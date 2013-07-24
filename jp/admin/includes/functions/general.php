@@ -7488,7 +7488,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     参数: $include_itself(boolean) 是否包含自己 
     返回值: 分类树(array) 
  ------------------------------------ */
-  function tep_get_faq_category_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $include_itself = false) {
+  function tep_get_faq_category_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $site_id='',$include_itself = false) {
     global $languages_id;
 
     if (!is_array($category_tree_array)) $category_tree_array = array();
@@ -7496,7 +7496,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
     if ($include_itself) {
       $category_query = tep_db_query("select cd.title from " .
-          TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd where cd.faq_category_id = '" . $parent_id . "' and cd.site_id='0'");
+          TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd where cd.faq_category_id = '" .  $parent_id . "' and cd.site_id='".$site_id."'");
       $category = tep_db_fetch_array($category_query);
       $category_tree_array[] = array('id' => $parent_id, 'text' => $category['title']);
     }
@@ -7504,11 +7504,11 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     $categories_query = tep_db_query("select c.id, cd.title, c.parent_id from " .
         TABLE_FAQ_CATEGORIES . " c, " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd 
         where c.id = cd.faq_category_id and  c.parent_id = '" . $parent_id . "'
-        and site_id ='0' order by c.sort_order, cd.title");
+        and site_id ='".$site_id."' order by c.sort_order, cd.title");
     while ($categories = tep_db_fetch_array($categories_query)) {
       if ($exclude != $categories['id']) $category_tree_array[] = array('id' =>
           $categories['id'], 'text' => $spacing . $categories['title']);
-      $category_tree_array = tep_get_faq_category_tree($categories['id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
+      $category_tree_array = tep_get_faq_category_tree($categories['id'], $spacing .  '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array,$site_id);
     }
 
     return $category_tree_array;
@@ -7518,25 +7518,27 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 /* -------------------------------------
     功能: 删除指定faq分类及其相关信息 
     参数: $category_id(int) 分类id 
+    参数: $site_id(int) 网站id 
     返回值: 无 
  ------------------------------------ */
-  function tep_remove_faq_category($category_id) {
+  function tep_remove_faq_category($category_id,$site_id) {
     tep_db_query("delete from " . TABLE_FAQ_CATEGORIES . " where id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where faq_category_id = '" . tep_db_input($category_id) . "'");
+    tep_db_query("delete from " . TABLE_FAQ_CATEGORIES_DESCRIPTION . " where faq_category_id = '" . tep_db_input($category_id) . "' and site_id='".$site_id."'");
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_category_id = '" . tep_db_input($category_id) . "'");
-    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($category_id) . "' and info_type = 'c'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($category_id) . "' and info_type = 'c' and site_id='".$site_id."'");
   }
 
 /* -------------------------------------
     功能: 删除指定faq问题及其相关信息 
     参数: $product_id(int) 问题id 
+    参数: $site_id(int) 网站id 
     返回值: 无 
  ------------------------------------ */
-  function tep_remove_faq_question($product_id) {
+  function tep_remove_faq_question($product_id,$site_id) {
     tep_db_query("delete from " . TABLE_FAQ_QUESTION . " where id = '" . tep_db_input($product_id) . "'");
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_TO_CATEGORIES . " where faq_question_id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where faq_question_id = '" . tep_db_input($product_id) . "'");
-    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($product_id) . "' and info_type = 'q'");
+    tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where faq_question_id = '" . tep_db_input($product_id) . "' and site_id='".$site_id."'");
+    tep_db_query("delete from `faq_sort` where info_id = '" .  tep_db_input($product_id) . "' and info_type = 'q' and site_id='".$site_id."'");
   }
 
 /* -------------------------------------
@@ -7591,7 +7593,7 @@ function   tep_order_status_change($oID,$status){
         " and `site_id` = '".$site_id."' LIMIT 1 ;");
     tep_db_query("UPDATE `".'faq_sort'."` SET `is_show` =
         '".intval($status)."' WHERE `info_id` =".$faq_category_id.
-        " and `site_id` = '".$site_id."' LIMIT 1 ;");
+        " and `site_id` = '".$site_id."' and info_type='c' LIMIT 1 ;");
     return true;
   }
 
@@ -7660,12 +7662,12 @@ function   tep_order_status_change($oID,$status){
   function tep_set_faq_question_status_by_site_id($question_id, $status, $site_id) {
     if ($status == '1') {
       tep_db_query("update " . 'faq_sort' . " set is_show = '1' where
-          info_id = '" . $question_id . "' and site_id = '".$site_id."'");
+          info_id = '" . $question_id . "' and site_id = '".$site_id."' and info_type='q'");
       return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '1' where
           faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '0') {
       tep_db_query("update " . 'faq_sort'. " set is_show = '0' where 
-          info_id = '" . $question_id . "' and site_id = '".$site_id."'");
+          info_id = '" . $question_id . "' and site_id = '".$site_id."' and info_type='q'");
       return tep_db_query("update " . TABLE_FAQ_QUESTION_DESCRIPTION . " set is_show = '0' where 
           faq_question_id = '" . $question_id . "' and site_id = '".$site_id."'");
     } else {
@@ -10394,19 +10396,23 @@ function tep_get_setting_site_info($current_page)
 function tep_get_quantity($pid,$v_quantity=false){
   if($v_quantity){
     $sql = "SELECT products_attention_1_3,
-      (`products_real_quantity`/`products_attention_1_3`) 
-      + `products_virtual_quantity`  as quantity FROM 
+      `products_real_quantity` ,
+      `products_virtual_quantity` FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
   }else{
     $sql = "SELECT products_attention_1_3,
-      (`products_real_quantity`/`products_attention_1_3`) as quantity
+      `products_real_quantity` 
       FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
   }
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
     if($row['products_attention_1_3']!=''&&$row['products_attention_1_3']!=0){
-      return (int)($row['quantity']);
+      if($v_quantity){
+        return floor($row['products_real_quantity']/$row['products_attention_1_3'])+$row['products_virtual_quantity'];
+      }else{
+        return floor($row['products_real_quantity']/$row['products_attention_1_3']);
+      }
     }else{
       $sql = "SELECT products_attention_1_3,
       `products_real_quantity` as quantity FROM 
@@ -10777,9 +10783,15 @@ function tep_get_beforday_orders($limit_time_info){
   -----------------------------*/
 function tep_get_mail_templates($mail_flag,$site_id){
 
-  $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
+  $mail_query = tep_db_query("select title,contents,valid from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
   $mail_array = tep_db_fetch_array($mail_query);
   tep_db_free_result($mail_query);
+
+  if($mail_array['valid'] == 0){
+    $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='0'");
+    $mail_array = tep_db_fetch_array($mail_query);
+    tep_db_free_result($mail_query); 
+  }
 
   return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
 }
@@ -10857,72 +10869,4 @@ function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=tr
   }else{
     return false;
   }
-}
-function tep_update_faq_sort($fid,$site_id,$type,$action='update'){
-  if($type=='c'){
-    if($action=='update'){
-    $c_sql = "SELECT * FROM `faq_categories` c, `faq_categories_description` cd WHERE c.id = cd.faq_category_id and cd.faq_category_id='".$fid."' and site_id = '".$site_id."' limit 1";
-    }else{
-    $c_sql = "SELECT * FROM `faq_categories` c, `faq_categories_description` cd WHERE c.id = cd.faq_category_id and cd.id='".$fid."' and site_id = '".$site_id."' limit 1";
-    }
-    $c_query = tep_db_query($c_sql);
-    if($c_row = tep_db_fetch_array($c_query)){
-      $search_text = $c_row['romaji'].'>>>'.$c_row['title'].'>>>'.$c_row['keywords'].'>>>'.$c_row['description'];
-      $title = $c_row['title'];
-      $sort_order = $c_row['sort_order'];
-      $is_show = $c_row['is_show'];
-      $parent_id = $c_row['parent_id'];
-      $info_id = $c_row['faq_category_id'];
-      $updated_at = $c_row['updated_at'];
-    }
-  }
-  if($type=='q'){
-    $q_sql = "SELECT qd.site_id,qd.faq_question_id,qd.romaji,qd.ask,
-      q.sort_order,qd.is_show,q2c.faq_category_id,q.updated_at,
-      qd.keywords,qd.answer
-      FROM
-      `faq_question_description` qd, `faq_question` q,
-      `faq_question_to_categories` q2c
-      WHERE q.id = qd.`faq_question_id`
-      and qd.`faq_question_id` = q2c.`faq_question_id` ";
-    if($action=='update'){
-      $q_sql .= "and qd.faq_question_id = '".$fid."' and site_id = '".$site_id."' limit 1";
-    }else{
-      $q_sql .= "and qd.id = '".$fid."' and site_id = '".$site_id."' limit 1";
-    }
-    $q_query = tep_db_query($q_sql);
-    if($q_row = tep_db_fetch_array($q_query)){
-      $search_text = $q_row['romaji'].'>>>'.$q_row['ask'].'>>>'.$q_row['keyworeds'].'>>>'.$q_row['answer'];
-      $title = $q_row['ask'];
-      $sort_order = $q_row['sort_order'];
-      $is_show = $q_row['is_show'];
-      $parent_id = $q_row['faq_category_id'];
-      $info_id = $q_row['faq_question_id'];
-      $updated_at = $q_row['updated_at'];
-    }
-  }
-  if($action=='update'){
-    $sql_fs = "UPDATE ".TABLE_FAQ_SORT." SET 
-      `title`='".$title."',
-      `sort_order`='".$sort_order."',
-      `is_show`='".$is_show."',
-      `parent_id`='".$parent_id."',
-      `info_id`='".$info_id."',
-      `info_type`='".$type."',
-      `updated_at`='".$updated_at."',
-      `search_text`='".$search_text."' 
-        WHERE `info_id`='".$info_id."' 
-        and `site_id`='".$site_id."'
-        and `info_type`='".$type."'";
-  }else if($action=='insert'){
-    $sql_fs = "INSERT INTO ".TABLE_FAQ_SORT." 
-      (`id` , `site_id` , `title` , `sort_order` ,
-       `is_show` , `parent_id` , `info_id` , `info_type`,
-       `updated_at`,`search_text`)  VALUES
-      ( NULL , '".$site_id."', '".$title."',
-      '".$sort_order."', '".$is_show."',
-      '".$parent_id."', '".$info_id."',
-      '".$type."','".$updated_at."','".$search_text."')";
-  }
-  tep_db_query($sql_fs);
 }

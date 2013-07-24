@@ -5131,7 +5131,7 @@ if($_GET['cID'] != -1){
       } else {
         $tmp_ex_array = array('cID', 'action');
       }
-     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params($tmp_ex_array) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
+     $customers_del =  ' <a class = "new_product_reset" href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if (confirm(\''.TEXT_DEL_NEWS.'\')) toggle_customers_action(\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params($tmp_ex_array) . 'cID=' .  $cInfo->customers_id .  '&action=deleteconfirm').'\', \''.$ocertify->npermission.'\');"').'</a>';
      if ($cInfo->is_active == '1') {
        if ($ocertify->npermission >= 15) {
          $customers_orders = ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a>';
@@ -6425,8 +6425,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     );
     $contents[]['text'] = array(
           array('text' => TEXT_ALT),
-          array('text' =>
-            tep_draw_input_field('manufacturers_alt',$mInfo->manufacturers_alt,'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
+          array('text' => tep_draw_input_field('manufacturers_alt',$mInfo->manufacturers_alt,'onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
     );
     $contents[]['text'] = array(
           array('text' => TEXT_PRODUCTS),
@@ -6548,6 +6547,13 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   $mail_query = tep_db_query("select * from ". TABLE_MAIL_TEMPLATES ." where id='".$mail_id."'"); 
   $mail_array = tep_db_fetch_array($mail_query);
   tep_db_free_result($mail_query);
+  //邮件模板无效时的处理
+  if($mail_array['valid'] == 0){
+
+    $mail_templates_str = tep_get_mail_templates($mail_array['flag'],0);
+    $mail_array['title'] = $mail_templates_str['title'];
+    $mail_array['contents'] = $mail_templates_str['contents'];
+  }
 
   $site_romaji_str = '';
   $field_str = '*';
@@ -6595,11 +6601,30 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     $site_id_array = explode('-',$site_id);
     $site_id_str = implode(',',$site_id_array);
     $site_id_str = ' where site_id in ('.$site_id_str.')';
+  }else{
+    
+    $show_site_query = tep_db_query("select site from ". TABLE_SHOW_SITE ." where user='".$ocertify->auth_user."' and page='".FILENAME_MAIL_TEMPLATES."'"); 
+    $show_site_array = tep_db_fetch_array($show_site_query);
+    tep_db_free_result($show_site_query);
+    $site_id_array = explode('-',$show_site_array['site']);
+    $site_id_str = implode(',',$site_id_array);
+    foreach($site_id_array as $site_key=>$site_value){
+
+      if(trim($site_value) == ''){
+
+        unset($site_id_array[$site_key]); 
+      }
+    }
+    if(!empty($site_id_array)){
+      $site_id_str = ' where site_id in ('.$site_id_str.')';
+    }else{
+      $site_id_str = ''; 
+    }
   } 
 
   if($keyword != ''){
 
-    if($site_id != ''){
+    if($site_id_str != ''){
 
       $keyword_str = " and (templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%')";
     }else{
@@ -6644,6 +6669,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
 
   $mail_id_prev = $mail_id_page_array[$mail_id_num - 1];
   $mail_id_next = $mail_id_page_array[$mail_id_num + 1];
+  $mail_id_page_array = array_filter($mail_id_page_array);
   if ($mail_id_num > 0) {
     $page_str .= '<a id="mail_prev" onclick="show_link_mail_info(\''.$mail_id_prev.'\',\''.$param_str.'\')" href="javascript:void(0);" ><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
@@ -6664,7 +6690,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
    
   //编辑mail templates项目   
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_NAME.'<input type="hidden" name="mail_id" value="'.$mail_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="url" value="'.$url.'">'), 
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_NAME.'<input type="hidden" name="mail_id" value="'.$mail_array['id'].'"><input type="hidden" name="param_str" value="'.$param_str.'"><input type="hidden" name="url" value="'.$url.'"><input type="hidden" name="valid" value="'.($mail_array['valid'] == 1 ?  0 : 1).'">'), 
        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<input type="text" class="option_input" name="templates_title" value="'.$mail_array['templates_title'].'"><span id="mail_name_error">'.TEXT_FIELD_REQUIRED.'</span>')
      );
 
@@ -6680,6 +6706,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
 
    //格式化邮件模板说明
    $mail_templates_array = preg_split('/<br>|<\/br>/',$mail_array['contents_description']);
+   $mail_templates_array = array_filter($mail_templates_array);
    $mail_templates_start_array = '';
    $mail_templates_end_array = '';
    $mail_templates_start_str = '';
@@ -6688,10 +6715,14 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
    foreach($mail_templates_array as $mail_value){
 
      if($i % 2 == 0){
-   
-       $mail_templates_end_array[] = $mail_value;
+
+       if(trim($mail_value) != ''){ 
+         $mail_templates_end_array[] = $mail_value;
+       }
      }else{
-       $mail_templates_start_array[] = $mail_value;
+       if(trim($mail_value) != ''){
+         $mail_templates_start_array[] = $mail_value;
+       }
      }
      $i++;
    }
@@ -6707,15 +6738,14 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
    $mail_templates_end_str = implode('<br>',$mail_templates_end_array);
    $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_MAIL_CONTENTS), 
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<textarea name="contents" rows="15" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:100%;">'.$mail_array['contents'].'</textarea>'),
+       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<textarea name="contents" rows="15" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical; width:100%;">'.$mail_array['contents'].'</textarea>'),
       array('align' => 'left', 'params' => 'valign="top" nowrap="nowrap"', 'text' => '<span id="mail_contents_error">'.TEXT_FIELD_REQUIRED.'</span>')
      );
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => ''), 
-       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $mail_templates_start_str),
-       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $mail_templates_end_str)
+       array('align' => 'left', 'params' => 'colspan="2"', 'text' => '<table width="100%" cellspacing="0" cellpadding="2" border="0"><tr><td>'.$mail_templates_start_str.'</td><td>'.$mail_templates_end_str.'</td></tr></table>'),
      );
-
+  
   //作成者，作成时间，更新者，更新时间 
   $category_info_row[]['text'] = array(
        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_added'])?$mail_array['user_added']:TEXT_UNSET_DATA))),
@@ -6730,7 +6760,16 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   //底部内容
   $buttons = array();
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
+   if($mail_array['site_id'] == 0){
+     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
+   }else{
+     if($mail_array['valid'] == 0){
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MAIL_VALID, 'id="button_valid" onclick="valid_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>';
+     }else{
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>';  
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MAIL_INVALID, 'id="button_valid" onclick="valid_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
+     }
+   }
  
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -6993,7 +7032,7 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
       if($disabled){
         $faq_qid_del  = tep_html_element_button(IMAGE_DELETE,$disabled);
       }else{
-        $faq_qid_del  = '<a href="javascript:void(0)" onclick="save_del()">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+        $faq_qid_del = '<a href="javascript:void(0);" onclick="delete_fix_faq_category(\'q\',\''.urlencode('site_id='.$faq_q_raw['site_id'].'&cPath=' . $cPath .  '&cID=' .  $faq_q_raw['faq_question_id']).'\');">'.tep_html_element_button(IMAGE_DELETE).'</a>';
       }
     }
    $button[] = $faq_qid_save.$faq_qid_del;
@@ -7007,7 +7046,7 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
          if($disabled){
             $faq_del =tep_html_element_button(IMAGE_DELETE,$disabled);
          }else{
-            $faq_del = '<a href="javascript:void(0);" onclick="delete_fix_faq_category(\''.urlencode('cPath=' . $cPath .  '&cID=' .  $faq_c_raw['faq_category_id']).'\');">'.tep_html_element_button(IMAGE_DELETE).'</a>';
+            $faq_del = '<a href="javascript:void(0);" onclick="delete_fix_faq_category(\'c\',\''.urlencode('site_id='.$faq_c_raw['site_id'].'&cPath=' . $cPath .  '&cID=' .  $faq_c_raw['faq_category_id']).'\');">'.tep_html_element_button(IMAGE_DELETE).'</a>';
          }
      } 
     $button[] = $faq_save.$faq_del;

@@ -190,7 +190,7 @@
       if ($current_page_number < $num_pages) {
         $next_url_str = str_replace('\'', '||||', tep_href_link(basename($PHP_SELF), $parameters.'page='.($current_page_number + 1))); 
         $next_url_str = str_replace('"', '>>>>', $next_url_str); 
-        echo '&nbsp;&nbsp;<input type="button" value="'.(defined('DIR_WS_ADMIN')?BUTTON_NEXT:PREVNEXT_BUTTON_NEXT).'" onclick="page_change(\''.$next_url_str.'\');">&nbsp;'; 
+        echo '&nbsp;&nbsp;<input type="button" value="'.(defined('DIR_WS_ADMIN')?BUTTON_NEXT:PREVNEXT_BUTTON_NEXT).'" onclick="page_change(\''.$next_url_str.'\');">'.(defined('DIR_WS_ADMIN')?'':'&nbsp;'); 
       }
       echo '</div>'; 
     

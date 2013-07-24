@@ -32,7 +32,7 @@ function redirect_new_url(new_object)
 }
 </script>
 <?php
-if($ocertify->npermission >= 15){
+if($ocertify->npermission > 15){
   ?>
   <table class="bottom_content" border="0" cellpadding="0" cellspacing="0">
   <tr> 

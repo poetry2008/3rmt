@@ -502,4 +502,16 @@ define('SENDMAIL_TEXT_MIN','分');
 define('SENDMAIL_TEXT_TWENTY_FOUR_HOUR','　（24時間表記）');
 define('SENDMAIL_TEXT_TIME_LINK', 'から');
 define('TEXT_PAYMENT_ERROR_TOP','エラー：');
+define('TEXT_ORDERS_CUSTOMER_STRING','▼');
+define('TEXT_ORDERS_PRODUCTS','注文商品');
+define('TEXT_ORDERS_PRODUCTS_NUMBER','個数');
+define('TEXT_ORDERS_PRODUCTS_PRICE','単価');
+define('TEXT_ORDERS_PRODUCTS_SUBTOTAL','小計');
+define('TEXT_ORDERS_PRODUCTS_LINE','------------------------------------------'."\n");
+define('TEXT_ORDERS_PRODUCTS_ORDERED','※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。'."\n\n");
+define('TEXT_ORDERS_PRODUCTS_ORDERED_TEXT','※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。'."\n\n");
+define('TEXT_ORDERS_PRODUCTS_LINK','分から');
+define('TEXT_ORDERS_PRODUCTS_TWENTY_HOUR','分　（24時間表記）');
+define('TEXT_ORDERS_PRODUCTS_ADDRESS_INFO','▼住所情報');
+define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'."\n");
 ?>

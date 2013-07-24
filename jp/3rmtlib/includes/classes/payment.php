@@ -15,6 +15,7 @@ class payment {
   var $session_error_name = 'payment_selection_error';
   var $session_paymentvalue_name = 'payment_value';
   public static  $use_payment = NULL;
+  public static  $use_type = NULL;
 /*----------------------
  功能：支付方法
  参数：$site_id(string) SITE_ID 值
@@ -39,11 +40,12 @@ class payment {
  参数：$site_id(site_id) SITE_ID值
  返回值：返回对象实例(string)
  ---------------------------*/
-  public static function getInstance($site_id=0,$u_payment='')
+  public static function getInstance($site_id=0,$u_payment='',$type='order')
   { //如果对象实例还没有被创建，则创建一个新的实例
 
     global $language;
     self::$use_payment = $u_payment;
+    self::$use_type = $type;
     $language = tep_get_default_language();
     if(self::$instance == NULL)
       {
@@ -92,6 +94,19 @@ class payment {
     foreach($paymentStringArray as $value){
       $class = strtoupper(substr($value,0,strpos($value,'.')));
       //判断是否为开启状态 经过此步以后  得到的payment_installed是所有可用的
+      if(self::$use_type == 'preorder'){
+      if(get_configuration_by_site_id_or_default("MODULE_PAYMENT_".$class."_PREORDER_SHOW",$site_id) == "True"){
+        $this->payment_enabled[] = array(
+                                         "file"=>$value,
+                                         "class"=>$class,
+                                         );
+      }else if ($class==strtoupper(self::$use_payment)){
+        $this->payment_enabled[] = array(
+                                         "file"=>$value,
+                                         "class"=>$class,
+                                         );
+      }
+      }else{
       if(get_configuration_by_site_id_or_default("MODULE_PAYMENT_".$class."_STATUS",$site_id) == "True"){
         $this->payment_enabled[] = array(
                                          "file"=>$value,
@@ -102,6 +117,7 @@ class payment {
                                          "file"=>$value,
                                          "class"=>$class,
                                          );
+      }
       }
     }
   }
@@ -344,11 +360,11 @@ class payment {
  参数：$total_price_mail(string) 总价邮件
  返回值：判断管理支付的电子邮件(string/boolean)
  -----------------------*/ 
-  function admin_process_pay_email($payment,$order,$total_price_mail) {
+  function admin_process_pay_email($payment,$order,$total_price_mail,$site_id=0) {
     $module = $this->getModule($payment);
     if ($module) {
       if (method_exists($module, 'admin_process_pay_email')) {
-        return $module->admin_process_pay_email($order,$total_price_mail); 
+        return $module->admin_process_pay_email($order,$total_price_mail,$site_id); 
       }
     }
     return false;
@@ -921,7 +937,7 @@ class payment {
  参数：$pay_info_array(string) 支付信息的数组 
  返回值：支付方法的目录(string)
  --------------------*/
-  function admin_show_payment_list($payment,$pay_info_array,$site_id='',$c_chk='',$type='order'){
+  function admin_show_payment_list($payment,$pay_info_array,$site_id='',$c_chk='',$type='order',$default_email_info=''){
 
     $module = $this->getModule($payment);
     $show_flag = true;
@@ -951,7 +967,7 @@ class payment {
     }
     if ($module&&$show_flag) {
       if (method_exists($module, 'admin_show_payment_list')) {
-         $module->admin_show_payment_list($pay_info_array); 
+         $module->admin_show_payment_list($pay_info_array, $default_email_info); 
       }
     }    
   }

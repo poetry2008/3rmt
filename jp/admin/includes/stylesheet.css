@@ -1887,7 +1887,6 @@ float right
 --------------------------- */
 .float_right{
 	float:right;
-        margin-right: -7px;
 }
 /* ---------------------------
 content
@@ -2083,7 +2082,6 @@ google hack
 	overflow:hidden;
 }
 .td_box{
-	margin-right:-4px;
 	overflow:hidden;
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
@@ -2092,9 +2090,14 @@ google hack
 	overflow:hidden;
 }}
 .td_box input{
-	margin:0;
+	margin:0 -1px 0 0;
 	padding:0;
 }
+@media all and (-webkit-min-device-pixel-ratio:0){
+.td_box input{
+	margin:0 3px 0 0;
+	padding:0;
+}}
 .right_space{
 	margin-right:-3px;
 }

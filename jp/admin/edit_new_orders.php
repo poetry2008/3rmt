@@ -1098,10 +1098,29 @@ if($address_error == false){
               $total_price_mail = round($totals['value']);
             } else {
               $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 -
-                      strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+                strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
+          $totals_email_i = 0;
+          foreach($update_totals as $update_total_key=>$update_total_value){
 
+              if($update_total_value['class'] == 'ot_custom' && trim($update_total_value['title']) != '' && trim($update_total_value['value']) != ''){
+                $totals_email_i = $update_total_key;
+              }
+          }
+          $totals_email_str = '';
+          foreach($update_totals as $update_totals_key=>$update_totals_value){
+
+              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
+                if($totals_email_i != $update_totals_key){
+                  $totals_email_str .= '▼'.$update_totals_value['title'].str_repeat('　', intval((16 -
+                      strlen($update_totals_value['title']))/2)).'：'.$currencies->format($update_totals_value['value'])."\n";
+                }else{
+                  $totals_email_str .= '▼'.$update_totals_value['title'].str_repeat('　', intval((16 -
+                      strlen($update_totals_value['title']))/2)).'：'.$currencies->format($update_totals_value['value']); 
+                }
+              }
+            }
 
 
           if ($customer_guest['is_send_mail'] != '1')
@@ -1112,6 +1131,12 @@ if($address_error == false){
             $mailoption['ORDER_DATE']       = tep_date_long(time())  ;       
             $mailoption['USER_NAME']        =  $order->customer['name'] ;
             $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address']; 
+            //自定义费用
+            if($totals_email_str != ''){
+              $mailoption['CUSTOMIZED_FEE']      = $totals_email_str;
+            }
+            //配送费
+            $mailoption['SHIPPING_FEE']      = $currencies->format($shipping_fee); 
             $mailoption['ORDER_TOTAL']      = $currencies->format($mailtotal);
             @$payment_class = $$payment; 
 
@@ -1120,7 +1145,7 @@ if($address_error == false){
             $trade_time = str_replace($oarr, $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00'))); 
             $trade_time_1 = date('H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN,strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00'));
             $mailoption['ORDER_TTIME']      = $trade_time . SENDMAIL_TEXT_TIME_LINK . $trade_time_1 .SENDMAIL_TEXT_TWENTY_FOUR_HOUR;
-            $mailoption['ORDER_COMMENT']    = isset($comment_arr['payment_bank_info']['add_info'])?$comment_arr['comment']:$_POST['comments_text'];// = $comments;
+            $mailoption['ORDER_COMMENT']    = $_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;
             $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
             $mailoption['SITE_NAME']        = get_configuration_by_site_id('STORE_NAME',$order->info['site_id']);
@@ -1133,9 +1158,8 @@ if($address_error == false){
             }
 
             $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
-            $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:'';
+            $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:(isset($comment_arr['payment_bank_info']['add_info']) ? $comment_arr['payment_bank_info']['add_info']: '');
             unset($_SESSION['orderinfo_mail_use']);
-            $totals_email_str = '';
             $print_totals_email_str = '';
             $totals_email_i = 0;
             foreach($update_totals as $update_total_key=>$update_total_value){
@@ -1144,16 +1168,7 @@ if($address_error == false){
                 $totals_email_i = $update_total_key;
               }
             }
-            foreach($update_totals as $update_totals_key=>$update_totals_value){
-
-              if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
-                if($totals_email_i != $update_totals_key){
-                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.$currencies->format($update_totals_value['value'])."\n";
-                }else{
-                  $totals_email_str .= '▼'.$update_totals_value['title'].'：'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($update_totals_value['value'])); 
-                }
-              }
-            }
+            
             foreach($update_totals as $update_totals_key=>$update_totals_value){
 
               if($update_totals_value['class'] == 'ot_custom' && trim($update_totals_value['title']) != '' && trim($update_totals_value['value']) != ''){
@@ -1166,9 +1181,9 @@ if($address_error == false){
             }
             $point = $mailpoint;
             if ($point){
-              $mailoption['POINT']            = $point.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$totals_email_str : '');
+              $mailoption['POINT']            = $point;
             }else {
-              $mailoption['POINT']            = '0'.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$totals_email_str : '');
+              $mailoption['POINT']            = '0';
             }
             $total_mail_fee = $handle_fee;	    
             if(!isset($total_mail_fee)){
@@ -1178,21 +1193,14 @@ if($address_error == false){
 
             $selected_module = payment::changeRomaji($order->info['payment_method'],
                 PAYMENT_RETURN_TYPE_CODE);
-
-            $email =get_configuration_by_site_id("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",$order->info['site_id']);
-            if($email === false){
-              $email =get_configuration_by_site_id("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",0);
-            }
+            //订单邮件
+            $orders_mail_templates = tep_get_mail_templates("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",$order->info['site_id']);
+            $email = $orders_mail_templates['contents'];
+            
             foreach ($mailoption as $key=>$value){
               $email = str_replace('${'.strtoupper($key).'}',$value,$email);
               }
             
-            $email_temp = SENDMAIL_TEXT_POINT_DISCOUNT;
-            $email_temp_str = SENDMAIL_TEXT_POINT_DISCOUNT_ONE;
-            $email_shipping_fee = SENDMAIL_TEXT_SHIPPING_FEE_ONE.$shipping_fee.SENDMAIL_EDIT_ORDERS_PRICE_UNIT."\n".$email_temp;
-            $email = str_replace($email_temp,$email_shipping_fee,$email);
-            $email = str_replace($email_temp_str,$email_shipping_fee,$email);
-            $email_address = SENDMAIL_ORDERS_PRODUCTS_ONE;
             //address
             if(isset($options_info_array) && !empty($options_info_array)){
               $address_len_array = array();
@@ -1213,9 +1221,14 @@ if($address_error == false){
                 $email_address_str .= $ad_name_array['name'].$temp_str.'：'.$ad_value."\n";
               }
               $email_address_str .= '------------------------------------------'."\n";
-              $email_address_str .= $email_address;
-              $email = str_replace($email_address,$email_address_str,$email);
-          }
+              $email = str_replace('${ADDRESS_INFO}',$email_address_str,$email);
+            }else{
+              $email = str_replace("\n".'${ADDRESS_INFO}','',$email); 
+            }
+            if($totals_email_str == ''){
+
+              $email = str_replace("\n".'${CUSTOMIZED_FEE}','',$email);
+            }
   // new send mail 
             $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email); 
             $search_products_name_list = array();
@@ -1225,21 +1238,19 @@ if($address_error == false){
               tep_db_free_result($search_products_name_query);
               $search_products_name_list[] = $search_products_name_array['products_name'];
             }
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
-            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           }
           $customer_notified = '1';
           
           // 支付方法是信用卡的话，发送决算URL
-          $email_credit =  $payment_modules->admin_process_pay_email(
-                  payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
-                $order,$total_price_mail);
-          $email_credit = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email_credit);
+          $email_credit_info =  $payment_modules->admin_process_pay_email( payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE), $order,$total_price_mail,$order->info['site_id']);
+          $email_credit = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email_credit_info[0]);
           if($email_credit){
             if ($customer_guest['is_send_mail'] != '1'){
-                tep_mail($check_status['customers_name'], $check_status['customers_email_address'], SENDMAIL_TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
+                tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME',$order->info['site_id']), $email_credit_info[1]) , $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
             }
-              tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), SENDMAIL_TEXT_SEND_MAIL_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
+              tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME',$order->info['site_id']), $email_credit_info[1]), $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
           }
           }
           $order_updated_2 = true;
@@ -1357,12 +1368,15 @@ if($address_error == false){
 
   $payment_mode = array(
                         '${USER_NAME}',
+                        '${YEAR}',
                         '${SITE_NAME}',
                         '${ORDER_ID}',
                         '${ORDER_DATE}',
                         '${USER_MAILACCOUNT}',
                         '${BUYING_INFO}',
                         '${POINT}',
+                        '${SHIPPING_FEE}',
+                        '${TOTAL}',
                         '${MAILFEE}',
                         '${ORDER_TOTAL}',
                         '${ORDER_PRODUCTS}',
@@ -1469,15 +1483,17 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       }
   $orders_comments = $pay_type_array[0] == $payment_method || $pay_type_array[2] == $payment_method ? $comment_arr['comment'] : $comments_text;  
   $point = !isset($point) ? 0 : $point;
-  $point = $point.($totals_email_i != 0 ? TEXT_MONEY_SYMBOL."\n".$print_totals_email_str : '');
   $payment_replace = array(
                           tep_db_input(stripslashes($update_customer_name)),
+                          date('Y'),
                           $orders_site_name_array['name'],
                           $oID,
                           tep_date_long(time()),
                           tep_db_input($update_customer_email_address), 
                           $comment_arr['comment'],
                           $point,  
+                          str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($shipping_fee)),
+                          str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($mailtotal)),
                           $handle_fee, 
                           str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format(abs($newtotal))),
                           $products_ordered_mail,
@@ -1491,6 +1507,18 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $payment_name_string = str_replace($payment_mode,$payment_replace,$payment_name_string);  
   $email_printing_order = $payment_name_string; 
   $email_printing_order_title = str_replace('${SITE_NAME}',$orders_site_name_array['name'],$payment_name_string_title);
+  //自定义费用
+  if($totals_email_str != ''){
+    $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email_printing_order);
+  }else{
+    $email_printing_order = str_replace("\n".'${CUSTOMIZED_FEE}','', $email_printing_order); 
+  }
+  //住所
+  if($email_address_str != ''){
+    $email_printing_order = str_replace('${ADDRESS_INFO}',str_replace('▼','',$email_address_str), $email_printing_order);
+  }else{
+    $email_printing_order = str_replace("\n".'${ADDRESS_INFO}','', $email_printing_order); 
+  } 
   $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order); 
   # ------------------------------------------
   tep_mail('',
@@ -3297,7 +3325,7 @@ a.dpicker {
       $payment_negative_array = array_unique($payment_negative_array);       
       $payment_positive_array = array_unique($payment_positive_array); 
       if($products_money_total != 0){
-          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $email_address_flag ."' and site_id='".$site_id_flag."' order by orders_id desc"); 
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='".  $email_address_flag ."' and site_id='".$site_id_flag."' and is_gray != '1' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($orders_payment_array['payment_method'] != ''){
@@ -3453,7 +3481,7 @@ a.dpicker {
           echo '$(document).ready(function(){'."\n";
 
           if($payment_code!=''){
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk,'order',$_SESSION['email_address']);
           }
           
           echo '});'."\n";
@@ -4771,7 +4799,7 @@ if($orders_exit_flag == true){
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
           $customer_notified = $select_status == 31 ? 0 : $customer_notified;
           $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
-          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_status;
+          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ?  $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : get_configuration_by_site_id('DEFAULT_ORDERS_STATUS_ID');
           
 ?>
             <td class="main" width="82" style="min-width:45px;"><?php echo ENTRY_STATUS; ?></td>

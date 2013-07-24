@@ -217,54 +217,6 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
                    'MODULE_PAYMENT_POSTALMONEYORDER_MONEY_LIMIT',
 );
     }
-/*----------------------------
- 功能：获取邮件的字符串
- 参数：$option(string) 选项
- 返回值：邮件字符串(string)
- ---------------------------*/
-  function getMailString($option=''){
-    $email_printing_order .= 'この注文は【販売】です。' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□
-      返答済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□
-      無　→　入金確認後仕入' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
-      abs($option) . '円ですか？　□ はい' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '残量入力→誤差有無　：□
-      無　　｜　　□ 有　→　報告　□' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '発送完了メール送信　：□
-      済' . "\n";    
-    $email_printing_order .=
-      '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-    return $email_printing_order;
-  }
 /*-------------------------------
  功能：获取邮件配置
  参数：$site_id(string) SITE_ID值
@@ -277,9 +229,10 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
 /*-----------------------------
  功能：显示后台支付方法列表 
  参数：$pay_info_array(string) 支付信息数组
+ 参数：$default_email_info(string) 默认邮件地址
  返回值：无
  ----------------------------*/
-  function admin_show_payment_list($pay_info_array){
+  function admin_show_payment_list($pay_info_array, $default_email_info){
 
    global $_POST;
    global $_GET;
@@ -312,7 +265,7 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email']) ? $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-   echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
+   echo 'document.getElementsByName("con_email")[0].value = "'.(!empty($con_email[1])?$con_email[1]:$default_email_info).'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];

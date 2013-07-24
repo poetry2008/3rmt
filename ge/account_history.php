@@ -92,6 +92,8 @@
 
       new tableBox(array(array('text' => $order_heading)), true);
       new infoBox(array(array('text' => $order)));
+     
+      echo '<br>';
     }
   } else {
     new infoBox(array(array('text' => TEXT_NO_PURCHASES)));

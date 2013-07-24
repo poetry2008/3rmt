@@ -10,7 +10,8 @@
   if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
 /* -----------------------------------------------------
-   case 'save' 更新mail templates     
+   case 'save'  更新mail templates     
+   case 'valid' 更新mail templates为有效，无效
 ------------------------------------------------------*/ 
       case 'save':
         $mail_id = tep_db_prepare_input($_POST['mail_id']);
@@ -23,6 +24,24 @@
 
         tep_redirect(tep_href_link(FILENAME_MAIL_TEMPLATES, $param_str));
         break; 
+      case 'valid':
+        $mail_id = tep_db_prepare_input($_POST['mail_id']);
+        $valid = tep_db_prepare_input($_POST['valid']);
+        $param_str = tep_db_prepare_input($_POST['url']);
+
+        //邮件模板无效时、有效时的处理
+        if($valid == 0){
+          tep_db_query("update " . TABLE_MAIL_TEMPLATES . " set title='',contents='',valid='".$valid."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($mail_id) . "'");
+        }else{
+
+          $templates_title = tep_db_prepare_input($_POST['templates_title']);
+          $title = tep_db_prepare_input($_POST['title']);
+          $contents = tep_db_prepare_input($_POST['contents']);
+          tep_db_query("update " . TABLE_MAIL_TEMPLATES . " set templates_title='".$templates_title."',title='".$title."',contents='".$contents."',valid='".$valid."',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($mail_id) . "'");
+        }
+
+        tep_redirect(tep_href_link(FILENAME_MAIL_TEMPLATES, $param_str));
+        break;
     }
   }
 ?>
@@ -223,6 +242,50 @@ function edit_mail_check(c_permission){
   }
   }
 }
+
+<?php //mail templates 有效、无效?>
+function valid_mail_check(c_permission){
+ 
+  if (c_permission == 31) {
+    document.edit_mail.action = '<?php echo tep_href_link(FILENAME_MAIL_TEMPLATES, 'action=valid');?>';
+    document.edit_mail.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+      async: false,
+      success: function(msg) {
+        var tmp_msg_arr = msg.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
+          document.edit_mail.action = '<?php echo tep_href_link(FILENAME_MAIL_TEMPLATES, 'action=valid');?>';
+          document.edit_mail.submit();
+        } else {
+          $('#button_valid').attr('id', 'tmp_button_save'); 
+          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+            $.ajax({
+              url: 'ajax_orders.php?action=record_pwd_log',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_MAIL_TEMPLATES, 'action=valid');?>'),
+              async: false,
+              success: function(msg_info) {
+                document.edit_mail.action = '<?php echo tep_href_link(FILENAME_MAIL_TEMPLATES, 'action=valid');?>';
+                document.edit_mail.submit();
+              }
+            }); 
+          } else {
+            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            setTimeOut($('#tmp_button_save').attr('id', 'button_valid'), 1); 
+          }
+        }
+      }
+    });
+  }
+}
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -346,12 +409,18 @@ require("includes/note_js.php");
     $site_id_str = ' where site_id in ('.$site_id_str.')';
   }else{
     
-    $show_site_query = tep_db_query("select site from ". TABLE_SHOW_SITE ." where page='".FILENAME_MAIL_TEMPLATES."'"); 
+    $show_site_query = tep_db_query("select site from ". TABLE_SHOW_SITE ." where user='".$ocertify->auth_user."' and page='".FILENAME_MAIL_TEMPLATES."'"); 
     $show_site_array = tep_db_fetch_array($show_site_query);
     tep_db_free_result($show_site_query);
     $site_id_array = explode('-',$show_site_array['site']);
     $site_id_str = implode(',',$site_id_array);
-    $site_id_array = array_filter($site_id_array);
+    foreach($site_id_array as $site_key=>$site_value){
+
+      if(trim($site_value) == ''){
+
+        unset($site_id_array[$site_key]); 
+      }
+    }
     if(!empty($site_id_array)){
       $site_id_str = ' where site_id in ('.$site_id_str.')';
     }else{

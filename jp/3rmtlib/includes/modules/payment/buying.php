@@ -347,36 +347,6 @@ class buying extends basePayment  implements paymentInterface  {
 		 'MODULE_PAYMENT_BUYING_MONEY_LIMIT',
 		 );
   }
-/*----------------------------
- 功能：获取邮件的字符串
- 参数：$option(string) 选项
- 返回值：邮件字符串(string)
- ---------------------------*/
-  function getMailString($option=''){
-    $email_printing_order ='';
-    $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= 'キャラクターの有無　：□ 有　　｜　　□ 無　→　新規作成してお客様へ連絡' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '受領　※注意※　　●：＿＿月＿＿日' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　□ 報告' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '受領メール送信　　　：□ 済' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '支払　　　　　　　　：＿＿月＿＿日　※総額5,000円未満は168円引く※' . "\n";
-    $email_printing_order .= '　　　　　　　　　　　□ JNB　　□ eBank　　□ ゆうちょ' . "\n";
-    $email_printing_order .= '　　　　　　　　　　　入金予定日＿＿月＿＿日　受付番号＿＿＿＿＿＿＿＿＿' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '支払完了メール送信　：□ 済　　　※追加文章がないか確認しましたか？※' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-    return $email_printing_order;
-  }
 /*--------------------------
  功能：处理评论
  参数：$comment(string) 评论
@@ -545,9 +515,10 @@ class buying extends basePayment  implements paymentInterface  {
 /*----------------------------
  功能：显示后台支付方法列表 
  参数：$pay_info_array(array) 支付信息数组
+ 参数：$default_email_info(string) 默认邮件地址
  返回值：无
  ---------------------------*/  
-  function admin_show_payment_list($pay_info_array){
+  function admin_show_payment_list($pay_info_array, $default_email_info){
 
    global $_POST;
    global $_GET;
@@ -580,7 +551,7 @@ class buying extends basePayment  implements paymentInterface  {
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email']) ? $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-   echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
+   echo 'document.getElementsByName("con_email")[0].value = "'.(!empty($con_email[1])?$con_email[1]:$default_email_info).'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];

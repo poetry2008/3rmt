@@ -2004,7 +2004,7 @@ require("includes/note_js.php");
                   echo "\n".'<script language="javascript">'."\n"; 
                   echo '$(document).ready(function(){'."\n";
 
-                  $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$order->info['site_id'],$c_chk,'preorder'); 
+                  $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$order->info['site_id'],$c_chk,'preorder',$order->customer['email_address']); 
                   echo '});'."\n";
                   echo '</script>'."\n";
       

@@ -105,29 +105,13 @@ class telecom  extends basePayment  implements paymentInterface  {
     if(isset($_SESSION['h_shipping_fee'])){
       $total += $_SESSION['h_shipping_fee']; 
     }
-    
-    #mail送信
-      $mail_body = '仮クレジットカード注文です。'."\n\n";
-    
-    # 用户信息----------------------------
-      $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
-    $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
-    $mail_body .= '▼メールアドレス　：' . $order->customer["email_address"]."\n";
-    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼お支払金額　　　：' . $currencies->format($total) . "\n";
-    $mail_body .= '▼お支払方法　　　：クレジットカード決済'."\n";
-    
-    # 商品内容----------------------------
-      $mail_body .= '▼注文商品'."\n";
-    $mail_body .= "\t" . '------------------------------------------'."\n";
 
     $products = $cart->get_products();
     
-    
+    $order_product_list = '';    
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       $char_id = $products[$i]['id'];
-      $mail_body .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . "\n";
+      $order_product_list .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . "\n";
       $attributes_exist = ((isset($products[$i]['op_attributes'])) ? 1 : 0);
 
       if ($attributes_exist == 1) {
@@ -136,7 +120,7 @@ class telecom  extends basePayment  implements paymentInterface  {
           $option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
           $option_res = tep_db_fetch_array($option_query);
           if ($option_res) {
-            $mail_body .= '└' . $option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $op_value) . "\n";
+            $order_product_list .= '└' . $option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $op_value) . "\n";
           }
         }
       }
@@ -147,25 +131,42 @@ class telecom  extends basePayment  implements paymentInterface  {
            $c_option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$c_op_array[0]."' and id = '".$c_op_array[2]."'"); 
            $c_option_res = tep_db_fetch_array($c_option_query);
            if ($c_option_res) {
-             $mail_body .= '└' . $c_option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $c_op_value) . "\n";
+             $order_product_list .= '└' . $c_option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $c_op_value) . "\n";
            }
          }
        }
     }
-
-    $mail_body .= "\t" . '------------------------------------------'."\n";
     
-    # 配送时间----------------------------
-      $mail_body .= '▼お届け日時　　　　：' . $_SESSION["insert_torihiki_date"] . "\n";
-    $mail_body .= '　　　　　　　　　：' . $_SESSION["torihikihouhou"] . "\n";
+    $mail_mode = array(
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_M}',
+        '${ORDER_PRODUCT_LIST}',
+        '${SHIPPING_DATE}',
+        '${SHIPPING_TIME}',
+        '${IP}',
+        '${ANGET}',
+        '${HOST}',
+        '${PAY}'
+        );
+    $mail_value = array(
+        $order->customer["lastname"] . ' '. $order->customer["firstname"],
+        $order->customer["email_address"],
+        tep_date_long(time()),
+        $currencies->format($total),
+        $order_product_list,
+        $_SESSION["insert_torihiki_date"],
+        $_SESSION["torihikihouhou"],
+        $_SERVER["REMOTE_ADDR"],
+        @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
+        $_SERVER["HTTP_USER_AGENT"],
+        payment::changeRomaji($this->code,PAYMENT_RETURN_TYPE_TITLE)
+        );
     
-    # 用户代理等----------------------------
-      $mail_body .= "\n\n";
-    $mail_body .= '■IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-    $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-    $mail_body .= '■ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-    
-    tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
+    $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
+    $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
+    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $process_button_template['title'], $mail_body, '', '');
     
     $today = date("YmdHis");
     // telecom_option 文档中的$ID
@@ -380,51 +381,6 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
   return $telecom_option_ok;
   }
-/*------------------------------
- 功能：获取电子邮件字符串 
- 参数：$option(string) 选项
- 返回值：电子邮件字符串(string) 
- -----------------------------*/
-  function getMailString($option='')
-  {
-    $email_printing_order ='';
-  $email_printing_order .= 'この注文は【販売】です。' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '決済確認　　　　　●：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　仕入困難ならお客様へ電話' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '信用調査　　　　　　：□ 2回目以降　→　□ 常連（以下のチェック必要無）' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 1. 過去に本人確認をしている' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 2. 決済内容に変更がない' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 3. 短期間に高額決済がない' . "\n";
-  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　□ 初回　→　□ IP・ホストのチェック' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話確認をする' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 カード名義（カタカナ）＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話番号＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ カード名義・商品名・キャラ名一致' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 本人確認日：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ 信用調査入力' . "\n";
-  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
-  $email_printing_order .= '※ 疑わしい点があれば担当者へ報告をする　→　担当者＿＿＿＿の承諾を得た' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";
-    $email_printing_order .=
-    '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  return $email_printing_order;
-  }
 /*----------------------------------
   功能：信用卡结算预约按钮
   参数：$pid(string) 预约ID
@@ -438,27 +394,16 @@ class telecom  extends basePayment  implements paymentInterface  {
     $preorder_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$pid."'");
     $preorder_info = tep_db_fetch_array($preorder_info_raw);
     
-    $mail_body = '仮クレジットカード注文です。'."\n\n";
-    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
-    $mail_body .= '▼お名前　　　　　：' . $preorder_info['customers_name']."\n";
-    $mail_body .= '▼メールアドレス　：' . $preorder_info['customers_email_address']."\n";
-    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼お支払金額　　　：' . $currencies->format($preorder_total) . "\n";
-    $mail_body .= '▼お支払方法　　　：クレジットカード決済'."\n";
-    
-    $mail_body .= '▼注文商品'."\n";
-    $mail_body .= "\t" . '------------------------------------------'."\n";
-   
+    $preorder_product_list = '';    
     $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
     $preorder_products_res = tep_db_fetch_array($preorder_products_raw); 
     if ($preorder_products_res) {
-      $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . "\n";
+      $preorder_product_list .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . "\n";
       
       $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$pid."'");
       while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
         $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info']));
-        $mail_body .= '└' . $old_attr_info['title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $old_attr_info['value']) . "\n";
+        $preorder_product_list .= '└' . $old_attr_info['title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $old_attr_info['value']) . "\n";
       }
       
       if (isset($_SESSION['preorder_option_info'])) {
@@ -467,24 +412,47 @@ class telecom  extends basePayment  implements paymentInterface  {
         $option_item_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$i_option[1]."' and id = '".$i_option[3]."'");
         $option_item = tep_db_fetch_array($option_item_raw); 
         if ($option_item) {
-            $mail_body .= '└' . $option_item['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $value) . "\n";
+            $preorder_product_list .= '└' . $option_item['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $value) . "\n";
           }
         }
       }
     }
+    
+    $mail_mode = array(
+        '${NAME}',
+        '${MAIL}',
+        '${ORDER_D}',
+        '${ORDER_M}',
+        '${ORDER_PRODUCT_LIST}',
+        '${SHIPPING_DATE}',
+        '${SHIPPING_TIME}',
+        '${IP}',
+        '${ANGET}',
+        '${HOST}',
+        '${PAY}'
+        );
+    $mail_value = array(
+        $preorder_info['customers_name'],
+        $preorder_info['customers_email_address'],
+        tep_date_long(time()),
+        $currencies->format($preorder_total),
+        $preorder_product_list,
+        $_SESSION["preorder_info_date"].' '.$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00",
+        $_SESSION["preorder_info_tori"],
+        $_SERVER["REMOTE_ADDR"],
+        @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
+        $_SERVER["HTTP_USER_AGENT"],
+        payment::changeRomaji($this->code,PAYMENT_RETURN_TYPE_TITLE)
+        );
+    
 
-    $mail_body .= "\t" . '------------------------------------------'."\n";
-    
-    $mail_body .= '▼お届け日時　　　　：' .  $_SESSION["preorder_info_date"].' '.$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00". "\n";
-    $mail_body .= '　　　　　　　　　：' . $_SESSION["preorder_info_tori"] . "\n";
-    
-    $mail_body .= "\n\n";
-    $mail_body .= '■IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-    $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-    $mail_body .= '■ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-   
-    tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
-    
+    $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
+    $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
+    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $process_button_template['title'], $mail_body, '', '');
+ 
+
+
+
     if (!isset($_SESSION['preorder_option'])) {
       $_SESSION['preorder_option'] = date('Ymd-His').ds_makeRandStr(2); 
     }
@@ -523,27 +491,30 @@ class telecom  extends basePayment  implements paymentInterface  {
  参数：$total_price_mail(string) 总价邮件
  返回值：返回处理之后的电子邮件(string) 
  ----------------------------*/
-  function admin_process_pay_email($order,$total_price_mail){
-    $email_credit = '';
-    $email_credit .= $order->customer['name'] . '様' . "\n\n";
-    $email_credit .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n\n";
-    $email_credit .= '注文番号' . $oID . 'の決済URLをお知らせいたします。' . "\n";
-    $email_credit .= '下記URLをクリックし、クレジットカード決済を完了してください。' . "\n";
-    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-    $email_credit .= 'https://secure.telecomcredit.co.jp/inetcredit/secure/order.pl?clientip=76011&usrmail=' . $order->customer['email_address'] . '&money=' . $total_price_mail . "\n";
-    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-    $email_credit .= '※ 上記URLをクリックしても決済ページが表示されない場合は、お手数ではご' . "\n";
-    $email_credit .= 'ざいますが「改行」を取り除きブラウザに直接入力してアクセスしてください。' . "\n\n\n";
-    $email_credit .= 'クレジットカード決済が成功しましたら、商品の手配に移らせていただきます。' . "\n";
-    $email_credit .= "\n\n\n";
-    $email_credit .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-    $email_credit .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
-    $email_credit .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-    $email_credit .= COMPANY_NAME . "\n";
-    $email_credit .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
-    $email_credit .= get_url_by_site_id($order->info['site_id']) . "\n";
-    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-    return $email_credit;
+  function admin_process_pay_email($order,$total_price_mail,$site_id=0){
+    $email_template = tep_get_mail_templates('PAYMENT_ADMIN_CREDIT_EMAIL_CONTENT',$site_id);
+    $email_key = array(
+        '${NAME}',
+        '${SITE_NAME}',
+        '${ORDER_ID}',
+        '${MAIL}',
+        '${ORDER_M}',
+        '${COMPANY_NAME}',
+        '${SUPPORT_EMAIL}',
+        '${SITE_URL}',
+        );
+    $email_value = array(
+        $order->customer['name'],
+        get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),
+        $oID,
+        $order->customer['email_address'],
+        $total_price_mail,
+        COMPANY_NAME,
+        get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']),
+        get_url_by_site_id($order->info['site_id'])
+        );
+    $email_credit = str_replace($email_key,$email_value,$email_template['contents']);
+    return array($email_credit, $email_template['title']);
   }
 /*-------------------------
  功能：获取支付标志值
@@ -557,9 +528,10 @@ class telecom  extends basePayment  implements paymentInterface  {
 /*----------------------------
  功能：显示后台支付方法列表 
  参数：$pay_info_array(array) 支付信息数组
+ 参数：$default_email_info(string) 默认邮件地址
  返回值：无
  ---------------------------*/  
-  function admin_show_payment_list($pay_info_array){
+  function admin_show_payment_list($pay_info_array, $default_email_info){
 
    global $_POST;
    global $_GET;
@@ -592,7 +564,7 @@ class telecom  extends basePayment  implements paymentInterface  {
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email']) ? $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-   echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
+   echo 'document.getElementsByName("con_email")[0].value = "'.(!empty($con_email[1])?$con_email[1]:$default_email_info).'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];
