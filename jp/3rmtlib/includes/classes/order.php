@@ -266,7 +266,7 @@
                           'cc_expires' => $GLOBALS['cc_expires'],
                           'shipping_method' => $shipping['title'],
                           'shipping_cost' => $shipping['cost'],
-                          'comments' => str_replace(':','：',$GLOBALS['comments']));
+                          'comments' => $GLOBALS['comments']);
 
       if (isset($GLOBALS[$payment]) && is_object($GLOBALS[$payment])) {
         $this->info['payment_method'] = $GLOBALS[$payment]->title;
