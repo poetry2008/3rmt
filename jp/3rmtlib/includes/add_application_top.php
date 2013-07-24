@@ -871,20 +871,38 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
     foreach ($_GET as $g_c_key => $g_c_value) {
       $check_sel_pos = stripos($g_c_value, 'select'); 
       $check_union_pos = stripos($g_c_value, 'union'); 
-      $check_two_c_pos = strpos($g_c_value, '%2C'); 
+      $check_from_pos = stripos($g_c_value, 'from'); 
+      $check_two_c_pos = stripos($g_c_value, '%2C'); 
       $check_nine_pos = strpos($g_c_value, '9999999999'); 
-      
-      if ($check_two_c_pos !== false) {
+      $check_order_by_pos = stripos($g_c_value, 'order by'); 
+      $check_ascii_pos = stripos($g_c_value, 'ascii'); 
+
+      if ($check_ascii_pos !== false) {
         forward404(); 
         break; 
       }
-      
+
       if ($check_nine_pos !== false) {
         forward404(); 
         break; 
       }
       
+      if ($check_order_by_pos !== false) {
+        forward404(); 
+        break; 
+      }
+
+      if ($check_two_c_pos !== false) {
+        forward404(); 
+        break; 
+      }
+      
       if (($check_sel_pos !== false) && $check_union_pos !== false) {
+        forward404(); 
+        break; 
+      }
+
+      if (($check_sel_pos !== false) && $check_from_pos !== false) {
         forward404(); 
         break; 
       }
