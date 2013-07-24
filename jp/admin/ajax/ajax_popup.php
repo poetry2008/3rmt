@@ -7209,4 +7209,279 @@ if($_GET['qID'] == -1){
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
 }
+}else if($_GET['action'] == 'edit_data'){
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_DATA_MANAGEMENT);
+include(DIR_FS_ADMIN.'classes/notice_box.php');
+if ($ocertify->npermission != 31) {
+       $c_site_query = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");
+       $c_site_res = tep_db_fetch_array($c_site_query);
+       $tmp_c_site_array = explode(',',$c_site_res['site_permission']);
+          if (!empty($tmp_c_site_array)) {
+               if (!in_array('0', $tmp_c_site_array)) {
+                    $is_disabled_single = true;
+               }
+          } else {
+               $is_disabled_single = true;
+          }
+}
+if($_GET['sort'] == 'update_at'){
+  $data_m = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' order by ".$_GET['sql_type']);
+     $c_id = array();
+  while($data_row = tep_db_fetch_array($data_m)){
+     $c_id[] = $data_row['configuration_id'];
+  }
+}
+$notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  if($_GET['type'] == 'mag_up'){
+    $page_str  = '';
+    if($_GET['sort'] == 'update_at'){
+    foreach ($c_id as $q_key => $q_value) {
+      if ($_GET['c_id'] == $q_value) {
+        break;
+      }
+    }
+    if ($q_key > 0) {
+      $c_id_sql  = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_id = '".$c_id[$q_key-1]."'");
+      $c_id_row = tep_db_fetch_array($c_id_sql); 
+      $page_str .= '<a onclick="show_data(\'\',\''.$c_id_row['configuration_value'].'\',\''.$_GET['sql_type'].'\','.$c_id[$q_key-1].')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    }
+    if ($q_key < (count($c_id) - 1)) {
+      $c_id_sql  = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_id = '".$c_id[$q_key+1]."'");
+      $c_id_row = tep_db_fetch_array($c_id_sql); 
+      $page_str .= '<a onclick="show_data(\'\',\''.$c_id_row['configuration_value'].'\',\''.$_GET['sql_type'].'\','.$c_id[$q_key+1].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }else{
+      $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+    }
+    }else{
+    if($_GET['sql_type'] == 'desc'){
+    $page_str .= '<a onclick="show_data(\'\',\'mag_dl\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+    }else{
+    $page_str .= '<a onclick="show_data(\'\',\'mag_dl\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }
+    }
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => TEXT_MAG_UP);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $contents = array();
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => ENTRY_SITE),
+        array('text' => tep_site_pull_down_menu('', false,'','id="site_id"'.(($is_disabled_single)?' disabled="disabled"':'')))
+        ); 
+    $contents[]['text'] = array(
+        array('text' => TEXT_MAG_UP),
+        array('text' => '<input id="products_csv" type="file" name="products_csv" size="50" '.(($is_disabled_single)?' disabled="disabled"':'').' ><br><span id="mag_up_error"></span>')
+        ); 
+    $update_data  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_up'"));
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_added'])?$update_data['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['date_added'])))?tep_datetime_short($update_data['date_added']):TEXT_UNSET_DATA))
+      );
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_update'])?$update_data['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['last_modified'])))?tep_datetime_short($update_data['last_modified']):TEXT_UNSET_DATA))
+      );
+ 
+    $button[] = tep_html_element_button(BUTTON_MAG_UP,'onclick="check_mag_up()" id="button_save"'.(($is_disabled_single)?' disabled="disabled"':''));
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $form_str = '<FORM method="POST" action="data_management.php?action=upload&sort='.$_GET['sort'].'&type='.$_GET['sql_type'].'&pitch=mag_up" name="mag_up" enctype="multipart/form-data">';
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+  }else if($_GET['type'] == 'mag_dl'){
+    $form_str = '<FORM method="POST"  name="mag_dl" action="data_management.php?action=download&sort='.$_GET['sort'].'&type='.$_GET['sql_type'].'&pitch=mag_dl">';
+    $page_str  = '';
+    if($_GET['sort'] == 'update_at'){
+    foreach ($c_id as $q_key => $q_value) {
+      if ($_GET['c_id'] == $q_value) {
+        break;
+      }
+    }
+    if ($q_key > 0) {
+      $c_id_sql  = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_id = '".$c_id[$q_key-1]."'");
+      $c_id_row = tep_db_fetch_array($c_id_sql); 
+      $page_str .= '<a onclick="show_data(\'\',\''.$c_id_row['configuration_value'].'\',\''.$_GET['sql_type'].'\','.$c_id[$q_key-1].')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    }
+    if ($q_key < (count($c_id) - 1)) {
+      $c_id_sql  = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_id = '".$c_id[$q_key+1]."'");
+      $c_id_row = tep_db_fetch_array($c_id_sql); 
+      $page_str .= '<a onclick="show_data(\'\',\''.$c_id_row['configuration_value'].'\',\''.$_GET['sql_type'].'\','.$c_id[$q_key+1].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }else{
+      $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+    }
+    }else{
+    if($_GET['sql_type'] == 'desc'){
+    $page_str .= '<a onclick="show_data(\'\',\'mag_orders\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_data(\'\',\'mag_up\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }else{
+    $page_str .= '<a onclick="show_data(\'\',\'mag_up\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_data(\'\',\'mag_orders\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }
+    }
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => TEXT_MAG_DL);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $contents = array();
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => ENTRY_SITE),
+        array('text' => tep_site_pull_down_menu('', false,'',(($is_disabled_single)?' disabled="disabled"':'')))
+       ); 
+    $update_data  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_dl'"));
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_added'])?$update_data['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['date_added'])))?tep_datetime_short($update_data['date_added']):TEXT_UNSET_DATA))
+      );
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_update'])?$update_data['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['last_modified'])))?tep_datetime_short($update_data['last_modified']):TEXT_UNSET_DATA))
+      );
+    $button[] = tep_html_element_button(BUTTON_MAG_DL,'onclick="check_dl(\''.$ocertify->npermission.'\')" id="button_save"'.(($is_disabled_single)?' disabled="disabled"':''));
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+  }else if($_GET['type'] == 'mag_orders'){
+    $all_orders_statuses =  array();
+    $all_preorders_statuses =  array();
+    $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
+    while ($orders_status = tep_db_fetch_array($orders_status_query)) {
+      $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
+     }
+    $preorders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" .  $languages_id . "'");
+    while ($preorders_status = tep_db_fetch_array($preorders_status_query)) {
+      $all_preorders_statuses[] = array('id' => $preorders_status['orders_status_id'], 'text' => $preorders_status['orders_status_name']);
+    }
+    $page_str  = '';
+    if($_GET['sort'] == 'update_at'){
+    foreach ($c_id as $q_key => $q_value) {
+      if ($_GET['c_id'] == $q_value) {
+        break;
+      }
+    }
+    if ($q_key > 0) {
+      $c_id_sql  = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_id = '".$c_id[$q_key-1]."'");
+      $c_id_row = tep_db_fetch_array($c_id_sql); 
+      $page_str .= '<a onclick="show_data(\'\',\''.$c_id_row['configuration_value'].'\',\''.$_GET['sql_type'].'\','.$c_id[$q_key-1].')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    }
+    if ($q_key < (count($c_id) - 1)) {
+      $c_id_sql  = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_id = '".$c_id[$q_key+1]."'");
+      $c_id_row = tep_db_fetch_array($c_id_sql); 
+      $page_str .= '<a onclick="show_data(\'\',\''.$c_id_row['configuration_value'].'\',\''.$_GET['sql_type'].'\','.$c_id[$q_key+1].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }else{
+      $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+    }
+    }else{
+    if($_GET['sql_type'] == 'desc'){
+    $page_str .= '<a onclick="show_data(\'\',\'mag_dl\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }else{
+    $page_str .= '<a onclick="show_data(\'\',\'mag_dl\',\''.$_GET['sql_type'].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+    }
+    }
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => TEXT_MAG_ORDERS);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $contents = array();
+    $form_str = '<form id="orders_download" action="'.tep_href_link('orders_csv_exe.php','csv_exe=true','SSL').'" method="post">';
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => TEXT_ORDER_SITE_TEXT),
+        array('text' => tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ?  $_GET['site_id'] :'', false,'all',(($is_disabled_single)?' disabled="disabled"':'')))
+        );
+    $select_y = '<select name="s_y" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
+    for($i=2002; $i<=date('Y'); $i++) { 
+      if($i == date('Y')){ 
+        $select_y .= '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; 
+      }else{ 
+        $select_y .='<option value="'.$i.'">'.$i.'</option>'."\n" ;
+      }
+    }
+    $select_y .='</select>';
+    $select_m = '<select name="s_m" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
+    $select_d = '<select name="s_d" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
+    for($i=1; $i<32; $i++) {
+      if($i == date('d')){
+        $select_d .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
+      }else{
+        $select_d .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
+      } 
+    }
+    $select_d .='</select>';
+    for($i=1; $i<13; $i++) { 
+      if($i == date('m')-1){ 
+        $select_m .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; 
+      }else{ 
+        $select_m .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; 
+      }  
+    }    
+    $select_m .='</select>';
+    $select_e_y ='<select name="e_y" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
+    for($i=2002; $i<=date('Y'); $i++) {
+      if($i == date('Y')){
+        $select_e_y .='<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
+      }else{
+        $select_e_y .='<option value="'.$i.'">'.$i.'</option>'."\n" ;
+      } 
+    }
+    $select_e_y .='</select>';
+    $select_e_m ='<select name="e_m" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
+    for($i=1; $i<13; $i++) {
+      if($i == date('m')){
+        $select_e_m .= '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
+      }else{
+        $select_e_m .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
+      } 
+    }
+    $select_e_m .='</select>';
+    $select_e_d ='<select name="e_d" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
+    for($i=1; $i<32; $i++) {
+      if($i == date('d')){
+        $select_e_d .= '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
+      }else{
+        $select_e_d .= '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
+      } 
+    }
+    $select_e_d .='</select>';
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => TEXT_ORDER_START_DATE),
+        array('text' => $select_y.TEXT_ORDER_YEAR.$select_m.TEXT_ORDER_MONTH.$select_d.TEXT_ORDER_DAY)
+        );
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => TEXT_ORDER_END_DATE),
+        array('text' => $select_e_y.TEXT_ORDER_YEAR.$select_e_m.TEXT_ORDER_MONTH.$select_e_d.TEXT_ORDER_DAY)
+        );
+ 
+    $contents[]['text'] = array(
+        array('text' => HEADING_TITLE_ORDER_STATUS),
+        array('text' => tep_draw_pull_down_menu('order_status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses),'',(($is_disabled_single)?' disabled="disabled"':''), '').'&nbsp;&nbsp;&nbsp;&nbsp;'.tep_html_element_button(TEXT_ORDER_CSV_OUTPUT,(($is_disabled_single)?' disabled="disabled"':'')."onclick=' orders_csv_exe(".$ocertify->npermission.") '"))
+        );
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => HEADING_TITLE_PREORDER_STATUS),
+        array('text' =>tep_draw_pull_down_menu('preorder_status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_PREORDERS)), $all_preorders_statuses),'',(($is_disabled_single)?' disabled="disabled"':''), '').'&nbsp;&nbsp;&nbsp;&nbsp;'.tep_html_element_button(TEXT_PREORDER_CSV_OUTPUT,(($is_disabled_single)?' disabled="disabled"':'')."onclick=' preorders_csv_exe(".$ocertify->npermission.") '"))
+        );
+    $update_data  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_orders'"));
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_added'])?$update_data['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['date_added'])))?tep_datetime_short($update_data['date_added']):TEXT_UNSET_DATA))
+      );
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_update'])?$update_data['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['last_modified'])))?tep_datetime_short($update_data['last_modified']):TEXT_UNSET_DATA))
+      );
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+  }
 }

@@ -60,7 +60,7 @@ if ($ocertify->npermission != 31) {
   $e_m = $_POST['e_m'] ; //结束日　月
   $e_d = $_POST['e_d'] ; //结束日　日
   $end = $e_y.$e_m.$e_d ;
-
+   
       $csv_query = tep_db_query("
           select o.*, op.*, s.romaji
           from ".TABLE_PREORDERS." o, ".TABLE_PREORDERS_PRODUCTS." op, ".TABLE_SITES." s
@@ -78,8 +78,12 @@ if ($ocertify->npermission != 31) {
   header('Content-Disposition: attachment; filename='.$filename);
 
   $csv_header = (isset($_POST['site_id']) && $_POST['site_id']?'"'.ENTRY_SITE.'",':'').'"受注番号","注文日時","商品名","商品ID","商品番号","個数","単価","項目・選択肢","顧客ID","注文者名","注文者名フリガナ","メールアドレス","注文者郵便番号","注文者住所国名","注文者住所都道府県","注文者住所都市区","注文者住所１","注文者住所２","注文者会社名","注文者電話番号","請求先名","請求先名フリガナ","請求先郵便番号","請求先住所国名","請求先住所都道府県","請求先住所都市区","請求先住所１","請求先住所２","請求先会社名","請求先電話番号","送付先名","送付先名フリガナ","送付先郵便番号","送付先住所国名","送付先住所都道府県","送付先住所都市区","送付先住所１","送付先住所２","送付先会社名","送付先電話番号","決済方法","クレジットカード種類","クレジットカード番号","クレジットカード名義人","クレジットカード有効期限","配送方法","コメント","合計","送料","代引料","取扱手数料","消費税","請求金額","ポイント割引","ポイント利用条件","ポイント利用額","合計金額"';
-
-
+  $c_sql = tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_orders'"));
+  if($c_sql > 0){
+     tep_db_query("update ".TABLE_CONFIGURATION." set last_modified = now(),user_update = '".$_SESSION['user_name']."' where configuration_key ='DATA_MANAGEMENT' and configuration_value = 'mag_orders'");
+  }else{
+     tep_db_query("insert into ".TABLE_CONFIGURATION." (configuration_key,configuration_value,last_modified,date_added,user_update,user_added) values ('DATA_MANAGEMENT','mag_orders',now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')");
+  }
   print chr(0xEF).chr(0xBB).chr(0xBF);
   print $csv_header."\r\n";
 
