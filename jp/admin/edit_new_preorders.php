@@ -782,7 +782,7 @@ function orders_session(type,value){
   $op_info_str = implode('|||',$op_info_array);
 ?>
   <?php //隐藏支付方法的附加信息?> 
-  function hidden_payment(){
+  function hidden_payment(h_type){
   if(document.edit_order.elements["payment_method"]){
   var idx = document.edit_order.elements["payment_method"].selectedIndex;
   var CI = document.edit_order.elements["payment_method"].options[idx].value;
@@ -792,10 +792,23 @@ function orders_session(type,value){
   $(".rowHide_"+CI).find("input").removeAttr("disabled"); 
   price_total();
   recalc_preorder_price("<?php echo $_GET['oID'];?>", "<?php echo $products_id_str;?>", "0", "<?php echo $op_info_str;?>");
+  if (h_type == 1) {
+    $.ajax({
+      dataType: 'text',
+      url: 'ajax_orders.php?action=get_select_payment_status',
+      type: 'POST',
+      data: 'select_payment='+CI+'&s_site_id=<?php echo $order['site_id']?>&h_type=1',
+      async: false, 
+      success: function(msg) {
+        $('#status').val(msg); 
+        check_prestatus();
+      }
+    });
+  }
   }
   }
 $(document).ready(function(){
-  hidden_payment();
+  hidden_payment(0);
   $("select[name='status']").change(function(){
     var s_status = document.getElementsByName("status")[0].value;
     orders_session('s_status',s_status);
@@ -823,7 +836,7 @@ $(document).ready(function(){
     orders_session('notify_comments',notify_comments);
   });
   $("select[name='payment_method']").change(function(){
-    hidden_payment();
+    hidden_payment(1);
   });
   $("textarea[name='comments_text']").blur(function(){
     var comments_text = document.getElementsByName("comments_text")[0].value;
@@ -1609,7 +1622,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder');
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder',$order['customers_email_address']);
           
           echo '});'."\n";
           echo '</script>'."\n";
@@ -2094,7 +2107,8 @@ if (($action == 'edit') && ($order_exists == true)) {
           <?php
           $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
           $is_select_res = tep_db_fetch_array($is_select_query); 
-          $sel_status_id = DEFAULT_PREORDERS_STATUS_ID; 
+          $sel_status_id = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($_SESSION['create_preorder']['orders']['payment_method']).'_PREORDER_STATUS_ID', $order['site_id']);
+          $sel_status_id = $sel_status_id != 0 ? $sel_status_id: get_configuration_by_site_id('DEFAULT_PREORDERS_STATUS_ID');
           $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
           $sel_status_id = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $sel_status_id;
           echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();" style="width:80px;"'); 

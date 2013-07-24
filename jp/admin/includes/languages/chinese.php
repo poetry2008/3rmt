@@ -789,3 +789,4 @@ define('TEXT_IMAGE_MAX','上传图片超过了规定最大值，请重新上传�
 define('TEXT_IMAGE_TYPE_WRONG','图片类型格式错误。');
 define('WARNING_LOSING_INFO_TEXT', '因为数据不全发生了错误，请重新操作。');
 define('TEXT_ERROR_NULL','&nbsp;&nbsp;<font color=\'red\'>请输入。</font>');
+define('TEXT_DATA_MANAGEMENT','数据管理');

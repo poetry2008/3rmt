@@ -148,28 +148,14 @@
          echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_FAQ).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_faq.gif').'</span><span>' .  BOX_TOOLS_FAQ . '</span></div>'.'<hr size="1">';
        }
      }
-     if (!check_whether_is_limited('mag_up.php')) {
-       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'mag_up.php'){
-         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link('mag_up.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_register.gif').'</span><span>'.FILENAME_MAG_UP_TEXT.'</span></div>';
+     if (!check_whether_is_limited('data_management.php')) {
+       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'data_management.php'){
+         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link('data_management.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_register.gif').'</span><span>'.TEXT_DATA_MANAGEMENT.'</span></div>';
        }else{
-         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('mag_up.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_register.gif').'</span><span>'.FILENAME_MAG_UP_TEXT.'</span></div>';
+         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('data_management.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_register.gif').'</span><span>'.TEXT_DATA_MANAGEMENT.'</span></div>';
        }
      }
-     if (!check_whether_is_limited('mag_dl.php')) {
-       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'mag_dl.php'){
-         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link('mag_dl.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_data.gif').'</span><span>'.FILENAME_MAG_DL_TEXT.'</span></div>';
-       }else{
-         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('mag_dl.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_data.gif').'</span><span>'.FILENAME_MAG_DL_TEXT.'</span></div>';
-       }
-     }
-     if (!check_whether_is_limited(FILENAME_ORDERS_DOWNLOAD)) {
-       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ORDERS_DOWNLOAD){
-         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS_DOWNLOAD, '', 'NONSSL').'\';"><span>'.  tep_image(DIR_WS_MENU_ICON . 'icon_date_export.gif').'</span><span>'.FILENAME_ORDER_DOWNLOAD.'</span></div>';
-       }else{
-         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS_DOWNLOAD, '', 'NONSSL').'\';"><span>'.  tep_image(DIR_WS_MENU_ICON . 'icon_date_export.gif').'</span><span>'.FILENAME_ORDER_DOWNLOAD.'</span></div>';
-       }
-     }
-              ?> 
+    ?> 
                 </td>
               </tr>
              </table> 

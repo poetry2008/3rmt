@@ -2637,4 +2637,18 @@ echo json_encode($json_array);
  参数: $_POST['url_redirect_str'] url 
  ----------------------------------------*/
   tep_insert_pwd_log($_POST['current_pwd'],$ocertify->auth_user,false,'',$_POST['url_redirect_str']);
+} else if ($_GET['action'] == 'get_select_payment_status') {
+/*-----------------------------------------
+ 功能: 获取该支付方法的状态
+ 参数: $_POST['select_payment'] 支付方法的代码 
+ 参数: $_POST['s_site_id'] 网站id 
+ 参数: $_POST['h_type'] 标识 
+ ----------------------------------------*/
+  if (isset($_POST['h_type'])) {
+    $default_select = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($_POST['select_payment']).'_PREORDER_STATUS_ID', $_POST['s_site_id']); 
+    echo ($default_select != 0 ? $default_select: get_configuration_by_site_id('DEFAULT_PREORDERS_STATUS_ID'));
+  } else {
+    $default_select = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($_POST['select_payment']).'_ORDER_STATUS_ID', $_POST['s_site_id']); 
+    echo ($default_select != 0 ? $default_select: get_configuration_by_site_id('DEFAULT_ORDERS_STATUS_ID'));
+  }
 }

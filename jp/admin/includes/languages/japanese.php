@@ -793,3 +793,4 @@ define('TEXT_IMAGE_MAX','アップロードされた画像が制限最大値を�
 define('TEXT_IMAGE_TYPE_WRONG','画像のファーマットが間違ったのです。');
 define('WARNING_LOSING_INFO_TEXT', 'データが不完全な為、エラーが発生しました。再度操作をしてください。');
 define('TEXT_ERROR_NULL','&nbsp;&nbsp;<font color=\'red\'>入力して下さい。</font>');
+define('TEXT_DATA_MANAGEMENT','データー管理');

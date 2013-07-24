@@ -921,7 +921,7 @@ class payment {
  参数：$pay_info_array(string) 支付信息的数组 
  返回值：支付方法的目录(string)
  --------------------*/
-  function admin_show_payment_list($payment,$pay_info_array,$site_id='',$c_chk='',$type='order'){
+  function admin_show_payment_list($payment,$pay_info_array,$site_id='',$c_chk='',$type='order',$default_email_info=''){
 
     $module = $this->getModule($payment);
     $show_flag = true;
@@ -951,7 +951,7 @@ class payment {
     }
     if ($module&&$show_flag) {
       if (method_exists($module, 'admin_show_payment_list')) {
-         $module->admin_show_payment_list($pay_info_array); 
+         $module->admin_show_payment_list($pay_info_array, $default_email_info); 
       }
     }    
   }

@@ -119,6 +119,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_BUTTONS', 'buttons.php');
   
   //add files
+  define('FILENAME_DATA_MANAGEMENT','data_management.php');
   define('FILENAME_BANK_CL', 'calendar.php');
   define('FILENAME_CONTENTS', 'contents.php');
   define('FILENAME_NEWS', 'news.php'); 

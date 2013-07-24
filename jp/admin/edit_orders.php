@@ -3205,7 +3205,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk); 
+          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk,'order',$order->customer['email_address']); 
           echo '});'."\n";
           echo '</script>'."\n";
       
