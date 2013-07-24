@@ -2806,7 +2806,7 @@ $(function() {
       }
 ?>
   <?php //隐藏地址附加信息?> 
-  function hidden_payment(){
+  function hidden_payment(h_type){
   var idx = document.edit_order.elements["payment_method"].selectedIndex;
   var CI = document.edit_order.elements["payment_method"].options[idx].value;
   $(".rowHide").hide();
@@ -2819,10 +2819,23 @@ $(function() {
     $("#handle_fee_id").html(0+'<?php echo TEXT_MONEY_SYMBOL;?>'); 
   }
   price_total('<?php echo TEXT_MONEY_SYMBOL;?>');
-
+  
+  if (h_type == 1) {
+    $.ajax({
+      dataType: 'text',
+      url: 'ajax_orders.php?action=get_select_payment_status',
+      type: 'POST',
+      data: 'select_payment='+CI+'&s_site_id='+session_site_id,
+      async: false, 
+      success: function(msg) {
+        $('#s_status').val(msg); 
+        new_mail_text_orders($('#s_status'), 's_status', 'comments', 'title');
+      }
+    });
+  }
  }
 $(document).ready(function(){
-  hidden_payment(); 
+  hidden_payment(0); 
   $("#fetch_year").change(function(){
     var date_value = document.getElementById("fetch_year").value;
     orders_session('fetch_year',date_value);
@@ -3078,7 +3091,7 @@ if($p_weight_total > 0){
 }
   ?> 
   $("select[name='payment_method']").change(function(){
-    hidden_payment();
+    hidden_payment(1);
   });
 });
 <?php //检查日期是否正确?>
@@ -4794,16 +4807,17 @@ if($orders_exit_flag == true){
           $order_status_query = tep_db_query("select * from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='". $oID ."' order by orders_status_history_id desc limit 0,1");            
           $order_status_num = tep_db_num_rows($order_status_query);
           $order_status_array = tep_db_fetch_array($order_status_query);
-          $select_status = $order_status_array['orders_status_id'];
+          $select_status = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper(payment::changeRomaji($pay_method,'code')).'_ORDER_STATUS_ID', $_SESSION['sites_id_flag']);
+          $select_status = $select_status != 0 ? $select_status: get_configuration_by_site_id('DEFAULT_ORDERS_STATUS_ID');
           $customer_notified = $order_status_array['customer_notified'];           
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
           $customer_notified = $select_status == 31 ? 0 : $customer_notified;
           $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
-          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ?  $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : get_configuration_by_site_id('DEFAULT_ORDERS_STATUS_ID');
+          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ?  $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_status;
           
 ?>
             <td class="main" width="82" style="min-width:45px;"><?php echo ENTRY_STATUS; ?></td>
-            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\');" style="width:80px;"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\');" style="width:80px;" id="s_status"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
             </tr>
             <?php
 
