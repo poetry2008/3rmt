@@ -1490,7 +1490,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                           $oID,
                           tep_date_long(time()),
                           tep_db_input($update_customer_email_address), 
-                          str_replace("\n".$comments_text,'',$comment_arr['comment']),
+                          trim(str_replace($comments_text,'',$comment_arr['comment'])),
                           $point,  
                           str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($shipping_fee)),
                           str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($mailtotal)),
