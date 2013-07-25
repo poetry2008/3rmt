@@ -371,7 +371,7 @@ $(document).ready(function() {
             if (headline != '') {
               $("#title_error").html(''); 
             } else {
-              $("#title_error").html('<?php echo TEXT_ERROR_NULL;?>'); 
+              $("#title_error").html('<?php echo TEXT_NEWS_ERROR_NULL;?>'); 
             }
             if (s_single == false) {
               $("#site_error").html('<?php echo TEXT_ERROR_SITE;?>'); 
