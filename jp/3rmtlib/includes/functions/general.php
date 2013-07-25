@@ -6721,3 +6721,40 @@ function tep_is_customer_by_id($cid){
     return false;
   }
 }
+/*----------------------------------
+  功能: 获取网站对应管理权限的管理员邮箱、昵称 
+  参数: 无 
+  返回: 管理员邮箱、昵称 
+----------------------------------*/
+function tep_get_admin_user_info(){
+  $users_id_array = array();
+  $users_permission_array = array();
+  $users_query = tep_db_query("select userid,permission,site_permission from permissions");
+  while($users_array = tep_db_fetch_array($users_query)){
+
+    $users_permission_array = explode(',',$users_array['site_permission']);
+    if(in_array(SITE_ID,$users_permission_array) || in_array('0',$users_permission_array)){
+
+      $users_id_array[$users_array['userid']] = $users_array['permission'];
+    }
+  }
+  tep_db_free_result($users_query);
+
+  asort($users_id_array);
+  $first_value = current($users_id_array);
+  $users_id_list = array();
+  foreach($users_id_array as $key=>$value){
+
+    if($first_value == $value){
+
+      $users_id_list[] = $key;
+    }
+  }  
+
+  $users_id_str = implode("','",$users_id_list);
+  $users_name_query = tep_db_query("select name,email from users where  userid in ('".$users_id_str."') order by date_added asc limit 0,1");
+  $users_name_array = tep_db_fetch_array($users_name_query);
+  tep_db_free_result($users_name_query);
+
+  return array($users_name_array['email'],$users_name_array['name']);  
+}
