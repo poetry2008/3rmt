@@ -6752,9 +6752,14 @@ function tep_get_admin_user_info(){
   }  
 
   $users_id_str = implode("','",$users_id_list);
-  $users_name_query = tep_db_query("select name,email from users where  userid in ('".$users_id_str."') order by date_added asc limit 0,1");
-  $users_name_array = tep_db_fetch_array($users_name_query);
-  tep_db_free_result($users_name_query);
+  if(trim($users_id_str) != ''){
+    $users_name_query = tep_db_query("select name,email from users where  userid in ('".$users_id_str."') order by date_added asc limit 0,1");
+    $users_name_array = tep_db_fetch_array($users_name_query);
+    tep_db_free_result($users_name_query);
+  }else{
+    $users_name_array['email'] = '';
+    $users_name_array['name'] = '';
+  }
 
   return array($users_name_array['email'],$users_name_array['name']);  
 }
