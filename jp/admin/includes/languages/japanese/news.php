@@ -31,7 +31,7 @@ define('TEXT_CAMPAIGN_PREV', '<前へ');
 define('TEXT_CAMPAIGN_NEXT', '次へ>');
 define('TEXT_NEWS_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
 define('TEXT_DEL_NEWS','本当に削除しますか？');
-define('TEXT_ERROR_NULL','入力して下さい。');
+define('TEXT_NEWS_ERROR_NULL','入力して下さい。');
 define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
 define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
 define('SHOP_NAME','ショップ名:');

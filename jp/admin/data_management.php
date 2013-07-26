@@ -3,117 +3,6 @@
   require("includes/jcode.phps");
 
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
-  if (isset($_GET['action']) && $_GET['action'] == 'download'){
-      $c_sql = tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_dl'"));
-      if($c_sql > 0){
-      tep_db_query("update ".TABLE_CONFIGURATION." set last_modified = now(),user_update = '".$_SESSION['user_name']."' where configuration_key ='DATA_MANAGEMENT' and configuration_value = 'mag_dl'");
-      }else{
-      tep_db_query("insert into ".TABLE_CONFIGURATION." (configuration_key,configuration_value,last_modified,date_added,user_update,user_added) values ('DATA_MANAGEMENT','mag_dl',now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')");
-      }
-      $msg = "";
-      header("Content-Type: application/force-download");
-      header('Pragma: public');
-      header("Content-Disposition: attachment; filename=mag_list.csv");
-      print chr(0xEF).chr(0xBB).chr(0xBF);
-      $query = tep_db_query(" select mag_id, mag_email, mag_name from mail_magazine where site_id = '".$_POST['site_id']."' order by mag_id");
-      $CsvFields = array("ID",".TEXT_MAILBOX.",".TEXT_NAME.");
-    for($i=0;$i<count($CsvFields);$i++){
-      if($CsvFields[$i] == '.TEXT_MAILBOX.'){
-         $CsvFields[$i] = TEXT_MAILBOX;
-         print $CsvFields[$i].","; 
-      }else if($CsvFields[$i] == '.TEXT_NAME.'){
-         $CsvFields[$i] = TEXT_NAME;
-         print $CsvFields[$i].","; 
-      }else{
-      print $CsvFields[$i] . ",";
-      }
-    }
-    print "\n";
-    
-    while($result_r = tep_db_fetch_array($query)) {
-      //ID
-      print $result_r['mag_id'] . ",";
-    
-      //邮件地址
-      print $result_r['mag_email'] . ",";
-    
-      //姓名
-      print $result_r['mag_name'];
-      
-      print "\n";
-    }
-    
-    //header("Location: ". $_SERVER['PHP_SELF']);
-    $msg = MSG_UPLOAD_IMG;
-    exit;
-}else if (isset($_GET['action']) && $_GET['action'] == 'upload'){
-    $c_sql = tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_up'"));
-    if($c_sql > 0){
-     tep_db_query("update ".TABLE_CONFIGURATION." set last_modified = now(),user_update = '".$_SESSION['user_name']."' where configuration_key ='DATA_MANAGEMENT' and configuration_value = 'mag_up'");
-    }else{
-     tep_db_query("insert into ".TABLE_CONFIGURATION." (configuration_key,configuration_value,last_modified,date_added,user_update,user_added) values ('DATA_MANAGEMENT','mag_up',now(),now(),'".$_SESSION['user_name']."','".$_SESSION['user_name']."')");
-    }
-    /* $dat[0] => ID $dat[1] => 邮件地址 $dat[2] => 姓名 */
-    // CSV文件检查
-    $chk_csv = true;
-    $filename = isset($_FILES['products_csv']['name'])?$_FILES['products_csv']['name']:'';
-    if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
-    // 文件名参考检查
-    if(isset($_FILES['products_csv']['tmp_name']) && $_FILES['products_csv']['tmp_name']!="" && $chk_csv){
-    $file = fopen($products_csv,"r");
-  //SQL弄成空
-  mysql_query("delete from ".TABLE_MAIL_MAGAZINE." where site_id = '".(int)$_POST['site_id']."'");
-  $cnt = "0"; 
-  $chk_input = true;
-  $cnt_insert=0;
-  while($dat = fgetcsv($file,10000,',')){
-    // 第一行是字段名的时候，从第二行开始读取
-    if(!ereg("@", $dat[1])) $dat = fgetcsv($file,10000,',');
-    // 转换成EUC
-    for($e=0;$e<count($dat);$e++){
-      $dat[$e] = addslashes(jcodeconvert($dat[$e],"0","1"));
-    }
-    if($chk_input){
-      //插入
-      if(!empty($dat[1])) {
-        $dat0 = tep_db_prepare_input($dat[0]);
-        $dat1 = tep_db_prepare_input($dat[1]);
-        $dat2 = tep_db_prepare_input($dat[2]);
-        $updated = false;
-        //参考顾客信息表
-        $ccnt_query = tep_db_query("select count(*) as cnt from customers where customers_email_address = '".$dat1."' and site_id = '".$_POST['site_id']."'");
-        $ccnt = tep_db_fetch_array($ccnt_query);
-        if($ccnt['cnt'] > 0) {
-          //Update
-        tep_db_query("update customers set customers_newsletter = '1' where customers_email_address = '".$dat1."'");
-        $updated = true;
-        }
-        //mail_magazine Update
-        if($updated == false) {
-          //重复检查
-          $jcnt_query = tep_db_query("select count(*) as cnt from mail_magazine where mag_email = '".$dat1."' and site_id = '".(int)$_POST['site_id']."'");
-          $jcnt = tep_db_fetch_array($jcnt_query);
-          //插入（不重复）
-          if($jcnt['cnt'] == 0) {
-          $mail_into_sql = "insert into mail_magazine (mag_email, mag_name, site_id) values ('".$dat1."', '".$dat2."', '".(int)$_POST['site_id']."')";
-          tep_db_query($mail_into_sql);
-          }else {
-          $mail_sql =  "update mail_magazine set mag_name = '".$dat1."' where mag_email = '".$dat2."' and site_id = '".(int)$_POST['site_id']."'";
-          tep_db_query($mail_sql);
-          }
-        }
-        $cnt++;
-      }
-      if( ($cnt % 200) == 0 ){
-        Flush();
-      }
-      }
-  }
-    fclose($file);
-  } 
-    tep_redirect(tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch='.$_GET['pitch']));
- }
-
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -268,7 +157,7 @@ function orders_csv_exe(c_permission){
                       url: 'ajax_orders.php?action=record_pwd_log',   
                       type: 'POST',
                       dataType: 'text',
-                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(change_action("<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL');?>")),
+                      data: 'current_pwd='+input_pwd_str,
                       async: false,
                       success: function(msg_info) {
                          change_action("<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL');?>");
@@ -306,7 +195,7 @@ function preorders_csv_exe(c_permission){
                       url: 'ajax_orders.php?action=record_pwd_log',   
                       type: 'POST',
                       dataType: 'text',
-                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(change_action("<?php echo tep_href_link('preorders_csv_exe.php','csv_exe=true', 'SSL');?>")),
+                      data: 'current_pwd='+input_pwd_str,
                       async: false,
                       success: function(msg_info) {
                          change_action("<?php echo tep_href_link('preorders_csv_exe.php','csv_exe=true', 'SSL');?>");
@@ -525,48 +414,6 @@ require("includes/note_js.php");
              if($sql_num > 0){
              $data_management = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' order by ".$data_str);   
              while($data_row = tep_db_fetch_array($data_management)){
-             if($data_row['configuration_value'] == 'mag_up'){ 
-             $data_info = array();
-             $data_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<input type="checkbox" disabled="disabled">'
-             );
-             $data_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_up').'\';"',
-                'text'   => TEXT_MAG_UP
-             );
-             $data_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_up\',\''.$data_str.'\','.$data_row['configuration_id'].')">'.  tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
-             );
-             if($_GET['pitch'] == 'mag_up'){
-             $data_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
-             }else{
-             $data_params = ' onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow" style=""';
-             }
-             $data_table_row[] = array('params' => $data_params, 'text' => $data_info);
-             }
-             if($data_row['configuration_value'] == 'mag_dl'){ 
-             if($_GET['pitch'] == 'mag_dl'){
-             $data_dl_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
-             }else{
-             $data_dl_params = 'onmouseout="this.className=\'dataTableSecondRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableSecondRow"';
-             }
-             $data_dl_info = array();
-             $data_dl_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<input type="checkbox" disabled="disabled">'
-             );
-             $data_dl_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_dl').'\';"',
-                'text'   => TEXT_MAG_DL
-             );
-             $data_dl_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_dl\',\''.$data_str.'\','.$data_row['configuration_id'].')">'.tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
-             );
-             $data_table_row[] = array('params' => $data_dl_params, 'text' => $data_dl_info);
-             }
              if($data_row['configuration_value'] == 'mag_orders'){ 
              if($_GET['pitch'] == 'mag_orders'){
              $data_orders_params = ' class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
@@ -592,7 +439,6 @@ require("includes/note_js.php");
              }
              }else{
              //sql else start
-             if($data_str == 'desc'){
              if($_GET['pitch'] == 'mag_orders'){
              $data_orders_params = ' class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
              }else{
@@ -613,91 +459,6 @@ require("includes/note_js.php");
                 'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_orders\',\''.$data_str.'\',0)">'.tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
              );
              $data_table_row[] = array('params' => $data_orders_params, 'text' => $data_orders_info);
-             }else{
-             $data_info = array();
-             $data_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<input type="checkbox" disabled="disabled">'
-             );
-             $data_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_up').'\';"',
-                'text'   => TEXT_MAG_UP
-             );
-             $data_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_up'"));   
-             $data_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_up\',\''.$data_str.'\',0)">'.tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
-             );
-             if($_GET['pitch'] == 'mag_up'){
-             $data_params = ' class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
-             }else{
-             $data_params = ' onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow" style=""';
-             }
-             $data_table_row[] = array('params' => $data_params, 'text' => $data_info);
-             }
-             if($_GET['pitch'] == 'mag_dl'){
-             $data_dl_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
-             }else{
-             $data_dl_params = 'onmouseout="this.className=\'dataTableSecondRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableSecondRow"';
-             }
-             $data_dl_info = array();
-             $data_dl_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<input type="checkbox" disabled="disabled">'
-             );
-             $data_dl_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_dl').'\';"',
-                'text'   => TEXT_MAG_DL
-             );
-             $data_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_dl'"));   
-             $data_dl_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_dl\',\''.$data_str.'\',0)">'.tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
-             );
-             $data_table_row[] = array('params' => $data_dl_params, 'text' => $data_dl_info);
-             if($data_str == 'desc'){
-             $data_info = array();
-             $data_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<input type="checkbox" disabled="disabled">'
-             );
-             $data_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_up').'\';"',
-                'text'   => TEXT_MAG_UP
-             );
-             $data_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_up'"));   
-             $data_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_up\',\''.$data_str.'\',0)">'.tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
-             );
-             if($_GET['pitch'] == 'mag_up'){
-             $data_params = ' class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
-             }else{
-             $data_params = ' onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow" style=""';
-             }
-             $data_table_row[] = array('params' => $data_params, 'text' => $data_info);
-             }else{
-             if($_GET['pitch'] == 'mag_orders'){
-             $data_orders_params = ' class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
-             }else{
-             $data_orders_params = ' onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow" style=""';
-             }
-             $data_orders_info = array();
-             $data_orders_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<input type="checkbox" disabled="disabled">'
-             );
-             $data_orders_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_orders').'\';"',
-                'text'   => TEXT_MAG_ORDERS
-             );
-             $data_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_orders'"));   
-             $data_orders_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_orders\',\''.$data_str.'\',0)">'.tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
-             );
-             $data_table_row[] = array('params' => $data_orders_params, 'text' => $data_orders_info);
-             }
              }
              $notice_box->get_contents($data_table_row);
              $notice_box->get_eof(tep_eof_hidden());

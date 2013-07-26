@@ -4813,7 +4813,7 @@ if($orders_exit_flag == true){
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
           $customer_notified = $select_status == 31 ? 0 : $customer_notified;
           $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
-          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ?  $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_status;
+          $select_status = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_status;
           
 ?>
             <td class="main" width="82" style="min-width:45px;"><?php echo ENTRY_STATUS; ?></td>

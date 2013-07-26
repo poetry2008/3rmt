@@ -112,16 +112,5 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }
   echo $products_list_str;
   echo "</select>";
-}else if(isset($_GET['action']) && $_GET['action'] == 'check_mag_up'){
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.'data_management.php');
-    /* $dat[0] => ID $dat[1] => 邮件地址 $dat[2] => 姓名 */
-    // CSV文件检查
-    $chk_csv = true;
-    $filename = isset($_POST['products_csv'])?$_POST['products_csv']:'';
-    if(substr($filename, strrpos($filename,".")+1)!="csv") $chk_csv = false;
-    // 文件名参考检查
-    if(!$chk_csv){
-    echo 'error';
-    }
 }
 ?>

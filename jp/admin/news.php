@@ -371,7 +371,7 @@ $(document).ready(function() {
             if (headline != '') {
               $("#title_error").html(''); 
             } else {
-              $("#title_error").html('<?php echo TEXT_ERROR_NULL;?>'); 
+              $("#title_error").html('<?php echo TEXT_NEWS_ERROR_NULL;?>'); 
             }
             if (s_single == false) {
               $("#site_error").html('<?php echo TEXT_ERROR_SITE;?>'); 
@@ -809,7 +809,7 @@ require("includes/note_js.php");
                $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_add_date_str);
                $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_status_str);
                $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $news_table_isfirst_str);
-               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="20" nowrap','text' => $news_table_operate_str);
+               $news_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="53" nowrap','text' => $news_table_operate_str);
                $news_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $news_title_row);
     $rows = 0;
 
