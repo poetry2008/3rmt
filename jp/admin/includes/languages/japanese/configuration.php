@@ -83,7 +83,7 @@ define('TEXT_URL_SEARCH_ENGINE',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IM
 define('TEXT_SELECT_PRODUCT_CART',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品の追加後にカートを表示');
 define('TEXT_ALLOWS_VISITORS_INFORM_FRIEND',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;ゲストに「友達に知らせる」を許可');
 define('TEXT_DEFAULT_SEARCH_OPERATOR',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;デフォルトの検索演算子');
-define('TEXT_STORE_ADDRESS_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ショップの住所と電話番号');
+define('TEXT_STORE_ADDRESS_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ショップの住所');
 define('TEXT_SHOW_NUMBER_CLASSIFICATION',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;カテゴリー内の商品数を表示');
 define('TEXT_TAX_POSITION_DECIMAIL_POINT',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;税額の小数点位置');
 define('TEXT_DISPLAY_TAX_AMOUNT',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;税込みの金額を表示');
@@ -246,3 +246,4 @@ define('TEXT_MANUAFACTURERS_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gi
 define('TEXT_PWD_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;操作ログの保存日数');
 define('TEXT_USERS_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ユーザログの保存日数');
 define('TEXT_ADMIN_POINT_MAIL',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ポイントお知らせメール');
+define('TEXT_STORE_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;会社の電話番号');
