@@ -794,3 +794,8 @@ define('TEXT_IMAGE_TYPE_WRONG','画像のファーマットが間違ったので
 define('WARNING_LOSING_INFO_TEXT', 'データが不完全な為、エラーが発生しました。再度操作をしてください。');
 define('TEXT_ERROR_NULL','&nbsp;&nbsp;<font color=\'red\'>入力して下さい。</font>');
 define('TEXT_DATA_MANAGEMENT','データー管理');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
+define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');
+define('TEXT_CONTENTS_DELETE_ACTION', '削除する');

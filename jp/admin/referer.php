@@ -6,7 +6,15 @@
   $xx_mins_ago = (time() - 900);
 
   require('includes/application_top.php');
-
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+     $sql_site_where = 's.id in ('.str_replace('-', ',', $_GET['site_id']).')';
+     $show_list_array = explode('-',$_GET['site_id']);
+   } else {
+      $show_list_str = tep_get_setting_site_info('referer.php');
+      $sql_site_where = 's.id in ('.$show_list_str.')';
+      $show_list_array = explode(',',$show_list_str);
+   }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -15,6 +23,7 @@
 <title><?php echo REFERER_TITLE_TEXT; ?></title>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -131,60 +140,126 @@ require("includes/note_js.php");
       </tr>
     </table><br>
     </form>
-        <?php tep_site_filter('referer.php');?>
+        <?php tep_show_site_filter('referer.php',true,array(0));?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo REFERER_TITLE_URL;?></td>
-                <td class="dataTableHeadingContent"><?php echo REFERER_TITLE_NUM;?></td>
-                <td class="dataTableHeadingContent"><?php echo REFERER_TITLE_SORT_NUM;?></td>
-              </tr>
-<?php
-  if ($_GET['type'] == 'adsense') {
-  //各个网站的访问排名 
-  $ref_site_query = tep_db_query("
-    select * from (
-      select count(orders_id) as cnt,orders_adurl
-      from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
-      where s.id = o.site_id
-        and orders_adurl IS NOT NULL
-        and orders_adurl != ''
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
-        (isset($_GET['s_y']) && isset($_GET['s_m']) && isset($_GET['s_d']) ? " and o.date_purchased > '".$_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
-        (isset($_GET['e_y']) && isset($_GET['e_m']) && isset($_GET['e_d']) ? " and o.date_purchased < '".$_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'] ." 23:59:59'" : '') . "
-      group by orders_adurl
-    ) s
-    order by cnt desc
-      ");
-  $i = 1;
-  while ($ref_site = tep_db_fetch_array($ref_site_query)) {
-?>
-              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
-                <td class="dataTableContent"><?php echo $ref_site['orders_adurl'];?></td>
-                <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
-                <td class="dataTableContent"><?php echo $i;?></td>
-              </tr>
-<?php
-    $i++;
-  }
-  } else {
+            <td valign="top">
+        <?php 
+        if(!isset($_GET['type']) || $_GET['type'] == ''){
+                   $_GET['type'] = 'asc';
+        }
+        if($referer_type == ''){
+                   $referer_type = 'asc';
+        }
+        if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+           $referer_str = 'cnt desc';
+        }else if($_GET['sort'] == 'orders_ref_site2'){
+              if($_GET['type'] == 'desc'){
+                 $referer_str = 'orders_ref_site2 desc';
+                 $referer_type = 'asc';
+               }else{
+                 $referer_str = 'orders_ref_site2 asc';
+                 $referer_type = 'desc';
+               }
+        }else if($_GET['sort'] == 'cnt'){
+              if($_GET['type'] == 'desc'){
+                 $referer_str = 'cnt desc';
+                 $referer_type = 'asc';
+               }else{
+                 $referer_str = 'cnt asc';
+                 $referer_type = 'desc';
+               }
+        }else if($_GET['sort'] == 'cnt_order'){
+              if($_GET['type'] == 'desc'){
+                 $referer_str = 'rownum desc';
+                 $referer_type = 'asc';
+               }else{
+                 $referer_str = 'rownum asc';
+                 $referer_type = 'desc';
+               }
+        }
+        if($_GET['sort'] == 'orders_ref_site2'){
+              if($_GET['type'] == 'desc'){
+                 $orders_ref_site2 = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+              }else{
+                 $orders_ref_site2 = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+              }
+        }
+        if($_GET['sort'] == 'cnt'){
+              if($_GET['type'] == 'desc'){
+                 $cnt = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+              }else{
+                 $cnt = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+              }
+        }
+        if($_GET['sort'] == 'cnt_order'){
+              if($_GET['type'] == 'desc'){
+                 $cnt_order = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+              }else{
+                 $cnt_order = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+              }
+        }
+        $referer_able_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+        $notice_box = new notice_box('','',$referer_table_params);
+        $referer_table_row = array();
+        $referer_title_row = array();
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox">');
+        if(isset($_GET['sort']) && $_GET['sort'] == 'orders_ref_site2'){
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=orders_ref_site2&type='.$referer_type.'&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_URL.$orders_ref_site2.'</a>');
+        }else{
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=orders_ref_site2&type=desc&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_URL.$orders_ref_site2.'</a>');
+        }
+        if(isset($_GET['sort']) && $_GET['sort'] == 'cnt'){
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt&type='.$referer_type.'&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_NUM.$cnt.'</a>');
+        }else{
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt&type=desc&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_NUM.$cnt.'</a>');
+        }
+        if(isset($_GET['sort']) && $_GET['sort'] == 'cnt_order'){
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt_order&type='.$referer_type.'&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_SORT_NUM.$cnt_order.'</a>');
+        }else{
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt_order&type=desc&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_SORT_NUM.$cnt_order.'</a>');
+        }
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
+        $referer_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $referer_title_row);
   //全部访问排名 
-  $ref_site_query = tep_db_query("
-    select * from (
-      select count(orders_id) as cnt , concat( ifnull( orders_ref_site, '' ) , if( orders_adurl is null, '', '(Adsense)' ) ) AS orders_ref_site2
+  $ref_site_sql= "
+    select * from ( select (@mycnt := @mycnt + 1) as rownum,cnt,orders_ref_site2,id from (
+      select orders_id as id,count(orders_id) as cnt , concat( ifnull( orders_ref_site, '' ) , if( orders_adurl is null, '', '(Adsense)' ) ) AS orders_ref_site2
       from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
       where s.id = o.site_id
         and orders_ref_site IS NOT NULL
         and orders_ref_site != ''
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
+        and " .$sql_site_where. 
         (isset($_GET['sy']) && isset($_GET['sm']) && isset($_GET['sd']) ? " and o.date_purchased > '".$_GET['sy'].'-'.$_GET['sm'].'-'.$_GET['sd'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
         (isset($_GET['ey']) && isset($_GET['em']) && isset($_GET['ed']) ? " and o.date_purchased < '".$_GET['ey'].'-'.$_GET['em'].'-'.$_GET['ed'] ." 23:59:59'" : '') . "
       group by orders_ref_site2
-    ) s
-    order by cnt desc
-      ");
+    ) s ";
+    if(!isset($_GET['sort']) || $_GET['sort'] == 'orders_ref_site2'){
+    $ref_site_sql .= 'order by cnt desc';
+    }else if($_GET['sort'] == 'cnt'){
+       if($_GET['type'] == 'desc'){
+        $ref_site_sql .= 'order by cnt desc';
+       }else{
+        $ref_site_sql .= 'order by cnt asc';
+       }
+    }else if($_GET['sort'] == 'cnt_order'){
+       if($_GET['type'] == 'desc'){
+        $ref_site_sql .= 'order by cnt desc';
+       }else{
+        $ref_site_sql .= 'order by cnt desc';
+       }
+    }
+
+    $ref_site_sql .= ") q order by ".$referer_str;
+    $referer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS,$ref_site_sql, $referer_query_numrows);
+    tep_db_query("set @mycnt=0");
+    $ref_site_query = tep_db_query($ref_site_sql);
+    $referer_num = tep_db_num_rows($ref_site_query);
+    if($_GET['sort'] == 'cnt_order' && $_GET['type'] == 'desc'){
+    $i = $referer_num;
+    }else{
     $i = 1;
+    }
     while ($ref_site = tep_db_fetch_array($ref_site_query)) {
       $even = 'dataTableSecondRow';
       $odd  = 'dataTableRow';
@@ -193,21 +268,67 @@ require("includes/note_js.php");
       } else {
         $nowColor = $odd; 
       }
-  ?>
-                <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
-                  <td class="dataTableContent"><?php echo $ref_site['orders_ref_site2'];?></td>
-                  <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
-                  <td class="dataTableContent"><?php echo $i;?></td>
-                </tr>
-  <?php
+    if($_GET['id'] == $ref_site['id']){
+       $referer_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
+     }else{
+       $referer_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+     }
+    $onclick = 'onClick="document.location.href=\''.tep_href_link('referer.php','sort='.$_GET['sort'].'&type='.$_GET['type'].'&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&ed='.$_GET['e_d']).'&id='.$ref_site['id'].'\'"';
+    $referer_info = array();
+    $referer_info[] = array(
+        'params' => 'class="dataTableContent"',
+        'text'   => '<input type="checkbox" disabled="disabled">'
+        );
+    $referer_info[] = array(
+        'params' => 'class="dataTableContent"'.$onclick,
+        'text'   => $ref_site['orders_ref_site2']
+        );
+    $referer_info[] = array(
+        'params' => 'class="dataTableContent"'.$onclick,
+        'text'   => $ref_site['cnt']
+        );
+    $referer_info[] = array(
+        'params' => 'class="dataTableContent"'.$onclick,
+        'text'   => $ref_site['rownum']
+        );
+    $referer_info[] = array(
+        'params' => 'class="dataTableContent" align="right"',
+        'text'   => tep_image('images/icons/info_gray.gif')
+        );
+    $referer_table_row[] = array('params' => $referer_params, 'text' => $referer_info);
+    if($_GET['sort'] == 'cnt_order' && $_GET['type'] == 'desc'){
+      $i--;
+    }else{
       $i++;
     }
-  }
+    }
+    $notice_box->get_contents($referer_table_row);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
 ?>
-              <tr>
-                <td class="smallText" colspan="7"></td>
-              </tr>
-            </table></td>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+    <?php
+     if($referer_num > 0){
+        if($ocertify->npermission >= 15){
+            echo '<select  disabled="disabled">';
+            echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';
+            echo '<option value="1">'.TEXT_CONTENTS_DELETE_ACTION.'</option>';
+            echo '</select>';
+          }
+      }else{
+            echo TEXT_DATA_EMPTY;
+      }
+     ?>
+    </td>
+  </tr>
+  <tr>
+    <td class="smallText" valign="top"><?php echo $referer_split->display_count($referer_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+    <td class="smallText" align="right"><div class="td_box"><?php echo $referer_split->display_links($referer_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td>
+  </tr>
+</table>
+            </td>
           </tr>
         </table></td>
       </tr>

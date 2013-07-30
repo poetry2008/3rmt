@@ -6,6 +6,16 @@
 */
 
   require('includes/application_top.php');
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+     $sql_site_where = 'c.site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+     $show_list_array = explode('-',$_GET['site_id']);
+  } else {
+     $show_list_str = tep_get_setting_site_info(FILENAME_NEW_CUSTOMERS);
+     $sql_site_where = 'c.site_id in ('.$show_list_str.')';
+     $show_list_array = explode(',',$show_list_str);
+   }
+
   if (!isset($_GET['s_y'])){
     $_GET['s_y'] = date('Y');
   }
@@ -54,7 +64,8 @@ break;
 <title><?php echo HEADING_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -90,12 +101,6 @@ require("includes/note_js.php");
     <!--ORDER EXPORT SCRIPT -->
     <form action="<?php echo tep_href_link(FILENAME_NEW_CUSTOMERS) ; ?>" method="get">
     <table  border="0" cellpadding="0" cellspacing="2">
-    <tr>
-    <td class="smallText" colspan="3">
-      <?php echo NEW_CUSTOMERS_SITES_SELECT;?> 
-      <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
-      </td>
-    </tr>
     <tr>
       
       <td class="smallText">
@@ -192,29 +197,131 @@ echo  REFRESH_TIME.$ref_s."&nbsp".SECOND_TEXT;
 ?>
 
 </td>
-<td align="right">
-<?php 
-echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'><button type='button'>".REFRESH."</button></a>";
- ?>
-</td>
 </tr></table>        
         </td>
-
-
       </tr>
       <tr><td>
-        <?php tep_site_filter(FILENAME_NEW_CUSTOMERS);?>
+        <?php tep_show_site_filter(FILENAME_NEW_CUSTOMERS,true,array(0));?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent" width="60"><?php echo TABLE_HEADING_SITE; ?></td>
-                <td class="dataTableHeadingContent" width="80"><?php echo TABLE_HEADING_MEMBER_TYPE; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LASTNAME; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_FIRSTNAME; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACCOUNT_CREATED; ?></td>
-              </tr>
-<?php
+            <td valign="top">
+            <?php 
+            if(!isset($_GET['type']) || $_GET['type'] == ''){
+                $_GET['type'] = 'asc';
+            }
+            if($new_type == ''){
+               $new_type = 'asc';
+            }
+            if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+                $new_str = 'date_account_created  DESC';
+            }else if($_GET['sort'] == 'site_romaji'){
+                  if($_GET['type'] == 'desc'){
+                    $new_str = 'c.site_id desc';
+                    $new_type = 'asc';
+                  }else{
+                    $new_str = 'c.site_id asc';
+                    $new_type = 'desc';
+                  }
+            }else if($_GET['sort'] == 'customers_guest_chk'){
+                  if($_GET['type'] == 'desc'){
+                    $new_str = 'c.customers_guest_chk desc';
+                    $new_type = 'asc';
+                  }else{
+                    $new_str = 'c.customers_guest_chk asc';
+                    $new_type = 'desc';
+                  }
+            }else if($_GET['sort'] == 'customers_lastname'){
+                  if($_GET['type'] == 'desc'){
+                    $new_str = 'c.customers_lastname desc';
+                    $new_type = 'asc';
+                  }else{
+                    $new_str = 'c.customers_lastname asc';
+                    $new_type = 'desc';
+                  }
+            }else if($_GET['sort'] == 'customers_firstname'){
+                  if($_GET['type'] == 'desc'){
+                    $new_str = 'c.customers_firstname desc';
+                    $new_type = 'asc';
+                  }else{
+                    $new_str = 'c.customers_firstname asc';
+                    $new_type = 'desc';
+                  }
+            }else if($_GET['sort'] == 'date_account_created'){
+                  if($_GET['type'] == 'desc'){
+                    $new_str = 'date_account_created desc';
+                    $new_type = 'asc';
+                  }else{
+                    $new_str = 'date_account_created asc';
+                    $new_type = 'desc';
+                  }
+            }
+            if($_GET['sort'] == 'site_romaji'){
+                 if($_GET['type'] == 'desc'){
+                     $site_romaji = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                     $site_romaji = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            if($_GET['sort'] == 'customers_guest_chk'){
+                 if($_GET['type'] == 'desc'){
+                     $customers_guest_chk = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                     $customers_guest_chk = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            if($_GET['sort'] == 'customers_lastname'){
+                 if($_GET['type'] == 'desc'){
+                     $customers_lastname = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                     $customers_lastname = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            if($_GET['sort'] == 'customers_firstname'){
+                 if($_GET['type'] == 'desc'){
+                     $customers_firstname = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                     $customers_firstname = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            if($_GET['sort'] == 'date_account_created'){
+                 if($_GET['type'] == 'desc'){
+                     $date_account_created = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                     $date_account_created = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            $new_able_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0'); 
+            $notice_box = new notice_box('','',$new_table_params);
+            $new_table_row = array();
+            $new_title_row = array();
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox">');
+            if(isset($_GET['sort']) && $_GET['sort'] == 'site_romaji'){
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=site_romaji&type='.$new_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
+            }else{
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=site_romaji&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
+            }
+            if(isset($_GET['sort']) && $_GET['sort'] == 'customers_guest_chk'){
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=customers_guest_chk&type='.$new_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.  TABLE_HEADING_MEMBER_TYPE.$customers_guest_chk.'</a>');
+            }else{
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=customers_guest_chk&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_MEMBER_TYPE.$customers_guest_chk.'</a>');
+            }
+            if(isset($_GET['sort']) && $_GET['sort'] == 'customers_lastname'){
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=customers_lastname&type='.$new_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_LASTNAME.$customers_lastname.'</a>');
+            }else{
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=customers_lastname&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_LASTNAME.$customers_lastname.'</a>');
+            }
+            if(isset($_GET['sort']) && $_GET['sort'] == 'customers_firstname'){
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=customers_firstname&type='.$new_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_FIRSTNAME.$customers_firstname.'</a>');
+            }else{
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=customers_firstname&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_FIRSTNAME.$customers_firstname.'</a>');
+            }
+            if(isset($_GET['sort']) && $_GET['sort'] == 'date_account_created'){
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=date_account_created&type='.$new_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_ACCOUNT_CREATED.$date_account_created.'</a>');
+            }else{
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort=date_account_created&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_ACCOUNT_CREATED.$date_account_created.'</a>');
+            }
+            $new_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
+            $new_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $new_title_row);
 
     $customers_query_raw = "
       SELECT c.customers_id,
@@ -226,13 +333,12 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'><bu
              ci.customers_info_date_account_created as date_account_created
       FROM customers c , ".TABLE_CUSTOMERS_INFO." ci
       WHERE c.customers_id = ci.customers_info_id and 
-     c.`customers_firstorderat` < '" . $endTime . "' AND c.`customers_firstorderat` > '" . $startTime . "'
-     ".(isset($_GET['site_id']) && $_GET['site_id'] ? ' AND c.site_id='.$_GET['site_id'] : '')."
+     c.`customers_firstorderat` < '" . $endTime . "' AND c.`customers_firstorderat` > '" . $startTime . "' ".' AND '.$sql_site_where."
       group by  c.customers_id  
-      ORDER BY c.customers_firstorderat  DESC 
-    ";
+      ORDER BY ".$new_str;
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
+    $new_num = tep_db_num_rows($customers_query);
     while ($customers = tep_db_fetch_array($customers_query)) {
       if($customers['customers_guest_chk'] == 1) {
         $type = TABLE_HEADING_MEMBER_TYPE_GUEST;
@@ -246,21 +352,66 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'><bu
       } else {
         $nowColor = $odd; 
       }
-
-    echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
-
-?>
-                <td class="dataTableContent"><?php echo tep_get_site_romaji_by_id($customers['site_id']); ?></td>
-                <td class="dataTableContent"><?php echo $type; ?></td>
-                <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_lastname']); ?></td>
-                <td class="dataTableContent"><?php echo htmlspecialchars($customers['customers_firstname']); ?></td>
-                <td class="dataTableContent" align="right"><?php echo tep_date_short($customers['date_account_created']); ?></td>
-              </tr>
-<?php
+      if($_GET['id'] == $customers['customers_id']){
+      $new_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
+      }else{
+      $new_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      }
+      $new_info = array();
+      $new_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => '<input type="checkbox" disabled="disabled">'
+          );
+      $onclick = 'onClick="document.location.href=\''.tep_href_link(FILENAME_NEW_CUSTOMERS,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&e_d='.$_GET['e_d']).'&id='.$customers['customers_id'].'\'"';
+      $new_info[] = array(
+          'params' => 'class="dataTableContent" '.$onclick,
+          'text'   => tep_get_site_romaji_by_id($customers['site_id'])
+          );
+      $new_info[] = array(
+          'params' => 'class="dataTableContent"'.$onclick,
+          'text'   => $type
+          );
+      $new_info[] = array(
+          'params' => 'class="dataTableContent"'.$onclick,
+          'text'   => htmlspecialchars($customers['customers_lastname'])
+          );
+      $new_info[] = array(
+          'params' => 'class="dataTableContent"'.$onclick,
+          'text'   => htmlspecialchars($customers['customers_firstname'])
+          );
+      $new_info[] = array(
+          'params' => 'class="dataTableContent" align="right"'.$onclick,
+          'text'   => tep_date_short($customers['date_account_created'])
+          );
+      $new_info[] = array(
+          'params' => 'class="dataTableContent" align="right"',
+          'text'   => tep_image('images/icons/info_gray.gif')
+          );
+ 
+      $new_table_row[] = array('params' => $new_params, 'text' => $new_info);
     }
+      $notice_box->get_contents($new_table_row);
+      $notice_box->get_eof(tep_eof_hidden());
+      echo $notice_box->show_notice();
 ?>
-            </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                           <tr>
+                             <td>
+                             <?php
+                                  if($new_num > 0){
+                                     if($ocertify->npermission >= 15){
+                                        echo '<select  disabled="disabled">';
+                                        echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';
+                                        echo '<option value="1">'.TEXT_CONTENTS_DELETE_ACTION.'</option>';
+                                        echo '</select>';
+                                      }
+                                   }else{
+                                        echo TEXT_DATA_EMPTY;
+                                   }
+                              ?>
+                              </td>
+                           </tr>
+
                   <tr>
                     <td class="smallText" valign="top"><?php echo $customers_split->display_count($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td>

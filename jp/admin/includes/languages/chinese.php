@@ -790,3 +790,8 @@ define('TEXT_IMAGE_TYPE_WRONG','图片类型格式错误。');
 define('WARNING_LOSING_INFO_TEXT', '因为数据不全发生了错误，请重新操作。');
 define('TEXT_ERROR_NULL','&nbsp;&nbsp;<font color=\'red\'>请输入。</font>');
 define('TEXT_DATA_MANAGEMENT','数据管理');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
+define('TEXT_CONTENTS_SELECT_ACTION','请选择');
+define('TEXT_CONTENTS_DELETE_ACTION', '删除勾选项目');

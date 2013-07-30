@@ -36,3 +36,8 @@ define('NEW_CUSTOMERS_TITLE_TEXT', 'ステータスが処理された日付で�
 define('NEW_CUSTOMERS_SITES_SELECT', 'サイト:');
 define('NEW_CUSTOMERS_SEARCH_START', '開始日:');
 define('NEW_CUSTOMERS_SEARCH_END', '終了日:');
+define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');
+define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
