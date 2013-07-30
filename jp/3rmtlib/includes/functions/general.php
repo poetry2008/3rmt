@@ -4901,7 +4901,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
-                           'comment_msg' => $pInfo['yourmessage'],
+                           'comment_msg' => $pInfo['yourmessage'], 
                            );
    if ($customers_res['is_quited'] == '1') {
      $sql_data_array['is_gray'] = '2';
@@ -4909,7 +4909,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    $payment_modules->deal_preorder_info($pInfo, $sql_data_array); 
    $sh_comments = ''; 
    $sh_comments = $payment_modules->deal_preorder_additional($pInfo, $sql_data_array); 
-    
+   
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
 
    require(DIR_WS_CLASSES.'order_total.php');
@@ -5771,7 +5771,7 @@ if (isset($_SESSION['campaign_fee'])) {
 <div class="checkout_payment_info">
   <?php
    //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
-    if (sizeof($selection) > 1) {
+    if (sizeof($selection) > 0) {
       echo "<div id='hm-payment'>";
       echo '<div class="hm-payment-top-left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
       echo '<div class="hm-payment-right"><b>'.TITLE_PLEASE_SELECT.'</b></div> ';
@@ -5780,7 +5780,7 @@ if (isset($_SESSION['campaign_fee'])) {
       echo "<div id='hm-payment'>";
       echo '<div class="hm-payment-left">';
       echo TEXT_ENTER_PAYMENT_INFORMATION;
-      echo '</div><div></div>';
+      echo '</div><div>&nbsp;</div>';
       echo "</div>";
     }
   ?>
@@ -6720,4 +6720,46 @@ function tep_is_customer_by_id($cid){
   }else{
     return false;
   }
+}
+/*----------------------------------
+  功能: 获取网站对应管理权限的管理员邮箱、昵称 
+  参数: 无 
+  返回: 管理员邮箱、昵称 
+----------------------------------*/
+function tep_get_admin_user_info(){
+  $users_id_array = array();
+  $users_permission_array = array();
+  $users_query = tep_db_query("select userid,permission,site_permission from permissions");
+  while($users_array = tep_db_fetch_array($users_query)){
+
+    $users_permission_array = explode(',',$users_array['site_permission']);
+    if(in_array(SITE_ID,$users_permission_array) || in_array('0',$users_permission_array)){
+
+      $users_id_array[$users_array['userid']] = $users_array['permission'];
+    }
+  }
+  tep_db_free_result($users_query);
+
+  asort($users_id_array);
+  $first_value = current($users_id_array);
+  $users_id_list = array();
+  foreach($users_id_array as $key=>$value){
+
+    if($first_value == $value){
+
+      $users_id_list[] = $key;
+    }
+  }  
+
+  $users_id_str = implode("','",$users_id_list);
+  if(trim($users_id_str) != ''){
+    $users_name_query = tep_db_query("select name,email from users where  userid in ('".$users_id_str."') order by date_added asc limit 0,1");
+    $users_name_array = tep_db_fetch_array($users_name_query);
+    tep_db_free_result($users_name_query);
+  }else{
+    $users_name_array['email'] = '';
+    $users_name_array['name'] = '';
+  }
+
+  return array($users_name_array['email'],$users_name_array['name']);  
 }

@@ -15,7 +15,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
-    <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
   <!-- body_text //-->
   <div class="yui3-u" id="layout">
     <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> ');?></div>
@@ -53,37 +52,59 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
                alt="'.TEXT_TOP_CON.'" title="'.TEXT_TOP_CON.'"></a></div></div>';
 
             $email_order = '';
-            $email_order .= $name . TEXT_REORDER_LIKE."\n";
-            $email_order .= "\n";
-            $email_order .= TEXT_REORDER_THANK_TO_CONTACT."\n";
-            $email_order .= TEXT_REORDER_RE_DELIVERY."\n";
-            $email_order .= "\n";
-            $email_order .= "=====================================\n";
-            $email_order .= "\n";
-            $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-            $email_order .= TEXT_REORDER_NAME_EMAIL . $name . "\n";
-            $email_order .= TEXT_REORDER_EMAIL_EMAIL . $email . "\n";
-            $email_order .= TEXT_REORDER_PRODUCT_EMAIL. $product . "\n";
-            $email_order .= TEXT_REORDER_DATETIME_EMAIL. $datetime . "\n";
-            $email_order .= TEXT_REORDER_COMMENT_TITLE_EMAIL. "\n";
-            $email_order .= $comment . "\n";
-            $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-            $email_order .= "\n";
-            $email_order .= "=====================================\n\n\n\n";
+            $mail_info = tep_get_mail_templates('REORDER_MAIL_CONTENT_TWO', 0);
+            $mail_title = $mail_info['title'];  
+            $mail_content = $mail_info['contents']; 
             
-            $email_order .= TEXT_REORDER_INFO1_EMAIL."\n";
-            $email_order .= TEXT_REORDER_INFO2_EMAIL."\n\n";
-
-            $email_order .= TEXT_REORDER_INFO3_EMAIL."━━━━━━━━━━━━\n";
-            $email_order .= TEXT_REORDER_INFO4_EMAIL."\n";
-            $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
-            $email_order .= HTTP_SERVER . "\n";
-            $email_order .= "━━━━━━━━━━━━━━━━━━━━━━━\n";
+            $user_info = SENDMAIL_TEXT_IP_ADDRESS.$_SERVER['REMOTE_ADDR']."\n";
+            $user_info .= SENDMAIL_TEXT_HOST.@gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n"; 
+            $user_info .= SENDMAIL_TEXT_USER_AGENT.$_SERVER['HTTP_USER_AGENT']."\n"; 
+            $admin_user_info = tep_get_admin_user_info(); 
             
-            //$email_title = str_replace(array(), array(), $email_title);
-            $mail_title = TEXT_REORDER_TITLE_EMAIL;
-            //$email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}'), array($name, date('Y-m-d H:i:s'), $email_order), $mail_content);
-            
+            $replace_array = array(
+                '${SITE_NAME}', 
+                '${SITE_URL}', 
+                '${COMPANY_NAME}', 
+                '${COMPANY_ADDRESS}', 
+                '${COMPANY_TEL}', 
+                '${SUPPORT_EMAIL}', 
+                '${STAFF_MAIL}', 
+                '${STAFF_NAME}', 
+                '${SIGNATURE}', 
+                '${USER_NAME}', 
+                '${USER_MAIL}', 
+                '${USER_INFO}', 
+                '${YEAR}', 
+                '${MONTH}', 
+                '${DAY}', 
+                '${PRODUCTS_NAME}', 
+                '${ORDER_COMMENT}', 
+                '${CHANGE_TIME}', 
+                ); 
+            $new_replace_array = array(
+                STORE_NAME,
+                HTTP_SERVER,
+                COMPANY_NAME,
+                STORE_NAME_ADDRESS,
+                STORE_NAME_TEL,
+                SUPPORT_EMAIL_ADDRESS,
+                $admin_user_info[0],
+                $admin_user_info[1],
+                C_EMAIL_FOOTER,
+                $name,
+                $email,
+                $user_info,
+                date('Y'),
+                date('m'),
+                date('d'),
+                $product,
+                $comment,
+                $datetime 
+                ); 
+            $mail_title = str_replace($replace_array, $new_replace_array ,$mail_title);
+            $mail_content = str_replace($replace_array, $new_replace_array ,$mail_content);
+            $email_order = $mail_content; 
+           
             tep_mail($name, $email, $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 
             if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
@@ -199,7 +220,6 @@ if(!isset($email_error)||$email_error == true){?>
 	      <?php include('includes/float-box.php');?>
 		  </div>
   <!-- body_text_eof //-->
-    <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>
   <!-- body_eof //-->
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>

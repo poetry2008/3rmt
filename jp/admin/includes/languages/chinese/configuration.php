@@ -81,7 +81,7 @@ define('TEXT_URL_SEARCH_ENGINE',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IM
 define('TEXT_SELECT_PRODUCT_CART',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;选择商品后显示购物车');
 define('TEXT_ALLOWS_VISITORS_INFORM_FRIEND',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;允许游客“通知朋友”');
 define('TEXT_DEFAULT_SEARCH_OPERATOR',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;默认的搜索运算符');
-define('TEXT_STORE_ADDRESS_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;店铺地址与电话号码');
+define('TEXT_STORE_ADDRESS_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;店铺地址');
 define('TEXT_SHOW_NUMBER_CLASSIFICATION',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;显示分类内的商品数量');
 define('TEXT_TAX_POSITION_DECIMAIL_POINT',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;显示含税金额');
 define('TEXT_DISPLAY_TAX_AMOUNT',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;显示含税金额');
@@ -244,4 +244,5 @@ define('TEXT_MANUAFACTURERS_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gi
 define('TEXT_PWD_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;操作日志的保存天数');
 define('TEXT_USERS_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;用户日志的保存天数');
 define('TEXT_ADMIN_POINT_MAIL',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;点数通知邮件');
+define('TEXT_STORE_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;公司电话号码');
 
