@@ -222,6 +222,11 @@ require("includes/note_js.php");
         $referer_table_row = array();
         $referer_title_row = array();
         $referer_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox">');
+        if(isset($_GET['sort']) && $_GET['sort'] == 'cnt_order'){
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt_order&type='.$referer_type.'&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_NUMBER.$cnt_order.'</a>');
+        }else{
+        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt_order&type=desc&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_NUMBER.$cnt_order.'</a>');
+        }
         if(isset($_GET['sort']) && $_GET['sort'] == 'orders_ref_site2'){
         $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=orders_ref_site2&type='.$referer_type.'&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_URL.$orders_ref_site2.'</a>');
         }else{
@@ -232,11 +237,7 @@ require("includes/note_js.php");
         }else{
         $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt&type=desc&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_NUM.$cnt.'</a>');
         }
-        if(isset($_GET['sort']) && $_GET['sort'] == 'cnt_order'){
-        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt_order&type='.$referer_type.'&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_SORT_NUM.$cnt_order.'</a>');
-        }else{
-        $referer_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('referer.php','sort=cnt_order&type=desc&sy='.$_GET['sy'].'&sm='.$_GET['sm'].'&sd='.$_GET['sd'].'&ey='.$_GET['ey'].'&em='.$_GET['em'].'&ed='.$_GET['ed']).'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.REFERER_TITLE_SORT_NUM.$cnt_order.'</a>');
-        }
+
         $referer_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
         $referer_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $referer_title_row);
   //全部访问排名 
@@ -299,15 +300,15 @@ require("includes/note_js.php");
         );
     $referer_info[] = array(
         'params' => 'class="dataTableContent"'.$onclick,
+        'text'   => $ref_site['rownum']
+        );
+    $referer_info[] = array(
+        'params' => 'class="dataTableContent"'.$onclick,
         'text'   => $ref_site['orders_ref_site2']
         );
     $referer_info[] = array(
         'params' => 'class="dataTableContent"'.$onclick,
         'text'   => $ref_site['cnt']
-        );
-    $referer_info[] = array(
-        'params' => 'class="dataTableContent"'.$onclick,
-        'text'   => $ref_site['rownum']
         );
     $referer_info[] = array(
         'params' => 'class="dataTableContent" align="right"',
