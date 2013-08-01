@@ -199,7 +199,6 @@ require("includes/note_js.php");
                           desc,customers_firstname, customers_lastname,romaji asc ';
                           $customers_query_raw .= " ) z order by ".$stats_str;
   $customers_query_raw2 = $customers_query_raw;
-  var_dump($customers_query_raw);
   $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
   
   // fix counted customers
