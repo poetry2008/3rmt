@@ -152,7 +152,7 @@ require("includes/note_js.php");
                     $keywords_type = 'asc';
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-              $keywords_str = 'cnt desc';
+              $keywords_str = 'cnt desc,orders_ref_keywords2 asc';
             }else if($_GET['sort'] == 'orders_ref_keywords'){
                   if($_GET['type'] == 'desc'){
                     $keywords_str = 'orders_ref_keywords2 desc';
@@ -235,7 +235,7 @@ require("includes/note_js.php");
         (isset($_GET['s_y']) && isset($_GET['s_m']) && isset($_GET['s_d']) ? " and o.date_purchased > '".$_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
         (isset($_GET['e_y']) && isset($_GET['e_m']) && isset($_GET['e_d']) ? " and o.date_purchased < '".$_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'] ." 23:59:59'" : '') . "
       group by orders_ref_keywords2
-    ) s) q
+    ) s order by cnt desc,orders_ref_keywords2 asc) q
     order by ".$keywords_str;
   $keywords_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $ref_site_sql, $keywords_query_numrows);
   tep_db_query("set @mycnt=0");
