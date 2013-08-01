@@ -319,7 +319,8 @@ document.onclick=function(e){
       '${USER_INFO}',
       '${YEAR}',
       '${MONTH}',
-      '${DAY}'
+      '${DAY}',
+      '${HTTPS_SERVER}'
       );
   $new_replace_array = array(
       STORE_NAME, 
@@ -340,7 +341,8 @@ document.onclick=function(e){
       $user_info,
       date('Y'),
       date('m'),
-      date('d')
+      date('d'),
+      HTTPS_SERVER
       );
   $mail_title = str_replace($replace_array, $new_replace_array, $mail_title); 
   $email_order = str_replace($replace_array, $new_replace_array, $mail_content); 

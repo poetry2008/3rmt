@@ -77,6 +77,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
                 '${PRODUCTS_NAME}', 
                 '${ORDER_COMMENT}', 
                 '${CHANGE_TIME}', 
+                '${HTTPS_SERVER}'
                 ); 
             $new_replace_array = array(
                 STORE_NAME,
@@ -96,7 +97,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
                 date('d'),
                 $product,
                 $comment,
-                $datetime 
+                $datetime, 
+                HTTPS_SERVER
                 ); 
             $mail_title = str_replace($replace_array, $new_replace_array ,$mail_title);
             $mail_content = str_replace($replace_array, $new_replace_array ,$mail_content);
