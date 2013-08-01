@@ -72,8 +72,8 @@ require("includes/note_js.php");
                   $stats_type = 'asc';
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-             // $stats_str = 'ordersum desc';
-              $stats_str = 'rownum asc';
+              $stats_str = 'ordersum desc';
+             // $stats_str = 'rownum asc';
             }else if($_GET['sort'] == 'site_name'){
               if($_GET['type'] == 'desc'){ 
                 $stats_str = 'romaji desc';
@@ -195,9 +195,7 @@ require("includes/note_js.php");
                             and c.site_id = s.id
                             and " . $sql_site_where . "
                           group by c.customers_firstname, c.customers_lastname) g";
-                          if(!isset($_GET['sort'])){
                           $customers_query_raw .= ' order by ordersum desc';
-                          }
                           $customers_query_raw .= " ) z order by ".$stats_str;
   $customers_query_raw2 = $customers_query_raw;
   $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
