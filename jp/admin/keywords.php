@@ -223,7 +223,11 @@ require("includes/note_js.php");
             $keywords_table_row = array();
             $keywords_title_row = array();
             $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox">');
-          //  $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => TABLE_HEADING_SITE);
+            if(isset($_GET['sort']) && $_GET['sort'] == 'cnt_orders'){
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt_orders&type='.$keywords_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_NUMBER.$cnt_orders.'</a>');
+            }else{
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt_orders&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_NUMBER.$cnt_orders.'</a>');
+            }
             if(isset($_GET['sort']) && $_GET['sort'] == 'orders_ref_keywords'){
             $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=orders_ref_keywords&type='.$keywords_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_ONE_TEXT.$orders_ref_keywords2.'</a>');
             }else{
@@ -233,11 +237,6 @@ require("includes/note_js.php");
             $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt&type='.$keywords_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_TWO_TEXT.$cnt.'</a>');
             }else{
             $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_TWO_TEXT.$cnt.'</a>');
-            }
-            if(isset($_GET['sort']) && $_GET['sort'] == 'cnt_orders'){
-            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt_orders&type='.$keywords_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_THREE_TEXT.$cnt_orders.'</a>');
-            }else{
-            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt_orders&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_THREE_TEXT.$cnt_orders.'</a>');
             }
             $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
             $keywords_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $keywords_title_row);
@@ -284,10 +283,10 @@ require("includes/note_js.php");
           'params' => 'class="dataTableContent"',
           'text'   => '<input type="checkbox" disabled="disabled">'
           );
-/*      $keywords_info[] = array(
+      $keywords_info[] = array(
           'params' => 'class="dataTableContent"'.$onclick,
-          'text'   => tep_get_site_romaji_by_id($ref_site['s_id'])
-          );*/
+          'text'   => $ref_site['rownum']
+          );
       $keywords_info[] = array(
           'params' => 'class="dataTableContent"'.$onclick,
           'text'   => $ref_site['orders_ref_keywords2']
@@ -295,10 +294,6 @@ require("includes/note_js.php");
       $keywords_info[] = array(
           'params' => 'class="dataTableContent"'.$onclick,
           'text'   => $ref_site['cnt']
-          );
-      $keywords_info[] = array(
-          'params' => 'class="dataTableContent"'.$onclick,
-          'text'   => $ref_site['rownum']
           );
       $keywords_info[] = array(
           'params' => 'class="dataTableContent" align="right"',

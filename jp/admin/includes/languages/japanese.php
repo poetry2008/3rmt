@@ -799,3 +799,4 @@ define('TEXT_SORT_DESC','▼');
 define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
 define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');
 define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
+define('TABLE_HEADING_NUMBER','No.');
