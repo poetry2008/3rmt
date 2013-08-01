@@ -199,6 +199,25 @@ require("includes/note_js.php");
                     $cnt_orders = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
                  }
             }
+        if($_GET['s_y'] == ''){
+           $_GET['s_y'] = date('Y');
+        }
+        if($_GET['s_m'] == ''){
+           $_GET['s_m'] = date('m')-1;
+        }
+        if($_GET['s_d'] == ''){
+           $_GET['s_d'] = date('d');
+        }
+        if($_GET['e_y'] == ''){
+           $_GET['e_y'] = date('Y');
+        }
+        if($_GET['e_m'] == ''){
+           $_GET['e_m'] = date('m');
+        }
+        if($_GET['e_d'] == ''){
+           $_GET['e_d'] = date('d');
+        }
+
             $keywords_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
             $notice_box = new notice_box('','',$keywords_table_params);  
             $keywords_table_row = array();
@@ -297,7 +316,7 @@ require("includes/note_js.php");
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
 ?>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
       <tr>
         <td>
          <?php

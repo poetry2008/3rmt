@@ -183,7 +183,7 @@ require("includes/note_js.php");
         );
     $stats_info[] = array(
         'params' => 'class="dataTableContent"',
-        'text'   => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_VIEWED . '?page=' . $_GET['page'], 'NONSSL') . '">' . $products['products_name'] . '</a> (' . $products['name'] . ')'
+        'text'   => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_VIEWED . '?page=' . $_GET['page'], 'NONSSL') . '">' . $products['products_name'] . '</a>'
         );
     $stats_info[] = array(
         'params' => 'class="dataTableContent"',
@@ -202,7 +202,7 @@ require("includes/note_js.php");
             </td>
           </tr>
         </table>
-		<table border="0" width="100%" cellspacing="0" cellpadding="0">
+		<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
                     <tr>
                       <td>
                        <?php

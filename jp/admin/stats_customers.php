@@ -266,7 +266,7 @@ require("includes/note_js.php");
             </td>
           </tr>
         </table>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
+	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
           <tr>
              <td>
               <?php
