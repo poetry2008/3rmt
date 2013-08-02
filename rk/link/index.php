@@ -50,7 +50,7 @@ if ($pdo_con) {
 }
 function forward404(){
       header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
-      require(dirname(__FILE__) . '/../../404.html');
+      require(dirname(__FILE__) . '/404.html');
       exit;
 }
   if (!empty($_GET)) {
