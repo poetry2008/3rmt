@@ -4,6 +4,7 @@
 */
 
   require('includes/application_top.php');
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -12,6 +13,7 @@
 <title><?php echo HEADING_TITLE; ?></title>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -47,34 +49,119 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td>
+         <?php 
+          $site_query = tep_db_query("select id from ".TABLE_SITES);
+          $site_list_array = array();
+          while($site_array = tep_db_fetch_array($site_query)){
+                $site_list_array[] = $site_array['id'];
+          }
+          tep_show_site_filter('stats_products_purchased.php',false,$site_list_array);
+         ?> 
+         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" style="margin-bottom:5px;">
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent" width="10%"><?php echo TABLE_HEADING_NUMBER; ?></td>
-                <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PURCHASED; ?></td>
-              </tr>
-<?php
+            <td valign="top">
+            <?php 
+            if(!isset($_GET['type']) || $_GET['type'] == ''){
+                      $_GET['type'] = 'asc';
+            }
+            if($stats_type == ''){
+                 $stats_type = 'asc';
+            }
+            if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+                  $stats_str = 'rownum asc';
+            }else if($_GET['sort'] == 'products_name'){
+                  if($_GET['type'] == 'desc'){
+                      $stats_str = 'products_name desc';
+                      $stats_type = 'asc';
+                   }else{
+                      $stats_str = 'products_name asc';
+                      $stats_type = 'desc';
+                   }
+            }else if($_GET['sort'] == 'products_ordered'){
+                  if($_GET['type'] == 'desc'){
+                      $stats_str = 'products_ordered desc';
+                      $stats_type = 'asc';
+                   }else{
+                      $stats_str = 'products_ordered asc';
+                      $stats_type = 'desc';
+                   }
+            }else if($_GET['sort'] == 'rownum'){
+                  if($_GET['type'] == 'desc'){
+                      $stats_str = 'rownum desc';
+                      $stats_type = 'asc';
+                   }else{
+                      $stats_str = 'rownum asc';
+                      $stats_type = 'desc';
+                   }
+            }
+            if($_GET['sort'] == 'products_name'){
+                    if($_GET['type'] == 'desc'){
+                         $products_name = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                     }else{
+                         $products_name = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                     }
+            }
+            if($_GET['sort'] == 'products_ordered'){
+                    if($_GET['type'] == 'desc'){
+                         $products_ordered = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                     }else{
+                         $products_ordered = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                     }
+            }
+            if($_GET['sort'] == 'rownum'){
+                    if($_GET['type'] == 'desc'){
+                         $rownum = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                     }else{
+                         $rownum = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                     }
+            }
+            $stats_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0'); 
+            $notice_box = new notice_box('','',$stats_table_params);
+            $stats_table_row = array(); 
+            $stats_title_row = array();
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox">');
+            if(isset($_GET['sort']) && $_GET['sort'] == 'rownum'){
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED,'sort=rownum&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'&type='.$stats_type).'">'.TABLE_HEADING_NUMBER.$rownum.'</a>');
+            }else{
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED,'sort=rownum&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'&type=desc').'">'.TABLE_HEADING_NUMBER.$rownum.'</a>');
+            }
+            if($_GET['sort'] == 'products_name'){
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED,'sort=products_name&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'&type='.$stats_type).'">'.TABLE_HEADING_PRODUCTS.$products_name.'</a>');
+            }else{
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED,'sort=products_name&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'&type=desc').'">'.TABLE_HEADING_PRODUCTS.$products_name.'</a>');
+            }
+            if($_GET['sort'] == 'products_ordered'){
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => 
+            '<a href="'.tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED,'sort=products_ordered&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'&type='.$stats_type).'">'.TABLE_HEADING_PURCHASED.$products_ordered.'</a>');
+            }else{
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED,'sort=products_ordered&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'&type=desc').'">'.TABLE_HEADING_PURCHASED.$products_ordered.'</a>');
+            }
+            $stats_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
+            $stats_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $stats_title_row);
   if (isset($_GET['page']) && $_GET['page'] > 1) {
     $rows = $_GET['page'] * MAX_DISPLAY_SEARCH_RESULTS - MAX_DISPLAY_SEARCH_RESULTS;
   } else {
     $rows = 0;
   }
   $products_query_raw = "
-    select p.products_id, 
-           p.products_ordered, 
-           pd.products_name 
+    select * from (select (@mycnt := @mycnt + 1) as rownum,products_ordered,products_name from(select p.products_id, 
+           p.products_ordered as products_ordered, 
+           pd.products_name as products_name
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where pd.products_id = p.products_id 
       and pd.language_id = '" . $languages_id. "' 
       and pd.site_id ='0'
       and p.products_ordered > 0 
-    group by pd.products_id 
-    order by p.products_ordered DESC, pd.products_name";
+    group by pd.products_id) g ";
+    if(!isset($_GET['sort'])){
+    $products_query_raw .= ' order by products_ordered desc';
+    }
+    $products_query_raw .= ") z order by ".$stats_str;
   $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_query_raw, $products_query_numrows);
-
+  tep_db_query("set @mycnt=0");
   $products_query = tep_db_query($products_query_raw);
+  $stats_num = tep_db_num_rows($products_query);
   while ($products = tep_db_fetch_array($products_query)) {
     $rows++;
 
@@ -129,19 +216,59 @@ require("includes/note_js.php");
    $firstQuery = tep_db_query("select UNIX_TIMESTAMP(min(date_purchased)) as first FROM " . TABLE_ORDERS . " o left join ".TABLE_ORDERS_PRODUCTS." op on o.orders_id=op.orders_id where op.products_id='".$products['products_id']."'");
    $first = tep_db_fetch_array($firstQuery);
    tep_db_free_result($firstQuery);
-?>
-              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL'); ?>'">
-                <td class="dataTableContent"><?php echo $rows; ?>.</td>
-                <td class="dataTableContent" align="left"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$products['products_id'].'&site_id=0', 'NONSSL') . '">' . $products['products_name'] . '</a>'; ?></td>
-                <td class="dataTableContent" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT, 'report=5&site_id=&is_select=1&add_product_categories_id='.$current_category_id.'&cid='.$current_category_id.'&pid='.$products['products_id'].'&products_id='.$products['products_id'].'&startY='.date('Y',$first['first']).'&startM='.date('m',$first['first']).'&startD='.date('d',$first['first']).'&method=1&detail=2&endY='.date('Y').'&endM='.date('m').'&endD='.date('d').'&export=0&bflag='.(tep_get_bflag_by_product_id($products['products_id']) == 0 ? 1 : 2).'&status=success&sort=4&compare=0&max=', 'NONSSL') . '">' . $products['products_ordered']. '</a>'; ?></td>
-              </tr>
-<?php
+   if($_GET['id'] == $products['rownum']){
+       $stats_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
+   }else{
+       $stats_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+   }    
+   $onlick = 'onClick="document.location.href=\''.tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED,'sort='.$_GET['sort'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$products['rownum'].'&type='.$_GET['type']).'\'"';
+   $stats_info = array();
+   $stats_info[] = array(
+       'params' => 'class="dataTableContent"',
+       'text'   => '<input type="checkbox" disabled="disabled">'
+       );
+   $stats_info[] = array(
+       'params' => 'class="dataTableContent"'.$onlick,
+       'text'   => $products['rownum']
+       );
+   $stats_info[] = array(
+       'params' => 'class="dataTableContent"'.$onlick,
+       'text'   => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'search='.$products['products_name']) . '">' . $products['products_name'] . '</a>'
+       );
+   $stats_info[] = array(
+       'params' => 'class="dataTableContent"'.$onlick,
+       'text'   => '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT, 'report=5&site_id=&is_select=1&add_product_categories_id='.$current_category_id.'&cid='.$current_category_id.'&pid='.$products['products_id'].'&products_id='.$products['products_id'].'&startY='.date('Y',$first['first']).'&startM='.date('m',$first['first']).'&startD='.date('d',$first['first']).'&method=1&detail=2&endY='.date('Y').'&endM='.date('m').'&endD='.date('d').'&export=0&bflag='.(tep_get_bflag_by_product_id($products['products_id']) == 0 ? 1 : 2).'&status=success&sort=4&compare=0&max=', 'NONSSL') . '">' . $products['products_ordered']. '</a>'
+       );
+   $stats_info[] = array(
+       'params' => 'class="dataTableContent" align="right"',
+       'text'   => tep_image('images/icons/info_gray.gif') 
+       );
+   $stats_table_row[] = array('params' => $stats_params, 'text' => $stats_info);
   }
+   $notice_box->get_contents($stats_table_row);
+   $notice_box->get_eof(tep_eof_hidden());
+   echo $notice_box->show_notice();
 ?>
-            </table></td>
+           </td>
           </tr>
         </table>
-		<table border="0" width="100%" cellspacing="0" cellpadding="0">
+		<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+                  <tr>
+                   <td>
+                    <?php
+                       if($stats_num > 0){
+                           if($ocertify->npermission >= 15){
+                               echo '<select disabled="disabled">';
+                               echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';
+                               echo '<option value="1">'.TEXT_CONTENTS_DELETE_ACTION.'</option>';
+                               echo '</select>';
+                            }
+                        }else{
+                               echo TEXT_DATA_EMPTY;
+                        }
+                     ?>
+                    </td>
+                  </tr>
               <tr>
                 <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
                 <td class="smallText" align="right"><div class="td_box"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>

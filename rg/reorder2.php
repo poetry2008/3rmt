@@ -3,7 +3,6 @@
  $Id$
 */
 require('includes/application_top.php');
-//require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
 
 define('HEADING_TITLE', '再配達依頼');
 define('MINUTES', 30);
@@ -53,38 +52,60 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
 
             $email_order = '';
-            $email_order .= $name . "様\n";
-            $email_order .= "\n";
-            $email_order .= "この度は、ご連絡いただき誠にありがとうございます。\n";
-            $email_order .= "お客様から、下記の注文内容にて再配達を承りました。\n";
-            $email_order .= "\n";
-            $email_order .= "=====================================\n";
-            $email_order .= "\n";
-            $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-            $email_order .= '▼お名前 : ' . $name . "\n";
-            $email_order .= '▼メールアドレス : ' . $email . "\n";
-            $email_order .= '▼ゲームタイトル : ' . $product . "\n";
-            $email_order .= '▼変更希望の日時 : ' . $datetime . "\n";
-            $email_order .= "▼備考 : \n";
-            $email_order .= $comment . "\n";
-            $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-            $email_order .= "\n";
-            $email_order .= "=====================================\n\n\n\n";
+            $mail_info = tep_get_mail_templates('REORDER_MAIL_CONTENT_TWO', 0);
+            $mail_title = $mail_info['title'];  
+            $mail_content = $mail_info['contents']; 
             
-            $email_order .= "ご不明な点がございましたら、注文番号をご確認の上、\n";
-            $email_order .= "お問い合わせください。\n\n";
-
-            $email_order .= "[ご連絡・お問い合わせ先]━━━━━━━━━━━━\n";
-            $email_order .= COMPANY_NAME."\n";
-            $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
-            $email_order .= HTTP_SERVER . "\n";
-            //$email_order .= "〒761-0445 香川県高松市西植田町2925番地\n";
-            //$email_order .= "電話番号： 087-862-1173\n";
-            $email_order .= "━━━━━━━━━━━━━━━━━━━━━━━\n";
-
-            //$email_title = str_replace(array(), array(), $email_title);
-            $mail_title = "再配達確認メール【" . STORE_NAME . "】";
-            //$email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}'), array($name, date('Y-m-d H:i:s'), $email_order), $mail_content);
+            $user_info = SENDMAIL_TEXT_IP_ADDRESS.$_SERVER['REMOTE_ADDR']."\n";
+            $user_info .= SENDMAIL_TEXT_HOST.@gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n"; 
+            $user_info .= SENDMAIL_TEXT_USER_AGENT.$_SERVER['HTTP_USER_AGENT']."\n"; 
+            $admin_user_info = tep_get_admin_user_info(); 
+            
+            $replace_array = array(
+                '${SITE_NAME}', 
+                '${SITE_URL}', 
+                '${COMPANY_NAME}', 
+                '${COMPANY_ADDRESS}', 
+                '${COMPANY_TEL}', 
+                '${SUPPORT_EMAIL}', 
+                '${STAFF_MAIL}', 
+                '${STAFF_NAME}', 
+                '${SIGNATURE}', 
+                '${USER_NAME}', 
+                '${USER_MAIL}', 
+                '${USER_INFO}', 
+                '${YEAR}', 
+                '${MONTH}', 
+                '${DAY}', 
+                '${PRODUCTS_NAME}', 
+                '${ORDER_COMMENT}', 
+                '${CHANGE_TIME}', 
+                '${HTTPS_SERVER}'
+                ); 
+            $new_replace_array = array(
+                STORE_NAME,
+                HTTP_SERVER,
+                COMPANY_NAME,
+                STORE_NAME_ADDRESS,
+                STORE_NAME_TEL,
+                SUPPORT_EMAIL_ADDRESS,
+                $admin_user_info[0],
+                $admin_user_info[1],
+                C_EMAIL_FOOTER,
+                $name,
+                $email,
+                $user_info,
+                date('Y'),
+                date('m'),
+                date('d'),
+                $product,
+                $comment,
+                $datetime, 
+                HTTPS_SERVER
+                ); 
+            $mail_title = str_replace($replace_array, $new_replace_array ,$mail_title);
+            $mail_content = str_replace($replace_array, $new_replace_array ,$mail_content);
+            $email_order = $mail_content; 
             
             tep_mail($name, $email, $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
 

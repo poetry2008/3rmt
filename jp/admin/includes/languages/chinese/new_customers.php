@@ -8,7 +8,7 @@ define('HEADING_TITLE_SEARCH', '搜索:');
 
 define('TABLE_HEADING_FIRSTNAME', '名');
 define('TABLE_HEADING_LASTNAME', '姓');
-define('TABLE_HEADING_ACCOUNT_CREATED', '账号建成日');
+define('TABLE_HEADING_ACCOUNT_CREATED', '创建日期');
 define('TABLE_HEADING_ACTION', '操作');
 
 define('TEXT_DATE_ACCOUNT_CREATED', '账号建成日:');
@@ -36,3 +36,8 @@ define('NEW_CUSTOMERS_TITLE_TEXT', '把状态处理日期作为条件来合计�
 define('NEW_CUSTOMERS_SITES_SELECT', '网站:');
 define('NEW_CUSTOMERS_SEARCH_START', '开始日期:');
 define('NEW_CUSTOMERS_SEARCH_END', '结束日期:');
+define('TEXT_CONTENTS_SELECT_ACTION','请选择');
+define('TEXT_CONTENTS_DELETE_ACTION', '删除勾选项目');
+define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');

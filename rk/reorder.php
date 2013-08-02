@@ -150,16 +150,6 @@ document.onclick=function(e){
           tep_db_query($sql);
         echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.' <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div>';
         // sent mail to customer
-        // ccdd
-        $mail    = tep_db_fetch_array(tep_db_query("
-              select * 
-              from ".TABLE_MAIL_TEMPLATES." 
-              where flag='ORDERS_STATUS_MAIL_TEMPLATES_17' 
-                and (site_id='0' or site_id = '" . SITE_ID . "')
-              order by site_id DESC
-        "));
-        $mail_title   = $mail['title'];
-        $mail_content = $mail['contents'];
 
   // load selected payment module
   require(DIR_WS_CLASSES . 'payment.php');
@@ -273,50 +263,91 @@ document.onclick=function(e){
   $_hour = $_time[0]; 
   $_minute = $_time[1];
 
-  $email_order .= TEXT_REORDER_LINE . "\n";
-  $email_order .= TEXT_REORDER_OID_EMAIL . $insert_id . "\n";
-  $email_order .= TEXT_REORDER_TDATE_EMAIL . tep_date_long(time()) . "\n";
-  $email_order .= TEXT_REORDER_NAME_EMAIL . $o->customer['name'] . "\n";
-  $email_order .= TEXT_REORDER_EMAIL_EMAIL . $o->customer['email_address'] . "\n";
-  $email_order .= TEXT_REORDER_LINE . "\n\n";
-  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date);
+  $time_info = str_string($_date);
   $date_arr = explode('-', $_date);  
   $tmp_date = date('D', mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]));  
   switch(strtolower($tmp_date)) {
      case 'mon':
-       $email_order .= '（'.TEXT_DATE_MONDAY.'）'; 
+       $time_info .= '（'.TEXT_DATE_MONDAY.'）'; 
        break;
      case 'tue':
-       $email_order .= '（'.TEXT_DATE_TUESDAY.'）'; 
+       $time_info .= '（'.TEXT_DATE_TUESDAY.'）'; 
        break;
      case 'wed':
-       $email_order .= '（'.TEXT_DATE_WEDNESDAY.'）'; 
+       $time_info .= '（'.TEXT_DATE_WEDNESDAY.'）'; 
        break;
      case 'thu':
-       $email_order .= '（'.TEXT_DATE_THURSDAY.'）'; 
+       $time_info .= '（'.TEXT_DATE_THURSDAY.'）'; 
        break;
      case 'fri':
-       $email_order .= '（'.TEXT_DATE_FRIDAY.'）'; 
+       $time_info .= '（'.TEXT_DATE_FRIDAY.'）'; 
        break;
      case 'sat':
-       $email_order .= '（'.TEXT_DATE_STATURDAY.'）'; 
+       $time_info .= '（'.TEXT_DATE_STATURDAY.'）'; 
        break;
      case 'sun':
-       $email_order .= '（'.TEXT_DATE_SUNDAY.'）'; 
+       $time_info .= '（'.TEXT_DATE_SUNDAY.'）'; 
        break;
      default:
        break;
   }
-  $email_order .= $_hour . TIME_HOUR_TEXT . $_minute .TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+  $time_info .= $_hour . TIME_HOUR_TEXT . $_minute .TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
 
-  if ($comment) {
-    $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
-    $email_order .= $comment . "\n";
-  }
-
-  $mail_title = "[" . $order['orders_id'] . "]".TEXT_REORDER_TITLE_EMAIL;
-  $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
-
+  $mail_info = tep_get_mail_templates('REORDER_MAIL_CONTENT', 0);  
+  $mail_title = $mail_info['title'];
+  $mail_content = $mail_info['contents'];
+  
+  $user_info = SENDMAIL_TEXT_IP_ADDRESS.$_SERVER['REMOTE_ADDR']."\n";
+  $user_info .= SENDMAIL_TEXT_HOST.@gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n"; 
+  $user_info .= SENDMAIL_TEXT_USER_AGENT.$_SERVER['HTTP_USER_AGENT']."\n"; 
+  $admin_user_info = tep_get_admin_user_info(); 
+  
+  $replace_array = array(
+      '${SITE_NAME}', 
+      '${USER_NAME}', 
+      '${ORDER_NUMBER}', 
+      '${ORDER_DATE}', 
+      '${USER_MAIL}', 
+      '${SHIPPING_TIME}',
+      '${ORDER_COMMENT}',
+      '${SITE_URL}',
+      '${COMPANY_NAME}',
+      '${COMPANY_ADDRESS}',
+      '${COMPANY_TEL}',
+      '${SUPPORT_EMAIL}',
+      '${STAFF_MAIL}',
+      '${STAFF_NAME}',
+      '${SIGNATURE}',
+      '${USER_INFO}',
+      '${YEAR}',
+      '${MONTH}',
+      '${DAY}',
+      '${HTTPS_SERVER}'
+      );
+  $new_replace_array = array(
+      STORE_NAME, 
+      $o->customer['name'], 
+      $oID,
+      tep_date_long(time()),
+      $o->customer['email_address'], 
+      $time_info, 
+      $comment, 
+      HTTP_SERVER,
+      COMPANY_NAME,
+      STORE_NAME_ADDRESS,
+      STORE_NAME_TEL,
+      SUPPORT_EMAIL_ADDRESS,
+      $admin_user_info[0],
+      $admin_user_info[1],
+      C_EMAIL_FOOTER,
+      $user_info,
+      date('Y'),
+      date('m'),
+      date('d'),
+      HTTPS_SERVER
+      );
+  $mail_title = str_replace($replace_array, $new_replace_array, $mail_title); 
+  $email_order = str_replace($replace_array, $new_replace_array, $mail_content); 
   # 邮件正文调整 --------------------------------------
   tep_mail($o->customer['name'], $o->customer['email_address'], $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {

@@ -6,10 +6,17 @@
   $xx_mins_ago = (time() - 900);
 
   require('includes/application_top.php');
-
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies();
-
+  if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+      $show_list_array = explode('-',$_GET['site_id']);
+  } else {
+      $show_list_str = tep_get_setting_site_info('keywords.php');
+      $sql_site_where = 'site_id in ('.$show_list_str.')';
+      $show_list_array = explode(',',$show_list_str);
+  }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -18,7 +25,8 @@
 <title><?php echo KEYWORDS_TITLE_TEXT; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -132,31 +140,130 @@ require("includes/note_js.php");
       </tr>
     </table><br>
     </form>
-        <?php tep_site_filter('keywords.php');?>
+        <?php tep_show_site_filter('keywords.php',true,array(0));?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo KEYWORDS_TABLE_COLUMN_ONE_TEXT;?></td>
-                <td class="dataTableHeadingContent"><?php echo KEYWORDS_TABLE_COLUMN_TWO_TEXT;?></td>
-                <td class="dataTableHeadingContent"><?php echo KEYWORDS_TABLE_COLUMN_THREE_TEXT;?></td>
-              </tr>
-<?php
-  $ref_site_query = tep_db_query("
-    select * from (
-      select count(orders_id) as cnt , concat( ifnull( orders_ref_keywords, '' ) , if( orders_adurl is null, '', '(Adsense)' ) ) AS orders_ref_keywords2
+            <td valign="top">
+            <?php
+            if(!isset($_GET['type']) || $_GET['type'] == ''){
+                    $_GET['type'] = 'asc';
+            }
+            if($keywords_type == ''){
+                    $keywords_type = 'asc';
+            }
+            if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+              $keywords_str = 'cnt desc,orders_ref_keywords2 asc';
+            }else if($_GET['sort'] == 'orders_ref_keywords'){
+                  if($_GET['type'] == 'desc'){
+                    $keywords_str = 'orders_ref_keywords2 desc';
+                    $keywords_type = 'asc';
+                  }else{
+                    $keywords_str = 'orders_ref_keywords2 asc';
+                    $keywords_type = 'desc';
+                  }
+            }else if($_GET['sort'] == 'cnt'){
+                  if($_GET['type'] == 'desc'){
+                    $keywords_str = 'cnt desc';
+                    $keywords_type = 'asc';
+                  }else{
+                    $keywords_str = 'cnt asc';
+                    $keywords_type = 'desc';
+                  }
+            }else if($_GET['sort'] == 'cnt_orders'){
+                  if($_GET['type'] == 'desc'){
+                    $keywords_str = 'rownum desc';
+                    $keywords_type = 'asc';
+                  }else{
+                    $keywords_str = 'rownum asc';
+                    $keywords_type = 'desc';
+                  }
+            }
+            if($_GET['sort'] == 'orders_ref_keywords'){
+                 if($_GET['type'] == 'desc'){
+                    $orders_ref_keywords2 = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                    $orders_ref_keywords2 = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            if($_GET['sort'] == 'cnt'){
+                 if($_GET['type'] == 'desc'){
+                    $cnt = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                    $cnt = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            if($_GET['sort'] == 'cnt_orders'){
+                 if($_GET['type'] == 'desc'){
+                    $cnt_orders = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                    $cnt_orders = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+        if($_GET['s_y'] == ''){
+           $_GET['s_y'] = date('Y');
+        }
+        if($_GET['s_m'] == ''){
+           $_GET['s_m'] = date('m')-1;
+        }
+        if($_GET['s_d'] == ''){
+           $_GET['s_d'] = date('d');
+        }
+        if($_GET['e_y'] == ''){
+           $_GET['e_y'] = date('Y');
+        }
+        if($_GET['e_m'] == ''){
+           $_GET['e_m'] = date('m');
+        }
+        if($_GET['e_d'] == ''){
+           $_GET['e_d'] = date('d');
+        }
+
+            $keywords_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+            $notice_box = new notice_box('','',$keywords_table_params);  
+            $keywords_table_row = array();
+            $keywords_title_row = array();
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox">');
+            if(isset($_GET['sort']) && $_GET['sort'] == 'cnt_orders'){
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt_orders&type='.$keywords_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_NUMBER.$cnt_orders.'</a>');
+            }else{
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt_orders&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.TABLE_HEADING_NUMBER.$cnt_orders.'</a>');
+            }
+            if(isset($_GET['sort']) && $_GET['sort'] == 'orders_ref_keywords'){
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=orders_ref_keywords&type='.$keywords_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_ONE_TEXT.$orders_ref_keywords2.'</a>');
+            }else{
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=orders_ref_keywords&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_ONE_TEXT.$orders_ref_keywords2.'</a>');
+            }
+            if(isset($_GET['sort']) && $_GET['sort'] == 'cnt'){
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt&type='.$keywords_type.'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_TWO_TEXT.$cnt.'</a>');
+            }else{
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('keywords.php','sort=cnt&type=desc&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&e_d='.$_GET['e_d']).' &page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$_GET['id'].'">'.KEYWORDS_TABLE_COLUMN_TWO_TEXT.$cnt.'</a>');
+            }
+            $keywords_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
+            $keywords_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $keywords_title_row);
+  $ref_site_sql= "
+    select * from (select (@mycnt := @mycnt + 1) as rownum,cnt,orders_ref_keywords2 from (
+      select count(orders_id) as cnt , concat( ifnull( orders_ref_keywords, '' ) ,
+        if( orders_adurl is null, '', '(Adsense)' ) ) AS
+      orders_ref_keywords2,site_id as s_id
       from " . TABLE_ORDERS . " o, ".TABLE_SITES." s
       where s.id = o.site_id
         and orders_ref_keywords IS NOT NULL
-        and orders_ref_keywords != ''
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . 
+        and orders_ref_keywords != '' and
+        " .$sql_site_where. 
         (isset($_GET['s_y']) && isset($_GET['s_m']) && isset($_GET['s_d']) ? " and o.date_purchased > '".$_GET['s_y'].'-'.$_GET['s_m'].'-'.$_GET['s_d'] ."'" : " and o.date_purchased > '".date('Y-m-d H:i:s', time()-(86400*30)) . "' ") . 
         (isset($_GET['e_y']) && isset($_GET['e_m']) && isset($_GET['e_d']) ? " and o.date_purchased < '".$_GET['e_y'].'-'.$_GET['e_m'].'-'.$_GET['e_d'] ." 23:59:59'" : '') . "
       group by orders_ref_keywords2
-    ) s
-    order by cnt desc
-      ");
+    ) s order by cnt desc,orders_ref_keywords2 asc) q
+    order by ".$keywords_str;
+  $keywords_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $ref_site_sql, $keywords_query_numrows);
+  tep_db_query("set @mycnt=0");
+  $ref_site_query = tep_db_query($ref_site_sql);  
+  $keywords_num = tep_db_num_rows($ref_site_query);
+  if($_GET['sort'] == 'cnt_orders' && $_GET['type'] == 'desc'){
+  $i = $keywords_num;
+  }else{
   $i = 1;
+  }
   while ($ref_site = tep_db_fetch_array($ref_site_query)) {
       $even = 'dataTableSecondRow';
       $odd  = 'dataTableRow';
@@ -165,20 +272,68 @@ require("includes/note_js.php");
       } else {
         $nowColor = $odd; 
       }
-?>
-              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
-                <td class="dataTableContent"><?php echo $ref_site['orders_ref_keywords2'];?></td>
-                <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
-                <td class="dataTableContent"><?php echo $i;?></td>
-              </tr>
-<?php
+      $onclick = 'onClick="document.location.href=\''.tep_href_link('keywords.php','sort='.$_GET['sort'].'&type='.$_GET['type'].'&s_y='.$_GET['s_y'].'&s_m='.$_GET['s_m'].'&s_d='.$_GET['s_d'].'&e_y='.$_GET['e_y'].'&e_m='.$_GET['e_m'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&e_d='.$_GET['e_d']).'&id='.$i.'\'"';
+      if($_GET['id'] == $i){
+      $keywords_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
+      }else{
+      $keywords_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      }
+      $keywords_info = array();
+      $keywords_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => '<input type="checkbox" disabled="disabled">'
+          );
+      $keywords_info[] = array(
+          'params' => 'class="dataTableContent"'.$onclick,
+          'text'   => $ref_site['rownum']
+          );
+      $keywords_info[] = array(
+          'params' => 'class="dataTableContent"'.$onclick,
+          'text'   => $ref_site['orders_ref_keywords2']
+          );
+      $keywords_info[] = array(
+          'params' => 'class="dataTableContent"'.$onclick,
+          'text'   => $ref_site['cnt']
+          );
+      $keywords_info[] = array(
+          'params' => 'class="dataTableContent" align="right"',
+          'text'   => tep_image('images/icons/info_gray.gif') 
+          );
+
+  if($_GET['sort'] == 'cnt_orders' && $_GET['type'] == 'desc'){
+    $i--;
+  }else{
     $i++;
   }
+    $keywords_table_row[] = array('params' => $keywords_params, 'text' => $keywords_info);
+  }
+    $notice_box->get_contents($keywords_table_row);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
 ?>
-              <tr>
-                <td class="smallText" colspan="7"></td>
-              </tr>
-            </table></td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+      <tr>
+        <td>
+         <?php
+           if($keywords_num > 0){
+             if($ocertify->npermission >= 15){
+                echo '<select  disabled="disabled">';
+                echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';
+                echo '<option value="1">'.TEXT_CONTENTS_DELETE_ACTION.'</option>';
+                echo '</select>';
+             }
+            }else{
+                echo TEXT_DATA_EMPTY;
+            }
+         ?>
+          </td>
+       </tr>
+       <tr>
+           <td class="smallText" valign="top"><?php echo $keywords_split->display_count($keywords_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+           <td class="smallText" align="right"><div class="td_box"><?php echo $keywords_split->display_links($keywords_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))); ?></div></td>
+                  </tr>
+             </table>
+            </td>
           </tr>
         </table></td>
       </tr>
