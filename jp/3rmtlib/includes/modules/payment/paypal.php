@@ -207,17 +207,17 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     }
 
     $mail_mode = array(
-        '${NAME}',
-        '${MAIL}',
-        '${ORDER_D}',
-        '${ORDER_M}',
-        '${ORDER_PRODUCT_LIST}',
+        '${USER_NAME}',
+        '${USER_MAIL}',
+        '${ORDER_DATE}',
+        '${ORDER_TOTAL}',
+        '${ORDER_PRODUCTS}',
         '${SHIPPING_DATE}',
         '${SHIPPING_TIME}',
         '${IP}',
-        '${ANGET}',
-        '${HOST}',
-        '${PAY}'
+        '${USER_AGENT}',
+        '${HOST_NAME}',
+        '${PAYMENT}'
         );
     $mail_value = array(
         $order->customer["lastname"] . ' '. $order->customer["firstname"],
@@ -235,7 +235,16 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     
     $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
     $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
-    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS, $process_button_template['title'], $mail_body, '', '');
+    $mail_body = tep_replace_mail_templates($mail_body,$order->customer["email_address"],$order->customer["lastname"] . ' '. $order->customer["firstname"]);
+    $subject = $process_button_template['title'];
+    $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+    $title_replace_array = array(
+                             STORE_NAME 
+                           );
+    $subject = str_replace($title_mode_array,$title_replace_array,$subject); 
+    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
     
     $today = date("YmdHis");
 
@@ -624,17 +633,17 @@ function getpreexpress($pre_value, $pre_pid){
     }
     
     $mail_mode = array(
-        '${NAME}',
-        '${MAIL}',
-        '${ORDER_D}',
-        '${ORDER_M}',
-        '${ORDER_PRODUCT_LIST}',
+        '${USER_NAME}',
+        '${USER_MAIL}',
+        '${ORDER_DATE}',
+        '${ORDER_TOTAL}',
+        '${ORDER_PRODUCTS}',
         '${SHIPPING_DATE}',
         '${SHIPPING_TIME}',
         '${IP}',
-        '${ANGET}',
-        '${HOST}',
-        '${PAY}'
+        '${USER_AGENT}',
+        '${HOST_NAME}',
+        '${PAYMENT}'
         );
     $mail_value = array(
         $preorder_info['customers_name'],
@@ -653,7 +662,16 @@ function getpreexpress($pre_value, $pre_pid){
 
     $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
     $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
-    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS,$process_button_template['title'], $mail_body, '', '');
+    $mail_body = tep_replace_mail_templates($mail_body,$preorder_info['customers_email_address'],$preorder_info['customers_name']);
+    $subject = $process_button_template['title'];
+    $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+    $title_replace_array = array(
+                             STORE_NAME 
+                           );
+    $subject = str_replace($title_mode_array,$title_replace_array,$subject);
+    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS,$subject, $mail_body, '', '');
     
     $hidden_param_str = ''; 
     $hidden_param_str .= tep_draw_hidden_field('cpre_type', '1');
@@ -966,6 +984,7 @@ function PPHttpPost($methodName_, $nvpStr_) {
   $orders_error_contents .= BROWSER_USER_LANGUAGE." ".$browser_user."\n";
 
   $orders_mail_text = str_replace('${ERROR_CONTENTS}',$orders_error_contents,$orders_mail_text);
+  $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']));
  
   $message = new email(array('X-Mailer: iimy Mailer'));
   $text = $orders_mail_text;

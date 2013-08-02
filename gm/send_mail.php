@@ -15,19 +15,20 @@
   $body_text = '';
   $body_text = $mail_array['contents'];
   $mode_array = array(
-                      '${STORE_NAME}', 
+                      '${SITE_NAME}', 
                       '${COMPANY_NAME}',
-                      '${HTTP_SERVER}',
-                      '${STORE_OWNER_EMAIL_ADDRESS}'
+                      '${SITE_URL}',
+                      '${SUPPORT_EMAIL}'
                     );
   $replace_array = array(
                       STORE_NAME, 
                       COMPANY_NAME,
                       HTTP_SERVER,
-                      STORE_OWNER_EMAIL_ADDRESS
+                      SUPPORT_EMAIL_ADDRESS 
                     );
   $body_text = str_replace($mode_array,$replace_array,$body_text);
-  
+
+  $body_text = tep_replace_mail_templates($body_text,$_POST['email_address'],''); 
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
       $error_single = true;

@@ -2,9 +2,7 @@
 <?php 
 set_time_limit(0);
 //file patch
-//define('ROOT_DIR','/home/.sites/28/site1/web/admin');
-//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-define('ROOT_DIR','/home/hm1001/osc_3rmt/jp/admin');
+define('ROOT_DIR','/home/.sites/28/site1/web/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default sleep second
 define('SLEEP_SECOND',3);//以秒为单位设置
@@ -129,7 +127,7 @@ o.customers_name AS customer_name,
           intval(($out_time-$now_time)/86400)==$value+1){
         $point_out_date = date('Y年m月d日',$out_time-86400);
         $show_email_template = str_replace(
-            array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
+            array('${USER_NAME}','${USER_MAIL}','${POINT}','${VALID_DAY}','${SITE_NAME}','${LAST_VILID_DATE}'
               ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
               $customer_info['customer_email'],
@@ -143,7 +141,7 @@ o.customers_name AS customer_name,
               ),
             $email_template);
         $title = str_replace(
-            array('${NAME}','${MAIL}','${POINT}','${POINT_DATE}','${SITE_NAME}','${POINT_OUT_DATE}'
+            array('${USER_NAME}','${USER_MAIL}','${POINT}','${VALID_DAY}','${SITE_NAME}','${LAST_VILID_DATE}'
               ,'${SITE_URL}','${SUPPORT_EMAIL}'),
             array($customer_info['customer_name'],
               $customer_info['customer_email'],
@@ -177,6 +175,56 @@ o.customers_name AS customer_name,
 
         $parameter = '-f'.$From_Mail;
         $send_row++;
+        //替换通用邮件模板参数
+        $user_info = "\n";
+        $user_info .= 'IPアドレス　　　　　　：'.$_SERVER['REMOTE_ADDR']."\n";
+        $user_info .= 'ホスト名　　　　　　　：'.@gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n"; 
+        $user_info .= 'ユーザーエージェント　：'.$_SERVER['HTTP_USER_AGENT']."\n"; 
+        $site_name = get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration');
+        $http_server = get_configuration_by_site_id('HTTP_SERVER',$customer_info['site_id'],'configuration');
+        $company_name = get_configuration_by_site_id('COMPANY_NAME',$customer_info['site_id'],'configuration');
+        $company_address = get_configuration_by_site_id('STORE_NAME_ADDRESS',$customer_info['site_id'],'configuration');
+        $company_tel = get_configuration_by_site_id('STORE_NAME_TEL',$customer_info['site_id'],'configuration');
+        $support_email_address = get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$customer_info['site_id'],'configuration');
+        $email_footer = get_configuration_by_site_id('C_EMAIL_FOOTER',$customer_info['site_id'],'configuration');
+            
+        $mode_array = array(
+                '${SITE_NAME}', 
+                '${SITE_URL}', 
+                '${COMPANY_NAME}', 
+                '${COMPANY_ADDRESS}', 
+                '${COMPANY_TEL}', 
+                '${SUPPORT_EMAIL}', 
+                '${STAFF_MAIL}', 
+                '${STAFF_NAME}', 
+                '${SIGNATURE}', 
+                '${USER_MAIL}',
+                '${USER_NAME}',
+                '${USER_INFO}', 
+                '${YEAR}', 
+                '${MONTH}', 
+                '${DAY}', 
+                '${HTTPS_SERVER}'
+                ); 
+        $replace_array = array(
+                $site_name,
+                $http_server,
+                $company_name,
+                $company_address,
+                $company_tel,
+                $support_email_address,
+                '',
+                '',
+                $email_footer,
+                $customer_info['customer_email'],
+                $customer_info['customer_name'],
+                $user_info,
+                date('Y'),
+                date('m'),
+                date('d'),
+                ''
+              );
+        $message = str_replace($mode_array,$replace_array,$message);
         if(POINT_DEBUG_MODULE_FLAG != 'On'){
           mail($to, $subject, $message, $headers,$parameter);
           if(($sum_user%SEND_ROWS)==0){

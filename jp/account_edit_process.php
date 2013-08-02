@@ -290,7 +290,7 @@
     
     tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".tep_db_input($customer_id)."'"); 
     
-    $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+    $old_str_array = array('${MAIL_CONFIRM_URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
     $new_str_array = array(
         HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom,
         $mail_name, 

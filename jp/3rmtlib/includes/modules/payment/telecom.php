@@ -138,17 +138,16 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
     
     $mail_mode = array(
-        '${NAME}',
-        '${MAIL}',
-        '${ORDER_D}',
-        '${ORDER_M}',
-        '${ORDER_PRODUCT_LIST}',
-        '${SHIPPING_DATE}',
+        '${USER_NAME}',
+        '${USER_MAIL}',
+        '${ORDER_DATE}',
+        '${ORDER_TOTAL}',
+        '${ORDER_PRODUCTS}',
         '${SHIPPING_TIME}',
         '${IP}',
-        '${ANGET}',
-        '${HOST}',
-        '${PAY}'
+        '${USER_AGENT}',
+        '${HOST_NAME}',
+        '${PAYMENT}'
         );
     $mail_value = array(
         $order->customer["lastname"] . ' '. $order->customer["firstname"],
@@ -156,8 +155,7 @@ class telecom  extends basePayment  implements paymentInterface  {
         tep_date_long(time()),
         $currencies->format($total),
         $order_product_list,
-        $_SESSION["insert_torihiki_date"],
-        $_SESSION["torihikihouhou"],
+        str_string(date('Y-m-d',strtotime($_SESSION["insert_torihiki_date"]))) . date('H',strtotime($_SESSION["insert_torihiki_date"])) . TIME_HOUR_TEXT . date('i',strtotime($_SESSION["insert_torihiki_date"])) . TEXT_ORDERS_PRODUCTS_LINK. date('H',strtotime($_SESSION["insert_torihiki_date_end"])) .TIME_HOUR_TEXT. date('i',strtotime($_SESSION["insert_torihiki_date_end"])) .TEXT_ORDERS_PRODUCTS_TWENTY_HOUR, 
         $_SERVER["REMOTE_ADDR"],
         @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
         $_SERVER["HTTP_USER_AGENT"],
@@ -166,7 +164,16 @@ class telecom  extends basePayment  implements paymentInterface  {
     
     $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
     $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
-    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $process_button_template['title'], $mail_body, '', '');
+    $mail_body = tep_replace_mail_templates($mail_body,$order->customer["email_address"],$order->customer["lastname"] . ' '. $order->customer["firstname"]);
+    $subject = $process_button_template['title'];
+    $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+    $title_replace_array = array(
+                             STORE_NAME 
+                           );
+    $subject = str_replace($title_mode_array,$title_replace_array,$subject);
+    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
     
     $today = date("YmdHis");
     // telecom_option 文档中的$ID
@@ -419,17 +426,16 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
     
     $mail_mode = array(
-        '${NAME}',
-        '${MAIL}',
-        '${ORDER_D}',
-        '${ORDER_M}',
-        '${ORDER_PRODUCT_LIST}',
-        '${SHIPPING_DATE}',
+        '${USER_NAME}',
+        '${USER_MAIL}',
+        '${ORDER_DATE}',
+        '${ORDER_TOTAL}',
+        '${ORDER_PRODUCTS}',
         '${SHIPPING_TIME}',
         '${IP}',
-        '${ANGET}',
-        '${HOST}',
-        '${PAY}'
+        '${USER_AGENT}',
+        '${HOST_NAME}',
+        '${PAYMENT}'
         );
     $mail_value = array(
         $preorder_info['customers_name'],
@@ -437,8 +443,7 @@ class telecom  extends basePayment  implements paymentInterface  {
         tep_date_long(time()),
         $currencies->format($preorder_total),
         $preorder_product_list,
-        $_SESSION["preorder_info_date"].' '.$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00",
-        $_SESSION["preorder_info_tori"],
+        str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_start_hour'] . TIME_HOUR_TEXT . $_SESSION['preorder_info_start_min'] .  TEXT_ORDERS_PRODUCTS_LINK. $_SESSION['preorder_info_end_hour'].TIME_HOUR_TEXT. $_SESSION['preorder_info_end_min'].TEXT_ORDERS_PRODUCTS_TWENTY_HOUR,
         $_SERVER["REMOTE_ADDR"],
         @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
         $_SERVER["HTTP_USER_AGENT"],
@@ -448,7 +453,16 @@ class telecom  extends basePayment  implements paymentInterface  {
 
     $process_button_template = tep_get_mail_templates('MODULE_PAYMENT_CARD_CONFRIMTION_EMAIL_CONTENT',SITE_ID);
     $mail_body = str_replace($mail_mode,$mail_value,$process_button_template['contents']);
-    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $process_button_template['title'], $mail_body, '', '');
+    $mail_body = tep_replace_mail_templates($mail_body,$preorder_info['customers_email_address'],$preorder_info['customers_name']);
+    $subject = $process_button_template['title'];
+    $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+    $title_replace_array = array(
+                             STORE_NAME 
+                           );
+    $subject = str_replace($title_mode_array,$title_replace_array,$subject);
+    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
  
 
 
@@ -494,11 +508,11 @@ class telecom  extends basePayment  implements paymentInterface  {
   function admin_process_pay_email($order,$total_price_mail,$site_id=0){
     $email_template = tep_get_mail_templates('PAYMENT_ADMIN_CREDIT_EMAIL_CONTENT',$site_id);
     $email_key = array(
-        '${NAME}',
+        '${USER_NAME}',
         '${SITE_NAME}',
-        '${ORDER_ID}',
-        '${MAIL}',
-        '${ORDER_M}',
+        '${ORDER_NUMBER}',
+        '${USER_MAIL}',
+        '${ORDER_TOTAL}',
         '${COMPANY_NAME}',
         '${SUPPORT_EMAIL}',
         '${SITE_URL}',

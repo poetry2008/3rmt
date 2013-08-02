@@ -17,14 +17,14 @@
   $mode_array = array(
                       '${STORE_NAME}', 
                       '${COMPANY_NAME}',
-                      '${HTTP_SERVER}',
+                      '${SITE_URL}',
                       '${STORE_OWNER_EMAIL_ADDRESS}'
                     );
   $replace_array = array(
                       STORE_NAME, 
                       COMPANY_NAME,
                       HTTP_SERVER,
-                      STORE_OWNER_EMAIL_ADDRESS
+                      SUPPORT_EMAIL_ADDRESS 
                     );
   $body_text = str_replace($mode_array,$replace_array,$body_text);
   

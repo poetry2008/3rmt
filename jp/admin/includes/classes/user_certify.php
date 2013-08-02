@@ -149,6 +149,7 @@ class user_certify {
                 $mail_text = str_replace('${TIME_'.$user_i.'}',date('Y年m月d日H時i分',strtotime($user_array['logintime'])),$mail_text); 
                 $user_i++;
               }
+              $mail_text = tep_replace_mail_templates($mail_text,'','');
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,'');
               
               session_regenerate_id();            
@@ -579,7 +580,7 @@ if (!tep_session_is_registered('user_permission')) {
                 $user_i++; 
               
               }
-              
+              $mail_text = tep_replace_mail_templates($mail_text,'',''); 
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,''); 
                 
               $s_sid = session_id();

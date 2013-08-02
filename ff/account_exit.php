@@ -90,8 +90,8 @@
     $mode_array = array(
                         '${SITE_NAME}', 
                         '${USER_NAME}',
-                        '${MAIL}',
-                        '${PASS}',
+                        '${USER_MAIL}',
+                        '${PASSWORD}',
                         '${SITE_URL}'
                     );
     $replace_array = array(
@@ -102,6 +102,14 @@
                           HTTP_SERVER
                     );
     $body_text = str_replace($mode_array,$replace_array,$body_text);  
+    $body_text = tep_replace_mail_templates($body_text,$customers_info['customers_email_address'],$mail_name);
+    $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+    $title_replace_array = array(
+                             STORE_NAME 
+                           );
+    $subject = str_replace($title_mode_array,$title_replace_array,$subject);
     tep_mail($mail_name, $customers_info['customers_email_address'], $subject, $body_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
 
     tep_session_unregister('customer_id');

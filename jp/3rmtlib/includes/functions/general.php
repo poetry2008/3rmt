@@ -6694,15 +6694,9 @@ function tep_get_radices($pid){
   -----------------------------*/
 function tep_get_mail_templates($mail_flag,$site_id){
 
-  $mail_query = tep_db_query("select title,contents,valid from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
+  $mail_query = tep_db_query("select title,contents,valid from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='0'");
   $mail_array = tep_db_fetch_array($mail_query);
   tep_db_free_result($mail_query);
-
-  if($mail_array['valid'] == 0){
-    $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='0'");
-    $mail_array = tep_db_fetch_array($mail_query);
-    tep_db_free_result($mail_query); 
-  }
 
   return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
 }
@@ -6762,4 +6756,58 @@ function tep_get_admin_user_info(){
   }
 
   return array($users_name_array['email'],$users_name_array['name']);  
+}
+/*----------------------------------
+  功能: 替换邮件模板的通用参数 
+  参数: $mail_templates (string)类型  邮件模板
+  参数: $users_email (string)类型  客户电子邮件
+  参数: $users_name (string)类型  客户昵称 
+  返回: 替换后的邮件模板
+----------------------------------*/
+function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=''){ 
+
+  $user_info  = "\n";
+  $user_info .= SENDMAIL_TEXT_IP_ADDRESS.$_SERVER['REMOTE_ADDR']."\n";
+  $user_info .= SENDMAIL_TEXT_HOST.@gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n"; 
+  $user_info .= SENDMAIL_TEXT_USER_AGENT.$_SERVER['HTTP_USER_AGENT']."\n"; 
+  $admin_user_info = tep_get_admin_user_info(); 
+            
+  $mode_array = array(
+                '${SITE_NAME}', 
+                '${SITE_URL}', 
+                '${COMPANY_NAME}', 
+                '${COMPANY_ADDRESS}', 
+                '${COMPANY_TEL}', 
+                '${SUPPORT_EMAIL}', 
+                '${STAFF_MAIL}', 
+                '${STAFF_NAME}', 
+                '${SIGNATURE}', 
+                '${USER_NAME}', 
+                '${USER_MAIL}', 
+                '${USER_INFO}', 
+                '${YEAR}', 
+                '${MONTH}', 
+                '${DAY}', 
+                '${HTTPS_SERVER}'
+                ); 
+  $replace_array = array(
+                STORE_NAME,
+                HTTP_SERVER,
+                COMPANY_NAME,
+                STORE_NAME_ADDRESS,
+                STORE_NAME_TEL,
+                SUPPORT_EMAIL_ADDRESS,
+                $admin_user_info[0],
+                $admin_user_info[1],
+                C_EMAIL_FOOTER,
+                $users_name,
+                $users_email,
+                $user_info,
+                date('Y'),
+                date('m'),
+                date('d'),
+                HTTPS_SERVER
+              );
+  $mail_templates = str_replace($mode_array,$replace_array,$mail_templates);
+  return $mail_templates;
 }

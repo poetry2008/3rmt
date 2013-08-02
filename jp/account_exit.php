@@ -80,7 +80,7 @@
     tep_db_query("update ".TABLE_ORDERS." set is_gray = '1' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
     tep_db_query("update ".TABLE_PREORDERS." set is_gray = '1' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
   
-    tep_db_query("update ".TABLE_CUSTOMERS_INFO." set customers_info_date_of_last_logon = NULL, customers_info_number_of_logons = 0, customers_info_date_account_created = '".$now_time."', customers_info_date_account_last_modified = '".$now_time."', global_product_notifications = 0, customer_last_resetpwd = '0000-00-00 00:00:00', user_update = '".tep_get_fullname($customers_info['customers_firstname'], $customers_info['customers_lastname'])."' where customers_info_id = '".$customer_id."'"); 
+    tep_db_query("update ".TABLE_CUSTOMERS_INFO." set customers_info_date_of_last_logon = NULL, customers_info_number_of_logons = 0, customers_info_date_account_created = '".$now_time."', customers_info_date_account_last_modified = '".$now_time."', global_product_notifications = 0, customer_last_resetpwd = '0000-00-00 00:00:00', user_update = '".tep_get_fullname($customers_info['customers_firstname'], $customers_info['customers_lastname'])."' where customers_info_id = '".$customer_id."'");
     //退会邮件
     $mail_array = tep_get_mail_templates('ACCOUNT_EXIT_MAIL_TEMPLATES',SITE_ID);
     $subject = $mail_array['title'];
@@ -90,8 +90,8 @@
     $mode_array = array(
                         '${SITE_NAME}', 
                         '${USER_NAME}',
-                        '${MAIL}',
-                        '${PASS}',
+                        '${USER_MAIL}',
+                        '${PASSWORD}',
                         '${SITE_URL}'
                     );
     $replace_array = array(
@@ -102,6 +102,14 @@
                           HTTP_SERVER
                     );
     $body_text = str_replace($mode_array,$replace_array,$body_text);  
+    $body_text = tep_replace_mail_templates($body_text,$customers_info['customers_email_address'],$mail_name);
+    $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+    $title_replace_array = array(
+                             STORE_NAME 
+                           );
+    $subject = str_replace($title_mode_array,$title_replace_array,$subject);
     tep_mail($mail_name, $customers_info['customers_email_address'], $subject, $body_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
 
     tep_session_unregister('customer_id');

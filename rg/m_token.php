@@ -30,10 +30,19 @@
       //会员登录邮件认证
       $edit_users_mail_array = tep_get_mail_templates('C_CREAT_ACCOUNT',SITE_ID);
       $email_text .= $edit_users_mail_array['contents'];
-      $email_text = str_replace(array('${MAIL}', '${PASS}'), array($customers_res['customers_email_address'], $customers_res['origin_password']), $email_text); 
+      $email_text = str_replace(array('${USER_MAIL}', '${PASSWORD}', '${SITE_URL}', '${HTTPS_SERVER}'), array($customers_res['customers_email_address'], $customers_res['origin_password'], HTTP_SERVER, HTTPS_SERVER), $email_text); 
+      $email_text = tep_replace_mail_templates($email_text,$customers_res['customers_email_address'],$email_name);
+      $subject = $edit_users_mail_array['title'];
+      $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+      $title_replace_array = array(
+                             STORE_NAME 
+                           );
+      $subject = str_replace($title_mode_array,$title_replace_array,$subject);
       if ($customers_res['is_active'] == 0) {
         if ($customers_res['is_send_mail'] != '1') {
-          tep_mail($email_name, $customers_res['customers_email_address'], $edit_users_mail_array['title'], $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
+          tep_mail($email_name, $customers_res['customers_email_address'], $subject, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
         }
       }
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 

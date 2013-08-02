@@ -136,7 +136,7 @@ function mail_text(st,tt,ot){
   }
 
 
-  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
+  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${MAIL_COMMENT}') != -1){
     alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
@@ -153,19 +153,19 @@ function mail_text(st,tt,ot){
     <?php // 列表页?>
     if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
-      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
+      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
     } else if (typeof(window.status_title[CI]) != 'undefined'){
       document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
     }
   } else {
     <?php // 详细页?>
     if (typeof(window.status_title[CI]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
     } else if (typeof(window.status_title[CI]) != 'undefined'){
       document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
     }
   }
   <?php // 替换${PAY_DATE}?>
@@ -659,7 +659,7 @@ function new_mail_text_orders(ele,st,tt,ot){
   }
 
 
-  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
+  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${MAIL_COMMENT}') != -1){
     alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
     document.edit_order.elements[st].options[window.last_status].selected = true;
     return false;
@@ -676,19 +676,19 @@ function new_mail_text_orders(ele,st,tt,ot){
     <?php // 列表页?>
     if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
       document.edit_order.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
-      document.edit_order.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
+      document.edit_order.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
     } else if (typeof(window.status_title[CI]) != 'undefined'){
       document.edit_order.elements[ot].value = window.status_title[CI][0];
-      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
+      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
     }
   } else {
     <?php // 详细页?>
     if (typeof(window.status_title[CI]) != 'undefined') {
       document.edit_order.elements[ot].value = window.status_title[CI][0];
-      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
     } else if (typeof(window.status_title[CI]) != 'undefined'){
       document.edit_order.elements[ot].value = window.status_title[CI][0];
-      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+      document.edit_order.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
     }
   }
   <?php // 替换${PAY_DATE}?>
@@ -733,7 +733,7 @@ function new_mail_text(ele,st,tt,ot){
   }
 
 
-  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
+  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${MAIL_COMMENT}') != -1){
     alert('<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>');
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
@@ -750,19 +750,19 @@ function new_mail_text(ele,st,tt,ot){
     <?php // 列表页?>
     if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
-      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
+      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
     } else if (typeof(window.status_title[CI]) != 'undefined'){
       document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
     }
   } else {
     <?php // 详细页?>
     if (typeof(window.status_title[CI]) != 'undefined') {
       document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
     } else if (typeof(window.status_title[CI]) != 'undefined'){
       document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
     }
   }
   <?php // 替换${PAY_DATE}?>

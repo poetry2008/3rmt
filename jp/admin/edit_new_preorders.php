@@ -572,13 +572,13 @@
       }
       
       $email = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${PREORDER_D}',
-              '${PREORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${ORDER_S}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${PREORDER_DATE}',
+              '${PREORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
@@ -618,13 +618,13 @@
         }
         $email_title = $_POST['etitle']; 
         $email_title = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${PREORDER_D}',
-              '${PREORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${ORDER_S}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${PREORDER_DATE}',
+              '${PREORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
@@ -655,6 +655,7 @@
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
+        $email = tep_replace_mail_templates($email,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           
@@ -665,7 +666,7 @@
         $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',$order->info['site_id']);
         $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $preorders_mail_array['title']); 
         $preorder_email_text = $preorders_mail_array['contents']; 
-        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
+        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
         
         $max_op_len = 0;
         $max_op_array = array();
@@ -688,8 +689,10 @@
         $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
         
         $preorder_email_text = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$preorder_email_text);
+        $email = tep_replace_mail_templates($email,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']);
         tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
-        
+
+        $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']); 
         tep_mail('', get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_subject, $preorder_email_text, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']); 
       }
       $customer_notified = '1';
@@ -2151,7 +2154,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents']);?></textarea>
+    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_COMMENT}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents']);?></textarea>
     </td>
   </tr>
 </table>

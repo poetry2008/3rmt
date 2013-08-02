@@ -257,7 +257,7 @@
         $gu_email_srandom = md5(time().$customer_id.$email_address); 
         
         $email_text = stripslashes($lastname.' '.$firstname).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
-        $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+        $old_str_array = array('${URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(
             HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom,
             $mail_name, 
@@ -268,6 +268,7 @@
         $guest_mail_array = tep_get_mail_templates('GUEST_LOGIN_EMAIL_CONTENT',SITE_ID);
         $email_text .= str_replace($old_str_array, $new_str_array, $guest_mail_array['contents']);  
         $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, $guest_mail_array['title']);
+        $email_text = tep_replace_mail_templates($email_text,$email_address,$mail_name);
         tep_mail($mail_name, $email_address, $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customer_id."'"); 
@@ -617,7 +618,7 @@ function pass_hidd(CI){
       $ac_email_srandom = md5(time().$customer_id.$email_address); 
        
       $email_text = stripslashes($lastname.' '.$firstname).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
-      $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+      $old_str_array = array('${URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
       $new_str_array = array(
           HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, 
           $mail_name,
@@ -632,6 +633,7 @@ function pass_hidd(CI){
       $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
       $customer_info = tep_db_fetch_array($customer_info_raw);
       
+      $email_text = tep_replace_mail_templates($email_text,$email_address,$mail_name); 
       if ($customer_info['is_send_mail'] != '1') {
         tep_mail($mail_name, $email_address, $ac_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       }
@@ -655,7 +657,7 @@ function pass_hidd(CI){
       $gu_email_srandom = md5(time().$customer_id.$email_address); 
       
       $email_text = stripslashes($lastname.' '.$firstname).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
-      $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+      $old_str_array = array('${URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
       $new_str_array = array(
           HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom,
           $mail_name, 
@@ -670,6 +672,7 @@ function pass_hidd(CI){
       $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
       $customer_info = tep_db_fetch_array($customer_info_raw);
       
+      $email_text = tep_replace_mail_templates($email_text,$email_address,$mail_name); 
       if ($customer_info['is_send_mail'] != '1') {
         tep_mail($mail_name, $email_address, $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       }
@@ -726,12 +729,21 @@ function pass_hidd(CI){
       //注册用户邮件
       $create_users_mail_array = tep_get_mail_templates('C_CREAT_ACCOUNT',SITE_ID);
       $email_text .= $create_users_mail_array['contents'];
-      $email_text = str_replace(array('${MAIL}', '${PASS}'), array($email_address, $password), $email_text);
+      $email_text = str_replace(array('${USER_MAIL}', '${PASSWORD}', '${SITE_URL}', '${HTTPS_SERVER}'), array($email_address, $password, HTTP_SERVER, HTTPS_SERVER), $email_text);
     
     $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
     $customer_info = tep_db_fetch_array($customer_info_raw);
+    $email_text = tep_replace_mail_templates($email_text,$email_address,$name);
+      $subject = $create_users_mail_array['title'];
+      $title_mode_array = array(
+                             '${SITE_NAME}' 
+                           );
+      $title_replace_array = array(
+                             STORE_NAME 
+                           );
+      $subject = str_replace($title_mode_array,$title_replace_array,$subject);
     if ($customer_info['is_send_mail'] != '1') {
-        tep_mail($name, $email_address, $create_users_mail_array['title'], $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        tep_mail($name, $email_address, $subject, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     }
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
   }

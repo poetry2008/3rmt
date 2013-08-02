@@ -44,7 +44,8 @@
         $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorders_mail_array['title']); 
         $encode_param_str = md5(time().$preorder['customers_id'].$_POST['pemail']); 
         $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
-        $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+        
+        $old_str_array = array('${URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(
             $active_url, 
             $preorder['customers_name'], 
@@ -55,6 +56,7 @@
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."', `customers_email_address` = '".$_POST['pemail']."' where customers_id = '".$preorder['customers_id']."' and site_id = '".SITE_ID."'");  
         tep_db_query("update `".TABLE_PREORDERS."` set `customers_email_address` = '".$_POST['pemail']."' where orders_id = '".$preorder['orders_id']."' and site_id = '".SITE_ID."'"); 
         
+        $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$_POST['pemail'],$preorder['customers_name']); 
         tep_mail($preorder['customers_name'], $_POST['pemail'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
     }
     }

@@ -683,13 +683,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $ensure_date_arr = explode(' ', $select_products_res['ensure_deadline']);
       $email = $_POST['comments']; 
       $email = str_replace(array(
-        '${NAME}',
-        '${MAIL}',
-        '${PREORDER_D}',
-        '${PREORDER_N}',
-        '${PAY}',
-        '${ORDER_M}',
-        '${ORDER_S}',
+        '${USER_NAME}',
+        '${USER_MAIL}',
+        '${PREORDER_DATE}',
+        '${PREORDER_NUMBER}',
+        '${PAYMENT}',
+        '${ORDER_TOTAL}',
+        '${ORDER_STATUS}',
         '${SITE_NAME}',
         '${SITE_URL}',
         '${SUPPORT_EMAIL}',
@@ -698,7 +698,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         '${PRODUCTS_QUANTITY}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
-        '${SUB_TOTAL}'
+        '${SUB_TOTAL}',
+        '${ORDER_COMMENT}'
       ),array(
         $select_products_res['customers_name'],
         $select_products_res['customers_email_address'],
@@ -715,7 +716,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $num_product.PREORDER_PRODUCT_UNIT_TEXT.$num_product_end,
         $num_product_res['products_name'],
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']).($totals_email_i != 0 ? "\n".$totals_email_str : ''),
-        $currencies->format($newtotal)
+        $currencies->format($newtotal),
+        preorders_a($order->info['orders_id'])
       ),$email);
       
       if ($customer_guest['is_send_mail'] != '1') {
@@ -741,13 +743,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $pre_t_otm = (int)$select_t_total_res['value'].TEXT_MONEY_SYMBOL;
           
           $preorder_email_title = str_replace(array(
-            '${NAME}',
-            '${MAIL}',
-            '${PREORDER_D}',
-            '${PREORDER_N}',
-            '${PAY}',
-            '${ORDER_M}',
-            '${ORDER_S}',
+            '${USER_NAME}',
+            '${USER_MAIL}',
+            '${PREORDER_DATE}',
+            '${PREORDER_NUMBER}',
+            '${PAYMENT}',
+            '${ORDER_TOTAL}',
+            '${ORDER_STATUS}',
             '${SITE_NAME}',
             '${SITE_URL}',
             '${SUPPORT_EMAIL}',
@@ -782,6 +784,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$check_status['language_id']."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
+        $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
           
@@ -2820,7 +2823,7 @@ if (tep_db_num_rows($orders_history_query)) {
     <?php echo ENTRY_EMAIL_TITLE.tep_draw_input_field('etitle', isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['title'],' style="width:230px;" id="mail_title"');?> 
     <br> 
     <br> 
-    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['contents']);?></textarea> 
+    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : str_replace('${ORDER_COMMENT}', preorders_a($order->info['orders_id']), $mail_sql['contents']);?></textarea> 
   </td>
   </tr>
 </table>

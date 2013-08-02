@@ -74,7 +74,7 @@
           $mail_option_str .= $ar_value['title'].str_repeat('　', intval($max_op_len - mb_strlen($ar_value['title'], 'utf-8'))).'：'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", stripslashes($ar_value['value']))."\n"; 
         }
       }
-      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
+      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
       
       $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
       $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
@@ -93,7 +93,8 @@
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
       $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, $preorders_mail_array['title']);
-      
+
+      $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$preorder_res['customers_email_address'],$preorder_res['customers_name']); 
       if ($exists_customer['is_send_mail'] != '1') {
         tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'], $pre_email_text, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
         tep_mail('', SENTMAIL_ADDRESS, $pre_email_text, $preorder_email_text, $preorder_res['customers_name'], $preorder_res['customers_email_address']); 

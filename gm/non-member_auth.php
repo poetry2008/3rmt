@@ -44,7 +44,7 @@
         $gu_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
         
         $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK .  "\n\n"; 
-        $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+        $old_str_array = array('${URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(
             HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom,
             $mail_name, 
@@ -56,6 +56,7 @@
         $email_text .= str_replace($old_str_array, $new_str_array, $guest_mail_array['contents']);  
         $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, $guest_mail_array['title']);
         
+        $email_text = tep_replace_mail_templates($email_text,$_POST['cemail'],$mail_name); 
         if ($customers_res['is_send_mail'] != '1') {
           tep_mail($mail_name, $_POST['cemail'], $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         } 

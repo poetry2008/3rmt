@@ -979,13 +979,13 @@ if($address_error == false){
         $os_result = tep_db_fetch_array($os_query);
         
         $title = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${ORDER_S}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
@@ -1005,13 +1005,13 @@ if($address_error == false){
                 ),$title);
 
         $comments = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${ORDER_S}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
@@ -1170,6 +1170,7 @@ if($address_error == false){
             tep_db_free_result($search_products_name_query);
             $search_products_name_list[] = $search_products_name_array['products_name'];
           }
+          $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']); 
           if ($customer_guest['is_send_mail'] != '1')
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
@@ -4236,9 +4237,9 @@ if (($action == 'edit') && ($order_exists == true)) {
         if($CommentsWithStatus) {
 
 
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
         } else {
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
         }
   ?>
     </td>

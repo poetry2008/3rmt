@@ -6539,7 +6539,6 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
 
   //读取mail templates的相应数据
   $mail_id = $_POST['mail_id'];
-  $site_id = $_POST['site_id'];
   $keyword = $_POST['search'];
   $param_str = $_POST['param_str'];
   $url = $_POST['url'];
@@ -6559,13 +6558,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   $field_str = '*';
   if(isset($_POST['order_sort']) && $_POST['order_sort'] != '' && isset($_POST['order_type']) && $_POST['order_type'] != ''){
     switch($_POST['order_sort']){
-
-    case 'site_id':
-      $order_sort = 's.romaji';
-      $order_type = $_POST['order_type'];
-      $site_romaji_str = ' mt left join (select id,romaji from '. TABLE_SITES .' union select 0,\'all\') s on mt.site_id=s.id ';
-      $field_str = 'mt.id id,mt.flag flag,mt.site_id site_id,mt.templates_title templates_title,mt.use_description use_description,mt.title title,mt.contents contents,mt.contents_description contents_description,mt.use_scope use_scope,mt.user_added user_added,mt.date_added date_added,mt.user_update user_update,mt.date_update date_update';
-      break;
+ 
     case 'name':
       $order_sort = 'templates_title';
       $order_type = $_POST['order_type'];
@@ -6595,45 +6588,12 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
     $order_type = 'asc'; 
   }
 
-  $site_id_str = '';
-  if($site_id != ''){
-
-    $site_id_array = explode('-',$site_id);
-    $site_id_str = implode(',',$site_id_array);
-    $site_id_str = ' where site_id in ('.$site_id_str.')';
-  }else{
-    
-    $show_site_query = tep_db_query("select site from ". TABLE_SHOW_SITE ." where user='".$ocertify->auth_user."' and page='".FILENAME_MAIL_TEMPLATES."'"); 
-    $show_site_array = tep_db_fetch_array($show_site_query);
-    tep_db_free_result($show_site_query);
-    $site_id_array = explode('-',$show_site_array['site']);
-    $site_id_str = implode(',',$site_id_array);
-    foreach($site_id_array as $site_key=>$site_value){
-
-      if(trim($site_value) == ''){
-
-        unset($site_id_array[$site_key]); 
-      }
-    }
-    if(!empty($site_id_array)){
-      $site_id_str = ' where site_id in ('.$site_id_str.')';
-    }else{
-      $site_id_str = ''; 
-    }
-  } 
-
   if($keyword != ''){
 
-    if($site_id_str != ''){
-
-      $keyword_str = " and (templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%')";
-    }else{
-
-      $keyword_str = " where templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%'";
-    }
+    $keyword_str = " where templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%'";
   }
   $mail_id_num_array = array();
-  $mail_id_query = tep_db_query("select ".$field_str." from ". TABLE_MAIL_TEMPLATES . $site_romaji_str . $site_id_str . $keyword_str ." order by ".$order_sort." ".$order_type); 
+  $mail_id_query = tep_db_query("select ".$field_str." from ". TABLE_MAIL_TEMPLATES . $site_romaji_str . $keyword_str ." order by ".$order_sort." ".$order_type); 
   while($mail_id_array = tep_db_fetch_array($mail_id_query)){
 
     $mail_id_num_array[] = $mail_id_array['id'];
@@ -6760,16 +6720,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   //底部内容
   $buttons = array();
 
-   if($mail_array['site_id'] == 0){
-     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
-   }else{
-     if($mail_array['valid'] == 0){
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MAIL_VALID, 'id="button_valid" onclick="valid_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>';
-     }else{
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>';  
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_MAIL_INVALID, 'id="button_valid" onclick="valid_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
-     }
-   }
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="edit_mail_check(\''.$ocertify->npermission.'\');"'.($site_permission_flag == false  ? 'disabled="disabled"' : '')).'</a>'; 
  
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 

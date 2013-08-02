@@ -10783,15 +10783,9 @@ function tep_get_beforday_orders($limit_time_info){
   -----------------------------*/
 function tep_get_mail_templates($mail_flag,$site_id){
 
-  $mail_query = tep_db_query("select title,contents,valid from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='".$site_id."'");
+  $mail_query = tep_db_query("select title,contents,valid from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='0'");
   $mail_array = tep_db_fetch_array($mail_query);
   tep_db_free_result($mail_query);
-
-  if($mail_array['valid'] == 0){
-    $mail_query = tep_db_query("select title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='".$mail_flag."' and site_id='0'");
-    $mail_array = tep_db_fetch_array($mail_query);
-    tep_db_free_result($mail_query); 
-  }
 
   return array('title'=>$mail_array['title'],'contents'=>$mail_array['contents']);
 }
@@ -10869,4 +10863,58 @@ function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=tr
   }else{
     return false;
   }
+}
+/*----------------------------------
+  功能: 替换邮件模板的通用参数 
+  参数: $mail_templates (string)类型  邮件模板
+  参数: $users_email (string)类型  客户电子邮件
+  参数: $users_name (string)类型  客户昵称 
+  返回: 替换后的邮件模板
+----------------------------------*/
+function tep_replace_mail_templates($mail_templates,$users_email='',$users_name='',$site_id='0'){ 
+
+  $ocertify = new user_certify(session_id()); 
+  $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+  $admin_user_array = tep_db_fetch_array($admin_user_query);
+  tep_db_free_result($admin_user_query);
+  $admin_user_info = array($admin_user_array['email'],$admin_user_array['name']); 
+            
+  $mode_array = array(
+                '${SITE_NAME}', 
+                '${SITE_URL}', 
+                '${COMPANY_NAME}', 
+                '${COMPANY_ADDRESS}', 
+                '${COMPANY_TEL}', 
+                '${SUPPORT_EMAIL}', 
+                '${STAFF_MAIL}', 
+                '${STAFF_NAME}', 
+                '${SIGNATURE}', 
+                '${USER_NAME}', 
+                '${USER_MAIL}', 
+                '${USER_INFO}', 
+                '${YEAR}', 
+                '${MONTH}', 
+                '${DAY}', 
+                '${HTTPS_SERVER}'
+                ); 
+  $replace_array = array(
+                get_configuration_by_site_id('STORE_NAME', $site_id),
+                '',
+                COMPANY_NAME,
+                STORE_NAME_ADDRESS,
+                STORE_NAME_TEL,
+                SUPPORT_EMAIL_ADDRESS,
+                $admin_user_info[0],
+                $admin_user_info[1],
+                C_EMAIL_FOOTER,
+                $users_name,
+                $users_email,
+                '',
+                date('Y'),
+                date('m'),
+                date('d'),
+                ''
+              );
+  $mail_templates = str_replace($mode_array,$replace_array,$mail_templates);
+  return $mail_templates;
 }

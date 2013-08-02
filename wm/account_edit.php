@@ -173,7 +173,7 @@ case 'per':
     
     tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".tep_db_input($customer_id)."'"); 
     
-    $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+    $old_str_array = array('${MAIL_CONFIRM_URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
     $new_str_array = array(
         HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom,
         $mail_name, 
@@ -184,6 +184,7 @@ case 'per':
     $edit_users_mail_array = tep_get_mail_templates('ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT',SITE_ID); 
     $email_text = str_replace($old_str_array, $new_str_array, $edit_users_mail_array['contents']);  
     $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, $edit_users_mail_array['title']); 
+    $email_text = tep_replace_mail_templates($email_text,$email_address,$mail_name); 
     tep_mail($mail_name, $email_address, $ed_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     
     $acu_cud = $customer_id;
@@ -431,7 +432,7 @@ if($_POST['num_rows'] > 0){
     
     tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".tep_db_input($customer_id)."'"); 
     
-    $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+    $old_str_array = array('${MAIL_CONFIRM_URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
     $new_str_array = array(
         HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom,
         $mail_name, 
@@ -442,6 +443,7 @@ if($_POST['num_rows'] > 0){
     $edit_users_mail_array = tep_get_mail_templates('ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT',SITE_ID); 
     $email_text = str_replace($old_str_array, $new_str_array, $edit_users_mail_array['contents']);  
     $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, $edit_users_mail_array['title']); 
+    $email_text = tep_replace_mail_templates($email_text,$email_address,$mail_name);
     tep_mail($mail_name, $email_address, $ed_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     
     $acu_cud = $customer_id;

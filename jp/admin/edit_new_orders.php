@@ -300,14 +300,14 @@ if($orders_exit_flag == true){
         $otm = (int)$ot_result['value'] . EDIT_ORDERS_PRICE_UNIT;
 
         $title = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
               '${TRADING}',
-              '${ORDER_S}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
@@ -328,22 +328,24 @@ if($orders_exit_flag == true){
                 ),$title);
 
         $comments = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
               '${TRADING}',
-              '${ORDER_S}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
-              '${PAY_DATE}'
+              '${PAY_DATE}',
+              '${SHIPPING_TIME}',
+              '${MAIL_COMMENT}'
               ),array(
                 $check_status['customers_name'],
                 $check_status['customers_email_address'],
-                tep_date_long($check_status['date_purchased']),
+                tep_date_long(date('Y-m-d H:i:s')),
                 $oID,
                 $check_status['payment_method'],
                 $otm,
@@ -352,9 +354,12 @@ if($orders_exit_flag == true){
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                orders_a($order->info['orders_id'])
               ),$comments);
         $comments = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $comments);
+        $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
         if ($customer_guest['is_send_mail'] != '1') {
 
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
@@ -1127,10 +1132,10 @@ if($address_error == false){
           {
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(SENDMAIL_TEXT_DATE_MONDAY, SENDMAIL_TEXT_DATE_TUESDAY, SENDMAIL_TEXT_DATE_WEDNESDAY, SENDMAIL_TEXT_DATE_THURSDAY, SENDMAIL_TEXT_DATE_FRIDAY, SENDMAIL_TEXT_DATE_STATURDAY, SENDMAIL_TEXT_DATE_SUNDAY);
-            $mailoption['ORDER_ID']         = $oID;                         
+            $mailoption['ORDER_NUMBER']         = $oID;                         
             $mailoption['ORDER_DATE']       = tep_date_long(time())  ;       
             $mailoption['USER_NAME']        =  $order->customer['name'] ;
-            $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address']; 
+            $mailoption['USER_MAIL'] = $order->customer['email_address']; 
             //自定义费用
             if($totals_email_str != ''){
               $mailoption['CUSTOMIZED_FEE']      = $totals_email_str;
@@ -1141,13 +1146,13 @@ if($address_error == false){
             @$payment_class = $$payment; 
 
             $mailoption['TORIHIKIHOUHOU']   =  $order->tori['houhou'];      
-            $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  
+            $mailoption['PAYMENT']    = $order->info['payment_method'] ;  
             $trade_time = str_replace($oarr, $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00'))); 
             $trade_time_1 = date('H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN,strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00'));
-            $mailoption['ORDER_TTIME']      = $trade_time . SENDMAIL_TEXT_TIME_LINK . $trade_time_1 .SENDMAIL_TEXT_TWENTY_FOUR_HOUR;
+            $mailoption['SHIPPING_TIME']      = $trade_time . SENDMAIL_TEXT_TIME_LINK . $trade_time_1 .SENDMAIL_TEXT_TWENTY_FOUR_HOUR;
             $mailoption['ORDER_COMMENT']    = $_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;
-            $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
+            $mailoption['SHIPPING_METHOD']    = $insert_torihiki_date;
             $mailoption['SITE_NAME']        = get_configuration_by_site_id('STORE_NAME',$order->info['site_id']);
             $mailoption['SITE_MAIL']        = get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']);
             $mailoption['SITE_URL']         = get_url_by_site_id($order->info['site_id']);
@@ -1221,13 +1226,15 @@ if($address_error == false){
                 $email_address_str .= $ad_name_array['name'].$temp_str.'：'.$ad_value."\n";
               }
               $email_address_str .= '------------------------------------------'."\n";
-              $email = str_replace('${ADDRESS_INFO}',$email_address_str,$email);
+              $email = str_replace('${USER_ADDRESS}',$email_address_str,$email);
             }else{
-              $email = str_replace("\n".'${ADDRESS_INFO}','',$email); 
+              $email = str_replace("\n".'${USER_ADDRESS}','',$email); 
+              $email = str_replace('${USER_ADDRESS}','',$email);
             }
             if($totals_email_str == ''){
 
               $email = str_replace("\n".'${CUSTOMIZED_FEE}','',$email);
+              $email = str_replace('${CUSTOMIZED_FEE}','',$email);
             }
   // new send mail 
             $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email); 
@@ -1238,6 +1245,7 @@ if($address_error == false){
               tep_db_free_result($search_products_name_query);
               $search_products_name_list[] = $search_products_name_array['products_name'];
             }
+            $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           }
@@ -1246,6 +1254,7 @@ if($address_error == false){
           // 支付方法是信用卡的话，发送决算URL
           $email_credit_info =  $payment_modules->admin_process_pay_email( payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE), $order,$total_price_mail,$order->info['site_id']);
           $email_credit = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email_credit_info[0]);
+          $email_credit = tep_replace_mail_templates($email_credit,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
           if($email_credit){
             if ($customer_guest['is_send_mail'] != '1'){
                 tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME',$order->info['site_id']), $email_credit_info[1]) , $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
@@ -1370,22 +1379,23 @@ if($address_error == false){
                         '${USER_NAME}',
                         '${YEAR}',
                         '${SITE_NAME}',
-                        '${ORDER_ID}',
+                        '${ORDER_NUMBER}',
                         '${ORDER_DATE}',
-                        '${USER_MAILACCOUNT}',
-                        '${BUYING_INFO}',
+                        '${USER_MAIL}',
+                        '${BANK_FOR_TRANSFER}',
                         '${POINT}',
                         '${SHIPPING_FEE}',
                         '${TOTAL}',
-                        '${MAILFEE}',
+                        '${COMMISSION}',
                         '${ORDER_TOTAL}',
                         '${ORDER_PRODUCTS}',
-                        '${ORDER_TTIME}',
+                        '${SHIPPING_TIME}',
                         '${ORDER_COMMENT}',
                         '${ADD_INFO}',
-                        '${CUSTOMER_INFO}',
+                        '${USER_INFO}',
                         '${CREDIT_RESEARCH}',
                         '${ORDER_HISTORY}',
+                        '${SHIPPING_METHOD}',
                       );
   //storm name
   $orders_site_name_query = tep_db_query("select name,url from ". TABLE_SITES ." where id='". $site_id_flag ."'");
@@ -1498,11 +1508,12 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                           str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format(abs($newtotal))),
                           $products_ordered_mail,
                           tep_date_long($_POST['date_orders']) . $_POST['start_hour'] . SENDMAIL_TEXT_HOUR . $_POST['start_min'].$_POST['start_min_1'] . SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TIME_LINK. $_POST     ['end_hour'] .SENDMAIL_TEXT_HOUR. $_POST['end_min'].$_POST['end_min_1'] .SENDMAIL_TEXT_MIN.SENDMAIL_TEXT_TWENTY_FOUR_HOUR, 
-                          strpos($payment_name_string,'${BUYING_INFO}') == true ? $comments_text : $comment_str,
+                          strpos($payment_name_string,'${BANK_FOR_TRANSFER}') == true ? $comments_text : $comment_str,
                           '',
                           $customer_printing_order,
                           $credit_printing_order,
                           $email_orders_history,
+                          ''
   );
   $payment_name_string = str_replace($payment_mode,$payment_replace,$payment_name_string);  
   $email_printing_order = $payment_name_string; 
@@ -1512,15 +1523,18 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email_printing_order);
   }else{
     $email_printing_order = str_replace("\n".'${CUSTOMIZED_FEE}','', $email_printing_order); 
+    $email_printing_order = str_replace('${CUSTOMIZED_FEE}','', $email_printing_order);
   }
   //住所
   if($email_address_str != ''){
-    $email_printing_order = str_replace('${ADDRESS_INFO}',str_replace('▼','',$email_address_str), $email_printing_order);
+    $email_printing_order = str_replace('${USER_ADDRESS}',str_replace('▼','',$email_address_str), $email_printing_order);
   }else{
-    $email_printing_order = str_replace("\n".'${ADDRESS_INFO}','', $email_printing_order); 
+    $email_printing_order = str_replace("\n".'${USER_ADDRESS}','', $email_printing_order); 
+    $email_printing_order = str_replace('${USER_ADDRESS}','', $email_printing_order);
   } 
   $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order); 
   # ------------------------------------------
+  $email_printing_order = tep_replace_mail_templates($email_printing_order,$check_status['customers_email_address'],$check_status['customers_name'],$site_id_flag);  
   tep_mail('',
       get_configuration_by_site_id('PRINT_EMAIL_ADDRESS',$site_id_flag),
       $email_printing_order_title,
@@ -4873,9 +4887,9 @@ if($orders_exit_flag == true){
                 if($CommentsWithStatus) {
 
 
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace(' ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
                 } else {
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
                 } 
           ?>
             </td>

@@ -35,7 +35,7 @@
           
           $ac_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
           
-          $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+          $old_str_array = array('${MAIL_CONFIRM_URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
           $new_str_array = array(
               HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, 
               $mail_name, 
@@ -45,6 +45,7 @@
           //会员编辑邮件认证
           $edit_users_mail_array = tep_get_mail_templates('ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT',SITE_ID); 
           $email_text = str_replace($old_str_array, $new_str_array, $edit_users_mail_array['contents']);  
+          $email_text = tep_replace_mail_templates($email_text,$_POST['cemail'],$mail_name);
           
           $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, $edit_users_mail_array['title']); 
           tep_mail($mail_name, $_POST['cemail'], $ed_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);

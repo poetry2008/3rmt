@@ -112,7 +112,7 @@ function show_mail_info(ele, mail_id, i_param_str, url)
   origin_offset_symbol = 1;
   $.ajax({
     url: 'ajax.php?action=edit_mail',      
-    data: 'mail_id='+mail_id+'&param_str='+i_param_str+'&url='+url+'<?php echo isset($_GET['search']) ? '&search='.$_GET['search'] : '';?>'+'<?php echo isset($_GET['site_id']) ? '&site_id='.$_GET['site_id'] : '';?>'+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
+    data: 'mail_id='+mail_id+'&param_str='+i_param_str+'&url='+url+'<?php echo isset($_GET['search']) ? '&search='.$_GET['search'] : '';?>'+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -150,7 +150,7 @@ function show_link_mail_info(mail_id, param_str)
   param_str = decodeURIComponent(param_str);
   $.ajax({
     url: 'ajax.php?action=edit_mail',      
-    data: 'mail_id='+mail_id+'&param_str='+param_str+'<?php echo isset($_GET['search']) ? '&search='.$_GET['search'] : '';?>'+'<?php echo isset($_GET['site_id']) ? '&site_id='.$_GET['site_id'] : '';?>'+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
+    data: 'mail_id='+mail_id+'&param_str='+param_str+'<?php echo isset($_GET['search']) ? '&search='.$_GET['search'] : '';?>'+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -317,7 +317,7 @@ require("includes/note_js.php");
           <tr><?php echo tep_draw_form('search', FILENAME_MAIL_TEMPLATES,'', 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
-          <td class="smallText" align="right"><?php echo (isset($_GET['site_id'])?'<input type="hidden" name="site_id" value="'.$_GET['site_id'].'">':'').HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?>
+          <td class="smallText" align="right"><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?>
           <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
           <br><?php echo TEXT_MAIL_SEARCH_READ_TITLE;?> 
           </td>
@@ -327,15 +327,17 @@ require("includes/note_js.php");
       <tr>
         <td>
 <?php 
-  // 获取网站的 romaji
+// 获取网站的 romaji
   $site_id_name_array = array(0=>'all');
+  $site_list_array = array();
   $site_name_query = tep_db_query("select id,romaji from ".TABLE_SITES);
   while($site_name_array = tep_db_fetch_array($site_name_query)){
 
     $site_id_name_array[$site_name_array['id']] = $site_name_array['romaji'];
+    $site_list_array[] = $site_name_array['id'];
   }
   tep_db_free_result($site_name_query);
-  echo tep_show_site_filter(FILENAME_MAIL_TEMPLATES,false);
+  echo tep_show_site_filter(FILENAME_MAIL_TEMPLATES,false,$site_list_array);
 ?>
 <div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:90%;min-width:550px;margin-left:0;display:none;"></div>
           <table border="0" width="100%" cellspacing="0" cellpadding="0" id="mail_list_box">
@@ -350,7 +352,7 @@ require("includes/note_js.php");
                   
   //mail templates列表  
   $mail_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_mail(\'mail_list_id[]\');" name="all_check" disabled="disabled">');
-  $mail_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_MAIL_TEMPLATES,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=site_id&order_type='.($_GET['order_sort'] == 'site_id' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MAIL_SITE_ID.($_GET['order_sort'] == 'site_id' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'site_id' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $mail_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => TEXT_MAIL_SITE_ID);
   $mail_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_MAIL_TEMPLATES,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=name&order_type='.($_GET['order_sort'] == 'name' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MAIL_NAME.($_GET['order_sort'] == 'name' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'name' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $mail_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_MAIL_TEMPLATES,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=title&order_type='.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MAIL_TITLE.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $mail_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_MAIL_TEMPLATES,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=contents&order_type='.($_GET['order_sort'] == 'contents' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MAIL_CONTENTS.($_GET['order_sort'] == 'contents' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'contents' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'); 
@@ -364,13 +366,7 @@ require("includes/note_js.php");
   //排序处理
   if(isset($_GET['order_sort']) && $_GET['order_sort'] != '' && isset($_GET['order_type']) && $_GET['order_type'] != ''){
     switch($_GET['order_sort']){
-
-    case 'site_id':
-      $order_sort = 's.romaji';
-      $order_type = $_GET['order_type'];
-      $site_romaji_str = ' mt left join (select id,romaji from '. TABLE_SITES .' union select 0,\'all\') s on mt.site_id=s.id ';
-      $field_str = 'mt.id id,mt.flag flag,mt.site_id site_id,mt.templates_title templates_title,mt.use_description use_description,mt.title title,mt.contents contents,mt.contents_description contents_description,mt.use_scope use_scope,mt.user_added user_added,mt.date_added date_added,mt.user_update user_update,mt.date_update date_update';
-      break;
+ 
     case 'name':
       $order_sort = 'templates_title';
       $order_type = $_GET['order_type'];
@@ -400,50 +396,16 @@ require("includes/note_js.php");
     $order_sort = 'id';
     $order_type = 'asc'; 
   }
-
-  $site_id_str = '';
-  if(isset($_GET['site_id']) && $_GET['site_id'] != ''){
-
-    $site_id_array = explode('-',$_GET['site_id']);
-    $site_id_str = implode(',',$site_id_array);
-    $site_id_str = ' where site_id in ('.$site_id_str.')';
-  }else{
-    
-    $show_site_query = tep_db_query("select site from ". TABLE_SHOW_SITE ." where user='".$ocertify->auth_user."' and page='".FILENAME_MAIL_TEMPLATES."'"); 
-    $show_site_array = tep_db_fetch_array($show_site_query);
-    tep_db_free_result($show_site_query);
-    $site_id_array = explode('-',$show_site_array['site']);
-    $site_id_str = implode(',',$site_id_array);
-    foreach($site_id_array as $site_key=>$site_value){
-
-      if(trim($site_value) == ''){
-
-        unset($site_id_array[$site_key]); 
-      }
-    }
-    if(!empty($site_id_array)){
-      $site_id_str = ' where site_id in ('.$site_id_str.')';
-    }else{
-      $site_id_str = ''; 
-    }
-  } 
-
+ 
   $keyword = '';
+  $keyword_str = '';
   if(isset($_GET['search']) && trim($_GET['search']) != ''){
 
-    $keyword = $_GET['search'];
-    if(isset($_GET['site_id']) && $_GET['site_id'] != ''){
-      $keyword_str = " and (templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%')";
-    }else{
-      if(count($site_id_array) < 1){
-        $keyword_str = " where templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%'"; 
-      }else{
-
-        $keyword_str = " and (templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%')"; 
-      }
-    }
+    $keyword = $_GET['search']; 
+    $keyword_str = " where templates_title like '%".$keyword."%' or title like '%".$keyword."%' or contents like '%".$keyword."%'"; 
+      
   }
-  $mail_query_raw = "select ".$field_str." from " . TABLE_MAIL_TEMPLATES . $site_romaji_str . $site_id_str . $keyword_str ." order by ".$order_sort." ".$order_type;
+  $mail_query_raw = "select ".$field_str." from " . TABLE_MAIL_TEMPLATES . $site_romaji_str . $keyword_str ." order by ".$order_sort." ".$order_type;
   $mail_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $mail_query_raw, $mail_query_numrows);
   $mail_query = tep_db_query($mail_query_raw);
   if(tep_db_num_rows($mail_query) == 0){

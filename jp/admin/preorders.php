@@ -151,13 +151,13 @@
         }
         $ensure_date_arr = explode(' ', $check_status['ensure_deadline']);
         $title = str_replace(array(
-          '${NAME}',
-          '${MAIL}',
-          '${PREORDER_D}',
-          '${PREORDER_N}',
-          '${PAY}',
-          '${ORDER_M}',
-          '${ORDER_S}',
+          '${USER_NAME}',
+          '${USER_MAIL}',
+          '${PREORDER_DATE}',
+          '${PREORDER_NUMBER}',
+          '${PAYMENT}',
+          '${ORDER_TOTAL}',
+          '${ORDER_STATUS}',
           '${SITE_NAME}',
           '${SITE_URL}',
           '${PAY_DATE}',
@@ -185,13 +185,13 @@
           ),$title
         );
         $comments = str_replace(array(
-          '${NAME}',
-          '${MAIL}',
-          '${PREORDER_D}',
-          '${PREORDER_N}',
-          '${PAY}',
-          '${ORDER_M}',
-          '${ORDER_S}',
+          '${USER_NAME}',
+          '${USER_MAIL}',
+          '${PREORDER_DATE}',
+          '${PREORDER_NUMBER}',
+          '${PAYMENT}',
+          '${ORDER_TOTAL}',
+          '${ORDER_STATUS}',
           '${SITE_NAME}',
           '${SITE_URL}',
           '${SUPPORT_EMAIL}',
@@ -235,6 +235,7 @@
           $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
           $search_products_name_array = tep_db_fetch_array($search_products_name_query);
           tep_db_free_result($search_products_name_query);
+          $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
           if ($status == 32) {
             $mail_preorder_pro_raw = tep_db_query("select ensure_deadline from ".TABLE_PREORDERS. " where orders_id = '".$oID."'"); 
             $mail_preorder_pro = tep_db_fetch_array($mail_preorder_pro_raw); 
@@ -398,13 +399,13 @@
       }
       $ensure_date_arr = explode(' ', $check_status['ensure_deadline']);
       $title = str_replace(array(
-        '${NAME}',
-        '${MAIL}',
-        '${PREORDER_D}',
-        '${PREORDER_N}',
-        '${PAY}',
-        '${ORDER_M}',
-        '${ORDER_S}',
+        '${USER_NAME}',
+        '${USER_MAIL}',
+        '${PREORDER_DATE}',
+        '${PREORDER_NUMBER}',
+        '${PAYMENT}',
+        '${ORDER_TOTAL}',
+        '${ORDER_STATUS}',
         '${SITE_NAME}',
         '${SITE_URL}',
         '${SUPPORT_EMAIL}',
@@ -434,13 +435,13 @@
       ),$title);
 
       $comments = str_replace(array(
-        '${NAME}',
-        '${MAIL}',
-        '${PREORDER_D}',
-        '${PREORDER_N}',
-        '${PAY}',
-        '${ORDER_M}',
-        '${ORDER_S}',
+        '${USER_NAME}',
+        '${USER_MAIL}',
+        '${PREORDER_DATE}',
+        '${PREORDER_NUMBER}',
+        '${PAYMENT}',
+        '${ORDER_TOTAL}',
+        '${ORDER_STATUS}',
         '${SITE_NAME}',
         '${SITE_URL}',
         '${SUPPORT_EMAIL}',
@@ -483,6 +484,7 @@
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
+        $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       }
@@ -1819,7 +1821,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',preorders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
+          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_COMMENT}',preorders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
         </td>
       </tr>
       <tr>
@@ -3415,7 +3417,7 @@ function submit_confirm()
   var idx = document.sele_act.elements['status'].selectedIndex;
   var CI  = document.sele_act.elements['status'].options[idx].value;
   chk = getCheckboxValue('chk[]')
-  if((chk.length > 1 || chk.length < 1) && window.status_text[CI].indexOf('${ORDER_A}') != -1){
+  if((chk.length > 1 || chk.length < 1) && window.status_text[CI].indexOf('${ORDER_COMMENT}') != -1){
     if(chk.length > 1){
       alert('<?php echo TEXT_SELECT_MORE;?>');
     } else {

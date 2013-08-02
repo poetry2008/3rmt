@@ -450,10 +450,10 @@ class buying extends basePayment  implements paymentInterface  {
   {
     $bank_info_array = explode('<<<|||', $pInfo['bank_info']); 
     $mailoption['BANK_NAME'] = $bank_info_array[0]; 
-    $mailoption['BANK_SHITEN'] = $bank_info_array[1]; 
-    $mailoption['BANK_KAMOKU'] = $bank_info_array[2]; 
-    $mailoption['BANK_KOUZA_NUM'] = $bank_info_array[3]; 
-    $mailoption['BANK_KOUZA_NAME'] = $bank_info_array[4]; 
+    $mailoption['BRANCH_NAME'] = $bank_info_array[1]; 
+    $mailoption['TYPE_OF_ACCOUNT'] = $bank_info_array[2]; 
+    $mailoption['ACCOUNT_NUMBER'] = $bank_info_array[3]; 
+    $mailoption['ACCOUNT_HOLDERS_NAME'] = $bank_info_array[4]; 
   }
 /*--------------------------
  功能：处理邮件选项
@@ -464,10 +464,10 @@ class buying extends basePayment  implements paymentInterface  {
   function deal_mailoption(&$mailoption, $session_paymentinfo_name)
   {
     $mailoption['BANK_NAME'] = $_SESSION[$session_paymentinfo_name]['bank_name']; 
-    $mailoption['BANK_SHITEN'] = $_SESSION[$session_paymentinfo_name]['bank_shiten']; 
-    $mailoption['BANK_KAMOKU'] = $_SESSION[$session_paymentinfo_name]['bank_kamoku']; 
-    $mailoption['BANK_KOUZA_NUM'] = $_SESSION[$session_paymentinfo_name]['bank_kouza_num']; 
-    $mailoption['BANK_KOUZA_NAME'] = $_SESSION[$session_paymentinfo_name]['bank_kouza_name']; 
+    $mailoption['BRANCH_NAME'] = $_SESSION[$session_paymentinfo_name]['bank_shiten']; 
+    $mailoption['TYPE_OF_ACCOUNT'] = $_SESSION[$session_paymentinfo_name]['bank_kamoku']; 
+    $mailoption['ACCOUNT_NUMBER'] = $_SESSION[$session_paymentinfo_name]['bank_kouza_num']; 
+    $mailoption['ACCOUNT_HOLDERS_NAME'] = $_SESSION[$session_paymentinfo_name]['bank_kouza_name']; 
   }
 /*-------------------------
  功能：处理预约信息 
@@ -488,10 +488,10 @@ class buying extends basePayment  implements paymentInterface  {
   {
     if(isset($_SESSION['payment_bank_info'][$oID])&& !empty($_SESSION['payment_bank_info'][$oID])){
       $mailoption['BANK_NAME'] = $_SESSION['payment_bank_info'][$oID]['bank_name']; 
-      $mailoption['BANK_SHITEN']      = $_SESSION['payment_bank_info'][$oID]['bank_shiten'] ;  
-      $mailoption['BANK_KAMOKU']      = $_SESSION['payment_bank_info'][$oID]['bank_kamoku'];
-      $mailoption['BANK_KOUZA_NUM'] = $_SESSION['payment_bank_info'][$oID]['bank_kouza_num'] ;
-      $mailoption['BANK_KOUZA_NAME'] = $_SESSION['payment_bank_info'][$oID]['bank_kouza_name'];
+      $mailoption['BRANCH_NAME']      = $_SESSION['payment_bank_info'][$oID]['bank_shiten'] ;  
+      $mailoption['TYPE_OF_ACCOUNT']      = $_SESSION['payment_bank_info'][$oID]['bank_kamoku'];
+      $mailoption['ACCOUNT_NUMBER'] = $_SESSION['payment_bank_info'][$oID]['bank_kouza_num'] ;
+      $mailoption['ACCOUNT_HOLDERS_NAME'] = $_SESSION['payment_bank_info'][$oID]['bank_kouza_name'];
       $mailoption['ADD_INFO'] = $_SESSION['payment_bank_info'][$oID]['add_info'];
     }
   }
@@ -602,10 +602,10 @@ EOT;
   function admin_get_payment_buying(&$mailoption,$comment_arr){
 
     $mailoption['BANK_NAME']        = $comment_arr['payment_bank_info']['bank_name'];      
-    $mailoption['BANK_SHITEN']      = $comment_arr['payment_bank_info']['bank_shiten'] ;   
-    $mailoption['BANK_KAMOKU']      = $comment_arr['payment_bank_info']['bank_kamoku'];    
-    $mailoption['BANK_KOUZA_NUM']   = $comment_arr['payment_bank_info']['bank_kouza_num'] ;
-    $mailoption['BANK_KOUZA_NAME']  = $comment_arr['payment_bank_info']['bank_kouza_name'];
+    $mailoption['BRANCH_NAME']      = $comment_arr['payment_bank_info']['bank_shiten'] ;   
+    $mailoption['TYPE_OF_ACCOUNT']      = $comment_arr['payment_bank_info']['bank_kamoku'];    
+    $mailoption['ACCOUNT_NUMBER']   = $comment_arr['payment_bank_info']['bank_kouza_num'] ;
+    $mailoption['ACCOUNT_HOLDERS_NAME']  = $comment_arr['payment_bank_info']['bank_kouza_name'];
     $mailoption['ADD_INFO']         = $comment_arr['add_info'];
   }
 /*-------------------------------

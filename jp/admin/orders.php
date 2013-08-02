@@ -608,13 +608,13 @@ switch ($_GET['action']) {
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
           $title = str_replace(array(
-                '${NAME}',
-                '${MAIL}',
-                '${ORDER_D}',
-                '${ORDER_N}',
-                '${PAY}',
-                '${ORDER_M}',
-                '${ORDER_S}',
+                '${USER_NAME}',
+                '${USER_MAIL}',
+                '${ORDER_DATE}',
+                '${ORDER_NUMBER}',
+                '${PAYMENT}',
+                '${ORDER_TOTAL}',
+                '${ORDER_STATUS}',
                 '${SITE_NAME}',
                 '${SITE_URL}',
                 '${PAY_DATE}'
@@ -633,13 +633,13 @@ switch ($_GET['action']) {
                   ),$title
                 );
           $comments = str_replace(array(
-                '${NAME}',
-                '${MAIL}',
-                '${ORDER_D}',
-                '${ORDER_N}',
-                '${PAY}',
-                '${ORDER_M}',
-                '${ORDER_S}',
+                '${USER_NAME}',
+                '${USER_MAIL}',
+                '${ORDER_DATE}',
+                '${ORDER_NUMBER}',
+                '${PAYMENT}',
+                '${ORDER_TOTAL}',
+                '${ORDER_STATUS}',
                 '${SITE_NAME}',
                 '${SITE_URL}',
                 '${SUPPORT_EMAIL}',
@@ -780,6 +780,7 @@ switch ($_GET['action']) {
             tep_db_free_result($search_products_name_query);
             $search_products_name_list[] = $search_products_name_array['products_name'];
           }
+          $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
           if ($customer_info_res['is_send_mail'] != '1') {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           } 
@@ -995,13 +996,13 @@ switch ($_GET['action']) {
         $os_result = tep_db_fetch_array($os_query);
 
         $title = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${ORDER_S}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
@@ -1021,13 +1022,13 @@ switch ($_GET['action']) {
                 ),$title);
 
         $comments = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${ORDER_S}',
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
@@ -1170,6 +1171,7 @@ switch ($_GET['action']) {
           tep_db_free_result($search_products_name_query);
           $search_products_name_list[] = $search_products_name_array['products_name'];
         }
+        $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
         if ($customer_info_res['is_send_mail'] != '1') {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
@@ -3805,7 +3807,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             <tr>
             <td class="main">
-            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
+            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
             </td>
             </tr>
             <tr>
@@ -5723,7 +5725,7 @@ if($c_parent_array['parent_id'] == 0){
                 var idx = document.sele_act.elements['status'].selectedIndex;
                 var CI  = document.sele_act.elements['status'].options[idx].value;
                 chk = getCheckboxValue('chk[]')
-                  if((chk.length > 1 || chk.length < 1) && window.status_text[CI].indexOf('${ORDER_A}') != -1){
+                  if((chk.length > 1 || chk.length < 1) && window.status_text[CI].indexOf('${MAIL_COMMENT}') != -1){
                     if(chk.length > 1){
                       alert('<?php echo TEXT_SELECT_MORE;?>');
                     } else {

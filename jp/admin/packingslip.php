@@ -38,7 +38,7 @@
   <tr>
     <td class="smallText"><table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
-        <td class="pageHeading"><?php echo nl2br(STORE_NAME_ADDRESS); ?></td>
+        <td class="pageHeading"><?php echo nl2br(STORE_NAME_ADDRESS."\n".STORE_NAME_TEL); ?></td>
         <td class="pageHeading" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
       </tr>
     </table><div align="right"><?php echo RIGHT_ORDER_INFO_ORDER_DATE;?><?php echo tep_date_long($order->customer['date']) . ' '.TEXT_PACKINGSLIP_ORDER_ID.' ' . $_GET['oID'] ; ?></div></td>
