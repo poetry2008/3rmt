@@ -48,6 +48,59 @@ if ($pdo_con) {
     }
   }
 }
+function forward404(){
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      require(dirname(__FILE__) . '/../../404.html');
+      exit;
+}
+  if (!empty($_GET)) {
+    foreach ($_GET as $g_c_key => $g_c_value) {
+      $check_sel_pos = stripos($g_c_value, 'select'); 
+      $check_union_pos = stripos($g_c_value, 'union'); 
+      $check_from_pos = stripos($g_c_value, 'from'); 
+      $check_two_c_pos = stripos($g_c_value, '%2C'); 
+      $check_nine_pos = strpos($g_c_value, '9999999999'); 
+      $check_order_by_pos = stripos($g_c_value, 'order by'); 
+      $check_ascii_pos = stripos($g_c_value, 'ascii'); 
+      $check_char_pos = stripos($g_c_value, 'char('); 
+
+      if ($check_ascii_pos !== false) {
+        forward404(); 
+        break; 
+      }
+
+      if ($check_nine_pos !== false) {
+        forward404(); 
+        break; 
+      }
+      
+      if ($check_order_by_pos !== false) {
+        forward404(); 
+        break; 
+      }
+
+      if ($check_two_c_pos !== false) {
+        forward404(); 
+        break; 
+      }
+
+      if ($check_char_pos !== false) {
+        forward404(); 
+        break; 
+      }
+      
+      if (($check_sel_pos !== false) && $check_union_pos !== false) {
+        forward404(); 
+        break; 
+      }
+
+      if (($check_sel_pos !== false) && $check_from_pos !== false) {
+        forward404(); 
+        break; 
+      }
+    }
+  }
+
 FLEA::import(APP_DIR);
 FLEA::runMVC();
 function ON_ACCESS_DENIED($controller, $action)
