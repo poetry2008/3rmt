@@ -23,7 +23,7 @@
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array);
            $last_insert_id = mysql_insert_id();
            //同步对应的邮件模板
-           tep_db_query("insert into ". TABLE_MAIL_TEMPLATES ." values(NULL,'POINT_NOTIFY_MAIL_TEMPLATES_".$last_insert_id."','0','".TEXT_INFO_POINT_MAIL_DATE.$point_mail_date.TEXT_POINT_NOTIFY_TITLE."','".TEXT_POINT_NOTIFY_USE_DESCRIPTION."','','','".TEXT_POINT_NOTIFY_DESCRIPTION."','1','".$_POST['user_added']."',now(),'','')");
+           tep_db_query("insert into ". TABLE_MAIL_TEMPLATES ." values(NULL,'POINT_NOTIFY_MAIL_TEMPLATES_".$last_insert_id."','0','".TEXT_INFO_POINT_MAIL_DATE.$point_mail_date.TEXT_POINT_NOTIFY_TITLE."','".TEXT_POINT_NOTIFY_USE_DESCRIPTION."','','','".TEXT_POINT_NOTIFY_DESCRIPTION."','1','1','".$_POST['user_added']."',now(),'','')");
            tep_redirect(tep_href_link(FILENAME_POINT_EMAIL,'page='.$_GET['page'].'&id='.$last_insert_id));
 
         }else if($_GET['action'] == 'save'){

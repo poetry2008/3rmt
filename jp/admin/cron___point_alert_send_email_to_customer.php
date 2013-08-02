@@ -175,11 +175,7 @@ o.customers_name AS customer_name,
 
         $parameter = '-f'.$From_Mail;
         $send_row++;
-        //替换通用邮件模板参数
-        $user_info = "\n";
-        $user_info .= 'IPアドレス　　　　　　：'.$_SERVER['REMOTE_ADDR']."\n";
-        $user_info .= 'ホスト名　　　　　　　：'.@gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n"; 
-        $user_info .= 'ユーザーエージェント　：'.$_SERVER['HTTP_USER_AGENT']."\n"; 
+        //替换通用邮件模板参数 
         $site_name = get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration');
         $http_server = get_configuration_by_site_id('HTTP_SERVER',$customer_info['site_id'],'configuration');
         $company_name = get_configuration_by_site_id('COMPANY_NAME',$customer_info['site_id'],'configuration');
@@ -218,7 +214,7 @@ o.customers_name AS customer_name,
                 $email_footer,
                 $customer_info['customer_email'],
                 $customer_info['customer_name'],
-                $user_info,
+                '',
                 date('Y'),
                 date('m'),
                 date('d'),
