@@ -694,22 +694,32 @@ function getpreexpress($pre_value, $pre_pid){
  功能：显示支付方法目录
  参数：$pay_info_array(string) 支付信息的数组
  参数：$default_email_info(string) 默认邮件地址
+ 参数：$is_show(boolean) 是否显示默认值 
  返回值：支付方法的目录(string)
  --------------------*/
-  function admin_show_payment_list($pay_info_array, $default_email_info){
+  function admin_show_payment_list($pay_info_array, $default_email_info, $is_show){
 
    global $_POST;
    global $_GET;
    $pay_array = explode("\n",trim($pay_info_array[0]));
    $bank_name = explode(':',$pay_array[0]);
+   if (!$is_show) {
+     $bank_name[1] = ''; 
+   }
    $bank_name[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] : $bank_name[1];
    $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
    echo 'document.getElementsByName("bank_name")[0].value = "'. $bank_name[1] .'";'."\n"; 
    $bank_shiten = explode(':',$pay_array[1]); 
+   if (!$is_show) {
+     $bank_shiten[1] = ''; 
+   }
    $bank_shiten[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] : $bank_shiten[1];
    $bank_shiten[1] = isset($_POST['bank_shiten']) ? $_POST['bank_shiten'] : $bank_shiten[1];
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
+   if (!$is_show) {
+     $bank_kamoku[1] = ''; 
+   }
    $bank_kamoku[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] : $bank_kamoku[1];
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
    if($bank_kamoku[1] == TS_MODULE_PAYMENT_PAYPAL_NORMAL || $bank_kamoku[1] == ''){
@@ -718,10 +728,16 @@ function getpreexpress($pre_value, $pre_pid){
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
    }
    $bank_kouza_num = explode(':',$pay_array[3]);
+   if (!$is_show) {
+     $bank_kouza_num[1] = ''; 
+   }
    $bank_kouza_num[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] : $bank_kouza_num[1];
    $bank_kouza_num[1] = isset($_POST['bank_kouza_num']) ? $_POST['bank_kouza_num'] : $bank_kouza_num[1];
    echo 'document.getElementsByName("bank_kouza_num")[0].value = "'.$bank_kouza_num[1].'";'."\n";
    $bank_kouza_name = explode(':',$pay_array[4]);
+   if (!$is_show) {
+     $bank_kouza_name[1] = ''; 
+   }
    $bank_kouza_name[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] : $bank_kouza_name[1];
    $bank_kouza_name[1] = isset($_POST['bank_kouza_name']) ? $_POST['bank_kouza_name'] : $bank_kouza_name[1];
    echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
