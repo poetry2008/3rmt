@@ -520,7 +520,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     $email_value = array(
         $order->customer['name'],
         get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),
-        $oID,
+        $order->info['orders_id'],
         $order->customer['email_address'],
         $total_price_mail,
         COMPANY_NAME,
