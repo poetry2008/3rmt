@@ -3389,7 +3389,11 @@ a.dpicker {
                   }
                 }
                 if($status_flag == false){
-                  $pay_info_array[0] = $orders_status_history_array['comments']; 
+                  if (tep_get_payment_customer_chk('',$_SESSION['customer_id']) == '2') {
+                    $pay_info_array[0] = ''; 
+                  } else {
+                    $pay_info_array[0] = $orders_status_history_array['comments']; 
+                  }
                   break;
                 }
               }
@@ -3506,9 +3510,9 @@ a.dpicker {
           if($paymentlist){
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
-
+          
           if($payment_code!=''){
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk,'order',$_SESSION['email_address']);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['sites_id_flag'],$c_chk,'order',$_SESSION['email_address'],(($c_chk == '2')?false:true));
           }
           
           echo '});'."\n";
