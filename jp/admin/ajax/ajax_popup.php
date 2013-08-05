@@ -921,9 +921,11 @@ if ($_GET['action'] == 'show_category_info') {
     $history_info_str .= $relate_product_history_info_str;
     
     $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0);
+    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
     $out_relate_sum_str = sprintf(TEXT_RELATE_ROW_COUNT, $relate_products_name, $relate_sub_date, intval($relate_row_count));
     $history_info_str .= '<div>'.$out_relate_sum_str.'</div>';
+    $out_relate_product_radices =sprintf(TEXT_RELATE_PRODUCT_RADICES,number_format($relate_radices));
+    $history_info_str .= '<div>'.$out_relate_product_radices.'</div>';
   }
   
   $data_info_array = array();

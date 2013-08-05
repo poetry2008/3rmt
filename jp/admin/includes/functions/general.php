@@ -9035,9 +9035,14 @@ function get_campaign_link_page($cid, $site_id, $st_id)
     参数: $site_id(int) 网站id 
     返回值: 购买数量的总和(int) 
  ------------------------------------ */
-function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_id=0){
-  $sql ="select sum(op.products_quantity) as history_sum 
-        from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS.
+function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_id=0,$radices=''){
+
+  if($radices==''){
+    $sql ="select sum(op.products_quantity) as history_sum ";
+  }else{
+    $sql ="select sum(op.products_rate) as history_sum ";
+  }
+    $sql .= " from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS.
         " o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS.
         " os on o.orders_status=os.orders_status_id 
         where 
@@ -9052,7 +9057,11 @@ function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_
   }
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
-    return $row['history_sum'];
+    if($radices==''){
+      return $row['history_sum'];
+    }else{
+      return floor($row['history_sum']/$radices);
+    }
   }else{
     return 0;
   }
