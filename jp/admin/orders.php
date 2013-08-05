@@ -1032,7 +1032,8 @@ switch ($_GET['action']) {
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_EMAIL}',
-              '${PAY_DATE}'
+              '${PAY_DATE}',
+              '${MAIL_COMMENT}'
               ),array(
                 $check_status['customers_name'],
                 $check_status['customers_email_address'],
@@ -1044,7 +1045,8 @@ switch ($_GET['action']) {
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
+                orders_a($oID)
                 ),$comments);
           
         $products_ordered_mail = '';
