@@ -15,10 +15,10 @@
   $body_text = '';
   $body_text = $mail_array['contents'];
   $mode_array = array(
-                      '${STORE_NAME}', 
+                      '${SITE_NAME}', 
                       '${COMPANY_NAME}',
                       '${SITE_URL}',
-                      '${STORE_OWNER_EMAIL_ADDRESS}'
+                      '${SUPPORT_EMAIL}'
                     );
   $replace_array = array(
                       STORE_NAME, 
@@ -27,7 +27,8 @@
                       SUPPORT_EMAIL_ADDRESS 
                     );
   $body_text = str_replace($mode_array,$replace_array,$body_text);
-  
+
+  $body_text = tep_replace_mail_templates($body_text,$_POST['email_address'],''); 
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
       $error_single = true;
@@ -68,7 +69,7 @@
   if ($error_single == true) {
      echo '<div style="color:#ff0000;">'.$error_msg.'</div>'; 
    }
-   echo tep_draw_form('login', tep_href_link('send_mail.php'), 'post') . "\n";
+   echo tep_draw_form('login', tep_href_link('send_mail.php', '', 'SSL'), 'post') . "\n";
 ?>
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>

@@ -66,7 +66,7 @@
   if ($error_single == true) {
      echo '<div style="color:#ff0000;" class="form_error">'.$error_msg.'</div>'; 
    }
-   echo tep_draw_form('login', tep_href_link('send_mail.php','','SSL'), 'post') . "\n";
+   echo tep_draw_form('login', tep_href_link('send_mail.php', '', 'SSL'), 'post') . "\n";
 ?>
       <table class="login" width="100%">
         <tr>

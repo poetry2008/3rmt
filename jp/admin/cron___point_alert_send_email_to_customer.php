@@ -128,7 +128,7 @@ o.customers_name AS customer_name,
         $point_out_date = date('Y年m月d日',$out_time-86400);
         $show_email_template = str_replace(
             array('${USER_NAME}','${USER_MAIL}','${POINT}','${VALID_DAY}','${SITE_NAME}','${LAST_VILID_DATE}'
-              ,'${SITE_URL}','${SUPPORT_EMAIL}'),
+              ,'${SITE_URL}','${SUPPORT_MAIL}'),
             array($customer_info['customer_name'],
               $customer_info['customer_email'],
               $customer_info_arr['point'],$value,
@@ -142,7 +142,7 @@ o.customers_name AS customer_name,
             $email_template);
         $title = str_replace(
             array('${USER_NAME}','${USER_MAIL}','${POINT}','${VALID_DAY}','${SITE_NAME}','${LAST_VILID_DATE}'
-              ,'${SITE_URL}','${SUPPORT_EMAIL}'),
+              ,'${SITE_URL}','${SUPPORT_MAIL}'),
             array($customer_info['customer_name'],
               $customer_info['customer_email'],
               $customer_info_arr['point'],$value,
@@ -190,7 +190,7 @@ o.customers_name AS customer_name,
                 '${COMPANY_NAME}', 
                 '${COMPANY_ADDRESS}', 
                 '${COMPANY_TEL}', 
-                '${SUPPORT_EMAIL}', 
+                '${SUPPORT_MAIL}', 
                 '${STAFF_MAIL}', 
                 '${STAFF_NAME}', 
                 '${SIGNATURE}', 

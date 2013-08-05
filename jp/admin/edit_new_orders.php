@@ -310,7 +310,7 @@ if($orders_exit_flag == true){
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
+              '${SUPPORT_MAIL}',
               '${PAY_DATE}'
               ),array(
                 $check_status['customers_name'],
@@ -338,7 +338,7 @@ if($orders_exit_flag == true){
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
+              '${SUPPORT_MAIL}',
               '${PAY_DATE}',
               '${SHIPPING_TIME}',
               '${MAIL_COMMENT}'
