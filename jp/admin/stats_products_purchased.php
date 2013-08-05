@@ -69,7 +69,7 @@ require("includes/note_js.php");
                  $stats_type = 'asc';
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                  $stats_str = 'rownum asc';
+                  $stats_str = 'products_ordered desc';
             }else if($_GET['sort'] == 'products_name'){
                   if($_GET['type'] == 'desc'){
                       $stats_str = 'products_name desc';
@@ -153,10 +153,7 @@ require("includes/note_js.php");
       and pd.language_id = '" . $languages_id. "' 
       and pd.site_id ='0'
       and p.products_ordered > 0 
-    group by pd.products_id) g ";
-    if(!isset($_GET['sort'])){
-    $products_query_raw .= ' order by products_ordered desc';
-    }
+    group by pd.products_id ) g order by products_ordered desc,products_name asc";
     $products_query_raw .= ") z order by ".$stats_str;
   $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_query_raw, $products_query_numrows);
   tep_db_query("set @mycnt=0");
