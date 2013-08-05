@@ -47,7 +47,7 @@
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_PREORDERS_STATUS, $sql_data_array);
           //同步对应的邮件模板
-          tep_db_query("insert into ". TABLE_MAIL_TEMPLATES ." values(NULL,'PREORDERS_STATUS_MAIL_TEMPLATES_".$orders_status_id."','0','".tep_db_prepare_input($orders_status_name_array[$language_id]).TEXT_PREORDERS_STATUS_MAIL_TITLE."','".TEXT_PREORDERS_STATUS_MAIL_USE_DESCRIPTION."','','','".TEXT_PREORDERS_STATUS_MAIL_DESCRIPTION."','1','1','".$_POST['user_added']."',now(),'','')");
+          tep_db_query("insert into ". TABLE_MAIL_TEMPLATES ." values(NULL,'PREORDERS_STATUS_MAIL_TEMPLATES_".$orders_status_id."','0','".tep_db_prepare_input($orders_status_name_array[$language_id]).TEXT_PREORDERS_STATUS_MAIL_TITLE."','".TEXT_PREORDERS_STATUS_MAIL_USE_DESCRIPTION."','','','".TEXT_PREORDERS_STATUS_MAIL_DESCRIPTION."','1','1','".$_POST['user_added']."',now(),'".$_POST['user_added']."',now())");
         } elseif ($_GET['action'] == 'save') {
           tep_db_perform(TABLE_PREORDERS_STATUS, $sql_data_array, 'update', "orders_status_id = '" . tep_db_input($orders_status_id) . "' and language_id = '" . $language_id . "'");
         }
