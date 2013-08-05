@@ -152,7 +152,7 @@ require("includes/note_js.php");
     where p.products_id = pd.products_id 
       and l.languages_id = pd.language_id 
       and pd.site_id != 0
-    group by p.products_id) g order by products_viewed desc) z
+    group by p.products_id) g order by products_viewed desc,products_name asc) z
     order by ".$stats_str;
   $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_query_raw, $products_query_numrows);
   tep_db_query("set @mycnt=0");
