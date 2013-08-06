@@ -376,6 +376,7 @@ if($address_error == false){
   $order_comment_str = '';
   
   
+  $order_comment_str = $payment_modules->get_preorder_add_info($cpayment_code, $preorder); 
   
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0'; 
   $sql_data_array = array('orders_id' => $orders_id,

@@ -67,7 +67,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
                 '${COMPANY_NAME}', 
                 '${COMPANY_ADDRESS}', 
                 '${COMPANY_TEL}', 
-                '${SUPPORT_EMAIL}', 
+                '${SUPPORT_MAIL}', 
                 '${STAFF_MAIL}', 
                 '${STAFF_NAME}', 
                 '${SIGNATURE}', 

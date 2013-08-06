@@ -9,7 +9,6 @@
 
   $breadcrumb->add(NAVBAR_TITLE);
 
-//  tep_session_destroy();
 
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');
@@ -68,7 +67,6 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -87,7 +85,6 @@
 		</div>
 					<?php include('includes/float-box.php');?>
 	</div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 
 </body>

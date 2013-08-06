@@ -757,7 +757,7 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
     $address_len_array[] = strlen($address_value[0]);
   }
   $maxlen = max($address_len_array);
-  $email_address_str = TEXT_ORDERS_PRODUCTS_ADDRESS_INFO."\n";
+  $email_address_str = "";
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $maxlen = 9;
   foreach($_SESSION['options'] as $ad_value){

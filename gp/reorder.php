@@ -890,7 +890,6 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   } 
   if(shipping_time_flag && document.getElementById('new_date').selectedIndex != 0){
       document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
-      $("#hour_show_error").show();
       return false;
   }
 

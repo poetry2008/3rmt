@@ -514,7 +514,7 @@ class telecom  extends basePayment  implements paymentInterface  {
         '${USER_MAIL}',
         '${ORDER_TOTAL}',
         '${COMPANY_NAME}',
-        '${SUPPORT_EMAIL}',
+        '${SUPPORT_MAIL}',
         '${SITE_URL}',
         );
     $email_value = array(
@@ -542,33 +542,22 @@ class telecom  extends basePayment  implements paymentInterface  {
 /*----------------------------
  功能：显示后台支付方法列表 
  参数：$pay_info_array(array) 支付信息数组
- 参数：$default_email_info(string) 默认邮件地址
- 参数：$is_show(boolean) 是否显示默认值 
  返回值：无
  ---------------------------*/  
-  function admin_show_payment_list($pay_info_array, $default_email_info, $is_show){
+  function admin_show_payment_list($pay_info_array){
 
    global $_POST;
    global $_GET;
    $pay_array = explode("\n",trim($pay_info_array[0]));
    $bank_name = explode(':',$pay_array[0]);
-   if (!$is_show) {
-     $bank_name[1] = ''; 
-   }
    $bank_name[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] : $bank_name[1];
    $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
    echo 'document.getElementsByName("bank_name")[0].value = "'. $bank_name[1] .'";'."\n"; 
    $bank_shiten = explode(':',$pay_array[1]); 
-   if (!$is_show) {
-     $bank_shiten[1] = ''; 
-   }
    $bank_shiten[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] : $bank_shiten[1];
    $bank_shiten[1] = isset($_POST['bank_shiten']) ? $_POST['bank_shiten'] : $bank_shiten[1];
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
-   if (!$is_show) {
-     $bank_kamoku[1] = ''; 
-   }
    $bank_kamoku[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] : $bank_kamoku[1];
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
    if($bank_kamoku[1] == TS_MODULE_PAYMENT_TELECOM_NORMAL || $bank_kamoku[1] == ''){
@@ -577,16 +566,10 @@ class telecom  extends basePayment  implements paymentInterface  {
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
    }
    $bank_kouza_num = explode(':',$pay_array[3]);
-   if (!$is_show) {
-     $bank_kouza_num[1] = ''; 
-   }
    $bank_kouza_num[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] : $bank_kouza_num[1];
    $bank_kouza_num[1] = isset($_POST['bank_kouza_num']) ? $_POST['bank_kouza_num'] : $bank_kouza_num[1];
    echo 'document.getElementsByName("bank_kouza_num")[0].value = "'.$bank_kouza_num[1].'";'."\n";
    $bank_kouza_name = explode(':',$pay_array[4]);
-   if (!$is_show) {
-     $bank_kouza_name[1] = ''; 
-   }
    $bank_kouza_name[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] : $bank_kouza_name[1];
    $bank_kouza_name[1] = isset($_POST['bank_kouza_name']) ? $_POST['bank_kouza_name'] : $bank_kouza_name[1];
    echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
@@ -594,7 +577,7 @@ class telecom  extends basePayment  implements paymentInterface  {
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email']) ? $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-   echo 'document.getElementsByName("con_email")[0].value = "'.(!empty($con_email[1])?$con_email[1]:$default_email_info).'";'."\n";
+   echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];

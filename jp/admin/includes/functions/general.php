@@ -1444,10 +1444,9 @@ function tep_cfg_pull_down_zone_list($zone_id,$empty_params = '',$params = '') {
     功能: 生成税率的下拉列表  
     参数: $tax_class_id(int) 税率id 
     参数: $key(string) 下拉列表的名字
-    参数: $params(string) 参数设置
     返回值: 税率的下拉列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
+function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
 
   $tax_class_array = array(array('id' => '0', 'text' => TEXT_NONE));
@@ -1457,7 +1456,7 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
         'text' => $tax_class['tax_class_title']);
   }
 
-  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id, $params);
+  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id);
 }
 
 /* -------------------------------------
@@ -2222,10 +2221,9 @@ function tep_cfg_pull_down_zone_classes($zone_class_id, $key = '') {
     功能: 获取订单状态的下拉列表 
     参数: $order_status_id(int) 订单状态id 
     参数: $key(string) 列表名 
-    参数: $params(string) 参数设置
     返回值: 订单状态的下拉列表(string) 
  ------------------------------------ */
-function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params = '') {
+function tep_cfg_pull_down_order_statuses($order_status_id, $key = '') {
   global $languages_id;
 
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
@@ -2237,7 +2235,7 @@ function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params =
         'text' => $statuses['orders_status_name']);
   }
 
-  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id, $params);
+  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id);
 }
 
 /* -------------------------------------
@@ -10909,7 +10907,7 @@ function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=
                 '${COMPANY_NAME}', 
                 '${COMPANY_ADDRESS}', 
                 '${COMPANY_TEL}', 
-                '${SUPPORT_EMAIL}', 
+                '${SUPPORT_MAIL}', 
                 '${STAFF_MAIL}', 
                 '${STAFF_NAME}', 
                 '${SIGNATURE}', 
