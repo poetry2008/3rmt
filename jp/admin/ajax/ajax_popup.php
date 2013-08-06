@@ -776,8 +776,16 @@ if ($_GET['action'] == 'show_category_info') {
       $sum_i++;
       if(isset($order_history['products_rate']) &&$order_history['products_rate']!=0 &&$order_history['products_rate']!=''){
         if($radices!=''&&$radices!=1&&$radices!=0){
-          $oh_fp = $order_history['final_price']/$order_history['products_rate']*$radices;
-          $oh_pq = $order_history['products_quantity']*$order_history['products_rate']/$radices;
+          $oh_fp = number_format($order_history['final_price']/$order_history['products_rate']*$radicesi,6,'.','');
+          $oh_pq = number_format($order_history['products_quantity']*$order_history['products_rate']/$radicesii,6,'.','');
+          if($oh_fp == 0){
+            $oh_fp = 0;
+          }
+          $oh_fp = delete_dot_zero($oh_fp);
+          if($oh_pq == 0){
+            $oh_pq = 0;
+          }
+          $oh_pq = delete_dot_zero($oh_pq);
         }else{
           $oh_fp = $order_history['final_price'];
           $oh_pq = $order_history['products_quantity'];
@@ -863,8 +871,16 @@ if ($_GET['action'] == 'show_category_info') {
         $sum_i++;
         if(isset($relate_order_history['products_rate']) &&$relate_order_history['products_rate']!=0 &&$relate_order_history['products_rate']!=''){
           if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-            $relate_oh_fp = $relate_order_history['final_price']/$relate_order_history['products_rate']*$relate_radices;
-            $relate_oh_pq = $relate_order_history['products_quantity']*$relate_order_history['products_rate']/$relate_radices;
+            $relate_oh_fp = number_format($relate_order_history['final_price']/$relate_order_history['products_rate']*$relate_radices,6,'.','');
+            $relate_oh_pq = number_format($relate_order_history['products_quantity']*$relate_order_history['products_rate']/$relate_radices,6,'.','');
+            if($relate_oh_fp == 0){
+              $relate_oh_fp = 0;
+            }
+            $relate_oh_fp = delete_dot_zero($relate_oh_fp);
+            if($relate_oh_pq == 0){
+              $relate_oh_pq = 0;
+            }
+            $relate_oh_pq = delete_dot_zero($relate_oh_pq);
           }else{
             $relate_oh_fp = $relate_order_history['final_price'];
             $relate_oh_pq = $relate_order_history['products_quantity'];
@@ -6560,7 +6576,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   $field_str = '*';
   if(isset($_POST['order_sort']) && $_POST['order_sort'] != '' && isset($_POST['order_type']) && $_POST['order_type'] != ''){
     switch($_POST['order_sort']){
- 
+
     case 'name':
       $order_sort = 'templates_title';
       $order_type = $_POST['order_type'];
