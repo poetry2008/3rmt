@@ -165,7 +165,6 @@
   <!-- body //--> 
   <div id="main">
   <!-- left_navigation //-->
-      <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       <!-- left_navigation_eof //-->
       <!-- body_text //-->
 <div id="layout" class="yui3-u">
@@ -248,7 +247,6 @@ if(isset($_GET['action']) && $_GET['action']=="quit_success"){
     
       <?php include('includes/float-box.php');?>
 </div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>

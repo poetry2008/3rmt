@@ -984,7 +984,6 @@ function orderConfirmPage(){
       <?php include('includes/float-box.php');?>
 
 </div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
  </div>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 

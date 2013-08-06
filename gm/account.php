@@ -29,7 +29,6 @@
   <!-- body //--> 
   <div id="main">
   <!-- left_navigation //-->
-      <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       <!-- left_navigation_eof //-->
       <!-- body_text //-->
 <div id="layout" class="yui3-u">
@@ -71,9 +70,6 @@
       </table>
       <table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue">
             <tr>
-<!--
-              <td align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_address_book.gif', IMAGE_BUTTON_ADDRESS_BOOK) . '</a>'; ?></td>
--->       
               <td align="center"><?php echo '<a href="' .
               tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' .
               tep_image_button('button_history.gif',
@@ -95,7 +91,6 @@
     
       <?php include('includes/float-box.php');?>
 </div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>
