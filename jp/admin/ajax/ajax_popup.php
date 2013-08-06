@@ -776,8 +776,8 @@ if ($_GET['action'] == 'show_category_info') {
       $sum_i++;
       if(isset($order_history['products_rate']) &&$order_history['products_rate']!=0 &&$order_history['products_rate']!=''){
         if($radices!=''&&$radices!=1&&$radices!=0){
-          $oh_fp = number_format($order_history['final_price']/$order_history['products_rate']*$radicesi,6,'.','');
-          $oh_pq = number_format($order_history['products_quantity']*$order_history['products_rate']/$radicesii,6,'.','');
+          $oh_fp = number_format($order_history['final_price']/$order_history['products_rate']*$radices,6,'.','');
+          $oh_pq = number_format($order_history['products_quantity']*$order_history['products_rate']/$radices,6,'.','');
           if($oh_fp == 0){
             $oh_fp = 0;
           }
