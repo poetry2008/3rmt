@@ -625,7 +625,6 @@ onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continu
   <!-- footer //--> 
    <!-- footer_eof //-->
   </div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
 
 </div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

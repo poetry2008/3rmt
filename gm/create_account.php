@@ -15,10 +15,6 @@
 <script type="text/javascript">
 <!--
 function pass_hidd(CI){
-  /*
-  var idx = document.account_edit.elements["guestchk"].selectedIndex;
-  var CI = document.account_edit.elements["guestchk"].options[idx].value;
-*/
   if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
     document.getElementById('trpass2').style.display = "";
@@ -55,7 +51,6 @@ function pass_hidd(CI){
 <!-- body --> 
 <div id="main">
 <div id="layout" class="yui3-u">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <?php include('includes/search_include.php');?>
 <!-- body_text -->
@@ -89,11 +84,9 @@ function pass_hidd(CI){
  <?php include('includes/float-box.php');?>
 		</div>
       <!-- body_text_eof --> 
-<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof -->  
   <!-- footer --> 
    <!-- footer_eof -->
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
   <script>
   document.onreadystatechange=function(){
   var obj = document.getElementsByName("guestchk"); 

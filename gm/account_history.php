@@ -136,7 +136,6 @@
 
           </div>
  
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 
 </body>
