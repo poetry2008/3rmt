@@ -9040,7 +9040,7 @@ function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_
   if($radices==''){
     $sql ="select sum(op.products_quantity) as history_sum ";
   }else{
-    $sql ="select sum(op.products_rate) as history_sum ";
+    $sql ="select sum(op.products_rate*op.products_quantity) as history_sum ";
   }
     $sql .= " from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS.
         " o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS.
