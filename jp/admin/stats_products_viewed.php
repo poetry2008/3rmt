@@ -69,7 +69,7 @@ require("includes/note_js.php");
                       $stats_type = 'asc';
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                  $stats_str = 'products_viewed DESC';
+                  $stats_str = 'products_viewed desc, products_name asc';
             }else if($_GET['sort'] == 'products_name'){
                   if($_GET['type'] == 'desc'){
                       $stats_str = 'products_name desc';
@@ -80,10 +80,10 @@ require("includes/note_js.php");
                    }
             }else if($_GET['sort'] == 'products_viewed'){
                   if($_GET['type'] == 'desc'){
-                      $stats_str = 'products_viewed desc';
+                      $stats_str = 'products_viewed desc, products_name asc';
                       $stats_type = 'asc';
                    }else{
-                      $stats_str = 'products_viewed asc';
+                      $stats_str = 'products_viewed asc, products_name desc';
                       $stats_type = 'desc';
                    }
             }else if($_GET['sort'] == 'rownum'){
@@ -221,7 +221,7 @@ require("includes/note_js.php");
                       </tr>
               <tr>
                 <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-                <td class="smallText" align="right"><div class="td_box"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
+                <td class="smallText" align="right"><div class="td_box"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></div></td>
               </tr>
             </table>
 		</td>
