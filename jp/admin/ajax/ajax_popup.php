@@ -781,11 +781,9 @@ if ($_GET['action'] == 'show_category_info') {
           if($oh_fp == 0){
             $oh_fp = 0;
           }
-          $oh_fp = delete_dot_zero($oh_fp);
           if($oh_pq == 0){
             $oh_pq = 0;
           }
-          $oh_pq = delete_dot_zero($oh_pq);
         }else{
           $oh_fp = $order_history['final_price'];
           $oh_pq = $order_history['products_quantity'];
@@ -798,10 +796,12 @@ if ($_GET['action'] == 'show_category_info') {
         $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
         $sum_quantity += $oh_pq; 
       }
+      $oh_pq = number_format($oh_pq,20,'.',',');
+      $oh_fp = number_format($oh_fp,20,'.',',');
       $product_history_array[]['text'] = array(
             array('params' => 'class="main" width="120"', 'text' => $order_history['torihiki_date']), 
             array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($oh_pq).CATEGORY_GE_UNIT_TEXT), 
-            array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
+            array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
             array('params' => 'class="main" width="100"', 'text' => $order_history['orders_status_name']) 
           );   
     }
@@ -811,8 +811,10 @@ if ($_GET['action'] == 'show_category_info') {
     $product_history_row_quantity[]['text'] = array(
           array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
         );
-    $sum_quantity = number_format($sum_quantity,20,'.','');
-    $sum_quantity = delete_dot_zero($sum_quantity);
+    $sum_vga = 0;
+    $sum_vga = number_format($sum_price/$sum_quantity,20,'.',',');
+    $sum_vga = display_quantity($sum_vga);
+    $sum_quantity = number_format($sum_quantity,20,'.',',');
     $sum_quantity = display_quantity($sum_quantity);
     $product_history_row_quantity[]['text'] = array(
           array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
@@ -826,7 +828,7 @@ if ($_GET['action'] == 'show_category_info') {
         );
     
     $product_history_row_average_num[]['text'] = array(
-        array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
+        array('align' => 'right', 'text' => $sum_vga.CATEGORY_MONEY_UNIT_TEXT) 
         );
     $product_history_row_average_num_str = $notice_box->get_table($product_history_row_average_num, '', $product_history_table_params); 
  
@@ -879,11 +881,9 @@ if ($_GET['action'] == 'show_category_info') {
             if($relate_oh_fp == 0){
               $relate_oh_fp = 0;
             }
-            $relate_oh_fp = delete_dot_zero($relate_oh_fp);
             if($relate_oh_pq == 0){
               $relate_oh_pq = 0;
             }
-            $relate_oh_pq = delete_dot_zero($relate_oh_pq);
           }else{
             $relate_oh_fp = $relate_order_history['final_price'];
             $relate_oh_pq = $relate_order_history['products_quantity'];
@@ -896,10 +896,12 @@ if ($_GET['action'] == 'show_category_info') {
           $sum_price += abs($relate_order_history['final_price']) * $relate_order_history['products_quantity'];
           $sum_quantity += $relate_oh_pq; 
         }
+        $relate_oh_pq = number_format($relate_oh_pq,20,'.',',');
+        $relate_oh_fp = number_format($relate_oh_fp,20,'.',',');
         $relate_product_history_array[]['text'] = array(
               array('params' => 'class="main" width="120"', 'text' => $relate_order_history['torihiki_date']), 
               array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($relate_oh_pq) .CATEGORY_GE_UNIT_TEXT), 
-              array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($relate_oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
+              array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($relate_oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
               array('params' => 'class="main" width="100"', 'text' => $relate_order_history['orders_status_name']) 
             );   
       } 
@@ -909,8 +911,10 @@ if ($_GET['action'] == 'show_category_info') {
       $relate_product_history_row_quantity[]['text'] = array(
             array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
           );
-      $sum_quantity = number_format($sum_quantity,20,'.','');
-      $sum_quantity = delete_dot_zero($sum_quantity);
+      $sum_vga = 0;
+      $sum_vga = number_format($sum_price/$sum_quantity,20,'.',',');
+      $sum_vga = display_quantity($sum_vga);
+      $sum_quantity = number_format($sum_quantity,20,'.',',');
       $sum_quantity = display_quantity($sum_quantity);
       $relate_product_history_row_quantity[]['text'] = array(
             array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
@@ -924,7 +928,7 @@ if ($_GET['action'] == 'show_category_info') {
           );
       
       $relate_product_history_row_average_num[]['text'] = array(
-            array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
+            array('align' => 'right', 'text' => $sum_vga.CATEGORY_MONEY_UNIT_TEXT) 
           );
       $relate_product_history_row_average_num_str = $notice_box->get_table($relate_product_history_row_average_num, '', $relate_product_history_table_params); 
    
