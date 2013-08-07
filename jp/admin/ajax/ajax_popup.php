@@ -87,7 +87,7 @@ if ($_GET['action'] == 'show_category_info') {
   if ($ocertify->npermission >= 10) {
     if (empty($site_id)) {
       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_MOVE, 'onclick="move_category_id(\''.$_GET['current_cid'].'\')"').'</a>'; 
-      $button[] = '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath='.$_GET['cPath'].'&cID='.$_GET['current_cid'].'&action=show_categories_manual&site_id='.$site_id).'">'.tep_html_element_button(IMAGE_MANUAL).'</a>'; 
+      $button[] = '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath='.$_GET['cPath'].'&cID='.$_GET['current_cid'].'&action=show_categories_manual&site_id='.$site_id).($_GET['search'] != '' ? '&search='.$_GET['search'] : '').'">'.tep_html_element_button(IMAGE_MANUAL).'</a>'; 
     } 
     if (!empty($site_id)) {
       if (tep_db_num_rows(tep_db_query("select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$_GET['current_cid']."' and site_id = '".$site_id."'"))) {
@@ -552,9 +552,9 @@ if ($_GET['action'] == 'show_category_info') {
  
   if (!$isstaff) {
     if (empty($site_id)) {
-      $button[] = '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' .  $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'.  '&site_id='.  $site_id.  '&page='.$_GET['page']) .'">'.tep_html_element_button(IMAGE_MANUAL).'</a>';
+      $button[] = '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' .  $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'.  '&site_id='.  $site_id.  '&page='.$_GET['page']) .($_GET['search'] != '' ? '&search='.$_GET['search'] : '').'">'.tep_html_element_button(IMAGE_MANUAL).'</a>';
     }
-      $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new'.($_GET['search']?'&search='.$_GET['search']:'')) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
+      $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
     if (empty($site_id)) {
       $button[] = '<input class="element_button" type="button" value="'.IMAGE_MOVE.'" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
       $button[] = '<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
@@ -569,7 +569,7 @@ if ($_GET['action'] == 'show_category_info') {
       }
     }
   } else {
-    $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id .  '&action=new') . '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
+    $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
   }
   if (empty($_GET['site_id'])) {
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
@@ -3153,7 +3153,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
        $action_type = 'insert'; 
        $site_permission = editPermission($site_arr, $_GET['action_sid'],true);
     }
-    if(!$site_permission){
+    if(!$site_permission&&isset($_GET['action_sid'])&&$_GET['action_sid']){
       $str_disabled = ' disabled="disabled" ';
     }else{
       $str_disabled = '';
@@ -3390,11 +3390,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
              $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
     $review_select_end = "</select>";
     if(!isset($df_pid)||$df_pid==0){
-      $error_add_id = '<span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
+      $error_add_id = '<br><span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
     }
     $contents[]['text'] = array(
         array('text' => ENTRY_PRODUCT),
-        array('text' => $review_select.$ProductOptions.$review_select_end.'<br>'.$error_add_id),
+        array('text' => $review_select.$ProductOptions.$review_select_end.$error_add_id),
         array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$df_pid.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_id.'">'.'<input type="hidden" id="r_pid" value="'.$df_pid.'">')
     );
 
