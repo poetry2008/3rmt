@@ -800,7 +800,7 @@ if ($_GET['action'] == 'show_category_info') {
       }
       $product_history_array[]['text'] = array(
             array('params' => 'class="main" width="120"', 'text' => $order_history['torihiki_date']), 
-            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$oh_pq.CATEGORY_GE_UNIT_TEXT), 
+            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($oh_pq).CATEGORY_GE_UNIT_TEXT), 
             array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
             array('params' => 'class="main" width="100"', 'text' => $order_history['orders_status_name']) 
           );   
@@ -811,6 +811,9 @@ if ($_GET['action'] == 'show_category_info') {
     $product_history_row_quantity[]['text'] = array(
           array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
         );
+    $sum_quantity = number_format($sum_quantity,20,'.','');
+    $sum_quantity = delete_dot_zero($sum_quantity);
+    $sum_quantity = display_quantity($sum_quantity);
     $product_history_row_quantity[]['text'] = array(
           array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
         );
@@ -895,7 +898,7 @@ if ($_GET['action'] == 'show_category_info') {
         }
         $relate_product_history_array[]['text'] = array(
               array('params' => 'class="main" width="120"', 'text' => $relate_order_history['torihiki_date']), 
-              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$relate_oh_pq .CATEGORY_GE_UNIT_TEXT), 
+              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($relate_oh_pq) .CATEGORY_GE_UNIT_TEXT), 
               array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($relate_oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
               array('params' => 'class="main" width="100"', 'text' => $relate_order_history['orders_status_name']) 
             );   
@@ -906,6 +909,9 @@ if ($_GET['action'] == 'show_category_info') {
       $relate_product_history_row_quantity[]['text'] = array(
             array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
           );
+      $sum_quantity = number_format($sum_quantity,20,'.','');
+      $sum_quantity = delete_dot_zero($sum_quantity);
+      $sum_quantity = display_quantity($sum_quantity);
       $relate_product_history_row_quantity[]['text'] = array(
             array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
           );

@@ -10944,7 +10944,7 @@ function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=
 }
 /*-----------------------
   功能: 去除数字小数点后的0 
-  参数: 要处理的数字
+  参数: $float(float)要处理的数字
   返回: 处理后的数字
   ----------------------*/
 function delete_dot_zero($float){
@@ -10958,5 +10958,27 @@ function delete_dot_zero($float){
     }else{
       return $arr[0];
     }
+  }
+}
+function display_quantity($float){
+  $arr = explode('.',$float);
+  if(empty($arr[1])||$arr[1]==null||$arr[1]==''){
+    return $float;
+  }else{
+    $res = $arr[0];
+    if($arr[1]!=''&&$arr[1]!=0){
+      $res .= '.';
+      $str_arr = str_split($arr[1]);
+      $i = 0;
+      foreach($str_arr as $value){
+        $i++;
+        $res .= $value;
+        if($i>2&&$value!=0){
+          break;
+        }
+      }
+      $res = preg_replace('/0+$/','',$res);
+    }
+    return $res;
   }
 }
