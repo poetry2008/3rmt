@@ -10909,7 +10909,7 @@ function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=
                 '${COMPANY_NAME}', 
                 '${COMPANY_ADDRESS}', 
                 '${COMPANY_TEL}', 
-                '${SUPPORT_EMAIL}', 
+                '${SUPPORT_MAIL}', 
                 '${STAFF_MAIL}', 
                 '${STAFF_NAME}', 
                 '${SIGNATURE}', 
