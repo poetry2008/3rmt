@@ -250,7 +250,7 @@ require("includes/note_js.php");
        );
    $stats_info[] = array(
        'params' => 'class="dataTableContent" align="right"'.$onlick,
-       'text'   => '<a href="' .  tep_href_link(FILENAME_ORDERS,'email='.$customers['customers_email_address'].'&keywords=&search_type=os_2', 'NONSSL') . '">' .$currencies->format($customers['ordersum'].'</a>')
+       'text'   => '<a href="' .  tep_href_link(FILENAME_ORDERS,'email='.$customers['customers_email_address'].'&keywords=&search_type=os_2', 'NONSSL') . '">' .$currencies->format($customers['ordersum']).'</a>'
        ); 
    $stats_info[] = array(
        'params' => 'class="dataTableContent" align="right"',
