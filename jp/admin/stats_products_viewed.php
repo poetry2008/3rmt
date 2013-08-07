@@ -144,7 +144,7 @@ require("includes/note_js.php");
     $rows = 0;
   }
   $products_query_raw = "
-    select * from (select (@mycnt := @mycnt + 1) as rownum,products_viewed,products_name from(select p.products_id, 
+    select * from (select (@mycnt := @mycnt + 1) as rownum,products_viewed,products_name, products_id from(select p.products_id, 
            pd.products_name, 
            sum(pd.products_viewed) as products_viewed, 
            l.name 
