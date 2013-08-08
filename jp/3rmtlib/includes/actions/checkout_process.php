@@ -701,7 +701,7 @@ $order_history_query = tep_db_query($order_history_query_raw);
 while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_orders_history .= $order_history['date_purchased'] . '　　' .
     tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . JPMONEY_UNIT_TEXT.'　　' . $order_history['orders_status_name'] . "\n";
+    $currencies->format(abs(intval($order_history['order_total_value']))) . '　　' . $order_history['orders_status_name'] . "\n";
 }
   
 $email_orders_history .= TEXT_ORDERS_PRODUCTS_THICK . "\n\n";
@@ -757,7 +757,7 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
     $address_len_array[] = strlen($address_value[0]);
   }
   $maxlen = max($address_len_array);
-  $email_address_str = TEXT_ORDERS_PRODUCTS_ADDRESS_INFO."\n";
+  $email_address_str = "";
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $maxlen = 9;
   foreach($_SESSION['options'] as $ad_value){

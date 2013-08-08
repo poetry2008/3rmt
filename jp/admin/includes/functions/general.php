@@ -9035,9 +9035,14 @@ function get_campaign_link_page($cid, $site_id, $st_id)
     参数: $site_id(int) 网站id 
     返回值: 购买数量的总和(int) 
  ------------------------------------ */
-function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_id=0){
-  $sql ="select sum(op.products_quantity) as history_sum 
-        from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS.
+function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_id=0,$radices=''){
+
+  if($radices==''){
+    $sql ="select sum(op.products_quantity) as history_sum ";
+  }else{
+    $sql ="select sum(op.products_rate*op.products_quantity) as history_sum ";
+  }
+    $sql .= " from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS.
         " o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS.
         " os on o.orders_status=os.orders_status_id 
         where 
@@ -9052,7 +9057,11 @@ function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_
   }
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
-    return $row['history_sum'];
+    if($radices==''){
+      return $row['history_sum'];
+    }else{
+      return floor($row['history_sum']/$radices);
+    }
   }else{
     return 0;
   }
@@ -10900,7 +10909,7 @@ function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=
                 '${COMPANY_NAME}', 
                 '${COMPANY_ADDRESS}', 
                 '${COMPANY_TEL}', 
-                '${SUPPORT_EMAIL}', 
+                '${SUPPORT_MAIL}', 
                 '${STAFF_MAIL}', 
                 '${STAFF_NAME}', 
                 '${SIGNATURE}', 
@@ -10915,13 +10924,13 @@ function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=
   $replace_array = array(
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 '',
-                COMPANY_NAME,
-                STORE_NAME_ADDRESS,
-                STORE_NAME_TEL,
-                SUPPORT_EMAIL_ADDRESS,
+                get_configuration_by_site_id('COMPANY_NAME','0'),
+                get_configuration_by_site_id('STORE_NAME_ADDRESS','0'),
+                get_configuration_by_site_id('STORE_NAME_TEL','0'),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS','0'),
                 $admin_user_info[0],
                 $admin_user_info[1],
-                C_EMAIL_FOOTER,
+                get_configuration_by_site_id('C_EMAIL_FOOTER','0'),
                 $users_name,
                 $users_email,
                 '',
@@ -10932,4 +10941,37 @@ function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=
               );
   $mail_templates = str_replace($mode_array,$replace_array,$mail_templates);
   return $mail_templates;
+}
+/*-----------------------
+  功能: 处理小数的输出结果 
+  参数: $float(float)要处理的数字
+  返回: 处理后的数字
+  ----------------------*/
+function display_quantity($float){
+  $arr = explode('.',$float);
+  if(empty($arr[1])||$arr[1]==null||$arr[1]==''){
+    return $float;
+  }else{
+    $res = $arr[0];
+    if($arr[1]!=''&&$arr[1]!=0){
+      $res .= '.';
+      $str_arr = str_split($arr[1]);
+      $i = 0;
+      foreach($str_arr as $value){
+        $i++;
+        if($str_arr[0]!=0&&$str_arr[1]==0&&$i==2){
+          break;
+        }
+        $res .= $value;
+        if($arr[0]!=0&&$i==2){
+          break;
+        }
+        if($i>=2&&$value!='0'){
+          break;
+        }
+      }
+      $res = preg_replace('/0+$/','',$res);
+    }
+    return $res;
+  }
 }

@@ -899,6 +899,7 @@ function orderConfirmPage(){
   } 
   if(shipping_time_flag && document.getElementById('new_date').selectedIndex != 0){
       document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
+      $("#hour_show_error").show();
       return false;
   }
 
@@ -983,7 +984,6 @@ function orderConfirmPage(){
       <?php include('includes/float-box.php');?>
 
 </div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
  </div>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 

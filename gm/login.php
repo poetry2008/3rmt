@@ -526,7 +526,6 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
 <?php include('includes/float-box.php');?>
 
   </div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
 </div>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 

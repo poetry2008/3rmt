@@ -988,7 +988,7 @@ if($address_error == false){
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
+              '${SUPPORT_MAIL}',
               '${PAY_DATE}'
               ),array(
                 $check_status['customers_name'],
@@ -1014,7 +1014,7 @@ if($address_error == false){
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
+              '${SUPPORT_MAIL}',
               '${PAY_DATE}'
               ),array(
                 $check_status['customers_name'],

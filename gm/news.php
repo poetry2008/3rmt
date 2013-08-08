@@ -20,7 +20,6 @@ function popupWindow(url) {
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div class="yui3-u" id="layout">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -125,7 +124,6 @@ function popupWindow(url) {
 <?php include('includes/float-box.php');?>
 
 </div>
-<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
 </div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 

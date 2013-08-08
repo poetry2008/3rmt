@@ -80,7 +80,7 @@
     tep_db_query("update ".TABLE_ORDERS." set is_gray = '1' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
     tep_db_query("update ".TABLE_PREORDERS." set is_gray = '1' where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
   
-    tep_db_query("update ".TABLE_CUSTOMERS_INFO." set customers_info_date_of_last_logon = NULL, customers_info_number_of_logons = 0, customers_info_date_account_created = '".$now_time."', customers_info_date_account_last_modified = '".$now_time."', global_product_notifications = 0, customer_last_resetpwd = '0000-00-00 00:00:00', user_update = '".tep_get_fullname($customers_info['customers_firstname'], $customers_info['customers_lastname'])."' where customers_info_id = '".$customer_id."'");
+    tep_db_query("update ".TABLE_CUSTOMERS_INFO." set customers_info_date_of_last_logon = NULL, customers_info_number_of_logons = 0, customers_info_date_account_created = '".$now_time."', customers_info_date_account_last_modified = '".$now_time."', global_product_notifications = 0, customer_last_resetpwd = '0000-00-00 00:00:00', user_update = '".tep_get_fullname($customers_info['customers_firstname'], $customers_info['customers_lastname'])."' where customers_info_id = '".$customer_id."'"); 
     //退会邮件
     $mail_array = tep_get_mail_templates('ACCOUNT_EXIT_MAIL_TEMPLATES',SITE_ID);
     $subject = $mail_array['title'];

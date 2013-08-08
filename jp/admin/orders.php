@@ -642,7 +642,7 @@ switch ($_GET['action']) {
                 '${ORDER_STATUS}',
                 '${SITE_NAME}',
                 '${SITE_URL}',
-                '${SUPPORT_EMAIL}',
+                '${SUPPORT_MAIL}',
                 '${PAY_DATE}'
                 ),array(
                   $check_status['customers_name'],
@@ -1005,7 +1005,7 @@ switch ($_GET['action']) {
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
+              '${SUPPORT_MAIL}',
               '${PAY_DATE}'
               ),array(
                 $check_status['customers_name'],
@@ -1031,8 +1031,9 @@ switch ($_GET['action']) {
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
-              '${PAY_DATE}'
+              '${SUPPORT_MAIL}',
+              '${PAY_DATE}',
+              '${MAIL_COMMENT}'
               ),array(
                 $check_status['customers_name'],
                 $check_status['customers_email_address'],
@@ -1044,7 +1045,8 @@ switch ($_GET['action']) {
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
+                orders_a($oID)
                 ),$comments);
           
         $products_ordered_mail = '';
@@ -1787,43 +1789,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                    '%".$_GET['keywords']."%' or op.products_name like
                    '%".$_GET['keywords']."%') " . $where_payment . $where_type ."  order by
                   ".$order_str;
-                  } else if(isset($_GET['email']) && $_GET['email'] != ''&& $_GET['keywords'] == ''){
-           $orders_query_raw = "
-           select distinct(o.orders_id), 
-               o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                 as torihiki_date_error,
-               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                 as date_purchased_error,
-               o.customers_id, 
-               o.customers_name, 
-               o.payment_method, 
-               o.date_purchased, 
-               o.last_modified, 
-               o.currency, 
-               o.currency_value, 
-               o.orders_status, 
-               o.orders_status_name,
-               o.orders_important_flag,
-               o.orders_care_flag,
-               o.orders_wait_flag,
-               o.orders_inputed_flag,
-               o.orders_work,
-               o.customers_email_address,
-               o.torihiki_houhou,
-               o.orders_comment,
-               o.confirm_payment_time, 
-               o.torihiki_date_end, 
-               o.site_id,
-               o.is_gray,
-               o.read_flag
-                 from " . TABLE_ORDERS . " o " . $from_payment . " ,
-               ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
-                 " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_status =
-                  '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and
-                  (o.customers_email_address like '%".$_GET['email']."%') " . $where_payment . $where_type ."  order by
-                  ".$order_str;
-                  }else {
+                  } else {
                   $orders_query_raw = "
                   select distinct(o.orders_id), 
                   o.torihiki_date, 

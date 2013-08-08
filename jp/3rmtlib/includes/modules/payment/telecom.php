@@ -514,13 +514,13 @@ class telecom  extends basePayment  implements paymentInterface  {
         '${USER_MAIL}',
         '${ORDER_TOTAL}',
         '${COMPANY_NAME}',
-        '${SUPPORT_EMAIL}',
+        '${SUPPORT_MAIL}',
         '${SITE_URL}',
         );
     $email_value = array(
         $order->customer['name'],
         get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),
-        $oID,
+        $order->info['orders_id'],
         $order->customer['email_address'],
         $total_price_mail,
         COMPANY_NAME,
@@ -542,10 +542,9 @@ class telecom  extends basePayment  implements paymentInterface  {
 /*----------------------------
  功能：显示后台支付方法列表 
  参数：$pay_info_array(array) 支付信息数组
- 参数：$default_email_info(string) 默认邮件地址
  返回值：无
  ---------------------------*/  
-  function admin_show_payment_list($pay_info_array, $default_email_info){
+  function admin_show_payment_list($pay_info_array){
 
    global $_POST;
    global $_GET;
@@ -578,7 +577,7 @@ class telecom  extends basePayment  implements paymentInterface  {
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email']) ? $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-   echo 'document.getElementsByName("con_email")[0].value = "'.(!empty($con_email[1])?$con_email[1]:$default_email_info).'";'."\n";
+   echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];

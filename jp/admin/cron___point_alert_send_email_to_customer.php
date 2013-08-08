@@ -128,7 +128,7 @@ o.customers_name AS customer_name,
         $point_out_date = date('Y年m月d日',$out_time-86400);
         $show_email_template = str_replace(
             array('${USER_NAME}','${USER_MAIL}','${POINT}','${VALID_DAY}','${SITE_NAME}','${LAST_VILID_DATE}'
-              ,'${SITE_URL}','${SUPPORT_EMAIL}'),
+              ,'${SITE_URL}','${SUPPORT_MAIL}'),
             array($customer_info['customer_name'],
               $customer_info['customer_email'],
               $customer_info_arr['point'],$value,
@@ -142,7 +142,7 @@ o.customers_name AS customer_name,
             $email_template);
         $title = str_replace(
             array('${USER_NAME}','${USER_MAIL}','${POINT}','${VALID_DAY}','${SITE_NAME}','${LAST_VILID_DATE}'
-              ,'${SITE_URL}','${SUPPORT_EMAIL}'),
+              ,'${SITE_URL}','${SUPPORT_MAIL}'),
             array($customer_info['customer_name'],
               $customer_info['customer_email'],
               $customer_info_arr['point'],$value,
@@ -175,11 +175,7 @@ o.customers_name AS customer_name,
 
         $parameter = '-f'.$From_Mail;
         $send_row++;
-        //替换通用邮件模板参数
-        $user_info = "\n";
-        $user_info .= 'IPアドレス　　　　　　：'.$_SERVER['REMOTE_ADDR']."\n";
-        $user_info .= 'ホスト名　　　　　　　：'.@gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n"; 
-        $user_info .= 'ユーザーエージェント　：'.$_SERVER['HTTP_USER_AGENT']."\n"; 
+        //替换通用邮件模板参数 
         $site_name = get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration');
         $http_server = get_configuration_by_site_id('HTTP_SERVER',$customer_info['site_id'],'configuration');
         $company_name = get_configuration_by_site_id('COMPANY_NAME',$customer_info['site_id'],'configuration');
@@ -194,7 +190,7 @@ o.customers_name AS customer_name,
                 '${COMPANY_NAME}', 
                 '${COMPANY_ADDRESS}', 
                 '${COMPANY_TEL}', 
-                '${SUPPORT_EMAIL}', 
+                '${SUPPORT_MAIL}', 
                 '${STAFF_MAIL}', 
                 '${STAFF_NAME}', 
                 '${SIGNATURE}', 
@@ -218,7 +214,7 @@ o.customers_name AS customer_name,
                 $email_footer,
                 $customer_info['customer_email'],
                 $customer_info['customer_name'],
-                $user_info,
+                '',
                 date('Y'),
                 date('m'),
                 date('d'),

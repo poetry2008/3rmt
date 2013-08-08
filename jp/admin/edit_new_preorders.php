@@ -581,7 +581,7 @@
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
+              '${SUPPORT_MAIL}',
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
@@ -627,7 +627,7 @@
               '${ORDER_STATUS}',
               '${SITE_NAME}',
               '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
+              '${SUPPORT_MAIL}',
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
@@ -1625,7 +1625,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder',$order['customers_email_address']);
+          $cpayment->admin_show_payment_list($payment_code,$pay_info_array,$_SESSION['create_preorder']['orders']['site_id'],$c_chk,'preorder',$order['customers_email_address'],(($c_chk == '2')?false:true));
           
           echo '});'."\n";
           echo '</script>'."\n";

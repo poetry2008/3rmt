@@ -839,7 +839,7 @@ function orderConfirmPage(){
   now          = new Date();
   nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
-  oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?><?php echo TEXT_TIME_LINK?><?php echo date('H:i', strtotime($order['torihiki_date_end']));?>';
+  oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?><?php echo TEXT_TIME_LINK;?><?php echo date('H:i', strtotime($order['torihiki_date_end']));?>';
   oldTime_value = '<?php echo strtotime($order['torihiki_date']);?>';
   today   = '<?php echo tep_date_long(time());?>';
   today_value = '<?php echo time();?>';
@@ -890,7 +890,6 @@ function orderConfirmPage(){
   } 
   if(shipping_time_flag && document.getElementById('new_date').selectedIndex != 0){
       document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
-      $("#hour_show_error").show();
       return false;
   }
 

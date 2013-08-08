@@ -87,7 +87,7 @@ if ($_GET['action'] == 'show_category_info') {
   if ($ocertify->npermission >= 10) {
     if (empty($site_id)) {
       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_MOVE, 'onclick="move_category_id(\''.$_GET['current_cid'].'\')"').'</a>'; 
-      $button[] = '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath='.$_GET['cPath'].'&cID='.$_GET['current_cid'].'&action=show_categories_manual&site_id='.$site_id).'">'.tep_html_element_button(IMAGE_MANUAL).'</a>'; 
+      $button[] = '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath='.$_GET['cPath'].'&cID='.$_GET['current_cid'].'&action=show_categories_manual&site_id='.$site_id).($_GET['search'] != '' ? '&search='.$_GET['search'] : '').'">'.tep_html_element_button(IMAGE_MANUAL).'</a>'; 
     } 
     if (!empty($site_id)) {
       if (tep_db_num_rows(tep_db_query("select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$_GET['current_cid']."' and site_id = '".$site_id."'"))) {
@@ -552,9 +552,9 @@ if ($_GET['action'] == 'show_category_info') {
  
   if (!$isstaff) {
     if (empty($site_id)) {
-      $button[] = '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' .  $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'.  '&site_id='.  $site_id.  '&page='.$_GET['page']) .'">'.tep_html_element_button(IMAGE_MANUAL).'</a>';
+      $button[] = '<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' .  $cPath . '&pID=' .  $pInfo->products_id .  '&action=show_products_manual'.  '&site_id='.  $site_id.  '&page='.$_GET['page']) .($_GET['search'] != '' ? '&search='.$_GET['search'] : '').'">'.tep_html_element_button(IMAGE_MANUAL).'</a>';
     }
-      $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id .  '&action=new'.($_GET['search']?'&search='.$_GET['search']:'')) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
+      $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
     if (empty($site_id)) {
       $button[] = '<input class="element_button" type="button" value="'.IMAGE_MOVE.'" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
       $button[] = '<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
@@ -569,7 +569,7 @@ if ($_GET['action'] == 'show_category_info') {
       }
     }
   } else {
-    $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id .  '&action=new') . '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
+    $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
   }
   if (empty($_GET['site_id'])) {
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
@@ -776,8 +776,14 @@ if ($_GET['action'] == 'show_category_info') {
       $sum_i++;
       if(isset($order_history['products_rate']) &&$order_history['products_rate']!=0 &&$order_history['products_rate']!=''){
         if($radices!=''&&$radices!=1&&$radices!=0){
-          $oh_fp = $order_history['final_price']/$order_history['products_rate']*$radices;
-          $oh_pq = $order_history['products_quantity']*$order_history['products_rate']/$radices;
+          $oh_fp = number_format($order_history['final_price']/$order_history['products_rate']*$radices,20,'.','');
+          $oh_pq = number_format($order_history['products_quantity']*$order_history['products_rate']/$radices,20,'.','');
+          if($oh_fp == 0){
+            $oh_fp = 0;
+          }
+          if($oh_pq == 0){
+            $oh_pq = 0;
+          }
         }else{
           $oh_fp = $order_history['final_price'];
           $oh_pq = $order_history['products_quantity'];
@@ -790,10 +796,12 @@ if ($_GET['action'] == 'show_category_info') {
         $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
         $sum_quantity += $oh_pq; 
       }
+      $oh_pq = number_format($oh_pq,20,'.',',');
+      $oh_fp = number_format($oh_fp,20,'.',',');
       $product_history_array[]['text'] = array(
             array('params' => 'class="main" width="120"', 'text' => $order_history['torihiki_date']), 
-            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$oh_pq.CATEGORY_GE_UNIT_TEXT), 
-            array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
+            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($oh_pq).CATEGORY_GE_UNIT_TEXT), 
+            array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
             array('params' => 'class="main" width="100"', 'text' => $order_history['orders_status_name']) 
           );   
     }
@@ -803,6 +811,11 @@ if ($_GET['action'] == 'show_category_info') {
     $product_history_row_quantity[]['text'] = array(
           array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
         );
+    $sum_vga = 0;
+    $sum_vga = number_format($sum_price/$sum_quantity,20,'.',',');
+    $sum_vga = display_quantity($sum_vga);
+    $sum_quantity = number_format($sum_quantity,20,'.',',');
+    $sum_quantity = display_quantity($sum_quantity);
     $product_history_row_quantity[]['text'] = array(
           array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
         );
@@ -815,7 +828,7 @@ if ($_GET['action'] == 'show_category_info') {
         );
     
     $product_history_row_average_num[]['text'] = array(
-        array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
+        array('align' => 'right', 'text' => $sum_vga.CATEGORY_MONEY_UNIT_TEXT) 
         );
     $product_history_row_average_num_str = $notice_box->get_table($product_history_row_average_num, '', $product_history_table_params); 
  
@@ -863,8 +876,14 @@ if ($_GET['action'] == 'show_category_info') {
         $sum_i++;
         if(isset($relate_order_history['products_rate']) &&$relate_order_history['products_rate']!=0 &&$relate_order_history['products_rate']!=''){
           if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-            $relate_oh_fp = $relate_order_history['final_price']/$relate_order_history['products_rate']*$relate_radices;
-            $relate_oh_pq = $relate_order_history['products_quantity']*$relate_order_history['products_rate']/$relate_radices;
+            $relate_oh_fp = number_format($relate_order_history['final_price']/$relate_order_history['products_rate']*$relate_radices,20,'.','');
+            $relate_oh_pq = number_format($relate_order_history['products_quantity']*$relate_order_history['products_rate']/$relate_radices,20,'.','');
+            if($relate_oh_fp == 0){
+              $relate_oh_fp = 0;
+            }
+            if($relate_oh_pq == 0){
+              $relate_oh_pq = 0;
+            }
           }else{
             $relate_oh_fp = $relate_order_history['final_price'];
             $relate_oh_pq = $relate_order_history['products_quantity'];
@@ -877,10 +896,12 @@ if ($_GET['action'] == 'show_category_info') {
           $sum_price += abs($relate_order_history['final_price']) * $relate_order_history['products_quantity'];
           $sum_quantity += $relate_oh_pq; 
         }
+        $relate_oh_pq = number_format($relate_oh_pq,20,'.',',');
+        $relate_oh_fp = number_format($relate_oh_fp,20,'.',',');
         $relate_product_history_array[]['text'] = array(
               array('params' => 'class="main" width="120"', 'text' => $relate_order_history['torihiki_date']), 
-              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>$relate_oh_pq .CATEGORY_GE_UNIT_TEXT), 
-              array('align' => 'right', 'params' => 'class="main"', 'text' => display_price($relate_oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
+              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($relate_oh_pq) .CATEGORY_GE_UNIT_TEXT), 
+              array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($relate_oh_fp).CATEGORY_MONEY_UNIT_TEXT), 
               array('params' => 'class="main" width="100"', 'text' => $relate_order_history['orders_status_name']) 
             );   
       } 
@@ -890,6 +911,11 @@ if ($_GET['action'] == 'show_category_info') {
       $relate_product_history_row_quantity[]['text'] = array(
             array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
           );
+      $sum_vga = 0;
+      $sum_vga = number_format($sum_price/$sum_quantity,20,'.',',');
+      $sum_vga = display_quantity($sum_vga);
+      $sum_quantity = number_format($sum_quantity,20,'.',',');
+      $sum_quantity = display_quantity($sum_quantity);
       $relate_product_history_row_quantity[]['text'] = array(
             array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
           );
@@ -902,7 +928,7 @@ if ($_GET['action'] == 'show_category_info') {
           );
       
       $relate_product_history_row_average_num[]['text'] = array(
-            array('align' => 'right', 'text' => display_price($sum_price/$sum_quantity).CATEGORY_MONEY_UNIT_TEXT) 
+            array('align' => 'right', 'text' => $sum_vga.CATEGORY_MONEY_UNIT_TEXT) 
           );
       $relate_product_history_row_average_num_str = $notice_box->get_table($relate_product_history_row_average_num, '', $relate_product_history_table_params); 
    
@@ -921,9 +947,11 @@ if ($_GET['action'] == 'show_category_info') {
     $history_info_str .= $relate_product_history_info_str;
     
     $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0);
+    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
     $out_relate_sum_str = sprintf(TEXT_RELATE_ROW_COUNT, $relate_products_name, $relate_sub_date, intval($relate_row_count));
     $history_info_str .= '<div>'.$out_relate_sum_str.'</div>';
+    $out_relate_product_radices =sprintf(TEXT_RELATE_PRODUCT_RADICES,number_format($relate_radices));
+    $history_info_str .= '<div>'.$out_relate_product_radices.'</div>';
   }
   
   $data_info_array = array();
@@ -3135,7 +3163,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
        $action_type = 'insert'; 
        $site_permission = editPermission($site_arr, $_GET['action_sid'],true);
     }
-    if(!$site_permission){
+    if(!$site_permission&&isset($_GET['action_sid'])&&$_GET['action_sid']){
       $str_disabled = ' disabled="disabled" ';
     }else{
       $str_disabled = '';
@@ -3372,11 +3400,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
              $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
     $review_select_end = "</select>";
     if(!isset($df_pid)||$df_pid==0){
-      $error_add_id = '<span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
+      $error_add_id = '<br><span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
     }
     $contents[]['text'] = array(
         array('text' => ENTRY_PRODUCT),
-        array('text' => $review_select.$ProductOptions.$review_select_end.'<br>'.$error_add_id),
+        array('text' => $review_select.$ProductOptions.$review_select_end.$error_add_id),
         array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$df_pid.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_id.'">'.'<input type="hidden" id="r_pid" value="'.$df_pid.'">')
     );
 
@@ -6558,7 +6586,7 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   $field_str = '*';
   if(isset($_POST['order_sort']) && $_POST['order_sort'] != '' && isset($_POST['order_type']) && $_POST['order_type'] != ''){
     switch($_POST['order_sort']){
- 
+
     case 'name':
       $order_sort = 'templates_title';
       $order_type = $_POST['order_type'];
