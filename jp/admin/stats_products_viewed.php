@@ -189,7 +189,7 @@ require("includes/note_js.php");
         );
     $stats_info[] = array(
         'params' => 'class="dataTableContent"'.$onclick_str,
-        'text'   => $products['products_name']
+        'text'   => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'search='.$products['products_name']) . '">' .$products['products_name'].'</a>'
         );
     $stats_info[] = array(
         'params' => 'class="dataTableContent"'.$onclick_str,
