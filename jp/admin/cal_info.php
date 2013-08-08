@@ -236,7 +236,7 @@ require("includes/note_js.php");
               }
               $cal_info[] = array(
                   'params' => 'class="dataTableContent"'.$onclik,
-                  'text'   => $list_status_arr[$i][0].$orders 
+                  'text'   => $orders.$list_status_arr[$i][0]
                   );
               $cal_info[] = array(
                   'params' => 'class="dataTableContent"'.$onclik,
@@ -268,7 +268,7 @@ require("includes/note_js.php");
               }
               $cal_info[] = array(
                   'params' => 'class="dataTableContent"'.$onclik,
-                  'text'   => $list_status_arr[$i][0].$orders
+                  'text'   => $orders.$list_status_arr[$i][0]
                   );
               $cal_info[] = array(
                   'params' => 'class="dataTableContent"'.$onclik,
@@ -300,7 +300,7 @@ require("includes/note_js.php");
               }
               $cal_info[] = array(
                   'params' => 'class="dataTableContent"'.$onclik,
-                  'text'   => $list_status_arr[$i][0].$orders 
+                  'text'   => $orders.$list_status_arr[$i][0]
                   );
               $cal_info[] = array(
                   'params' => 'class="dataTableContent"'.$onclik,

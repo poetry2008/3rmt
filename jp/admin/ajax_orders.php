@@ -2521,14 +2521,14 @@ echo json_encode($json_array);
       }
     }
     sort($site_info_array);
-    tep_db_query("update `show_site` set `site` = '".implode('-', $site_info_array)."' where `user` = '".$ocertify->auth_user."' and `page` ='".$_POST['current_file']."'");
+    tep_db_query("update `show_site` set `site` = '".implode('-',array_unique($site_info_array))."' where `user` = '".$ocertify->auth_user."' and `page` ='".$_POST['current_file']."'");
   } else {
     $site_info_array = $site_list_array; 
     if ($_POST['flag'] == 0&&count($site_info_array)>1) {
       unset($site_info_array[array_search($_POST['site_id'], $site_info_array)]);
     } 
     sort($site_info_array);
-    tep_db_query("insert into `show_site` values (null, '".$ocertify->auth_user."', '".$_POST['current_file']."', '".implode('-', $site_info_array)."')");  
+    tep_db_query("insert into `show_site` values (null, '".$ocertify->auth_user."', '".$_POST['current_file']."', '".implode('-', array_unique($site_info_array))."')");  
   }
   if(isset($_POST['unshow_list'])&&$_POST['unshow_list']!=''){
     $unshow_list_array = explode('-',$_POST['unshow_list']);

@@ -757,11 +757,13 @@ if($_GET['order_sort'] == 'date'){
      }
    }
 ?>
+      <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
       <td class="dataTableContent" align="left"><?php echo tep_date_short(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$info_value['orders_id'].'&search_type=orders_id', 'NONSSL').'">'.$info_value['orders_id']; ?></a></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info_value['pid'].'&site_id=0', 'NONSSL').'">'.$info_value['pname'];?></a></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
    </tr>
 <?php
     $orders_i++;
@@ -819,6 +821,7 @@ if($_GET['report'] != 5){
     $last = sizeof($info) - 1;
   ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+                <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
                 <?php
       switch ($srView) {
         case '3':
@@ -857,6 +860,8 @@ if($_GET['report'] != 5){
                   }
                 }
     ?></td>
+
+               <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
               </tr>
               <?php
     if ($srDetail) {
@@ -901,6 +906,7 @@ if($_GET['report'] != 5){
    }
   ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+                <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left">&nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info[$i]['pid'].'&site_id=0', 'NONSSL'); ?>"><?php echo $info[$i]['pname']; ?></a>
@@ -925,6 +931,7 @@ if($_GET['report'] != 5){
                 <?php
             }
   ?>
+               <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
               </tr>
               <?php
         }
@@ -982,11 +989,13 @@ if($_GET['report'] != 5){
    }
 ?> 
     <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
+      <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
       <td class="dataTableContent" align="left"><?php echo tep_date_short(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$info_value['orders_id'].'&search_type=orders_id', 'NONSSL').'">'.$info_value['orders_id']; ?></a></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info_value['pid'].'&site_id=0', 'NONSSL').'">'.$info_value['pname'];?></a></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
    </tr>
 <?php 
   }
