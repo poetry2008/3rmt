@@ -73,7 +73,6 @@ require("includes/note_js.php");
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
               $stats_str = 'ordersum desc';
-             // $stats_str = 'rownum asc';
             }else if($_GET['sort'] == 'site_name'){
               if($_GET['type'] == 'desc'){ 
                 $stats_str = 'romaji desc';
