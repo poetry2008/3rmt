@@ -902,7 +902,7 @@ function orderConfirmPage(){
   
   text += "<table class='box_des' summary='table'>\n"
   text += "<tr><td width='130' align='left' style='wdith:130px; text-align:left;' valign='top'>";
-  text += "備考";
+  text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";
   text += "</td><td align='left' style='wdith:130px; text-align:left;'>\n";
   text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");
   text += "</td></tr>\n";
