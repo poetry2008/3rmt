@@ -2521,11 +2521,6 @@ echo json_encode($json_array);
       }
     }
     sort($site_info_array);
-    $str_array = array(
-       '0' => '1',
-       '1' => '1',
-       '2' => '0'
-        );
     tep_db_query("update `show_site` set `site` = '".implode('-',array_unique($site_info_array))."' where `user` = '".$ocertify->auth_user."' and `page` ='".$_POST['current_file']."'");
   } else {
     $site_info_array = $site_list_array; 
