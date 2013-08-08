@@ -715,8 +715,8 @@ $mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname']
 $mailoption['USER_MAIL'] = $order->customer['email_address'];
 //配送料
 $shipping_fee_value = isset($_SESSION['h_shipping_fee']) ? $_SESSION['h_shipping_fee'] : 0; 
-$mailoption['SHIPPING_FEE']      = $currencies->format(abs($shipping_fee_value));
-$mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
+$mailoption['SHIPPING_FEE']      = str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format(abs($shipping_fee_value)));
+$mailoption['ORDER_TOTAL']      = str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format(abs($ot['value'])));
 @$payment_class = $payment_modules->getModule($payment);
 
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
@@ -770,6 +770,7 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
 }else{
   $email_order = str_replace("\n".'${USER_ADDRESS}','',$email_order); 
   $email_order = str_replace('${USER_ADDRESS}','',$email_order);
+  $email_order = str_replace("\n".TEXT_ORDERS_PRODUCTS_ADDRESS_INFO,'',$email_order);
 }
 $email_order = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order);
 $email_order = str_replace('${CUSTOMIZED_FEE}','',$email_order);
@@ -866,6 +867,7 @@ if($email_address_str != ''){
 }else{
   $email_printing_order = str_replace("\n".'${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace('${USER_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace("\n".str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',TEXT_ORDERS_PRODUCTS_ADDRESS_INFO),'',$email_printing_order);
 }
 
 # ------------------------------------------

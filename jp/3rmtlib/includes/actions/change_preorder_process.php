@@ -591,8 +591,8 @@ if($totals_email_str != ''){
   $mailoption['CUSTOMIZED_FEE'] = $totals_email_str;
 }
 $shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
-$mailoption['SHIPPING_FEE']      = $currencies->format(abs($shipping_fee_value));
-$mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num+$_SESSION['preorders_code_fee']));
+$mailoption['SHIPPING_FEE']      = str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format(abs($shipping_fee_value)));
+$mailoption['ORDER_TOTAL']      = str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format(abs($preorder_total_print_num+$_SESSION['preorders_code_fee'])));
 
 $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['PAYMENT']    = $preorder['payment_method'];
@@ -642,7 +642,7 @@ if(!empty($add_list)){
     $address_len_array[] = strlen($address_value[0]);
   }
   $maxlen = max($address_len_array);
-  $email_address_str = TEXT_ORDERS_PRODUCTS_ADDRESS_INFO."\n";
+  $email_address_str = "";
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $maxlen = 9;
   foreach($add_list as $ad_value){
@@ -655,6 +655,7 @@ if(!empty($add_list)){
 }else{
   $email_order_text = str_replace("\n".'${USER_ADDRESS}','',$email_order_text);
   $email_order_text = str_replace('${USER_ADDRESS}','',$email_order_text);
+  $email_order_text = str_replace("\n".TEXT_ORDERS_PRODUCTS_ADDRESS_INFO,'',$email_order_text);
 }
 if($totals_email_str == ''){
   $email_order_text = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order_text);
@@ -782,6 +783,7 @@ if($email_address_str != ''){
 }else{
   $email_printing_order = str_replace("\n".'${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace('${USER_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace("\n".str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',TEXT_ORDERS_PRODUCTS_ADDRESS_INFO),'',$email_printing_order);
 }
 
 $email_printing_order = tep_replace_mail_templates($email_printing_order,$preorder['customers_email_address'],$preorder['customers_name']);
