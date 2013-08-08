@@ -250,7 +250,7 @@ require("includes/note_js.php");
        );
    $stats_info[] = array(
        'params' => 'class="dataTableContent" align="right"'.$onlick,
-       'text'   => '<a href="' .  tep_href_link(FILENAME_ORDERS,'email='.$customers['customers_email_address'].'&keywords=&search_type=os_2', 'NONSSL') . '">' .$currencies->format($customers['ordersum'].'</a>')
+       'text'   => '<a href="' .  tep_href_link(FILENAME_ORDERS,'email='.$customers['customers_email_address'].'&keywords=&search_type=os_2', 'NONSSL') . '">' .(($customers['ordersum'] < 0)?'<font color="#ff0000">':'').$currencies->format($customers['ordersum']).(($customers['ordersum'] < 0)?'</font>':'').'</a>'
        ); 
    $stats_info[] = array(
        'params' => 'class="dataTableContent" align="right"',
@@ -284,7 +284,7 @@ require("includes/note_js.php");
              </tr>
               <tr>
                 <td class="smallText" valign="top"><?php echo $customers_split->display_count($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
-                <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?></div></td>
+                <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page','info', 'x', 'y', 'id'))); ?></div></td>
               </tr>
             </table>
 		</td>

@@ -69,7 +69,7 @@ require("includes/note_js.php");
                       $stats_type = 'asc';
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                  $stats_str = 'products_viewed DESC';
+                  $stats_str = 'products_viewed desc, products_name asc';
             }else if($_GET['sort'] == 'products_name'){
                   if($_GET['type'] == 'desc'){
                       $stats_str = 'products_name desc';
@@ -80,10 +80,10 @@ require("includes/note_js.php");
                    }
             }else if($_GET['sort'] == 'products_viewed'){
                   if($_GET['type'] == 'desc'){
-                      $stats_str = 'products_viewed desc';
+                      $stats_str = 'products_viewed desc, products_name asc';
                       $stats_type = 'asc';
                    }else{
-                      $stats_str = 'products_viewed asc';
+                      $stats_str = 'products_viewed asc, products_name desc';
                       $stats_type = 'desc';
                    }
             }else if($_GET['sort'] == 'rownum'){
@@ -144,7 +144,7 @@ require("includes/note_js.php");
     $rows = 0;
   }
   $products_query_raw = "
-    select * from (select (@mycnt := @mycnt + 1) as rownum,products_viewed,products_name from(select p.products_id, 
+    select * from (select (@mycnt := @mycnt + 1) as rownum,products_viewed,products_name, products_id from(select p.products_id, 
            pd.products_name, 
            sum(pd.products_viewed) as products_viewed, 
            l.name 
@@ -171,22 +171,28 @@ require("includes/note_js.php");
     } else {
       $nowColor = $odd; 
     }
-    $stats_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+    if ($_GET['id'] == $products['rownum']) {
+      $stats_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
+    } else {
+      $stats_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+    }
+   
+    $onclick_str = ' onClick="document.location.href=\''.tep_href_link(FILENAME_STATS_PRODUCTS_VIEWED,'sort='.$_GET['sort'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&id='.$products['rownum'].'&type='.$_GET['type']).'\'"';
     $stats_info = array();
     $stats_info[] = array(
         'params' => 'class="dataTableContent"',
         'text'   => '<input type="checkbox" disabled="disabled">'
         );
     $stats_info[] = array(
-        'params' => 'class="dataTableContent"',
+        'params' => 'class="dataTableContent"'.$onclick_str,
         'text'   => $products['rownum']
         );
     $stats_info[] = array(
-        'params' => 'class="dataTableContent"',
-        'text'   => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_VIEWED . '?page=' . $_GET['page'], 'NONSSL') . '">' . $products['products_name'] . '</a>'
+        'params' => 'class="dataTableContent"'.$onclick_str,
+        'text'   => $products['products_name']
         );
     $stats_info[] = array(
-        'params' => 'class="dataTableContent"',
+        'params' => 'class="dataTableContent"'.$onclick_str,
         'text'   => $products['products_viewed']
         );
     $stats_info[] = array(
@@ -221,7 +227,7 @@ require("includes/note_js.php");
                       </tr>
               <tr>
                 <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-                <td class="smallText" align="right"><div class="td_box"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
+                <td class="smallText" align="right"><div class="td_box"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'id'))); ?></div></td>
               </tr>
             </table>
 		</td>

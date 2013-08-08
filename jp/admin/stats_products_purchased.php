@@ -69,7 +69,7 @@ require("includes/note_js.php");
                  $stats_type = 'asc';
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                  $stats_str = 'products_ordered desc';
+                  $stats_str = 'products_ordered desc, products_name asc';
             }else if($_GET['sort'] == 'products_name'){
                   if($_GET['type'] == 'desc'){
                       $stats_str = 'products_name desc';
@@ -80,10 +80,10 @@ require("includes/note_js.php");
                    }
             }else if($_GET['sort'] == 'products_ordered'){
                   if($_GET['type'] == 'desc'){
-                      $stats_str = 'products_ordered desc';
+                      $stats_str = 'products_ordered desc, products_name asc';
                       $stats_type = 'asc';
                    }else{
-                      $stats_str = 'products_ordered asc';
+                      $stats_str = 'products_ordered asc, products_name desc';
                       $stats_type = 'desc';
                    }
             }else if($_GET['sort'] == 'rownum'){
@@ -153,8 +153,7 @@ require("includes/note_js.php");
       and pd.language_id = '" . $languages_id. "' 
       and pd.site_id ='0'
       and p.products_ordered > 0 
-    group by pd.products_id ) g order by products_ordered desc,products_name asc";
-    $products_query_raw .= ") z order by ".$stats_str;
+    group by pd.products_id ) g order by products_ordered desc,products_name asc) z order by ".$stats_str;
   $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_query_raw, $products_query_numrows);
   tep_db_query("set @mycnt=0");
   $products_query = tep_db_query($products_query_raw);
@@ -268,7 +267,7 @@ require("includes/note_js.php");
                   </tr>
               <tr>
                 <td class="smallText" valign="top"><?php echo $products_split->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS); ?></td>
-                <td class="smallText" align="right"><div class="td_box"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page']); ?></div></td>
+                <td class="smallText" align="right"><div class="td_box"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'id'))); ?></div></td>
               </tr>
             </table>
 		</td>

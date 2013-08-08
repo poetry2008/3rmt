@@ -1444,9 +1444,10 @@ function tep_cfg_pull_down_zone_list($zone_id,$empty_params = '',$params = '') {
     功能: 生成税率的下拉列表  
     参数: $tax_class_id(int) 税率id 
     参数: $key(string) 下拉列表的名字
+    参数: $params(string) 参数设置
     返回值: 税率的下拉列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
+function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
 
   $tax_class_array = array(array('id' => '0', 'text' => TEXT_NONE));
@@ -1456,7 +1457,7 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
         'text' => $tax_class['tax_class_title']);
   }
 
-  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id);
+  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id, $params);
 }
 
 /* -------------------------------------
@@ -2221,9 +2222,10 @@ function tep_cfg_pull_down_zone_classes($zone_class_id, $key = '') {
     功能: 获取订单状态的下拉列表 
     参数: $order_status_id(int) 订单状态id 
     参数: $key(string) 列表名 
+    参数: $params(string) 参数设置
     返回值: 订单状态的下拉列表(string) 
  ------------------------------------ */
-function tep_cfg_pull_down_order_statuses($order_status_id, $key = '') {
+function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params = '') {
   global $languages_id;
 
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
@@ -2235,7 +2237,7 @@ function tep_cfg_pull_down_order_statuses($order_status_id, $key = '') {
         'text' => $statuses['orders_status_name']);
   }
 
-  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id);
+  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id, $params);
 }
 
 /* -------------------------------------
@@ -10939,4 +10941,37 @@ function tep_replace_mail_templates($mail_templates,$users_email='',$users_name=
               );
   $mail_templates = str_replace($mode_array,$replace_array,$mail_templates);
   return $mail_templates;
+}
+/*-----------------------
+  功能: 处理小数的输出结果 
+  参数: $float(float)要处理的数字
+  返回: 处理后的数字
+  ----------------------*/
+function display_quantity($float){
+  $arr = explode('.',$float);
+  if(empty($arr[1])||$arr[1]==null||$arr[1]==''){
+    return $float;
+  }else{
+    $res = $arr[0];
+    if($arr[1]!=''&&$arr[1]!=0){
+      $res .= '.';
+      $str_arr = str_split($arr[1]);
+      $i = 0;
+      foreach($str_arr as $value){
+        $i++;
+        if($str_arr[0]!=0&&$str_arr[1]==0&&$i==2){
+          break;
+        }
+        $res .= $value;
+        if($arr[0]!=0&&$i==2){
+          break;
+        }
+        if($i>=2&&$value!='0'){
+          break;
+        }
+      }
+      $res = preg_replace('/0+$/','',$res);
+    }
+    return $res;
+  }
 }

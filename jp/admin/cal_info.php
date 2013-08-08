@@ -3,8 +3,15 @@
   $Id$
 */
   require('includes/application_top.php');
-
-
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+      $show_list_array = explode('-',$_GET['site_id']);
+  } else {
+      $show_list_str = tep_get_setting_site_info('cal_info.php');
+      $sql_site_where = 'site_id in ('.$show_list_str.')';
+      $show_list_array = explode(',',$show_list_str);
+  }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -14,6 +21,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -54,65 +62,287 @@ require("includes/note_js.php");
       </tr>
       <tr>
         <td>
-        <?php tep_site_head_list('cal_info.php');?>
+        <?php tep_show_site_filter('cal_info.php',true,array(0));?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
             <?php
+            if(!isset($_GET['type']) || $_GET['type'] == ''){
+                      $_GET['type'] = 'asc';
+            }
+            if($cal_type == ''){
+                $cal_type = 'asc';
+            }
+            if($_GET['sort'] == 'project'){
+                if($_GET['type'] == 'desc'){
+                   $cal_type = 'asc';
+                }else{
+                   $cal_type = 'desc';
+                }
+            }else if($_GET['sort'] == 'number'){
+                if($_GET['type'] == 'desc'){
+                   $cal_type = 'asc';
+                }else{
+                   $cal_type = 'desc';
+                }
+            }
+            if($_GET['sort'] == 'project'){
+                if($_GET['type'] == 'desc'){
+                   $project = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                   $project = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
+            if($_GET['sort'] == 'number'){
+                if($_GET['type'] == 'desc'){
+                   $number = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                 }else{
+                   $number = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                 }
+            }
             $list_status_arr = array(); 
             $list_num = 0; 
             //所有订单状态信息 
-            $orders_status_query = tep_db_query("select orders_status_name, orders_status_id from ".TABLE_ORDERS_STATUS." where language_id = '".$languages_id."'"); 
+            $orders_status_sql = "select orders_status_name, orders_status_id from ".TABLE_ORDERS_STATUS." where language_id = '".$languages_id."' group by orders_status_name,orders_status_id";
+            $cal_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $orders_status_sql, $cal_query_numrows);
+            $orders_status_query = tep_db_query($orders_status_sql); 
             while ($orders_status_res = tep_db_fetch_array($orders_status_query)) {
-              $site_id = (isset($_GET['site_id'])?$_GET['site_id']:1); 
-              $site_orders_pending_query = tep_db_query("select count(*) as count from ".TABLE_ORDERS." where site_id = ".$site_id." and orders_status = '".$orders_status_res['orders_status_id']."'"); 
+              $site_orders_pending_query = tep_db_query("select count(*) as count from ".TABLE_ORDERS." where ".$sql_site_where." and orders_status = '".$orders_status_res['orders_status_id']."'"); 
               $site_orders_pending_res = tep_db_fetch_array($site_orders_pending_query); 
-              $list_status_arr[]= array($orders_status_res['orders_status_name'], $site_orders_pending_res['count']); 
+              $list_status_arr[]= array($orders_status_res['orders_status_name'], $site_orders_pending_res['count'],'orders'); 
             } 
             //各个网站所拥有的顾客数量 
-            $site_customers_query = tep_db_query("select count(*) as count from ".TABLE_CUSTOMERS." where site_id = ".$site_id); 
+            $site_customers_query = tep_db_query("select count(*) as count from ".TABLE_CUSTOMERS." where ".$sql_site_where); 
             $site_customers_res = tep_db_fetch_array($site_customers_query); 
              
-            $list_status_arr[] = array(HEADER_ENTRY_CAL_CUSTOMERS, $site_customers_res['count']); 
             //商品数量 
             $site_products_query = tep_db_query("select count(*) as count from ".TABLE_PRODUCTS); 
                                 $site_products_res = tep_db_fetch_array($site_products_query); 
-            $list_status_arr[] = array(HEADER_ENTRY_CAL_PRODUCTS, $site_products_res['count']); 
             //各个网站的评论数量 
-            $site_reviews_query = tep_db_query("select count(*) as count from ".TABLE_REVIEWS." where site_id = ".$site_id); 
+            $site_reviews_query = tep_db_query("select count(*) as count from ".TABLE_REVIEWS." where ".$sql_site_where); 
             $site_reviews_res = tep_db_fetch_array($site_reviews_query); 
-            $list_status_arr[] = array(HEADER_ENTRY_CAL_REVIEWS, $site_reviews_res['count']); 
-             
-             foreach ($list_status_arr as $list_key => $list_value) {
-              if ($list_num == 0) {
-                $list_head_str = '<tr class="dataTableHeadingRow">';
-                $list_data_str = '<tr class="dataTableRow">';
-                echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">';
-              }
-              $list_head_str .= '<td class="dataTableHeadingContent" align="center">'.$list_value[0].'</td>';    
-              $list_data_str .= '<td class="dataTableContent" align="center">'.$list_value[1].'</td>'; 
-              $list_num++;
-              if ($list_num % 13 == 0) {
-                echo $list_head_str.'</tr>'; 
-                echo $list_data_str.'</tr>'; 
-                echo '</table><br><br>'; 
-                echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">';
-                $list_head_str = '<tr class="dataTableHeadingRow">';
-                $list_data_str = '<tr class="dataTableRow">';
-              }
+            $cal_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+            $notice_box = new notice_box('','',$keywords_table_params);
+            $cal_table_row = array();
+            $cal_title_row = array();
+            $cal_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox">');
+            if($_GET['sort'] == 'project'){
+            $cal_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('cal_info.php','sort=project&type='.$cal_type.(isset($_GET['id']) && $_GET['id']?'&id='.$_GET['id']:'')).'">'.TEXT_CAL_PROJECT.$project.'</a>');
+            }else{
+            $cal_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('cal_info.php','sort=project&type=desc'.(isset($_GET['id']) && $_GET['id']?'&id='.$_GET['id']:'')).'">'.TEXT_CAL_PROJECT.$project.'</a>');
             }
-            if ($list_num % 13 != 0) {
-              echo $list_head_str.'</tr>'; 
-              echo $list_data_str.'</tr>'; 
-              echo '</table>'; 
-            } else {
-              echo '</table>'; 
+            if($_GET['sort'] == 'number'){
+            $cal_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('cal_info.php','sort=number&type='.$cal_type.(isset($_GET['id']) && $_GET['id']?'&id='.$_GET['id']:'')).'">'.TEXT_CAL_NUMBER.$number.'</a>');
+            }else{
+            $cal_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('cal_info.php','sort=number&type=desc'.(isset($_GET['id']) && $_GET['id']?'&id='.$_GET['id']:'')).'">'.TEXT_CAL_NUMBER.$number.'</a>');
             }
+            $cal_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
+            $cal_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $cal_title_row);
+            $orders_p_status_sql = "select orders_status_name, orders_status_id from ".TABLE_PREORDERS_STATUS." where language_id = '".$languages_id."' group by orders_status_name,orders_status_id";
+            $cal_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $orders_p_status_sql, $cal_query_numrows);
+            $orders_p_status_query = tep_db_query($orders_p_status_sql); 
+            while ($orders_status_res = tep_db_fetch_array($orders_p_status_query)) {
+              $site_orders_pending_query = tep_db_query("select count(*) as count from ".TABLE_PREORDERS." where ".$sql_site_where." and orders_status = '".$orders_status_res['orders_status_id']."' order by count desc"); 
+              $site_orders_pending_res = tep_db_fetch_array($site_orders_pending_query); 
+              $list_status_arr[]= array($orders_status_res['orders_status_name'], $site_orders_pending_res['count'],'preorders'); 
+            } 
+            //商品数量 
+            $site_products_query = tep_db_query("select count(*) as count from ".TABLE_PRODUCTS); 
+            $site_products_res = tep_db_fetch_array($site_products_query); 
+            $list_status_arr[] = array(HEADER_ENTRY_CAL_PRODUCTS, $site_products_res['count'],'NULL'); 
+            //各个网站的评论数量 
+            $site_reviews_query = tep_db_query("select count(*) as count from ".TABLE_REVIEWS." where ".$sql_site_where); 
+            $site_reviews_res = tep_db_fetch_array($site_reviews_query); 
+            $list_status_arr[] = array(HEADER_ENTRY_CAL_REVIEWS, $site_reviews_res['count'],'NULL'); 
+            //各个网站所拥有的顾客数量 
+            $site_customers_query = tep_db_query("select count(*) as count from ".TABLE_CUSTOMERS." where ".$sql_site_where); 
+            $site_customers_res = tep_db_fetch_array($site_customers_query); 
+            $list_status_arr[] = array(HEADER_ENTRY_CAL_CUSTOMERS, $site_customers_res['count'],'NULL'); 
+            $list_arr = array();
+            $list_array = array();
+            $list_project = array();
+            for($i = 0;$i < count($list_status_arr);$i++){
+               $list_arr[] = $list_status_arr[$i][1];
+               $list_array[] = $list_status_arr[$i][0];
+               $list_type[] = $list_status_arr[$i][2];
+            }
+            if($_GET['sort'] == 'number'){
+               $k = 0;
+               if($_GET['type'] == 'desc'){
+                 arsort($list_arr);
+                 foreach($list_arr as $key => $value){
+                      $list_status_arr[$k][0] = $list_array[$key];
+                      $list_status_arr[$k][1] = $list_arr[$key];
+                      $list_status_arr[$k][2] = $list_type[$key];
+                      $k++;
+                 }
+               }else{
+                 asort($list_arr);
+                 foreach($list_arr as $key => $value){
+                      $list_status_arr[$k][0] = $list_array[$key];
+                      $list_status_arr[$k][1] = $list_arr[$key];
+                      $list_status_arr[$k][2] = $list_type[$key];
+                      $k++;
+                 }
+               }
+            }
+            if($_GET['sort'] == 'project'){
+               $k = 0;
+               if($_GET['type'] == 'desc'){
+                 arsort($list_array);
+                 foreach($list_array as $key => $value){
+                      $list_status_arr[$k][0] = $list_array[$key];
+                      $list_status_arr[$k][1] = $list_arr[$key];
+                      $list_status_arr[$k][2] = $list_type[$key];
+                      $k++;
+                 }
+               }else{
+                 asort($list_array);
+                 foreach($list_array as $key => $value){
+                      $list_status_arr[$k][0] = $list_array[$key];
+                      $list_status_arr[$k][1] = $list_arr[$key];
+                      $list_status_arr[$k][2] = $list_type[$key];
+                      $k++;
+                 }
+               }
+            }
+            for($i = 0; $i < count($list_status_arr);$i++) {
+              if($nowColor == ''){ $nowColor = 'dataTableRow'; }
+              $even = 'dataTableSecondRow';
+              $odd  = 'dataTableRow';
+              if (isset($nowColor) && $nowColor == $odd) {
+                   $nowColor = $even;
+              } else {
+                   $nowColor = $odd;
+              }
+              if(!isset($_GET['sort'])){
+              $onclik = 'onClick="document.location.href=\''.tep_href_link('cal_info.php','id='.$list_status_arr[$i][0].$list_status_arr[$i][2].$list_status_arr[$i][1].(isset($_GET['sort'])?'&sort='.$_GET['sort']:'').(isset($_GET['type'])?'&type='.$_GET['type']:'')).'\'"';
+              if(isset($_GET['id']) && $_GET['id'] == $list_status_arr[$i][0].$list_status_arr[$i][2].$list_status_arr[$i][1]){
+              $cal_params = 'class=" dataTableRowSelected " onmouseover="this.style.cursor=\'hand\'" '; 
+              }else{
+              $cal_params = 'class=" '.$nowColor.' " onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\' '.$nowColor.' \'"';
+              }
+              $cal_info = array();
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"',
+                  'text'   => '<input type="checkbox" disabled="disabled">'
+                  );
+              if($list_status_arr[$i][2] == 'orders'){
+                  $orders = TEXT_CAL_ORDER;
+              }else if($list_status_arr[$i][2] == 'preorders'){
+                  $orders = TEXT_CAL_PREORDER;
+              }else if($list_status_arr[$i][2] == 'NULL'){
+                  $orders = '';
+              }
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"'.$onclik,
+                  'text'   => $list_status_arr[$i][0].$orders 
+                  );
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"'.$onclik,
+                  'text'   => $list_status_arr[$i][1]
+                  );
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent" align="right"',
+                  'text'   => tep_image('images/icons/info_gray.gif')
+                  );
+              $cal_table_row[] = array('params' => $cal_params, 'text' => $cal_info);
+              }else if($_GET['sort'] == 'number'){
+              $onclik = 'onClick="document.location.href=\''.tep_href_link('cal_info.php','id='.$list_status_arr[$i][0].$list_status_arr[$i][1].$list_status_arr[$i][2].(isset($_GET['sort'])?'&sort='.$_GET['sort']:'').(isset($_GET['type'])?'&type='.$_GET['type']:'')).'\'"';
+              if(isset($_GET['id']) && $_GET['id'] == $list_status_arr[$i][0].$list_status_arr[$i][2].$list_status_arr[$i][1]){
+              $cal_params = 'class=" dataTableRowSelected " onmouseover="this.style.cursor=\'hand\'" '; 
+              }else{
+              $cal_params = 'class=" '.$nowColor.' " onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\' '.$nowColor.' \'"';
+              }
+              $cal_info = array();
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"',
+                  'text'   => '<input type="checkbox" disabled="disabled">'
+                  );
+              if($list_status_arr[$i][2] == 'orders'){
+                  $orders = TEXT_CAL_ORDER;
+              }else if($list_status_arr[$i][2] == 'preorders'){
+                  $orders = TEXT_CAL_PREORDER;
+              }else if($list_status_arr[$i][2] == 'NULL'){
+                  $orders = '';
+              }
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"'.$onclik,
+                  'text'   => $list_status_arr[$i][0].$orders
+                  );
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"'.$onclik,
+                  'text'   => $list_status_arr[$i][1]
+                  );
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent" align="right"',
+                  'text'   => tep_image('images/icons/info_gray.gif')
+                  );
+              $cal_table_row[] = array('params' => $cal_params, 'text' => $cal_info);
+              }else if($_GET['sort'] == 'project'){
+              $onclik = 'onClick="document.location.href=\''.tep_href_link('cal_info.php','id='.$list_status_arr[$i][0].$list_status_arr[$i][2].$list_status_arr[$i][1].(isset($_GET['sort'])?'&sort='.$_GET['sort']:'').(isset($_GET['type'])?'&type='.$_GET['type']:'')).'\'"';
+              if(isset($_GET['id']) && $_GET['id'] == $list_status_arr[$i][0].$list_status_arr[$i][2].$list_status_arr[$i][1]){
+              $cal_params = 'class=" dataTableRowSelected " onmouseover="this.style.cursor=\'hand\'" '; 
+              }else{
+              $cal_params = 'class=" '.$nowColor.' " onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\' '.$nowColor.' \'"';
+              }
+              $cal_info = array();
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"',
+                  'text'   => '<input type="checkbox" disabled="disabled">'
+                  );
+              if($list_status_arr[$i][2] == 'orders'){
+                  $orders = TEXT_CAL_ORDER;
+              }else if($list_status_arr[$i][2] == 'preorders'){
+                  $orders = TEXT_CAL_PREORDER;
+              }else if($list_status_arr[$i][2] == 'NULL'){
+                  $orders = '';
+              }
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"'.$onclik,
+                  'text'   => $list_status_arr[$i][0].$orders 
+                  );
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent"'.$onclik,
+                  'text'   => $list_status_arr[$i][1]
+                  );
+              $cal_info[] = array(
+                  'params' => 'class="dataTableContent" align="right"',
+                  'text'   => tep_image('images/icons/info_gray.gif')
+                  );
+              $cal_table_row[] = array('params' => $cal_params, 'text' => $cal_info);
+              }
+             }
+             $notice_box->get_contents($cal_table_row);
+             $notice_box->get_eof(tep_eof_hidden());
+             echo $notice_box->show_notice();
             ?> 
-            </table> 
             </td>
           </tr>
-        </table></td>
+        </table>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+          <tr>
+           <td>
+            <?php
+             if( count($cal_table_row) > 0){
+                if($ocertify->npermission >= 15){
+                   echo '<select  disabled="disabled">';
+                   echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';
+                   echo '<option value="1">'.TEXT_CONTENTS_DELETE_ACTION.'</option>';
+                   echo '</select>';
+                }
+             }else{
+                   echo TEXT_DATA_EMPTY;
+             }
+             ?>
+              </td>
+             </tr>
+             <tr>
+              <td class="smallText" valign="top"><?php echo $cal_split->display_count(count($list_status_arr), MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+              </td>
+             </tr>
+          </table>
+        </td>
       </tr>
     </table>
     </div> 
