@@ -18,7 +18,7 @@
                       '${SITE_NAME}', 
                       '${COMPANY_NAME}',
                       '${SITE_URL}',
-                      '${SUPPORT_EMAIL}'
+                      '${SUPPORT_MAIL}'
                     );
   $replace_array = array(
                       STORE_NAME, 

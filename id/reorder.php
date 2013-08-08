@@ -317,7 +317,7 @@ document.onclick=function(e){
       '${COMPANY_NAME}',
       '${COMPANY_ADDRESS}',
       '${COMPANY_TEL}',
-      '${SUPPORT_EMAIL}',
+      '${SUPPORT_MAIL}',
       '${STAFF_MAIL}',
       '${STAFF_NAME}',
       '${SIGNATURE}',

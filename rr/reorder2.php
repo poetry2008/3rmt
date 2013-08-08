@@ -3,11 +3,9 @@
  $Id$
 */
 require('includes/application_top.php');
+require(DIR_WS_LANGUAGES . $language . '/' . 'reorder2.php');
 
-define('HEADING_TITLE', '再配達依頼');
-define('MINUTES', 30);
-
-$breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
+$breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
 ?>
 <?php page_head();?>
 <script type="text/javascript" src='./js/order.js'></script>
@@ -42,14 +40,14 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           $time     = strtotime($datetime);
           if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
             // time error
-            echo '<div class="comment">【お届け希望日】を選択してください。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
+            echo '<div class="comment">'.TEXT_INFO_FOR_TRADE.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
             $email_error = false;
           } else if($name==''||$date==''||$minute==''||$hour==''|| $product==''){
             $email_error = true;
           } else if(!tep_validate_email($email)){
             $email_error = true;
           } else {
-            echo '<div class="comment"><div class="product_info_box">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div></div>';
+            echo '<div class="comment"><div class="product_info_box">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.' <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="'.TEXT_TOP_CON.'" title="'.TEXT_TOP_CON.'"></a></div></div></div>';
 
             $email_order = '';
             $mail_info = tep_get_mail_templates('REORDER_MAIL_CONTENT_TWO', 0);
@@ -67,7 +65,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
                 '${COMPANY_NAME}', 
                 '${COMPANY_ADDRESS}', 
                 '${COMPANY_TEL}', 
-                '${SUPPORT_EMAIL}', 
+                '${SUPPORT_MAIL}', 
                 '${STAFF_MAIL}', 
                 '${STAFF_NAME}', 
                 '${SIGNATURE}', 
@@ -122,7 +120,7 @@ if(!isset($email_error)||$email_error == true){?>
 <form action="reorder2.php" method="post" name="order">
 <table class="information_table">
  <tr>
-  <td bgcolor="#333333" width='120'>お名前</td>
+ <td bgcolor="#333333" width='120'><?php echo TEXT_REORDER_OID_NAME;?></td>
   <td bgcolor="#333333"><input type='text'  name='name' value='<?php
   if(isset($name)&&$name){
     echo $name;
@@ -132,7 +130,7 @@ if(!isset($email_error)||$email_error == true){?>
   }?></span></td>
  </tr>
  <tr>
-  <td bgcolor="#333333">メールアドレス</td>
+ <td bgcolor="#333333"><?php echo TEXT_REORDER_EMAIL_TITLE;?></td>
   <td bgcolor="#333333"><input type='text'  name='email' <?php
   if(isset($email)&&$email){
     if(preg_match('/\'/',$email)){
@@ -146,11 +144,11 @@ if(!isset($email_error)||$email_error == true){?>
  }?></span><?php
  if(isset($email_error)&&$email_error&&$email!=''&&!tep_validate_email($email)){
    echo "<br>";
-   echo "<font color='red'>入力されたメールアドレスは不正です!</font>";
+   echo "<font color='red'>".TEXT_REORDER_EMAIL_ERROR."</font>";
  }?></td>
  </tr>
  <tr>
-  <td bgcolor="#333333">ゲームタイトル</td>
+ <td bgcolor="#333333"><?php echo TEXT_REORDER_GAME_TITLE;?></td>
   <td bgcolor="#333333"><input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
     echo $product;
@@ -160,7 +158,7 @@ if(!isset($email_error)||$email_error == true){?>
  }?></span></td>
  </tr>
  <tr>
-  <td bgcolor="#333333">お届け日時</td>
+ <td bgcolor="#333333"><?php echo TEXT_REORDER_TRADE_DATE;?></td>
   <td bgcolor="#333333">
    <select class="margin_clear" name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
     <option value=''>--</option>
@@ -179,11 +177,11 @@ if(!isset($email_error)||$email_error == true){?>
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
    <br >
-   <font color="red">ご希望のお時間に添えない場合は、弊社より「お届け日時」をご連絡させていただきます。</font>
+   <font color="red"><?php echo TEXT_REORDER_TREADE_TEXT;?></font>
   </td>
  </tr>
 <tr>
-<td bgcolor="#333333">備考</td>
+<td bgcolor="#333333"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
 <td bgcolor="#333333"><textarea name='comment' id='comment' cols="3" rows="3"><?php
 if(isset($comment)&&$comment){
   echo $comment;
@@ -192,8 +190,8 @@ if(isset($comment)&&$comment){
 </table>
 <br>
 <p align="center">
-  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" >
-  <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick='javascript:document.order.reset();return false;' >
+<input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_INFO_CONFIRM;?>" title="<?php echo TEXT_REORDER_INFO_CONFIRM;?>" >
+<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick='javascript:document.order.reset();return false;' >
 </p>
 </form>
 <?php }?></div></div>
