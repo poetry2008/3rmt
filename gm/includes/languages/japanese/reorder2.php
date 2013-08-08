@@ -1,6 +1,6 @@
 <?php
 define('HEADING_TITLE', '再配達依頼');
-define('MINUTES', 20);
+define('MINUTES', 30);
 define('TEXT_BREADCRUMB_TITLE','再配達フォーム');
 define('TEXT_BACK_TO_TOP','TOPに戻る');
 define('TEXT_INFO_FOR_TRADE','【お届け希望日】を選択してください。');
