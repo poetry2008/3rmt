@@ -301,7 +301,6 @@ date("Y") - $i; ?></option>
               <td colspan="4" class="menuBoxHeading" align="right"><input type="submit" value="<?php echo SR_REPORT_SEND; ?>">
               </td>
             </tr>
-
               </table>
               </td>
              
@@ -316,6 +315,7 @@ date("Y") - $i; ?></option>
           <tr>
             <td valign="top"><?php tep_show_site_filter(FILENAME_STATS_SALES_REPORT,false,array(0));?><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
+                <td class="dataTableHeadingContent" align="left"><input type="checkbox"></td>
                 <td class="dataTableHeadingContent_order" align="left"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=date&order_type='.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_DATE.($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'date' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
 <?php
                 if(isset($_GET['report']) && $_GET['report'] == 5){
@@ -339,6 +339,7 @@ date("Y") - $i; ?></option>
 ?>
                 <td class="dataTableHeadingContent_order" align="right"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=num&order_type='.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_ITEMS.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
                 <td class="dataTableHeadingContent_order" align="right"><?php echo  '<a href="'.tep_href_link(FILENAME_STATS_SALES_REPORT,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=price&order_type='.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.SR_TABLE_HEADING_REVENUE.($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'price' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'; ?></td>
+                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION;?></td>
               </tr>
 <?php
 if($_GET['report'] != 5){
@@ -378,8 +379,10 @@ while ($sr->hasNext()) {
               <tr id="i_<?php echo $show_i;?>" class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'ID=' . $show_i);?>'">
 <?php
     }
+    echo '<td class="dataTableContent" align="left"><input type="checkbox" disabled="disabled"></td>';
   }
     $show_list_array[$show_i] = '<tr id="i_'.$show_i.'" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'ID=' . $show_i).'\'">'; 
+    $show_list_array[$show_i] .= '<td class="dataTableContent" align="left"><input type="checkbox" disabled="disabled"></td>';
     switch ($srView) {
     case '3':
   if(!isset($_GET['order_sort'])){
@@ -450,10 +453,11 @@ while ($sr->hasNext()) {
     $t += $info[$last - 1]['totsum'];
   if(!isset($_GET['order_sort'])){
   ?></td>
+      <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
               </tr>
 <?php
   }
-    $show_list_array[$show_i] .= '</td></tr>'; 
+    $show_list_array[$show_i] .= '</td><td class="dataTableContent" align="right">'.tep_image('images/icons/info_gray.gif').'</td></tr>'; 
 if (isset($srDetail)){
   $row_num++;
     for ($i = 0; $i < $last; $i++) {
@@ -496,6 +500,13 @@ if (isset($srDetail)){
      }
    }
         if(!isset($_GET['order_sort'])){
+        $even = 'dataTableSecondRow';
+        $odd  = 'dataTableRow';
+        if (isset($nowColor) && $nowColor == $odd) {
+           $nowColor = $even; 
+         } else {
+            $nowColor = $odd; 
+         } 
           if($_GET['PID'] != '' && $_GET['PID'] == $show_i.'_'.$i){
 ?>
               <tr id="p_<?php echo $show_i.'_'.$i;?>" class="dataTableRowSelected" onmouseover="this.style.cursor='hand'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'PID=' . $show_i.'_'.$i);?>'">  
@@ -506,6 +517,7 @@ if (isset($srDetail)){
 <?php
           } 
 ?>
+                <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left">&nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info[$i]['pid'].'&site_id=0', 'NONSSL'); ?>"><?php echo $info[$i]['pname']; ?></a>
@@ -514,6 +526,7 @@ if (isset($srDetail)){
 <?php
         }
         $show_list_array[$show_i] .= '<tr id="p_'.$show_i.'_'.$i.'" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\''.tep_href_link(FILENAME_STATS_SALES_REPORT, tep_get_all_get_params(array('x', 'y', 'ID', 'PID')).'PID=' . $show_i.'_'.$i).'\'">
+                <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left">&nbsp;&nbsp;&nbsp;<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info[$i]['pid'].'&site_id=0', 'NONSSL').'">'.$info[$i]['pname'].'</a>
@@ -556,11 +569,11 @@ if (isset($srDetail)){
         }
         if(!isset($_GET['order_sort'])){
 ?>
-                
+                <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif'); ?></td>
               </tr>
 <?php
         }
-        $show_list_array[$show_i] .= '</tr>';
+        $show_list_array[$show_i] .= ' <td class="dataTableContent" align="right">'.tep_image('images/icons/info_gray.gif').'</td></tr>';
       }
     }
   }
@@ -744,11 +757,13 @@ if($_GET['order_sort'] == 'date'){
      }
    }
 ?>
+      <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
       <td class="dataTableContent" align="left"><?php echo tep_date_short(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$info_value['orders_id'].'&search_type=orders_id', 'NONSSL').'">'.$info_value['orders_id']; ?></a></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info_value['pid'].'&site_id=0', 'NONSSL').'">'.$info_value['pname'];?></a></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
    </tr>
 <?php
     $orders_i++;
@@ -764,6 +779,7 @@ if($_GET['order_sort'] == 'date'){
 <td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php echo
 SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php echo
 SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 <td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.
@@ -779,6 +795,7 @@ echo TEXT_MONEY_SYMBOL;
 echo AVG_ORDERS_SUM;
 echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num)) == 1 && $_GET['report'] == 5 ? '-' : str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($orders_sum/$row_num));
 echo SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"></td>
 <td class="dataTableContent" align="right"><?php 
 echo AVG_PRODUCTS_POINT_SUM;
 echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($products_point_sum/$row_num));
@@ -804,6 +821,7 @@ if($_GET['report'] != 5){
     $last = sizeof($info) - 1;
   ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+                <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
                 <?php
       switch ($srView) {
         case '3':
@@ -842,6 +860,8 @@ if($_GET['report'] != 5){
                   }
                 }
     ?></td>
+
+               <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
               </tr>
               <?php
     if ($srDetail) {
@@ -886,6 +906,7 @@ if($_GET['report'] != 5){
    }
   ?>
               <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+                <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left">&nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info[$i]['pid'].'&site_id=0', 'NONSSL'); ?>"><?php echo $info[$i]['pname']; ?></a>
@@ -910,7 +931,7 @@ if($_GET['report'] != 5){
                 <?php
             }
   ?>
-                
+               <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
               </tr>
               <?php
         }
@@ -968,22 +989,37 @@ if($_GET['report'] != 5){
    }
 ?> 
     <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
+      <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
       <td class="dataTableContent" align="left"><?php echo tep_date_short(date("Y-m-d\ H:i:s", strtotime($info_value['date_purchased']))); ?></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$info_value['orders_id'].'&search_type=orders_id', 'NONSSL').'">'.$info_value['orders_id']; ?></a></td>
       <td class="dataTableContent" align="left"><?php echo '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$categories_url_id.'&page='.$page.'&pID='.$info_value['pid'].'&site_id=0', 'NONSSL').'">'.$info_value['pname'];?></a></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['pquant']; ?></td>
       <td class="dataTableContent" align="right"><?php echo $info_value['psum'] < 0 ? '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).'</font>'.TEXT_MONEY_SYMBOL : str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($info_value['psum'])).TEXT_MONEY_SYMBOL; ?></td> 
+      <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
    </tr>
 <?php 
   }
 }
 }
 ?>
-            </table>
-
-
+          </table>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+              <tr>
+                <td>
+                   <?php
+                     if($ocertify->npermission >= 15){
+                          echo '<select  disabled="disabled">';
+                          echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';
+                          echo '<option value="1">'.TEXT_CONTENTS_DELETE_ACTION.'</option>';
+                          echo '</select>';
+                        }
+                    ?>
+                 </td>
+               </tr>
+           </table>
   <?php } ?>
   </td>
+
           </tr>
         </table></td>
       </tr>

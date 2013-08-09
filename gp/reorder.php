@@ -315,7 +315,7 @@ document.onclick=function(e){
       '${COMPANY_NAME}',
       '${COMPANY_ADDRESS}',
       '${COMPANY_TEL}',
-      '${SUPPORT_EMAIL}',
+      '${SUPPORT_MAIL}',
       '${STAFF_MAIL}',
       '${STAFF_NAME}',
       '${SIGNATURE}',
@@ -889,7 +889,8 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
     var shipping_time_flag = !document.getElementById('m0');
   } 
   if(shipping_time_flag && document.getElementById('new_date').selectedIndex != 0){
-      document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
+      document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_SHIPPING_TIME_SELECT;?></font>";
+      $("#hour_show_error").show();
       return false;
   }
 

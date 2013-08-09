@@ -11,6 +11,7 @@
   if (isset($_GET['tags_id'])) {
     forward404(); 
   }
+  $is_show_review = false;
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
@@ -42,8 +43,10 @@ if (isset($body_option)) {
       <!-- body_text --> 
 <?php
 if ($category_depth == 'nested') {
+           $is_show_review = true;
            require(DIR_WS_ACTIONS.'index_nested.php');
           } elseif ($_GET['tags_id']) { 
+             $is_show_review = true;
              require(DIR_WS_ACTIONS.'index_tags.php');
   ?>
         <div id="cgi">
@@ -203,6 +206,7 @@ if ($category_depth == 'nested') {
 } else {
   require(DIR_WS_ACTIONS.'index_main.php');
   require(DIR_WS_ACTIONS.'index_default.php');
+  $is_show_review = true;
 ?>
 <?php 
 if ($_SESSION['reset_flag'] == true){
@@ -241,14 +245,12 @@ $oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where key
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
-//  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
 $oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
-//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
 }
 ?>
 <div class="popup_notice_text">

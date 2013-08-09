@@ -144,7 +144,7 @@ require("includes/note_js.php");
     $rows = 0;
   }
   $products_query_raw = "
-    select * from (select (@mycnt := @mycnt + 1) as rownum,products_viewed,products_name from(select p.products_id, 
+    select * from (select (@mycnt := @mycnt + 1) as rownum,products_viewed,products_name, products_id from(select p.products_id, 
            pd.products_name, 
            sum(pd.products_viewed) as products_viewed, 
            l.name 
@@ -189,7 +189,7 @@ require("includes/note_js.php");
         );
     $stats_info[] = array(
         'params' => 'class="dataTableContent"'.$onclick_str,
-        'text'   => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_VIEWED . '?page=' . $_GET['page'], 'NONSSL') . '">' . $products['products_name'] . '</a>'
+        'text'   => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'search='.$products['products_name']) . '">' .$products['products_name'].'</a>'
         );
     $stats_info[] = array(
         'params' => 'class="dataTableContent"'.$onclick_str,

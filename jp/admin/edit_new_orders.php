@@ -1146,8 +1146,8 @@ if($address_error == false){
               $mailoption['CUSTOMIZED_FEE']      = $totals_email_str;
             }
             //配送费
-            $mailoption['SHIPPING_FEE']      = $currencies->format($shipping_fee); 
-            $mailoption['ORDER_TOTAL']      = $currencies->format($mailtotal);
+            $mailoption['SHIPPING_FEE']      = str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($shipping_fee)); 
+            $mailoption['ORDER_TOTAL']      = str_replace(TEXT_MONEY_SYMBOL,'',$currencies->format($mailtotal));
             @$payment_class = $$payment; 
 
             $mailoption['TORIHIKIHOUHOU']   =  $order->tori['houhou'];      
@@ -1219,7 +1219,7 @@ if($address_error == false){
                 $address_len_array[] = strlen($address_value);
               }
               $maxlen = max($address_len_array);
-              $email_address_str = SENDMAIL_TEXT_ADDRESS_INFO_LEFT."\n";
+              $email_address_str = "";
               $email_address_str .= '------------------------------------------'."\n";
               $maxlen = 9;
               foreach($options_info_array as $ad_key=>$ad_value){
@@ -1235,6 +1235,7 @@ if($address_error == false){
             }else{
               $email = str_replace("\n".'${USER_ADDRESS}','',$email); 
               $email = str_replace('${USER_ADDRESS}','',$email);
+              $email = str_replace("\n".SENDMAIL_TEXT_ADDRESS_INFO_LEFT,'',$email);
             }
             if($totals_email_str == ''){
 
@@ -1536,6 +1537,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   }else{
     $email_printing_order = str_replace("\n".'${USER_ADDRESS}','', $email_printing_order); 
     $email_printing_order = str_replace('${USER_ADDRESS}','', $email_printing_order);
+    $email_printing_order = str_replace("\n".str_replace('▼','',SENDMAIL_TEXT_ADDRESS_INFO_LEFT),'', $email_printing_order);
   } 
   $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order); 
   # ------------------------------------------
