@@ -17,12 +17,19 @@ if (
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     // ccdd
     $reviews_query = tep_db_query("
-        select r.reviews_rating, 
+        select rd.reviews_text, 
+               r.reviews_rating, 
                r.reviews_id, 
-               r.customers_name 
-        from " .  TABLE_REVIEWS . " r 
-        where r.products_id = '" .  (int)$_GET['products_id'] . "' 
+               r.products_id, 
+               r.customers_name, 
+               r.date_added, 
+               r.last_modified, 
+               r.reviews_read 
+        from " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd 
+        where r.reviews_id = rd.reviews_id 
+          and r.products_id = '" .  (int)$_GET['products_id'] . "' 
           and r.reviews_status = '1' 
+          and  r.products_id not in".tep_not_in_disabled_products()." 
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
@@ -43,7 +50,8 @@ if (
       $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
     }
 ?>
-<div class="box_des"><a href="<?php echo tep_href_link(FILENAME_REVIEWS);?>">REVIEW</a></div>
+<div class='yui3-g main-columns'>
+<h3><span><a href="<?php echo tep_href_link(FILENAME_REVIEWS);?>"><?php echo BOX_HEADING_REVIEWS?></a></span></h3>
 <?php
   $random_select = "
   select *
@@ -101,18 +109,57 @@ if (
 
     $review = htmlspecialchars($review['reviews_text']);
     $review = tep_break_string($review, 15, '-<br>');
-
-    echo '<div align="center" style="width:90%; padding-left:5px;" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . $review . ' ..</a><br>' . tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating'])) . '</div>';
+    echo '<div class="yui3-u-1-3">&nbsp;</div>';
+    echo '<div class="yui3-u-1-3">';
+    echo '<table border="0" width="100%" align="center" cellpadding="0" cellspacing="0">'; 
+    echo '<tr>'; 
+    echo '<td align="center">'; 
+    echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' . $random_product['products_image'], $random_product['products_name'], 89, 93) . '</a>';
+    echo '</td>'; 
+    echo '</tr>'; 
+    echo '<tr>'; 
+    echo '<td align="center">'; 
+    echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '">' . $review . ' ..</a>';
+    echo '</td>'; 
+    echo '</tr>'; 
+    echo '<tr>'; 
+    echo '<td align="center">'; 
+    echo tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] .  '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating']));
+    echo '</td>'; 
+    echo '</tr>'; 
+    echo '</table>'; 
+    echo '</div>';
+    echo '<div class="yui3-u-1-3">&nbsp;</div>';
   } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
-    echo '<table border="0" cellspacing="2" cellpadding="2" width="100%" align="center"><tr><td><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'box_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a></td><td class="boxText"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a></td></tr></table>';
+    echo '<div class="yui3-u-1-3">&nbsp;</div>';
+    echo '<div class="yui3-u-1-3">';
+    echo '<table border="0" width="100%" align="center" cellpadding="0" cellspacing="0">'; 
+    echo '<tr>'; 
+    echo '<td align="center">'; 
+    echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a>';
+    echo '</td>'; 
+    echo '</tr>'; 
+    echo '</table>'; 
+    echo '</div>';
+    echo '<div class="yui3-u-1-3">&nbsp;</div>';
   } else {
 // display 'no reviews' box
-    echo BOX_REVIEWS_NO_REVIEWS;
+    echo '<div class="yui3-u-1-3">&nbsp;</div>';
+    echo '<div class="yui3-u-1-3">';
+    echo '<table border="0" width="100%" align="center" cellpadding="0" cellspacing="0">'; 
+    echo '<tr>'; 
+    echo '<td align="center">'; 
+    echo '<font color="#ffffff">'.BOX_REVIEWS_NO_REVIEWS.'</font>';
+    echo '</td>'; 
+    echo '</tr>'; 
+    echo '</table>'; 
+    echo '</div>';
+    echo '<div class="yui3-u-1-3">&nbsp;</div>';
   }
     
 ?>
-<div class="sep">&nbsp;</div>
+</div>
 <!-- reviews_eof -->
 <?php
   }

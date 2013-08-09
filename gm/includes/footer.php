@@ -1,3 +1,10 @@
+<?php 
+if (!isset($is_show_review) || ($is_show_review == true)) {
+  if ((basename($PHP_SELF) != FILENAME_PRODUCT_INFO) && (basename($PHP_SELF) != FILENAME_ADVANCED_SEARCH_RESULT)) {
+    include(DIR_WS_BOXES . 'reviews.php');
+  }
+}
+?>
 <?php include(DIR_WS_BOXES . 'best_sellers.php');?>
 <div id="footer">
 		<div id="footer-nav">

@@ -293,6 +293,9 @@ td,th{ border:0;font-size:14px; padding:2px;}
 	line-height:27px;
 	font-size:18px;
 }
+.main-columns h3 span a{
+	font-size:18px;
+}
 .main-columns ul{
 	overflow:hidden;
 	line-height:25px;
