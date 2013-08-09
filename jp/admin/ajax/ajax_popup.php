@@ -775,9 +775,9 @@ if ($_GET['action'] == 'show_category_info') {
     while($order_history = tep_db_fetch_array($order_history_query)){
       $sum_i++;
       if(isset($order_history['products_rate']) &&$order_history['products_rate']!=0 &&$order_history['products_rate']!=''){
-        if($radices!=''&&$radices!=1&&$radices!=0){
-          $oh_fp = number_format($order_history['final_price']/$order_history['products_rate']*$radices,20,'.','');
-          $oh_pq = number_format($order_history['products_quantity']*$order_history['products_rate']/$radices,20,'.','');
+        if($radices!=''&&$radices!=1&&$radices!=0&&$order_history['products_rate']!=$radices){
+          $oh_fp = tep_number_format($order_history['final_price']*$radices/$order_history['products_rate']);
+          $oh_pq = tep_number_format($order_history['products_quantity']*$order_history['products_rate']/$radices);
           if($oh_fp == 0){
             $oh_fp = 0;
           }
@@ -796,8 +796,8 @@ if ($_GET['action'] == 'show_category_info') {
         $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
         $sum_quantity += $oh_pq; 
       }
-      $oh_pq = number_format($oh_pq,20,'.',',');
-      $oh_fp = number_format($oh_fp,20,'.',',');
+      $oh_pq = tep_number_format($oh_pq,',');
+      $oh_fp = tep_number_format($oh_fp,',');
       $product_history_array[]['text'] = array(
             array('params' => 'class="main" width="120"', 'text' => $order_history['torihiki_date']), 
             array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($oh_pq).CATEGORY_GE_UNIT_TEXT), 
@@ -812,9 +812,9 @@ if ($_GET['action'] == 'show_category_info') {
           array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
         );
     $sum_vga = 0;
-    $sum_vga = number_format($sum_price/$sum_quantity,20,'.',',');
+    $sum_vga = tep_number_format($sum_price/$sum_quantity,',');
     $sum_vga = display_quantity($sum_vga);
-    $sum_quantity = number_format($sum_quantity,20,'.',',');
+    $sum_quantity = tep_number_format($sum_quantity,',');
     $sum_quantity = display_quantity($sum_quantity);
     $product_history_row_quantity[]['text'] = array(
           array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
@@ -875,9 +875,9 @@ if ($_GET['action'] == 'show_category_info') {
       while($relate_order_history = tep_db_fetch_array($relate_order_history_query)){
         $sum_i++;
         if(isset($relate_order_history['products_rate']) &&$relate_order_history['products_rate']!=0 &&$relate_order_history['products_rate']!=''){
-          if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-            $relate_oh_fp = number_format($relate_order_history['final_price']/$relate_order_history['products_rate']*$relate_radices,20,'.','');
-            $relate_oh_pq = number_format($relate_order_history['products_quantity']*$relate_order_history['products_rate']/$relate_radices,20,'.','');
+          if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0&&$relate_order_history['products_rate']!=$relate_radices){
+            $relate_oh_fp = tep_number_format($relate_order_history['final_price']*$relate_radices/$relate_order_history['products_rate']);
+            $relate_oh_pq = tep_number_format($relate_order_history['products_quantity']*$relate_order_history['products_rate']/$relate_radices);
             if($relate_oh_fp == 0){
               $relate_oh_fp = 0;
             }
@@ -896,8 +896,8 @@ if ($_GET['action'] == 'show_category_info') {
           $sum_price += abs($relate_order_history['final_price']) * $relate_order_history['products_quantity'];
           $sum_quantity += $relate_oh_pq; 
         }
-        $relate_oh_pq = number_format($relate_oh_pq,20,'.',',');
-        $relate_oh_fp = number_format($relate_oh_fp,20,'.',',');
+        $relate_oh_pq = tep_number_format($relate_oh_pq,',');
+        $relate_oh_fp = tep_number_format($relate_oh_fp,',');
         $relate_product_history_array[]['text'] = array(
               array('params' => 'class="main" width="120"', 'text' => $relate_order_history['torihiki_date']), 
               array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($relate_oh_pq) .CATEGORY_GE_UNIT_TEXT), 
@@ -912,9 +912,9 @@ if ($_GET['action'] == 'show_category_info') {
             array('align' => 'left', 'text' => mb_substr(CATEGORY_TOTALNUM_TEXT, 1, mb_strlen(CATEGORY_TOTALNUM_TEXT, 'utf-8')-1, 'utf-8')) 
           );
       $sum_vga = 0;
-      $sum_vga = number_format($sum_price/$sum_quantity,20,'.',',');
+      $sum_vga = tep_number_format($sum_price/$sum_quantity,',');
       $sum_vga = display_quantity($sum_vga);
-      $sum_quantity = number_format($sum_quantity,20,'.',',');
+      $sum_quantity = tep_number_format($sum_quantity,',');
       $sum_quantity = display_quantity($sum_quantity);
       $relate_product_history_row_quantity[]['text'] = array(
             array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
