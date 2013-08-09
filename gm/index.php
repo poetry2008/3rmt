@@ -11,6 +11,7 @@
   if (isset($_GET['tags_id'])) {
     forward404(); 
   }
+  $is_show_review = false;
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
@@ -42,8 +43,10 @@ if (isset($body_option)) {
       <!-- body_text --> 
 <?php
 if ($category_depth == 'nested') {
+           $is_show_review = true;
            require(DIR_WS_ACTIONS.'index_nested.php');
           } elseif ($_GET['tags_id']) { 
+             $is_show_review = true;
              require(DIR_WS_ACTIONS.'index_tags.php');
   ?>
         <div id="cgi">
@@ -203,6 +206,7 @@ if ($category_depth == 'nested') {
 } else {
   require(DIR_WS_ACTIONS.'index_main.php');
   require(DIR_WS_ACTIONS.'index_default.php');
+  $is_show_review = true;
 ?>
 <?php 
 if ($_SESSION['reset_flag'] == true){
