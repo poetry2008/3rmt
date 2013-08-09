@@ -96,9 +96,6 @@ document.onclick=function(e){
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
         echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS.' <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif"  alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
-      } else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
-        // time error
-        //echo '<div class="comment">お届け時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div><div>';
       } else {
         // update time
         //change order status and insert order status history

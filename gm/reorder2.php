@@ -204,8 +204,8 @@ if(!isset($email_error)||$email_error == true){?>
           src="includes/languages/japanese/images/buttons/button_submit2.gif"
             onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'"
             onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit2_hover.gif'"
-            alt="<?php echo TEXT_REORDER_CONFIRE;?>" title="<?php echo
-            TEXT_REORDER_CONFIRE;?>" onclick='return check()' >
+            alt="<?php echo TEXT_REORDER_INFO_CONFIRM;?>" title="<?php echo
+            TEXT_REORDER_INFO_CONFIRM;?>" onclick='return check()' >
           <input type='image'
             onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'"
             onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"

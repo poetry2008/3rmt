@@ -37,7 +37,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
           $time     = strtotime($datetime);
           if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
             // time error
-            echo '<div><div class="comment">'.TEXT_REORDER_SHIPPING_TIME_SELECT.' <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
+            echo '<div><div class="comment">'.TEXT_INFO_FOR_TRADE.' <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
             $email_error = false;
           } else if($name==''||$date==''||$minute==''||$hour==''|| $product==''){
             $email_error = true;
