@@ -10975,3 +10975,11 @@ function display_quantity($float){
     return $res;
   }
 }
+function tep_number_format($float,$substr=''){
+  $arr = explode('.',$float);
+  if(empty($arr[1])||$arr[1]==null||$arr[1]==''){
+    return number_format($float,'0','.',$substr);
+  }else{
+    return number_format($float,strlen($arr[1]),'.',$substr);
+  }
+}
