@@ -532,4 +532,5 @@ define('TEXT_ORDERS_PRODUCTS_LINK','分から');
 define('TEXT_ORDERS_PRODUCTS_TWENTY_HOUR','分　（24時間表記）');
 define('TEXT_ORDERS_PRODUCTS_ADDRESS_INFO','▼住所情報');
 define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'."\n");
+define('TEXT_LINK_MORE', 'もっと見る');
 ?>

@@ -51,12 +51,13 @@ if (
     }
 ?>
 <div class='yui3-g main-columns'>
-<h3><span><a href="<?php echo tep_href_link(FILENAME_REVIEWS);?>"><?php echo BOX_HEADING_REVIEWS?></a></span></h3>
+<h3><span><?php echo BOX_HEADING_REVIEWS?></span></h3>
 <?php
   $random_select = "
   select *
   from (
     select r.reviews_id, 
+           r.customers_name, 
            r.reviews_rating, 
            p.products_id, 
            p.products_image, 
@@ -100,36 +101,34 @@ if (
 // display random review box
     // ccdd
     $review_query = tep_db_query("
-        select substring(reviews_text, 1, 60) as reviews_text 
+        select reviews_text 
         from " . TABLE_REVIEWS_DESCRIPTION . " 
         where reviews_id = '" . $random_product['reviews_id'] . "' 
           and languages_id = '" . $languages_id . "'
     ");
     $review = tep_db_fetch_array($review_query);
 
-    $review = htmlspecialchars($review['reviews_text']);
-    $review = tep_break_string($review, 15, '-<br>');
-    echo '<div class="yui3-u-1-3">&nbsp;</div>';
-    echo '<div class="yui3-u-1-3">';
-    echo '<table border="0" width="100%" align="center" cellpadding="0" cellspacing="0">'; 
+    $review = tep_output_string_protected(mb_substr($review['reviews_text'], 0, 250, 'utf-8')).'..';
+    echo '<div class="hm-product-content">';
+    echo '<table border="0" cellpadding="0" cellspacing="0">'; 
     echo '<tr>'; 
-    echo '<td align="center">'; 
+    echo '<td valign="top" width="90">'; 
     echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' . $random_product['products_image'], $random_product['products_name'], 89, 93) . '</a>';
     echo '</td>'; 
-    echo '</tr>'; 
-    echo '<tr>'; 
-    echo '<td align="center">'; 
-    echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '">' . $review . ' ..</a>';
-    echo '</td>'; 
-    echo '</tr>'; 
-    echo '<tr>'; 
-    echo '<td align="center">'; 
-    echo tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] .  '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating']));
+    echo '<td valign="top">'; 
+    echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '">' .$random_product['products_name']. '</a>';
+    echo '&nbsp;&nbsp;'; 
+    echo sprintf(TEXT_REVIEW_BY, tep_output_string_protected($random_product['customers_name']));
+    echo '<br>'; 
+    echo $review;
+    echo '<br>'; 
+    echo '<br>'; 
+    echo '<i>'.sprintf(TEXT_REVIEW_RATING, tep_image(DIR_WS_IMAGES . 'stars_' .  $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating'])), sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating'])).'</i>';
     echo '</td>'; 
     echo '</tr>'; 
     echo '</table>'; 
     echo '</div>';
-    echo '<div class="yui3-u-1-3">&nbsp;</div>';
+    echo '<div class="right_more"><a href="'.tep_href_link(FILENAME_REVIEWS).'">'.TEXT_LINK_MORE.'</a></div>'; 
   } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
     echo '<div class="yui3-u-1-3">&nbsp;</div>';
