@@ -26,9 +26,7 @@ if (STORE_DB_TRANSACTIONS && false) {?>
       echo '[' . $log_times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
     }
   }
-   //&& print_r($logger->queries);
   ?>
-  <?php //print_r($logger->times);?>
   </pre>
 </div>
 <?php }?>            </div>

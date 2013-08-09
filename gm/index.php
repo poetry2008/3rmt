@@ -245,14 +245,12 @@ $oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where key
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
-//  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
 $oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
-//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
 }
 ?>
 <div class="popup_notice_text">
