@@ -874,7 +874,7 @@ function orderConfirmPage(){
   }
 
   if(document.getElementById('new_date').selectedIndex == 0 && oldTime_value <= today_value){
-    document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_INFO_FOR_TRADE;?></font>";
+    document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
       return false;
   }
 
