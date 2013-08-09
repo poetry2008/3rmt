@@ -128,7 +128,7 @@ if (
     echo '</tr>'; 
     echo '</table>'; 
     echo '</div>';
-    echo '<div class="right_more"><a href="'.tep_href_link(FILENAME_REVIEWS).'">'.TEXT_LINK_MORE.'</a></div>'; 
+    echo '<div class="right_more"><img src="images/more_img.gif" alt="img"><a href="'.tep_href_link(FILENAME_REVIEWS).'">'.TEXT_LINK_MORE.'</a></div>'; 
   } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
     echo '<div class="yui3-u-1-3">&nbsp;</div>';
