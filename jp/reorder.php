@@ -61,7 +61,6 @@ document.onclick=function(e){
   $cEmail = str_replace("\xe2\x80\x8b", '', $cEmail);
   
   $o      = new order($oID);
-  // ccdd
   $order  = tep_db_fetch_array(tep_db_query("
         select * 
         from `".TABLE_ORDERS."` 
@@ -145,7 +144,6 @@ document.onclick=function(e){
                 '".tep_db_input($order['customers_name'])."'
               )
           ";
-          // ccdd
           tep_db_query($sql);
         echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.' <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="'.TEXT_BACK_TO_TOP.'"></a></div></div>';
         // sent mail to customer
@@ -161,7 +159,6 @@ document.onclick=function(e){
   $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
 
   # Check
-  // ccdd
   $NewOidQuery = tep_db_query("
       select count(*) as cnt 
       from ".TABLE_ORDERS." 
@@ -234,7 +231,6 @@ document.onclick=function(e){
       $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
     
-    // ccdd
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
     
     $products_ordered .= $products_ordered_attributes . "\n";
@@ -246,7 +242,6 @@ document.onclick=function(e){
   # 邮件正文调整 --------------------------------------
   $email_order = '';
 
-  // ccdd
   $otq = tep_db_query("
       select * 
       from ".TABLE_ORDERS_TOTAL." 
