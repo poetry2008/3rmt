@@ -176,7 +176,7 @@ if(isset($product)&&$product){
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
    <br >
-   <font color="red"><?php echo TEXT_REORDER_TREADE_TEXT;?></font>
+   <font color="red"><?php echo TEXT_REORDER_TRADE_TEXT;?></font>
   </td>
  </tr>
 <tr>

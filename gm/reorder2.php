@@ -186,7 +186,7 @@ if(!isset($email_error)||$email_error == true){?>
      echo TEXT_REORDER2_TRADE_TIME_ERROR;
    }?></span>
               <br >
-              <font color="red"><?php echo TEXT_REORDER_TREADE_TEXT;?></font>
+              <font color="red"><?php echo TEXT_REORDER_TRADE_TEXT;?></font>
             </td>
           </tr>
           <tr>

@@ -12,6 +12,6 @@ define('TEXT_REORDER_TRADE_DATE','お届け日時');
 define('TEXT_REORDER_GAME_TITLE','ゲームタイトル');
 define('TEXT_REORDER_EMAIL_ERROR','入力されたメールアドレスは不正です!');
 define('TEXT_TOP_CON','トップに戻る');
-define('TEXT_REORDER_TREADE_TEXT', 'ご希望のお時間に添えない場合は、弊社より「お届け日時」をご連絡させていただきます。');
+define('TEXT_REORDER_TRADE_TEXT', 'ご希望のお時間に添えない場合は、弊社より「お届け日時」をご連絡させていただきます。');
 define('TEXT_REORDER2_TRADE_TIME_ERROR', '【お届け日時】を選択してください。');
 define('TEXT_REORDER_INFO_CONFIRM','確定する');

@@ -176,7 +176,7 @@ if(!isset($email_error)||$email_error == true){?>
    if($hour==''||$date==''||$minute==''){
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
-            <font color="red"><?php echo TEXT_REORDER_TREADE_TEXT;?></font></div>
+            <font color="red"><?php echo TEXT_REORDER_TRADE_TEXT;?></font></div>
             </td>
           </tr>
           <tr>
