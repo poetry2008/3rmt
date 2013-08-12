@@ -154,7 +154,7 @@ if(!isset($email_error)||$email_error == true){?>
 
           </tr>
           <tr>
-            <td><?php echo TEXT_REORDER_GAME_TITLE?></td>
+            <td><?php echo TEXT_REORDER_GAME_TITLE;?></td>
             <td>
               <input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
