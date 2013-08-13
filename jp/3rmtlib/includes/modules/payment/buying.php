@@ -530,14 +530,24 @@ class buying extends basePayment  implements paymentInterface  {
    }
    $bank_name[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_name'] : $bank_name[1];
    $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
-   echo 'document.getElementsByName("bank_name")[0].value = "'. $bank_name[1] .'";'."\n"; 
+   echo <<<EOT
+   if (document.getElementsByName("bank_name")[0]) {
+     document.getElementsByName("bank_name")[0].value = "$bank_name[1]"; 
+   }
+EOT;
+   echo "\n";
    $bank_shiten = explode(':',$pay_array[1]); 
    if (!$is_show) {
      $bank_shiten[1] = ''; 
    }
    $bank_shiten[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_shiten'] : $bank_shiten[1];
    $bank_shiten[1] = isset($_POST['bank_shiten']) ? $_POST['bank_shiten'] : $bank_shiten[1];
-   echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
+   echo <<<EOT
+   if (document.getElementsByName("bank_shiten")[0]) {
+     document.getElementsByName("bank_shiten")[0].value = "$bank_shiten[1]"; 
+   }
+EOT;
+   echo "\n";
    $bank_kamoku = explode(':',$pay_array[2]);
    if (!$is_show) {
      $bank_kamoku[1] = ''; 
@@ -545,9 +555,19 @@ class buying extends basePayment  implements paymentInterface  {
    $bank_kamoku[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] : $bank_kamoku[1];
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
    if($bank_kamoku[1] == TS_TEXT_BANK_SELECT_KAMOKU_F || $bank_kamoku[1] == ''){
-     echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
+   echo <<<EOT
+   if (document.getElementsByName("bank_kamoku")[0]) {
+     document.getElementsByName("bank_kamoku")[0].checked = true; 
+   }
+EOT;
+   echo "\n";
    }else{
-     echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
+   echo <<<EOT
+   if (document.getElementsByName("bank_kamoku")[1]) {
+     document.getElementsByName("bank_kamoku")[1].checked = true; 
+   }
+EOT;
+   echo "\n";
    }
    $bank_kouza_num = explode(':',$pay_array[3]);
    if (!$is_show) {
@@ -555,57 +575,93 @@ class buying extends basePayment  implements paymentInterface  {
    }
    $bank_kouza_num[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_num'] : $bank_kouza_num[1];
    $bank_kouza_num[1] = isset($_POST['bank_kouza_num']) ? $_POST['bank_kouza_num'] : $bank_kouza_num[1];
-   echo 'document.getElementsByName("bank_kouza_num")[0].value = "'.$bank_kouza_num[1].'";'."\n";
+   echo <<<EOT
+   if (document.getElementsByName("bank_kouza_num")[0]) {
+     document.getElementsByName("bank_kouza_num")[0].value = "$bank_kouza_num[1]";
+   }
+EOT;
+   echo "\n";
    $bank_kouza_name = explode(':',$pay_array[4]);
    if (!$is_show) {
      $bank_kouza_name[1] = ''; 
    }
    $bank_kouza_name[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kouza_name'] : $bank_kouza_name[1];
    $bank_kouza_name[1] = isset($_POST['bank_kouza_name']) ? $_POST['bank_kouza_name'] : $bank_kouza_name[1];
-   echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
+   echo <<<EOT
+   if (document.getElementsByName("bank_kouza_name")[0]) {
+     document.getElementsByName("bank_kouza_name")[0].value = "$bank_kouza_name[1]";
+   }
+EOT;
+   echo "\n";
    $pay_array = explode("\n",trim($pay_info_array[1]));
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['con_email']) ? $_SESSION['orders_update_products'][$_GET['oID']]['con_email'] : $con_email[1];
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-   echo 'document.getElementsByName("con_email")[0].value = "'.(!empty($con_email[1])?$con_email[1]:$default_email_info).'";'."\n";
+   $tmp_email = (!empty($con_email[1])?$con_email[1]:$default_email_info); 
+   echo <<<EOT
+   if (document.getElementsByName("con_email")[0]) {
+     document.getElementsByName("con_email")[0].value = "$tmp_email";
+   }
+EOT;
+   echo "\n";
    $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['rak_tel']) ? $_SESSION['orders_update_products'][$_GET['oID']]['rak_tel'] : $rak_tel[1];
    $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
-   echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
    echo <<<EOT
-   $("input[name='con_email']").blur(function(){
-     var con_email = document.getElementsByName("con_email")[0].value;
-     orders_session('con_email',con_email);
-   });
-   $("input[name='bank_name']").blur(function(){
-     var payment_value = document.getElementsByName("bank_name")[0].value;
-     orders_session('bank_name',payment_value);
-   });
-   $("input[name='bank_shiten']").blur(function(){
-     var payment_value = document.getElementsByName("bank_shiten")[0].value;
-     orders_session('bank_shiten',payment_value);
-   });
-   $("input[name='bank_kamoku']").click(function(){
-     if(document.getElementsByName("bank_kamoku")[0].checked == true){
-       var payment_value = document.getElementsByName("bank_kamoku")[0].value;
-     }else{
-      var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
-     }
-     orders_session('bank_kamoku',payment_value);
-   });
-   $("input[name='bank_kouza_num']").blur(function(){
-     var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
-     orders_session('bank_kouza_num',payment_value);
-   });
-   $("input[name='bank_kouza_name']").blur(function(){
-     var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
-     orders_session('bank_kouza_name',payment_value);
-   });
-   $("input[name='rak_tel']").blur(function(){
-     var payment_value = document.getElementsByName("rak_tel")[0].value;
-     orders_session('rak_tel',payment_value);
-   });
+   if (document.getElementsByName("rak_tel")[0]) {
+     document.getElementsByName("rak_tel")[0].value = "$rak_tel[1]";
+   }
+EOT;
+   echo "\n";
+   
+   echo <<<EOT
+   if (document.getElementsByName("con_email")[0]) {
+     $("input[name='con_email']").blur(function(){
+       var con_email = document.getElementsByName("con_email")[0].value;
+       orders_session('con_email',con_email);
+     });
+   }
+   if (document.getElementsByName("bank_name")[0]) {
+     $("input[name='bank_name']").blur(function(){
+       var payment_value = document.getElementsByName("bank_name")[0].value;
+       orders_session('bank_name',payment_value);
+     });
+   }
+   if (document.getElementsByName("bank_shiten")[0]) {
+     $("input[name='bank_shiten']").blur(function(){
+       var payment_value = document.getElementsByName("bank_shiten")[0].value;
+       orders_session('bank_shiten',payment_value);
+     });
+   }
+   if (document.getElementsByName("bank_kamoku")[0]) {
+     $("input[name='bank_kamoku']").click(function(){
+       if(document.getElementsByName("bank_kamoku")[0].checked == true){
+         var payment_value = document.getElementsByName("bank_kamoku")[0].value;
+       }else{
+        var payment_value = document.getElementsByName("bank_kamoku")[1].value; 
+       }
+       orders_session('bank_kamoku',payment_value);
+     });
+   }
+   if (document.getElementsByName("bank_kouza_num")[0]) {
+     $("input[name='bank_kouza_num']").blur(function(){
+       var payment_value = document.getElementsByName("bank_kouza_num")[0].value;
+       orders_session('bank_kouza_num',payment_value);
+     });
+   }
+   if (document.getElementsByName("bank_kouza_name")[0]) {
+     $("input[name='bank_kouza_name']").blur(function(){
+       var payment_value = document.getElementsByName("bank_kouza_name")[0].value;
+       orders_session('bank_kouza_name',payment_value);
+     });
+   }
+   if (document.getElementsByName("rak_tel")[0]) {
+     $("input[name='rak_tel']").blur(function(){
+       var payment_value = document.getElementsByName("rak_tel")[0].value;
+       orders_session('rak_tel',payment_value);
+     });
+   }
 EOT;
    echo "\n";
   }
@@ -806,6 +862,15 @@ EOT;
     }
     $comment_str = implode("\n",$comment_str_array);
     return $comment_str;
+  }
+/*---------------------------
+ 功能：是否显示信息 
+ 参数：$payment(string) 支付方法
+ 返回值：是否显示(boolean)
+ --------------------------*/
+  function admin_is_show_info()
+  {
+    return true;
   }
 }
 ?>
