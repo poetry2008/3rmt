@@ -516,11 +516,13 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         $parameters = array('action', 'pid');
       }
     }
-
+ 
     switch ($_GET['action']) {
       // customer wants to update the product quantity in their shopping cart
-      case 'update_product' : for ($i=0, $n=sizeof($_POST['products_id']); $i<$n; $i++) {
+      case 'update_product' : $check_products_option_delete = $_POST['cart_products_id_list'];for ($i=0, $n=sizeof($_POST['products_id']); $i<$n; $i++) {
                                 if (in_array($_POST['products_id'][$i], (is_array($_POST['cart_delete']) ? $_POST['cart_delete'] : array()))) {
+                                  $cart->remove($_POST['products_id'][$i]);
+                                }elseif(in_array($_POST['products_id'][$i],$check_products_option_delete)){
                                   $cart->remove($_POST['products_id'][$i]);
                                 } else {
                                   $hide_option_info = array(); 

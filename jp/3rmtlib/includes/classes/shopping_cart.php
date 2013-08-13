@@ -354,7 +354,9 @@
       if (!is_array($this->contents)) return 0;
 
       reset($this->contents);
+      $check_products_option = $_SESSION['change_option_id']; 
       while (list($products_id, ) = each($this->contents)) {
+        if(in_array($products_id,$check_products_option)){continue;}
         $qty = $this->contents[$products_id]['qty'];
 
 // products price
