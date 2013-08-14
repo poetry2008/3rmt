@@ -19,14 +19,6 @@ define('FORM_FIELD_FRIEND_EMAIL', 'メールアドレス:');
 
 define('TEXT_EMAIL_SUCCESSFUL_SENT', '<b>%s</b> を紹介するメッセージを <b>%s</b> に送信しました。');
 
-define('TEXT_EMAIL_SUBJECT', 'お友達の %s さんが %s のこの商品をお勧めしています');
-define('TEXT_EMAIL_INTRO', 'こんにちは、%s' . "\n\n"
-. '＊あなたのお友達の%sさんは、' . "\n"
-. '  あなたが [%s] に興味を持つだろうと思って紹介されました。' . "\n"
-. '  この商品は %s でご覧になれます。');
-define('TEXT_EMAIL_LINK', '＊この商品をご覧になるには、下のリンクをクリックするか、' . "\n"
-. '  リンクをブラウザにコピー＆ペーストしてください:' . "\n\n" . '%s');
-define('TEXT_EMAIL_SIGNATURE', 'ご来店をお待ちいたします。' . "\n\n" . EMAIL_SIGNATURE);
 define('VALIDATE_RANDOM_CODE_TEXT', '認証コード:');
 define('VALIDATE_RANDOM_CODE_NOT_SAME', '認証コードを再度入力してください。');
 define('VALIDATE_RANDOM_CODE_IS_NULL', '必須項目エラー');
