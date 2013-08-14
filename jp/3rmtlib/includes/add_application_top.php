@@ -516,7 +516,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         $parameters = array('action', 'pid');
       }
     }
- 
+
     switch ($_GET['action']) {
       // customer wants to update the product quantity in their shopping cart
       case 'update_product' : $check_products_option_delete = $_POST['cart_products_id_list'];for ($i=0, $n=sizeof($_POST['products_id']); $i<$n; $i++) {

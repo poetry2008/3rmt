@@ -47,7 +47,7 @@
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
-    // ccdd
+
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
 
 // Quantity box or information as an input box or text
@@ -63,7 +63,7 @@
       $origin_small = ''; 
       if (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id'])) {
         $origin_small = tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']); 
-      } 
+      }
       if(in_array($products[$i]['id'],$check_products_option)){
         echo tep_draw_hidden_field('cart_quantity[]',$products[$i]['quantity']); 
         echo tep_draw_hidden_field('cart_products_id_list[]',$products[$i]['id']);

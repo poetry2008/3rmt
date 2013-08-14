@@ -84,11 +84,19 @@ unset($_SESSION['shipping_session_flag']);
           <td>
           <?php
           $list_products = $cart->get_products();
+          //检查商品的OPTION是否改动
+          $check_products_option = tep_check_less_product_option();
           for ($j=0, $k=sizeof($list_products); $j<$k; $j++) {
             $belong_option_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".(int)$list_products[$j]['id']."'");  
             $belong_option = tep_db_fetch_array($belong_option_raw);
             
-            echo '<div class="option_product_title"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.(int)$list_products[$j]['id']).'">'.$list_products[$j]['name'].'</a></div>';
+            echo '<div class="option_product_title"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.(int)$list_products[$j]['id']).'">'.$list_products[$j]['name'].'</a>';
+
+            if(in_array($list_products[$j]['id'],$check_products_option)){
+
+              echo '<br>'.TEXT_PRODUCTS_OPTION_CHANGE_ERROR;
+            }
+            echo '</div>';
             
             if ($belong_option) {
               $is_checkout_item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where place_type = '1' and group_id = '".$belong_option['belong_to_option']."' and status = '1'"); 
