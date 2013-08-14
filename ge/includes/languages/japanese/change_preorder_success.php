@@ -25,13 +25,13 @@ define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メー�
 最近、リネージュ2において詐欺行為を行うキャラクターの存在が多数報告されております。不特定多数のキャラクターへトレードを申し込み、ゲーム通貨やアイテムを不正に取得する手口となります。
 トレードの際は、キャラクター名を十分ご確認いただきますようお願い申し上げます。弊社キャラクター以外へトレードされた場合、弊社では一切の保障をいたしかねます。
 <div class="underline">&nbsp;</div>
-<img src="images/stock.gif" alt="販売アイコン" width="50" height="50"><b>「販売」商品について</b><br>
+<img src="images/stock.jpg" alt="販売アイコン" width="50" height="50"><b>「販売」商品について</b><br>
 お客様ご指定のお届け日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
 <div class="dot">&nbsp;</div>
 <img src="images/preorder.gif" alt="取り寄せアイコン" width="50" height="50"><b>「取り寄せ」商品について</b><br>
 ご注文いただいた商品は、通常１～５営業日でお届けしております。
 <div class="dot">&nbsp;</div>
-<img src="images/sell.gif" alt="買取アイコン" width="50" height="50"><b>「買取」商品について</b><br>
+<img src="images/sell.jpg" alt="買取アイコン" width="50" height="50"><b>「買取」商品について</b><br>
 お客様ご指定のお届け日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
 <div class="dot">&nbsp;</div>');
 define('PREORDER_TRADER_LINE_TITLE', '配送方法');

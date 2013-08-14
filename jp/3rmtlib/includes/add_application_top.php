@@ -19,6 +19,16 @@ $source_host = $_SERVER['HTTP_HOST'];
 $unit_time = 3;
 // confi total
 $unit_total = 15;
+
+// config time 
+$unit_min_time = 1;
+// confi total
+$unit_min_total = 120;
+
+// config time 
+$unit_hour_time = 1;
+// confi total
+$unit_hour_total = 360;
 if ($pdo_con) {
   if(is_reset_blocked_ip($pdo_con, $source_ip)){
     // go to 503
@@ -32,6 +42,30 @@ if ($pdo_con) {
     // write ip to accresslog 
     write_vlog($pdo_con, $source_ip, $source_host);    
     if (is_large_visit($pdo_con, $source_ip, $unit_time, $unit_total)) {
+      // write ip to banlist prebanlist
+      analyze_ban_log($pdo_con, $source_ip);
+      // go to 503
+      header("Cache-Control:");
+      header("Pragma:");
+      header("Expires:".date("D, d M Y H:i:s",0)." GMT");
+      header('http/1.1 503 Service Unavailable');
+      require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
+      exit;
+    }
+   //minite
+    if (is_large_visit($pdo_con, $source_ip, $unit_min_time, $unit_min_total,'i')) {
+      // write ip to banlist prebanlist
+      analyze_ban_log($pdo_con, $source_ip);
+      // go to 503
+      header("Cache-Control:");
+      header("Pragma:");
+      header("Expires:".date("D, d M Y H:i:s",0)." GMT");
+      header('http/1.1 503 Service Unavailable');
+      require(DIR_FS_DOCUMENT_ROOT.'error/503-service-unavailable.html');
+      exit;
+    }
+    //hour
+    if (is_large_visit($pdo_con, $source_ip, $unit_hour_time, $unit_hour_total,'h')) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
@@ -878,6 +912,7 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
       $check_nine_pos = strpos($g_c_value, '9999999999'); 
       $check_order_by_pos = stripos($g_c_value, 'order by'); 
       $check_ascii_pos = stripos($g_c_value, 'ascii'); 
+      $check_char_pos = stripos($g_c_value, 'char('); 
 
       if ($check_ascii_pos !== false) {
         forward404(); 
@@ -895,6 +930,11 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
       }
 
       if ($check_two_c_pos !== false) {
+        forward404(); 
+        break; 
+      }
+
+      if ($check_char_pos !== false) {
         forward404(); 
         break; 
       }
