@@ -16,7 +16,7 @@
   echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_QUANTITY . '</td>' . "\n";
 
   if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)){
-    echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_IMAGE. '</td>' . "\n";
+    echo '    <td align="center" class="tableHeading" width="60">' . TABLE_HEADING_IMAGE. '</td>' . "\n";
   }
 
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
@@ -31,8 +31,8 @@
     echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_TAX . '</td>' . "\n";
   }
 
-  echo '    <td align="right" class="tableHeading">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
-       '    <td align="center" class="tableHeading">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
+  echo '    <td align="right" class="tableHeading" width="60">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
+       '    <td align="center" class="tableHeading" width="53">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
        '  </tr>' . "\n" .
        '  <tr>' . "\n" .
        '    <td colspan="' . $colspan . '" bgcolor="#bdced5" height="1">' . '</td>' . "\n" .
