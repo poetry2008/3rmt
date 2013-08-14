@@ -1,8 +1,8 @@
 ﻿<?php
 $p_info_image_list ='';
 foreach($p_image_list as $p_image_src){
-  if(file_exists3(DIR_WS_IMAGES.'products/'.$p_list_row)&&
-    $p_list_row){
+  if(file_exists3(DIR_WS_IMAGES.'products/'.$p_image_src)&&
+    $p_image_src){
     $p_info_image_list .= '<div class="carousel-feature">';
     $p_info_image_list .= '<a class="light" title="'.$product_info['romaji'].'" ';
     $p_info_image_list .= ' href="'.tep_href_link(DIR_WS_IMAGES.'products/' .$p_image_src) . '" >';
@@ -26,26 +26,12 @@ echo $p_info_image_footer;
   echo "<div >";
   $show_images = false;
   foreach($p_image_list as $p_list_src){
-  if(file_exists3(DIR_WS_IMAGES.'products/'.$p_list_row)&&
-      $p_list_row){
+  if(file_exists3(DIR_WS_IMAGES.'products/'.$p_list_src)&&
+      $p_list_src){
       echo "<div id='product-carousel'>";
       echo tep_image3(DIR_WS_IMAGES.'products/' . $p_list_src,
         $product_info['products_name'], '','',
         'hspace="2" vspace="2" class="product-carousel-image"');
-      echo "</div>";
-      $show_images = true;
-    }
-  }
-  if(!$show_images){
-    if($product_info['products_cflag']=='1'){
-      echo "<div id='product-carousel'>";
-      echo '<img src="images/stock.gif" alt="'.$product_info['products_name'].'"
-        hspace="2" vspace="2" class="product-carousel-image" />';
-      echo "</div>";
-    }else{
-      echo "<div id='product-carousel'>";
-      echo '<img src="images/sell.gif" alt="'.$product_info['products_name'].'"
-        hspace="2" vspace="2" class="product-carousel-image" />';
       echo "</div>";
     }
   }
