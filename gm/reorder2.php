@@ -154,7 +154,7 @@ if(!isset($email_error)||$email_error == true){?>
 
           </tr>
           <tr>
-            <td><?php echo TEXT_REORDER_GAME_TITLE?></td>
+            <td><?php echo TEXT_REORDER_GAME_TITLE;?></td>
             <td>
               <input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
@@ -186,7 +186,7 @@ if(!isset($email_error)||$email_error == true){?>
      echo TEXT_REORDER2_TRADE_TIME_ERROR;
    }?></span>
               <br >
-              <font color="red"><?php echo TEXT_REORDER_TREADE_TEXT;?></font>
+              <font color="red"><?php echo TEXT_REORDER_TRADE_TEXT;?></font>
             </td>
           </tr>
           <tr>
@@ -204,8 +204,8 @@ if(!isset($email_error)||$email_error == true){?>
           src="includes/languages/japanese/images/buttons/button_submit2.gif"
             onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'"
             onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit2_hover.gif'"
-            alt="<?php echo TEXT_REORDER_CONFIRE;?>" title="<?php echo
-            TEXT_REORDER_CONFIRE;?>" onclick='return check()' >
+            alt="<?php echo TEXT_REORDER_INFO_CONFIRM;?>" title="<?php echo
+            TEXT_REORDER_INFO_CONFIRM;?>" onclick='return check()' >
           <input type='image'
             onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'"
             onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"

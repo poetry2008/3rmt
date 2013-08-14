@@ -1,3 +1,4 @@
+<?php include(DIR_WS_BOXES . 'best_sellers.php');?>
 <?php 
 if (!isset($is_show_review) || ($is_show_review == true)) {
   if ((basename($PHP_SELF) != FILENAME_PRODUCT_INFO) && (basename($PHP_SELF) != FILENAME_ADVANCED_SEARCH_RESULT)) {
@@ -5,7 +6,6 @@ if (!isset($is_show_review) || ($is_show_review == true)) {
   }
 }
 ?>
-<?php include(DIR_WS_BOXES . 'best_sellers.php');?>
 <div id="footer">
 		<div id="footer-nav">
 <?php if ($banner = tep_banner_exists('dynamic', 'footer1')) {  echo tep_display_banner    ('static',  $banner); }?>

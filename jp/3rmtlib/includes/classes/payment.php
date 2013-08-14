@@ -1217,5 +1217,21 @@ class payment {
     }
     return ''; 
   }
+
+/*---------------------------
+ 功能：是否显示信息 
+ 参数：$payment(string) 支付方法
+ 返回值：是否显示(boolean)
+ --------------------------*/
+  function admin_is_show_info($payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_is_show_info')) {
+        return $module->admin_is_show_info(); 
+      }
+    }
+    return false; 
+  }
 }
 ?>

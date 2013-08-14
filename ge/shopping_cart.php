@@ -9,6 +9,41 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
 
+  //检查商品的OPTION是否改动 
+  $check_products_option = tep_check_less_product_option();
+  if(!empty($check_products_option)){
+    if(!isset($_SESSION['change_option_num'])){
+
+      $_SESSION['change_option_num'] = 1;
+    }else{
+      $_SESSION['change_option_num']++;
+    }
+  }else{
+    unset($_SESSION['change_option_num']); 
+  }
+
+  if(isset($_SESSION['change_option_num']) && $_SESSION['change_option_num'] > 1){
+
+    foreach($check_products_option as $check_products_value){
+      $cart->remove($check_products_value); 
+    }
+    unset($_SESSION['change_option_num']);
+  }
+
+  $products_cart_array = $cart->get_products();
+  if($_GET['action'] != 'update_product'){
+    unset($_SESSION['change_option_id']);
+    unset($_SESSION['change_option_flag']);
+    //记录OPTION有变化的商品
+    for ($i=0, $n=sizeof($products_cart_array); $i<$n; $i++) { 
+      if(in_array($products_cart_array[$i]['id'],$check_products_option)){
+        $_SESSION['change_option_id'][] = $products_cart_array[$i]['id']; 
+      }else{
+        $_SESSION['change_option_flag'][] = $products_cart_array[$i]['id']; 
+      }
+    }
+  }
+
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
       $cart->remove($_GET['products_id']); 
@@ -34,6 +69,12 @@
         $return_check_array[] = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
         $return_check_array[] = implode('>>>', $check_products_info); 
       } else {
+        $return_check_array[] = 0; 
+      }
+      if(isset($_SESSION['change_option_flag']) && count($_SESSION['change_option_flag']) > 0){
+
+        $return_check_array[] = 1;
+      }else{
         $return_check_array[] = 0; 
       }
       echo implode('|||', $return_check_array); 
@@ -62,7 +103,7 @@ function check_op_products() {
     success: function(msg) {
       msg_arr = msg.split('|||');  
       if (msg_arr[0] != '0') {
-        if (window.confirm(msg_arr[0])) {
+       if(msg_arr[2] == '0'){
           $.ajax({
             url: '<?php echo FILENAME_SHOPPING_CART.'?action=delete_products_op';?>',     
             data:'d_op_list='+msg_arr[1], 
@@ -71,8 +112,10 @@ function check_op_products() {
             success: function(msg) {
               window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>'; 
             }
-          }); 
-        }
+          });
+       }else{
+         document.forms.cart_quantity.submit();   
+       }
       } else {
         document.forms.cart_quantity.submit(); 
       }
@@ -394,6 +437,36 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <?php
     $any_out_of_stock = 0;
+    $products_array = $cart->get_products();
+    //对相同商品OPTION改动的覆盖
+    $products_id_array = array();
+    for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
+      $products_id_str = explode('_',$products_array[$i]['id']);
+      $products_id_array[] = $products_id_str[0];
+    }
+    $products_id_count = array_count_values($products_id_array);
+    $products_temp_array = array();
+    foreach($products_id_count as $key=>$value){
+
+      if($value >= 2){
+
+        $products_temp_array[] = $key;
+      }
+    }
+    $check_products_option_array = array();
+    foreach($check_products_option as $value){
+
+      $check_products_option_str = explode('_',$value);
+      $check_products_option_array[] = $check_products_option_str[0];
+    } 
+    foreach($products_temp_array as $value){
+
+      if(in_array($value,$check_products_option_array)){
+
+        $cart->remove($check_products_option[array_search($value,$check_products_option_array)]); 
+      }
+    }
+
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
 // Push all attributes information in an array

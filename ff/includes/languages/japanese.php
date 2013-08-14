@@ -502,4 +502,5 @@ define('TEXT_ORDERS_PRODUCTS_LINK','分から');
 define('TEXT_ORDERS_PRODUCTS_TWENTY_HOUR','分　（24時間表記）');
 define('TEXT_ORDERS_PRODUCTS_ADDRESS_INFO','▼住所情報');
 define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'."\n");
+define('TEXT_PRODUCTS_OPTION_CHANGE_ERROR','<font color="red">商品情報に更新があった為、ショッピングカートから削除されました。お手数ですが、再度最初からお手続きをお願いいたします。</font>');
 ?>

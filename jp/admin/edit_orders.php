@@ -3203,10 +3203,18 @@ if (($action == 'edit') && ($order_exists == true)) {
             echo $_SESSION['payment_empty_error_edit'];
             unset($_SESSION['payment_empty_error_edit']);
           }
+          $tmp_is_show = true; 
+          if (($order->info['is_gray'] == '1') || ($c_chk == '2')) {
+            if (!$cpayment->admin_is_show_info(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE))) {
+              $tmp_is_show = false; 
+            } 
+          } 
+          if (!$tmp_is_show) {
+            $pay_info_array[0] = ''; 
+          }
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
-
-          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk,'order',$order->customer['email_address']); 
+          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk,'order',$order->customer['email_address'],$tmp_is_show); 
           echo '});'."\n";
           echo '</script>'."\n";
       

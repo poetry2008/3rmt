@@ -37,6 +37,8 @@
        */
        '  </tr>' . "\n";
 
+  //检查商品的OPTION是否改动
+  $check_products_option = tep_check_less_product_option();
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     echo '  <tr>' . "\n";
 
@@ -48,6 +50,7 @@
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
 
 // Quantity box or information as an input box or text
+    $disabled = in_array($products[$i]['id'],$check_products_option) ? ' disabled="disabled"' : '';    
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       // add up and down 
       $p_a_quan = tep_get_quantity($products[$i]['id'],true);
@@ -63,8 +66,12 @@
       $origin_small = ''; 
       if (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id'])) {
         $origin_small = tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']); 
-      } 
-      echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onkeypress="return key(event);" onblur="money_blur_update(\'quantity_'.$products[$i]['id'].'\', \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')"');
+      }
+      if(in_array($products[$i]['id'],$check_products_option)){
+        echo tep_draw_hidden_field('cart_quantity[]',$products[$i]['quantity']); 
+        echo tep_draw_hidden_field('cart_products_id_list[]',$products[$i]['id']);
+      }
+      echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onkeypress="return key(event);" onblur="money_blur_update(\'quantity_'.$products[$i]['id'].'\', \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')"'.$disabled);
       echo   tep_draw_hidden_field('products_id[]', $products[$i]['id']);
       echo tep_draw_hidden_field('option_info[]', serialize($products[$i]['op_attributes'])); 
       
@@ -82,6 +89,7 @@
       
       echo '</td>'; 
       echo '<td>'; 
+      if(!in_array($products[$i]['id'],$check_products_option)){
       ?>
       <table cellpadding="0" cellspacing="0" border="0">
       <tr><td> <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>, '<?php echo $products[$i]['quantity'];?>', '<?php echo $origin_small;?>'); return false;"> 
@@ -92,6 +100,11 @@
       </a> </td></tr>
       </table>
       <?php
+      }else{
+
+        echo '<div style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></div>';
+        echo '<div style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></div>';
+      }
       echo '</td>';
       echo '<td><font style="font-size:10px">'.NUM_UNIT_TEXT.'</font></td>';
       echo '</tr>'; 
@@ -139,6 +152,10 @@
       }
     } else {
       echo '    <td class="main" style=" background:#434242">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . (int)$products[$i]['id']) . '">' . $products[$i]['model'] . '</a><br>':'').'<div class="product_open"><b>' . $products[$i]['name'] . '</b>';
+    }
+        if(in_array($products[$i]['id'],$check_products_option)){
+
+      echo '<br>'.TEXT_PRODUCTS_OPTION_CHANGE_ERROR;
     }
 
 // Display marker if stock quantity insufficient
@@ -231,8 +248,10 @@
 
   
     echo '</td>' . "\n"; 
-    if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
+    if (strstr($PHP_SELF, FILENAME_SHOPPING_CART) && !in_array($products[$i]['id'],$check_products_option)) {
       echo '<td align="center" style=" background:#434242;"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&amp;action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
+    }else{
+      echo '<td align="center" style=" background:#434242;">&nbsp;</td>'; 
     }
     echo '  </tr>' . "\n";
      
