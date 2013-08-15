@@ -37,6 +37,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TELL_A_FRIEND);
 
+  if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_TELL_A_FRIEND, 'send_to=' . $_GET['send_to'] . '&products_id=' . $_GET['products_id']));
 ?>
 <?php page_head();?>
@@ -217,7 +218,6 @@
                     <td><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
                     <td>
                     <?php 
-                    if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
                     echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to']), 'style="width:35%"'); if ($friendemail_error == true) echo '<br><span class="error_information">'.strip_tags(ENTRY_EMAIL_ADDRESS_CHECK_ERROR).'</span>'; 
                     ?>
                     </td>

@@ -5,6 +5,14 @@
 
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+       $sql_site_where = 'o.site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+       $show_list_array = explode('-',$_GET['site_id']);
+   } else {
+       $show_list_str = tep_get_setting_site_info('stats_products_purchased.php');
+       $sql_site_where = 'o.site_id in ('.$show_list_str.')';
+       $show_list_array = explode(',',$show_list_str);
+   }  
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -51,12 +59,7 @@ require("includes/note_js.php");
       <tr>
         <td>
          <?php 
-          $site_query = tep_db_query("select id from ".TABLE_SITES);
-          $site_list_array = array();
-          while($site_array = tep_db_fetch_array($site_query)){
-                $site_list_array[] = $site_array['id'];
-          }
-          tep_show_site_filter('stats_products_purchased.php',false,$site_list_array);
+          tep_show_site_filter('stats_products_purchased.php',false,array(0));
          ?> 
          <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -69,7 +72,7 @@ require("includes/note_js.php");
                  $stats_type = 'asc';
             }
             if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                  $stats_str = 'products_ordered desc, products_name asc';
+                  $stats_str = 'one_price desc, products_name asc';
             }else if($_GET['sort'] == 'products_name'){
                   if($_GET['type'] == 'desc'){
                       $stats_str = 'products_name desc';
@@ -80,10 +83,10 @@ require("includes/note_js.php");
                    }
             }else if($_GET['sort'] == 'products_ordered'){
                   if($_GET['type'] == 'desc'){
-                      $stats_str = 'products_ordered desc, products_name asc';
+                      $stats_str = 'one_price desc, products_name asc';
                       $stats_type = 'asc';
                    }else{
-                      $stats_str = 'products_ordered asc, products_name desc';
+                      $stats_str = 'one_price asc, products_name desc';
                       $stats_type = 'desc';
                    }
             }else if($_GET['sort'] == 'rownum'){
@@ -145,15 +148,14 @@ require("includes/note_js.php");
     $rows = 0;
   }
   $products_query_raw = "
-    select * from (select (@mycnt := @mycnt + 1) as rownum,products_ordered,products_name from(select p.products_id, 
-           p.products_ordered as products_ordered, 
-           pd.products_name as products_name
-    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-    where pd.products_id = p.products_id 
-      and pd.language_id = '" . $languages_id. "' 
-      and pd.site_id ='0'
-      and p.products_ordered > 0 
-    group by pd.products_id ) g order by products_ordered desc,products_name asc) z order by ".$stats_str;
+    select * from(select (@mycnt := @mycnt+1) as rownum,pos.* from (select op.products_name,sum(op.products_quantity*
+              if(op.products_rate is null,if(products_attention_1_3 is null,1,if(products_attention_1_3='',1,products_attention_1_3)),
+              if(op.products_rate='',1,op.products_rate))/if(products_attention_1_3 is null,1,if(products_attention_1_3='',1,products_attention_1_3))) as one_price
+              from orders o,orders_status os,products p,orders_products op where
+              o.orders_status = os.orders_status_id and o.orders_id = op.orders_id
+              and op.products_id = p.products_id and ".$sql_site_where."  and os.calc_price = '1'
+              group by p.products_id order by one_price desc) pos order by rownum) q
+    order by ".$stats_str;
   $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_query_raw, $products_query_numrows);
   tep_db_query("set @mycnt=0");
   $products_query = tep_db_query($products_query_raw);
@@ -233,7 +235,7 @@ require("includes/note_js.php");
        );
    $stats_info[] = array(
        'params' => 'class="dataTableContent"'.$onlick,
-       'text'   => '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT, 'report=5&site_id=&is_select=1&add_product_categories_id='.$current_category_id.'&cid='.$current_category_id.'&pid='.$products['products_id'].'&products_id='.$products['products_id'].'&startY='.date('Y',$first['first']).'&startM='.date('m',$first['first']).'&startD='.date('d',$first['first']).'&method=1&detail=2&endY='.date('Y').'&endM='.date('m').'&endD='.date('d').'&export=0&bflag='.(tep_get_bflag_by_product_id($products['products_id']) == 0 ? 1 : 2).'&status=success&sort=4&compare=0&max=', 'NONSSL') . '">' . $products['products_ordered']. '</a>'
+       'text'   => '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT, 'report=5&site_id=&is_select=1&add_product_categories_id='.$current_category_id.'&cid='.$current_category_id.'&pid='.$products['products_id'].'&products_id='.$products['products_id'].'&startY='.date('Y',$first['first']).'&startM='.date('m',$first['first']).'&startD='.date('d',$first['first']).'&method=1&detail=2&endY='.date('Y').'&endM='.date('m').'&endD='.date('d').'&export=0&bflag='.(tep_get_bflag_by_product_id($products['products_id']) == 0 ? 1 : 2).'&status=success&sort=4&compare=0&max=', 'NONSSL') . '">' .  (int)$products['one_price']. '</a>'
        );
    $stats_info[] = array(
        'params' => 'class="dataTableContent" align="right"',

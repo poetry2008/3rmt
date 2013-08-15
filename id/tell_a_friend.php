@@ -25,7 +25,8 @@
     $product_info_query = tep_db_query("
         select pd.products_name
         from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-        where pd.products_id = '" .  (int)$_GET['products_id'] . "' 
+        where pd.products_status != '0' and pd.products_status != '3' 
+          and pd.products_id = '" .  (int)$_GET['products_id'] . "' 
           and pd.language_id = '" . $languages_id . "' 
           and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
         order by pd.site_id DESC
