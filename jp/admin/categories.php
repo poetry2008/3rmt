@@ -198,12 +198,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       echo intval(tep_calc_limit_time_by_order_id($_POST['pid'],$_POST['single'],$_POST['limit_time']));
     exit;
     break;
-    case 'edit_category'; 
-    case 'new_product'; 
-    if (!($ocertify->npermission >= 10)){
-      forward401();
-    }
-    break;
     //一并更新
     case 'all_update':
     tep_isset_eof();
