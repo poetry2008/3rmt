@@ -26,7 +26,7 @@ if ($tmp_sort_str == '4') {
 			       }                    
 
  ?>
-<!--select searach -->
+<!--select search -->
 <table cellspacing="0" cellpadding="0" border="0" class="sort" width="100%">
 	<tr>
 <td><a class="product_listing_link" <?php echo (!isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100a' or $_COOKIE['sort'] == '100d') ? 'style="background:url(images/design/box/button_large_hover.gif)"' : 'style="background:url(images/design/box/button_large.gif)"' ; ?> href="javascript:void(0)"
@@ -72,7 +72,7 @@ if ($tmp_sort_str == '4') {
   }
 ?>
 </table>
-<!--select searach_eof// -->
+<!--select search_eof// -->
 
 
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -147,7 +147,7 @@ if ($listing_numrows > 0) {
          </tr>
           <tr>
           <td colspan="2">
-            <?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?>
+             <?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?>
           </td>
         </tr>
         <tr>
