@@ -112,7 +112,7 @@
       echo  '</td>' . "\n";
     } else {
       echo '    <td align="center" class ="main" style="
-        background:#FFFFFF;padding-left:10px;padding-right:20px;">' .tep_get_quantity($products[$i]['id'],true) . NUM_UNIT_TEXT;
+        background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . NUM_UNIT_TEXT;
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true),
             $products[$i]['id']) ? '<span style="font-size:10px">'.  tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";

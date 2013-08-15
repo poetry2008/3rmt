@@ -188,7 +188,7 @@
 
     if($products_error == true && $stock_check == ''){
 
-      echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products_name='.urlencode($products[$i]['name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
+      echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($products[$i]['name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
     }
     echo '</div>';
 // Product options names
