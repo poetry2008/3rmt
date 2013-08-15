@@ -118,17 +118,28 @@
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
     }
-    //add products image 
-    echo '<td align="center" class="main" style=" background:#e2e2e2;padding-left:10px;padding-right:20px;">';
-    $pimage_query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".intval($products[$i]['id'])."'"); 
-    $pimage_res = tep_db_fetch_array($pimage_query); 
 
-    if ($pimage_res) {
-      if (!empty($pimage_res['products_image'])) {
-        echo tep_image(DIR_WS_IMAGES . 'products/' . $pimage_res['products_image'], $products[$i]['name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); 
+    //image
+    if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
+      echo '<td align="center" class="main" style=" background:#e2e2e2;padding-left:10px;padding-right:20px;">';
+      if (!empty($product_info['products_image']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
       }
+      else if (!empty($product_info['products_image2']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image2'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
+      }
+      else if (!empty($product_info['products_image3']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image3'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
+      }
+
+      echo '</td>';
     }
-    echo '</td>';
 // Model
     if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       //echo '    <td class="main" style=" background:#dbfdff">1<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products[$i]['id']) . '">' . $products[$i]['model'] . '</a></td>' . "\n";
@@ -151,7 +162,8 @@
     if(in_array($products[$i]['id'],$check_products_option)){
 
       echo '<br>'.TEXT_PRODUCTS_OPTION_CHANGE_ERROR;
-    }   
+    }
+
 // Display marker if stock quantity insufficient
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
       if (STOCK_CHECK == 'true') {
