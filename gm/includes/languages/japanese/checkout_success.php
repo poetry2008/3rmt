@@ -27,7 +27,7 @@ define('TEXT_SUCCESS', '
 最近、リネージュ2において詐欺行為を行うキャラクターの存在が多数報告されております。不特定多数のキャラクターへトレードを申し込み、ゲーム通貨やアイテムを不正に取得する手口となります。
 トレードの際は、キャラクター名を十分ご確認いただきますようお願い申し上げます。弊社キャラクター以外へトレードされた場合、弊社では一切の保障をいたしかねます。</div>
 <div style="margin-bottom:35px;overflow:hidden;">
-<div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/stock.gif" alt="販売アイコン" width="50" height="50"></div>
+<div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/stock.jpg" alt="販売アイコン" width="50" height="50"></div>
 <div style="float:left; width:90%;">
 <h3><b>「販売」商品について</b></h3>
 お客様ご指定の取引日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。</div>
@@ -39,7 +39,7 @@ define('TEXT_SUCCESS', '
 ご注文いただいた商品は、通常１～５営業日でお届けしております。</div>
 </div>
 <div style="margin-bottom:35px;overflow:hidden;">
-<div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/sell.gif" alt="買取アイコン" width="50" height="50"></div>
+<div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/sell.jpg" alt="買取アイコン" width="50" height="50"></div>
 <div style="float:left;width:90%;">
 <h3><b>「買取」商品について</b></h3>
 お客様ご指定の取引日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。</div></div>');

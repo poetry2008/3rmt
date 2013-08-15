@@ -6,7 +6,6 @@
   require('includes/application_top.php');
 
   if (tep_session_is_registered('customer_id')) {
-    // ccdd
     $account = tep_db_query("
         select customers_firstname, 
                customers_lastname, 
@@ -23,7 +22,6 @@
 
   $valid_product = false;
   if (isset($_GET['products_id'])) {
-    // ccdd
     $product_info_query = tep_db_query("
         select pd.products_name
         from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -39,6 +37,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_TELL_A_FRIEND);
 
+  if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_TELL_A_FRIEND, 'send_to=' . $_GET['send_to'] . '&products_id=' . $_GET['products_id']));
 ?>
 <?php page_head();?>
@@ -49,7 +48,6 @@
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-    <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
   <!-- body_text //-->
      <div id="layout" class="yui3-u" >
 
@@ -143,15 +141,28 @@
     }
     
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
-      $email_subject = sprintf(TEXT_EMAIL_SUBJECT, $from_name, STORE_NAME);
-      $email_body = sprintf(TEXT_EMAIL_INTRO, $_POST['friendname'], $from_name, $_POST['products_name'], STORE_NAME) . "\n\n";
-
-      if (tep_not_null($_POST['yourmessage'])) {
-        $email_body .= $_POST['yourmessage'] . "\n\n";
-      }
-
-      $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id'])) . "\n\n" .
-                     sprintf(TEXT_EMAIL_SIGNATURE, STORE_NAME . "\n" . HTTP_SERVER . DIR_WS_CATALOG . "\n");
+      $tell_friend_mail_templates = tep_get_mail_templates('TELL_FRIEND_MAIL_TEMPLATES','0');
+      $replace_array = array(
+            '${FROM}',
+            '${TO}', 
+            '${PRODUCTS_NAME}',
+            '${COMMENTS}',
+            '${PRODUCTS_URL}'
+          ); 
+      
+      $new_replace_array = array(
+            $from_name,
+            $_POST['friendname'], 
+            $_POST['products_name'],
+            $_POST['yourmessage'],
+            tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id'])
+          );
+      
+      $email_subject = str_replace($replace_array, $new_replace_array, $tell_friend_mail_templates['title']);
+      $email_body = str_replace($replace_array, $new_replace_array, $tell_friend_mail_templates['contents']);
+      
+      $email_subject = tep_replace_mail_templates($email_subject, $from_name, $from_email_address);
+      $email_body = tep_replace_mail_templates($email_body, $from_name, $from_email_address);
 
       tep_mail($_POST['friendname'], $_POST['friendemail'], $email_subject, stripslashes($email_body), '', $from_email_address);
 ?>
@@ -207,7 +218,6 @@
                     <td><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
                     <td>
                     <?php 
-                    if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
                     echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to']), 'style="width:35%"'); if ($friendemail_error == true) echo '<br><span class="error_information">'.strip_tags(ENTRY_EMAIL_ADDRESS_CHECK_ERROR).'</span>'; 
                     ?>
                     </td>
@@ -251,7 +261,6 @@
 </div>
   <?php include('includes/float-box.php');?>
   <!-- body_text_eof //-->
-    <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>
   <!-- body_eof //-->
   <!-- footer //-->
    <!-- footer_eof //-->

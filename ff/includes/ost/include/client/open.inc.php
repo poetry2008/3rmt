@@ -47,8 +47,8 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
 if(isset($info['subject'])){
   $products_name= $info['subject'] ;
 }else {
-    if(isset($_GET['products_name'])){
-        $products_name = $_GET['products_name'].'について';
+    if(isset($_GET['products'])){
+        $products_name = $_GET['products'].'について';
     }else {
         if (isset($_GET['pname'])) {
           $products_name = $_GET['pname'].'の確保期限について';
