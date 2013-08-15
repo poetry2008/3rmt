@@ -816,11 +816,22 @@ if ($srCompare > SR_COMPARE_NO) {
 <?php
 if($_GET['report'] != 5){
   $sum = 0;
+  $sum_orders = 0;
+  $products_sum_point = 0;
+  $d = 0;
+  $num_row = 0;
   while ($sr2->hasNext()) {
     $info = $sr2->next();
     $last = sizeof($info) - 1;
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }  
   ?>
-              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
                 <td class="dataTableContent"><input type="checkbox" disabled="disabled"></td>
                 <?php
       switch ($srView) {
@@ -849,14 +860,9 @@ if($_GET['report'] != 5){
                 <td class="dataTableContent" align="right"><?php 
                 if(isset($info[$last - 1]['totsum']) ) {
                   if ($info[$last - 1]['totsum']<0) {
-                    echo '<font color="red">'.
-                      str_replace(TEXT_MONEY_SYMBOL,'',
-                      $currencies->format($info[$last - 1]['totsum'])).
-                      '</font>'.TEXT_MONEY_SYMBOL;
+                    echo '<font color="red">'.  str_replace(TEXT_MONEY_SYMBOL,'', $currencies->format($info[$last - 1]['totsum'])).  '</font>'.TEXT_MONEY_SYMBOL;
                   } else {
-                    echo str_replace(TEXT_MONEY_SYMBOL,'',
-                      $currencies->format($info[$last - 1]['totsum'])).
-                      TEXT_MONEY_SYMBOL;
+                    echo str_replace(TEXT_MONEY_SYMBOL,'', $currencies->format($info[$last - 1]['totsum'])).  TEXT_MONEY_SYMBOL;
                   }
                 }
     ?></td>
@@ -864,6 +870,10 @@ if($_GET['report'] != 5){
                <td class="dataTableContent" align="right"><?php echo tep_image('images/icons/info_gray.gif');?></td>
               </tr>
               <?php
+              $products_sum_point += $info[$last - 1]['totitem'];
+              $sum_orders += $info[0]['order'];
+              $d += $info[$last - 1]['totsum'];
+              $num_row++;
     if ($srDetail) {
       for ($i = 0; $i < $last; $i++) {
         if ($srMax === 'all' or $i < $srMax) {
@@ -938,6 +948,23 @@ if($_GET['report'] != 5){
       }
     }
   }
+  ?>
+<tr>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php echo SR_ORDERS_SUM.$sum_orders.SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php echo SR_PRODUCTS_POINT_SUM.$products_sum_point.SR_POINT;?></td>
+<td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.  ($t<0?'<font color="red">':'');?><?php echo str_replace(TEXT_MONEY_SYMBOL,'', $currencies->format($d));?><?php echo ($d<0?'</font>':''); echo TEXT_MONEY_SYMBOL; ?></td></tr>
+<tr>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php echo AVG_ORDERS_SUM; echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($sum_orders/$num_row)) == 1 && $_GET['report'] == 5 ? '-' : str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($sum_orders/$num_row)); echo SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php echo AVG_PRODUCTS_POINT_SUM; echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($products_sum_point/$num_row)); echo SR_POINT;?></td>
+<td class="dataTableContent" align="right"><?php echo AVG_MONEY_SUM.  ($t<0?'<font color="red">':'');?><?php echo str_replace(TEXT_MONEY_SYMBOL,'',$avg_currencies->format($d/$num_row)) ;?><?php echo ($t<0?'</font>':''); echo TEXT_MONEY_SYMBOL;?></td>
+</tr>
+<?php
 }else{
 
   $info = $sr2->next(); 
