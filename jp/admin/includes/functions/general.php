@@ -10050,7 +10050,7 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
                 if (!empty($ao_option['se_option'])) {
                   $ao_se_single = false; 
                   foreach ($ao_option['se_option'] as $se_key => $se_value) {
-                    if ($se_value == $att_option_info['value']) {
+                    if (trim($se_value) == trim($att_option_info['value'])) {
                       $ao_se_single = true;
                       break;
                     }
