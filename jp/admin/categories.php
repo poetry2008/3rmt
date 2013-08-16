@@ -2069,7 +2069,7 @@ url: 'ajax_orders.php?action=handle_option',
 data:'keyword='+option_value,
 async:false,
 success: function(msg) {
-open_url = "<?php echo HTTP_SERVER;?>"+'/admin/option.php?keyword='+option_value+"&search=2";     
+open_url = 'option.php?keyword='+option_value+"&search=2";     
 window.open(open_url, 'newwindow', ''); 
 }
 });  
