@@ -1015,7 +1015,25 @@ function check_point(point_num) {
             <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                       <tr> 
                         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
-                        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                        <td class="main" align="right"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></a>
+<?php
+          //触发弹出层的条件
+          $check_products_info = tep_check_less_product_option(); 
+          if (!empty($check_products_info)) {
+            $notice_msg_array = array(); 
+            foreach ($check_products_info as $cpo_key => $cpo_value) {
+              $tmp_cpo_info = explode('_', $cpo_value); 
+              $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+            }
+            $alert_info = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+            echo '<input type="hidden" id="alert_info" value="1">';
+            echo '<input type="hidden" id="alert_info_str" value="'.$alert_info.'">';
+          }else{
+            echo '<input type="hidden" id="alert_info" value="0">'; 
+            echo '<input type="hidden" id="alert_info_str" value="">';
+          }
+?>
+</td> 
                       </tr> 
                     </table>
               </td> 
@@ -1744,7 +1762,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
             <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                       <tr> 
                         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
-                        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                        <td class="main" align="right"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></a></td> 
                       </tr> 
                     </table>
               </td> 
