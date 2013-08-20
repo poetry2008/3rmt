@@ -7357,9 +7357,16 @@ if($_GET['type'] == 'mag_orders'){
         array('text' => str_replace(':','',TEXT_INFO_CURRENT_CATEGORIES) . tep_draw_hidden_field('products_id', $pInfo->products_id)), 
         array('text' => tep_output_generated_category_path($pInfo->products_id, 'product'))
       );
+  $products_link_array = tep_generate_category_path($pInfo->products_id, 'product');
+  $categories_products_array = array();
+  foreach($products_link_array as $value){
+
+    $products_link_temp_array = end($value);
+    $categories_products_array[] = $products_link_temp_array['id'];
+  }
   $copy_product_info[]['text'] = array(
         array('text' => IMAGE_LINK_TO), 
-        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','',$current_category_id,'',false), ''))
+        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','',$categories_products_array,'',false), ''))
       ); 
 
   $form_str = tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=link_to_confirm&cPath=' . $cPath);

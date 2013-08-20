@@ -948,7 +948,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       //处理 发售日 时间
       if(!isset($site_id)||$site_id==''||$site_id==0){
         $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
-        $products_date_available = (date('Y-m-d') < $products_date_available) ? $products_date_available : 'null';
         $sql_data_array = array_merge($sql_data_array,
             array(
               'products_date_available' => $products_date_available,
@@ -1289,7 +1288,7 @@ if (isset($_GET['action']) && $_GET['action']) {
                 products_user_added,
                 products_user_update
                   ) values (
-                    '" . $product['real_quantity'] . "', 
+                    '" . $product['products_real_quantity'] . "', 
                     '" . $product['products_model'] . "', 
                     '" . $product['products_image'] . "', 
                     '" . $product['products_image2'] . "', 
