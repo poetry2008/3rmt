@@ -42,6 +42,7 @@ if (isset($_GET['action']) && $_GET['action']) {
    case 'insert_product' 创建商品  
    case 'update_product' 更新商品  
    case 'copy_to_confirm' 复制商品  
+   case 'link_to_confirm' 链接商品
    case 'new_product_preview' 在商品预览页把提交的数据放到session里  
    case 'delete_select_categories_products' 删除分类及子分类及相对应的商品，或者删除商品
  ------------------------------------------------------*/
@@ -1234,18 +1235,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         $move_flag = true; 
       }
       if($move_flag == true){ 
-        if ($_POST['copy_as'] == 'link') {
-          //复制链接 
-          if ($_POST['categories_id'] != $current_category_id) {
-            $check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($categories_id) . "'");
-            $check = tep_db_fetch_array($check_query);
-            if ($check['total'] < '1') {
-              tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . tep_db_input($products_id) . "', '" . tep_db_input($categories_id) . "')");
-            }
-          } else {
-            $messageStack->add_session(ERROR_CANNOT_LINK_TO_SAME_CATEGORY, 'error');
-          }
-        } elseif ($_POST['copy_as'] == 'duplicate') {
+        
           //重复复制 
           $product_query = tep_db_query("
               select *
@@ -1282,7 +1272,22 @@ if (isset($_GET['action']) && $_GET['action']) {
                 products_attention_3, 
                 products_attention_4,
                 products_attention_5,
-                belong_to_option
+                belong_to_option,
+                products_quantity_deleted,
+                products_virtual_quantity,
+                products_cartflag,
+                products_cart_buyflag,
+                products_cart_min,
+                products_cartorder,
+                products_cart_image,
+                products_shipping_time,
+                products_ordered,
+                relate_products_id,
+                sort_order,
+                max_inventory,
+                min_inventory,
+                products_user_added,
+                products_user_update
                   ) values (
                     '" . $product['real_quantity'] . "', 
                     '" . $product['products_model'] . "', 
@@ -1301,16 +1306,31 @@ if (isset($_GET['action']) && $_GET['action']) {
                     '" . $product['products_cflag'] . "',
                     '" . $product['products_small_sum'] . "',
                     '" . $product['option_type'] . "',
-                    '" . addslashes($description['products_attention_1_1']) . "', 
-                    '" . addslashes($description['products_attention_1_2']) . "', 
-                    '" . addslashes($description['products_attention_1_3']) . "', 
-                    '" . addslashes($description['products_attention_1_4']) . "', 
-                    '" . addslashes($description['products_attention_1']) . "', 
-                    '" . addslashes($description['products_attention_2']) . "', 
-                    '" . addslashes($description['products_attention_3']) . "', 
-                    '" . addslashes($description['products_attention_4']) . "', 
-                    '" . addslashes($description['products_attention_5']) . "',
-                    '" . $product['belong_to_option'] . "'
+                    '" . addslashes($product['products_attention_1_1']) . "', 
+                    '" . addslashes($product['products_attention_1_2']) . "', 
+                    '" . addslashes($product['products_attention_1_3']) . "', 
+                    '" . addslashes($product['products_attention_1_4']) . "', 
+                    '" . addslashes($product['products_attention_1']) . "', 
+                    '" . addslashes($product['products_attention_2']) . "', 
+                    '" . addslashes($product['products_attention_3']) . "', 
+                    '" . addslashes($product['products_attention_4']) . "', 
+                    '" . addslashes($product['products_attention_5']) . "',
+                    '" . $product['belong_to_option'] . "',
+                    '".$product['products_quantity_deleted']."',
+                    '".$product['products_virtual_quantity']."',
+                    '".$product['products_cartflag']."',
+                    '".$product['products_cart_buyflag']."',
+                    '".$product['products_cart_min']."',
+                    '".$product['products_cartorder']."',
+                    '".$product['products_cart_image']."',
+                    '".$product['products_shipping_time']."',
+                    '".$product['products_ordered']."',
+                    '".$product['relate_products_id']."',
+                    '".$product['sort_order']."',
+                    '".$product['max_inventory']."',
+                    '".$product['min_inventory']."',
+                    '".$_SESSION['user_name']."',
+                    now()
                       )");
           $dup_products_id = tep_db_insert_id();
           $description_query = tep_db_query("
@@ -1328,7 +1348,11 @@ if (isset($_GET['action']) && $_GET['action']) {
                   products_viewed,
                   site_id,
                   products_status, 
-                  romaji
+                  romaji,
+                  products_description_origin,
+                  option_image_type,
+                  preorder_status,
+                  p_manual
                   ) values (
                     '" . $dup_products_id . "', 
                     '" . $description['language_id'] . "', 
@@ -1338,18 +1362,131 @@ if (isset($_GET['action']) && $_GET['action']) {
                     '0',
                     '" . $description['site_id'] . "', 
                     '" . $description['products_status'] . "', 
-                    '" . $description['romaji'].'('.$code_str.')'."'
+                    '" . $description['romaji'].'('.$code_str.')'."',
+                    '" . $description['products_description_origin']."',
+                    '" . $description['option_image_type']."',
+                    '" . $description['preorder_status']."',
+                    '" . $description['p_manual']."'
                     )");
           }
+          //商品关联标签
+          $products_tags_query = tep_db_query("
+              select *
+              from " . TABLE_PRODUCTS_TO_TAGS . " 
+              where products_id = '" . tep_db_input($products_id) . "'");
+          while ($products_tags_array = tep_db_fetch_array($products_tags_query)) { 
+
+            tep_db_query("insert into " . TABLE_PRODUCTS_TO_TAGS . " (products_id, tags_id) values ('" . $dup_products_id . "', '" . tep_db_input($products_tags_array['tags_id']) . "')");
+          }
+          tep_db_free_result($products_tags_query);
+
+          //商品买忘关联
+          $products_carttag_query = tep_db_query("
+              select *
+              from products_to_carttag 
+              where products_id = '" . tep_db_input($products_id) . "'");
+          while ($products_carttag_array = tep_db_fetch_array($products_carttag_query)) { 
+
+            tep_db_query("insert into products_to_carttag (products_id, tags_id, tags_name, buyflag) values ('" . $dup_products_id . "', '" . tep_db_input($products_carttag_array['tags_id']) . "', '".$products_carttag_array['tags_name']."', '".$products_carttag_array['buyflag']."')");
+          }
+          tep_db_free_result($products_carttag_query);
 
           tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $dup_products_id . "', '" . tep_db_input($categories_id) . "')");
           $products_id = $dup_products_id;
-        }
 
         if (USE_CACHE == 'true') {
           tep_reset_cache_block('categories');
           tep_reset_cache_block('also_purchased');
         }
+      }
+    }
+    if($move_flag == true){
+      tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $categories_id . '&pID=' . $products_id));
+    }
+    break;
+    case 'link_to_confirm':
+    tep_isset_eof();
+    if ( (tep_not_null($_POST['products_id'])) && (tep_not_null($_POST['categories_id'])) ) {
+      $products_id   = tep_db_prepare_input($_POST['products_id']);
+      $categories_id = tep_db_prepare_input($_POST['categories_id']);
+
+      $products_categories_id_query = tep_db_query("select categories_id from ". TABLE_PRODUCTS_TO_CATEGORIES ." where products_id='". $products_id ."'");
+      $products_categories_id_array = tep_db_fetch_array($products_categories_id_query);
+      tep_db_free_result($products_categories_id_query);
+
+      $move_flag = false;
+      if($products_categories_id_array['categories_id'] != $categories_id){
+
+        $products_id_query = tep_db_query("select romaji from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='". $products_id ."'");
+        $products_id_array = tep_db_fetch_array($products_id_query);
+        tep_db_free_result($products_id_query);
+        $products_id_code = $products_id_array['romaji']; 
+        $products_code_id_query = tep_db_query("select distinct p_d.romaji as pd_romaji from ". TABLE_PRODUCTS_DESCRIPTION ." as p_d left join ". TABLE_PRODUCTS_TO_CATEGORIES ." as p_t_c on p_d.products_id=p_t_c.products_id where p_t_c.categories_id='". $categories_id ."'");
+        $products_code_array = array();
+        while($products_code_id_array = tep_db_fetch_array($products_code_id_query)){
+
+          $products_code_array[] = $products_code_id_array['pd_romaji'];
+        }
+        tep_db_free_result($products_code_id_query);
+
+        if(!empty($products_code_array)){
+          //判断该商品罗马字在指定分类下的商品的罗马字是否重复
+          if(in_array($products_id_code,$products_code_array)){
+
+            $messageStack->add(ERROR_MOVE_CATEGORY, 'error');
+          }else{
+            $move_flag = true; 
+          }
+        }else{
+          $move_flag = true; 
+        }
+      }else{
+        $products_id_query = tep_db_query("select romaji from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='". $products_id ."'");
+        $products_id_array = tep_db_fetch_array($products_id_query);
+        tep_db_free_result($products_id_query);
+        $products_id_code = $products_id_array['romaji']; 
+        $products_code_id_query = tep_db_query("select distinct p_d.romaji as pd_romaji from ". TABLE_PRODUCTS_DESCRIPTION ." as p_d left join ". TABLE_PRODUCTS_TO_CATEGORIES ." as p_t_c on p_d.products_id=p_t_c.products_id where p_t_c.categories_id='". $categories_id ."'");
+        $products_code_array = array();
+        while($products_code_id_array = tep_db_fetch_array($products_code_id_query)){
+
+          $products_code_array[] = $products_code_id_array['pd_romaji'];
+        }
+        tep_db_free_result($products_code_id_query);
+
+        if(!empty($products_code_array)){
+
+          $code_num_array = array();
+          $products_id_code = str_replace(array('(',')'),array('\(','\)'),$products_id_code);
+          foreach($products_code_array as $code_key=>$code_value){ 
+            preg_match_all('/^'.$products_id_code.'\(([0-9])\)$/',$code_value,$code_array);
+            if($code_array[1][0] != ''){
+              $code_num_array[] = $code_array[1][0]; 
+            }
+          } 
+          if(max($code_num_array) < 2){
+            $code_str = 2;
+          }else{
+            $code_str = max($code_num_array)+1;
+          }
+        }
+        $move_flag = true; 
+      }
+      if($move_flag == true){ 
+          //复制链接 
+          if ($_POST['categories_id'] != $current_category_id) {
+            $check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($products_id) . "' and categories_id = '" . tep_db_input($categories_id) . "'");
+            $check = tep_db_fetch_array($check_query);
+            if ($check['total'] < '1') {
+              tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . tep_db_input($products_id) . "', '" . tep_db_input($categories_id) . "')");
+            }
+          } else {
+            $messageStack->add_session(ERROR_CANNOT_LINK_TO_SAME_CATEGORY, 'error');
+          }
+        
+          if (USE_CACHE == 'true') {
+            tep_reset_cache_block('categories');
+            tep_reset_cache_block('also_purchased');
+          }
       }
     }
     if($move_flag == true){
@@ -2189,11 +2326,19 @@ $('#show_popup_info').css('display','block');
 }
 });
 }
-<?php //弹出商品复制页?>
-function show_product_copy(pid){
+<?php //弹出商品复制页或链接页?>
+function show_product_copy(type,pid){
+  var type_str;
+  if(type == 'copy'){
+
+    type_str = 'product_copy_to_box';
+  }else{
+    
+    type_str = 'product_link_to_box'; 
+  }
   $.ajax({
 dataType: 'text',
-url: 'ajax.php?action=product_copy_to_box&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
+url: 'ajax.php?action='+type_str+'&pID='+pid+'&site_id=<?php echo $site_id."&page=".$_GET['page']."&cPath=".$cPath."&search=".$_GET['search'];?>',
 success: function(text) {
 //show_p_info 
 $('#show_popup_info').html(text);

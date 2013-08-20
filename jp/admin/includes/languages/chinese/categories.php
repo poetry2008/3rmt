@@ -269,4 +269,6 @@ define('TEXT_EDIT_TAGS_ALL_SELECT','全选择');
 define('TEXT_EDIT_TAGS_SAVE','确定');
 define('MANUAL_LINK_TEXT', '手册');
 define('TEXT_RELATE_PRODUCT_RADICES','按照1个（%s）计算。');
+define('IMAGE_LINK','链接');
+define('IMAGE_LINK_TO','链接到');
 ?>

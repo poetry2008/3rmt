@@ -277,3 +277,5 @@ define('TEXT_EDIT_TAGS_ALL_SELECT','全選択');
 define('TEXT_EDIT_TAGS_SAVE','確定');
 define('MANUAL_LINK_TEXT', 'マニュアル');
 define('TEXT_RELATE_PRODUCT_RADICES','1個（%s）での計算とします。');
+define('IMAGE_LINK','リンク');
+define('IMAGE_LINK_TO','リンク先');
