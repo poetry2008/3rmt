@@ -1285,8 +1285,7 @@ if (isset($_GET['action']) && $_GET['action']) {
                 sort_order,
                 max_inventory,
                 min_inventory,
-                products_user_added,
-                products_user_update
+                products_user_added
                   ) values (
                     '" . $product['products_real_quantity'] . "', 
                     '" . $product['products_model'] . "', 
@@ -1328,8 +1327,7 @@ if (isset($_GET['action']) && $_GET['action']) {
                     '".$product['sort_order']."',
                     '".$product['max_inventory']."',
                     '".$product['min_inventory']."',
-                    '".$_SESSION['user_name']."',
-                    now()
+                    '".$_SESSION['user_name']."'
                       )");
           $dup_products_id = tep_db_insert_id();
           $description_query = tep_db_query("
@@ -1337,7 +1335,8 @@ if (isset($_GET['action']) && $_GET['action']) {
               from " . TABLE_PRODUCTS_DESCRIPTION . " 
               where products_id = '" . tep_db_input($products_id) . "'");
           while ($description = tep_db_fetch_array($description_query)) {
-            tep_db_query("
+//            tep_db_query("
+            var_dump("
                 insert into " . TABLE_PRODUCTS_DESCRIPTION . " (
                   products_id, 
                   language_id, 
@@ -1369,6 +1368,7 @@ if (isset($_GET['action']) && $_GET['action']) {
                     )");
           }
           //商品关联标签
+            exit;
           $products_tags_query = tep_db_query("
               select *
               from " . TABLE_PRODUCTS_TO_TAGS . " 
