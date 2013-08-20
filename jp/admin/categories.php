@@ -1335,8 +1335,7 @@ if (isset($_GET['action']) && $_GET['action']) {
               from " . TABLE_PRODUCTS_DESCRIPTION . " 
               where products_id = '" . tep_db_input($products_id) . "'");
           while ($description = tep_db_fetch_array($description_query)) {
-//            tep_db_query("
-            var_dump("
+            tep_db_query("
                 insert into " . TABLE_PRODUCTS_DESCRIPTION . " (
                   products_id, 
                   language_id, 
@@ -1368,7 +1367,6 @@ if (isset($_GET['action']) && $_GET['action']) {
                     )");
           }
           //商品关联标签
-            exit;
           $products_tags_query = tep_db_query("
               select *
               from " . TABLE_PRODUCTS_TO_TAGS . " 
