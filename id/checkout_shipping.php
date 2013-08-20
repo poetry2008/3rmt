@@ -10,6 +10,23 @@
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
   $_SESSION['shipping_page_str'] = end($page_url_array);
+  //检测商品OPTION是否改动
+  if ($_GET['action'] == 'check_products_op') {
+      $check_products_info = tep_check_less_product_option(); 
+      if (!empty($check_products_info)) {
+        $notice_msg_array = array(); 
+        foreach ($check_products_info as $cpo_key => $cpo_value) {
+          $tmp_cpo_info = explode('_', $cpo_value); 
+          $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+        }
+        $return_check_array[] = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+        $return_check_array[] = implode('>>>', $check_products_info); 
+      } else {
+        $return_check_array[] = 0; 
+      } 
+      echo implode('|||', $return_check_array); 
+      exit; 
+  }
 
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
@@ -268,6 +285,35 @@ header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
+$(document).ready(function(){
+  var alert_info_flag = $("#alert_info").val();
+  var alert_info_str = $("#alert_info_str").val();
+  if(alert_info_flag == '1'){
+
+    alert(alert_info_str); 
+    window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>';
+  }
+});
+<?php //检查不足的option?>
+function check_option_change(){ 
+  $.ajax({
+    url: '<?php echo FILENAME_CHECKOUT_SHIPPING.'?action=check_products_op';?>',     
+    type: 'POST', 
+    async: false,
+    success: function(msg) {
+      msg_arr = msg.split('|||');  
+      if (msg_arr[0] != '0') {
+        alert(msg_arr[0]);
+        window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>'; 
+      }else{
+        document.forms.order.submit(); 
+      }
+    }
+  }); 
+}
+
+
+
 <?php
 if($cart->weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
