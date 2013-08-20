@@ -1285,8 +1285,7 @@ if (isset($_GET['action']) && $_GET['action']) {
                 sort_order,
                 max_inventory,
                 min_inventory,
-                products_user_added,
-                products_user_update
+                products_user_added
                   ) values (
                     '" . $product['products_real_quantity'] . "', 
                     '" . $product['products_model'] . "', 
@@ -1328,8 +1327,7 @@ if (isset($_GET['action']) && $_GET['action']) {
                     '".$product['sort_order']."',
                     '".$product['max_inventory']."',
                     '".$product['min_inventory']."',
-                    '".$_SESSION['user_name']."',
-                    now()
+                    '".$_SESSION['user_name']."'
                       )");
           $dup_products_id = tep_db_insert_id();
           $description_query = tep_db_query("
