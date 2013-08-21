@@ -349,6 +349,7 @@ require("includes/note_js.php");
   </script>
 <?php }?>
 <script language="javascript">
+<?php //删除数据 ?>
 function view_delete(c_permission,cID){
    if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
     if (c_permission == 31) {
@@ -387,6 +388,7 @@ function view_delete(c_permission,cID){
     }
    }
 }
+<?php //删除列表数据 ?>
 function list_delete(c_permission,cID,list_id){
    if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
     if (c_permission == 31) {
@@ -425,6 +427,7 @@ function list_delete(c_permission,cID,list_id){
     }
    }
 }
+<?php //选择全部checkbox ?>
 function all_select_present(present_str){
      var check_flag = document.del_present.all_check.checked;
         if (document.del_present.elements[present_str]) {
@@ -484,6 +487,7 @@ $(document).ready(function() {
     }
   });    
 });
+<?php //I按钮弹出页面 ?>
 function show_present(ele,cID,site_id,type,page,list_id){
  var sql = '<?php echo $sql_site_where;?>';
  var str = '<?php echo $present_str;?>';
@@ -554,6 +558,7 @@ o_submit_single = true;
   }
   }); 
 }
+<?php //关闭I按钮弹出页面 ?>
 function hidden_info_box(){
    $('#show_present').css('display','none');
 }
@@ -721,6 +726,7 @@ function check_present_form(c_permission)
     });
   }
 }
+<?php //批量删除数据 ?>
 function delete_select_present(present_str, c_permission){
      sel_num = 0;
      if (document.del_present.elements[present_str].length == null) {
@@ -780,6 +786,7 @@ function delete_select_present(present_str, c_permission){
              alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
           }
 }
+<?php //选择动作 ?>
 function present_change_action(r_value, r_str) {
    if (r_value == '1') {
        delete_select_present(r_str, '<?php echo $ocertify->npermission;?>');
@@ -839,6 +846,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
               <tr>
                 <td valign="top">
                 <?php 
+                 //显示数据列表开始
                  $list_id = ($_GET['list_id']?'&list_id='.$_GET['list_id']:'');
                  $present_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0'); 
                  $notice_box = new notice_box('','',$present_table_params);
@@ -946,10 +954,12 @@ $c_id = tep_db_prepare_input($_GET['cID']);
     $notice_box->get_contents($present_table_row);
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
+                 //显示数据列表结束
   ?>
                                 <tr>
                                   <td>
                                     <?php 
+                                     //删除勾选触发事件
                                       if($present_num > 0){
                                           if($ocertify->npermission >= 15){
                                              echo '<select name="present_action" onchange="present_change_action(this.value, \'present_id[]\');">';
@@ -993,6 +1003,7 @@ default:
                     <tr>
                       <td valign="top">
                       <?php 
+                      //显示数据列表开始
                       $present_cid = ($_GET['cID']?'&cID='.$_GET['cID']:'');
                       $present_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0'); 
                       $notice_box = new notice_box('','',$present_table_params);
@@ -1096,11 +1107,13 @@ default:
     $notice_box->get_contents($present_table_row);
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
+                 //显示数据列表结束
 ?>
 						<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
                                 <tr>
                                   <td>
                                     <?php 
+                                      //删除勾选触发事件
                                       if($present_num > 0){
                                           if($ocertify->npermission >= 15){
                                              echo '<select name="present_action" onchange="present_change_action(this.value, \'present_id[]\');">';
