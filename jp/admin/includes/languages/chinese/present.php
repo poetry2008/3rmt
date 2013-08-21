@@ -38,7 +38,15 @@ define('PRESENT_SAVE','保存');
 define('DATA_APPEND_ERROR','数据追加错误');
 define('PRESENT_SHOW','显示');
 define('PRESENT_LIST','列表');
-define('PRESENT_PLEASE_INPUT_TEXT','请输入正文');
-define('PRESENT_PLEASE_ENTER_TITLE','请输入标题');
-define('PRESENT_PLEASE_START_DATE_END_DATE','开始日期＞结束日期');
+define('PRESENT_PLEASE_INPUT_TEXT','&nbsp;&nbsp;<font color=\'red\'>请输入正文</font>');
+define('PRESENT_PLEASE_ENTER_TITLE','&nbsp;&nbsp;<font color=\'red\'>请输入标题</font>');
+define('PRESENT_PLEASE_START_DATE_END_DATE','&nbsp;&nbsp;<font color=\'red\'>开始日期＞结束日期</font>');
+define('TEXT_REVIEWS_SELECT_ACTION','请选择');
+define('TEXT_REVIEWS_DELETE_ACTION', '删除勾选项目');
+define('TEXT_NEWS_MUST_SELECT', '请至少选择一项');
+define('TEXT_DEL_NEWS', '确定要删除吗？');
+define('TEXT_DISPLAY_NUMBER_OF_CONTENS_PRESENT', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_CUSTOMERS_ID','顾客ID');
+define('TEXT_EMAIL','邮箱地址');
+define('TEXT_DISPLAY_NUMBER_OF_CONTENS_PRESENT_LIST', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 ?>

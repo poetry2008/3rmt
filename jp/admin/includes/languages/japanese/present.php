@@ -50,11 +50,16 @@ define('PRESENT_BACK','戻る');
 define('PRESENT_SAVE','保存');
 define('DATA_APPEND_ERROR','データ追加エラー');
 define('PRESENT_SHOW','表示');
-define('PRESENT_LIST','リスト');
-define('PRESENT_PLEASE_INPUT_TEXT','タイトルを入力して下さい');
-define('PRESENT_PLEASE_ENTER_TITLE','本文を入力して下さい');
-define('PRESENT_PLEASE_START_DATE_END_DATE','開始日と終了日を正しく設定してください。');
-
-
-
+define('PRESENT_LIST','応募者リスト');
+define('PRESENT_PLEASE_INPUT_TEXT','&nbsp;&nbsp;<font color=\'red\'>本文を入力して下さい</font>');
+define('PRESENT_PLEASE_ENTER_TITLE','&nbsp;&nbsp;<font color=\'red\'>タイトルを入力して下さい</font>');
+define('PRESENT_PLEASE_START_DATE_END_DATE','&nbsp;&nbsp;<font color=\'red\'>開始日と終了日を正しく設定してください。</font>');
+define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
+define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
+define('TEXT_NEWS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
+define('TEXT_DEL_NEWS', '本当に削除しますか？');
+define('TEXT_DISPLAY_NUMBER_OF_CONTENS_PRESENT', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のプレゼントのうち)');
+define('TEXT_CUSTOMERS_ID','顧客ID');
+define('TEXT_EMAIL','E-Mail アドレス');
+define('TEXT_DISPLAY_NUMBER_OF_CONTENS_PRESENT_LIST', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のリストのうち)');
 ?>
