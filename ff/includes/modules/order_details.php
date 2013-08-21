@@ -121,17 +121,28 @@
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
     }
-    //add products image 
-    echo '<td align="center" class="main" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">';
-    $pimage_query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".intval($products[$i]['id'])."'"); 
-    $pimage_res = tep_db_fetch_array($pimage_query); 
 
-    if ($pimage_res) {
-      if (!empty($pimage_res['products_image'])) {
-        echo tep_image(DIR_WS_IMAGES . 'products/' . $pimage_res['products_image'], $products[$i]['name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); 
+    //image
+    if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
+      echo '<td align="center" class="main" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">';
+      if (!empty($product_info['products_image']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
       }
+      else if (!empty($product_info['products_image2']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image2'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
+      }
+      else if (!empty($product_info['products_image3']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image3'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
+      }
+
+      echo '</td>';
     }
-    echo '</td>';
 // Model
     if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       //echo '    <td class="main" style=" background:#dbfdff">1<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products[$i]['id']) . '">' . $products[$i]['model'] . '</a></td>' . "\n";
@@ -144,14 +155,14 @@
       $cart_pro_status = tep_db_fetch_array($cart_pro_status_raw);
       if ($cart_pro_status['products_status'] == 0 || $cart_pro_status['products_status'] == 3) {
         $stock_link_single = true; 
-        echo '    <td class="main" style=" background:#FFFFFF">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?$products[$i]['model'] . '<br>':'').'<div class="product_open"><b>' . $products[$i]['name'] . '</b>';
+        echo '    <td class="main" style=" background:#FFFFFF">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?$products[$i]['model'] . '<br>':'').'<b>' . $products[$i]['name'] . '</b>';
       } else {
-        echo '    <td class="main" style=" background:#FFFFFF">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  (int)$products[$i]['id']) . '">' . $products[$i]['model'] .  '</a><br>':'').'<div class="product_open"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . (int)$products[$i]['id']) . '"><b>' . $products[$i]['name'] . '</b></a>';
+        echo '    <td class="main" style=" background:#FFFFFF">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  (int)$products[$i]['id']) . '">' . $products[$i]['model'] .  '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . (int)$products[$i]['id']) . '"><b>' . $products[$i]['name'] . '</b></a>';
       }
     } else {
-      echo '    <td class="main" style=" background:#FFFFFF">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  (int)$products[$i]['id']) . '">' . $products[$i]['model'] .  '</a><br>':'').'<div class="product_open"><b>' . $products[$i]['name'] . '</b>';
+      echo '    <td class="main" style=" background:#FFFFFF">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  (int)$products[$i]['id']) . '">' . $products[$i]['model'] .  '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
     }
-        if(in_array($products[$i]['id'],$check_products_option)){
+    if(in_array($products[$i]['id'],$check_products_option)){
 
       echo '<br>'.TEXT_PRODUCTS_OPTION_CHANGE_ERROR;
     }
@@ -177,20 +188,14 @@
 
     if($products_error == true && $stock_check == ''){
 
-      echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products_name='.urlencode($products[$i]['name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
+      echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($products[$i]['name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
     }
-    echo '</div>';
+
 // Product options names
     $attributes_exist = ((isset($products[$i]['add_op_attributes'])) ? 1 : 0);
-    
-    $op_auto_num = 0;
     if ($attributes_exist == 1) {
       foreach ($products[$i]['add_op_attributes'] as $ap_key => $ap_value) {
-        if ($op_auto_num > 0) {
-          echo '<br>'; 
-        }
-        echo '<small><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i></small>';
-        $op_auto_num++; 
+        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i></small>';
       }
     }
 

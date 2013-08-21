@@ -28,6 +28,15 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/option.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+  var alert_info_flag = $("#alert_info").val();
+  var alert_info_str = $("#alert_info_str").val();
+  if(alert_info_flag == '1'){
+
+    alert(alert_info_str); 
+    window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>';
+  }
+});
 <?php //检查不足的option?>
 function check_option_change(){ 
   $.ajax({
@@ -37,10 +46,8 @@ function check_option_change(){
     success: function(msg) {
       msg_arr = msg.split('|||');  
       if (msg_arr[0] != '0') {
-        if (window.confirm(msg_arr[0])) {
-          
-          window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>'; 
-        }
+        alert(msg_arr[0]);
+        window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>'; 
       }else{
         document.forms.option_form.submit(); 
       }
@@ -156,13 +163,7 @@ unset($_SESSION['shipping_session_flag']);
             $belong_option_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".(int)$list_products[$j]['id']."'");  
             $belong_option = tep_db_fetch_array($belong_option_raw);
             
-            echo '<div class="option_product_title"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.(int)$list_products[$j]['id']).'">'.$list_products[$j]['name'].'</a>';
-
-            if(in_array($list_products[$j]['id'],$check_products_option)){
-
-              echo '<br>'.TEXT_PRODUCTS_OPTION_CHANGE_ERROR;
-            }
-            echo '</div>';
+            echo '<div class="option_product_title"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.(int)$list_products[$j]['id']).'">'.$list_products[$j]['name'].'</a></div>';
             
             if ($belong_option) {
               $is_checkout_item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where place_type = '1' and group_id = '".$belong_option['belong_to_option']."' and status = '1'"); 
@@ -173,6 +174,21 @@ unset($_SESSION['shipping_session_flag']);
                 echo '</div>'; 
               }
             }
+          }
+          //触发弹出层的条件
+          $check_products_info = tep_check_less_product_option(); 
+          if (!empty($check_products_info)) {
+            $notice_msg_array = array(); 
+            foreach ($check_products_info as $cpo_key => $cpo_value) {
+              $tmp_cpo_info = explode('_', $cpo_value); 
+              $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+            }
+            $alert_info = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+            echo '<input type="hidden" id="alert_info" value="1">';
+            echo '<input type="hidden" id="alert_info_str" value="'.$alert_info.'">';
+          }else{
+            echo '<input type="hidden" id="alert_info" value="0">'; 
+            echo '<input type="hidden" id="alert_info_str" value="">';
           }
           ?>
           </td>

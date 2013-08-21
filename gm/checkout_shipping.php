@@ -1,22 +1,35 @@
 <?php
 /*
   $Id$
-  确认文件代码
 */
-
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
-  require(DIR_WS_CLASSES . 'order.php');
+  require(DIR_WS_CLASSES . 'order.php'); 
   $order = new order;
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
-  $_SESSION['shipping_page_str'] = end($page_url_array);
-
+  $_SESSION['shipping_page_str'] = end($page_url_array); 
+  //检测商品OPTION是否改动
+  if ($_GET['action'] == 'check_products_op') {
+      $check_products_info = tep_check_less_product_option(); 
+      if (!empty($check_products_info)) {
+        $notice_msg_array = array(); 
+        foreach ($check_products_info as $cpo_key => $cpo_value) {
+          $tmp_cpo_info = explode('_', $cpo_value); 
+          $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+        }
+        $return_check_array[] = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+        $return_check_array[] = implode('>>>', $check_products_info); 
+      } else {
+        $return_check_array[] = 0; 
+      } 
+      echo implode('|||', $return_check_array); 
+      exit; 
+  }
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  }
+    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL')); }
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents() < 1) {
@@ -37,8 +50,7 @@
 // if no shipping destination address was selected, use the customers own address as default
   if (!tep_session_is_registered('sendto')) {
     tep_session_register('sendto');
-    $sendto = $customer_default_address_id;
-  } else {
+    $sendto = $customer_default_address_id; } else {
 // verify the selected shipping address
 //ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
@@ -110,7 +122,7 @@
   $shipping_end_min = tep_db_prepare_input($_POST['end_min']);
   $address_option_value = tep_db_prepare_input($_POST['address_option']);
   $shipping_ele = tep_db_prepare_input($_POST['ele']);
-  $shipping_address_show_list = $_POST['address_show_list']; 
+  $shipping_address_show_list = $_POST['address_show_list'];
 
   //住所
   $options_required = array();
@@ -129,7 +141,6 @@
   tep_db_free_result($address_query);
 
   
-
   //住所信息处理 
   $weight_count = $cart->weight;
   $option_info_array = array(); 
@@ -203,7 +214,8 @@
     $_SESSION['ele'] = $shipping_ele;
     $_SESSION['address_show_list'] = $shipping_address_show_list; 
     $_SESSION['address_option'] = $address_option_value;
-    $_SESSION['insert_torihiki_date'] = $shipping_insert_torihiki_date; $_SESSION['insert_torihiki_date_end'] = $shipping_insert_torihiki_date_end; 
+    $_SESSION['insert_torihiki_date'] = $shipping_insert_torihiki_date;
+    $_SESSION['insert_torihiki_date_end'] = $shipping_insert_torihiki_date_end; 
     //住所信息 session
     
     $options = array();
@@ -223,6 +235,7 @@
 
     tep_session_register('options');
     tep_session_register('options_type_array');
+
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
   }
   }
@@ -267,6 +280,33 @@ header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
+$(document).ready(function(){
+  var alert_info_flag = $("#alert_info").val();
+  var alert_info_str = $("#alert_info_str").val();
+  if(alert_info_flag == '1'){
+
+    alert(alert_info_str); 
+    window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>';
+  }
+});
+<?php //检查不足的option?>
+function check_option_change(){ 
+  $.ajax({
+    url: '<?php echo FILENAME_CHECKOUT_SHIPPING.'?action=check_products_op';?>',     
+    type: 'POST', 
+    async: false,
+    success: function(msg) {
+      msg_arr = msg.split('|||');  
+      if (msg_arr[0] != '0') {
+        alert(msg_arr[0]);
+        window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>'; 
+      }else{
+        document.forms.order.submit(); 
+      }
+    }
+  }); 
+}
+
 <?php
 if($cart->weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
@@ -413,7 +453,7 @@ function country_area_check(value,select_value){
       $("#"+country_city_id).append( "<option value=\""+arr[value][x]+"\""+selected_value+">"+x+"</option>" );
       selected_value = '';
       i++;
-    }
+    }    
     if(i == 0){ 
       $("#td_"+country_city_id_one).hide();
     }else{
@@ -581,7 +621,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     echo 'var address_show_list_one = first_num;'."\n"; 
   }
   ?>
-      if(i==address_show_list_one){
+     if(i==address_show_list_one){
         selected_value = ' selected';
       }
       $("#address_show_list").append( "<option value=\""+i+"\""+selected_value+">"+arr_str+"</option>" ); 
@@ -700,14 +740,14 @@ function session_value(){
     }else{
 
       $("#op_"+x).css("color","#000000");
-      $("#op_"+x).val(session_array[x]); 
+      $("#op_"+x).val(session_array[x]);
     }
   }
 }
 <?php
 }
 ?>
-//--></script>
+--></script>
 <script type="text/javascript" src="js/date_time.js"></script>
 <?php
 if($cart->weight > 0){
@@ -724,7 +764,7 @@ if($cart->weight > 0){
     }
 }
 ?>
-<script type="text/javascript"><!--
+<script type="text/javascript"> 
 $(document).ready(function(){
 <?php
 if($cart->weight > 0){
@@ -755,11 +795,12 @@ if($cart->weight > 0){
 <?php
   }else{
 ?>
-     <?php
-     if($address_quest_flag == 0){ 
+    
+     <?php 
+     if($address_quest_flag == 0){
      ?>
      address_option_show('old'); 
-     address_option_list(first_num);      
+     address_option_list(first_num); 
      <?php
      }
      if(isset($_SESSION['options'])){ 
@@ -901,7 +942,7 @@ function check_point(point_num) {
     return true;
   }
 }
-//--></script>
+</script>
 </head>
 <body>
 <!-- header //--> 
@@ -977,8 +1018,26 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 	<div id="hm-checkout-warp">
   <div class="checkout-title"><p><?php echo '<b>' .
   TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p><p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p></div>
-  <div class="checkout-bottom"><?php echo
-  tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div>  
+  <div class="checkout-bottom"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo
+  tep_image_button('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></a>
+  <?php
+          //触发弹出层的条件
+          $check_products_info = tep_check_less_product_option(); 
+          if (!empty($check_products_info)) {
+            $notice_msg_array = array(); 
+            foreach ($check_products_info as $cpo_key => $cpo_value) {
+              $tmp_cpo_info = explode('_', $cpo_value); 
+              $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+            }
+            $alert_info = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+            echo '<input type="hidden" id="alert_info" value="1">';
+            echo '<input type="hidden" id="alert_info_str" value="'.$alert_info.'">';
+          }else{
+            echo '<input type="hidden" id="alert_info" value="0">'; 
+            echo '<input type="hidden" id="alert_info_str" value="">';
+          }
+  ?>
+  </div>  
   </div>
   <div class="checkout-conent">   
 <?php
@@ -1424,7 +1483,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 </td></tr>
 <?php
                             }
-    $hm_option->render('');
+    $hm_option->render('', false, false);
 ?>
     	</table>
     </td> 
@@ -1634,8 +1693,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
   <div class="checkout-title">
      <p><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p>
   </div>
-  <div class="checkout-bottom"><?php echo
-  tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div> 
+  <div class="checkout-bottom"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo
+  tep_image_button('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></a></div> 
   </div> 
      
 </form>

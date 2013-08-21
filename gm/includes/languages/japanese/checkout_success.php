@@ -36,7 +36,7 @@ define('TEXT_SUCCESS', '
 <div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/preorder.gif" alt="取り寄せアイコン" width="50" height="50"></div>
 <div style="float:left;width:90%;">
 <h3><b>「取り寄せ」商品について</b></h3>
-ご注文いただいた商品は、通常１～５営業日でお届けしております。</div>
+ご注文いただいた商品は、通常1～4営業日でお届けしております。</div>
 </div>
 <div style="margin-bottom:35px;overflow:hidden;">
 <div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/sell.jpg" alt="買取アイコン" width="50" height="50"></div>

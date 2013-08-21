@@ -39,8 +39,8 @@
        '  </tr>' . "\n";
 
   //检查商品的OPTION是否改动
-  $check_products_option = tep_check_less_product_option(); 
-  for ($i=0, $n=sizeof($products); $i<$n; $i++) { 
+  $check_products_option = tep_check_less_product_option();
+  for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     echo '  <tr>' . "\n";
 
 // Delete box only for shopping cart
@@ -53,7 +53,10 @@
 // Quantity box or information as an input box or text
     $disabled = in_array($products[$i]['id'],$check_products_option) ? ' disabled="disabled"' : '';    
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      $product_price_after_tax = tep_add_tax($products[$i]['price'],tep_get_tax_rate($products[$i]['tax_class_id']));
+      // add up and down 
+      $p_a_quan = tep_get_quantity($products[$i]['id'],true);
+      $p_id = 'quantity_'.$products[$i]['id'];
+      $product_price_after_tax = tep_add_tax($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id'])); 
       echo '<td align="center" style="padding-left:10px;padding-right:20px;">';
       echo '<table><tr><td colspan="3"><table><tr><td>';
       
@@ -86,8 +89,8 @@
       echo '</td>';
       echo '<td><div class="top_and_bottom">';
       if(!in_array($products[$i]['id'],$check_products_option)){
-        echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'up\',1,'. tep_get_quantity($products[$i]['id'],true).',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
-        echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'down\',1,'. tep_get_quantity($products[$i]['id'],true).',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
+        echo '<a onclick="change_num(\''.$p_id.'\',\'up\',1,'. $p_a_quan.',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
+        echo '<a onclick="change_num(\''.$p_id.'\',\'down\',1,'. $p_a_quan.',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
       }else{
 
         echo '<div style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></div>';
@@ -109,7 +112,7 @@
       echo  '</td>' . "\n";
     } else {
       echo '    <td align="center" class ="main" style="
-        background:#FFFFFF;padding-left:10px;padding-right:20px;">' .tep_get_quantity($products[$i]['id'],true) . NUM_UNIT_TEXT;
+        background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . NUM_UNIT_TEXT;
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true),
             $products[$i]['id']) ? '<span style="font-size:10px">'.  tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
@@ -121,20 +124,19 @@
       if (!empty($product_info['products_image']))
       {
         echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'],
-            $product_info['products_name'],60, 60);
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
       }
       else if (!empty($product_info['products_image2']))
       {
         echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image2'],
-            $product_info['products_name'],60, 60);
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
       }
       else if (!empty($product_info['products_image3']))
       {
         echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image3'],
-            $product_info['products_name'],60, 60);
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
       }
-      else
-      {}
+
       echo '</td>';
     }
 // Model

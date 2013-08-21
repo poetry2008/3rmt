@@ -557,7 +557,8 @@ if ($_GET['action'] == 'show_category_info') {
       $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
     if (empty($site_id)) {
       $button[] = '<input class="element_button" type="button" value="'.IMAGE_MOVE.'" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
-      $button[] = '<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
+      $button[] = '<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="show_product_copy(\'copy\',\''.$pInfo->products_id.'\')">';
+      $button[] = '<input class="element_button" type="button" value="'.IMAGE_LINK.'" onclick="show_product_copy(\'link\',\''.$pInfo->products_id.'\')">';
     }
     if ($ocertify->npermission >= 15) {
       if(isset($site_id) && $site_id != 0){
@@ -1174,25 +1175,20 @@ if ($_GET['action'] == 'show_category_info') {
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_COPY, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'7\')"').'</a>'; 
-  $button[] = '<input type="button" value="'.IMAGE_CANCEL.'" onclick="hidden_info_box()" class="element_button">';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'7\')"').'</a>'; 
   
   $buttons = array('align' => 'center', 'button' => $button); 
   
   $copy_product_info = array();
   $copy_product_info[]['text'] = array(
-        array('text' => TEXT_INFO_COPY_TO_INTRO.tep_draw_hidden_field('products_id', $pInfo->products_id)) 
+        array('text' => str_replace(':','',TEXT_INFO_CURRENT_CATEGORIES).tep_draw_hidden_field('products_id', $pInfo->products_id)),
+        array('text' => tep_output_generated_category_path($pInfo->products_id, 'product'))
       );
   $copy_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br>' . tep_output_generated_category_path($pInfo->products_id, 'product')) 
+        array('text' => TEXT_INFO_HEADING_COPY_TO), 
+        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','','','',false), ''))
       );
-  $copy_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_CATEGORIES . '<br>' . tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','','','',false), $current_category_id)) 
-      );
-  $copy_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_HOW_TO_COPY . '<br>' . tep_draw_radio_field('copy_as', 'link', true) . ' ' . TEXT_COPY_AS_LINK . '<br>' . tep_draw_radio_field('copy_as', 'duplicate') . ' ' . TEXT_COPY_AS_DUPLICATE) 
-      );
-
+  
   $form_str = tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=copy_to_confirm&cPath=' . $cPath);
   
   $notice_box->get_form($form_str);
@@ -7800,4 +7796,59 @@ $sql2 = tep_db_fetch_array($sele2);
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
 }
+} else if ($_GET['action'] == 'product_link_to_box') {
+/* -----------------------------------------------------
+    功能: 链接商品的弹出框
+    参数: $_GET['pID'] 商品id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
+  $pInfo = tep_get_pinfo_by_pid($_GET['pID'],$site_id);
+  $cPath = $_GET['cPath'];
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => IMAGE_LINK_TO);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'7\')"').'</a>'; 
+  
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $copy_product_info = array();
+  
+  $copy_product_info[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_INFO_CURRENT_CATEGORIES) . tep_draw_hidden_field('products_id', $pInfo->products_id)), 
+        array('text' => tep_output_generated_category_path($pInfo->products_id, 'product'))
+      );
+  $products_link_array = tep_generate_category_path($pInfo->products_id, 'product');
+  $categories_products_array = array();
+  foreach($products_link_array as $value){
+
+    $products_link_temp_array = end($value);
+    $categories_products_array[] = $products_link_temp_array['id'];
+  }
+  $copy_product_info[]['text'] = array(
+        array('text' => IMAGE_LINK_TO), 
+        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','',$categories_products_array,'',false), ''))
+      ); 
+
+  $form_str = tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=link_to_confirm&cPath=' . $cPath);
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($copy_product_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
 }

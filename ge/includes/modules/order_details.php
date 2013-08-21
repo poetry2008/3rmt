@@ -51,9 +51,10 @@
 // Quantity box or information as an input box or text
     $disabled = in_array($products[$i]['id'],$check_products_option) ? ' disabled="disabled"' : '';    
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      $product_price_after_tax = tep_add_tax($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id'])); 
+      // add up and down 
       $p_a_quan = tep_get_quantity($products[$i]['id'],true);
       $p_id = 'quantity_'.$products[$i]['id'];
+      $product_price_after_tax = tep_add_tax($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id'])); 
       echo tep_draw_hidden_field('unit_price_'.$products[$i]['id'], $product_info['products_price'], 'id="unit_price_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('small_sum_' . $products[$i]['id'], $product_info['products_small_sum'], ' id="small_sum_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
@@ -119,16 +120,28 @@
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
     }
-    echo '<td>'; 
-    $pimage_query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".intval($products[$i]['id'])."'"); 
-    $pimage_res = tep_db_fetch_array($pimage_query); 
 
-    if ($pimage_res) {
-      if (!empty($pimage_res['products_image'])) {
-        echo tep_image(DIR_WS_IMAGES . 'products/' . $pimage_res['products_image'], $products[$i]['name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); 
+    //image
+    if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
+      echo '<td>'; 
+      if (!empty($product_info['products_image']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
       }
+      else if (!empty($product_info['products_image2']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image2'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
+      }
+      else if (!empty($product_info['products_image3']))
+      {
+        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image3'],
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
+      }
+
+      echo '</td>';
     }
-    echo '</td>';
 // Model
     if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       //echo '    <td class="main"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products[$i]['id']) . '">' . $products[$i]['model'] . '</a></td>' . "\n";
@@ -150,7 +163,7 @@
       echo '    <td class="main" style=" ">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . (int)$products[$i]['id']) . '">' . $products[$i]['model'] . '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
       //echo '    <td class="main"><b>' . $products[$i]['name'] . '</b>';
     }
-        if(in_array($products[$i]['id'],$check_products_option)){
+    if(in_array($products[$i]['id'],$check_products_option)){
 
       echo '<br>'.TEXT_PRODUCTS_OPTION_CHANGE_ERROR;
     }
