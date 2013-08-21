@@ -842,7 +842,7 @@ $payment_replace = array(
                         $insert_id,  
                         tep_date_long(time()),
                         $order->customer['email_address'],
-                        trim(str_replace($_SESSION['mailcomments'],'',$order->info['comments'])),
+                        $comments_info['payment_info'],
                         $print_point,
                         isset($_SESSION['h_shipping_fee']) ? $_SESSION['h_shipping_fee'] : 0,
                         $total_mail_fee,
