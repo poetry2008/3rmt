@@ -803,8 +803,6 @@ if($cart->weight > 0){
      address_option_list(first_num); 
      <?php
      }
-     ?>
-     <?php
      if(isset($_SESSION['options'])){ 
      ?>
      session_value();
@@ -1485,7 +1483,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 </td></tr>
 <?php
                             }
-    $hm_option->render('');
+    $hm_option->render('', false, false);
 ?>
     	</table>
     </td> 
