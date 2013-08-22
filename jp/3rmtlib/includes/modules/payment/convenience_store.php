@@ -399,7 +399,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
       }
       $payment_bank_info['add_info'] = $pay_comments;
       $res_arr = array('comment'=> $pay_comments ."\n".$comment,
-          'payment_bank_info' => $payment_bank_info);
+          'payment_bank_info' => $payment_bank_info, 'payment_info' => $pay_comments);
       return $res_arr;
     }
 /*---------------------------
@@ -472,6 +472,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
  ----------------------------*/
  function get_preorder_add_info($order_info)
     {
+      $_SESSION['preorder_payment_info'] = $order_info['cemail_text']; 
       return $order_info['cemail_text'] ."\n".$order_info['comment_msg'];
     }
 
