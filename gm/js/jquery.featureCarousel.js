@@ -117,26 +117,26 @@
       else if (options.largeFeatureWidth > 0 && options.largeFeatureWidth < 1)
         pluginData.largeFeatureWidth = $firstFeatureImage.width() * options.largeFeatureWidth;
       else
-        pluginData.largeFeatureWidth = $firstFeatureImage.outerWidth();
+        pluginData.largeFeatureWidth = $firstFeatureImage.attr('width');
       // Large Feature Height
       if (options.largeFeatureHeight > 1)
         pluginData.largeFeatureHeight = options.largeFeatureHeight;
       else if (options.largeFeatureHeight > 0 && options.largeFeatureHeight < 1)
         pluginData.largeFeatureHeight = $firstFeatureImage.height() * options.largeFeatureHeight;
       else
-        pluginData.largeFeatureHeight = $firstFeatureImage.outerHeight();
+        pluginData.largeFeatureHeight = $firstFeatureImage.attr('height');
       // Small Feature Width
       if (options.smallFeatureWidth > 1)
         pluginData.smallFeatureWidth = options.smallFeatureWidth;
       else if (options.smallFeatureWidth > 0 && options.smallFeatureWidth < 1)
-        pluginData.smallFeatureWidth = $firstFeatureImage.width() * options.smallFeatureWidth;
+        pluginData.smallFeatureWidth = $firstFeatureImage.attr('width') * options.smallFeatureWidth;
       else
         pluginData.smallFeatureWidth = $firstFeatureImage.outerWidth() / 2;
       // Small Feature Height
       if (options.smallFeatureHeight > 1)
         pluginData.smallFeatureHeight = options.smallFeatureHeight;
       else if (options.smallFeatureHeight > 0 && options.smallFeatureHeight < 1)
-        pluginData.smallFeatureHeight = $firstFeatureImage.height() * options.smallFeatureHeight;
+        pluginData.smallFeatureHeight = $firstFeatureImage.attr('height') * options.smallFeatureHeight;
       else
         pluginData.smallFeatureHeight = $firstFeatureImage.outerHeight() / 2;
     }
