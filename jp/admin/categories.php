@@ -98,8 +98,10 @@ if (isset($_GET['action']) && $_GET['action']) {
         $tags_id_list_array = explode(',',$tags_id_list);
         $tags_url = $_POST['tags_url'];
         if (is_array($tags_id_list_array) && !empty($tags_id_list_array)) {
+          foreach($_POST['products_id'] as $p_id) {
+            tep_db_query("delete from products_to_tags where products_id='".$p_id."'");
+          }
           foreach($tags_id_list_array as $tid) {
-          tep_db_query("delete from products_to_tags where tags_id='".$tid."'");
             if ($_POST['products_id']) {
                foreach($_POST['products_id'] as $pid) {
                 tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$pid."'");
