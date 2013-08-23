@@ -2393,16 +2393,83 @@ function resizepage(){
 <?php //确认邮件标题?>
 function confrim_mail_title(){
   var _end = $("#mail_title_status").val();
+  
+  var direct_single = false;
   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-    return true;
   }else{
     if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-      return true;
-    }else{
-      return false;
+    } else {
+      direct_single = true;
     }
   }
-  return false;
+  
+  $.ajax({
+    type:"POST",
+    data:"c_comments="+$('#c_comments').val()+'&o_id=<?php echo $_GET['oID'];?>'+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    async:false,
+    url:'ajax_orders.php?action=check_order_variable_data',
+    success: function(msg) {
+      if (msg != '') {
+        if (direct_single == false) {
+          alert(msg); 
+        } 
+      } else {
+        if (direct_single == false) {
+          document.forms.sele_act.submit(); 
+        }
+      } 
+    }
+  }); 
+}
+<?php //确认邮件标题?>
+function confrim_list_mail_title(){
+  var _end = $("#mail_title_status").val();
+  var o_id_list = ''; 
+  var direct_single = false;
+  if (document.sele_act.elements['chk[]']) {
+    if (document.sele_act.elements['chk[]'].length == null) {
+      if (document.sele_act.elements['chk[]'].checked == true) {
+        o_id_list += document.sele_act.elements['chk[]'].value+','; 
+      }
+    } else {
+      for (var i = 0; i < document.sele_act.elements['chk[]'].length; i++) {
+        if (document.sele_act.elements['chk[]'][i].checked == true) {
+          o_id_list += document.sele_act.elements['chk[]'][i].value+','; 
+        }
+      }
+    }
+  }
+  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
+  }else{
+    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
+    } else {
+      direct_single = true;
+    }
+  }
+  
+  $.ajax({
+    type:"POST",
+    data:"c_comments="+$('#l_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    async:false,
+    url:'ajax_orders.php?action=check_order_list_variable_data',
+    success: function(msg) {
+      if (msg != '') {
+        if (direct_single == false) {
+          alert(msg); 
+        } 
+      } else {
+        if (direct_single == false) {
+          document.forms.sele_act.submit(); 
+        }
+      } 
+    }
+  }); 
+}
+<?php //提交表单?>
+function check_list_order_submit() {
+  if (submit_confirm()) {
+    confrim_list_mail_title();
+  }
 }
         <?php //选中/非选中网站?> 
         function change_site(site_id,flag,site_list,param_url){  
@@ -3768,7 +3835,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <table border="0" width="100%">
             <tr>
             <td width="50%">
-            <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post','onsubmit="return confrim_mail_title()"'); ?>
+            <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post'); ?>
             <table width="100%" border="0">
             <tr>
             <td class="main"><?php echo ENTRY_STATUS; ?>
@@ -3809,7 +3876,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             <tr>
             <td class="main">
-            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
+            <textarea id="c_comments" style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
             </td>
             </tr>
             <tr>
@@ -3831,7 +3898,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
             ?>
-            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title();"'); ?></a></td>
             </tr>
             </table>
             </td>
@@ -5121,7 +5188,7 @@ if($c_parent_array['parent_id'] == 0){
             }
           }
         ?>
-          <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post','onsubmit="return confrim_mail_title()"'); ?>
+          <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post'); ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
           <td valign="bottom">
@@ -5767,8 +5834,7 @@ if($c_parent_array['parent_id'] == 0){
                   color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
                   <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
                   <br>
-                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30',
-                      $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
+                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="l_comments"'); ?>
                   </td>
                   </tr>
                   <tr>
@@ -5792,7 +5858,7 @@ if($c_parent_array['parent_id'] == 0){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?></td>
+                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_list_order_submit()"'); ?></a></td>
                   </tr>
                   </table>
                   </td>
