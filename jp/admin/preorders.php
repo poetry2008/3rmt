@@ -161,7 +161,7 @@
           '${SITE_NAME}',
           '${SITE_URL}',
           '${PAY_DATE}',
-          '${ENSURE_TIME}',
+          '${RESERVE_DATE}',
           '${PRODUCTS_QUANTITY}',
           '${PRODUCTS_NAME}',
           '${PRODUCTS_PRICE}',
@@ -196,7 +196,7 @@
           '${SITE_URL}',
           '${SUPPORT_MAIL}',
           '${PAY_DATE}',
-          '${ENSURE_TIME}', 
+          '${RESERVE_DATE}', 
           '${PRODUCTS_QUANTITY}',
           '${PRODUCTS_NAME}',
           '${PRODUCTS_PRICE}',
@@ -223,28 +223,19 @@
         $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
         $customer_info_res = tep_db_fetch_array($customer_info_raw); 
         if ($customer_info_res['is_send_mail'] != '1') {
-          if ($status == 32) {
-            $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
-            $site_url_res = tep_db_fetch_array($site_url_raw); 
-            $change_preorder_url_param = md5(time().$oID); 
-            $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
-            $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
-            
-            tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
-          }
+          $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
+          $site_url_res = tep_db_fetch_array($site_url_raw); 
+          $change_preorder_url_param = md5(time().$oID); 
+          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
+          $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
+          
+          tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
+          
           $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
           $search_products_name_array = tep_db_fetch_array($search_products_name_query);
           tep_db_free_result($search_products_name_query);
           $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
-          if ($status == 32) {
-            $mail_preorder_pro_raw = tep_db_query("select ensure_deadline from ".TABLE_PREORDERS. " where orders_id = '".$oID."'"); 
-            $mail_preorder_pro = tep_db_fetch_array($mail_preorder_pro_raw); 
-            if ($mail_preorder_pro['ensure_deadline'] != '0000-00-00 00:00:00') {
-              tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
-            }
-          } else {
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
-          }
+          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         } 
         $customer_notified = '1';
@@ -410,7 +401,7 @@
         '${SITE_URL}',
         '${SUPPORT_MAIL}',
         '${PAY_DATE}',
-        '${ENSURE_TIME}', 
+        '${RESERVE_DATE}', 
         '${PRODUCTS_QUANTITY}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
@@ -446,7 +437,7 @@
         '${SITE_URL}',
         '${SUPPORT_MAIL}',
         '${PAY_DATE}',
-        '${ENSURE_TIME}', 
+        '${RESERVE_DATE}', 
         '${PRODUCTS_QUANTITY}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
@@ -472,15 +463,13 @@
       $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
       $customer_info_res = tep_db_fetch_array($customer_info_raw); 
       if ($customer_info_res['is_send_mail'] != '1') {
-        if ($status == 32) {
-          $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
-          $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url_param = md5(time().$oID); 
-          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
-          $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
-          
-          tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
-        }
+        $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
+        $site_url_res = tep_db_fetch_array($site_url_raw); 
+        $change_preorder_url_param = md5(time().$oID); 
+        $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
+        $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
+        
+        tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
@@ -883,32 +872,75 @@ function del_confirm_payment_time(oid, status_id)
 function check_mail_product_status(pid)
 {
    var _end = $("#s_status").val();
+   var direct_single = false; 
    if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
    }else{
-   if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-   }else{
-      return false;
+     if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
+     }else{
+       direct_single = true; 
      }
    }
-   var direct_single = false; 
-   var select_status = document.getElementById('s_status').value;  
-   if (select_status == 32) {
-     $.ajax({ 
-     type:"POST",
-     data:"pid="+pid,
-     async:false, 
-     url: 'ajax_preorders.php?action=check_preorder_deadline',
-     success: function(msg) {
-       if (msg == 'true') {
-         direct_single = true; 
-         alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
-       }
-     }
-     });  
-   }
-   if (direct_single) {
-     return false;
-   }
+
+   $.ajax({
+    type:"POST",
+    data:"c_comments="+$('#c_comments').val()+'&o_id='+pid+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    async:false,
+    url:'ajax_preorders.php?action=check_preorder_variable_data',
+    success: function(msg) {
+      if (msg != '') {
+        if (direct_single == false) {
+          alert(msg); 
+        } 
+      } else {
+        if (direct_single == false) {
+          document.forms.sele_act.submit(); 
+        }
+      } 
+    }
+  });
+}
+<?php //检查是否为空?>
+function check_mail_list_product_status() {
+  var _end = $("#mail_title_status").val();
+  var o_id_list = ''; 
+  var direct_single = false;
+  if (document.sele_act.elements['chk[]']) {
+    if (document.sele_act.elements['chk[]'].length == null) {
+      if (document.sele_act.elements['chk[]'].checked == true) {
+        o_id_list += document.sele_act.elements['chk[]'].value+','; 
+      }
+    } else {
+      for (var i = 0; i < document.sele_act.elements['chk[]'].length; i++) {
+        if (document.sele_act.elements['chk[]'][i].checked == true) {
+          o_id_list += document.sele_act.elements['chk[]'][i].value+','; 
+        }
+      }
+    }
+  }
+  
+  $.ajax({
+    type:"POST",
+    data:"c_comments="+$('#l_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    async:false,
+    url:'ajax_preorders.php?action=check_preorder_list_variable_data',
+    success: function(msg) {
+      if (msg != '') {
+        if (direct_single == false) {
+          alert(msg); 
+        } 
+      } else {
+        if (direct_single == false) {
+          document.forms.sele_act.submit(); 
+        }
+      } 
+    }
+  });
+}
+<?php //提交表单?>
+function check_list_preorder_submit() {
+  if (submit_confirm()) {
+    check_mail_list_product_status();
+  }
 }
 <?php
 if (!isset($_GET['action'])) {
@@ -1779,7 +1811,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <table border="0" width="100%">
   <tr>
     <td width="50%">
-      <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post', 'onsubmit="return check_mail_product_status(\''.$_GET['oID'].'\');"'); ?>
+      <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post'); ?>
       <table width="100%" border="0">
       <tr>
         <td class="main"><?php echo ENTRY_STATUS; ?>
@@ -1821,7 +1853,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_COMMENT}',preorders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
+          <textarea id="c_comments" style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_COMMENT}',preorders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
         </td>
       </tr>
       <tr>
@@ -1842,7 +1874,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-              echo TEXT_ORDER_HAS_ERROR;?></font><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+              echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_mail_product_status(\''.$_GET['oID'].'\');"'); ?></a></td>
             </tr>
           </table>
         </td>
@@ -3457,7 +3489,7 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="l_comments"'); ?>
         </td>
         </tr>
         <tr>
@@ -3482,7 +3514,7 @@ function submit_confirm()
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
                 echo TEXT_ORDER_HAS_ERROR;?></font><br><br>
-                <?php echo tep_html_element_button(IMAGE_UPDATE,'onclick="if(submit_confirm()) document.sele_act.submit();"');?> 
+                <?php echo tep_html_element_button(IMAGE_UPDATE,'onclick="check_list_preorder_submit();"');?> 
                 </td>
               </tr>
             </table>

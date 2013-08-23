@@ -1752,25 +1752,40 @@ function products_num_check(orders_products_list_id,products_name,products_list_
       products_temp = $("#update_products_new_qty_"+products_array[x]).val(); 
       products_list_str += products_temp+'|||';
     }
-    $.ajax({
-    type: "POST",
-    data: 'products_list_id='+products_list_id+'&products_list_str='+products_list_str+'&products_name='+products_name+'&orders_products_list_id='+orders_products_list_id+'&products_diff=1',
-    async:false,
-    url: 'ajax_orders.php?action=products_num',
-    success: function(msg) {
-      if(msg != ''){
-
-        if(confirm(msg+"\n\n<?php echo TEXT_PRODUCTS_NUM;?>")){
-
-          products_error = true;
-        }else{
-          products_error = false;
-        }
-      }else{  
-        products_error = true;
-      }         
+    var payment_str = '';    
+    if (document.getElementsByName('payment_method')[0]) {
+      payment_str = document.getElementsByName('payment_method')[0].value; 
     }
-    }); 
+    $.ajax({
+      type:'POST',
+      data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName("update_customer_name")[0].value+'&c_mail_info='+document.getElementsByName("update_customer_email_address")[0].value,
+      async: false,
+      url:'ajax_orders.php?action=check_edit_order_variable_data',
+      success: function(msg_info) {
+        if (msg_info != '') {
+          products_error = false;
+          alert(msg_info); 
+        } else {
+          $.ajax({
+            type: "POST",
+            data: 'products_list_id='+products_list_id+'&products_list_str='+products_list_str+'&products_name='+products_name+'&orders_products_list_id='+orders_products_list_id+'&products_diff=1',
+            async:false,
+            url: 'ajax_orders.php?action=products_num',
+            success: function(msg) {
+              if(msg != ''){
+                if(confirm(msg+"\n\n<?php echo TEXT_PRODUCTS_NUM;?>")){
+                  products_error = true;
+                }else{
+                  products_error = false;
+                }
+              }else{  
+                products_error = true;
+              }         
+            }
+          });   
+        }
+      }
+    });  
     return products_error;
 }
 <?php //检查订单商品的重量是否超重?>
@@ -4245,9 +4260,9 @@ if (($action == 'edit') && ($order_exists == true)) {
         if($CommentsWithStatus) {
 
 
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;" id="c_comments"');
         } else {
-          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+          echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;" id="c_comments"');
         }
   ?>
     </td>

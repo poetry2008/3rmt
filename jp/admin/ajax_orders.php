@@ -2651,4 +2651,55 @@ echo json_encode($json_array);
     $default_select = get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($_POST['select_payment']).'_ORDER_STATUS_ID', $_POST['s_site_id']); 
     echo ($default_select != 0 ? $default_select: get_configuration_by_site_id('DEFAULT_ORDERS_STATUS_ID'));
   }
+} else if ($_GET['action'] == 'check_order_variable_data') {
+/*-----------------------------------------
+ 功能: 检查变量是否为空
+ 参数: $_POST['c_comments'] 内容 
+ 参数: $_POST['o_id'] 订单id 
+ 参数: $_POST['c_title'] 标题 
+ 参数: $_POST['c_status_id'] 状题id 
+ ----------------------------------------*/
+  $o_array = array();
+  $o_array[] = $_POST['o_id'];
+  echo tep_check_order_variable_data($o_array, $_POST['c_comments'], $_POST['c_title'], false, $_POST['c_status_id']); 
+} else if ($_GET['action'] == 'check_order_list_variable_data') {
+/*-----------------------------------------
+ 功能: 检查变量是否为空
+ 参数: $_POST['c_comments'] 内容 
+ 参数: $_POST['o_id_list'] 订单id列表 
+ 参数: $_POST['c_title'] 标题 
+ 参数: $_POST['c_status_id'] 状题id 
+ ----------------------------------------*/
+  $o_array = array();
+  if (!empty($_POST['o_id_list'])) {
+    $o_id_list = substr($_POST['o_id_list'], 0, -1);
+    $o_array = explode(',', $o_id_list);
+  } 
+  echo tep_check_order_variable_data($o_array, $_POST['c_comments'], $_POST['c_title'], true, $_POST['c_status_id']); 
+} else if ($_GET['action'] == 'check_new_order_variable_data') {
+/*-----------------------------------------
+ 功能: 检查变量是否为空
+ 参数: $_POST['o_id_info'] 订单id 
+ 参数: $_POST['c_comments'] 内容 
+ 参数: $_POST['fetch_date'] 时间 
+ 参数: $_POST['c_title'] 标题 
+ 参数: $_POST['c_status_id'] 状态id 
+ 参数: $_POST['c_payment'] 方法信息 
+ 参数: $_POST['c_name_info'] 名字 
+ 参数: $_POST['c_mail_info'] 邮箱 
+ 参数: $_POST['site_id_info'] 网站id 
+ ----------------------------------------*/
+  echo tep_check_new_order_variable_data($_POST['o_id_info'], $_POST['fetch_date'], $_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['c_mail_info'], $_POST['c_name_info'], $_POST['site_id_info']); 
+} else if ($_GET['action'] == 'check_edit_order_variable_data') {
+/*-----------------------------------------
+ 功能: 检查变量是否为空
+ 参数: $_POST['c_comments'] 内容 
+ 参数: $_POST['o_id'] 订单id 
+ 参数: $_POST['c_title'] 标题 
+ 参数: $_POST['c_status_id'] 状题id 
+ 参数: $_POST['c_payment'] 方法信息 
+ 参数: $_POST['c_name_info'] 名字信息 
+ 参数: $_POST['c_mail_info'] 邮箱信息 
+ ----------------------------------------*/
+  echo tep_check_edit_order_variable_data($_POST['o_id'], $_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['c_name_info'], $_POST['c_mail_info']); 
 }

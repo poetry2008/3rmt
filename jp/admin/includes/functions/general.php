@@ -10983,3 +10983,1057 @@ function tep_number_format($float,$substr=''){
     return number_format($float,strlen($arr[1]),'.',$substr);
   }
 }
+
+/*-----------------------
+  功能: 判断变量是否为空 
+  参数: $o_id_array(array) 订单id
+  参数: $comment_info(string) 信息
+  参数: $title_info(string) 标题信息
+  参数: $is_list(boolean) 是否是列表
+  参数: $c_status_id(int) 状题id
+  返回: 错误信息
+  ----------------------*/
+function tep_check_order_variable_data($o_id_array, $comment_info, $title_info, $is_list = false, $c_status_id)
+{
+  global $ocertify; 
+  $error_array = array();
+  foreach ($o_id_array as $o_key => $o_value) {
+    $order_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$o_value."'"); 
+    $order_info = tep_db_fetch_array($order_info_raw); 
+    if ($order_info) {
+      $shipping_pos = strpos($comment_info, '${SHIPPING_TIME}');  
+      $t_shipping_pos = strpos($title_info, '${SHIPPING_TIME}');  
+      if (($shipping_pos !== false) || ($t_shipping_pos !== false)) {
+        if (!tep_not_null($order_info['torihiki_date']) || ($order_info['torihiki_date'] == '0000-00-00 00:00:00')) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${SHIPPING_TIME}'; 
+          } else {
+            $error_array[] = '${SHIPPING_TIME}'; 
+          }
+        }
+      }
+      
+      $pay_date_pos = strpos($comment_info, '${PAY_DATE}');  
+      $t_pay_date_pos = strpos($title_info, '${PAY_DATE}');  
+      if (($pay_date_pos !== false) || ($t_pay_date_pos !== false)) {
+        $pay_date = tep_get_pay_day(); 
+        if (!$pay_date) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${PAY_DATE}'; 
+          } else {
+            $error_array[] = '${PAY_DATE}'; 
+          }
+        }
+      }
+      
+      $order_date_pos = strpos($comment_info, '${ORDER_DATE}');  
+      $t_order_date_pos = strpos($title_info, '${ORDER_DATE}');  
+      if (($order_date_pos !== false) || ($t_order_date_pos !== false)) {
+        if (!tep_not_null($order_info['date_purchased']) || ($order_info['date_purchased'] == '0000-00-00 00:00:00')) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${ORDER_DATE}'; 
+          } else {
+            $error_array[] = '${ORDER_DATE}'; 
+          }
+        }
+      }
+      
+      $reserve_date_pos = strpos($comment_info, '${RESERVE_DATE}');  
+      $t_reserve_date_pos = strpos($title_info, '${RESERVE_DATE}');  
+      if (($reserve_date_pos !== false) || ($t_reserve_date_pos !== false)) {
+        if ($is_list) {
+          $error_array[$o_value][] = '${RESERVE_DATE}'; 
+        } else {
+          $error_array[] = '${RESERVE_DATE}'; 
+        }
+      }
+      
+      $year_pos = strpos($comment_info, '${YEAR}');  
+      $t_year_pos = strpos($title_info, '${YEAR}');  
+      if (($year_pos !== false) || ($t_year_pos !== false)) {
+        $tmp_year = date('Y'); 
+        if (!$tmp_year) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${YEAR}'; 
+          } else {
+            $error_array[] = '${YEAR}'; 
+          }
+        }
+      }
+      
+      $month_pos = strpos($comment_info, '${MONTH}');  
+      $t_month_pos = strpos($title_info, '${MONTH}');  
+      if (($month_pos !== false) || ($t_month_pos !== false)) {
+        $tmp_month = date('m'); 
+        if (!$tmp_month) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${MONTH}'; 
+          } else {
+            $error_array[] = '${MONTH}'; 
+          }
+        }
+      }
+      
+      $day_pos = strpos($comment_info, '${DAY}');  
+      $t_day_pos = strpos($title_info, '${DAY}');  
+      if (($day_pos !== false) || ($t_day_pos !== false)) {
+        $tmp_day = date('d'); 
+        if (!$tmp_day) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${DAY}'; 
+          } else {
+            $error_array[] = '${DAY}'; 
+          }
+        }
+      }
+      
+      $user_email_pos = strpos($comment_info, '${USER_MAIL}');   
+      $t_user_email_pos = strpos($title_info, '${USER_MAIL}');   
+      if (($user_email_pos !== false) || ($t_user_email_pos !== false)) {
+        if (!tep_not_null($order_info['customers_email_address'])) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${USER_MAIL}'; 
+          } else {
+            $error_array[] = '${USER_MAIL}'; 
+          }
+        }
+      }
+    
+      $order_number_pos = strpos($comment_info, '${ORDER_NUMBER}');   
+      $t_order_number_pos = strpos($title_info, '${ORDER_NUMBER}');   
+      if (($order_number_pos !== false) || ($t_order_number_pos !== false)) {
+        if (!tep_not_null($order_info['orders_id'])) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${ORDER_NUMBER}'; 
+          } else {
+            $error_array[] = '${ORDER_NUMBER}'; 
+          }
+        }
+      }
+     
+      $order_total_pos = strpos($comment_info, '${ORDER_TOTAL}');   
+      $t_order_total_pos = strpos($title_info, '${ORDER_TOTAL}');   
+      if (($order_total_pos !== false) || ($t_order_total_pos !== false)) {
+         $order_total_raw = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where orders_id = '".$o_value."' and class='ot_total'"); 
+         $order_total = tep_db_fetch_array($order_total_raw);
+         if ($order_total) {
+           if (!tep_not_null($order_total['value'])) {
+             if ($is_list) {
+               $error_array[$o_value][] = '${ORDER_TOTAL}'; 
+             } else {
+               $error_array[] = '${ORDER_TOTAL}'; 
+             }
+           }
+         } else {
+           if ($is_list) {
+             $error_array[$o_value][] = '${ORDER_TOTAL}'; 
+           } else {
+             $error_array[] = '${ORDER_TOTAL}'; 
+           }
+         }
+      }
+    
+      $order_status_pos = strpos($comment_info, '${ORDER_STATUS}');   
+      $t_order_status_pos = strpos($title_info, '${ORDER_STATUS}');   
+      if (($order_status_pos !== false) || ($t_order_status_pos !== false)) {
+        $order_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$c_status_id."'"); 
+        $order_status = tep_db_fetch_array($order_status_raw); 
+        if ($order_status) {
+          if (!tep_not_null($order_status['orders_status_name'])) {
+            if ($is_list) {
+              $error_array[$o_value][] = '${ORDER_STATUS}'; 
+            } else {
+              $error_array[] = '${ORDER_STATUS}'; 
+            }
+          }
+        } else {
+          if ($is_list) {
+            $error_array[$o_value][] = '${ORDER_STATUS}'; 
+          } else {
+            $error_array[] = '${ORDER_STATUS}'; 
+          }
+        }
+      }
+      
+      $site_name_pos = strpos($comment_info, '${SITE_NAME}');   
+      $t_site_name_pos = strpos($title_info, '${SITE_NAME}');   
+      if (($site_name_pos !== false) || ($t_site_name_pos !== false)) {
+        $sites_info_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_info['site_id']."'"); 
+        $sites_info = tep_db_fetch_array($sites_info_raw); 
+        if ($sites_info) {
+          if (!tep_not_null($sites_info['name'])) {
+            if ($is_list) {
+              $error_array[$o_value][] = '${SITE_NAME}'; 
+            } else {
+              $error_array[] = '${SITE_NAME}'; 
+            }
+          }
+        } else {
+          if ($is_list) {
+            $error_array[$o_value][] = '${SITE_NAME}'; 
+          } else {
+            $error_array[] = '${SITE_NAME}'; 
+          }
+        }
+      }
+    
+      $support_mail_pos = strpos($comment_info, '${SUPPORT_MAIL}');   
+      $t_support_mail_pos = strpos($title_info, '${SUPPORT_MAIL}');   
+      if (($support_mail_pos !== false) || ($t_support_mail_pos !== false)) {
+        if (!tep_not_null(get_configuration_by_site_id_or_default('SUPPORT_EMAIL_ADDRESS', $order_info['site_id']))) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${SUPPORT_MAIL}'; 
+          } else {
+            $error_array[] = '${SUPPORT_MAIL}'; 
+          }
+        }
+      }
+    
+      $company_name_pos = strpos($comment_info, '${COMPANY_NAME}');   
+      $t_company_name_pos = strpos($title_info, '${COMPANY_NAME}');   
+      if (($company_name_pos !== false) || ($t_company_name_pos !== false)) {
+        if (!tep_not_null(get_configuration_by_site_id_or_default('COMPANY_NAME', $order_info['site_id']))) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${COMPANY_NAME}'; 
+          } else {
+            $error_array[] = '${COMPANY_NAME}'; 
+          }
+        }
+      }
+    
+      $company_tel_pos = strpos($comment_info, '${COMPANY_TEL}');   
+      $t_company_tel_pos = strpos($title_info, '${COMPANY_TEL}');   
+      if (($company_tel_pos !== false) || ($t_company_tel_pos !== false)) {
+        if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_TEL', $order_info['site_id']))) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${COMPANY_TEL}'; 
+          } else {
+            $error_array[] = '${COMPANY_TEL}'; 
+          }
+        }
+      }
+    
+      $staff_name_pos = strpos($comment_info, '${STAFF_NAME}');   
+      $t_staff_name_pos = strpos($title_info, '${STAFF_NAME}');   
+      if (($staff_name_pos !== false) || ($t_staff_name_pos !== false)) {
+        $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+        $admin_user = tep_db_fetch_array($admin_user_query); 
+        if ($admin_user) {
+          if (!tep_not_null($admin_user['name'])) {
+            if ($is_list) {
+              $error_array[$o_value][] = '${STAFF_NAME}'; 
+            } else {
+              $error_array[] = '${STAFF_NAME}'; 
+            }
+          }
+        } else {
+          if ($is_list) {
+            $error_array[$o_value][] = '${STAFF_NAME}'; 
+          } else {
+            $error_array[] = '${STAFF_NAME}'; 
+          }
+        }
+      }
+      
+      $user_info_pos = strpos($comment_info, '${USER_INFO}');   
+      $t_user_info_pos = strpos($title_info, '${USER_INFO}');   
+      if (($user_info_pos !== false) || ($t_user_info_pos !== false)) {
+        if ($is_list) {
+          $error_array[$o_value][] = '${USER_INFO}'; 
+        } else {
+          $error_array[] = '${USER_INFO}'; 
+        }
+      }
+    
+      $https_server_pos = strpos($comment_info, '${HTTPS_SERVER}');   
+      $t_https_server_pos = strpos($title_info, '${HTTPS_SERVER}');   
+      if (($https_server_pos !== false) || ($t_https_server_pos !== false)) {
+        if ($is_list) {
+          $error_array[$o_value][] = '${HTTPS_SERVER}'; 
+        } else {
+          $error_array[] = '${HTTPS_SERVER}'; 
+        }
+      }
+    
+      $user_name_pos = strpos($comment_info, '${USER_NAME}');   
+      $t_user_name_pos = strpos($title_info, '${USER_NAME}');   
+      if (($user_name_pos !== false) || ($t_user_name_pos !== false)) {
+        if (!tep_not_null($order_info['customers_name'])) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${USER_NAME}'; 
+          } else {
+            $error_array[] = '${USER_NAME}'; 
+          }
+        }
+      }
+    
+      $payment_pos = strpos($comment_info, '${PAYMENT}');   
+      $t_payment_pos = strpos($title_info, '${PAYMENT}');   
+      if (($payment_pos !== false) || ($t_payment_pos !== false)) {
+        if (!tep_not_null($order_info['payment_method'])) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${PAYMENT}'; 
+          } else {
+            $error_array[] = '${PAYMENT}'; 
+          }
+        }
+      }
+       
+      $mail_comment_pos = strpos($comment_info, '${MAIL_COMMENT}');   
+      $t_mail_comment_pos = strpos($title_info, '${MAIL_COMMENT}');   
+      if (($mail_comment_pos !== false) || ($t_mail_comment_pos !== false)) {
+        if (!tep_not_null(orders_a($order_info['orders_id']))) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${MAIL_COMMENT}'; 
+          } else {
+            $error_array[] = '${MAIL_COMMENT}'; 
+          }
+        }
+      }
+    
+      $site_url_pos = strpos($comment_info, '${SITE_URL}');   
+      $t_site_url_pos = strpos($title_info, '${SITE_URL}');   
+      if (($site_url_pos !== false) || ($t_site_url_pos !== false)) {
+        $site_url_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_info['site_id']."'"); 
+        $site_url = tep_db_fetch_array($site_url_raw); 
+        if ($site_url) {
+          if (!tep_not_null($site_url['url'])) {
+            if ($is_list) {
+              $error_array[$o_value][] = '${SITE_URL}'; 
+            } else {
+              $error_array[] = '${SITE_URL}'; 
+            }
+          }
+        } else {
+          if ($is_list) {
+            $error_array[$o_value][] = '${SITE_URL}'; 
+          } else {
+            $error_array[] = '${SITE_URL}'; 
+          }
+        }
+      }
+    
+      $company_address_pos = strpos($comment_info, '${COMPANY_ADDRESS}');   
+      $t_company_address_pos = strpos($title_info, '${COMPANY_ADDRESS}');   
+      if (($company_address_pos !== false) || ($t_company_address_pos !== false)) {
+        if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_ADDRESS', $order_info['site_id']))) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${COMPANY_ADDRESS}'; 
+          } else {
+            $error_array[] = '${COMPANY_ADDRESS}'; 
+          }
+        }
+      }
+    
+      $staff_mail_pos = strpos($comment_info, '${STAFF_MAIL}');   
+      $t_staff_mail_pos = strpos($title_info, '${STAFF_MAIL}');   
+      if (($staff_mail_pos !== false) || ($t_staff_mail_pos !== false)) {
+        $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+        $admin_user = tep_db_fetch_array($admin_user_query); 
+        if ($admin_user) {
+          if (!tep_not_null($admin_user['email'])) {
+            if ($is_list) {
+              $error_array[$o_value][] = '${STAFF_MAIL}'; 
+            } else {
+              $error_array[] = '${STAFF_MAIL}'; 
+            }
+          }
+        } else {
+          if ($is_list) {
+            $error_array[$o_value][] = '${STAFF_MAIL}'; 
+          } else {
+            $error_array[] = '${STAFF_MAIL}'; 
+          }
+        }
+      }
+    
+      $signature_pos = strpos($comment_info, '${SIGNATURE}');   
+      $t_signature_pos = strpos($title_info, '${SIGNATURE}');   
+      if (($signature_pos !== false) || ($t_signature_pos !== false)) {
+        if (!tep_not_null(get_configuration_by_site_id_or_default('C_EMAIL_FOOTER', $order_info['site_id']))) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${SIGNATURE}'; 
+          } else {
+            $error_array[] = '${SIGNATURE}'; 
+          }
+        }
+      }
+    } else {
+      if ($is_list) {
+        $error_array[$o_value][] = '${SHIPPING_TIME}'; 
+        $error_array[$o_value][] = '${PAY_DATE}'; 
+        $error_array[$o_value][] = '${ORDER_DATE}'; 
+        $error_array[$o_value][] = '${RESERVE_DATE}'; 
+        $error_array[$o_value][] = '${YEAR}'; 
+        $error_array[$o_value][] = '${MONTH}'; 
+        $error_array[$o_value][] = '${DAY}'; 
+        $error_array[$o_value][] = '${USER_MAIL}'; 
+        $error_array[$o_value][] = '${ORDER_NUMBER}'; 
+        $error_array[$o_value][] = '${ORDER_TOTAL}'; 
+        $error_array[$o_value][] = '${ORDER_STATUS}'; 
+        $error_array[$o_value][] = '${SITE_NAME}'; 
+        $error_array[$o_value][] = '${SUPPORT_MAIL}'; 
+        $error_array[$o_value][] = '${COMPANY_NAME}'; 
+        $error_array[$o_value][] = '${COMPANY_TEL}'; 
+        $error_array[$o_value][] = '${STAFF_NAME}'; 
+        $error_array[$o_value][] = '${USER_INFO}'; 
+        $error_array[$o_value][] = '${HTTPS_SERVER}'; 
+        $error_array[$o_value][] = '${USER_NAME}'; 
+        $error_array[$o_value][] = '${PAYMENT}'; 
+        $error_array[$o_value][] = '${MAIL_COMMENT}'; 
+        $error_array[$o_value][] = '${SITE_URL}'; 
+        $error_array[$o_value][] = '${COMPANY_ADDRESS}'; 
+        $error_array[$o_value][] = '${STAFF_MAIL}'; 
+        $error_array[$o_value][] = '${SIGNATURE}'; 
+      } else {
+        $error_array[] = '${SHIPPING_TIME}'; 
+        $error_array[] = '${PAY_DATE}'; 
+        $error_array[] = '${ORDER_DATE}'; 
+        $error_array[] = '${RESERVE_DATE}'; 
+        $error_array[] = '${YEAR}'; 
+        $error_array[] = '${MONTH}'; 
+        $error_array[] = '${DAY}'; 
+        $error_array[] = '${USER_MAIL}'; 
+        $error_array[] = '${ORDER_NUMBER}'; 
+        $error_array[] = '${ORDER_TOTAL}'; 
+        $error_array[] = '${ORDER_STATUS}'; 
+        $error_array[] = '${SITE_NAME}'; 
+        $error_array[] = '${SUPPORT_MAIL}'; 
+        $error_array[] = '${COMPANY_NAME}'; 
+        $error_array[] = '${COMPANY_TEL}'; 
+        $error_array[] = '${STAFF_NAME}'; 
+        $error_array[] = '${USER_INFO}'; 
+        $error_array[] = '${HTTPS_SERVER}'; 
+        $error_array[] = '${USER_NAME}'; 
+        $error_array[] = '${PAYMENT}'; 
+        $error_array[] = '${MAIL_COMMENT}'; 
+        $error_array[] = '${SITE_URL}'; 
+        $error_array[] = '${COMPANY_ADDRESS}'; 
+        $error_array[] = '${STAFF_MAIL}'; 
+        $error_array[] = '${SIGNATURE}'; 
+      }
+    }
+  }
+  if (!empty($error_array)) {
+    $error_str = ''; 
+    if ($is_list) {
+      foreach ($error_array as $l_key => $l_value) {
+        if (!empty($l_value)) {
+          $error_tmp_array = array_unique($l_value);
+          if (!empty($error_tmp_array)) {
+            $error_str .= $l_key."\n"; 
+            foreach ($error_tmp_array as $e_key => $e_value) {
+              $error_str .= sprintf(ERROR_VARIABLE_DATA_TEXT, $e_value)."\n"; 
+            }
+            $error_str .= "\n"; 
+          }
+        }
+      }
+    } else {
+      $error_tmp_array = array_unique($error_array);
+      foreach ($error_tmp_array as $e_key => $e_value) {
+        $error_str .= sprintf(ERROR_VARIABLE_DATA_TEXT, $e_value)."\n"; 
+      }
+    }
+    return $error_str; 
+  } else {
+    return ''; 
+  }
+}
+
+/*-----------------------
+  功能: 判断变量是否为空 
+  参数: $o_id_info(string) 订单id
+  参数: $comment_info(string) 信息
+  参数: $title_info(string) 标题信息
+  参数: $c_status_id(int) 状题id
+  参数: $c_payment_info(string) 方法信息
+  参数: $c_name_info(string) 名字信息
+  参数: $c_mail_info(string) 邮箱信息
+  返回: 错误信息
+  ----------------------*/
+function tep_check_edit_order_variable_data($o_id_info, $comment_info, $title_info, $c_status_id, $c_payment_info, $c_name_info, $c_mail_info)
+{
+  global $ocertify; 
+  $error_array = array();
+  
+  $order_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$o_id_info."'"); 
+  $order_info = tep_db_fetch_array($order_info_raw); 
+  if ($order_info) {
+    $shipping_pos = strpos($comment_info, '${SHIPPING_TIME}');  
+    $t_shipping_pos = strpos($title_info, '${SHIPPING_TIME}');  
+    if (($shipping_pos !== false) || ($t_shipping_pos !== false)) {
+      if (!tep_not_null($order_info['torihiki_date']) || ($order_info['torihiki_date'] == '0000-00-00 00:00:00')) {
+        $error_array[] = '${SHIPPING_TIME}'; 
+      }
+    }
+      
+    $pay_date_pos = strpos($comment_info, '${PAY_DATE}');  
+    $t_pay_date_pos = strpos($title_info, '${PAY_DATE}');  
+    if (($pay_date_pos !== false) || ($t_pay_date_pos !== false)) {
+      $pay_date = tep_get_pay_day(); 
+      if (!$pay_date) {
+        $error_array[] = '${PAY_DATE}'; 
+      }
+    }
+      
+    $order_date_pos = strpos($comment_info, '${ORDER_DATE}');  
+    $t_order_date_pos = strpos($title_info, '${ORDER_DATE}');  
+    if (($order_date_pos !== false) || ($t_order_date_pos !== false)) {
+      if (!tep_not_null($order_info['date_purchased']) || ($order_info['date_purchased'] == '0000-00-00 00:00:00')) {
+        $error_array[] = '${ORDER_DATE}'; 
+      }
+    }
+    
+    $reserve_date_pos = strpos($comment_info, '${RESERVE_DATE}');  
+    $t_reserve_date_pos = strpos($title_info, '${RESERVE_DATE}');  
+    if (($reserve_date_pos !== false) || ($t_reserve_date_pos !== false)) {
+      $error_array[] = '${RESERVE_DATE}'; 
+    }
+      
+    $year_pos = strpos($comment_info, '${YEAR}');  
+    $t_year_pos = strpos($title_info, '${YEAR}');  
+    if (($year_pos !== false) || ($t_year_pos !== false)) {
+      $tmp_year = date('Y'); 
+      if (!$tmp_year) {
+        $error_array[] = '${YEAR}'; 
+      }
+    }
+      
+    $month_pos = strpos($comment_info, '${MONTH}');  
+    $t_month_pos = strpos($title_info, '${MONTH}');  
+    if (($month_pos !== false) || ($t_month_pos !== false)) {
+      $tmp_month = date('m'); 
+      if (!$tmp_month) {
+        $error_array[] = '${MONTH}'; 
+      }
+    }
+      
+    $day_pos = strpos($comment_info, '${DAY}');  
+    $t_day_pos = strpos($title_info, '${DAY}');  
+    if (($day_pos !== false) || ($t_day_pos !== false)) {
+      $tmp_day = date('d'); 
+      if (!$tmp_day) {
+        $error_array[] = '${DAY}'; 
+      }
+    }
+      
+    $user_email_pos = strpos($comment_info, '${USER_MAIL}');   
+    $t_user_email_pos = strpos($title_info, '${USER_MAIL}');   
+    if (($user_email_pos !== false) || ($t_user_email_pos !== false)) {
+      if (!tep_not_null($c_mail_info)) {
+        $error_array[] = '${USER_MAIL}'; 
+      }
+    }
+    
+    $order_number_pos = strpos($comment_info, '${ORDER_NUMBER}');   
+    $t_order_number_pos = strpos($title_info, '${ORDER_NUMBER}');   
+    if (($order_number_pos !== false) || ($t_order_number_pos !== false)) {
+      if (!tep_not_null($order_info['orders_id'])) {
+        $error_array[] = '${ORDER_NUMBER}'; 
+      }
+    }
+    
+    $order_total_pos = strpos($comment_info, '${ORDER_TOTAL}');   
+    $t_order_total_pos = strpos($title_info, '${ORDER_TOTAL}');   
+    if (($order_total_pos !== false) || ($t_order_total_pos !== false)) {
+       if (isset($_SESSION['orders_update_products'][$o_id_info]['ot_total'])) {
+         if (is_null($_SESSION['orders_update_products'][$o_id_info]['ot_total']) || (trim($_SESSION['orders_update_products'][$o_id_info]['ot_total']) == '')) {
+           $error_array[] = '${ORDER_TOTAL}'; 
+         }
+       } else {
+         $order_total_raw = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where orders_id = '".$o_id_info."' and class='ot_total'"); 
+         $order_total = tep_db_fetch_array($order_total_raw);
+         if ($order_total) {
+           if (!tep_not_null($order_total['value'])) {
+             $error_array[] = '${ORDER_TOTAL}'; 
+           }
+         } else {
+           $error_array[] = '${ORDER_TOTAL}'; 
+         }
+       }
+    }
+    
+    $order_status_pos = strpos($comment_info, '${ORDER_STATUS}');   
+    $t_order_status_pos = strpos($title_info, '${ORDER_STATUS}');   
+    if (($order_status_pos !== false) || ($t_order_status_pos !== false)) {
+      $order_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$c_status_id."'"); 
+      $order_status = tep_db_fetch_array($order_status_raw); 
+      if ($order_status) {
+        if (!tep_not_null($order_status['orders_status_name'])) {
+          $error_array[] = '${ORDER_STATUS}'; 
+        }
+      } else {
+        $error_array[] = '${ORDER_STATUS}'; 
+      }
+    }
+      
+    $site_name_pos = strpos($comment_info, '${SITE_NAME}');   
+    $t_site_name_pos = strpos($title_info, '${SITE_NAME}');   
+    if (($site_name_pos !== false) || ($t_site_name_pos !== false)) {
+      $sites_info_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_info['site_id']."'"); 
+      $sites_info = tep_db_fetch_array($sites_info_raw); 
+      if ($sites_info) {
+        if (!tep_not_null($sites_info['name'])) {
+          $error_array[] = '${SITE_NAME}'; 
+        }
+      } else {
+        $error_array[] = '${SITE_NAME}'; 
+      }
+    }
+    
+    $support_mail_pos = strpos($comment_info, '${SUPPORT_MAIL}');   
+    $t_support_mail_pos = strpos($title_info, '${SUPPORT_MAIL}');   
+    if (($support_mail_pos !== false) || ($t_support_mail_pos !== false)) {
+      if (!tep_not_null(get_configuration_by_site_id_or_default('SUPPORT_EMAIL_ADDRESS', $order_info['site_id']))) {
+        $error_array[] = '${SUPPORT_MAIL}'; 
+      }
+    }
+    
+    $company_name_pos = strpos($comment_info, '${COMPANY_NAME}');   
+    $t_company_name_pos = strpos($title_info, '${COMPANY_NAME}');   
+    if (($company_name_pos !== false) || ($t_company_name_pos !== false)) {
+      if (!tep_not_null(get_configuration_by_site_id_or_default('COMPANY_NAME', $order_info['site_id']))) {
+        $error_array[] = '${COMPANY_NAME}'; 
+      }
+    }
+    
+    $company_tel_pos = strpos($comment_info, '${COMPANY_TEL}');   
+    $t_company_tel_pos = strpos($title_info, '${COMPANY_TEL}');   
+    if (($company_tel_pos !== false) || ($t_company_tel_pos !== false)) {
+      if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_TEL', $order_info['site_id']))) {
+        $error_array[] = '${COMPANY_TEL}'; 
+      }
+    }
+    
+    $staff_name_pos = strpos($comment_info, '${STAFF_NAME}');   
+    $t_staff_name_pos = strpos($title_info, '${STAFF_NAME}');   
+    if (($staff_name_pos !== false) || ($t_staff_name_pos !== false)) {
+      $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+      $admin_user = tep_db_fetch_array($admin_user_query); 
+      if ($admin_user) {
+        if (!tep_not_null($admin_user['name'])) {
+          $error_array[] = '${STAFF_NAME}'; 
+        }
+      } else {
+        $error_array[] = '${STAFF_NAME}'; 
+      }
+    }
+      
+    $user_info_pos = strpos($comment_info, '${USER_INFO}');   
+    $t_user_info_pos = strpos($title_info, '${USER_INFO}');   
+    if (($user_info_pos !== false) || ($t_user_info_pos !== false)) {
+      $error_array[] = '${USER_INFO}'; 
+    }
+    
+    $https_server_pos = strpos($comment_info, '${HTTPS_SERVER}');   
+    $t_https_server_pos = strpos($title_info, '${HTTPS_SERVER}');   
+    if (($https_server_pos !== false) || ($t_https_server_pos !== false)) {
+      $error_array[] = '${HTTPS_SERVER}'; 
+    }
+    
+    $user_name_pos = strpos($comment_info, '${USER_NAME}');   
+    $t_user_name_pos = strpos($title_info, '${USER_NAME}');   
+    if (($user_name_pos !== false) || ($t_user_name_pos !== false)) {
+      if (!tep_not_null($c_name_info)) {
+        $error_array[] = '${USER_NAME}'; 
+      }
+    }
+    
+    $payment_pos = strpos($comment_info, '${PAYMENT}');   
+    $t_payment_pos = strpos($title_info, '${PAYMENT}');   
+    if (($payment_pos !== false) || ($t_payment_pos !== false)) {
+      if (!tep_not_null($c_payment_info)) {
+        $error_array[] = '${PAYMENT}'; 
+      }
+    }
+       
+    $mail_comment_pos = strpos($comment_info, '${MAIL_COMMENT}');   
+    $t_mail_comment_pos = strpos($title_info, '${MAIL_COMMENT}');   
+    if (($mail_comment_pos !== false) || ($t_mail_comment_pos !== false)) {
+      if (!tep_not_null(orders_a($order_info['orders_id']))) {
+        $error_array[] = '${MAIL_COMMENT}'; 
+      }
+    }
+    
+    $site_url_pos = strpos($comment_info, '${SITE_URL}');   
+    $t_site_url_pos = strpos($title_info, '${SITE_URL}');   
+    if (($site_url_pos !== false) || ($t_site_url_pos !== false)) {
+      $site_url_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_info['site_id']."'"); 
+      $site_url = tep_db_fetch_array($site_url_raw); 
+      if ($site_url) {
+        if (!tep_not_null($site_url['url'])) {
+          $error_array[] = '${SITE_URL}'; 
+        }
+      } else {
+        $error_array[] = '${SITE_URL}'; 
+      }
+    }
+    
+    $company_address_pos = strpos($comment_info, '${COMPANY_ADDRESS}');   
+    $t_company_address_pos = strpos($title_info, '${COMPANY_ADDRESS}');   
+    if (($company_address_pos !== false) || ($t_company_address_pos !== false)) {
+      if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_ADDRESS', $order_info['site_id']))) {
+        $error_array[] = '${COMPANY_ADDRESS}'; 
+      }
+    }
+    
+    $staff_mail_pos = strpos($comment_info, '${STAFF_MAIL}');   
+    $t_staff_mail_pos = strpos($title_info, '${STAFF_MAIL}');   
+    if (($staff_mail_pos !== false) || ($t_staff_mail_pos !== false)) {
+      $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+      $admin_user = tep_db_fetch_array($admin_user_query); 
+      if ($admin_user) {
+        if (!tep_not_null($admin_user['email'])) {
+          $error_array[] = '${STAFF_MAIL}'; 
+        }
+      } else {
+        $error_array[] = '${STAFF_MAIL}'; 
+      }
+    }
+    
+    $signature_pos = strpos($comment_info, '${SIGNATURE}');   
+    $t_signature_pos = strpos($title_info, '${SIGNATURE}');   
+    if (($signature_pos !== false) || ($t_signature_pos !== false)) {
+      if (!tep_not_null(get_configuration_by_site_id_or_default('C_EMAIL_FOOTER', $order_info['site_id']))) {
+        $error_array[] = '${SIGNATURE}'; 
+      }
+    }
+  } else {
+    $error_array[] = '${SHIPPING_TIME}'; 
+    $error_array[] = '${PAY_DATE}'; 
+    $error_array[] = '${ORDER_DATE}'; 
+    $error_array[] = '${RESERVE_DATE}'; 
+    $error_array[] = '${YEAR}'; 
+    $error_array[] = '${MONTH}'; 
+    $error_array[] = '${DAY}'; 
+    $error_array[] = '${USER_MAIL}'; 
+    $error_array[] = '${ORDER_NUMBER}'; 
+    $error_array[] = '${ORDER_TOTAL}'; 
+    $error_array[] = '${ORDER_STATUS}'; 
+    $error_array[] = '${SITE_NAME}'; 
+    $error_array[] = '${SUPPORT_MAIL}'; 
+    $error_array[] = '${COMPANY_NAME}'; 
+    $error_array[] = '${COMPANY_TEL}'; 
+    $error_array[] = '${STAFF_NAME}'; 
+    $error_array[] = '${USER_INFO}'; 
+    $error_array[] = '${HTTPS_SERVER}'; 
+    $error_array[] = '${USER_NAME}'; 
+    $error_array[] = '${PAYMENT}'; 
+    $error_array[] = '${MAIL_COMMENT}'; 
+    $error_array[] = '${SITE_URL}'; 
+    $error_array[] = '${COMPANY_ADDRESS}'; 
+    $error_array[] = '${STAFF_MAIL}'; 
+    $error_array[] = '${SIGNATURE}'; 
+  }
+  
+  if (!empty($error_array)) {
+    $error_str = ''; 
+    $error_tmp_array = array_unique($error_array);
+    foreach ($error_tmp_array as $e_key => $e_value) {
+      $error_str .= sprintf(ERROR_VARIABLE_DATA_TEXT, $e_value)."\n"; 
+    }
+    return $error_str; 
+  } else {
+    return ''; 
+  }
+}
+/*-----------------------
+  功能: 判断变量是否为空 
+  参数: $o_id_info(string) 订单id
+  参数: $fetch_date(string) 日期
+  参数: $comment_info(string) 信息
+  参数: $title_info(string) 标题信息
+  参数: $c_status_id(int) 订单id
+  参数: $c_payment_info(string) 方法
+  参数: $c_mail_info(string) 邮箱
+  参数: $c_name_info(string) 名字
+  参数: $site_id_info(int) 网站id
+  返回: 错误信息
+  ----------------------*/
+function tep_check_new_order_variable_data($o_id_info, $fetch_date, $comment_info, $title_info, $c_status_id, $c_payment_info, $c_mail_info, $c_name_info, $site_id_info)
+{
+  global $ocertify; 
+  $error_array = array();
+  
+  $shipping_pos = strpos($comment_info, '${SHIPPING_TIME}');  
+  $t_shipping_pos = strpos($title_info, '${SHIPPING_TIME}');  
+  if (($shipping_pos !== false) || ($t_shipping_pos !== false)) {
+    if (!tep_not_null($fetch_date) || ($fetch_date == '0000-00-00 00:0:0')) {
+      $error_array[] = '${SHIPPING_TIME}'; 
+    }
+  }
+  
+  $pay_date_pos = strpos($comment_info, '${PAY_DATE}');  
+  $t_pay_date_pos = strpos($title_info, '${PAY_DATE}');  
+  if (($pay_date_pos !== false) || ($t_pay_date_pos !== false)) {
+    $pay_date = tep_get_pay_day(); 
+    if (!$pay_date) {
+      $error_array[] = '${PAY_DATE}'; 
+    }
+  }
+      
+  $order_date_pos = strpos($comment_info, '${ORDER_DATE}');  
+  $t_order_date_pos = strpos($title_info, '${ORDER_DATE}');  
+  if (($order_date_pos !== false) || ($t_order_date_pos !== false)) {
+    $tmp_order_date = time(); 
+    if (!$tmp_order_date) { 
+      $error_array[] = '${ORDER_DATE}'; 
+    }
+  }
+  
+  $reserve_date_pos = strpos($comment_info, '${RESERVE_DATE}');  
+  $t_reserve_date_pos = strpos($title_info, '${RESERVE_DATE}');  
+  if (($reserve_date_pos !== false) || ($t_reserve_date_pos !== false)) {
+    $error_array[] = '${RESERVE_DATE}'; 
+  }
+  
+  $year_pos = strpos($comment_info, '${YEAR}');  
+  $t_year_pos = strpos($title_info, '${YEAR}');  
+  if (($year_pos !== false) || ($t_year_pos !== false)) {
+    $tmp_year = date('Y'); 
+    if (!$tmp_year) {
+      $error_array[] = '${YEAR}'; 
+    }
+  }
+      
+  $month_pos = strpos($comment_info, '${MONTH}');  
+  $t_month_pos = strpos($title_info, '${MONTH}');  
+  if (($month_pos !== false) || ($t_month_pos !== false)) {
+    $tmp_month = date('m'); 
+    if (!$tmp_month) {
+      $error_array[] = '${MONTH}'; 
+    }
+  }
+  
+  $day_pos = strpos($comment_info, '${DAY}');  
+  $t_day_pos = strpos($title_info, '${DAY}');  
+  if (($day_pos !== false) || ($t_day_pos !== false)) {
+    $tmp_day = date('d'); 
+    if (!$tmp_day) {
+      $error_array[] = '${DAY}'; 
+    }
+  }
+ 
+  $user_email_pos = strpos($comment_info, '${USER_MAIL}');   
+  $t_user_email_pos = strpos($title_info, '${USER_MAIL}');   
+  if (($user_email_pos !== false) || ($t_user_email_pos !== false)) {
+    if (!tep_not_null($c_mail_info)) {
+      $error_array[] = '${USER_MAIL}'; 
+    }
+  }
+    
+  $order_number_pos = strpos($comment_info, '${ORDER_NUMBER}');   
+  $t_order_number_pos = strpos($title_info, '${ORDER_NUMBER}');   
+  if (($order_number_pos !== false) || ($t_order_number_pos !== false)) {
+    if (!tep_not_null($o_id_info)) {
+      $error_array[] = '${ORDER_NUMBER}'; 
+    }
+  }
+  
+  $order_total_pos = strpos($comment_info, '${ORDER_TOTAL}');   
+  $t_order_total_pos = strpos($title_info, '${ORDER_TOTAL}');   
+  if (($order_total_pos !== false) || ($t_order_total_pos !== false)) {
+    if (isset($_SESSION['orders_update_products'][$o_id_info]['ot_total'])) {
+      if (is_null($_SESSION['orders_update_products'][$o_id_info]['ot_total']) || (trim($_SESSION['orders_update_products'][$o_id_info]['ot_total']) == '')) {
+        $error_array[] = '${ORDER_TOTAL}'; 
+      }
+    } else {
+      $error_array[] = '${ORDER_TOTAL}'; 
+    }
+  }
+    
+  $order_status_pos = strpos($comment_info, '${ORDER_STATUS}');   
+  $t_order_status_pos = strpos($title_info, '${ORDER_STATUS}');   
+  if (($order_status_pos !== false) || ($t_order_status_pos !== false)) {
+    $order_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$c_status_id."'"); 
+    $order_status = tep_db_fetch_array($order_status_raw); 
+    if ($order_status) {
+      if (!tep_not_null($order_status['orders_status_name'])) {
+        $error_array[] = '${ORDER_STATUS}'; 
+      }
+    } else {
+      $error_array[] = '${ORDER_STATUS}'; 
+    }
+  }
+      
+  $site_name_pos = strpos($comment_info, '${SITE_NAME}');   
+  $t_site_name_pos = strpos($title_info, '${SITE_NAME}');   
+  if (($site_name_pos !== false) || ($t_site_name_pos !== false)) {
+    $sites_info_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$site_id_info."'"); 
+    $sites_info = tep_db_fetch_array($sites_info_raw); 
+    if ($sites_info) {
+      if (!tep_not_null($sites_info['name'])) {
+        $error_array[] = '${SITE_NAME}'; 
+      }
+    } else {
+      $error_array[] = '${SITE_NAME}'; 
+    }
+  }
+    
+  $support_mail_pos = strpos($comment_info, '${SUPPORT_MAIL}');   
+  $t_support_mail_pos = strpos($title_info, '${SUPPORT_MAIL}');   
+  if (($support_mail_pos !== false) || ($t_support_mail_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('SUPPORT_EMAIL_ADDRESS', $site_id_info))) {
+      $error_array[] = '${SUPPORT_MAIL}'; 
+    }
+  }
+    
+  $company_name_pos = strpos($comment_info, '${COMPANY_NAME}');   
+  $t_company_name_pos = strpos($title_info, '${COMPANY_NAME}');   
+  if (($company_name_pos !== false) || ($t_company_name_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('COMPANY_NAME', $site_id_info))) {
+      $error_array[] = '${COMPANY_NAME}'; 
+    }
+  }
+    
+  $company_tel_pos = strpos($comment_info, '${COMPANY_TEL}');   
+  $t_company_tel_pos = strpos($title_info, '${COMPANY_TEL}');   
+  if (($company_tel_pos !== false) || ($t_company_tel_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_TEL', $site_id_info))) {
+      $error_array[] = '${COMPANY_TEL}'; 
+    }
+  }
+    
+  $staff_name_pos = strpos($comment_info, '${STAFF_NAME}');   
+  $t_staff_name_pos = strpos($title_info, '${STAFF_NAME}');   
+  if (($staff_name_pos !== false) || ($t_staff_name_pos !== false)) {
+    $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+    $admin_user = tep_db_fetch_array($admin_user_query); 
+    if ($admin_user) {
+      if (!tep_not_null($admin_user['name'])) {
+        $error_array[] = '${STAFF_NAME}'; 
+      }
+    } else {
+      $error_array[] = '${STAFF_NAME}'; 
+    }
+  }
+      
+  $user_info_pos = strpos($comment_info, '${USER_INFO}');   
+  $t_user_info_pos = strpos($title_info, '${USER_INFO}');   
+  if (($user_info_pos !== false) || ($t_user_info_pos !== false)) {
+    $error_array[] = '${USER_INFO}'; 
+  }
+    
+  $https_server_pos = strpos($comment_info, '${HTTPS_SERVER}');   
+  $t_https_server_pos = strpos($title_info, '${HTTPS_SERVER}');   
+  if (($https_server_pos !== false) || ($t_https_server_pos !== false)) {
+    $error_array[] = '${HTTPS_SERVER}'; 
+  }
+  
+  $user_name_pos = strpos($comment_info, '${USER_NAME}');   
+  $t_user_name_pos = strpos($title_info, '${USER_NAME}');   
+  if (($user_name_pos !== false) || ($t_user_name_pos !== false)) {
+    if (!tep_not_null($c_name_info)) {
+      $error_array[] = '${USER_NAME}'; 
+    }
+  }
+    
+  $payment_pos = strpos($comment_info, '${PAYMENT}');   
+  $t_payment_pos = strpos($title_info, '${PAYMENT}');   
+  if (($payment_pos !== false) || ($t_payment_pos !== false)) {
+    if (!tep_not_null($c_payment_info)) {
+      $error_array[] = '${PAYMENT}'; 
+    }
+  }
+       
+  $mail_comment_pos = strpos($comment_info, '${MAIL_COMMENT}');   
+  $t_mail_comment_pos = strpos($title_info, '${MAIL_COMMENT}');   
+  if (($mail_comment_pos !== false) || ($t_mail_comment_pos !== false)) {
+    $products_list_info = array(); 
+    $products_list_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$o_id_info."'"); 
+    while ($products_list_res = tep_db_fetch_array($products_list_query)) {
+      if (isset($_SESSION['orders_update_products'][$o_id_info][$products_list_res['orders_products_id']]['qty'])) {
+        if (!empty($_SESSION['orders_update_products'][$o_id_info][$products_list_res['orders_products_id']]['qty'])) {
+          $products_list_info[] = $products_list_res['products_id']; 
+        }
+      } else {
+        if (!empty($products_list_res['products_quantity'])) {
+          $products_list_info[] = $products_list_res['products_id']; 
+        }
+      }
+    }
+    if (!check_new_orders_a($products_list_info, $site_id_info)) {
+      $error_array[] = '${MAIL_COMMENT}'; 
+    }
+  }
+    
+  $site_url_pos = strpos($comment_info, '${SITE_URL}');   
+  $t_site_url_pos = strpos($title_info, '${SITE_URL}');   
+  if (($site_url_pos !== false) || ($t_site_url_pos !== false)) {
+    $site_url_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$site_id_info."'"); 
+    $site_url = tep_db_fetch_array($site_url_raw); 
+    if ($site_url) {
+      if (!tep_not_null($site_url['url'])) {
+        $error_array[] = '${SITE_URL}'; 
+      }
+    } else {
+      $error_array[] = '${SITE_URL}'; 
+    }
+  }
+    
+  $company_address_pos = strpos($comment_info, '${COMPANY_ADDRESS}');   
+  $t_company_address_pos = strpos($title_info, '${COMPANY_ADDRESS}');   
+  if (($company_address_pos !== false) || ($t_company_address_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_ADDRESS', $site_id_info))) {
+      $error_array[] = '${COMPANY_ADDRESS}'; 
+    }
+  }
+    
+  $staff_mail_pos = strpos($comment_info, '${STAFF_MAIL}');   
+  $t_staff_mail_pos = strpos($title_info, '${STAFF_MAIL}');   
+  if (($staff_mail_pos !== false) || ($t_staff_mail_pos !== false)) {
+    $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+    $admin_user = tep_db_fetch_array($admin_user_query); 
+    if ($admin_user) {
+      if (!tep_not_null($admin_user['email'])) {
+        $error_array[] = '${STAFF_MAIL}'; 
+      }
+    } else {
+      $error_array[] = '${STAFF_MAIL}'; 
+    }
+  }
+    
+  $signature_pos = strpos($comment_info, '${SIGNATURE}');   
+  $t_signature_pos = strpos($title_info, '${SIGNATURE}');   
+  if (($signature_pos !== false) || ($t_signature_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('C_EMAIL_FOOTER', $site_id_info))) {
+      $error_array[] = '${SIGNATURE}'; 
+    }
+  } 
+  
+  if (!empty($error_array)) {
+    $error_tmp_array = array_unique($error_array);
+    $error_str = '';
+    foreach ($error_tmp_array as $e_key => $e_value) {
+      $error_str .= sprintf(ERROR_VARIABLE_DATA_TEXT, $e_value)."\n"; 
+    }
+    return $error_str; 
+  } else {
+    return ''; 
+  }
+}
+
+/* -------------------------------------
+    功能: 检查该订单的商品的指定信息是否为空 
+    参数: $products_id_list(array) 订单数组 
+    返回值: 是否为空(boolean) 
+ ------------------------------------ */
+function check_new_orders_a($products_id_list, $site_id)
+{
+  $single = false; 
+  if (!empty($products_id_list)) {
+    foreach ($products_id_list as $key => $value) {
+      $sql = "select pd.products_name,p.products_attention_5,p.products_id from `".TABLE_PRODUCTS_DESCRIPTION."` pd,".TABLE_PRODUCTS." p WHERE p.products_id=pd.products_id and p.`products_id`='".$value."' and pd.site_id = '".$site_id."'";
+      $products_description = tep_db_fetch_array(tep_db_query($sql));
+      if ($products_description['products_attention_5']) {
+        $single = true;
+        break;
+      }
+    }
+  }
+  if (!$single) {
+    return false; 
+  }
+  return true;
+}
