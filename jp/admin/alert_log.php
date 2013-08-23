@@ -440,10 +440,17 @@ if ($rec_c % 2) {
      echo $notice_box->show_notice();
 
     }else{
-    echo '<tr><td><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
+     $alert_log_form = tep_draw_form('edit_logs',FILENAME_ALERT_LOG,'action=deleteconfirm&page='.$_GET['page']);
+     $notice_box->get_form($alert_log_form);
+     $notice_box->get_contents($alert_table_row);
+     $notice_box->get_eof(tep_eof_hidden());
+     echo $notice_box->show_notice();
+     echo '<tr><td><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
     }
     echo "</table>\n";
     echo '</td></tr><tr><td>';
+    echo '<table width="100%" cellspacing="0" cellpadding="2" border="0">';
+    echo '<tr><td>';
  if($ocertify->npermission >= 15 && $nrow > 0){
     echo '<div class="td_box">';
     echo '<select name="edit_logs_list" onchange="select_logs_change(this.value,\'logs_list_id[]\',\''.$ocertify->npermission.'\');">';
@@ -454,6 +461,7 @@ if ($rec_c % 2) {
  }
     echo $alert_split->display_count($alert_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ALERT);
     echo '<div class="td_box">'.$alert_split->display_links($alert_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID'))).'</div>';
+    echo '</td></tr></table>';
 ?>        
                                      </td> 
                                    </tr>

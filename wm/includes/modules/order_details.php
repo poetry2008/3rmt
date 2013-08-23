@@ -90,10 +90,10 @@
       echo '<td>'; 
       if(!in_array($products[$i]['id'],$check_products_option)){
       ?>
-      <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>, '<?php echo $products[$i]['quantity']?>', '<?php echo $origin_small;?>'); return false;"> 
+      <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>, '<?php echo $products[$i]['quantity'];?>', '<?php echo $origin_small;?>'); return false;"> 
       <img src="images/ico/nup.gif"> 
       </a> 
-      <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'down',1,<?php echo $p_a_quan;?>, '<?php echo $products[$i]['quantity']?>','<?php echo $origin_small;?>'); return false;"> 
+      <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'down',1,<?php echo $p_a_quan;?>, '<?php echo $products[$i]['quantity'];?>','<?php echo $origin_small;?>'); return false;"> 
       <img src="images/ico/ndown.gif"> 
       </a> 
       <?php

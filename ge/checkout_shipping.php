@@ -9,6 +9,23 @@
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
   $_SESSION['shipping_page_str'] = end($page_url_array); 
+  //检测商品OPTION是否改动
+  if ($_GET['action'] == 'check_products_op') {
+      $check_products_info = tep_check_less_product_option(); 
+      if (!empty($check_products_info)) {
+        $notice_msg_array = array(); 
+        foreach ($check_products_info as $cpo_key => $cpo_value) {
+          $tmp_cpo_info = explode('_', $cpo_value); 
+          $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+        }
+        $return_check_array[] = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+        $return_check_array[] = implode('>>>', $check_products_info); 
+      } else {
+        $return_check_array[] = 0; 
+      } 
+      echo implode('|||', $return_check_array); 
+      exit; 
+  }
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
@@ -265,6 +282,35 @@ header('Pragma: no-cache');
 ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
+$(document).ready(function(){
+  var alert_info_flag = $("#alert_info").val();
+  var alert_info_str = $("#alert_info_str").val();
+  if(alert_info_flag == '1'){
+
+    alert(alert_info_str); 
+    window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>';
+  }
+});
+<?php //检查不足的option?>
+function check_option_change(){ 
+  $.ajax({
+    url: '<?php echo FILENAME_CHECKOUT_SHIPPING.'?action=check_products_op';?>',     
+    type: 'POST', 
+    async: false,
+    success: function(msg) {
+      msg_arr = msg.split('|||');  
+      if (msg_arr[0] != '0') {
+        alert(msg_arr[0]);
+        window.location.href = '<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>'; 
+      }else{
+        document.forms.order.submit(); 
+      }
+    }
+  }); 
+}
+
+
+
 <?php
 if($cart->weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
@@ -761,8 +807,6 @@ if($cart->weight > 0){
      address_option_list(first_num); 
      <?php
      }
-     ?>
-     <?php
      if(isset($_SESSION['options'])){ 
      ?>
      session_value();
@@ -971,7 +1015,25 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
     <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
       <tr>
         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
-        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+        <td class="main" align="right"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></a>
+<?php
+          //触发弹出层的条件
+          $check_products_info = tep_check_less_product_option(); 
+          if (!empty($check_products_info)) {
+            $notice_msg_array = array(); 
+            foreach ($check_products_info as $cpo_key => $cpo_value) {
+              $tmp_cpo_info = explode('_', $cpo_value); 
+              $notice_msg_array[] = tep_get_products_name($tmp_cpo_info[0]);
+            }
+            $alert_info = sprintf(NOTICE_LESS_PRODUCT_OPTION_TEXT, implode('、', $notice_msg_array)); 
+            echo '<input type="hidden" id="alert_info" value="1">';
+            echo '<input type="hidden" id="alert_info_str" value="'.$alert_info.'">';
+          }else{
+            echo '<input type="hidden" id="alert_info" value="0">'; 
+            echo '<input type="hidden" id="alert_info_str" value="">';
+          }
+?>
+</td> 
       </tr> 
     </table>
   </td> 
@@ -1425,7 +1487,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 </td></tr>
 <?php
                             }
-    $hm_option->render('');
+    $hm_option->render('', false, false);
 ?>
                           </table>
 	    </td> 
@@ -1679,7 +1741,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
     <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
       <tr> 
         <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
-        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+        <td class="main" align="right"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></a></td> 
       </tr> 
     </table>
   </td> 

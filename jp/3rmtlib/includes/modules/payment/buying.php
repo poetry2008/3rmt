@@ -376,7 +376,7 @@ class buying extends basePayment  implements paymentInterface  {
       $payment_bank_info['bank_kouza_name']  = $_POST['bank_kouza_name'];
     }
     $comment = $bbbank ."\n".$comment;
-    $res_arr = array('comment'=>$comment,'payment_bank_info'=>$payment_bank_info); 
+    $res_arr = array('comment'=>$comment,'payment_bank_info'=>$payment_bank_info,'payment_info'=>$bbbank); 
     return $res_arr;
   }
 /*-----------------------------
@@ -509,6 +509,7 @@ class buying extends basePayment  implements paymentInterface  {
     $bbbank .= TS_TEXT_BANK_KOUZA_NUM . $buying_info[3] . "\n";
     $bbbank .= TS_TEXT_BANK_KOUZA_NAME . $buying_info[4];
     
+    $_SESSION['preorder_payment_info'] = $bbbank; 
     $comment = $bbbank ."\n".$order_info['comment_msg'];
     return $comment;
   }

@@ -6533,7 +6533,7 @@ function tep_pre_check_less_product_option_by_products_info($op_info_array, $pro
           if (!empty($cop_option['se_option'])) {
             $cop_se_single = false; 
             foreach ($cop_option['se_option'] as $cse_key => $cse_value) {
-              if ($cse_value == $o_value) {
+              if (trim($cse_value) == trim($o_value)) {
                 $cop_se_single = true;
                 break;
               }

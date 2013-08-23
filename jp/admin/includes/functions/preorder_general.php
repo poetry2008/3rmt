@@ -1532,7 +1532,7 @@ function tep_pre_check_less_option_product($products_id, $pro_attr_info)
             if (!empty($ao_option['se_option'])) {
               $ao_se_single = false;
               foreach ($ao_option['se_option'] as $se_key => $se_value) {
-                if ($se_value == $p_value['option_info']['value']) {
+                if (trim($se_value) == trim($p_value['option_info']['value'])) {
                   $ao_se_single = true;
                   break; 
                 }

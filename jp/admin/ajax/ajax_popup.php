@@ -557,7 +557,8 @@ if ($_GET['action'] == 'show_category_info') {
       $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
     if (empty($site_id)) {
       $button[] = '<input class="element_button" type="button" value="'.IMAGE_MOVE.'" onclick="show_product_move(\''.$pInfo->products_id.'\')">';
-      $button[] = '<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="show_product_copy(\''.$pInfo->products_id.'\')">';
+      $button[] = '<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="show_product_copy(\'copy\',\''.$pInfo->products_id.'\')">';
+      $button[] = '<input class="element_button" type="button" value="'.IMAGE_LINK.'" onclick="show_product_copy(\'link\',\''.$pInfo->products_id.'\')">';
     }
     if ($ocertify->npermission >= 15) {
       if(isset($site_id) && $site_id != 0){
@@ -1174,25 +1175,20 @@ if ($_GET['action'] == 'show_category_info') {
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_COPY, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'7\')"').'</a>'; 
-  $button[] = '<input type="button" value="'.IMAGE_CANCEL.'" onclick="hidden_info_box()" class="element_button">';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'7\')"').'</a>'; 
   
   $buttons = array('align' => 'center', 'button' => $button); 
   
   $copy_product_info = array();
   $copy_product_info[]['text'] = array(
-        array('text' => TEXT_INFO_COPY_TO_INTRO.tep_draw_hidden_field('products_id', $pInfo->products_id)) 
+        array('text' => str_replace(':','',TEXT_INFO_CURRENT_CATEGORIES).tep_draw_hidden_field('products_id', $pInfo->products_id)),
+        array('text' => tep_output_generated_category_path($pInfo->products_id, 'product'))
       );
   $copy_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br>' . tep_output_generated_category_path($pInfo->products_id, 'product')) 
+        array('text' => TEXT_INFO_HEADING_COPY_TO), 
+        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','','','',false), ''))
       );
-  $copy_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_CATEGORIES . '<br>' . tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','','','',false), $current_category_id)) 
-      );
-  $copy_product_info[]['text'] = array(
-        array('text' => '<br>' . TEXT_HOW_TO_COPY . '<br>' . tep_draw_radio_field('copy_as', 'link', true) . ' ' . TEXT_COPY_AS_LINK . '<br>' . tep_draw_radio_field('copy_as', 'duplicate') . ' ' . TEXT_COPY_AS_DUPLICATE) 
-      );
-
+  
   $form_str = tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=copy_to_confirm&cPath=' . $cPath);
   
   $notice_box->get_form($form_str);
@@ -7326,4 +7322,533 @@ if($_GET['type'] == 'mag_orders'){
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
   }
+}else if($_GET['action'] == 'edit_present'){
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PRESENT);
+include(DIR_FS_ADMIN.'classes/notice_box.php');
+$notice_box = new notice_box('popup_order_title', 'popup_order_info');
+$today = getdate();
+$yyyy = $today['year'];
+$mm = $today['mon'];
+$dd = $today['mday'];
+$pd = $dd + 1;
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+$action_sid = $_GET['site_id'];
+while($userslist= tep_db_fetch_array($sites_id)){
+     $site_permission = $userslist['site_permission']; 
+}
+$sites_sql = tep_db_query("SELECT * FROM `sites`");
+if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+else $site_arr="";
+$site_array = explode(',',$site_arr);
+if(!in_array($action_sid,$site_array) && $action_sid != -1){
+   $disabled = 'disabled="disabled"'; 
+}
+if($_GET['site_id'] == -1){
+   $_GET['site_id'] = '';
+}
+if($_GET['type'] == 'view'){
+    $present_query_raw = "
+      select g.goods_id,
+             g.html_check,
+             g.title,
+             g.image,
+             g.text,
+             g.start_date,
+             g.limit_date,
+             s.romaji,
+             g.site_id,
+             g.goods_id,
+             g.date_added,
+             g.date_update
+      from ".TABLE_PRESENT_GOODS." g , ".TABLE_SITES." s
+      where s.id = g.site_id  and ".$_GET['sql']. " order by ".$_GET['str'];
+    $present_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_query_numrows);
+    $present_query = tep_db_query($present_query_raw);
+    $cid_array = array();
+    while ($present = tep_db_fetch_array($present_query)) {
+         $cid_array[] = $present['goods_id'];
+    }
+$sele1_id = (int)$_GET['cID'];
+$sele1 = tep_db_query("
+    select g.goods_id,
+           g.html_check,
+           g.title,
+           g.image,
+           g.text,
+           g.start_date,
+           g.limit_date,
+           g.site_id,
+           g.user_added,
+           g.user_update,
+           g.date_added,
+           g.date_update,
+           s.romaji,
+           s.name as site_name
+    from ".TABLE_PRESENT_GOODS." g, ".TABLE_SITES." s
+    where g.goods_id = '".$sele1_id."'
+      and g.site_id = s.id
+    ");
+$sql1 = tep_db_fetch_array($sele1);
+//期间
+$sele_sty = substr($sql1['start_date'],0,4);
+$sele_stm = substr($sql1['start_date'],5,2);
+$sele_std = substr($sql1['start_date'],8,2);
+$sele_liy = substr($sql1['limit_date'],0,4);
+$sele_lim = substr($sql1['limit_date'],5,2);
+$sele_lid = substr($sql1['limit_date'],8,2);
+   
+ foreach ($cid_array as $c_key => $c_value) {
+    if ($_GET['cID'] == $c_value) {
+      break; 
+    }
+  }
+  $page_str = '';
+  if ($c_key > 0) {
+    $present_site_id = tep_db_query(" select * from ".TABLE_PRESENT_GOODS." where goods_id= '".$cid_array[$c_key-1]."'");
+    $present_site_id_row = tep_db_fetch_array($present_site_id); 
+    $page_str .= '<a onclick=\'show_present("",'.$cid_array[$c_key-1].','.$present_site_id_row['site_id'].',"view",'.$_GET['page'].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+  if ($c_key < (count($cid_array) - 1)) {
+    $present_site_id = tep_db_query(" select * from ".TABLE_PRESENT_GOODS." where goods_id= '".$cid_array[$c_key+1]."'");
+    $present_site_id_row = tep_db_fetch_array($present_site_id); 
+    $page_str .= '<a onclick=\'show_present("",'.$cid_array[$c_key+1].','.$present_site_id_row['site_id'].',"view",'.$_GET['page'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }else{
+    $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+  }
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => $sql1['title']);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $contents = array();
+    $form_str = '<form name="apply" name="view" method="post" action="present.php?action=update&cID='.$sele1_id.'" enctype="multipart/form-data">';
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => ENTRY_SITE),
+        array('text' => tep_get_site_romaji_by_id($sql1['site_id']))
+    ); 
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_NAME_TEXT),
+        array('text' => '<input name="title" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" '.($disabled?$disabled:'').'type="text" value="'.$sql1['title'].'" id="title"><span id="title_error"></span>')
+    ); 
+
+    if($sql1['image']){ $present_image =  tep_info_image('present/'.$sql1['image'], $sql1['title'],'','',$sql1['site_id']) ; }
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_IMAGE_TEXT),
+        array('text' => '<input type="file" '.($disabled?$disabled:'').'name="file"><br>'.$present_image)
+    ); 
+    if($sql1['html_check'] == 1){
+       $present_input =  '<input type="checkbox" name="ht" value="1" '.($disabled?$disabled:'').' checked>'.PRESENT_HTML_READ."\n";
+       $present_input .= '<br><textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="text" '.($disabled?$disabled:'').' style="width:95%; height:300px;resize:vertical;">'.stripslashes($sql1['text']).'</textarea><span id="text_error"></span>'."\n";
+    }else{
+       $present_input =  '<input type="checkbox" name="ht" '.($disabled?$disabled:'').' value="1">'.PRESENT_HTML_READ."\n";
+       $present_input .='<br><textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="text" '.($disabled?$disabled:'').' style="width:95%; height:300px;
+resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_error"></span>'."\n";
+    }
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_COMMENT_TEXT),
+        array('text' => $present_input)
+    ); 
+          $present_y = '<select name="start_y" '.($disabled?$disabled:'').'>';
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($sele_sty == $nen){
+              $present_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{ $present_y .= "<option value=\"$nen\">$nen</option>"."\n"; }
+          }
+          $present_y .= '</select>';
+          $present_m = '<select name="start_m" '.($disabled?$disabled:'').'>';
+          for($m=1;$m<=9;$m++){
+            if($sele_stm == $m){
+              $present_m .=  "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              $present_m .= "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($sele_stm == $m){
+              $present_m .= "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              $present_m .= "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+              $present_m .= '</select>';
+              $present_d = '<select name="start_d" '.($disabled?$disabled:'').'>';
+          for($d=1;$d<=9;$d++){
+            if($sele_std == $d){
+              $present_d .= "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              $present_d .= "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($sele_std == $d){
+              $present_d .="<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              $present_d .="<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+              $present_d .= '</select>';
+              $present_d .= DAY_TEXT.'<br>';
+              $present_l_y = KEYWORDS_SEARCH_END_TEXT;
+              $present_l_y .= '<select name="limit_y" '.($disabled?$disabled:'').'>';
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($sele_liy == $nen){
+              $present_l_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{
+              $present_l_y .=  "<option value=\"$nen\">$nen</option>"."\n";
+            }
+          }
+              $present_l_y .= '</select>';
+              $present_l_m = YEAR_TEXT;
+              $present_l_m .= '<select name="limit_m" '.($disabled?$disabled:'').'>';
+          for($m=1;$m<=9;$m++){
+            if($sele_lim == $m){
+              $present_l_m .= "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              $present_l_m .= "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($sele_lim == $m){
+              $present_l_m .= "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              $present_l_m .= "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+              $present_l_m .= '</select>';
+              $present_l_d  = MONTH_TEXT;
+              $present_l_d .= '<select name="limit_d" '.($disabled?$disabled:'').'>';
+          for($d=1;$d<=9;$d++){
+            if($sele_lid == $d){
+              $present_l_d .= "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              $present_l_d .= "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($sele_lid == $d){
+              $present_l_d .="<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              $present_l_d .= "<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+              $present_l_d .= '</select>';
+              $present_l_d .= DAY_TEXT;
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_DATE_TEXT),
+        array('text' => KEYWORDS_SEARCH_START_TEXT.$present_y.YEAR_TEXT.$present_m.MONTH_TEXT.$present_d.$present_l_y.$present_l_m.$present_l_d.'<br><span id="select_error"></span>')
+    );
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_added'])?$sql1['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_added'])))?tep_datetime_short($sql1['date_added']):TEXT_UNSET_DATA))
+      );
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_update'])?$sql1['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_update'])))?tep_datetime_short($sql1['date_update']):TEXT_UNSET_DATA))
+      );
+    if($disabled){
+    $button[] = '<a>'.tep_html_element_button(IMAGE_SAVE,$disabled.'id="button_save"').'</a>'.(($ocertify->npermission >= 15)?'<a>' .  tep_html_element_button(IMAGE_DELETE,$disabled) .  '</a>':'').'<a>' .  tep_html_element_button(PRESENT_LIST,$disabled) . '</a>';
+    }else{
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="msg(\''.$ocertify->npermission.'\')"').'</a>'.  (($ocertify->npermission >= 15)?' <a href="javascript:void(0)" onclick="view_delete('.$ocertify->npermission.','.$cID.')"> ' .  tep_html_element_button(IMAGE_DELETE) .  '</a>':'').'<a href="' .  tep_href_link(FILENAME_PRESENT, 'site_id='.$sql1['site_id'].'&cID=' . $cID .  '&action=list') . '">' .  tep_html_element_button(PRESENT_LIST) . '</a>';
+    }
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+}else if($_GET['type'] == 'input'){
+   $sites_sql = tep_db_query("SELECT * FROM `sites`");
+   $show_site_arr = array();
+   while($sites_row = tep_db_fetch_array($sites_sql)){
+     $show_site_arr[] = $sites_row['id']; 
+   }
+   $present_site_arr = array_intersect($show_site_arr,$site_array);
+   $site_id_name = "<select id='present_site_id' name='site_id' $disabled>";
+   foreach($present_site_arr as $value){
+     if($value!=0){
+       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
+       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
+     }
+   }
+   $site_id_name .= "</select>";
+   $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
+
+    $page_str  = '';
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => PRESENT_CREATE_TITLE);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $contents = array();
+    $form_str = '<form name="apply" action="present.php?action=insert&page='.$_GET['page'].'" method="post" enctype="multipart/form-data">';
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => ENTRY_SITE),
+        array('text' => $site_id_name.'<input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">')
+    ); 
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_NAME_TEXT),
+        array('text' => '<input name="title" type="text" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" id="title"><span id="title_error"></span>')
+    ); 
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_IMAGE_TEXT),
+        array('text' => '<input type="file" name="file">')
+    ); 
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_COMMENT_TEXT),
+        array('text' => '<input type="checkbox" name="ht" value="1">'.PRESENT_HTML_READ.'<br> <textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="text" style="width:65%; height:100px;resize:vertical;"></textarea><br><span id="text_error"></span>')
+    ); 
+          $present_y = '<select name="start_y">';
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($yyyy == $nen){
+              $present_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{
+              $present_y .= "<option value=\"$nen\">$nen</option>"."\n";
+            }
+          }
+          $present_y .= '</select>';
+          $present_y .=  YEAR_TEXT;
+          $present_m = '<select name="start_m">';
+          for($m=1;$m<=9;$m++){
+            if($mm == $m){
+              $present_m .= "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              $present_m .= "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($mm == $m){
+              $present_m .= "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              $present_m .= "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+              $present_m .= '</select>';
+              $present_m .=  MONTH_TEXT;
+              $present_d = '<select name="start_d">';
+          for($d=1;$d<=9;$d++){
+            if($dd == $d){
+              $present_d .= "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              $present_d .= "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($dd == $d){
+              $present_d .= "<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              $present_d .= "<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+              $present_d .= '</select>';
+              $present_d .=  DAY_TEXT.'<br>';
+              $present_l_y =  KEYWORDS_SEARCH_END_TEXT;
+              $present_l_y .= '<select name="limit_y">';
+          for($y=0;$y<=5;$y++){
+            $nen = $yyyy + $y;
+            if($yyyy == $nen){
+              $present_l_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
+            }else{
+              $present_l_y .= "<option value=\"$nen\">$nen</option>"."\n";
+            }
+          }
+              $present_l_y .= '</select>';
+              $present_l_y .=  YEAR_TEXT;
+              $present_l_m = '<select name="limit_m">';
+          for($m=1;$m<=9;$m++){
+            if($mm == $m){
+              $present_l_m .= "<option value=\"0$m\" selected>$m</option>"."\n";
+            }else{
+              $present_l_m .= "<option value=\"0$m\">$m</option>"."\n";
+            }
+          }
+          for($m=10;$m<=12;$m++){
+            if($mm == $m){
+              $present_l_m .= "<option value=\"$m\" selected>$m</option>"."\n";
+            }else{
+              $present_l_m .= "<option value=\"$m\">$m</option>"."\n";
+            }
+          }
+              $present_l_m .= '</select>';
+              $present_l_m .= MONTH_TEXT;
+              $present_l_d = '<select name="limit_d">';
+          for($d=1;$d<=9;$d++){
+            if($pd == $d){
+              $present_l_d .= "<option value=\"0$d\" selected>$d</option>"."\n";
+            }else{
+              $present_l_d .= "<option value=\"0$d\">$d</option>"."\n";
+            }
+          }
+          for($d=10;$d<=31;$d++){
+            if($pd == $d){
+              $present_l_d .= "<option value=\"$d\" selected>$d</option>"."\n";
+            }else{
+              $present_l_d .=  "<option value=\"$d\">$d</option>"."\n";
+            }
+          }
+             $present_l_d .= '</select>';
+             $present_l_d .= DAY_TEXT;
+     $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_DATE_TEXT),
+        array('text' => KEYWORDS_SEARCH_START_TEXT.$present_y.$present_m.$present_d.$present_l_y.$present_l_m.$present_l_d.'<br><span id="select_error"></span>')
+     ); 
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_added'])?$sql1['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_added'])))?tep_datetime_short($sql1['date_added']):TEXT_UNSET_DATA))
+      );
+    $contents[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_update'])?$sql1['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_update'])))?tep_datetime_short($sql1['date_update']):TEXT_UNSET_DATA))
+      );
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(PRESENT_SAVE, 'id="button_save" onclick="msg(\''.$ocertify->npermission.'\');"').'</a>';
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+}else if($_GET['type'] == 'listview'){
+   $list_query_raw = "
+      select p.id ,
+             p.goods_id, 
+             p.customer_id, 
+             p.family_name, 
+             p.first_name, 
+             p.mail, 
+             p.postcode, 
+             p.prefectures, 
+             p.cities, 
+             p.address1, 
+             p.address2, 
+             p.phone, 
+             p.tourokubi, 
+             s.romaji,
+             g.site_id
+      from ".TABLE_PRESENT_APPLICANT." p , ".TABLE_SITES." s, ".TABLE_PRESENT_GOODS." g
+      where p.goods_id='".$_GET['cID']."' 
+        and g.goods_id = p.goods_id
+        and s.id = g.site_id
+      order by ".$_GET['str'];
+    $present_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $list_query_raw, $present_query_numrows);
+    $list_query = tep_db_query($list_query_raw);
+    $cid_array = array();
+    while ($list = tep_db_fetch_array($list_query)) {
+      $cid_array[] = $list['id'];
+    }
+$lv_id = tep_db_prepare_input($_GET['list_id']);
+$sele2 = tep_db_query(" select * from ".TABLE_PRESENT_APPLICANT." where id = '".$lv_id."'");
+$sql2 = tep_db_fetch_array($sele2);
+    $page_str  = '';
+    foreach ($cid_array as $c_key => $c_value) {
+       if ($_GET['list_id'] == $c_value) {
+           break; 
+        }
+    }
+    if ($c_key > 0) {
+      $page_str .= '<a onclick=\'show_present("",'.$_GET['cID'].','.$_GET['site_id'].',"listview",'.$_GET['page'].','.$cid_array[$c_key-1].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    }
+    if ($c_key < (count($cid_array) - 1)) {
+      $page_str .= '<a onclick=\'show_present("",'.$_GET['cID'].','.$_GET['site_id'].',"listview",'.$_GET['page'].','.$cid_array[$c_key+1].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    }else{
+     $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+    }
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => PRESENT_CUSTOMER_TITLE);
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+    $contents = array();
+    $form_str = '<form name="listview" method="post">';
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => TEXT_CUSTOMERS_ID),
+        array('text' => $sql2['customer_id'])
+        );
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_NAME),
+        array('text' => $sql2['family_name'].$sql2['first_name'])
+        );
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => TEXT_EMAIL),
+        array('text' => $sql2['mail'])
+        );
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_ADDRESS),
+        array('text' => '〒'.$sql2['postcode'].'<br>'.$sql2['prefectures'].$sql2['cities'].'<br>'.$sql2['address1'].'<br>'.$sql2['address2'])
+        );
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_TEL),
+        array('text' => $sql2['phone'])
+        );
+    $contents[]['text'] = array(
+        array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_APPLYDAY),
+        array('text' => $sql2['tourokubi'])
+        );
+    $button[] = (($ocertify->npermission >= 15)?'<a href="javascript:void(0)" onclick="list_delete('.$ocertify->npermission.','.$cID.','.$sql2['id'].')">' .  tep_html_element_button(IMAGE_DELETE) .  '</a>':'');
+    if(!empty($button)){
+         $buttons = array('align' => 'center', 'button' => $button);
+    }
+    $notice_box->get_form($form_str);
+    $notice_box->get_heading($heading);
+    $notice_box->get_contents($contents, $buttons);
+    $notice_box->get_eof(tep_eof_hidden());
+    echo $notice_box->show_notice();
+}
+} else if ($_GET['action'] == 'product_link_to_box') {
+/* -----------------------------------------------------
+    功能: 链接商品的弹出框
+    参数: $_GET['pID'] 商品id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+    参数: $_GET['cPath'] 分类路径 
+    参数: $_GET['search'] 搜索字符串 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
+  $pInfo = tep_get_pinfo_by_pid($_GET['pID'],$site_id);
+  $cPath = $_GET['cPath'];
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => IMAGE_LINK_TO);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  
+  $buttons = array();
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'7\')"').'</a>'; 
+  
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $copy_product_info = array();
+  
+  $copy_product_info[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_INFO_CURRENT_CATEGORIES) . tep_draw_hidden_field('products_id', $pInfo->products_id)), 
+        array('text' => tep_output_generated_category_path($pInfo->products_id, 'product'))
+      );
+  $products_link_array = tep_generate_category_path($pInfo->products_id, 'product');
+  $categories_products_array = array();
+  foreach($products_link_array as $value){
+
+    $products_link_temp_array = end($value);
+    $categories_products_array[] = $products_link_temp_array['id'];
+  }
+  $copy_product_info[]['text'] = array(
+        array('text' => IMAGE_LINK_TO), 
+        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','',$categories_products_array,'',false), ''))
+      ); 
+
+  $form_str = tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=link_to_confirm&cPath=' . $cPath);
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($copy_product_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
 }

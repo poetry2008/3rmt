@@ -724,7 +724,7 @@ $mailoption['PAYMENT']    = $payment_class->title ;
 $mailoption['SHIPPING_TIME']      =  str_string($date) . $start_hour . TIME_HOUR_TEXT . $start_min . TEXT_ORDERS_PRODUCTS_LINK. $end_hour .TIME_HOUR_TEXT. $end_min .TEXT_ORDERS_PRODUCTS_TWENTY_HOUR ;
 $mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
 unset($_SESSION['comments']);
-$mailoption['ADD_INFO']    = str_replace("\n".$mailoption['ORDER_COMMENT'],'',trim($order->info['comments']));
+$mailoption['ADD_INFO']    = $comments_info['payment_info'];
 $mailoption['ORDER_PRODUCTS']   = $products_ordered ;
 $mailoption['SHIPPING_METHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
@@ -842,7 +842,7 @@ $payment_replace = array(
                         $insert_id,  
                         tep_date_long(time()),
                         $order->customer['email_address'],
-                        trim(str_replace($_SESSION['mailcomments'],'',$order->info['comments'])),
+                        $comments_info['payment_info'],
                         $print_point,
                         isset($_SESSION['h_shipping_fee']) ? $_SESSION['h_shipping_fee'] : 0,
                         $total_mail_fee,

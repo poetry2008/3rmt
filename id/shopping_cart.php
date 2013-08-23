@@ -5,6 +5,8 @@
 
   require("includes/application_top.php");
 
+  check_uri('/page=\d+/');
+
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
 
   //检查商品的OPTION是否改动 
@@ -41,7 +43,6 @@
       }
     }
   }
-
 
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
@@ -92,10 +93,24 @@
       exit; 
     }
   }
+  
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 ?>
 <?php page_head();?>
 <script type="text/javascript">
+<?php //格式化金额?>
+function convert(money) {
+  var str = money;
+  str += "";
+  if (str.indexOf("*") == -1){
+    str += "*";
+  }
+  while (/\d{4}(\*|,)/.test(str)){
+    str = str.replace(/(\d)(\d{3}(\*|,))/, "$1,$2");
+  }
+  str = str.replace('*','');
+  return str;
+}
 <?php //检查不足的option?>
 function check_op_products() {
   $.getJSON('<?php echo ((getenv('HTTPS') == 'on')?HTTPS_SERVER:'http://'.$_SERVER['HTTP_HOST']).'/'.FILENAME_SHOPPING_CART.'?action=check_products_op';?>', function (msg) {
@@ -106,7 +121,7 @@ function check_op_products() {
         }); 
       }else{
         document.forms.cart_quantity.submit(); 
-      } 
+      }
     } else {
       document.forms.cart_quantity.submit(); 
     }
@@ -213,9 +228,9 @@ function money_update(objid, targ, origin_qty, origin_small)
   new_unit_price_total = Math.round(new_unit_price_total);
 
   if (unit_price.value < 0) {
-    old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' + '<?php echo JPMONEY_UNIT_TEXT;?>';
+    old_price_total.innerHTML = '<font color="#ff0000">'+convert(Math.abs(new_unit_price_total)).toString() +'</font>' + '<?php echo JPMONEY_UNIT_TEXT;?>';
   } else {
-    old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + '<?php echo JPMONEY_UNIT_TEXT;?>';
+    old_price_total.innerHTML = convert(Math.abs(new_unit_price_total)).toString() + '<?php echo JPMONEY_UNIT_TEXT;?>';
   }
   
   if (hop_price_str != '') {
@@ -228,9 +243,9 @@ function money_update(objid, targ, origin_qty, origin_small)
       old_option_price_info =  old_option_price.slice(0, -1).replace(/,/g, '');
       new_option_price = Number(hop_array[hop_num])*Number(obj.value); 
       if (new_option_price < 0) {
-        $(this).html('<i><font color="#ff0000">' + (0 - new_option_price) + '</font>' + old_option_pri + '</i>');
+        $(this).html('<i><font color="#ff0000">' + convert((0 - new_option_price)) + '</font>' + old_option_pri + '</i>');
       } else {
-        $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+        $(this).html('<i>' + convert(new_option_price) + old_option_pri + '</i>');
       }
       hop_num++; 
     }
@@ -283,9 +298,9 @@ function money_blur_update(objid, o_num, old_small)
   new_unit_price_total = Math.round(new_unit_price_total);
   
   if (unit_price.value < 0) {
-    old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' + '<?php echo JPMONEY_UNIT_TEXT;?>';
+    old_price_total.innerHTML = '<font color="#ff0000">'+convert(Math.abs(new_unit_price_total)).toString() +'</font>' + '<?php echo JPMONEY_UNIT_TEXT;?>';
   } else {
-    old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + '<?php echo JPMONEY_UNIT_TEXT;?>';
+    old_price_total.innerHTML =  convert(Math.abs(new_unit_price_total)).toString() + '<?php echo JPMONEY_UNIT_TEXT;?>';
   }
   if (hop_price_str != '') {
   hop_array = hop_price_str.split(",");
@@ -297,9 +312,9 @@ function money_blur_update(objid, o_num, old_small)
       old_option_price_info =  old_option_price.slice(0, -1).replace(/,/g, '');
       new_option_price = Number(hop_array[hop_num])*Number(obj.value); 
       if (new_option_price < 0) {
-        $(this).html('<i><font color="#ff0000">' + (0 - new_option_price) + '</font>' + old_option_pri + '</i>');
+        $(this).html('<i><font color="#ff0000">' + convert((0 - new_option_price)) + '</font>' + old_option_pri + '</i>');
       } else {
-        $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+        $(this).html('<i>' + convert(new_option_price) + old_option_pri + '</i>');
       }
       hop_num++; 
     }
@@ -349,9 +364,9 @@ function set_sub_total()
   var sub_total_text = document.getElementById("sub_total");
   var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
   if (sub_total >= 0) {
-    sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
+    sub_total_text.innerHTML = convert(Math.abs(sub_total)).toString() + monetary_sub_total;
   } else {
-    sub_total_text.innerHTML = '<font color="#ff0000">' + Math.abs(sub_total).toString() + '</font>' + monetary_sub_total;
+    sub_total_text.innerHTML = '<font color="#ff0000">' + convert(Math.abs(sub_total)).toString() + '</font>' + monetary_sub_total;
   }
 }
   

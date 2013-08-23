@@ -30,7 +30,7 @@ echo $p_info_image_footer;
       $p_list_src){
       echo "<div id='product-carousel'>";
       echo tep_image3(DIR_WS_IMAGES.'products/' . $p_list_src,
-        $product_info['products_name'], '','',
+        $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT,
         'hspace="2" vspace="2" class="product-carousel-image"');
       echo "</div>";
     }

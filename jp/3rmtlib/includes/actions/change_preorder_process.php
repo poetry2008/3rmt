@@ -631,7 +631,7 @@ if (!empty($_SESSION['preorders_code_fee'])) {
 $email_order_text = '';
 
 $mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
-$mailoption['ADD_INFO'] = trim(str_replace($preorder['comment_msg'],'',$order_comment_str));
+$mailoption['ADD_INFO'] = trim($_SESSION['preorder_payment_info']);
 
 $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
 
@@ -754,7 +754,7 @@ $payment_replace = array(
                         $orders_id,  
                         tep_date_long(time()),
                         $preorder['customers_email_address'],
-                        trim(str_replace($preorder['comment_msg'],'',$order_comment_str)),
+                        $_SESSION['preorder_payment_info'],
                         $print_point,
                         $shipping_fee_value,
                         $print_handle_fee,
@@ -878,6 +878,7 @@ unset($_SESSION['referer_adurl']);
 unset($_SESSION['preorder_campaign_fee']);
 unset($_SESSION['preorder_camp_id']);
 unset($_SESSION['preorders_code_fee']);
+unset($_SESSION['preorder_payment_info']);
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 

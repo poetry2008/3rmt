@@ -437,7 +437,7 @@ function tep_in_array($lookup_value, $lookup_array) {
     功能: 根据条件生成商品分类目录     
     参数: $parent_id(string) 商品父分类  
     参数: $spacing(string) 间隔字符
-    参数: $exclude(int) 排除掉的商品分类id
+    参数: $exclude(array) 排除掉的商品分类id
     参数: $category_tree_array(array) 给定的商品目录数组
     参数: $include_itself(boolean) 是否包含 $parent_id 自身的id,名字 
     参数: $index_flag(boolean) 是否显示分类首页
@@ -446,8 +446,12 @@ function tep_in_array($lookup_value, $lookup_array) {
 function tep_get_category_tree($parent_id = '0', $spacing = '', $exclude = '', $category_tree_array = '', $include_itself = false,$index_flag = true) {
   global $languages_id;
 
+  if(!is_array($exclude)){
+
+    $exclude = array($exclude);
+  }
   if (!is_array($category_tree_array)) $category_tree_array = array();
-  if ( (sizeof($category_tree_array) < 1) && ($exclude != '0') && $index_flag == true) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
+  if ( (sizeof($category_tree_array) < 1) && (!in_array('0',$exclude)) && $index_flag == true) $category_tree_array[] = array('id' => '0', 'text' => TEXT_TOP);
 
   if ($include_itself) {
     $category_query = tep_db_query("select cd.categories_name from " . TABLE_CATEGORIES_DESCRIPTION . " cd where cd.language_id = '" . $languages_id . "' and cd.categories_id = '" . $parent_id . "' and cd.site_id='0'");
@@ -457,7 +461,7 @@ function tep_get_category_tree($parent_id = '0', $spacing = '', $exclude = '', $
 
   $categories_query = tep_db_query("select c.categories_id, cd.categories_name, c.parent_id from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd where c.categories_id = cd.categories_id and cd.language_id = '" . $languages_id . "' and c.parent_id = '" . $parent_id . "' and site_id ='0' order by c.sort_order, cd.categories_name");
   while ($categories = tep_db_fetch_array($categories_query)) {
-    if ($exclude != $categories['categories_id']) {
+    if (!in_array($categories['categories_id'],$exclude)) {
       $category_tree_array[] = array('id' => $categories['categories_id'], 'text' => $spacing . $categories['categories_name']);
       $category_tree_array = tep_get_category_tree($categories['categories_id'], $spacing . '&nbsp;&nbsp;&nbsp;', $exclude, $category_tree_array);
     }
@@ -1723,6 +1727,9 @@ function tep_output_generated_category_path($id, $from = 'category') {
       $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
   }
   $calculated_category_path_string = substr($calculated_category_path_string, 0, -4);
+  if($calculated_category_path_string != TEXT_TOP && count($calculated_category_path) == 1){
+    $calculated_category_path_string = TEXT_TOP.'&nbsp;&gt;&nbsp;'.$calculated_category_path_string;
+  }
 
   if (strlen($calculated_category_path_string) < 1) $calculated_category_path_string = TEXT_TOP;
 
@@ -10050,7 +10057,7 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
                 if (!empty($ao_option['se_option'])) {
                   $ao_se_single = false; 
                   foreach ($ao_option['se_option'] as $se_key => $se_value) {
-                    if ($se_value == $att_option_info['value']) {
+                    if (trim($se_value) == trim($att_option_info['value'])) {
                       $ao_se_single = true;
                       break;
                     }

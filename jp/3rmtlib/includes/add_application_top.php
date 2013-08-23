@@ -864,6 +864,21 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
   }
 
   tep_session_register('ajax');
+  //检测商品OPTION是否改动
+  $check_products_option = tep_check_less_product_option();
+  $products_cart_array = $cart->get_products();
+  if($_GET['action'] != 'update_product'){
+    unset($_SESSION['change_option_id']);
+    unset($_SESSION['change_option_flag']);
+    //记录OPTION有变化的商品
+    for ($i=0, $n=sizeof($products_cart_array); $i<$n; $i++) { 
+      if(in_array($products_cart_array[$i]['id'],$check_products_option)){
+        $_SESSION['change_option_id'][] = $products_cart_array[$i]['id']; 
+      }else{
+        $_SESSION['change_option_flag'][] = $products_cart_array[$i]['id']; 
+      }
+    }
+  }
 # 订单上限金额设置
   if(substr(basename($PHP_SELF),0,9) == 'checkout_') {
     if(DS_LIMIT_PRICE < $cart->show_total()) {

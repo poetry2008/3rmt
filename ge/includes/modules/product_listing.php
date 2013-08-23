@@ -83,7 +83,7 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
   }
 ?>
 </table>
-<!--select searach_eof// -->
+<!--select search_eof// -->
 <div class="underline">&nbsp;</div>
 <table border="0" width="600" cellspacing="0" cellpadding="0">
   <tr>
@@ -151,7 +151,7 @@ if ($listing_numrows > 0) {
             ?>
           </td>
           <td width="120" align="right">
-            <p class="main"><?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?></p>
+              <p class="main"><?php echo PRE_SURPLUS.'&nbsp;<b>'.tep_show_quantity(tep_get_quantity($listing['products_id'],true)).'</b>&nbsp;'.PRE_NUM_QTY; ?></p>
           </td>
         </tr>
         <tr>

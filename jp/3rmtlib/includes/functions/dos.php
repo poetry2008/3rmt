@@ -37,10 +37,16 @@ function write_vlog($pdo_con, $ip_info, $host_info)
     参数: $ip_info(string) ip地址   
     参数: $unit_time(string) 间隔时间   
     参数: $unit_total(string) 间隔次数   
+    参数: $type(string) 间隔时间类型 s 秒 i分 h小时
     返回值: 是否超过访问次数(boolean) 
 ------------------------------------ */
-function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
+function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total,$type='s')
 {
+  if($type=='i'){
+    $unit_time = $unit_time*60;
+  }else if($type=='h'){
+    $unit_time = $unit_time*60*60;
+  }
   $res = $pdo_con->query("select count(*) from accesslog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
   if ($res) {
     $total_num = $res->fetchColumn(); 
@@ -48,11 +54,12 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
       return true; 
     }else{
       // delete  accesslog  rows by time
-      $pdo_con->exec("delete from accesslog where vtime< '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
+      if($type=='h'){
+        $pdo_con->exec("delete from accesslog where vtime< '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
+      }
       return false;
     }
   }
-  
   return false;
 }
 
