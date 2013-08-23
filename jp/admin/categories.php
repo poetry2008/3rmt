@@ -3425,12 +3425,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   }
                                   //获取分类下关联的标签
                                   $products_tags_id_list_array = array();
-                                  $products_to_tags_query = tep_db_query("select tags_id from ". TABLE_PRODUCTS_TO_TAGS ." where products_id='".$_GET['pID']."'");
-                                  while($products_to_tags_array = tep_db_fetch_array($products_to_tags_query)){
+                                  if(isset($_GET['pID']) && $_GET['pID'] != ''){
+                                    $products_to_tags_query = tep_db_query("select tags_id from ". TABLE_PRODUCTS_TO_TAGS ." where products_id='".$_GET['pID']."'");
+                                    while($products_to_tags_array = tep_db_fetch_array($products_to_tags_query)){
 
                                        $products_tags_id_list_array[] = $products_to_tags_array['tags_id'];
+                                    }
+                                    tep_db_free_result($products_to_tags_query);
                                   }
-                                  tep_db_free_result($products_to_tags_query);
 
                                   if(isset($_GET['cPath']) && trim($_GET['cPath']) != '' && $_GET['cPath'] != 0 && empty($products_tags_id_list_array)){
                                     $categories_cpath_array = explode('_',$_GET['cPath']);
