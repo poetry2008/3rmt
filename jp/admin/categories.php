@@ -2621,7 +2621,11 @@ function toggle_category_form(c_permission, cf_type)
           if (cf_type == 0) {
             document.forms.delete_category.submit(); 
           } else if (cf_type == 1) {
-            document.forms.insert_product.submit(); 
+            <?php //对连续点击提交的处理?>
+            if($("#check_submit_flag").val() == '0'){
+              document.forms.insert_product.submit(); 
+              $("#check_submit_flag").val('1');
+            }
           } else if (cf_type == 2) {
             document.forms.update_product.submit(); 
           } else if (cf_type == 3) {
@@ -2670,7 +2674,11 @@ function toggle_category_form(c_permission, cf_type)
                 if (cf_type == 0) {
                   document.forms.delete_category.submit(); 
                 } else if (cf_type == 1) {
-                  document.forms.insert_product.submit(); 
+                  <?php //对连续点击提交的处理?>
+                  if($("#check_submit_flag").val() == '0'){
+                    document.forms.insert_product.submit(); 
+                    $("#check_submit_flag").val('1');
+                  }
                 } else if (cf_type == 2) {
                   document.forms.update_product.submit(); 
                 } else if (cf_type == 3) {
