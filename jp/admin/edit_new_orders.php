@@ -1963,16 +1963,18 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     }
     var is_cu_single = 1;
     var start_num = $('#button_add_id').val(); 
+    var is_cu_str = ''; 
     for (var s_num = start_num; s_num > 0; s_num--) {
       if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
-        if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') { if ((document.getElementsByName('update_totals['+s_num+'][title]')[0].value == '') || (document.getElementsByName('update_totals['+s_num+'][value]')[0].value == '')) {
-            is_cu_single = 0; 
-            break; 
-          }
+        if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+          is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
         }
       }
     }
-    
+    is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
+    if (is_cu_str == '') {
+      is_cu_single = 0;
+    }
     $.ajax({
       type: "POST",
       data:"o_id_info=<?php echo $_GET['oID'];?>&c_comments="+$('#c_comments').val()+'&fetch_date='+fetch_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#s_status').val()+'&c_payment='+payment_str+'&c_name_info=<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?>'+'&c_mail_info=<?php echo $orders_exit_flag == true ?  $order->customer['email_address'] : $_SESSION['email_address'];?>'+'&site_id_info=<?php echo (isset($_SESSION['sites_id_flag'])?$_SESSION['sites_id_flag']:'');?>'+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,

@@ -887,15 +887,17 @@ function submit_order_check(products_id,op_id){
   }
   var is_cu_single = 1;
   var start_num = $('#button_add_id').val(); 
+  var is_cu_str = ''; 
   for (var s_num = start_num; s_num > 0; s_num--) {
     if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
       if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
-        if ((document.getElementsByName('update_totals['+s_num+'][title]')[0].value == '') || (document.getElementsByName('update_totals['+s_num+'][value]')[0].value == '')) {
-          is_cu_single = 0; 
-          break; 
-        }
+        is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
       }
     }
+  }
+  is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
+  if (is_cu_str == '') {
+    is_cu_single = 0;
   }
   $.ajax({
     dataType: 'text',
