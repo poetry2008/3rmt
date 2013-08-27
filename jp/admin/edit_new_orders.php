@@ -1375,7 +1375,7 @@ if($address_error == false){
                 str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($shipping_fee)),
                 $_POST['comments_text'],
                 $insert_torihiki_date,
-                $point,
+                empty($point) ? 0 : $point,
                 str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($mailtotal)),
               ),$comments);
         $comments = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $comments);
