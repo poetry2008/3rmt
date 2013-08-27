@@ -12368,7 +12368,7 @@ function tep_check_new_order_variable_data($o_id_info, $fetch_date, $comment_inf
         if (isset($_SESSION['orders_update_products'][$o_id_info][$products_order_res['orders_products_id']]['qty'])) {
           $products_weight += $product_info_res['products_weight']*$_SESSION['orders_update_products'][$o_id_info][$products_order_res['orders_products_id']]['qty'];
         } else {
-          $products_weight += $product_info_res['products_weight']*$product_info_res['products_quantity'];
+          $products_weight += $product_info_res['products_weight']*$products_order_res['products_quantity'];
         }
       }
     }
