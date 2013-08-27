@@ -1813,17 +1813,18 @@ function products_num_check(orders_products_list_id,products_name,products_list_
     }
     var is_cu_single = 1;
     var start_num = $('#button_add_id').val(); 
+    var is_cu_str = ''; 
     for (var s_num = start_num; s_num > 0; s_num--) {
       if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
         if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
-          if ((document.getElementsByName('update_totals['+s_num+'][title]')[0].value == '') || (document.getElementsByName('update_totals['+s_num+'][value]')[0].value == '')) {
-            is_cu_single = 0; 
-            break; 
-          }
+          is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
         }
       }
     }
-    
+    is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
+    if (is_cu_str == '') {
+      is_cu_single = 0;
+    }
     $.ajax({
       type:'POST',
       data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName("update_customer_name")[0].value+'&c_mail_info='+document.getElementsByName("update_customer_email_address")[0].value+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
