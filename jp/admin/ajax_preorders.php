@@ -1208,8 +1208,9 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
  参数: $_POST['c_title'] 标题 
  参数: $_POST['c_status_id'] 状态id 
  参数: $_POST['c_payment'] 方法 
+ 参数: $_POST['is_customized_fee'] 信息 
  ----------------------------------------*/
-  echo tep_check_new_preorder_variable_data($_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment']); 
+  echo tep_check_new_preorder_variable_data($_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['is_customized_fee']); 
 } else if ($_GET['action'] == 'check_edit_preorder_variable_data') {
 /*-----------------------------------------
  功能: 检查变量是否为空
@@ -1220,6 +1221,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
  参数: $_POST['ensure_date'] 时间 
  参数: $_POST['c_name_info'] 名字 
  参数: $_POST['c_mail_info'] 邮箱 
+ 参数: $_POST['is_customized_fee'] 信息 
  ----------------------------------------*/
-  echo tep_check_edit_preorder_variable_data($_POST['o_id'], $_POST['c_comments'], $_POST['c_title'], $_POST['ensure_date'], $_POST['c_status_id'], $_POST['c_name_info'], $_POST['c_mail_info'], $_POST['c_payment']);
+  echo tep_check_edit_preorder_variable_data($_POST['o_id'], $_POST['c_comments'], $_POST['c_title'], $_POST['ensure_date'], $_POST['c_status_id'], $_POST['c_name_info'], $_POST['c_mail_info'], $_POST['c_payment'], $_POST['is_customized_fee']);
 }

@@ -873,10 +873,22 @@ function submit_order_check(products_id,op_id){
   if (document.getElementsByName('payment_method')[0]) {
     payment_str = document.getElementsByName('payment_method')[0].value; 
   }
+  var is_cu_single = 1;
+  var start_num = $('#button_add_id').val(); 
+  for (var s_num = start_num; s_num > 0; s_num--) {
+    if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
+      if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+        if ((document.getElementsByName('update_totals['+s_num+'][title]')[0].value == '') || (document.getElementsByName('update_totals['+s_num+'][value]')[0].value == '')) {
+          is_cu_single = 0; 
+          break; 
+        }
+      }
+    }
+  }
   $.ajax({
     dataType: 'text',
     type: 'POST',
-    data:'c_comments='+$('#c_comments').val()+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#status').val()+'&c_payment='+payment_str,
+    data:'c_comments='+$('#c_comments').val()+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#status').val()+'&c_payment='+payment_str+'&is_customized_fee='+is_cu_single,
     async:false,
     url:'ajax_preorders.php?action=check_new_preorder_variable_data',
     success: function(msg_info) {

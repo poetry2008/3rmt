@@ -2688,8 +2688,10 @@ echo json_encode($json_array);
  参数: $_POST['c_name_info'] 名字 
  参数: $_POST['c_mail_info'] 邮箱 
  参数: $_POST['site_id_info'] 网站id 
+ 参数: $_POST['c_comment_info'] 信息 
+ 参数: $_POST['is_customized_fee'] 信息 
  ----------------------------------------*/
-  echo tep_check_new_order_variable_data($_POST['o_id_info'], $_POST['fetch_date'], $_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['c_mail_info'], $_POST['c_name_info'], $_POST['site_id_info']); 
+  echo tep_check_new_order_variable_data($_POST['o_id_info'], $_POST['fetch_date'], $_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['c_mail_info'], $_POST['c_name_info'], $_POST['site_id_info'], $_POST['c_comment_info'], $_POST['is_customized_fee']); 
 } else if ($_GET['action'] == 'check_edit_order_variable_data') {
 /*-----------------------------------------
  功能: 检查变量是否为空
@@ -2700,6 +2702,8 @@ echo json_encode($json_array);
  参数: $_POST['c_payment'] 方法信息 
  参数: $_POST['c_name_info'] 名字信息 
  参数: $_POST['c_mail_info'] 邮箱信息 
+ 参数: $_POST['c_comment_info'] 信息 
+ 参数: $_POST['is_customized_fee'] 信息 
  ----------------------------------------*/
-  echo tep_check_edit_order_variable_data($_POST['o_id'], $_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['c_name_info'], $_POST['c_mail_info']); 
+  echo tep_check_edit_order_variable_data($_POST['o_id'], $_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['c_name_info'], $_POST['c_mail_info'], $_POST['c_comment_info'], $_POST['is_customized_fee']); 
 }
