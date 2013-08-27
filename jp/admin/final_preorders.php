@@ -1037,9 +1037,21 @@ function submit_order_check(products_id,op_id){
   if (document.getElementsByName('payment_method')[0]) {
     payment_str = document.getElementsByName('payment_method')[0].value; 
   }
+  var is_cu_single = 1;
+  var start_num = $('#button_add_id').val(); 
+  for (var s_num = start_num; s_num > 0; s_num--) {
+    if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
+      if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+        if ((document.getElementsByName('update_totals['+s_num+'][title]')[0].value == '') || (document.getElementsByName('update_totals['+s_num+'][value]')[0].value == '')) {
+          is_cu_single = 0; 
+          break; 
+        }
+      }
+    }
+  }
   $.ajax({
     type:'POST',
-    data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+"&ensure_date="+ensure_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName('update_customer_name')[0].value+'&c_mail_info='+document.getElementsByName('update_customer_email_address')[0].value,
+    data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+"&ensure_date="+ensure_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName('update_customer_name')[0].value+'&c_mail_info='+document.getElementsByName('update_customer_email_address')[0].value+'&is_customized_fee='+is_cu_single,
     async:false,
     url:'ajax_preorders.php?action=check_edit_preorder_variable_data',
     success: function(msg_info) {

@@ -1811,9 +1811,22 @@ function products_num_check(orders_products_list_id,products_name,products_list_
     if (document.getElementsByName('payment_method')[0]) {
       payment_str = document.getElementsByName('payment_method')[0].value; 
     }
+    var is_cu_single = 1;
+    var start_num = $('#button_add_id').val(); 
+    for (var s_num = start_num; s_num > 0; s_num--) {
+      if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
+        if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+          if ((document.getElementsByName('update_totals['+s_num+'][title]')[0].value == '') || (document.getElementsByName('update_totals['+s_num+'][value]')[0].value == '')) {
+            is_cu_single = 0; 
+            break; 
+          }
+        }
+      }
+    }
+    
     $.ajax({
       type:'POST',
-      data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName("update_customer_name")[0].value+'&c_mail_info='+document.getElementsByName("update_customer_email_address")[0].value,
+      data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName("update_customer_name")[0].value+'&c_mail_info='+document.getElementsByName("update_customer_email_address")[0].value+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
       async: false,
       url:'ajax_orders.php?action=check_edit_order_variable_data',
       success: function(msg_info) {
@@ -4302,7 +4315,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         </tr>
       <tr>
         <td class="main" valign="top"><?php echo TABLE_HEADING_COMMENTS;?>:</td>
-        <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
+        <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'],'style="font-family:monospace; font-size:12px; width:100%;"'); ?></td>
       </tr>
         <?php } ?>
         </table>
