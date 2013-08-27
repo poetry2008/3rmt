@@ -642,7 +642,19 @@
               $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT.$num_product_end,
               $num_product_res['products_name'] 
             ),$email_title);
-        
+
+        //自定义费用列表 
+        $totals_email_str = '';
+        foreach($update_totals as $value){
+
+          if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
+
+
+            $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+          }
+        }
+        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email); 
+
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
         $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);

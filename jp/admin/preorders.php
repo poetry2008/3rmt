@@ -234,6 +234,20 @@
           $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
           $search_products_name_array = tep_db_fetch_array($search_products_name_query);
           tep_db_free_result($search_products_name_query);
+          //自定义费用列表 
+          $totals_email_str = '';
+          $totals_email_query = tep_db_query("select title,value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_custom'");
+          while($totals_email_result = tep_db_fetch_array($totals_email_query)){
+
+            if($totals_email_result['title'] != '' && $totals_email_result['value'] != ''){
+
+
+              $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+            }
+          }
+          tep_db_free_result($totals_email_query);
+          $comments = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$comments);
+
           $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -473,6 +487,19 @@
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
+        //自定义费用列表 
+        $totals_email_str = '';
+        $totals_email_query = tep_db_query("select title,value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_custom'");
+        while($totals_email_result = tep_db_fetch_array($totals_email_query)){
+
+          if($totals_email_result['title'] != '' && $totals_email_result['value'] != ''){
+
+
+            $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+          }
+        }
+        tep_db_free_result($totals_email_query);
+        $comments = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$comments);
         $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);

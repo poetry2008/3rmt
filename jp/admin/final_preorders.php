@@ -783,6 +783,17 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$check_status['language_id']."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
+        //自定义费用列表 
+        $totals_email_str = '';
+        foreach($update_totals as $value){
+
+          if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
+
+
+            $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+          }
+        }
+        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
         $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
