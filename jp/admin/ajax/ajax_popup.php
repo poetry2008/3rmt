@@ -1186,7 +1186,7 @@ if ($_GET['action'] == 'show_category_info') {
       );
   $copy_product_info[]['text'] = array(
         array('text' => TEXT_INFO_HEADING_COPY_TO), 
-        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','','','',false), ''))
+        array('text' => tep_draw_pull_down_menu('categories_id', tep_get_category_tree('0','','','',false), $current_category_id))
       );
   
   $form_str = tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=copy_to_confirm&cPath=' . $cPath);
