@@ -2571,7 +2571,7 @@ function confrim_list_mail_title(){
   
   $.ajax({
     type:"POST",
-    data:"c_comments="+$('#l_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    data:"c_comments="+$('#c_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
     async:false,
     url:'ajax_orders.php?action=check_order_list_variable_data',
     success: function(msg) {
@@ -5956,7 +5956,7 @@ if($c_parent_array['parent_id'] == 0){
                   color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
                   <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
                   <br>
-                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="l_comments"'); ?>
+                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="c_comments"'); ?>
                   </td>
                   </tr>
                   <tr>
