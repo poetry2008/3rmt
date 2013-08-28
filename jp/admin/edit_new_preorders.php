@@ -600,7 +600,8 @@
               '${PAY_DATE}',
               '${RESERVE_DATE}',
               '${PRODUCTS_QUANTITY}',
-              '${PRODUCTS_NAME}' 
+              '${PRODUCTS_NAME}',
+              '${ORDER_COMMENT}' 
             ),array(
               $order->customer['name'],
               $order->customer['email_address'],
@@ -615,7 +616,8 @@
               date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT.$num_product_end,
-              $num_product_res['products_name'] 
+              $num_product_res['products_name'],
+              preorders_a($order->info['orders_id'])
             ),$email);
 
       if ($customer_guest['is_send_mail'] != '1') {
