@@ -217,6 +217,21 @@
     }
   }
   
+  // update total
+  $total_key_temp = ''; 
+  foreach ($update_totals as $total_key=>$total_value){
+
+    if($total_value['class'] == 'ot_custom' && trim($total_value['title']) == '' && $total_key_temp == ''){
+      $total_key_temp = $total_key;
+    }
+    if($total_value['class'] == 'ot_custom' && trim($total_value['title']) != '' && $total_key_temp != ''){
+
+      $update_totals_temp = $update_totals[$total_key_temp];
+      $update_totals[$total_key_temp] = $total_value;
+      $update_totals[$total_key] = $update_totals_temp;
+      break;
+    }
+  }  
   // 1.4. UPDATE SHIPPING, DISCOUNT & CUSTOM TAXES #####
 
   foreach($update_totals as $total_index => $total_details) {
