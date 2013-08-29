@@ -351,7 +351,7 @@ function check_form_error()
                     <td class="main">
                     <?php 
                     if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL; 
-                    echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname'])); if ($friendname_error == true) 
+                    echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname']));
                     echo '&nbsp;<span id="friendname_error" class="errorText">';
                     if ($friendname_error == true) {
                       echo TEXT_REQUIRED;
