@@ -800,3 +800,4 @@ define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。<
 define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');
 define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
 define('TABLE_HEADING_NUMBER','No.');
+define('ERROR_VARIABLE_DATA_TEXT', '%sの値が空です。');

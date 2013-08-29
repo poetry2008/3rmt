@@ -157,7 +157,7 @@
     if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
       return false;
     }
-   if(!file_exists(DIR_FS_CATALOG . '/images/' . $src)
+   if(!file_exists(DIR_FS_CATALOG . '/' . $src)
        && file_exists(DIR_FS_CATALOG . '/' . str_replace('images/', 'default_images/', $src))
        ){
      $src = str_replace('images/', 'default_images/', $src);

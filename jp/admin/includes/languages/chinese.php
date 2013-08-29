@@ -796,3 +796,4 @@ define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
 define('TEXT_CONTENTS_SELECT_ACTION','请选择');
 define('TEXT_CONTENTS_DELETE_ACTION', '删除勾选项目');
 define('TABLE_HEADING_NUMBER','No.');
+define('ERROR_VARIABLE_DATA_TEXT', '%s的值为空。');

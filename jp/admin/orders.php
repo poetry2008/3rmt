@@ -507,7 +507,7 @@ switch ($_GET['action']) {
       $site_id  = tep_get_site_id_by_orders_id($value);
 
       $order_updated = false;
-      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, site_id,payment_method, torihiki_date,  torihiki_date_end from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, site_id,payment_method, torihiki_date,  torihiki_date_end,code_fee,shipping_fee from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
 
        
@@ -605,6 +605,10 @@ switch ($_GET['action']) {
           $ot_result = tep_db_fetch_array($ot_query);
           $otm = (int)$ot_result['value'] . TEXT_YEN;
 
+          $point_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_point'");
+          $point_result = tep_db_fetch_array($point_query);
+          $point_value = (int)$point_result['value'];
+
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
           $title = str_replace(array(
@@ -643,7 +647,13 @@ switch ($_GET['action']) {
                 '${SITE_NAME}',
                 '${SITE_URL}',
                 '${SUPPORT_MAIL}',
-                '${PAY_DATE}'
+                '${PAY_DATE}',
+                '${COMMISSION}',
+                '${SHIPPING_FEE}',
+                '${ORDER_COMMENT}',
+                '${SHIPPING_METHOD}',
+                '${POINT}',
+                '${TOTAL}',
                 ),array(
                   $check_status['customers_name'],
                   $check_status['customers_email_address'],
@@ -655,7 +665,13 @@ switch ($_GET['action']) {
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
                   get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                  date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                  date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
+                  $check_status['code_fee'],
+                  $check_status['shipping_fee'],
+                  '',
+                  '',
+                  $point_value, 
+                  str_replace(TEXT_YEN,'',$otm),
                   ),$comments
                 );
           $products_ordered_mail = '';
@@ -731,6 +747,7 @@ switch ($_GET['action']) {
             } else {
               $totals['title'] = str_replace(SENDMAIL_TEXT_TRANSACTION_FEE, SENDMAIL_TEXT_REPLACE_HANDLE_FEE, $totals['title']);
               $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+              $totals_email_str .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n"; 
             }
           }
           
@@ -738,6 +755,49 @@ switch ($_GET['action']) {
           $email_content = $products_ordered_mail;
           $email_content .= $total_details_mail;
           $comments = str_replace('${CONTENT}', $email_content, $comments);
+          $comments = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $comments);
+          //自定义费用
+          if($totals_email_str != ''){
+            $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+          }else{
+            $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+            $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
+          }
+          //address
+          $option_info_array = array();
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          while($address_array = tep_db_fetch_array($address_query)){
+          
+            $option_info_array[$address_array['name']] = $address_array['value']; 
+          }
+          tep_db_free_result($address_query);
+            if(isset($option_info_array) && !empty($option_info_array)){
+              $address_len_array = array();
+              foreach($option_info_array as $address_value){
+
+                $address_len_array[] = strlen($address_value);
+              }
+              $maxlen = max($address_len_array);
+              $email_address_str = "";
+              $email_address_str .= '------------------------------------------'."\n";
+              $maxlen = 9;
+              foreach($option_info_array as $ad_key=>$ad_value){
+                $ad_name_query = tep_db_query("select name from ". TABLE_ADDRESS ." where name_flag='". $ad_key ."'");
+                $ad_name_array = tep_db_fetch_array($ad_name_query);
+                tep_db_free_result($ad_name_query);
+                $ad_len = mb_strlen($ad_name_array['name'],'utf8');
+                $temp_str = str_repeat('　',$maxlen-$ad_len);
+                $email_address_str .= $ad_name_array['name'].$temp_str.'：'.$ad_value."\n";
+              }
+              $email_address_str .= '------------------------------------------'."\n";
+            }
+          //住所
+          if($email_address_str != ''){
+            $comments = str_replace('${USER_ADDRESS}',str_replace('▼','',$email_address_str), $comments);
+          }else{
+            $comments = str_replace("\n".'${USER_ADDRESS}','', $comments); 
+            $comments = str_replace('${USER_ADDRESS}','', $comments);
+          }
           
           $fetch_time_start_array = explode(' ', $check_status['torihiki_date']); 
           $fetch_time_end_array = explode(' ', $check_status['torihiki_date_end']); 
@@ -887,7 +947,9 @@ switch ($_GET['action']) {
         date_purchased, 
         payment_method, 
         torihiki_date,
-        torihiki_date_end
+        torihiki_date_end,
+        code_fee,
+        shipping_fee
         from " . TABLE_ORDERS . " 
         where orders_id = '" . tep_db_input($oID) . "'");
     $check_status = tep_db_fetch_array($check_status_query);
@@ -992,6 +1054,10 @@ switch ($_GET['action']) {
         $ot_result = tep_db_fetch_array($ot_query);
         $otm = (int)$ot_result['value'] . TEXT_YEN;
 
+        $point_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_point'");
+        $point_result = tep_db_fetch_array($point_query);
+        $point_value = (int)$point_result['value'];
+
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
 
@@ -1033,7 +1099,13 @@ switch ($_GET['action']) {
               '${SITE_URL}',
               '${SUPPORT_MAIL}',
               '${PAY_DATE}',
-              '${MAIL_COMMENT}'
+              '${MAIL_COMMENT}',
+              '${COMMISSION}',
+              '${SHIPPING_FEE}',
+              '${ORDER_COMMENT}',
+              '${SHIPPING_METHOD}',
+              '${POINT}',
+              '${TOTAL}',
               ),array(
                 $check_status['customers_name'],
                 $check_status['customers_email_address'],
@@ -1046,7 +1118,13 @@ switch ($_GET['action']) {
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
-                orders_a($oID)
+                orders_a($oID),
+                $check_status['code_fee'],
+                $check_status['shipping_fee'],
+                '',
+                '',
+                $point_value,
+                str_replace(TEXT_YEN,'',$otm),
                 ),$comments);
           
         $products_ordered_mail = '';
@@ -1124,6 +1202,7 @@ switch ($_GET['action']) {
           } else {
             $totals['title'] = str_replace(SENDMAIL_TEXT_TRANSACTION_FEE, SENDMAIL_TEXT_REPLACE_HANDLE_FEE, $totals['title']);
             $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+            $totals_email_str .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
           }
         }
         
@@ -1131,6 +1210,49 @@ switch ($_GET['action']) {
         $email_content  = $products_ordered_mail;
         $email_content .= $total_details_mail;
         $comments = str_replace('${CONTENT}', $email_content, $comments);  
+        $comments = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $comments);
+          //自定义费用
+          if($totals_email_str != ''){
+            $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+          }else{
+            $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+            $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
+          }
+          //address
+          $option_info_array = array();
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          while($address_array = tep_db_fetch_array($address_query)){
+          
+            $option_info_array[$address_array['name']] = $address_array['value']; 
+          }
+          tep_db_free_result($address_query);
+            if(isset($option_info_array) && !empty($option_info_array)){
+              $address_len_array = array();
+              foreach($option_info_array as $address_value){
+
+                $address_len_array[] = strlen($address_value);
+              }
+              $maxlen = max($address_len_array);
+              $email_address_str = "";
+              $email_address_str .= '------------------------------------------'."\n";
+              $maxlen = 9;
+              foreach($option_info_array as $ad_key=>$ad_value){
+                $ad_name_query = tep_db_query("select name from ". TABLE_ADDRESS ." where name_flag='". $ad_key ."'");
+                $ad_name_array = tep_db_fetch_array($ad_name_query);
+                tep_db_free_result($ad_name_query);
+                $ad_len = mb_strlen($ad_name_array['name'],'utf8');
+                $temp_str = str_repeat('　',$maxlen-$ad_len);
+                $email_address_str .= $ad_name_array['name'].$temp_str.'：'.$ad_value."\n";
+              }
+              $email_address_str .= '------------------------------------------'."\n";
+            }
+          //住所
+          if($email_address_str != ''){
+            $comments = str_replace('${USER_ADDRESS}',str_replace('▼','',$email_address_str), $comments);
+          }else{
+            $comments = str_replace("\n".'${USER_ADDRESS}','', $comments); 
+            $comments = str_replace('${USER_ADDRESS}','', $comments);
+          }
         
         $fetch_time_start_array = explode(' ', $check_status['torihiki_date']); 
         $fetch_time_end_array = explode(' ', $check_status['torihiki_date_end']); 
@@ -2393,16 +2515,83 @@ function resizepage(){
 <?php //确认邮件标题?>
 function confrim_mail_title(){
   var _end = $("#mail_title_status").val();
+  
+  var direct_single = false;
   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-    return true;
   }else{
     if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-      return true;
-    }else{
-      return false;
+    } else {
+      direct_single = true;
     }
   }
-  return false;
+  
+  $.ajax({
+    type:"POST",
+    data:"c_comments="+$('#c_comments').val()+'&o_id=<?php echo $_GET['oID'];?>'+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    async:false,
+    url:'ajax_orders.php?action=check_order_variable_data',
+    success: function(msg) {
+      if (msg != '') {
+        if (direct_single == false) {
+          alert(msg); 
+        } 
+      } else {
+        if (direct_single == false) {
+          document.forms.sele_act.submit(); 
+        }
+      } 
+    }
+  }); 
+}
+<?php //确认邮件标题?>
+function confrim_list_mail_title(){
+  var _end = $("#mail_title_status").val();
+  var o_id_list = ''; 
+  var direct_single = false;
+  if (document.sele_act.elements['chk[]']) {
+    if (document.sele_act.elements['chk[]'].length == null) {
+      if (document.sele_act.elements['chk[]'].checked == true) {
+        o_id_list += document.sele_act.elements['chk[]'].value+','; 
+      }
+    } else {
+      for (var i = 0; i < document.sele_act.elements['chk[]'].length; i++) {
+        if (document.sele_act.elements['chk[]'][i].checked == true) {
+          o_id_list += document.sele_act.elements['chk[]'][i].value+','; 
+        }
+      }
+    }
+  }
+  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
+  }else{
+    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
+    } else {
+      direct_single = true;
+    }
+  }
+  
+  $.ajax({
+    type:"POST",
+    data:"c_comments="+$('#c_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    async:false,
+    url:'ajax_orders.php?action=check_order_list_variable_data',
+    success: function(msg) {
+      if (msg != '') {
+        if (direct_single == false) {
+          alert(msg); 
+        } 
+      } else {
+        if (direct_single == false) {
+          document.forms.sele_act.submit(); 
+        }
+      } 
+    }
+  }); 
+}
+<?php //提交表单?>
+function check_list_order_submit() {
+  if (submit_confirm()) {
+    confrim_list_mail_title();
+  }
 }
         <?php //选中/非选中网站?> 
         function change_site(site_id,flag,site_list,param_url){  
@@ -3768,7 +3957,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <table border="0" width="100%">
             <tr>
             <td width="50%">
-            <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post','onsubmit="return confrim_mail_title()"'); ?>
+            <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post'); ?>
             <table width="100%" border="0">
             <tr>
             <td class="main"><?php echo ENTRY_STATUS; ?>
@@ -3809,7 +3998,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             </tr>
             <tr>
             <td class="main">
-            <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
+            <textarea id="c_comments" style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
             </td>
             </tr>
             <tr>
@@ -3831,7 +4020,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
             ?>
-            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title();"'); ?></a></td>
             </tr>
             </table>
             </td>
@@ -5121,7 +5310,7 @@ if($c_parent_array['parent_id'] == 0){
             }
           }
         ?>
-          <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post','onsubmit="return confrim_mail_title()"'); ?>
+          <?php echo tep_draw_form('sele_act', FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) .  'action=sele_act','post'); ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
           <td valign="bottom">
@@ -5767,8 +5956,7 @@ if($c_parent_array['parent_id'] == 0){
                   color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
                   <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
                   <br>
-                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30',
-                      $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
+                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="c_comments"'); ?>
                   </td>
                   </tr>
                   <tr>
@@ -5792,7 +5980,7 @@ if($c_parent_array['parent_id'] == 0){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?></td>
+                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_list_order_submit()"'); ?></a></td>
                   </tr>
                   </table>
                   </td>

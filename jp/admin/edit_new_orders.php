@@ -420,109 +420,6 @@ if($orders_exit_flag == true){
     $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
     $shipping_fee = $products_weight_total == 0 ? 0 : $shipping_fee;  
     // end 
-    
-    if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
-        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', user_update='".$_SESSION['user_name']."',last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-        orders_updated(tep_db_input($oID));
-        orders_wait_flag(tep_db_input($oID));
-        $customer_notified = '0';
-        $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
-        $os_result = tep_db_fetch_array($os_query); 
-      if ($_POST['notify'] == 'on' && $os_result['nomail'] == 0) {
-
-        $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
-        $ot_result = tep_db_fetch_array($ot_query);
-        $otm = (int)$ot_result['value'] . EDIT_ORDERS_PRICE_UNIT;
-
-        $title = str_replace(array(
-              '${USER_NAME}',
-              '${USER_MAIL}',
-              '${ORDER_DATE}',
-              '${ORDER_NUMBER}',
-              '${PAYMENT}',
-              '${ORDER_TOTAL}',
-              '${TRADING}',
-              '${ORDER_STATUS}',
-              '${SITE_NAME}',
-              '${SITE_URL}',
-              '${SUPPORT_MAIL}',
-              '${PAY_DATE}'
-              ),array(
-                $check_status['customers_name'],
-                $check_status['customers_email_address'],
-                tep_date_long($check_status['date_purchased']),
-                $oID,
-                $check_status['payment_method'],
-                $otm,
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
-                $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
-                ),$title);
-        $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-        $newarr = array(SENDMAIL_TEXT_DATE_MONDAY, SENDMAIL_TEXT_DATE_TUESDAY, SENDMAIL_TEXT_DATE_WEDNESDAY, SENDMAIL_TEXT_DATE_THURSDAY, SENDMAIL_TEXT_DATE_FRIDAY, SENDMAIL_TEXT_DATE_STATURDAY, SENDMAIL_TEXT_DATE_SUNDAY);
-        $trade_time_start = str_replace($oarr, $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00'))); 
-        $trade_time_end = date('H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN,strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00')); 
-        $comments = str_replace(array(
-              '${USER_NAME}',
-              '${USER_MAIL}',
-              '${ORDER_DATE}',
-              '${ORDER_NUMBER}',
-              '${PAYMENT}',
-              '${ORDER_TOTAL}',
-              '${TRADING}',
-              '${ORDER_STATUS}',
-              '${SITE_NAME}',
-              '${SITE_URL}',
-              '${SUPPORT_MAIL}',
-              '${PAY_DATE}',
-              '${SHIPPING_TIME}',
-              '${MAIL_COMMENT}'
-              ),array(
-                $check_status['customers_name'],
-                $check_status['customers_email_address'],
-                tep_date_long(date('Y-m-d H:i:s')),
-                $oID,
-                $check_status['payment_method'],
-                $currencies->format($_SESSION['orders_update_products'][$oID]['ot_total']+$shipping_fee),
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
-                $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
-                $trade_time_start . SENDMAIL_TEXT_TIME_LINK . $trade_time_end .SENDMAIL_TEXT_TWENTY_FOUR_HOUR,
-                orders_a($order->info['orders_id'])
-              ),$comments);
-        $comments = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $comments);
-        $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
-        if ($customer_guest['is_send_mail'] != '1') {
-
-          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
-        }
-        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), SENDMAIL_TEXT_SENDED.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
-        $customer_notified = '1';
-      }
-
-
-        $customer_notified = '1';
-      
-      // 同步问答
-      $order_updated = true;
-    }
-    
-    $message_success = false;
-    if ($order_updated) {
-      $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
-      $message_success = true;  
-    } else {
-      if($orders_exit_flag == true){
-        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
-      }
-    }
-      //订单状态更新结束  
       
       //更新订单
 
@@ -1376,6 +1273,138 @@ if($address_error == false){
         } else {
           $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
         }
+  //订单状态邮件
+  if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
+        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', user_update='".$_SESSION['user_name']."',last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+        orders_updated(tep_db_input($oID));
+        orders_wait_flag(tep_db_input($oID));
+        $customer_notified = '0';
+        $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+        $os_result = tep_db_fetch_array($os_query); 
+      if ($_POST['notify'] == 'on' && $os_result['nomail'] == 0) {
+
+        $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
+        $ot_result = tep_db_fetch_array($ot_query);
+        $otm = (int)$ot_result['value'] . EDIT_ORDERS_PRICE_UNIT;
+
+        //自定义费用
+        if($totals_email_str != ''){
+          $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+        }else{
+          $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+          $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
+        }
+        //住所
+        if($email_address_str != ''){
+          $comments = str_replace('${USER_ADDRESS}',str_replace('▼','',$email_address_str), $comments);
+        }else{
+          $comments = str_replace("\n".'${USER_ADDRESS}','', $comments); 
+          $comments = str_replace('${USER_ADDRESS}','', $comments);
+        }
+
+        $title = str_replace(array(
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${TRADING}',
+              '${ORDER_STATUS}',
+              '${SITE_NAME}',
+              '${SITE_URL}',
+              '${SUPPORT_MAIL}',
+              '${PAY_DATE}'
+              ),array(
+                $check_status['customers_name'],
+                $check_status['customers_email_address'],
+                tep_date_long($check_status['date_purchased']),
+                $oID,
+                $check_status['payment_method'],
+                $otm,
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                $os_result['orders_status_name'],
+                get_configuration_by_site_id('STORE_NAME', $site_id),
+                get_url_by_site_id($site_id),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                ),$title);
+        $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+        $newarr = array(SENDMAIL_TEXT_DATE_MONDAY, SENDMAIL_TEXT_DATE_TUESDAY, SENDMAIL_TEXT_DATE_WEDNESDAY, SENDMAIL_TEXT_DATE_THURSDAY, SENDMAIL_TEXT_DATE_FRIDAY, SENDMAIL_TEXT_DATE_STATURDAY, SENDMAIL_TEXT_DATE_SUNDAY);
+        $trade_time_start = str_replace($oarr, $newarr,date('Y'.SENDMAIL_TEXT_DATE_YEAR.'m'.SENDMAIL_TEXT_DATE_MONTH.'d'.SENDMAIL_TEXT_DATE_DAY.'（l）H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00'))); 
+        $trade_time_end = date('H'.SENDMAIL_TEXT_HOUR.'i'.SENDMAIL_TEXT_MIN,strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00')); 
+        $comments = str_replace(array(
+              '${USER_NAME}',
+              '${USER_MAIL}',
+              '${ORDER_DATE}',
+              '${ORDER_NUMBER}',
+              '${PAYMENT}',
+              '${ORDER_TOTAL}',
+              '${TRADING}',
+              '${ORDER_STATUS}',
+              '${SITE_NAME}',
+              '${SITE_URL}',
+              '${SUPPORT_MAIL}',
+              '${PAY_DATE}',
+              '${SHIPPING_TIME}',
+              '${MAIL_COMMENT}',
+              '${COMMISSION}',
+              '${ORDER_PRODUCTS}',
+              '${SHIPPING_FEE}',
+              '${ORDER_COMMENT}',
+              '${SHIPPING_METHOD}',
+              '${POINT}',
+              '${TOTAL}',
+              ),array(
+                $check_status['customers_name'],
+                $check_status['customers_email_address'],
+                tep_date_long(date('Y-m-d H:i:s')),
+                $oID,
+                $check_status['payment_method'],
+                $currencies->format($_SESSION['orders_update_products'][$oID]['ot_total']+$shipping_fee),
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                $os_result['orders_status_name'],
+                get_configuration_by_site_id('STORE_NAME', $site_id),
+                get_url_by_site_id($site_id),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
+                $trade_time_start . SENDMAIL_TEXT_TIME_LINK . $trade_time_end .SENDMAIL_TEXT_TWENTY_FOUR_HOUR,
+                orders_a($order->info['orders_id']),
+                $handle_fee,
+                $products_ordered_mail,      
+                str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($shipping_fee)),
+                $_POST['comments_text'],
+                $insert_torihiki_date,
+                empty($point) ? 0 : $point,
+                str_replace(SENDMAIL_TEXT_MONEY_SYMBOL,"",$currencies->format($mailtotal)),
+              ),$comments);
+        $comments = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $comments);
+        $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
+        if ($customer_guest['is_send_mail'] != '1') {
+
+          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+        }
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), SENDMAIL_TEXT_SENDED.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+        $customer_notified = '1';
+      }
+
+
+        $customer_notified = '1';
+      
+      // 同步问答
+      $order_updated = true;
+    }
+    
+    $message_success = false;
+    if ($order_updated) {
+      $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
+      $message_success = true;  
+    } else {
+      if($orders_exit_flag == true){
+        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+      }
+    }
+    //订单状态更新结束 
   //打印邮件
   $orders_print_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($_POST['payment_method']).'_PRINT_MAILSTRING',$site_id_flag);  
   $payment_name_string = $orders_print_mail_templates['contents']; 
@@ -1918,6 +1947,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   <?php //检查订单商品的数量是否正确?>
   function products_num_check(orders_products_list_id,products_name,products_list_id){
 
+    var fetch_date = $('#fetch_year').val()+'-'+$('#fetch_month').val()+'-'+$('#fetch_day').val()+' '+$('#hour').val()+':'+$('#min').val()+':'+$('#min_1').val(); 
     var products_error = true;
     var products_array = new Array();
     products_array = orders_products_list_id.split('|||');
@@ -1927,25 +1957,55 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
       products_temp = $("#update_products_new_qty_"+products_array[x]).val(); 
       products_list_str += products_temp+'|||';
     }
-    $.ajax({
-    type: "POST",
-    data: 'products_list_id='+products_list_id+'&products_list_str='+products_list_str+'&products_name='+products_name,
-    async:false,
-    url: 'ajax_orders.php?action=products_num',
-    success: function(msg) {
-      if(msg != ''){
-
-        if(confirm(msg+"\n\n<?php echo TEXT_PRODUCTS_NUM;?>")){
-
-          products_error = true;
-        }else{
-          products_error = false;
-        }
-      }else{  
-        products_error = true;
-      }         
+    var payment_str = '';
+    if (document.getElementsByName('payment_method')[0]) {
+      payment_str = document.getElementsByName('payment_method')[0].value; 
     }
-    }); 
+    var is_cu_single = 1;
+    var start_num = $('#button_add_id').val(); 
+    var is_cu_str = ''; 
+    for (var s_num = start_num; s_num > 0; s_num--) {
+      if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
+        if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+          is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
+        }
+      }
+    }
+    is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
+    if (is_cu_str == '') {
+      is_cu_single = 0;
+    }
+    $.ajax({
+      type: "POST",
+      data:"o_id_info=<?php echo $_GET['oID'];?>&c_comments="+$('#c_comments').val()+'&fetch_date='+fetch_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#s_status').val()+'&c_payment='+payment_str+'&c_name_info=<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?>'+'&c_mail_info=<?php echo $orders_exit_flag == true ?  $order->customer['email_address'] : $_SESSION['email_address'];?>'+'&site_id_info=<?php echo (isset($_SESSION['sites_id_flag'])?$_SESSION['sites_id_flag']:'');?>'+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
+      async: false,
+      url:'ajax_orders.php?action=check_new_order_variable_data',
+      success: function(msg_info) {
+        if (msg_info != '') {
+          products_error = false;
+          alert(msg_info); 
+        } else {
+          $.ajax({
+          type: "POST",
+          data: 'products_list_id='+products_list_id+'&products_list_str='+products_list_str+'&products_name='+products_name,
+          async:false,
+          url: 'ajax_orders.php?action=products_num',
+          success: function(msg) {
+            if(msg != ''){
+              if(confirm(msg+"\n\n<?php echo TEXT_PRODUCTS_NUM;?>")){
+                products_error = true;
+              }else{
+                products_error = false;
+              }
+            }else{  
+              products_error = true;
+            }         
+          }
+          });
+        }
+      }
+    });
+     
     return products_error;
   }
   <?php //检查订单商品的重量是否超出?> 
@@ -4680,7 +4740,7 @@ if($orders_exit_flag == true){
                   unset($TotalsArray[$TotalIndex]);
                 }
           }
-
+          $_SESSION['orders_update_products'][$_GET['oID']]['new_shipping_fee'] = $shipping_fee;
           foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
             $TotalStyle = "smallText";
             if ($TotalDetails["Class"] == "ot_total") {
@@ -4872,7 +4932,7 @@ if($orders_exit_flag == true){
 
             <tr>
             <td class="main"><?php echo ENTRY_EMAIL_TITLE; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['title'],'style="width:100%;"'); ?></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['title'],'style="width:100%;" id="mail_title"'); ?></td>
             </tr>
             <tr>
             <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></td>
@@ -4898,9 +4958,9 @@ if($orders_exit_flag == true){
                 if($CommentsWithStatus) {
 
 
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;" id="c_comments"');
                 } else {
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']),'style=" font-family:monospace; font-size:12px; width:400px;" id="c_comments"');
                 } 
           ?>
             </td>

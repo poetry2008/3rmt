@@ -116,6 +116,7 @@ if ($pdo_con) {
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_TELL_A_FRIEND_SUCCESS','tell_a_friend_success.php');
   define('FILENAME_OPEN','open.php');
   define('FILENAME_CREATE_INDEX', 'index.php');
   define('FILENAME_CHECKOUT_ATTRIBUTES', 'checkout_attributes.php'); 

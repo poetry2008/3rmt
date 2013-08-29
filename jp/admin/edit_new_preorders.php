@@ -217,6 +217,21 @@
     }
   }
   
+  // update total
+  $total_key_temp = ''; 
+  foreach ($update_totals as $total_key=>$total_value){
+
+    if($total_value['class'] == 'ot_custom' && trim($total_value['title']) == '' && $total_key_temp == ''){
+      $total_key_temp = $total_key;
+    }
+    if($total_value['class'] == 'ot_custom' && trim($total_value['title']) != '' && $total_key_temp != ''){
+
+      $update_totals_temp = $update_totals[$total_key_temp];
+      $update_totals[$total_key_temp] = $total_value;
+      $update_totals[$total_key] = $update_totals_temp;
+      break;
+    }
+  }  
   // 1.4. UPDATE SHIPPING, DISCOUNT & CUSTOM TAXES #####
 
   foreach($update_totals as $total_index => $total_details) {
@@ -583,9 +598,10 @@
               '${SITE_URL}',
               '${SUPPORT_MAIL}',
               '${PAY_DATE}',
-              '${ENSURE_TIME}',
+              '${RESERVE_DATE}',
               '${PRODUCTS_QUANTITY}',
-              '${PRODUCTS_NAME}' 
+              '${PRODUCTS_NAME}',
+              '${ORDER_COMMENT}' 
             ),array(
               $order->customer['name'],
               $order->customer['email_address'],
@@ -600,22 +616,17 @@
               date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT.$num_product_end,
-              $num_product_res['products_name'] 
+              $num_product_res['products_name'],
+              preorders_a($order->info['orders_id'])
             ),$email);
 
       if ($customer_guest['is_send_mail'] != '1') {
         $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
         $site_url_res = tep_db_fetch_array($site_url_raw); 
-        if ($_POST['status'] == 32) {
-          $change_preorder_url_param = md5(time().$order->info['orders_id']); 
-          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
-          $email = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $email); 
-          tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$order->info['orders_id']."'"); 
-        }
-        if ($_POST['status'] == 33) {
-          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$order->info['orders_id']; 
-          $email = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $email); 
-        }
+        $change_preorder_url_param = md5(time().$order->info['orders_id']); 
+        $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
+        $email = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $email); 
+        tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$order->info['orders_id']."'"); 
         $email_title = $_POST['etitle']; 
         $email_title = str_replace(array(
               '${USER_NAME}',
@@ -629,7 +640,7 @@
               '${SITE_URL}',
               '${SUPPORT_MAIL}',
               '${PAY_DATE}',
-              '${ENSURE_TIME}',
+              '${RESERVE_DATE}',
               '${PRODUCTS_QUANTITY}',
               '${PRODUCTS_NAME}' 
             ),array(
@@ -648,7 +659,19 @@
               $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT.$num_product_end,
               $num_product_res['products_name'] 
             ),$email_title);
-        
+
+        //自定义费用列表 
+        $totals_email_str = '';
+        foreach($update_totals as $value){
+
+          if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
+
+
+            $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+          }
+        }
+        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email); 
+
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
         $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
@@ -875,29 +898,55 @@ function add_option(){
 <?php //检查表单?>
 function submit_order_check(products_id,op_id){
   var qty = document.getElementById('p_'+op_id).value;
-
+  var payment_str = '';
+  if (document.getElementsByName('payment_method')[0]) {
+    payment_str = document.getElementsByName('payment_method')[0].value; 
+  }
+  var is_cu_single = 1;
+  var start_num = $('#button_add_id').val(); 
+  var is_cu_str = ''; 
+  for (var s_num = start_num; s_num > 0; s_num--) {
+    if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
+      if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+        is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
+      }
+    }
+  }
+  is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
+  if (is_cu_str == '') {
+    is_cu_single = 0;
+  }
   $.ajax({
     dataType: 'text',
-    url: 'ajax_orders_weight.php?action=edit_preorder',
-    data: 'qty='+qty+'&products_id='+products_id, 
-    type:'POST',
-    async: false,
-    success: function(data) {
-      if(data != ''){
-
-        if(confirm(data)){
-
-          createPreorderChk('<?php echo $ocertify->npermission;?>');
-          document.edit_order.submit();
-        }
-      }else{
-
-        createPreorderChk('<?php echo $ocertify->npermission;?>');
-        document.edit_order.submit();
+    type: 'POST',
+    data:'c_comments='+$('#c_comments').val()+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#status').val()+'&c_payment='+payment_str+'&is_customized_fee='+is_cu_single,
+    async:false,
+    url:'ajax_preorders.php?action=check_new_preorder_variable_data',
+    success: function(msg_info) {
+      if (msg_info != '') {
+        alert(msg_info); 
+      } else {
+        $.ajax({
+          dataType: 'text',
+          url: 'ajax_orders_weight.php?action=edit_preorder',
+          data: 'qty='+qty+'&products_id='+products_id, 
+          type:'POST',
+          async: false,
+          success: function(data) {
+            if(data != ''){
+              if(confirm(data)){
+                createPreorderChk('<?php echo $ocertify->npermission;?>');
+                document.edit_order.submit();
+              }
+            }else{
+              createPreorderChk('<?php echo $ocertify->npermission;?>');
+              document.edit_order.submit();
+            }
+          }
+        });
       }
     }
   });
-    
 }
 <?php //格式化输出价格?>
 function fmoney(s)
@@ -2143,7 +2192,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $mail_sql['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['title'];  
     ?>
     <?php   
-    echo TEXT_EMAIL_TITLE.tep_draw_input_field('etitle', $mail_sql['title'],'style="width:230px;"'); 
+    echo TEXT_EMAIL_TITLE.tep_draw_input_field('etitle', $mail_sql['title'],'style="width:230px;" id="mail_title"'); 
     ?> 
     <br>
     <br>
@@ -2154,7 +2203,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_COMMENT}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents']);?></textarea>
+    <textarea id="c_comments" style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_COMMENT}', $order_a_str, isset($_POST['comments']) ? $_POST['comments'] : isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : $mail_sql['contents']);?></textarea>
     </td>
   </tr>
 </table>
