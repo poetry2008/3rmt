@@ -304,7 +304,6 @@ function check_form_error()
         
         if (!isset($_GET['from'])) $_GET['from'] = NULL; 
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']));
-        if ($fromemail_error == true) $your_email_address_prompt .= '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
         $your_email_address_prompt .= '<br><span id="from_error" class="errorText">';
         if ($fromemail_error == true) {
           $your_email_address_prompt .= strip_tags(ENTRY_EMAIL_ADDRESS_CHECK_ERROR);
