@@ -63,4 +63,12 @@ define('TEXT_USER_UPDATE','更新者:');
 define('TEXT_DATE_ADDED','登録日:');
 define('TEXT_DATE_UPDATE','更新日:');
 define('TEXT_ADVERTISEMENT_INFO','バナー機能を使うなら、「または下に新しいバナー・グループを登録」は必ず命名した先頭がadvになる');
+define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
+define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
+define('TEXT_NEWS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
+define('TEXT_DEL_NEWS', '本当に削除しますか？');
+define('BANNER_TITLE_ERROR','&nbsp;&nbsp;<font color=\'red\'>バナー・タイトルを入力してください。</font>');
+define('BANNER_URL_ERROR','&nbsp;&nbsp;<font color=\'red\'>バナー URLを入力してください。</font>');
+define('BANNER_GROUP_ERROR','&nbsp;&nbsp;<font color=\'red\'>バナー・グループを入力してください。</font>');
+define('TEXT_CONTENTS','内容');
 ?>

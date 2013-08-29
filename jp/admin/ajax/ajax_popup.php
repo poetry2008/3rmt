@@ -7851,4 +7851,335 @@ $sql2 = tep_db_fetch_array($sele2);
   $notice_box->get_contents($copy_product_info, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}else if($_GET['action'] == 'edit_banner'){
+/* -----------------------------------------------------
+    功能: Banner管理的弹出框
+    参数: $_GET['bID'] banner id 
+    参数: $_GET['site_id'] 网站id 
+    参数: $_GET['page'] 当前页 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_BANNER_MANAGER);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+$action_sid = $_GET['site_id'];
+while($userslist= tep_db_fetch_array($sites_id)){
+     $site_permission = $userslist['site_permission']; 
+}
+$sites_sql = tep_db_query("SELECT * FROM `sites`");
+if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+else $site_arr="";
+$site_array = explode(',',$site_arr);
+if(!in_array($action_sid,$site_array) && $action_sid != -1){
+   $disabled = 'disabled="disabled"'; 
+}
+  if($_GET['bID'] == '-1'){ $_GET['bID'] = '';}
+  if($_GET['site_id'] == '-1'){ $_GET['site_id'] = '';}
+    $banners_query_raw = "
+      select sum(h.banners_shown) as banners_shown,
+             sum(h.banners_clicked) as banners_clicked,
+             b.banners_id, 
+             b.banners_title, 
+             b.banners_image, 
+             b.banners_group, 
+             b.status, 
+             b.expires_date, 
+             b.expires_impressions, 
+             b.date_status_change, 
+             b.date_scheduled, 
+             b.date_added,
+	     b.user_added,
+	     b.user_update,
+	     b.date_update,
+             b.site_id,
+             s.romaji,
+             s.name as site_name
+      from " . TABLE_BANNERS . " b left join  " . TABLE_BANNERS_HISTORY . " h on b.banners_id = h.banners_id , ".TABLE_SITES." s 
+      where s.id = b.site_id and 
+        " . $_GET['sql'] . "  group by b.banners_id 
+      order by ".$_GET['str'];
+    $banners_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $banners_query_raw, $banners_query_numrows);
+    $banners_query = tep_db_query($banners_query_raw);
+    $banner_num = tep_db_num_rows($banners_query);
+    $cid_array = array();
+   while ($banners = tep_db_fetch_array($banners_query)) {
+       $cid_array[] = $banners['banners_id']; 
+   } 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+    //新建/编辑页面 
+    $form_action = 'insert';
+    if (isset($_GET['bID']) && $_GET['bID']) {
+      $bID = tep_db_prepare_input($_GET['bID']);
+      $site_id = tep_db_prepare_input($_GET['lsite_id']);
+      $form_action = 'update';
+$banner_query = tep_db_query("
+          select b.banners_title, 
+                 b.banners_url, 
+                 b.banners_image, 
+                 b.banners_group, 
+                 b.banners_html_text, 
+                 b.status,
+                 b.user_added,
+                 b.user_update,
+                 b.date_update,
+                 b.date_added,
+                 b.banners_id,
+                 b.date_scheduled,
+                 b.expires_date, 
+                 b.expires_impressions, 
+                 b.date_status_change,
+                 b.site_id,
+                 b.banners_show_type,
+                 s.romaji,
+                 s.name as site_name
+          from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
+          where banners_id = '" . tep_db_input($bID) . "'
+            and s.id = b.site_id  and ".$_GET['sql']."
+          ");
+      $banner = tep_db_fetch_array($banner_query);
+      $bInfo = new objectInfo($banner);
+    } elseif ($_POST) {
+      $bInfo = new objectInfo($_POST);
+    } else {
+      $bInfo = new objectInfo(array());
+    }
+
+    $groups_array = array();
+    $groups_query = tep_db_query("
+        select distinct banners_group 
+        from " . TABLE_BANNERS . " 
+        order by banners_group");
+    while ($groups = tep_db_fetch_array($groups_query)) {
+      $groups_array[] = array('id' => $groups['banners_group'], 'text' => $groups['banners_group']);
+    }
+?>
+<link rel="stylesheet" type="text/css" href="includes/javascript/spiffyCal/spiffyCal_v2_1.css">
+<script language="JavaScript" src="includes/javascript/spiffyCal/spiffyCal_v2_1.js"></script>
+<script language="javascript">
+  var dateExpires = new ctlSpiffyCalendarBox("dateExpires", "new_banner", "expires_date","btnDate1","<?php echo isset($bInfo->expires_date)?$bInfo->expires_date:''; ?>",scBTNMODE_CUSTOMBLUE);
+  var dateScheduled = new ctlSpiffyCalendarBox("dateScheduled", "new_banner", "date_scheduled","btnDate2","<?php echo isset($bInfo->date_scheduled)?$bInfo->date_scheduled:''; ?>",scBTNMODE_CUSTOMBLUE);
+</script>
+      <?php
+ foreach ($cid_array as $c_key => $c_value) {
+    if ($_GET['bID'] == $c_value) {
+      break; 
+    }
+  }
+  $page_str = '';
+  if($_GET['bID'] != ''){
+  if ($c_key > 0) {
+    $banner_site_id = tep_db_query(" select * from ".TABLE_BANNERS." where banners_id = '".$cid_array[$c_key-1]."'");
+    $banner_site_id_row = tep_db_fetch_array($banner_site_id); 
+    $page_str .= '<a onclick=\'show_banner("",'.$cid_array[$c_key-1].','.$_GET['page'].','.$banner_site_id_row['site_id'].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+  }
+  if ($c_key < (count($cid_array) - 1)) {
+    $banner_site_id = tep_db_query(" select * from ".TABLE_BANNERS." where banners_id= '".$cid_array[$c_key+1]."'");
+    $banner_site_id_row = tep_db_fetch_array($banner_site_id); 
+    $page_str .= '<a onclick=\'show_banner("",'.$cid_array[$c_key+1].','.$_GET['page'].','.$banner_site_id_row['site_id'].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+  }else{
+    $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
+  }
+  }
+    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+    $heading[] = array('align' => 'left', 'text' => ($bInfo->banners_title?$bInfo->banners_title:HEADING_TITLE));
+    $heading[] = array('align' => 'right', 'text' => $page_str);
+   $sites_sql = tep_db_query("SELECT * FROM `sites`");
+   $show_site_arr = array();
+   while($sites_row = tep_db_fetch_array($sites_sql)){
+     $show_site_arr[] = $sites_row['id']; 
+   }
+   $present_site_arr = array_intersect($show_site_arr,$site_array);
+   $site_id_name = "<select id='present_site_id' name='site_id' $disabled>";
+   foreach($present_site_arr as $value){
+     if($value!=0){
+       $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
+       $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
+     }
+   }
+   $site_id_name .= "</select>";
+   $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
+    $contents = array();
+    if ($form_action == 'update') {
+    $contents_banners[]['text'] = array(
+        array('text' => ''), 
+        array('text' => tep_draw_hidden_field('banners_id', $bID).tep_draw_hidden_field('site_id', $banner['site_id']))
+        );
+    }
+    $contents_banners[]['text'] = array(
+        array('params' => 'class="main" nowrap width="30%"','text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'"><input type="hidden" name="user_added" value="'.$user_info['name'].'">'.ENTRY_SITE), 
+        array('params' => 'class="main"','text' => (isset($_GET['bID']) && $_GET['bID'])?tep_get_site_romaji_by_id($banner['site_id']):$site_id_name)
+        );
+    $contents_banners[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_BANNERS_TITLE)), 
+        array('text' => tep_draw_input_field('banners_title', isset($bInfo->banners_title)?$bInfo->banners_title:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"', true).'<span id="title_error"></span>')
+        );
+    $contents_banners[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_BANNERS_URL)), 
+        array('text' => tep_draw_input_field('banners_url', isset($bInfo->banners_url)?$bInfo->banners_url:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"').'<span id="url_error"></span>')
+        );
+    $contents_banners[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_BANNERS_GROUP)), 
+        array('text' => tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"') .  TEXT_BANNERS_NEW_GROUP .  '<br>' .  tep_draw_input_field('new_banners_group', '', $disabled, ((sizeof($groups_array) > 0) ? false : true)).'<span id="group_error"></span><br>'.TEXT_ADVERTISEMENT_INFO)
+        );
+    $contents_banners[]['text'] = array(
+        array('text' => ''), 
+        array('text' => TEXT_BANNERS_BANNER_NOTE)
+        );
+    if($_GET['bID'] != ''){
+    if(isset($bInfo->banners_show_type) && $bInfo->banners_show_type == 0){
+         $checked_img = 'checked=""';
+    }else{
+         $checked_html = 'checked=""';
+    }
+    }else{
+         $checked_img = 'checked=""';
+    }
+    $contents_banners[]['text'] = array(
+        array('text' => TEXT_CONTENTS), 
+        array('text' => '<input class="td_input" type="radio" '.$checked_img.' onclick="check_radio(this.value)" value="0" class="td_input" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_IMAGE).'<input class="td_input" type="radio" '.$checked_html.' onclick="check_radio(this.value)" value="1" class="td_input" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_HTML_TEXT))
+        );
+    $banners_start = $notice_box->get_table($contents_banners);  
+    $contents[]['text'] = array(
+        array('params' => 'width="100%" colspan="3"','text' => $banners_start)
+     );
+    $contents_img_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0', 'parameters' => 'id="banners_image_hide"');
+    $contents_img[]['text'] = array(
+        array('params' => 'class="main" valign="top" nowrap width="30%"'), 
+        array('text' => tep_draw_file_field('banners_image','',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"') . ' ' .  TEXT_BANNERS_IMAGE_LOCAL . '<br>' . (tep_get_upload_root().'x/') .  tep_draw_input_field('banners_image_local', isset($bInfo->banners_image)?$bInfo->banners_image:'',$disabled).'<br>'.(isset($bInfo->banners_image) && $bInfo->banners_image?tep_get_new_image('upload_images/'.$bInfo->site_id.'/'.$bInfo->banners_image, $bInfo->banners_title, '180', '120'):'').'<br>')
+        );
+    $banners_img = $notice_box->get_table($contents_img,'',$contents_img_params);  
+    $contents[]['text'] = array(
+        array('params' => 'width="100%" colspan="3"','text' => $banners_img)
+     );
+    $contents_html_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0', 'parameters' => 'id="banners_html_hide"');
+    $contents_html[]['text'] = array(
+        array('params' => 'valign="top" class="main" nowrap width="30%"'), 
+        array('text' => tep_draw_textarea_field('html_text', 'soft', '60', '5', isset($bInfo->banners_html_text)?$bInfo->banners_html_text:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize:vertical;"'))
+        );
+    $banners_html = $notice_box->get_table($contents_html,'',$contents_html_params);  
+    $contents[]['text'] = array(
+        array('params' => 'width="100%" colspan="3"','text' => $banners_html)
+     ); 
+    $text_date_scheduled = explode('/',$bInfo->date_scheduled); 
+       if($text_date_scheduled[2] != null){ 
+          $banner_date = $text_date_scheduled[2].'-'.$text_date_scheduled[1].'-'.$text_date_scheduled[0];
+       } 
+    if($disabled){
+     $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_BANNERS_SCHEDULED_AT)), 
+        array('text' => '<div class="yui3-skin-sam yui3-g"><input type="text"'.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="date_scheduled" id="input_date_scheduled" value="'.$banner_date.' "/><img src="includes/calendar.png" '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;"> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"> <div id="mycalendar"></div> </div> </div>')
+        );
+    }else{
+    $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_BANNERS_SCHEDULED_AT)), 
+        array('text' => '<div class="yui3-skin-sam yui3-g"><input type="text"'.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="date_scheduled" id="input_date_scheduled" value="'.$banner_date.' "/><a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"><img src="includes/calendar.png" '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;"></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"> <div id="mycalendar"></div> </div> </div>')
+        );
+    }
+    $contents_end[]['text'] = array(
+        array('text' => ''), 
+        array('text' => TEXT_BANNERS_SCHEDULE_NOTE)
+        );
+    $text_expires_date = explode('/',$bInfo->expires_date); 
+       if($text_expires_date[2] != null && $text_expires_date[2] != 0000 ){ 
+           $banner_end_date = $text_expires_date[2].'-'.$text_expires_date[1].'-'.$text_expires_date[0];
+       }
+
+    if($disabled){
+    $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_BANNERS_EXPIRES_ON)), 
+        array('text' => ' <div class="yui3-skin-sam yui3-g"> <input type="text" name="expires_date" id="input_expires_date" value="'.$banner_end_date.' " '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" /><img src="includes/calendar.png" '.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" ><input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> <div class="yui3-u" id="end_yui3"> <div id="mycalendar_end"></div> </div> </div>'.TEXT_BANNERS_OR_AT.'<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"'.$disabled) . ' ' . TEXT_BANNERS_IMPRESSIONS)
+        );
+    }else{
+    $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',TEXT_BANNERS_EXPIRES_ON)), 
+        array('text' => ' <div class="yui3-skin-sam yui3-g"> <input type="text" name="expires_date" id="input_expires_date" value="'.$banner_end_date.' " '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" /><a href="javascript:void(0);" onclick="open_update_calendar();" class="dpicker"><img src="includes/calendar.png" '.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" ></a> <input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> <div class="yui3-u" id="end_yui3"> <div id="mycalendar_end"></div> </div> </div>'.TEXT_BANNERS_OR_AT.'<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"'.$disabled) . ' ' . TEXT_BANNERS_IMPRESSIONS)
+        );
+    }
+    $contents_end[]['text'] = array(
+        array('text' => ''), 
+        array('text' => TEXT_BANNERS_EXPIRCY_NOTE)
+        );
+    if($_GET['bID'] != ''){
+       $dir_ok = false;
+    $banner_extension = tep_banner_image_extension();
+        if ( (function_exists('imagecreate')) && ($banner_extension) ) {
+           if (is_dir(DIR_WS_IMAGES . 'graphs')) {
+             if (is_writeable(DIR_WS_IMAGES . 'graphs')) {
+                  $dir_ok = true;
+              } else {
+                  $messageStack->add(ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE, 'error');
+              }
+            } else {
+                  $messageStack->add(ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST, 'error');
+            }
+    }
+    if ( (function_exists('imagecreate')) && ($dir_ok) && ($banner_extension)) {
+           $banner_id = $bID;
+           $days = '3';
+           include(DIR_WS_INCLUDES . 'graphs/banner_infobox.php');
+    $contents_end[]['text'] = array(
+        array('text' => tep_image(DIR_WS_IMAGES .  'graph_hbar_blue.gif', 'Blue', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_VIEWS . '/' .  tep_image(DIR_WS_IMAGES .  'graph_hbar_red.gif', 'Red', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_CLICKS),
+        array('text' => tep_image(DIR_WS_IMAGES . 'graphs/banner_infobox-' .  $banner_id .  '.' . $banner_extension))
+        );
+     } else {
+           include(DIR_WS_FUNCTIONS . 'html_graphs.php');
+    $contents_end[]['text'] = array(
+        array('text' => tep_image(DIR_WS_IMAGES .  'graph_hbar_blue.gif', 'Blue', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_VIEWS . '/' .  tep_image(DIR_WS_IMAGES .  'graph_hbar_red.gif', 'Red', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_CLICKS),
+        array('text' => tep_banner_graph_infoBox($bInfo->banners_id, '3'))
+        );
+     }
+    if ($bInfo->date_scheduled){ 
+    $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_SCHEDULED_AT_DATE))), 
+        array('text' => tep_date_short($bInfo->date_scheduled))
+        );
+    }
+    if ($bInfo->expires_date) {
+    $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_EXPIRES_AT_DATE))), 
+        array('text' => tep_date_short($bInfo->expires_date))
+        );
+    } elseif ($bInfo->expires_impressions) {
+    $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS))), 
+        array('text' => $bInfo->expires_impressions)
+        );
+    }
+    if ($bInfo->date_status_change){
+    $contents_end[]['text'] = array(
+        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_STATUS_CHANGE))), 
+        array('text' => tep_date_short($bInfo->date_status_change))
+        );
+    }
+    }
+    $contents_end[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($bInfo->user_added)?$bInfo->user_added:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($bInfo->date_added)))?tep_datetime_short($bInfo->date_added):TEXT_UNSET_DATA))
+      );
+    $contents_end[]['text'] = array(
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($bInfo->user_update)?$bInfo->user_update:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($bInfo->date_update)))?tep_datetime_short($bInfo->date_update):TEXT_UNSET_DATA))
+      );
+  $buttons = array();
+  if($disabled){
+   if($_GET['bID'] != ''){
+       if($ocertify->npermission >= 15){
+         $delete_banner = tep_html_element_button(IMAGE_DELETE,$disabled);
+       }
+   }
+  $button[] = (($form_action == 'insert') ?  tep_html_element_button(IMAGE_INSERT, ' id="button_save" '.$disabled) : tep_html_element_button(IMAGE_SAVE, $disabled)).$delete_banner;
+  }else{
+  $button[] = '<a href="javascript:void(0);">'.(($form_action == 'insert') ?  tep_html_element_button(IMAGE_INSERT, ' id="button_save" onclick="check_banner_form(0);"') : tep_html_element_button(IMAGE_SAVE, 'onclick="check_banner_form(0);"')).($_GET['bID'] != ''?($ocertify->npermission >= 15 ? ( '<a href="javascript:void(0)" onclick="msg('.$ocertify->npermission.','.$_GET['page'].','.$_GET['bID'].')">' .tep_html_element_button(IMAGE_DELETE) . '</a> '):''):'');
+  }
+  $banners_end = $notice_box->get_table($contents_end);  
+  $contents[]['text'] = array(
+      array('params' => 'width="100%" colspan="3"','text' => $banners_end)
+   ); 
+  $form_str = tep_draw_form('new_banner', FILENAME_BANNER_MANAGER, 'page=' .  (isset($_GET['page'])?$_GET['page']:'') .  '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&action=' . $form_action .  (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):''), 'post', 'enctype="multipart/form-data"');
+  $buttons = array('align' => 'center', 'button' => $button); 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($contents, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
 }

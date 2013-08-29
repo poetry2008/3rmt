@@ -55,8 +55,9 @@ if ($ocertify->npermission != 31) {
 ------------------------------------------------------*/
       case 'banner':
         $banners_id = tep_db_prepare_input($_GET['banner']);
+        $site_id = tep_db_prepare_input($_GET['site_id']);
 
-        $banner_query = tep_db_query("select banners_title, banners_image, banners_html_text from " . TABLE_BANNERS . " where banners_id = '" . tep_db_input($banners_id) . "'");
+        $banner_query = tep_db_query("select banners_title, banners_image, banners_html_text,site_id from " . TABLE_BANNERS . " where banners_id = '" . tep_db_input($banners_id) . "' and site_id = '".$site_id."'");
         $banner = tep_db_fetch_array($banner_query);
 
         $page_title = $banner['banners_title'];
@@ -64,7 +65,7 @@ if ($ocertify->npermission != 31) {
         if ($banner['banners_html_text']) {
           $image_source = $banner['banners_html_text'];
         } elseif ($banner['banners_image']) {
-          $image_source = tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . $banner['banners_image'], $page_title);
+          $image_source = tep_info_image($banner['banners_image'], $page_title,'100%','100%',$banner['site_id']);
         }
         break;
     }

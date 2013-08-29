@@ -63,4 +63,12 @@ define('TEXT_DATE_ADDED','创建日:');
 define('TEXT_DATE_UPDATE','更新日:');
 
 define('TEXT_ADVERTISEMENT_INFO','如果想使用banner功能的话，【注册新banner/组】的命名一定要以adv开头。');
+define('TEXT_REVIEWS_SELECT_ACTION','请选择');
+define('TEXT_REVIEWS_DELETE_ACTION', '删除勾选项目');
+define('TEXT_NEWS_MUST_SELECT', '请至少选择一项');
+define('TEXT_DEL_NEWS', '确定要删除吗？');
+define('BANNER_TITLE_ERROR','&nbsp;&nbsp;<font color=\'red\'>请输入banner・标题。</font>');
+define('BANNER_URL_ERROR','&nbsp;&nbsp;<font color=\'red\'>请输入banner URL。</font>');
+define('BANNER_GROUP_ERROR','&nbsp;&nbsp;<font color=\'red\'>请输入banner ・分组。</font>');
+define('TEXT_CONTENTS','内容');
 ?>

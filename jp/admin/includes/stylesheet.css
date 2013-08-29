@@ -2110,3 +2110,9 @@ google hack
 	font-weight: bold;
 	color:#F0F1F1;
 }
+#banner_graph .td_middle td {
+     vertical-align: middle; 
+}
+#banner_graph .td_bottom td {
+     vertical-align: bottom;
+}

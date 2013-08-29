@@ -410,12 +410,12 @@ define('REFERER_TITLE_TEXT', 'アクセスランキング');
 define('REFERER_TITLE_URL', 'アクセス来たソース');
 define('REFERER_TITLE_NUM', '件数');
 define('REFERER_TITLE_SORT_NUM', '順位');
-define('TELECOM_UNKNOW_TITLE', '決算管理');
+define('TELECOM_UNKNOW_TITLE', '決済管理');
 define('TELECOM_UNKNOW_SEARCH_SUCCESS', '成功');
 define('TELECOM_UNKNOW_SEARCH_FAIL', '失敗');
-define('TELECOM_UNKNOW_TABLE_CAL_METHOD', '決算方法');
+define('TELECOM_UNKNOW_TABLE_CAL_METHOD', '決済方法');
 define('TELECOM_UNKNOW_TABLE_TIME', '時間');
-define('TELECOM_UNKNOW_TABLE_CAL', '決算');
+define('TELECOM_UNKNOW_TABLE_CAL', '決済');
 define('TELECOM_UNKNOW_TABLE_YIN', '引当');
 define('TELECOM_UNKNOW_TABLE_SURNAME', '氏名');
 define('TELECOM_UNKNOW_TABLE_TEL', '電話');
@@ -452,7 +452,7 @@ define('FILENAME_CLEATE_DOUGYOUSYA_TEXT','同業者の名前設定');
 define('FILENAME_CATEGORIES_ADMIN_TEXT','商品卸価格管理');
 
 //coustomers language
-define('FILENAME_TELECOM_UNKNOW_TEXT','決算管理');
+define('FILENAME_TELECOM_UNKNOW_TEXT','決済管理');
 define('FILENAME_BILL_TEMPLATES_TEXT','請求書のテンプレート');
 
 //reports language
@@ -470,7 +470,7 @@ define('FILENAME_MAG_DL_TEXT','メールマガジンデータDL');
 define('HEADER_TEXT_SITE_NAME',COMPANY_NAME);
 define('HEADER_TEXT_LOGINED','でログインしています。');
 define('HEADER_TEXT_ORDERS','注文一覧');
-define('HEADER_TEXT_TELECOM_UNKNOW','決算履歴');
+define('HEADER_TEXT_TELECOM_UNKNOW','決済履歴');
 define('HEADER_TEXT_TUTORIALS','▼商品調整');
 define('HEADER_TEXT_CATEGORIES','商品登録');
 define('HEADER_TEXT_LOGOUT','ログアウト');

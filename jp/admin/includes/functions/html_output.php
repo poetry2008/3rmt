@@ -467,3 +467,79 @@ function tep_eof_hidden(){
   $hidden_str = '<input type="hidden" name="eof" value="eof">';
   return $hidden_str;
 }
+/* -------------------------------------
+    功能: 缩放图片 
+    参数: $src(string) 图片路径   
+    参数: $alt(string) 图片说明   
+    参数: $maxwidth(int) 图片宽度   
+    参数: $maxheight(int) 图片高度   
+    参数: $parameters(string) 其它参数   
+    返回值: 缩放后的图片的img的html(string) 
+------------------------------------ */
+function tep_get_new_image($src, $alt = '', $maxwidth, $maxheight, $parameters = '') 
+{
+  $img_info = @getimagesize($src); 
+  $pic_width = $img_info[0];
+  $pic_height = $img_info[1];
+  
+  if(($maxwidth && $pic_width > $maxwidth) || ($maxheight && $pic_height > $maxheight))
+  {
+    if($maxwidth && $pic_width > $maxwidth)
+    {
+      $widthratio = $maxwidth/$pic_width;
+      $resizewidth_tag = true;
+    }
+
+    if($maxheight && $pic_height > $maxheight)
+    {
+      $heightratio = $maxheight/$pic_height;
+      $resizeheight_tag = true;
+    }
+
+    if($resizewidth_tag && $resizeheight_tag)
+    {
+      if($widthratio < $heightratio)
+        $ratio = $widthratio;
+      else
+        $ratio = $heightratio;
+    }
+
+    if($resizewidth_tag && !$resizeheight_tag)
+      $ratio = $widthratio;
+    if($resizeheight_tag && !$resizewidth_tag)
+      $ratio = $heightratio;
+
+    $newwidth = $pic_width * $ratio;
+    $newheight = $pic_height * $ratio;
+  } else {
+    if (tep_not_null($pic_width)) {
+      if ($maxwidth > $pic_width) {
+        $newwidth = $pic_width;
+      } else {
+        $newwidth = $maxwidth;
+      }
+    } else {
+      $newwidth = $maxwidth;
+    }
+    
+    if (tep_not_null($pic_height)) {
+      if ($maxheight > $pic_height) {
+        $newheight = $pic_height;
+      } else {
+        $newheight = $maxheight;
+      }
+    } else {
+      $newheight = $maxheight;
+    }
+  }
+  $image = '<img src="' . tep_output_string($src) . '" alt="' . tep_output_string($alt) . '"';
+  if (tep_not_null($alt)) {
+    $image .= ' title=" ' . tep_output_string($alt) . ' "';
+  }
+  if (tep_not_null($newwidth) && tep_not_null($newheight)) {
+    $image .= ' width="' . tep_output_string($newwidth) . '" height="' .  tep_output_string($newheight) . '"';
+  }
+  if (tep_not_null($parameters)) $image .= ' ' . $parameters;
+  $image .= '>';
+  return $image;
+}
