@@ -200,7 +200,8 @@
           '${PRODUCTS_QUANTITY}',
           '${PRODUCTS_NAME}',
           '${PRODUCTS_PRICE}',
-          '${SUB_TOTAL}'
+          '${SUB_TOTAL}',
+          '${ORDER_COMMENT}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -217,7 +218,8 @@
           $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
           $num_product_res['products_name'],
           $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
-          $ot_sub_total
+          $ot_sub_total,
+          preorders_a($oID)
         ),$comments
         );
         $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
@@ -455,7 +457,8 @@
         '${PRODUCTS_QUANTITY}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
-        '${SUB_TOTAL}'
+        '${SUB_TOTAL}',
+        '${ORDER_COMMENT}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -472,7 +475,8 @@
         $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
         $num_product_res['products_name'], 
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
-        $ot_sub_total
+        $ot_sub_total,
+        preorders_a($oID)
       ),$comments);
       $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
       $customer_info_res = tep_db_fetch_array($customer_info_raw); 
