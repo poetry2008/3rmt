@@ -25,7 +25,7 @@
                    $present_type = 'asc';
                 }
                 if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-                     $banner_str = ' banners_group';
+                     $banner_str = ' banners_id desc';
                 }else if($_GET['sort'] == 'site_name'){
                      if($_GET['type'] == 'desc'){
                         $banner_str = 'romaji desc';
@@ -131,8 +131,11 @@
         $banner_exists = tep_db_fetch_array($banner_exists_raw);
         if ($banner_exists) {
           if (($_GET['flag'] == '0') || ($_GET['flag'] == '1')) {
-            tep_db_query("update  ".TABLE_BANNERS." set user_update = '".$_SESSION['user_name']."',date_update = now() where banners_id = '".(int)$_GET['bID']."' and site_id = '".$_GET['site_id']."'");
-            tep_set_banner_status($_GET['bID'], $_GET['flag'], $banner_exists['site_id']);
+            if($_GET['flag'] == '1'){
+            tep_db_query("update  ".TABLE_BANNERS." set expires_impressions = NULL,date_status_change = NULL,status = '".$_GET['flag']."', date_scheduled = '".$banner_exists['date_scheduled']."',user_update = '".$_SESSION['user_name']."',date_update = now() where banners_id = '".(int)$_GET['bID']."' and site_id = '".$_GET['site_id']."'");
+            }else{
+            tep_db_query("update  ".TABLE_BANNERS." set date_status_change = now(),status = '".$_GET['flag']."', date_scheduled = '".$banner_exists['date_scheduled']."',user_update = '".$_SESSION['user_name']."',date_update = now() where banners_id = '".(int)$_GET['bID']."' and site_id = '".$_GET['site_id']."'");
+            }
             $messageStack->add_session(SUCCESS_BANNER_STATUS_UPDATED, 'success');
           } else {
             $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
@@ -206,7 +209,9 @@
 		                     'user_added' => $_SESSION['user_name'],
                                       'status' => '1',
                                       'site_id' => $site_id,
-                                      'banners_show_type' => $_POST['banner_show_type']
+                                      'banners_show_type' => $_POST['banner_show_type'],
+                                      'date_scheduled' => $_POST['date_scheduled'],
+                                      'expires_date'   => $_POST['expires_date']
                                      );
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_BANNERS, $sql_data_array);
@@ -218,30 +223,27 @@
             $messageStack->add_session(SUCCESS_BANNER_UPDATED, 'success');
           }
 
-          if (isset($_POST['expires_date']) && $_POST['expires_date']) {
             $expires_date = tep_db_prepare_input($_POST['expires_date']);
+
+          if (isset($_POST['expires_date']) && $_POST['expires_date']) {
+            print_r($_POST);
             list($day, $month, $year) = explode('/', $expires_date);
 
             $expires_date = $year .
                             ((strlen($month) == 1) ? '0' . $month : $month) .
                             ((strlen($day) == 1) ? '0' . $day : $day);
-
-            tep_db_query("
-                update " . TABLE_BANNERS . " 
-                set expires_date = '" . tep_db_input($expires_date) . "', 
-                    expires_impressions = null 
-                where banners_id = '" . $banners_id . "' 
-                and site_id = '" .$site_id."'
-            ");
+            tep_db_query(" update " . TABLE_BANNERS . " set expires_date = '" . tep_db_input($expires_date) . "', expires_impressions = null where banners_id = '" . $banners_id . "' and site_id = '" .$site_id."' ");
           } elseif (isset($_POST['impressions']) && $_POST['impressions']) {
             $impressions = tep_db_prepare_input($_POST['impressions']);
             tep_db_query("
                 update " . TABLE_BANNERS . " 
                 set expires_impressions = '" . tep_db_input($impressions) . "', 
-                    expires_date = null 
+                    expires_date = ".tep_db_input($expires_date)."
                 where banners_id = '" . $banners_id . "'
                 and site_id = '" .$site_id."'
             ");
+          }else if($_POST['expires_date'] == ''){
+            tep_db_query(" update " . TABLE_BANNERS . " set date_scheduled = '".$_POST['date_scheduled']."',expires_date = '" . tep_db_input($expires_date) . "' where banners_id = '" . $banners_id . "' and site_id = '" .$site_id."' ");
           }
 
           if ($_POST['date_scheduled'] != ' ') {
@@ -1014,7 +1016,7 @@ require("includes/note_js.php");
           'text'   => $banner_images
           );
       $banner_info[] = array(
-          'params' => 'class="dataTableContent" width="2%" align="center"',
+          'params' => 'class="dataTableContent" width="22px" align="center"',
           'text'   => '&nbsp;<a href="javascript:popupImageWindow(\'' . FILENAME_POPUP_IMAGE . '?banner=' . $banners['banners_id'] .  '&site_id='.$banners['site_id'].'\')">' . tep_image(DIR_WS_IMAGES . 'icon_popup.gif', 'View Banner') . '</a>&nbsp;'
           );
       $banner_info[] = array(
