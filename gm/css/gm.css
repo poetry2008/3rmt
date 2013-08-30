@@ -1558,3 +1558,48 @@ top:70px;
 .td_link img{
 	clear:both;
 }
+#carousel-left {
+  position:absolute;
+  left:10px;
+  cursor:pointer;
+}
+#carousel-right {
+  position:absolute;
+  right:10px;
+  cursor:pointer;
+}
+#carousel {
+  width:900px;
+  margin:0 auto;
+  position:relative;
+  font-size:14px;
+  font-family: Arial;
+}
+.carousel-container {
+  position:relative;
+  width:100%;
+  margin-bottom:1em;
+  overflow: hidden;
+  clear:both;
+  top:0;
+}
+.image_select_list{
+	width:900px;
+	margin:0 auto;
+	overflow:hidden;
+}
+.image_select_list span{
+	margin:5px;
+}
+.image_select_list .gray{
+	color:#e2e2e2;
+}
+.image_select_list .black{
+	color:#00000;
+}
+#small_image_right,#small_image_left{
+	filter:alpha(opacity=60);
+	-moz-opacity:0.6;
+	-khtml-opacity: 0.6;
+	opacity: 0.6;
+}

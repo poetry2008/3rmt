@@ -153,7 +153,7 @@
     参数: $parameters(string) 其它参数   
     返回值: 生成的img(string) 
 ------------------------------------ */
-  function tep_image3($src, $alt = '', $width = '', $height = '', $parameters = '') {
+  function tep_image3($src, $alt = '', $width = '', $height = '', $parameters = '',$img_info=array()) {
     if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
       return false;
     }
@@ -164,6 +164,23 @@
      }
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
+    $return_src = false;
+    $t_width = '';
+    $t_height = '';
+    if(!empty($img_info)){
+      if(isset($img_info['width'])&&$img_info['width']!=''){
+        $t_width = $img_info['width'];
+      }
+      if(isset($img_info['height'])&&$img_info['height']!=''){
+        $t_height = $img_info['height'];
+      }
+      if($t_width!=''&&$t_height!=''){
+        $return_src = true;
+        $width = $t_width;
+        $height = $t_height;
+      }
+
+    }
     if ( ($width) || ($height) ) {
       if ( $width=="100%" ) {
         $width = $image_size[0];
@@ -198,7 +215,11 @@
 
     $image .= '>';
 
-    return $image;
+    if($return_src){
+      return tep_output_string($src);
+    }else{
+      return $image;
+    }
   }
 
 /* -------------------------------------
