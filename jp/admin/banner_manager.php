@@ -4,17 +4,122 @@
 */
 
   require('includes/application_top.php');
-
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
   $banner_extension = tep_banner_image_extension();
-
+  if(isset($_GET['site_id'])&&$_GET['site_id']!='') {
+     $sql_site_where = 's.id in ('.str_replace('-', ',', $_GET['site_id']).')';
+     $show_list_array = explode('-',$_GET['site_id']);
+  }else {
+     $show_list_str = tep_get_setting_site_info(FILENAME_BANNER_MANAGER);
+     $sql_site_where = 's.id in ('.$show_list_str.')';
+     $show_list_array = explode(',',$show_list_str);
+  }
+  $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+      while($userslist= tep_db_fetch_array($sites_id_sql)){
+            $site_arr = $userslist['site_permission'];
+      }
+               if(!isset($_GET['type']) || $_GET['type'] == ''){
+                         $_GET['type'] = 'asc';
+                }
+                if($present_type == ''){
+                   $present_type = 'asc';
+                }
+                if(!isset($_GET['sort']) || $_GET['sort'] == ''){
+                     $banner_str = ' banners_id desc';
+                }else if($_GET['sort'] == 'site_name'){
+                     if($_GET['type'] == 'desc'){
+                        $banner_str = 'romaji desc';
+                        $banner_type = 'asc';
+                      }else{
+                        $banner_str = 'romaji asc';
+                        $banner_type = 'desc';
+                      }
+                }else if($_GET['sort'] == 'title'){
+                     if($_GET['type'] == 'desc'){
+                        $banner_str = 'banners_title desc';
+                        $banner_type = 'asc';
+                      }else{
+                        $banner_str = 'banners_title asc';
+                        $banner_type = 'desc';
+                      }
+                }else if($_GET['sort'] == 'banners_group'){
+                     if($_GET['type'] == 'desc'){
+                        $banner_str = 'banners_group desc';
+                        $banner_type = 'asc';
+                      }else{
+                        $banner_str = 'banners_group asc';
+                        $banner_type = 'desc';
+                      }
+                }else if($_GET['sort'] == 'banners_shown'){
+                     if($_GET['type'] == 'desc'){
+                        $banner_str = 'banners_shown desc';
+                        $banner_type = 'asc';
+                      }else{
+                        $banner_str = 'banners_shown asc';
+                        $banner_type = 'desc';
+                      }
+                }else if($_GET['sort'] == 'status'){
+                     if($_GET['type'] == 'desc'){
+                        $banner_str = 'status desc';
+                        $banner_type = 'asc';
+                      }else{
+                        $banner_str = 'status asc';
+                        $banner_type = 'desc';
+                      }
+                }else if($_GET['sort'] == 'date_update'){
+                     if($_GET['type'] == 'desc'){
+                        $banner_str = 'date_update desc';
+                        $banner_type = 'asc';
+                      }else{
+                        $banner_str = 'date_update asc';
+                        $banner_type = 'desc';
+                      }
+                }
+             if($_GET['sort'] == 'site_name'){
+                if($_GET['type'] == 'desc'){
+                    $banner_site_name = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                }else{
+                    $banner_site_name = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                }
+             }
+             if($_GET['sort'] == 'title'){
+                if($_GET['type'] == 'desc'){
+                    $banner_title = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                }else{
+                    $banner_title = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                }
+             }
+             if($_GET['sort'] == 'banners_group'){
+                if($_GET['type'] == 'desc'){
+                    $banner_group = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                }else{
+                    $banner_group = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                }
+             }
+             if($_GET['sort'] == 'banners_shown'){
+                if($_GET['type'] == 'desc'){
+                    $banner_shown = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                }else{
+                    $banner_shown = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                }
+             }
+             if($_GET['sort'] == 'status'){
+                if($_GET['type'] == 'desc'){
+                    $banner_status = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                }else{
+                    $banner_status = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                }
+             }
+             if($_GET['sort'] == 'date_update'){
+                if($_GET['type'] == 'desc'){
+                    $banner_date_update = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+                }else{
+                    $banner_date_update = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+                }
+             }
+  $site_array = explode(',',$site_arr);
   if (isset($_GET['action']) && $_GET['action']) {
-  if(isset($_SESSION['site_permission'])) {
-    //权限判断
-    $site_arr=$_SESSION['site_permission'];
-  } else {
-    $site_arr="";
-  } 
-    switch ($_GET['action']) {
+   switch ($_GET['action']) {
 /* -----------------------------------------------------
    case 'setflag' 设置banner状态   
    case 'insert' 创建banner     
@@ -22,11 +127,15 @@
    case 'deleteconfirm' 删除banner      
 ------------------------------------------------------*/
       case 'setflag':
-        $banner_exists_raw = tep_db_query("select * from ".TABLE_BANNERS." where banners_id = '".(int)$_GET['bID']."'");        
+        $banner_exists_raw = tep_db_query("select * from ".TABLE_BANNERS." where banners_id = '".(int)$_GET['bID']."' and site_id = '".$_GET['site_id']."'");        
         $banner_exists = tep_db_fetch_array($banner_exists_raw);
         if ($banner_exists) {
           if (($_GET['flag'] == '0') || ($_GET['flag'] == '1')) {
-            tep_set_banner_status($_GET['bID'], $_GET['flag'], $banner_exists['site_id']);
+            if($_GET['flag'] == '1'){
+            tep_db_query("update  ".TABLE_BANNERS." set expires_impressions = NULL,date_status_change = NULL,status = '".$_GET['flag']."', date_scheduled = '".$banner_exists['date_scheduled']."',user_update = '".$_SESSION['user_name']."',date_update = now() where banners_id = '".(int)$_GET['bID']."' and site_id = '".$_GET['site_id']."'");
+            }else{
+            tep_db_query("update  ".TABLE_BANNERS." set date_status_change = now(),status = '".$_GET['flag']."', date_scheduled = '".$banner_exists['date_scheduled']."',user_update = '".$_SESSION['user_name']."',date_update = now() where banners_id = '".(int)$_GET['bID']."' and site_id = '".$_GET['site_id']."'");
+            }
             $messageStack->add_session(SUCCESS_BANNER_STATUS_UPDATED, 'success');
           } else {
             $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
@@ -34,17 +143,14 @@
         } else {
           $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
         }
-
-        tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $_GET['bID'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
+        tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&bID=' . $_GET['bID'] .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')));
         break;
       case 'insert':
- forward401Unless(editPermission($site_arr, $lsite_id));
         if (empty($site_id)) {
           $messageStack->add(SITE_ID_NOT_NULL, 'error');
           $banner_error = true;
         }
       case 'update':
- forward401Unless(editPermission($site_arr, $lsite_id));
         $site_id              = tep_db_prepare_input($_POST['site_id']);
 
         $banners_id           = tep_db_prepare_input($_POST['banners_id']);
@@ -95,13 +201,17 @@
                                   'banners_group'     => $banners_group,
 				  'banners_html_text' => $html_text,
 				  'user_update' => $_SESSION['user_name'],
-				  'date_update' => date('Y-m-d H:i:s',time())
+				  'date_update' => date('Y-m-d H:i:s',time()),
+                                  'banners_show_type' => $_POST['banner_show_type']
 			  );
           if ($_GET['action'] == 'insert') {
             $insert_sql_data = array('date_added' => date('Y-m-d H:i:s',time()),
 		                     'user_added' => $_SESSION['user_name'],
                                       'status' => '1',
-                                      'site_id' => $site_id
+                                      'site_id' => $site_id,
+                                      'banners_show_type' => $_POST['banner_show_type'],
+                                      'date_scheduled' => $_POST['date_scheduled'],
+                                      'expires_date'   => $_POST['expires_date']
                                      );
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_BANNERS, $sql_data_array);
@@ -113,33 +223,30 @@
             $messageStack->add_session(SUCCESS_BANNER_UPDATED, 'success');
           }
 
-          if (isset($_POST['expires_date']) && $_POST['expires_date']) {
             $expires_date = tep_db_prepare_input($_POST['expires_date']);
+
+          if (isset($_POST['expires_date']) && $_POST['expires_date']) {
+            print_r($_POST);
             list($day, $month, $year) = explode('/', $expires_date);
 
             $expires_date = $year .
                             ((strlen($month) == 1) ? '0' . $month : $month) .
                             ((strlen($day) == 1) ? '0' . $day : $day);
-
-            tep_db_query("
-                update " . TABLE_BANNERS . " 
-                set expires_date = '" . tep_db_input($expires_date) . "', 
-                    expires_impressions = null 
-                where banners_id = '" . $banners_id . "' 
-                and site_id = '" .$site_id."'
-            ");
+            tep_db_query(" update " . TABLE_BANNERS . " set expires_date = '" . tep_db_input($expires_date) . "', expires_impressions = null where banners_id = '" . $banners_id . "' and site_id = '" .$site_id."' ");
           } elseif (isset($_POST['impressions']) && $_POST['impressions']) {
             $impressions = tep_db_prepare_input($_POST['impressions']);
             tep_db_query("
                 update " . TABLE_BANNERS . " 
                 set expires_impressions = '" . tep_db_input($impressions) . "', 
-                    expires_date = null 
+                    expires_date = ".tep_db_input($expires_date)."
                 where banners_id = '" . $banners_id . "'
                 and site_id = '" .$site_id."'
             ");
+          }else if($_POST['expires_date'] == ''){
+            tep_db_query(" update " . TABLE_BANNERS . " set date_scheduled = '".$_POST['date_scheduled']."',expires_date = '" . tep_db_input($expires_date) . "' where banners_id = '" . $banners_id . "' and site_id = '" .$site_id."' ");
           }
 
-          if ($_POST['date_scheduled']) {
+          if ($_POST['date_scheduled'] != ' ') {
             $date_scheduled = tep_db_prepare_input($_POST['date_scheduled']);
             list($day, $month, $year) = explode('/', $date_scheduled);
 
@@ -155,8 +262,7 @@
                 and site_id = '" .$site_id."'
                 ");
           }
-
-          tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners_id . (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')));
+          tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .  $_GET['page'] . '&bID=' . $banners_id .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'').($_GET['sort']?'&sort='.$_GET['sort']:'').($_GET['type']?'&type='.$_GET['type']:'')));
         } else {
           $_GET['action'] = 'new';
         }
@@ -164,13 +270,9 @@
       case 'deleteconfirm':
         $banners_id   = tep_db_prepare_input($_GET['bID']);
         $delete_image = tep_db_prepare_input($_POST['delete_image']);
-
-        if ($delete_image == 'on') {
-          $banner_query = tep_db_query("
-              select *
-              from " . TABLE_BANNERS . " 
-              where banners_id = '" . tep_db_input($banners_id) . "'
-          ");
+        if(!empty($_POST['banner_id'])){
+         foreach($_POST['banner_id'] as $ge_key => $ge_value){
+          $banner_query = tep_db_query(" select * from " . TABLE_BANNERS . " where banners_id = '" .$ge_value. "' ");
           $banner = tep_db_fetch_array($banner_query);
           if (is_file(tep_get_upload_dir($banner['site_id']). $banner['banners_image'])) {
             if (is_writeable(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
@@ -181,8 +283,22 @@
           } else {
             $messageStack->add_session(ERROR_IMAGE_DOES_NOT_EXIST, 'error');
           }
-        }
 
+        tep_db_query("delete from " . TABLE_BANNERS . " where banners_id = '" .  $ge_value . "'");
+        tep_db_query("delete from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . $ge_value . "'");
+          } 
+        }
+          $banner_query = tep_db_query(" select * from " . TABLE_BANNERS . " where banners_id = '" . tep_db_input($banners_id) . "' ");
+          $banner = tep_db_fetch_array($banner_query);
+          if (is_file(tep_get_upload_dir($banner['site_id']). $banner['banners_image'])) {
+            if (is_writeable(DIR_FS_CATALOG_IMAGES . $banner['banners_image'])) {
+              unlink(DIR_FS_CATALOG_IMAGES . $banner['banners_image']);
+            } else {
+              $messageStack->add_session(ERROR_IMAGE_IS_NOT_WRITEABLE, 'error');
+            }
+          } else {
+            $messageStack->add_session(ERROR_IMAGE_DOES_NOT_EXIST, 'error');
+          }
         tep_db_query("delete from " . TABLE_BANNERS . " where banners_id = '" . tep_db_input($banners_id) . "'");
         tep_db_query("delete from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . tep_db_input($banners_id) . "'");
 
@@ -211,10 +327,8 @@
             }
           }
         }
-
         $messageStack->add_session(SUCCESS_BANNER_REMOVED, 'success');
-
-        tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')));
+        tep_redirect(tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').($_GET['sort']?'&sort='.$_GET['sort']:'').($_GET['type']?'&type='.$_GET['type']:'')));
         break;
     }
   }
@@ -242,7 +356,266 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript"><!--
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if ($('#show_present').css('display') != 'none') {
+        hidden_info_box(); 
+      }
+    }
+     if (event.which == 13) {
+           <?php //回车?>
+        if ($('#show_present').css('display') != 'none') {
+            if (o_submit_single){
+                cid = $("#cid").val();
+                $("#button_save").trigger("click");
+             }
+            }
+        }
+
+     if (event.ctrlKey && event.which == 37) {
+      <?php //Ctrl+方向左?> 
+      if ($('#show_present').css('display') != 'none') {
+        if ($("#option_prev")) {
+          $("#option_prev").trigger("click");
+        }
+      } 
+    }
+    if (event.ctrlKey && event.which == 39) {
+      <?php //Ctrl+方向右?> 
+      if ($('#show_present').css('display') != 'none') {
+        if ($("#option_next")) {
+          $("#option_next").trigger("click");
+        }
+      } 
+    }
+  });    
+});
+<?php //批量删除数据 ?>
+function delete_select_banner(banner_str, c_permission){
+     sel_num = 0;
+     if (document.del_banner.elements[banner_str].length == null) {
+         if (document.del_banner.elements[banner_str].checked == true){
+               sel_num = 1;
+            }
+         } else {
+         for (i = 0; i < document.del_banner.elements[banner_str].length; i++) {
+             if(document.del_banner.elements[banner_str][i].checked == true) {
+                   sel_num = 1;
+                   break;
+                  }
+               }
+         }
+       if (sel_num == 1) {
+         if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
+           if (c_permission == 31) {
+             document.forms.del_banner.submit(); 
+           } else {
+             $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+              async: false,
+              success: function(msg) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
+                  document.forms.del_banner.submit(); 
+                } else {
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.del_banner.action),
+                      async: false,
+                      success: function(msg_info) {
+                        document.forms.del_banner.submit(); 
+                      }
+                    }); 
+                  } else {
+                    document.getElementsByName('banner_action')[0].value = 0;
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              }
+            });
+           }
+          }else{
+             document.getElementsByName('banner_action')[0].value = 0;
+          }
+         } else {
+            document.getElementsByName('banner_action')[0].value = 0;
+             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
+          }
+}
+<?php //选择动作 ?>
+function banner_change_action(r_value, r_str) {
+    if (r_value == '1') {
+       delete_select_banner(r_str, '<?php echo $ocertify->npermission;?>');
+    }
+}
+<?php //选择全部checkbox ?>
+function all_select_banner(banner_str){
+   var check_flag = document.del_banner.all_check.checked;
+        if (document.del_banner.elements[banner_str]) {
+             if (document.del_banner.elements[banner_str].length == null){
+                  if (check_flag == true) {
+                      document.del_banner.elements[banner_str].checked = true;
+                  } else {
+                      document.del_banner.elements[banner_str].checked = false;
+                  }
+              } else {
+                  for (i = 0; i < document.del_banner.elements[banner_str].length; i++){
+                       if(!document.del_banner.elements[banner_str][i].disabled) { 
+                          if (check_flag == true) {
+                              document.del_banner.elements[banner_str][i].checked = true;
+                          } else {
+                              document.del_banner.elements[banner_str][i].checked = false;
+                          }
+                        }
+                   }
+             }
+        }
+}
+<?php //检查radio是哪种类型 ?>
+function check_radio(value){
+  if(value == 0){
+    $("#banners_html_hide").hide(); 
+    $("#banners_image_hide").show(); 
+  }else{
+    $("#banners_html_hide").show(); 
+    $("#banners_image_hide").hide(); 
+  }
+}
+<?php //I按钮弹出页面 ?>
+function show_banner(ele,bID,page,site_id){
+  var sql = '<?php echo $sql_site_where;?>';
+  var str = '<?php echo $banner_str;?>';
+  var post_site_id = '<?php echo $_GET['site_id'];?>';
+  var sort = '<?php echo $_GET['sort'];?>';
+  var type = '<?php echo $_GET['type'];?>';
+ $.ajax({
+ url: 'ajax.php?&action=edit_banner',
+ data:
+ {bID:bID,site_id:site_id,page:page,post_site_id:post_site_id,str:str,sql:sql,sort:sort,type:type} ,
+ dataType: 'text',
+ async : false,
+ success: function(data){
+  $("div#show_banner").html(data);
+ele = ele.parentNode;
+head_top = $('.compatible_head').height();
+box_warp_height = 0;
+if(document.documentElement.clientHeight < document.body.scrollHeight){
+if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+if(ele.offsetTop < $('#show_banner').height()){
+offset = ele.offsetTop+$("#show_banner_list").position().top+ele.offsetHeight+head_top;
+box_warp_height = offset-head_top;
+}else{
+if (((head_top+ele.offsetTop+$('#show_banner').height()) > $('.box_warp').height())&&($('#show_banner').height()<ele.offsetTop+parseInt(head_top)-$("#show_banner_list").position().top-1)) {
+offset = ele.offsetTop+$("#show_banner_list").position().top-1-$('#show_banner').height()+head_top;
+} else {
+offset = ele.offsetTop+$("#show_banner_list").position().top+$(ele).height()+head_top;
+offset = offset + parseInt($('#show_banner_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+}
+box_warp_height = offset-head_top;
+}
+}else{
+  if (((head_top+ele.offsetTop+$('#show_banner').height()) > $('.box_warp').height())&&($('#show_banner').height()<ele.offsetTop+parseInt(head_top)-$("#show_banner_list").position().top-1)) {
+    offset = ele.offsetTop+$("#show_banner_list").position().top-1-$('#show_banner').height()+head_top;
+  } else {
+    offset = ele.offsetTop+$("#show_banner_list").position().top+$(ele).height()+head_top;
+    offset = offset + parseInt($('#show_banner_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+  }
+}
+if(!(!+[1,])){
+   offset = offset+3;
+} 
+$('#show_banner').css('top',offset);
+}else{
+  if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+    if (((head_top+ele.offsetTop+$('#show_banner').height()) > $('.box_warp').height())&&($('#show_banner').height()<ele.offsetTop+parseInt(head_top)-$("#show_banner_list").position().top-1)) {
+      offset = ele.offsetTop+$("#show_banner_list").position().top-1-$('#show_banner').height()+head_top;
+    } else {
+      offset = ele.offsetTop+$("#show_banner_list").position().top+$(ele).height()+head_top;
+      offset = offset + parseInt($('#show_banner_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+    }
+    box_warp_height = offset-head_top;
+  }else{
+    offset = ele.offsetTop+$("#show_banner_list").position().top+ele.offsetHeight+head_top;
+    box_warp_height = offset-head_top;
+  }
+  $('#show_banner').css('top',offset);
+}
+box_warp_height = box_warp_height + $('#show_banner').height();
+if($('.show_left_menu').width()){
+  leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+}else{
+  leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
+} 
+if(bID == '-1'){
+  $('#show_banner').css('top', $('#show_banner_list').offset().top);
+}
+$('#show_banner').css('z-index','1');
+$('#show_banner').css('left',leftset);
+$('#show_banner').css('display', 'block');
+o_submit_single = true;
+  }
+  }); 
+}
+<?php //删除数据验证 ?>
+function msg(c_permission,page,bID,site_id){
+  if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
+    if (c_permission == 31) {
+      location.href = '<?php echo tep_href_link(FILENAME_BANNER_MANAGER);?>?action=deleteconfirm&page='+page+'&bID='+bID+'&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>';
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+        async: false,
+        success: function(msg) {
+          var tmp_msg_arr = msg.split('|||'); 
+          var pwd_list_array = tmp_msg_arr[1].split(',');
+          if (tmp_msg_arr[0] == '0') {
+            location.href = '<?php echo tep_href_link(FILENAME_BANNER_MANAGER);?>?action=deleteconfirm&page='+page+'&bID='+bID+'&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>';
+          } else {
+            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+            if (in_array(input_pwd_str, pwd_list_array)) {
+              $.ajax({
+                url: 'ajax_orders.php?action=record_pwd_log',   
+                type: 'POST',
+                dataType: 'text',
+                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent( location.href = '<?php echo tep_href_link(FILENAME_BANNER_MANAGER);?>?action=deleteconfirm&page='+page+'&bID='+bID+'&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>'),
+                async: false,
+                success: function(msg_info) {
+                  location.href = '<?php echo tep_href_link(FILENAME_BANNER_MANAGER);?>?action=deleteconfirm&page='+page+'&bID='+bID+'&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>';
+                }
+              }); 
+            } else {
+              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+            }
+          }
+        }
+      });
+    }
+  }
+}
+<?php //图片权限一次性密码 ?>
+function onetime_images(c_permission,page,bID,site_id){
+      location.href = '<?php echo tep_href_link(FILENAME_BANNER_STATISTICS);?>?page='+page+'&bID='+bID+'&site_id='+site_id;
+}
+<?php //关闭I按钮弹出页面 ?>
+function hidden_info_box(){
+   $('#show_banner').css('display','none');
+}
 <?php //弹出新建日历?>
 function open_new_calendar()
 {
@@ -293,11 +666,30 @@ function open_update_calendar()
   }
 }
 function popupImageWindow(url) {
-  window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
+  window.open(url, 'popupImageWindow', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=yes,width=300,height=200,left=0,top=0')
 }
 <?php //提交表单?>
 function check_banner_form(b_type) 
 {
+
+  p_error = false; 
+  if(document.new_banner.banners_title.value == ""){
+    $("#title_error").html("<?php echo BANNER_TITLE_ERROR;?>");
+    document.new_banner.banners_title.focus();
+    p_error = true; 
+  }else{
+    $("#title_error").html("");
+    document.new_banner.banners_title.focus();
+  }
+  if(document.new_banner.banners_group.value == "" && document.new_banner.new_banners_group.value == ""){
+    $("#group_error").html("<?php echo BANNER_GROUP_ERROR;?>");
+    document.new_banner.banners_group.focus();
+    p_error = true; 
+  }else{
+    $("#group_error").html("");
+    document.new_banner.banners_group.focus();
+  }
+  if(p_error == false){
   <?php
   if ($ocertify->npermission == 31) {
   ?>
@@ -356,6 +748,7 @@ function check_banner_form(b_type)
   <?php
   }
   ?>
+  }
 }
 <?php //跳转动作?>
 function toggle_banner_action(banner_url_str)
@@ -461,6 +854,8 @@ require("includes/note_js.php");
 <!-- header_eof //-->
 
 <!-- body //-->
+<input id="show_info_id" type="hidden" value="show_banner" name="show_info_id">
+<div id="show_banner" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
@@ -470,7 +865,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -479,182 +874,56 @@ require("includes/note_js.php");
           </tr>
         </table></td>
       </tr>
-<?php
-  if (isset($_GET['action']) && $_GET['action'] == 'new') {
-    //新建/编辑页面 
-    $form_action = 'insert';
-    if (isset($_GET['bID']) && $_GET['bID']) {
-      $bID = tep_db_prepare_input($_GET['bID']);
-      $site_id = tep_db_prepare_input($_GET['lsite_id']);
-      $form_action = 'update';
-$banner_query = tep_db_query("
-          select b.banners_title, 
-                 b.banners_url, 
-                 b.banners_image, 
-                 b.banners_group, 
-                 b.banners_html_text, 
-                 b.status, 
-                 date_format(b.date_scheduled, '%d/%m/%Y') as date_scheduled, 
-                 date_format(b.expires_date, '%d/%m/%Y') as expires_date, 
-                 b.expires_impressions, 
-                 b.date_status_change,
-                 b.site_id,
-                 s.romaji,
-                 s.name as site_name
-          from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
-          where banners_id = '" . tep_db_input($bID) . "'
-            and s.id = b.site_id
-          ");
-
-      $banner = tep_db_fetch_array($banner_query);
-      $bInfo = new objectInfo($banner);
-    } elseif ($_POST) {
-      $bInfo = new objectInfo($_POST);
-    } else {
-      $bInfo = new objectInfo(array());
-    }
-
-    $groups_array = array();
-    $groups_query = tep_db_query("
-        select distinct banners_group 
-        from " . TABLE_BANNERS . " 
-        order by banners_group");
-    while ($groups = tep_db_fetch_array($groups_query)) {
-      $groups_array[] = array('id' => $groups['banners_group'], 'text' => $groups['banners_group']);
-    }
-?>
-<link rel="stylesheet" type="text/css" href="includes/javascript/spiffyCal/spiffyCal_v2_1.css">
-<script language="JavaScript" src="includes/javascript/spiffyCal/spiffyCal_v2_1.js"></script>
-<script language="javascript">
-  var dateExpires = new ctlSpiffyCalendarBox("dateExpires", "new_banner", "expires_date","btnDate1","<?php echo isset($bInfo->expires_date)?$bInfo->expires_date:''; ?>",scBTNMODE_CUSTOMBLUE);
-  var dateScheduled = new ctlSpiffyCalendarBox("dateScheduled", "new_banner", "date_scheduled","btnDate2","<?php echo isset($bInfo->date_scheduled)?$bInfo->date_scheduled:''; ?>",scBTNMODE_CUSTOMBLUE);
-</script>
       <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr><?php echo tep_draw_form('new_banner', FILENAME_BANNER_MANAGER, 'page=' .
-          (isset($_GET['page'])?$_GET['page']:'') . '&action=' . $form_action .
-          (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):''), 'post',
-          'enctype="multipart/form-data"'); if ($form_action == 'update') {
-        echo tep_draw_hidden_field('banners_id', $bID); 
-        echo tep_draw_hidden_field('site_id', $banner['site_id']); 
-      }?>
-        <td><table border="0" cellspacing="0" cellpadding="2">
-          <tr>
-	  <input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
-	  <input type="hidden" name="user_added" value="<?php echo $user_info['name']?>">
-            <td class="main" nowrap><?php echo ENTRY_SITE; ?></td>
-            <td class="main"><?php echo (isset($_GET['bID']) && $_GET['bID'])?$banner['site_name']:tep_site_pull_down_menu(); ?></td>
-          </tr>
-          <tr>
-            <td class="main" nowrap><?php echo TEXT_BANNERS_TITLE; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('banners_title', isset($bInfo->banners_title)?$bInfo->banners_title:'', '', true); ?></td>
-          </tr>
-          <tr>
-            <td class="main" nowrap><?php echo TEXT_BANNERS_URL; ?></td>
-            <td class="main"><?php echo tep_draw_input_field('banners_url', isset($bInfo->banners_url)?$bInfo->banners_url:''); ?></td>
-          </tr>
-          <tr>
-            <td class="main" valign="top" nowrap><?php echo TEXT_BANNERS_GROUP; ?></td>
-            <td class="main"><?php echo tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'') . TEXT_BANNERS_NEW_GROUP . '<br>' . tep_draw_input_field('new_banners_group', '', '', ((sizeof($groups_array) > 0) ? false : true)); ?><br><?php echo TEXT_ADVERTISEMENT_INFO;?></td>
-          </tr>
-          <tr>
-            <td></td><td><?php echo TEXT_BANNERS_BANNER_NOTE;?></td>
-          </tr>
-          <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td class="main" valign="top" nowrap><?php echo TEXT_BANNERS_IMAGE; ?></td>
-            <td class="main"><?php echo tep_draw_file_field('banners_image') . ' ' . TEXT_BANNERS_IMAGE_LOCAL . '<br>' . (tep_get_upload_root().'x/') . tep_draw_input_field('banners_image_local', isset($bInfo->banners_image)?$bInfo->banners_image:''); ?><br>
-<?php if(isset($bInfo->banners_image) && $bInfo->banners_image) echo tep_info_image($bInfo->banners_image, $bInfo->banners_title, '', '', $bInfo->site_id) ; ?>
-<br>
-</td>
-          </tr>
-          <tr>
-            <td></td><td><?php echo TEXT_BANNERS_INSERT_NOTE; ?></td>
-          </tr>
-          <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td class="main" nowrap><?php echo TEXT_BANNERS_IMAGE_TARGET; ?></td>
-            <td class="main"><?php echo (tep_get_upload_root().'x/') . tep_draw_input_field('banners_image_target'); ?></td>
-          </tr>
-          <tr>
-            <td></td><td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td valign="top" class="main" nowrap><?php echo TEXT_BANNERS_HTML_TEXT; ?></td>
-            <td class="main"><?php echo tep_draw_textarea_field('html_text', 'soft', '60', '5', isset($bInfo->banners_html_text)?$bInfo->banners_html_text:''); ?></td>
-          </tr>
-          <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td class="main" nowrap><?php echo TEXT_BANNERS_SCHEDULED_AT; ?><br><small>(dd/mm/yyyy)</small></td>
-            <td valign="top" class="main">
-            <div class="yui3-skin-sam yui3-g">
-            <input type="text" name="date_scheduled" id="input_date_scheduled" value="<?php $text_date_scheduled = explode('/',$bInfo->date_scheduled); 
-            if($text_date_scheduled[2] != null){ echo $text_date_scheduled[2].'-'.$text_date_scheduled[1].'-'.$text_date_scheduled[0];} ?>"/><a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"><img src="includes/calendar.png" ></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
-            <div class="yui3-u" id="new_yui3">
-            <div id="mycalendar"></div>
-            </div> 
-            </div>
-            </td>
-          </tr>
-          <tr><td></td><td><?php echo TEXT_BANNERS_SCHEDULE_NOTE; ?></td></tr>
-          <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-          </tr>
-          <tr>
-            <td valign="top" class="main" nowrap><?php echo TEXT_BANNERS_EXPIRES_ON; ?><br><small>(dd/mm/yyyy)</small></td>
-            <td class="main">
-            <div class="yui3-skin-sam yui3-g">
-            <input type="text" name="expires_date" id="input_expires_date" value="<?php $text_expires_date = explode('/',$bInfo->expires_date); 
-            if($text_expires_date[2] != null && $text_expires_date[2] != 0000 ){ 
-              echo $text_expires_date[2].'-'.$text_expires_date[1].'-'.$text_expires_date[0];} ?>" /><a href="javascript:void(0);" onclick="open_update_calendar();" class="dpicker"><img src="includes/calendar.png" ></a>
-            <input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> 
-            <div class="yui3-u" id="end_yui3">
-            <div id="mycalendar_end"></div>
-            </div> 
-            </div>
-          <?php echo TEXT_BANNERS_OR_AT . '<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"') . ' ' . TEXT_BANNERS_IMPRESSIONS; ?></td>
-          </tr>
-          <tr><td></td><td><?php echo TEXT_BANNERS_EXPIRCY_NOTE;?></td> </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
-          <tr>
-            <td height="65" class="main" align="right" valign="top" nowrap><a href="javascript:void(0);"><?php echo (($form_action == 'insert') ?  tep_html_element_button(IMAGE_INSERT, 'onclick="check_banner_form(0);"') : tep_html_element_button(IMAGE_SAVE, 'onclick="check_banner_form(0);"')). '&nbsp;&nbsp;<a class="new_product_reset" href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .(isset($_GET['page'])?$_GET['page']:'') . '&bID=' .  (isset($_GET['bID'])?$_GET['bID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
-          </tr>
-        </table></td>
-      </form></tr>
-<?php
-  } else {
-//列表页
-?>
-      <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td>
+        <?php tep_show_site_filter(FILENAME_BANNER_MANAGER,'false',array(0));?>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_banner_list">
           <tr>
             <td valign="top">
-            <?php tep_site_filter(FILENAME_BANNER_MANAGER);?>
-            <table border="0" width="100%" cellspacing="0" cellpadding="2">
-              <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_BANNERS; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_GROUPS; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATISTICS; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_STATUS; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-              </tr>
-<?php
+            <?php 
+             $banner_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+             $notice_box = new notice_box('','',$banner_table_params);
+             $banner_table_row = array();
+             $banner_title_row = array();
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_banner(\'banner_id[]\');">');
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '');
+             if(isset($_GET['sort']) && $_GET['sort'] == 'site_name'){
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=site_name'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type='.$banner_type).'">'.TABLE_HEADING_SITE.$banner_site_name.'</a>');
+             }else{
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=site_name'.($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type=desc').'">'.TABLE_HEADING_SITE.$banner_site_name.'</a>');
+             }
+             if(isset($_GET['sort']) && $_GET['sort'] == 'title'){
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order" colspan="3"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=title'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type='.$banner_type).'">'.TABLE_HEADING_BANNERS.$banner_title.'</a>');
+             }else{
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order" colspan="3"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=title'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type=desc').'">'.TABLE_HEADING_BANNERS.$banner_title.'</a>');
+             }
+             if(isset($_GET['sort']) && $_GET['sort'] == 'banners_group'){
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=banners_group'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type='.$banner_type).'">'.TABLE_HEADING_GROUPS.$banner_group.'</a>');
+             }else{
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=banners_group'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type=desc').'">'.TABLE_HEADING_GROUPS.$banner_group.'</a>');
+             }
+             if(isset($_GET['sort']) && $_GET['sort'] == 'banners_shown'){
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=banners_shown'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type='.$banner_type).'">'.TABLE_HEADING_STATISTICS.$banner_shown.'</a>');
+             }else{
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => 
+          '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=banners_shown'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type=desc').'">'.TABLE_HEADING_STATISTICS.$banner_shown.'</a>');
+             }
+             if(isset($_GET['sort']) && $_GET['sort'] == 'status'){
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' =>
+             '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=status'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type='.$banner_type).'">'.TABLE_HEADING_STATUS.$banner_status.'</a>');
+             }else{
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=status'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type=desc').'">'.TABLE_HEADING_STATUS.$banner_status.'</a>');
+             }
+             if(isset($_GET['sort']) && $_GET['sort'] == 'date_update'){
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="53px"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=date_update'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type='.$banner_type).'">'.TABLE_HEADING_ACTION.$banner_date_update.'</a>');
+             }else{
+             $banner_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="53px"','text' => '<a href="'.tep_href_link(FILENAME_BANNER_MANAGER,'sort=date_update'.  ($_GET['site_id']?'&site_id='.$_GET['site_id']:'').($_GET['bID']?'&bID='.$_GET['bID']:'').'&type=desc').'">'.TABLE_HEADING_ACTION.$banner_date_update.'</a>');
+             }
+             $banner_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $banner_title_row);
     $banners_query_raw = "
-      select b.banners_id, 
+      select sum(h.banners_shown) as banners_shown,
+             sum(h.banners_clicked) as banners_clicked,
+             b.banners_id, 
              b.banners_title, 
              b.banners_image, 
              b.banners_group, 
@@ -667,25 +936,33 @@ $banner_query = tep_db_query("
 	     b.user_added,
 	     b.user_update,
 	     b.date_update,
+             b.banners_show_type,
+             b.site_id,
              s.romaji,
              s.name as site_name
-      from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
-      where s.id = b.site_id
-        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . "
-      order by b.banners_group";
+      from " . TABLE_BANNERS . " b left join  " . TABLE_BANNERS_HISTORY . " h on b.banners_id = h.banners_id , ".TABLE_SITES." s 
+      where s.id = b.site_id and 
+        " . $sql_site_where . "  group by b.banners_id 
+      order by ".$banner_str;
     $banners_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $banners_query_raw, $banners_query_numrows);
     $banners_query = tep_db_query($banners_query_raw);
-    while ($banners = tep_db_fetch_array($banners_query)) {
-      $info_query = tep_db_query("select sum(banners_shown) as banners_shown, sum(banners_clicked) as banners_clicked from " . TABLE_BANNERS_HISTORY . " where banners_id = '" . $banners['banners_id'] . "'");
-      $info = tep_db_fetch_array($info_query);
-
-      if (((!isset($_GET['bID']) || !$_GET['bID']) || ($_GET['bID'] == $banners['banners_id'])) && (!isset($bInfo) || !$bInfo) && (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new')) {
-        $bInfo_array = tep_array_merge($banners, $info);
-        $bInfo = new objectInfo($bInfo_array);
+    $banner_num = tep_db_num_rows($banners_query);
+        $sql_check = "select * from ".TABLE_PWD_CHECK." where page_name='/admin/banner_statistics.php'";
+        $query_check = tep_db_query($sql_check);
+        $arr_check = array();
+        while($row_check = tep_db_fetch_array($query_check)){
+             $arr_check[] = $row_check['check_value'];
+        }
+      if($ocertify->npermission == 7){
+          $permissions = 'staff'; 
+      }else if($ocertify->npermission == 15){
+          $permissions = 'admin';
+      }else if($ocertify->npermission == 10){
+          $permissions = 'chief';
       }
-
-      $banners_shown = ($info['banners_shown'] != '') ? $info['banners_shown'] : '0';
-      $banners_clicked = ($info['banners_clicked'] != '') ? $info['banners_clicked'] : '0';
+   while ($banners = tep_db_fetch_array($banners_query)) {
+      $banners_shown = ($banners['banners_shown'] != '') ? $banners['banners_shown'] : '0';
+      $banners_clicked = ($banners['banners_clicked'] != '') ? $banners['banners_clicked'] : '0';
       
       $even = 'dataTableSecondRow';
       $odd  = 'dataTableRow';
@@ -695,41 +972,121 @@ $banner_query = tep_db_query("
         $nowColor = $odd; 
       }
       
-      if ( (isset($bInfo) && is_object($bInfo)) && ($banners['banners_id'] == $bInfo->banners_id) ) {
-        echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\';">' . "\n";
+      if ($banners['banners_id'] == $_GET['bID']) {
+        $banner_params =  'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\';"' . "\n";
       } else {
-        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\';" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
+        $banner_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\';" onmouseout="this.className=\''.$nowColor.'\'"' . "\n";
       }
-      $banner_param_str = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'"';
-?>
-                <td class="dataTableContent" <?php echo $banner_param_str;?>><?php echo $banners['romaji'];?></td>
-                <td class="dataTableContent" <?php echo $banner_param_str;?>><?php echo '<a href="javascript:popupImageWindow(\'' . FILENAME_POPUP_IMAGE . '?banner=' . $banners['banners_id'] . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_popup.gif', 'View Banner') . '</a>&nbsp;' . $banners['banners_title']; ?></td>
-                <td class="dataTableContent" align="right" <?php echo $banner_param_str;?>><?php echo $banners['banners_group']; ?></td>
-                <td class="dataTableContent" align="right" <?php echo $banner_param_str;?>><?php echo $banners_shown . ' / ' . $banners_clicked; ?></td>
-                <td class="dataTableContent" align="right">
-<?php
+      $banner_param_str = 'onclick="document.location.href=\'' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' .$banners['banners_id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').($_GET['sort']?'&sort='.$_GET['sort']:'').($_GET['type']?'&type='.$_GET['type']:'')) . '\'"';
+      $banner_info = array();
+      if(in_array($banners['site_id'],$site_array)){
+          $banner_checkbox = '<input type="checkbox" name="banner_id[]" value="'.$banners['banners_id'].'">';
+      }else{
+          $banner_checkbox = '<input disabled="disabled" type="checkbox" name="banner_id[]" value="'.$banners['banners_id'].'">';
+      }
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent" width="1%"',
+          'text'   => $banner_checkbox
+          );
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent" width="3%"'.$banner_param_str,
+          'text'   => ''
+          );
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent"'.$banner_param_str,
+          'text'   => $banners['romaji']
+          );
+      if(in_array($banners['site_id'],$site_array)){
+       if($ocertify->npermission == 31){
+       $banner_images = '<a href="' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' .  $_GET['page'] . '&bID=' . $banners['banners_id'] .  (isset($banners['site_id'])?('&site_id='.$banners['site_id']):'')) . '">' . tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS) .  '</a>';
+       }else{
+       if(in_array($permissions,$arr_check)){
+       $banner_images = '<a href="' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' .  $_GET['page'] . '&bID=' . $banners['banners_id'] .  (isset($banners['site_id'])?('&site_id='.$banners['site_id']):'')) . '">' . tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS) .  '</a>';
+      }else if(in_array('onetime',$arr_check)){
+       $banner_images = '<a href="javascript:void(0)" onclick="onetime_images('.$ocertify->npermission.','.$_GET['page'].','.$banners['banners_id'].','.$banners['site_id'].')" >' . tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS) .  '</a>';
+      }else{
+      $banner_images = tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS);
+      }
+       }
+      }else{
+      $banner_images = tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS);
+      }
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent" width="1%"',
+          'text'   => $banner_images
+          );
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent" width="22px" align="center"',
+          'text'   => '&nbsp;<a href="javascript:popupImageWindow(\'' . FILENAME_POPUP_IMAGE . '?banner=' . $banners['banners_id'] .  '&site_id='.$banners['site_id'].'\')">' . tep_image(DIR_WS_IMAGES . 'icon_popup.gif', 'View Banner') . '</a>&nbsp;'
+          );
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent"'.$banner_param_str,
+          'text'   => $banners['banners_title']
+          );
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent"'.$banner_param_str,
+          'text'   => $banners['banners_group']
+          );
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent"'.$banner_param_str,
+          'text'   => $banners_shown . ' / ' . $banners_clicked
+          );
       if ($banners['status'] == '1') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', 'Active') .  '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_banner_action(\'' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] .  '&action=setflag&flag=0' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', 'Set Inactive') . '</a>';
-      } else {
-        echo '<a href="javascript:void(0);" onclick="toggle_banner_action(\'' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' .  $banners['banners_id'] . '&action=setflag&flag=1' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', 'Set Active') . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', 'Inactive');
+      if(in_array($banners['site_id'],$site_array)){
+        $banner_status =  tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', 'Active') .  '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_banner_action(\'' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] .  '&action=setflag&flag=0&sort='.$_GET['sort'].'&type='.$_GET['type'] .  (isset($banners['site_id'])?('&site_id='.$banners['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', 'Set Inactive') . '</a>';
+      }else{
+        $banner_status =  tep_image(DIR_WS_IMAGES . 'icon_status_green.gif',
+            'Active') .  '&nbsp;&nbsp;'. tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', 'Set Inactive');
       }
-?></td>
-                <td class="dataTableContent" align="right" <?php echo $banner_param_str;?>><?php echo '<a href="' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_ICONS . 'statistics.gif', ICON_STATISTICS) . '</a>&nbsp;'; if ( (isset($bInfo) && is_object($bInfo)) && ($banners['banners_id'] == $bInfo->banners_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
-              </tr>
-<?php
+      } else {
+      if(in_array($banners['site_id'],$site_array)){
+        $banner_status =  '<a href="javascript:void(0);" onclick="toggle_banner_action(\'' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' .  $banners['banners_id'] .  '&action=setflag&flag=1&sort='.$_GET['sort'].'&type='.$_GET['type'] .  (isset($banners['site_id'])?('&site_id='.$banners['site_id']):'').(isset($_GET['site_id']) && $_GET['site_id']?'&lsite_id='.$_GET['site_id']:'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', 'Set Active') . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', 'Inactive');
+      }else{
+        $banner_status =  tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', 'Set Active') . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', 'Inactive');
+      }
+      }
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => $banner_status
+          );
+      $banner_info[] = array(
+          'params' => 'class="dataTableContent"',
+          'text'   => ' <a href="javascript:void(0)" onclick="show_banner(this,'.$banners['banners_id'].','.$_GET['page'].','.$banners['site_id'].');check_radio('.$banners['banners_show_type'].')">'.tep_get_signal_pic_info(isset($banners['date_update']) && $banners['date_update']?$banners['date_update']:$banners['date_added']).'</a>'
+          );
+      $banner_table_row[] = array('params' => $banner_params, 'text' => $banner_info);
     }
+      $banner_form = tep_draw_form('del_banner',FILENAME_BANNER_MANAGER,'action=deleteconfirm&page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&sort='.$_GET['sort'].'&type='.$_GET['type']);
+      $notice_box->get_form($banner_form);
+      $notice_box->get_contents($banner_table_row);
+      $notice_box->get_eof(tep_eof_hidden());
+      echo $notice_box->show_notice();
 ?>
-            </table>
-			<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
+           <tr>
+             <td>
+               <?php
+               //删除勾选触发事件
+                 if($banner_num > 0){
+                   if($ocertify->npermission >= 15){
+                        echo '<select name="banner_action" onchange="banner_change_action(this.value, \'banner_id[]\');">';
+                        echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';
+                        echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
+                        echo '</select>';
+                    }
+                 }else{
+                        echo TEXT_DATA_EMPTY;
+                 }
+                ?>
+              </td>
+            </tr>
                   <tr>
                     <td class="smallText" valign="top"><?php echo $banners_split->display_count($banners_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BANNERS); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $banners_split->display_links($banners_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'bID'))); ?></div></td>
                   </tr>
                   <tr>
-                    <td align="right" colspan="2"><div class="td_button"><?php echo '<a href="' .
-                    tep_href_link(FILENAME_BANNER_MANAGER, 'action=new' .
-                        (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):''))
-                    . '">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></div></td>
+                    <td align="right" colspan="2"><div class="td_button">
+                    <?php echo '<a href="javascript:void(0)" onclick="show_banner(this,-1,'.$_GET['page'].',-1);check_radio(0)">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?>
+                    </div></td>
                   </tr>
                 </table>
 			</td>
@@ -751,71 +1108,11 @@ $banner_query = tep_db_query("
       $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_banner_form(1);"') .
           '</a>&nbsp;<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] .  '&bID=' . $_GET['bID'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
-    default:
-      if (is_object($bInfo)) {
-        $heading[] = array('text' => $bInfo->banners_title);
-
-        $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .  $_GET['page'] .  '&bID=' . $bInfo->banners_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission >= 15 ? (' <a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
-        );
-        if(tep_not_null($bInfo->user_added)){
-$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .$bInfo->user_added);
-        }else{
-$contents[] = array('text' =>  TEXT_USER_ADDED. ' ' .TEXT_UNSET_DATA);
-        }if(tep_not_null(tep_datetime_short($bInfo->date_added))){
-$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .tep_datetime_short($bInfo->date_added));
-        }else{
-$contents[] = array('text' =>  TEXT_DATE_ADDED. ' ' .TEXT_UNSET_DATA);
-        }if(tep_not_null($bInfo->user_update)){
-$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .$bInfo->user_update);
-        }else{
-$contents[] = array('text' =>  TEXT_USER_UPDATE. ' ' .TEXT_UNSET_DATA);
-        }if(tep_not_null(tep_datetime_short($bInfo->date_update))){
-$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .tep_datetime_short($bInfo->date_update));
-        }else{
-$contents[] = array('text' =>  TEXT_DATE_UPDATE. ' ' .TEXT_UNSET_DATA);
-        }
-
-
-        if ( (function_exists('imagecreate')) && ($dir_ok) && ($banner_extension) ) {
-          $banner_id = $bInfo->banners_id;
-          $days = '3';
-          include(DIR_WS_INCLUDES . 'graphs/banner_infobox.php');
-          $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image(DIR_WS_IMAGES . 'graphs/banner_infobox-' . $banner_id . '.' . $banner_extension));
-        } else {
-          include(DIR_WS_FUNCTIONS . 'html_graphs.php');
-          $contents[] = array('align' => 'center', 'text' => '<br>' . tep_banner_graph_infoBox($bInfo->banners_id, '3'));
-        }
-
-        $contents[] = array('text' => tep_image(DIR_WS_IMAGES . 'graph_hbar_blue.gif', 'Blue', '5', '5') . ' ' . TEXT_BANNERS_BANNER_VIEWS . '<br>' . tep_image(DIR_WS_IMAGES . 'graph_hbar_red.gif', 'Red', '5', '5') . ' ' . TEXT_BANNERS_BANNER_CLICKS);
-
-        if ($bInfo->date_scheduled) $contents[] = array('text' => '<br>' . sprintf(TEXT_BANNERS_SCHEDULED_AT_DATE, tep_date_short($bInfo->date_scheduled)));
-
-        if ($bInfo->expires_date) {
-          $contents[] = array('text' => '<br>' . sprintf(TEXT_BANNERS_EXPIRES_AT_DATE, tep_date_short($bInfo->expires_date)));
-        } elseif ($bInfo->expires_impressions) {
-          $contents[] = array('text' => '<br>' . sprintf(TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS, $bInfo->expires_impressions));
-        }
-
-        if ($bInfo->date_status_change) $contents[] = array('text' => '<br>' . sprintf(TEXT_BANNERS_STATUS_CHANGE, tep_date_short($bInfo->date_status_change)));
-      }
-      break;
-  }
-
-  if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-    echo '            <td class="right_column_a" width="25%" valign="top">' . "\n";
-
-    $box = new box;
-    echo $box->infoBox($heading, $contents);
-
-    echo '            </td>' . "\n";
   }
 ?>
           </tr>
         </table></td>
       </tr>
-<?php
-  }
-?>
     </table>
     </div> 
     </div>

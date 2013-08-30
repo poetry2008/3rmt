@@ -80,7 +80,7 @@
     返回值: 图表的头部和标签的html(string) 
 ------------------------------------ */
   function start_graph($vals, $names) {
-    $start_graph_string = '<table cellpadding="' . $vals['cellpadding'] . '" cellspacing="' . $vals['cellspacing'] . '" border="' . $vals['border'] . '"';
+    $start_graph_string = '<table id="banner_graph" cellpadding="' . $vals['cellpadding'] . '" cellspacing="' . $vals['cellspacing'] . '" border="' . $vals['border'] . '"';
 
     if ($vals['width'] != 0) $start_graph_string .= ' width="' . $vals['width'] . '"';
     if ($vals['background']) $start_graph_string .= ' background="' . $vals['background'] . '"';
@@ -99,15 +99,15 @@
       }
 
       $start_graph_string .= '  <tr>' . "\n" .
-                             '    <td align="center" valign="center"';
+                             '    <td align="center"';
 
 // if a background was choosen don't print cell BGCOLOR
       if (!$vals['background']) $start_graph_string .= ' bgcolor="' . $vals['hbgcolor'] . '"';
 
       $start_graph_string .= ' colspan="' . $colspan . '"><font color="' . $vals['hfcolor'] . '" style="' . $vals['hfstyle'] . '"><b>' . $vals['hlabel'] . '</b></font></td>' . "\n" .
                              '  </tr>' . "\n" .
-                             '  <tr>' . "\n" .
-                             '    <td align="center" valign="center"';
+                             '  <tr class="td_middle">' . "\n" .
+                             '    <td align="center" ';
 
 // if a background was choosen don't print cell BGCOLOR
       if (!$vals['background']) $start_graph_string .= ' bgcolor="' . $vals['vbgcolor'] . '"';
@@ -330,9 +330,9 @@
     返回值: 双垂直图表(string) 
 ------------------------------------ */
   function double_vertical_graph($names, $values, $bars, $vals, $dvalues, $dbars) {
-    $double_vertical_graph_string = '  <tr>' . "\n";
+    $double_vertical_graph_string = '  <tr class="td_bottom">' . "\n";
     for ($i = 0, $n = sizeof($values); $i < $n; $i++) {
-      $double_vertical_graph_string .= '    <td align="center" valign="bottom"';
+      $double_vertical_graph_string .= '    <td align="center"';
 
 // if a background was choosen don't print cell BGCOLOR
       if (!$vals['background']) $double_vertical_graph_string .= ' bgcolor="' . $vals['valuebgcolor'] . '"';

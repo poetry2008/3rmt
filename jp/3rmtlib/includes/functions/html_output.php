@@ -48,7 +48,7 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      $src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
+      $src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'cache_lists');
       if($height==0){
         $t_height = 0;
       }else{
@@ -116,7 +116,7 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      $src=thumbimage2(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache2');
+      $src=thumbimage2(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'cache_small');
       if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
          $width=ceil(($image_size[0]/$image_size[1])* $height);
       } elseif ($width>0) {
@@ -191,7 +191,7 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      $src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache3');
+      $src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'cache_large');
       if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
          $width=ceil(($image_size[0]/$image_size[1])* $height);
       } elseif ($width>0) {
@@ -600,10 +600,10 @@
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
-          $image = DIR_WS_IMAGES . 'imagecache' . $thumbfile;
+          $image = DIR_WS_IMAGES . 'cache_lists' . $thumbfile;
      } else {
           $iscached
-               ? $image = DIR_WS_IMAGES . 'imagecache' . $thumbfile
+               ? $image = DIR_WS_IMAGES . 'cache_lists' . $thumbfile
                : $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
      }
   return $image;
@@ -709,10 +709,10 @@
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
-          $image = DIR_WS_IMAGES . 'imagecache2' . $thumbfile;
+          $image = DIR_WS_IMAGES . 'cache_small' . $thumbfile;
      } else {
           $iscached
-               ? $image = DIR_WS_IMAGES . 'imagecache2' . $thumbfile
+               ? $image = DIR_WS_IMAGES . 'cache_small' . $thumbfile
                : $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
      }
 return $image;
@@ -819,10 +819,10 @@ return $image;
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
-          $image = DIR_WS_IMAGES . 'imagecache3' . $thumbfile;
+          $image = DIR_WS_IMAGES . 'cache_large' . $thumbfile;
      } else {
           $iscached
-               ? $image = DIR_WS_IMAGES . 'imagecache3' . $thumbfile
+               ? $image = DIR_WS_IMAGES . 'cache_large' . $thumbfile
                : $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
      }
 return $image;

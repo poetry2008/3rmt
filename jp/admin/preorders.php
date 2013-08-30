@@ -200,7 +200,8 @@
           '${PRODUCTS_QUANTITY}',
           '${PRODUCTS_NAME}',
           '${PRODUCTS_PRICE}',
-          '${SUB_TOTAL}'
+          '${SUB_TOTAL}',
+          '${ORDER_COMMENT}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -217,7 +218,8 @@
           $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
           $num_product_res['products_name'],
           $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
-          $ot_sub_total
+          $ot_sub_total,
+          preorders_a($oID)
         ),$comments
         );
         $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
@@ -234,6 +236,20 @@
           $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
           $search_products_name_array = tep_db_fetch_array($search_products_name_query);
           tep_db_free_result($search_products_name_query);
+          //自定义费用列表 
+          $totals_email_str = '';
+          $totals_email_query = tep_db_query("select title,value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_custom'");
+          while($totals_email_result = tep_db_fetch_array($totals_email_query)){
+
+            if($totals_email_result['title'] != '' && $totals_email_result['value'] != ''){
+
+
+              $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+            }
+          }
+          tep_db_free_result($totals_email_query);
+          $comments = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$comments);
+
           $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -441,7 +457,8 @@
         '${PRODUCTS_QUANTITY}',
         '${PRODUCTS_NAME}',
         '${PRODUCTS_PRICE}',
-        '${SUB_TOTAL}'
+        '${SUB_TOTAL}',
+        '${ORDER_COMMENT}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -458,7 +475,8 @@
         $num_product.SENDMAIL_EDIT_ORDERS_NUM_UNIT,
         $num_product_res['products_name'], 
         $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
-        $ot_sub_total
+        $ot_sub_total,
+        preorders_a($oID)
       ),$comments);
       $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_id = '".$check_status['customers_id']."'"); 
       $customer_info_res = tep_db_fetch_array($customer_info_raw); 
@@ -473,6 +491,19 @@
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$languages_id."' and (site_id='".$site_id."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
+        //自定义费用列表 
+        $totals_email_str = '';
+        $totals_email_query = tep_db_query("select title,value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_custom'");
+        while($totals_email_result = tep_db_fetch_array($totals_email_query)){
+
+          if($totals_email_result['title'] != '' && $totals_email_result['value'] != ''){
+
+
+            $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+          }
+        }
+        tep_db_free_result($totals_email_query);
+        $comments = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$comments);
         $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -920,7 +951,7 @@ function check_mail_list_product_status() {
   
   $.ajax({
     type:"POST",
-    data:"c_comments="+$('#l_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+    data:"c_comments="+$('#c_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
     async:false,
     url:'ajax_preorders.php?action=check_preorder_list_variable_data',
     success: function(msg) {
@@ -3489,7 +3520,7 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="l_comments"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="c_comments"'); ?>
         </td>
         </tr>
         <tr>

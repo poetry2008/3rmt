@@ -1015,7 +1015,13 @@ if($address_error == false){
               '${SITE_NAME}',
               '${SITE_URL}',
               '${SUPPORT_MAIL}',
-              '${PAY_DATE}'
+              '${PAY_DATE}',
+              '${COMMISSION}',
+              '${SHIPPING_FEE}',
+              '${ORDER_COMMENT}',
+              '${SHIPPING_METHOD}',
+              '${POINT}',
+              '${TOTAL}',
               ),array(
                 $check_status['customers_name'],
                 $check_status['customers_email_address'],
@@ -1027,7 +1033,13 @@ if($address_error == false){
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
-                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
+                date('Y'.SENDMAIL_TEXT_DATE_YEAR.'n'.SENDMAIL_TEXT_DATE_MONTH.'j'.SENDMAIL_TEXT_DATE_DAY,strtotime(tep_get_pay_day())),
+                $handle_fee,
+                $shipping_fee,
+                $comments_text,
+                '',
+                $point_fee,
+                $otm,
                 ),$comments);
         tep_order_status_change($oID,$status);
         tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
@@ -1096,6 +1108,7 @@ if($address_error == false){
           $total_details_mail = '';
           $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
           $order->totals = array();
+          $totals_email_str = '';
           while ($totals = tep_db_fetch_array($totals_query)) {
             if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
               if ($totals['class'] == "ot_point") {
@@ -1120,6 +1133,7 @@ if($address_error == false){
               // 去掉 决算费用  消费税
               $totals['title'] = str_replace(SENDMAIL_TEXT_TRANSACTION_FEE, SENDMAIL_TEXT_HANDLE_FEE_ONE, $totals['title']);
               $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+              $totals_email_str .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
 
@@ -1128,6 +1142,47 @@ if($address_error == false){
           $email_content = $products_ordered_mail;
           $email_content .= $total_details_mail;
           $email = str_replace('${CONTENT}', $email_content, $email); 
+          $email = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $email);
+          //自定义费用
+          if($totals_email_str != ''){
+            $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
+          }else{
+            $email = str_replace("\n".'${CUSTOMIZED_FEE}','', $email); 
+            $email = str_replace('${CUSTOMIZED_FEE}','', $email);
+          }
+          //address
+            if(isset($option_info_array) && !empty($option_info_array)){
+              $address_len_array = array();
+              foreach($option_info_array as $address_value){
+
+                $address_len_array[] = strlen($address_value);
+              }
+              $maxlen = max($address_len_array);
+              $email_address_str = "";
+              $email_address_str .= '------------------------------------------'."\n";
+              $maxlen = 9;
+              foreach($option_info_array as $ad_key=>$ad_value){
+                $ad_name_query = tep_db_query("select name from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
+                $ad_name_array = tep_db_fetch_array($ad_name_query);
+                tep_db_free_result($ad_name_query);
+                $ad_len = mb_strlen($ad_name_array['name'],'utf8');
+                $temp_str = str_repeat('　',$maxlen-$ad_len);
+                $email_address_str .= $ad_name_array['name'].$temp_str.'：'.$ad_value."\n";
+              }
+              $email_address_str .= '------------------------------------------'."\n";
+              $email = str_replace('${USER_ADDRESS}',$email_address_str,$email);
+            }else{
+              $email = str_replace("\n".'${USER_ADDRESS}','',$email); 
+              $email = str_replace('${USER_ADDRESS}','',$email);
+              $email = str_replace("\n".SENDMAIL_TEXT_ADDRESS_INFO_LEFT,'',$email);
+            }
+          //住所
+          if($email_address_str != ''){
+            $email = str_replace('${USER_ADDRESS}',str_replace('▼','',$email_address_str), $email);
+          }else{
+            $email = str_replace("\n".'${USER_ADDRESS}','', $email); 
+            $email = str_replace('${USER_ADDRESS}','', $email);
+          }
           $fetch_time_start_array = explode(' ', $check_status['torihiki_date']); 
           $fetch_time_end_array = explode(' ', $check_status['torihiki_date_end']); 
           
@@ -1756,9 +1811,23 @@ function products_num_check(orders_products_list_id,products_name,products_list_
     if (document.getElementsByName('payment_method')[0]) {
       payment_str = document.getElementsByName('payment_method')[0].value; 
     }
+    var is_cu_single = 1;
+    var start_num = $('#button_add_id').val(); 
+    var is_cu_str = ''; 
+    for (var s_num = start_num; s_num > 0; s_num--) {
+      if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
+        if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+          is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
+        }
+      }
+    }
+    is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
+    if (is_cu_str == '') {
+      is_cu_single = 0;
+    }
     $.ajax({
       type:'POST',
-      data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName("update_customer_name")[0].value+'&c_mail_info='+document.getElementsByName("update_customer_email_address")[0].value,
+      data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName("update_customer_name")[0].value+'&c_mail_info='+document.getElementsByName("update_customer_email_address")[0].value+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
       async: false,
       url:'ajax_orders.php?action=check_edit_order_variable_data',
       success: function(msg_info) {
@@ -4247,7 +4316,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         </tr>
       <tr>
         <td class="main" valign="top"><?php echo TABLE_HEADING_COMMENTS;?>:</td>
-        <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'],'style=" font-family:monospace; font-size:12px; width:100%;"'); ?></td>
+        <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', $_SESSION['orders_update_products'][$_GET['oID']]['comments_text'],'style="font-family:monospace; font-size:12px; width:100%;"'); ?></td>
       </tr>
         <?php } ?>
         </table>

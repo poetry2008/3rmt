@@ -391,6 +391,21 @@
     }
   }
   
+  // update total
+  $total_key_temp = ''; 
+  foreach ($update_totals as $total_key=>$total_value){
+
+    if($total_value['class'] == 'ot_custom' && trim($total_value['title']) == '' && $total_key_temp == ''){
+      $total_key_temp = $total_key;
+    }
+    if($total_value['class'] == 'ot_custom' && trim($total_value['title']) != '' && $total_key_temp != ''){
+
+      $update_totals_temp = $update_totals[$total_key_temp];
+      $update_totals[$total_key_temp] = $total_value;
+      $update_totals[$total_key] = $update_totals_temp;
+      break;
+    }
+  } 
   // 1.5.2. Summing up total
   foreach ($update_totals as $total_index => $total_details) {
   
@@ -783,6 +798,17 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$check_status['language_id']."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
+        //自定义费用列表 
+        $totals_email_str = '';
+        foreach($update_totals as $value){
+
+          if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
+
+
+            $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+          }
+        }
+        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
         $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
@@ -1026,9 +1052,23 @@ function submit_order_check(products_id,op_id){
   if (document.getElementsByName('payment_method')[0]) {
     payment_str = document.getElementsByName('payment_method')[0].value; 
   }
+  var is_cu_single = 1;
+  var start_num = $('#button_add_id').val(); 
+  var is_cu_str = ''; 
+  for (var s_num = start_num; s_num > 0; s_num--) {
+    if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
+      if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
+        is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
+      }
+    }
+  }
+  is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
+  if (is_cu_str == '') {
+    is_cu_single = 0;
+  }
   $.ajax({
     type:'POST',
-    data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+"&ensure_date="+ensure_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName('update_customer_name')[0].value+'&c_mail_info='+document.getElementsByName('update_customer_email_address')[0].value,
+    data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+"&ensure_date="+ensure_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName('update_customer_name')[0].value+'&c_mail_info='+document.getElementsByName('update_customer_email_address')[0].value+'&is_customized_fee='+is_cu_single,
     async:false,
     url:'ajax_preorders.php?action=check_edit_preorder_variable_data',
     success: function(msg_info) {

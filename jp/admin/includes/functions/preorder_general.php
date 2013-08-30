@@ -1646,14 +1646,14 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
         }
       }
       
-      $order_date_pos = strpos($comment_info, '${ORDER_DATE}');  
-      $t_order_date_pos = strpos($title_info, '${ORDER_DATE}');  
+      $order_date_pos = strpos($comment_info, '${PREORDER_DATE}');  
+      $t_order_date_pos = strpos($title_info, '${PREORDER_DATE}');  
       if (($order_date_pos !== false) || ($t_order_date_pos !== false)) {
         if (!tep_not_null($preorder_info['date_purchased']) || ($preorder_info['date_purchased'] == '0000-00-00 00:00:00')) {
           if ($is_list) {
-            $error_array[$o_value][] = '${ORDER_DATE}'; 
+            $error_array[$o_value][] = '${PREORDER_DATE}'; 
           } else {
-            $error_array[] = '${ORDER_DATE}'; 
+            $error_array[] = '${PREORDER_DATE}'; 
           }
         }
       }
@@ -1721,14 +1721,14 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
         }
       }
     
-      $order_number_pos = strpos($comment_info, '${ORDER_NUMBER}');   
-      $t_order_number_pos = strpos($title_info, '${ORDER_NUMBER}');   
+      $order_number_pos = strpos($comment_info, '${PREORDER_NUMBER}');   
+      $t_order_number_pos = strpos($title_info, '${PREORDER_NUMBER}');   
       if (($order_number_pos !== false) || ($t_order_number_pos !== false)) {
         if (!tep_not_null($preorder_info['orders_id'])) {
           if ($is_list) {
-            $error_array[$o_value][] = '${ORDER_NUMBER}'; 
+            $error_array[$o_value][] = '${PREORDER_NUMBER}'; 
           } else {
-            $error_array[] = '${ORDER_NUMBER}'; 
+            $error_array[] = '${PREORDER_NUMBER}'; 
           }
         }
       }
@@ -1978,6 +1978,46 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
           }
         }
       }
+      
+      $order_comment_pos = strpos($comment_info, '${ORDER_COMMENT}');   
+      $t_order_comment_pos = strpos($title_info, '${ORDER_COMMENT}');   
+      if (($order_comment_pos !== false) || ($t_order_comment_pos !== false)) {
+        if (!tep_not_null(preorders_a($o_value))) {
+          if ($is_list) {
+            $error_array[$o_value][] = '${ORDER_COMMENT}'; 
+          } else {
+            $error_array[] = '${ORDER_COMMENT}'; 
+          }
+        }
+      }
+      
+      $customized_fee_pos = strpos($comment_info, '${CUSTOMIZED_FEE}');   
+      $t_customized_fee_pos = strpos($title_info, '${CUSTOMIZED_FEE}');   
+      if (($customized_fee_pos !== false) || ($t_customized_fee_pos !== false)) {
+        $preorder_custom_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$o_value."' and class = 'ot_custom'"); 
+        if (tep_db_num_rows($preorder_custom_raw)) {
+          $is_cu_single = false; 
+          while ($preorder_custom_res = tep_db_fetch_array($preorder_custom_raw)) {
+            if (!tep_not_null($preorder_custom_res['value'])) {
+              $is_cu_single = true;
+              break;
+            }
+          }
+          if ($is_cu_single) {
+            if ($is_list) {
+              $error_array[$o_value][] = '${CUSTOMIZED_FEE}'; 
+            } else {
+              $error_array[] = '${CUSTOMIZED_FEE}'; 
+            }
+          }
+        } else {
+          if ($is_list) {
+            $error_array[$o_value][] = '${CUSTOMIZED_FEE}'; 
+          } else {
+            $error_array[] = '${CUSTOMIZED_FEE}'; 
+          }
+        }
+      }
     } else {
       if ($is_list) {
         $error_array[$o_value][] = '${SHIPPING_TIME}'; 
@@ -2005,6 +2045,8 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
         $error_array[$o_value][] = '${COMPANY_ADDRESS}'; 
         $error_array[$o_value][] = '${STAFF_MAIL}'; 
         $error_array[$o_value][] = '${SIGNATURE}'; 
+        $error_array[$o_value][] = '${ORDER_COMMENT}'; 
+        $error_array[$o_value][] = '${CUSTOMIZED_FEE}'; 
       } else {
         $error_array[] = '${SHIPPING_TIME}'; 
         $error_array[] = '${PAY_DATE}'; 
@@ -2031,6 +2073,8 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
         $error_array[] = '${COMPANY_ADDRESS}'; 
         $error_array[] = '${STAFF_MAIL}'; 
         $error_array[] = '${SIGNATURE}'; 
+        $error_array[] = '${ORDER_COMMENT}'; 
+        $error_array[] = '${CUSTOMIZED_FEE}'; 
       }   
     }
   }
@@ -2071,9 +2115,10 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
   参数: $c_mail_info(strng) 邮箱
   参数: $c_name_info(string) 名字
   参数: $c_payment_info(string) 方法
+  参数: $is_customized_fee(boolean) 是否自定义
   返回: 错误信息
   ----------------------*/
-function tep_check_edit_preorder_variable_data($o_id_info, $comment_info, $title_info, $ensure_date, $c_status_id, $c_name_info, $c_mail_info, $c_payment_info)
+function tep_check_edit_preorder_variable_data($o_id_info, $comment_info, $title_info, $ensure_date, $c_status_id, $c_name_info, $c_mail_info, $c_payment_info, $is_customized_fee)
 {
   global $ocertify; 
   $error_array = array();
@@ -2097,11 +2142,11 @@ function tep_check_edit_preorder_variable_data($o_id_info, $comment_info, $title
       }
     }
     
-    $order_date_pos = strpos($comment_info, '${ORDER_DATE}');  
-    $t_order_date_pos = strpos($title_info, '${ORDER_DATE}');  
+    $order_date_pos = strpos($comment_info, '${PREORDER_DATE}');  
+    $t_order_date_pos = strpos($title_info, '${PREORDER_DATE}');  
     if (($order_date_pos !== false) || ($t_order_date_pos !== false)) {
       if (!tep_not_null($preorder_info['date_purchased']) || ($preorder_info['date_purchased'] == '0000-00-00 00:00:00')) {
-        $error_array[] = '${ORDER_DATE}'; 
+        $error_array[] = '${PREORDER_DATE}'; 
       }
     }
     
@@ -2148,11 +2193,11 @@ function tep_check_edit_preorder_variable_data($o_id_info, $comment_info, $title
       }
     }
   
-    $order_number_pos = strpos($comment_info, '${ORDER_NUMBER}');   
-    $t_order_number_pos = strpos($title_info, '${ORDER_NUMBER}');   
+    $order_number_pos = strpos($comment_info, '${PREORDER_NUMBER}');   
+    $t_order_number_pos = strpos($title_info, '${PREORDER_NUMBER}');   
     if (($order_number_pos !== false) || ($t_order_number_pos !== false)) {
       if (!tep_not_null($preorder_info['orders_id'])) {
-        $error_array[] = '${ORDER_NUMBER}'; 
+        $error_array[] = '${PREORDER_NUMBER}'; 
       }
     }
    
@@ -2320,6 +2365,22 @@ function tep_check_edit_preorder_variable_data($o_id_info, $comment_info, $title
         $error_array[] = '${SIGNATURE}'; 
       }
     }
+    
+    $order_comment_pos = strpos($comment_info, '${ORDER_COMMENT}');   
+    $t_order_comment_pos = strpos($title_info, '${ORDER_COMMENT}');   
+    if (($order_comment_pos !== false) || ($t_order_comment_pos !== false)) {
+      if (!tep_not_null(preorders_a($o_id_info))) {
+        $error_array[] = '${ORDER_COMMENT}'; 
+      }
+    }
+      
+    $customized_fee_pos = strpos($comment_info, '${CUSTOMIZED_FEE}');   
+    $t_customized_fee_pos = strpos($title_info, '${CUSTOMIZED_FEE}');
+    if (($customized_fee_pos !== false) || ($t_customized_fee_pos !== false)) {
+      if (!$is_customized_fee) {
+        $error_array[] = '${CUSTOMIZED_FEE}'; 
+      }
+    }
   } else {
       $error_array[] = '${SHIPPING_TIME}'; 
       $error_array[] = '${PAY_DATE}'; 
@@ -2346,6 +2407,8 @@ function tep_check_edit_preorder_variable_data($o_id_info, $comment_info, $title
       $error_array[] = '${COMPANY_ADDRESS}'; 
       $error_array[] = '${STAFF_MAIL}'; 
       $error_array[] = '${SIGNATURE}'; 
+      $error_array[] = '${ORDER_COMMENT}'; 
+      $error_array[] = '${CUSTOMIZED_FEE}'; 
     }
   if (!empty($error_array)) {
     $error_str = ''; 
@@ -2365,9 +2428,10 @@ function tep_check_edit_preorder_variable_data($o_id_info, $comment_info, $title
   参数: $title_info(string) 标题信息
   参数: $c_status_id(int) 状态id
   参数: $c_payment_info(string) 方法
+  参数: $is_customized_fee(boolean) 是否自定义
   返回: 错误信息
   ----------------------*/
-function tep_check_new_preorder_variable_data($comment_info, $title_info, $c_status_id, $c_payment_info)
+function tep_check_new_preorder_variable_data($comment_info, $title_info, $c_status_id, $c_payment_info, $is_customized_fee)
 {
   global $ocertify; 
   $error_array = array();
@@ -2389,12 +2453,12 @@ function tep_check_new_preorder_variable_data($comment_info, $title_info, $c_sta
     }
   }
   
-  $order_date_pos = strpos($comment_info, '${ORDER_DATE}');  
-  $t_order_date_pos = strpos($title_info, '${ORDER_DATE}');  
+  $order_date_pos = strpos($comment_info, '${PREORDER_DATE}');  
+  $t_order_date_pos = strpos($title_info, '${PREORDER_DATE}');  
   if (($order_date_pos !== false) || ($t_order_date_pos !== false)) {
     $tmp_order_date = time(); 
     if (!$tmp_order_date) { 
-      $error_array[] = '${ORDER_DATE}'; 
+      $error_array[] = '${PREORDER_DATE}'; 
     }
   }
   
@@ -2439,175 +2503,198 @@ function tep_check_new_preorder_variable_data($comment_info, $title_info, $c_sta
     }
   }
   
-    $order_number_pos = strpos($comment_info, '${ORDER_NUMBER}');   
-    $t_order_number_pos = strpos($title_info, '${ORDER_NUMBER}');   
-    if (($order_number_pos !== false) || ($t_order_number_pos !== false)) {
-      if (!tep_not_null($preorder_info['orders_id'])) {
-        $error_array[] = '${ORDER_NUMBER}'; 
-      }
+  $order_number_pos = strpos($comment_info, '${PREORDER_NUMBER}');   
+  $t_order_number_pos = strpos($title_info, '${PREORDER_NUMBER}');   
+  if (($order_number_pos !== false) || ($t_order_number_pos !== false)) {
+    if (!tep_not_null($preorder_info['orders_id'])) {
+      $error_array[] = '${PREORDER_NUMBER}'; 
     }
-    
-    $order_total_pos = strpos($comment_info, '${ORDER_TOTAL}');   
-    $t_order_total_pos = strpos($title_info, '${ORDER_TOTAL}');   
-    if (($order_total_pos !== false) || ($t_order_total_pos !== false)) {
-      if (isset($_SESSION['preorder_products'][$preorder_info['orders_id']]['ot_total'])) {
-        if (is_null($_SESSION['preorder_products'][$preorder_info['orders_id']]['ot_total']) || (trim($_SESSION['preorder_products'][$preorder_info['orders_id']]['ot_total']) == '')) {
+  }
+  
+  $order_total_pos = strpos($comment_info, '${ORDER_TOTAL}');   
+  $t_order_total_pos = strpos($title_info, '${ORDER_TOTAL}');   
+  if (($order_total_pos !== false) || ($t_order_total_pos !== false)) {
+    if (isset($_SESSION['preorder_products'][$preorder_info['orders_id']]['ot_total'])) {
+      if (is_null($_SESSION['preorder_products'][$preorder_info['orders_id']]['ot_total']) || (trim($_SESSION['preorder_products'][$preorder_info['orders_id']]['ot_total']) == '')) {
+        $error_array[] = '${ORDER_TOTAL}'; 
+      }
+    } else {
+      if (isset($_SESSION['create_preorder']['orders_total']['ot_total']['value'])) {
+        if (is_null($_SESSION['create_preorder']['orders_total']['ot_total']['value']) || (trim($_SESSION['create_preorder']['orders_total']['ot_total']['value']) == '')) {
           $error_array[] = '${ORDER_TOTAL}'; 
         }
       } else {
-        if (isset($_SESSION['create_preorder']['orders_total']['ot_total']['value'])) {
-          if (is_null($_SESSION['create_preorder']['orders_total']['ot_total']['value']) || (trim($_SESSION['create_preorder']['orders_total']['ot_total']['value']) == '')) {
-            $error_array[] = '${ORDER_TOTAL}'; 
-          }
-        } else {
-          $error_array[] = '${ORDER_TOTAL}'; 
-        }
+        $error_array[] = '${ORDER_TOTAL}'; 
       }
     }
-    
-    $order_status_pos = strpos($comment_info, '${ORDER_STATUS}');   
-    $t_order_status_pos = strpos($title_info, '${ORDER_STATUS}');   
-    if (($order_status_pos !== false) || ($t_order_status_pos !== false)) {
-      $order_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$c_status_id."'"); 
-      $order_status = tep_db_fetch_array($order_status_raw); 
-      if ($order_status) {
-        if (!tep_not_null($order_status['orders_status_name'])) {
-          $error_array[] = '${ORDER_STATUS}'; 
-        }
-      } else {
+  }
+  
+  $order_status_pos = strpos($comment_info, '${ORDER_STATUS}');   
+  $t_order_status_pos = strpos($title_info, '${ORDER_STATUS}');   
+  if (($order_status_pos !== false) || ($t_order_status_pos !== false)) {
+    $order_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$c_status_id."'"); 
+    $order_status = tep_db_fetch_array($order_status_raw); 
+    if ($order_status) {
+      if (!tep_not_null($order_status['orders_status_name'])) {
         $error_array[] = '${ORDER_STATUS}'; 
       }
+    } else {
+      $error_array[] = '${ORDER_STATUS}'; 
     }
-    
-    $site_name_pos = strpos($comment_info, '${SITE_NAME}');   
-    $t_site_name_pos = strpos($title_info, '${SITE_NAME}');   
-    if (($site_name_pos !== false) || ($t_site_name_pos !== false)) {
-      $sites_info_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$preorder_info['site_id']."'"); 
-      $sites_info = tep_db_fetch_array($sites_info_raw); 
-      if ($sites_info) {
-        if (!tep_not_null($sites_info['name'])) {
-          $error_array[] = '${SITE_NAME}'; 
-        }
-      } else {
+  }
+  
+  $site_name_pos = strpos($comment_info, '${SITE_NAME}');   
+  $t_site_name_pos = strpos($title_info, '${SITE_NAME}');   
+  if (($site_name_pos !== false) || ($t_site_name_pos !== false)) {
+    $sites_info_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$preorder_info['site_id']."'"); 
+    $sites_info = tep_db_fetch_array($sites_info_raw); 
+    if ($sites_info) {
+      if (!tep_not_null($sites_info['name'])) {
         $error_array[] = '${SITE_NAME}'; 
       }
+    } else {
+      $error_array[] = '${SITE_NAME}'; 
     }
-  
-    $support_mail_pos = strpos($comment_info, '${SUPPORT_MAIL}');   
-    $t_support_mail_pos = strpos($title_info, '${SUPPORT_MAIL}');   
-    if (($support_mail_pos !== false) || ($t_support_mail_pos !== false)) {
-      if (!tep_not_null(get_configuration_by_site_id_or_default('SUPPORT_EMAIL_ADDRESS', $preorder_info['site_id']))) {
-        $error_array[] = '${SUPPORT_MAIL}'; 
-      }
+  }
+
+  $support_mail_pos = strpos($comment_info, '${SUPPORT_MAIL}');   
+  $t_support_mail_pos = strpos($title_info, '${SUPPORT_MAIL}');   
+  if (($support_mail_pos !== false) || ($t_support_mail_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('SUPPORT_EMAIL_ADDRESS', $preorder_info['site_id']))) {
+      $error_array[] = '${SUPPORT_MAIL}'; 
     }
-  
-    $company_name_pos = strpos($comment_info, '${COMPANY_NAME}');   
-    $t_company_name_pos = strpos($title_info, '${COMPANY_NAME}');   
-    if (($company_name_pos !== false) || ($t_company_name_pos !== false)) {
-      if (!tep_not_null(get_configuration_by_site_id_or_default('COMPANY_NAME', $preorder_info['site_id']))) {
-        $error_array[] = '${COMPANY_NAME}'; 
-      }
+  }
+
+  $company_name_pos = strpos($comment_info, '${COMPANY_NAME}');   
+  $t_company_name_pos = strpos($title_info, '${COMPANY_NAME}');   
+  if (($company_name_pos !== false) || ($t_company_name_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('COMPANY_NAME', $preorder_info['site_id']))) {
+      $error_array[] = '${COMPANY_NAME}'; 
     }
-  
-    $company_tel_pos = strpos($comment_info, '${COMPANY_TEL}');   
-    $t_company_tel_pos = strpos($title_info, '${COMPANY_TEL}');   
-    if (($company_tel_pos !== false) || ($t_company_tel_pos !== false)) {
-      if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_TEL', $preorder_info['site_id']))) {
-        $error_array[] = '${COMPANY_TEL}'; 
-      }
+  }
+
+  $company_tel_pos = strpos($comment_info, '${COMPANY_TEL}');   
+  $t_company_tel_pos = strpos($title_info, '${COMPANY_TEL}');   
+  if (($company_tel_pos !== false) || ($t_company_tel_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_TEL', $preorder_info['site_id']))) {
+      $error_array[] = '${COMPANY_TEL}'; 
     }
-  
-    $staff_name_pos = strpos($comment_info, '${STAFF_NAME}');   
-    $t_staff_name_pos = strpos($title_info, '${STAFF_NAME}');   
-    if (($staff_name_pos !== false) || ($t_staff_name_pos !== false)) {
-      $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
-      $admin_user = tep_db_fetch_array($admin_user_query); 
-      if ($admin_user) {
-        if (!tep_not_null($admin_user['name'])) {
-          $error_array[] = '${STAFF_NAME}'; 
-        }
-      } else {
+  }
+
+  $staff_name_pos = strpos($comment_info, '${STAFF_NAME}');   
+  $t_staff_name_pos = strpos($title_info, '${STAFF_NAME}');   
+  if (($staff_name_pos !== false) || ($t_staff_name_pos !== false)) {
+    $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+    $admin_user = tep_db_fetch_array($admin_user_query); 
+    if ($admin_user) {
+      if (!tep_not_null($admin_user['name'])) {
         $error_array[] = '${STAFF_NAME}'; 
       }
+    } else {
+      $error_array[] = '${STAFF_NAME}'; 
     }
-    
-    $user_info_pos = strpos($comment_info, '${USER_INFO}');   
-    $t_user_info_pos = strpos($title_info, '${USER_INFO}');   
-    if (($user_info_pos !== false) || ($t_user_info_pos !== false)) {
-      $error_array[] = '${USER_INFO}'; 
-    }
+  }
   
-    $https_server_pos = strpos($comment_info, '${HTTPS_SERVER}');   
-    $t_https_server_pos = strpos($title_info, '${HTTPS_SERVER}');   
-    if (($https_server_pos !== false) || ($t_https_server_pos !== false)) {
-      $error_array[] = '${HTTPS_SERVER}'; 
-    }
-    
-    $user_name_pos = strpos($comment_info, '${USER_NAME}');   
-    $t_user_name_pos = strpos($title_info, '${USER_NAME}');   
-    if (($user_name_pos !== false) || ($t_user_name_pos !== false)) {
-      if (!tep_not_null($preorder_info['customers_name'])) {
-        $error_array[] = '${USER_NAME}'; 
-      }
-    }
+  $user_info_pos = strpos($comment_info, '${USER_INFO}');   
+  $t_user_info_pos = strpos($title_info, '${USER_INFO}');   
+  if (($user_info_pos !== false) || ($t_user_info_pos !== false)) {
+    $error_array[] = '${USER_INFO}'; 
+  }
+
+  $https_server_pos = strpos($comment_info, '${HTTPS_SERVER}');   
+  $t_https_server_pos = strpos($title_info, '${HTTPS_SERVER}');   
+  if (($https_server_pos !== false) || ($t_https_server_pos !== false)) {
+    $error_array[] = '${HTTPS_SERVER}'; 
+  }
   
-    $payment_pos = strpos($comment_info, '${PAYMENT}');   
-    $t_payment_pos = strpos($title_info, '${PAYMENT}');   
-    if (($payment_pos !== false) || ($t_payment_pos !== false)) {
-      if (!tep_not_null($c_payment_info)) {
-        $error_array[] = '${PAYMENT}'; 
-      }
+  $user_name_pos = strpos($comment_info, '${USER_NAME}');   
+  $t_user_name_pos = strpos($title_info, '${USER_NAME}');   
+  if (($user_name_pos !== false) || ($t_user_name_pos !== false)) {
+    if (!tep_not_null($preorder_info['customers_name'])) {
+      $error_array[] = '${USER_NAME}'; 
     }
-     
-    $mail_comment_pos = strpos($comment_info, '${MAIL_COMMENT}');   
-    $t_mail_comment_pos = strpos($title_info, '${MAIL_COMMENT}');   
-    if (($mail_comment_pos !== false) || ($t_mail_comment_pos !== false)) {
-      $error_array[] = '${MAIL_COMMENT}'; 
+  }
+
+  $payment_pos = strpos($comment_info, '${PAYMENT}');   
+  $t_payment_pos = strpos($title_info, '${PAYMENT}');   
+  if (($payment_pos !== false) || ($t_payment_pos !== false)) {
+    if (!tep_not_null($c_payment_info)) {
+      $error_array[] = '${PAYMENT}'; 
     }
-  
-    $site_url_pos = strpos($comment_info, '${SITE_URL}');   
-    $t_site_url_pos = strpos($title_info, '${SITE_URL}');   
-    if (($site_url_pos !== false) || ($t_site_url_pos !== false)) {
-      $site_url_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$preorder_info['site_id']."'"); 
-      $site_url = tep_db_fetch_array($site_url_raw); 
-      if ($site_url) {
-        if (!tep_not_null($site_url['url'])) {
-          $error_array[] = '${SITE_URL}'; 
-        }
-      } else {
+  }
+   
+  $mail_comment_pos = strpos($comment_info, '${MAIL_COMMENT}');   
+  $t_mail_comment_pos = strpos($title_info, '${MAIL_COMMENT}');   
+  if (($mail_comment_pos !== false) || ($t_mail_comment_pos !== false)) {
+    $error_array[] = '${MAIL_COMMENT}'; 
+  }
+
+  $site_url_pos = strpos($comment_info, '${SITE_URL}');   
+  $t_site_url_pos = strpos($title_info, '${SITE_URL}');   
+  if (($site_url_pos !== false) || ($t_site_url_pos !== false)) {
+    $site_url_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$preorder_info['site_id']."'"); 
+    $site_url = tep_db_fetch_array($site_url_raw); 
+    if ($site_url) {
+      if (!tep_not_null($site_url['url'])) {
         $error_array[] = '${SITE_URL}'; 
       }
+    } else {
+      $error_array[] = '${SITE_URL}'; 
     }
-  
-    $company_address_pos = strpos($comment_info, '${COMPANY_ADDRESS}');   
-    $t_company_address_pos = strpos($title_info, '${COMPANY_ADDRESS}');   
-    if (($company_address_pos !== false) || ($t_company_address_pos !== false)) {
-      if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_ADDRESS', $preorder_info['site_id']))) {
-        $error_array[] = '${COMPANY_ADDRESS}'; 
-      }
+  }
+
+  $company_address_pos = strpos($comment_info, '${COMPANY_ADDRESS}');   
+  $t_company_address_pos = strpos($title_info, '${COMPANY_ADDRESS}');   
+  if (($company_address_pos !== false) || ($t_company_address_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('STORE_NAME_ADDRESS', $preorder_info['site_id']))) {
+      $error_array[] = '${COMPANY_ADDRESS}'; 
     }
-  
-    $staff_mail_pos = strpos($comment_info, '${STAFF_MAIL}');   
-    $t_staff_mail_pos = strpos($title_info, '${STAFF_MAIL}');   
-    if (($staff_mail_pos !== false) || ($t_staff_mail_pos !== false)) {
-      $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
-      $admin_user = tep_db_fetch_array($admin_user_query); 
-      if ($admin_user) {
-        if (!tep_not_null($admin_user['email'])) {
-          $error_array[] = '${STAFF_MAIL}'; 
-        }
-      } else {
+  }
+
+  $staff_mail_pos = strpos($comment_info, '${STAFF_MAIL}');   
+  $t_staff_mail_pos = strpos($title_info, '${STAFF_MAIL}');   
+  if (($staff_mail_pos !== false) || ($t_staff_mail_pos !== false)) {
+    $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+    $admin_user = tep_db_fetch_array($admin_user_query); 
+    if ($admin_user) {
+      if (!tep_not_null($admin_user['email'])) {
         $error_array[] = '${STAFF_MAIL}'; 
       }
+    } else {
+      $error_array[] = '${STAFF_MAIL}'; 
     }
-  
-    $signature_pos = strpos($comment_info, '${SIGNATURE}');   
-    $t_signature_pos = strpos($title_info, '${SIGNATURE}');   
-    if (($signature_pos !== false) || ($t_signature_pos !== false)) {
-      if (!tep_not_null(get_configuration_by_site_id_or_default('C_EMAIL_FOOTER', $preorder_info['site_id']))) {
-        $error_array[] = '${SIGNATURE}'; 
+  }
+
+  $signature_pos = strpos($comment_info, '${SIGNATURE}');   
+  $t_signature_pos = strpos($title_info, '${SIGNATURE}');   
+  if (($signature_pos !== false) || ($t_signature_pos !== false)) {
+    if (!tep_not_null(get_configuration_by_site_id_or_default('C_EMAIL_FOOTER', $preorder_info['site_id']))) {
+      $error_array[] = '${SIGNATURE}'; 
+    }
+  }
+
+  $order_comment_pos = strpos($comment_info, '${ORDER_COMMENT}');   
+  $t_order_comment_pos = strpos($title_info, '${ORDER_COMMENT}');   
+  if (($order_comment_pos !== false) || ($t_order_comment_pos !== false)) {
+    if ($_SESSION['create_preorder']['orders_products']) {
+      foreach ($_SESSION['create_preorder']['orders_products'] as $o_pid => $orders_products_info) {
+        if (!check_new_preorders_a($orders_products_info['products_id'], $preorder_info['site_id'])) {
+          $error_array[] = '${ORDER_COMMENT}'; 
+        }
       }
+    } else {
+      $error_array[] = '${ORDER_COMMENT}'; 
     }
+  }
+    
+  $customized_fee_pos = strpos($comment_info, '${CUSTOMIZED_FEE}');   
+  $t_customized_fee_pos = strpos($title_info, '${CUSTOMIZED_FEE}');
+  if (($customized_fee_pos !== false) || ($t_customized_fee_pos !== false)) {
+    if (!$is_customized_fee) {
+      $error_array[] = '${CUSTOMIZED_FEE}'; 
+    }
+  }
+  
   if (!empty($error_array)) {
     $error_str = '';
     $error_tmp_array = array_unique($error_array);
@@ -2618,4 +2705,25 @@ function tep_check_new_preorder_variable_data($comment_info, $title_info, $c_sta
   } else {
     return ''; 
   }
+}
+
+/* -------------------------------------
+    功能: 检查该预约订单的商品的指定信息是否为空 
+    参数: $products_id(int) 商品id 
+    返回值: 是否为空(boolean) 
+ ------------------------------------ */
+function check_new_preorders_a($products_id, $site_id)
+{
+  $single = false; 
+  $sql = "select pd.products_name,p.products_attention_5,p.products_id from `".TABLE_PRODUCTS_DESCRIPTION."` pd,".TABLE_PRODUCTS." p WHERE p.products_id=pd.products_id and p.`products_id`='".$products_id."' and pd.site_id = '".$site_id."'";
+  $products_description = tep_db_fetch_array(tep_db_query($sql));
+  if ($products_description) {
+    if ($products_description['products_attention_5']) {
+      $single = true; 
+    }
+  }
+  if (!$single) {
+    return false; 
+  }
+  return true;
 }

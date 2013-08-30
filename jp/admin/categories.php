@@ -214,6 +214,8 @@ if (isset($_GET['action']) && $_GET['action']) {
     $products_id = tep_db_prepare_input($_GET['pID']);
     $site_id     = tep_db_prepare_input($_GET['site_id']);
     $relate_products_id = tep_db_prepare_input($_POST['relate_products_id']);
+    //如果实际库存为空时,默认为0
+    $_POST['products_real_quantity'] = $_POST['products_real_quantity'] == '' ? 0 : $_POST['products_real_quantity'];
     //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
     $update_sql_data = array(
@@ -344,6 +346,8 @@ if (isset($_GET['action']) && $_GET['action']) {
     tep_isset_eof();
     $products_id = tep_db_prepare_input($_GET['pID']);
     $site_id     = tep_db_prepare_input($_POST['pID']);
+    //如果实际库存为空时,默认为0
+    $_POST['products_real_quantity'] = $_POST['products_real_quantity'] == '' ? 0 : $_POST['products_real_quantity'];
     //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
     $update_sql_data = array(
@@ -893,6 +897,8 @@ if (isset($_GET['action']) && $_GET['action']) {
     case 'update_product':
     tep_isset_eof();
     $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+    //如果实际库存为空时,默认为0
+    $_POST['products_real_quantity'] = $_POST['products_real_quantity'] == '' ? 0 : $_POST['products_real_quantity'];
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
     else $site_arr="";
     forward401Unless(editPermission($site_arr, $site_id));
@@ -1576,7 +1582,7 @@ if (file_exists(tep_get_upload_root())) {
 //删除商品图像
 if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
   $image_location  = tep_get_upload_dir($site_id). 'products/' . $_GET['file'];//原始图像
-  $image_location2 = tep_get_upload_dir($site_id) .'imagecache3/'. $_GET['file'];//缩略图
+  $image_location2 = tep_get_upload_dir($site_id) .'cache_large/'. $_GET['file'];//缩略图
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
   if (file_exists($image_location2)) @unlink($image_location2);
@@ -2581,7 +2587,11 @@ function toggle_category_form(c_permission, cf_type)
     if (cf_type == 0) {
       document.forms.delete_category.submit(); 
     } else if (cf_type == 1) {
-      document.forms.insert_product.submit(); 
+      <?php //对连续点击提交的处理?>
+      if($("#check_submit_flag").val() == '0'){
+        document.forms.insert_product.submit(); 
+        $("#check_submit_flag").val('1');
+      }
     } else if (cf_type == 2) {
       document.forms.update_product.submit(); 
     } else if (cf_type == 3) {
@@ -2611,7 +2621,11 @@ function toggle_category_form(c_permission, cf_type)
           if (cf_type == 0) {
             document.forms.delete_category.submit(); 
           } else if (cf_type == 1) {
-            document.forms.insert_product.submit(); 
+            <?php //对连续点击提交的处理?>
+            if($("#check_submit_flag").val() == '0'){
+              document.forms.insert_product.submit(); 
+              $("#check_submit_flag").val('1');
+            }
           } else if (cf_type == 2) {
             document.forms.update_product.submit(); 
           } else if (cf_type == 3) {
@@ -2660,7 +2674,11 @@ function toggle_category_form(c_permission, cf_type)
                 if (cf_type == 0) {
                   document.forms.delete_category.submit(); 
                 } else if (cf_type == 1) {
-                  document.forms.insert_product.submit(); 
+                  <?php //对连续点击提交的处理?>
+                  if($("#check_submit_flag").val() == '0'){
+                    document.forms.insert_product.submit(); 
+                    $("#check_submit_flag").val('1');
+                  }
                 } else if (cf_type == 2) {
                   document.forms.update_product.submit(); 
                 } else if (cf_type == 3) {
@@ -3155,7 +3173,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue">' . TEXT_PRODUCTS_REAL_QUANTITY . '</font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : 'id="products_real_quantity" onkeyup="clearLibNum(this);"')); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity : ($_GET['action'] == 'new_product' ? '' : '0'), ($site_id ? 'class="readonly" readonly' : 'id="products_real_quantity" onkeyup="clearLibNum(this);"')); ?></td>
                 </tr>
                 <tr>
                 <td>&nbsp;</td>
@@ -4189,7 +4207,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if ($_GET['pID']) {
                   echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_UPDATE, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'2\')"').'</a>';
                 } else {
-                  echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_INSERT, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'1\')"').'</a>';
+                  echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_INSERT, 'onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'1\')"').'</a><input type="hidden" id="check_submit_flag" value="0">';
                 }
                 echo tep_draw_hidden_field('relate_products_id', $_POST['relate_products_id']); 
                 foreach ($_POST['carttags'] as $ck => $ct) {
