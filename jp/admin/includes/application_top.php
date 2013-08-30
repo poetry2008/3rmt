@@ -12,7 +12,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // Set the level of error reporting
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
-  ini_set("display_errors", "Off");
+  ini_set("display_errors", "On");
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
