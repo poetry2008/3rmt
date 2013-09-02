@@ -140,7 +140,7 @@ define('TEXT_CUSTOMER_ORDER_HISTORY_TABLE',tep_image(DIR_WS_IMAGES . 'icon_front
 define('TEXT_ORDER_HISTORY',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;注文履歴');
 define('TEXT_PRODUCTS_SHOW_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;新着商品表示数');
 define('TEXT_PRODUCTS_LIST_DISPLAY',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;商品リスト表示件数');
-define('TEXT_COMMODITY_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;一覧に表示される画像の横幅');
+define('TEXT_COMMODITY_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;一覧に表示される商品画像の横幅');
 define('TEXT_COMMODITY_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;一覧に表示される商品画像の縦幅');
 define('TEXT_COMMODITY_SPECIFIC_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（大）の横幅');
 define('TEXT_COMMODITY_SPECIFIC_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（大）の縦幅');
@@ -241,8 +241,6 @@ define('TEXT_CALENDAR_SETTING_MONTH_START','当月含めて');
 define('TEXT_CALENDAR_SETTING_MONTH_END','か月分');
 define('TEXT_COMMENTS_BAN_CHARACTER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;投稿禁止ワード');
 define('TEXT_ALARM_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;アラートログの保存日数');
-define('TEXT_MANUAFACTURERS_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;メーカー一覧画像の横幅');
-define('TEXT_MANUAFACTURERS_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;メーカー一覧画像の縦幅');
 define('TEXT_PWD_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;操作ログの保存日数');
 define('TEXT_USERS_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ユーザログの保存日数');
 define('TEXT_ADMIN_POINT_MAIL',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ポイントお知らせメール');

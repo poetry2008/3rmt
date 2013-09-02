@@ -239,8 +239,6 @@ define('TEXT_CALENDAR_SETTING_MONTH_START','包含本月');
 define('TEXT_CALENDAR_SETTING_MONTH_END','个月');
 define('TEXT_COMMENTS_BAN_CHARACTER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;评论禁止字符');
 define('TEXT_ALARM_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;提醒日志的保存天数');
-define('TEXT_MANUAFACTURERS_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;制造商列表图像的宽度');
-define('TEXT_MANUAFACTURERS_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;制造商列表图像的高度');
 define('TEXT_PWD_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;操作日志的保存天数');
 define('TEXT_USERS_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;用户日志的保存天数');
 define('TEXT_ADMIN_POINT_MAIL',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;点数通知邮件');
