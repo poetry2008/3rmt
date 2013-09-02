@@ -178,7 +178,7 @@ while ($tag = tep_db_fetch_array($tags_query))
       echo '<td align="center" valign="top" class="smallText" width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
-            echo '<div class="tag_image01">';
+            echo '<div>';
                         if ($products['products_image'])
                         {
                           echo tep_image(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
