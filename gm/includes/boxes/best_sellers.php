@@ -118,12 +118,12 @@
 <?php
 if (!empty($best_sellers['products_image'])) {
   if (file_exists(DIR_FS_CATALOG.DIR_WS_IMAGES.'products/'.$best_sellers['products_image'])) {
-    echo tep_image_new(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], 89, 93);
+    echo tep_image(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
   } else {
-    echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], 89, 93);
+    echo tep_image(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
   }
 } else {
-  echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], 89, 93);
+  echo tep_image(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
 }
 ?>
 </a>
