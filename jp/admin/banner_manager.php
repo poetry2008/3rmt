@@ -194,7 +194,7 @@
           if ( (empty($html_text)) && ($store_image == true) ) {
             tep_copy_uploaded_file($banners_image, $image_directory);
           }
-          $db_image_location = (tep_not_null($banners_image_local)) ? $banners_image_local : $banners_image_target . $banners_image['name'];
+          $db_image_location = $banners_image['name'];
           $sql_data_array = array('banners_title'     => $banners_title,
                                   'banners_url'       => $banners_url,
                                   'banners_image'     => $db_image_location,
@@ -224,9 +224,7 @@
           }
 
             $expires_date = tep_db_prepare_input($_POST['expires_date']);
-
-          if (isset($_POST['expires_date']) && $_POST['expires_date']) {
-            print_r($_POST);
+          if (isset($_POST['expires_date']) && $_POST['expires_date'] && $_POST['expires_date'] != ' ') {
             list($day, $month, $year) = explode('/', $expires_date);
 
             $expires_date = $year .
@@ -235,13 +233,7 @@
             tep_db_query(" update " . TABLE_BANNERS . " set expires_date = '" . tep_db_input($expires_date) . "', expires_impressions = null where banners_id = '" . $banners_id . "' and site_id = '" .$site_id."' ");
           } elseif (isset($_POST['impressions']) && $_POST['impressions']) {
             $impressions = tep_db_prepare_input($_POST['impressions']);
-            tep_db_query("
-                update " . TABLE_BANNERS . " 
-                set expires_impressions = '" . tep_db_input($impressions) . "', 
-                    expires_date = ".tep_db_input($expires_date)."
-                where banners_id = '" . $banners_id . "'
-                and site_id = '" .$site_id."'
-            ");
+            tep_db_query(" update " . TABLE_BANNERS . " set expires_impressions = '" . tep_db_input($impressions) . "', expires_date = '".tep_db_input($expires_date)."' where banners_id = '" . $banners_id . "' and site_id = '" .$site_id."' ");    
           }else if($_POST['expires_date'] == ''){
             tep_db_query(" update " . TABLE_BANNERS . " set date_scheduled = '".$_POST['date_scheduled']."',expires_date = '" . tep_db_input($expires_date) . "' where banners_id = '" . $banners_id . "' and site_id = '" .$site_id."' ");
           }
