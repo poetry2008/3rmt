@@ -41,6 +41,12 @@ $tags_query_string = "
 $tags_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
 //ccdd
 $tags_query = tep_db_query($tags_query_string);
+
+
+$all_tags_page = ceil($tags_numrows/MAX_DISPLAY_SEARCH_RESULTS);
+if($_GET['page'] > $all_tags_page){
+  forward404();
+}
 if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3')))
 {
 ?>

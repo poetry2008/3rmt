@@ -5,9 +5,9 @@
   require('includes/application_top.php');
   //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
   forward404();  
-  define('NAVBAR_TITLE', 'ゲームメーカー一覧');
-  define('HEADING_TITLE', 'ゲームメーカー一覧');
-  define('TEXT_MORE', 'このメーカー一覧の商品一覧へ');
+  define('NAVBAR_TITLE', TEXT_MANUFACTURERS_TITLE);
+  define('HEADING_TITLE', TEXT_MANUFACTURERS_TITLE);
+  define('TEXT_MORE', TEXT_MANUFACTURERS_PRODUCT_LIST);
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 ?>
