@@ -32,6 +32,25 @@ foreach($p_image_list as $p_list_row){
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/product_info.js"></script>
+<?php if($p_image_count>1){ ?>
+<script type="text/javascript" src="js/jquery.featureCarousel.js" ></script>
+<script type="text/javascript" src="js/jquery.lightbox-0.5.js"></script>
+<link rel="stylesheet" href="css/jquery.lightbox-0.5.css" type="text/css">
+<link rel="stylesheet" href="css/feature-carousel.css" type="text/css">
+<script type="text/javascript">
+$(document).ready(function() {
+  var carousel = $("#carousel").featureCarousel({
+      largeFeatureWidth:   <?php echo  PRODUCT_INFO_IMAGE_WIDTH;?>,
+      largeFeatureHeight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT;?>,
+      smallFeatureWidth:   <?php echo  PRODUCT_INFO_IMAGE_WIDTH/2;?>,
+      smallFeatureHwight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT/2;?>,
+    });
+  $("#carousel a").lightBox();
+});
+</script>
+<?php
+}
+?>
 <script type="text/javascript">
 function dbc2sbc(str){   
   var result = '';   
