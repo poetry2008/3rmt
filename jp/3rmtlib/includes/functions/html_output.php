@@ -176,12 +176,13 @@
       }
       $src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache3');
       if($boder_image){
-        overlayjpg(DIR_FS_CATALOG.'/'.$src, $width, $height);
-	$t_src = imgtopng_name($src);
-	if(file_exists($src)){
-          unlink($src);
-	}
-	$src = $t_src;
+        if(overlayjpg(DIR_FS_CATALOG.'/'.$src, $width, $height)){
+	  $t_src = imgtopng_name($src);
+	  if(file_exists($src)){
+            unlink($src);
+          }
+  	  $src = $t_src;
+        }
       }
       if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
          $width=ceil(($image_size[0]/$image_size[1])* $height);
@@ -1019,7 +1020,9 @@ function overlayjpg($imgsrc,$width,$height=""){
         $img_Y = ($height - $arr[1])/2;
     }
   }
-
+  if(!file_exists($imgsrc)){
+    return false;
+  }
   $image = imagecreatetruecolor($width,$heights); //创建一个彩色的底图
   imagealphablending($image, false);
   imagesavealpha($image, true);
@@ -1031,6 +1034,7 @@ function overlayjpg($imgsrc,$width,$height=""){
 
   imagepng($image,$png_name);
   imagedestroy($image);
+  return true;
 }
 
 function loadimg($imgname,$mime) {

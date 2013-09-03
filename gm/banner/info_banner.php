@@ -1,15 +1,13 @@
 <?php
-$p_info_image_list ='';
 if($p_image_count>1){
+$p_info_image_list ='';
 foreach($p_image_list as $p_image_src){
   if(file_exists3(DIR_WS_IMAGES.'products/'.$p_image_src)&&
     $p_image_src){
     $p_info_image_list .= '<div class="carousel-feature">';
     $p_info_image_list .= '<a class="light" title="'.$product_info['romaji'].'" ';
     $p_info_image_list .= ' href="'.tep_href_link(DIR_WS_IMAGES.'products/' .$p_image_src) . '" >';
-    $p_info_image_list .=  tep_image3(DIR_WS_IMAGES.'products/' . $p_image_src,
-        $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT,
-        'hspace="2" vspace="2" class="carousel-image"',true) . '</a>';
+    $p_info_image_list .=  tep_image3(DIR_WS_IMAGES.'products/' . $p_image_src, $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="carousel-image"',true) . '</a>';
     $p_info_image_list .= '<div class="carousel-caption">';
     $p_info_image_list .= '</div></div>';
   }
