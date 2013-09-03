@@ -1,5 +1,6 @@
 <?php
 $p_info_image_list ='';
+if($p_image_count>1){
 foreach($p_image_list as $p_image_src){
   if(file_exists3(DIR_WS_IMAGES.'products/'.$p_image_src)&&
     $p_image_src){
@@ -18,7 +19,6 @@ $p_info_image_footer = '</div>';
 $p_info_image_footer .= '<div id="carousel-left"><img src="banner/imag/carousel_back_normal.png" alt="picture"></div>';
 $p_info_image_footer .= '<div id="carousel-right"><img src="banner/imag/carousel_next_normal.png" alt="picture"></div>';
 $p_info_image_footer .= '</div>';
-if($p_image_count>1){
 echo $p_info_image_head;
 echo $p_info_image_list;
 echo $p_info_image_footer;
