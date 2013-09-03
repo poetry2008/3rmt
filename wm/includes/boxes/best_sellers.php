@@ -2,15 +2,15 @@
 /*
   $Id$
 */
-
   if (isset($current_category_id) && ($current_category_id > 0)) {
     // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select p.products_id,
+        select distinct p.products_id,
                         p.products_image,
                         p.products_ordered,
+                        pd.products_viewed,
                         pd.products_name,
                         pd.products_status, 
                         pd.products_description,
@@ -33,15 +33,15 @@
       having p.products_status != '0' and p.products_status != '3' 
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
-    
   } else {
     // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select p.products_id,
+        select distinct p.products_id,
                         p.products_image,
                         p.products_ordered,
+                        pd.products_viewed,
                         pd.products_status, 
                         pd.products_name,
                         pd.products_description,
@@ -70,7 +70,7 @@
 <!-- best_sellers -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: url(images/design/box/ranking_content_bg.gif) repeat-y; margin-bottom: 10px;" summary="best sellers box">
   <tr>
-      <td height="39"><img width="171" height="39" alt="RMTランキング" src="images/design/box/ranking.gif"><?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?></td>
+      <td height="39"><img width="171" height="39" alt="<?php echo TEXT_PRODUCTS_SORT;?>" src="images/design/box/ranking.gif"><?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?></td>
     </tr>
 <?php
   $info_box_contents = array();

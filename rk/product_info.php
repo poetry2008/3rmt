@@ -8,6 +8,7 @@
   if (tep_whether_show_products((int)$_GET['products_id'])) {
     forward404(); 
   }
+  require('ajax_process.php'); 
   require(DIR_WS_ACTIONS . 'product_info.php');
 ?>
 <?php page_head();?>
@@ -90,7 +91,7 @@ function calc_product_final_price(pid)
        }
    }); 
    
-   jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+jq('#quantity').val(), function(msg) { 
+   jq.getJSON("<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.(int)$_GET['products_id']);?>"+"?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+jq('#quantity').val(), function(msg) { 
      document.getElementById("show_price").innerHTML = msg.price; 
      jq("#change_flag").val('true');
      jq("#show_price").show();
@@ -196,7 +197,6 @@ function timeline_action(p){
   if (get_current_ts()-actiontime>=980){
   calc_product_final_price(p);
   };
-
 //  calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 </script>

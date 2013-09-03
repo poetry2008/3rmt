@@ -56,7 +56,7 @@
 ?>
 <!-- best_sellers -->
       <div class="ranking_warpper">
-      <div class="menu_top">ランキング</div>
+      <div class="menu_top"><?php echo BOX_HEADING_BESTSELLERS;?></div>
       <div class="bestseller_sort">
 <?php
   $info_box_contents = array();
