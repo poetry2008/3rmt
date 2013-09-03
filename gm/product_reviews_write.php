@@ -84,11 +84,13 @@ function checkForm() {
   <font color='red' style='font-size:14px'><?php echo str_replace('\n','<br>',$error_message);?></font>
   <?php }?>
   <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
+              <tr>
+              <td colspan="2" valign="top" align="right"> 
+                <?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
+              </tr>
               <tr> 
                 <td width="20%"><b><?php echo SUB_TITLE_PRODUCT; ?></b></td>
-                <td><?php echo $product_info['products_name']; ?></td> 
-                <td rowspan="2" valign="top" align="right"><br> 
-                <?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td> 
+                <td><?php echo $product_info['products_name']; ?></td>  
               </tr> 
               <tr> 
               	<td><b><?php echo SUB_TITLE_FROM; ?></b></td>
