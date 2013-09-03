@@ -238,13 +238,13 @@
 <?php page_head();?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <div id="main-content">
@@ -398,8 +398,7 @@
                             </tr> 
                             <tr> 
                               <td><?php echo TEXT_PRESENT_CON_EMAIL;?></td> 
-                              <td><?php echo tep_draw_input_field('email_address',
-                                  $email_address, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!$email_address)
+                              <td><?php echo tep_draw_input_field('email_address', $email_address, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!tep_validate_email($email_address)){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address)
 {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST; ?></font><?php }?></td> 
                             </tr> 
                             <tr> 
@@ -454,12 +453,12 @@
             </div>
       <?php include('includes/float-box.php');?>
 </div>
-      <!-- body_text_eof //--> 
+      <!-- body_text_eof --> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-  <!-- body_eof //-->  
-  <!-- footer //--> 
+  <!-- body_eof -->  
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

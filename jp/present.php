@@ -18,24 +18,35 @@
   
 ?>
 <?php page_head();?>
-<script language="javascript" type="text/javascript"><!--
+<script type="text/javascript" src="js/prototype.js"></script>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+ var jq = jQuery.noConflict();
+</script>
+<script language="javascript" type="text/javascript">
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
-//--></script>
+function showimage($1) {
+  document.images.lrgproduct.src = $1;
+}
+</script>
+<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
+<script type="text/javascript" src="js/lightbox.js"></script>
+<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 </head>
 <body>
-<div align="center">
+<div  class="body_shadow" align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation //-->
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
       <td valign="top" id="contents"><h1 class="pageHeading"> <?php echo ($_GET['goods_id'] && $_GET['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?> </h1>
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
@@ -57,9 +68,19 @@ function popupWindow(url) {
           <p align="right" class="main"> <?php echo TEXT_PRESENT_ORDER_DATE.tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table border="0" cellspacing="0" cellpadding="2" align="right">
             <tr>
-              <td align="center" class="smallText"><script type="text/javascript"><!--
-      document.write('<?php echo '<a href="javascript:popupWindow(\\\'' .  tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) .  '\\\')">' .  tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>'.TEXT_PRESENT_ENLARGE.'<\'+\'/a>'; ?>');
-      //--></script>
+              <td align="center" class="smallText">
+              <script type="text/javascript"><!--
+      //document.write('<?php echo '<a href="javascript:popupWindow(\\\'' .  tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) .  '\\\')">' .  tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>'.TEXT_PRESENT_ENLARGE.'<\'+\'/a>'; ?>');
+      --></script>
+              <?php 
+              if((file_exists(DIR_WS_IMAGES.'present/'.$present['image']) != '') && ($present['image'] != '')){
+              ?>
+              <a href="<?php echo DIR_WS_IMAGES .'present/'. $present['image'] ;?>" rel="lightbox[present]">
+              <?php echo tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5" id="lrgproduct" name="lrgproduct"') .  '<br>'.TEXT_PRESENT_ENLARGE;?>
+              </a>
+              <?php 
+              }
+              ?>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
               </noscript>
@@ -125,10 +146,12 @@ function popupWindow(url) {
           $row ++ ;
         ?>
             <tr>
-              <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
+              <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php 
+              echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; 
+              ?></td>
               <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">'. $present['title'].'</a>' ; ?></b> <br>
               <?php echo TEXT_PRESENT_ORDER_DATE;?>:<?php echo tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?>
-              <p class="smallText"><?php echo substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
+              <p class="smallText"><?php echo mb_substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
             </tr>
             <?php
         }
@@ -160,16 +183,16 @@ function popupWindow(url) {
     }
     ?>
       </table></td>
-      <!-- body_text_eof //-->
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation //-->
+      <!-- body_text_eof -->
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
       </td>
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

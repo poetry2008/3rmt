@@ -404,7 +404,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td>メールアドレス</td> 
-                              <td><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?> <?php if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address); ?> <?php if(!tep_validate_email($email_address)){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">郵便番号</td> 
