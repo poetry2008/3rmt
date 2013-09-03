@@ -96,10 +96,17 @@
                 if ($this->boldtitle) {
                     $title = '<b>'.$title.'</b>';
                 }
+                if($_SERVER['PHP_SELF'] == '/present_order.php'){
+                echo '<tr>'
+                  .'<td class="main"'.((NEW_STYLE_WEB === true)?' valign="top" width="114" align="left">':'width="104" valign="top">').$title.'</td>'
+                  .'<td class="main" '.((NEW_STYLE_WEB === true)?' align="left"':'').'>'.$this->formlines[$name]['value'].'</td>'
+                  .'</tr>'."\n";
+                }else{
                 echo '<tr>'
                   .'<td class="main"'.((NEW_STYLE_WEB === true)?' valign="top" width="15%" align="left">':'width="93" valign="top">').$title.'</td>'
                   .'<td class="main" '.((NEW_STYLE_WEB === true)?' align="left"':'').'>'.$this->formlines[$name]['value'].'</td>'
                   .'</tr>'."\n";
+                }
             }
         }
     }

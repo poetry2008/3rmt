@@ -48,7 +48,7 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      $src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'cache_lists');
+      $src = thumbimage(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache');
       if($height==0){
         $t_height = 0;
       }else{
@@ -116,7 +116,7 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      $src=thumbimage2(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'cache_small');
+      $src=thumbimage2(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache2');
       if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
          $width=ceil(($image_size[0]/$image_size[1])* $height);
       } elseif ($width>0) {
@@ -153,7 +153,7 @@
     参数: $parameters(string) 其它参数   
     返回值: 生成的img(string) 
 ------------------------------------ */
-  function tep_image3($src, $alt = '', $width = '', $height = '', $parameters = '',$img_info=array()) {
+  function tep_image3($src, $alt = '', $width = '', $height = '', $parameters = '',$boder_image=false) {
     if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
       return false;
     }
@@ -164,23 +164,6 @@
      }
    if ($image_size = @getimagesize($src)) {
       if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
-    $return_src = false;
-    $t_width = '';
-    $t_height = '';
-    if(!empty($img_info)){
-      if(isset($img_info['width'])&&$img_info['width']!=''){
-        $t_width = $img_info['width'];
-      }
-      if(isset($img_info['height'])&&$img_info['height']!=''){
-        $t_height = $img_info['height'];
-      }
-      if($t_width!=''&&$t_height!=''){
-        $return_src = true;
-        $width = $t_width;
-        $height = $t_height;
-      }
-
-    }
     if ( ($width) || ($height) ) {
       if ( $width=="100%" ) {
         $width = $image_size[0];
@@ -191,7 +174,15 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      $src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'cache_large');
+      $src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache3');
+      if($boder_image){
+        overlayjpg(DIR_FS_CATALOG.'/'.$src, $width, $height);
+	$t_src = imgtopng_name($src);
+	if(file_exists($src)){
+          unlink($src);
+	}
+	$src = $t_src;
+      }
       if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
          $width=ceil(($image_size[0]/$image_size[1])* $height);
       } elseif ($width>0) {
@@ -215,11 +206,7 @@
 
     $image .= '>';
 
-    if($return_src){
-      return tep_output_string($src);
-    }else{
-      return $image;
-    }
+    return $image;
   }
 
 /* -------------------------------------
@@ -600,10 +587,10 @@
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
-          $image = DIR_WS_IMAGES . 'cache_lists' . $thumbfile;
+          $image = DIR_WS_IMAGES . 'imagecache' . $thumbfile;
      } else {
           $iscached
-               ? $image = DIR_WS_IMAGES . 'cache_lists' . $thumbfile
+               ? $image = DIR_WS_IMAGES . 'imagecache' . $thumbfile
                : $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
      }
   return $image;
@@ -709,10 +696,10 @@
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
-          $image = DIR_WS_IMAGES . 'cache_small' . $thumbfile;
+          $image = DIR_WS_IMAGES . 'imagecache2' . $thumbfile;
      } else {
           $iscached
-               ? $image = DIR_WS_IMAGES . 'cache_small' . $thumbfile
+               ? $image = DIR_WS_IMAGES . 'imagecache2' . $thumbfile
                : $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
      }
 return $image;
@@ -819,10 +806,10 @@ return $image;
           call_user_func("image".$types[$imagedata[2]], $thumb, $cachedir.$thumbfile);
           imagedestroy ($image);
           imagedestroy ($thumb);
-          $image = DIR_WS_IMAGES . 'cache_large' . $thumbfile;
+          $image = DIR_WS_IMAGES . 'imagecache3' . $thumbfile;
      } else {
           $iscached
-               ? $image = DIR_WS_IMAGES . 'cache_large' . $thumbfile
+               ? $image = DIR_WS_IMAGES . 'imagecache3' . $thumbfile
                : $image = substr ($image, (strrpos (DIR_FS_CATALOG . '/', '/'))+1);
      }
 return $image;
@@ -1014,3 +1001,64 @@ if ($height>0 && $width>0 && (($image_size[1]/$height) > ($image_size[0]/$width)
     return $image;
   }
 
+function overlayjpg($imgsrc,$width,$height=""){
+//$imgsrc jpg格式图像路径 $imgdst 图像保存文件名 $imgwidth要改变的宽度 $imgheight要改变的高度
+//取得图片的宽度,高度值
+  $arr = getimagesize($imgsrc);
+//计算图片X轴位置
+  $img_X = ($width - $arr[0])/2;
+  if($height == ""){
+    $heights = $arr[1];
+    $img_Y = 0;
+  } else{
+    if($height <= $arr[1]){
+        $heights = $arr[1];
+        $img_Y = 0;
+    } else{
+        $heights = $height;
+        $img_Y = ($height - $arr[1])/2;
+    }
+  }
+
+  $image = imagecreatetruecolor($width,$heights); //创建一个彩色的底图
+  imagealphablending($image, false);
+  imagesavealpha($image, true);
+  $white = imagecolorallocatealpha($image,255,255,255,127);
+  imagefill($image,0,0,$white);
+  $png_name = imgtopng_name($imgsrc);
+  $imgsrc = loadimg($imgsrc,$arr['mime']);
+  imagecopy($image,$imgsrc,$img_X,$img_Y,0,0,$arr[0],$arr[1]);
+
+  imagepng($image,$png_name);
+  imagedestroy($image);
+}
+
+function loadimg($imgname,$mime) {
+    if($mime == "image/gif"){
+        $im = @imagecreatefromgif($imgname); /* Attempt to open */
+    } elseif ($mime == "image/png"){
+        $im = @imagecreatefrompng($imgname); /* Attempt to open */
+    } else{
+        $im = @imagecreatefromjpeg($imgname); /* Attempt to open */
+    }
+    if(!$im) { /* See if it failed */
+        $im = imagecreatetruecolor(150, 30); /* Create a blank image */
+        $bgc = imagecolorallocate($im, 255, 255, 255);
+        $tc = imagecolorallocate($im, 0, 0, 0);
+        imagefilledrectangle($im, 0, 0, 150, 30, $bgc);
+        /* Output an errmsg */
+        imagestring($im, 1, 5, 5, "Error loading $imgname", $tc);
+    }
+    return $im;
+}
+function imgtopng_name($src){
+    $arr = getimagesize($src);
+    $new_src = $src;
+    if($arr['mime'] == "image/gif"){
+      $new_src =  preg_replace('/gif$/','png',$src);
+    } elseif ($arr['mime'] == "image/jpeg"){
+      $new_src =  preg_replace('/jpg$/','png',$src);
+      $new_src =  preg_replace('/jpeg$/','png',$new_src);
+    }
+    return $new_src;
+}
