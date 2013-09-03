@@ -956,6 +956,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
     echo $notice_box->show_notice();
                  //显示数据列表结束
   ?>
+                      <table border="0" width="100%" cellspacing="0" cellpadding="2">
                                 <tr>
                                   <td>
                                     <?php 
@@ -971,6 +972,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
                                              echo TEXT_DATA_EMPTY;
                                        }
                                     ?>
+                                  <div style="float:right"><button onclick="location.href='<?php echo tep_href_link(FILENAME_PRESENT,'cID='.$_GET['cID']);?>'"><?php echo IMAGE_BACK;?></button></div>
                                   </td>
                                 </tr>
  
