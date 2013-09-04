@@ -90,7 +90,7 @@
             <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" summary="ranking">
                 <tr>
                     <td width="21" class="bestseller_img">
-                        <img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="21" height="16" alt="<?php echo 'ランキング' . $rows . '位'; ?>">
+                        <img src="images/design/box/ranking_<?php echo $rows; ?>.gif" width="21" height="16" alt="<?php echo BOX_HEADING_BESTSELLERS . $rows . TEXT_PRODUCTS_SORT_FIRST_FEW; ?>">
                     </td>
                     <td class="bestseller_text">
                         <nobr><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo $best_sellers['products_name']; ?></a></nobr>

@@ -69,7 +69,7 @@
 ?>
 <!-- best_sellers //-->
       <div class="ranking_warpper">
-      <div class="menu_top"><span>ランキング</span></div>
+      <div class="menu_top"><span><?php echo BOX_HEADING_BESTSELLERS;?></span></div>
 <?php
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);

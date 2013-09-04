@@ -69,7 +69,7 @@
 ?>
 <!-- best_sellers //-->
       <div class="ranking_warpper">
-      <div class="menu_top"><img src="images/menu_ico08.gif" alt="" align="top"><span>ランキング</span></div>
+      <div class="menu_top"><img src="images/menu_ico08.gif" alt="" align="top"><span><?php echo BOX_HEADING_BESTSELLERS;?></span></div>
     <?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?>
 <?php
   $info_box_contents = array();

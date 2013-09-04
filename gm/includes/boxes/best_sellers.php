@@ -64,10 +64,8 @@
       limit " . MAX_DISPLAY_BESTSELLERS
         );
   }
-  if (
-    tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS 
-    && ((isset($current_category_id) && ($current_category_id > 0)) ? tep_show_warning($current_category_id) != 1 : true)
-  ) {
+
+  if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
 <!-- best_sellers //-->
 <div class="yui3-g main-columns">

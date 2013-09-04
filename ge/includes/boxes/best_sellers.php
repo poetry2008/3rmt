@@ -64,15 +64,13 @@
       limit " . MAX_DISPLAY_BESTSELLERS
         );
   }
-  if (
-    tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS 
-    && ((isset($current_category_id) && ($current_category_id > 0)) ? tep_show_warning($current_category_id) != 1 : true)
-  ) {
+
+  if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
 <!-- best_sellers -->
 <div class="best_sellers_main">
 <div class="top"></div>
-<div class="best_sellers_title">RMT ランキング</div>
+<div class="best_sellers_title"><?php echo TEXT_PRODUCTS_SORT;?></div>
 
 <?php
   $info_box_contents = array();
