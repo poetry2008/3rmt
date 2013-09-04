@@ -24,6 +24,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
      $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
      $cp_pos = strpos($_SERVER['PHP_SELF'], 'change_preorder.php');
      $back_pos = strpos($_SERVER['PHP_SELF'], 'admin/');
+     $pre_ac_pos = strpos($_SERVER['PHP_SELF'], 'admin/create_preorder.php');
      
      if (strlen($this->front_title)) {
        if ($ptype) {
@@ -56,7 +57,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
      if ($sp_pos !== false) {
          if ($_SESSION['guestchk'] != '1') {
            if (!isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
-             $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$_SESSION['customer_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$pre_item_str."' and o.is_gray != '1' order by opa.orders_id desc limit 1"); 
+             $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$_SESSION['customer_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$pre_item_str."' and o.is_gray != '1' and o.is_guest = '0' order by opa.orders_id desc limit 1"); 
              $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
              if ($o_attributes_res) {
                $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
@@ -69,14 +70,16 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
      
      if ($ac_pos !== false) {
          if (($_GET['action'] == 'add_product') && isset($_GET['Customer_mail']) && isset($_GET['site_id']) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
-            $customer_info_raw = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where customers_email_address = '".$_GET['Customer_mail']."' and site_id = '".$_GET['site_id']."'");   
+            $customer_info_raw = tep_db_query("select customers_id, customers_guest_chk from ".TABLE_CUSTOMERS." where customers_email_address = '".$_GET['Customer_mail']."' and site_id = '".$_GET['site_id']."'");   
             $customer_info = tep_db_fetch_array($customer_info_raw); 
             if ($customer_info) {
-              $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$customer_info['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$_POST['add_product_products_id']."' and o.is_gray != '1' order by opa.orders_id desc limit 1"); 
-              $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
-              if ($o_attributes_res) {
-                $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
-                $default_value = $old_option_info['value']; 
+              if ($customer_info['customers_guest_chk'] == '0') {
+                $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$customer_info['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$_POST['add_product_products_id']."' and o.is_gray != '1' and o.is_guest = '0' order by opa.orders_id desc limit 1"); 
+                $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+                if ($o_attributes_res) {
+                  $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                  $default_value = $old_option_info['value']; 
+                }
               }
             }
          }
@@ -87,12 +90,18 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
             $origin_order_raw = tep_db_query("select customers_id, site_id from ".TABLE_ORDERS." where orders_id = '".$_GET['oID']."'"); 
             $origin_order = tep_db_fetch_array($origin_order_raw);
             if ($origin_order) {
-                $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$origin_order['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$_POST['add_product_products_id']."' and o.is_gray != '1' order by opa.orders_id desc limit 1"); 
-                $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
-                if ($o_attributes_res) {
-                  $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
-                  $default_value = $old_option_info['value']; 
+              $customer_info_raw = tep_db_query("select customers_guest_chk from ".TABLE_CUSTOMERS." where customers_id = '".$origin_order['customers_id']."'");   
+              $customer_info = tep_db_fetch_array($customer_info_raw); 
+              if ($customer_info) {
+                if ($customer_info['customers_guest_chk'] == '0') {
+                  $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$origin_order['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$_POST['add_product_products_id']."' and o.is_gray != '1' and o.is_guest = '0' order by opa.orders_id desc limit 1"); 
+                  $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+                  if ($o_attributes_res) {
+                    $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                    $default_value = $old_option_info['value']; 
+                  }
                 }
+              }
             }
          }
        }
@@ -107,15 +116,17 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
            if ($preorder_res) {
              $customers_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'"); 
              $customers_info = tep_db_fetch_array($customers_info_raw); 
-             if ($customers_info['customers_guest_chk'] == '0') {
-               $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_res['orders_id']."'"); 
-               $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
-               if ($preorder_product_res) {
-                 $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$preorder_res['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$preorder_product_res['products_id']."' and o.is_gray != '1' order by opa.orders_id desc limit 1"); 
-                 $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
-                 if ($o_attributes_res) {
-                   $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
-                   $default_value = $old_option_info['value']; 
+             if ($customers_info) {
+               if ($customers_info['customers_guest_chk'] == '0') {
+                 $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_res['orders_id']."'"); 
+                 $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+                 if ($preorder_product_res) {
+                   $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$preorder_res['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$preorder_product_res['products_id']."' and o.is_gray != '1' and o.is_guest = '0' order by opa.orders_id desc limit 1"); 
+                   $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+                   if ($o_attributes_res) {
+                     $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                     $default_value = $old_option_info['value']; 
+                   }
                  }
                }
              }
@@ -123,6 +134,24 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
          }
        }
      }
+     
+     if ($pre_ac_pos !== false) {
+       if (($_GET['action'] == 'add_product') && isset($_GET['Customer_mail']) && isset($_GET['site_id']) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+          $customer_info_raw = tep_db_query("select customers_id, customers_guest_chk from ".TABLE_CUSTOMERS." where customers_email_address = '".$_GET['Customer_mail']."' and site_id = '".$_GET['site_id']."'");   
+          $customer_info = tep_db_fetch_array($customer_info_raw); 
+          if ($customer_info) {
+            if ($customer_info['customers_guest_chk'] == '0') {
+              $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_PREORDERS." o, ".TABLE_PREORDERS_PRODUCTS." op where op.orders_id = o.orders_id and o.customers_id = '".(int)$customer_info['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' and op.orders_products_id = opa.orders_products_id and op.products_id = '".(int)$_POST['add_product_products_id']."' and o.is_gray != '1' and o.is_guest = '0' order by opa.orders_id desc limit 1"); 
+              $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+              if ($o_attributes_res) {
+                $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                $default_value = $old_option_info['value']; 
+              }
+            }
+          }
+       }
+     }
+     
      $default_value = stripslashes($default_value); 
      echo '<td>'; 
      echo '<div class="option_info_text">'; 

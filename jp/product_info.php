@@ -41,7 +41,7 @@ function dbc2sbc(str){
 jq(document).ready(function () {
    var change_flag = jq("#change_flag").val();
    if(change_flag == 'true'){
-     calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
+     calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
      jq("#show_price").show();
      jq(".calc_show_price").show();  
    } 
@@ -654,6 +654,7 @@ $tnum++;
 </div>
 <?php }?>
       </td>
+     </tr>
       <!-- body_text_eof //-->
   </table>
   <!-- body_eof //-->

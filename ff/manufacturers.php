@@ -5,9 +5,9 @@
   require('includes/application_top.php');
   //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
   forward404();  
-  define('NAVBAR_TITLE', 'ゲームメーカー一覧');
-  define('HEADING_TITLE', 'ゲームメーカー一覧');
-  define('TEXT_MORE', 'このメーカー一覧の商品一覧へ');
+  define('NAVBAR_TITLE', TEXT_MANUFACTURERS_TITLE);
+  define('HEADING_TITLE', TEXT_MANUFACTURERS_TITLE);
+  define('TEXT_MORE', TEXT_MANUFACTURERS_PRODUCT_LIST);
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 ?>
@@ -77,7 +77,16 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
     echo '  <tr>' . "\n";
-    echo '    <td width="120" class="smallText" valign="top">' . tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']) . '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3><!-- '.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'... --></td>' . "\n";
+    if(isset($manufacturer['manufacturers_alt'])&&$manufacturer['manufacturers_alt']!=''){
+      $m_alt = $manufacturer['manufacturers_alt'];
+    }else{
+      if(isset($manufacturer['manufacturers_name'])&&$manufacturer['manufacturers_name']!=''){
+        $m_alt = $manufacturer['manufacturers_name'];
+      }else{
+        $m_alt = 'img';
+      }
+    }
+    echo '    <td width="120" class="smallText" valign="top">' . tep_image(DIR_WS_IMAGES.$manufacturer['manufacturers_image'],$m_alt) . '<h3><strong>'.$manufacturer['manufacturers_name'].'</strong></h3><!-- '.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'... --></td>' . "\n";
     echo '    <td>' . "\n";
   
     echo '      <table width="100%" border="0" cellspacing="2" cellpadding="0">' . "\n";

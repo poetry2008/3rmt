@@ -2381,7 +2381,7 @@ function address_option_show(action){
 
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   if ($address_orders_group_array['orders_id'] != $order->info['orders_id']) {
-    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' order by ah.id asc");
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' and o.is_guest = '0' order by ah.id asc");
   } else {
     $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
   }
@@ -2496,7 +2496,7 @@ function address_option_list(value){
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   if ($address_orders_group_array['orders_id'] != $order->info['orders_id']) {
-    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' order by ah.id");
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' and o.is_guest = '0' order by ah.id");
   } else {
     $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
   }

@@ -18,6 +18,7 @@
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION .  " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c 
         where (pd.site_id = '0'
           or pd.site_id = '".SITE_ID."' )
+          and p.products_ordered > 0 
           and p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.products_id = p2c.products_id 
@@ -30,38 +31,8 @@
          or site_id = '".SITE_ID."' 
       group by products_id
       having p.products_status != '0' and p.products_status != '3' 
-      order by products_viewed desc, products_name 
+      order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
-    if (tep_db_num_rows($best_sellers_query) == 0) {
-      $best_sellers_query = tep_db_query("
-        select *
-        from (
-          select distinct p.products_price, 
-                          p.products_id, 
-                          p.products_image, 
-                          pd.products_name, 
-                          pd.products_description,
-                          pd.products_status,
-                          pd.products_viewed,
-                          pd.site_id
-          from ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
-        where (pd.site_id = '0'
-          or pd.site_id = '".SITE_ID."' )
-          and p.products_ordered > 0 
-          and p.products_id = pd.products_id 
-          and pd.language_id = '" .  $languages_id . "' 
-          and p.products_id not in".tep_not_in_disabled_products()." 
-          order by pd.site_id DESC
-          limit 100
-        ) p
-        where site_id = '0'
-           or site_id = '".SITE_ID."' 
-        group by products_id
-        having p.products_status != '0' and p.products_status != '3' 
-        order by products_viewed desc 
-        limit ".MAX_DISPLAY_BESTSELLERS
-      ); 
-    }
   } else {
     // ccdd
     $best_sellers_query = tep_db_query("
@@ -89,19 +60,17 @@
          or site_id = '".SITE_ID."' 
       group by products_id
       having p.products_status != '0' and p.products_status != '3' 
-      order by products_viewed desc, products_name 
+      order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS
         );
   }
-  if (
-    tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS 
-    && ((isset($current_category_id) && ($current_category_id > 0)) ? tep_show_warning($current_category_id) != 1 : true)
-  ) {
+
+  if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
 <!-- best_sellers -->
 <div class="best_sellers_main">
 <div class="top"></div>
-<div class="best_sellers_title">RMT ランキング</div>
+<div class="best_sellers_title"><?php echo TEXT_PRODUCTS_SORT;?></div>
 
 <?php
   $info_box_contents = array();

@@ -633,20 +633,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
   }
 ?>
         
-        <?php
-      if (tep_session_is_registered('affiliate_id')) {
-?>
-        <h1 class="pageHeading_long"><?php echo TEXT_TAGS_ADVERTISING; ?> </h1>
-        <p class="comment_long"><b><?php echo TEXT_REGISTER_AD_PRODUCTS;?></b><br>
-        <?php echo TEXT_COPY_CODE;?></p>
-
-        <textarea class="boxText" style="width:95%; height:90px; "><a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"');?><br><?php echo $product_info['products_name'] ; ?> </a></textarea>
-        <p align="center"><?php echo TEXT_IMAGES_DISPLAY;?><br>
-         <a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?><br>
-          <?php echo $product_info['products_name'] ; ?> </a></p>
-        <?php
-   }
- ?>
       </td>
      </tr>
       <!-- body_text_eof //-->
