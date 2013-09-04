@@ -346,9 +346,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main">都道府県</td> 
-                              <td class="main">
-                              <?php if (!isset($zone)) $zone = NULL;//del notice?>
-                              <?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
+                              <td class="main"><?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">住所１</td> 

@@ -145,7 +145,7 @@ function popupWindow(url) {
               '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
               <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">'. $present['title'].'</a>' ; ?></b> <br>
               <?php echo TEXT_PRESENT_ORDER_DATE;?>:<?php echo tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?>
-              <p class="smallText"><?php echo substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
+              <p class="smallText"><?php echo mb_substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
             </tr>
             <?php
         }

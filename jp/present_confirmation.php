@@ -26,7 +26,7 @@
   }
   
   //process
-if (isset($_GET['action'])) {
+if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
   switch($_GET['action']) {
     case 'process'://申请流程
     //现在的时间

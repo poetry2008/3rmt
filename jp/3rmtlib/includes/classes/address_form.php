@@ -98,7 +98,7 @@
                 }
                 if($_SERVER['PHP_SELF'] == '/present_order.php'){
                 echo '<tr>'
-                  .'<td class="main"'.((NEW_STYLE_WEB === true)?' valign="top" width="114" align="left">':'width="104" valign="top">').$title.'</td>'
+                  .'<td class="main"'.((NEW_STYLE_WEB === true)?' valign="top" width="106" align="left">':'width="104" valign="top">').$title.'</td>'
                   .'<td class="main" '.((NEW_STYLE_WEB === true)?' align="left"':'').'>'.$this->formlines[$name]['value'].'</td>'
                   .'</tr>'."\n";
                 }else{
