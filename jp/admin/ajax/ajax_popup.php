@@ -7774,9 +7774,11 @@ $sql2 = tep_db_fetch_array($sele2);
         array('params' => 'width="30%"','text' => TEXT_EMAIL),
         array('text' => $sql2['mail'])
         );
+    $zone_query = tep_db_query(" select zone_name from " . TABLE_ZONES . " where zone_country_id = '107' and zone_id = '".$sql2['zone_name']."' ");
+    $zone = tep_db_fetch_array($zone_query);
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_ADDRESS),
-        array('text' => '〒'.$sql2['postcode'].'<br>'.$sql2['prefectures'].$sql2['cities'].'<br>'.$sql2['address1'].'<br>'.$sql2['address2'])
+        array('text' => '〒'.$sql2['postcode'].'<br>'.$zone['zone_name'].'<br>'.$sql2['prefectures'].$sql2['cities'].'<br>'.$sql2['address1'].'<br>'.$sql2['address2'])
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_TEL),
@@ -8011,15 +8013,15 @@ $banner_query = tep_db_query("
         );
     $contents_banners[]['text'] = array(
         array('text' => str_replace(':','',TEXT_BANNERS_TITLE)), 
-        array('text' => tep_draw_input_field('banners_title', isset($bInfo->banners_title)?$bInfo->banners_title:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"', true).'<span id="title_error"></span>')
+        array('text' => tep_draw_input_field('banners_title', isset($bInfo->banners_title)?$bInfo->banners_title:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"', true).'<span id="title_error"></span>')
         );
     $contents_banners[]['text'] = array(
         array('text' => str_replace(':','',TEXT_BANNERS_URL)), 
-        array('text' => tep_draw_input_field('banners_url', isset($bInfo->banners_url)?$bInfo->banners_url:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"').'<span id="url_error"></span>')
+        array('text' => tep_draw_input_field('banners_url', isset($bInfo->banners_url)?$bInfo->banners_url:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').'<span id="url_error"></span>')
         );
     $contents_banners[]['text'] = array(
         array('text' => str_replace(':','',TEXT_BANNERS_GROUP)), 
-        array('text' => tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"') .  TEXT_BANNERS_NEW_GROUP .  '<br>' .  tep_draw_input_field('new_banners_group', '', $disabled, ((sizeof($groups_array) > 0) ? false : true)).'<span id="group_error"></span><br>'.TEXT_ADVERTISEMENT_INFO)
+        array('text' => tep_draw_pull_down_menu('banners_group', $groups_array, isset($bInfo->banners_group)?$bInfo->banners_group:'',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"') .  TEXT_BANNERS_NEW_GROUP .  '<br>' .  tep_draw_input_field('new_banners_group', '', $disabled.'style="width:60%"', ((sizeof($groups_array) > 0) ? false : true)).'<span id="group_error"></span><br>'.TEXT_ADVERTISEMENT_INFO)
         );
     $contents_banners[]['text'] = array(
         array('text' => ''), 
@@ -8067,12 +8069,12 @@ $banner_query = tep_db_query("
     if($disabled){
      $contents_end[]['text'] = array(
         array('text' => str_replace(':','',TEXT_BANNERS_SCHEDULED_AT)), 
-        array('text' => '<div class="yui3-skin-sam yui3-g"><input type="text"'.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="date_scheduled" id="input_date_scheduled" value="'.$banner_date.' "/><img src="includes/calendar.png" '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;"> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"> <div id="mycalendar"></div> </div> </div>')
+        array('text' => '<div class="yui3-skin-sam yui3-g"><input type="text"'.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="date_scheduled" id="input_date_scheduled" value="'.($bInfo->date_scheduled == '0000-00-00 00:00:00' || $bInfo->date_scheduled == ''?'':date('Y-m-d',strtotime($bInfo->date_scheduled))).' "/><img src="includes/calendar.png" '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;"> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"> <div id="mycalendar"></div> </div> </div>')
         );
     }else{
     $contents_end[]['text'] = array(
         array('text' => str_replace(':','',TEXT_BANNERS_SCHEDULED_AT)), 
-        array('text' => '<div class="yui3-skin-sam yui3-g"><input type="text"'.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="date_scheduled" id="input_date_scheduled" value="'.$banner_date.' "/><a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"><img src="includes/calendar.png" '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;"></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"> <div id="mycalendar"></div> </div> </div>')
+        array('text' => '<div class="yui3-skin-sam yui3-g"><input type="text"'.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" name="date_scheduled" id="input_date_scheduled" value="'.($bInfo->date_scheduled == '0000-00-00 00:00:00' || $bInfo->date_scheduled == ''?'':date('Y-m-d',strtotime($bInfo->date_scheduled))).' "/><a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"><img src="includes/calendar.png" '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;"></a> <input type="hidden" name="toggle_open" value="0" id="toggle_open"> <div class="yui3-u" id="new_yui3"> <div id="mycalendar"></div> </div> </div>')
         );
     }
     $contents_end[]['text'] = array(
@@ -8087,12 +8089,13 @@ $banner_query = tep_db_query("
     if($disabled){
     $contents_end[]['text'] = array(
         array('text' => str_replace(':','',TEXT_BANNERS_EXPIRES_ON)), 
-        array('text' => ' <div class="yui3-skin-sam yui3-g"> <input type="text" name="expires_date" id="input_expires_date" value="'.$banner_end_date.' " '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" /><img src="includes/calendar.png" '.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" ><input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> <div class="yui3-u" id="end_yui3"> <div id="mycalendar_end"></div> </div> </div>'.TEXT_BANNERS_OR_AT.'<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"'.$disabled) . ' ' . TEXT_BANNERS_IMPRESSIONS)
+        array('text' => ' <div class="yui3-skin-sam yui3-g"><input type="text" name="expires_date" id="input_expires_date" value="'.
+          ($bInfo->expires_date == '0000-00-00 00:00:00' || $bInfo->expires_date == ''?'':date('Y-m-d',strtotime($bInfo->expires_date))).' " '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" /><img src="includes/calendar.png" '.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" ><input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> <div class="yui3-u" id="end_yui3"> <div id="mycalendar_end"></div> </div> </div>'.TEXT_BANNERS_OR_AT.'<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"'.$disabled) . ' ' . TEXT_BANNERS_IMPRESSIONS)
         );
     }else{
     $contents_end[]['text'] = array(
         array('text' => str_replace(':','',TEXT_BANNERS_EXPIRES_ON)), 
-        array('text' => ' <div class="yui3-skin-sam yui3-g"> <input type="text" name="expires_date" id="input_expires_date" value="'.$banner_end_date.' " '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" /><a href="javascript:void(0);" onclick="open_update_calendar();" class="dpicker"><img src="includes/calendar.png" '.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" ></a> <input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> <div class="yui3-u" id="end_yui3"> <div id="mycalendar_end"></div> </div> </div>'.TEXT_BANNERS_OR_AT.'<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"'.$disabled) . ' ' . TEXT_BANNERS_IMPRESSIONS)
+        array('text' => ' <div class="yui3-skin-sam yui3-g"><input type="text" name="expires_date" id="input_expires_date" value="'.($bInfo->expires_date == '0000-00-00 00:00:00' || $bInfo->expires_date == ''?'':date('Y-m-d',strtotime($bInfo->expires_date))).' " '.$disabled.' onfocus="o_submit_single = false;" onblur="o_submit_single = true;" /><a href="javascript:void(0);" onclick="open_update_calendar();" class="dpicker"><img src="includes/calendar.png" '.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" ></a> <input type="hidden" name="toggle_open_end" value="0" id="toggle_open_end"> <div class="yui3-u" id="end_yui3"> <div id="mycalendar_end"></div> </div> </div>'.TEXT_BANNERS_OR_AT.'<br>' . tep_draw_input_field('impressions', isset($bInfo->expires_impressions)?$bInfo->expires_impressions:'', 'maxlength="7" size="7"'.$disabled) . ' ' . TEXT_BANNERS_IMPRESSIONS)
         );
     }
     $contents_end[]['text'] = array(
@@ -8122,34 +8125,28 @@ $banner_query = tep_db_query("
         array('text' => tep_image(DIR_WS_IMAGES . 'graphs/banner_infobox-' .  $banner_id .  '.' . $banner_extension))
         );
      } else {
+    $banner_stats_query = tep_db_query("select dayofmonth(banners_history_date) as
+        name, banners_shown as value, banners_clicked as dvalue from " .
+        TABLE_BANNERS_HISTORY . " where banners_id = '" . $bInfo->banners_id . "' and
+        to_days(now()) -to_days(banners_history_date) < 3 order by
+        banners_history_date");
+    while ($banner_stats = tep_db_fetch_array($banner_stats_query)) {
+          $values[] = $banner_stats['value'];
+          $dvalues[] = $banner_stats['dvalue'];
+    }
+    if($values[0] == 0 && $dvalues[0] == 0){
+     $contents_end[]['text'] = array(
+        array('text' => tep_image(DIR_WS_IMAGES .  'graph_hbar_blue.gif', 'Blue', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_VIEWS . '/' .  tep_image(DIR_WS_IMAGES .  'graph_hbar_red.gif', 'Red', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_CLICKS),
+        array('text' => TEXT_UNSET_DATA)
+        );
+    }else{
+
            include(DIR_WS_FUNCTIONS . 'html_graphs.php');
     $contents_end[]['text'] = array(
         array('text' => tep_image(DIR_WS_IMAGES .  'graph_hbar_blue.gif', 'Blue', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_VIEWS . '/' .  tep_image(DIR_WS_IMAGES .  'graph_hbar_red.gif', 'Red', '5', '5') . ' ' .  TEXT_BANNERS_BANNER_CLICKS),
         array('text' => tep_banner_graph_infoBox($bInfo->banners_id, '3'))
         );
      }
-    if ($bInfo->date_scheduled){ 
-    $contents_end[]['text'] = array(
-        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_SCHEDULED_AT_DATE))), 
-        array('text' => tep_date_short($bInfo->date_scheduled))
-        );
-    }
-    if ($bInfo->expires_date) {
-    $contents_end[]['text'] = array(
-        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_EXPIRES_AT_DATE))), 
-        array('text' => tep_date_short($bInfo->expires_date))
-        );
-    } elseif ($bInfo->expires_impressions) {
-    $contents_end[]['text'] = array(
-        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_EXPIRES_AT_IMPRESSIONS))), 
-        array('text' => $bInfo->expires_impressions)
-        );
-    }
-    if ($bInfo->date_status_change){
-    $contents_end[]['text'] = array(
-        array('text' => str_replace(':','',str_replace('%s','',TEXT_BANNERS_STATUS_CHANGE))), 
-        array('text' => tep_date_short($bInfo->date_status_change))
-        );
     }
     }
     $contents_end[]['text'] = array(

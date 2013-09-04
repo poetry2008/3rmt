@@ -2,15 +2,15 @@
 /*
   $Id$
 */
-
   if (isset($current_category_id) && ($current_category_id > 0)) {
     // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select p.products_id,
+        select distinct p.products_id,
                         p.products_image,
                         p.products_ordered,
+                        pd.products_viewed,
                         pd.products_name,
                         pd.products_status, 
                         pd.products_description,
@@ -33,15 +33,15 @@
       having p.products_status != '0' and p.products_status != '3' 
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
-    
   } else {
     // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select p.products_id,
+        select distinct p.products_id,
                         p.products_image,
                         p.products_ordered,
+                        pd.products_viewed,
                         pd.products_status, 
                         pd.products_name,
                         pd.products_description,
@@ -70,7 +70,7 @@
 <!-- best_sellers -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: url(images/design/box/ranking_content_bg.gif) repeat-y; margin-bottom: 10px;" summary="best sellers box">
   <tr>
-      <td height="39"><img width="171" height="39" alt="RMTランキング" src="images/design/box/ranking.gif"><?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?></td>
+      <td height="39"><img width="171" height="39" alt="<?php echo TEXT_PRODUCTS_SORT;?>" src="images/design/box/ranking.gif"><?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?></td>
     </tr>
 <?php
   $info_box_contents = array();
@@ -99,7 +99,7 @@
             </table>
             <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" summary="ranking">
               <tr>
-                   <td width="50" align="center" valign="middle"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" class="ranking_money_ico"><?php echo tep_image2(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'],$best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); ?></a></td>
+                   <td width="50" align="center" valign="middle"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" class="ranking_money_ico"><?php echo tep_image(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'],$best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); ?></a></td>
           <td valign="top" class="bestseller_description">
             <p>
               <?php echo mb_substr(strip_tags(replace_store_name($best_sellers['products_description'])),0,30); ?>...

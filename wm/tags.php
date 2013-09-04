@@ -13,21 +13,19 @@ $breadcrumb->add(TAGS_NAVBAR_TITLE, tep_href_link(FILENAME_TAGS));
 </head>
 
 <body>
-<!-- header --> 
-<?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof --> 
-<!-- body --> 
-<div id="main">
-<!-- left_navigation -->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof -->
-<!-- body_text -->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h2 class="pageHeading"><?php echo TAGS_HEADING_TITLE; ?></h2>
-<div class="tag_list01">
+<div class="body_shadow" align="center"> 
+  <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
+  <!-- header_eof --> 
+  <!-- body --> 
+  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
+    <tr> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
+        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
+      <td valign="top" id="contents"><h1 class="pageHeading"><?php echo TAGS_HEADING_TITLE ; ?></h1> 
+        
+        <div class="comment"> 
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <tr>
 <td>
@@ -54,14 +52,14 @@ if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_L
 <td>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <tr>
-<td class="smallText">
+<td class="smallText" style="border-bottom:#ccc solid 1px;">
 <?php 
 echo $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS);
 ?>
 <br>
 <br>
 </td>
-<td align="right" class="smallText">
+<td align="right" class="smallText" style="border-bottom:#ccc solid 1px;">
 <?php
 echo TEXT_RESULT_PAGE;
 ?>
@@ -74,7 +72,7 @@ echo $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_D
 </tr>
 </table>
 <?php
-//echo tep_draw_separator('pixel_trans.gif', '100%', '10') . "\n";
+echo tep_draw_separator('pixel_trans.gif', '100%', '10') . "\n";
 ?>
 </td>
 </tr>
@@ -219,7 +217,9 @@ while ($tag = tep_db_fetch_array($tags_query))
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
     echo '  <tr>' . "\n";
-    echo '    <td width="120" class="smallText" valign="top"><h3 class="tag_h03"><b>'.$tag['tags_name'].'</b></h3><div class="manufacturer_image01">' .
+    echo '    <td width="120" class="smallText"
+                  valign="top"><h3><b>'.$tag['tags_name'].'</b></h3><div
+                  class="manufacturer_image">' .
                   tep_image(DIR_WS_IMAGES.$tag['tags_images'],$tag['tags_name']) .
                   '</div>' . "\n";
                 //<!-- '.mb_substr(strip_tags($manufacturer['manufacturers_url']),0,100,'utf8') .'... --></td>' . "\n";
@@ -262,7 +262,7 @@ while ($tag = tep_db_fetch_array($tags_query))
     echo '    </td>' . "\n";
     echo '  </tr>' . "\n";
     echo '  <tr>' . "\n";
-    echo '    <td colspan="2" align="right" class="smallText" >' .  '<a href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
+    echo '    <td colspan="2" align="right" class="smallText" style="padding-top:5px;border-bottom:#ccc solid 1px;">' . '<a href="'.tags_tep_href_link($tag['tags_id']).'">'.TAGS_TEXT_MORE.'</a></td>'."\n";
     echo '  </tr>' . "\n";
     echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
   }
@@ -297,17 +297,19 @@ while ($tag = tep_db_fetch_array($tags_query))
                       </td>
                     </tr>
                   </table>
-      </div></div>
+</div> 
+    <p class="pageBottom"></p>
+    </td> 
       <!-- body_text_eof --> 
-<!-- right_navigation --> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof -->
-  <!-- body_eof -->
-  <!-- footer -->
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof -->
-</div>
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
+        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+        <!-- right_navigation_eof --> </td> 
+                    </tr>
+  </table> 
+  <!-- body_eof --> 
+  <!-- footer --> 
+  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+  <!-- footer_eof --> 
 </body>
-</html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+</html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

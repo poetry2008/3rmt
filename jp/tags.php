@@ -53,6 +53,12 @@ $tags_split = new splitPageResults($_GET['page'],
     MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
 //ccdd
 $tags_query = tep_db_query($tags_query_string);
+
+
+$all_tags_page = ceil($tags_numrows/MAX_DISPLAY_SEARCH_RESULTS);
+if($_GET['page'] > $all_tags_page){
+  forward404();
+}
 if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3')))
 {
 ?>
@@ -178,14 +184,14 @@ while ($tag = tep_db_fetch_array($tags_query))
       echo '<td align="center" valign="top" class="smallText" width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
-            echo '<div class="tag_image01">';
+            echo '<div>';
                         if ($products['products_image'])
                         {
-                          echo tep_image2(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
+                          echo tep_image(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
                         else
                         {
-                          echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif',$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
+                          echo tep_image(DIR_WS_IMAGES.'new_products_blank_small.gif',$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
             echo '</div>';
                           echo '<br>' .$products['products_name'] . '</a><br>';

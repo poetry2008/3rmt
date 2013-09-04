@@ -92,10 +92,12 @@ function showimage($1) {
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td class="smallText" align="right">
+          <a href="<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
+                  </tr>
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
-                    <td class="smallText" rowspan="3" align="center">
-          <a href="<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?><br> </a></td> 
                   </tr> 
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 

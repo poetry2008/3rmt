@@ -1582,7 +1582,7 @@ if (file_exists(tep_get_upload_root())) {
 //删除商品图像
 if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
   $image_location  = tep_get_upload_dir($site_id). 'products/' . $_GET['file'];//原始图像
-  $image_location2 = tep_get_upload_dir($site_id) .'imagecache3/'. $_GET['file'];//缩略图
+  $image_location2 = tep_get_upload_dir($site_id) .'cache_large/'. $_GET['file'];//缩略图
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
   if (file_exists($image_location2)) @unlink($image_location2);
