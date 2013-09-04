@@ -24,4 +24,5 @@ define('TEXT_PRESENT_BAR_INFORMATION', '応募者情報');
 define('TEXT_PRESENT_BAR_CONFIRMATION', '確認画面');
 define('TEXT_PRESENT_BAR_SUCCESS', '応募完了');
 define('TEXT_PRESENT_ORDER_DATE', '応募期間:');
+define('TEXT_INPUT_PASSWORD','※このまま会員登録をご希望の場合はパスワードを入力してください。')
 ?>

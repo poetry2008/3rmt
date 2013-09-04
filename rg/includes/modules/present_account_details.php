@@ -257,7 +257,7 @@
     <td class="formAreaTitle"><br><?php echo CATEGORY_PASSWORD; ?></td>
   </tr>
   <tr>
-    <td class="main">※このまま会員登録をご希望の場合はパスワードを入力してください。</td>
+    <td class="main"><?php echo TEXT_INPUT_PASSWORD;?></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">

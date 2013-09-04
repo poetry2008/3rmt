@@ -26,6 +26,7 @@
   }
   
   //process
+if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
   switch($_GET['action']) {
     case 'process':
       $now = date("Y/m/d H:i:s", time());

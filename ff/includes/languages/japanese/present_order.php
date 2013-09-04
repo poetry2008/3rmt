@@ -19,4 +19,5 @@ define('TEXT_PASSWORD_FORGOTTEN', 'パスワードをお忘れの場合はクリ
 
 define('TEXT_LOGIN_ERROR', '<font color="#ff0000"><b>エラー:</b></font> &quot;メールアドレス&quot; または &quot;パスワード&quot; が一致しませんでした。');
 define('TEXT_VISITORS_CART', '<font color="#ff0000"><b>ご注意:</b></font> ログインすると、[ショッピングカート] の商品は [メンバーズ・ショッピングカート] へ自動的に移動します。 <a href="javascript:session_win();"> [詳細情報]</a>');
+define('TEXT_INPUT_PASSWORD','※このまま会員登録をご希望の場合はパスワードを入力してください。')
 ?>

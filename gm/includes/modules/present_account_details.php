@@ -254,7 +254,7 @@
     <td><br><h3><?php echo CATEGORY_PASSWORD; ?></h3></td>
   </tr>
   <tr>
-    <td>&nbsp;&nbsp;※このまま会員登録をご希望の場合はパスワードを入力してください。</td>
+    <td>&nbsp;&nbsp;<?php echo TEXT_INPUT_PASSWORD;?></td>
   </tr>
   <tr>
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
