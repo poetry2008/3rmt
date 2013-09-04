@@ -18,22 +18,11 @@
   
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/prototype.js"></script>
-<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript">
- var jq = jQuery.noConflict();
-</script>
-<script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
-function showimage($1) {
-  document.images.lrgproduct.src = $1;
-}
-</script>
-<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
-<script type="text/javascript" src="js/lightbox.js"></script>
-<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
+//--></script>
 </head>
 <body>
 <div  class="body_shadow" align="center">
@@ -69,13 +58,11 @@ function showimage($1) {
           <table border="0" cellspacing="0" cellpadding="2" align="right">
             <tr>
               <td align="center" class="smallText">
-              <script type="text/javascript"><!--
-      //document.write('<?php echo '<a href="javascript:popupWindow(\\\'' .  tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) .  '\\\')">' .  tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>'.TEXT_PRESENT_ENLARGE.'<\'+\'/a>'; ?>');
-      --></script>
               <?php 
               if((file_exists(DIR_WS_IMAGES.'present/'.$present['image']) != '') && ($present['image'] != '')){
+                 require('js/light_box.js');
               ?>
-              <a href="<?php echo DIR_WS_IMAGES .'present/'. $present['image'] ;?>" rel="lightbox[present]">
+              <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES .'present/'.  $present['image'] ;?>')">
               <?php echo tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5" id="lrgproduct" name="lrgproduct"') .  '<br>'.TEXT_PRESENT_ENLARGE;?>
               </a>
               <?php 

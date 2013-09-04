@@ -57,13 +57,17 @@ function popupWindow(url) {
           <p align="right" class="box_des"> <?php echo TEXT_PRESENT_ORDER_DATE.tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table class="box_des" border="0" cellspacing="0" cellpadding="2" align="right">
             <tr>
-              <td align="center" class="smallText"><script type="text/javascript"><!--
-      document.write('<?php echo '<a href="javascript:popupWindow(\\\'' .
-      tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) .
-      '\\\')">' .
-          tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,
-            'hspace="5" vspace="5"') . '<br>'.TEXT_PRESENT_ENLARGE.'</a>'; ?>');
-      //--></script>
+              <td align="center" class="smallText">
+              <?php 
+              if((file_exists(DIR_WS_IMAGES.'present/'.$present['image']) != '') && ($present['image'] != '')){
+                 require('js/light_box.js');
+              ?>
+              <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES .'present/'.  $present['image'] ;?>')">
+              <?php echo tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5" id="lrgproduct" name="lrgproduct"') .  '<br>'.TEXT_PRESENT_ENLARGE;?>
+              </a>
+              <?php 
+              }
+              ?>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
               </noscript>

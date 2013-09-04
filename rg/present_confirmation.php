@@ -44,6 +44,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                 'address1' => tep_db_prepare_input($street_address),
                 'address2' => tep_db_prepare_input($suburb),
                 'phone' => tep_db_prepare_input($telephone),
+                'zone_name'   => $zone_id,
                 'tourokubi' => tep_db_prepare_input($now));
     
       tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
@@ -403,7 +404,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main">メールアドレス</td> 
-                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address); ?> <?php if(!tep_validate_email($email_address)){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?> <?php if(!tep_validate_email($email_address)){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main">郵便番号</td> 

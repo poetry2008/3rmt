@@ -43,6 +43,7 @@
                 'address1' => tep_db_prepare_input($street_address),
                 'address2' => tep_db_prepare_input($suburb),
                 'phone' => tep_db_prepare_input($telephone),
+                'zone_name'   => $zone_id,
                 'tourokubi' => tep_db_prepare_input($now));
     
       tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
