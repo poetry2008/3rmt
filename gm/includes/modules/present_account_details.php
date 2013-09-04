@@ -214,7 +214,7 @@
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
       
           <tr>
-            <td width="114"><?php echo ENTRY_TELEPHONE_NUMBER; ?></td>
+            <td width="106"><?php echo ENTRY_TELEPHONE_NUMBER; ?></td>
             <td>
 <?php
   if ($is_read_only == true) {
@@ -231,7 +231,7 @@
 ?></td>
           </tr>
           <tr>
-            <td width="114"><?php echo ENTRY_FAX_NUMBER; ?></td>
+            <td width="106"><?php echo ENTRY_FAX_NUMBER; ?></td>
             <td>
 <?php
   if ($is_read_only == true) {
@@ -259,7 +259,7 @@
   <tr>
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td width="114"><?php echo ENTRY_PASSWORD; ?></td>
+            <td width="105"><?php echo ENTRY_PASSWORD; ?></td>
             <td>
 <?php
 
@@ -279,7 +279,7 @@
     if ( ($error == false) || ($entry_password_error == true) ) {
 ?>
           <tr>
-            <td width="114"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
+            <td width="106"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
             <td>
 <?php
      echo tep_draw_password_field('confirmation') . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;

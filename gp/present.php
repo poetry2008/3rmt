@@ -16,8 +16,6 @@
     forward404Unless($present);
   } 
   
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
-
 ?>
 <?php page_head();?>
 <script language="javascript" type="text/javascript"><!--
