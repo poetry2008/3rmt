@@ -1583,6 +1583,11 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
          if ($exists_customer['is_quited'] == '1') {
            tep_db_query("update ".TABLE_ORDERS." set is_gray = '2' where orders_id = '".$oID."'"); 
          }
+         if ($exists_customer['customers_guest_chk'] == '1') {
+           tep_db_query("update ".TABLE_ORDERS." set is_guest = '1' where orders_id = '".$oID."'"); 
+         }
+       } else {
+         tep_db_query("update ".TABLE_ORDERS." set is_guest = '1' where orders_id = '".$oID."'"); 
        }
        //session unset
        unset($_SESSION['oID']);
@@ -2203,7 +2208,7 @@ function address_option_show(action){
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
   if ($address_orders_group_array['orders_id'] != $oID) {
-    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$oID."' and o.is_gray != '1' order by ah.id asc");
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$oID."' and o.is_gray != '1' and o.is_guest = '0' order by ah.id asc");
   } else {
     $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
   }
@@ -2317,7 +2322,7 @@ function address_option_list(value){
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
   if ($address_orders_group_array['orders_id'] != $oID) {
-    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$oID."' and o.is_gray != '1' order by ah.id");
+    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$oID."' and o.is_gray != '1' and o.is_guest = '0' order by ah.id");
   } else {
     $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
   }
@@ -3419,7 +3424,7 @@ a.dpicker {
       $payment_negative_array = array_unique($payment_negative_array);       
       $payment_positive_array = array_unique($payment_positive_array); 
       if($products_money_total != 0){
-          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='".  $email_address_flag ."' and site_id='".$site_id_flag."' and is_gray != '1' order by orders_id desc"); 
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='".  $email_address_flag ."' and site_id='".$site_id_flag."' and is_gray != '1' and is_guest = '0' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($orders_payment_array['payment_method'] != ''){
@@ -4331,6 +4336,11 @@ if($orders_exit_flag == true){
                 $address_historys_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$customer_id_flag ."'");
                 $address_historys_num = tep_db_num_rows($address_historys_query);
                 tep_db_free_result($address_historys_query);
+                $member_order_query = tep_db_query("select * from ".TABLE_ORDERS." where customers_id = '".$customer_id_flag."' and is_guest = '0' and is_gray != '1'"); 
+                $member_order_num = tep_db_num_rows($member_order_query);
+                if (!$member_order_num) {
+                  $address_historys_num = 0;
+                }
                 if($address_historys_num == 0 && !isset($_POST['address_option'])){
                     $old_checked = '';
                     $new_checked = 'checked';

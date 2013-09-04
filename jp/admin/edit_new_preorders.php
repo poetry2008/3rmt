@@ -490,6 +490,11 @@
         if ($exists_customer['is_quited'] == '1') {
           tep_db_query("update ".TABLE_PREORDERS." set is_gray = '2' where orders_id = '".$new_orders2_id."'"); 
         }
+        if ($exists_customer['customers_guest_chk'] == '1') {
+          tep_db_query("update ".TABLE_PREORDERS." set is_guest = '1' where orders_id = '".$new_orders2_id."'"); 
+        }
+      } else {
+        tep_db_query("update ".TABLE_PREORDERS." set is_guest = '1' where orders_id = '".$new_orders2_id."'"); 
       }
       foreach($_SESSION['create_preorder']['orders_products'] as $pid => $orders_product) {
         $orders_product['site_id'] = $_SESSION['create_preorder']['orders']['site_id'];
@@ -1533,7 +1538,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $payment_positive_array = array_unique($payment_positive_array); 
       $products_money_total = $_SESSION['create_preorder']['orders_total']['ot_total']['value'];
       if($products_money_total != 0){
-          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_PREORDERS ." where customers_email_address='".  $_SESSION['create_preorder']['orders']['customers_email_address'] ."' and site_id='". $_SESSION['create_preorder']['orders']['site_id'] ."' and is_gray = '1' order by orders_id desc"); 
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_PREORDERS ." where customers_email_address='".  $_SESSION['create_preorder']['orders']['customers_email_address'] ."' and site_id='". $_SESSION['create_preorder']['orders']['site_id'] ."' and is_gray = '1' and is_guest = '0' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($orders_payment_array['payment_method'] != ''){

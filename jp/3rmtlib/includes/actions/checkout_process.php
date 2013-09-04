@@ -385,6 +385,9 @@ if ($bflag_single == 'View') {
 if ($customers_referer_array['is_quited'] == '1') {
   $sql_data_array['is_gray'] = '2';
 }
+if ($_SESSION['guestchk'] == '1') {
+  $sql_data_array['is_guest'] = '1';
+}
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
 tep_order_status_change($insert_id,$sql_data_array['orders_status']);
 $total_data_arr = array();

@@ -40,23 +40,23 @@
   $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_INFO." where customers_info_id = '".$customer_id."'"); 
   $customer_info = tep_db_fetch_array($customer_info_raw); 
   $history_query_raw = "
-    select o.orders_id, 
-          o.date_purchased, 
-          o.delivery_name, 
-          ot.text as order_total, 
-          ot.value as order_total_value, 
-          o.orders_status_name 
-    from " . TABLE_ORDERS . " o 
-      left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
-    where o.customers_id = '" . $customer_id . "' 
-      and ot.class = 'ot_total' 
-      and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1'  
-    order by orders_id DESC";
+        select o.orders_id, 
+                o.date_purchased, 
+                o.delivery_name, 
+                ot.text as order_total, 
+                ot.value as order_total_value, 
+                o.orders_status_name 
+        from " . TABLE_ORDERS . " o 
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
+        where o.customers_id = '" . $customer_id . "' 
+          and ot.class = 'ot_total' 
+          and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1' and is_guest = '0' order by orders_id DESC
+  ";
   $history_count_query_raw = "
         select count(o.orders_id) as count
         from " . TABLE_ORDERS . " o 
         where o.customers_id = '" . $customer_id . "' 
-          and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1' ";
+          and o.site_id = ".SITE_ID." and o.date_purchased >= '".$customer_info['customers_info_date_account_created']."' and is_gray != '1' and is_guest = '0' ";
   $history_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDER_HISTORY, $history_query_raw, $history_numrows, $history_count_query_raw);
   $history_query = tep_db_query($history_query_raw);
 

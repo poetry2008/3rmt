@@ -219,6 +219,16 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
     $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
   }
   
+  $customers_type_info_raw = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $preorder_cus_id . "'");
+  $customers_type_info_res = tep_db_fetch_array($customers_type_info_raw); 
+  if ($customers_type_info_res) {
+    if ($customers_type_info_res['customers_guest_chk'] == '1') {
+      $sql_data_array['is_guest'] = '1';
+    }
+  } else {
+    $sql_data_array['is_guest'] = '1';
+  }
+  
   $telecom_option_ok = $payment_modules->preorderDealUnknow($sql_data_array, $cpayment_code); 
   
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
