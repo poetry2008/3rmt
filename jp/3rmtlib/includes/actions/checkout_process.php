@@ -342,7 +342,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query); 
-if($address_error == false){
+if($address_error == false && $_SESSION['guestchk'] == '0'){
   foreach($_SESSION['options'] as $address_history_key=>$address_history_value){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". $address_history_key ."'");
       $address_history_array = tep_db_fetch_array($address_history_query);

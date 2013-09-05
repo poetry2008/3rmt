@@ -287,7 +287,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query);
-if($address_error == false){
+if($address_error == false && $customers_type_info_res['customers_guest_chk'] == '0'){
   if ($preorder['is_gray'] != '1') { 
     foreach($_SESSION['preorder_information'] as $address_history_key=>$address_history_value){
       if(substr($address_history_key,0,3) == 'ad_'){
