@@ -243,6 +243,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <div id="main-content">
+<?php if (!isset($_GET['news_id'])) $_GET['news_id']=NULL;?>
 <h2><?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h2> 
         
          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 

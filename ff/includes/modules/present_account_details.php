@@ -71,7 +71,6 @@
     } elseif($entry_date_of_birth_error2 == true) {
           $a_value = tep_draw_input_field('dob','' , "class='input_text'") . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR2;
     } else {
-          //$a_value = $dob . tep_draw_hidden_field('dob');
       $a_value = tep_draw_input_field('dob','' , "class='input_text'");
       }
   } else {

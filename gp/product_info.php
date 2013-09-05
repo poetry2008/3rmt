@@ -586,13 +586,9 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             </div>
          <?php }?>
         <?php
-    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
-    $reviews_values = tep_db_fetch_array($reviews);
-    if ($reviews_values['count'] > 0) {
       include(DIR_WS_BOXES.'reviews.php') ;
 ?>
 <?php
-    }
 
     if (tep_not_null($product_info['products_url'])) {
 ?>

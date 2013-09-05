@@ -246,7 +246,6 @@ function showimage($1) {
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    // ccdd
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
@@ -383,7 +382,6 @@ function showimage($1) {
                           <?php } ?> 
                         <?php 
                           //show products tags 
-// ccdd
 if (false) {
 $tag_query = tep_db_query("
     SELECT t.tags_id, 
@@ -498,7 +496,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         }
         echo '</span>'; 
       }else{    
-    // ccdd
     
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
@@ -546,7 +543,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             </table>
       <?php
                     //sub图像
-        // ccdd
         $sub_colors_query = tep_db_query("
             SELECT color_image, 
                    color_id, 
@@ -563,7 +559,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
                       //获取颜色名
-          // ccdd
           $colors_name_query = tep_db_query("
               SELECT color_name 
               FROM ".TABLE_COLOR." 

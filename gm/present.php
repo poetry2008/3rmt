@@ -123,7 +123,7 @@ function popupWindow(url) {
           <div class="underline">&nbsp;</div>
           <table class="box_des" border="0" width="100%" cellspacing="1" cellpadding="2">
             <?php 
-   
+            $row = 0;
         while($present = tep_db_fetch_array($present_query)){
           $row ++ ;
         ?>

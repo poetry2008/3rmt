@@ -247,7 +247,6 @@ if (!$product_info) { // product not found in database
     </div>
     <?php
 } else {
-  // ccdd
   $product_info['site_id'] == SITE_ID && tep_db_query("
       UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
       SET products_viewed = products_viewed+1 
@@ -386,7 +385,6 @@ if (!$product_info) { // product not found in database
                 </tr>
                 <?php } ?>
                 <?php
-                // ccdd
                 if (false) {
                   $tag_query = tep_db_query("
                       SELECT t.tags_id, 
@@ -456,7 +454,6 @@ if (!$product_info) { // product not found in database
       }
       echo '</span>'; 
     }else{    
-      // ccdd
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
@@ -508,7 +505,6 @@ if (!$product_info) { // product not found in database
     </div>
     <?php
     //sub图像
-    // ccdd
     $sub_colors_query = tep_db_query("
         SELECT color_image, 
         color_id, 

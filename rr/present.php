@@ -15,8 +15,6 @@
     forward404Unless($present);
   } 
   
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
-
 ?>
 <?php page_head();?>
 <script language="javascript" type="text/javascript"><!--
@@ -124,8 +122,8 @@ function popupWindow(url) {
           <div class="underline">&nbsp;</div>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" summary="table">
             <?php 
+            $row = 0;
         while($present = tep_db_fetch_array($present_query)){
-          if (!isset($row)) $row =NULL; //delnotice
           $row ++ ;
         ?>
             <tr>

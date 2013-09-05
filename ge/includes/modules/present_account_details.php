@@ -67,11 +67,10 @@
   } elseif ($error == true) {
       if ($entry_date_of_birth_error == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR;
-      //18歳未満登録禁止処理
+      //未满18岁禁止处理
     } elseif($entry_date_of_birth_error2 == true) {
           $a_value = tep_draw_input_field('dob') . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR2;
     } else {
-          //$a_value = $dob . tep_draw_hidden_field('dob');
       $a_value = tep_draw_input_field('dob');
       }
   } else {
