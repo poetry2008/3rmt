@@ -395,31 +395,31 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_FAM; ?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname,'class="input_text"'); ?> <?php if(!$lastname) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname,'class="input_text"'); ?> <?php if(!$lastname) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_NAME;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname,'class="input_text"'); ?> <?php if(!$firstname) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname,'class="input_text"'); ?> <?php if(!$firstname) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_EMAIL;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?> <?php if(!tep_validate_email($email_address)){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?> <?php if(!tep_validate_email($email_address)){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_MAIL;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode, 'class="input_text"'); ?> <?php if(!$postcode) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode, 'class="input_text"'); ?> <?php if(!$postcode) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_STR?></td> 
-                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?> <?php if(!$zone_id) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?> <?php if(!$zone_id) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_CITY;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('city', $city, 'class="input_text"'); ?> <?php if(!$city) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('city', $city, 'class="input_text"'); ?> <?php if(!$city) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS1?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address, 'class="input_text"'); ?> <?php if(!$street_address) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address, 'class="input_text"'); ?> <?php if(!$street_address) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS2;?></td> 
@@ -427,7 +427,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_PHO_NUM;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone, 'class="input_text"'); ?> <?php if(!$telephone) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone, 'class="input_text"'); ?> <?php if(!$telephone) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
