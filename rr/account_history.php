@@ -82,9 +82,7 @@
                '    <td class="main" width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' . tep_date_long($history['date_purchased']) . '<br><b>' . TEXT_ORDER_SHIPPED_TO . '</b> ' . tep_get_orders_address($history['orders_id']) . '</td>' . "\n" .
                '    <td class="main" width="30%" valign="top"><b>' .
                TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' .
-               TEXT_ORDER_COST . '</b> '.$currencies->format_total($history['order_total_value']);
-                  
-               $order .= '</td>' . "\n" .
+               TEXT_ORDER_COST . '</b> ' .  $currencies->format_total($history['order_total_value']) . '</td>' . "\n" .
                '    <td class="main" width="20%"><a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'page=' . $_GET['page'] . '&order_id=' . $history['orders_id'], 'SSL') . '">' . TEXT_VIEW_ORDER . '</a></td>' . "\n" .
                '  </tr>' . "\n" .
                '</table>';
