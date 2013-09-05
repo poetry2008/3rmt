@@ -11,7 +11,6 @@
   $get_params = tep_get_all_get_params(array('reviews_id'));
   $get_params = substr($get_params, 0, -1); //remove trailing &
 
-  // ccdd
   $reviews_query = tep_db_query("
     select *
     from (
@@ -41,7 +40,7 @@
     ) p
     where psid = '0'
        or psid = '".SITE_ID."'
-    group by reviews_id
+    group by products_id, reviews_id 
     having p.products_status != '0' and p.products_status != '3'  
   ");
   //forward if no reviews
@@ -79,7 +78,6 @@ function showimage($1) {
 <!-- left_navigation_eof -->
 <!-- body_text -->
 <div id="content"><?php
-      // ccdd
   tep_db_query("
       UPDATE " . TABLE_REVIEWS . " 
       SET reviews_read = reviews_read+1 
@@ -105,11 +103,6 @@ function showimage($1) {
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 
                   </tr> 
-          <?php /*
-                  <tr> 
-                    <td class="main"><b><?php echo SUB_TITLE_DATE; ?></b> <?php echo tep_date_long($reviews['date_added']); ?></td> 
-                  </tr> 
-          */ ?>
                 </table></td> 
             </tr> 
             <tr> 
@@ -128,7 +121,6 @@ function showimage($1) {
                 <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
                     <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td align="right" class="main"><?php //echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' . $reviews['products_id']) . '">' . tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></a></td> 
                   </tr> 
                 </table></td> 
             </tr> 

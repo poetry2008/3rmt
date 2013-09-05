@@ -13,7 +13,6 @@
 
 
   if($_GET['goods_id']) {
-//ccdd
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -49,12 +48,10 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                 'zone_name'   => $zone_id
                 );
 
-      // ccdd
       tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
     
     //check pre insert - customers
     if($pc_id != '0') {
-      //ccdd
       $cmcnt_query = tep_db_query("
           select count(*) as cnt 
           from ".TABLE_CUSTOMERS." 
@@ -67,7 +64,6 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
 
       //update mail_mag
       if($cmcnt != 0) {
-      //ccdd
         tep_db_query("
             update ".TABLE_CUSTOMERS." 
             set customers_newsletter = '1' 
@@ -80,7 +76,6 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
     }
     
     //check pre insert - main_magazine
-    //ccdd
     $mgcnt_query = tep_db_query("
         select count(*) as cnt 
         from ".TABLE_MAIL_MAGAZINE." 
@@ -96,7 +91,6 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
           'mag_name'  => tep_get_fullname($firstname, $lastname),
           'site_id'   => SITE_ID
           );
-      // ccdd
       tep_db_perform(TABLE_MAIL_MAGAZINE, $sql_data_array2);
     }
     
@@ -185,7 +179,6 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
         default:
           if (!tep_session_is_registered('firstname'))
           {
-          //ccdd
           $account_query = tep_db_query("
               select c.customers_gender, 
                      c.customers_firstname, 

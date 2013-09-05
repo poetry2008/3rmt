@@ -8,7 +8,6 @@
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRESENT));
   
   if(isset($_GET['goods_id']) && $_GET['goods_id']) {
-//ccdd
     $present_query = tep_db_query("select * from ".TABLE_PRESENT_GOODS." where goods_id = '".(int)$_GET['goods_id']."' and site_id = '" . SITE_ID . "'") ;
     $present = tep_db_fetch_array($present_query) ;
     $breadcrumb->add($present['title'], tep_href_link(FILENAME_PRESENT, 'goods_id='.$present['goods_id']));
@@ -44,7 +43,6 @@ function popupWindow(url) {
       ##    详细页面    ##
       ######################
       if($_GET['goods_id'] && !empty($_GET['goods_id'])) {
-//ccdd
       $present_query = tep_db_query("
           select * 
           from ".TABLE_PRESENT_GOODS." 
@@ -104,7 +102,6 @@ function popupWindow(url) {
               order by start_date DESC
         ";
         $present_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $present_query_raw, $present_numrows);
-//ccdd
         $present_query = tep_db_query($present_query_raw);
   ?>
           <br>
@@ -133,8 +130,7 @@ function popupWindow(url) {
           $row ++ ;
         ?>
             <tr>
-              <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php 
-              echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; 
+              <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; 
               ?></td>
               <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">'. $present['title'].'</a>' ; ?></b> <br>
               <?php echo TEXT_PRESENT_ORDER_DATE;?>:<?php echo tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?>
