@@ -20,6 +20,7 @@
   if (tep_whether_show_products((int)$_GET['products_id'])) {
     forward404(); 
   }
+  require('ajax_process.php'); 
   require(DIR_WS_ACTIONS . 'product_info.php');
 ?>
 <?php page_head();?>
@@ -60,7 +61,7 @@ jq(document).ready(function () {
    var actiontime =new Date().getTime();  
    jq(".option_product_radio_list").each(function(){
 
-     var radio_option_value = document.getElementById("h_<?php echo $_SESSION['name_one']; ?>").value;
+     var radio_option_value = jq(this).next("span").children("input[type='hidden']").val();
      radio_option_value = radio_option_value.replace(/<br>/i,"<br>");
      radio_option_value = radio_option_value.replace(/<\/br>/i,"</br>");
      var tmp_t_obj = jq(this); 
@@ -102,7 +103,7 @@ function calc_product_final_price(pid)
        }
    }); 
    
-   jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+jq('#quantity').val(), function(msg) { 
+   jq.getJSON("<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.(int)$_GET['products_id']);?>"+"?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+jq('#quantity').val(), function(msg) { 
      document.getElementById("show_price").innerHTML = msg.price; 
      jq("#change_flag").val('true');
      jq("#show_price").show();
@@ -208,7 +209,6 @@ function timeline_action(p){
   if (get_current_ts()-actiontime>=980){
   calc_product_final_price(p);
   };
-//  calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 </script>
 <script language="javascript" type="text/javascript"><!--
@@ -275,19 +275,8 @@ function showimage($1) {
     $data3 = explode("//", $product_info['products_attention_3']);
     //data1
     $data4 = explode("//", $product_info['products_attention_4']);
-    //data1
-    //$data5 = explode("//", $product_info['products_attention_5']);
 ?>
-<?php 
-            //if(tep_not_null(ds_tep_get_categories((int)$_GET['products_id'],1)) { 
-            //    echo tep_image(DIR_WS_IMAGES.tep_not_null(ds_tep_get_categories((int)$_GET['products_id'],1) ;
-            //  }else{
-            //    echo '' ;
-            //  }
-    //bobhero <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $products_info['products_status'] != '1') {
-             ?>
-    <?php if
-    (tep_show_warning(tep_get_products_categories_id($product_info['products_id']))
+    <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id']))
      or $product_info['products_status'] != '1' ) {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
@@ -464,7 +453,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         -->
                         </script>
                         <noscript>
-                        <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . urlencode($product_info['products_image'])) . '">' .  tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
+                        <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' . urlencode($product_info['products_image'])) . '">' .  tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
                         </noscript>
                       </td>
                     </tr>
@@ -587,15 +576,11 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       $mcnt++;
                       if($mcnt == 1) {
                       ?>
-                <script language="javascript" type="text/javascript"><!--
-    document.write('<?php //echo '<td class="smallText" align="center"><a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE, 'pID=' . $product_info['products_id']) . '\\\')">' . tep_image2(DIR_WS_IMAGES . $product_info['products_image'], addslashes($product_info['products_name']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2"  class="image_border"') . '</a><br>-</td>'; ?>');
-    --></script>
                 <noscript>
-                <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES . $product_info['products_image']) . '" rel="lightbox[products]">' . tep_image2(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
+                <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES .'products/'.  $product_info['products_image']) . '" rel="lightbox[products]">' .  tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
                 </noscript>
                 <?php
                       }
-                       // $cnt++;
                       ?>
                 <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES . 'colors/' . $sub_colors['color_image']) . '" rel="lightbox[products]">' . tep_image2(DIR_WS_IMAGES . 'colors/' . $sub_colors['color_image'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'.$sub_colors['color_to_products_name'].'</td>'; ?>
                 <?php
@@ -619,20 +604,15 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             <h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3>
             <div class="comment_long">
               <div  class="reviews_area"><p><?php 
-            //echo stripslashes($product_info['products_description']);
             echo $description;
             ?>
             </p></div></div>
          <?php }?>
         <?php
-//    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
-//    $reviews_values = tep_db_fetch_array($reviews);
-//    if ($reviews_values['count'] > 0) {
     include(DIR_WS_BOXES.'reviews.php') ;
 ?>
 
 <?php
-//    }
 
     if (tep_not_null($product_info['products_url'])) {
 ?>

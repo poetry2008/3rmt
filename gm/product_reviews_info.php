@@ -9,7 +9,6 @@
   $get_params = tep_get_all_get_params(array('reviews_id'));
   $get_params = substr($get_params, 0, -1); //remove trailing &
 
-  // ccdd
   $reviews_query = tep_db_query("
     select *
     from (
@@ -39,7 +38,7 @@
     ) p
     where psid = '0'
        or psid = '".SITE_ID."'
-    group by reviews_id
+    group by products_id, reviews_id 
     having p.products_status != '0' and p.products_status != '3'  
   ");
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
@@ -69,10 +68,8 @@ function showimage($1) {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div class="yui3-u" id="layout"><?php
-      // ccdd
   tep_db_query("
       UPDATE " . TABLE_REVIEWS . " 
       SET reviews_read = reviews_read+1 
@@ -99,11 +96,6 @@ function showimage($1) {
                   <tr> 
                     <td><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 
                   </tr> 
-          <?php /*
-                  <tr> 
-                    <td><b><?php echo SUB_TITLE_DATE; ?></b> <?php echo tep_date_long($reviews['date_added']); ?></td> 
-                  </tr> 
-                  */ ?>
                 </table></td> 
             </tr> 
             <tr> 
@@ -125,7 +117,6 @@ function showimage($1) {
                     tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' .
                     tep_image_button('button_back.gif',
                         IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td> 
-                    <td align="right"><?php //echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' . $reviews['products_id']) . '">' . tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></a></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -135,7 +126,6 @@ function showimage($1) {
 	<?php include('includes/float-box.php');?>
       </div>
       <!-- body_text_eof //--> 
-<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
     <!-- footer_eof //--> 
