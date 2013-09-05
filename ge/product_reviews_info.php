@@ -95,7 +95,7 @@ function showimage($1) {
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td class="smallText" align="right">
-          <a href="<?php echo DIR_WS_IMAGES . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?></a></td>
+          <a href="<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?></a></td>
                   </tr>
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
