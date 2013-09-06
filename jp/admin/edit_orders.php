@@ -625,7 +625,7 @@ if (tep_not_null($action)) {
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query);
-if($address_error == false){
+if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
   foreach($option_info_array as $address_history_key=>$address_history_value){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
       $address_history_array = tep_db_fetch_array($address_history_query);

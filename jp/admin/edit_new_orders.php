@@ -545,7 +545,7 @@ if($orders_exit_flag == true){
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query);
-if($address_error == false){
+if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
   $address_history_search_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='".$oID."'");
   $address_history_num_rows = tep_db_num_rows($address_history_search_query);
   tep_db_free_result($address_history_search_query);
