@@ -532,7 +532,7 @@ if (!$product_info) { // product not found in database
         if($mcnt == 1) {
           ?>
             <noscript>
-            <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES .  $product_info['products_image']) . '" rel="lightbox[products]">' .  tep_image3(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'; ?>
+            <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES .  $product_info['products_image']) . '" rel="lightbox[products]">' .  tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'; ?>
             </noscript>
             <?php
         }
