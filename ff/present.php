@@ -54,7 +54,7 @@ function popupWindow(url) {
       $present = tep_db_fetch_array($present_query) ;
       forward404Unless($present);
       ?>
-          <p align="right" class="main">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
+          <p align="right" class="main"> <?php echo TEXT_PRESENT_ORDER_DATE.tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table border="0" cellspacing="0" cellpadding="2" align="right" summary="table">
             <tr>
               <td align="center" class="smallText">
