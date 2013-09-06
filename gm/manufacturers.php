@@ -25,10 +25,10 @@
 <h2><?php echo HEADING_TITLE ; ?></h2> 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php 
-  $manufacturer_query_raw = "select * from (select pd.products_id, pd.products_status, pd.site_id, m.manufacturers_id, m.manufacturers_name, m.manufacturers_alt,m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id not in".tep_not_in_disabled_products()." and p.manufacturers_id  = m.manufacturers_id and p.products_id = pd.products_id and m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' group by manufacturers_id having p.products_status != '0' and p.products_status != '3' order by manufacturers_name" ;
+  $manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, m.manufacturers_alt, mi.manufacturers_url  from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi where m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
   $manufacturer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
   $manufacturer_query = tep_db_query($manufacturer_query_raw);
- 
+
   if (($manufacturer_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
       <tr>

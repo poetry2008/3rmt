@@ -24,6 +24,7 @@ $products_tags_str .=")";
 if ($products_tags_str == ')') {
   $products_tags_str = "(0)";
 }
+/*查找所有的不重复的 tags 使用 tag 的 name 和order 排序*/
 $tags_query_string = "
     select tags_id,tags_images,tags_name 
     from " . TABLE_TAGS . " 
@@ -31,9 +32,7 @@ $tags_query_string = "
     order by tags_order,tags_name
 ";
 /*调用分页类  生成了新的 SQL*/
-$tags_split = new splitPageResults($_GET['page'],
-    MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
-//ccdd
+$tags_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $tags_query_string, $tags_numrows);
 $tags_query = tep_db_query($tags_query_string);
 
 
@@ -173,8 +172,6 @@ while ($tag = tep_db_fetch_array($tags_query))
       $_products_query = tep_db_query($_products_sql);
       $products = tep_db_fetch_array($_products_query);
       if($products['products_status'] != 3 && $products['products_status'] != 0){
-      //$products['products_name'] = tep_get_products_name($products['products_id']);
-      //$products['products_description'] = tep_get_products_description($products['products_id']);
       echo '<td align="center" valign="top" class="smallText" width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
@@ -190,8 +187,7 @@ while ($tag = tep_db_fetch_array($tags_query))
             echo '</span>';
                           echo '<br>' .$products['products_name'] . '</a><br>';
       if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
-        echo '<s>' .
-          $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), 0) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</span>&nbsp;';
+        echo '<s>' .  $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'],$products['products_bflag']), 0) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</span>&nbsp;';
       } else {
         echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), 0);
       }
@@ -212,8 +208,6 @@ while ($tag = tep_db_fetch_array($tags_query))
     echo '</table><br><div class="dot">&nbsp;</div>' . "\n";
   }
   }
-// }
-
 }
 ?>
                                 <?php
