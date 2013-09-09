@@ -322,6 +322,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   }
   
   $address_error = false;
+  $orders_id_temp = '';
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
@@ -337,11 +338,17 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
     if($address_temp_str == $add_temp_str){
 
       $address_error = true;
+      $orders_id_temp = $address_sh_his_array['orders_id'];
       break;
     }
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query); 
+  //update address info
+  if($address_error == true && $orders_id_temp != ''){
+
+    tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set orders_id='".$insert_id."' where orders_id='".$orders_id_temp."'"); 
+  }
 if($address_error == false && $_SESSION['guestchk'] == '0'){
   foreach($_SESSION['options'] as $address_history_key=>$address_history_value){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". $address_history_key ."'");

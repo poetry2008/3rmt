@@ -518,6 +518,8 @@ function address_option_show(action){
           $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
       }
    }
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
     $("#error_"+country_fee_id_one).html('');
     $("#prompt_"+country_fee_id_one).html('');
     $("#error_"+country_area_id_one).html('');
@@ -544,6 +546,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   }
   tep_db_free_result($address_list_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_show_num = tep_db_num_rows($address_orders_group_query);
   
    
   $address_num = 0;
@@ -797,10 +800,14 @@ if($cart->weight > 0){
 ?>
     
      <?php 
-     if($address_quest_flag == 0){
+     if($address_quest_flag == 0 && $address_show_num > 0){
      ?>
      address_option_show('old'); 
      address_option_list(first_num); 
+     <?php
+     }else{
+     ?>
+     address_option_show('new');
      <?php
      }
      if(isset($_SESSION['options'])){ 
