@@ -3,7 +3,6 @@
   $Id$
 */
   if (isset($current_category_id) && ($current_category_id > 0)) {
-    // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -34,7 +33,6 @@
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
-    // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -70,18 +68,14 @@
 <!-- best_sellers -->
       <div class="ranking_warpper">
       <div class="menu_top_ranking"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;<?php echo BOX_HEADING_BESTSELLERS;?></div>
-    <?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?>
 <?php
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
 
-  // new infoBoxHeading($info_box_contents, false, false);
 
   $rows = 0;
-  //$bestsellers_list = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
   while ($best_sellers = tep_db_fetch_array($best_sellers_query)) {
     $rows++;
-    // $bestsellers_list .= '<tr><td class="infoBoxContents" valign="top">' . tep_row_number_format($rows) . '.</td><td class="infoBoxContents"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) . '">' . $best_sellers['products_name'] . '</a></td></tr>';
 ?>
           <div class="ranking_area">       
             <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" summary="ranking">
