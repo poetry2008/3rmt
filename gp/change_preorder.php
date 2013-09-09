@@ -192,7 +192,8 @@ function session_value(){
       }
     }
   ?>
-  
+
+    
     for(x in session_array){
       if(document.getElementById(x)){
         var pre_id = document.getElementById(x); 
@@ -257,6 +258,9 @@ function address_option_show(action){
       }
     }
   }
+    check();
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
     $("#error_"+country_fee_id_one).html('');
     $("#prompt_"+country_fee_id_one).html('');
     $("#error_"+country_area_id_one).html('');
@@ -367,7 +371,9 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
 
   } 
-    //address_option_list(first_num); 
+    <?php if($address_num > 0){?> 
+      address_option_list(first_num); 
+    <?php }?>
     break;
   }
 }
@@ -481,6 +487,13 @@ if (!isset($_POST['address_option']) && $customers_guest_flag == 0) {
     address_option_show('old'); 
   });
 <?php
+}elseif(!isset($_POST[$country_fee_id]) && $customers_guest_flag == 1){
+?>
+  $(document).ready(function(){
+    
+    address_option_show('new'); 
+  });
+<?php
 }
 }
 ?>
@@ -526,16 +539,16 @@ if($weight_count > 0){
     $("#error_"+country_city_id_one).html('');
     $("#prompt_"+country_city_id_one).html('');
   });
-  <?php
+<?php
     $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'"); 
     $address_histroy_num = tep_db_num_rows($address_histroy_query);
-    tep_db_free_result($address_histroy_query); 
+    tep_db_free_result($address_histroy_query);
     if(isset($_POST[$country_fee_id])){
   ?>  
     check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
   <?php
    }elseif(!isset($_SESSION['preorder_information'])){
-  ?>
+?>
   <?php
     if($address_histroy_num > 0 && $customers_guest_flag == 0){
   ?>
@@ -617,7 +630,7 @@ if($weight_count > 0){
 <body>
 <?php 
 if ($error == false && $_POST['action'] == 'process') { 
-  
+
   $options_comment = array();
   $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
   while($address_required = tep_db_fetch_array($address_query)){
@@ -712,7 +725,6 @@ document.forms.order1.submit();
           <?php
           echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'])).tep_draw_hidden_field('action', 'process'); 
           ?>
-          
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
@@ -722,7 +734,7 @@ document.forms.order1.submit();
                 <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
-          </table>
+          </table> 
           <br> 
           <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></p>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
@@ -928,7 +940,7 @@ document.forms.order1.submit();
   //当日起几日后可以收货
   $db_set_day = max($shipping_time_array['db_set_day']);
   //可选收货期限
-  $shipping_time = max($shipping_time_array['shipping_time']);
+  $shipping_time = max($shipping_time_array['shipping_time']); 
   if(count($shipping_time_array['work']) == 1){
     
     $shi_time_array = array();
@@ -955,7 +967,7 @@ document.forms.order1.submit();
         sort($s_temp_array);
         $shi_time_array[$_s_key] = implode('|',$s_temp_array);
     }
- 
+
     $max_time_str_old = implode('||',array_keys($shi_time_array));
     $min_time_str_old = implode('||',$shi_time_array);
 
@@ -1040,7 +1052,8 @@ document.forms.order1.submit();
   $work_start_old = $max_time_str_old;
   $work_end_old = $min_time_str_old; 
   $work_start_exit = $max_time_end_str;
-  $work_end_exit = $min_time_end_str; 
+  $work_end_exit = $min_time_end_str;
+
 
         if($weight_total > 0){
           $checked_str_old = '';
@@ -1103,7 +1116,7 @@ document.forms.order1.submit();
         </script>
             <tr>
             <td colspan="2" class="main">
-              <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
+              <input type="radio" name="address_option" value="old" onClick="address_option_show('old');" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
               <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
             </td>
             </tr>
@@ -1141,7 +1154,7 @@ document.forms.order1.submit();
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();$('#time_error_id').hide();$('#time_error').html('');">
     <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
     <?php
     $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -1152,7 +1165,6 @@ document.forms.order1.submit();
     if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
 
      if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
-
       $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
       if(!isset($_POST['date'])){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_information']['date'] ? 'selected' : ''; 
@@ -1170,7 +1182,7 @@ document.forms.order1.submit();
         echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
         break;
      }
-    }
+  }
     ?>
   </select>
               <?php
@@ -1183,6 +1195,7 @@ document.forms.order1.submit();
             <tr id="shipping_list" style="display:none;">
               <td class="main"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
               <td class="main" id="shipping_list_show">
+              
 </td>
 </tr>
 <?php
@@ -1196,7 +1209,7 @@ if (isset($time_error)) {
 <?php
 }
 ?>
-          </table>  
+</table>  
 <noscript>
               <table cellpadding="2" cellspacing="2" border="0" class="red_box">
               <tr>
@@ -1211,8 +1224,9 @@ if (isset($time_error)) {
               </td> 
             </tr>
 </table>
-          <?php
-          if(isset($_POST['date']) && $_POST['date'] != ''){
+
+             <?php   
+             if(isset($_POST['date']) && $_POST['date'] != ''){
 
                 echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$_POST['date'].'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
              }else{
@@ -1222,6 +1236,7 @@ if (isset($time_error)) {
                   echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$_SESSION['preorder_information']['date'].'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
                 }
              }
+ 
              if(isset($_POST['hour']) && $_POST['hour'] != ''){
 
                 if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $_POST['date'])){
@@ -1236,10 +1251,12 @@ if (isset($time_error)) {
                   if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $_SESSION['preorder_information']['date'])){
                     $work_start = $work_start_old;
                     $work_end = $work_end_old;
-                  }
+                  } 
                   echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
-             }
+             } 
+             ?> 
+          <?php
           if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
           ?>
           <br>

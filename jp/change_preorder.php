@@ -382,7 +382,7 @@ function address_option_list(value){
   $("#td_"+country_fee_id_one).hide();
   $("#td_"+country_area_id_one).hide();
   $("#td_"+country_city_id_one).hide();
- 
+
   //clear
   var country_fee = document.getElementById(country_fee_id);
   country_fee.options.length = 0;   

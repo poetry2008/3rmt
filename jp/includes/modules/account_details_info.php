@@ -614,7 +614,7 @@ $(document).ready(function(){
         <input type="hidden" id="options" name="newsletter" value="">
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">
-        <input type="hidden" id="action_flag" name="action_flag" value="0">
+        <input type="hidden" id="action_flag" name="action_flag" value="0"> 
         <input type="hidden" name="num_rows" value="<?php echo $address_orders_num_rows;?>">
   <?php if($style_display == 'block'){ ?>
   <tr>
