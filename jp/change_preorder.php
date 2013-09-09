@@ -487,7 +487,7 @@ if (!isset($_POST['address_option']) && $customers_guest_flag == 0) {
     address_option_show('old'); 
   });
 <?php
-}else{
+}elseif(!isset($_POST[$country_fee_id]) && $customers_guest_flag == 1){
 ?>
   $(document).ready(function(){
     
