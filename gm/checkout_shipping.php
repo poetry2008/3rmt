@@ -54,7 +54,6 @@
     $sendto = $customer_default_address_id;
   } else {
 // verify the selected shipping address
-//ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -959,7 +958,6 @@ function check_point(point_num) {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -1714,7 +1712,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
 
 </div>
 
-<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
     <!-- footer_eof //--> 

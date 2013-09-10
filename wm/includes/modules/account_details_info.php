@@ -688,7 +688,7 @@ $(document).ready(function(){
       <tr>
         <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
 <?php if (!isset($guestchk)) $guestchk = NULL;?>
-        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;;?></td>
+        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></td>
       </tr>
 <?php
     } else {
