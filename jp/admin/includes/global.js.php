@@ -88,6 +88,7 @@ opacity: 0.8,
 containment:'parent',
 start:function(e,ui){ ui.helper.css('z-index',++zIndex)},
 stop:function(e,ui){
+z_index = zIndex+1;
 $.get('update_position.php',{
 x		: ui.position.left,
 y		: ui.position.top,
