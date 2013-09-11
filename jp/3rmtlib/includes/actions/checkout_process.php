@@ -887,6 +887,24 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
 
+$check_status_info = $payment_modules->check_insert_status_history($payment, $_SESSION['option']);
+if (!empty($check_status_info)) {
+  $sql_data_array = array('orders_id' => $insert_id, 
+                        'orders_status_id' => $order->info['order_status'], 
+                        'date_added' => $check_status_info[0], 
+                        'customer_notified' => '0',
+                        'comments' => $check_status_info[1]
+                        );
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  $last_order_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where date_added > '".$check_status_info[0]."' and orders_id = '".$insert_id."'");
+  if (!tep_db_num_rows($last_order_history_raw)) {
+    $order_status_info_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order->info['order_status']."'");    
+    $order_status_info_res = tep_db_fetch_array($order_status_info_raw); 
+    tep_db_query("update ".TABLE_ORDERS." set orders_status = '".$order->info['order_status']."', orders_status_name = '".$order_status_info_res['orders_status_name']."' where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'"); 
+    orders_updated($insert_id);
+  }
+}
+
 // load the after_process function from the payment modules
 $payment_modules->after_process($payment);
 

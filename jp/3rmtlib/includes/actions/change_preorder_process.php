@@ -809,6 +809,24 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
+$check_status_info = $payment_modules->check_insert_status_history($cpayment_code, $_SESSION['preorder_option']);
+if (!empty($check_status_info)) {
+  $sql_data_array = array('orders_id' => $orders_id, 
+                        'orders_status_id' => $orders_status_id, 
+                        'date_added' => $check_status_info[0], 
+                        'customer_notified' => '0',
+                        'comments' => $check_status_info[1]
+                        );
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  $last_order_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where date_added > '".$check_status_info[0]."' and orders_id = '".$orders_id."'");
+  if (!tep_db_num_rows($last_order_history_raw)) {
+    $order_status_info_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_status_id."'");    
+    $order_status_info_res = tep_db_fetch_array($order_status_info_raw); 
+    tep_db_query("update ".TABLE_ORDERS." set orders_status = '".$orders_status_id."', orders_status_name = '".$order_status_info_res['orders_status_name']."' where orders_id = '".$orders_id."' and site_id = '".SITE_ID."'"); 
+    orders_updated($orders_id);
+  }
+}
+
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($preorder_get_point - $preorder_point) . " where customers_id = " . $preorder_cus_id );

@@ -16,3 +16,4 @@
   define('TS_MODULE_PAYMENT_TELECOM_TEXT_CONFIRMATION', 'カード情報の入力画面ではフリーメールアドレスのご入力をご遠慮ください。');
   define('TS_MODULE_PAYMENT_TELECOM_NORMAL', '普通');
   define('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME','管理者');
+  define('TS_MODULE_PAYMENT_TELECOM_TEXT_CAL', '決済あり');
