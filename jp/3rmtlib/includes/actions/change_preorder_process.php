@@ -815,7 +815,8 @@ if (!empty($check_status_info)) {
                         'orders_status_id' => $orders_status_id, 
                         'date_added' => $check_status_info[0], 
                         'customer_notified' => '0',
-                        'comments' => $check_status_info[1]
+                        'comments' => $check_status_info[1],
+                        'user_added' => $check_status_info[2]
                         );
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   $last_order_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where date_added > '".$check_status_info[0]."' and orders_id = '".$orders_id."'");

@@ -66,7 +66,9 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
                           'orders_status_id' => $orders_status_id, 
                           'date_added' => 'now()', 
                           'customer_notified' => '0',
-                          'comments' => $payment_modules->getModule($payment_code)->show_text_info);
+                          'comments' => $payment_modules->getModule($payment_code)->show_text_info,
+                          'user_added' => $w_username
+                          );
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders['orders_id']);
     tep_order_status_change($orders['orders_id'], $orders_status_id);

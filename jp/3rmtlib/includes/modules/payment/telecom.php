@@ -398,7 +398,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     if ($option_info) {
       $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$option_info."' and rel='yes' limit 1"));
       if ($telecom_unknow) {
-        return array($telecom_unknow['date_added'], constant('TS_MODULE_PAYMENT_'.strtoupper($this->code).'_TEXT_CAL')); 
+        return array($telecom_unknow['date_added'], constant('TS_MODULE_PAYMENT_'.strtoupper($this->code).'_TEXT_CAL'), $telecom_unknow['username']); 
       }
     }
     return array(); 
