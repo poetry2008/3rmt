@@ -212,7 +212,7 @@ function popupWindow(url) {
   $account['entry_country_id'] = STORE_COUNTRY;
     echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL'), 'post', 'onSubmit="return check_form();"'); 
     require(DIR_WS_MODULES . 'present_account_details.php');
-    echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', IMAGE_BUTTON_NEXT) .'</div>' . "\n";
+    echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', '') .'</div>' . "\n";
     echo '</form>';
 
 ?>
