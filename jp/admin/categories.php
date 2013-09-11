@@ -1695,6 +1695,24 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
 <script language="javascript">
+<?php
+//获得页面最大的z-index值 
+  $z_index = '1';
+ 
+  $note_list_raw = tep_db_query("select xyz from notes where belong = '".$belong."'");
+  $note_list_array = array();
+  
+  while ($note_list_res = tep_db_fetch_array($note_list_raw)) {
+    $note_list_tmp_array = explode('|', $note_list_res['xyz']); 
+    $note_list_array[] = $note_list_tmp_array[2]; 
+  }
+  
+  if (!empty($note_list_array)) {
+    $z_index = max($note_list_array) + 1; 
+  }
+?>
+<?php //本页最大z-index?>
+  var z_index = '<?php echo $z_index;?>';
 <?php //隐藏或显示推荐商品的关联选项?>
 function cattags_show(num){
 
@@ -2219,13 +2237,7 @@ window.open(open_url, 'newwindow', '');
 }
 <?php //设置弹出页面的位置 ?>
 function info_box_set(ele, current_belong){
-  $.ajax({
-type:'POST',
-dataType: 'text',
-url: 'ajax_orders.php?action=get_top_layer',
-data: 'current_belong='+current_belong,
-async:false,
-success: function(msg) {
+  
 ele = ele.parentNode;
 head_top = $('.compatible_head').height();
 box_warp_height = 0;
@@ -2273,10 +2285,8 @@ if($('.show_left_menu').width()){
 }else{
   leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
 }
-$('#show_popup_info').css('z-index', msg);
+$('#show_popup_info').css('z-index', z_index);
 $('#show_popup_info').css('left',leftset);
-}
-});
 }
 <?php //隐藏弹出页面?>
 function hidden_info_box(){
