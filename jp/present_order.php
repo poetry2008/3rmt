@@ -6,7 +6,6 @@
   require('includes/application_top.php');
   
   if($_GET['goods_id']) {
-//ccdd
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -37,7 +36,6 @@
     case 'login':
       require(DIR_WS_ACTIONS.'present_login.php');
       break;
-    
       //游客或者新会员
     case 'process':
       require(DIR_WS_ACTIONS.'present_process.php');
@@ -106,7 +104,6 @@ function popupWindow(url) {
             <tr>
               <td class="main"><?php
   if(isset($_POST['goods_id']) && $_POST['goods_id']) {
-//ccdd
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -122,12 +119,11 @@ function popupWindow(url) {
                         <tr <?php echo $_class?"class='".$_class."'":'' ; ?>>
                           <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>">
 <script type="text/javascript" language="javascript"><!--
-  document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '<\'+\'/a>'; ?>');
+  document.write('<?php echo '<a href="'.tep_href_link(FILENAME_PRESENT, 'goods_id=' . (int)$_GET['goods_id']).'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '<\'+\'/a>'; ?>');
 --></script>
 <noscript>
 <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
 </noscript>
-                            <?php //echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT) . '</a>'; ?>
                           </td>
                           <td class="main"><b><?php echo $present['title'] ; ?></b> &nbsp;&nbsp; 応募期間:<?php echo tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?> </td>
                         </tr>

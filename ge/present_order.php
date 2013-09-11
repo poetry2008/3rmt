@@ -6,7 +6,6 @@
   require('includes/application_top.php');
   
   if($_GET['goods_id']) {
-//ccdd
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -31,17 +30,17 @@
     tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$_GET['goods_id'], 'SSL'));
   }
  
- 
-  
-  switch($_GET['action']) {
-    //老会员登录
-  case 'login':
-    require(DIR_WS_ACTIONS.'present_login.php');
-    break;
-    //游客或者新会员
-  case 'process':
-    require(DIR_WS_ACTIONS.'present_process.php');
-    break;
+  if(isset($_GET['action'])){
+    switch($_GET['action']) {
+      //老会员登录
+    case 'login':
+      require(DIR_WS_ACTIONS.'present_login.php');
+      break;
+      //游客或者新会员
+    case 'process':
+      require(DIR_WS_ACTIONS.'present_process.php');
+      break;
+    }
   }
   
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT_ORDER);
@@ -73,7 +72,7 @@ function popupWindow(url) {
 <!-- body_text -->
 <div id="content">
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h1> 
+<h1 class="pageHeading"><?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h1> 
         
     <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
       <tr> 
@@ -105,8 +104,7 @@ function popupWindow(url) {
       </tr>
       <tr>
         <td class="main"><?php
-  if($_POST['goods_id']) {
-//ccdd
+  if(isset($_POST['goods_id']) && $_POST['goods_id']) {
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -121,7 +119,7 @@ function popupWindow(url) {
             <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents">
               <tr class="<?php echo $_class ; ?>">
                 <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><script type="text/javascript"><!--
-            document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
+            document.write('<?php echo '<a href="' . tep_href_link(FILENAME_PRESENT, 'goods_id=' . (int)$_GET['goods_id']) . ')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
             --></script>
                             <noscript>
                             <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
