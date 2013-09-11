@@ -489,7 +489,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             	<table cellpadding="0" cellspacing="0" border="0">
                                 	<tr>
                                         <?php $p_a_quan = $product_info['products_quantity'];?>
-                                        <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)"></td>
+                                        <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" class="input_text_short" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)"></td>
                                         <td valign="middle">
                                           <div style="*margin-top:-4px;">
                                             <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
