@@ -831,7 +831,7 @@ td,th{ border:0;font-size:14px; padding:2px;}
 	width:35%;
 }
 /*checkout*/
-.hm-hot-product{ height:93px; overflow:hidden;}
+.hm-hot-product{overflow:hidden;}
 #hm-hot-category{height:50px; overflow:hidden;}
 #hm-payment{background-color:#577C9D; overflow:hidden; padding:0 5px; height:20px;}
 #preorder_payment{background-color:#577C9D; overflow:hidden; padding:0 5px; height:20px; font-size:18px;}
