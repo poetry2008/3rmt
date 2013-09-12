@@ -394,7 +394,8 @@ if (!isset($guestchk)) $guestchk = NULL;
               <tr>
                 <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
                 <td><?php
-      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
+      '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?>                </td>
               </tr>
               <?php
