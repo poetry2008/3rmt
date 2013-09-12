@@ -6,7 +6,6 @@
   require('includes/application_top.php');
   
   if($_GET['goods_id']) {
-//ccdd
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -31,18 +30,17 @@
     tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$_GET['goods_id'], 'SSL'));
   }
  
- 
- if (!isset($_GET['action']))  $_GET['action'] = NULL;
-  switch($_GET['action']) {
-    //老会员登录
-  case 'login':
-    require(DIR_WS_ACTIONS.'present_login.php');
-    break;
-  
-    //游客或者新会员
-  case 'process':
-    require(DIR_WS_ACTIONS.'present_process.php');
-    break;
+  if(isset($_GET['action'])){
+    switch($_GET['action']) {
+      //老会员登录
+    case 'login':
+      require(DIR_WS_ACTIONS.'present_login.php');
+      break;
+      //游客或者新会员
+    case 'process':
+      require(DIR_WS_ACTIONS.'present_process.php');
+      break;
+    }
   }
   
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT_ORDER);
@@ -54,7 +52,7 @@
 ?>
 <?php page_head();?>
 <?php require('includes/present_form_check.js.php'); ?>
-<script language="javascript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -72,7 +70,7 @@ function popupWindow(url) {
         <!-- left_navigation_eof --> </td> 
       <!-- body_text --> 
       <td valign="top" id="contents"> <h1 class="pageHeading"> 
-          <?php if (isset($_GET['news_id'])) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
+          <?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
         </h1> 
         <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
@@ -105,8 +103,7 @@ function popupWindow(url) {
             </tr>
             <tr>
               <td class="main"><?php
-  if(isset($_POST['goods_id'])) {
-//ccdd
+  if(isset($_POST['goods_id']) && $_POST['goods_id']) {
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -122,12 +119,11 @@ function popupWindow(url) {
                         <tr <?php echo $_class?"class='".$_class."'":'' ; ?>>
                           <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>">
 <script type="text/javascript" language="javascript"><!--
-  document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
+  document.write('<?php echo '<a href="' . tep_href_link(FILENAME_PRESENT, 'goods_id=' . (int)$_GET['goods_id']) . ')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
 --></script>
 <noscript>
 <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
 </noscript>
-                            <?php //echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT) . '</a>'; ?>
                           </td>
                           <td class="main"><b><?php echo $present['title'] ; ?></b> &nbsp;&nbsp; 応募期間:<?php echo tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?> </td>
                         </tr>

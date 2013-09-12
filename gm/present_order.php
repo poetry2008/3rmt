@@ -6,7 +6,6 @@
   require('includes/application_top.php');
   
   if($_GET['goods_id']) {
-//ccdd
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -31,17 +30,17 @@
     tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.(int)$_GET['goods_id'], 'SSL'));
   }
  
- 
-  
-  switch($_GET['action']) {
-    //老会员登录
-  case 'login':
-    require(DIR_WS_ACTIONS.'present_login.php');
-    break;
-    //游客或者新会员
-  case 'process':
-    require(DIR_WS_ACTIONS.'present_process.php');
-    break;
+  if(isset($_GET['action'])){
+    switch($_GET['action']) {
+      //老会员登录
+    case 'login':
+      require(DIR_WS_ACTIONS.'present_login.php');
+      break;
+      //游客或者新会员
+    case 'process':
+      require(DIR_WS_ACTIONS.'present_process.php');
+      break;
+    }
   }
   
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT_ORDER);
@@ -69,7 +68,7 @@ function popupWindow(url) {
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <div id="main-content">
-<h2><?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h2> 
+<h2><?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h2> 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
           <tr>
             <td width="33%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -105,8 +104,7 @@ function popupWindow(url) {
       </tr>
       <tr>
         <td><?php
-  if($_POST['goods_id']) {
-//ccdd
+  if(isset($_POST['goods_id']) && $_POST['goods_id']) {
     $present_query = tep_db_query("
         select * 
         from ".TABLE_PRESENT_GOODS." 
@@ -121,7 +119,7 @@ function popupWindow(url) {
             <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents">
               <tr class="<?php echo $_class ; ?>">
                 <td width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><script type="text/javascript"><!--
-            document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
+            document.write('<?php echo '<a href="' . tep_href_link(FILENAME_PRESENT, 'goods_id=' . (int)$_GET['goods_id']) . ')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
             //--></script>
                             <noscript>
                             <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
@@ -213,7 +211,7 @@ function popupWindow(url) {
   $account['entry_country_id'] = STORE_COUNTRY;
     echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL'), 'post', 'onSubmit="return check_form();"'); 
     require(DIR_WS_MODULES . 'present_account_details.php');
-    echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', IMAGE_BUTTON_NEXT) .'</div>' . "\n";
+    echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', '') .'</div>' . "\n";
     echo '</form>';
 
 ?>
