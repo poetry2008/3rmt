@@ -358,10 +358,6 @@ if (!isset($guestchk)) $guestchk = NULL;
        <tr>
                 <td width="15%" align="left"><?php echo ENTRY_PASSWORD; ?></td>
                 <td><?php
- if(preg_match("/[a-zA-Z]/",$_POST['password']) ||
-     preg_match("/[0-9]/",$_POST['password'])){
-
-      
         $p_error_show_str = ''; 
     if ($error == true) {
               if ($entry_password_confirm_same_error == true) { 
@@ -404,21 +400,6 @@ if (!isset($guestchk)) $guestchk = NULL;
               </tr>
               <?php
     }  
-?>
-<?php
-  } 
-else{
-                   echo tep_draw_password_field('password','',"id='input_text_short'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
-?>
-             <tr>
-                <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-                <td><?php
-      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
-      '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
-?>                </td>
-              </tr>
-<?php
-}
 ?>
     </table>
     </td>
