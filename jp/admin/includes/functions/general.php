@@ -9806,7 +9806,8 @@ function tep_get_pinfo_by_pid($pid,$site_id=0)
                  p.products_cart_min,
                  p.products_cartorder,
                  p.belong_to_option,
-                 pd.preorder_status
+                 pd.preorder_status,
+                 p.products_attention_1_3
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $pid . "' 
             and p.products_id = pd.products_id 

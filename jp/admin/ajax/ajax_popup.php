@@ -582,9 +582,22 @@ if ($_GET['action'] == 'show_category_info') {
   
   $product_info_array = array();
   
-  $product_tmp_price = tep_get_products_price($pInfo->products_id);
-  $inventory = tep_get_product_inventory($pInfo->products_id);
- 
+  if ($pInfo->products_bflag == 1) {
+    $product_tmp_price = array(
+        'price' => tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum, $pInfo->products_bflag),
+        'sprice' => tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)
+        );
+  } else {
+    $product_tmp_price = array(
+        'price' => tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum),
+        'sprice' => tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)
+        );
+  }
+  
+  $inventory = array();
+  $inventory['max']  = $pInfo->max_inventory; 
+  $inventory['min']  = $pInfo->min_inventory; 
+  
   $product_info_array[]['text'] = array(
         array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'),
         array('text' => (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;':'').((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price .  CATEGORY_MONEY_UNIT_TEXT)
@@ -596,7 +609,11 @@ if ($_GET['action'] == 'show_category_info') {
         );
   }
   //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
-  $radices = tep_get_radices($pInfo->products_id);
+  if (isset($pInfo->products_attention_1_3)) {
+    $radices = (int)$pInfo->products_attention_1_3;
+  } else {
+    $radices = 1;
+  }
   if($radices!=''&&$radices!=1&&$radices!=0){
   $product_info_array[]['text'] = array(
         array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
@@ -653,8 +670,22 @@ if ($_GET['action'] == 'show_category_info') {
   if ($relate_exists_single) {
     $relate_product_info_array = array(); 
     $relate_pInfo = tep_get_pinfo_by_pid($pInfo->relate_products_id, $site_id); 
-    $relate_product_tmp_price = tep_get_products_price($relate_pInfo->products_id);
-    $inventory = tep_get_product_inventory($relate_pInfo->products_id);
+    
+    if ($relate_pInfo->products_bflag == 1) {
+      $relate_product_tmp_price = array(
+        'price' => tep_get_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum, $relate_pInfo->products_bflag),
+        'sprice' => tep_get_special_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum)
+        );
+    } else {
+      $relate_product_tmp_price = array(
+          'price' => tep_get_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum),
+          'sprice' => tep_get_special_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum)
+          );
+    }
+    
+    $inventory = array();
+    $inventory['max']  = $relate_pInfo->max_inventory; 
+    $inventory['min']  = $relate_pInfo->min_inventory; 
     
     $relate_product_info_array[]['text'] = array(
           array('params' => 'colspan="2"', 'text' => TEXT_PRODUCT_LINK_PRODUCT_TEXT.$relate_pInfo->products_name) 
@@ -673,7 +704,12 @@ if ($_GET['action'] == 'show_category_info') {
     }
 
 
-  $relate_radices = tep_get_radices($relate_pInfo->products_id);
+  if (isset($relate_pInfo->products_attention_1_3)) {
+    $relate_radices = (int)$relate_pInfo->products_attention_1_3;
+  } else {
+    $relate_radices = 1;
+  }
+  
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
     $relate_product_info_array[]['text'] = array(
           array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
@@ -721,7 +757,7 @@ if ($_GET['action'] == 'show_category_info') {
   $history_table_params = array('width' => '95%', 'cellpadding' => '2', 'cellspacing' => '0', 'border' => '1');
   $history_info_str = '';
   if (empty($_GET['site_id'])) { 
-    if (tep_get_bflag_by_product_id($pInfo->products_id)) {
+    if ($pInfo->products_bflag == 1) {
       $sell_table_array = array();
       $sell_table_array[]['text'] = array(
             array('text' => '<button type="button" onclick="calculate_price()">'.CATEGORY_CAL_TITLE_TEXT.'</button>'), 
@@ -857,7 +893,7 @@ if ($_GET['action'] == 'show_category_info') {
       order by o.torihiki_date desc
       limit 5
     ");
-    $relate_products_name = tep_get_relate_products_name($pInfo->products_id);
+    $relate_products_name = $relate_pInfo->products_name;
     
     $relate_product_history_array = array();
     $relate_product_history_array[]['text'] = array(
