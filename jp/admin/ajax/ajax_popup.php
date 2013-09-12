@@ -461,23 +461,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   if (isset($_GET['search']) && $_GET['search']) {
     $products_query_raw = "
-      select p.products_id, 
-             pd.products_name, 
-             p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-             p.products_real_quantity, 
-             p.products_virtual_quantity, 
-             p.products_image,
-             p.products_image2,
-             p.products_image3, 
-             p.products_price, 
-             p.products_price_offset,
-             p.products_user_added,
-             p.products_date_added, 
-             pd.products_last_modified, 
-             pd.products_user_update,
-             p.products_date_available, 
-             pd.products_status, 
-             p2c.categories_id 
+      select p.products_id 
       from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
       where p.products_id = pd.products_id 
         and pd.language_id = '" . $languages_id . "' 
@@ -494,22 +478,8 @@ if ($_GET['action'] == 'show_category_info') {
       select * from ( 
       select p.products_id, 
              pd.products_name, 
-             p.products_real_quantity + p.products_virtual_quantity as products_quantity, 
-             p.products_real_quantity, 
-             p.products_virtual_quantity, 
-             p.products_image,
-             p.products_image2,
-             p.products_image3, 
-             p.products_price, 
-             p.products_price_offset,
-             p.products_user_added,
-             p.products_date_added, 
-             pd.products_last_modified, 
-             pd.products_user_update,
-             p.products_date_available, 
              pd.site_id, 
-             p.sort_order, 
-             pd.products_status 
+             p.sort_order 
       from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
       where p.products_id = pd.products_id 
         and pd.language_id = '" . $languages_id . "' 
@@ -617,7 +587,7 @@ if ($_GET['action'] == 'show_category_info') {
   if($radices!=''&&$radices!=1&&$radices!=0){
   $product_info_array[]['text'] = array(
         array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
-        array('text' => ((!empty($_GET['site_id']))?tep_get_quantity($pInfo->products_id):tep_draw_input_field('products_quantity', tep_get_quantity($pInfo->products_id),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($pInfo->products_real_quantity/$radices) .CATEGORY_GE_UNIT_TEXT)
+        array('text' => ((!empty($_GET['site_id']))?tep_new_get_quantity($pInfo):tep_draw_input_field('products_quantity', tep_new_get_quantity($pInfo),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($pInfo->products_real_quantity/$radices) .CATEGORY_GE_UNIT_TEXT)
       );
   $product_info_array[]['text'] = array(
         array('params' => 'nowrap="nowrap"', 'text' => '<input id="product_radices" type="hidden" value="'.$radices.'">'),
@@ -713,7 +683,7 @@ if ($_GET['action'] == 'show_category_info') {
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
     $relate_product_info_array[]['text'] = array(
           array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
-          array('text' => ((!empty($_GET['site_id']))?tep_get_quantity($relate_pInfo->products_id):tep_draw_input_field('relate_products_quantity', tep_get_quantity($relate_pInfo->products_id),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($relate_pInfo->products_real_quantity/$relate_radices) . CATEGORY_GE_UNIT_TEXT)
+          array('text' => ((!empty($_GET['site_id']))?tep_new_get_quantity($relate_pInfo):tep_draw_input_field('relate_products_quantity', tep_new_get_quantity($relate_pInfo),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($relate_pInfo->products_real_quantity/$relate_radices) . CATEGORY_GE_UNIT_TEXT)
         );
     $relate_product_info_array[]['text'] = array(
           array('params' => 'nowrap="nowrap"', 'text' => '<input id="relate_radices" type="hidden" value="'.$relate_radices.'">'),
@@ -786,13 +756,14 @@ if ($_GET['action'] == 'show_category_info') {
   
   //商品历史记录 
   $order_history_query = tep_db_query("
-    select * 
+    select op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
     from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$pInfo->products_id."'
     order by o.torihiki_date desc
     limit 5
   ");
+  
   $product_history_array = array();
   $product_history_array[]['text'] = array(
         array('align' => 'left', 'params' => 'colspan="4"', 'text' => TABLE_HEADING_PRODUCT_HISTORY) 
@@ -886,7 +857,7 @@ if ($_GET['action'] == 'show_category_info') {
   if ($relate_exists_single) {
     $history_info_str .= '<br>'; 
     $relate_order_history_query = tep_db_query("
-      select * 
+      select op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
       from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
       where 
       op.products_id='".$pInfo->relate_products_id."'
