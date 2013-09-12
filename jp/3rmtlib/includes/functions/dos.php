@@ -7,9 +7,9 @@
 ------------------------------------ */
 function is_at_ban_list($pdo_con, $ip_info)
 {
-  $res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."'"); 
+  $res = $pdo_con->query("select count(ip) from banlist where ip = '".$ip_info."'"); 
   if ($res->fetchColumn() > 0) {
-    $ban_info_res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."' and betime >= '".date('Y-m-d H:i:s', time())."'"); 
+    $ban_info_res = $pdo_con->query("select count(ip) from banlist where ip = '".$ip_info."' and betime >= '".date('Y-m-d H:i:s', time())."'"); 
     if ($ban_info_res->fetchColumn() > 0) {
       return true; 
     } else {
@@ -47,7 +47,7 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total,$type='s')
   }else if($type=='h'){
     $unit_time = $unit_time*60*60;
   }
-  $res = $pdo_con->query("select count(*) from accesslog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
+  $res = $pdo_con->query("select count(ip) from accesslog where ip = '".$ip_info."' and vtime <= '".date('Y-m-d H:i:s', time())."' and vtime >= '".date('Y-m-d H:i:s', time()-$unit_time)."'"); 
   if ($res) {
     $total_num = $res->fetchColumn(); 
     if ($total_num > 0 && $total_num > $unit_total) {
@@ -71,7 +71,7 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total,$type='s')
 ------------------------------------ */
 function analyze_ban_log($pdo_con, $ip_info)
 {
-  foreach( $pdo_con->query("select count(*) as con from prebanlist where ip =
+  foreach( $pdo_con->query("select count(ip) as con from prebanlist where ip =
         '".$ip_info."' and type='1' limit 1") as $res){
     $con = $res['con'];
   }
@@ -134,7 +134,7 @@ function send_mail($sTo, $sTitle, $sMessage, $sFrom = null, $sReply = null, $sNa
     返回值: 是否重置成功(boolean) 
 ------------------------------------ */
 function is_reset_blocked_ip($pdo_con, $ip_info){
-  $res = $pdo_con->query("select count(*) from banlist where ip = '".$ip_info."' 
+  $res = $pdo_con->query("select count(ip) from banlist where ip = '".$ip_info."' 
     and betime < '".date('Y-m-d H:i:s', time())."'"); 
   if ($res) {
     $total_num = $res->fetchColumn(); 

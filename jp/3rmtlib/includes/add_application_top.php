@@ -28,10 +28,11 @@ $unit_min_total = 120;
 // config time 
 $unit_hour_time = 1;
 // confi total
-$unit_hour_total = 360;
+$unit_hour_total = 600;
 if ($pdo_con) {
   if(is_reset_blocked_ip($pdo_con, $source_ip)){
     // go to 503
+    $pdo_con = null;
     header("Cache-Control:");
     header("Pragma:");
     header("Expires:".date("D, d M Y H:i:s",0)." GMT");
@@ -45,6 +46,7 @@ if ($pdo_con) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
+      $pdo_con = null;
       header("Cache-Control:");
       header("Pragma:");
       header("Expires:".date("D, d M Y H:i:s",0)." GMT");
@@ -57,6 +59,7 @@ if ($pdo_con) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
+      $pdo_con = null;
       header("Cache-Control:");
       header("Pragma:");
       header("Expires:".date("D, d M Y H:i:s",0)." GMT");
@@ -69,6 +72,7 @@ if ($pdo_con) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
+      $pdo_con = null;
       header("Cache-Control:");
       header("Pragma:");
       header("Expires:".date("D, d M Y H:i:s",0)." GMT");
