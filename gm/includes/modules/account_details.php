@@ -394,8 +394,7 @@ if (!isset($guestchk)) $guestchk = NULL;
               <tr>
                 <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
                 <td><?php
-      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
-      '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?>                </td>
               </tr>
               <?php
@@ -408,7 +407,7 @@ if (!isset($guestchk)) $guestchk = NULL;
     <?php
             if($_POST['password'] != $_POST['confirmation']){
         echo "<tr id='trpass3'><td></td><td style='font-size:14px'><font
-      color=\"red\">&nbsp;&nbsp;".ENTRY_PASSWORD_IS_DIFFERENT."</td></tr>";
+      color=\"red\">".ENTRY_PASSWORD_IS_DIFFERENT."</td></tr>";
     }
 
   if ($p_error_show_str != '') {
@@ -416,7 +415,7 @@ if (!isset($guestchk)) $guestchk = NULL;
    <tr id="trpass4">
      <td class="main">&nbsp;</td>
      <td class="main" style="font-size:14px;">
-     <?php echo '&nbsp;'.$p_error_show_str;?> 
+     <?php echo $p_error_show_str;?> 
      </td>
    </tr>
   <?php 
