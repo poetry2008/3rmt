@@ -358,10 +358,6 @@ if (!isset($guestchk)) $guestchk = NULL;
        <tr>
                 <td width="15%" align="left"><?php echo ENTRY_PASSWORD; ?></td>
                 <td><?php
- if(preg_match("/[a-zA-Z]/",$_POST['password']) ||
-     preg_match("/[0-9]/",$_POST['password'])){
-
-      
         $p_error_show_str = ''; 
     if ($error == true) {
               if ($entry_password_confirm_same_error == true) { 
@@ -405,21 +401,6 @@ if (!isset($guestchk)) $guestchk = NULL;
               <?php
     }  
 ?>
-<?php
-  } 
-else{
-                   echo tep_draw_password_field('password','',"id='input_text_short'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
-?>
-             <tr>
-                <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-                <td><?php
-      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
-      '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
-?>                </td>
-              </tr>
-<?php
-}
-?>
     </table>
     </td>
     </tr>
@@ -427,7 +408,7 @@ else{
     <?php
             if($_POST['password'] != $_POST['confirmation']){
         echo "<tr id='trpass3'><td></td><td style='font-size:14px'><font
-      color=\"red\">&nbsp;&nbsp;".ENTRY_PASSWORD_IS_DIFFERENT."</td></tr>";
+      color=\"red\">".ENTRY_PASSWORD_IS_DIFFERENT."</td></tr>";
     }
 
   if ($p_error_show_str != '') {
@@ -435,7 +416,7 @@ else{
    <tr id="trpass4">
      <td class="main">&nbsp;</td>
      <td class="main" style="font-size:14px;">
-     <?php echo '&nbsp;'.$p_error_show_str;?> 
+     <?php echo $p_error_show_str;?> 
      </td>
    </tr>
   <?php 
