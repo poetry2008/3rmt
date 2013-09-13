@@ -9,40 +9,6 @@ define('NAVBAR_TITLE_2', '手続完了');
 
 define('HEADING_TITLE', 'ご注文の手続きが完了しました!!');
 define('TEXT_SUCCESS_TITLE', '「注文受付」メールをお送りしましたのでご確認ください。');
-define('TEXT_SUCCESS', '
-<div style="margin-bottom:35px"><h3><b>'.TEXT_SUCCESS_TITLE.'</b></h3>
-10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。<br />
-注意：メールが届かないときは、以下のことを必ずご確認ください。<br />
-＜迷惑メールフォルダの確認＞<br />
-弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br />
-＜メールドメインの受信制限を設定している＞<br />
-'.STORE_DOMAIN.'のメールドメインを受信するように設定をお願いいたします。<br />
-＜それでも届かないときは、メールアドレス変更＞<br />
-お客様情報から今すぐご登録メールアドレスの変更をお願いいたします。</div>
-<div style="margin-bottom:35px"><h3 >お取り引きの際の注意点</h3>
-電子メールに記載しておりますご注文内容および、弊社キャラクター名を事前にご確認ください。<br />
-弊社キャラクターが変更となる場合は、お取り引き前に電子メールにてご案内を差し上げます。
-</div>
-<div style="margin-bottom:35px;"><h3>買取依頼のお客様へ</h3>
-最近、リネージュ2において詐欺行為を行うキャラクターの存在が多数報告されております。不特定多数のキャラクターへトレードを申し込み、ゲーム通貨やアイテムを不正に取得する手口となります。
-トレードの際は、キャラクター名を十分ご確認いただきますようお願い申し上げます。弊社キャラクター以外へトレードされた場合、弊社では一切の保障をいたしかねます。</div>
-<div style="margin-bottom:35px;overflow:hidden;">
-<div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/stock.jpg" alt="販売アイコン" width="50" height="50"></div>
-<div style="float:left; width:90%;">
-<h3><b>「販売」商品について</b></h3>
-お客様ご指定の取引日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。</div>
-</div>
-<div style="margin-bottom:35px;overflow:hidden;">
-<div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/preorder.gif" alt="取り寄せアイコン" width="50" height="50"></div>
-<div style="float:left;width:90%;">
-<h3><b>「取り寄せ」商品について</b></h3>
-ご注文いただいた商品は、通常1～4営業日でお届けしております。</div>
-</div>
-<div style="margin-bottom:35px;overflow:hidden;">
-<div style="float:left;margin:10px 5px 0 0; width:50px"><img src="images/sell.jpg" alt="買取アイコン" width="50" height="50"></div>
-<div style="float:left;width:90%;">
-<h3><b>「買取」商品について</b></h3>
-お客様ご指定の取引日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。</div></div>');
 define('TEXT_NOTIFY_PRODUCTS', '本日ご注文いただいた商品の最新情報を 
 電子メールでお届けしております。ご希望の方は、商品ごとにチェックして <b>[次に進む]</b> を押してください。');
 define('TEXT_SEE_ORDERS', 'あなたのご注文履歴は、<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">\'会員\'</a> ページの <a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">\'履歴\'</a>ボタンをクリックするとご覧になれます。');
@@ -55,4 +21,29 @@ define('TABLE_HEADING_DOWNLOAD_DATE', 'ダウンロード有効期限: ');
 define('TABLE_HEADING_DOWNLOAD_COUNT', ' 回ダウンロードできます');
 define('HEADING_DOWNLOAD', 'こちらから商品をダウンロードしてください:');
 define('FOOTER_DOWNLOAD', '後で [%s] ページから商品をダウンロードすることもできます。');
+define('TEXT_HEADER_INFO','<table width="100%" cellspacing="0" cellpadding="0"
+    border="0" class="checkout_s_link"> <tbody><tr> <td width="20%"><table
+    width="100%" cellspacing="0" cellpadding="0" border="0"> <tbody><tr> <td
+    width="50%" align="right"><img width="1" height="5" alt=""
+    src="images/pixel_silver.gif"></td> <td width="50%"><img width="100%" height="1"
+    alt="" src="images/pixel_silver.gif"></td> </tr> </tbody></table></td> <td
+    width="20%"> <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody><tr> <td> <img width="100%" height="1" alt=""
+    src="images/pixel_silver.gif"></td> </tr> </tbody></table> </td> <td
+    width="20%"> <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody><tr> <td> <img width="100%" height="1" alt=""
+    src="images/pixel_silver.gif"></td> </tr> </tbody></table> </td> <td
+    width="20%"> <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody><tr> <td> <img width="100%" height="1" alt=""
+    src="images/pixel_silver.gif"></td> </tr> </tbody></table> </td> <td
+    width="20%"><table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody><tr> <td width="50%"><img width="100%" height="1" alt=""
+    src="images/pixel_silver.gif"></td> <td width="50%"><img alt=""
+    src="images/checkout_bullet.gif"></td> </tr> </tbody></table></td> </tr> <tr
+    class="box_des"> <td width="20%" nowrap="nowrap" align="center"
+    class="checkoutBarFrom">'.CHECKOUT_BAR_OPTION.'</td> <td width="20%" nowrap="nowrap"
+align="center" class="checkoutBarFrom">'.CHECKOUT_BAR_DELIVERY.'</td> <td width="20%" nowrap="nowrap"
+align="center" class="checkoutBarFrom">'.CHECKOUT_BAR_PAYMENT.'</td> <td width="20%" nowrap="nowrap"
+align="center" class="checkoutBarFrom">'.CHECKOUT_BAR_CONFIRMATION.'</td> <td width="20%" nowrap="nowrap"
+align="center" class="checkoutBarCurrent">'.CHECKOUT_BAR_FINISHED.'</td> </tr> </tbody></table>');
 ?>

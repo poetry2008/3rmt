@@ -24,71 +24,11 @@
       <!-- body_text --> 
       <div id="content"> 
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-        <h1 class="pageHeading"><?php echo CPREORDER_SUCCESS_HEADING_TITLE ; ?></h1> 
-        <table width="95%" cellspacing="0" cellpadding="0" border="0" class="box_des"> 
-		<tr><td>
-          <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
-            <tr>
-              <td width="20%">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr>
-                    <td width="30%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?></td> 
-                    <td width="70%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
-                  </tr>
-                </table> 
-              </td>
-              <td width="58%">
-              <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
-              </td>
-              <td width="22%">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr>
-                    <td width="70%">
-                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
-                    </td>
-                    <td width="30%">
-                    <?php echo tep_image(DIR_WS_IMAGES.'checkout_bullet.gif');?>
-                    </td>
-                  </tr>
-                </table>  
-              </td>
-            </tr>
-            <tr>
-              <td align="left" width="20%" class="preorderBarFrom"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
-              <td align="center" width="58%" class="preorderBarFrom"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="22%" class="preorderBarCurrent"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
-            </tr>
-          </table>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" style=" line-height:1.5">
-          <tr>
-            <td>
-            <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10');?> 
-            </td>
-          </tr>
-          <tr>
-            <td align="right">
-            <?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?>
-            </td>
-          </tr>
-          <tr>
-            <td>
-            <?php echo CPREORDER_SUCCESS_TEXT;?> 
-            </td>
-          </tr>
-          <tr>
-            <td>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                    <tr> 
-                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                      <td align="right" class="main">
-                      </td> 
-                    </tr> 
-                  </table></td> 
-          </tr>
-        </table>
-        </td></tr></table>
-       <p class="pageBottom"></p>
-      </div> 
+        <?php 
+        $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'change_preorder_success.php' and site_id = '".SITE_ID."'")); 
+        echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}','<a href="' .tep_href_link(FILENAME_DEFAULT).  '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) .  '</a>',$info_page['text_information']))));
+        ?> 
+      </div>
       <!-- body_text_eof --> 
       <div id="r_menu"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 

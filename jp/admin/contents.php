@@ -93,7 +93,6 @@
         foreach ($an_cols as $col) {
           $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
         }
-
         $cID              = $_GET['cID'];
         $navbar_title     = tep_db_prepare_input($_POST['navbar_title']);
         $heading_title    = tep_db_prepare_input($_POST['heading_title']);
@@ -106,14 +105,6 @@
          $error = true;
          $error_message = ROMAJI_NOT_NULL;
          $_GET['action'] = 'edit';
-        }
-
-
-        if (preg_match('/[^a-zA-Z0-9_]/i', $romaji))
-        {
-          $error = true;
-          $error_message = ROMAJI_WRONG_FORMAT;
-          $_GET['action'] = 'edit';
         }
         $exists_romaji_query = tep_db_query("
             select * 
@@ -135,7 +126,7 @@
                                 );
         if ($error == false) {
           tep_db_perform(TABLE_INFORMATION_PAGE, $sql_data_array, 'update', "pID = '" . tep_db_input($cID) . "'");
-          tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID .  '&page='.$page.((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
+          tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID .  '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$page.((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
         }
         break;
       case 'insert':
@@ -186,10 +177,10 @@
                                 'site_id' => $site_id);
         if ($error == false) {
           tep_db_perform(TABLE_INFORMATION_PAGE, $sql_data_array);
-          tep_redirect(tep_href_link(FILENAME_CONTENTS,'cID='.tep_db_insert_id().'&page='.$_GET['page'].'&site_id='.$_GET['site_id']));
+          tep_redirect(tep_href_link(FILENAME_CONTENTS,'cID='.tep_db_insert_id().'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'].'&site_id='.$_GET['site_id']));
           exit;
         }
-          tep_redirect(tep_href_link(FILENAME_CONTENTS,'page='.$_GET['page'].'&site_id='.$_GET['site_id']));
+          tep_redirect(tep_href_link(FILENAME_CONTENTS,'page='.$_GET['page'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$_GET['site_id']));
         break;    
     case 'setflag':
       $status = tep_db_prepare_input($_GET['flag']);
@@ -269,11 +260,6 @@ function show_contents(ele,cID,page,action_sid){
  site_id = '<?php echo (isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1');?>';
  var sort = $("#sort").val();
  var type = $("#type").val();
- if(type == 'asc'){
-    type = 'desc';
- }else if(type == 'desc'){
-    type = 'asc';
- }
  $.ajax({
  url: 'ajax.php?&action=edit_contents',
  data: {cID:cID,page:page,site_id:site_id,action_sid:action_sid,sort:sort,type:type} ,
@@ -509,6 +495,8 @@ function check_contents(c_permission){
   heading_title = $("#heading_title").val();
   var check_romaji = 'false';
   var error = 'false';
+  var update_value = $("#romaji_hidden_value").val(); 
+  if(update_value == 'insert'){
   $.ajax({
     url: 'ajax.php?action=check_romaji',
     data: {post_romaji:post_romaji} ,
@@ -521,6 +509,7 @@ function check_contents(c_permission){
      }
     }
    });
+  }
  if(heading_title == ''){
    $("#heading_title_error").html("<?php echo TEXT_ERROR_NULL;?>");
    error = 'true';
@@ -699,29 +688,24 @@ require("includes/note_js.php");
            $contents_title_row = array();
            $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_pw"','text' => '<input type="checkbox" name="all_check" onclick="all_select_contents(\'contents_id[]\');">');
            if(isset($_GET['sort']) && $_GET['sort'] == 'site_romaji'){
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&type='.$contents_type).'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type='.$contents_type).'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
            }else{
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&type=desc').'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" ','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=site_romaji&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type=desc').'">'.TABLE_HEADING_SITE.$site_romaji.'</a>');
            }
            if(isset($_GET['sort']) && $_GET['sort'] == 'title'){
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
            }else{
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&type=desc').'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=title&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type=desc').'">'.TABLE_HEADING_CONTENTS_TITLE.$heading_contents_title.'</a>');
            }
            if(isset($_GET['sort']) && $_GET['sort'] == 'status'){
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
            }else{
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&type=desc').'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
-           }
-           if(isset($_GET['sort']) && $_GET['sort'] == 'sort_id'){
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
-           }else{
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type=desc').'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type=desc').'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
            }
            if(isset($_GET['sort']) && $_GET['sort'] == 'date_update'){
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&type='.$contents_type).'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type='.$contents_type).'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
            }else{
-           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&type=desc').'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type=desc').'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
            }
            $contents_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $contents_title_row);
     $search = '';
@@ -737,6 +721,7 @@ require("includes/note_js.php");
              i.site_id,
              i.date_added,
              i.date_update,
+             i.show_status,
              s.romaji as sromaji
       from ".TABLE_INFORMATION_PAGE." i , ".TABLE_SITES." s
       where s.id = i.site_id and ".$sql_site_where."
@@ -763,7 +748,11 @@ require("includes/note_js.php");
       }
     $contents_info = array();
     if(in_array($contents['site_id'],$site_array)){
+       if($contents['show_status'] == '1'){
+       $contents_checkbox = '<input type="checkbox" disabled="disabled" name="contents_id[]" value="'.$contents['pID'].'">';
+       }else{
        $contents_checkbox = '<input type="checkbox" name="contents_id[]" value="'.$contents['pID'].'">';
+       }
     }else{
        $contents_checkbox = '<input type="checkbox" disabled="disabled" name="contents_id[]" value="'.$contents['pID'].'">';
     }
@@ -776,11 +765,13 @@ require("includes/note_js.php");
          'text'   => $contents['sromaji']
      );
      $contents_info[] = array(
-         'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CONTENTS,'cID='.$contents['pID']).'\';"',
+         'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CONTENTS,'cID='.$contents['pID'].'&page='.$_GET['page'].'&sort='.$_GET['sort'].'&type='.$_GET['type']).'\';"',
          'text'   => htmlspecialchars($contents['heading_title']) 
      );
      if ($contents['status'] == '1') {
-       if(in_array($contents['site_id'],$site_array)){
+       if($contents['show_status'] == '1'){
+        $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES .  'icon_status_gray_light.gif', IMAGE_ICON_STATUS_GRAY_LIGHT);
+       }else if(in_array($contents['site_id'],$site_array)){
         $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="check_image('.$ocertify->npermission.','.$contents['pID'].','.$_GET['page'].',0)">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
        }else{
         $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT,'','','disabled="disabled"');
@@ -795,10 +786,6 @@ require("includes/note_js.php");
      $contents_info[] = array(
          'params' => 'class="dataTableContent" align="center"',
          'text'   => $image
-     );
-     $contents_info[] = array(
-         'params' => 'class="dataTableContent" align="right"',
-         'text'   =>  htmlspecialchars($contents['sort_id']) 
      );
      $contents_info[] = array(
          'params' => 'class="dataTableContent" align="right"',
