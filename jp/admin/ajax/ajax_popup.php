@@ -5178,10 +5178,7 @@ if($_GET['cID'] != -1){
     }
    }
      if(isset($cInfo->customers_email_address) && $cInfo->customers_email_address != ''){
-        if($is_active_single){
-           $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$is_active_single);
-           $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$is_active_single);
-        }else if($disabled){
+        if($disabled){
            $orders_products = tep_html_element_button(TEXT_ORDER_MADE,$disabled);
            $preorders_products = tep_html_element_button(TEXT_PREORDER_MADE,$disabled);
         }else{

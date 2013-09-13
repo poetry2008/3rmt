@@ -31,7 +31,7 @@
     $address = tep_db_fetch_array($address_query);
   } elseif (IsSet($_GET['Customer_mail'])) {
     $site_id = isset($_GET['site_id']) ? $_GET['site_id']: 0;
-    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $_GET['Customer_mail'] . "' and site_id = '".$site_id."' and is_active='1'");
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $_GET['Customer_mail'] . "' and site_id = '".$site_id."'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer . "'");
