@@ -816,7 +816,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                 <?php
                 $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
                 ?>
-                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>')"><?php echo tep_image_button('button_confirm_order_hover.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
+                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order_hover.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
               </div>
            </div>
           </form> 
