@@ -33,7 +33,7 @@
             <td>
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php 
-  $manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name,m.manufacturers_alt,m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
+  $manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, m.manufacturers_alt, mi.manufacturers_url  from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi where m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name";
   $manufacturer_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturer_query_raw, $manufacturer_numrows);
   $manufacturer_query = tep_db_query($manufacturer_query_raw);
 
@@ -61,8 +61,7 @@
                   <td>
 <?php
 while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
-  $products_query = tep_db_query("
-      select * from (select p.products_date_added, pd.site_id, pd.products_status, p.products_id, p.products_image, p.products_tax_class_id, p.products_bflag,  p.products_price, p.products_price_offset, p.products_small_sum from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where  p.products_id not in".tep_not_in_disabled_products()." and p.products_id = pd.products_id and manufacturers_id = '".$manufacturer['manufacturers_id']."' order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' group by products_id having p.products_status != '0' and p.products_status != '3' order by products_date_added desc limit 5 ");
+  $products_query = tep_db_query("select * from (select p.products_date_added, pd.site_id, pd.products_status, p.products_id, p.products_image, p.products_bflag, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id not in".tep_not_in_disabled_products()." and p.manufacturers_id = '".$manufacturer['manufacturers_id']."' order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit 5 ");
   if (tep_db_num_rows($products_query)) {
 
     echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">' . "\n";
@@ -97,8 +96,7 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
          $products_price = '<s>' .
            $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), tep_get_tax_rate($products['products_tax_class_id'])) . '</s> <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</span>';
        } else {
-         $products_price =
-           $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), tep_get_tax_rate($products['products_tax_class_id']));
+         $products_price = $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), tep_get_tax_rate($products['products_tax_class_id']));
        }
       echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $products['products_id']) . '">'.tep_image(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'</td>'."\n";
     }

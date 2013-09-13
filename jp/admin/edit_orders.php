@@ -21,7 +21,7 @@ $currencies = new currencies(2);
 
 include(DIR_WS_CLASSES . 'order.php');
 
-$orders_update_time_query = tep_db_query("select site_id,payment_method,code_fee,last_modified from ". TABLE_ORDERS ." where orders_id='".$_GET['oID']."'");
+$orders_update_time_query = tep_db_query("select site_id,payment_method,code_fee,last_modified,is_guest from ". TABLE_ORDERS ." where orders_id='".$_GET['oID']."'");
 $orders_update_time_array = tep_db_fetch_array($orders_update_time_query);
 tep_db_free_result($orders_update_time_query);
 if(!isset($_SESSION['orders_update_time'][$_GET['oID']])){
@@ -605,6 +605,7 @@ if (tep_not_null($action)) {
   }
   
   $address_error = false;
+  $orders_id_temp = '';
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
@@ -620,12 +621,18 @@ if (tep_not_null($action)) {
     if($address_temp_str == $add_temp_str){
 
       $address_error = true;
+      $orders_id_temp = $address_sh_his_array['orders_id'];
       break;
     }
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query);
-if($address_error == false){
+  //update address info
+  if($address_error == true && $orders_id_temp != ''){
+
+    tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set orders_id='".(date("Ymd") . '-' . date("His") . tep_get_order_end_num())."' where orders_id='".$orders_id_temp."'"); 
+  }
+if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
   foreach($option_info_array as $address_history_key=>$address_history_value){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
       $address_history_array = tep_db_fetch_array($address_history_query);
@@ -2356,7 +2363,17 @@ function address_option_show(action){
     }
     break;
   case 'old' :
-    $("#address_list_id").show();
+    <?php
+      if($customer_guest['customers_guest_chk'] == 0 && $orders_update_time_array['is_guest'] == 0){
+    ?>  
+        $("#address_list_id").show();
+    <?php
+      }else{
+    ?>
+       $("#address_list_id").hide(); 
+    <?php
+      }
+    ?>
     var arr_old  = new Array();
     var arr_name = new Array();
 <?php
@@ -2380,11 +2397,7 @@ function address_option_show(action){
   $json_old_array = array();
 
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
-  if ($address_orders_group_array['orders_id'] != $order->info['orders_id']) {
-    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' order by ah.id asc");
-  } else {
-    $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
-  }
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
    
   $json_str_list = '';
   unset($json_old_array);
@@ -2495,11 +2508,7 @@ function address_option_list(value){
   $json_str_array = array();
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
-  if ($address_orders_group_array['orders_id'] != $order->info['orders_id']) {
-    $address_orders_query = tep_db_query("select ah.* from ". TABLE_ADDRESS_HISTORY ." ah, ".TABLE_ORDERS." o where ah.orders_id='".  $address_orders_group_array['orders_id'] ."' and ah.orders_id = o.orders_id and o.orders_id != '".$order->info['orders_id']."' and o.is_gray != '1' order by ah.id");
-  } else {
-    $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
-  }
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
   
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     

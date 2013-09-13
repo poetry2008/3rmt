@@ -763,6 +763,7 @@ if ($_GET['action'] == 'show_category_info') {
     order by o.torihiki_date desc
     limit 5
   ");
+  
   $product_history_array = array();
   $product_history_array[]['text'] = array(
         array('align' => 'left', 'params' => 'colspan="4"', 'text' => TABLE_HEADING_PRODUCT_HISTORY) 

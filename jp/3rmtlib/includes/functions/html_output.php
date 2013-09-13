@@ -573,6 +573,13 @@
           ($imagedata[0] > $x || $imagedata[1] > $y) || (($imagedata[0] < $x || $imagedata[1] < $y) && $resize)
                ? $makethumb = true
                : $makethumb = false;
+       if ($imagedata[0] == $x) {
+         if ($imagedata[1] == $y) {
+           if ($resize) {
+             $makethumb = true;
+           }
+         }
+       }
      } else {
           $makethumb = false;
      }
@@ -680,6 +687,14 @@
           ($imagedata[0] > $x || $imagedata[1] > $y) || (($imagedata[0] < $x || $imagedata[1] < $y) && $resize)
                ? $makethumb = true
                : $makethumb = false;
+     
+       if ($imagedata[0] == $x) {
+         if ($imagedata[1] == $y) {
+           if ($resize) {
+             $makethumb = true;
+           }
+         }
+       }
      } else {
           $makethumb = false;
      }
@@ -790,6 +805,14 @@ return $image;
           ($imagedata[0] > $x || $imagedata[1] > $y) || (($imagedata[0] < $x || $imagedata[1] < $y) && $resize)
                ? $makethumb = true
                : $makethumb = false;
+     
+       if ($imagedata[0] == $x) {
+         if ($imagedata[1] == $y) {
+           if ($resize) {
+             $makethumb = true;
+           }
+         }
+       }
      } else {
           $makethumb = false;
      }

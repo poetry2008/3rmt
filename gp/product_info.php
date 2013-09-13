@@ -489,7 +489,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           <?php $p_a_quan = $product_info['products_quantity'];?>
                           <td class="main" valign="middle" width="85"><b><?php echo TEXT_PRODUCTS_QTY;?></b></td>
                             <td colspan="2"><table background="0" cellpadding="0" cellspacing="0"><tr>
-                            <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)"></td>
+                            <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" class="input_text_short" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)"></td>
                             <td valign="middle">
                               <div style="*margin-top:-3px;">
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
@@ -586,13 +586,9 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             </div>
          <?php }?>
         <?php
-    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
-    $reviews_values = tep_db_fetch_array($reviews);
-    if ($reviews_values['count'] > 0) {
       include(DIR_WS_BOXES.'reviews.php') ;
 ?>
 <?php
-    }
 
     if (tep_not_null($product_info['products_url'])) {
 ?>

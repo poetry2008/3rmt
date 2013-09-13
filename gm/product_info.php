@@ -33,10 +33,10 @@ foreach($p_image_list as $p_list_row){
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/product_info.js"></script>
-<?php if($p_image_count>1){ ?>
-<script type="text/javascript" src="js/jquery.featureCarousel.js" ></script>
 <script type="text/javascript" src="js/jquery.lightbox-0.5.js"></script>
 <link rel="stylesheet" href="css/jquery.lightbox-0.5.css" type="text/css">
+<?php if($p_image_count>1){ ?>
+<script type="text/javascript" src="js/jquery.featureCarousel.js" ></script>
 <link rel="stylesheet" href="css/feature-carousel.css" type="text/css">
 <script type="text/javascript">
 $(document).ready(function() {
@@ -47,6 +47,14 @@ $(document).ready(function() {
       smallFeatureHwight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT/2;?>,
     });
   $("#carousel a").lightBox();
+});
+</script>
+<?php
+}else{
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".light").lightBox();
 });
 </script>
 <?php
@@ -247,7 +255,6 @@ if (!$product_info) { // product not found in database
     </div>
     <?php
 } else {
-  // ccdd
   $product_info['site_id'] == SITE_ID && tep_db_query("
       UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
       SET products_viewed = products_viewed+1 
@@ -386,7 +393,6 @@ if (!$product_info) { // product not found in database
                 </tr>
                 <?php } ?>
                 <?php
-                // ccdd
                 if (false) {
                   $tag_query = tep_db_query("
                       SELECT t.tags_id, 
@@ -456,7 +462,6 @@ if (!$product_info) { // product not found in database
       }
       echo '</span>'; 
     }else{    
-      // ccdd
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
@@ -508,7 +513,6 @@ if (!$product_info) { // product not found in database
     </div>
     <?php
     //sub图像
-    // ccdd
     $sub_colors_query = tep_db_query("
         SELECT color_image, 
         color_id, 
@@ -536,7 +540,7 @@ if (!$product_info) { // product not found in database
         if($mcnt == 1) {
           ?>
             <noscript>
-            <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES .  $product_info['products_image']) . '" rel="lightbox[products]">' .  tep_image3(DIR_WS_IMAGES . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'; ?>
+            <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' .  $product_info['products_image']) . '" rel="lightbox[products]">' .  tep_image2(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'; ?>
             </noscript>
             <?php
         }

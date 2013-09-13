@@ -8,7 +8,7 @@
   $order = new order;
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
-  $_SESSION['shipping_page_str'] = end($page_url_array); 
+  $_SESSION['shipping_page_str'] = end($page_url_array);
   //检测商品OPTION是否改动
   if ($_GET['action'] == 'check_products_op') {
       $check_products_info = tep_check_less_product_option(); 
@@ -29,7 +29,8 @@
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL')); }
+    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  }
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents() < 1) {
@@ -50,9 +51,9 @@
 // if no shipping destination address was selected, use the customers own address as default
   if (!tep_session_is_registered('sendto')) {
     tep_session_register('sendto');
-    $sendto = $customer_default_address_id; } else {
+    $sendto = $customer_default_address_id;
+  } else {
 // verify the selected shipping address
-//ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -108,7 +109,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SHIPPING);
 
-// process the selected shipping method
+  // process the selected shipping method
   if ( (isset($_POST['action']) && ($_POST['action'] == 'process')) || (isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1) ) {
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
@@ -453,7 +454,7 @@ function country_area_check(value,select_value){
       $("#"+country_city_id).append( "<option value=\""+arr[value][x]+"\""+selected_value+">"+x+"</option>" );
       selected_value = '';
       i++;
-    }    
+    }
     if(i == 0){ 
       $("#td_"+country_city_id_one).hide();
     }else{
@@ -518,6 +519,8 @@ function address_option_show(action){
           $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
       }
    }
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
     $("#error_"+country_fee_id_one).html('');
     $("#prompt_"+country_fee_id_one).html('');
     $("#error_"+country_area_id_one).html('');
@@ -544,6 +547,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   }
   tep_db_free_result($address_list_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_show_num = tep_db_num_rows($address_orders_group_query);
   
    
   $address_num = 0;
@@ -795,12 +799,16 @@ if($cart->weight > 0){
 <?php
   }else{
 ?>
-    
+
      <?php 
-     if($address_quest_flag == 0){
+     if($address_quest_flag == 0 && $address_show_num > 0){
      ?>
      address_option_show('old'); 
      address_option_list(first_num); 
+     <?php
+     }else{
+     ?>
+     address_option_show('new');
      <?php
      }
      if(isset($_SESSION['options'])){ 
@@ -1305,7 +1313,7 @@ function check_point(point_num) {
       sort($s_temp_array);
       $shi_time_array[$_s_key] = implode('|',$s_temp_array); 
     }
-   $max_time_str_old = implode('||',array_keys($shi_time_array));
+    $max_time_str_old = implode('||',array_keys($shi_time_array));
     $min_time_str_old = implode('||',$shi_time_array);
 
 
@@ -1528,9 +1536,8 @@ function check_point(point_num) {
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo
-  $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();$('#time_error').remove();">
-    <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();$('#time_error').remove();">
+  <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
@@ -1540,7 +1547,7 @@ function check_point(point_num) {
   while($j_shipping <= $shipping_time){
     if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
      
-     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){ 
+     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
       if(isset($_POST['date']) && $_POST['date'] != ""){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != '' && !isset($date_error)){

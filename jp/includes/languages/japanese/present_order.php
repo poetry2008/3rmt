@@ -13,8 +13,6 @@ define('TEXT1', STORE_NAME.'では、会員登録をされていなくてもプ�
 define('TEXT_PRESENT_ERROR_NOT_SELECTED','プレゼント商品が選択されていません');
 define('HEADING_RETURNING_CUSTOMER', '会員登録済みのお客様');
 define('TEXT_RETURNING_CUSTOMER', 'メールアドレスとパスワードを入力して、ログインしてください。');
-//define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
-//define('ENTRY_PASSWORD', 'パスワード:');
 
 define('TEXT_PASSWORD_FORGOTTEN', 'パスワードをお忘れの場合はクリック!');
 

@@ -197,13 +197,20 @@ if($address_histroy_num > 0){
 function address_clear(){
   var arr_new = Array();
   var arr_comment = Array();
+  var arr_default = Array();
 <?php
   $address_new_i = 0;
-  $address_new_query = tep_db_query("select name_flag,comment from ". TABLE_ADDRESS ." where type='textarea' and status='0'");
+  $address_new_query = tep_db_query("select name_flag,comment,type_comment from ". TABLE_ADDRESS ." where type='textarea' and status='0'");
   while($address_new_array = tep_db_fetch_array($address_new_query)){
 
     echo 'arr_new['. $address_new_i .'] = "'. $address_new_array['name_flag'] .'";';
     echo 'arr_comment['. $address_new_i .'] = "'. $address_new_array['comment'] .'";';
+    $address_new_arr = unserialize($address_new_array['type_comment']);
+    if($address_new_arr['set_value'] != ''){
+      echo 'arr_default['. $address_new_i .'] = "'. $address_new_arr['set_value'] .'";';
+    }else{
+      echo 'arr_default['. $address_new_i .'] = "";'; 
+    }
     $address_new_i++;
   } 
   tep_db_free_result($address_new_query);
@@ -213,9 +220,13 @@ function address_clear(){
   country_area_check($("#"+country_area_id).val());
   for(x in arr_new){
 
-    $("#op_"+arr_new[x]).val(arr_comment[x]);
-    var op_comment = document.getElementById("op_"+arr_new[x]);
-    op_comment.style.color = '#999';
+    if(arr_default[x] == ''){
+      $("#op_"+arr_new[x]).val(arr_comment[x]);
+      var op_comment = document.getElementById("op_"+arr_new[x]);
+      op_comment.style.color = '#999';
+    }else{
+      $("#op_"+arr_new[x]).val(arr_default[x]);
+    }
     if(document.getElementById("l_"+arr_new[x])){
       if($("#l_"+arr_new[x]).val() == 'true'){
         $("#r_"+arr_new[x]).html("&nbsp;*<?php echo TEXT_REQUIRED;?>");
@@ -303,6 +314,7 @@ function address_option_list(value){
   country_area.options.length = 0;
   var country_city = document.getElementById(country_city_id);
   country_city.options.length = 0;
+
   var arr_list = new Array();
   var arr_flag = new Array();
   var arr_address = new Array();
@@ -347,7 +359,7 @@ function address_option_list(value){
   }
   tep_db_free_result($address_orders_group_query); 
 ?>
-for(k in arr_address){
+  for(k in arr_address){
 
     $("#op_"+arr_address[k]).val("");
   }
@@ -366,7 +378,7 @@ if(arr_list.length > 0){
       list_option.style.color = '#000';
       list_option.value = arr_list[value][x]; 
     }
-     
+ 
     if(document.getElementById("l_"+x)){
       if($("#l_"+x).val() == 'true'){
         $("#r_"+x).html("&nbsp;*<?php echo TEXT_REQUIRED;?>");
@@ -676,7 +688,7 @@ $(document).ready(function(){
       <tr>
         <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
 <?php if (!isset($guestchk)) $guestchk = NULL;?>
-        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;;?></td>
+        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></td>
       </tr>
 <?php
     } else {

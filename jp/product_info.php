@@ -233,7 +233,6 @@ function showimage($1) {
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    // ccdd
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
@@ -365,7 +364,6 @@ function showimage($1) {
                       </tr>
                       <?php } ?>
 <?php 
-// ccdd
 if (false) {
 $tag_query = tep_db_query("
     SELECT t.tags_id, 
@@ -483,7 +481,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                         <?php $p_a_quan = $product_info['products_quantity'];?>
-                        <td><input style="text-align:right;" name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)">
+                        <td><input style="text-align:right;" name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="20" maxlength="4" onchange="change_num('quantity','','',<?php echo $p_a_quan;?>)">
 </td>
                         <td>
                         <div class="top_and_bottom">
@@ -529,7 +527,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 		</table>
         <?php
           //sub图像
-        // ccdd
         $sub_colors_query = tep_db_query("
             SELECT color_image, 
                    color_id, 
@@ -546,7 +543,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             <?php
         while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
           //获取颜色名
-          // ccdd
           $colors_name_query = tep_db_query("
               SELECT color_name 
               FROM ".TABLE_COLOR." 

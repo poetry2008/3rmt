@@ -197,13 +197,20 @@ if($address_histroy_num > 0){
 function address_clear(){
   var arr_new = Array();
   var arr_comment = Array();
+  var arr_default = Array();
 <?php
   $address_new_i = 0;
-  $address_new_query = tep_db_query("select name_flag,comment from ". TABLE_ADDRESS ." where type='textarea' and status='0'");
+  $address_new_query = tep_db_query("select name_flag,comment,type_comment from ". TABLE_ADDRESS ." where type='textarea' and status='0'");
   while($address_new_array = tep_db_fetch_array($address_new_query)){
 
     echo 'arr_new['. $address_new_i .'] = "'. $address_new_array['name_flag'] .'";';
     echo 'arr_comment['. $address_new_i .'] = "'. $address_new_array['comment'] .'";';
+    $address_new_arr = unserialize($address_new_array['type_comment']);
+    if($address_new_arr['set_value'] != ''){
+      echo 'arr_default['. $address_new_i .'] = "'. $address_new_arr['set_value'] .'";';
+    }else{
+      echo 'arr_default['. $address_new_i .'] = "";'; 
+    }
     $address_new_i++;
   } 
   tep_db_free_result($address_new_query);
@@ -213,9 +220,13 @@ function address_clear(){
   country_area_check($("#"+country_area_id).val());
   for(x in arr_new){
 
-    $("#op_"+arr_new[x]).val(arr_comment[x]);
-    var op_comment = document.getElementById("op_"+arr_new[x]);
-    op_comment.style.color = '#999';
+    if(arr_default[x] == ''){
+      $("#op_"+arr_new[x]).val(arr_comment[x]);
+      var op_comment = document.getElementById("op_"+arr_new[x]);
+      op_comment.style.color = '#999';
+    }else{
+      $("#op_"+arr_new[x]).val(arr_default[x]);
+    }
     if(document.getElementById("l_"+arr_new[x])){
       if($("#l_"+arr_new[x]).val() == 'true'){
         $("#r_"+arr_new[x]).html("&nbsp;*<?php echo TEXT_REQUIRED;?>");
@@ -603,7 +614,7 @@ $(document).ready(function(){
         <input type="hidden" id="options" name="newsletter" value="">
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">
-        <input type="hidden" id="action_flag" name="action_flag" value="0">
+        <input type="hidden" id="action_flag" name="action_flag" value="0"> 
         <input type="hidden" name="num_rows" value="<?php echo $address_orders_num_rows;?>">
   <?php if($style_display == 'block'){ ?>
   <tr>

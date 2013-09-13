@@ -8,7 +8,7 @@
   $order = new order;
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
-  $_SESSION['shipping_page_str'] = end($page_url_array); 
+  $_SESSION['shipping_page_str'] = end($page_url_array);
   //检测商品OPTION是否改动
   if ($_GET['action'] == 'check_products_op') {
       $check_products_info = tep_check_less_product_option(); 
@@ -29,7 +29,8 @@
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL')); }
+    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  }
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents() < 1) {
@@ -50,9 +51,9 @@
 // if no shipping destination address was selected, use the customers own address as default
   if (!tep_session_is_registered('sendto')) {
     tep_session_register('sendto');
-    $sendto = $customer_default_address_id; } else {
+    $sendto = $customer_default_address_id;
+  } else {
 // verify the selected shipping address
-//ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -108,7 +109,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SHIPPING);
 
-// process the selected shipping method
+  // process the selected shipping method
   if ( (isset($_POST['action']) && ($_POST['action'] == 'process')) || (isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1) ) {
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
@@ -453,7 +454,7 @@ function country_area_check(value,select_value){
       $("#"+country_city_id).append( "<option value=\""+arr[value][x]+"\""+selected_value+">"+x+"</option>" );
       selected_value = '';
       i++;
-    }    
+    }
     if(i == 0){ 
       $("#td_"+country_city_id_one).hide();
     }else{
@@ -518,6 +519,8 @@ function address_option_show(action){
           $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
       }
    }
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
     $("#error_"+country_fee_id_one).html('');
     $("#prompt_"+country_fee_id_one).html('');
     $("#error_"+country_area_id_one).html('');
@@ -544,6 +547,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   }
   tep_db_free_result($address_list_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_show_num = tep_db_num_rows($address_orders_group_query);
   
    
   $address_num = 0;
@@ -795,12 +799,16 @@ if($cart->weight > 0){
 <?php
   }else{
 ?>
-    
+
      <?php 
-     if($address_quest_flag == 0){
+     if($address_quest_flag == 0 && $address_show_num > 0){
      ?>
      address_option_show('old'); 
      address_option_list(first_num); 
+     <?php
+     }else{
+     ?>
+     address_option_show('new');
      <?php
      }
      if(isset($_SESSION['options'])){ 
@@ -950,7 +958,6 @@ function check_point(point_num) {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -1057,6 +1064,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
     }
   }
 
+  
   //根据$cart_products_id数组中的商品ID来获取每个商品的取引时间
   $cart_shipping_time = array();
   foreach($cart_products_id as $cart_products_value){
@@ -1147,6 +1155,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
                  $ship_end_time_value = str_replace(':','',$ship_end_time);
                  if(!in_array($ship_start_time.','.$ship_end_time,$shipp_time_array[$ship_hour_key]) && (int)$ship_start_time_value < (int)$ship_end_time_value){
                    $shipp_time_array[$ship_hour_key][] = $ship_start_time.','.$ship_end_time;
+                   
                  }
                }
             }
@@ -1189,10 +1198,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
      unset($shipp_time_array[$shipp_flag_k]);
    }
 
-
   }
-
-  
+   
   $ship_new_array = array(); 
   $shipp_array = array();
   foreach($shipp_time_array as $shipp_time_k=>$shpp_time_v){
@@ -1201,7 +1208,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
       $ship_new_array[] = $ship_new_str;
       $shipp_array[] = $shipp_time_k;
 
-  } 
+  }
 
   foreach($ship_new_array as $_s_key=>$_s_value){
       $s_temp_array = explode('|',$_s_value);    
@@ -1383,7 +1390,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
        }
      
     }
-
     $max_time_str = implode('||',array_keys($shi_time_array));
     $min_time_str = implode('||',$shi_time_array);
     $max_time_end_str = implode('||',array_keys($shi_time_end_array));
@@ -1508,8 +1514,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo
-  $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();$('#time_error').remove();">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();$('#time_error').remove();">
   <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -1548,10 +1553,10 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
 
          $date_session_flag = true;
        }
-
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
        break;
      }
+
   }
     ?>
   </select>
@@ -1585,6 +1590,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
     $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
     echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$post_date.'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
 }
+
   if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '' && $date_session_flag == true)){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
@@ -1620,7 +1626,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
 </table>
 <?php
   }
-?> 
+?>
 <noscript>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="red_border">
 <tr>
@@ -1706,7 +1712,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
 
 </div>
 
-<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
     <!-- footer_eof //--> 

@@ -1,6 +1,6 @@
 <?php 
 require('includes/application_top.php');
-
+require(DIR_WS_CLASSES . 'payment.php');
 //check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
@@ -50,21 +50,28 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
 
   if ($orders&&!$orders['telecom_name']&&!$orders['telecom_tel']&&!$orders['telecom_money']&&!$orders['telecom_email']) {
     // OK
+    $payment_modules = payment::getInstance($orders['site_id']); 
+    $payment_code = payment::changeRomaji($orders['payment_method'], PAYMENT_RETURN_TYPE_CODE);    
+    $orders_status_id = $payment_modules->get_default_status_id($payment_code, $orders['site_id']); 
+    $orders_status_id = $orders_status_id != 0 ? $orders_status_id : DEFAULT_ORDERS_STATUS_ID; 
+    
     tep_db_perform(TABLE_ORDERS, array(
       'telecom_name'  => $w_username,
       'telecom_tel'   => $w_telno,
       'telecom_money' => $w_money,
       'telecom_email' => $w_email,
-      'orders_status' => '30',
+      'orders_status' => $orders_status_id,
     ), 'update', "orders_id='".$orders['orders_id']."'");
     $sql_data_array = array('orders_id' => $orders['orders_id'], 
-                          'orders_status_id' => '30', 
+                          'orders_status_id' => $orders_status_id, 
                           'date_added' => 'now()', 
                           'customer_notified' => '0',
-                          'comments' => '');
+                          'comments' => $payment_modules->getModule($payment_code)->show_text_info,
+                          'user_added' => $w_username
+                          );
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders['orders_id']);
-    tep_order_status_change($orders['orders_id'], 30);
+    tep_order_status_change($orders['orders_id'], $orders_status_id);
     // success
     tep_db_perform('telecom_unknow', array(
       '`option`'      => $w_option,

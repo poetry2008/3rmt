@@ -4,10 +4,8 @@
 */
 
   if (isset($current_category_id) && ($current_category_id > 0)) {
-    // ccdd
     $best_c_category_id = $current_category_id; 
   } else {
-    // ccdd
     $best_c_category_id = FF_CID; 
   }
     $best_sellers_query = tep_db_query("

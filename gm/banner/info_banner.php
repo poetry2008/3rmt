@@ -26,11 +26,11 @@ echo $p_info_image_footer;
   foreach($p_image_list as $p_list_src){
   if(file_exists3(DIR_WS_IMAGES.'products/'.$p_list_src)&&
       $p_list_src){
-      echo "<div id='product-carousel'>";
+      echo  '<a class="light" title="'.$product_info['romaji'].'" href="'.tep_href_link(DIR_WS_IMAGES.'products/' .$p_list_src) . '" >';
       echo tep_image3(DIR_WS_IMAGES.'products/' . $p_list_src,
         $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT,
         'hspace="2" vspace="2" class="product-carousel-image"');
-      echo "</div>";
+      echo '</a>';
     }
   }
   echo "</div>";

@@ -67,7 +67,7 @@
 
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
-<!-- best_sellers //-->
+<!-- best_sellers -->
 <div class="yui3-g main-columns">
 <h3><span><?php echo BESTSELLERS_TITLE_TEXT;?></span></h3>
 
@@ -86,7 +86,7 @@
 <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) ; ?>">
 <?php
 if (!empty($best_sellers['products_image'])) {
-  if (file_exists(DIR_FS_CATALOG.DIR_WS_IMAGES.'products/'.$best_sellers['products_image'])) {
+  if (file_exists3(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'])) {
     echo tep_image(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
   } else {
     echo tep_image(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
@@ -110,7 +110,7 @@ $special_res = tep_db_fetch_array($special_query);
 ?>
 </div>
 <div class="sep" style="display:none;">&nbsp;</div>
-<!-- best_sellers_eof //-->
+<!-- best_sellers_eof -->
 <?php
   }
 ?>

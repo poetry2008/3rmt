@@ -9806,7 +9806,8 @@ function tep_get_pinfo_by_pid($pid,$site_id=0)
                  p.products_cart_min,
                  p.products_cartorder,
                  p.belong_to_option,
-                 pd.preorder_status
+                 pd.preorder_status,
+                 p.products_attention_1_3
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $pid . "' 
             and p.products_id = pd.products_id 
@@ -12444,4 +12445,21 @@ function check_new_orders_a($products_id_list, $site_id)
     return false; 
   }
   return true;
+}
+/*----------------------------------
+  功能: 获得产品的库存
+  参数: $product_info (object) 商品信息
+  返回：根据基数和 产品（游戏币） 计算出商品个数 取整（小数省略）
+----------------------------------*/
+function tep_new_get_quantity($product_info){
+  
+  if ($product_info) {
+    if ($product_info->products_attention_1_3 != '' && $product_info->products_attention_1_3 != 0) {
+      return floor($product_info->products_real_quantity / $product_info->products_attention_1_3);
+    } else {
+      return $product_info->products_real_quantity; 
+    }
+  } else {
+    return 0; 
+  }
 }

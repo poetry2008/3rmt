@@ -3,7 +3,6 @@
   $Id$
 */
   if (isset($current_category_id) && ($current_category_id > 0)) {
-    // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -34,7 +33,6 @@
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
-    // ccdd
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -76,13 +74,10 @@
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
 
-  // new infoBoxHeading($info_box_contents, false, false);
 
   $rows = 0;
-  //$bestsellers_list = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
   while ($best_sellers = tep_db_fetch_array($best_sellers_query)) {
     $rows++;
-    // $bestsellers_list .= '<tr><td class="infoBoxContents" valign="top">' . tep_row_number_format($rows) . '.</td><td class="infoBoxContents"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) . '">' . $best_sellers['products_name'] . '</a></td></tr>';
 ?>
   <tr>
       <td>

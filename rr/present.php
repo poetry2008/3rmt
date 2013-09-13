@@ -15,8 +15,6 @@
     forward404Unless($present);
   } 
   
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT);
-
 ?>
 <?php page_head();?>
 <script language="javascript" type="text/javascript"><!--
@@ -56,7 +54,7 @@ function popupWindow(url) {
       $present = tep_db_fetch_array($present_query) ;
       forward404Unless($present);
       ?>
-          <p align="right" class="main">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
+          <p align="right" class="main"> <?php echo TEXT_PRESENT_ORDER_DATE.tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table border="0" cellspacing="0" cellpadding="2" align="right" summary="table">
             <tr>
               <td align="center" class="smallText">
@@ -124,8 +122,8 @@ function popupWindow(url) {
           <div class="underline">&nbsp;</div>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" summary="table">
             <?php 
+            $row = 0;
         while($present = tep_db_fetch_array($present_query)){
-          if (!isset($row)) $row =NULL; //delnotice
           $row ++ ;
         ?>
             <tr>

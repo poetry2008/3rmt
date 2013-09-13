@@ -4,7 +4,7 @@
 */
 require_once (DIR_WS_CLASSES . 'basePayment.php');
 class telecom  extends basePayment  implements paymentInterface  { 
-  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
+  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info, $show_text_info;
 
   // class constructor
 /*------------------------------
@@ -17,6 +17,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     $this->code        = 'telecom';    
     $this->form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL;
     $this->show_payment_info = 1;
+    $this->show_text_info = TS_MODULE_PAYMENT_TELECOM_TEXT_CAL; 
   }
 /*----------------------------
  功能：编辑信用卡结算
@@ -387,6 +388,20 @@ class telecom  extends basePayment  implements paymentInterface  {
       }
     }
   return $telecom_option_ok;
+  }
+/*------------------------
+ 功能：是否插入历史信息
+ 参数：$option_info(string) 信息
+ 返回值：信息(array)
+ -----------------------*/
+  function check_insert_status_history($option_info) {
+    if ($option_info) {
+      $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$option_info."' and rel='yes' limit 1"));
+      if ($telecom_unknow) {
+        return array($telecom_unknow['date_added'], constant('TS_MODULE_PAYMENT_'.strtoupper($this->code).'_TEXT_CAL'), $telecom_unknow['username']); 
+      }
+    }
+    return array(); 
   }
 /*----------------------------------
   功能：信用卡结算预约按钮

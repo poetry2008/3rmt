@@ -396,7 +396,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_EMAIL;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?> <?php if(!tep_validate_email($email_address)){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
+                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address,'class="input_text"'); ?> <?php if(!tep_validate_email($email_address) && $email_address != ''){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_MAIL;?></td> 

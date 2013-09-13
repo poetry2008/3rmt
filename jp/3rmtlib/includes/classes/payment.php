@@ -1233,5 +1233,33 @@ class payment {
     }
     return false; 
   }
+ 
+/*---------------------------
+ 功能：是否插入历史信息 
+ 参数：$payment(string) 支付方法
+ 参数：$option_info(string) 信息
+ 返回值：信息(array)
+ --------------------------*/
+  function check_insert_status_history($payment, $option_info)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'check_insert_status_history')) {
+        return $module->check_insert_status_history($option_info); 
+      }
+    }
+    return array(); 
+  }
+ 
+/*---------------------------
+ 功能：获取该支付方法的默认状态 
+ 参数：$payment(string) 支付方法
+ 参数：$site_id(string) 网站id
+ 返回值：默认状态(mixed)
+ --------------------------*/
+  function get_default_status_id($payment, $site_id)
+  {
+    return get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_ORDER_STATUS_ID', $site_id); 
+  }
 }
 ?>

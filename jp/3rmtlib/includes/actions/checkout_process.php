@@ -322,6 +322,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   }
   
   $address_error = false;
+  $orders_id_temp = '';
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
@@ -337,12 +338,18 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
     if($address_temp_str == $add_temp_str){
 
       $address_error = true;
+      $orders_id_temp = $address_sh_his_array['orders_id'];
       break;
     }
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query); 
-if($address_error == false){
+  //update address info
+  if($address_error == true && $orders_id_temp != ''){
+
+    tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set orders_id='".$insert_id."' where orders_id='".$orders_id_temp."'"); 
+  }
+if($address_error == false && $_SESSION['guestchk'] == '0'){
   foreach($_SESSION['options'] as $address_history_key=>$address_history_value){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". $address_history_key ."'");
       $address_history_array = tep_db_fetch_array($address_history_query);
@@ -878,6 +885,25 @@ $email_printing_order = tep_replace_mail_templates($email_printing_order,$order-
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+}
+
+$check_status_info = $payment_modules->check_insert_status_history($payment, $_SESSION['option']);
+if (!empty($check_status_info)) {
+  $sql_data_array = array('orders_id' => $insert_id, 
+                        'orders_status_id' => $order->info['order_status'], 
+                        'date_added' => $check_status_info[0], 
+                        'customer_notified' => '0',
+                        'comments' => $check_status_info[1],
+                        'user_added' => $check_status_info[2]
+                        );
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  $last_order_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where date_added > '".$check_status_info[0]."' and orders_id = '".$insert_id."'");
+  if (!tep_db_num_rows($last_order_history_raw)) {
+    $order_status_info_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order->info['order_status']."'");    
+    $order_status_info_res = tep_db_fetch_array($order_status_info_raw); 
+    tep_db_query("update ".TABLE_ORDERS." set orders_status = '".$order->info['order_status']."', orders_status_name = '".$order_status_info_res['orders_status_name']."' where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'"); 
+    orders_updated($insert_id);
+  }
 }
 
 // load the after_process function from the payment modules

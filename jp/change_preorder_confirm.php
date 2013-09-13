@@ -681,7 +681,7 @@ foreach($all_show_option_id as $t_item_id){
                    ?>
                   
                   <tr>
-                    <td class="main" align="right"><?php echo $preorder_total_res['title'];?></td>                  
+                    <td class="main" align="right"><?php echo $preorder_total_res['class'] == 'ot_custom' ? $preorder_total_res['title'].':' : $preorder_total_res['title'];?></td>                  
                     <td class="main" align="right">
                  <?php 
                     }

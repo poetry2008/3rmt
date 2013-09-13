@@ -2,10 +2,9 @@
 /*
   $Id$
 */
-
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
-  require(DIR_WS_CLASSES . 'order.php');
+  require(DIR_WS_CLASSES . 'order.php'); 
   $order = new order;
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
@@ -27,7 +26,6 @@
       echo implode('|||', $return_check_array); 
       exit; 
   }
-
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
@@ -56,7 +54,6 @@
     $sendto = $customer_default_address_id;
   } else {
 // verify the selected shipping address
-//ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -311,8 +308,6 @@ function check_option_change(){
   }); 
 }
 
-
-
 <?php
 if($cart->weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
@@ -524,6 +519,8 @@ function address_option_show(action){
           $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
       }
    }
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
     $("#error_"+country_fee_id_one).html('');
     $("#prompt_"+country_fee_id_one).html('');
     $("#error_"+country_area_id_one).html('');
@@ -550,6 +547,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   }
   tep_db_free_result($address_list_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_show_num = tep_db_num_rows($address_orders_group_query);
   
    
   $address_num = 0;
@@ -753,7 +751,7 @@ function session_value(){
 <?php
 }
 ?>
-//--></script>
+--></script>
 <script type="text/javascript" src="js/date_time.js"></script>
 <?php
 if($cart->weight > 0){
@@ -801,18 +799,23 @@ if($cart->weight > 0){
 <?php
   }else{
 ?>
-    <?php
-     if($address_quest_flag == 0){
+
+     <?php 
+     if($address_quest_flag == 0 && $address_show_num > 0){
      ?>
      address_option_show('old'); 
      address_option_list(first_num); 
-    <?php
+     <?php
+     }else{
+     ?>
+     address_option_show('new');
+     <?php
      }
-    if(isset($_SESSION['options'])){
-    ?>
+     if(isset($_SESSION['options'])){ 
+     ?>
      session_value();
-    <?php
-     }
+     <?php
+     } 
      ?>
 <?php
   }
@@ -876,7 +879,7 @@ unset($_SESSION['shipping_session_flag']);
   <?php
   }else{
   ?>
-    check();     
+    check();    
   <?php
   }
   ?>
@@ -907,7 +910,7 @@ unset($_SESSION['shipping_session_flag']);
   <?php
   }else{
   ?>
-    country_area_check($("#"+country_area_id).val());
+    country_area_check($("#"+country_area_id).val());    
   <?php
   }
   ?>
@@ -960,7 +963,7 @@ function check_point(point_num) {
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents">
-        <?php
+        <?php 
           if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
             echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL')) . tep_draw_hidden_field('action', 'process'); 
           } else {
@@ -1050,6 +1053,7 @@ function check_point(point_num) {
     }
   }
 
+  
   //根据$cart_products_id数组中的商品ID来获取每个商品的取引时间
   $cart_shipping_time = array();
   foreach($cart_products_id as $cart_products_value){
@@ -1140,6 +1144,7 @@ function check_point(point_num) {
                  $ship_end_time_value = str_replace(':','',$ship_end_time);
                  if(!in_array($ship_start_time.','.$ship_end_time,$shipp_time_array[$ship_hour_key]) && (int)$ship_start_time_value < (int)$ship_end_time_value){
                    $shipp_time_array[$ship_hour_key][] = $ship_start_time.','.$ship_end_time;
+                   
                  }
                }
             }
@@ -1148,7 +1153,7 @@ function check_point(point_num) {
     }
   }
 
-
+  
   $shipp_flag_array = $ship_time_array[$ship_min_value];
 
   foreach($shipp_time_array as $shipp_flag_k=>$shipp_flag_v){
@@ -1183,10 +1188,7 @@ function check_point(point_num) {
    }
 
   }
- 
-
-
-  
+   
   $ship_new_array = array(); 
   $shipp_array = array();
   foreach($shipp_time_array as $shipp_time_k=>$shpp_time_v){
@@ -1377,7 +1379,6 @@ function check_point(point_num) {
        }
      
     }
-
     $max_time_str = implode('||',array_keys($shi_time_array));
     $min_time_str = implode('||',$shi_time_array);
     $max_time_end_str = implode('||',array_keys($shi_time_end_array));
@@ -1520,16 +1521,16 @@ function check_point(point_num) {
   <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
 <?php
-    $m_num = date('m',strtotime("+".$db_set_day." minutes"));
-    $d_num = date('d',strtotime("+".$db_set_day." minutes"));
-    $shipping_time = strtotime("+".$shipping_time." minutes");
-    $year = date('Y',strtotime("+".$db_set_day." minutes"));
+      $m_num = date('m',strtotime("+".$db_set_day." minutes"));
+      $d_num = date('d',strtotime("+".$db_set_day." minutes"));
+      $shipping_time = strtotime("+".$shipping_time." minutes");
+      $year = date('Y',strtotime("+".$db_set_day." minutes"));
     
     $hours = date('H');
     $mimutes = date('i');
 ?>
   <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();$('#time_error').remove();">
-    <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
+  <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
@@ -1553,7 +1554,7 @@ function check_point(point_num) {
         break;
       }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
-      }
+     }
     }
      $j_shipping += 86400;
      $j++;
@@ -1567,11 +1568,11 @@ function check_point(point_num) {
 
          $date_session_flag = true;
        }
-
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
-      break;
+       break;
      }
-    }
+
+  }
     ?>
   </select>
   </td>
@@ -1607,9 +1608,9 @@ function check_point(point_num) {
 if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true && !isset($time_error) && !isset($date_error))){
 
     $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
-
     echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$post_date.'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
-  }
+}
+
   if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '' && $date_session_flag == true)){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
@@ -1633,6 +1634,8 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
       echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();$("#h_c_'.$post_hour.'").val('.$post_min.');</script>';
     }
   }
+?>
+<?php
   if(isset($time_error) && $time_error != '') {
 ?>
   <tr id="time_error">
@@ -1667,7 +1670,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
                 <tr> 
                   <td class="main">
                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
-                  &nbsp;&nbsp; 
+                  &nbsp;&nbsp;
                   <?php
                   if ($campaign_error) {
                     echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
@@ -1711,9 +1714,9 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
-          <?php
+          <?php 
             }
-          } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {  
+          } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
             if($guestchk != '1') {
           ?>
           <tr><td height="80"></td></tr>

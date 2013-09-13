@@ -61,7 +61,6 @@ function checkForm() {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div class="yui3-u" id="layout">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -132,7 +131,6 @@ function checkForm() {
     }
 ?></div>
       <!-- body_text_eof //--> 
-<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <!-- footer_eof //--> 

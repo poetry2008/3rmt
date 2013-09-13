@@ -258,6 +258,9 @@ function address_option_show(action){
       }
     }
   }
+    check();
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
     $("#error_"+country_fee_id_one).html('');
     $("#prompt_"+country_fee_id_one).html('');
     $("#error_"+country_area_id_one).html('');
@@ -368,7 +371,9 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
 
   } 
-    //address_option_list(first_num); 
+    <?php if($address_num > 0){?> 
+      address_option_list(first_num); 
+    <?php }?>
     break;
   }
 }
@@ -377,7 +382,7 @@ function address_option_list(value){
   $("#td_"+country_fee_id_one).hide();
   $("#td_"+country_area_id_one).hide();
   $("#td_"+country_city_id_one).hide();
- 
+
   //clear
   var country_fee = document.getElementById(country_fee_id);
   country_fee.options.length = 0;   
@@ -480,6 +485,13 @@ if (!isset($_POST['address_option']) && $customers_guest_flag == 0) {
   $(document).ready(function(){
     
     address_option_show('old'); 
+  });
+<?php
+}elseif(!isset($_POST[$country_fee_id]) && $customers_guest_flag == 1){
+?>
+  $(document).ready(function(){
+    
+    address_option_show('new'); 
   });
 <?php
 }
@@ -1100,7 +1112,7 @@ document.forms.order1.submit();
         </script>
             <tr>
             <td colspan="2" class="main">
-              <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
+              <input type="radio" name="address_option" value="old" onClick="address_option_show('old');" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
               <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
             </td>
             </tr>
@@ -1178,6 +1190,7 @@ document.forms.order1.submit();
             <tr id="shipping_list" style="display:none;">
               <td class="main"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
               <td class="main" id="shipping_list_show">
+              
 </td>
 </tr>
 <?php

@@ -267,6 +267,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
   }
   
   $address_error = false;
+  $orders_id_temp = '';
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$preorder_cus_id' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
@@ -282,12 +283,18 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
     if($address_temp_str == $add_temp_str){
 
       $address_error = true;
+      $orders_id_temp = $address_sh_his_array['orders_id'];
       break;
     }
     tep_db_free_result($address_sh_query);
   }
   tep_db_free_result($address_sh_his_query);
-if($address_error == false){
+  //update address info
+  if($address_error == true && $orders_id_temp != ''){
+
+    tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set orders_id='".$orders_id."' where orders_id='".$orders_id_temp."'"); 
+  }
+if($address_error == false && $customers_type_info_res['customers_guest_chk'] == '0'){
   if ($preorder['is_gray'] != '1') { 
     foreach($_SESSION['preorder_information'] as $address_history_key=>$address_history_value){
       if(substr($address_history_key,0,3) == 'ad_'){
@@ -800,6 +807,25 @@ $email_printing_order = tep_replace_mail_templates($email_printing_order,$preord
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
+}
+
+$check_status_info = $payment_modules->check_insert_status_history($cpayment_code, $_SESSION['preorder_option']);
+if (!empty($check_status_info)) {
+  $sql_data_array = array('orders_id' => $orders_id, 
+                        'orders_status_id' => $orders_status_id, 
+                        'date_added' => $check_status_info[0], 
+                        'customer_notified' => '0',
+                        'comments' => $check_status_info[1],
+                        'user_added' => $check_status_info[2]
+                        );
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  $last_order_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where date_added > '".$check_status_info[0]."' and orders_id = '".$orders_id."'");
+  if (!tep_db_num_rows($last_order_history_raw)) {
+    $order_status_info_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$orders_status_id."'");    
+    $order_status_info_res = tep_db_fetch_array($order_status_info_raw); 
+    tep_db_query("update ".TABLE_ORDERS." set orders_status = '".$orders_status_id."', orders_status_name = '".$order_status_info_res['orders_status_name']."' where orders_id = '".$orders_id."' and site_id = '".SITE_ID."'"); 
+    orders_updated($orders_id);
+  }
 }
 
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {

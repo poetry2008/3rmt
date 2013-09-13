@@ -4828,7 +4828,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
               co.address_format_id, 
               ab.entry_state,
               c.is_quited,
-              c.quited_date
+              c.quited_date,
+              c.customers_guest_chk
       from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) 
       where c.customers_id = '" .  $customers_id . "' 
       and ab.customers_id = '" . $customers_id . "' 
@@ -4905,6 +4906,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            );
    if ($customers_res['is_quited'] == '1') {
      $sql_data_array['is_gray'] = '2';
+   }
+   if ($customers_res['customers_guest_chk'] == '1') {
+     $sql_data_array['is_guest'] = '1'; 
    }
    $payment_modules->deal_preorder_info($pInfo, $sql_data_array); 
    $sh_comments = ''; 
