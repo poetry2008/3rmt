@@ -21,8 +21,9 @@ define('TEXT_DETAIL_STATUS', '状态');
 define('TEXT_DETAIL_SORT', '排列顺序');
 define('TEXT_DETAIL_NAVBAR_TITLE', '导航栏');
 define('TEXT_DETAIL_HEADING_TITLE', '标题名');
-define('TEXT_DETAIL_CONTENTS', '内容（HTML可能）<br>换行被无视<br>换行时输入「&lt;BR&gt;」');
-define('TEXT_CONTENTS_COPY_LOCATION','要显示这个页面的链接请把下面的代码来源复制到要显示的位置。');
+define('TEXT_DETAIL_CONTENTS', '内容（HTML可能）');
+define('TEXT_DETAIL_INPUT','换行被无视');
+define('TEXT_DETAIL_MAKE','换行时输入「&lt;BR&gt;」<br>要显示这个页面的链接请把下面的代码来源复制到要显示的位置。');
 
 
 define('TEXT_DETAIL_ROMAJI', '罗马字');
@@ -46,4 +47,9 @@ define('TEXT_LINK','链接');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_DATA_EMPTY','<font color=\'red\'><b>数据为空。</b></font>');
+define('IMAGE_ICON_STATUS_GRAY_LIGHT','不可设置');
+define('TEXT_CONTENT_INFO','进度：${PROCEDURE}');
+define('TEXT_CONTENT_NEXT','下一步：${NEXT}');
+define('TEXT_CONTENT_ORDER','产品订购：${PRODUCTS_SUBSCRIPTION}');
+define('TEXT_CONTENT_PRODUCTS_INFO','产品信息：${PRODUCTS_INFO}');
 ?>

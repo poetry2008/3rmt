@@ -20,8 +20,8 @@ define('TEXT_DETAIL_STATUS', 'ステータス');
 define('TEXT_DETAIL_SORT', '並び順');
 define('TEXT_DETAIL_NAVBAR_TITLE', 'ナビゲーションタイトル');
 define('TEXT_DETAIL_HEADING_TITLE', 'タイトル名');
-define('TEXT_DETAIL_CONTENTS', 'コンテンツ内容（HTML可能）<br>改行は無視されます<br>改行する場合は「&lt;BR&gt;」と入力');
-
+define('TEXT_DETAIL_CONTENTS', 'コンテンツ内容（HTML可能）');
+define('TEXT_DETAIL_INPUT','改行は無視されます。<br>改行する場合は「&lt;BR&gt;」と入力してください。');
 
 define('TEXT_DETAIL_ROMAJI', 'ローマ字');
 define('ROMAJI_NOT_NULL', '<font color=\'red\'>ローマ字をご入力ください。</font>');
@@ -43,4 +43,9 @@ define('TEXT_LINK','リンク');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_DATA_EMPTY','<font color=\'red\'><b>データがありません。</b></font>');
+define('IMAGE_ICON_STATUS_GRAY_LIGHT','設定不可');
+define('TEXT_CONTENT_INFO','手続き：${PROCEDURE}');
+define('TEXT_CONTENT_NEXT','次へ進む：${NEXT}');
+define('TEXT_CONTENT_ORDER','商品の最新情報を購読：${PRODUCTS_SUBSCRIPTION}');
+define('TEXT_CONTENT_PRODUCTS_INFO','商品情報：${PRODUCTS_INFO}');
 ?>

@@ -575,7 +575,7 @@ if ($_GET['action'] == 'show_category_info') {
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
     $product_info_array[]['text'] = array(
           array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1).':'),
-          array('text' => @display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT) 
+          array('text' => @display_price(tep_new_get_avg_by_pid($pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
         );
   }
   //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
@@ -669,7 +669,7 @@ if ($_GET['action'] == 'show_category_info') {
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
       $relate_product_info_array[]['text'] = array(
             array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1).':'),
-            array('text' => @display_price(tep_get_avg_by_pid($relate_pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT) 
+            array('text' => @display_price(tep_new_get_avg_by_pid($relate_pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
           );
     }
 
@@ -4815,70 +4815,70 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
     include_once(DIR_WS_CLASSES . 'address_form.php');
     $address_form = new addressForm;
     // gender
-    $a_value = tep_draw_radio_field('customers_gender', 'm', false, $cInfo->customers_gender) . '&nbsp;&nbsp;' . MALE . '&nbsp;&nbsp;'
-     . tep_draw_radio_field('customers_gender', 'f', false, $cInfo->customers_gender) . '&nbsp;&nbsp;' . FEMALE;
-    $address_form->setFormLine('gender',ENTRY_GENDER,$a_value);
+    $customers_gender_html = tep_draw_radio_field('customers_gender', 'm', false, $cInfo->customers_gender) . '&nbsp;&nbsp;' . MALE . '&nbsp;&nbsp;'
+    . tep_draw_radio_field('customers_gender', 'f', false, $cInfo->customers_gender) . '&nbsp;&nbsp;' . FEMALE;
+    $address_form->setFormLine('gender',ENTRY_GENDER,$customers_gender_html);
 
     // firstname
-    $a_value = tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32"', false);
-    $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
+    $customers_firstname_html = tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'maxlength="32"', false);
+    $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$customers_firstname_html);
 
     // lastname
-    $a_value = tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32"', false);
-    $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
+    $customers_lastname_html = tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'maxlength="32"', false);
+    $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$customers_lastname_html);
   
   // firstname_f
-    $a_value = tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32"', false);
-    $address_form->setFormLine('firstname_f',ENTRY_FIRST_NAME_F,$a_value);
+    $customers_firstname_f_html = tep_draw_input_field('customers_firstname_f', $cInfo->customers_firstname_f, 'maxlength="32"', false);
+    $address_form->setFormLine('firstname_f',ENTRY_FIRST_NAME_F,$customers_firstname_f_html);
 
     // lastname_f
-    $a_value = tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32"', false);
-    $address_form->setFormLine('lastname_f',ENTRY_LAST_NAME_F,$a_value);
+    $customers_lastname_f_html = tep_draw_input_field('customers_lastname_f', $cInfo->customers_lastname_f, 'maxlength="32"', false);
+    $address_form->setFormLine('lastname_f',ENTRY_LAST_NAME_F,$customers_lastname_f_html);
 
     // dob
-    $a_value = tep_draw_input_field('customers_dob', tep_date_short($cInfo->customers_dob), 'maxlength="10"', false);
-    $address_form->setFormLine('dob',ENTRY_DATE_OF_BIRTH,$a_value);
+    $customers_dob_html = tep_draw_input_field('customers_dob', tep_date_short($cInfo->customers_dob), 'maxlength="10"', false);
+    $address_form->setFormLine('dob',ENTRY_DATE_OF_BIRTH,$customers_dob_html);
 
     // email_address
-    $a_value = tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', false);
-    $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
+    $customers_email_address_html = tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', false);
+    $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$customers_email_address_html);
     //quited_date
     if($cInfo->is_quited==1){
-    $a_value = date("Y/m/d H:i",strtotime($cInfo->quited_date));
+    $quited_date_html = date("Y/m/d H:i",strtotime($cInfo->quited_date));
 
-    $address_form->setFormLine('quited_date',ENTRY_QUITED_DATE,$a_value);
+    $address_form->setFormLine('quited_date',ENTRY_QUITED_DATE,$quited_date_html);
     }
     // company
-    $a_value = tep_draw_input_field('entry_company', $cInfo->entry_company, 'maxlength="32"');
-    $address_form->setFormLine('company',ENTRY_COMPANY,$a_value);
+    $entry_company_html = tep_draw_input_field('entry_company', $cInfo->entry_company, 'maxlength="32"');
+    $address_form->setFormLine('company',ENTRY_COMPANY,$entry_company_html);
 
     // street_address
-    $a_value = tep_draw_input_field('entry_street_address', $cInfo->entry_street_address, 'maxlength="64"', true);
-    $address_form->setFormLine('street_address',ENTRY_STREET_ADDRESS,$a_value);
+    $entry_street_address_html = tep_draw_input_field('entry_street_address', $cInfo->entry_street_address, 'maxlength="64"', true);
+    $address_form->setFormLine('street_address',ENTRY_STREET_ADDRESS,$entry_street_address_html);
 
     // suburb
-    $a_value = tep_draw_input_field('entry_suburb', $cInfo->entry_suburb, 'maxlength="32"');
-    $address_form->setFormLine('suburb',ENTRY_SUBURB,$a_value);
+    $entry_suburb_html = tep_draw_input_field('entry_suburb', $cInfo->entry_suburb, 'maxlength="32"');
+    $address_form->setFormLine('suburb',ENTRY_SUBURB,$entry_suburb_html);
 
     // postcode
-    $a_value = tep_draw_input_field('entry_postcode', $cInfo->entry_postcode, 'maxlength="8"', true);
-    $address_form->setFormLine('postcode',ENTRY_POST_CODE,$a_value);
+    $entry_postcode_html = tep_draw_input_field('entry_postcode', $cInfo->entry_postcode, 'maxlength="8"', true);
+    $address_form->setFormLine('postcode',ENTRY_POST_CODE,$entry_postcode_html);
 
     // city
-    $a_value = tep_draw_input_field('entry_city', $cInfo->entry_city, 'maxlength="32"', true);
-    $address_form->setFormLine('city',ENTRY_CITY,$a_value);
+    $entry_city_html = tep_draw_input_field('entry_city', $cInfo->entry_city, 'maxlength="32"', true);
+    $address_form->setFormLine('city',ENTRY_CITY,$entry_city_html);
     $address_form->setCountry($cInfo->entry_country_id);
-    $a_value = tep_draw_pull_down_menu('entry_country_id', tep_get_countries(), $cInfo->entry_country_id, 'onChange="update_zone(this.form);"');
-    $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
+    $entry_country_id_html = tep_draw_pull_down_menu('entry_country_id', tep_get_countries(), $cInfo->entry_country_id, 'onChange="update_zone(this.form);"');
+    $address_form->setFormLine('country',ENTRY_COUNTRY,$$entry_country_id_html);
     $a_hidden = tep_draw_hidden_field('entry_country_id',$cInfo->entry_country_id);
     $address_form->setFormHidden('country',$a_hidden); // in case without country
     $a_hidden = tep_draw_hidden_field('user_update',$user_info['name']);
     $address_form->setFormHidden('user_update',$a_hidden);
     // state
-    $a_value = tep_draw_pull_down_menu('entry_zone_id', tep_prepare_country_zones_pull_down($cInfo->entry_country_id), $cInfo->entry_zone_id, 'onChange="resetStateText(this.form);"');
-    $address_form->setFormLine('zone_id',ENTRY_STATE,$a_value);
-    $a_value = tep_draw_input_field('entry_state', $cInfo->entry_state, 'maxlength="32" onChange="resetZoneSelected(this.form);"');
-    $address_form->setFormLine('state','&nbsp;',$a_value);
+    $entry_zone_id_html = tep_draw_pull_down_menu('entry_zone_id', tep_prepare_country_zones_pull_down($cInfo->entry_country_id), $cInfo->entry_zone_id, 'onChange="resetStateText(this.form);"');
+    $address_form->setFormLine('zone_id',ENTRY_STATE,$entry_zone_id_html);
+    $entry_state_html = tep_draw_input_field('entry_state', $cInfo->entry_state, 'maxlength="32" onChange="resetZoneSelected(this.form);"');
+    $address_form->setFormLine('state','&nbsp;',$entry_state_html);
     if($_GET['cID'] == -1){
       $action = 'insert';
       $page = 'page='.$_GET['page'];
@@ -6186,7 +6186,7 @@ if($cID && tep_not_null($cID)) {
       $show_site_arr[] = $sites_row['id']; 
     }
 if($cID != -1){
-$contents_query_raw = " select i.pID, i.navbar_title, i.heading_title, i.text_information, i.status, i.sort_id, i.romaji, i.site_id, i.date_added, i.date_update, s.romaji as sromaji from ".TABLE_INFORMATION_PAGE." i , ".TABLE_SITES." s where s.id = i.site_id and ".$sql_site_where." order by ".$contents_str.$_GET['type'];
+$contents_query_raw = " select i.pID, i.navbar_title, i.heading_title, i.text_information, i.status, i.sort_id, i.romaji, i.site_id, i.date_added, i.date_update,i.show_status, s.romaji as sromaji from ".TABLE_INFORMATION_PAGE." i , ".TABLE_SITES." s where s.id = i.site_id and ".$sql_site_where." order by ".$contents_str.$_GET['type'];
 $contents_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $contents_query_raw, $contents_query_numrows);
 $contents_query = tep_db_query($contents_query_raw);
 $cid_array = array();
@@ -6227,7 +6227,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => $detail['heading_title']);
     $heading[] = array('align' => 'right', 'text' => $page_str); 
-    $form_str = tep_draw_form('content_form', FILENAME_CONTENTS, 'cID='.$cID.'&act=update' .((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:''));
+    $form_str = tep_draw_form('content_form', FILENAME_CONTENTS, 'cID='.$cID.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&act=update' .((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:''));
     $contents[]['text'] = array(
          array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'),  
          array('text' => '<input type="hidden" name="action_sid" value="'.$_GET['action_sid'].'"><input type="hidden" name="status" value="'.$detail['status'].'">')    
@@ -6237,14 +6237,15 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('text' => ENTRY_SITE),
          array('text' => $site_name['romaji'])
     );
-    $contents[]['text'] = array(
-         array('text' => TEXT_DETAIL_SORT),
-         array('text' => tep_draw_input_field('sort_id', $detail['sort_id'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%"'))
-    );
+    if($detail['show_status'] == '1'){
+        $show_status_input = tep_draw_input_field('show_romaji', $detail['romaji'],$disabled.'disabled="disabled" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%" id="romaji"').'<input type="hidden" name="romaji" value="'.$detail['romaji'].'">';
+    }else{
+        $show_status_input = tep_draw_input_field('romaji', $detail['romaji'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%" id="romaji"'); 
+    }
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_ROMAJI),
-         array('params' => 'nowrap','text' => tep_draw_input_field('romaji', $detail['romaji'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%" id="romaji"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
+         array('params' => 'nowrap','text' => '<input type="hidden" id="romaji_hidden_value" value="update">'.  $show_status_input.$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_NAVBAR_TITLE),
@@ -6254,9 +6255,24 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('text' => TEXT_DETAIL_HEADING_TITLE),
          array('params' => 'nowrap','text' => tep_draw_input_field('heading_title', $detail['heading_title'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%" id="heading_title"').'&nbsp;&nbsp;<span id="heading_title_error"></span>')
     );
+     if($detail['show_status'] == '1'){
+        $note_params = TEXT_CONTENT_INFO; 
+        $note_params_next = TEXT_CONTENT_NEXT;
+        if($detail['romaji'] != 'present_success.php'){
+           $note_params_order = '<div style="float:left">'.TEXT_CONTENT_ORDER.'</div>';
+           $note_params_info =  '<div style="float:right;width:30%">'.TEXT_CONTENT_PRODUCTS_INFO.'</div><br>';
+        }
+     }
      $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_CONTENTS),
          array('params' => 'nowrap','text' => tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information']),' style="resize: vertical;"'.$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'))
+    );
+    if($detail['show_status'] == '1'){
+         $note_content_params = '<div style="float:left">'.$note_params.'</div><div style="float:right;width:30%">'.$note_params_next.'</div><br>'.$note_params_order.$note_params_info;
+    }
+    $contents[]['text'] = array(
+         array('params' => 'width="30%"','text' => ''),
+         array('text' => $note_content_params.TEXT_DETAIL_INPUT)
     );
     $contents[]['text'] = array(
          array('params' => 'width="30%"','text' => TEXT_LINK),
@@ -6282,7 +6298,11 @@ while ($contents = tep_db_fetch_array($contents_query)) {
      if($disabled){
         $delete = tep_html_element_button(IMAGE_DELETE,$disabled).tep_draw_hidden_field('cID', $cID).tep_draw_hidden_field('page', htmlspecialchars($_GET['page']));
       }else{
+      if($info_array['show_status'] == '1'){
+      $delete = tep_html_element_button(IMAGE_DELETE,'disabled="disabled"').tep_draw_hidden_field('cID', $cID).tep_draw_hidden_field('page', htmlspecialchars($_GET['page']));
+      }else{
       $delete = '<a href="javascript:void(0)" onclick="check_del(\''.$ocertify->npermission.'\',\''.$cID.'\',\''.$_GET['page'].'\',\''.$_GET['site_id'].'\')">'.tep_html_element_button(IMAGE_DELETE).'</a>'.tep_draw_hidden_field('cID', $cID).tep_draw_hidden_field('page', htmlspecialchars($_GET['page']));
+      }
       }
     }
     $button[] = $submit.'&nbsp;&nbsp;'.$delete;
@@ -6300,7 +6320,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
     $heading[] = array('align' => 'left', 'text' => HEADING_TITLE);
     $heading[] = array('align' => 'right', 'text' => $page_str);
-    $form_str = tep_draw_form('content_form', FILENAME_CONTENTS, 'act=insert&site_id='.$_GET['site_id'].'&page='.$_GET['page']);
+    $form_str = tep_draw_form('content_form', FILENAME_CONTENTS, 'act=insert&site_id='.$_GET['site_id'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']);
     $contents[]['text'] = array(
          array('text' => '<input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">'),
          array('text' => '')
@@ -6324,14 +6344,10 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('text' => ''),
          array('text' => '<input type="hidden" name="status" value="1">')
     );
-    $contents[]['text'] = array(
-         array('params' => 'style="width:30%"','text' => TEXT_DETAIL_SORT),
-         array('text' => tep_draw_input_field('sort_id', '',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"'))
-    );
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_ROMAJI),
-         array('params' => 'nowrap','text' => tep_draw_input_field('romaji', '',$disabled.'id="romaji"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
+         array('params' => 'nowrap','text' => '<input type="hidden" id="romaji_hidden_value" value="insert">'.tep_draw_input_field('romaji', '',$disabled.'id="romaji"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
          array('text' => TEXT_DETAIL_NAVBAR_TITLE),

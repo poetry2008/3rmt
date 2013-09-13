@@ -88,108 +88,33 @@
 <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <div id="main-content">
-<h2><?php echo HEADING_TITLE ; ?></h2>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
-                  <tr> 
-                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                    <td width="20%">
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                       <td> 
-                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                        </tr> 
-                      </table>
-                    </td> 
-                    <td width="20%">
-                      <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                       <td> 
-                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                       </tr> 
-                      </table>
-                    </td> 
-                    <td width="20%">
-                      <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                       <td> 
-                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                       </tr> 
-                      </table>
-                    </td> 
-                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                          <td width="50%"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                  <tr class="box_des"> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_OPTION; ?></td>
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
-                  </tr> 
-                </table>
-				<div id="hm-checkout-warp">
-				<div class="checkout-bottom"><?php echo
-                                tep_image_submit('button_continue_hover.gif', IMAGE_BUTTON_CONTINUE); ?></div>
-				</div>
-				<div class="checkout-conent">
-<table border="0" width="100%" cellspacing="0" cellpadding="0"
-class="success_spacing"> 
-            <?php
-            if (!isset($_POST['SID'])) $_POST['SID']=NULL;
-            if (!isset($_GET['SID'])) $_GET['SID']=NULL;
-      if($_GET['SID'] != "" || $_POST['SID'] != ""){
-            
-      if($_GET['SID'] != ""){
-      $pr = '?sid=' . $_GET['SID'];
-      }
-      
-      if($_POST['SID'] != ""){
-      $pr = '?sid=' . $_POST['SID'];
-      }
-      
-      echo '<tr><td>';
-      echo '</td></tr>';
-      }
-        ?>
-         
-                  <tr> 
-                    <td valign="top"> 
-                      <?php echo TEXT_SUCCESS; ?> 
+<?php
+$info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'checkout_success.php' and site_id = '".SITE_ID."'")); 
+?>
                       <?php
   if ($global['global_product_notifications'] != '1') {
-    echo TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
+    $info_notify =  TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
 
     $products_displayed = array();
     for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
       if (!in_array($products_array[$i]['id'], $products_displayed)) {
-        echo tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
+        $info_notify .= tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
         $products_displayed[] = $products_array[$i]['id'];
       }
     }
 
-    echo '</p>';
+    $info_notify .= '</p>';
   } else {
-    echo TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
+    $info_notify =  TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
+  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${NEXT}',tep_image_submit('button_continue_hover.gif', IMAGE_BUTTON_CONTINUE),str_replace('${PROCEDURE}',TEXT_HEADER_INFO,$info_page['text_information']))));
 ?> 
-<h3><b><?php echo TEXT_THANKS_FOR_SHOPPING; ?></b></h3>
-</td> 
-                  </tr> 
-                      <?php if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php'); ?> 
-          </table> 
+            <?php if (DOWNLOAD_ENABLED == 'true'){
+            echo ' <table width="100%" cellspacing="0" cellpadding="0" border="0">';
+            include(DIR_WS_MODULES . 'downloads.php');
+            echo '</table>';
+            } ?> 
 		  </div>
-		  <div id="hm-checkout-warp">
-		  <div class="checkout-bottom"><?php echo
-                  tep_image_submit('button_continue_hover.gif', IMAGE_BUTTON_CONTINUE); ?></div>
 		  </div></div>
           </form> 
         

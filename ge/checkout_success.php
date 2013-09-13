@@ -1,10 +1,12 @@
 <?php
 /*
   $Id$
+  订制订单完成页
 */
 
-  require('includes/application_top.php');
+ require('includes/application_top.php');
 
+// 以下是动作
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
@@ -17,6 +19,7 @@
       if(!isset($_SESSION['shipping_session_flag'])){
         $_SESSION['shipping_session_flag'] = true;
       }
+
       if(!empty($_SESSION['shipping_page_str'])){
         tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
       }
@@ -35,11 +38,13 @@
     tep_redirect(tep_href_link(FILENAME_DEFAULT, $notify_string));
   }
 
+
+
+// 以下是页面
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SUCCESS);
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
-
 //ccdd
   $global_query = tep_db_query("
       SELECT global_product_notifications 
@@ -91,96 +96,27 @@
 <div id="content">
 <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
-            <?php
-      #convenience_store
-            if (!isset($_POST['SID'])) $_POST['SID']=NULL;
-            if (!isset($_GET['SID'])) $_GET['SID']=NULL;
-      if($_GET['SID'] != "" || $_POST['SID'] != ""){
-            
-      if($_GET['SID'] != ""){
-      $pr = '?sid=' . $_GET['SID'];
-      }
-      
-      if($_POST['SID'] != ""){
-      $pr = '?sid=' . $_POST['SID'];
-      }
-      
-      echo '<tr><td>';
-      //echo '<a href="convenience_store_chk.php' . $pr . '">' . 'コンビニ決済はこちらから！！</a>';
-      echo '</td></tr>';
-      }
-        ?>
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
-                  <tr> 
-                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                        <tr> 
-                          <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                          <td width="50%"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                  <tr class="box_des"> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_OPTION; ?></td>
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
-              <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="4" cellpadding="2" class="box_des"> 
-                  <tr> 
-                    <!--<td valign="top"><?php echo tep_image(DIR_WS_IMAGES . 'table_background_man_on_board.gif', HEADING_TITLE); ?></td> -->
-                    <td valign="top" class="main">
-                      <?php echo TEXT_SUCCESS; ?> 
-                      <?php
+<?php 
+  $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'checkout_success.php' and site_id = '".SITE_ID."'"));
+ 
   if ($global['global_product_notifications'] != '1') {
-    echo TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
+    $info_checkbox =  TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
 
     $products_displayed = array();
     for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
       if (!in_array($products_array[$i]['id'], $products_displayed)) {
-        echo tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
+        $info_checkbox .= tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
         $products_displayed[] = $products_array[$i]['id'];
       }
     }
 
-    echo '</p>';
+    $info_checkbox .= '</p>';
   } else {
-    echo TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
+    $info_checkbox .= TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
-?> 
-                      <h2><?php echo TEXT_THANKS_FOR_SHOPPING; ?></h2></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
+  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${PRODUCTS_SUBSCRIPTION}',$info_checkbox,str_replace('${NEXT}',tep_image_submit('button_continue.gif',IMAGE_BUTTON_CONTINUE),$info_page['text_information'])))); 
+  ?>  
             <?php if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php'); ?> 
-          </table> 
           </form> 
         </div>
 <!-- body_text_eof --> 

@@ -71,39 +71,22 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       </td>
       <td valign="top" id="contents">
-        <h1 class="pageHeading">
         <?php 
-          echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
-        ?>
-        </h1>
-        <div class="comment">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
-          <tr>
-          <td style="font-size:15px; color:#ff0000;">
-            <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
-          </td>
-          </tr>
-          <tr>
-            <td>
+         $preorder_info = '
             <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
             <tr> 
-            <td colspan="2"> 
-            <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
+            <td colspan="2">'.PREORDER_SUCCESS_APPOINT_CONTENT.'
             <br>
             </td> 
             </tr> 
             <tr> 
-            <td width="150"> 
-            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
-            </td>
-            <td>
-            <?php 
+            <td width="150"> '.PREORDER_SUCCESS_APPOINT_PRODUCT_NAME.' </td>
+            <td>';
                   $show_products_name = tep_get_products_name($preorder_product['products_id']); 
-                  echo tep_not_null($show_products_name) ? $show_products_name : $preorder_product['products_name'];
-            ?> 
+            $preorder_info .= tep_not_null($show_products_name) ? $show_products_name : $preorder_product['products_name'];
+            $preorder_info .= '
             </td>
-            </tr> 
-            <?php
+            </tr>';
             $preorder_attributes_raw = tep_db_query("select prea.* from ".
                 TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." prea left join ".
                 TABLE_OPTION_ITEM." it 
@@ -112,70 +95,49 @@
                 order by it.sort_num,it.title"); 
             while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
               $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
-            ?>
+            $preorder_info .= '
             <tr>
               <td>
-              <?php echo $option_info_array['title'].'：';?> 
+               '.$option_info_array['title'].'：'.' 
               </td>
               <td>
-              <?php echo str_replace(array("<br>", "<BR>"), '', $option_info_array['value']);?> 
+              '. str_replace(array("<br>", "<BR>"), '', $option_info_array['value']).' 
               </td>
-            </tr>
-            <?php
+            </tr>';
             }
-            ?>
+            $preorder_info .= '
             <tr> 
-            <td> 
-            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
+            <td>';
+            $preorder_info .= PREORDER_SUCCESS_APPOINT_PRODUCT_NUM.'
             </td>
-            <td>
-            <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
-            <?php 
+            <td>';
+            $preorder_info .= $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;
             if(isset($preorder_product['products_rate']) &&$preorder_product['products_rate']!=0 &&$preorder_product['products_rate']!=1 &&$preorder_product['products_rate']!=''){
-              echo ' ('.number_format($preorder_product['products_rate']*$preorder_product['products_quantity']).')';
+             $preorder_info .=  ' ('.number_format($preorder_product['products_rate']*$preorder_product['products_quantity']).')';
             }
+            $preorder_info .= '
+            </td>
+            </tr>
+            <tr>
+              <td>
+              '. PREORDER_SUCCESS_APPOINT_PAYMENT_NAME.'
+              </td>
+              <td>
+               '.$preorder['payment_method'].'
+              </td>
+            </tr>
+            <tr>
+              <td>
+              '.PREORDER_SUCCESS_APPOINT_COMMENT.'
+              </td>
+              <td>
+              '.nl2br($preorder['comment_msg']).'
+              </td>
+            </tr>
+            </table>';
+          $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'preorder_success.php' and site_id = '".SITE_ID."'"));
+          echo str_replace('${PRODUCTS_INFO}',$preorder_info,str_replace('${PRODUCTS_SUBSCRIPTION}','',str_replace('${PROCEDURE}','',str_replace('${NEXT}','<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) .  '</a>',$info_page['text_information']))));
             ?>
-            </td>
-            </tr>
-            <tr>
-              <td>
-              <?php echo PREORDER_SUCCESS_APPOINT_PAYMENT_NAME;?>
-              </td>
-              <td>
-              <?php echo $preorder['payment_method'];?> 
-              </td>
-            </tr>
-            <tr>
-              <td>
-              <?php echo PREORDER_SUCCESS_APPOINT_COMMENT;?>
-              </td>
-              <td>
-              <?php echo nl2br($preorder['comment_msg']);?> 
-              </td>
-            </tr>
-            </table>
-            <br>
-            </td>
-          </tr>
-          <tr>
-            <td style=" font-size:12px;">
-              <?php 
-              echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
-              ?>
-            </td>
-          </tr>
-          <tr>
-            <td><br>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                    <tr> 
-                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                      <td align="right" class="main">
-                      </td> 
-                    </tr> 
-                  </table></td> 
-          </tr>
-        </table>
-        </div>
       </td>
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
