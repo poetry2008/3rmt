@@ -575,7 +575,7 @@ if ($_GET['action'] == 'show_category_info') {
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
     $product_info_array[]['text'] = array(
           array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1).':'),
-          array('text' => @display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT) 
+          array('text' => @display_price(tep_new_get_avg_by_pid($pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
         );
   }
   //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
@@ -669,7 +669,7 @@ if ($_GET['action'] == 'show_category_info') {
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
       $relate_product_info_array[]['text'] = array(
             array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1).':'),
-            array('text' => @display_price(tep_get_avg_by_pid($relate_pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT) 
+            array('text' => @display_price(tep_new_get_avg_by_pid($relate_pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
           );
     }
 

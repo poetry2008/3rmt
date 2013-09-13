@@ -12463,3 +12463,59 @@ function tep_new_get_quantity($product_info){
     return 0; 
   }
 }
+
+/* -------------------------------------
+    功能: 商品信息的平均值
+    参数: $product_info (object) 商品信息
+    返回值: 平均值(float) 
+ ------------------------------------ */
+  function tep_new_get_avg_by_pid($product_info){
+    $product_quantity = tep_new_get_quantity($product_info);
+    
+    if (isset($product_info->products_attention_1_3)) {
+      $p_radices = (int)$product_info->products_attention_1_3;
+    } else {
+      $p_radices = 1;
+    }
+    
+    $order_history_query = tep_db_query("
+        select * 
+        from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
+        where 
+        op.products_id='".$product_info->relate_products_id."'
+        and os.calc_price = '1'
+        order by o.torihiki_date desc
+        ");
+    $sum = 0;
+    $cnt = 0;
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      $product_quantity = $product_quantity*$p_radices;
+    }
+    while($h = tep_db_fetch_array($order_history_query)){
+      if(isset($h['products_rate'])&&$h['products_rate']!=''&&$h['products_rate']!=0){
+        $h_pq = $h['products_quantity']*$h['products_rate'];
+        $h_fp = $h['final_price']/$h['products_rate'];
+      }else{
+        if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+          $h_pq = $h['products_quantity']*$p_radices;
+          $h_fp = $h['final_price']/$p_radices;
+        }else{
+          $h_pq = $h['products_quantity'];
+          $h_fp = $h['final_price'];
+        }
+      }
+      if ($cnt + $h_pq > $product_quantity) {
+        $sum += ($product_quantity - $cnt) * abs($h_fp);
+        $cnt = $product_quantity;
+        break;
+      } else {
+        $sum += $h_pq * abs($h_fp);
+        $cnt += $h_pq;
+      }
+    }
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      return $sum/$cnt*$p_radices;
+    }else{
+      return $sum/$cnt;
+    }
+  }
