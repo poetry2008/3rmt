@@ -35,7 +35,7 @@
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer . "'");
-    $address = tep_db_fetch_array($address_query); 
+    $address = tep_db_fetch_array($address_query);
   }
   // 2. ADD A PRODUCT ###############################################################################################
   if(isset($_GET['action']) && $_GET['action'] == 'add_product'){
@@ -570,10 +570,10 @@ require("includes/note_js.php");
   </table>
 <?php
   //插入信息
-    $customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
-    $firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
-    $lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';
-    $email_address  = isset($account['customers_email_address'])? $account['customers_email_address']:'';
+    $preorder_customer_id    = isset($account['customers_id'])           ? $account['customers_id']:'';
+    $preorder_firstname      = isset($account['customers_firstname'])    ? $account['customers_firstname']:'';
+    $preorder_lastname       = isset($account['customers_lastname'])     ? $account['customers_lastname']:'';
+    $preorder_email_address  = isset($account['customers_email_address'])? $account['customers_email_address']:'';
     $telephone      = isset($account['customers_telephone'])    ? $account['customers_telephone']:'';
     $fax            = isset($account['customers_fax'])          ? $account['customers_fax']:'';
     $zone_id        = isset($account['entry_zone_id'])          ? $account['entry_zone_id']:'';
@@ -591,7 +591,7 @@ require("includes/note_js.php");
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php echo tep_draw_form('create_order', 'create_preorder_process.php'.$url_action, '', 'post', '', '') . tep_draw_hidden_field('customers_id', isset($account['customers_id'])?$account['customers_id']:''); ?>
 <?php
-    tep_draw_hidden_field($customer_id);    
+    tep_draw_hidden_field($preorder_customer_id);    
 ?>
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_CORRECT; ?></td>
@@ -602,19 +602,19 @@ require("includes/note_js.php");
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_CUSTOMERS_ID; ?></td>
-                <td class="main">&nbsp;<?php  echo tep_draw_hidden_field('customers_id', $customer_id) . $customer_id; ?></td>
+                <td class="main">&nbsp;<?php  echo tep_draw_hidden_field('preorder_customers_id', $preorder_customer_id) . $preorder_customer_id; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE?><?php if (isset($entry_firstname_error) && $entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('preorder_lastname', $preorder_lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE?><?php if (isset($entry_firstname_error) && $entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_FIRST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE?><?php if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('preorder_firstname', $preorder_firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE?><?php if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_EMAIL_ADDRESS; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red">' . $email_address . '</font>'; ?><?php if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('preorder_email_address', $preorder_email_address) . '<font color="red">' . $preorder_email_address . '</font>'; ?><?php if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
             </table></td>
         </tr>

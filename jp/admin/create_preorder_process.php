@@ -12,21 +12,21 @@
     $_POST['site_id'] = isset($_GET['site_id']) ? $_GET['site_id']: 0;
     $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $_GET['Customer_mail'] . "' and site_id = '".$_POST['site_id']."' and is_active='1'");
     $account = tep_db_fetch_array($account_query);
-    $_POST['customers_id'] = $account['customers_id'];
-    $_POST['firstname'] = $account['customers_firstname']; 
-    $_POST['lastname'] = $account['customers_lastname'];
-    $_POST['email_address'] = $account['customers_email_address'];
+    $_POST['preorder_customers_id'] = $account['customers_id'];
+    $_POST['preorder_firstname'] = $account['customers_firstname']; 
+    $_POST['preorder_lastname'] = $account['customers_lastname'];
+    $_POST['preorder_email_address'] = $account['customers_email_address'];
     
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$account['customers_id'] . "'");
-    $address = tep_db_fetch_array($address_query);  
+    $address = tep_db_fetch_array($address_query);
   }
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/create_preorder_process.php');
 
   
-  $customer_id    = tep_db_prepare_input($_POST['customers_id']);
-  $firstname      = tep_db_prepare_input($_POST['firstname']);
-  $lastname       = tep_db_prepare_input($_POST['lastname']);
-  $email_address  = tep_db_prepare_input($_POST['email_address']);
+  $preorder_customer_id    = tep_db_prepare_input($_POST['preorder_customers_id']);
+  $preorder_firstname      = tep_db_prepare_input($_POST['preorder_firstname']);
+  $preorder_lastname       = tep_db_prepare_input($_POST['preorder_lastname']);
+  $preorder_email_address  = tep_db_prepare_input($_POST['preorder_email_address']);
   $con_email  = tep_db_prepare_input($_POST['con_email']);
   $rak_tel  = tep_db_prepare_input($_POST['rak_tel']);
   $telephone      = isset($_POST['telephone']) ? tep_db_prepare_input($_POST['telephone']) : '';
@@ -57,34 +57,34 @@
   $error = false;
   
   //customer_id check
-  if($customer_id == '') {
+  if($preorder_customer_id == '') {
     $error = true;
-  } elseif(!is_numeric($customer_id)) {
+  } elseif(!is_numeric($preorder_customer_id)) {
     $error = true;
   }
 
-  if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
+  if (strlen($preorder_firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
   } else {
     $entry_firstname_error = false;
   }
 
-  if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
+  if (strlen($preorder_lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_lastname_error = true;
   } else {
     $entry_lastname_error = false;
   }
 
-  if (strlen($email_address) < ENTRY_EMAIL_ADDRESS_MIN_LENGTH) {
+  if (strlen($preorder_email_address) < ENTRY_EMAIL_ADDRESS_MIN_LENGTH) {
     $error = true;
     $entry_email_address_error = true;
   } else {
     $entry_email_address_error = false;
   }
 
-  if (!tep_validate_email($email_address)) {
+  if (!tep_validate_email($preorder_email_address)) {
     $error = true;
     $entry_email_address_check_error = true;
   } else {
@@ -499,7 +499,7 @@ require("includes/note_js.php");
         <td class="main"><font color="#ffffff"><?php echo TEXT_STEP_1 ?></font></td>
       </tr>
     </table>
- <?php if (empty($customer_id)) {?> 
+ <?php if (empty($preorder_customer_id)) {?> 
     <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
 <?php
   $url_action = isset($_GET['oID']) ? '<input type="hidden" name="oID" value="'.$_GET['oID'].'">' : '';
@@ -551,8 +551,8 @@ require("includes/note_js.php");
   $insert_id = $_GET['oID'];
    
   $sql_data_array = array('orders_id'     => $insert_id,
-            'customers_id'                => $customer_id,
-            'customers_name'              => tep_get_fullname($firstname,$lastname),
+            'customers_id'                => $preorder_customer_id,
+            'customers_name'              => tep_get_fullname($preorder_firstname,$preorder_lastname),
             'customers_company'           => $company,
             'customers_street_address'    => $street_address,
             'customers_suburb'            => $suburb,
@@ -561,7 +561,7 @@ require("includes/note_js.php");
             'customers_state'             => $state,
             'customers_country'           => $country,
             'customers_telephone'         => $telephone,
-            'customers_email_address'     => $email_address,
+            'customers_email_address'     => $preorder_email_address,
             'customers_address_format_id' => $format_id,
             'delivery_company'            => $company,
             'delivery_street_address'     => $street_address,
@@ -571,7 +571,7 @@ require("includes/note_js.php");
             'delivery_state'              => $state,
             'delivery_country'            => $country,
             'delivery_address_format_id'  => $format_id,
-            'billing_name'                => tep_get_fullname($firstname,$lastname),
+            'billing_name'                => tep_get_fullname($preorder_firstname,$preorder_lastname),
             'billing_company'             => $company,
             'billing_street_address'      => $street_address,
             'billing_suburb'              => $suburb,
