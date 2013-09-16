@@ -374,7 +374,23 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                    'error' => $error_message);
     }
 
-
+/*----------------------
+ 功能：是否插入历史信息
+ 参数：$option_info(string) 信息
+ 参数：$orders_id(string) 订单id
+ 返回值：信息(array)
+ ----------------------*/
+  function check_insert_status_history($option_info, $orders_id) {
+    if ($orders_id) {
+      $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from `telecom_unknow` where `option` = '".$orders_id."' and `rel` = 'yes' and `payment_method` = '".$this->code."' limit 1")); 
+      if ($telecom_unknow) {
+        $order_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$orders_id."'"); 
+        $order_info_res = tep_db_fetch_array($order_info_raw); 
+        return array($telecom_unknow['date_added'], constant('TS_MODULE_PAYMENT_'.strtoupper($this->code).'_TEXT_CAL'), $order_info_res['telecom_name']); 
+      }
+    }
+    return array(); 
+  }
 
 /*----------------------
  功能：快速获取到paypal结算
@@ -423,7 +439,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       if($paypalData['PAYMENTSTATUS'] == "Completed"){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
-        '`option`'      => ' ',
+        '`option`'      => $insert_id,
         'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'] .(isset($paypalData['BUSINESS']) && $paypalData['BUSINESS'] != '' ? ' / '.$paypalData['BUSINESS'] : ''),
         'email'         => $paypalData['EMAIL'],
         'telno'         => $paypalData['PHONENUM'],
@@ -468,6 +484,8 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
             exit;
     
   }
+  $orders_status_id = get_configuration_by_site_id('MODULE_PAYMENT_'.strtoupper($this->code).'_ORDER_STATUS_ID', SITE_ID); 
+  $orders_status_id = $orders_status_id != 0 ? $orders_status_id : DEFAULT_ORDERS_STATUS_ID;
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
@@ -478,7 +496,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                                      'telecom_money'        => $paypalData['AMT'],
                                      'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
                                      'telecom_tel'          => $paypalData['PHONENUM'],
-                                     'orders_status'        => '30',
+                                     'orders_status'        => $orders_status_id,
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
                                      ), 'update', "orders_id='".$insert_id."'");
@@ -534,7 +552,7 @@ function getpreexpress($pre_value, $pre_pid){
       if($paypalData['PAYMENTSTATUS'] == "Completed"){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
-        '`option`'      => ' ',
+        '`option`'      => $pre_pid,
         'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'].(isset($paypalData['BUSINESS']) && $paypalData['BUSINESS'] != '' ? ' / '.$paypalData['BUSINESS'] : ''),
         'email'         => $paypalData['EMAIL'],
         'telno'         => $paypalData['PHONENUM'],
@@ -576,6 +594,8 @@ function getpreexpress($pre_value, $pre_pid){
             exit;
 
   }
+  $orders_status_id = get_configuration_by_site_id('MODULE_PAYMENT_'.strtoupper($this->code).'_ORDER_STATUS_ID', SITE_ID); 
+  $orders_status_id = $orders_status_id != 0 ? $orders_status_id : DEFAULT_ORDERS_STATUS_ID;
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
@@ -586,7 +606,7 @@ function getpreexpress($pre_value, $pre_pid){
                                      'telecom_money'        => $paypalData['AMT'],
                                      'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
                                      'telecom_tel'          => $paypalData['PHONENUM'],
-                                     'orders_status'        => '30',
+                                     'orders_status'        => $orders_status_id,
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
                                      ), 'update', "orders_id='".$pre_pid."'");
