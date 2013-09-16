@@ -392,9 +392,10 @@ class telecom  extends basePayment  implements paymentInterface  {
 /*------------------------
  功能：是否插入历史信息
  参数：$option_info(string) 信息
+ 参数：$orders_id(string) 订单id
  返回值：信息(array)
  -----------------------*/
-  function check_insert_status_history($option_info) {
+  function check_insert_status_history($option_info, $orders_id) {
     if ($option_info) {
       $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$option_info."' and rel='yes' limit 1"));
       if ($telecom_unknow) {

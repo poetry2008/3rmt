@@ -809,7 +809,7 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
-$check_status_info = $payment_modules->check_insert_status_history($cpayment_code, $_SESSION['preorder_option']);
+$check_status_info = $payment_modules->check_insert_status_history($cpayment_code, $_SESSION['preorder_option'], $orders_id);
 if (!empty($check_status_info)) {
   $sql_data_array = array('orders_id' => $orders_id, 
                         'orders_status_id' => $orders_status_id, 
