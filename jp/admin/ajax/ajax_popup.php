@@ -6279,7 +6279,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     if($detail['show_status'] != '1'){
     $contents[]['text'] = array(
          array('params' => 'width="30%"','text' => TEXT_LINK),
-         array('text' => TEXT_CONTENT_MSG.'<br>< a href="'.info_tep_href_link($detail['romaji']).'">'.$c_title.'< /a>')
+         array('text' => TEXT_CONTENT_MSG.'<br>< a href="'.HTTP_SERVER.'/info/'.($detail['romaji']).'.html">'.$c_title.'< /a>')
     );
     }
     $info_query = tep_db_query("select * from information_page where PID='".$cID."'");
