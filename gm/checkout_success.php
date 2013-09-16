@@ -114,13 +114,12 @@ $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_
             include(DIR_WS_MODULES . 'downloads.php');
             echo '</table>';
             } ?> 
-		  </div>
-		  </div></div>
+               </div>
           </form> 
         
-               </div>
  <?php include('includes/float-box.php');?>
 
+</div>
 </div>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 
