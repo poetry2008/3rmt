@@ -191,7 +191,7 @@
           set status = '".$status."',date_update=now()
           where pID = '".tep_db_input($cID)."'
       ");
-      tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID .  '&page='.$page.'&site_id='.$_GET['site_id']));
+      tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID .  '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$page.'&site_id='.$_GET['site_id']));
       break;
     case 'deleteconfirm':
         if(isset($_POST['contents_id'])&&!empty($_POST['contents_id'])){
@@ -202,7 +202,7 @@
         $cID = tep_db_prepare_input($_GET['cID']);
 
         tep_db_query("delete from " . TABLE_INFORMATION_PAGE . " where pID = '" . tep_db_input($cID) . "'");
-        tep_redirect(tep_href_link(FILENAME_CONTENTS,'page='.$page.'&site_id='.$_GET['site_id'])); 
+        tep_redirect(tep_href_link(FILENAME_CONTENTS,'page='.$page.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$_GET['site_id'])); 
         break;
     }
   }
@@ -417,7 +417,7 @@ function delete_select_contents(contents_str, c_permission){
 }
 function check_del(c_permission,cID,page,site_id){
   if (c_permission == 31) {
-     window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?page="+page+"&site_id="+site_id+"&cID="+cID+"&act=deleteconfirm";
+     window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?page="+page+"&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id="+site_id+"&cID="+cID+"&act=deleteconfirm";
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
@@ -429,7 +429,7 @@ function check_del(c_permission,cID,page,site_id){
         var tmp_msg_arr = msg.split('|||'); 
         var pwd_list_array = tmp_msg_arr[1].split(',');
         if (tmp_msg_arr[0] == '0') {
-          window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?page="+page+"&site_id="+site_id+"&cID="+cID+"&act=deleteconfirm";
+          window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?page="+page+"&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id="+site_id+"&cID="+cID+"&act=deleteconfirm";
         } else {
           $("#button_save").attr('id', 'tmp_button_save'); 
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
@@ -438,10 +438,10 @@ function check_del(c_permission,cID,page,site_id){
               url: 'ajax_orders.php?action=record_pwd_log',   
               type: 'POST',
               dataType: 'text',
-              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_CONTENTS);?>?page='+page+'&site_id='+site_id+'&cID='+cID+'&act=deleteconfirm'),
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_CONTENTS);?>?page='+page+'&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id='+site_id+'&cID='+cID+'&act=deleteconfirm'),
               async: false,
               success: function(msg_info) {
-                window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?page="+page+"&site_id="+site_id+"&cID="+cID+"&act=deleteconfirm";
+                window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?page="+page+"&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id="+site_id+"&cID="+cID+"&act=deleteconfirm";
               }
             }); 
           } else {
@@ -455,7 +455,7 @@ function check_del(c_permission,cID,page,site_id){
 }
 function check_image(c_permission,pID,page,flag){
   if (c_permission == 31) {
-     window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag="+flag+"&cID="+pID+"&page="+page+"&site_id=<?php echo $_GET['site_id'];?>";
+     window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag="+flag+"&cID="+pID+"&page="+page+"&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id=<?php echo $_GET['site_id'];?>";
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
@@ -467,7 +467,7 @@ function check_image(c_permission,pID,page,flag){
         var tmp_msg_arr = msg.split('|||'); 
         var pwd_list_array = tmp_msg_arr[1].split(',');
         if (tmp_msg_arr[0] == '0') {
-          window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag="+flag+"&cID="+pID+"&page="+page+"&site_id=<?php echo $_GET['site_id'];?>";
+          window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag="+flag+"&cID="+pID+"&page="+page+"&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id=<?php echo $_GET['site_id'];?>";
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_list_array)) {
@@ -475,10 +475,10 @@ function check_image(c_permission,pID,page,flag){
               url: 'ajax_orders.php?action=record_pwd_log',   
               type: 'POST',
               dataType: 'text',
-              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag='+flag+'&cID='+pID+'&page='+page+'&site_id=<?php echo $_GET['site_id'];?>'),
+              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag='+flag+'&cID='+pID+'&page='+page+'&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id=<?php echo $_GET['site_id'];?>'),
               async: false,
               success: function(msg_info) {
-                window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag="+flag+"&cID="+pID+"&page="+page+"&site_id=<?php echo $_GET['site_id'];?>";
+                window.location.href="<?php echo tep_href_link(FILENAME_CONTENTS);?>?act=setflag&flag="+flag+"&cID="+pID+"&page="+page+"&sort=<?php echo $_GET['sort'];?>&type=<?php echo $_GET['type'];?>&site_id=<?php echo $_GET['site_id'];?>";
               }
             }); 
           } else {
@@ -702,6 +702,11 @@ require("includes/note_js.php");
            }else{
            $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=status&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type=desc').'">'.TABLE_HEADING_CONTENTS_STATUS.$contents_status.'</a>');
            }
+           if(isset($_GET['sort']) && $_GET['sort'] == 'sort_id'){
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type='.$contents_type).'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
+           }else{
+           $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=sort_id&type=desc').'">'.TABLE_HEADING_CONTENTS_SORT.$contents_sort_id.'</a>');
+           }
            if(isset($_GET['sort']) && $_GET['sort'] == 'date_update'){
            $contents_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CONTENTS,'sort=date_update&page='.$_GET['page'].(isset($_GET['cID']) && $_GET['cID']?'&cID='.$_GET['cID']:'').'&type='.$contents_type).'">'.TABLE_HEADING_ACTION.$contents_date_update.'</a>');
            }else{
@@ -769,9 +774,9 @@ require("includes/note_js.php");
          'text'   => htmlspecialchars($contents['heading_title']) 
      );
      if ($contents['status'] == '1') {
-       if($contents['show_status'] == '1'){
-        $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES .  'icon_status_gray_light.gif', IMAGE_ICON_STATUS_GRAY_LIGHT);
-       }else if(in_array($contents['site_id'],$site_array)){
+        if($contents['show_status'] == '1'){
+          $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;'.tep_image(DIR_WS_IMAGES .  'icon_status_gray_light.gif', IMAGE_ICON_STATUS_GRAY_LIGHT);
+        }else if(in_array($contents['site_id'],$site_array)){
         $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="check_image('.$ocertify->npermission.','.$contents['pID'].','.$_GET['page'].',0)">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
        }else{
         $image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT,'','','disabled="disabled"');
@@ -788,12 +793,16 @@ require("includes/note_js.php");
          'text'   => $image
      );
      $contents_info[] = array(
+         'params' => 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CONTENTS,'cID='.$contents['pID'].'&page='.$_GET['page'].'&sort='.$_GET['sort'].'&type='.$_GET['type']).'\';"',
+         'text'   =>  htmlspecialchars($contents['sort_id']) 
+     );
+     $contents_info[] = array(
          'params' => 'class="dataTableContent" align="right"',
          'text'   => '<a href="javascript:void(0)" onclick="show_contents(this,'.$contents['pID'].','.$_GET['page'].','.$contents['site_id'].')">'.tep_get_signal_pic_info(isset($contents['date_update']) && $contents['date_update'] != null?$contents['date_update']:$contents['date_added']).'</a>'
      );
     $contents_table_row[] = array('params' => $contents_params, 'text' => $contents_info);
    }
-   $contents_form = tep_draw_form('del_contents',FILENAME_CONTENTS,'act=deleteconfirm&site_id='.$_GET['site_id'].'&page='.$_GET['page'].(isset($_GET['search'])?'&search='.$_GET['search']:''));
+   $contents_form = tep_draw_form('del_contents',FILENAME_CONTENTS,'act=deleteconfirm&site_id='.$_GET['site_id'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page'].(isset($_GET['search'])?'&search='.$_GET['search']:''));
    $notice_box->get_form($contents_form);
    $notice_box->get_contents($contents_table_row);
    $notice_box->get_eof(tep_eof_hidden());

@@ -74,8 +74,10 @@
         and site_id = ".SITE_ID." 
       order by sort_id
   ");
-   while($result = tep_db_fetch_array($contents_page)){
+  while($result = tep_db_fetch_array($contents_page)){
+       if($result['show_status'] != '1'){
              echo '<li><a href="'.info_tep_href_link($result['romaji']).'">'.$result['heading_title'].'</a></li>'."\n" ;
+       }
   } 
    echo "<li><a href='/faq/'>FAQ</a></li>";
 // Extra Pages ADDED END
