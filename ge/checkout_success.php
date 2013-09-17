@@ -114,7 +114,7 @@
   } else {
     $info_checkbox .= TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
-  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${PRODUCTS_SUBSCRIPTION}',$info_checkbox,str_replace('${NEXT}',tep_image_submit('button_continue.gif',IMAGE_BUTTON_CONTINUE),$info_page['text_information'])))); 
+  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${PRODUCTS_SUBSCRIPTION}',$info_checkbox,str_replace('${NEXT}',tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE),$info_page['text_information'])))); 
   ?>  
             <?php if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php'); ?> 
           </form> 

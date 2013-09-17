@@ -106,7 +106,7 @@
   } else {
     $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
-  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));
+  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));
 ?> 
             <?php if (DOWNLOAD_ENABLED == 'true'){
             echo ' <table width="100%" cellspacing="0" cellpadding="0" border="0">';

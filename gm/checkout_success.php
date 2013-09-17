@@ -40,7 +40,6 @@
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
 
-//ccdd
   $global_query = tep_db_query("
       SELECT global_product_notifications 
       FROM " . TABLE_CUSTOMERS_INFO . " 
@@ -49,7 +48,6 @@
   $global = tep_db_fetch_array($global_query);
 
   if ($global['global_product_notifications'] != '1') {
-//ccdd
     $orders_query = tep_db_query("
         SELECT orders_id 
         FROM " . TABLE_ORDERS . " 
@@ -61,7 +59,6 @@
     $orders = tep_db_fetch_array($orders_query);
 
     $products_array = array();
-//ccdd
     $products_query = tep_db_query("
         SELECT products_id, products_name 
         FROM " . TABLE_ORDERS_PRODUCTS . " 

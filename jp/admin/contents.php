@@ -188,7 +188,7 @@
       $page   = tep_db_prepare_input($_GET['page']);
       tep_db_query("
           update ".TABLE_INFORMATION_PAGE." 
-          set status = '".$status."',date_update=now()
+          set status = '".$status."',user_update = '".$_SESSION['user_name']."',date_update=now()
           where pID = '".tep_db_input($cID)."'
       ");
       tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID .  '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$page.'&site_id='.$_GET['site_id']));
