@@ -3,7 +3,7 @@
   $Id$
 */
 
-  require('includes/application_top.php');
+ require('includes/application_top.php');
 
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
@@ -40,7 +40,6 @@
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
 
-//ccdd
   $global_query = tep_db_query("
       SELECT global_product_notifications 
       FROM " . TABLE_CUSTOMERS_INFO . " 
@@ -49,7 +48,6 @@
   $global = tep_db_fetch_array($global_query);
 
   if ($global['global_product_notifications'] != '1') {
-//ccdd
     $orders_query = tep_db_query("
         SELECT orders_id 
         FROM " . TABLE_ORDERS . " 
@@ -61,7 +59,6 @@
     $orders = tep_db_fetch_array($orders_query);
 
     $products_array = array();
-//ccdd
     $products_query = tep_db_query("
         SELECT products_id, products_name 
         FROM " . TABLE_ORDERS_PRODUCTS . " 
@@ -87,7 +84,7 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents">
+      <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
         <?php 
         $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'checkout_success.php' and site_id = '".SITE_ID."'")); 
         ?>
@@ -97,7 +94,7 @@
     $products_displayed = array();
     for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
       if (!in_array($products_array[$i]['id'], $products_displayed)) {
-        $info_notify .=  tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
+        $info_notify .= tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
         $products_displayed[] = $products_array[$i]['id'];
       }
     }
@@ -113,6 +110,7 @@
             include(DIR_WS_MODULES . 'downloads.php');
             echo '</table>';
             } ?> 
+</form>
         </td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
