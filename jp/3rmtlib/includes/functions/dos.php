@@ -148,3 +148,34 @@ function is_reset_blocked_ip($pdo_con, $ip_info){
   }
 }
 
+/* -------------------------------------
+    功能: 限制ip存储到SESSION
+    参数: $pdo_con(object) pdo对象   
+    参数: $ip_info(string) ip地址   
+------------------------------------ */
+function save_block_ip($pdo_con){
+  $res = $pdo_con->query("select ip,betime from banlist"); 
+  while($ban_info = $res->fetch()){
+    $_SESSION['banlist'][$ban_info['ip']] = array(
+        'ip' => $ban_info['ip'],
+        'relock_time' => $ban_info['betime']);
+    $_SESSION['banlist_ip'][] = $ban_info['ip'];
+  }
+}
+
+/* -------------------------------------
+    功能: 是否重置限制ip  
+    参数: $ip_info(string) ip地址   
+    返回值: 是否重置成功(boolean) 
+------------------------------------ */
+function is_reset_session_blocked_ip($ip_info){
+  $relock_time = strtotime($_SESSION['banlist'][$ip_info]['relock_time']);
+  if ($relock_time<time()) {
+    unset($_SESSION['banlist'][$ip_info]['relock_time']);
+    $key = array_search($ip_info,$_SESSION['banlist_ip']);
+    unset($_SESSION['banlist_ip'][$key]);
+    return false;
+  }else{
+    return true;
+  }
+}
