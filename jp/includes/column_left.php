@@ -25,8 +25,7 @@
         $tmp_id_array = tep_parse_category_path($tmp_left_ca_path); 
       }
     }
-//    echo tep_cache_categories_box(false, false, $tmp_id_array);
-    include(DIR_WS_BOXES . 'categories.php');
+    echo tep_cache_categories_box(false, false, $tmp_id_array);
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }

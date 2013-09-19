@@ -10,7 +10,7 @@ define('CPREORDER_SUCCESS_NAVBAR_TITLE_CONFIRM', '最終確認');
 define('PREORDER_TRADER_LINE_TITLE', '配送方法');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続完了！');
-define('TEXT_HEADER_INFO','<table width="90%" cellspacing="0" cellpadding="0"
+define('TEXT_HEADER_INFO','<table width="100%" cellspacing="0" cellpadding="0"
     border="0" align="center"> <tbody><tr> <td width="20%"> <table width="100%"
     cellspacing="0" cellpadding="0" border="0"> <tbody><tr> <td width="30%"
     align="right"><img width="1" height="5" alt=""

@@ -6,7 +6,6 @@
 
  require('includes/application_top.php');
 
-// 以下是动作
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
@@ -19,7 +18,6 @@
       if(!isset($_SESSION['shipping_session_flag'])){
         $_SESSION['shipping_session_flag'] = true;
       }
-
       if(!empty($_SESSION['shipping_page_str'])){
         tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
       }
@@ -38,14 +36,10 @@
     tep_redirect(tep_href_link(FILENAME_DEFAULT, $notify_string));
   }
 
-
-
-// 以下是页面
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SUCCESS);
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
-//ccdd
   $global_query = tep_db_query("
       SELECT global_product_notifications 
       FROM " . TABLE_CUSTOMERS_INFO . " 
@@ -54,7 +48,6 @@
   $global = tep_db_fetch_array($global_query);
 
   if ($global['global_product_notifications'] != '1') {
-//ccdd
     $orders_query = tep_db_query("
         SELECT orders_id 
         FROM " . TABLE_ORDERS . " 
@@ -66,7 +59,6 @@
     $orders = tep_db_fetch_array($orders_query);
 
     $products_array = array();
-//ccdd
     $products_query = tep_db_query("
         SELECT products_id, products_name 
         FROM " . TABLE_ORDERS_PRODUCTS . " 
@@ -105,7 +97,7 @@
     $products_displayed = array();
     for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
       if (!in_array($products_array[$i]['id'], $products_displayed)) {
-        $info_notify .=  tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
+        $info_notify .= tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
         $products_displayed[] = $products_array[$i]['id'];
       }
     }
@@ -114,7 +106,7 @@
   } else {
     $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
-  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${NEXT}',tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE),str_replace('${PROCEDURE}',TEXT_HEADER_INFO,$info_page['text_information']))));
+  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));
 ?> 
             <?php if (DOWNLOAD_ENABLED == 'true'){
             echo ' <table width="100%" cellspacing="0" cellpadding="0" border="0">';

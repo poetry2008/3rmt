@@ -18,7 +18,6 @@
   <!-- header_eof //--> 
   <!-- body //--> 
   <div id="main"> 
-        <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
       <!-- body_text //--> 
       <div id="layout" class="yui3-u"> 
         <div id="current"><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
@@ -26,10 +25,9 @@
         <div id="main-content">
         <?php
         $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'change_preorder_success.php' and site_id = '".SITE_ID."'"));
-        echo str_replace('${PRODUCTS_SUBSCRIPTION}','',str_replace('${PRODUCTS_INFO}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}','<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE) .  '</a>',$info_page['text_information']))));?> 
+        echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}','<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE) .  '</a>',$info_page['text_information']))));?> 
       </div> 
       <!-- body_text_eof //--> 
-        <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
 <?php include("includes/float-box.php");?>
