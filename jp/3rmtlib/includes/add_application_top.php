@@ -13,7 +13,7 @@ $source_ip = $_SERVER['REMOTE_ADDR'];
 $source_host = $_SERVER['HTTP_HOST'];
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
-    if(SITE_ID == 5){
+    if((defined('SID_SYMBOL')) && SID_SYMBOL){
       define('PHP_SESSION_NAME', 'sid');
     } else {
       define('PHP_SESSION_NAME', 'cmd');
@@ -27,7 +27,7 @@ $source_host = $_SERVER['HTTP_HOST'];
   require(DIR_WS_FUNCTIONS . 'sessions.php');
   //tep_session_name('SID');
   
-  if(SITE_ID == 5){
+  if((defined('SID_SYMBOL')) && SID_SYMBOL){
     tep_session_name('sid');
   } else {
     tep_session_name('cmd');
