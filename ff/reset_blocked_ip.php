@@ -4,7 +4,7 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 include('includes/configure.php');
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
-    if(SITE_ID == 5){
+    if((defined('SID_SYMBOL')) && SID_SYMBOL){
       define('PHP_SESSION_NAME', 'sid');
     } else {
       define('PHP_SESSION_NAME', 'cmd');
@@ -17,7 +17,7 @@ include('includes/configure.php');
   require(DIR_WS_FUNCTIONS . 'sessions.php');
   //tep_session_name('SID');
 
-  if(SITE_ID == 5){
+  if((defined('SID_SYMBOL')) && SID_SYMBOL){
     tep_session_name('sid');
   } else {
     tep_session_name('cmd');
