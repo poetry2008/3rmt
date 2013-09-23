@@ -24,7 +24,7 @@ include('includes/configure.php');
   }
   tep_session_save_path('/tmp/');
   tep_session_start();
-  $ssss_id = tep_session_id();
+  $old_sid = tep_session_id();
   session_write_close();
   $today = date("Ymd",time());
   tep_session_id('sessbanlist'.$today);
@@ -33,7 +33,7 @@ include('includes/configure.php');
   $key = array_search($ip_info,$_SESSION['banlist_ip']);
   unset($_SESSION['banlist_ip'][$key]);
   session_write_close();
-  tep_session_id($ssss_id);
+  tep_session_id($old_sid);
   tep_session_start();
 
 

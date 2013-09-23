@@ -3,7 +3,7 @@
   $Id$
 */
 
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
   error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 // ddos start 
 require(DIR_WS_FUNCTIONS . 'dos.php');
@@ -36,7 +36,7 @@ $source_host = $_SERVER['HTTP_HOST'];
 
 
   tep_session_start();
-  $ssss_id = tep_session_id();
+  $old_sid = tep_session_id();
   session_write_close();
 
   $today = date("Ymd",time());
@@ -47,7 +47,7 @@ $source_host = $_SERVER['HTTP_HOST'];
   if(in_array($source_ip,$_SESSION['banlist_ip'])&&
        is_reset_session_blocked_ip($source_ip)){
     session_write_close();
-    tep_session_id($ssss_id);
+    tep_session_id($old_sid);
     tep_session_start();
     header("Cache-Control:");
     header("Pragma:");
@@ -82,7 +82,7 @@ if ($pdo_con) {
     // go to 503
     save_block_ip($pdo_con);
     session_write_close();
-    tep_session_id($ssss_id);
+    tep_session_id($old_sid);
     tep_session_start();
     $pdo_con = null;
     header("Cache-Control:");
@@ -100,7 +100,7 @@ if ($pdo_con) {
       // go to 503
       save_block_ip($pdo_con);
       session_write_close();
-      tep_session_id($ssss_id);
+      tep_session_id($old_sid);
       tep_session_start();
       $pdo_con = null;
       header("Cache-Control:");
@@ -117,7 +117,7 @@ if ($pdo_con) {
       // go to 503
       save_block_ip($pdo_con);
       session_write_close();
-      tep_session_id($ssss_id);
+      tep_session_id($old_sid);
       tep_session_start();
       $pdo_con = null;
       header("Cache-Control:");
@@ -134,7 +134,7 @@ if ($pdo_con) {
       // go to 503
       save_block_ip($pdo_con);
       session_write_close();
-      tep_session_id($ssss_id);
+      tep_session_id($old_sid);
       tep_session_start();
       $pdo_con = null;
       header("Cache-Control:");
@@ -443,7 +443,7 @@ if ($pdo_con) {
    } elseif (ENABLE_SSL == true && (SESSION_RECREATE == 'True') && isset($_GET[tep_session_name()])) {
      tep_session_id($_GET[tep_session_name()]);
    }else {
-     tep_session_id($ssss_id);
+     tep_session_id($old_sid);
    }
   
   if (function_exists('session_set_cookie_params')) {
@@ -1026,10 +1026,3 @@ $void_href = '';
 if($has_a_link){
   $void_href = ' href="javascript:void(0)" ';
 }
-/*
-var_dump($_SESSION);
-var_dump("<br><br>");
-var_dump($sess_old);
-var_dump("<br><br>");
-var_dump($ssss_id);
-*/

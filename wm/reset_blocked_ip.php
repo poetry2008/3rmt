@@ -1,10 +1,45 @@
 <?php
 ini_set("display_errors", "Off");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
+include('includes/configure.php');
+// check if sessions are supported, otherwise use the php3 compatible session class
+  if (!function_exists('session_start')) {
+    if(SITE_ID == 5){
+      define('PHP_SESSION_NAME', 'sid');
+    } else {
+      define('PHP_SESSION_NAME', 'cmd');
+    }
+
+    define('PHP_SESSION_SAVE_PATH', '/tmp/');
+    include(DIR_WS_CLASSES . 'sessions.php');
+  }
+// define how the session functions will be used
+  require(DIR_WS_FUNCTIONS . 'sessions.php');
+  //tep_session_name('SID');
+
+  if(SITE_ID == 5){
+    tep_session_name('sid');
+  } else {
+    tep_session_name('cmd');
+  }
+  tep_session_save_path('/tmp/');
+  tep_session_start();
+  $old_sid = tep_session_id();
+  session_write_close();
+  $today = date("Ymd",time());
+  tep_session_id('sessbanlist'.$today);
+  tep_session_start();
+  unset($_SESSION['banlist'][$ip_info]['relock_time']);
+  $key = array_search($ip_info,$_SESSION['banlist_ip']);
+  unset($_SESSION['banlist_ip'][$key]);
+  session_write_close();
+  tep_session_id($old_sid);
+  tep_session_start();
+
+
 header("Cache-Control:");
 header("Pragma:");
 header("Expires:".date("D, d M Y H:i:s",0)." GMT");
-include('includes/configure.php');
 $dsn = 'mysql:host='.DB_SERVER.';dbname='.DB_DATABASE;
 $pdo_con = new PDO($dsn, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
 
