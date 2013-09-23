@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 include('includes/configure.php');
 // check if sessions are supported, otherwise use the php3 compatible session class
@@ -26,7 +26,8 @@ include('includes/configure.php');
   tep_session_start();
   $ssss_id = tep_session_id();
   session_write_close();
-  tep_session_id('aaaaaaaaaaaaaaa');
+  $today = date("Ymd",time());
+  tep_session_id('sessbanlist'.$today);
   tep_session_start();
   unset($_SESSION['banlist'][$ip_info]['relock_time']);
   $key = array_search($ip_info,$_SESSION['banlist_ip']);

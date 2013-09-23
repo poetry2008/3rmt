@@ -39,7 +39,8 @@ $source_host = $_SERVER['HTTP_HOST'];
   $ssss_id = tep_session_id();
   session_write_close();
 
-  tep_session_id('aaaaaaaaaaaaaaa');
+  $today = date("Ymd",time());
+  tep_session_id('sessbanlist'.$today);
 
   tep_session_start();
 // 使用SESSION 判断IP 是否被封
@@ -59,7 +60,7 @@ $source_host = $_SERVER['HTTP_HOST'];
 // config time 
 $unit_time = 3;
 // confi total
-$unit_total = 5;
+$unit_total = 15;
 
 // config time 
 $unit_min_time = 1;
