@@ -514,4 +514,5 @@ define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━�
 define('TEXT_PRODUCTS_OPTION_CHANGE_ERROR','<font color="red">商品情報に更新があった為、ショッピングカートから削除されました。お手数ですが、再度最初からお手続きをお願いいたします。</font>');
 define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
 define('TEXT_PRODUCTS_SORT_FIRST_FEW','位');
+define('SEARCH_NO_TOP_CATEGORY', 'データがありません');
 ?>

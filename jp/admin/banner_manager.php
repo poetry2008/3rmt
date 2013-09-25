@@ -189,12 +189,15 @@
             $store_image = true;
           }
         }
-
+      
         if (!$banner_error) {
           if ( (empty($html_text)) && ($store_image == true) ) {
             tep_copy_uploaded_file($banners_image, $image_directory);
           }
           $db_image_location = $banners_image['name'];
+          if($db_image_location == ''){
+             $db_image_location = $_POST['banners_image_local'];
+          }
           $sql_data_array = array('banners_title'     => $banners_title,
                                   'banners_url'       => $banners_url,
                                   'banners_image'     => $db_image_location,

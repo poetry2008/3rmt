@@ -3,7 +3,7 @@
   $Id$
 */
 
-
+  if ($banner = tep_banner_exists('dynamic', 'left_top')) { echo '<div class="left_top">'.tep_display_banner('static', $banner).'</div>'."\n"; }
   if ( (USE_CACHE == 'true') && !SID ) {
     $tmp_id_array = array();
     if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
