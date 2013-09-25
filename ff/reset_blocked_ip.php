@@ -1,6 +1,8 @@
 <?php
 ini_set("display_errors", "Off");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
+$source_ip = $_SERVER['REMOTE_ADDR'];
+$source_host = $_SERVER['HTTP_HOST'];
 include('includes/configure.php');
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
@@ -29,8 +31,8 @@ include('includes/configure.php');
   $today = date("Ymd",time());
   tep_session_id('sessbanlist'.$today);
   tep_session_start();
-  unset($_SESSION['banlist'][$ip_info]['relock_time']);
-  $key = array_search($ip_info,$_SESSION['banlist_ip']);
+  unset($_SESSION['banlist'][$source_ip]['relock_time']);
+  $key = array_search($source_ip,$_SESSION['banlist_ip']);
   unset($_SESSION['banlist_ip'][$key]);
   session_write_close();
   tep_session_id($old_sid);
@@ -43,8 +45,6 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
 $dsn = 'mysql:host='.DB_SERVER.';dbname='.DB_DATABASE;
 $pdo_con = new PDO($dsn, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
 
-$source_ip = $_SERVER['REMOTE_ADDR'];
-$source_host = $_SERVER['HTTP_HOST'];
 $clear_banlist = false;
 foreach( $pdo_con->query("select type from prebanlist where ip = '".$source_ip."'
       order by bstime desc limit 1") as $row){
