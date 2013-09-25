@@ -539,7 +539,23 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       tep_parseURI();
     }
   } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
-    if (
+    if (defined('URL_ROMAJI_ENABLED_TAG')&&URL_ROMAJI_ENABLED_TAG) {
+      if (
+           basename($_SERVER['SCRIPT_NAME']) != FILENAME_NEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_TAGS
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PREORDER
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
+        && !isset($_GET['manufacturers_id']) && !isset($_GET['tags_id']) 
+      ) {
+        tep_parseURI();
+      }
+    } else {
+      if (
            basename($_SERVER['SCRIPT_NAME']) != FILENAME_NEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
@@ -550,10 +566,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
         && !isset($_GET['manufacturers_id']) 
       ) {
-        tep_parseURI();
-    }
-    if (defined(URL_ROMAJI_ENABLED_TAG)&&URL_ROMAJI_ENABLED_TAG) {
-      if ( basename($_SERVER['SCRIPT_NAME']) != FILENAME_TAGS && !isset($_GET['tags_id']) ) {
         tep_parseURI();
       }
     }
