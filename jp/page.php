@@ -32,7 +32,7 @@
     define('PAGE_NAVBAR_TITLE', $page['navbar_title']);
     define('PAGE_HEADING_TITLE', $page['heading_title']);
     define('PAGE_TEXT_INFORMATION', $page['text_information']);
-    define('PAGE_ROMAJI',$page['romaji']);
+    define('PAGE_ROMAN',$page['romaji']);
   } else {
     define('PAGE_NAVBAR_TITLE', PAGE_ERR_NAVBER_TITLE);
   }
@@ -49,12 +49,12 @@ function search_top_category(ra_str)
     url:"search_category.php", 
     data:"ra="+ra_str, 
     success:function(msg){
-      $("#showca").html(msg);   
-      $("#showca").css('display', 'block');   
+      $("#show_popup_info").html(msg);   
+      $("#show_popup_info").css('display', 'block');   
       if( document.getElementById('icontent01').style.display != 'none'){
-      $("#showca").css('top',$('#icontent01').position().top);   
+      $("#show_popup_info").css('top',$('#icontent01').position().top);   
       }else if(document.getElementById('icontent02').style.display != 'none'){
-      $("#showca").css('top',$('#icontent02').position().top);   
+      $("#show_popup_info").css('top',$('#icontent02').position().top);   
       }
     }
   });
@@ -100,19 +100,13 @@ function toggle_index_menu(toggle_num)
             <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
     } else {
-      if(PAGE_ROMAJI != 'reason'){
     ?>
-     <h1 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h1> 
-        <div id="contents"> 
           <?php 
-          } 
           echo PAGE_TEXT_INFORMATION; ?>
         <?php
     } 
-    if(PAGE_ROMAJI != 'reason'){ 
     ?>
       </div>
-      <?php  } ?>
       </td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 

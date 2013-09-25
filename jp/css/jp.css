@@ -2800,24 +2800,24 @@ searching
 #contents .title{
 	margin:5px 0 23px 0;
 }
-#contents .txt_bold{
+#contents .text_bold{
 	font-weight:bold;
 	font-size:14px;
 	width:538px;
 	margin-left:8px;
 	line-height:25px;
 }
-#contents .txt_content{
+#contents .text_content{
 	line-height:25px;
 	width:538px;
 	margin:0 0 20px 8px;
 	overflow:hidden;
 }
-#contents .img_right{
+#contents .image_right{
 	float:right;
 	margin-top:5px;
 }
-#contents .img_left{
+#contents .image_left{
 	float:left;
 	margin-top:5px;
 }
@@ -2882,20 +2882,20 @@ searching
 .column_right { 
 	float:right;
 }
-.conter_number{
+.content_number{
 	margin-top:10px; 
 	padding:5px 0; 
 	padding:0 0 25px 5px\9; 
 	margin-top:10px\9;
 }
-.conter_number a{ 
+.content_number a{ 
 	font-size:28px; 
 	padding:22px 23px 22px 23px; 
 	padding:21px 23px 21px 24px\9; 
 	font-weight:bold; 
 	color:#545559;
 }
-.conter_number a:hover{
+.content_number a:hover{
 	background: url(../images/design/search_img_big02.gif) center 10px no-repeat; 
 	padding:21px 23px 21px 24px\9; 
 	color:#64a8f3;
@@ -2921,7 +2921,7 @@ searching
 	background: url(../images/design/search_img_big02.gif) no-repeat;
 	color:#64a8f3;
 }
-#showca{ 
+#show_popup_info{ 
 	position: absolute; 
 	background-color:#efefef; 
 	border:1px solid #ccc; 
