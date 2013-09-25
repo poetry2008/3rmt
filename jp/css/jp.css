@@ -1241,6 +1241,9 @@ H3 {
 	margin: 0;
 	padding: 0;
 }
+.bold {
+	font-weight: bold;
+}
 .red {
 	color: #C85050;
 }
@@ -2798,7 +2801,27 @@ searching
 	color:#888
 }
 #contents .title{
-	margin:5px 0 23px 0;
+	background-color:#efefef;
+	font-size:23px;
+	color:#0079c1;
+	width:546px;
+	height:37px; 
+	margin:5px auto 23px auto; 
+	padding:11px 0 0 5px;
+	padding:11px 0 11px 5px\9;
+}
+#contents .title_box{
+	background-color:#efefef;
+	font-size:23px;
+	color:#0079c1;
+	width:546px;
+	height:90px; 
+	margin:5px auto 23px auto; 
+}
+#contents .title_box img ,#contents .title_box span{
+	float:left;
+	margin:12px 5px 0 5px;
+	line-height:33px;
 }
 #contents .text_bold{
 	font-weight:bold;
@@ -2832,6 +2855,14 @@ searching
 }
 #contents .title_keyword{
 	margin-bottom:25px;
+	background:url(../images/design/reason/title_keyword.gif) no-repeat;
+	width:546px;
+	height:40px;
+	height:50px\9;
+	color:#fff;
+	font-size:26px;
+	text-align:center;
+	padding-top:10px;
 }
 .top_index_image{
 	overflow:hidden;
