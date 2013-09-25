@@ -11,7 +11,6 @@
   if(!$pID || $pID == '0' || $pID == '') {
     $error = true;
   } else {
-//ccdd
     $page_query = tep_db_query("
         select * 
         from ".TABLE_INFORMATION_PAGE." 
@@ -32,7 +31,6 @@
     define('PAGE_NAVBAR_TITLE', $page['navbar_title']);
     define('PAGE_HEADING_TITLE', $page['heading_title']);
     define('PAGE_TEXT_INFORMATION', $page['text_information']);
-    define('PAGE_ROMAN',$page['romaji']);
   } else {
     define('PAGE_NAVBAR_TITLE', PAGE_ERR_NAVBER_TITLE);
   }
@@ -42,6 +40,7 @@
 <?php page_head();?>
 <script src="js/jquery-1.3.2.min.js" type="text/javascript"></script>
 <script>
+<?php //搜索商品 ?>
 function search_top_category(ra_str)
 {
   $.ajax({
@@ -59,10 +58,12 @@ function search_top_category(ra_str)
     }
   });
 }
+<?php //关闭搜索商品弹出框 ?>
 function close_top_category(close_name)
 {
   $("#"+close_name).css('display', 'none');
 }
+<?php //切换菜单 ?>
 function toggle_index_menu(toggle_num)
 {
   if (toggle_num == 0) {
