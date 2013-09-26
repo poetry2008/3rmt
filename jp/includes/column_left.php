@@ -3,8 +3,8 @@
   $Id$
 */
 
-    if ($banner = tep_banner_exists('dynamic', 'left_top')) { echo '<div class="left_top">'.tep_display_banner('static', $banner,'','',true).'</div>'."\n"; }
-    if ( (USE_CACHE == 'true') && !SID ) {
+  if ($banner = tep_banner_exists('dynamic', 'left_top')) { echo '<div class="left_top">'.tep_display_banner('static', $banner,'','',true).'</div>'."\n"; }
+  if ( (USE_CACHE == 'true') && !SID ) {
     $tmp_id_array = array();
     if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
       $tmp_left_products_id = tep_preorder_get_products_id_by_param();
