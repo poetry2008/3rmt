@@ -400,9 +400,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     if($temp_row['quantity_all_product']!=0){
       $all_true_row ++;
       $all_quantity += $temp_row['quantity_all_product'];
+      $all_avg_price += $temp_row['avg_price'];
+      $all_asset_price += $temp_row['asset_all_product'];
     }
-    $all_avg_price += $temp_row['avg_price'];
-    $all_asset_price += $temp_row['asset_all_product'];
     if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''&&false){
       if($temp_row['asset_all_product'] == 0){
         $sort_category_arr[$row_category_asset['categories_id']]=$i;
@@ -432,9 +432,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     if($tmp_arr['quantity_all_product']!=0){
       $all_true_row ++;
       $all_quantity += $tmp_arr['quantity_all_product'];
+      $all_avg_price += $tmp_arr['price'];
+      $all_asset_price += $tmp_arr['asset_all_product'];
     }
-    $all_avg_price += $tmp_arr['price'];
-    $all_asset_price += $tmp_arr['asset_all_product'];
 
     if($product['relate_id']==0){
       $tmp_arr['relate_date'] = tep_get_relate_date($product['products_id'],$site_id,$start,$end);
