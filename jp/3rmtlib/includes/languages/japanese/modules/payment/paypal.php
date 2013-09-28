@@ -20,3 +20,4 @@ PayPal (ペイパル) は、世界中で利用されているオンライン決�
   define('TS_MODULE_PAYMENT_PAYPAL_TEXT_CONFIRMATION', 'カード情報の入力画面ではフリーメールアドレスのご入力をご遠慮ください。');
   define('TS_MODULE_PAYMENT_PAYPAL_NORMAL', '普通');
   define('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME','管理者');
+  define('TS_MODULE_PAYMENT_PAYPAL_TEXT_CAL', '決済あり');

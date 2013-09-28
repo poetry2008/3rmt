@@ -6797,9 +6797,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
               if (isset($level_category_arr[$cur_key+1])) {
-              $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }else{
-                $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+                $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }
             }
 
@@ -6807,9 +6807,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
               if (isset($level_category_arr[$cur_key-1])) {
-              $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:10px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:10px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }else{
-                $return_str .= '&nbsp;<input style="width:102px;float:left;margin-left:182px;" type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+                $return_str .= '&nbsp;<input style="width:102px;float:left;margin-left:182px;" type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }
             }
           }

@@ -31,15 +31,19 @@
         }
       }
       if($h_show_flag){
+        if(NEW_STYLE_WEB===true){
+         echo '<h3><span>'.$product_info['products_name'].TEXT_ALSO_PURCHASED_PRODUCTS.'</span></h3>';
+        }else{
 ?>
 <!-- also_purchased_products //-->
 <h3 class="pageHeading_long"><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h3>
   
 <?php
+        }
       $row = 0;
       $col = 0;
-      
-      echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">'."\n" ;
+              
+      echo '<table border="0" width="100%" cellspacing="0" cellpadding="2"'.(NEW_STYLE_WEB===true?'id="text_spacing"':'').'>'."\n" ;
       echo   '<tr>'."\n";
       }
       while ($orders = tep_db_fetch_array($orders_query)) {

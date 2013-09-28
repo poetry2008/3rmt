@@ -516,4 +516,5 @@ define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアド�
 define('TEXT_PRODUCTS_SORT_FIRST_FEW','位');
 define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
 define('IMAGE_BUTTON_PREORDER','予約する');
+define('SEARCH_NO_TOP_CATEGORY', 'データがありません');
 ?>

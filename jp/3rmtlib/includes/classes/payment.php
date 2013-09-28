@@ -1238,14 +1238,15 @@ class payment {
  功能：是否插入历史信息 
  参数：$payment(string) 支付方法
  参数：$option_info(string) 信息
+ 参数：$orders_id(string) 订单id
  返回值：信息(array)
  --------------------------*/
-  function check_insert_status_history($payment, $option_info)
+  function check_insert_status_history($payment, $option_info, $orders_id)
   {
     $module = $this->getModule($payment);
     if ($module) {
       if (method_exists($module, 'check_insert_status_history')) {
-        return $module->check_insert_status_history($option_info); 
+        return $module->check_insert_status_history($option_info, $orders_id); 
       }
     }
     return array(); 

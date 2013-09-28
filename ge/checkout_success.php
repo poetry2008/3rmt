@@ -45,7 +45,6 @@
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
-//ccdd
   $global_query = tep_db_query("
       SELECT global_product_notifications 
       FROM " . TABLE_CUSTOMERS_INFO . " 
@@ -54,7 +53,6 @@
   $global = tep_db_fetch_array($global_query);
 
   if ($global['global_product_notifications'] != '1') {
-//ccdd
     $orders_query = tep_db_query("
         SELECT orders_id 
         FROM " . TABLE_ORDERS . " 
@@ -66,7 +64,6 @@
     $orders = tep_db_fetch_array($orders_query);
 
     $products_array = array();
-//ccdd
     $products_query = tep_db_query("
         SELECT products_id, products_name 
         FROM " . TABLE_ORDERS_PRODUCTS . " 
@@ -100,21 +97,21 @@
   $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'checkout_success.php' and site_id = '".SITE_ID."'"));
  
   if ($global['global_product_notifications'] != '1') {
-    $info_checkbox =  TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
+    $info_notify = TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
 
     $products_displayed = array();
     for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
       if (!in_array($products_array[$i]['id'], $products_displayed)) {
-        $info_checkbox .= tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
+        $info_notify .= tep_draw_checkbox_field('notify[]', $products_array[$i]['id']) . ' ' . $products_array[$i]['text'] . '<br>';
         $products_displayed[] = $products_array[$i]['id'];
       }
     }
 
-    $info_checkbox .= '</p>';
+    $info_notify .= '</p>';
   } else {
-    $info_checkbox .= TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
+    $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
-  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${PRODUCTS_SUBSCRIPTION}',$info_checkbox,str_replace('${NEXT}',tep_image_submit('button_continue.gif',IMAGE_BUTTON_CONTINUE),$info_page['text_information'])))); 
+  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));
   ?>  
             <?php if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php'); ?> 
           </form> 

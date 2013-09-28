@@ -11,7 +11,6 @@
   if(!$pID || $pID == '0' || $pID == '') {
     $error = true;
   } else {
-//ccdd
     $page_query = tep_db_query("
         select * 
         from ".TABLE_INFORMATION_PAGE." 
@@ -39,6 +38,50 @@
   $breadcrumb->add(PAGE_NAVBAR_TITLE, '');
 ?>
 <?php page_head();?>
+<script src="js/jquery-1.3.2.min.js" type="text/javascript"></script>
+<script>
+<?php //搜索商品 ?>
+function search_top_category(ra_str)
+{
+  $.ajax({
+    type:"POST", 
+    url:"search_category.php", 
+    data:"ra="+ra_str, 
+    success:function(msg){
+      $("#show_popup_info").html(msg);   
+      $("#show_popup_info").css('display', 'block');   
+      if( document.getElementById('kanasearch').style.display != 'none'){
+      $("#show_popup_info").css('top',$('#kanasearch').position().top);   
+      }else if(document.getElementById('englishsearch').style.display != 'none'){
+      $("#show_popup_info").css('top',$('#englishsearch').position().top);   
+      }
+    }
+  });
+}
+<?php //关闭搜索商品弹出框 ?>
+function close_top_category(close_name)
+{
+  $("#"+close_name).css('display', 'none');
+}
+<?php //切换菜单 ?>
+function toggle_index_menu(toggle_num)
+{
+  if (toggle_num == 0) {
+    $('#kanatitle').css('display', 'block'); 
+    $('#englishtitle').css('display', 'none'); 
+    
+    $('#kanasearch').css('display', 'block'); 
+    $('#englishsearch').css('display', 'none'); 
+  } else {
+    $('#kanatitle').css('display', 'none'); 
+    $('#englishtitle').css('display', 'block'); 
+    
+    $('#kanasearch').css('display', 'none'); 
+    $('#englishsearch').css('display', 'block'); 
+  }
+  $('#show_popup_info').css('display', 'none');
+}
+</script>
 </head>
 <body> 
 <div class="body_shadow" align="center"> 
@@ -60,14 +103,13 @@
         <?php
     } else {
     ?>
-<h1 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h1> 
-        
-        <div id="contents"> 
-          <?php echo PAGE_TEXT_INFORMATION; ?>
+          <?php 
+          echo PAGE_TEXT_INFORMATION; ?>
         <?php
-    }
+    } 
     ?>
-      </div></td> 
+      </div>
+      </td> 
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 

@@ -887,7 +887,7 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
 
-$check_status_info = $payment_modules->check_insert_status_history($payment, $_SESSION['option']);
+$check_status_info = $payment_modules->check_insert_status_history($payment, $_SESSION['option'], $insert_id);
 if (!empty($check_status_info)) {
   $sql_data_array = array('orders_id' => $insert_id, 
                         'orders_status_id' => $order->info['order_status'], 

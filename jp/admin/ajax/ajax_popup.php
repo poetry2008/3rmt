@@ -6234,6 +6234,11 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('text' => ENTRY_SITE),
          array('text' => $site_name['romaji'])
     );
+    $contents[]['text'] = array(
+         array('text' => TEXT_DETAIL_SORT),
+         array('text' => tep_draw_input_field('sort_id', $detail['sort_id'],$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%"'))
+    );
+ 
     if($detail['show_status'] == '1'){
         $show_status_input = tep_draw_input_field('show_romaji', $detail['romaji'],$disabled.'disabled="disabled" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:60%" id="romaji"').'<input type="hidden" name="romaji" value="'.$detail['romaji'].'">';
     }else{
@@ -6271,10 +6276,12 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('params' => 'width="30%"','text' => ''),
          array('text' => $note_content_params.TEXT_DETAIL_INPUT)
     );
+    if($detail['show_status'] != '1'){
     $contents[]['text'] = array(
          array('params' => 'width="30%"','text' => TEXT_LINK),
-         array('text' => TEXT_CONTENT_MSG.'<br>< a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'< /a>')
+         array('text' => TEXT_CONTENT_MSG.'<br>< a href="'.HTTP_SERVER.'/info/'.($detail['romaji']).'.html">'.$c_title.'< /a>')
     );
+    }
     $info_query = tep_db_query("select * from information_page where PID='".$cID."'");
     $info_array = tep_db_fetch_array($info_query);
     $contents[]['text'] = array(
@@ -6340,6 +6347,10 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     $contents[]['text'] = array(
          array('text' => ''),
          array('text' => '<input type="hidden" name="status" value="1">')
+    );
+    $contents[]['text'] = array(
+         array('params' => 'style="width:30%"','text' => TEXT_DETAIL_SORT),
+         array('text' => tep_draw_input_field('sort_id', '',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"'))
     );
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(

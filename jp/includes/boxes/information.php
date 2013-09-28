@@ -17,11 +17,12 @@
       order by sort_id 
   ");
   while ($result = tep_db_fetch_array($contents_page)){
+    if($result['show_status'] != '1'){
     echo '    <li class="l_m_category_li">' . "\n";
     echo '      <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt="">' . "\n";
-    echo '      <a href="' .
-                  info_tep_href_link($result['romaji']) . '">' . $result['heading_title'] . '</a>' . "\n";
+    echo '      <a href="' .  info_tep_href_link($result['romaji']) . '">' . $result['heading_title'] . '</a>' . "\n";
     echo '    </li>' . "\n";
+    }
   } 
 // Extra Pages ADDED END
 
