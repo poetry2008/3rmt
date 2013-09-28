@@ -737,7 +737,7 @@ document.forms.order1.submit();
           <p class="formAreaTitle"><b><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></b></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150">
+              <td class="main" width="144">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
               <td class="main">
@@ -759,8 +759,10 @@ document.forms.order1.submit();
           ?> 
           <p class="formAreaTitle"><b><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></b></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <tr><td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td class="main" width="150">
+              <td class="main" width="144">
               <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
               </td>
               <td class="main">
@@ -779,6 +781,8 @@ document.forms.order1.submit();
               ?>
               </td>
             </tr>
+            </table>
+            </td></tr>
             <?php
             $old_attr_raw = tep_db_query("select prea.* from ".
                 TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." prea left join ".
@@ -790,7 +794,10 @@ document.forms.order1.submit();
               $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
             ?>
             <tr>
-              <td class="main"><?php echo $old_attr_info['title'];?>:</td> 
+            <td>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+              <td class="main" width="144"><?php echo $old_attr_info['title'];?>:</td> 
               <td class="main">
               <?php 
               echo str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
@@ -800,6 +807,8 @@ document.forms.order1.submit();
               ?>
               </td> 
             </tr>
+            </table>
+            </td></tr>
             <?php
             }
             ?>
@@ -807,8 +816,21 @@ document.forms.order1.submit();
               $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$preorder_product_res['products_id']."'"); 
               $product_info_res = tep_db_fetch_array($product_info_raw); 
             ?>
+<?php
+          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
+          ?>
+          <tr><td>
+            <?php 
+            $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
+            echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);
+            ?> 
+          </td></tr>
+          <?php }?>
             <tr>
-              <td class="main">
+            <td>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+              <td class="main" width="144">
               <?php echo CHANGE_ORDER_PRODUCT_NUM;?> 
               </td>
               <td class="main">
@@ -816,6 +838,8 @@ document.forms.order1.submit();
               <?php echo tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
               </td>
             </tr>
+            </table>
+            </td></tr>
         </table> 
         <?php
         //计算商品的总价格及总重量
@@ -1136,7 +1160,7 @@ document.forms.order1.submit();
         <p class="formAreaTitle"><b><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></b></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
-          <td class="main" width="150">
+          <td class="main" width="144">
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
           </td>
           <td class="main">
@@ -1250,21 +1274,7 @@ if (isset($time_error)) {
                   echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
              } 
-             ?> 
-          <?php
-          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
-          ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-          <tr>
-            <td style="padding:0;">
-            <?php 
-            $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
-            echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);
-            ?> 
-            </td>
-          </tr>
-          </table> 
-          <?php }?> 
+             ?>  
           <?php
           $preorder_total = 0;
           $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
@@ -1276,7 +1286,7 @@ if (isset($time_error)) {
             ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main" width="144" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
               <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;"><br><?php echo $preorder_point;?> 
               <?php 
@@ -1292,7 +1302,7 @@ if (isset($time_error)) {
           ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main" width="144" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
               <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:(isset($_SESSION['preorder_information']['preorder_campaign_point'])?$_SESSION['preorder_information']['preorder_campaign_point']:'0'));?>" style="text-align:right;">
               <?php 
