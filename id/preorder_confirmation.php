@@ -467,7 +467,7 @@ if (tep_not_null($_POST['yourmessage'])) {
     <tr class="infoBoxContents"> 
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
     <tr> 
-    <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($_POST['yourmessage'])); ?></div></td> 
+    <td class="main"><div><?php echo nl2br(htmlspecialchars($_POST['yourmessage'])); ?></div></td> 
     </tr> 
     </table></td> 
     </tr> 
