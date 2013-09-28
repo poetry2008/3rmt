@@ -512,7 +512,8 @@ foreach($all_show_option_id as $t_item_id){
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
-                <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b> 
+                <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b>
+                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str']) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
               </td>
             </tr>
             <tr>
@@ -813,6 +814,85 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
               </td>
             </tr>
           </table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<?php
+if (is_array($payment_modules->modules)) {
+
+  if ($confirmation = $payment_modules->confirmation(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE))) {
+    ?> 
+      <tr> 
+      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
+      <tr> 
+      <td class="main">&nbsp;<b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
+      </tr> 
+      <tr> 
+      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
+      <tr> 
+      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+      <tr class="infoBoxContents"> 
+      <td><table border="0" cellspacing="0" cellpadding="2"> 
+      <tr> 
+      <td class="main" colspan="4"><?php
+      echo $confirmation['title']; ?></td> 
+      </tr> 
+      <?php
+      for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
+        ?> 
+          <tr> 
+          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
+          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
+          </tr> 
+          <?php
+      }
+    ?> 
+      <?php
+
+      ?>
+      </table></td> 
+      </tr> 
+      </table></td> 
+      </tr> 
+      <?php
+  }
+}
+?> 
+<tr> 
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+<?php
+$preorder_query = tep_db_query("select comment_msg from ". TABLE_PREORDERS ." where orders_id='". $_POST['pid'] ."'");
+$preorder_array = tep_db_fetch_array($preorder_query);
+tep_db_free_result($preorder_query);
+if (tep_not_null($preorder_array['comment_msg'])) {
+  ?> 
+    <tr> 
+    <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b>'; ?></td> 
+    </tr> 
+    <tr> 
+    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+    </tr> 
+    <tr> 
+    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+    <tr class="infoBoxContents"> 
+    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+    <tr> 
+    <td class="main"><div><?php echo nl2br(htmlspecialchars($preorder_array['comment_msg'])) . tep_draw_hidden_field('comments', $preorder_array['comment_msg']); ?></div></td> 
+    </tr> 
+    </table></td> 
+    </tr> 
+    </table></td> 
+    </tr> 
+    <tr> 
+    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+    </tr> 
+    <?php
+}
+?>
+</table>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">

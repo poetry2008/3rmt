@@ -192,6 +192,8 @@ if ($pdo_con) {
   define('FILENAME_CHECKOUT_OPTION', 'checkout_option.php');
   define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
   define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
+  define('FILENAME_PREORDER_CONFIRMATION', 'preorder_confirmation.php');
+  define('FILENAME_PREORDER_PROCESS', 'preorder_process.php');
   define('FILENAME_PREORDER_UNSUCCESS', 'preorder_unsuccess.php');
   define('FILENAME_FAQ_INFO', 'faq_info.php');
   define('FILENAME_ACCOUNT', 'account.php');

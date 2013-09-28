@@ -28,8 +28,13 @@ require('option/HM_Option_Group.php');
 $hm_option = new HM_Option();
 
 if ($_GET['action'] == 'process') {
+  $quantity_error = false;
+  if(!preg_match('/[0-9]+/',$_POST['quantity'])){
+
+    $quantity_error = true;
+  }
   $option_info_array = array(); 
-  if (!$hm_option->check()) {
+  if (!$hm_option->check() && $quantity_error == false) {
     //检查option是否正确 
     foreach ($_POST as $p_key => $p_value) {
       $op_single_str = substr($p_key, 0, 3);

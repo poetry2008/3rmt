@@ -759,6 +759,8 @@ document.forms.order1.submit();
           ?> 
           <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr><td>
+            <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td class="main" width="150">
               <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
@@ -779,6 +781,8 @@ document.forms.order1.submit();
               ?>
               </td>
             </tr>
+            </table>
+            </td></tr>
             <?php
             $old_attr_raw = tep_db_query("select prea.* from ".
                 TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." prea left join ".
@@ -790,7 +794,10 @@ document.forms.order1.submit();
               $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
             ?>
             <tr>
-              <td class="main"><?php echo $old_attr_info['title'];?>:</td> 
+              <td>
+              <table width="100%" cellpadding="0" cellspacing="0">
+              <tr> 
+              <td class="main" width="150"><?php echo $old_attr_info['title'];?>:</td> 
               <td class="main">
               <?php 
               echo str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
@@ -800,6 +807,8 @@ document.forms.order1.submit();
               ?>
               </td> 
             </tr>
+            </table>
+            </td></tr>
             <?php
             }
             ?>
@@ -807,8 +816,21 @@ document.forms.order1.submit();
               $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$preorder_product_res['products_id']."'"); 
               $product_info_res = tep_db_fetch_array($product_info_raw); 
             ?>
+<?php
+          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
+          ?>
+          <tr><td>
+            <?php 
+            $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
+            echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);
+            ?> 
+          </td></tr>
+          <?php }?>
             <tr>
-              <td class="main">
+            <td>
+            <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td class="main" width="150">
               <?php echo CHANGE_ORDER_PRODUCT_NUM;?> 
               </td>
               <td class="main">
@@ -816,6 +838,8 @@ document.forms.order1.submit();
               <?php echo tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
               </td>
             </tr>
+            </table>
+            </td></tr>
         </table> 
         <br>
         <?php
@@ -1253,22 +1277,7 @@ if (isset($time_error)) {
                   echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
              } 
-             ?> 
-          <?php
-          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
-          ?>
-          <br>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-          <tr>
-            <td style="padding:0;">
-            <?php 
-            $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
-            echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);
-            ?> 
-            </td>
-          </tr>
-          </table> 
-          <?php }?> 
+             ?>  
           <br>
           <?php
           $preorder_total = 0;

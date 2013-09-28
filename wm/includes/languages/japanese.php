@@ -507,4 +507,6 @@ define('TEXT_PRODUCTS_OPTION_CHANGE_ERROR','<font color="red">商品情報に更
 define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
 define('TEXT_PRODUCTS_SORT','RMTランキング');
 define('TEXT_PRODUCTS_SORT_FIRST_FEW','位');
+define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
+define('IMAGE_BUTTON_PREORDER','予約する');
 ?>
