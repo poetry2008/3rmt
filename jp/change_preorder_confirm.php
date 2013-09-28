@@ -596,12 +596,14 @@ foreach($all_show_option_id as $t_item_id){
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                     if ($preorder_total_res['class'] == 'ot_total') {
                      //点数
+                     if($preorder_point_title != '' && $preorder_point_value != ''){
                      ?>
                     <tr>
                     <td class="main" align="right"><?php echo $preorder_point_title;?></td>                  
                     <td class="main" align="right"><?php echo $preorder_point_value;?></td>
                     </tr>
                     <?php
+                     }
                     $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
                     if ($shipping_fee != 0) {
                     ?>

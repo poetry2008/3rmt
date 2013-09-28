@@ -135,7 +135,7 @@ $product_info = tep_get_product_by_id((int)$_POST['products_id'], SITE_ID, $lang
   <tr> 
   <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
     <tr> 
-      <td class="main" colspan="3"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+      <td class="main" colspan="3"><h3><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></h3></td> 
     </tr> 
 <?php
 //商品option信息
@@ -351,7 +351,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><sp
 }
 ?>
 <tr> 
-<td class="main">&nbsp;<b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+<td class="main">&nbsp;<h3><b><?php echo HEADING_BILLING_INFORMATION; ?></b></h3></td> 
 </tr> 
 <tr> 
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -405,7 +405,7 @@ if (is_array($payment_modules->modules)) {
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
-      <td class="main">&nbsp;<b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
+      <td class="main">&nbsp;<h3><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></h3></td> 
       </tr> 
       <tr> 
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -449,7 +449,7 @@ if (is_array($payment_modules->modules)) {
 if (tep_not_null($_POST['yourmessage'])) {
   ?> 
     <tr> 
-    <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+    <td class="main"><h3><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></h3></td> 
     </tr> 
     <tr> 
     <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
