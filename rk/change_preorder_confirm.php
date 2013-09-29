@@ -287,7 +287,7 @@ function check_preorder_op(pre_pid)
                     
                     <td class="confirmation_product_num_info" align="right" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
-                    <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
+                    <?php echo '<br><span style="font-size:10px">'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']).'</span>';?> 
                     
                     </td>                  
                     <td class="main">

@@ -572,7 +572,17 @@ foreach($all_show_option_id as $t_item_id){
               </td>
             </tr>
           </table>
-          <br> 
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr> 
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr>
+<tr> 
+<td class="main">&nbsp;<b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+</tr> 
+<tr> 
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr>
+</table>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="30%" valign="top">

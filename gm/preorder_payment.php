@@ -505,8 +505,8 @@ $op_info_array = array();
     <!-- body_text_eof -->
   </div>
   </div>
-  </div>
-  <?php include('includes/float-box.php');?>
+  <?php include('includes/float-box.php');?> 
+  </div> 
 </div>
 <!-- body_eof -->
 <!-- footer -->
