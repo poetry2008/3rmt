@@ -8473,7 +8473,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    }
    $result['quantity_all_product'] = $quantity_all_product;
    $result['asset_all_product'] = $asset_all_product;
-   $result['avg_price'] = @($all_tmp_price/$all_tmp_row);
+   $result['avg_price'] = @($asset_all_product/$quantity_all_product);
    return $result;
 }
 
