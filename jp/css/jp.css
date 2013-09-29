@@ -2804,11 +2804,11 @@ searching
 	background-color:#efefef;
 	font-size:23px;
 	color:#0079c1;
-	width:546px;
 	height:37px; 
+	*height:48px;
 	margin:5px auto 23px auto; 
 	padding:11px 0 0 5px;
-	padding:11px 0 0 5px\9;
+	padding:11px 0 0 5px\0;
 }
 #contents .title_box{
 	background-color:#efefef;
@@ -2839,14 +2839,16 @@ searching
 #contents .image_right{
 	float:right;
 	margin-top:5px;
+	margin-left:5px;
 }
 #contents .image_left{
 	float:left;
 	margin-top:5px;
+	margin-right:5px;
 }
 #contents .text_left{
 	float:left;
-	width:324px;
+	width:525px;
 	margin-left:3px;
 }
 #contents .text_left .bold{
@@ -2855,8 +2857,7 @@ searching
 }
 #contents .title_keyword{
 	margin-bottom:25px;
-	background:url(../images/design/reason/title_keyword.gif) no-repeat;
-	width:546px;
+	background: url(../images/design/reason/title_keyword.gif) no-repeat;
 	height:40px;
 	height:50px\9;
 	color:#fff;
@@ -2957,8 +2958,9 @@ searching
 	background-color:#efefef; 
 	border:1px solid #ccc; 
 	width:537px; 
-	width:546px\9; 
-	padding-left:5px; 
+	*width:546px; 
+	padding-left:5px;
+	padding-left:5px\0; 
 	line-height:25px;
 }
 .search_list_category_content {

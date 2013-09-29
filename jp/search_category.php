@@ -59,7 +59,9 @@ $per_col = (int)($num_row/3 +1);
 if ($row % $per_col == 0) {
         $ca_list_str .= '<div class="search_list_category">'; 
       }
-
+if(preg_match('/RMT$/',$val['categories_name'])){
+  $val['categories_name'] = preg_replace('/RMT$/','',$val['categories_name']);
+}
 $check_category_query = tep_db_query("select parent_id from categories where categories_id='".$val['categories_id']."'");
 $check_category_array = tep_db_fetch_array($check_category_query);
 if($check_category_array['parent_id'] == 0){
