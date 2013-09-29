@@ -127,6 +127,11 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
 <td class="main" align="right"><a href="javascript:void(0);" onclick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a></td> 
 </tr> 
 </table>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr>
+</table>
 <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 
 <?php
 //获取商品相关信息
@@ -181,7 +186,7 @@ $preorder_products_array = array(
                                     );
   //商品信息列表    
   echo '          <tr>' . "\n" .
-    '            <td align="right" valign="top" class="confirmation_product_num_info">' .
+    '            <td align="right" valign="top" id="confirmation_product_num_info">' .
     $preorder_products_array['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $preorder_products_array['name'];
   if ($preorder_products_array['price'] < 0) {
@@ -354,7 +359,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><sp
 }
 ?>
 <tr> 
-<td class="main">&nbsp;<b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+<td class="main" style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">&nbsp;<b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
 </tr> 
 <tr> 
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -408,7 +413,7 @@ if (is_array($payment_modules->modules)) {
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
-      <td class="main">&nbsp;<b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
+      <td class="main" style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">&nbsp;<b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
       </tr> 
       <tr> 
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
