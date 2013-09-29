@@ -79,8 +79,8 @@ require("includes/note_js.php");
 <?php }?>
 <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -180,7 +180,7 @@ require("includes/note_js.php");
       </tr>
     </table>
     </form>
-    <!--ORDER EXPORT SCRIPT EOF //-->
+    <!--ORDER EXPORT SCRIPT EOF -->
     <table  border="0" cellpadding="2" cellspacing="2" width="100%">
 <tr>
 <td align="left" width="200" >
@@ -196,6 +196,11 @@ echo  REFRESH_TIME.$ref_s."&nbsp".SECOND_TEXT;
 }
 ?>
 
+</td>
+<td align="right">
+<?php 
+echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".REFRESH."</a>";
+ ?>
 </td>
 </tr></table>        
         </td>
