@@ -1212,7 +1212,7 @@ document.forms.order1.submit();
               </td>
             </tr>
             <tr id="shipping_list" style="display:none;">
-              <td class="main"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
+              <td class="main" valign="top"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
               <td class="main" id="shipping_list_show">
               
 </td>
@@ -1287,7 +1287,7 @@ if (isset($time_error)) {
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="144" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
-              <td class="main">
+              <td class="main" valign="top">
               <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;"><br><?php echo $preorder_point;?> 
               <?php 
               echo TEXT_PREORDER_POINT_READ; 

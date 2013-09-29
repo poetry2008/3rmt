@@ -475,7 +475,7 @@ foreach($all_show_option_id as $t_item_id){
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
-                <b><?php echo TEXT_ADDRESS;?></b> 
+                <h3><b><?php echo TEXT_ADDRESS;?></b></h3> 
               </td>
             </tr>
             <tr>
