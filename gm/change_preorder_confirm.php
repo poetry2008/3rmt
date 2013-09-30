@@ -283,7 +283,7 @@ function check_preorder_op(pre_pid)
                     
                     <td class="confirmation_product_num_info" align="right" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
-                    <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
+                    <?php echo '<br><span style="font-size:10px">'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']).'</span>';?> 
                     
                     </td>                  
                     <td class="main">
@@ -377,7 +377,7 @@ foreach($all_show_option_id as $t_item_id){
     $all_show_option[$t_item_id]['option_info']!=''){
     $all_attr_info = @unserialize(stripslashes($all_show_option[$t_item_id]['option_info'])); 
     if(is_array($all_attr_info)){
-    echo $all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
+    echo '<small>&nbsp;<i> - '.$all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
     if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
       if ((int)$preorder_product_res['products_price'] != '0') {
         if($all_show_option[$t_item_id]['options_values_price'] < 0){
@@ -387,11 +387,11 @@ foreach($all_show_option_id as $t_item_id){
         }
       } 
     }
-        echo '<br>';
+        echo '<br></i></small>';
     }
   }else{
     if($all_show_option[$t_item_id]['front_title']){
-    echo $all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
+    echo '<small>&nbsp;<i> - '.$all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
       '', $all_show_option[$t_item_id]['of_value']); 
     }
     if ($all_show_option[$t_item_id]['type'] == 'radio') {
@@ -442,6 +442,7 @@ foreach($all_show_option_id as $t_item_id){
     if($all_show_option[$t_item_id]['front_title']){
         echo '<br>';
     }
+    echo '</i></small>';
   }
 }
 ?>
@@ -814,10 +815,7 @@ if (is_array($payment_modules->modules)) {
       </tr> 
       <tr> 
       <td class="main">&nbsp;<h3><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></h3></td> 
-      </tr> 
-      <tr> 
-      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-      </tr> 
+      </tr>  
       <tr> 
       <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
       <tr class="infoBoxContents"> 

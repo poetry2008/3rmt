@@ -273,7 +273,7 @@ function check_preorder_op(pre_pid)
             </tr>
           </table>
           <br>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="box_contents">
             <tr>
               <td class="main">
                 <b><?php echo PRORDER_CONFIRM_PRODUCT_INFO;?></b> 
@@ -480,7 +480,7 @@ foreach($all_show_option_id as $t_item_id){
 <?php
                     if($weight_total > 0){
 ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="box_contents">
             <tr>
               <td class="main">
                 <b><?php echo TEXT_ADDRESS;?></b> 
@@ -512,7 +512,7 @@ foreach($all_show_option_id as $t_item_id){
 <?php
 }
 ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="box_contents">
             <tr>
               <td class="main">
                 <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b>
@@ -584,7 +584,7 @@ foreach($all_show_option_id as $t_item_id){
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr>
           </table>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="box_contents">
             <tr>
               <td class="main" width="30%" valign="top">
                 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
@@ -844,7 +844,7 @@ if (is_array($payment_modules->modules)) {
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
-      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_contents"> 
       <tr class="infoBoxContents"> 
       <td><table border="0" cellspacing="0" cellpadding="2"> 
       <tr> 
@@ -890,7 +890,7 @@ if (tep_not_null($preorder_array['comment_msg'])) {
     <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
     </tr> 
     <tr> 
-    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_contents"> 
     <tr class="infoBoxContents"> 
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
     <tr> 
