@@ -135,7 +135,7 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
 </tr>
 </table>
-<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents01"> 
+<table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_contents"> 
 <?php
 //获取商品相关信息
 $product_info = tep_get_product_by_id((int)$_POST['products_id'], SITE_ID, $languages_id);
@@ -368,7 +368,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><sp
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 <tr> 
-<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents01"> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_contents"> 
 <tr> 
 <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <tr> 
@@ -422,7 +422,7 @@ if (is_array($payment_modules->modules)) {
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
-      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents01"> 
+      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_contents"> 
       <tr> 
       <td><table border="0" cellspacing="0" cellpadding="2"> 
       <tr> 
@@ -463,7 +463,7 @@ if (tep_not_null($_POST['yourmessage'])) {
     <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
     </tr> 
     <tr> 
-    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents01"> 
+    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_contents"> 
     <tr> 
     <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
     </tr>

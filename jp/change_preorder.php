@@ -734,7 +734,9 @@ document.forms.order1.submit();
             </tr>
           </table> 
           <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></p> 
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+          <tbody><tr class="infoBoxContents"><td> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0"> 
             <tr>
               <td class="main" width="150">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
@@ -752,13 +754,16 @@ document.forms.order1.submit();
               </td>
             </tr>
           </table>
+          </td></tr></table>
           <br> 
           <?php
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
           ?> 
           <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></p> 
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+          <tbody><tr class="infoBoxContents"><td>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
               <td>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -841,6 +846,7 @@ document.forms.order1.submit();
             </table>
         </td></tr>
         </table> 
+        </td></tr></table>
         <br>
         <?php
         //计算商品的总价格及总重量
@@ -1102,7 +1108,9 @@ document.forms.order1.submit();
           tep_db_free_result($quest_query);
         ?>
         <p class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></p>
-        <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
+        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+        <tbody><tr class="infoBoxContents"><td>  
+        <table border="0" width="100%" cellspacing="2" cellpadding="2"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
             $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'");
@@ -1154,13 +1162,16 @@ document.forms.order1.submit();
           $ad_option->render('');  
         ?>
         </table>
+        </td></tr></table>
         <br>
         <?php 
         }
         ?>
         
         <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></p> 
-        <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+        <tbody><tr class="infoBoxContents"><td>
+        <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>
           <td class="main" width="150">
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
@@ -1231,6 +1242,7 @@ if (isset($time_error)) {
 }
 ?>
 </table>  
+</td></tr></table>
 <noscript>
 <table width="100%" cellspacing="2" cellpadding="2" border="0" class="red_box">
 <tr>
@@ -1288,8 +1300,10 @@ if (isset($time_error)) {
             $preorder_total = number_format($preorder_total_res['value'], 0, '.', ''); 
           }
           if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total > 0)) { 
-            ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+             ?>
+        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+        <tbody><tr class="infoBoxContents"><td>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
               <td class="main" width="150" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main" valign="top">
@@ -1303,10 +1317,13 @@ if (isset($time_error)) {
               </td> 
             </tr>
           </table>
+          </td></tr></table>
           <br>
           <?php } else if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total < 0)) { 
-          ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+           ?>
+        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+        <tbody><tr class="infoBoxContents"><td>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
               <td class="main" width="150" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
@@ -1319,6 +1336,7 @@ if (isset($time_error)) {
               </td> 
             </tr>
           </table>
+          </td></tr></table>
           <br>
           <?php
           }?> 

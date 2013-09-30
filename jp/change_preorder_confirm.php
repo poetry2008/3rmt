@@ -270,7 +270,9 @@ function check_preorder_op(pre_pid)
               </td>
             </tr>
           </table>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+          <tbody><tr class="infoBoxContents"><td> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
               <td class="main">
                 <b><?php echo PRORDER_CONFIRM_PRODUCT_INFO;?></b> 
@@ -287,7 +289,7 @@ function check_preorder_op(pre_pid)
                     
                     <td class="confirmation_product_num_info" align="right" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
-                    <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
+                    <?php echo '<br><span style="font-size:10px">'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']).'</span>';?> 
                     
                     </td>                  
                     <td class="main">
@@ -381,7 +383,7 @@ foreach($all_show_option_id as $t_item_id){
     $all_show_option[$t_item_id]['option_info']!=''){
     $all_attr_info = @unserialize(stripslashes($all_show_option[$t_item_id]['option_info'])); 
     if(is_array($all_attr_info)){
-    echo $all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
+    echo '<small>&nbsp;<i> - '.$all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
     if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
       if ((int)$preorder_product_res['products_price'] != '0') {
         if($all_show_option[$t_item_id]['options_values_price'] < 0){
@@ -391,11 +393,11 @@ foreach($all_show_option_id as $t_item_id){
         }
       } 
     }
-        echo '<br>';
+        echo '<br></i></small>';
     }
   }else{
     if($all_show_option[$t_item_id]['front_title']){
-    echo $all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
+    echo '<small>&nbsp;<i> - '.$all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
       '', $all_show_option[$t_item_id]['of_value']); 
     }
     if ($all_show_option[$t_item_id]['type'] == 'radio') {
@@ -446,6 +448,7 @@ foreach($all_show_option_id as $t_item_id){
     if($all_show_option[$t_item_id]['front_title']){
         echo '<br>';
     }
+    echo '</i></small>';
   }
 }
 ?>
@@ -472,11 +475,14 @@ foreach($all_show_option_id as $t_item_id){
               </td>
             </tr>
           </table>
+          </td></tr></table>
           <br>
 <?php
                     if($weight_total > 0){
 ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+          <tbody><tr class="infoBoxContents"><td> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
               <td class="main">
                 <b><?php echo TEXT_ADDRESS;?></b> 
@@ -506,11 +512,14 @@ foreach($all_show_option_id as $t_item_id){
               </td>
             </tr>
           </table>
+          </td></tr></table>
           <br> 
 <?php
 }
 ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+<table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+<tbody><tr class="infoBoxContents"><td> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
               <td class="main">
                 <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b>
@@ -572,6 +581,7 @@ foreach($all_show_option_id as $t_item_id){
               </td>
             </tr>
           </table>
+</td></tr></table>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr> 
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -583,10 +593,10 @@ foreach($all_show_option_id as $t_item_id){
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr>
 </table>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-            <tr>
-              <td class="main" width="30%" valign="top">
-                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
+<table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+<tbody><tr class="infoBoxContents">  
+              <td width="30%" valign="top">
+                <table width="100%" cellpadding="2" cellspacing="0" border="0"> 
                   <tr>
                     <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
                   </tr>
@@ -598,8 +608,8 @@ foreach($all_show_option_id as $t_item_id){
                   </tr>
                 </table> 
               </td>
-              <td width="70%" align="right" valign="top">
-                <table border="0" cellpadding="2" cellspacing="0"> 
+              <td width="70%" valign="top">
+                <table width="100%" border="0" cellpadding="2" cellspacing="0"> 
                   <?php
                   $total_param = '0'; 
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
@@ -844,7 +854,7 @@ if (is_array($payment_modules->modules)) {
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
-      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
       <tr class="infoBoxContents"> 
       <td><table border="0" cellspacing="0" cellpadding="2"> 
       <tr> 
