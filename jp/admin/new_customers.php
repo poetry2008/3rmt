@@ -356,7 +356,8 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".R
              ci.customers_info_date_account_created as date_account_created
       FROM customers c , ".TABLE_CUSTOMERS_INFO." ci
       WHERE c.customers_id = ci.customers_info_id and 
-     c.`customers_firstorderat` < '" . $endTime . "' AND c.`customers_firstorderat` > '" . $startTime . "' ".' AND '.$sql_site_where."
+     ci.`customers_info_date_account_created` < '" . $endTime . "' AND
+     ci.`customers_info_date_account_created` > '" . $startTime . "' ".' AND '.$sql_site_where."
       group by  c.customers_id  
       ORDER BY ".$new_str;
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
