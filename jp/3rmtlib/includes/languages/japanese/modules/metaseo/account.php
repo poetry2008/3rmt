@@ -1,9 +1,0 @@
-<?php
-/*
-  $Id$
-*/
-
-  define('MODULE_METASEO_ACCOUNT_TEXT_TITLE', 'お客様情報');
-  define('MODULE_METASEO_ACCOUNT_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_ACCOUNT_TEXT_DESCRIPTION', 'お客様情報ページのSEO');
-?>
