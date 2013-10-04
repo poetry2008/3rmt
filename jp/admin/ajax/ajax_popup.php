@@ -8210,4 +8210,241 @@ $banner_query = tep_db_query("
   $notice_box->get_contents($contents, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}else if($_GET['action'] == 'edit_meta_info'){
+/* -----------------------------------------------------
+    功能: meta的弹出框
+    参数: $_GET['meta_e_id'] meta id 
+ -----------------------------------------------------*/
+
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CONFIGURATION_META);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ 
+  $meta_info_raw = tep_db_query("select cm.*, s.romaji from ".TABLE_CONFIGURATION_META." cm, ".TABLE_SITES." s  where s.id = cm.site_id and cm.id = '".$_POST['meta_e_id']."'");
+  $meta_info_res = tep_db_fetch_array($meta_info_raw);
+  
+  $site_list_raw = tep_db_query("select `site_permission`, `permission` from `permissions` where `userid` = '".$ocertify->auth_user."'");
+  while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
+    $site_permission_list = $site_list_res['site_permission']; 
+  }
+  if (isset($site_permission_list)) {
+    $site_list_str = $site_permission_list;  
+  } else {
+    $site_list_str = '';  
+  }
+  $site_list_array = explode(',', $site_list_str); 
+  if (!in_array($meta_info_res['site_id'], $site_list_array)) {
+    $disabled_str = 'disabled="disabled"'; 
+  }
+  
+  $param_str = '';
+  $meta_array = array();
+
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'meta_e_id') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  
+  $meta_order_sort_name = ' cm.site_id';
+  $meta_order_sort = 'asc';
+  if (isset($_POST['meta_sort'])) {
+    switch ($_POST['meta_sort']) {
+       case 'meta_site':
+         $meta_order_sort_name = ' s.romaji';
+         break;
+       case 'meta_title':
+         $meta_order_sort_name = ' cm.title';
+         break;
+       case 'meta_url':
+         $meta_order_sort_name = ' cm.link_url';
+         break;
+       case 'meta_update':
+          $meta_order_sort_name = ' cm.last_modified';
+         break;
+    }
+  }
+  if (isset($_POST['meta_sort_type'])) {
+    if ($_POST['meta_sort_type'] == 'asc') {
+      $meta_order_sort = 'asc';
+    } else {
+      $meta_order_sort = 'desc';
+    }
+  }
+  $meta_order_sql = $meta_order_sort_name.' '.$meta_order_sort;
+
+  $meta_query_raw = 'select cm.* from '.TABLE_CONFIGURATION_META.' cm, '.TABLE_SITES.' s where cm.site_id = s.id and cm.site_id in ('.tep_get_setting_site_info(FILENAME_CONFIGURATION_META).') order by '.$meta_order_sql;
+  $meta_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $meta_query_raw, $meta_query_numrows);
+  $meta_list_query = tep_db_query($meta_query_raw);
+  $meta_array = array(); 
+  while ($meta_row = tep_db_fetch_array($meta_list_query)) {
+    $meta_array[] = $meta_row['id'];
+  }
+  foreach ($meta_array as $m_key => $m_value) {
+    if ($_POST['meta_e_id'] == $m_value) {
+      break;
+    }
+  }
+
+  if($m_key > 0){ 
+    $page_str .= '<a onclick="show_link_meta_info(\''.$meta_array[$m_key - 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="meta_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;';
+  } else {
+    $page_str .= '<font color="#000000">'.IMAGE_PREV.'</font>&nbsp;&nbsp;'; 
+  }
+  
+  if($m_key < count($meta_array)-1){
+    $page_str .= '<a onclick="show_link_meta_info(\''.$meta_array[$m_key + 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="meta_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;';
+  } else {
+    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'</font>&nbsp;&nbsp;'; 
+  }
+  
+  $page_str .= '<a onclick="close_meta_info();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $meta_info_res['title']); 
+  $heading[] = array('align' => 'right', 'text' => $page_str); 
+ 
+  $button = array();
+  if (isset($disabled_str)) {
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' id="button_save"').'</a>'; 
+  } else {
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' onclick="submit_meta_form()" id="button_save"').'</a>'; 
+  }
+  $buttons = array('align' => 'center', 'button' => $button); 
+
+  $meta_info_row = array();
+  $meta_info_params = array('width' => '60%', 'cellpadding' => '0', 'cellspacing' => '0', 'border' => '0'); 
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_META_SITE_TEXT),
+        array('align' => 'left', 'text' => $meta_info_res['romaji'])
+      );
+  
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_TITLE_TEXT),
+        array('align' => 'left', 'text' => tep_draw_input_field('meta_title', $meta_info_res['meta_title'], 'style="width:60%;" '.$disabled_str))
+      );
+  $meta_title_info_str = '';
+  $meta_title_info_array = explode('<br>', $meta_info_res['meta_title_info']);
+  if (!preg_match('#[A-Z_]+#', $meta_title_info_array[0])) {
+    unset($meta_title_info_array[0]); 
+  }
+  if (!empty($meta_title_info_array)) {
+    $mt_num = 1; 
+    $meta_title_table_info_array = array();
+    $calc_mt_num = 0; 
+    foreach ($meta_title_info_array as $mt_key => $mt_value) {
+      $meta_title_table_info_array[$calc_mt_num]['text'][] =  array('align' => 'left', 'text' => $mt_value); 
+      if ($mt_num % 2 == 0) {
+        $calc_mt_num++; 
+      }
+      $mt_num++; 
+    }
+    if (!empty($meta_title_table_info_array)) {
+      if (count($meta_title_info_array) % 2 != 0) {
+        $meta_title_table_info_array[$calc_mt_num]['text'][] =  array('align' => 'left', 'text' => ''); 
+      }
+    }
+    $meta_title_info_str = $notice_box->get_table($meta_title_table_info_array, '', $meta_info_params);
+ 
+    $meta_info_row[]['text'] = array(
+          array('align' => 'left', 'params' => 'width="25%"', 'text' => '&nbsp;'),
+          array('align' => 'left', 'text' => $meta_title_info_str)
+        );
+  }
+  
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_KEYWORD_TEXT),
+        array('align' => 'left', 'text' => tep_draw_textarea_field('meta_keywords', 'soft', '30', '10', $meta_info_res['meta_keywords'], 'style="width:60%; resize:vertical;"; onfocus="o_submit_single = false;" onblur="o_submit_single = true;" '.$disabled_str))
+      );
+  
+  $meta_keywords_info_str = '';
+  $meta_keywords_info_array = explode('<br>', $meta_info_res['meta_keywords_info']);
+  if (!preg_match('#[A-Z_]+#', $meta_keywords_info_array[0])) {
+    unset($meta_keywords_info_array[0]); 
+  }
+  if (!empty($meta_keywords_info_array)) {
+    $mk_num = 1; 
+    $meta_keywords_table_info_array = array();
+    $calc_mk_num = 0; 
+    foreach ($meta_keywords_info_array as $mk_key => $mk_value) {
+      $meta_keywords_table_info_array[$calc_mk_num]['text'][] =  array('align' => 'left', 'text' => $mk_value); 
+      if ($mk_num % 2 == 0) {
+        $calc_mk_num++; 
+      }
+      $mk_num++; 
+    }
+    if (!empty($meta_keywords_table_info_array)) {
+      if (count($meta_keywords_info_array) % 2 != 0) {
+        $meta_keywords_table_info_array[$calc_mk_num]['text'][] =  array('align' => 'left', 'text' => ''); 
+      }
+    }
+    $meta_keywords_info_str = $notice_box->get_table($meta_keywords_table_info_array, '', $meta_info_params);
+    $meta_info_row[]['text'] = array(
+          array('align' => 'left', 'params' => 'width="25%"', 'text' => '&nbsp;'),
+          array('align' => 'left', 'text' => $meta_keywords_info_str)
+        );
+  }
+  
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_DESCRIPTION_TEXT),
+        array('align' => 'left', 'text' => tep_draw_textarea_field('meta_description', 'soft', '30', '10', $meta_info_res['meta_description'], 'style="width:60%; resize:vertical;"; onfocus="o_submit_single = false;" onblur="o_submit_single = true;" '.$disabled_str))
+      );
+  
+  $meta_description_info_str = '';
+  $meta_description_info_array = explode('<br>', $meta_info_res['meta_description_info']);
+  if (!preg_match('#[A-Z_]+#', $meta_description_info_array[0])) {
+    unset($meta_description_info_array[0]); 
+  }
+  if (!empty($meta_description_info_array)) {
+    $md_num = 1; 
+    $meta_description_table_info_array = array();
+    $calc_md_num = 0; 
+    foreach ($meta_description_info_array as $md_key => $md_value) {
+      $meta_description_table_info_array[$calc_md_num]['text'][] =  array('align' => 'left', 'text' => $md_value); 
+      if ($md_num % 2 == 0) {
+        $calc_md_num++; 
+      }
+      $md_num++; 
+    }
+    if (!empty($meta_description_table_info_array)) {
+      if (count($meta_description_info_array) % 2 != 0) {
+        $meta_description_table_info_array[$calc_md_num]['text'][] =  array('align' => 'left', 'text' => ''); 
+      }
+    }
+    $meta_description_info_str = $notice_box->get_table($meta_description_table_info_array, '', $meta_info_params);
+
+    $meta_info_row[]['text'] = array(
+          array('align' => 'left', 'params' => 'width="25%"', 'text' => '&nbsp;'),
+          array('align' => 'left', 'text' => $meta_description_info_str)
+        );
+  }
+  
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_ROBOT_TEXT),
+        array('align' => 'left', 'text' => tep_draw_radio_field('meta_robots', 'index,follow',(($meta_info_res['meta_robots'] == 'index,follow')?true:false), '', 'style="padding-left:0;margin-left:0;"').'index,follow&nbsp;'.tep_draw_radio_field('meta_robots', 'noindex',(($meta_info_res['meta_robots'] == 'noindex')?true:false)).'noindex')
+      );
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_COPYRIGHT_TEXT),
+        array('align' => 'left', 'text' => tep_draw_input_field('meta_copyright', $meta_info_res['meta_copyright'], 'style="width:60%;" '.$disabled_str))
+      );
+  
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'text' => substr(TEXT_USER_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_added'])?$meta_info_res['user_added']:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => substr(TEXT_DATE_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['date_added'])?$meta_info_res['date_added']:TEXT_UNSET_DATA))
+      );
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'text' => substr(TEXT_USER_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_update'])?$meta_info_res['user_update']:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => substr(TEXT_DATE_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['last_modified'])?$meta_info_res['last_modified']:TEXT_UNSET_DATA))
+      );
+  
+  $form_str = tep_draw_form('meta_form', FILENAME_CONFIGURATION_META, 'meta_e_id='.$_POST['meta_e_id'].'&action=update_meta_info&'.$param_str);
+  $notice_box->get_form($form_str); 
+  $notice_box->get_heading($heading); 
+  $notice_box->get_contents($meta_info_row, $buttons); 
+  $notice_box->get_eof(tep_eof_hidden()); 
+ 
+  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_CONFIGURAION_META);
 }

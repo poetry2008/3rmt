@@ -272,6 +272,7 @@ if ($pdo_con) {
   define('FILENAME_UPCOMING_PRODUCTS', 'upcoming_products.php'); // This is the bottom of default.php (found in modules)
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 // define the database table names used in the project
+  define('TABLE_CONFIGURATION_META', 'configuration_meta');
   define('TABLE_CUSTOMERS_EXIT_HISTORY', 'customers_exit_history');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
@@ -382,6 +383,15 @@ if ($pdo_con) {
     define($configuration['cfgKey'], $configuration['cfgValue']);
       }
   } 
+
+  $configuration_meta_list_raw = tep_db_query("select * from ".TABLE_CONFIGURATION_META." where site_id = '".SITE_ID."'");
+  while ($configuration_meta_list_res = tep_db_fetch_array($configuration_meta_list_raw)) {
+     define($configuration_meta_list_res['key_info'].'_TITLE', $configuration_meta_list_res['meta_title']); 
+     define($configuration_meta_list_res['key_info'].'_KEYWORDS', $configuration_meta_list_res['meta_keywords']); 
+     define($configuration_meta_list_res['key_info'].'_DESCRIPTION', $configuration_meta_list_res['meta_description']); 
+     define($configuration_meta_list_res['key_info'].'_ROBOTS', $configuration_meta_list_res['meta_robots']); 
+     define($configuration_meta_list_res['key_info'].'_COPYRIGHT', $configuration_meta_list_res['meta_copyright']); 
+  }
 // if gzip_compression is enabled, start to buffer the output
   if ( (GZIP_COMPRESSION == 'true') && ($ext_zlib_loaded = extension_loaded('zlib')) && (PHP_VERSION >= '4') ) {
     if (($ini_zlib_output_compression = (int)ini_get('zlib.output_compression')) < 1) {
@@ -1026,10 +1036,3 @@ $void_href = '';
 if($has_a_link){
   $void_href = ' href="javascript:void(0)" ';
 }
-/*
-var_dump($_SESSION);
-var_dump("<br><br>");
-var_dump($sess_old);
-var_dump("<br><br>");
-var_dump($ssss_id);
-*/

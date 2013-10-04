@@ -39,11 +39,6 @@
     }else{
       echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_MODULE_TOTAL, '', 'NONSSL').'\';"><span>' . tep_image(DIR_WS_MENU_ICON .  'icon_calculation.gif').'</span><span>' . BOX_MODULES_ORDER_TOTAL . '</span></div>';
     }
-    if(str_replace('/admin/','',$_SERVER['PHP_SELF']).'?set='.$_GET['set'] == FILENAME_MODULES.'?set=metaseo'){
-      echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON . 'icon_seo.gif').  '</span><span>' .  BOX_MODULES_METASEO .  '</span></div>';
-    }else{
-      echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON . 'icon_seo.gif').  '</span><span>' .  BOX_MODULES_METASEO .  '</span></div>'; 
-    } 
   } 
   ?>
                 </td>
