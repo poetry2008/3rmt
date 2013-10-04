@@ -63,9 +63,10 @@
     参数: $identifier(array) banner组的信息 
     参数: $width(int) 宽度 
     参数: $height(int) 高度  
+    参数: $jump_single(bool) 跳转URL  
     返回值: 显示的html(string) 
 ------------------------------------ */
-  function tep_display_banner($action, $identifier, $width = null, $height = null) {
+  function tep_display_banner($action, $identifier, $width = null, $height = null,$jump_single=false) {
     if ($action == 'dynamic') {
       $banners_query = tep_db_query("select count(*) as count from " . TABLE_BANNERS . " where status = '1' and banners_group = '" . $identifier . "' and site_id = '".SITE_ID."'");
       $banners = tep_db_fetch_array($banners_query);
@@ -94,9 +95,9 @@
     } else {
       if($banner['banners_url'] != '') { 
          if($width && $height) {
-        $banner_string = '<a href="' . tep_href_link(FILENAME_REDIRECT, 'action=banner&goto=' . $banner['banners_id']) . '" class="blank">' . tep_image(DIR_WS_IMAGES . $banner['banners_image'], $banner['banners_title'], $width, $height) . '</a>';
+        $banner_string = '<a href="' . tep_href_link(FILENAME_REDIRECT, 'action=banner&goto=' . $banner['banners_id']) . '" '.($jump_single?'':'class="blank"').'>' . tep_image(DIR_WS_IMAGES . $banner['banners_image'], $banner['banners_title'], $width, $height) . '</a>';
          } else {
-          $banner_string = '<a href="' . tep_href_link(FILENAME_REDIRECT, 'action=banner&goto=' . $banner['banners_id']) . '" class="blank">' . tep_image(DIR_WS_IMAGES . $banner['banners_image'], $banner['banners_title']) . '</a>';
+          $banner_string = '<a href="' . tep_href_link(FILENAME_REDIRECT, 'action=banner&goto=' . $banner['banners_id']) . '" '.($jump_single?'':'class="blank"').'>' . tep_image(DIR_WS_IMAGES . $banner['banners_image'], $banner['banners_title']) . '</a>';
          }
         } else {
         if($width && $height) {

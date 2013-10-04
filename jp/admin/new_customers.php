@@ -79,8 +79,8 @@ require("includes/note_js.php");
 <?php }?>
 <!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -180,7 +180,7 @@ require("includes/note_js.php");
       </tr>
     </table>
     </form>
-    <!--ORDER EXPORT SCRIPT EOF //-->
+    <!--ORDER EXPORT SCRIPT EOF -->
     <table  border="0" cellpadding="2" cellspacing="2" width="100%">
 <tr>
 <td align="left" width="200" >
@@ -196,6 +196,11 @@ echo  REFRESH_TIME.$ref_s."&nbsp".SECOND_TEXT;
 }
 ?>
 
+</td>
+<td align="right">
+<?php 
+echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".REFRESH."</a>";
+ ?>
 </td>
 </tr></table>        
         </td>
@@ -351,7 +356,8 @@ echo  REFRESH_TIME.$ref_s."&nbsp".SECOND_TEXT;
              ci.customers_info_date_account_created as date_account_created
       FROM customers c , ".TABLE_CUSTOMERS_INFO." ci
       WHERE c.customers_id = ci.customers_info_id and 
-     c.`customers_firstorderat` < '" . $endTime . "' AND c.`customers_firstorderat` > '" . $startTime . "' ".' AND '.$sql_site_where."
+     ci.`customers_info_date_account_created` < '" . $endTime . "' AND
+     ci.`customers_info_date_account_created` > '" . $startTime . "' ".' AND '.$sql_site_where."
       group by  c.customers_id  
       ORDER BY ".$new_str;
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);

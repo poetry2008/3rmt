@@ -1558,3 +1558,6 @@ top:70px;
 .td_link img{
 	clear:both;
 }
+#text_spacing {
+        letter-spacing: 0;
+}

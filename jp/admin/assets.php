@@ -389,7 +389,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $i=-1000;
   $sort_category_arr = array();
   $all_quantity = 0;
-  $all_avg_price = 0;
   $all_asset_price = 0;
   $all_true_row =0;
   while($row_category_asset = tep_db_fetch_array($query_category_asset)){
@@ -400,9 +399,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     if($temp_row['quantity_all_product']!=0){
       $all_true_row ++;
       $all_quantity += $temp_row['quantity_all_product'];
+      $all_asset_price += $temp_row['asset_all_product'];
     }
-    $all_avg_price += $temp_row['avg_price'];
-    $all_asset_price += $temp_row['asset_all_product'];
     if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''&&false){
       if($temp_row['asset_all_product'] == 0){
         $sort_category_arr[$row_category_asset['categories_id']]=$i;
@@ -432,9 +430,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     if($tmp_arr['quantity_all_product']!=0){
       $all_true_row ++;
       $all_quantity += $tmp_arr['quantity_all_product'];
+      $all_asset_price += $tmp_arr['asset_all_product'];
     }
-    $all_avg_price += $tmp_arr['price'];
-    $all_asset_price += $tmp_arr['asset_all_product'];
 
     if($product['relate_id']==0){
       $tmp_arr['relate_date'] = tep_get_relate_date($product['products_id'],$site_id,$start,$end);
@@ -561,7 +558,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
-      echo $currencies->format(@($all_avg_price/$all_true_row));
+      echo $currencies->format(@($all_asset_price/$all_quantity));
       echo "</td>";
       echo "<tr class='assets_c'>";
       echo "<td class='assets_bottom_info_left'>";
@@ -589,7 +586,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
-      echo $currencies->format(@($all_avg_price/$all_true_row));
+      echo $currencies->format(@($all_asset_price/$all_quantity));
       echo "</td>";
       echo "<tr class='assets_c'>";
       echo "<td  class='asstes_easy_left'>";

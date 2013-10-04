@@ -3,7 +3,7 @@
   $Id$
 */
 
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
   error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 // ddos start 
 require(DIR_WS_FUNCTIONS . 'dos.php');
@@ -13,7 +13,7 @@ $source_ip = $_SERVER['REMOTE_ADDR'];
 $source_host = $_SERVER['HTTP_HOST'];
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
-    if(SITE_ID == 5){
+    if((defined('SID_SYMBOL')) && SID_SYMBOL){
       define('PHP_SESSION_NAME', 'sid');
     } else {
       define('PHP_SESSION_NAME', 'cmd');
@@ -27,7 +27,7 @@ $source_host = $_SERVER['HTTP_HOST'];
   require(DIR_WS_FUNCTIONS . 'sessions.php');
   //tep_session_name('SID');
   
-  if(SITE_ID == 5){
+  if((defined('SID_SYMBOL')) && SID_SYMBOL){
     tep_session_name('sid');
   } else {
     tep_session_name('cmd');
@@ -36,7 +36,7 @@ $source_host = $_SERVER['HTTP_HOST'];
 
 
   tep_session_start();
-  $ssss_id = tep_session_id();
+  $old_sid = tep_session_id();
   session_write_close();
 
   $today = date("Ymd",time());
@@ -47,7 +47,7 @@ $source_host = $_SERVER['HTTP_HOST'];
   if(in_array($source_ip,$_SESSION['banlist_ip'])&&
        is_reset_session_blocked_ip($source_ip)){
     session_write_close();
-    tep_session_id($ssss_id);
+    tep_session_id($old_sid);
     tep_session_start();
     header("Cache-Control:");
     header("Pragma:");
@@ -82,7 +82,7 @@ if ($pdo_con) {
     // go to 503
     save_block_ip($pdo_con);
     session_write_close();
-    tep_session_id($ssss_id);
+    tep_session_id($old_sid);
     tep_session_start();
     $pdo_con = null;
     header("Cache-Control:");
@@ -100,7 +100,7 @@ if ($pdo_con) {
       // go to 503
       save_block_ip($pdo_con);
       session_write_close();
-      tep_session_id($ssss_id);
+      tep_session_id($old_sid);
       tep_session_start();
       $pdo_con = null;
       header("Cache-Control:");
@@ -117,7 +117,7 @@ if ($pdo_con) {
       // go to 503
       save_block_ip($pdo_con);
       session_write_close();
-      tep_session_id($ssss_id);
+      tep_session_id($old_sid);
       tep_session_start();
       $pdo_con = null;
       header("Cache-Control:");
@@ -134,7 +134,7 @@ if ($pdo_con) {
       // go to 503
       save_block_ip($pdo_con);
       session_write_close();
-      tep_session_id($ssss_id);
+      tep_session_id($old_sid);
       tep_session_start();
       $pdo_con = null;
       header("Cache-Control:");
@@ -192,6 +192,8 @@ if ($pdo_con) {
   define('FILENAME_CHECKOUT_OPTION', 'checkout_option.php');
   define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
   define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
+  define('FILENAME_PREORDER_CONFIRMATION', 'preorder_confirmation.php');
+  define('FILENAME_PREORDER_PROCESS', 'preorder_process.php');
   define('FILENAME_PREORDER_UNSUCCESS', 'preorder_unsuccess.php');
   define('FILENAME_FAQ_INFO', 'faq_info.php');
   define('FILENAME_ACCOUNT', 'account.php');
@@ -453,7 +455,7 @@ if ($pdo_con) {
    } elseif (ENABLE_SSL == true && (SESSION_RECREATE == 'True') && isset($_GET[tep_session_name()])) {
      tep_session_id($_GET[tep_session_name()]);
    }else {
-     tep_session_id($ssss_id);
+     tep_session_id($old_sid);
    }
   
   if (function_exists('session_set_cookie_params')) {
@@ -549,7 +551,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       tep_parseURI();
     }
   } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
-    if (SITE_ID == 6 || SITE_ID == 9) {
+    if (defined('URL_ROMAJI_ENABLED_TAG')&&URL_ROMAJI_ENABLED_TAG) {
       if (
            basename($_SERVER['SCRIPT_NAME']) != FILENAME_NEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS

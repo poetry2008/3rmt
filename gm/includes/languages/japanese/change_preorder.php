@@ -10,7 +10,7 @@ define('CHANGE_ORDER_PRODUCT_DETAILS', '予約商品について');
 define('CHANGE_ORDER_PRODUCT_NAME', '商品名:');
 define('CHANGE_ORDER_PRODUCT_NUM', 'ご希望個数:');
 define('PRODUCT_UNIT_TEXT', '個');
-define('CHANGE_ORDER_FETCH_TIME_TITLE', 'お届け日時');
+define('CHANGE_ORDER_FETCH_TIME_TITLE', 'ご希望のお届け日時を指定してください');
 define('CHANGE_ORDER_FETCH_TIME_READ', 'オプション:');
 define('CHANGE_ORDER_FETCH_DAY', 'お届け希望日:');
 define('CHANGE_ORDER_FETCH_DATE', 'お届け希望時間:');

@@ -4,6 +4,11 @@
 */
 
   require('includes/application_top.php');
+  if(isset($_SESSION['preorder_products_list']) && !(isset($_POST['action']) && $_POST['action'] == 'process')){
+
+    $_POST = $_SESSION['preorder_products_list'];
+    unset($_POST['action']);
+  }
   if (isset($_GET['products_id'])) {
     forward404(); 
   }
@@ -104,6 +109,15 @@
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="./js/option.js"></script>
 <script type="text/javascript">
+<?php //检测输入的内容是否是数字?>
+function change_num(value){
+
+  $(".errorText").html('');
+  $("#quantity_error").html('');  
+  if(isNaN(value) || value==''){
+    $("#quantity_error").html('<?php echo TEXT_PRODUCT_QUANTITY_ERROR;?>');
+  }
+}
   function check_products_num(pid)  {
  var products_num = document.getElementById('quantity').value;
  $.ajax({
@@ -151,8 +165,12 @@ $products_num_query = mysql_query("select products_real_quantity,products_virtua
 $products_num_array = mysql_fetch_array($products_num_query);
 $products_num = tep_get_quantity($_POST['products_id']) + $products_num_array['products_virtual_quantity'];
 
+    $quantity_num_error = false;
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($_POST['quantity'])) {
       $quantity_error = true;
+      $error = true;
+    } elseif(isset($_POST['action']) && $_POST['action'] == 'process' && !preg_match('/[0-9]+/',$_POST['quantity'])) {
+      $quantity_num_error = true;
       $error = true;
     } else {
       if (isset($_POST['action']) && ($_POST['action'] == 'process') && !is_numeric(tep_an_zen_to_han($_POST['quantity']))) {
@@ -398,10 +416,10 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
 if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
-            echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" class="input_text_short"');
-            echo '&nbsp;&nbsp;'.PREORDER_QTY.'&nbsp;';
+            echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_POST['quantity']) , 'size="7" maxlength="15" class="input_text_short" onchange="change_num(this.value);"');
+            echo '&nbsp;&nbsp;'.PREORDER_QTY.'&nbsp;<span id="quantity_error">'.($quantity_num_error == true ? TEXT_PRODUCT_QUANTITY_ERROR : '').'</span>';
             if($products_weight_error == true){ 
-              echo '<span><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products_name='.urlencode($product_info['products_name']), 'SSL').'"><b>' .  STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</b></a></span>';
+              echo '<span><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($product_info['products_name']), 'SSL').'"><b>' .  STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</b></a></span>';
             }
       if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
       if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>'.TEXT_NEED_RETENTION.'<br>'.(int)$_POST['quantity'].TEXT_ORDERS_QTY.'<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>'.TEXT_PREORDER_HERE.'</a>'.TEXT_PREORDER_FROM.'</span>' ;}
@@ -433,10 +451,10 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td class="main">
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+           &nbsp; 
           </td>
           <td align="right" class="main">
-            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <?php echo tep_image_submit('button_preorder.gif', IMAGE_BUTTON_PREORDER); ?>
           </td>
         </tr>
       </table>

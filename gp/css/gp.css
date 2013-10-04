@@ -1523,7 +1523,7 @@ TABLE：Info box (content)
 	border-spacing: 1px;
 	color:#3a3a3a;
 }
-.infoBoxContents01{
+.box_contents{
 	width: 100%;
 	background: #eee;
 	font-size: 12px;

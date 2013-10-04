@@ -5,6 +5,19 @@
 
   require('includes/application_top.php');
   
+  if(isset($_SESSION['preorder_products_list'])){
+
+    foreach($_SESSION['preorder_products_list'] as $key=>$value){
+
+      if(substr($key,0,3) == 'op_' && !empty($_POST)){
+
+        unset($_SESSION['preorder_products_list'][$key]);
+      }
+    }
+    $_POST = array_merge($_SESSION['preorder_products_list'],$_POST);
+  }else{
+    $_SESSION['preorder_products_list'] = $_POST; 
+  }
   if (!isset($_POST['products_id'])) {
     forward404(); 
   }
@@ -85,6 +98,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
 <?php
   exit;
   }
+
   require(DIR_WS_CLASSES. 'payment.php'); 
   $payment_modules = payment::getInstance(SITE_ID,'','preorder');
   if (tep_session_is_registered('customer_id')) {
@@ -156,23 +170,64 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
   $po_game_c = ds_tep_get_categories($product_info['products_id'],1);
 ?>
 <?php page_head();?>
+<?php
+if (isset($_GET['check']) && $_GET['check'] == '1' && !empty($_POST['pre_payment'])) {
+      $payment_error = false;
+      $sn_type = $payment_modules->preorder_confirmation_check($_POST['pre_payment']); 
+      if ($sn_type) {
+        $sn_error_info = $payment_modules->get_preorder_error($_POST['pre_payment'], $sn_type); 
+        $error = true; 
+        $payment_error = true;
+        $payment_error_str = $sn_error_info; 
+      } else {
+        $payment_error = false;
+      }
+
+      if($payment_error == false){
+
+        echo tep_draw_form('payment_form', tep_href_link(FILENAME_PREORDER_CONFIRMATION));
+        foreach ($_POST as $p_key => $p_value) {
+          echo tep_draw_hidden_field($p_key, stripslashes($p_value)); 
+        }
+        echo '</form>';
+        echo '<script type="text/javascript">';
+        echo 'document.forms.payment_form.submit();';
+        echo '</script>';
+      }
+    }
+?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 function check_pre_products(op_info_str, products_id_str) {
-  $.ajax({
-    url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_products_op');?>',     
-    type: 'POST',
-    data: 'op_info_str='+op_info_str+'&products_id_str='+products_id_str,
-    async: false,
-    success: function(msg) {
-      if (msg != 'success') {
-        alert(msg); 
-        document.forms.form1.submit(0); 
-      } else {
-        document.forms.preorder_product.submit(0); 
-      }
+  var pre_payment = document.getElementsByName("pre_payment");  
+  var pre_payment_length = pre_payment.length;
+  var error = true;
+  for(var i=0;i<pre_payment_length;i++){
+
+    if(pre_payment[i].checked == true){
+
+      error = false;
     }
-  });
+  }
+  if(error == true){
+
+    alert('<?php echo JS_ERROR;?>'); 
+  }else{
+    $.ajax({
+      url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_products_op');?>',     
+      type: 'POST',
+      data: 'op_info_str='+op_info_str+'&products_id_str='+products_id_str,
+      async: false,
+      success: function(msg) {
+        if (msg != 'success') {
+          alert(msg); 
+          document.forms.form1.submit(0); 
+        } else {
+          document.forms.preorder_product.submit(0); 
+        }
+      }
+    });
+  }
 }
 function triggerHide(radio)
 {
@@ -207,14 +262,6 @@ $(document).ready(function(){
 	  triggerHide(this);
 	}
     });
-<?php
-if((isset($_POST['preorder_flag']) && $_POST['preorder_flag'] != $_SESSION['submit_flag']) ||(isset($_POST['preorder_flag']) && !isset($_SESSION['submit_flag']) && $_POST['preorder_flag'] == '')){
-?>
-  alert('<?php echo TEXT_SUBMIT_ERROR;?>');
-  document.location.href='<?php echo FILENAME_SHOPPING_CART;?>';
-<?php
-}
-?>
 });
 </script>
 </head>
@@ -242,262 +289,116 @@ if((isset($_POST['preorder_flag']) && $_POST['preorder_flag'] != $_SESSION['subm
       <div class="headerNavigation">
       <?php echo $breadcrumb->trail(' &raquo; ');?>
       </div>
-      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1>
+      <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
             <div class="comment">
-      <p>
-        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
-        <?php 
-        if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
-          echo $product_info['products_name']; 
-        } else {
-          echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
-        }
-        echo TEXT_PREORDER_BOOK_INFO_END;
-        ?>
-      </p>
-<?php
-    $error = false;
-  
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['quantity'])) {
-      $quantity_error = true;
-      $error = true;
-    } else {
-      if (isset($_GET['action']) && ($_GET['action'] == 'process') && !is_numeric(tep_an_zen_to_han($_POST['quantity']))) {
-        $quantity_error = true;
-        $error = true;
-      } else {
-       if (isset($_GET['action']) && ($_GET['action'] == 'process') && (tep_an_zen_to_han($_POST['quantity']) <= 0)) {
-        $quantity_error = true;
-        $error = true;
-       } else {
-        $quantity_error = false;
-       }
-      }
-    }
-     
-    if (tep_session_is_registered('customer_id')) {
-      $from_name = tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']);
-      $from_email_address = $account_values['customers_email_address'];
-    } else {
-if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
-if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
-if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
-      $first_name = $_POST['firstname'];
-      $last_name = $_POST['lastname'];
-      $from_name = tep_get_fullname($_POST['firstname'], $_POST['lastname']); 
-      $from_email_address = $_POST['from'];
-    }
-    
-    if (!tep_session_is_registered('customer_id')) {
-      if (isset($_GET['action']) && ($_GET['action'] == 'process') && !tep_validate_email(trim($from_email_address))) {
-        $fromemail_error = true;
-        $error = true;
-        } else {
-          $fromemail_error = false;
-        }
-      }
-    
-    if (!tep_session_is_registered('customer_id')) {
-      if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($last_name)) {
-        $lastname_error = true;
-        $error = true;
-      } else {
-        $lasttname_error = false;
-      }
-      
-      if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($first_name)) {
-        $firstname_error = true;
-        $error = true;
-      } else {
-        $firstname_error = false;
-      }
-    } 
-    
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['pre_payment'])) {
-      $payment_error = true;
-      $error = true;
-    } else {
-      $payment_error = false;
-    }
-     
-    if (!empty($_POST['pre_payment'])) {
-      $sn_type = $payment_modules->preorder_confirmation_check($_POST['pre_payment']); 
-      if ($sn_type) {
-        $sn_error_info = $payment_modules->get_preorder_error($_POST['pre_payment'], $sn_type); 
-        $error = true; 
-        $payment_error = true;
-        $payment_error_str = $sn_error_info; 
-      } else {
-        $payment_error = false;
-      }
-    }
-    
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false) && ($_POST['preorder_flag'] != '' && isset($_SESSION['submit_flag']) && $_POST['preorder_flag'] == $_SESSION['submit_flag'])) { 
-      unset($_SESSION['submit_flag']); 
-      $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
-      $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
-      $redirect_single = 0; 
-      $max_op_len = 0;
-      $max_op_array = array();
-      $mail_option_str = '';
-      foreach ($_POST as $mo_key => $mo_value) {
-        $m_op_str = substr($mo_key, 0, 3);
-        if ($m_op_str == 'op_') {
-          $m_op_info = explode('_', $mo_key); 
-          $item_m_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$m_op_info['1']."' and id = '".$m_op_info[3]."'"); 
-          $item_m_res = tep_db_fetch_array($item_m_raw);
-          if ($item_m_res) {
-            $max_op_array[] = mb_strlen($item_m_res['front_title'], 'utf-8'); 
-          }
-        }
-      }
-      
-      if (!empty($max_op_array)) {
-        $max_op_len = max($max_op_array);
-      }
-      foreach ($_POST as $mao_key => $mao_value) {
-        $ma_op_str = substr($mao_key, 0, 3);
-        if ($ma_op_str == 'op_') {
-          $ma_op_info = explode('_', $mao_key); 
-          $item_f_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$ma_op_info['1']."' and id = '".$ma_op_info[3]."'"); 
-          $item_f_res = tep_db_fetch_array($item_f_raw);
-          if ($item_f_res) {
-            $mail_option_str .= $item_f_res['front_title'].str_repeat('　', intval($max_op_len - mb_strlen($item_f_res['front_title'], 'utf-8'))).'：'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", stripslashes($mao_value))."\n"; 
-          }
-        }
-      }
-      
-      if (tep_session_is_registered('customer_id')) {
-          //预约完成邮件认证
-          $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
-          $preorder_email_text = $preorders_mail_array['contents']; 
-          
-          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
-        
-          $payment_name_class = new $_POST['pre_payment'];
-          $payment_name_str = $payment_name_class->title;
-          
-          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'].NUM_UNIT_TEXT.' '.tep_get_full_count2($_POST['quantity'],$_POST['products_id']), $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
-          
-          $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
-          
-          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorders_mail_array['title']); 
-          $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$account_values['customers_email_address'],tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']));
-          if ($account_values['is_send_mail'] != '1') {
-            tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
-            tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
-          }
-      } else {
-        $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".$_POST['from']."' and site_id = '".SITE_ID."'");    
-        if (tep_db_num_rows($exists_customer_raw)) {
-          $exists_customer_res = tep_db_fetch_array($exists_customer_raw); 
-          if ($exists_customer_res['is_active'] == 0) {
-            $redirect_single = 1; 
-            $tmp_customer_id = $exists_customer_res['customers_id']; 
-            $encode_param_str = md5(time().$exists_customer_res['customers_id'].$_POST['from']); 
-            $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
-            $old_str_array = array('${URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
-            $new_str_array = array(
-                $active_url, 
-                $from_name, 
-                STORE_NAME,
-                HTTP_SERVER
-                ); 
-            //预约邮件认证
-            $preorder_mail_array = tep_get_mail_templates('PREORDER_MAIL_ACTIVE_CONTENT',SITE_ID); 
-            $preorder_email_text = str_replace($old_str_array, $new_str_array, $preorder_mail_array['contents']); 
-            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorder_mail_array['title']); 
-            $unactive_customers_single = true; 
-            $send_to_owner = true;  
-            tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$exists_customer_res['customers_id']."'");  
-          } else {
-            //预约完成邮件认证
-            $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
-            $preorder_email_text = $preorders_mail_array['contents']; 
-            
-            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
-            
-            $payment_name_class = new $_POST['pre_payment'];
-            $payment_name_str = $payment_name_class->title;
-              
-            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'].NUM_UNIT_TEXT.' '.tep_get_full_count2($_POST['quantity'],$_POST['products_id']), $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
-            
-            $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
-            
-            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorders_mail_array['title']); 
-            $exists_email_single = true;     
-          
-            if ($exists_customer_res['is_send_mail'] == '1') {
-              $c_is_send_mail = true; 
-            }
-          }
-        } else {
-          $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
-          $redirect_single = 1; 
-          $send_to_owner = true;  
-          $encode_param_str = md5(time().$tmp_customer_id.$_POST['from']); 
-          $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
-          
-          $old_str_array = array('${URL}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}'); 
-          $new_str_array = array(
-              $active_url, 
-              $from_name, 
-              STORE_NAME,
-              HTTP_SERVER
-              ); 
-          //预约邮件认证
-          $preorder_mail_array = tep_get_mail_templates('PREORDER_MAIL_ACTIVE_CONTENT',SITE_ID);
-          $preorder_email_text = str_replace($old_str_array, $new_str_array, $preorder_mail_array['contents']); 
-          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorder_mail_array['title']); 
-          tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$tmp_customer_id."'");  
-        }
-        $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$_POST['from'],$from_name); 
-        if (!isset($c_is_send_mail)) {
-          tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
-        }
-        if (isset($send_to_owner)) {
-          tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, $from_name, $_POST['from']); 
-        }
-      }
-      
-      $send_preorder_id = $preorder_id;
-      tep_session_register('send_preorder_id');
-      if (isset($exists_email_single)) {
-        tep_create_preorder_info($_POST, $preorder_id, $exists_customer_res['customers_id'], $tmp_customer_id, true); 
-      } else {
-        if (isset($unactive_customers_single)) {
-          tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id, true); 
-        } else {
-          tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
-        }
-      }
-      if (!$redirect_single) {
-        tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
-      } else {
-        tep_redirect(tep_href_link('non-preorder_auth.php'));
-      }
+<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+   <tr> 
+   <td>
+   <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
+   <tr> 
+   <td width="20%">
+   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+   <tr> 
+   <td width="50%" align="right">&nbsp;</td> 
+<td>
+ <?php
+echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); 
 ?>
-      <div>
-        <?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, $from_email_address, stripslashes($_POST['products_name']), $_POST['quantity'], $_POST['timelimit']); ?>
-        <div align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></div>
-      </div>
-<?php
-    } else { 
-      ?>
-      <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']).tep_draw_hidden_field('preorder_flag', $_SESSION['submit_flag']); ?>
-
-      <p>
-        <?php echo TEXT_PREORDER_BOOK_TEXT;?>
-      </p>
-        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
-<?php
-      if($error == true) {
-        echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
-      }
+</td>
+<td width="50%">
+   <?php
+   echo tep_draw_separator('pixel_silver.gif', '100%', '1'); 
 ?>
-     
-    <div class="formAreaTitle"><b><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></b></div>
+</td> 
+</tr> 
+</table>
+</td>  
+<td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+   <tr> 
+   <td width="50%">
+   <?php
+   echo tep_draw_separator('pixel_silver.gif', '100%', '1'); 
+?>
+</td>  
+<td width="50%">
+   <?php
+   echo tep_draw_separator('pixel_silver.gif', '100%', '1'); 
+?>
+</td> 
+</tr> 
+</table></td>  
+<td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+   <tr> 
+   <td width="50%">
+   <?php
+   echo tep_draw_separator('pixel_silver.gif', '100%', '1'); 
+?>
+</td> 
+<td width="50%">
+   <?php
+   echo tep_draw_separator('pixel_silver.gif', '1', '5'); 
+?>
+</td> 
+</tr> 
+</table></td> 
+</tr> 
+<tr class="box_des">  
+<td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent">
+   <?php
+   echo CHECKOUT_BAR_PAYMENT; 
+?>
+</td> 
+<td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo">
+   <?php
+   echo CHECKOUT_BAR_CONFIRMATION; 
+?>
+</td> 
+<td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo">
+   <?php
+   echo CHECKOUT_BAR_FINISHED; 
+?>
+</td> 
+</tr> 
+</table></td> 
+</tr> 
+</table>     
+      <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'check=1')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']).tep_draw_hidden_field('action', 'process'); 
+              $op_info_array = array(); 
+              foreach ($_POST as $op_s_key => $op_s_value) {
+                $ops_single_str = substr($op_s_key, 0, 3);
+                if ($ops_single_str == 'op_') {
+                  $op_info_array[] = $op_s_key.'||||||'.stripslashes($op_s_value); 
+                }
+              }
+              $op_info_tmp_str = implode('<<<<<<', $op_info_array);
+?>  
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<tr> 
+<td>
+<table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+   <tr> 
+   <td class="main"><b>
+   <?php
+   echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; 
+?>
+</div></td> 
+<td class="main" align="right">
+<a href="javascript:void(0);" onclick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></a>
+</td> 
+</tr> 
+</table>
+</td> 
+</tr> 
+<tr> 
+<td><b>
+   <?php
+   echo FORM_FIELD_PREORDER_PAYMENT; 
+?>
+</b></td> 
+</tr>
+</table>
     <div class="checkout_payment_info">  
+    <div><div class="float_left"><?php echo TEXT_SELECT_PAYMENT_METHOD;?></div><div class="txt_right"><b><?php echo TITLE_PLEASE_SELECT;?></b><br><img alt="" src="images/arrow_east_south.gif"></div> </div>
     <?php
       $selection = $payment_modules->selection(1); 
         if ($payment_error == true) {
@@ -569,17 +470,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         ?>
       <?php }?> 
       </div>
-      <div class="formAreaTitle"><b><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></b></div>
+      <div class="formAreaTitle"><b><?php echo PREORDER_EXPECT_CTITLE; ?></b></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
         <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 53, 8);?></td></tr>
       </table>
       <br>
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
-        <tr>
-          <td class="main">
-           <?php echo '<a href="javascript:void(0);" onclick="document.forms.form1.submit(0);">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
-          </td>
-          <td align="right" class="main">
             <?php
               if (!tep_session_is_registered('customer_id')) {
                 echo tep_draw_hidden_field('lastname', $_POST['lastname']); 
@@ -598,9 +494,22 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               }
               $op_info_tmp_str = implode('<<<<<<', $op_info_array); 
             ?>
-            <a href="javascript:void(0);" onclick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE);?></a> 
-          </td>
-        </tr>
+<tr> 
+<td>
+<table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
+   <tr> 
+   <td class="main"><b>
+   <?php
+   echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; 
+?>
+</div></td> 
+<td class="main" align="right">
+<a href="javascript:void(0);" onclick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></a>
+</td> 
+</tr> 
+</table>
+</td> 
+</tr>
       </table>
     </form>
     <?php
@@ -621,7 +530,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     </form>
 <?php
     }
-  }
 ?></div>
         <p class="pageBottom"></p>
     </div>

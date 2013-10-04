@@ -6797,9 +6797,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
               if (isset($level_category_arr[$cur_key+1])) {
-              $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }else{
-                $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+                $return_str .= '<input type="button" style="width:102px;float:left;margin-left:70px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }
             }
 
@@ -6807,9 +6807,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
               if (isset($level_category_arr[$cur_key-1])) {
-              $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:10px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              $return_str .= '&nbsp;<input type="button" style="width:102px;float:left;margin-left:10px;" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }else{
-                $return_str .= '&nbsp;<input style="width:102px;float:left;margin-left:182px;" type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+                $return_str .= '&nbsp;<input style="width:102px;float:left;margin-left:182px;" type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID','action')).'cPath='.$link_cpath).'\'">&nbsp;'; 
 	      }
             }
           }
@@ -8443,7 +8443,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    }else if(count($return_arr)==1){
      $cid_str = " and p2c.categories_id = '".$return_arr[0]."' ";
    }
-   $tmp_sql = "select p.products_id,p.products_real_quantity from ".TABLE_PRODUCTS." 
+   $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price from ".TABLE_PRODUCTS." 
      p,".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p2c.products_id = p.products_id 
      ".$cid_str." and p.products_bflag='".$bflag."'";
    $tmp_query=tep_db_query($tmp_sql);
@@ -8454,10 +8454,11 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    $all_tmp_price = 0;
    $all_tmp_row = 0;
    while($tmp_row = tep_db_fetch_array($tmp_query)){
-     $tmp_price['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
-     $tmp_price =
-       @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end,
-           $sort);
+     $tmp_row['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
+     $tmp_price = @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end,$sort);
+     if(!$tmp_price){
+       $tmp_price = $tmp_row['products_price'];
+     }
      if($tmp_row['products_real_quantity'] > tep_get_relate_products_sum($tmp_row['products_id']
            ,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
        $result['error'] = true;
@@ -8466,13 +8467,13 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
      $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
+       $quantity_all_product += $tmp_row['products_real_quantity'];
+       $all_tmp_price += $tmp_price;
      }
-     $quantity_all_product += $tmp_row['products_real_quantity'];
-     $all_tmp_price += $tmp_price;
    }
    $result['quantity_all_product'] = $quantity_all_product;
    $result['asset_all_product'] = $asset_all_product;
-   $result['avg_price'] = @($all_tmp_price/$all_tmp_row);
+   $result['avg_price'] = @($asset_all_product/$quantity_all_product);
    return $result;
 }
 
@@ -8488,11 +8489,14 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
  ------------------------------------ */
 function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
     $start='',$end='',$sort=''){
-  $sql = "select products_real_quantity from ".TABLE_PRODUCTS." where products_id
+  $sql = "select products_real_quantity,products_price from ".TABLE_PRODUCTS." where products_id
     ='".$pid."' and products_bflag='".$bflag."'";
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
   $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end,$sort);
+  if(!$tmp_price){
+    $tmp_price = $row['products_price'];
+  }
   $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
