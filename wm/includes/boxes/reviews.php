@@ -15,7 +15,6 @@ if (
 <!-- reviews //-->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
-    // ccdd
     $reviews_query = tep_db_query("
         select r.reviews_rating, 
                r.reviews_id, 
@@ -45,7 +44,7 @@ if (
     }
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px;" summary="reviews">
-  <tr><td height="44"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" height="44" alt="<?php echo BOX_REVIEWS_SHOW_TITLE;?>" src="images/design/box/reviews.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a></td></tr>
+  <tr><td height="44"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" height="44" alt="<?php echo BOX_REVIEWS_SHOW_TITLE;?>" src="images/design/box/reviews.gif" ></a></td></tr>
   <tr>
     <td class="boxText" align="center" style="padding: 3px 14px 0px 14px; background: url(images/design/box/reviews_content_bg.gif) repeat-y;">
     <?php
@@ -94,7 +93,6 @@ if (
 
   if ($random_product) {
 // display random review box
-    // ccdd
     $review_query = tep_db_query("
         select substring(reviews_text, 1, 60) as reviews_text 
         from " . TABLE_REVIEWS_DESCRIPTION . " 

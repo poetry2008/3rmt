@@ -15,7 +15,6 @@ if (
 <!-- reviews //-->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
-    // ccdd
     $reviews_query = tep_db_query("
         select r.reviews_rating, 
                r.reviews_id, 
@@ -46,8 +45,7 @@ if (
 ?>
   <div class="reviews_box">
   <div class="menu_top">
-  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico10.gif" alt="" align="top"><span><?php echo BOX_HEADING_REVIEWS;?></span>
-  <?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
+  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico10.gif" alt="" align="top"><span><?php echo BOX_HEADING_REVIEWS;?></span> </a>
   </div>
     <?php
   $random_select = "
@@ -90,13 +88,11 @@ if (
   having p.products_status != '0' and p.products_status != '3'
   ";
   $random_select .= " order by c desc limit 3";
-  //$random_product = tep_random_select($random_select);
 
   $info_box_contents = array();
   $random_reviews_query = tep_db_query($random_select);
   if (tep_db_num_rows($random_reviews_query)) {
 // display random review box
-    // ccdd
     while ($random_product = tep_db_fetch_array($random_reviews_query)) { 
     $review_query = tep_db_query("
         select substring(reviews_text, 1, 60) as reviews_text 

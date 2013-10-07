@@ -63,7 +63,7 @@
         and site_id = '" . SITE_ID . "'
       ")) > REVIEWS_DAY_LIMIT) {
       $form_error = true;
-      $error_message .= '※ 今日あまりにも多いコメントを送りました、明日送ってください。\n';
+      $error_message .= '※ 今日あまりにも多いコメントを送りました。明日送ってください。\n';
     }
     $last_reviews_query = tep_db_query("
       select * from ".TABLE_REVIEWS." where reviews_ip = '".$_SERVER['REMOTE_ADDR']."' order by date_added DESC

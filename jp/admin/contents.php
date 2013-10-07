@@ -88,7 +88,7 @@
         }
         forward401Unless(editPermission($site_arr, $site_id));
 
-        $an_cols = array('navbar_title','heading_title','text_information');
+        $an_cols = array('navbar_title','heading_title');
         $error = false; 
         foreach ($an_cols as $col) {
           $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
@@ -130,7 +130,7 @@
         }
         break;
       case 'insert':
-        $an_cols = array('navbar_title','heading_title','text_information');
+        $an_cols = array('navbar_title','heading_title');
         $error = false; 
         foreach ($an_cols as $col) {
           $_POST[$col] = tep_an_zen_to_han($_POST[$col]);

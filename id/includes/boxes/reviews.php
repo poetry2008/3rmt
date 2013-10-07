@@ -15,7 +15,6 @@ if (
 <!-- reviews -->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
-    // ccdd
     $reviews_query = tep_db_query("
         select r.reviews_rating, 
                r.reviews_id, 
@@ -44,7 +43,7 @@ if (
     }
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;" summary="reviews">
-  <tr><td height="27"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" height="27" alt="<?php echo BOX_REVIEWS_SHOW_TITLE;?>" src="images/design/title_img12.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a></td></tr>
+  <tr><td height="27"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" height="27" alt="<?php echo BOX_REVIEWS_SHOW_TITLE;?>" src="images/design/title_img12.gif" ></a></td></tr>
   <tr>
     <td class="boxText_reviews">
     <?php
@@ -93,7 +92,6 @@ if (
 
   if ($random_product) {
 // display random review box
-    // ccdd
     $review_query = tep_db_query("
         select substring(reviews_text, 1, 60) as reviews_text 
         from " . TABLE_REVIEWS_DESCRIPTION . " 
@@ -110,9 +108,6 @@ if (
   } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
     echo '<table border="0" cellspacing="2" cellpadding="2" width="100%">';
-    //echo ' <tr><td class="boxText">
-        //<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'box_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>
-      //</td>';
     echo '<tr><td class="boxText02">
         <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a>
       </td></tr>

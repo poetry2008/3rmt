@@ -15,18 +15,17 @@ if (
 <!-- reviews -->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
-    // ccdd
     $reviews_query = tep_db_query("
         select r.reviews_rating, 
                r.reviews_id, 
-               r.customers_name
+               r.customers_name 
         from " .  TABLE_REVIEWS . " r 
         where r.products_id = '" .  (int)$_GET['products_id'] . "' 
           and r.reviews_status = '1' 
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-     echo  '<div class="sep">&nbsp;</div><div class="pageHeading_long">'.$product_info['products_name'] .'のレビュー</div>'."\n" . '<div id="contents">'."\n" ;
+     echo  '<div class="sep">&nbsp;</div><div class="pageHeading_long">'.$product_info['products_name'] .BOX_REVIEWS_LINK_TEXT.'</div>'."\n" . '<div id="contents">'."\n" ;
          while ($reviews = tep_db_fetch_array($reviews_query)) {
         $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
@@ -81,8 +80,8 @@ if (
   ) p
   where psid = '0'
      or psid = '".SITE_ID."'
-  having p.products_status != '0' and p.products_status != '3' 
   group by reviews_id
+  having p.products_status != '0' and p.products_status != '3' 
   ";
   $random_select .= " order by reviews_id desc";
   $random_product = tep_random_select($random_select);
@@ -91,7 +90,6 @@ if (
 
   if ($random_product) {
 // display random review box
-    // ccdd
     $review_query = tep_db_query("
         select substring(reviews_text, 1, 60) as reviews_text 
         from " . TABLE_REVIEWS_DESCRIPTION . " 

@@ -96,7 +96,6 @@ if (
 
   if ($random_product) {
 // display random review box
-    // ccdd
     $review_query = tep_db_query("
         select reviews_text 
         from " . TABLE_REVIEWS_DESCRIPTION . " 
