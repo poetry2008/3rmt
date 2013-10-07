@@ -436,6 +436,7 @@ UL {
 	border: solid 1px #eee;
 	background: #F6F6F5;
 	padding: 8px;
+        word-wrap:break-word;word-break:break-all;
 }
 .reviews_area p{
 	margin: 0px;
@@ -2256,7 +2257,7 @@ line-height:16px;
 .margin_clear{
   margin:0px;
 }
-.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box{margin:0 2px 0 0px;height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .text_box{ margin-top:5px;}

@@ -2768,7 +2768,7 @@ searching
 .margin_clear{
   margin:0px;
 }
-.input_box{margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box{margin:0 2px 0 0; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .text_box{ margin-top:5px;}
@@ -3000,4 +3000,7 @@ searching
 .seach_before_info a:hover{
 	color: #04DBEC; 
 	font-size:12px;
+}
+#contents .table_wrap{
+        word-wrap:break-word;word-break:break-all;
 }

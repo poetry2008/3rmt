@@ -1974,7 +1974,7 @@ color: #005c69;
 .send_mail td{
 	font-size:11px;
 }
-.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box{margin:0 2px 0 0px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .text_box{ margin-top:3px;}
@@ -1989,4 +1989,7 @@ color: #005c69;
 }
 .table_select select{
 	margin-left:0;
+}
+.table_wrap{
+        word-wrap:break-word;word-break:break-all;
 }

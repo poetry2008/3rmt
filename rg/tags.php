@@ -71,6 +71,7 @@ echo $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET
 </tr>
 </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
+<tr>
 <td class="smallText" style="border-bottom:#ccc solid 1px;">
 <?php echo $tags_split->display_links($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y')));?>
 <br><br>

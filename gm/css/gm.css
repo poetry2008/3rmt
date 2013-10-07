@@ -1561,3 +1561,6 @@ top:70px;
 #text_spacing {
         letter-spacing: 0;
 }
+.table_wrap{
+        word-wrap:break-word;word-break:break-all;
+}

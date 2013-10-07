@@ -2512,7 +2512,7 @@ line-height:21px;
 .margin_clear{
   margin:0px;
 }
-.input_box{margin:0 2px 0 0px;*margin:0 2px 0 -4px; height:20px; float:left;}
+.input_box{margin:0 2px 0 0px; height:20px; float:left;}
 .input_box input,.input_box span{ float:left; line-height:22px;}
 .input_both{clear:both;}
 .text_box{ margin-top:5px;}
@@ -2527,4 +2527,7 @@ line-height:21px;
 }
 .table_select select{
 	margin-left:0;
+}
+.table_wrap{
+        word-wrap:break-word;word-break:break-all;
 }

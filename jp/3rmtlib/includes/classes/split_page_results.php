@@ -203,9 +203,9 @@
           echo '<form method="post" action="'.tep_href_link('handle_split.php').'">'; 
         }
         if ($current_page_number) {
-          echo '&nbsp;<input type="text" class="input_box" name="j_page" value="'.$current_page_number.'" size="2">'; 
+          echo '<input type="text" class="input_box" name="j_page" value="'.$current_page_number.'" size="2">'; 
         } else {
-          echo '&nbsp;<input type="text" class="input_box" name="j_page" value="1" size="2">'; 
+          echo '<input type="text" class="input_box" name="j_page" value="1" size="2">'; 
         }
         echo '<input type="hidden" name="split_param" value="'.$parameters.'">'; 
         echo '<input type="hidden" name="current_file_info" value="'.basename($PHP_SELF).'">'; 
