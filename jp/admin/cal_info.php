@@ -112,7 +112,14 @@ require("includes/note_js.php");
               $list_status_arr[]= array($orders_status_res['orders_status_name'], $site_orders_pending_res['count'],'orders'); 
             } 
             //各个网站所拥有的顾客数量 
-            $site_customers_query = tep_db_query("select count(*) as count from ".TABLE_CUSTOMERS." where ".$sql_site_where); 
+            $site_customers_query = tep_db_query("select count(*) as count
+                from " . TABLE_CUSTOMERS . " c left join " . 
+                TABLE_ADDRESS_BOOK . " a 
+                on c.customers_id = a.customers_id 
+                and c.customers_default_address_id = a.address_book_id, ".
+                TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s 
+                where c.customers_id = ci.customers_info_id 
+                and c.site_id = s.id and " .  $sql_site_where); 
             $site_customers_res = tep_db_fetch_array($site_customers_query); 
              
             //商品数量 
@@ -155,7 +162,14 @@ require("includes/note_js.php");
             $site_reviews_res = tep_db_fetch_array($site_reviews_query); 
             $list_status_arr[] = array(HEADER_ENTRY_CAL_REVIEWS, $site_reviews_res['count'],'NULL'); 
             //各个网站所拥有的顾客数量 
-            $site_customers_query = tep_db_query("select count(*) as count from ".TABLE_CUSTOMERS." where ".$sql_site_where); 
+            $site_customers_query = tep_db_query("select count(*) as count
+                from " . TABLE_CUSTOMERS . " c left join " . 
+                TABLE_ADDRESS_BOOK . " a 
+                on c.customers_id = a.customers_id 
+                and c.customers_default_address_id = a.address_book_id, ".
+                TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s 
+                where c.customers_id = ci.customers_info_id 
+                and c.site_id = s.id and " .  $sql_site_where); 
             $site_customers_res = tep_db_fetch_array($site_customers_query); 
             $list_status_arr[] = array(HEADER_ENTRY_CAL_CUSTOMERS, $site_customers_res['count'],'NULL'); 
             $list_arr = array();

@@ -110,7 +110,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents01" > 
+          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_contents" > 
               <tr> 
                 <?php
   if ($sendto != false) {
@@ -265,7 +265,7 @@ if(!empty($_SESSION['options'])){
 ?>
           <tr> 
             <td>
-<table class="infoBoxContents01">
+<table class="box_contents">
 <tr>
   <td class="main" colspan="2"><b><?php echo TEXT_OPTIONS_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
@@ -568,7 +568,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
         </tr> 
         <tr> 
           <td>
-          <table class="infoBoxContents01" width="100%"> 
+          <table class="box_contents" width="100%"> 
               <tr> 
                 <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                     <tr> 
@@ -701,7 +701,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
         </tr> 
         <tr> 
           <td>
-            <table class="infoBoxContents01" width="100%"> 
+            <table class="box_contents" width="100%"> 
               <tr> 
                 <td>
                   <table border="0" cellspacing="0" cellpadding="2"> 
@@ -753,7 +753,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 ?> 
        
         <tr> 
-          <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents01"> 
+          <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_contents"> 
               <tr> 
                 <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                 <tr> 

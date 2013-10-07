@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-define('NAVBAR_CHANGE_PREORDER_TITLE', '最終確認');
+define('NAVBAR_CHANGE_PREORDER_TITLE', 'ご注文内容を確認してください  （ご注文はまだ確定しておりません！）');
 define('PRORDER_CONFIRM_PRODUCT_INFO', '数量 / 商品名');
 define('PRODUCT_UNIT_TEXT', '個');
 define('MONEY_UNIT_TEXT', '円');
@@ -22,3 +22,7 @@ define('TEXT_SHIPPING_FEE_FREE','無料');
 define('PREORDER_TRADER_LINE_TITLE', '配送方法');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続完了！');
+define('TEXT_EDIT', '変更する');
+define('HEADING_PAYMENT_INFORMATION', 'お支払いについて');
+define('HEADING_ORDER_COMMENTS', 'ご注文についてのコメント');
+define('HEADING_BILLING_INFORMATION', 'ご請求について');

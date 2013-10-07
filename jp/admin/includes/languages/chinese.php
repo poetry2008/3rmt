@@ -72,7 +72,7 @@ define('BOX_HEADING_MODULES', '模块设置');
 define('BOX_MODULES_PAYMENT', '支付模块设置');
 define('BOX_MODULES_SHIPPING', '配送模块');
 define('BOX_MODULES_ORDER_TOTAL', '合计模块设置');
-define('BOX_MODULES_METASEO', 'SEO模块设置');
+define('BOX_MODULES_METASEO', '设置SEO信息');
 
 // categories box text in includes/boxes/catalog.php
 define('BOX_HEADING_CATALOG', '商品管理');

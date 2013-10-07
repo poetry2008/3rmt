@@ -149,14 +149,14 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
 
 function change_num(ob,targ, quan, a_quan)
 {
+  jq("#quantity_error").html('');
   var product_quantity = document.getElementById(ob);
-  product_quantity.value = dbc2sbc(product_quantity.value);
   if(isNaN(product_quantity.value)||product_quantity.value==''){
-    product_quantity.value = 0;
+    jq("#quantity_error").html('<?php echo TEXT_PRODUCT_QUANTITY_ERROR;?>');
   }else{
     var product_quantity_reg = new RegExp(/\.|\-/);
     if(product_quantity_reg.test(product_quantity.value)){
-      product_quantity.value = 0; 
+      jq("#quantity_error").html('<?php echo TEXT_PRODUCT_QUANTITY_ERROR;?>');
     }else{
       if(product_quantity.value.substr(0,1) == 0 || product_quantity.value.substr(0,1) == '+'){
         var length = product_quantity.value.length;
@@ -179,16 +179,24 @@ function change_num(ob,targ, quan, a_quan)
   }
   var product_quantity_num = parseInt(product_quantity.value);
   if (targ == 'up') { 
-    if (product_quantity_num >= a_quan) {
-      num_value = product_quantity_num;
-    } else {
-      num_value = product_quantity_num + quan; 
+  if(isNaN(product_quantity.value)||product_quantity.value==''){
+      jq("#quantity_error").html('<?php echo TEXT_PRODUCT_QUANTITY_ERROR;?>');
+    }else{
+      if (product_quantity_num >= a_quan) {
+        num_value = product_quantity_num;
+      } else {
+        num_value = product_quantity_num + quan; 
+      }
     }
   } else if(targ == 'down') {
-    if (product_quantity_num <= 1) {
-      num_value = product_quantity_num;
-    } else { 
-      num_value = product_quantity_num - quan;
+    if(isNaN(product_quantity.value)||product_quantity.value==''){
+      jq("#quantity_error").html('<?php echo TEXT_PRODUCT_QUANTITY_ERROR;?>');
+    }else{
+      if (product_quantity_num <= 1) {
+        num_value = product_quantity_num;
+      } else { 
+        num_value = product_quantity_num - quan;
+      }
     }
   }else {
     num_value = product_quantity.value;
@@ -513,7 +521,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                               </div>
                             </td>
-                            <td class="main">&nbsp;<?php echo TEXT_UNIT;?>&nbsp;</td>
+                            <td class="main">&nbsp;<?php echo TEXT_UNIT;?>&nbsp;<span id="quantity_error"><?php echo $quantity_error == true ? TEXT_PRODUCT_QUANTITY_ERROR : '';?></span></td>
                             </tr></table>
                             </td>
                           </tr>

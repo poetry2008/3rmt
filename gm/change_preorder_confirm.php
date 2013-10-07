@@ -269,7 +269,7 @@ function check_preorder_op(pre_pid)
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
-                <b><?php echo PRORDER_CONFIRM_PRODUCT_INFO;?></b> 
+                <h3><b><?php echo PRORDER_CONFIRM_PRODUCT_INFO;?></b></h3> 
               </td>
             </tr>
             <?php
@@ -283,7 +283,7 @@ function check_preorder_op(pre_pid)
                     
                     <td class="confirmation_product_num_info" align="right" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
-                    <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
+                    <?php echo '<br><span style="font-size:10px">'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']).'</span>';?> 
                     
                     </td>                  
                     <td class="main">
@@ -377,7 +377,7 @@ foreach($all_show_option_id as $t_item_id){
     $all_show_option[$t_item_id]['option_info']!=''){
     $all_attr_info = @unserialize(stripslashes($all_show_option[$t_item_id]['option_info'])); 
     if(is_array($all_attr_info)){
-    echo $all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
+    echo '<small>&nbsp;<i> - '.$all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
     if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
       if ((int)$preorder_product_res['products_price'] != '0') {
         if($all_show_option[$t_item_id]['options_values_price'] < 0){
@@ -387,11 +387,11 @@ foreach($all_show_option_id as $t_item_id){
         }
       } 
     }
-        echo '<br>';
+        echo '<br></i></small>';
     }
   }else{
     if($all_show_option[$t_item_id]['front_title']){
-    echo $all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
+    echo '<small>&nbsp;<i> - '.$all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
       '', $all_show_option[$t_item_id]['of_value']); 
     }
     if ($all_show_option[$t_item_id]['type'] == 'radio') {
@@ -442,6 +442,7 @@ foreach($all_show_option_id as $t_item_id){
     if($all_show_option[$t_item_id]['front_title']){
         echo '<br>';
     }
+    echo '</i></small>';
   }
 }
 ?>
@@ -475,7 +476,7 @@ foreach($all_show_option_id as $t_item_id){
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
-                <b><?php echo TEXT_ADDRESS;?></b> 
+                <h3><b><?php echo TEXT_ADDRESS;?></b></h3> 
               </td>
             </tr>
             <tr>
@@ -506,9 +507,10 @@ foreach($all_show_option_id as $t_item_id){
 ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main">
-                <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b> 
-              </td>
+              <td class="main"><h3>
+                <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b>
+                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str']) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
+              </h3></td>
             </tr>
             <tr>
               <td class="main">
@@ -565,40 +567,39 @@ foreach($all_show_option_id as $t_item_id){
           </table>
           <br> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-            <tr>
-              <td class="main" width="30%" valign="top">
-                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
-                  <tr>
-                    <td class="main"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
-                  </tr>
-                  <tr>
-                    <td class="main">
-                    <?php echo $preorder_res['payment_method'];?> 
-                    </td>                  
-                  </tr>
-                </table> 
-              </td>
-              <td width="70%" align="right" valign="top">
-                <table border="0" cellpadding="2" cellspacing="0"> 
+           <tr>
+           <td colspan="3"><br><h3><b><?php echo HEADING_BILLING_INFORMATION; ?></b></h3></td>
+           </tr>
+           <tr>
+           <td class="main" colspan="3"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
+           </tr>
+           <tr>
+           <td class="main" colspan="3">
+           <?php echo $preorder_res['payment_method'];?> 
+           </td>                  
+           </tr>
+           <tr>
                   <?php
                   $total_param = '0'; 
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                     if ($preorder_total_res['class'] == 'ot_total') {
                      //点数
+                     if($preorder_point_title != '' && $preorder_point_value != ''){
                      ?>
                     <tr>
-                    <td class="main" align="right"><?php echo $preorder_point_title;?></td>                  
-                    <td class="main" align="right"><?php echo $preorder_point_value;?></td>
+                    <td class="main" align="right" colspan="2" width="80%"><?php echo $preorder_point_title;?></td>                  
+                    <td class="main" align="right" width="20%"><?php echo $preorder_point_value;?></td>
                     </tr>
                     <?php
+                     }
                     $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
                     if ($shipping_fee != 0) {
                     ?>
                       <tr>
-                        <td class="main" align="right">
+                        <td class="main" align="right" colspan="2" width="80%">
                           <?php echo TEXT_SHIPPING_FEE;?></td> 
-                        <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
+                        <td class="main" align="right" width="20%"><?php echo $shipping_fee_str;?></td> 
                       </tr>
                    <?php
                     }
@@ -610,8 +611,8 @@ foreach($all_show_option_id as $t_item_id){
                       if (!empty($preorder_total_info_array['fee'])) {
                   ?>
                       <tr>
-                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
+                        <td class="main" align="right" colspan="2" width="80%"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right" width="20%"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
                       </tr>
                   <?php
                       } else {
@@ -628,8 +629,8 @@ foreach($all_show_option_id as $t_item_id){
                         if ($handle_fee) {
                   ?>
                       <tr>
-                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                        <td class="main" align="right"><?php echo $currencies->format_total($handle_fee);?></td> 
+                        <td class="main" align="right" colspan="2" width="80%"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right" width="20%"><?php echo $currencies->format_total($handle_fee);?></td> 
                       </tr>
                       <?php
                           }
@@ -672,8 +673,8 @@ foreach($all_show_option_id as $t_item_id){
                   ?>
                   
                   <tr>
-                    <td class="main" align="right"><?php echo $preorder_total_res['class'] == 'ot_custom' ? $preorder_total_res['title'].':' : $preorder_total_res['title'];?></td>                  
-                    <td class="main" align="right">
+                    <td class="main" align="right" colspan="2" width="80%"><?php echo $preorder_total_res['class'] == 'ot_custom' ? $preorder_total_res['title'].':' : $preorder_total_res['title'];?></td>                  
+                    <td class="main" align="right" width="20%">
                  <?php 
                     }
                     if ($preorder_total_res['class'] == 'ot_point') {
@@ -787,7 +788,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 }
                   ?>
                   <tr>
-                    <td class="main" align="right">
+                    <td class="main" align="right" colspan="2" width="80%">
                     <?php 
                     if (isset($show_point_single)) {
                       if ($preorder_get_point == 0) {
@@ -800,12 +801,85 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                     }
                     ?>
                     </td> 
-                    <td class="main" align="right"><?php echo (int)$preorder_get_point.'&nbsp;P';?></td> 
-                  </tr>
-                </table> 
-              </td>
-            </tr>
+                    <td class="main" align="right" width="20%"><?php echo (int)$preorder_get_point.'&nbsp;P';?></td> 
+                  </tr> 
           </table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<?php
+if (is_array($payment_modules->modules)) {
+
+  if ($confirmation = $payment_modules->confirmation(payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE))) {
+    ?> 
+      <tr> 
+      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
+      <tr> 
+      <td class="main">&nbsp;<h3><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></h3></td> 
+      </tr>  
+      <tr> 
+      <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+      <tr class="infoBoxContents"> 
+      <td><table border="0" cellspacing="0" cellpadding="2"> 
+      <tr> 
+      <td class="main" colspan="4"><?php
+      echo $confirmation['title']; ?></td> 
+      </tr> 
+      <?php
+      for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
+        ?> 
+          <tr> 
+          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
+          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
+          </tr> 
+          <?php
+      }
+    ?> 
+      <?php
+
+      ?>
+      </table></td> 
+      </tr> 
+      </table></td> 
+      </tr> 
+      <?php
+  }
+}
+?> 
+<tr> 
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+<?php
+$preorder_query = tep_db_query("select comment_msg from ". TABLE_PREORDERS ." where orders_id='". $_POST['pid'] ."'");
+$preorder_array = tep_db_fetch_array($preorder_query);
+tep_db_free_result($preorder_query);
+if (tep_not_null($preorder_array['comment_msg'])) {
+  ?> 
+    <tr> 
+    <td class="main"><h3><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b>'; ?></h3></td> 
+    </tr> 
+    <tr> 
+    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+    </tr> 
+    <tr> 
+    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+    <tr class="infoBoxContents"> 
+    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+    <tr> 
+    <td class="main"><div><?php echo nl2br(htmlspecialchars($preorder_array['comment_msg'])) . tep_draw_hidden_field('comments', $preorder_array['comment_msg']); ?></div></td> 
+    </tr> 
+    </table></td> 
+    </tr> 
+    </table></td> 
+    </tr> 
+    <tr> 
+    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+    </tr> 
+    <?php
+}
+?>
+</table>
           </div>
           <br> 
           <div id="hm-checkout-warp">

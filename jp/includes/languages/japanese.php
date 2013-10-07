@@ -514,5 +514,7 @@ define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━�
 define('TEXT_PRODUCTS_OPTION_CHANGE_ERROR','<font color="red">商品情報に更新があった為、ショッピングカートから削除されました。お手数ですが、再度最初からお手続きをお願いいたします。</font>');
 define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
 define('TEXT_PRODUCTS_SORT_FIRST_FEW','位');
+define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
+define('IMAGE_BUTTON_PREORDER','予約する');
 define('SEARCH_NO_TOP_CATEGORY', 'データがありません');
 ?>
