@@ -17,19 +17,12 @@ if (
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     // ccdd
     $reviews_query = tep_db_query("
-        select rd.reviews_text, 
-               r.reviews_rating, 
+        select r.reviews_rating, 
                r.reviews_id, 
-               r.products_id, 
-               r.customers_name, 
-               r.date_added, 
-               r.last_modified, 
-               r.reviews_read 
-        from " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd 
-        where r.reviews_id = rd.reviews_id 
-          and r.products_id = '" .  (int)$_GET['products_id'] . "' 
+               r.customers_name 
+        from " .  TABLE_REVIEWS . " r 
+        where r.products_id = '" .  (int)$_GET['products_id'] . "' 
           and r.reviews_status = '1' 
-          and  r.products_id not in".tep_not_in_disabled_products()." 
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
