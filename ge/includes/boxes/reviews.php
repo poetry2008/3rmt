@@ -25,7 +25,7 @@ if (
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-     echo  '<div class="sep">&nbsp;</div><div class="pageHeading_long">'.$product_info['products_name'] .BOX_REVIEWS_LINK_TEXT.'</div>'."\n" . '<div id="contents">'."\n" ;
+     echo  '<div class="sep">&nbsp;</div><h3>'.$product_info['products_name'] .BOX_REVIEWS_LINK_TEXT.'</h3>'."\n" . '<div id="contents">'."\n" ;
          while ($reviews = tep_db_fetch_array($reviews_query)) {
         $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 

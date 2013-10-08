@@ -297,7 +297,7 @@ function showimage($1) {
                     <?php } ?>
 
                       <?php
-                      if(!empty($data1[0])){
+                      if(!empty($data1[0]) && !empty($data1[1])){
                       ?>
                     <tr>
                       <td><?php echo $data1[0] ; ?></td>
@@ -305,7 +305,7 @@ function showimage($1) {
                     </tr>
                     <?php } ?>
                     <?php 
-                      if(!empty($data2[0])){
+                      if(!empty($data2[0]) && !empty($data2[1])){
                       ?>
                     <tr>
                       <td><?php echo $data2[0] ; ?></td>

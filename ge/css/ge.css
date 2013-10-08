@@ -313,7 +313,7 @@ SPAN.errorText {
 }
 .sep {
 	border-top:1px solid #5E5E5E;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 /* content
 */
@@ -1637,6 +1637,6 @@ TEXTAREA {
 .table_select select{
 	margin-left:0;
 }
-#contents .table_wrap{
+.table_wrap{
         word-wrap:break-word;word-break:break-all;
 }

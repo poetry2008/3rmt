@@ -493,10 +493,8 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 </td>
                         <td>
                         <div class="top_and_bottom">
-                        <?php
-                            echo '<a onclick="change_num(\'quantity\',\'up\',1,'.  $p_a_quan.')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
-                            echo '<a onclick="change_num(\'quantity\',\'down\',1,'.  $p_a_quan.')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
-                            ?>
+                        <a style="display:block;" href="javascript:void(0)" onclick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/nup.gif" style="vertical-align:bottom;"></a>
+                        <a style="display:block;" href="javascript:void(0)" onclick="change_num('quantity','down',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ndown.gif" style="vertical-align:top;"></a>
                          </div>
                               </td>
                               <td class="main">
