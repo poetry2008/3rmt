@@ -23,7 +23,7 @@
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
         <div > 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+          <table class="table_wrap" border="0" width="95%" cellspacing="0" cellpadding="0"> 
 <?php if (($reviews_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) { ?>
       <tr>
         <td>
