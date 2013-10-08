@@ -28,4 +28,10 @@ if ($_GET['action'] == 'calc_price') {
     echo $_SESSION['option'];
     exit;
   }
+}else if ($_GET['action'] == 'process_reorder') {
+  if(isset($_SESSION['reorder_flag'])&&$_SESSION['reorder_flag']){
+    echo 'true';
+  }else{
+    echo 'false';
+  }
 }

@@ -30,5 +30,5 @@ define('TEXT_EXPECT_TRADE_TIME', 'お届け希望時間');
 define('TEXT_NOSCRIPT_INFO','<font color="red"><b>JavaScriptを有効に設定してからご利用ください。</b></font><br>セキュリティソフトの誤操作等により、お客様が意図しない設定に変更される事もあります。操作に覚えが無い場合でも設定をご確認ください。<br>設定方法がわからない場合は、FirefoxやChromeなどのブラウザをダウンロードしてご利用ください。当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。');
 define('TEXT_ACTION_REORDER_CONFIRM','確定');
 define('TEXT_REORDER_SHIPPING_TIME_SELECT','【お届け希望時間】を選択してください。');
-define('TEXT_REORDER_BOTH','このフォームは既に送信されています。');
+define('TEXT_REORDER_BOTH','このフォームは既に送信されました。');
 ?>
