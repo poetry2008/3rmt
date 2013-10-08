@@ -203,15 +203,7 @@ $preorder_products_array = array(
     for ($j=0, $n2=sizeof($preorder_products_array['op_attributes']); $j<$n2; $j++) {  
       $all_show_option[$preorder_products_array['op_attributes'][$j]['item_id']] 
       = $preorder_products_array['op_attributes'][$j];
-      /*
-      $op_price = tep_get_show_attributes_price($preorder_products_array['op_attributes'][$j]['item_id'], $preorder_products_array['op_attributes'][$j]['group_id'], $preorder_products_array['op_attributes'][$j]['value']); 
-       
-      echo '<br><small>&nbsp;<i> - ' .  $preorder_products_array['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $preorder_products_array['op_attributes'][$j]['value']);
-      if ($op_price != '0') {
-        echo ' ('.$currencies->format($op_price).')'; 
-      }
-      echo '</i></small>';
-      */
+      
     }
   }
   
@@ -219,14 +211,7 @@ $preorder_products_array = array(
    for ($jk=0, $n3=sizeof($preorder_products_array['ck_attributes']); $jk<$n3; $jk++) {
       $all_show_option[$preorder_products_array['ck_attributes'][$jk]['item_id']] 
       = $preorder_products_array['ck_attributes'][$jk];
-      /*
-      $cop_price = tep_get_show_attributes_price($preorder_products_array['ck_attributes'][$jk]['item_id'], $preorder_products_array['ck_attributes'][$jk]['group_id'], $preorder_products_array['ck_attributes'][$jk]['value']); 
-      echo '<br><small>&nbsp;<i> - ' .  $preorder_products_array['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $preorder_products_array['ck_attributes'][$jk]['value']);
-      if ($cop_price != '0') {
-        echo ' ('.$currencies->format($cop_price).')'; 
-      }
-      echo '</i></small>';
-      */
+      
     }
   }
   // new option list 
@@ -479,8 +464,9 @@ if (tep_not_null($_POST['yourmessage'])) {
 if (is_array($payment_modules->modules)) {
   echo $payment_modules->process_button($payment);
 }
+echo '<a href="javascript:void(0);" onclick="check_error();">';
+echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER).'</a>';
 ?>
-<a href="javascript:void(0);" onclick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a>
     </div>  
 </div> 
 <!-- body_text_eof //-->  

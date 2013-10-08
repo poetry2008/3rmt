@@ -352,7 +352,6 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
         <?php
         }
         ?>
-        //$("#error_"+x).html('');
     }
     if(arr_str != ''){
       ++j_num;
@@ -639,17 +638,13 @@ if ($error == false && $_POST['action'] == 'process') {
   }
   tep_db_free_result($address_query);
 
-//echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
 $preorder_information = array();
 foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {
-      //echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
-      //$preorder_info_attr[] = $ps_value;
       $preorder_information[$post_key][$ps_key] = $ps_value; 
     }
   } else {
-    //echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
     if(substr($post_key,0,3) == 'ad_'){
 
       if($options_comment[substr($post_key,3)] == $post_value){
@@ -666,8 +661,6 @@ if (!tep_session_is_registered('preorder_information')) {
    tep_session_register('preorder_information');
 }
 tep_redirect(tep_href_link('change_preorder_confirm.php'));
-//echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 
-//echo '</form>';
 ?>
 <script type="text/javascript">
 document.forms.order1.submit(); 
@@ -807,9 +800,6 @@ document.forms.order1.submit();
               <td class="main">
               <?php 
               echo str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
-              //if ($old_attr_res['options_values_price'] != '0') {
-                //echo ' ('.$currencies->format($old_attr_res['options_values_price'] * $preorder_product_res['products_quantity']).')'; 
-              //}
               ?>
               </td> 
             </tr>

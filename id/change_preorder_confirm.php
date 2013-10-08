@@ -328,19 +328,9 @@ function check_preorder_op(pre_pid)
                       order by it.sort_num,it.title");
                     while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
                       $all_show_option[$old_attr_res['item_id']] = $old_attr_res; 
-                      /*
-                      echo '<br>';  
-                      $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
-                      echo $old_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
-                      if ($old_attr_res['options_values_price'] != '0') {
-                        if ($preorder_product_res['products_price'] != '0') {
-                          echo ' ('.$currencies->format($old_attr_res['options_values_price']).')'; 
-                        } 
-                      }
-                      */
+                      
                     }
                     if (!empty($option_info_array)) {
-                      //echo '<br>';  
                       foreach ($option_info_array as $of_key => $of_value) {
                         $of_key_array = explode('_', $of_key); 
                         $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$of_key_array[3]."' and name = '".$of_key_array[1]."'");  
@@ -348,27 +338,7 @@ function check_preorder_op(pre_pid)
                         if ($option_item) {
                           $all_show_option[$option_item['id']] = $option_item; 
                           $all_show_option[$option_item['id']]['of_value'] = $of_value; 
-                          /*
-                          echo $option_item['front_title'].':'.str_replace(array("<br>", "<BR>"), '', $of_value); 
-                          if ($option_item['type'] == 'radio') {
-                            $r_option_array = @unserialize($option_item['option']);
-                            if (!empty($r_option_array['radio_image'])) {
-                              foreach ($r_option_array['radio_image'] as $ro_key => $ro_value) {
-                                if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ro_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($of_value))))) {
-                                  if ($ro_value['money'] != '') {
-                                    echo ' ('.$currencies->format($ro_value['money']).')'; 
-                                  }
-                                  break; 
-                                }
-                              }
-                            }
-                          } else {
-                            if ($option_item['price'] != '0') {
-                              echo ' ('.$currencies->format($option_item['price']).')'; 
-                            }
-                          }
-                          echo '<br>'; 
-                        */
+                          
                         }
                       }
                     }
@@ -492,7 +462,6 @@ foreach($all_show_option_id as $t_item_id){
                         echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
-                        //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
                         echo '</tr>';
                       }
                     }
@@ -738,7 +707,6 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
   
   $total_buyed_date = 0;
-  // ccdd
   $customer_level_total_query = tep_db_query("select * from preorders where customers_id = '".$preorder_res['customers_id']."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
   if(tep_db_num_rows($customer_level_total_query)) {
     while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
