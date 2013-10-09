@@ -11,3 +11,7 @@ define('META_INFO_KEYWORD_TEXT', '关键字');
 define('META_INFO_DESCRIPTION_TEXT', '说明');
 define('META_INFO_ROBOT_TEXT', '爬虫');
 define('META_INFO_COPYRIGHT_TEXT', '版权');
+define('META_INFO_COPY_TEXT', '复制');
+define('META_INFO_COPY_TITLE', '%s的复制');
+define('META_INFO_COPY_SITE', '复制指定的网站');
+define('META_INFO_SELECT_SITE_WARING', '至少选择1个网站。');

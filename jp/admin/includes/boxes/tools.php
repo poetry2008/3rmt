@@ -56,6 +56,13 @@
          echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_PW_MANAGER).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_identity.gif').'</span><span>' .FILENAME_PW_MANAGER_TEXT.  '</span></div>';
        }
      }
+     if (!check_whether_is_limited(FILENAME_CONFIGURATION_META)) {
+       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_CONFIGURATION_META){ 
+         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION_META, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_seo.gif').'</span><span>'.BOX_MODULES_METASEO.'</span></div>';
+       }else{
+         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION_META, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_seo.gif').'</span><span>'.BOX_MODULES_METASEO.'</span></div>';
+       }
+     }
      if (!check_whether_is_limited(FILENAME_DEFINE_LANGUAGE)) {
        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_DEFINE_LANGUAGE){
          echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_DEFINE_LANGUAGE).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_language_file.gif').'</span><span>' .  BOX_TOOLS_DEFINE_LANGUAGE . '</span></div>';
