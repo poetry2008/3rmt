@@ -25,3 +25,4 @@ define('PREORDER_FINISH_LINE_TITLE', '手続完了！');
 define('TEXT_EDIT', '変更する');
 define('HEADING_PAYMENT_INFORMATION', 'お支払いについて');
 define('HEADING_ORDER_COMMENTS', 'ご注文についてのコメント');
+define('HEADING_BILLING_INFORMATION', 'ご請求について');

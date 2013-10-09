@@ -4,6 +4,9 @@
 */
 require('includes/application_top.php');
 require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_REORDER);
+if(!$_POST){
+  $_SESSION['reorder_flag'] = true;
+}
 
 $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
@@ -48,7 +51,7 @@ document.onclick=function(e){
       <!-- body_text -->
       <td id="contents" valign="top">
         <div class="pageHeading"><h1><?php echo HEADING_TITLE; ?></h1></div>
-<?php if ($_POST) {
+<?php if ($_POST&&isset($_SESSION['reorder_flag'])&&$_SESSION['reorder_flag']) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
   if(isset($_POST['order_id'])){
@@ -61,7 +64,6 @@ document.onclick=function(e){
   $cEmail = str_replace("\xe2\x80\x8b", '', $cEmail);
   
   $o      = new order($oID);
-  // ccdd
   $order  = tep_db_fetch_array(tep_db_query("
         select * 
         from `".TABLE_ORDERS."` 
@@ -146,8 +148,8 @@ document.onclick=function(e){
                 '".tep_db_input($order['customers_name'])."'
               )
           ";
-          // ccdd
           tep_db_query($sql);
+        unset($_SESSION['reorder_flag']);
         echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.' <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div>';
         // sent mail to customer
 
@@ -162,7 +164,6 @@ document.onclick=function(e){
   $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
 
   # Check
-  // ccdd
   $NewOidQuery = tep_db_query("
       select count(*) as cnt 
       from ".TABLE_ORDERS." 
@@ -249,7 +250,6 @@ document.onclick=function(e){
   # 邮件正文调整 --------------------------------------
   $email_order = '';
 
-  // ccdd
   $otq = tep_db_query("
       select * 
       from ".TABLE_ORDERS_TOTAL." 
@@ -362,6 +362,22 @@ document.onclick=function(e){
     } else {
         // edit order
 ?>
+<script language="javascript">
+$(document).ready(function(){
+  $.ajax({
+    url: 'ajax_process.php?action=process_reorder',
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(data){
+      if(data=='false'){
+        alert('<?php echo TEXT_REORDER_BOTH;?>');
+        location.href = '<?php tep_href_link(FILENAME_REORDER);?>';
+      }
+    }
+  });
+});
+</script>
 <div class="comment">
 <div id='form'>
 <?php

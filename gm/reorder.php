@@ -5,7 +5,9 @@
 */
 require('includes/application_top.php');
 require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_REORDER);
-
+if(!$_POST){
+  $_SESSION['reorder_flag'] = true;
+}
 
 $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
@@ -47,7 +49,7 @@ document.onclick=function(e){
 <?php include('includes/search_include.php');?>
 <div id="main-content">
   <h2><?php echo HEADING_TITLE; ?></h2>
-  <?php if ($_POST) {
+<?php if ($_POST&&isset($_SESSION['reorder_flag'])&&$_SESSION['reorder_flag']) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
   if(isset($_POST['order_id'])){
@@ -60,7 +62,6 @@ document.onclick=function(e){
   $cEmail = str_replace("\xe2\x80\x8b", '', $cEmail);
   
   $o      = new order($oID);
-  // ccdd
   $order  = tep_db_fetch_array(tep_db_query("
         select * 
         from `".TABLE_ORDERS."` 
@@ -146,8 +147,8 @@ document.onclick=function(e){
                 '".tep_db_input($order['customers_name'])."'
               )
           ";
-          // ccdd
           tep_db_query($sql);
+        unset($_SESSION['reorder_flag']);
         echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.'
           <div align="right" class="botton-continue"><a href="/"><img
           src="includes/languages/japanese/images/buttons/button_back_home.gif"
@@ -371,6 +372,22 @@ document.onclick=function(e){
     } else {
         // edit order
 ?>
+<script language="javascript">
+$(document).ready(function(){
+  $.ajax({
+    url: 'ajax_process.php?action=process_reorder',
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(data){
+      if(data=='false'){
+        alert('<?php echo TEXT_REORDER_BOTH;?>');
+        location.href = '<?php tep_href_link(FILENAME_REORDER);?>';
+      }
+    }
+  });
+});
+</script>
   <div class="comment">
     <div id='form'>
       <form action="reorder.php" method="post" name="order">

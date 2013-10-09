@@ -247,6 +247,15 @@ function timeline_action(p){
   };
 }
 </script>
+<script language="javascript" type="text/javascript"><!--
+function popupWindow(url) {
+  window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
+}
+function showimage($1) {
+    document.images.lrgproduct.src = $1;
+}
+
+--></script>
 </head><body>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <div id="main">

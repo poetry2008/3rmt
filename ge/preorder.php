@@ -13,7 +13,6 @@
     forward404(); 
   }
   if (tep_session_is_registered('customer_id')) {
-//ccdd
     $account = tep_db_query("
         select customers_firstname, 
                customers_lastname, 
@@ -142,7 +141,6 @@ function change_num(value){
       </p>
 <?php
   } else {
-    //$product_info = tep_db_fetch_array($product_info_query);
 ?>
 <?php
     
@@ -418,9 +416,6 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
         <tr>
           <td class="main"><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
           <td class="main">
-<?php
-//echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
-?>
           </td>
         </tr>
         <?php }?> 

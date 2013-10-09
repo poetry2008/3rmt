@@ -430,7 +430,7 @@ $(document).ready(function(){
       <br>
       <div class="formAreaTitle"><?php echo PREORDER_EXPECT_CTITLE; ?></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-        <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td></tr>
+        <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8, $_POST['yourmessage']);?></td></tr>
       </table>
       <br>
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
