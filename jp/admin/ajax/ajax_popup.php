@@ -8251,7 +8251,7 @@ $banner_query = tep_db_query("
 
   foreach ($_POST as $p_key => $p_value) {
     if (($p_key != 'meta_e_id') && ($p_key != 'action')) {
-      $param_str .= $p_key.'='.$p_value.'&'; 
+      $param_str .= $p_key.'='.urlencode($p_value).'&'; 
     }
   }
   $param_str = substr($param_str, 0, -1); 
@@ -8493,7 +8493,7 @@ $banner_query = tep_db_query("
 
   foreach ($_POST as $p_key => $p_value) {
     if (($p_key != 'meta_e_id') && ($p_key != 'action')) {
-      $param_str .= $p_key.'='.$p_value.'&'; 
+      $param_str .= $p_key.'='.urlencode($p_value).'&'; 
     }
   }
   $param_str = substr($param_str, 0, -1); 
