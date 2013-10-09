@@ -84,8 +84,7 @@ if ($global['global_product_notifications'] != '1') {
     $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
   echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));?> 
-      </form>
-      </div> 
+      </div> </form>
       <!-- body_text_eof //--> 
   <!-- body_eof //--> 
   <!-- footer //--> 

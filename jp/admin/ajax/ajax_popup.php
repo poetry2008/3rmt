@@ -8283,7 +8283,11 @@ $banner_query = tep_db_query("
   }
   $meta_order_sql = $meta_order_sort_name.' '.$meta_order_sort;
 
-  $meta_query_raw = 'select cm.* from '.TABLE_CONFIGURATION_META.' cm, '.TABLE_SITES.' s where cm.site_id = s.id and cm.site_id in ('.tep_get_setting_site_info(FILENAME_CONFIGURATION_META).') order by '.$meta_order_sql;
+  if (isset($_POST['search'])) {
+    $meta_query_raw = 'select cm.* from '.TABLE_CONFIGURATION_META.' cm, '.TABLE_SITES.' s where (title like \'%'.trim($_POST['search']).'%\' or meta_title like \'%'.$_POST['search'].'%\' or meta_keywords like \'%'.trim($_POST['search']).'%\' or meta_description like \'%'.trim($_POST['search']).'%\' or meta_copyright like \'%'.trim($_POST['search']).'%\') and cm.site_id = s.id and cm.site_id in ('.tep_get_setting_site_info(FILENAME_CONFIGURATION_META).') order by '.$meta_order_sql;
+  } else {
+    $meta_query_raw = 'select cm.* from '.TABLE_CONFIGURATION_META.' cm, '.TABLE_SITES.' s where cm.site_id = s.id and cm.site_id in ('.tep_get_setting_site_info(FILENAME_CONFIGURATION_META).') order by '.$meta_order_sql;
+  }
   $meta_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $meta_query_raw, $meta_query_numrows);
   $meta_list_query = tep_db_query($meta_query_raw);
   $meta_array = array(); 
@@ -8317,8 +8321,10 @@ $banner_query = tep_db_query("
  
   $button = array();
   if (isset($disabled_str)) {
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(META_INFO_COPY_TEXT, $disabled_str.' id="button_save"').'</a>'; 
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' id="button_save"').'</a>'; 
   } else {
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(META_INFO_COPY_TEXT, $disabled_str.' onclick="copy_meta(\''.$_POST['meta_e_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' onclick="submit_meta_form()" id="button_save"').'</a>'; 
   }
   $buttons = array('align' => 'center', 'button' => $button); 
@@ -8449,6 +8455,83 @@ $banner_query = tep_db_query("
       );
   
   $form_str = tep_draw_form('meta_form', FILENAME_CONFIGURATION_META, 'meta_e_id='.$_POST['meta_e_id'].'&action=update_meta_info&'.$param_str);
+  $notice_box->get_form($form_str); 
+  $notice_box->get_heading($heading); 
+  $notice_box->get_contents($meta_info_row, $buttons); 
+  $notice_box->get_eof(tep_eof_hidden()); 
+ 
+  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_CONFIGURAION_META);
+}else if($_GET['action'] == 'copy_meta_info'){
+/* -----------------------------------------------------
+    功能: meta的复制弹出框
+    参数: $_GET['meta_e_id'] meta id 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CONFIGURATION_META);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  $meta_info_raw = tep_db_query("select cm.*, s.romaji from ".TABLE_CONFIGURATION_META." cm, ".TABLE_SITES." s  where s.id = cm.site_id and cm.id = '".$_POST['meta_e_id']."'");
+  $meta_info_res = tep_db_fetch_array($meta_info_raw);
+  
+  $site_list_raw = tep_db_query("select `site_permission`, `permission` from `permissions` where `userid` = '".$ocertify->auth_user."'");
+  while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
+    $site_permission_list = $site_list_res['site_permission']; 
+  }
+  if (isset($site_permission_list)) {
+    $site_list_str = $site_permission_list;  
+  } else {
+    $site_list_str = '';  
+  }
+  $site_list_array = explode(',', $site_list_str); 
+  if (!in_array($meta_info_res['site_id'], $site_list_array)) {
+    $disabled_str = 'disabled="disabled"'; 
+  }
+  
+  $page_str = '<a onclick="close_meta_info();" href="javascript:void(0);">X</a>';
+  $meta_array = array();
+
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'meta_e_id') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => sprintf(META_INFO_COPY_TITLE, $meta_info_res['title'])); 
+  $heading[] = array('align' => 'right', 'text' => $page_str); 
+
+  $button = array();
+  if (isset($disabled_str)) {
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' id="button_save"').'</a>'; 
+  } else {
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' onclick="check_copy_meta()" id="button_save"').'</a>'; 
+  }
+  $buttons = array('align' => 'center', 'button' => $button); 
+
+  $meta_info_row = array();
+  $site_info_str = ''; 
+  $site_list_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
+  while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
+    if ($site_list_res['id'] == $meta_info_res['site_id']) {
+      $site_info_str .= tep_draw_checkbox_field('select_site[]', $site_list_res['id'], false, '', 'disabled=disabled').$site_list_res['romaji'].'&nbsp;';   
+    } else {
+      if (isset($disabled_str)) {
+        $site_info_str .= tep_draw_checkbox_field('select_site[]', $site_list_res['id'], false, '', 'disabled=disabled').$site_list_res['romaji'].'&nbsp;';   
+      } else {
+        $site_info_str .= tep_draw_checkbox_field('select_site[]', $site_list_res['id']).$site_list_res['romaji'].'&nbsp;';   
+      }
+    }
+  }
+  $meta_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_COPY_SITE),
+        array('align' => 'left', 'text' => $site_info_str.'<br><span id="site_error" style="color:#ff0000;"></span>')
+      );
+
+  $form_str = tep_draw_form('copy_meta', FILENAME_CONFIGURATION_META, 'meta_e_id='.$_POST['meta_e_id'].'&action=copy_meta_info&'.$param_str);
   $notice_box->get_form($form_str); 
   $notice_box->get_heading($heading); 
   $notice_box->get_contents($meta_info_row, $buttons); 

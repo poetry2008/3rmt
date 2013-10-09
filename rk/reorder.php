@@ -51,7 +51,7 @@ document.onclick=function(e){
       <!-- body_text -->
       <td id="contents" valign="top">
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
-<?php if ($_POST) {
+<?php if ($_POST&&isset($_SESSION['reorder_flag'])&&$_SESSION['reorder_flag']) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
   if(isset($_POST['order_id'])){

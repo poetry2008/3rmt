@@ -73,13 +73,6 @@ $configuration_groups_img = array("901"=>"icon_shop_settings.gif",
                     }
                   }
                 }
-                if (!check_whether_is_limited(FILENAME_CONFIGURATION_META)) {
-                  if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_CONFIGURATION_META){ 
-                    echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION_META, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_seo.gif').'</span><span>'.BOX_MODULES_METASEO.'</span></div>';
-                  }else{
-                    echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION_META, '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_seo.gif').'</span><span>'.BOX_MODULES_METASEO.'</span></div>';
-                  }
-                }
                 ?> 
                </td>
               </tr>

@@ -11,3 +11,7 @@ define('META_INFO_KEYWORD_TEXT', 'キーワード');
 define('META_INFO_DESCRIPTION_TEXT', '説明');
 define('META_INFO_ROBOT_TEXT', 'ロボット');
 define('META_INFO_COPYRIGHT_TEXT', '著作者');
+define('META_INFO_COPY_TEXT', 'コピー');
+define('META_INFO_COPY_TITLE', '%sをコピー');
+define('META_INFO_COPY_SITE', 'コピー予定のサイト');
+define('META_INFO_SELECT_SITE_WARING', '少なくとも一つのサイトを選んでください。');

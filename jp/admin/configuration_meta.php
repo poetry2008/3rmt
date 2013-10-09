@@ -22,6 +22,7 @@ if (isset($_GET['action'])) {
   switch ($_GET['action']) {
 /* -----------------------------------------------------
    case 'update_meta_info' 更新信息    
+   case 'copy_meta_info' 复制信息    
 ------------------------------------------------------*/
     case 'update_meta_info':
       tep_isset_eof();  
@@ -39,6 +40,31 @@ if (isset($_GET['action'])) {
          'last_modified' => 'now()', 
       ); 
       tep_db_perform(TABLE_CONFIGURATION_META, $sql_data_array , 'update', 'id = \''.tep_db_prepare_input($_GET['meta_e_id']).'\''); 
+      tep_redirect(tep_href_link(FILENAME_CONFIGURATION_META, tep_get_all_get_params(array('meta_e_id', 'site_id', 'action')))); 
+      break;
+    case 'copy_meta_info':
+      tep_isset_eof();  
+      $meta_info_raw = tep_db_query("select * from ".TABLE_CONFIGURATION_META." where id = '".$_GET['meta_e_id']."'"); 
+      if (!tep_db_num_rows($meta_info_raw)) {
+        forward404(); 
+      }
+      $meta_info_res = tep_db_fetch_array($meta_info_raw); 
+      if (isset($_POST['select_site'])) {
+        $sql_data_array = array(
+         'meta_title' => tep_db_prepare_input($meta_info_res['meta_title']), 
+         'meta_keywords' => tep_db_prepare_input($meta_info_res['meta_keywords']), 
+         'meta_description' => tep_db_prepare_input($meta_info_res['meta_description']), 
+         'meta_robots' => tep_db_prepare_input($meta_info_res['meta_robots']), 
+         'meta_copyright' => tep_db_prepare_input($meta_info_res['meta_copyright']), 
+         'user_update' => tep_db_prepare_input($_SESSION['user_name']), 
+         'last_modified' => 'now()', 
+        );
+        $site_list_str = implode(',', $_POST['select_site']); 
+        $meta_list_raw = tep_db_query("select * from ".TABLE_CONFIGURATION_META." where site_id in (".$site_list_str.") and key_info = '".$meta_info_res['key_info']."'"); 
+        while ($meta_list_res = tep_db_fetch_array($meta_list_raw)) {
+          tep_db_perform(TABLE_CONFIGURATION_META, $sql_data_array , 'update', 'id = \''.tep_db_prepare_input($meta_list_res['id']).'\''); 
+        }
+      }
       tep_redirect(tep_href_link(FILENAME_CONFIGURATION_META, tep_get_all_get_params(array('meta_e_id', 'site_id', 'action')))); 
       break;
   }
@@ -83,7 +109,48 @@ function close_meta_info()
 <?php //提交表单?>
 function submit_meta_form()
 {
+  <?php
+  if ($ocertify->npermission > 15) {
+  ?>
   document.forms.meta_form.submit();
+  <?php
+  } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+    async: false,
+    success: function(msg) {
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
+      if (tmp_msg_arr[0] == '0') {
+        document.forms.meta_form.submit();
+      } else {
+        $("#button_save").attr('id', 'tmp_button_save'); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.meta_form.action),
+            async: false,
+            success: function(msg_info) {
+              document.forms.meta_form.submit();
+            }
+          }); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1); 
+        }
+      }
+    }
+  }); 
+  <?php
+  }
+  ?>
 }
 
 <?php //弹出页面?>
@@ -179,6 +246,90 @@ function show_link_meta_info(meta_id, other_param)
     } 
   });
 }
+<?php //复制meta?>
+function copy_meta(meta_id, other_param)
+{
+  other_param = decodeURIComponent(other_param);
+  $.ajax({
+    url: 'ajax.php?action=copy_meta_info',      
+    data: 'meta_e_id='+meta_id+'&'+other_param,
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      data_info_array = data.split('||||||'); 
+      $('#show_popup_info').html(data_info_array[0]); 
+      $('#show_popup_info').css('z-index', data_info_array[1]); 
+      $('#show_popup_info').show(); 
+      o_submit_single = true;
+    } 
+  });
+}
+
+<?php //检查form?>
+function check_copy_meta()
+{
+  var check_flag = true; 
+  if (document.copy_meta.elements['select_site[]']) {
+    if (document.copy_meta.elements['select_site[]'].length == null) {
+      if (document.copy_meta.elements['select_site[]'].checked == true) {
+        check_flag = false;
+      }
+    } else {
+      for (var i = 0; i < document.copy_meta.elements['select_site[]'].length; i++) {
+        if (document.copy_meta.elements['select_site[]'][i].checked == true) {
+          check_flag = false; 
+        }
+      }
+    }
+  } 
+  if (check_flag == false) {
+  <?php
+  if ($ocertify->npermission > 15) {
+  ?>
+  document.forms.copy_meta.submit();
+  <?php
+  } else {
+  ?> 
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+    async: false,
+    success: function(msg) {
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
+      if (tmp_msg_arr[0] == '0') {
+        document.forms.copy_meta.submit();
+      } else {
+        $("#button_save").attr('id', 'tmp_button_save'); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.copy_meta.action),
+            async: false,
+            success: function(msg_info) {
+              document.forms.copy_meta.submit();
+            }
+          }); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          setTimeOut($("#tmp_button_save").attr('id', 'button_save'), 1); 
+        }
+      }
+    }
+  });
+  <?php 
+  }
+  ?>
+  } else {
+    $('#site_error').html('<?php echo META_INFO_SELECT_SITE_WARING;?>'); 
+  }
+}
 
 $(function() {
   box_warp_height = $('.box_warp').height();    
@@ -267,13 +418,19 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
       <table border="0" width="100%" cellspacing="0" cellpadding="2">
         <tr>
           <td width="100%" height="40">
+            <?php echo tep_draw_form('search', FILENAME_CONFIGURATION_META, '', 'get');?> 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td class="pageHeading">
                 <?php echo HEADING_TITLE;?> 
                 </td>
+                <td class="smallText" align="right">
+                <?php echo tep_draw_input_field('search', (isset($_GET['search'])?$_GET['search']:''));?>
+                <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
+                </td>
               </tr>
             </table>
+            </form>
           </td>
         </tr>
         <tr>
@@ -366,7 +523,11 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                  
                   $meta_table_info_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $meta_table_title_row); 
                   
-                  $meta_list_query_raw = "select cm.*, s.romaji, s.url from ".TABLE_CONFIGURATION_META." cm, ".TABLE_SITES." s where cm.site_id = s.id and ".$sql_site_where." order by ".$meta_order_sql;
+                  if (isset($_GET['search'])) {
+                    $meta_list_query_raw = "select cm.*, s.romaji, s.url from ".TABLE_CONFIGURATION_META." cm, ".TABLE_SITES." s where (title like '%".trim($_GET['search'])."%' or meta_title like '%".$_GET['search']."%' or meta_keywords like '%".trim($_GET['search'])."%' or meta_description like '%".trim($_GET['search'])."%' or meta_copyright like '%".trim($_GET['search'])."%') and cm.site_id = s.id and ".$sql_site_where." order by ".$meta_order_sql;
+                  } else {
+                    $meta_list_query_raw = "select cm.*, s.romaji, s.url from ".TABLE_CONFIGURATION_META." cm, ".TABLE_SITES." s where cm.site_id = s.id and ".$sql_site_where." order by ".$meta_order_sql;
+                  }
                   $meta_list_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $meta_list_query_raw, $meta_list_query_numrows); 
                   $meta_list_query = tep_db_query($meta_list_query_raw); 
                   
@@ -413,6 +574,9 @@ if (isset($_GET['eof']) && $_GET['eof'] == 'error') {
                   }
                   $notice_box->get_contents($meta_table_info_row);
                   echo $notice_box->show_notice();
+                  if (!$meta_list_query_numrows) {
+                    echo '<font color="#ff0000"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>'; 
+                  }
                 ?>
                 </td>
               </tr>

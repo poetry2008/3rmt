@@ -42,6 +42,6 @@ define('TEXT_HEADER_INFO','<table width="100%" cellspacing="0" cellpadding="0"
     <td width="20%" align="center" class="checkoutBarFrom">'.CHECKOUT_BAR_PAYMENT.'</td> <td width="20%"
     align="center" class="checkoutBarFrom">'.CHECKOUT_BAR_CONFIRMATION.'</td> <td width="20%"
     align="center" class="checkoutBarCurrent">'.CHECKOUT_BAR_FINISHED.'</td> </tr> </tbody></table>');
-define('TEXT_NOTIFY_PRODUCTS', '本日ご注文いただいた商品の最新情報を 電子メールでお届けしております。ご希望の方は、商品ごとにチェックして <b>[次へ進む]</b> を押してください。');
+define('TEXT_NOTIFY_PRODUCTS', '本日ご注文いただいた商品の最新情報を電子メールでお届けしております。ご希望の方は、商品ごとにチェックして <b>[次へ進む]</b> を押してください。');
 define('TEXT_SEE_ORDERS', 'あなたのご注文履歴は、<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">\'会員\'</a> ページの <a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">\'履歴\'</a>ボタンをクリックするとご覧になれます。');
 define('TEXT_CONTACT_STORE_OWNER', 'もしご注文手続きについてご質問がございましたら、直接<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">店主</a>までお問い合わせください。');
