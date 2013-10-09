@@ -289,7 +289,7 @@ require("includes/note_js.php");
           );
       $keywords_info[] = array(
           'params' => 'class="dataTableContent"'.$onclick,
-          'text'   => $ref_site['orders_ref_keywords2']
+          'text'   => preg_replace('/%./','',$ref_site['orders_ref_keywords2'])
           );
       $keywords_info[] = array(
           'params' => 'class="dataTableContent"'.$onclick,
