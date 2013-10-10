@@ -340,7 +340,7 @@ $(document).ready(function(){
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                   <tr> 
                     <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
-                    <td class="main" align="right"><a href="javascript:void(0);" onclick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></a></td> 
+                    <td class="main" align="right"><a href="javascript:void(0);" onClick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></a></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -354,8 +354,8 @@ $(document).ready(function(){
             <tr> 
             </tr>
 </table>  
-    <div class="preorder_payment_info">  
-    <div><div class="float_left"><?php echo TEXT_SELECT_PAYMENT_METHOD;?></div><div class="txt_right"><b><?php echo TITLE_PLEASE_SELECT;?></b><br><img alt="" src="images/arrow_east_south.gif"></div> </div>
+    <div class="preorder_payment_info"> 
+    <div class="float_left"><?php echo TEXT_SELECT_PAYMENT_METHOD;?></div><div class="txt_right"><b><?php echo TITLE_PLEASE_SELECT;?></b><br><img alt="" src="images/arrow_east_south.gif"></div>
     <?php
       $selection = $payment_modules->selection(1); 
         if ($payment_error == true) {
@@ -456,7 +456,7 @@ $(document).ready(function(){
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                   <tr> 
                     <td class="main"><b><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
-                    <td class="main" align="right"><a href="javascript:void(0);" onclick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></a></td> 
+                    <td class="main" align="right"><a href="javascript:void(0);" onClick="check_pre_products('<?php echo $op_info_tmp_str;?>', '<?php echo $product_info['products_id'];?>');"><?php echo tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></a></td> 
                   </tr> 
                 </table></td> 
             </tr>

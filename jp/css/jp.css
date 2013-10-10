@@ -2081,6 +2081,11 @@ P.description {
 	font-weight: bold;
 	color: #4A6175;
 }
+.formBoxTitle{
+	font-size:12px;
+	font-weight: bold;
+	color:#656565;
+}
 .smallText {
 	font-size: 10px;
 }

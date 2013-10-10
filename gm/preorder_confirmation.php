@@ -56,7 +56,6 @@ if(!isset($_SESSION['submit_flag'])){
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
