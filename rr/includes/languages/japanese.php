@@ -319,7 +319,7 @@ define('TEXT_BY', ' &sim; ');   //by
 
 define('TEXT_REVIEW_BY', '投稿者： %s');
 define('TEXT_REVIEW_WORD_COUNT', '%s 文字');
-define('TEXT_REVIEW_RATING', '評価: %s [%s]');
+define('TEXT_REVIEW_RATING', '<span>評価:</span> %s <span>[%s]</span>');
 define('TEXT_REVIEW_DATE_ADDED', '投稿日: %s');
 define('TEXT_NO_REVIEWS', 'まだレビューはありません...');
 

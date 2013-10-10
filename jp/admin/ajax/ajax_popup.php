@@ -531,6 +531,8 @@ if ($_GET['action'] == 'show_category_info') {
            $show_site_list_array[] = $site_list_info['id'];
          }
          $all_site_id = implode('-',$show_site_list_array);
+      }else{
+         $all_site_id = $site_id;
       }
       $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' .  $pInfo->products_name . '&site_id='.$all_site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
     if (empty($site_id)) {

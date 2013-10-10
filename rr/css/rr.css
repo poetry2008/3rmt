@@ -95,7 +95,6 @@ H4 {
 	font-size:12px;
 	color:#fff;
 }
-.comment img{ clear:both;}
 .comment_index02 , .comment_index01{
 	width: 520px;
 	margin: 0;
@@ -2342,4 +2341,18 @@ border:1px solid #CAC6BE;
 }
 .table_wrap{
         word-wrap:break-word;word-break:break-all;
+}
+.text_main{
+	width:100%;
+	clear:both;
+}
+.text_main span{
+	float:left;
+	*float: none;
+}
+.text_main img{
+	float:left;
+	*float: none;
+	margin:-1px 5px 0 5px;
+	*margin:0;
 }

@@ -2647,3 +2647,17 @@ searching
 .table_wrap{
         word-wrap:break-word;word-break:break-all;
 }
+.text_main{
+	width:100%;
+	clear:both;
+}
+.text_main span{
+	float:left;
+	*float: none;
+}
+.text_main img{
+	float:left;
+	*float: none;
+	margin:-1px 5px 0 5px;
+	*margin:0;
+}

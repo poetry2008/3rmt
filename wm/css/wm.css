@@ -1993,3 +1993,19 @@ color: #005c69;
 .table_wrap{
         word-wrap:break-word;word-break:break-all;
 }
+.text_main{
+	width:100%;
+	clear:both;
+	*height:19px;
+	*padding-top:5px;
+}
+.text_main span{
+	float:left;
+	*float: none;
+}
+.text_main img{
+	float:left;
+	*float: none;
+	margin:-1px 5px 0 5px;
+	*margin:-5px 0 0;
+}

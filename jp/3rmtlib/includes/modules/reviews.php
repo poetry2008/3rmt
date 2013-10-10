@@ -39,7 +39,7 @@
     } else {
       echo '&nbsp;&nbsp;' . sprintf(TEXT_REVIEW_BY, $reviews_array[$i]['authors_name']) . '<br>';
     }
-    echo $reviews_array[$i]['review'] . '<br><br><i>' . sprintf(TEXT_REVIEW_RATING, tep_image(DIR_WS_IMAGES . 'stars_' . $reviews_array[$i]['rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews_array[$i]['rating'])), sprintf(TEXT_OF_5_STARS, $reviews_array[$i]['rating'])) . '</i>'; 
+    echo $reviews_array[$i]['review'] . '<br><br><i><div class="text_main">' .  sprintf(TEXT_REVIEW_RATING, tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews_array[$i]['rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews_array[$i]['rating'])), sprintf(TEXT_OF_5_STARS, $reviews_array[$i]['rating'])) . '</div></i>'; 
     ?>
     </td>
   </tr>

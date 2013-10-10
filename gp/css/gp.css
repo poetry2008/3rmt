@@ -2528,3 +2528,16 @@ line-height:21px;
 .table_select select{
 	margin-left:0;
 }
+.text_main{
+	width:100%;
+	clear:both;
+}
+.text_main span{
+	float:left;
+	*float: none;
+}
+.text_main img{
+	float:left;
+	*float: none;
+	margin:0 5px 0 5px;
+}

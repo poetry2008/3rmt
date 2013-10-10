@@ -2273,3 +2273,19 @@ line-height:16px;
 .table_select select{
 	margin-left:0;
 }
+.text_main{
+	width:100%;
+	clear:both;
+	*height:20px;
+	*padding-top:7px;
+}
+.text_main span{
+	float:left;
+	*float: none;
+		*height:20px;
+}
+.text_main img{
+	float:left;
+	margin:-1px 5px 0 5px;
+	*margin-top:1px;
+}
