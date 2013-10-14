@@ -415,7 +415,6 @@ foreach ($total_data_arr as $sql_data_array){
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
 }
 
-tep_order_status_change($orders['orders_id'],30);
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
 $sql_data_array = array('orders_id' => $insert_id, 
                         'orders_status_id' => $order->info['order_status'], 
@@ -428,7 +427,6 @@ tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 //# 添加部分（买取信息）
 
 if ($telecom_option_ok == true) {
-  tep_order_status_change($orders['orders_id'],30);
   orders_updated($insert_id);
 }
 

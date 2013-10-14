@@ -8,6 +8,8 @@ if(!$_POST){
   $_SESSION['reorder_flag'] = true;
 }
 
+$status_info_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where is_reorder = '1' and language_id = '".$languages_id."' limit 1"); 
+$status_info_res = tep_db_fetch_array($status_info_raw); 
 $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
 <?php page_head();?>
@@ -97,7 +99,6 @@ document.onclick=function(e){
       $datetime_end = $date.' '.$end_hour.':'.$end_min;
       $time     = strtotime($datetime);
 
-      //if (in_array($order['orders_status'], array(2,5,6,7,8))) {
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
         echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS.' <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="47" height="17" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
@@ -108,7 +109,7 @@ document.onclick=function(e){
         if ($date && $hour && $start_min) {
           tep_db_query("
               update `".TABLE_ORDERS."` 
-              set `orders_status`='17' ,
+              set `orders_status`='".$status_info_res['orders_status_id']."' ,
                   `torihiki_date` = '".$datetime."' ,
                   `torihiki_date_end` = '".$datetime_end."' ,
                   `last_modified` = now()
@@ -120,7 +121,7 @@ document.onclick=function(e){
         }else{
           tep_db_query("
               update `".TABLE_ORDERS."` 
-              set `orders_status`='17' ,
+              set `orders_status`='".$status_info_res['orders_status_id']."' ,
                   `last_modified` = now()
               WHERE `orders_id`='".$order_id."' 
                 and site_id = '".SITE_ID."'
@@ -128,7 +129,7 @@ document.onclick=function(e){
           orders_updated($order_id);
           last_customer_action();
         }
-        tep_order_status_change($order_id,17);
+        tep_order_status_change($order_id,$status_info_res['orders_status_id']);
           // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
@@ -142,7 +143,7 @@ document.onclick=function(e){
               ) VALUES (
                 NULL ,
                 '".$order_id."', 
-                '17', 
+                '".$status_info_res['orders_status_id']."', 
                 '".date("Y-m-d H:i:s")."', 
                 '1', 
                 '".mysql_real_escape_string($comment)."',

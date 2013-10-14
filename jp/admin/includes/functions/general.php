@@ -7568,7 +7568,10 @@ function   tep_order_status_change($oID,$status){
   $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   
-  if ($status == '9') {
+  $status_info_raw = tep_db_query('select * from '.TABLE_ORDERS_STATUS." where orders_status_id = '".(int)$status."'");
+  $status_info_res = tep_db_fetch_array($status_info_raw); 
+  
+  if ($status_info_res['is_pay_time'] == '1') {
     tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
   }
   
