@@ -502,7 +502,8 @@ class SEO_URL{
   function stock_href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true, $search_engine_safe = true) {
     global $request_type, $session_started, $SID;
     if (!$this->not_null($page)) {
-      die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine the page link!<br><br>');
+      forward404();
+      exit;
     }
   if ($page == '/') $page = '';
     if ($connection == 'NONSSL') {
@@ -523,7 +524,8 @@ class SEO_URL{
         }
       }
     } else {
-       die('<font color="#ff0000"><b>Error!</b></font><br><br><b>Unable to determine connection method on a link!<br><br>Known methods: NONSSL SSL</b><br><br>');
+      forward404();
+      exit;
     }
     if ($this->not_null($parameters)) {
       if ($page == FILENAME_TAGS) {
