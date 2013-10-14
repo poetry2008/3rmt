@@ -23,7 +23,7 @@
       if (!empty($seo_category['categories_header_text'])) { 
       ?>
       <p class="comment">
-      <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?>
+      <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase ?>
       </p>
       <?php
       } 
@@ -36,7 +36,7 @@
     // check to see if there are deeper categories within the current category
       $category_links = array_reverse($cPath_array);
       for($i=0, $n=sizeof($category_links); $i<$n; $i++) {
-        //ccdd
+         
         $categories_query = tep_db_query("
           select * 
           from (
@@ -66,7 +66,7 @@
         }
       }
     } else {
-      //ccdd
+       
         $categories_query = tep_db_query("
           select * 
           from (
@@ -113,7 +113,7 @@
       ?>
       <p class="comment">
       <?php 
-      echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ 
+      echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase
       ?>
       </p>
       <?php
@@ -136,7 +136,7 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h2 class="pageHeading"><span class="game_t">' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</span></h2>' . "\n";
-      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seoフレーズ
+      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo phrase
     }
     if (!empty($seo_category['text_information'])) {
       echo '<p class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']).'</p>';
@@ -145,7 +145,7 @@
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">
-      <!-- right_navigation //--> 
+      <!-- right_navigation --> 
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
     </td> 

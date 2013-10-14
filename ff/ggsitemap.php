@@ -13,7 +13,7 @@
     array_push($subcid, FF_CID); 
   }
   // 取得全部分类
-//ccdd
+ 
   $categories_query = tep_db_query("select 
       c.categories_id,c.categories_status,c.categories_image,
       c.parent_id,c.sort_order,c.date_added,c.last_modified, cd.romaji 
@@ -27,14 +27,14 @@
     $categories[$category['categories_id']] = $category;
   }
   // 取得全部信息页内容
-//ccdd
+ 
   $contents_page = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = '" . SITE_ID . "' order by sort_id ");
   while ($result = tep_db_fetch_array($contents_page)){
     $pages[] = info_tep_href_link($result['romaji']);
   } 
 
   // 取得全部商品
-//ccdd
+ 
   $products_query = tep_db_query("select p.* from ".TABLE_PRODUCTS." p left join ".TABLE_PRODUCTS_DESCRIPTION." pd on p.products_id = pd.products_id, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $subcid).") and pd.products_status <> '3' and pd.site_id ='".SITE_ID."'");
    
   while ($product = tep_db_fetch_array($products_query)){

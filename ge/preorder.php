@@ -125,16 +125,16 @@ function change_num(value){
   if ($valid_product == false) {
 ?>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-      <!-- left_navigation //-->
+      <!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
     </td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td valign="top" id="contents">
       <p class="main">
         <?php echo HEADING_TITLE_ERROR; ?><br><?php echo ERROR_INVALID_PRODUCT; ?>
@@ -314,15 +314,15 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       }
 ?>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <div id="main">
     <div id="l_menu">
-      <!-- left_navigation //-->
+      <!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
     </div>
-    <!-- body_text //-->
+    <!-- body_text -->
     <div id="content">
       <div class="headerNavigation">
       <?php echo $breadcrumb->trail(' &raquo; ');?>
@@ -446,16 +446,16 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
     </div>
         <p class="pageBottom"></p>
     </div>      
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
     <div id="r_menu">
-      <!-- right_navigation //-->
+      <!-- right_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
     </div>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 </div>
 </body>
 </html>

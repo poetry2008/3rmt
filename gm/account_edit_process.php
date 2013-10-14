@@ -137,7 +137,7 @@
     }
   }
 
-//ccdd
+ 
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
@@ -159,13 +159,13 @@
 <?php require('includes/form_check.js.php'); ?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div id="layout" class="yui3-u">
    <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
   		 <?php include('includes/search_include.php');?>
@@ -204,12 +204,12 @@
 </div>
         <?php include('includes/float-box.php');?>
 		</div>
-<!-- body_text_eof //--> 
+<!-- body_text_eof --> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

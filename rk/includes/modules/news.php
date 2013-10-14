@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- latest_news //-->
+<!-- latest_news -->
 <div class="latest_news_box">
 <div class="pageHeading">
 <div class="pageHeading_left">
@@ -19,7 +19,7 @@
         <ul class="news_ul">
 
 <?php
-//ccdd
+ 
     if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
       $start_open_time = str_replace('/','-',trim(SITE_OPEN_TIME));
     }else{
@@ -63,4 +63,4 @@ $row++;
 </div>
 <div class="pageBottom"></div>
 </div>
-<!-- latest_news_eof //-->
+<!-- latest_news_eof -->

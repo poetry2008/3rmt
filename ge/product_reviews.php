@@ -15,7 +15,7 @@
     $get_params_back = $get_params;
   }
 
-  //ccdd
+   
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) tep_redirect(tep_href_link(FILENAME_REVIEWS));
 

@@ -10,7 +10,7 @@
 
   if (isset($_GET['products_id'])) {
     if (tep_session_is_registered('customer_id')) {
-//ccdd
+ 
       $check_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . $customer_id . "' and global_product_notifications = '1'");
       $check = tep_db_fetch_array($check_query);
       if ($check['count'] > 0) {

@@ -1,5 +1,4 @@
 <?php
-// 3rmt over
 /*
   $Id$
 

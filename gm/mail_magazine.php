@@ -27,12 +27,12 @@
       tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
     }
     
-    //ccdd
+     
     $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
     $regist_result = tep_db_fetch_array($regist_query);
     if($regist_result['cnt'] == '0') {
       //注册
-      //ccdd
+       
       tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
       
       tep_session_unregister('mag_mail');
@@ -54,7 +54,7 @@
       tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
     }
 
-    //ccdd
+     
     $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
     $regist_result = tep_db_fetch_array($regist_query);
     if($regist_result['cnt'] == '0') {
@@ -79,13 +79,13 @@
 <?php page_head();?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <div id="main-content"><h2><?php echo HEADING_TITLE ; ?></h2>
@@ -175,12 +175,12 @@
 				<div id="r-box"><img alt="img" src="images/header_right_flower_bg.png"></div>
 		    </div>
 </div>
-      <!-- body_text_eof //--> 
+      <!-- body_text_eof --> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-  <!-- body_eof //-->  
-  <!-- footer //--> 
+  <!-- body_eof -->  
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
  
 </body>
 </html>

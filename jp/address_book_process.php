@@ -21,13 +21,13 @@
 
   if (isset($_GET['action']) && ($_GET['action'] == 'remove') && tep_not_null($_GET['entry_id']) ) {
     $entry_id = tep_db_prepare_input($_GET['entry_id']);
-//ccdd
+ 
     tep_db_query("
 DELETE FROM
  " . TABLE_ADDRESS_BOOK . " 
 WHERE address_book_id = '" . tep_db_input($entry_id) . "' 
 AND customers_id = '" . $customer_id . "'");
-//ccdd
+ 
     tep_db_query(
 "UPDATE " . TABLE_ADDRESS_BOOK . " 
 SET address_book_id = address_book_id - 1
@@ -152,18 +152,18 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
       } else {
         $zone_id = 0;
         $entry_state_error = false;
-//ccdd
+ 
         $check_query = tep_db_query("SELECT count(*) as total FROM " . TABLE_ZONES . " WHERE zone_country_id = '" . tep_db_input($country) . "'");
         $check_value = tep_db_fetch_array($check_query);
         $entry_state_has_zones = ($check_value['total'] > 0);
         if ($entry_state_has_zones == true) {
-//ccdd
+ 
           $zone_query = tep_db_query("SELECT zone_id FROM " . TABLE_ZONES . " WHERE zone_country_id = '" . tep_db_input($country) . "' AND zone_name = '" . tep_db_input($state) . "'");
           if (tep_db_num_rows($zone_query) == 1) {
             $zone_values = tep_db_fetch_array($zone_query);
             $zone_id = $zone_values['zone_id'];
           } else {
-//ccdd
+ 
             $zone_query = tep_db_query("SELECT zone_id FROM " . TABLE_ZONES . " WHERE zone_country_id = '" . tep_db_input($country) . "' AND zone_code = '" . tep_db_input($state) . "'");
             if (tep_db_num_rows($zone_query) == 1) {
               $zone_values = tep_db_fetch_array($zone_query);
@@ -234,7 +234,7 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
 
   if (isset($_GET['action']) && ($_GET['action'] == 'modify') && tep_not_null($_GET['entry_id'])) {
 
-//ccdd
+ 
     $entry_query = tep_db_query("
 SELECT 
     entry_gender, 
@@ -367,19 +367,19 @@ function check_form() {
     return true;
   }
 }
-//--></script>
+--></script>
 </head>
 <body> 
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"><?php echo tep_draw_form('add_entry', tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?> 
         <h1 class="pageHeading"><?php echo (isset($_GET['action']) && $_GET['action'] == 'modify') ? HEADING_TITLE_MODIFY_ENTRY : HEADING_TITLE_ADD_ENTRY; ?></h1> 
         
@@ -436,15 +436,15 @@ function check_form() {
           </table> 
           </form> 
         </div></td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

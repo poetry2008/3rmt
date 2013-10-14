@@ -12,7 +12,7 @@
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
-//ccdd
+ 
 ?>
 <?php page_head();?>
 <?php

@@ -152,7 +152,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
   }
   /**************/
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-    //ccdd
+     
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .

@@ -56,15 +56,15 @@
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
-//--></script>
+--></script>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
-<!-- body_text //-->
+<!-- body_text -->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <div id="main-content">
@@ -120,7 +120,7 @@ function popupWindow(url) {
               <tr class="<?php echo $_class ; ?>">
                 <td width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><script type="text/javascript"><!--
             document.write('<?php echo '<a href="' . tep_href_link(FILENAME_PRESENT, 'goods_id=' . (int)$_GET['goods_id']) . ')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
-            //--></script>
+            --></script>
                             <noscript>
                             <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
                             </noscript>
@@ -223,11 +223,11 @@ function popupWindow(url) {
  </div>
       <?php include('includes/float-box.php');?>
 </div>
-      <!-- body_text_eof //--> 
-  <!-- body_eof //-->
-  <!-- footer //--> 
+      <!-- body_text_eof --> 
+  <!-- body_eof -->
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

@@ -98,7 +98,7 @@ case 'per':
   } else {
     $entry_email_address_check_error = false;
   } 
-//ccdd
+ 
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
@@ -300,7 +300,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     $entry_password_old_error = true;
   }
   
-//ccdd
+ 
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
@@ -568,11 +568,11 @@ if($_POST['num_rows'] > 0){
 <body>
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table"> 
     <tr> 
-      <!-- body_text //--> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> 
         <h1 class="pageHeading">
           <span class="game_t">
@@ -584,7 +584,7 @@ if($_POST['num_rows'] > 0){
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
             <tr> 
               <td> <?php
-//ccdd
+ 
   $account_query = tep_db_query("select c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a where c.customers_id = '" . $customer_id . "' and a.customers_id = c.customers_id and a.address_book_id = '" .  $customer_default_address_id . "' and c.site_id = '".SITE_ID."'");
   $account = tep_db_fetch_array($account_query);
   $email_address = isset($_POST['email_address']) && isset($_POST['action']) && ($_POST['action'] == 'per' ||($_POST['action'] == 'address' && $_POST['action_flag'] == 1 ))? $_POST['email_address'] : $account['customers_email_address'];
@@ -610,17 +610,17 @@ if($_POST['num_rows'] > 0){
           </table> 
         </div>
         </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </td> 
     </tr>
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

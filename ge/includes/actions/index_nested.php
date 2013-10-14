@@ -29,7 +29,7 @@
 // check to see if there are deeper categories within the current category
       $category_links = array_reverse($cPath_array);
       for($i=0, $n=sizeof($category_links); $i<$n; $i++) {
-        //ccdd
+         
         $categories_query = tep_db_query("
           select * 
           from (
@@ -59,7 +59,7 @@
         }
       }
     } else {
-      //ccdd
+       
         $categories_query = tep_db_query("
           select * 
           from (

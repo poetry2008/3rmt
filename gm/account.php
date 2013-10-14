@@ -23,14 +23,14 @@
 <?php page_head();?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <div id="main">
-  <!-- left_navigation //-->
-      <!-- left_navigation_eof //-->
-      <!-- body_text //-->
+  <!-- left_navigation -->
+      <!-- left_navigation_eof -->
+      <!-- body_text -->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
  <?php include('includes/search_include.php');?>
@@ -40,7 +40,7 @@
       <?php
   $is_read_only = true;
 
-//ccdd
+ 
   $account_query = tep_db_query("
       SELECT c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter
       FROM " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a 

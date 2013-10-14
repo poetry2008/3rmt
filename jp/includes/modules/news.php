@@ -3,14 +3,14 @@
   $Id$
 */
 ?>
-<!-- latest_news //-->
+<!-- latest_news -->
 <p class="pageHeading"><?php echo STORE_NAME.TEXT_MODULE_NEWS_TITLE;?></p>
 <div class="comment">
 <div id="news">
     <ul class="news_ul">
 
 <?php
-//ccdd
+ 
     if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
       $start_open_time = str_replace('/','-',trim(SITE_OPEN_TIME));
     }else{
@@ -58,4 +58,4 @@
         echo TEXT_MODULE_NEWS_MORE;?></a>
     </div>
 </div>
-<!-- latest_news_eof //-->
+<!-- latest_news_eof -->

@@ -611,7 +611,7 @@
   $email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_printing_order .= '信用調査' . "\n";
-//ccdd
+ 
   $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk
       from " . TABLE_CUSTOMERS . " where customers_id = '" . $order['customers_id'] . "'");
   $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
@@ -630,7 +630,7 @@
       ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" .
       tep_db_input($order['customers_id']) . "' and o.orders_status =
       s.orders_status_id and s.language_id = '" . $_SESSION['languages_id'] . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
-//ccdd
+ 
   $order_history_query = tep_db_query($order_history_query_raw);
   while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_printing_order .= $order_history['date_purchased'] . '　　' . tep_output_string_protected($order_history['customers_name']) . '　　' . strip_tags($order_history['order_total']) . '　　' . $order_history['orders_status_name'] . "\n";

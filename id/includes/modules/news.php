@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- latest_news_index //-->
+<!-- latest_news_index -->
 <div class="latest_news_home">
 <h2 class="pageHeading_05">
 <span class="game_t game_t02">
@@ -12,7 +12,7 @@
     <div id="news">
         <ul class="news_ul">
 <?php
-//ccdd
+ 
     if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
       $start_open_time = str_replace('/','-',trim(SITE_OPEN_TIME));
     }else{
@@ -56,5 +56,5 @@ $row++;
     <div align="right" style="padding: 0 10px 0px 0px;">
         <a class="more_news" href='<?php echo tep_href_link('news.php');?>'><?php echo TEXT_MODULE_NEWS_MORE;?></a>
     </div>
-</div><!-- latest_news_eof //-->
-</div><!-- latest_news_home_eof //-->
+</div><!-- latest_news_eof -->
+</div><!-- latest_news_home_eof -->
