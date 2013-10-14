@@ -26,15 +26,15 @@
 <body>
 <div class="body_shadow" align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
+  <!-- header_eof -->
+  <!-- body -->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation //-->
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"><!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
       </td>
-      <!-- body_text //-->
+      <!-- body_text -->
       <td valign="top" id="contents"><h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
@@ -42,7 +42,7 @@
 <?php
 //设置只读  用户第一次访问此页，并不想修改信息
   $is_read_only       = true;
-//ccdd
+ 
   $account_query = tep_db_query("
       SELECT c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter
       FROM " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a 
@@ -56,7 +56,7 @@
         <?php 
     //Point
     if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
-//ccdd
+ 
     $point_query = tep_db_query("
         select point 
         from " . TABLE_CUSTOMERS . " 
@@ -103,17 +103,17 @@
           </table></td>
         </tr>
       </table></td>
-      <!-- body_text_eof //-->
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation //-->
+      <!-- body_text_eof -->
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"><!-- right_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
       </td>
       </tr>
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>

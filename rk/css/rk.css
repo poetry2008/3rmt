@@ -2358,6 +2358,8 @@ display:block;
 .text_main{
 	width:100%;
 	clear:both;
+	*height:19px;
+	*padding-top:5px;
 }
 .text_main span{
 	float:left;
@@ -2367,5 +2369,5 @@ display:block;
 	float:left;
 	*float: none;
 	margin:-1px 5px 0 5px;
-	*margin:0;
+	*margin:-5px 0 0;
 }

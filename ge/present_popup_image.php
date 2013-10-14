@@ -7,7 +7,7 @@
 
   $navigation->remove_current_page();
 
-//ccdd
+ 
   $present_query = tep_db_query("
       select * 
       from ".TABLE_PRESENT_GOODS." 

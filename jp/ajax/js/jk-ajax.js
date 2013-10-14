@@ -1,9 +1,8 @@
 //----------------------------------------
 //Content            :Communication
-//
-//geturi             :送信先URL
-//execution_f        :xmlHttpObjectの生成後、状態が変わったら実行するFunction(空の場合は、バックエンドでの処理)
-//did                :文字変更ID
+//geturi             :Address URL
+//execution_f        :After generating xmlHttpObject, if the state is changed, then use this Function(When null values, background processing)
+//did                :The ID of Changed text
 //----------------------------------------
 function sendData(geturi,execution_f,did) {
   xmlHttpObject = null;
@@ -21,7 +20,7 @@ function sendData(geturi,execution_f,did) {
 	}
   }
   
-  //execution_fを追加したら以下の処理を追加する
+  //After adding execution_f, do the following
   if(xmlHttpObject){
 	if(execution_f == 'displaychange'){
 	  xmlHttpObject.onreadystatechange = displaychange;
@@ -31,9 +30,9 @@ function sendData(geturi,execution_f,did) {
   }
   
 //----------------------------------------------------------------------------------------------------
-//ここから下は追加Function
+//Start adding Function
 
-  //表示変更（カートに追加）
+  //The display is changed (add to cart）
   function displaychange() {  
     if((xmlHttpObject.readyState == 4) && (xmlHttpObject.status == 200)){
       document.getElementById(did).innerHTML = "カートに追加しました";
@@ -43,7 +42,7 @@ function sendData(geturi,execution_f,did) {
     }
   }
   
-  //表示変更（金額）
+  //The display is changed (amount)
   function moneydisplay() {
     if((xmlHttpObject.readyState == 4) && (xmlHttpObject.status == 200)){  
       document.getElementById(did).innerHTML = xmlHttpObject.responseText+'円';
@@ -53,7 +52,7 @@ function sendData(geturi,execution_f,did) {
     }
   }
 
-//ここまでが追加Function
+//End adding Function
 //----------------------------------------------------------------------------------------------------  
   
   if(xmlHttpObject){

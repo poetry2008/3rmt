@@ -73,7 +73,7 @@ function chara_mess(){
 foreach($cart as $key => $val){
   if($key == 'contents'){
     foreach($val as $key2 => $val2){
-    //ccdd
+     
     $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
     if($cp_result['products_cflag'] == 1){
       $cid = 'cname_' . $key2;
@@ -95,14 +95,14 @@ foreach($cart as $key => $val){
 <body>
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="box"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         <div class="comment"> 
           <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
@@ -166,7 +166,7 @@ foreach($cart as $key => $val){
           foreach($cart as $key => $val){
             if($key == 'contents'){
             foreach($val as $key2 => $val2){
-              //ccdd
+               
               $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
         ?>
           <tr>
@@ -224,15 +224,15 @@ foreach($cart as $key => $val){
     </div>
         <p class="pageBottom"></p>
     </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div>
 </div>
 </body>

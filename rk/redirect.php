@@ -6,7 +6,7 @@
   require('includes/application_top.php');
 
   switch ($_GET['action']) {
-    //ccdd
+     
     case 'banner': $banner_query = tep_db_query("
                        select banners_url 
                        from " . TABLE_BANNERS . " 
@@ -31,7 +31,7 @@
                    break;
 
     case 'manufacturer' : if (isset($_GET['manufacturers_id'])) {
-//ccdd
+ 
                             $manufacturer_query = tep_db_query("
                                 select manufacturers_url 
                                 from " . TABLE_MANUFACTURERS_INFO . " 
@@ -40,7 +40,7 @@
                             ");
                             if (!tep_db_num_rows($manufacturer_query)) {
 // no url exists for the selected language, lets use the default language then
-//ccdd
+ 
                               $manufacturer_query = tep_db_query("
                                   select mi.languages_id, 
                                          mi.manufacturers_url 
@@ -54,7 +54,7 @@
                                 tep_redirect(tep_href_link(FILENAME_DEFAULT));
                               } else {
                                 $manufacturer = tep_db_fetch_array($manufacturer_query);
-//ccdd 
+  
                                 tep_db_query("
                                     update " . TABLE_MANUFACTURERS_INFO . " 
                                     set url_clicked = url_clicked+1, 
@@ -66,7 +66,7 @@
                             } else {
 // url exists in selected language
                               $manufacturer = tep_db_fetch_array($manufacturer_query);
-//ccdd
+ 
                               tep_db_query("
                                   update " . TABLE_MANUFACTURERS_INFO . " 
                                   set url_clicked = url_clicked+1, 

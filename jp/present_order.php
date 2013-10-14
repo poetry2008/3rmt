@@ -56,19 +56,19 @@
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
-//--></script>
+--></script>
 </head>
 <body> 
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> <h1 class="pageHeading"> 
           <?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?> 
         </h1> 
@@ -220,15 +220,15 @@ function popupWindow(url) {
             </tr>
           </table>
         </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

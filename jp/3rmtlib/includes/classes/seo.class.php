@@ -472,7 +472,7 @@ class SEO_URL{
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
   
     // id 不显示 index.php
-    if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID == 10) && !isset($_sid)) {
+    if ($page == 'index.php' && $parameters == '' && !defined('NEW_TYPE_SYMBOL') && !isset($_sid)) {
       $link = HTTP_SERVER . DIR_WS_CATALOG;
     }
     
@@ -583,7 +583,7 @@ class SEO_URL{
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID == 10)) {
+        if (!defined('NEW_TYPE_SYMBOL')) {
           if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))){
           // id 特殊处理，未登录丢弃sid
             $link .= $separator . $_sid;
@@ -600,7 +600,7 @@ class SEO_URL{
       }
     }
   // id 不显示 index.php
-  if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4  || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID ==10 ) && !isset($_sid)) {
+  if ($page == 'index.php' && $parameters == '' && !defined('NEW_TYPE_SYMBOL') && !isset($_sid)) {
     $link = HTTP_SERVER . DIR_WS_CATALOG;
   }
   $this->performance['NUMBER_STANDARD_URLS_GENERATED']++;
@@ -613,7 +613,6 @@ class SEO_URL{
   $link = str_replace('&amp;', '&', htmlspecialchars($link));
   return $link;
 
-  //return htmlspecialchars($link);
   } # end default tep_href function
   
 
@@ -662,7 +661,7 @@ class SEO_URL{
         return $link; 
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID == 10)) {
+        if (!defined('NEW_TYPE_SYMBOL')) {
           if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
             // id 特殊处理，未登录丢弃sid
             return $link . $separator . $_sid;
@@ -744,7 +743,6 @@ class SEO_URL{
               $url = $this->make_url($page, 'reviews/page', '', $p2[1], '.html', $separator);
               break;
             case ($page == FILENAME_DEFAULT && $_GET['cPath']):
-              //break; 
             default:
               $container[$p2[0]] = $p2[1];
               break;
@@ -1718,7 +1716,6 @@ class SEO_URL{
  返回值：无
  -----------------------*/
   function cache_gc(){
-          //date_default_timezone_set('UTC');
           $this->DB->Query("DELETE FROM cache WHERE cache_expires <= '" . date("Y-m-d H:i:s") . "'" );
   }
 

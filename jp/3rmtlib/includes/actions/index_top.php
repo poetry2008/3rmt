@@ -11,7 +11,7 @@
     //rmt/c-168_198_page1.html => 404
     check_uri('/page1\.html/');
     
-    if (SITE_ID <= 3) {
+    if (defined('NEW_TYPE_SYMBOL')) {
       if (!empty($cPath_array)) {
         foreach ($cPath_array as $cpkey => $cpvalue) {
           $ex_ca_query = tep_db_query("select * from ".TABLE_CATEGORIES." where categories.categories_id = '".$cpvalue."'"); 

@@ -6809,7 +6809,7 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$de
 
 //以下是配送使用的方法
   function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
+ 
     $address_sql = "select address_book_id,entry_firstname as firstname,
         entry_lastname as lastname, entry_firstname_f as firstname_f,
         entry_lastname_f as lastname_f, entry_company as company,
@@ -6836,7 +6836,7 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$de
 
 
 function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
+ 
     $address_sql = "select address_book_id,entry_firstname as firstname,
         entry_lastname as lastname, entry_firstname_f as firstname_f,
         entry_lastname_f as lastname_f, entry_company as company,

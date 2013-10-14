@@ -15,7 +15,7 @@
     $get_params_back = $get_params;
   }
 
-  //ccdd
+   
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) tep_redirect(tep_href_link(FILENAME_REVIEWS));
 
@@ -26,13 +26,13 @@
 <?php page_head();?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div class="yui3-u" id="layout">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 		      <?php include('includes/search_include.php');?>
@@ -112,11 +112,11 @@
 			</div>
 	<?php include('includes/float-box.php');?>
       </div>
-      <!-- body_text_eof //--> 
+      <!-- body_text_eof --> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-  <!-- body_eof //-->  
-  <!-- footer //--> 
-   <!-- footer_eof //--> 
+  <!-- body_eof -->  
+  <!-- footer --> 
+   <!-- footer_eof --> 
 </div>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 

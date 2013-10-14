@@ -74,7 +74,7 @@ function chara_mess(){
 foreach($cart as $key => $val){
   if($key == 'contents'){
     foreach($val as $key2 => $val2){
-    //ccdd
+     
     $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
     if($cp_result['products_cflag'] == 1){
       $cid = 'cname_' . $key2;
@@ -93,13 +93,13 @@ foreach($cart as $key => $val){
 </script>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <?php
@@ -179,7 +179,7 @@ foreach($cart as $key => $val){
           foreach($cart as $key => $val){
             if($key == 'contents'){
             foreach($val as $key2 => $val2){
-            //ccdd
+             
             $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
         ?>
           <div class="checkout-list"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO,
@@ -232,11 +232,11 @@ foreach($cart as $key => $val){
 </div>
 <?php include('includes/float-box.php');?>
 </div>
-<!-- body_text_eof //--> 
+<!-- body_text_eof --> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-   <!-- footer_eof //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
+   <!-- footer_eof --> 
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 
 </body>

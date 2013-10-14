@@ -3,7 +3,7 @@
   $Id$
 */
   $categories_path   = explode('_', $_GET['cPath']);
-  //ccdd
+   
   $_categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 
@@ -97,7 +97,7 @@
     $row = 0;
     $col = 0;
 ?>
-<!-- new_products //-->
+<!-- new_products -->
 <?php if (0 < $num_products) { ?>
 <div class="comment03">
 <h3 class="products03"><img align="top" alt="" src="images/menu_ico_a.gif"><?php echo $new_c_name; ?>の新着商品</h3>
@@ -156,4 +156,4 @@
 <?php
   }
 ?>
-<!-- new_products4_eof //-->
+<!-- new_products4_eof -->

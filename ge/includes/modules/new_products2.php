@@ -3,7 +3,7 @@
   $Id$
 */
   $categories_path = explode('_', $_GET['cPath']);
-  //ccdd
+   
   $_categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 

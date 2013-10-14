@@ -20,12 +20,12 @@ unset($_SESSION['shipping_session_flag']);
 ?>
 <body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-        <!-- left_navigation_eof //--><!--</td>--> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --><!--</td>--> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> 
       <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
       <input type="hidden" name="carturl" id="carturl" value="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">
@@ -153,7 +153,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
   }
   /**************/
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-    //ccdd
+     
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     
@@ -785,17 +785,17 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
         </table>
         </div>
         </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </td> 
     </tr>
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 <!-- visites --> 
 <object>

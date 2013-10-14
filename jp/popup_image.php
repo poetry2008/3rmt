@@ -6,7 +6,7 @@
   require('includes/application_top.php');
 
   $navigation->remove_current_page();
-//ccdd
+ 
   $products_query = tep_db_query("
       select * from (select pd.products_name, 
              p.products_image,
@@ -35,7 +35,7 @@ function resize() {
   if (document.images[0]) window.resizeTo(document.images[0].width +30, document.images[0].height+60-i);
   self.focus();
 }
-//--></script>
+--></script>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <style type="text/css">
 BODY {

@@ -42,7 +42,6 @@ if ($category_depth == 'nested') {
 ?>
   <td valign="top" id="contents">
 <?php
-  #$current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
   if (tep_show_warning($current_category_id)) {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
@@ -56,7 +55,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></p>
+    <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase ?></p>
 <?php
   $has_ca_single = false;
 ?>

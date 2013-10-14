@@ -145,7 +145,7 @@
     }
   }
 
-//ccdd
+ 
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {

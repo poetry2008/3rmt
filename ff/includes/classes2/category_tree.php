@@ -21,7 +21,7 @@
 
    function osC_CategoryTree($load_from_database = true) {
      global $languages_id;
-//ccdd
+ 
          $categories_query = tep_db_query("
            select *
            from (

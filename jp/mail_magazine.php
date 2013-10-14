@@ -27,12 +27,12 @@
     tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
     }
     
-    //ccdd
+     
     $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
     $regist_result = tep_db_fetch_array($regist_query);
     if($regist_result['cnt'] == '0') {
       //注册
-//ccdd
+ 
     tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
     
     tep_session_unregister('mag_mail');
@@ -53,7 +53,7 @@
     if (!tep_validate_email($mag_mail)) {
     tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
     }
-//ccdd
+ 
     $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
     $regist_result = tep_db_fetch_array($regist_query);
     if($regist_result['cnt'] == '0') {
@@ -64,7 +64,7 @@
       tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_STOP_ERROR), 'SSL'));
     } else {
       //删除注册信息处理（退会）
-//ccdd 
+  
     tep_db_query("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
     
     tep_session_unregister('mag_mail');
@@ -82,14 +82,14 @@
 <body> 
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"><h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                       <tr> 
@@ -203,15 +203,15 @@
           tep_session_unregister('mag_name');
           ?>
       </td>         
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>
