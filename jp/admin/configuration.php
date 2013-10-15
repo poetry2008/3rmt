@@ -402,7 +402,7 @@ require("includes/note_js.php");
                     ?> 
 
 <?php
-                             只先默认的值 
+//只先默认的值 
 $configuration_query = tep_db_query("
 select 
     configuration_id, 
