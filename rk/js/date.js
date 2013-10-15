@@ -4,11 +4,11 @@
 function selectDate(myHour, myMin){
 
 
-	var num    = document.order.date.selectedIndex; //'Select a number of select box
+	var num    = document.order.date.selectedIndex; //'Choose a number of select box
 	var myD    = new Date();                        //'Date object
 //	var myHour = myD.getHours();                    //'Time
 //	var myMin  = myD.getMinutes();                  //'Minutes
-		myMin  = Math.ceil(myMin/10) * 10;          //'Minutes carry dealt
+		myMin  = Math.ceil(myMin/10) * 10;          //'Finishing of upvaluation processing (Minutes)
 	var plus   = 20;                                //'Add the initial value of minutes
 
 
@@ -17,7 +17,7 @@ function selectDate(myHour, myMin){
 	myMin  = parseInt(myMin);
 
 
-	//'Select box value is cleared
+	//'To clear the selected box value
 	document.order.min.options.length  = 1;
 	document.order.hour.options.length = 1;
 
@@ -60,14 +60,14 @@ function selectDate(myHour, myMin){
 /*                            Minutes select box                               /
 /******************************************************************************/
 function selectHour(myHour, myMin){
-	var num  = document.order.hour.selectedIndex;  //'Select a number of select box
-	var num2 = document.order.date.selectedIndex;  //'Select a number of select box
+	var num  = document.order.hour.selectedIndex;  //'Choose a number of select box
+	var num2 = document.order.date.selectedIndex;  //'Choose a number of select box
 
 	var myD    = new Date();                       //'Date object
 //	var myHour = myD.getHours();                   //'Time
 //	var myMin  = myD.getMinutes();                 //'Minutes
-		myMin  = Math.ceil(myMin/10) * 10;         //'Minutes carry dealt
-	var min    = 0;                                //'the initial value of minutes
+		myMin  = Math.ceil(myMin/10) * 10;         //'Finishing of upvaluation processing
+	var min    = 0;                                //'The initial value of minutes
 	var plus   = 20;                               //'Add the initial value of minutes
 
 
@@ -76,7 +76,7 @@ function selectHour(myHour, myMin){
 	myMin  = parseInt(myMin);
 
 
-	//'Select box value is cleared
+	//'To clear the selected box value
 	document.order.min.options.length = 1;
 
 
