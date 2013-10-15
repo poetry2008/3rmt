@@ -770,7 +770,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   }
   
   // 统计 REFERER
-  if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
+  if ($_SERVER["HTTP_REFERER"]) {
 if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("#".HTTPS_SERVER."#", $_SERVER["HTTP_REFERER"])){
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
 	  }
