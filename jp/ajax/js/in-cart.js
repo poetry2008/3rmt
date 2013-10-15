@@ -1,17 +1,17 @@
 //----------------------------------------  
-//When the scroll bar appears, window display (cart)
+//The display of window when scrolling   
 //----------------------------------------
   
   var vs = "0";
   window.onscroll = myMove;
   
-  //----------For IE function----------
+  //----------Function for IE----------
   function ietruebody(){
     return (document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
   }
   //----------Put div in the bottom left display----------
   function myMove(){
-	var offSY = ietruebody().scrollTop; //The scroll position (Y coordinate on the screen）
+	var offSY = ietruebody().scrollTop; //Scroll position (y coordinates on a screen)
 	
 	if(document.all){
 	  var offMY = ietruebody().clientHeight; //Window size
@@ -33,7 +33,7 @@
 	document.getElementById("dis_clist").style.visibility = "visible";
 	  
 
-        //----------Cross browserOpacity set the function----------
+        //----------The Function to set the cross browser opacity----------
 	if(window.opera){
       return;
     }
@@ -50,7 +50,7 @@
       document.getElementById("dis_clist").style.MozOpacity = arg;
     }
   
-    //----------The first display----------
+    //----------The first display ?----------
 	if(vs == 0){
 	  vs = "1";
 	  cart_view('ajax.php?id=jk-list','in_cart','dis_clist');
@@ -65,8 +65,8 @@
 //Content            :Communication
 //
 //geturi             :Address URL
-//execution_f        :After generating xmlHttpObject, if the state is changed, then use this Function(When null values, background processing)
-//did                :The ID of Changed text
+//execution_f        :The Function will be performed if a state changes after generation of xmlHttpObject (when it is empty, it is processed by a backend)
+//did                : Character change ID
 //----------------------------------------
   function cart_view(geturi,execution_f,did) {
     xmlHttpObject = null;
@@ -84,7 +84,7 @@
 	  }
     }
   
-    //----------After adding execution_f, do the following----------
+    //----------The following processings will be added if execution_f is added. ----------
     if(xmlHttpObject){
 	  if(execution_f == 'in_cart'){
 	    xmlHttpObject.onreadystatechange = in_cart;
@@ -92,11 +92,11 @@
     }
   
     //----------------------------------------------------------------------------------------------------
-    //Start adding Function
+    //Start to add the Function
 
-    //----------In the shopping cart display list----------
+    //----------The display of the list in a cart ----------
     function in_cart(){
-	  var offSY = ietruebody().scrollTop; //The scroll position (Y coordinates on the screen）
+	  var offSY = ietruebody().scrollTop; //Scroll position (y coordinates on a screen) 
 	
 	  if(document.all){
 	    var offMY = ietruebody().clientHeight; //Window size
@@ -117,13 +117,13 @@
 	  document.getElementById("dis_clist").style.fontSize = "10px";
 	  document.getElementById("dis_clist").style.visibility = "visible";
 	  
-	  //----------Set function when the scroll bar appears----------
+          //----------The setting to perform the function when  click on scroll ----------
 	  window.onscroll = myMove;
 	  
-	  //----------When you click on it，window display (cart)----------
+          //----------The setting to display window (cart) when  click  on it ----------
 	  document.getElementById("dis_clist").onclick = null;
 
-      //----------Cross browserOpacity set the function----------
+          //----------The Function to set the opacity of  crossing the browser----------
 	  if(window.opera){
         return;
       }
@@ -160,11 +160,11 @@
 
 
 //----------------------------------------  
-//Mini window display
+//The display of mini window
 //----------------------------------------
   function cart_non(did) {
-    //----------Put mini_div in the bottom left display----------
-    var miniSY = ietruebody().scrollTop; //The scroll position (Y coordinates on the screen）
+    //----------Didplay  mini_div in the left bottom----------
+    var miniSY = ietruebody().scrollTop; // Scroll position (Y coordinates on the screen） 
 	
 	if(document.all){
 	  var miniMY = ietruebody().clientHeight; //Window size
@@ -185,16 +185,16 @@
 	document.getElementById(did).innerHTML = "";
 	document.getElementById(did).style.visibility = "visible";
 	
-	//----------Set function when the scroll bar appears----------
+        //----------The setting to perform the function when scrolling ----------
 	window.onscroll = miniMove;
   }
 
 //----------------------------------------  
-//When the scroll bar appears, window display(mini)
+//To display window (mini) when scrolling
 //----------------------------------------
   function miniMove(){
-    //----------In the left display div----------
-	var moveSY = ietruebody().scrollTop; //The scroll position (Y coordinates on the screen）
+    //----------Display div in the left bottom----------
+	var moveSY = ietruebody().scrollTop; // Scroll position (Y coordinates on the screen）
 	
 	if(document.all){
 	  var moveMY = ietruebody().clientHeight; //Window size
@@ -214,6 +214,6 @@
 	document.getElementById("dis_clist").style.fontSize = "10px";
 	document.getElementById("dis_clist").style.visibility = "visible";
 	
-	//----------When you click on it，window display (cart)----------
+        //----------The setting to display window (cart) when click on it----------
 	document.getElementById("dis_clist").onclick = function(){cart_view('ajax.php?id=jk-list','in_cart','dis_clist')};
   }
