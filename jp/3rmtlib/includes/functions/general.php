@@ -4888,7 +4888,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'currency_value' =>
                            $currencies->currencies[$currency]['value'],
                            'site_id' => SITE_ID, 
-                           'orders_ref'        => tep_db_input($_SESSION['referer']),
+                           'orders_ref'        => tep_db_prepare_input($_SESSION['referer']),
                            'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
                            'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
                            'orders_ip' => $_SERVER['REMOTE_ADDR'], 

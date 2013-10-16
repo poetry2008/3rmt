@@ -770,7 +770,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   }
   
   // 统计 REFERER
-  if ($_SERVER["HTTP_REFERER"]) {
+  if ($_SERVER["HTTP_REFERER"]&&$_SERVER['HTTP_REFERER']!='') {
 if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("#".HTTPS_SERVER."#", $_SERVER["HTTP_REFERER"])){
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
 	  }
@@ -785,7 +785,10 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
       " where customers_id ='".$_SESSION['customer_id']."'";
     $c_ref_query = tep_db_query($c_ref_sql);
     if($c_ref_row = tep_db_fetch_array($c_ref_query)){
-      if($c_ref_row['referer'] != tep_db_prepare_input($_SESSION['referer'])){
+      if($_SESSION['referer']==''||$_SESSION['referer']==null){
+         $_SESSION['referer'] = $c_ref_row['referer'];
+      }
+      if($c_ref_row['referer'] != tep_db_prepare_input($_SESSION['referer'])&&tep_db_prepare_input($_SESSION['referer'])!=''){
         tep_db_query("update ".TABLE_CUSTOMERS." set
             referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$_SESSION['customer_id']."'");
       }
