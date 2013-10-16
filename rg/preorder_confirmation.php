@@ -55,7 +55,6 @@ if(!isset($_SESSION['submit_flag'])){
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof //--> 
 <!-- body //--> 
-<?php echo tep_draw_form('preorder_confirmation', FILENAME_PREORDER_PROCESS.'?action=process', 'post', '');?>
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
 <tr> 
 <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
@@ -64,6 +63,7 @@ if(!isset($_SESSION['submit_flag'])){
 <!-- body_text //--> 
 <td valign="top" id="contents"> <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><?php echo HEADING_TITLE ; ?></div>      
 <div class="comment">
+<?php echo tep_draw_form('preorder_confirmation', FILENAME_PREORDER_PROCESS.'?action=process', 'post', '');?>
 <table class="table_ie" border="0" width="100%" cellspacing="0" cellpadding="0"> 
 <tr> 
   <td>
@@ -476,7 +476,7 @@ if (is_array($payment_modules->modules)) {
   echo $payment_modules->process_button($payment);
 }
 echo '<a href="javascript:void(0);" onclick="check_error();">';
-echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER) . '</a></form>' . "\n";
+echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER) . '</a>' . "\n";
 ?> </td> 
 </tr> 
 </table></td> 
@@ -485,6 +485,7 @@ echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER) . '</a></for
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 </table>
+</form>
 </div>
 <p class="pageBottom"></p>
 </td> 

@@ -211,7 +211,7 @@ function check_pre_products(op_info_str, products_id_str) {
   }
   if(error == true){
 
-    alert('<?php echo JS_ERROR;?>'); 
+    alert('<?php echo JS_ERROR.JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER;?>'); 
   }else{
     $.ajax({
       url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_products_op');?>',     
