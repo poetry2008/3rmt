@@ -868,7 +868,7 @@ if (tep_not_null($preorder_array['comment_msg'])) {
     <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
     </tr> 
     <tr> 
-    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="c_pay_info"> 
+    <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
     <tr class="infoBoxContents"> 
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
     <tr> 
