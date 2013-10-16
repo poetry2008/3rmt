@@ -9,7 +9,7 @@
   $new_c_name = $_categories['categories_name'];
 
   if ( (!isset($new_products_category_id)) || ($new_products_category_id == '0') ) {
-    // ccdd
+    
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
                p.products_image, 
@@ -26,7 +26,7 @@
         where p.products_id = pd.products_id order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
   } else {
-    // ccdd
+    
     $has_child_category_raw = tep_db_query("select * from (select cd.site_id, cd.categories_id, cd.categories_status from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$new_products_category_id."' order by cd.site_id desc) c where site_id = '0' or site_id = '".SITE_ID."' group by categories_id having c.categories_status != '1' and c.categories_status != '3'"); 
     $has_c_arr = array();
     while ($has_child_category_res = tep_db_fetch_array($has_child_category_raw)) {

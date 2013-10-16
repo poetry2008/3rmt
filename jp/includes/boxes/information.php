@@ -8,7 +8,7 @@
   <?php echo tep_image(DIR_WS_IMAGES.'design/box/information.gif',BOX_HEADING_INFORMATION,171,25) . "\n"; ?>
   <ul class="l_m_category_ul">
 <?php
-// ccdd
+
   $contents_page = tep_db_query("
       select * 
       from ".TABLE_INFORMATION_PAGE." 

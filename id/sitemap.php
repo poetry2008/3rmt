@@ -62,7 +62,7 @@
            </ul>
         <ul>
 <?php
-                          // ccdd
+                          
   $contents_page = tep_db_query("
       select * 
       from ".TABLE_INFORMATION_PAGE." 

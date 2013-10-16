@@ -45,7 +45,7 @@
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
-    // ccdd
+    
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
 
 // Quantity box or information as an input box or text

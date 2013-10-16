@@ -21,7 +21,7 @@
  
 <?php
   if ( (!isset($new_products_category_id)) || ($new_products_category_id == '0') ) {
-    // ccdd
+    
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
                p.products_image, 
@@ -36,7 +36,7 @@
         where p.products_id = pd.products_id order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
   } else {
-    // ccdd
+    
     $new_products_query = tep_db_query("
         select * from (select distinct p.products_id, 
                         p.products_image, 
@@ -70,7 +70,7 @@
   $info_box_contents = array();
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $row ++;
-      // ccdd
+      
       /*
       $product_query = tep_db_query("
           select products_name, 

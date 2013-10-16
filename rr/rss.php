@@ -11,7 +11,7 @@ $connection = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD)  
 $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
 if (!isset($_GET['language']) || !$_GET['language']) {
-  // ccdd
+  
   $lang_query = tep_db_query("
       select languages_id, 
              code 
@@ -20,7 +20,7 @@ if (!isset($_GET['language']) || !$_GET['language']) {
   ");
 } else {
   $cur_language = tep_db_output($_GET['language']);
-  // ccdd
+  
   $lang_query = tep_db_query("
       select languages_id, 
              code 

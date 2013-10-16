@@ -9,7 +9,7 @@
                   <td height="40"><?php echo tep_image(DIR_WS_IMAGES.'design/menu_left/by_brand.gif',BOX_HEADING_MANUFACTURERS);?></td> 
                 </tr> 
 <?php
-// ccdd
+
   $manufacturers_query = tep_db_query("
       select manufacturers_id, 
              manufacturers_name 

@@ -7,7 +7,7 @@
 <div class="box_title"><?php echo BOX_HEADING_INFORMATION;?></div> 
 <ul id="box">
 <?php
-// ccdd
+
   $contents_page = tep_db_query("
       select * 
       from ".TABLE_INFORMATION_PAGE." 

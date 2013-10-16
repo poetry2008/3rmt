@@ -53,7 +53,7 @@
             <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>*/ ?>
           </tr>
 <?php
-// ccdd
+
   $reviews_query = tep_db_query("
       SELECT reviews_rating, 
              reviews_id, 

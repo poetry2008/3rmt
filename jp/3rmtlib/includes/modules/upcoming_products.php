@@ -3,7 +3,7 @@
   $Id$
 */
 
-  // ccdd
+  
   $expected_query = tep_db_query("
     select * 
     from (

@@ -2,7 +2,7 @@
 /*
  $Id$
  */
-// ccdd
+
 $colors_query = tep_db_query("
     select * 
     from ".TABLE_COLOR." 

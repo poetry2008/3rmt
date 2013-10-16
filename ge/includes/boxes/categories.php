@@ -4,7 +4,7 @@
 */
 
 $categories = array();
-// ccdd
+
 $categories_query = tep_db_query("
     select * 
     from (
@@ -77,7 +77,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
           </a>
         <?php
           $subcategories = array();
-          // ccdd
+          
           $subcategories_query = tep_db_query("
               select *
               from (

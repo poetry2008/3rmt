@@ -14,7 +14,7 @@
 
  // new infoBoxHeading($info_box_contents, false, false);
 
-// ccdd
+
   $manufacturers_query = tep_db_query("
       select manufacturers_id, 
              manufacturers_name 

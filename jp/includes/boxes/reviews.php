@@ -94,7 +94,7 @@ if (
     
     if ($random_product) {
       // display random review box
-      // ccdd
+      
       $review_query = tep_db_query("
           select substring(reviews_text, 1, 60) as reviews_text 
           from " . TABLE_REVIEWS_DESCRIPTION . " 

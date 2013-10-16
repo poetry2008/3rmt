@@ -74,7 +74,7 @@
   }
   if (!isset($cat0[0])) $cat0[0] = NULL; //del notice
   $cat1 = $cat0[0];
-  // ccdd
+  
   $categories_parent0_query = tep_db_query("
       select * 
       from (

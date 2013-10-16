@@ -94,7 +94,7 @@ function change_num(ob, targ, quan,a_quan)
       </div>
       <?php
   } else {
-    // ccdd
+    
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
@@ -244,7 +244,7 @@ function change_num(ob, targ, quan,a_quan)
                     </tr>
                     <?php } ?>
                     <?php
-// ccdd
+
 if (false) {
 $tag_query = tep_db_query("
     SELECT t.tags_id, 
@@ -313,7 +313,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         }
         echo '</span>'; 
       }else{    
-        // ccdd
+        
         $products_attributes_query = tep_db_query("
             SELECT count(*) as total 
             FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
@@ -329,7 +329,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
          echo "<div style='overflow: hidden;'>"; 
       
       echo ''."\n".'<p>' . TEXT_PRODUCT_OPTIONS . '</p>' ;
-    // ccdd
+    
       $products_options_name_query = tep_db_query("
           SELECT distinct popt.products_options_id, 
                  popt.products_options_name 
@@ -346,7 +346,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
             $products_options_array = array();
             echo '<span>' . $products_options_name['products_options_name'] .
               ':</span>' . "\n";
-                  // ccdd
+                  
         $products_options_query = tep_db_query("
             SELECT pov.products_options_values_id, 
                    pov.products_options_values_name, 
@@ -386,7 +386,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
         while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
           $selected = 0;
           $products_options_array = array();
-          // ccdd
+          
           $products_options_query = tep_db_query("
               SELECT pov.products_options_values_id, 
                      pov.products_options_values_name, 
@@ -481,7 +481,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
   <!--datail-div  end-->
       <?php
                     //sub图像
-        // ccdd
+        
         $sub_colors_query = tep_db_query("
             SELECT color_image, 
                    color_id, 
@@ -499,7 +499,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
           <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
                       //获取颜色名
-          // ccdd
+          
           $colors_name_query = tep_db_query("
               SELECT color_name 
               FROM ".TABLE_COLOR." 

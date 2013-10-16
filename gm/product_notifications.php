@@ -25,7 +25,7 @@
     $remove = substr($remove, 0, -1);
 
     if (tep_not_null($remove)) {
-      // ccdd
+      
       tep_db_query("
           delete 
           from " . TABLE_PRODUCTS_NOTIFICATIONS . " 
@@ -37,14 +37,14 @@
     tep_redirect(tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
   } elseif (isset($_GET['action']) && ($_GET['action'] == 'global_notify')) {
     if (isset($_POST['global']) && ($_POST['global'] == 'enable')) {
-      // ccdd
+      
       tep_db_query("
           update " . TABLE_CUSTOMERS_INFO . " 
           set global_product_notifications = '1' 
           where customers_info_id = '" . $customer_id . "'
       ");
     } else {
-      // ccdd
+      
       $check_query = tep_db_query("
           select count(*) as count 
           from " . TABLE_CUSTOMERS_INFO . " 
@@ -53,7 +53,7 @@
       ");
       $check = tep_db_fetch_array($check_query);
       if ($check['count'] > 0) {
-        // ccdd
+        
         tep_db_query("
             update " . TABLE_CUSTOMERS_INFO . " 
             set global_product_notifications = '0' 
@@ -205,7 +205,7 @@
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
           <table width="100%" class="botton-continue">
 <?php
-    // ccdd
+    
     $products_query = tep_db_query("
       select *
       from (
