@@ -126,16 +126,16 @@ function change_num(value){
 ?>
       <div align="center">
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-      <!-- left_navigation //-->
+      <!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
+      <!-- left_navigation_eof -->
     </td>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td valign="top" id="contents">
       <p class="main">
         <?php echo HEADING_TITLE_ERROR; ?><br><?php echo ERROR_INVALID_PRODUCT; ?>
@@ -316,11 +316,11 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
 ?>
       <div align="center">
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
   <tr>
-    <!-- body_text //-->
+    <!-- body_text -->
     <td valign="top" id="contents_long">
       <h1 class="pageHeading_long"><span class="game_t"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></span></h1>
             <div class="comment">
@@ -441,18 +441,18 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
 ?>
     </div>
     </td>      
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
     <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-      <!-- right_navigation //-->
+      <!-- right_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
+      <!-- right_navigation_eof -->
     </td>
   </tr>
 </table>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 </div>
 </div>
 </body>

@@ -16,7 +16,7 @@
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-      echo  '<div class="pageHeading_long"><h3>'.$product_info['products_name'].BOX_REVIEWS_LINK_TEXT.'</h3></div>'."\n" . '<div class="comment_long">'."\n" ;
+      echo  '<div class="pageHeading_long"><h3>'.$product_info['products_name'].BOX_REVIEWS_LINK_TEXT.'</h3></div>'."\n" . '<div class="comment_long"><div class="comment_long_text">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
         $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
@@ -27,7 +27,7 @@
         echo '<p class="main"><div class="text_main"> <span><b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) .  '</b></span>&nbsp;&nbsp;<span>' . tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) .  '</span>&nbsp;&nbsp;<span>[' .  sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) .  ']</span></div>' . nl2br($reviews_des_res['reviews_text']) . "\n" . '</p></td></tr>';
         echo '</table>';
       }
-      echo '</div>' . "\n";
+      echo '</div></div>' . "\n";
    } 
 }
 ?>

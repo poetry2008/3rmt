@@ -770,13 +770,25 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   }
   
   // 统计 REFERER
-  if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
+  if ($_SERVER["HTTP_REFERER"]) {
 if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("#".HTTPS_SERVER."#", $_SERVER["HTTP_REFERER"])){
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
 	  }
     // 统计 Google Adsense
     if (isset($_GET['from']) && $_GET['from'] == 'adwords') {
       $_SESSION['referer_adurl'] = '1';
+    }
+  }
+
+  if (tep_session_is_registered('customer_id')) {
+    $c_ref_sql = "select referer from ".TABLE_CUSTOMERS.
+      " where customers_id ='".$_SESSION['customer_id']."'";
+    $c_ref_query = tep_db_query($c_ref_sql);
+    if($c_ref_row = tep_db_fetch_array($c_ref_query)){
+      if($c_ref_row['referer'] != tep_db_prepare_input($_SESSION['referer'])){
+        tep_db_query("update ".TABLE_CUSTOMERS." set
+            referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$_SESSION['customer_id']."'");
+      }
     }
   }
 

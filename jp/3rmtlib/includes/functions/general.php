@@ -245,12 +245,13 @@ function forward404Unless($condition)
     返回值: 检测商品库存不足的信息(string) 
 ------------------------------------ */
   function tep_check_stock($products_id, $products_quantity, $link_single = false) {
+    global $languages_id;
     $stock_left = tep_get_quantity($products_id,true) - $products_quantity;
     $out_of_stock = '';
-    $product = tep_get_product_by_id($products_id, SITE_ID, 4);
+    $product = tep_get_product_by_id($products_id, SITE_ID, $languages_id);
 
     if ($stock_left < 0) {
-      $product = tep_get_product_by_id($products_id, SITE_ID, 4,true,'product_info');
+      $product = tep_get_product_by_id($products_id, SITE_ID, $languages_id,true,'product_info');
       if ($link_single) {
         $out_of_stock = '<span class="markProductOutOfStock" style="color:#cc0033">'.STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</span>';
       } else {
@@ -1336,8 +1337,10 @@ function forward404Unless($condition)
 ------------------------------------ */
   function tep_word_count($string, $needle) {
     global $language;
-    if ($language == 'japanese') {
-        return mb_strlen($string);
+    $language_info_raw = tep_db_query("select * from ".TABLE_LANGUAGES." where code = '".DEFAULT_LANGUAGE."' limit 1"); 
+    $language_info_res = tep_db_fetch_array($language_info_raw); 
+    if (strtolower($language_info_res['directory']) == $language) {
+      return mb_strlen($string);
     }
 
     $temp_array = split($needle, $string);
@@ -1589,7 +1592,11 @@ function forward404Unless($condition)
   function tep_get_fullname($firstname, $lastname) {
     global $language;
     $separator = ' ';
-    if ($language == 'japanese') {
+    
+    $language_info_raw = tep_db_query("select * from ".TABLE_LANGUAGES." where code = '".DEFAULT_LANGUAGE."' limit 1"); 
+    $language_info_res = tep_db_fetch_array($language_info_raw); 
+    
+    if (strtolower($language_info_res['directory']) == $language) {
         return $lastname.$separator.$firstname;
     } else {
         return $firstname.$separator.$lastname;
@@ -2723,8 +2730,8 @@ function tep_unlink_temp_dir($dir)
     参数: $country_code(string) 国家代码
     返回值: 区域列表(string) 
 ------------------------------------ */
-      function tep_get_zone_list2($name, $selected = '', $country_code = '107') {
-        $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '107' order by zone_code");
+      function tep_get_zone_list2($name, $selected = '', $country_code = STORE_COUNTRY) {
+        $zones_query = tep_db_query("select zone_name, zone_id from ".TABLE_ZONES." where zone_country_id = '".STORE_COUNTRY."' order by zone_code");
         $string = '<select name="'.$name.'">';
         while ($zones_values = tep_db_fetch_array($zones_query)) {
           $string .= '<option value="'.$zones_values['zone_id'].'"';
@@ -3208,7 +3215,9 @@ function tep_orders_status_finished($osid){
     参数: $languages_id(int) 语言id 
     返回值: 显示警告(string/boolean) 
 ------------------------------------ */
-function tep_show_warning($categories_id, $languages_id = 4) {
+function tep_show_warning($categories_id) {
+  global $languages_id;
+  
   $categories_query = tep_db_query("select * from (select c.categories_id, c.parent_id, cd.categories_status, cd.site_id, cd.categories_name, c.sort_order from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and cd.language_id = '".$languages_id."' and c.categories_id = '".$categories_id."' order by site_id DESC) c where site_id = '".SITE_ID."' or site_id = 0 group by categories_id order by sort_order, categories_name");
   $categories = tep_db_fetch_array($categories_query);
   if ($categories) {
@@ -4566,14 +4575,18 @@ function tep_order_status_change($oID,$status){
   $formtype = tep_check_order_type($order_id);
   $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
+ 
+  $status_info_raw = tep_db_query('select * from '.TABLE_ORDERS_STATUS." where orders_status_id = '".(int)$status."'");
+  $status_info_res = tep_db_fetch_array($status_info_raw); 
   
-  if ($status == '9') {
+  if ($status_info_res['is_pay_time'] == '1') {
     tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
   }
-  if($status == '17'){
+  
+  if ($status_info_res['is_reorder'] == '1') {
     tep_db_query("update `".TABLE_ORDERS."` set `orders_wait_flag` = '1' where `orders_id` = '".$oID."'");
   }
-
+  
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   //如果存在，把每个元素找出来，看是否有自动更新
   if($form){
@@ -4754,7 +4767,7 @@ function tep_create_tmp_guest($email, $last_name, $first_name)
                             'entry_street_address' => '',
                             'entry_postcode' => '',
                             'entry_city' => '',
-                            'entry_country_id' => '107',
+                            'entry_country_id' => STORE_COUNTRY,
                             'entry_telephone' => '');
 
     tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
@@ -4875,6 +4888,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'currency_value' =>
                            $currencies->currencies[$currency]['value'],
                            'site_id' => SITE_ID, 
+                           'orders_ref'        => tep_db_input($_SESSION['referer']),
+                           'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
+                           'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
                            'orders_ip' => $_SERVER['REMOTE_ADDR'], 
                            'orders_host_name'  => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))), 
                            'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'], 
@@ -5932,7 +5948,7 @@ function outputs() {
                   }
                 }
               }
-              $colspan = SITE_ID == 2 ? ' colspan="2"' : '';
+              $colspan = (NEW_STYLE_WEB === true) ? ' colspan="2"' : '';
               $output_string .= '              <tr>' . "\n" .
                                 '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
                                 '                <td align="right" class="main"'.

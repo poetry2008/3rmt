@@ -72,7 +72,7 @@ if ($_GET['cPath'] != "") {
   $sql = "SELECT p.products_id, p.products_model, p.products_image, p.products_price, p.products_tax_class_id FROM products p ORDER BY products_id DESC";
 }
 // Execute SQL query and get result
-//ccdd
+ 
 $sql_result = mysql_query($sql,$connection) or die("Couldn't execute query.");
 $i = 1;
 // Format results by row
@@ -108,7 +108,7 @@ while ($row = mysql_fetch_array($sql_result)) {
            order by site_id DESC
            LIMIT 1
    ";
-  //ccdd
+   
   $sql2_result = mysql_query($sql2,$connection) or die("Couldn't execute query.");
   $row2 = mysql_fetch_array($sql2_result);
   if ($row2['products_status'] == 0 || $row2['products_status'] == 3) {

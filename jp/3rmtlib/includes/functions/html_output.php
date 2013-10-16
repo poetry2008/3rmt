@@ -486,7 +486,7 @@
         select zone_name 
         from " . TABLE_ZONES . " 
         where zone_country_id = '" . tep_db_input($country_code) . "' 
-        order by " . (($country_code == 107) ? "zone_code" : "zone_name")
+        order by " . (($country_code == STORE_COUNTRY) ? "zone_code" : "zone_name")
     );
     while ($zones_values = tep_db_fetch_array($zones_query)) {
       $zones_array[] = array('id' => $zones_values['zone_name'], 'text' => $zones_values['zone_name']);
@@ -854,7 +854,7 @@ function info_tep_href_link($romaji)
       $returnstr .= "info/".urlencode($romaji).".html";
     } else {
       // id 要求登陆之前不传sid
-      if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID == 10)) {
+      if (!defined('NEW_TYPE_SYMBOL')) {
         if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
           $returnstr .= "info/".urlencode($romaji).".html?".tep_session_name()."=".tep_session_id();
         } else {

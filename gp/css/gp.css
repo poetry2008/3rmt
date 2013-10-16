@@ -2531,6 +2531,8 @@ line-height:21px;
 .text_main{
 	width:100%;
 	clear:both;
+	*height:19px;
+	*padding-top:5px;
 }
 .text_main span{
 	float:left;
@@ -2539,5 +2541,6 @@ line-height:21px;
 .text_main img{
 	float:left;
 	*float: none;
-	margin:0 5px 0 5px;
+	margin:-1px 5px 0 5px;
+	*margin:-5px 0 0;
 }

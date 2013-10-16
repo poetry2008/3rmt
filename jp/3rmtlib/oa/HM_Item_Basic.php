@@ -56,6 +56,7 @@ class HM_Item_Basic
     返回值: 元素的html(string) 
 ------------------------------------ */
   public function prepareFormWithParent($item_id){
+    global $languages_id;
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 
     $item_res = tep_db_fetch_object($item_raw); 
     if ($item_res) {
@@ -63,14 +64,12 @@ class HM_Item_Basic
     }
     $formString  = '';
     $formString = '<table width="100%" boder="0">';
-
     if ($this->hasRequire){
       $checked = isset($item_value['require'])?'checked="true"':'';
       $formString .= "<tr><td width='5%' nowrap >".TEXT_MUSTBE."</td><td width='15%'><input type='checkbox' name='require' ".$checked."/></td><td><font size='2' color='#ff0000'>".$this->must_comment."</font></td></tr>";      
     }
     //关联状态
     if ($this->hasSelect){
-      $languages_id = 4;
       $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
       $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
       $formString .="<tr><td width='5%' nowrap >".TEXT_OA_BASEIC_STATUS."</td><td width='15%'><select name='status'>";

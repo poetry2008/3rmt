@@ -2,6 +2,7 @@
 /*
   $Id$
 */
+    require(DIR_WS_FUNCTIONS . 'visites.php');
     require(DIR_WS_CLASSES . 'payment.php');
     $payment_modules = payment::getInstance(SITE_ID);
     $error = false;

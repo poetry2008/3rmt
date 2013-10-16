@@ -21,13 +21,13 @@ unset($_SESSION['shipping_session_flag']);
 }
 ?>
 <body>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 
@@ -163,7 +163,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
   }
 
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-    //ccdd
+     
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .

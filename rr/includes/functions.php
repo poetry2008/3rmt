@@ -21,7 +21,7 @@ function tep_rr_get_categories($categories_array = '', $parent_id = '0', $indent
   $parent_id = tep_db_prepare_input($parent_id);
   $pa_cid_arr = explode(',', $include_pid);
   if (!is_array($categories_array)) $categories_array = array();
-  //ccdd
+   
   $categories_query = tep_db_query("
     select *
     from (

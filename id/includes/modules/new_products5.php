@@ -3,7 +3,7 @@
   $Id$
 */
   $categories_path   = explode('_', $_GET['cPath']);
-  //ccdd
+   
   $_categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 
@@ -129,7 +129,7 @@
     $row = 0;
     $col = 0;
 ?>
-<!-- new_products //-->
+<!-- new_products -->
 <?php if (0 < $num_products) { ?>
 <h1 class="pageHeading">
 <span class="game_t">
@@ -205,4 +205,4 @@
 <?php
   }
 ?>
-<!-- new_products5_eof //-->
+<!-- new_products5_eof -->

@@ -33,7 +33,7 @@
     $sendto = $customer_default_address_id;
   } else {
 // verify the selected shipping address
-//ccdd
+ 
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
     $check_address = tep_db_fetch_array($check_address_query);
 
@@ -213,21 +213,21 @@ function rowOverEffect(object) {
 function rowOutEffect(object) {
   if (object.className == 'moduleRowOver') object.className = 'moduleRow';
 }
-//--></script>
+--></script>
 <script type="text/javascript" src="js/data.js"></script>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <div id="l_menu">
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 </div>
-<!-- left_navigation_eof //-->
-<!-- body_text //-->
+<!-- left_navigation_eof -->
+<!-- body_text -->
 <div id="content">
 <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL')) . tep_draw_hidden_field('action', 'process'); ?> 
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
@@ -406,16 +406,16 @@ if (!isset($jikan_error)) $jikan_error=NULL;
 </table>      
 </form>
 </div>
-<!-- body_text_eof //--> 
-<!-- right_navigation //--> 
+<!-- body_text_eof --> 
+<!-- right_navigation --> 
 <div id="r_menu">
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
-<!-- right_navigation_eof //-->
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+<!-- right_navigation_eof -->
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

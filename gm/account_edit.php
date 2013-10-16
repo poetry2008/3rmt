@@ -99,7 +99,7 @@ case 'per':
   } else {
     $entry_email_address_check_error = false;
   } 
-//ccdd
+ 
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
@@ -302,7 +302,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     $entry_password_old_error = true;
   }
   
-//ccdd
+ 
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
@@ -569,13 +569,13 @@ if($_POST['num_rows'] > 0){
 <?php require('includes/form_check.js.php'); ?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
 <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- body_text //-->
+<!-- body_text -->
 <div id="layout" class="yui3-u">        <div id="current"><?php echo
 $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 		<?php include('includes/search_include.php');?>
@@ -584,7 +584,7 @@ $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
     <h2><?php echo HEADING_TITLE ; ?></h2> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <?php
-//ccdd
+ 
   $account_query = tep_db_query("select c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a where c.customers_id = '" . $customer_id . "' and a.customers_id = c.customers_id and a.address_book_id = '" .  $customer_default_address_id . "' and c.site_id = '".SITE_ID."'");
   $account = tep_db_fetch_array($account_query);
   $email_address = isset($_POST['email_address']) && isset($_POST['action']) && ($_POST['action'] == 'per' ||($_POST['action'] == 'address' && $_POST['action_flag'] == 1 ))? $_POST['email_address'] : $account['customers_email_address'];

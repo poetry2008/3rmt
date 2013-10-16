@@ -20,7 +20,7 @@ STORE_NAME.TEXT_MODULE_NEWS_TITLE;?></span>
         <ul class="news_ul">
 
 <?php
-//ccdd
+ 
 if(preg_match('/^[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]$/',trim(SITE_OPEN_TIME))){
       $start_open_time = str_replace('/','-',trim(SITE_OPEN_TIME));
     }else{

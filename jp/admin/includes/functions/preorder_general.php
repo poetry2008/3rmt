@@ -746,10 +746,6 @@ function   tep_pre_order_status_change($oID,$status){
   $payment_romaji = tep_get_pre_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   
-  if ($status == '9') {
-    tep_db_query("update `".TABLE_PREORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
-  }
-  
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   //如果存在，把每个元素找出来，看是否有自动更新
   if($form){

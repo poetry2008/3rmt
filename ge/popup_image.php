@@ -7,7 +7,7 @@
 
   $navigation->remove_current_page();
 
-//ccdd
+ 
   $products_query = tep_db_query("
       select * from (select pd.products_name, 
              p.products_image,

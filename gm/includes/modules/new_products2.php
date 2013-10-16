@@ -3,7 +3,7 @@
   $Id$
 */
   $categories_path = explode('_', $_GET['cPath']);
-  //ccdd
+   
   $_categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 
@@ -14,7 +14,7 @@
   $_categories = tep_db_fetch_array($_categories_query);
   $new_c_name = $_categories['categories_name'];
 ?>
-<!-- new_products //-->
+<!-- new_products -->
         <h2> 
           <table width="100%" border="0" align="center" cellpadding="0"
           cellspacing="0" summary="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"> 
@@ -121,4 +121,4 @@
   echo '</table>' ;
   }
 ?>
-<!-- new_products_eof //-->
+<!-- new_products_eof -->

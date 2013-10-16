@@ -53,7 +53,7 @@
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 function popupImageWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -107,7 +107,7 @@ function showimage($1) {
             </tr> 
             <tr> 
               <td class="main"><br> 
-                <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?> <small>[<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</small></td> 
+                <div class="text_main"><span><b><?php echo SUB_TITLE_RATING; ?></b></span><?php echo tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?><span>[<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</span></div></td> 
             </tr> 
             <tr> 
               <td><br> 

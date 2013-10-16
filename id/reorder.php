@@ -8,6 +8,8 @@ if(!$_POST){
   $_SESSION['reorder_flag'] = true;
 }
 
+$status_info_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where is_reorder = '1' and language_id = '".$languages_id."' limit 1"); 
+$status_info_res = tep_db_fetch_array($status_info_raw); 
 $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
 <?php page_head();?>
@@ -107,7 +109,7 @@ document.onclick=function(e){
         if ($date && $hour && $start_min) {
           tep_db_query("
               update `".TABLE_ORDERS."` 
-              set `orders_status`='17' ,
+              set `orders_status`='".$status_info_res['orders_status_id']."' ,
                   `torihiki_date` = '".$datetime."' ,
                   `torihiki_date_end` = '".$datetime_end."' ,
                   `last_modified` = now()
@@ -119,7 +121,7 @@ document.onclick=function(e){
         }else{
           tep_db_query("
               update `".TABLE_ORDERS."` 
-              set `orders_status`='17' ,
+              set `orders_status`='".$status_info_res['orders_status_id']."' ,
                   `last_modified` = now()
               WHERE `orders_id`='".$order_id."' 
                 and site_id = '".SITE_ID."'
@@ -127,7 +129,7 @@ document.onclick=function(e){
           orders_updated($order_id);
           last_customer_action();
         }
-        tep_order_status_change($order_id,17);
+        tep_order_status_change($order_id,$status_info_res['orders_status_id']);
           // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
@@ -141,7 +143,7 @@ document.onclick=function(e){
               ) VALUES (
                 NULL ,
                 '".$order_id."', 
-                '17', 
+                '".$status_info_res['orders_status_id']."', 
                 '".date("Y-m-d H:i:s")."', 
                 '1', 
                 '".mysql_real_escape_string($comment)."',
@@ -239,7 +241,6 @@ document.onclick=function(e){
       $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
   
-    //ccdd
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
   
     $products_ordered .= $products_ordered_attributes . "\n";
@@ -251,7 +252,6 @@ document.onclick=function(e){
   # 邮件正文调整 --------------------------------------
   $email_order = '';
 
-  // ccdd
   $otq = tep_db_query("
       select * 
       from ".TABLE_ORDERS_TOTAL." 

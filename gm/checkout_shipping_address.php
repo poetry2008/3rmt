@@ -198,7 +198,7 @@
 
         if (!tep_session_is_registered('sendto')) tep_session_register('sendto');
         
-        //ccdd
+         
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $sendto = $entry_id;
@@ -372,12 +372,12 @@ function check_form() {
     return true;
   }
 }
-//--></script>
+--></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
  <div id="main">
  <div id="layout" class="yui3-u">
   
@@ -387,7 +387,7 @@ function check_form() {
  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
         <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-      <!-- body_text //--> 
+      <!-- body_text --> 
       <td valign="top" id="contents"><?php echo tep_draw_form('checkout_address', tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?>
 <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -622,17 +622,17 @@ function check_form() {
           </table> 
           </form> 
         </div></td> 
-      <!-- body_text_eof //--> 
+      <!-- body_text_eof --> 
         <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   </div>
   </div>
    <?php include("includes/float-box.php"); ?>
    </div>
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
