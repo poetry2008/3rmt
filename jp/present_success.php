@@ -54,6 +54,8 @@ tep_session_unregister('suburb');
 tep_session_unregister('postcode');
 tep_session_unregister('city');
 tep_session_unregister('zone_id');
+tep_session_unregister('address_present');
+tep_session_unregister('present_type_array');
 
 
 require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

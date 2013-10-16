@@ -13,7 +13,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array,$is_space = false)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="93" valign="top">';
+      echo '<td class="main" width="'.($is_space == true ? '104' : '93').'" valign="top">';
       echo $this->front_title.':'; 
       echo '</td>'; 
     }

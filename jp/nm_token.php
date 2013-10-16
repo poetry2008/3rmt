@@ -38,8 +38,14 @@
         $cart->restore_contents(); 
       }
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
-      
-      tep_redirect(tep_href_link('non-member_auth_finish.php', '', 'SSL')); 
+
+      if(isset($_GET['goods_id'])){
+        $pc_id = $customer_id;
+        tep_session_register('pc_id');   
+        tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'], 'SSL'));  
+      }else{
+        tep_redirect(tep_href_link('non-member_auth_finish.php', '', 'SSL')); 
+      }
     }
   } else {
     tep_redirect(tep_href_link('account_timeout.php')); 

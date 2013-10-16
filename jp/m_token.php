@@ -67,7 +67,13 @@
       tep_session_register('guestchk');
       $cart->restore_contents(); 
     }
-    tep_redirect(tep_href_link('create_account_success.php', '', 'SSL')); 
+    if(isset($_GET['goods_id'])){
+      $pc_id = $customer_id;
+      tep_session_register('pc_id');   
+      tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'], 'SSL'));
+    }else{
+      tep_redirect(tep_href_link('create_account_success.php', '', 'SSL')); 
+    }
   } else {
     tep_redirect(tep_href_link('account_timeout.php')); 
   }

@@ -7760,12 +7760,6 @@ resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_e
              p.family_name, 
              p.first_name, 
              p.mail, 
-             p.postcode, 
-             p.prefectures, 
-             p.cities, 
-             p.address1, 
-             p.address2, 
-             p.phone, 
              p.tourokubi, 
              s.romaji,
              g.site_id
@@ -7817,14 +7811,11 @@ $sql2 = tep_db_fetch_array($sele2);
         );
     $zone_query = tep_db_query(" select zone_name from " . TABLE_ZONES . " where zone_country_id = '107' and zone_id = '".$sql2['zone_name']."' ");
     $zone = tep_db_fetch_array($zone_query);
+    //礼物配送地址 
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_ADDRESS),
-        array('text' => '〒'.$sql2['postcode'].'<br>'.$zone['zone_name'].'<br>'.$sql2['prefectures'].$sql2['cities'].'<br>'.$sql2['address1'].'<br>'.$sql2['address2'])
-        );
-    $contents[]['text'] = array(
-        array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_TEL),
-        array('text' => $sql2['phone'])
-        );
+        array('text' => $sql2['address'])
+        ); 
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_APPLYDAY),
         array('text' => $sql2['tourokubi'])

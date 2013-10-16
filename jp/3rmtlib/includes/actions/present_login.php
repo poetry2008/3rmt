@@ -91,4 +91,4 @@
       $_GET['login'] = 'fail';
     }
     
-    if($login_error == false) tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$goods_id, 'SSL'));
+    if($login_error == false) tep_redirect(tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$goods_id, 'SSL'));

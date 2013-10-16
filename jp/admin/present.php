@@ -883,12 +883,6 @@ $c_id = tep_db_prepare_input($_GET['cID']);
              p.family_name, 
              p.first_name, 
              p.mail, 
-             p.postcode, 
-             p.prefectures, 
-             p.cities, 
-             p.address1, 
-             p.address2, 
-             p.phone, 
              p.tourokubi, 
              s.romaji,
              g.site_id

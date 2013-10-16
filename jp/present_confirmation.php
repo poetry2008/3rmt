@@ -30,6 +30,35 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
     case 'process'://申请流程
     //现在的时间
     $now = date("Y/m/d H:i:s", time());
+
+    //present address info 
+    $present_address_info = '';
+    $i = 0;
+    $sum = count($_SESSION['address_present']);
+    foreach($_SESSION['address_present'] as $op_key=>$op_value){
+  
+      if($_SESSION['present_type_array'][$op_key] == 'num'){
+     
+        $input_text_str = $op_value[1];
+        $mode = array('/\s/','/－/','/－/','/-/');
+        $replace = array('','','','');
+        $mode_half = array('1','2','3','4','5','6','7','8','9','0');
+        $mode_all = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/');
+        $input_text_str = preg_replace($mode,$replace,$input_text_str);
+        $input_text_str = preg_replace($mode_all,$mode_half,$input_text_str);
+        $op_value[1] = $input_text_str;
+      } 
+      $i++;
+      if($i == $sum){
+        if(trim($op_value[1]) != ''){
+          $present_address_info .= $op_value[1];
+        }
+      }else{
+        if(trim($op_value[1]) != ''){
+          $present_address_info .= $op_value[1].'<br>'; 
+        }
+      }
+    }
     
     //insert present_aplicant
     $sql_data_array = array(
@@ -38,17 +67,67 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                 'family_name' => tep_db_prepare_input($lastname),
                 'first_name'  => tep_db_prepare_input($firstname),
                 'mail'        => tep_db_prepare_input($email_address),
-                'postcode'    => tep_db_prepare_input($postcode),
-                'prefectures' => tep_db_prepare_input(tep_get_zone_name('107',$state, $zone)),
-                'cities'      => tep_db_prepare_input($city),
-                'address1'    => tep_db_prepare_input($street_address),
-                'address2'    => tep_db_prepare_input($suburb),
-                'phone'       => tep_db_prepare_input($telephone),
                 'tourokubi'   => tep_db_prepare_input($now),
-                'zone_name'   => $zone_id
+                'address'     => tep_db_prepare_input($present_address_info)
                 );
 
-      tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
+    tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
+
+    //address history info
+    $address_show_array = array(); 
+    $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+    while($address_show_list_array = tep_db_fetch_array($address_show_list_query)){
+
+      $address_show_array[$address_show_list_array['id']] = $address_show_list_array['name_flag'];
+    }
+    tep_db_free_result($address_show_list_query);
+    $address_temp_str = '';
+    foreach($_SESSION['address_present'] as $address_his_key=>$address_his_value){
+    
+      if(in_array($address_his_key,$address_show_array)){
+
+         $address_temp_str .= $address_his_value[1];
+      }
+    }
+  
+    $address_error = false;
+    $orders_id_temp = '';
+    $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' group by orders_id");
+    while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
+
+      $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' and orders_id='". $address_sh_his_array['orders_id'] ."' order by id");
+      $add_temp_str = '';
+      while($address_sh_array = tep_db_fetch_array($address_sh_query)){
+     
+        if(in_array($address_sh_array['name'],$address_show_array)){
+
+          $add_temp_str .= $address_sh_array['value'];
+        }  
+      }
+      if($address_temp_str == $add_temp_str){
+
+        $address_error = true;
+        $orders_id_temp = $address_sh_his_array['orders_id'];
+        break;
+      }
+      tep_db_free_result($address_sh_query);
+    }
+    tep_db_free_result($address_sh_his_query); 
+    //update address info
+    if($address_error == true && $orders_id_temp != ''){
+
+      tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set orders_id='".(date("Ymd") . '-' . date("His") . tep_get_order_end_num())."' where orders_id='".$orders_id_temp."'"); 
+    }
+    if($address_error == false && $_SESSION['guestchk'] == '0'){
+      foreach($_SESSION['address_present'] as $address_history_key=>$address_history_value){
+        $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". $address_history_key ."'");
+        $address_history_array = tep_db_fetch_array($address_history_query);
+        tep_db_free_result($address_history_query);
+        $address_history_id = $address_history_array['id'];
+        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'".(date("Ymd") . '-' . date("His") . tep_get_order_end_num())."',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
+        tep_db_free_result($address_history_add_query);
+      }
+    }
     
     //check pre insert - customers
     if($pc_id != '0') {
@@ -95,88 +174,8 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
     }
     
     tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
-    break;
-  
-  case 'update'://申请者信息变更
-    $firstname      = tep_db_prepare_input($_POST['firstname']);
-    $lastname       = tep_db_prepare_input($_POST['lastname']);
-    $email_address  = tep_db_prepare_input($_POST['email_address']);
-    $telephone      = tep_db_prepare_input($_POST['telephone']);
-    $street_address = tep_db_prepare_input($_POST['street_address']);
-    $suburb         = tep_db_prepare_input($_POST['suburb']);
-    $postcode       = tep_db_prepare_input($_POST['postcode']);
-    $city           = tep_db_prepare_input($_POST['city']);
-    $zone_id        = tep_db_prepare_input($_POST['zone_id']);
-
-    $error = false;
-    
-    //first_name
-    if (empty($firstname)) {
-    $error = true;
-    }
-  
-    //last_name
-    if (empty($lastname)) {
-    $error = true;
-    }
-    
-    //email-1
-    if (empty($email_address)) {
-    $entry_email_address_error = false;
-    }
-  
-    //email-2
-    if (!tep_validate_email($email_address)) {
-    $error = true;
-    }
-  
-    //street_address
-    if (empty($street_address)) {
-    $error = true;
-    }
-  
-    //postcode
-    if (empty($postcode)) {
-    $error = true;
-    }
-  
-    //city
-    if (empty($city)) {
-    $error = true;
-    }
-  
-    //telephone
-    if (empty($telephone)) {
-    $error = true;
-    }
-    
-    if($error == false) {
-      //临时开放session
-      tep_session_unregister('firstname');
-      tep_session_unregister('lastname');
-      tep_session_unregister('email_address');
-      tep_session_unregister('telephone');
-      tep_session_unregister('street_address');
-      tep_session_unregister('suburb');
-      tep_session_unregister('postcode');
-      tep_session_unregister('city');
-      tep_session_unregister('zone_id');
-    
-      //session更新
-      tep_session_register('firstname');
-      tep_session_register('lastname');
-      tep_session_register('email_address');
-      tep_session_register('telephone');
-      tep_session_register('street_address');
-      tep_session_register('suburb');
-      tep_session_register('postcode');
-      tep_session_register('city');
-      tep_session_register('zone_id');
-    
-    tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION,'goods_id='.$_GET['goods_id']));
-    }
     break;  
-        default:
+    default:
           if (!tep_session_is_registered('firstname'))
           {
           $account_query = tep_db_query("
@@ -208,23 +207,11 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
           $firstname      = $account['customers_firstname'];
           $lastname       = $account['customers_lastname'];
           $email_address  = $account['customers_email_address'];
-          $postcode       = $account['entry_postcode'];
-          $zone_id        = $account['entry_zone_id'];
-          $city           = $account['entry_city'];
-          $street_address = $account['entry_street_address'];
-          $telephone      = $account['customers_telephone'];
-          $suburb         = $account['entry_suburb'];
           
           tep_session_register('firstname');
           tep_session_register('lastname');
-          tep_session_register('email_address');
-          tep_session_register('telephone');
-          tep_session_register('street_address');
-          tep_session_register('suburb');
-          tep_session_register('postcode');
-          tep_session_register('city');
-          tep_session_register('zone_id');
-          }
+          tep_session_register('email_address'); 
+      }
   }
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRESENT_ORDER);
@@ -287,161 +274,131 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
+          <?php 
+            echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL')); 
+          ?>
           <tr> 
-            <td class="main"><?php
-        $name     = tep_get_fullname($firstname, $lastname);
-        $email    = $email_address;
-        $postcode = $postcode;
-        $state    = $zone_id;
-        $address1 = $city . $street_address;
-        $address2 = $suburb;
-        $tel      = $telephone;
-?> 
+            <td class="main">
+              <table border="0" width="100%" cellspacing="0" cellpadding="2"><tr><td> 
               <table width="100%" cellpadding="1" cellspacing="0" class="infoBox" border="0"> 
                 <tr> 
-                  <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 
+                  <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents"> 
                       <tr class="<?php echo $_class ; ?>"> 
-                        <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT) . '</a>'; ?></td> 
-                        <td class="main"><b><?php echo $present['title'] ; ?></b><br> 
+                      <td class="main"><b><?php echo TEXT_PRESENT_CON_NEXT;?></b></td> 
+                        <td class="main" align="right"><?php echo tep_image_submit('button_present.gif', IMAGE_BUTTON_PRESENT); ?></td> 
+                      </tr> 
+                    </table></td> 
+                </tr> 
+              </table></td></tr></table></td> 
+          </tr> 
+          <tr> 
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+          </tr>
+          <tr><td>
+          <table border="0" width="100%" cellspacing="0" cellpadding="2"><tr><td> 
+              <table width="100%" cellpadding="1" cellspacing="0" class="infoBox" border="0"> 
+                <tr> 
+                  <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents"> 
+                  <tr><td class="main" colspan="3"><b><?php echo TEXT_PRESENT_CON_CONTENTS;?>&nbsp;</b><a href="<?php echo tep_href_link(FILENAME_PRESENT,'','SSL');?>"><span class="orderEdit"><?php echo TEXT_PRESENT_CON_EDIT;?></span></a></td></tr>
+                      <tr class="<?php echo $_class ; ?>"> 
+                        <td class="main" width="10">&nbsp;</td> 
+                        <td class="main"><?php echo $present['title'] ; ?><br> 
                           <?php echo TEXT_PRESENT_CON_TIME.tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?> </td> 
                       </tr> 
                     </table></td> 
                 </tr> 
-              </table></td> 
-          </tr> 
+              </table></td></tr></table>
+          </td></tr>
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-          </tr> 
-          <?php 
-    if(!$_GET['action'] || $_GET['action'] != 'update') {
-    echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL')); ?> 
+          </tr>  
           <tr> 
             <td class="main"><table width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td class="main"><b><?php echo TEXT_PRESENT_CON_CONFIRM;?></b> 
+                  <td class="main"> 
                     <table border="0" width="100%" height="100%" cellspacing="0" cellpadding="1" class="infoBox"> 
                       <tr> 
                         <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents"> 
                             <tr> 
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+                              <td class="main" colspan="3"><b><?php echo TEXT_PRESENT_CON_PERSONAL_INFO; ?>&nbsp;</b><a href="<?php echo tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$_GET['goods_id'],'SSL');?>"><span class="orderEdit"><?php echo TEXT_PRESENT_CON_EDIT;?></span></a></td> 
                             </tr> 
                             <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_FONT_NAME;?></td> 
-                              <td class="main"><?php echo $name; ?></td> 
+                              <td class="main" width="10">&nbsp;</td>
+                              <td class="main" width="30%"><?php echo TEXT_PRESENT_CON_FAM;?></td> 
+                              <td class="main"><?php echo $lastname; ?></td> 
                             </tr> 
                             <tr> 
-                              <td><?php echo TEXT_PRESENT_CON_EMAIL;?></td> 
-                              <td><?php echo $email; ?></td> 
+                              <td class="main" width="10">&nbsp;</td>
+                              <td class="main" width="30%"><?php echo TEXT_PRESENT_CON_NAME;?></td> 
+                              <td class="main"><?php echo $firstname; ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_MAIL; ?></td> 
-                              <td class="main"><?php echo $postcode; ?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_STR;?></td> 
-                              <td class="main"><?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS1;?></td> 
-                              <td class="main"><?php echo $address1; ?></td> 
-                            </tr> 
-                            <?php if(!empty($address2)) { ?> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS2;?></td> 
-                              <td class="main"><?php echo $address2; ?></td> 
-                            </tr> 
-                            <?php } ?> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_PHO_NUM;?></td> 
-                              <td class="main"><?php echo $tel; ?></td> 
-                            </tr> 
-                            <tr> 
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-                            </tr> 
+                              <td class="main" width="10">&nbsp;</td>
+                              <td class="main" width="30%"><?php echo TEXT_PRESENT_CON_EMAIL; ?></td> 
+                              <td class="main"><?php echo $email_address; ?></td> 
+                            </tr>   
                           </table>
                           </td> 
                       </tr> 
                     </table></td> 
-                </tr> 
-                <tr> 
-                  <td align="right"><br> 
-                    <?php echo tep_image_submit('button_present.gif', IMAGE_BUTTON_PRESENT); ?></td> 
-                </tr> 
+                </tr>  
               </table></td> 
-          </tr> 
-          </form> 
-           <tr> 
+          </tr>  
+          <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-          </tr> 
-          <?php 
-    }
-    echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=update', 'SSL')); ?> 
+          </tr>  
           <tr> 
             <td class="main"><table width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td class="main"><b><?php echo TEXT_PRESENT_CON_INFO_EDIT; ?></b><br> 
-                   <?php echo TEXT_PRESENT_CON_CHANGE_INFO;?> 
+                  <td class="main"> 
                     <table border="0" width="100%" height="100%" cellspacing="0" cellpadding="1" class="infoBox"> 
                       <tr> 
                         <td><table border="0" width="100%" height="100%" cellspacing="0" cellpadding="2" class="infoBoxContents"> 
                             <tr> 
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+                              <td class="main" colspan="3"><b><?php echo TEXT_PRESENT_CON_ADDRESS_INFO; ?>&nbsp;</b><a href="<?php echo tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$_GET['goods_id'],'SSL');?>"><span class="orderEdit"><?php echo TEXT_PRESENT_CON_EDIT;?></span></a></td> 
                             </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_FAM; ?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname); ?> <?php if(!$lastname) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_NAME;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname); ?> <?php if(!$firstname) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_EMAIL;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('email_address', $email_address); ?> <?php if(!tep_validate_email($email_address) && $email_address != ''){ echo TEXT_EMAIL_ADDRESS;} if(!$email_address) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_MAIL;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode); ?> <?php if(!$postcode) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_STR?></td> 
-                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?> <?php if(!$zone_id) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_CITY;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('city', $city); ?> <?php if(!$city) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS1?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address); ?> <?php if(!$street_address) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS2;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('suburb', $suburb); ?></td> 
-                            </tr> 
-                            <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_PHO_NUM;?></td> 
-                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone); ?> <?php if(!$telephone) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
-                            </tr> 
-                            <tr> 
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-                            </tr> 
+                            <?php
+                            foreach($_SESSION['address_present'] as $key=>$value){
+                            ?>
+                            <tr>
+                              <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                              <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
+                              <td class="main" width="70%"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+                            </tr>
+                            <?php
+                             }
+                            ?>  
                           </table></td> 
                       </tr> 
                     </table></td> 
-                </tr> 
-                <tr> 
-                  <td align="right"><br> 
-                    <?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td> 
-                </tr> 
+                </tr>  
               </table></td> 
           </tr> 
+          <tr> 
+          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+          </tr>
+          <tr> 
+              <td>
+              <table border="0" width="100%" cellspacing="0" cellpadding="2"><tr><td> 
+              <table width="100%" cellpadding="1" cellspacing="0" class="infoBox" border="0"> 
+                <tr> 
+                  <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents"> 
+                      <tr class="<?php echo $_class ; ?>"> 
+                      <td class="main"><b><?php echo TEXT_PRESENT_CON_NEXT;?></b></td> 
+                        <td class="main" align="right"><?php echo tep_image_submit('button_present.gif', IMAGE_BUTTON_PRESENT); ?></td> 
+                      </tr> 
+                    </table></td> 
+                </tr> 
+              </table></td></tr></table>
+              </td> 
+              </tr>
           </form> 
            </table></div></td> 
       <!-- body_text_eof --> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
         <!-- right_navigation_eof --> </td> 
+  </tr>
   </table> 
   <!-- body_eof --> 
   <!-- footer --> 
