@@ -478,13 +478,13 @@ echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER).'</a>';
 <!-- footer //--> 
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 <!-- footer_eof //--> 
-<!-- /visites --> 
+<!-- visites --> 
 <object>
 <noscript>
 <img src="visites.php" alt="Statistics" style="border:0" />
 </noscript>
 </object>
-<!-- /visites -->
+<!-- visites -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
