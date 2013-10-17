@@ -372,7 +372,7 @@ function pass_hidd(CI){
   } else {
     if($guestchk == '1') {
       $active_single = 2; 
-      # Guest
+
       $check_cid = tep_db_query("select customers_id, is_active from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
       if(tep_db_num_rows($check_cid)) {
       $check = tep_db_fetch_array($check_cid);
@@ -428,7 +428,6 @@ function pass_hidd(CI){
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
 	if($_SESSION['referer']!=""){
 		  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
-        unset($_SESSION['referer']);
 		                 }
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
@@ -492,7 +491,6 @@ function pass_hidd(CI){
       tep_db_query("delete from  ".TABLE_USER_LOGIN." where account = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
     }
     $NewPass = $password;
-      
     $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
                                 'customers_firstname_f' => $firstname_f,
@@ -604,7 +602,7 @@ function pass_hidd(CI){
     }
   }
 
-    if (SESSION_RECREATE == 'True') { // Add session management
+    if (SESSION_RECREATE == 'True') {
       tep_session_recreate();
     }
     
@@ -632,7 +630,7 @@ function pass_hidd(CI){
       
       $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
       $customer_info = tep_db_fetch_array($customer_info_raw);
-      
+
       $email_text = tep_replace_mail_templates($email_text,$email_address,$mail_name); 
       if ($customer_info['is_send_mail'] != '1') {
         tep_mail($mail_name, $email_address, $ac_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
@@ -671,7 +669,7 @@ function pass_hidd(CI){
       
       $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
       $customer_info = tep_db_fetch_array($customer_info_raw);
-     
+
       $email_text = tep_replace_mail_templates($email_text,$email_address,$mail_name); 
       if ($customer_info['is_send_mail'] != '1') {
         tep_mail($mail_name, $email_address, $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
@@ -722,17 +720,15 @@ function pass_hidd(CI){
     }
 
     if($guestchk == '1') {
-    # For Guest
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
-  } else {
-    # For Member
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
+    } else {
       //注册用户邮件
       $create_users_mail_array = tep_get_mail_templates('C_CREAT_ACCOUNT',SITE_ID);
       $email_text .= $create_users_mail_array['contents'];
       $email_text = str_replace(array('${USER_MAIL}', '${PASSWORD}', '${SITE_URL}', '${HTTPS_SERVER}'), array($email_address, $password, HTTP_SERVER, HTTPS_SERVER), $email_text);
-
-    $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
-    $customer_info = tep_db_fetch_array($customer_info_raw);
+      
+      $customer_info_raw = tep_db_query("select is_send_mail from ".TABLE_CUSTOMERS." where customers_email_address = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
+      $customer_info = tep_db_fetch_array($customer_info_raw);
       $email_text = tep_replace_mail_templates($email_text,$email_address,$name);
       $subject = $create_users_mail_array['title'];
       $title_mode_array = array(
@@ -742,11 +738,11 @@ function pass_hidd(CI){
                              STORE_NAME 
                            );
       $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-    if ($customer_info['is_send_mail'] != '1') {
+      if ($customer_info['is_send_mail'] != '1') {
         tep_mail($name, $email_address, $subject, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+      }
+      tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
     }
-    tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT_SUCCESS, '', 'SSL'));
-  }
   }
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');

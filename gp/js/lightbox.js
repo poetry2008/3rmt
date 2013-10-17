@@ -408,7 +408,9 @@ Lightbox.prototype = {
 	updateDetails: function() {
 	
 		Element.show('caption');
-		Element.setInnerHTML( 'caption', imageArray[activeImage][1]);
+                if(imageArray[activeImage][1]!=null&&imageArray[activeImage][1]!=''){
+		  Element.setInnerHTML( 'caption', imageArray[activeImage][1]);
+                }
 		
 		// if image is part of set display 'Image x of x' 
 		if(imageArray.length > 1){

@@ -360,7 +360,7 @@ function pass_hidd(CI){
     if(obj[i].checked){ 
       CI = obj[i].value; 
     } 
-   }      
+  }      
   pass_hidd(CI);  
   }
   </script>
@@ -426,7 +426,6 @@ function pass_hidd(CI){
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
 	if($_SESSION['referer']!=""){
 		  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
-        unset($_SESSION['referer']);
 		                 }
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
@@ -719,10 +718,8 @@ function pass_hidd(CI){
     }
 
     if($guestchk == '1') {
-      # For Guest
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
     } else {
-      # For Member
       //注册用户邮件
       $create_users_mail_array = tep_get_mail_templates('C_CREAT_ACCOUNT',SITE_ID);
       $email_text .= $create_users_mail_array['contents'];
