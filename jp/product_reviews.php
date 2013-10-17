@@ -18,7 +18,7 @@
     $get_params_back = $get_params;
   }
 
-// ccdd
+
 /*
   $product_info_query = tep_db_query("
       SELECT pd.products_name 
@@ -71,7 +71,7 @@
             <td colspan="3"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
-// ccdd
+
   $reviews_query = tep_db_query("
       SELECT reviews_rating, 
              reviews_id, 

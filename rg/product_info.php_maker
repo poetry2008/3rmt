@@ -88,7 +88,7 @@ function change_num(ob, targ, quan,a_quan)
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    // ccdd
+    
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
@@ -268,7 +268,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           <?php } ?> 
                         <?php 
                           //show products tags 
-// ccdd
+
 $tag_query = tep_db_query("
     SELECT t.tags_id, 
            t.tags_images, 
@@ -329,7 +329,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
           echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
         }
       }else{    
-    // ccdd
+    
     $products_attributes_query = tep_db_query("
         SELECT count(*) as total 
         FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
@@ -342,7 +342,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
           echo '<!-- 商品オプション -->' ;
           echo '<br>'."\n".'<b>' . TEXT_PRODUCT_OPTIONS . '</b><br>' .
                '<table border="0" cellpadding="2" cellspacing="0" summary="rmt_text">';
-    // ccdd
+    
       $products_options_name_query = tep_db_query("
           SELECT distinct popt.products_options_id, 
                  popt.products_options_name 
@@ -355,7 +355,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
             $selected = 0;
             $products_options_array = array();
             echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
-        // ccdd
+        
         $products_options_query = tep_db_query("
             SELECT pov.products_options_values_id, 
                    pov.products_options_values_name, 
@@ -420,7 +420,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
             </table>
             <?php
                     //サブ画像
-        // ccdd
+        
         $sub_colors_query = tep_db_query("
             SELECT color_image, 
                    color_id, 
@@ -437,7 +437,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                 <?php
                     while($sub_colors = tep_db_fetch_array($sub_colors_query)) {
                       //色名を取得
-          // ccdd
+          
           $colors_name_query = tep_db_query("
               SELECT color_name 
               FROM ".TABLE_COLOR." 

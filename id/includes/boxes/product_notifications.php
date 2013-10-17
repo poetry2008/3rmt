@@ -15,7 +15,7 @@
     new infoBoxHeading($info_box_contents, false, false, tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
 
     if (tep_session_is_registered('customer_id')) {
-      // ccdd
+      
       $check_query = tep_db_query("
           select count(*) as count 
           from " . TABLE_PRODUCTS_NOTIFICATIONS . " 

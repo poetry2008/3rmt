@@ -6,7 +6,7 @@ if ($cPath) {
   $ca_arr = explode('_', $cPath);
 }
 $categories = array();
-// ccdd
+
 $categories_query = tep_db_query("
     select * 
     from (
@@ -82,7 +82,7 @@ if ($ca_num == 0) {
   <div class="menu_top"><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$list_category['categories_id']);?>"><?php echo $list_category['categories_name'];?></a></div>
   <?php
           $subcategories = array();
-          // ccdd
+          
           $subcategories_query = tep_db_query("
               select *
               from (

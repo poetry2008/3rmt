@@ -132,7 +132,7 @@ case 'per':
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
-        // ccdd
+        
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
 
@@ -157,7 +157,7 @@ case 'per':
         }
       }
 
-      // ccdd
+      
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
         $save_flag = true;
         //tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
@@ -393,7 +393,7 @@ if($_POST['num_rows'] > 0){
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
-        // ccdd
+        
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
         $sql_data_array = array('entry_street_address' => $street_address,
@@ -417,7 +417,7 @@ if($_POST['num_rows'] > 0){
         }
       }
 
-      // ccdd
+      
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
         $save_flag = true;
         //tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));

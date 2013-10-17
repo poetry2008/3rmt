@@ -6,7 +6,7 @@ if ($cPath) {
   $menu_ca_arr = explode('_', $cPath);
 }
 $menu_categories = array();
-// ccdd
+
 $menu_categories_query = tep_db_query("
     select * 
     from (

@@ -7,7 +7,7 @@
       <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
     </li>
 <?php
-// ccdd
+
   $present_left_query = tep_db_query("
       select count(*) as cnt 
       from " . TABLE_PRESENT_GOODS . "

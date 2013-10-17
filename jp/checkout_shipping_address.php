@@ -211,7 +211,7 @@
 
         if (!tep_session_is_registered('sendto')) tep_session_register('sendto');
         
-        // ccdd
+        
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $sendto = $entry_id;

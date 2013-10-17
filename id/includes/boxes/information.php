@@ -8,7 +8,7 @@
   <img width="172" height="39" alt="RMT情報" src="images/design/box/information.gif">
   <ul class="l_m_category_ul">
 <?php
-// ccdd
+
   $contents_page = tep_db_query("
       select * 
       from ".TABLE_INFORMATION_PAGE." 

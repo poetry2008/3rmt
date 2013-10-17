@@ -9,7 +9,7 @@ if($_POST['updata'] == 'on') {
   for($i=1; $i<32; $i++) {
     $mm_1 .= $_POST[$i];
   }
-  // ccdd
+  
   tep_db_query("
       update calendar 
       set cl_value='".$mm_1."' 
@@ -21,7 +21,7 @@ if($_POST['updata'] == 'on') {
   for($j=101; $j<132; $j++) {
     $mm_2 .= $_POST[$j];
   }
-  // ccdd
+  
   tep_db_query("
       update calendar 
       set cl_value='".$mm_2."' 
@@ -96,7 +96,7 @@ if($_GET['action'] == 'success') {
     
     //获取月的数据
     $ymd = date("Ym", time());
-    // ccdd
+    
     $calen_query = tep_db_query("
         select cl_value 
         from calendar 

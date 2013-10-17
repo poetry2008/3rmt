@@ -4,7 +4,7 @@
 */
   global $product_info;
   if (isset($_GET['products_id'])) {
-    // ccdd
+    
     $orders_sql = "
         select * from (select pd.products_status, pd.site_id, o.date_purchased,p.products_id, p.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
@@ -41,7 +41,7 @@
       while ($orders = tep_db_fetch_array($orders_query)) {
         if($orders['products_status'] != 0 ){
         $orders['products_name'] = tep_get_products_name($orders['products_id']);
-        // ccdd
+        
         $products_description = tep_get_products_description($orders['products_id'], $languages_id) ;
         if($products_description){
           $products_description = strip_tags(substr($products_description['products_description'],0,96));
