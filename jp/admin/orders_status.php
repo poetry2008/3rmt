@@ -48,12 +48,6 @@
             break;
         }
         if (isset($_POST['is_reorder'])) {
-          if (isset($_POST['is_pay_time'])) {
-            $messageStack->add(ORDERS_STATUS_SELECT_ERROR_TEXT, 'error');
-            tep_redirect(tep_href_link(FILENAME_ORDERS_STATUS)); 
-          }
-        }
-        if (isset($_POST['is_reorder'])) {
           tep_db_query("update `".TABLE_ORDERS_STATUS."` set `is_reorder` = '0'"); 
         }
         if (isset($_POST['is_pay_time'])) {
@@ -151,25 +145,12 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script type="text/javascript">
 <?php //提交表单?>
-function check_status_form(type_single) 
+function check_status_form() 
 {
-  var check_error_single = false; 
-  if (type_single == '0') {
-    if (document.getElementsByName('is_reorder')[0].checked == true) {
-      if (document.getElementsByName('is_pay_time')[0].checked == true) {
-        check_error_single = true; 
-      }
-    }
-  } 
-  
   <?php
   if ($ocertify->npermission == 31) {
   ?>
-  if (check_error_single == true) {
-    alert('<?php echo ORDERS_STATUS_SELECT_ERROR_TEXT;?>'); 
-  } else {
-    document.forms.orders_status.submit(); 
-  }
+  document.forms.orders_status.submit(); 
   <?php
   } else {
   ?>
@@ -183,30 +164,22 @@ function check_status_form(type_single)
       var tmp_msg_arr = msg.split('|||'); 
       var pwd_list_array = tmp_msg_arr[1].split(',');
       if (tmp_msg_arr[0] == '0') {
-        if (check_error_single == true) {
-          alert('<?php echo ORDERS_STATUS_SELECT_ERROR_TEXT;?>'); 
-        } else {
-          document.forms.orders_status.submit(); 
-        }
+        document.forms.orders_status.submit(); 
       } else {
-        if (check_error_single == true) {
-          alert('<?php echo ORDERS_STATUS_SELECT_ERROR_TEXT;?>'); 
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.orders_status.action),
+            async: false,
+            success: function(msg_info) {
+              document.forms.orders_status.submit(); 
+            }
+          }); 
         } else {
-          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
-            $.ajax({
-              url: 'ajax_orders.php?action=record_pwd_log',   
-              type: 'POST',
-              dataType: 'text',
-              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.orders_status.action),
-              async: false,
-              success: function(msg_info) {
-                document.forms.orders_status.submit(); 
-              }
-            }); 
-          } else {
-            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-          }
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
         }
       }
     }
@@ -360,7 +333,7 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_reorder', '1') . ' ' . TEXT_ORDERS_STATUS_REORDER_TEXT);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_pay_time', '1') . ' ' . TEXT_ORDERS_STATUS_CONFIRM_TIME_TEXT);
 
-      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form(\'0\');"') . '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form();"') . '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_ORDERS_STATUS);
@@ -408,7 +381,7 @@ require("includes/note_js.php");
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_reorder', '1', ($oInfo->is_reorder == '1')?true:false) . ' ' . TEXT_ORDERS_STATUS_REORDER_TEXT);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_pay_time', '1', ($oInfo->is_pay_time == '1')?true:false) . ' ' . TEXT_ORDERS_STATUS_CONFIRM_TIME_TEXT);
       
-      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form(\'0\');"') .  '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form();"') .  '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_ORDERS_STATUS);
@@ -416,7 +389,7 @@ require("includes/note_js.php");
       $contents = array('form' => tep_draw_form('orders_status', FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id  . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br>' . $oInfo->orders_status_name);
-      if ($remove_status) $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' . tep_html_element_button(IMAGE_DELETE, 'onclick="check_status_form(\'1\');"') .  '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      if ($remove_status) $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' . tep_html_element_button(IMAGE_DELETE, 'onclick="check_status_form();"') .  '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
   if (isset($oInfo) and is_object($oInfo)) {
