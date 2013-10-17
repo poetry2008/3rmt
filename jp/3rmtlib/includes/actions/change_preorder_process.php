@@ -104,7 +104,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
   if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
     if($seal_user_row['is_seal']){
       //判断该顾客是否可以下订单 
-      tep_redirect(tep_href_link('change_preorder_confirm.php')); 
+      tep_redirect(tep_href_link('change_preorder_confirm.php', '', 'SSL')); 
       exit;
     }
   }
@@ -916,7 +916,7 @@ unset($_SESSION['preorder_camp_id']);
 unset($_SESSION['preorders_code_fee']);
 unset($_SESSION['preorder_payment_info']);
 
-tep_redirect(tep_href_link('change_preorder_success.php'));
+tep_redirect(tep_href_link('change_preorder_success.php', '', 'SSL'));
 
 
 
