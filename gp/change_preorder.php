@@ -660,7 +660,7 @@ $preorder_information['pid'] = $preorder_id;
 if (!tep_session_is_registered('preorder_information')) {
    tep_session_register('preorder_information');
 }
-tep_redirect(tep_href_link('change_preorder_confirm.php'));
+tep_redirect(tep_href_link('change_preorder_confirm.php', '', 'SSL'));
 ?>
 <script type="text/javascript">
 document.forms.order1.submit(); 
@@ -716,7 +716,7 @@ document.forms.order1.submit();
             </tr>
           </table>
           <?php
-          echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'])).tep_draw_hidden_field('action', 'process'); 
+          echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'SSL')).tep_draw_hidden_field('action', 'process'); 
           ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>

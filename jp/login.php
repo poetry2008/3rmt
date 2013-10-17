@@ -237,7 +237,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                 WHERE customers_info_id = '" . $customer_id . "'
                 ");    
              $cart->restore_contents();
-             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'NONSSL'));
+             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'SSL'));
           }
         }
       }
