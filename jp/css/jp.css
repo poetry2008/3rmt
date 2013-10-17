@@ -73,7 +73,6 @@ H3 {
 }
 .comment {
 	margin: 10px;
-	margin:0\9;
 	line-height:14px;
 }
 .comment img { vertical-align:middle\9;}
@@ -1257,11 +1256,6 @@ H3 {
 	padding-bottom: 5px;
 	margin-top: 4px;
 	margin-bottom: 10px;
-}
-.comment {
-	margin: 10px;
-	margin:0\9;
-	line-height:14px;
 }
 .comment img { vertical-align:middle\9;}
 /* ---------------------------
