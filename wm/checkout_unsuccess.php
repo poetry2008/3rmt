@@ -34,7 +34,9 @@ $(document).ready(function() {
 var docheight = $(document).height();
 var screenwidth, screenheight, mytop, getPosLeft, getPosTop
 screenwidth = $(window).width();
-screenheight = $(window).height(); mytop = $(document).scrollTop(); getPosLeft = screenwidth / 2 - 276;
+screenheight = $(window).height();
+mytop = $(document).scrollTop();
+getPosLeft = screenwidth / 2 - 276;
 getPosTop = 50;
 
 $("#popup_notice").css('display', 'block');

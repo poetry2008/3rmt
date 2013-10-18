@@ -126,9 +126,6 @@
   if (0 < $num_products || BOX_NEW_PRODUCTS_DAY_LIMIT) {
     $info_box_contents = array();
     $info_box_contents[] = array('text' => sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')));
-  
-    //   new contentBoxHeading($info_box_contents);
-  
     $row = 0;
     $col = 0;
 ?>
@@ -140,16 +137,11 @@ if (0 < $num_products) {
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
-      
-      /*
-      $product_query = tep_db_query("select products_name, products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" .  $new_products['products_id'] . "' and language_id = '" .  $languages_id . "' and site_id = '".SITE_ID."'");
-      $product_details = tep_db_fetch_array($product_query);
-      */
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
-
+      
       $new_products['products_name'] = $product_details['products_name'];
       $description_view = strip_tags(mb_substr(replace_store_name($product_details['products_description']),0,110));
-
+  
       $row ++;
 ?>
   <tr>
@@ -165,7 +157,7 @@ if (0 < $num_products) {
               <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>'; ?><br>
             </p>
           </td>
-           <td align="right">
+          <td align="right">
           <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_description.jpg',IMAGE_BUTTON_DEC,'81','24'); ?></a>
           </td>
         </tr>
@@ -182,18 +174,8 @@ if (0 < $num_products) {
     }
     echo '</table>' . "\n";
 } else if (BOX_NEW_PRODUCTS_DAY_LIMIT) {
-  //echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
 }
-/*
-if($num_products){?>
-<div align="right" style="padding: 5px 10px 0px 0px;">
-      <a href="/pl-<?php echo $categories_path[count($categories_path)-1];?>.html">more</a>
-</div>
-<?php 
-}
-*/
 ?>
-<?php /*<p class="pageBottom"></p>*/ ?>
 <!-- new_products_eof //-->
 <?php
   }
