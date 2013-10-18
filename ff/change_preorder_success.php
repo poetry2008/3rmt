@@ -6,6 +6,10 @@
   require('includes/application_top.php');
 
   //处理商品订阅
+  if (!tep_session_is_registered('customer_id')) {
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
+    exit;
+  }
   if (isset($_GET['action']) && ($_GET['action'] == 'update')) {
     $notify_string = 'action=notify&';
     $notify = $_POST['notify'];
@@ -68,7 +72,7 @@
       <!-- body_text --> 
       <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link('change_preorder_success.php', 'action=update', 'SSL')); ?> 
         <?php 
-  $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'change_preorder_success.php' and site_id = '".SITE_ID."'")); 
+        $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'change_preorder_success.php' and site_id = '".SITE_ID."'")); 
 if ($global['global_product_notifications'] != '1') {
     $info_notify = TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
 
@@ -85,7 +89,7 @@ if ($global['global_product_notifications'] != '1') {
     $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
         echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));
-?> 
+         ?> 
       </form>
       </td> 
       <!-- body_text_eof --> 
@@ -101,4 +105,9 @@ if ($global['global_product_notifications'] != '1') {
 </div>
 </body>
 </html>
+<?php 
+if($guestchk == '1') {
+  tep_session_unregister('customer_id');
+}
+?>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

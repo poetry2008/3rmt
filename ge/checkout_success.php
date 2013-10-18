@@ -6,10 +6,9 @@
 
  require('includes/application_top.php');
 
-// 以下是动作
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
   }else{
 
     $url_array = explode('/',$_SERVER['HTTP_REFERER']);
@@ -19,7 +18,6 @@
       if(!isset($_SESSION['shipping_session_flag'])){
         $_SESSION['shipping_session_flag'] = true;
       }
-
       if(!empty($_SESSION['shipping_page_str'])){
         tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
       }
@@ -38,9 +36,6 @@
     tep_redirect(tep_href_link(FILENAME_DEFAULT, $notify_string));
   }
 
-
-
-// 以下是页面
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SUCCESS);
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));

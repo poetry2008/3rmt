@@ -7,7 +7,7 @@
 
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
   }else{
 
     $url_array = explode('/',$_SERVER['HTTP_REFERER']);
@@ -79,7 +79,6 @@
   <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-        <!-- left_navigation_eof //--> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
         <?php 
@@ -88,6 +87,7 @@
                       <?php
   if ($global['global_product_notifications'] != '1') {
     $info_notify = TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
+
     $products_displayed = array();
     for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
       if (!in_array($products_array[$i]['id'], $products_displayed)) {

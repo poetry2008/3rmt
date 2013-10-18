@@ -3,11 +3,11 @@
   $Id$
 */
 
-  require('includes/application_top.php');
+ require('includes/application_top.php');
 
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
   }else{
 
     $url_array = explode('/',$_SERVER['HTTP_REFERER']);
@@ -90,7 +90,7 @@ $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_
 ?>
                       <?php
   if ($global['global_product_notifications'] != '1') {
-    $info_notify =  TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
+    $info_notify = TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';
 
     $products_displayed = array();
     for ($i=0, $n=sizeof($products_array); $i<$n; $i++) {
@@ -102,7 +102,7 @@ $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_
 
     $info_notify .= '</p>';
   } else {
-    $info_notify =  TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
+    $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
   echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${NEXT}',tep_image_submit('button_continue_hover.gif', IMAGE_BUTTON_CONTINUE),str_replace('${PROCEDURE}',TEXT_HEADER_INFO,$info_page['text_information']))));
 ?> 
@@ -123,6 +123,7 @@ $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_
 </body>
 </html>
 <?php 
+# For Guest - LogOff
 if($guestchk == '1') {
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');

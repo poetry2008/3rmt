@@ -6,6 +6,10 @@
   require('includes/application_top.php');
 
   //处理商品订阅
+  if (!tep_session_is_registered('customer_id')) {
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
+    exit;
+  }
   if (isset($_GET['action']) && ($_GET['action'] == 'update')) {
     $notify_string = 'action=notify&';
     $notify = $_POST['notify'];
@@ -83,12 +87,12 @@ if ($global['global_product_notifications'] != '1') {
   } else {
     $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
-  echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));?> 
+        echo str_replace('${PRODUCTS_INFO}','',str_replace('${PRODUCTS_SUBSCRIPTION}',$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));?> 
       </div> </form>
       <!-- body_text_eof //--> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-<?php include("includes/float-box.php");?>
+  <?php include("includes/float-box.php");?>
   <!-- footer_eof //--> 
 </div>
 </div>
@@ -96,4 +100,9 @@ if ($global['global_product_notifications'] != '1') {
 
 </body>
 </html>
+<?php 
+if($guestchk == '1') {
+  tep_session_unregister('customer_id');
+}
+?>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
