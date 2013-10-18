@@ -786,13 +786,13 @@ echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . 
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 <!-- footer_eof //--> 
 </div> 
-<!-- /visites --> 
+<!-- visites --> 
 <object>
 <noscript>
 <img src="visites.php" alt="Statistics" style="border:0" />
 </noscript>
 </object>
-<!-- /visites -->
+<!-- visites -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

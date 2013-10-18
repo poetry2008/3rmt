@@ -1,8 +1,6 @@
- <?php
+<?php
 /*
   $Id$
-
-  用户信息页
 */
 
   require('includes/application_top.php');
@@ -36,6 +34,7 @@
       </td>
       <!-- body_text -->
       <td valign="top" id="contents"><h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
+
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td>

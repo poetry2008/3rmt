@@ -541,7 +541,7 @@ function session_win() {
                     </tr>
                     <tr>
                     <td align="right">
-                    <?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL, '', 'SSL') .  '">' . SEND_MAIL_TEST . '</a>';?>
+                    <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php echo SEND_MAIL_TEST;?></a>
                     </td>
                     </tr>
                   </table></td>

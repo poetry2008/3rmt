@@ -86,11 +86,6 @@
     $subcategories = array();
     
     
-    //$subcategory_query = tep_db_query("
-        //select * 
-        //from " . TABLE_CATEGORIES . " 
-        //where parent_id=" . $new_products_category_id
-    //);
     
     $subcategory_query = tep_db_query("select * from (select cd.site_id, cd.categories_status, cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and parent_id = '".$new_products_category_id."' order by cd.site_id desc) c where site_id = '0' or site_id = '".SITE_ID."' group by categories_id having c.categories_status != '1' and c.categories_status != '3'"); 
     
@@ -123,9 +118,6 @@
   if (0 < $num_products || BOX_NEW_PRODUCTS_DAY_LIMIT) {
     $info_box_contents = array();
     $info_box_contents[] = array('text' => sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')));
-  
-    //   new contentBoxHeading($info_box_contents);
-  
     $row = 0;
     $col = 0;
 ?>
@@ -177,7 +169,6 @@ if (0 < $num_products) {
     }
     echo '</table>' . "\n";
 } else if (BOX_NEW_PRODUCTS_DAY_LIMIT) {
-  //echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
 }
 ?>
 <!-- new_products_eof //-->

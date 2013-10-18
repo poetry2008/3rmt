@@ -182,7 +182,7 @@ UL {
 }
 .l_m_category_ul {
   background-color: #fff;
-  padding:5px;
+  padding:5px 0;
 }
 .l_m_category_ul_infomation {
 	list-style: none;
@@ -194,7 +194,7 @@ UL {
 .l_m_category_ul2 {
 	list-style: none outside none;
 	clear:both;
-	margin-top:-15px\9;
+	*margin-top:-15px;
 }
 .l_m_category_ul3 {
 	list-style: none outside none;

@@ -28,8 +28,7 @@
       <!-- body_text -->
       <td valign="top" id="contents">
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?><?php echo SPECIAL_TITLE_LINK_TEXT;?></h1>
-        <div class="comment">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <div class="comment"><table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
   $specials_query_raw = "
   select * 
@@ -60,7 +59,7 @@
   order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
-   
+  
   $specials_query = tep_db_query($specials_query_raw);
   
   if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
@@ -96,7 +95,7 @@
     echo '<img src="images/design/button/button_order.gif" width="82" height="25" alt="'.SPECIAL_CONFIRM_ORDER.'"></a><br>';
     
     echo '<s>' .
-      $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'], $specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
+      $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'],$specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
     if ((($row / 3) == floor($row / 3))) {
 ?>
                 </tr>
