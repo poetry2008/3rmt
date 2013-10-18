@@ -237,7 +237,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                 WHERE customers_info_id = '" . $customer_id . "'
                 ");    
              $cart->restore_contents();
-             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'NONSSL'));
+             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'SSL'));
           }
         }
       }
@@ -541,7 +541,7 @@ function session_win() {
                     </tr>
                     <tr>
                     <td align="right">
-                    <?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL, '', 'SSL') .  '">' . SEND_MAIL_TEST . '</a>';?>
+                    <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php echo SEND_MAIL_TEST;?></a>
                     </td>
                     </tr>
                   </table></td>

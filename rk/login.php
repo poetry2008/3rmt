@@ -241,7 +241,7 @@ if($flag_error == false){
                 WHERE customers_info_id = '" . $customer_id . "'
             ");    
              $cart->restore_contents();
-             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'NONSSL'));
+             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'SSL'));
           }
         }
       }
@@ -285,7 +285,7 @@ if($flag_error == false){
                $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
        	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
 	  }
-        if (SESSION_RECREATE == 'True') { // Add session management
+        if (SESSION_RECREATE == 'True') {
           tep_session_recreate();
         }
 
@@ -322,7 +322,7 @@ if($flag_error == false){
                 customers_info_number_of_logons   = customers_info_number_of_logons+1 
             WHERE customers_info_id = '" . $customer_id . "'
         ");    
-    //POINT_LIMIT CHECK 返点的有效期限判断 ds-style
+    //POINT_LIMIT CHECK 返点的有效期限判断
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
       $plimit_count_query = tep_db_query("
           SELECT count(*) as cnt 
@@ -489,11 +489,11 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                     </tr>
                     <tr>
                       <td class="main" width="92"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
-                      <td class="main"><?php echo tep_draw_input_field('email_address', '', "class='input_text'"); ?></td>
+                      <td class="main"><?php echo tep_draw_input_field('email_address', '', 'class="input_text"'); ?></td>
                     </tr>
                     <tr>
                       <td class="main" width="92"><b><?php echo ENTRY_PASSWORD; ?></b></td>
-                      <td class="main"><?php echo tep_draw_password_field('password', '', "class='input_text'"); ?></td>
+                      <td class="main"><?php echo tep_draw_password_field('password', '', 'class="input_text"'); ?></td>
                     </tr>
                     <tr>
                       <td class="smallText" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') . '">' . TEXT_PASSWORD_FORGOTTEN . '</a>'; ?></td>

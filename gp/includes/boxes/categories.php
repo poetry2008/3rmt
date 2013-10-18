@@ -6,7 +6,7 @@ if ($cPath) {
   $ca_arr = explode('_', $cPath);
 }
 $categories = array();
-// ccdd
+
 $categories_query = tep_db_query("
     select * 
     from (
@@ -71,7 +71,7 @@ if($cPath){
           </a>
         <?php
           $subcategories = array();
-          // ccdd
+          
           $subcategories_query = tep_db_query("
               select *
               from (

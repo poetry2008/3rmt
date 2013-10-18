@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-// ccdd
+
 $categories_tab_query1 = tep_db_query("
   select * 
   from (

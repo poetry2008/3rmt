@@ -4234,7 +4234,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
         echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-          '    <td class="smallText" align="left">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment))) . '&nbsp;</td>' . "\n";
+          '    <td class="smallText" align="left">' . tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)) . '&nbsp;</td>' . "\n";
       } else {
         if ($CommentsWithStatus) {
           echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .

@@ -6,21 +6,20 @@
   require('includes/application_top.php');
 
   $navigation->remove_current_page();
-
  
   $products_query = tep_db_query("
       select * from (select pd.products_name, 
              p.products_image,
              p.products_image2,
-             pd.site_id,
+             pd.products_id,
+             pd.site_id, 
              pd.products_status,
-             pd.products_id, 
              p.products_image3 
       from " . TABLE_PRODUCTS .  " p 
         left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id 
       where p.products_id = '" .  (int)$_GET['pIID'] . "' 
         and pd.language_id = '" . $languages_id . "' 
-        and (pd.site_id = '".SITE_ID."' or pd.site = '0')
+       and (pd.site_id = '".SITE_ID."' or pd.site = '0')
       order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by site_id DESC ");
   $products_values = tep_db_fetch_array($products_query);
 ?>
@@ -29,7 +28,7 @@
 <head>
 <title><?php echo $products_values['products_name']; ?></title>
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 var i=0;
 function resize() {
   if (navigator.appName == 'Netscape') i=40;
@@ -67,7 +66,7 @@ A {
 </style>
 </head>
 
-<body Oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onload="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
+<body oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onLoad="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
 <h1 class="pageHeading"><?php echo $products_values['products_name'] ; ?></h1>
       <table border="0" cellspacing="6" cellpadding="0">
 <tr>
@@ -84,7 +83,7 @@ A {
    if($_GET['image'] && $_GET['image'] != '') {
      echo tep_image(DIR_WS_IMAGES . 'products/' . $_GET['image'], $products_values['products_name']);
   }else{   
-    echo tep_image(DIR_WS_IMAGES . 'products/' . $products_values['products_image'], $products_values['products_name'],'','','name="featImage"');
+    echo tep_image(DIR_WS_IMAGES .'products/'. $products_values['products_image'], $products_values['products_name'],'','','name="featImage"');
   }
   
   ?></div>

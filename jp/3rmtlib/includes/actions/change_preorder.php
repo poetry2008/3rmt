@@ -254,7 +254,7 @@
       if (!tep_session_is_registered('preorder_information')) {
         tep_session_register('preorder_information'); 
       }
-      tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'].'&is_check=1'));
+      tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'].'&is_check=1', 'SSL'));
       }
     }
   }

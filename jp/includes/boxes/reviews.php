@@ -10,6 +10,13 @@ if (
   && basename($PHP_SELF) != FILENAME_CHECKOUT_SUCCESS
   && basename($PHP_SELF) != FILENAME_SHOPPING_CART
   && basename($PHP_SELF) != FILENAME_LOGIN
+  && basename($PHP_SELF) != FILENAME_PREORDER 
+  && basename($PHP_SELF) != FILENAME_PREORDER_PAYMENT 
+  && basename($PHP_SELF) != FILENAME_PREORDER_CONFIRMATION
+  && basename($PHP_SELF) != FILENAME_PREORDER_SUCCESS 
+  && basename($PHP_SELF) != 'change_preorder.php' 
+  && basename($PHP_SELF) != 'change_preorder_confirm.php' 
+  && basename($PHP_SELF) != 'change_preorder_success.php' 
 ) {
 ?>
 <!-- reviews //-->
@@ -94,7 +101,7 @@ if (
     
     if ($random_product) {
       // display random review box
-      // ccdd
+      
       $review_query = tep_db_query("
           select substring(reviews_text, 1, 60) as reviews_text 
           from " . TABLE_REVIEWS_DESCRIPTION . " 

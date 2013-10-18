@@ -39,6 +39,7 @@
       $country = tep_db_prepare_input($_POST['country']);
       $zone_id = tep_db_prepare_input($_POST['zone_id']);
       $state = tep_db_prepare_input($_POST['state']);
+
       $telephone = tep_db_prepare_input($_POST['telephone']);
 
       if (ACCOUNT_GENDER == 'true') {
@@ -144,6 +145,7 @@
         }
       }
 
+
       if (strlen($telephone) < ENTRY_TELEPHONE_MIN_LENGTH) {
         $telephone_error = true;
         $error = true;
@@ -160,6 +162,7 @@
         } else {
           $entry_id = 1;
         }
+
 
         $sql_data_array = array('customers_id' => $customer_id,
                                 'address_book_id' => $entry_id,
@@ -187,7 +190,7 @@
         }
 
         if (!tep_session_is_registered('billto')) tep_session_register('billto');
-        // ccdd
+        
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $billto = $entry_id;
@@ -240,7 +243,7 @@
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT_ADDRESS, '', 'SSL'));
 ?>
 <?php page_head();?>
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 var selected;
 
 function selectRowEffect(object, buttonSelect) {
@@ -368,7 +371,8 @@ function check_form() {
 }
 --></script>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body> 
+<div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 
   <!-- body --> 
@@ -469,6 +473,7 @@ function check_form() {
                         </tr> 
                         <?php
       $radio_buttons = 0;
+
 
  
       $addresses_query = tep_db_query("select address_book_id, entry_firstname as firstname, entry_lastname as lastname, entry_company as company, entry_street_address as street_address, entry_suburb as suburb, entry_city as city, entry_postcode as postcode, entry_state as state, entry_zone_id as zone_id, entry_country_id as country_id, entry_telephone as telephone from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "'");

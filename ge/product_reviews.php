@@ -58,7 +58,7 @@
             <td colspan="3"><hr></td>
           </tr>
 <?php
-// ccdd
+
   $reviews_query = tep_db_query("
       SELECT reviews_rating, 
              reviews_id, 

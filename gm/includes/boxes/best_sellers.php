@@ -3,7 +3,7 @@
   $Id$
 */
   if (isset($current_category_id) && ($current_category_id > 0)) {
-    // ccdd
+    
     $best_sellers_query = tep_db_query("
       select *
       from (
@@ -34,7 +34,7 @@
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
-    // ccdd
+    
     $best_sellers_query = tep_db_query("
       select *
       from (

@@ -509,4 +509,5 @@ define('TEXT_PRODUCTS_SORT','RMTランキング');
 define('TEXT_PRODUCTS_SORT_FIRST_FEW','位');
 define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
 define('IMAGE_BUTTON_PREORDER','予約する');
+define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ ご予約商品のお支払方法を選択してください。\n');
 ?>

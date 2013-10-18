@@ -4,7 +4,7 @@
 */
 
   if (isset($_GET['products_id'])) {
-    // ccdd
+    
     $manufacturer_query = tep_db_query("
         select m.manufacturers_id, 
                m.manufacturers_name, 

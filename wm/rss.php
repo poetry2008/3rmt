@@ -11,7 +11,7 @@ $connection = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD)  
 $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
 if (!isset($_GET['language']) || !$_GET['language']) {
-  // ccdd
+  
   $lang_query = tep_db_query("
       select languages_id, 
              code 
@@ -20,7 +20,7 @@ if (!isset($_GET['language']) || !$_GET['language']) {
   ");
 } else {
   $cur_language = tep_db_output($_GET['language']);
-  // ccdd
+  
   $lang_query = tep_db_query("
       select languages_id, 
              code 
@@ -28,7 +28,6 @@ if (!isset($_GET['language']) || !$_GET['language']) {
       where code = '" . $cur_language . "'
   ");
 }
-
 
 if (tep_db_num_rows($lang_query)) {
   $lang_a = tep_db_fetch_array($lang_query);
@@ -66,13 +65,14 @@ echo "<!-- RSS for " . STORE_NAME . ", generated on " . date('r') . " -->\n";
 <?php
 // Create SQL statement
 if ($_GET['cPath'] != "") {
-  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' RDER BY products_id DESC";
+  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC";
 } else {
-  $sql = "SELECT products_id, products_model, products_image, products_price,  products_tax_class_id FROM products ORDER BY products_id DESC";
+  $sql = "SELECT products_id, products_model, products_image, products_price, products_tax_class_id FROM products ORDER BY products_id DESC";
 }
 // Execute SQL query and get result
  
 $sql_result = mysql_query($sql,$connection) or die("Couldn't execute query.");
+
 $i = 1;
 // Format results by row
 while ($row = mysql_fetch_array($sql_result)) {
@@ -81,7 +81,7 @@ while ($row = mysql_fetch_array($sql_result)) {
   }
   $id = $row["products_id"];
 
-  // RSS Links for Ultimate SEO
+  // RSS Links for Ultimate SEO 
   $link = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $id) ;
 
   $model = $row["products_model"];

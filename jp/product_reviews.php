@@ -1,9 +1,6 @@
 <?php
 /*
   $Id$
-
-  一个商品的评论列表页
-
 */
 
   require('includes/application_top.php');
@@ -18,20 +15,6 @@
     $get_params_back = $get_params;
   }
 
-// ccdd
-/*
-  $product_info_query = tep_db_query("
-      SELECT pd.products_name 
-      FROM " .  TABLE_PRODUCTS_DESCRIPTION . " pd 
-        LEFT JOIN " . TABLE_PRODUCTS . " p ON pd.products_id = p.products_id 
-      WHERE pd.language_id = '" . $languages_id . "' 
-        AND p.products_status != '0' 
-        AND pd.products_id = '" .  (int)$_GET['products_id'] . "' 
-        AND pd.site_id = " . SITE_ID
-      );
-  if (!tep_db_num_rows($product_info_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
-  $product_info = tep_db_fetch_array($product_info_query);
-  */
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) tep_redirect(tep_href_link(FILENAME_REVIEWS));
 
@@ -64,14 +47,12 @@
             <td class="tableHeading"><?php echo TABLE_HEADING_NUMBER; ?></td>
             <td class="tableHeading"><?php echo TABLE_HEADING_AUTHOR; ?></td>
             <td align="center" class="tableHeading"><?php echo TABLE_HEADING_RATING; ?></td>
-            <?php /*<td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td> */ ?>
-            <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td> */ ?>
           </tr>
           <tr>
             <td colspan="3"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
-// ccdd
+
   $reviews_query = tep_db_query("
       SELECT reviews_rating, 
              reviews_id, 

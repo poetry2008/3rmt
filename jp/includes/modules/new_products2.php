@@ -3,7 +3,7 @@
   $Id$
 */
   $categories_path = explode('_', $_GET['cPath']);
-  // ccdd
+  
   $_categories_query = tep_db_query("
       select categories_name 
       from ".TABLE_CATEGORIES_DESCRIPTION." 
@@ -16,7 +16,7 @@
   $new_c_name = $_categories['categories_name'];
 
   if ( (!isset($new_products_category_id)) || ($new_products_category_id == '0') ) {
-    // ccdd
+    
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,
@@ -34,7 +34,7 @@
         limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
   } else {
-    // ccdd
+    
     $has_child_category_raw = tep_db_query("select * from (select cd.site_id, cd.categories_id, cd.categories_status from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$new_products_category_id."' order by cd.site_id desc) c where site_id = '0' or site_id = '".SITE_ID."' group by categories_id having c.categories_status != '1' and c.categories_status != '3'"); 
     $has_c_arr = array();
     while ($has_child_category_res = tep_db_fetch_array($has_child_category_raw)) {
@@ -88,7 +88,7 @@
   $num_products = tep_db_num_rows($new_products_query);
   if (0 === $num_products) {
     $subcategories = array();
-    // ccdd
+    
     //$subcategory_query = tep_db_query("
         //select * 
         //from " . TABLE_CATEGORIES . " 
@@ -101,7 +101,7 @@
       $subcategories[] = $subcategory['categories_id'];
     }
     if ($subcategories) {
-      // ccdd
+      
       $new_products_query = tep_db_query("
           select * from (select distinct p.products_id, 
                           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
@@ -126,9 +126,6 @@
   if (0 < $num_products || BOX_NEW_PRODUCTS_DAY_LIMIT) {
     $info_box_contents = array();
     $info_box_contents[] = array('text' => sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')));
-  
-    //   new contentBoxHeading($info_box_contents);
-  
     $row = 0;
     $col = 0;
 ?>
@@ -140,16 +137,11 @@ if (0 < $num_products) {
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
-      // ccdd
-      /*
-      $product_query = tep_db_query("select products_name, products_description from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" .  $new_products['products_id'] . "' and language_id = '" .  $languages_id . "' and site_id = '".SITE_ID."'");
-      $product_details = tep_db_fetch_array($product_query);
-      */
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
-
+      
       $new_products['products_name'] = $product_details['products_name'];
       $description_view = strip_tags(mb_substr(replace_store_name($product_details['products_description']),0,110));
-
+  
       $row ++;
 ?>
   <tr>
@@ -165,7 +157,7 @@ if (0 < $num_products) {
               <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>'; ?><br>
             </p>
           </td>
-           <td align="right">
+          <td align="right">
           <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_description.jpg',IMAGE_BUTTON_DEC,'81','24'); ?></a>
           </td>
         </tr>
@@ -182,18 +174,8 @@ if (0 < $num_products) {
     }
     echo '</table>' . "\n";
 } else if (BOX_NEW_PRODUCTS_DAY_LIMIT) {
-  //echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
 }
-/*
-if($num_products){?>
-<div align="right" style="padding: 5px 10px 0px 0px;">
-      <a href="/pl-<?php echo $categories_path[count($categories_path)-1];?>.html">more</a>
-</div>
-<?php 
-}
-*/
 ?>
-<?php /*<p class="pageBottom"></p>*/ ?>
 <!-- new_products_eof //-->
 <?php
   }

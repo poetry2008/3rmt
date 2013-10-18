@@ -110,7 +110,7 @@ if ($category_depth == 'nested') {
   if(isset($_GET['cPath']) && $_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);
     //返回一级分类的图像
-    // ccdd
+    
     $_categories = tep_get_category_by_id($categories_path[0], SITE_ID, $languages_id);
     echo $_categories['categories_name'];
   } else {

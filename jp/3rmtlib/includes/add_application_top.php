@@ -732,8 +732,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                 }
                                 tep_redirect(tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action', 'notify'))));
                               } else {
-                                $navigation->set_snapshot();
-                                tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+                                tep_redirect(tep_href_link(FILENAME_DEFAULT));
                               }
                               break;
       case 'notify_remove' :  if (tep_session_is_registered('customer_id') && isset($_GET['products_id'])) {
@@ -785,6 +784,9 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
       " where customers_id ='".$_SESSION['customer_id']."'";
     $c_ref_query = tep_db_query($c_ref_sql);
     if($c_ref_row = tep_db_fetch_array($c_ref_query)){
+      if($_SESSION['referer']==''||$_SESSION['referer']==null){
+         $_SESSION['referer'] = $c_ref_row['referer'];
+      }
       if($c_ref_row['referer'] != tep_db_prepare_input($_SESSION['referer'])&&tep_db_prepare_input($_SESSION['referer'])!=''){
         tep_db_query("update ".TABLE_CUSTOMERS." set
             referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$_SESSION['customer_id']."'");

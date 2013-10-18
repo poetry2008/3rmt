@@ -10,7 +10,7 @@
   </div>
   <ul class="l_m_category_ul_infomation">
 <?php
-// ccdd
+
   $contents_page = tep_db_query("
       select * 
       from ".TABLE_INFORMATION_PAGE." 

@@ -98,7 +98,8 @@
 <?php //检测输入的内容是否是数字?>
 function change_num(value){
 
-  $(".errorText").html('');
+  $("#preorder_info_message").html('');
+  $("#preorder_info_quantity").html('');
   $("#quantity_error").html('');  
   if(isNaN(value) || value==''){
     $("#quantity_error").html('<?php echo TEXT_PRODUCT_QUANTITY_ERROR;?>');
@@ -408,7 +409,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
             if($products_weight_error == true){ 
               echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($product_info['products_name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
             }
-      if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
+      if ($quantity_error == true) echo '&nbsp;<span id="preorder_info_quantity" class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
       if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>'.TEXT_NEED_RETENTION.'<br>'.(int)$_POST['quantity'].TEXT_ORDERS_QTY.'<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>'.TEXT_PREORDER_HERE.'</a>'.TEXT_PREORDER_FROM.'</span>' ;}
       if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 ?>

@@ -5,7 +5,7 @@
 
   if (tep_session_is_registered('customer_id')) {
 // retreive the last x products purchased
-    // ccdd
+    
     $orders_query = tep_db_query("
         select distinct op.products_id from " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " .  TABLE_PRODUCTS . " p,".TABLE_PRODUCTS_DESCRIPTION." pd 
         where o.customers_id = '" . $customer_id . "' 
@@ -37,7 +37,7 @@
       $product_ids = substr($product_ids, 0, -1);
 
       $customer_orders_string = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
-      // ccdd
+      
       $products_query = tep_db_query("
         select * 
         from (

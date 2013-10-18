@@ -190,7 +190,7 @@
         }
 
         if (!tep_session_is_registered('billto')) tep_session_register('billto');
-        // ccdd
+        
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $billto = $entry_id;
@@ -288,7 +288,6 @@ function check_form() {
   var street_address = document.checkout_address.street_address.value;
   var postcode = document.checkout_address.postcode.value;
   var city = document.checkout_address.city.value;
-<?php ?>
   var telephone = document.checkout_address.telephone.value;
 
   if (firstname == '' && lastname == '' && street_address == '') {
@@ -358,7 +357,6 @@ function check_form() {
     error = 1;
   }
 
-<?php  ?>
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
     error = 1;

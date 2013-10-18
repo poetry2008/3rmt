@@ -12,7 +12,7 @@ $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
 // Si la langue n'est pas spfi
 if (!isset($_GET['language']) || !$_GET['language']) {
-  // ccdd
+  
   $lang_query = tep_db_query("
       select languages_id, 
              code 
@@ -21,7 +21,7 @@ if (!isset($_GET['language']) || !$_GET['language']) {
   ");
 } else {
   $cur_language = tep_db_output($_GET['language']);
-  // ccdd
+  
   $lang_query = tep_db_query("
       select languages_id, 
              code 

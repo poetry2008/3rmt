@@ -42,7 +42,7 @@
 </noscript>
 <script src="../Scripts/swfobject_modified.js" type="text/javascript"></script>
 <div id="title">
-  <?php
+<?php
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
@@ -51,7 +51,7 @@
     echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_PRODUCT_TITLE.'</a>' . "\n";
   } else {
     echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
-  }  
+  } 
 ?>
 </div>
 <div id="header">
@@ -101,9 +101,9 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
     $cat_products = tep_get_product_path($_GET['products_id']);
     $cat0 = explode('_', $cat_products);
   }
-  if (!isset($cat0[0])) $cat0[0] = NULL; //del notice
+if (!isset($cat0[0])) $cat0[0] = NULL;
   $cat1 = $cat0[0];
-  // ccdd
+  
   $categories_parent0_query = tep_db_query("
       select * 
       from (

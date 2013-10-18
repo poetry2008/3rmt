@@ -65,7 +65,7 @@ order by products_date_added DESC, products_name
   ";
   $products_new_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_NEW, $products_new_query_raw, $products_new_numrows);
 
-  // ccdd
+  
   $products_new_query = tep_db_query($products_new_query_raw);
   while ($products_new = tep_db_fetch_array($products_new_query)) {
     $products_new_array[] = array('id' => $products_new['products_id'],

@@ -4,7 +4,7 @@
 */
 
 $categories = array();
-// ccdd
+
 $categories_query = tep_db_query("
     select * 
     from (

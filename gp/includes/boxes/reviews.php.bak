@@ -15,7 +15,7 @@ if (
 <!-- reviews //-->
 <?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
-    // ccdd
+    
     $reviews_query = tep_db_query("
         select rd.reviews_text, 
                r.reviews_rating, 
@@ -78,7 +78,7 @@ if (
   
   if ($random_products) {
 // display random review box
-    // ccdd
+    
 	echo '<div>';
 	echo '<ul>';
     for ($ri=0; $ri<sizeof($random_products); $ri++) { 

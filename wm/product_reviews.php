@@ -4,18 +4,17 @@
 */
 
   require('includes/application_top.php');
-  
+
 // lets retrieve all $_GET keys and values..
-  $get_params = tep_get_all_get_params();
+  $get_params      = tep_get_all_get_params();
   $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button
-  $get_params = substr($get_params, 0, -1); //remove trailing &
+  $get_params      = substr($get_params, 0, -1); //remove trailing &
   if (tep_not_null($get_params_back)) {
     $get_params_back = substr($get_params_back, 0, -1); //remove trailing &
   } else {
     $get_params_back = $get_params;
   }
 
-   
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) tep_redirect(tep_href_link(FILENAME_REVIEWS));
 
@@ -25,7 +24,8 @@
 ?>
 <?php page_head();?>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body> 
+<div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 
   <!-- body --> 
@@ -47,14 +47,12 @@
             <td class="tableHeading"><?php echo TABLE_HEADING_NUMBER; ?></td>
             <td class="tableHeading"><?php echo TABLE_HEADING_AUTHOR; ?></td>
             <td align="center" class="tableHeading"><?php echo TABLE_HEADING_RATING; ?></td>
-            <?php /*<td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td> */ ?>
-            <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td> */ ?>
           </tr>
           <tr>
             <td colspan="3" style="line-height: 0px; font-size: 0px;"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
-// ccdd
+
   $reviews_query = tep_db_query("
       SELECT reviews_rating, 
              reviews_id, 
@@ -109,10 +107,7 @@
           </tr>
         </table></td>
       </tr>
-    </table>
-    </div>
-    <p class="pageBottom"></p>
-    </td> 
+    </table></div> <p class="pageBottom"></p> </td> 
       <!-- body_text_eof --> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 

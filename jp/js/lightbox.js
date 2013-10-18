@@ -64,10 +64,6 @@ resizeDuration = (11 - resizeSpeed) * 0.15;
 
 // -----------------------------------------------------------------------------------
 
-//
-//	Additional methods for Element added by SU, Couloir
-//	- further additions by Lokesh Dhakar (huddletogether.com)
-//
 Object.extend(Element, {
 	getWidth: function(element) {
 	   	element = $(element);
@@ -412,7 +408,9 @@ Lightbox.prototype = {
 	updateDetails: function() {
 	
 		Element.show('caption');
-		Element.setInnerHTML( 'caption', imageArray[activeImage][1]);
+                if(imageArray[activeImage][1]!=null&&imageArray[activeImage][1]!=''){
+		  Element.setInnerHTML( 'caption', imageArray[activeImage][1]);
+                }
 		
 		// if image is part of set display 'Image x of x' 
 		if(imageArray.length > 1){
@@ -527,11 +525,6 @@ Lightbox.prototype = {
 
 // -----------------------------------------------------------------------------------
 
-//
-// getPageScroll()
-// Returns array with x,y page scroll values.
-// Core code from - quirksmode.org
-//
 function getPageScroll(){
 
 	var yScroll;
@@ -550,12 +543,6 @@ function getPageScroll(){
 
 // -----------------------------------------------------------------------------------
 
-//
-// getPageSize()
-// Returns array with page width, height and window width, height
-// Core code from - quirksmode.org
-// Edit for Firefox by pHaez
-//
 function getPageSize(){
 	
 	var xScroll, yScroll;
@@ -647,10 +634,6 @@ function hideSelectBoxes(){
 
 // ---------------------------------------------------
 
-//
-// pause(numberMillis)
-// Pauses code execution for specified time. Uses busy code, not good.
-//
 function pause(numberMillis) {
 	var now = new Date();
 	var exitTime = now.getTime() + numberMillis;

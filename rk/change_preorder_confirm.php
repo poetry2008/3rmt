@@ -195,7 +195,7 @@ function check_preorder_op(pre_pid)
      success: function(msg) {
        if (msg != 'success') {
          alert(msg);
-         window.location.href = '<?php echo tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'].'&ao_type=1');?>'; 
+         window.location.href = '<?php echo tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'].'&ao_type=1', 'SSL');?>'; 
        } else {
          document.forms.order.submit(); 
        }
@@ -252,7 +252,7 @@ function check_preorder_op(pre_pid)
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="'.tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str']).'" class="preorderBarFrom">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
+              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="'.tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL').'" class="preorderBarFrom">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
               <td align="center" width="60%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
               <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
@@ -482,7 +482,7 @@ foreach($all_show_option_id as $t_item_id){
             <tr>
               <td class="main">
                 <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b>
-                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str']) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
+                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
               </td>
             </tr>
             <tr>
@@ -877,7 +877,7 @@ if (tep_not_null($preorder_array['comment_msg'])) {
           </table> 
           </form> 
           <?php 
-          echo tep_draw_form('order1', tep_href_link('change_preorder.php?pid='.$check_preorder_str));
+          echo tep_draw_form('order1', tep_href_link('change_preorder.php?pid='.$check_preorder_str, '', 'SSL'));
           foreach ($_POST as $post_key => $post_value) {
             if ($post_key == 'action' || $post_key == 'x' || $post_key == 'y') {
               continue; 

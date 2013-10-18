@@ -59,7 +59,7 @@
   order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
-  // ccdd
+  
   $specials_query = tep_db_query($specials_query_raw);
   
   if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {

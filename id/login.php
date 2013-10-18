@@ -242,7 +242,7 @@ if($flag_error == false){
                 WHERE customers_info_id = '" . $customer_id . "'
             ");    
              $cart->restore_contents();
-             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'NONSSL'));
+             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'SSL'));
           }
         }
       }
@@ -491,11 +491,11 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                     </tr>
                     <tr>
                       <td class="main" width="93"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
-                      <td class="main"><?php echo tep_draw_input_field('email_address', '', "class='input_text'"); ?></td>
+                      <td class="main"><?php echo tep_draw_input_field('email_address', '', 'class="input_text"'); ?></td>
                     </tr>
                     <tr>
                       <td class="main"><b><?php echo ENTRY_PASSWORD; ?></b></td>
-                      <td class="main"><?php echo tep_draw_password_field('password', '', "class='input_text'"); ?></td>
+                      <td class="main"><?php echo tep_draw_password_field('password', '', 'class="input_text"'); ?></td>
                     </tr>
                     <tr>
                       <td colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') . '">' . TEXT_PASSWORD_FORGOTTEN . '</a>'; ?></td>

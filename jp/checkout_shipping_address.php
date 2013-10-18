@@ -1,9 +1,6 @@
 <?php
 /*
   $Id$
-
-  编辑订单送货地址页
-
 */
 
   require('includes/application_top.php');
@@ -211,7 +208,7 @@
 
         if (!tep_session_is_registered('sendto')) tep_session_register('sendto');
         
-        // ccdd
+        
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
         $sendto = $entry_id;
@@ -383,7 +380,6 @@ function check_form() {
     error = 1;
   }
 
-<?php?>
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
     error = 1;

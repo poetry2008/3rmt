@@ -56,7 +56,7 @@
             <td colspan="3" style="line-height: 0px; font-size: 0px;"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
-// ccdd
+
   $reviews_query = tep_db_query("
       SELECT reviews_rating, 
              reviews_id, 

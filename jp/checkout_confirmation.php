@@ -604,7 +604,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
 
     $total_buyed_date = 0;
-    // ccdd
+    
     $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
     if(tep_db_num_rows($customer_level_total_query)) {
       while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
@@ -786,13 +786,13 @@ echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . 
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 <!-- footer_eof //--> 
 </div> 
-<!-- /visites --> 
+<!-- visites --> 
 <object>
 <noscript>
 <img src="visites.php" alt="Statistics" style="border:0" />
 </noscript>
 </object>
-<!-- /visites -->
+<!-- visites -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

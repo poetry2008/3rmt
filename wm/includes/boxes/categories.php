@@ -4,7 +4,7 @@
 */
 
 $categories = array();
-// ccdd
+
 $categories_query = tep_db_query("
     select * 
     from (
@@ -78,14 +78,14 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
           </a>
         <?php
           $subcategories = array();
-          // ccdd
+          
           $subcategories_query = tep_db_query("
               select *
               from (
                 select c.categories_id, 
+                       cd.categories_status, 
                        cd.categories_name, 
                        c.parent_id,
-                       cd.categories_status, 
                        cd.site_id,
                        c.sort_order
                 from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
@@ -94,13 +94,13 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
                   and cd.language_id='" . $languages_id ."' 
                 order by cd.site_id DESC
                 ) c
-              where site_id = 0
-                 or site_id = ".SITE_ID."
+              where site_id = ".SITE_ID."
+                 or site_id = 0
               group by categories_id
               having c.categories_status != '1' and c.categories_status != '3' 
               order by sort_order, categories_name
               ");
-         while ($subcategory = tep_db_fetch_array($subcategories_query))  {
+          while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
           ?>
@@ -122,16 +122,18 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
                 <?php if (in_array($subcategory['categories_id'], $id)) {?>
                   </strong>
                 <?php }?>
+
         <?php
             $_subcategories = array();
+            
             $_subcategories_query = tep_db_query("
                 select *
                 from (
                   select c.categories_id, 
+                         cd.categories_status, 
                          cd.categories_name, 
                          c.parent_id,
                          cd.site_id,
-                         cd.categories_status, 
                          c.sort_order
                   from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
                   where c.parent_id = '".$subcategory['categories_id']."' 
@@ -182,7 +184,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>"><?php echo $subcategory['categories_name'];?></a>
               </li>
             <?php }?>
-          <?}?>
+          <?php }?>
           </ul>
       <?php } else {?>
         <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
@@ -198,7 +200,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
       <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
     </li>
 <?php
-// ccdd
+
   $present_query = tep_db_query("
       select count(*) as cnt 
       from " . TABLE_PRESENT_GOODS . "

@@ -30,7 +30,7 @@ $ymd = date("Ym", time());
 
   //new infoBoxHeading($info_box_contents, false, false);
   
-  // ccdd
+  
 $calen_query = tep_db_query("
     select * 
     from ".TABLE_CL." 
@@ -130,7 +130,7 @@ echo $cl_string ;
     
     //获取月的数据
     $ymd2 = date("Ym", mktime(0,0,0,$m_num2,1,$year2));
-    // ccdd
+    
     $calen_query2 = tep_db_query("
         select cl_value 
         from ".TABLE_CL." 

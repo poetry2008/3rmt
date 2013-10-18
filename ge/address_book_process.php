@@ -212,12 +212,12 @@ WHERE address_book_id > " . tep_db_input($entry_id)  . " AND customers_id = '" .
 
       $entry_id = tep_db_prepare_input($_POST['entry_id']);
       if ($_POST['action'] == 'update') {
-        // ccdd
+        
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "address_book_id = '" . tep_db_input($entry_id) . "' AND customers_id ='" . tep_db_input($customer_id) . "'");
       } else {
         $sql_data_array['customers_id'] = $customer_id;
         $sql_data_array['address_book_id'] = $entry_id;
-        // ccdd
+        
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
 
 // Go back to where we came from
