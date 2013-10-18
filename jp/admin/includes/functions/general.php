@@ -1379,7 +1379,7 @@ function tep_get_countries($default = '') {
  ------------------------------------ */
 function tep_get_country_zones($country_id) {
   $zones_array = array();
-  $zones_query = tep_db_query("select zone_id, zone_name from " . TABLE_ZONES . " where zone_country_id = '" . $country_id . "' order by " . ($country_id == 107 ? "zone_code" : "zone_name"));
+  $zones_query = tep_db_query("select zone_id, zone_name from " . TABLE_ZONES . " where zone_country_id = '" . $country_id . "' order by " . ($country_id == STORE_COUNTRY ? "zone_code" : "zone_name"));
   while ($zones = tep_db_fetch_array($zones_query)) {
     $zones_array[] = array('id' => $zones['zone_id'],
         'text' => $zones['zone_name']);
@@ -2322,9 +2322,11 @@ function tep_get_address_format_id($country_id) {
     返回值: 全名(string) 
  ------------------------------------ */
 function tep_get_fullname($firstname, $lastname) {
-  global $language;
+  global $language, $languages_id;
   $separator = ' ';
-  return ($language == 'japanese')
+  $language_info_raw = tep_db_query("select * from ".TABLE_LANGUAGES." where languages_id = '".$languages_id."'"); 
+  $language_info_res = tep_db_fetch_array($language_info_raw); 
+  return ($language == strtolower($language_info_res['directory']))
     ? ($lastname.$separator.$firstname)
     : ($firstname.$separator.$lastname);
 }
@@ -3273,38 +3275,6 @@ function tep_get_site_name_by_order_id($id){
   return isset($order['name'])?$order['name']:'';
 }
 
-
-/* -------------------------------------
-    功能: 获取属性名字 
-    参数: $id(int) 属性id 
-    参数: $languages(int) 语言id 
-    返回值: 属性名字(string) 
- ------------------------------------ */
-function tep_get_add_options_name($id, $languages='4') {
-  $query = tep_db_query("select products_options_name from products_options where products_options_id = '".$id."' and language_id = '".$languages."'");
-  if(tep_db_num_rows($query)) {
-    $result = tep_db_fetch_array($query);
-    return $result['products_options_name'];
-  } else {
-    return '';
-  }
-}
-
-/* -------------------------------------
-    功能: 获取属性值 
-    参数: $id(int) 属性id 
-    参数: $languages(int) 语言id 
-    返回值: 属性值(string) 
- ------------------------------------ */
-function tep_get_add_options_value($id, $languages='4') {
-  $query = tep_db_query("select products_options_values_name from products_options_values where products_options_values_id = '".$id."' and language_id = '".$languages."'");
-  if(tep_db_num_rows($query)) {
-    $result = tep_db_fetch_array($query);
-    return $result['products_options_values_name'];
-  } else {
-    return '';
-  }
-}
 
 /* -------------------------------------
     功能: 判断分类是否存在描述 

@@ -150,7 +150,7 @@ function tep_get_zone_list($name, $country_code = '', $selected = '', $parameter
   $zones_array = array();
   $zones_query = tep_db_query("select zone_name from " . TABLE_ZONES
       . " where zone_country_id = '" . tep_db_input($country_code)
-      . "' order by " . (($country_code == 107) ? "zone_code" : "zone_name"));
+      . "' order by " . (($country_code == STORE_COUNTRY) ? "zone_code" : "zone_name"));
   while ($zones_values = tep_db_fetch_array($zones_query)) {
     $zones_array[] = array('id' => $zones_values['zone_name'], 'text' => $zones_values['zone_name']);
   }

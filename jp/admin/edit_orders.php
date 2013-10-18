@@ -4279,8 +4279,9 @@ if (($action == 'edit') && ($order_exists == true)) {
           $select_status = $order_status_array['orders_status_id'];
           $customer_notified = $order_status_array['customer_notified'];           
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
-          $customer_notified = $select_status == 31 ? 0 : $customer_notified;
-          $select_select = 16;
+          $c_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where is_order_change = '1'"); 
+          $c_status_res = tep_db_fetch_array($c_status_raw); 
+          $select_select = (int)$c_status_res['orders_status_id'];
           $customer_notified = isset($_SESSION['orders_update_products'][$_GET['oID']]['notify']) ? $_SESSION['orders_update_products'][$_GET['oID']]['notify'] : $customer_notified;
           $select_select = isset($_SESSION['orders_update_products'][$_GET['oID']]['s_status']) ? $_SESSION['orders_update_products'][$_GET['oID']]['s_status'] : $select_select;
 ?>

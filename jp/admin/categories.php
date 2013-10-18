@@ -3301,53 +3301,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
-                <?php 
-                if (false) { 
-                  ?> 
-                    <tr>
-                    <td class="main" valign="top"><?php echo TEXT_PRODUCT_OPTIONS_TITLE;?></td>
-                    <td class="main"><?php echo tep_draw_separator('pixel_trans.gif',
-                        '24', '15') . '&nbsp;<span class="categories_textarea01">' .  tep_draw_textarea_field('products_options', 'soft', '70', '15', (isset($pInfo->products_options)?$pInfo->products_options:(($options_array)?$options_array:'')), ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
-                    </tr>
-                    <tr>
-                    <td class="main" valign="top"><?php echo TEXT_PRODUCT_OIMAGE_TITLE;?></td>
-                    <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?> 
-                    <?php
-                    if (!isset($pInfo->option_image_type)) {
-                      ?>
-                        <input type="radio" name="option_image_type" value="select" checked><?php echo TEXT_PRODUCT_OPTIONS_SELECT_TEXT;?>
-                        <input type="radio" name="option_image_type" value="radio"><?php echo TEXT_PRODUCT_OPTIONS_RADIO_TEXT;?>
-                        <?php
-                    } else {
-                      ?>
-                        <input type="radio" name="option_image_type" value="select" <?php if($pInfo->option_image_type == 'select'){?> checked<?php }?>><?php echo TEXT_PRODUCT_OPTIONS_SELECT_TEXT;?>
-                        <input type="radio" name="option_image_type" value="radio" <?php if($pInfo->option_image_type == 'radio'){?> checked<?php }?>><?php echo TEXT_PRODUCT_OPTIONS_RADIO_TEXT;?>
-                        <?php
-                    }
-                  ?>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td></td>
-                    <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?><?php echo TEXT_PRODUCT_LAN_READ;?><br>
-                    <?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'; ?><?php echo TEXT_PRODUCT_LAN_LI_TEXT;?><br>
-                    <table border="0" cellspacing="0" cellpadding="3">
-                    <tr>
-                    <td class="main">                  
-                    <?php echo TEXT_PRODUCT_LAN_COMMENT;?>
-                    </td>
-                    <td width="50" align="center" class="main">&rarr;</td>
-                    <td class="main"><?php echo TEXT_PRODUCT_LAN_TEXT;?>
-                    <select name="select">
-                    <option selected><?php echo TEXT_LANGUAGE_JAPAN;?></option>
-                    <option><?php echo TEXT_LANGUAGE_CHINA;?></option>
-                    <option><?php echo TEXT_LANGUAGE_KOREA;?></option>
-                    </select></td>
-                    </tr>
-                    </table>
-                    </td>
-                    </tr>
-                    <?php }?> 
                     <!-- options -->
                     <tr>
                     </table>

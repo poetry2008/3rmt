@@ -470,54 +470,6 @@ function ajaxUpdate(id,order){
 }
 
 </script>
-           <?php if (false) {?> 
-           <table border="1">
-            <tr>
-              <td>
-              <input type="checkbox" name="allgroup" value="" onclick="select_all_group();"><?php echo OAGROUP_SELECT_ALL_TEXT;?> 
-              </td>
-              <td>
-              <?php echo TABLE_HEADING_OAGROUP_NAME;?> 
-              </td>
-              <td>
-              <?php echo TABLE_HEADING_OAGROUP_OPERATE;?> 
-              </td>
-              <td>
-              <?php echo TABLE_HEADING_OAGROUP_ORDER;?> 
-              </td>
-            </tr>
-            <?php
-              $group_list_raw = tep_db_query("select * from ".TABLE_OA_GROUP." order
-                  by ordernumber ,id "); 
-              while ($group_list_res = tep_db_fetch_array($group_list_raw)) {
-?>
-                <tr class='<?php echo $group_list_res['id']; ?>' id = 'o<?php echo $group_list_res['ordernumber'];?>'>
-<?php
-                echo '<td><input type="checkbox" name="ag[]" value="'.$group_list_res['id'].'"></td>'; 
-                echo '<td>'.$group_list_res['name'].'</td>'; 
-                echo '<td>';
-                echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
-                if ($ocertify->npermission >= 15) {
-                  echo '&nbsp;&nbsp;'; 
-                  echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
-                }
-                echo '</td>'; 
-                echo '<td>';
-                echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
-                echo '<input type="button" class="down" value=\'↓\' onclick="editorder(this)">';
-                echo '</td>'; 
-                echo '</tr>'; 
-              }
-            ?>
-            </table>
-            <?php
-              if (tep_db_num_rows($group_list_raw)) {
-            ?>
-                <input type="submit" value="<?php echo TEXT_TEMPLATE_ADD;?>"> 
-            <?php
-              }
-            ?>
-            <?php }?> 
             </form> 
           <?php }?> 
         </td>

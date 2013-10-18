@@ -51,7 +51,7 @@
         $insert_id = tep_db_insert_id();
         $sql_description_array = array(
           'reviews_id' => $insert_id,
-          'languages_id' => '4',
+          'languages_id' => $languages_id,
           'reviews_text' => $_POST['reviews_text']
         );
         tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
@@ -115,7 +115,7 @@
           $insert_id = tep_db_insert_id();
           $sql_description_array = array(
             'reviews_id' => $insert_id,
-            'languages_id' => '4',
+            'languages_id' => $languages_id,
             'reviews_text' => $_POST['reviews_text']
           );
           tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);

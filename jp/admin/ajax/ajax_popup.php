@@ -7809,7 +7809,7 @@ $sql2 = tep_db_fetch_array($sele2);
         array('params' => 'width="30%"','text' => TEXT_EMAIL),
         array('text' => $sql2['mail'])
         );
-    $zone_query = tep_db_query(" select zone_name from " . TABLE_ZONES . " where zone_country_id = '107' and zone_id = '".$sql2['zone_name']."' ");
+    $zone_query = tep_db_query(" select zone_name from " . TABLE_ZONES . " where zone_country_id = '".STORE_COUNTRY."' and zone_id = '".$sql2['zone_name']."' ");
     $zone = tep_db_fetch_array($zone_query);
     //礼物配送地址 
     $contents[]['text'] = array(
