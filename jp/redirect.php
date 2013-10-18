@@ -1,14 +1,12 @@
 <?php
 /*
   $Id$
-
-  跳转
 */
 
   require('includes/application_top.php');
 
   switch ($_GET['action']) {
- 
+     
     case 'banner': $banner_query = tep_db_query("
                        select banners_url 
                        from " . TABLE_BANNERS . " 

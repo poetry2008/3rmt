@@ -28,7 +28,6 @@
   if (!isset($_GET['order_id'])) {
     tep_redirect(tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL'));
   }
-  
  
   $customer_number_query = tep_db_query("select customers_id from " . TABLE_ORDERS .  " where orders_id = '".  tep_db_input(tep_db_prepare_input($_GET['order_id'])) . "' and site_id = ".SITE_ID);
   $customer_number = tep_db_fetch_array($customer_number_query);
@@ -47,7 +46,8 @@
 ?>
 <?php page_head();?>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body> 
+<div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 
   <!-- body --> 
@@ -102,8 +102,7 @@
 ?> 
                               <tr> 
                                 <td class="main" colspan="4"><b><?php echo HEADING_PRODUCTS; ?></b></td> 
-                              </tr>
-                
+                              </tr> 
                               <?php
   }
 
@@ -188,7 +187,7 @@
          '          </tr>' . "\n";
   }
 ?> 
-                           </table></td> 
+                            </table></td> 
                         </tr> 
                       </table></td> 
                   
@@ -236,11 +235,9 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td>
-              	<table class="infoBoxContents"> 
-                  <tr>
-                   
-            		<td width="30%" valign="top">
+              <td><table class="infoBoxContents"> 
+                        <tr>
+                          <td width="30%" valign="top">
                                 	<table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                                        <tr> 
                                             <td class="main" colspan="2"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
@@ -289,31 +286,33 @@
   $order->totals[$total_point_key] = $total_point_value;
   $order->totals[$total_total_key] = $total_total_value;
   foreach ($order->totals as $i=>$total_value) {
-    if ($order->totals[$i]['class'] == 'ot_point') {
+   if ($order->totals[$i]['class'] == 'ot_point') {
       $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
       $campaign_info = tep_db_fetch_array($campaign_info_query);
       if ($campaign_info) {
         if ($campaign_info['campaign_fee'] == 0) {
-           echo '              <tr>' . "\n" .
-                '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
-                '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
-           echo '              <tr>' . "\n" .
-                '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
-                '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
+          //配送费用，手续费用
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           continue; 
         }
       } else {
         if ($order->totals[$i]['value'] == 0) {
-           echo '              <tr>' . "\n" .
-                '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
-                '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
-           echo '              <tr>' . "\n" .
-                '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
-                '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
+          //配送费用，手续费用
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+          echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           continue; 
         }
       }
@@ -321,34 +320,34 @@
     echo '              <tr>' . "\n" .
          '                <td class="main" align="right" width="100%">' . ($order->totals[$i]['class'] == 'ot_custom' ? $order->totals[$i]['title'].':' : $order->totals[$i]['title']) . '</td>' . "\n" .
          '                <td class="main" align="right" nowrap>';
-         if ($order->totals[$i]['class'] == 'ot_point') {
-           $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
-           $campaign_info = tep_db_fetch_array($campaign_info_query);
-           if ($campaign_info) {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
-           } else {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
-           }
-           echo '</td>' . "\n" .
-         '              </tr>' . "\n";
-           echo '              <tr>' . "\n" .
-                '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
-                '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
-           echo '              <tr>' . "\n" .
-                '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
-                '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n"; 
-         } else {
-           echo $currencies->format_total($order->totals[$i]['value']); 
-           echo '</td>' . "\n" .
-         '              </tr>' . "\n";
-         } 
+    if ($order->totals[$i]['class'] == 'ot_point') {
+      $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
+      $campaign_info = tep_db_fetch_array($campaign_info_query);
+      if ($campaign_info) {
+        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
+      } else {
+        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
+      }
+      echo '</td>' . "\n" .
+      '              </tr>' . "\n";
+
+      //配送费用，手续费用
+      echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+      echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n"; 
+    } else {
+      echo $currencies->format_total($order->totals[$i]['value']); 
+      echo '</td>' . "\n" .
+      '              </tr>' . "\n";
+    } 
   }
 ?> 
-                      		</table>
-                      	</td>
-                        		
+                      </table></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -372,7 +371,8 @@
          '                <td width="10"></td>
 		 				  <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
-         '                <td class="main" valign="top">' .  (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
+         '                <td class="main" valign="top">' .
+         (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 
@@ -387,10 +387,7 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td align="right" class="main"><?php echo '<a href="' .
-              tep_href_link(FILENAME_ACCOUNT_HISTORY,
-                  tep_get_all_get_params(array('order_id')), 'SSL') . '">' .
-              tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+              <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, tep_get_all_get_params(array('order_id')), 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
             </tr> 
           </table> 
         </div>
