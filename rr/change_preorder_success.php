@@ -70,7 +70,7 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof --> </td> 
       <!-- body_text --> 
-      <td valign="top" id="contents"> 
+      <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link('change_preorder_success.php', 'action=update', 'SSL')); ?> 
         <?php 
         $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'change_preorder_success.php' and site_id = '".SITE_ID."'")); 
 if ($global['global_product_notifications'] != '1') {
