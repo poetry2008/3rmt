@@ -732,8 +732,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                 }
                                 tep_redirect(tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action', 'notify'))));
                               } else {
-                                $navigation->set_snapshot();
-                                tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+                                tep_redirect(tep_href_link(FILENAME_DEFAULT));
                               }
                               break;
       case 'notify_remove' :  if (tep_session_is_registered('customer_id') && isset($_GET['products_id'])) {
