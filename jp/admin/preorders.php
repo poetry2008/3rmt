@@ -2052,29 +2052,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           </tr>
         </table>
       </td>
-      <td align="right">
-        <?php if (false) {?> 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr>
-            <td class="smallText" align="right">
-              <?php echo tep_draw_form('orders', FILENAME_PREORDERS, '', 'get'); ?>
-              <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('oID', '', 'size="12"') . tep_draw_hidden_field('action', 'edit'); ?>
-              </form>
-            </td>
-          </tr>
-          <tr>
-            <td class="smallText" align="right">
-              <?php echo tep_draw_form('status', FILENAME_PREORDERS, '', 'get'); ?>
-              <?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', 'onChange="this.form.submit();"'); ?>
-              <?php
-                echo tep_draw_hidden_field('site_id', $site_list_string); 
-              ?>
-              </form>
-            </td>
-          </tr>      
-        </table>
-        <?php }?> 
-      </td>
     </tr>
   </table>
 </div>
@@ -2090,37 +2067,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php
   if ($ocertify->npermission >= 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
-    if (false) { 
-    if($reload == 'yes') {
-?>
-      <table border="0" width="100%" cellspacing="1" cellpadding="2" style="background: #FF8E90;" height="30"> 
-        <tr style="background: #FFE6E6; font-size: 10px; "> 
-          <td><strong><font color="#FF0000"> <?php echo TEXT_ORDER_NOTICE;?>
-          </font></strong><?php echo TEXT_ORDER_AUTO_RUN_ON;?>【<a href="<?php echo
-          tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID',
-                  'action', 'reload')) . 'reload=No'); ?>"><b><?php echo
-          TEXT_ORDER_AUTO_POWER_OFF;?></b></a>】&nbsp;&nbsp;|&nbsp;&nbsp;<?php echo
-          TEXT_ORDER_SHOW_LIST;?><a
-          href="orders_status.php"><b><?php echo TEXT_ORDER_STATUS_SET;?></b></a></td>
-        </tr>
-      </table>
-<?php
-    } else {
-?>
-      <table border="0" width="100%" cellspacing="1" cellpadding="2" style="background: #FF8E90;" height="30"> 
-        <tr style="background: #FFE6E6; font-size: 10px; "> 
-          <td><strong><font color="#FF0000"> <?php echo TEXT_ORDER_NOTICE;?>
-          </font></strong><?php echo TEXT_ORDER_AUTO_RUN_OFF;?>【<a
-          href="<?php echo tep_href_link(FILENAME_PREORDERS,
-tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
-?>"><b><?php echo TEXT_ORDER_AUTO_POWER_ON;?></b></a>】&nbsp;&nbsp;|&nbsp;&nbsp;<?php echo
-  TEXT_ORDER_SHOW_LIST;?><a
-  href="orders_status.php"><b><?php echo TEXT_ORDER_STATUS_SET;?></b></a></td>
-        </tr>
-      </table>
-<?php
-    }
-    }
   }
 ?>
     <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'action=sele_act'); ?>
@@ -3438,19 +3384,11 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
     }
     ?>
     </td>
-    <?php 
-    if (false) { 
-    ?>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right">
-    <?php
-      echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
-    } else { 
-    ?>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right"  onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
     <?php
       echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       
-    } ?>&nbsp;</td>
+    ?>&nbsp;</td>
     </tr>
 <?php }?>
   </table>

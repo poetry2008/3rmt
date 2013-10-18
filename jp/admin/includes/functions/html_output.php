@@ -169,7 +169,7 @@
         $output_string .= '  } else if (' . $country . ' == "' . $countries['zone_country_id'] . '") {' . "\n";
       }
 
-      $states_query = tep_db_query("select zone_name, zone_id from " . TABLE_ZONES . " where zone_country_id = '" . $countries['zone_country_id'] . "' order by " . ($countries['zone_country_id'] == 107 ? "zone_code" : "zone_name"));
+      $states_query = tep_db_query("select zone_name, zone_id from " . TABLE_ZONES . " where zone_country_id = '" . $countries['zone_country_id'] . "' order by " . ($countries['zone_country_id'] == STORE_COUNTRY ? "zone_code" : "zone_name"));
 
       $num_state = 1;
       while ($states = tep_db_fetch_array($states_query)) {
