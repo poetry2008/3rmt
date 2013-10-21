@@ -906,6 +906,7 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('preorder_real_point');
   tep_session_unregister('preorder_get_point');
 }
+$_SESSION['customer_id'] = $preorder['customers_id'];
 
 unset($_SESSION['insert_id']);
 unset($_SESSION['preorder_option']);

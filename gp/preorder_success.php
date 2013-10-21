@@ -19,7 +19,7 @@
   $preorder = tep_db_fetch_array($preorder_raw);
  
   if (!$preorder) {
-    forward404(); 
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
   }
   
   $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'");

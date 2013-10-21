@@ -8,7 +8,7 @@
 
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
   }else{
 
     $url_array = explode('/',$_SERVER['HTTP_REFERER']);

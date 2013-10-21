@@ -7,7 +7,7 @@
 
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
   }else{
 
     $url_array = explode('/',$_SERVER['HTTP_REFERER']);
@@ -39,7 +39,6 @@
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
-
   $global_query = tep_db_query("
       SELECT global_product_notifications 
       FROM " . TABLE_CUSTOMERS_INFO . " 
@@ -82,7 +81,8 @@
     <tr> 
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
+      <!-- left_navigation_eof //-->
+      </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
         <?php 

@@ -7,6 +7,10 @@
   require('includes/application_top.php');
 
   //处理商品订阅
+  if (!tep_session_is_registered('customer_id')) {
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
+    exit;
+  }
   if (isset($_GET['action']) && ($_GET['action'] == 'update')) {
     $notify_string = 'action=notify&';
     $notify = $_POST['notify'];
@@ -103,4 +107,9 @@ if ($global['global_product_notifications'] != '1') {
 </div>
 </body>
 </html>
+<?php 
+if($guestchk == '1') {
+  tep_session_unregister('customer_id');
+}
+?>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

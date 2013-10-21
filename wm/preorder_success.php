@@ -18,7 +18,7 @@
   $preorder = tep_db_fetch_array($preorder_raw);
  
   if (!$preorder) {
-    forward404(); 
+    tep_redirect(tep_href_link(FILENAME_DEFAULT));
   }
   
   $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'");
@@ -206,7 +206,7 @@
     $info_notify = TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
           echo str_replace('${PRODUCTS_INFO}',$preorder_info,str_replace('${PRODUCTS_SUBSCRIPTION}','<br><br>'.$info_notify,str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}',tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE),$info_page['text_information']))));
-            ?>
+          ?>
       </form>
       </td>
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
@@ -214,8 +214,6 @@
       </td>
     </tr>
   </table>
-
-  
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </div>
 </body>
