@@ -2322,13 +2322,8 @@ function tep_get_address_format_id($country_id) {
     返回值: 全名(string) 
  ------------------------------------ */
 function tep_get_fullname($firstname, $lastname) {
-  global $language, $languages_id;
   $separator = ' ';
-  $language_info_raw = tep_db_query("select * from ".TABLE_LANGUAGES." where languages_id = '".$languages_id."'"); 
-  $language_info_res = tep_db_fetch_array($language_info_raw); 
-  return ($language == strtolower($language_info_res['directory']))
-    ? ($lastname.$separator.$firstname)
-    : ($firstname.$separator.$lastname);
+  return $lastname.$separator.$firstname;
 }
 
 /* -------------------------------------
