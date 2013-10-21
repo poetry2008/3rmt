@@ -3,6 +3,9 @@
   $Id$
 
 */
+define('TEXT_EPRESNT_BAR_INFORMATION', '応募者情報');
+define('TEXT_PRESENT_BAR_CONFIRMATION', '確認画面');
+define('TEXT_PRESENT_BAR_SUCCESS', '応募完了');
 
 define('NAVBAR_TITLE1', 'プレゼント');
 define('NAVBAR_TITLE2', 'プレゼント商品');

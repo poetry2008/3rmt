@@ -45,6 +45,9 @@
 <?php require('includes/present_form_check.js.php'); ?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
+function session_win() {
+  window.open("<?php echo tep_href_link(FILENAME_INFO_SHOPPING_CART, '', 'SSL'); ?>","info_shopping_cart","height=460,width=430,toolbar=no,statusbar=no,scrollbars=yes").focus();
+}
 $(document).ready(function(){
 $("#"+country_fee_id).change(function(){
     country_check($("#"+country_fee_id).val());
@@ -343,9 +346,9 @@ function popupWindow(url) {
                       </table></td>
                   </tr>
                   <tr>
-                    <td align="center" width="33%" class="checkoutBarCurrent">応募者情報</td>
-                    <td align="center" width="33%" class="checkoutBarFrom">確認画面</td>
-                    <td align="center" width="33%" class="checkoutBarFrom">応募完了</td>
+                  <td align="center" width="33%" class="checkoutBarCurrent"><?php echo TEXT_EPRESNT_BAR_INFORMATION;?></td>
+                  <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_PRESENT_BAR_CONFIRMATION;?></td>
+                  <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_PRESENT_BAR_SUCCESS;?></td>
                   </tr>
                 </table></td>
             </tr>
@@ -467,7 +470,7 @@ if(!tep_session_is_registered('customer_id')) {
       
   if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);
     $account['entry_country_id'] = STORE_COUNTRY;
-    echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL'), 'post', 'onSubmit="return check_form();"'); 
+    echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL'), 'post', ''); 
     require(DIR_WS_MODULES . 'present_account_details.php');
     echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', '') .'</div>' . "\n";
     echo '</form>';

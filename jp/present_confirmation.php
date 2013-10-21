@@ -265,7 +265,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                     </table></td> 
                 </tr> 
                 <tr> 
-                  <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_EPRESNT_BAR_INFORMATION;?></td> 
+                  <td align="center" width="33%" class="checkoutBarFrom"><a href="<?php echo tep_href_link(FILENAME_PRESENT_ORDER,'goods_id='.$_GET['goods_id']);?>" class="checkoutBarFrom"><?php echo TEXT_EPRESNT_BAR_INFORMATION;?></a></td> 
                   <td align="center" width="33%" class="checkoutBarCurrent"><?php echo TEXT_PRESENT_BAR_CONFIRMATION;?></td> 
                   <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_PRESENT_BAR_SUCCESS;?></td> 
                 </tr> 

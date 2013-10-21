@@ -20,7 +20,7 @@
                customers_default_address_id 
         from " .  TABLE_CUSTOMERS . " 
         where customers_email_address = '" .  tep_db_input($email_address) . "' 
-          and site_id = '".SITE_ID."'
+          and site_id = '".SITE_ID."' AND is_active = 1 AND is_quited = 0
       ");
       if (tep_db_num_rows($check_customer_query)) {
         //判断该顾客是否存在 
