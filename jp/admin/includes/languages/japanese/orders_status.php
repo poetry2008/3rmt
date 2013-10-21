@@ -45,3 +45,4 @@ define('TEXT_ORDERS_STATUS_OPTION_FAIL', '取引失敗');
 define('TEXT_TRANSACTION_EXPIRED_COMMENT', 'お届け日時を過ぎた際に、選択したステータスになっていれば警告アイコンを表示します。複数選択可。');
 define('TEXT_ORDERS_STATUS_REORDER_TEXT', '再配達受付のデフォルトステータス');
 define('TEXT_ORDERS_STATUS_CONFIRM_TIME_TEXT', '支払時間記録ステータス');
+define('TEXT_ORDERS_STATUS_EDIT_ORDERS_TEXT', '注文内容編集のデフォルトステータス');

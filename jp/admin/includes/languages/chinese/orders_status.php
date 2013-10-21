@@ -43,4 +43,5 @@ define('TEXT_ORDERS_STATUS_OPTION_FAIL', '交易失败');
 define('TEXT_TRANSACTION_EXPIRED_COMMENT', '超过送货时间，并且是勾选了此项目的状态对应的订单，显示警告图标。可以在多个状态下勾选此项目。');
 define('TEXT_ORDERS_STATUS_REORDER_TEXT', '再配送的默认状态');
 define('TEXT_ORDERS_STATUS_CONFIRM_TIME_TEXT', '支付时间记录状态');
+define('TEXT_ORDERS_STATUS_EDIT_ORDERS_TEXT', '订单内容编辑的默认状态');
 ?>

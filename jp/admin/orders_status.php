@@ -31,7 +31,8 @@
             'date_update' => 'now()',
             'transaction_expired' => tep_db_prepare_input((int)$_POST['transaction_expired']),
             'is_reorder' => ((isset($_POST['is_reorder']))?1:0), 
-            'is_pay_time' => ((isset($_POST['is_pay_time']))?1:0) 
+            'is_pay_time' => ((isset($_POST['is_pay_time']))?1:0), 
+            'is_order_change' => ((isset($_POST['is_order_change']))?1:0) 
             );
         switch($_POST['option_status']) {
           case '1':
@@ -52,6 +53,9 @@
         }
         if (isset($_POST['is_pay_time'])) {
           tep_db_query("update `".TABLE_ORDERS_STATUS."` set `is_pay_time` = '0'"); 
+        }
+        if (isset($_POST['is_order_change'])) {
+          tep_db_query("update `".TABLE_ORDERS_STATUS."` set `is_order_change` = '0'"); 
         }
         if ($_GET['action'] == 'insert') {
           if (!tep_not_null($orders_status_id)) {
@@ -332,6 +336,7 @@ require("includes/note_js.php");
       
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_reorder', '1') . ' ' . TEXT_ORDERS_STATUS_REORDER_TEXT);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_pay_time', '1') . ' ' . TEXT_ORDERS_STATUS_CONFIRM_TIME_TEXT);
+      $contents[] = array('text' => '<br>' .  tep_draw_checkbox_field('is_order_change', '1') . ' ' .  TEXT_ORDERS_STATUS_EDIT_ORDERS_TEXT);
 
       $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form();"') . '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
@@ -380,6 +385,7 @@ require("includes/note_js.php");
       
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_reorder', '1', ($oInfo->is_reorder == '1')?true:false) . ' ' . TEXT_ORDERS_STATUS_REORDER_TEXT);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_pay_time', '1', ($oInfo->is_pay_time == '1')?true:false) . ' ' . TEXT_ORDERS_STATUS_CONFIRM_TIME_TEXT);
+      $contents[] = array('text' => '<br>' .  tep_draw_checkbox_field('is_order_change', '1', ($oInfo->is_order_change == '1')?true:false) . ' ' .  TEXT_ORDERS_STATUS_EDIT_ORDERS_TEXT);
       
       $contents[] = array('align' => 'center', 'text' => '<br><a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'onclick="check_status_form();"') .  '</a> <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
