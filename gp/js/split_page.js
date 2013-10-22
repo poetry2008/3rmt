@@ -1,6 +1,6 @@
 function jump_page(j_ele, j_total_page, j_c_page)
 {
-  var jump_page = j_ele.parentNode.childNodes[1].value;
+  var jump_page = j_ele.parentNode.childNodes[0].value;
   if (jump_page.match(/^\d+$/)) {
     if (parseInt(jump_page, 10) >= 0) {
       j_ele.parentNode.submit();

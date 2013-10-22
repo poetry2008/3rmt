@@ -632,6 +632,60 @@ function toggle_reviews_action(reviews_url_str)
     }
   ?>
 }
+<?php //删除动作链接?>
+function delete_reviews_action(reviews_url_str) 
+{
+  <?php
+    if ($ocertify->npermission == 31) {
+  ?>
+  if (confirm('<?php echo TEXT_DEL_REVIEW;?>')) {
+    window.location.href = reviews_url_str;  
+  } 
+  <?php
+    } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+    async: false,
+    success: function(msg) {
+       var tmp_msg_arr = msg.split('|||'); 
+       var pwd_list_array = tmp_msg_arr[1].split(',');
+       if (confirm('<?php echo TEXT_DEL_REVIEW;?>')) {
+         if (tmp_msg_arr[0] == '0') {
+           window.location.href = reviews_url_str;  
+         } else {
+           if ($('#button_save')) {
+             $('#button_save').attr('id', 'tmp_button_save'); 
+           }
+           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+           if (in_array(input_pwd_str, pwd_list_array)) {
+             $.ajax({
+               url: 'ajax_orders.php?action=record_pwd_log',   
+               type: 'POST',
+               dataType: 'text',
+               data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(reviews_url_str),
+               async: false,
+               success: function(msg_info) {
+                 window.location.href = reviews_url_str;  
+               }
+             }); 
+           } else {
+             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             if ($('#tmp_button_save')) {
+               setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+             }
+           }
+         }
+       }
+     }
+  });
+  <?php
+    }
+  ?>
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
