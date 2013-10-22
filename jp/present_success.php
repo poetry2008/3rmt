@@ -27,7 +27,7 @@
       <td valign="top" id="contents">
           <?php 
           $info_page = tep_db_fetch_array(tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where show_status='1' and romaji = 'present_success.php' and site_id = '".SITE_ID."'")); 
-          echo str_replace('${PRODUCTS_INFO}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}','<a href="' .  tep_href_link(FILENAME_DEFAULT) . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) .  '</a>',$info_page['text_information'])));
+          echo str_replace('${PRODUCTS_INFO}','',str_replace('${PROCEDURE}',TEXT_HEADER_INFO,str_replace('${NEXT}','<a href="' .  tep_href_link(FILENAME_DEFAULT) . '">' .  tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE) .  '</a>',$info_page['text_information'])));
           ?>
         </td> 
       <!-- body_text_eof //--> 
