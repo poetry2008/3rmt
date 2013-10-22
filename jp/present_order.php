@@ -438,19 +438,16 @@ if(!tep_session_is_registered('customer_id')) {
                               </tr>
                               <tr>
                                 <td class="smallText" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') . '">' . TEXT_PASSWORD_FORGOTTEN . '</a>'; ?></td>
-                              </tr>
+                              </tr> 
                               <tr>
-                                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+                              <td align="right" colspan="2"><?php echo tep_image_submit('button_login.gif', IMAGE_BUTTON_LOGIN); ?></td>
                               </tr>
                             </table>
                       </td>
                   </tr> 
                 </table>
                 </td>
-            </tr>
-            <tr>
-            <td align="right"><?php echo tep_image_submit('button_login.gif', IMAGE_BUTTON_LOGIN); ?></td>
-            </tr>
+            </tr> 
             </table></form>
             </td></tr>
             <tr>

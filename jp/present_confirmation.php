@@ -48,14 +48,18 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
         $input_text_str = preg_replace($mode_all,$mode_half,$input_text_str);
         $op_value[1] = $input_text_str;
       } 
+
+      $address_info_query = tep_db_query("select name from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
+      $address_info_array = tep_db_fetch_array($address_info_query);
+      tep_db_free_result($address_info_query);
       $i++;
       if($i == $sum){
         if(trim($op_value[1]) != ''){
-          $present_address_info .= $op_value[1];
+          $present_address_info .= $address_info_array['name'].'&nbsp;:&nbsp;'.$op_value[1];
         }
       }else{
         if(trim($op_value[1]) != ''){
-          $present_address_info .= $op_value[1].'<br>'; 
+          $present_address_info .= $address_info_array['name'].'&nbsp;:&nbsp;'.$op_value[1].'<br>'; 
         }
       }
     }

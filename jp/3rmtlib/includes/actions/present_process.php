@@ -169,9 +169,9 @@
       $entry_password_confirmation_error = false; 
       }
     }
-  
-    if(!empty($password)) {
-    //check_email_count for regist user
+
+    if(!tep_session_is_registered('customer_id')){ 
+      //check_email_count for regist user
       $check_email = tep_db_query("
           select customers_email_address 
           from " .  TABLE_CUSTOMERS . " 
@@ -180,10 +180,10 @@
             and customers_guest_chk = '0' 
             and site_id = '".SITE_ID."'");
       if (tep_db_num_rows($check_email)) {
-      $error = true;
-      $entry_email_address_exists = true;
+        $error = true;
+        $entry_email_address_exists = true;
       } else {
-      $entry_email_address_exists = false;
+        $entry_email_address_exists = false;
       }
     }
     // end check
