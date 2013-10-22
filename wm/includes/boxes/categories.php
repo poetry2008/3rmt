@@ -214,9 +214,10 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
     </li>' . "\n";
   }
 ?>
-    <li class="l_m_category_li">
-      <a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
-    </li>
+
+<li class="l_m_category_li">
+<a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
+</li>
   </ul>
   <img src="images/design/box/box_bottom_bg_01.gif" width="172" height="14" alt="" >
 </div>
