@@ -42,7 +42,11 @@
       if(isset($_GET['goods_id'])){
         $pc_id = $customer_id;
         tep_session_register('pc_id');   
-        tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'], 'SSL'));  
+        if(isset($_SESSION['address_present']) && !empty($_SESSION['address_present'])){
+          tep_redirect(tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'], 'SSL'));  
+        }else{
+          tep_redirect(tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'], 'SSL')); 
+        }
       }else{
         tep_redirect(tep_href_link('non-member_auth_finish.php', '', 'SSL')); 
       }

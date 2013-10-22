@@ -472,7 +472,7 @@ if(!tep_session_is_registered('customer_id')) {
     $account['entry_country_id'] = STORE_COUNTRY;
     echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL'), 'post', ''); 
     require(DIR_WS_MODULES . 'present_account_details.php');
-    echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', '') .'</div>' . "\n";
+    echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue_02.gif', '') .'</div>' . "\n";
     echo '</form>';
 
 ?></td>
