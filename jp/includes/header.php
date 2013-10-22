@@ -42,9 +42,11 @@
 </noscript>
 <div id="title">
 <?php
-  if (isset($_GET['cPath']) && $_GET['cPath']) {
+  if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
+  if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
+  if ($_GET['cPath']) {
     echo $seo_category['seo_name'] . ' '.TEXT_HEADER_CATEGORY_TITLE. "\n";
-  } elseif (isset($_GET['products_id']) && $_GET['products_id']) {
+  } elseif ($_GET['products_id']) {
     echo ds_tep_get_categories((int)$_GET['products_id'],1) . ' ' .TEXT_HEADER_PRODUCT_TITLE. "\n";
   } else {
     echo sprintf(TEXT_HEADER_OTHER_TITLE,STORE_NAME). "\n";
@@ -69,57 +71,6 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
             <tr>
               <td><img class="middle" src="images/design/button/search_text.jpg" width="53" height="12" alt="<?php echo TEXT_HEADER_SEARCH_IMAGE_ALT;?>"></td>
               <td>
-<?php
-// --- get categoris list ( parent_id = 0 ) --- //
- /*
-  $cat1 = '';
-  if (isset($_GET['cPath']) && $_GET['cPath']) {
-    $cat0 = explode('_', $_GET['cPath']);
-  } elseif (isset($_GET['products_id']) && $_GET['products_id']) {
-    $cat_products = tep_get_product_path($_GET['products_id']);
-    $cat0 = explode('_', $cat_products);
-  }
-if (!isset($cat0[0])) $cat0[0] = NULL;
-  $cat1 = $cat0[0];
-  
-  $categories_parent0_query = tep_db_query("
-      select * 
-      from (
-        select c.categories_id, 
-               c.categories_status, 
-               cd.categories_name,
-               c.sort_order,
-               cd.site_id
-        from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-        where c.parent_id = '0' 
-        and c.categories_status != '1' 
-        and c.categories_id = cd.categories_id 
-        and cd.language_id = '" . (int)$languages_id . "' 
-        order by sort_order, cd.categories_name, cd.site_id DESC
-      ) c
-      where site_id = '0'
-         or site_id = '".SITE_ID."'
-      group by categories_id
-      order by sort_order, categories_name
-      ");
-  $categories_array = '<select name="categories_id" class="header_search_select">'."\n";
-  $categories_array .= '<option value=""';
-  if($cat1 == '') {
-    $categories_array .= ' selected';
-  }
-  $categories_array .= '>全てのゲーム</option>'."\n";
-  while($categories_parent0 = tep_db_fetch_array($categories_parent0_query)) {
-    $categories_array .= '<option value="'.$categories_parent0['categories_id'].'"';
-    if($cat1 == $categories_parent0['categories_id']) {
-      $categories_array .= ' selected';
-    }
-    $categories_array .= '>'.$categories_parent0['categories_name'].'</option>'."\n";
-  }
-  $categories_array .= '</select>'."\n";
-  echo $categories_array ;
-  */
-// --- end add--- //
-?>
               </td>
               <td><?php echo tep_draw_input_field('keywords', TEXT_HEADER_SEARCH_MUST_INPUT, 'size="30" maxlength="40" id="skeywords" onclick="document.getElementById(\'skeywords\').value = \'\';"'); ?></td>
               <td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="<?php echo TEXT_SEARCH_ALT;?>"></td>
