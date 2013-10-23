@@ -96,6 +96,7 @@ address_option_show();
     }
   }
 ?>
+<?php //配送地址初始化?>
 function address_option_show(){
 
   arr_new = new Array();
@@ -156,7 +157,7 @@ function address_option_show(){
    ?>
 
 }
-
+<?php //国家选项?>
 function check(select_value){
 
   var arr = new Array();
@@ -187,6 +188,7 @@ function check(select_value){
       $("#td_"+country_fee_id_one).show();
     }
 }
+<?php //地域选项?>
 function country_check(value,select_value){
    
    var arr = new Array();
@@ -232,7 +234,7 @@ function country_check(value,select_value){
       $("#td_"+country_area_id_one).show();
     }
 }
-
+<?php //地域选择动作?>
 function country_area_check(value,select_value){
    
    var arr = new Array();
@@ -280,7 +282,7 @@ function country_area_check(value,select_value){
 
     }
 }
-
+<?php //session 赋值?>
 function session_value(){
   var session_array = new Array();
 <?php

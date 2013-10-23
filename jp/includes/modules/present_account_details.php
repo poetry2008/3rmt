@@ -7,7 +7,7 @@
   if(tep_session_is_registered('customer_id')){
 
     $account_info_query = tep_db_query("
-      SELECT c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter
+      SELECT c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_suburb, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_newsletter
       FROM " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a 
       WHERE c.customers_id = '" . $customer_id . "' AND a.customers_id = c.customers_id AND a.address_book_id = '" .  $customer_default_address_id . "' AND  c.site_id = ".SITE_ID);
     $account_info = tep_db_fetch_array($account_info_query);
@@ -116,20 +116,7 @@
     $a_value = $account_info['customers_email_address'];
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
-  // street_address
-  if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_street_address'],false,true);
-  } elseif ($error == true) {
-      if ($entry_street_address_error == true) {
-          $a_value = tep_draw_input_field('street_address','','class="input_text"') . '&nbsp;' . ENTRY_STREET_ADDRESS_ERROR;
-      } else {
-          $a_value = $street_address . tep_draw_hidden_field('street_address');
-      }
-  } else {
-      $a_value = tep_draw_input_field('street_address', $account['entry_street_address'],'class="input_text"') . '&nbsp;' . ENTRY_STREET_ADDRESS_TEXT;
-  }
-  $address_form->setFormLine('street_address',ENTRY_STREET_ADDRESS,$a_value);
-
+  
   // suburb
   if ($is_read_only == true) {
       $a_value = tep_output_string($account['entry_suburb'],false,true);
@@ -143,34 +130,6 @@
       $a_value = tep_draw_input_field('suburb', $account['entry_suburb'],'class="input_text"') . '&nbsp;' . ENTRY_SUBURB_TEXT;
   }
   $address_form->setFormLine('suburb',ENTRY_SUBURB,$a_value);
-
-  // postcode
-  if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_postcode'],false,true);
-  } elseif ($error) {
-      if ($entry_post_code_error == true) {
-          $a_value = tep_draw_input_field('postcode','','class="input_text"') . '&nbsp;' . ENTRY_POST_CODE_ERROR;
-      } else {
-          $a_value = $postcode . tep_draw_hidden_field('postcode');
-      }
-  } else {
-      $a_value = tep_draw_input_field('postcode', $account['entry_postcode'],'class="input_text"') . '&nbsp;' . ENTRY_POST_CODE_TEXT;
-  }
-  $address_form->setFormLine('postcode',ENTRY_POST_CODE,$a_value);
-
-  // city
-  if ($is_read_only == true) {
-      $a_value = tep_output_string($account['entry_city'],false,true);
-  } elseif ($error) {
-      if ($entry_city_error == true) {
-          $a_value = tep_draw_input_field('city','','class="input_text"') . '&nbsp;' . ENTRY_CITY_ERROR;
-      } else {
-          $a_value = $city . tep_draw_hidden_field('city');
-      }
-  } else {
-      $a_value = tep_draw_input_field('city', $account['entry_city'],'class="input_text"') . '&nbsp;' . ENTRY_CITY_TEXT;
-  }
-  $address_form->setFormLine('city',ENTRY_CITY,$a_value);
 
   // state
   if ($is_read_only == true) {
@@ -198,7 +157,7 @@
 
   if ($account['entry_country_id']) { $country = $account['entry_country_id']; }
   else if (!$country) { $country = STORE_COUNTRY; } 
-    echo tep_draw_hidden_field('country', 107);
+    echo tep_draw_hidden_field('country', STORE_COUNTRY);
 
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
