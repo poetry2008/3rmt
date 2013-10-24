@@ -402,7 +402,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT) . '"><span class="o
 <tr> 
 <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
 <tr class="infoBoxContents"> 
-<td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+<td width="35%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <tr> 
 <td class="main" colspan="2"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
 </tr> 
@@ -411,7 +411,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT) . '"><span class="o
 <td class="main" width="125"><?php echo payment::changeRomaji($payment); ?></td> 
 </tr> 
 </table></td> 
-<td width="70%" valign="top" align="right">
+<td width="65%" valign="top" align="right">
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
 <tr><td class="main" align="right"><?php echo HEADING_SUBTOTAL;?>:</td><td class="main" align="right" width="25%">
 <?php
