@@ -298,7 +298,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }else{
         $_SESSION['preorder_products_list'] = $_POST; 
       }
-      tep_redirect(tep_href_link(FILENAME_PREORDER_PAYMENT)); 
+      tep_redirect(tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL')); 
     } else {
       if (tep_session_is_registered('customer_id')) {
         $last_name_prompt = $account_values['customers_lastname'];
