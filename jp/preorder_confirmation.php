@@ -3,6 +3,7 @@
    $Id$
  */
 require('includes/application_top.php');
+$_POST = $_SESSION['preorder_products_list'];
 if(isset($_GET['action']) && $_GET['action'] == 'check'){
 
   if(!isset($_SESSION['submit_flag'])){
@@ -309,9 +310,7 @@ if (!$payment_modules->moduleIsEnabled($payment)){
 }
 $payment_selection = $payment_modules->selection();
 $pay_info_array = $payment_modules->specialOutput($payment);
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $payment_modules->deal_other_info($payment, $_POST); 
-}
+$payment_modules->deal_other_info($payment, $_POST); 
 //支付方法相关信息
 if (!empty($pay_info_array)) {
 ?>
