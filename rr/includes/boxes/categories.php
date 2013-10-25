@@ -27,7 +27,7 @@ $categories_query = tep_db_query("
     where site_id = ".SITE_ID."
        or site_id = 0
     group by categories_id
-    having c.categories_status != '1' and c.categories_status != '3'  
+    having c.categories_status != '1' and c.categories_status != '3' 
     order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
@@ -98,23 +98,18 @@ if ($ca_num == 0) {
                   and cd.language_id='" . $languages_id ."' 
                 order by cd.site_id DESC
                 ) c
-              where site_id = 0
-                 or site_id = ".SITE_ID."
+              where site_id = ".SITE_ID."
+                 or site_id = 0
               group by categories_id
-              having c.categories_status != '1' and c.categories_status != '3'  
+              having c.categories_status != '1' and c.categories_status != '3' 
               order by sort_order, categories_name
               ");
-         while ($subcategory = tep_db_fetch_array($subcategories_query))  {
+          while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
-          ?>
-        <?php
-        if (!empty($subcategories)) {
-        ?>
-          <ul class="l_m_category_ul">
-        <?php
-        foreach ($subcategories as $skey => $subcategory) {
-        ?>
+          ?> <?php if (!empty($subcategories)) { ?>
+          <ul class="l_m_category_ul"> 
+          <?php foreach($subcategories as $skey =>  $subcategory){?>
             <li class="l_m_category_li2">
               <a class="l_m_category_li2_link" href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$list_category['categories_id'].'_'.$subcategory['categories_id']);?>">
               <?php
@@ -153,15 +148,14 @@ if ($ca_num == 0) {
                 where site_id = 0
                    or site_id = ".SITE_ID."
                 group by categories_id
-                having c.categories_status != '1' and c.categories_status != '3'  
+                having c.categories_status != '1' and c.categories_status != '3' 
                 order by sort_order, categories_name
             ");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
               $_subcategories[] = $_subcategory;
             }
             ?>
-            <?php
-            if (!empty($_subcategories)) { 
+            <?php if(!empty($_subcategories)) { 
             ?>
             <ul class="l_m_category_ul2"> 
 	    <li>
