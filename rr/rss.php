@@ -89,7 +89,6 @@ while ($row = mysql_fetch_array($sql_result)) {
   }
   $id = $row["products_id"];
 
-  // RSS Links for Ultimate SEO 
   $link = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $id) ;
 
   $model = $row["products_model"];

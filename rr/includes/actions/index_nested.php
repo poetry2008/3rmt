@@ -3,40 +3,39 @@
   $Id$
 */
   $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
-?>
+?> 
       <td valign="top" id="contents">
-      <!-- heading title --> 
 <?php  
-  if (isset($cPath_array)) {
+  if( isset($cPath_array)) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
-      echo '<h1 class="pageHeading"><span>'.$seo_category['categories_name'].'</span></h1>';
-    } elseif ($_GET['manufacturers_id']) {
+       echo '<h1 class="pageHeading"><span>'.$seo_category['categories_name'].'</span></h1>';
+  } elseif ($_GET['manufacturers_id']) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
-      }
+  }
 ?> 
-            <div class="comment">
-               <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子?></font>
-        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="product_list_page"> 
-          <tr align="center">
+      <!-- heading title eof-->
+      <div class="comment"> <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子?></font>
+      <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="product_list_page"> 
+        <tr align="center">
 <?php
     if (isset($cPath) && ereg('_', $cPath)) {
-    // check to see if there are deeper categories within the current category
+// check to see if there are deeper categories within the current category
       $category_links = array_reverse($cPath_array);
       for($i=0, $n=sizeof($category_links); $i<$n; $i++) {
-         
+        
         $categories_query = tep_db_query("
           select * 
           from (
             select c.categories_id, 
                    cd.categories_name, 
+                   cd.categories_status, 
                    c.categories_image, 
                    c.parent_id,
-                   cd.categories_status, 
                    cd.site_id,
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
@@ -48,7 +47,7 @@
           where site_id = 0 
              or site_id = ".SITE_ID."
           group by categories_id
-          having c.categories_status != '1' and c.categories_status != '3'  
+          having c.categories_status != '1' and c.categories_status != '3' 
           order by sort_order, categories_name
         ");
         if (tep_db_num_rows($categories_query) < 1) {
@@ -58,7 +57,7 @@
         }
       }
     } else {
-       
+      
         $categories_query = tep_db_query("
           select * 
           from (
@@ -66,8 +65,8 @@
                    cd.categories_name, 
                    c.categories_image, 
                    c.parent_id,
-                   cd.categories_status, 
                    cd.site_id,
+                   cd.categories_status,
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
             where c.parent_id = '" . $current_category_id . "' 
@@ -88,7 +87,7 @@
     $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
-      echo '<td class="smallText"><h2 class="Tlist"><a href="' .  tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES . 'categories/' . $categories['categories_image'], $categories['categories_name'], 299, 48) ;
+      echo '<td class="smallText"><h2 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES .'categories/'. $categories['categories_image'], $categories['categories_name'], 299, 48) ;
                              if(tep_not_null($categories['categories_image'])) { echo '<br>' ; } 
                    echo $categories['categories_name'] . '</a></h2></td>' . "\n";
       if ((($rows / 2) == floor($rows / 2)) && ($rows != tep_db_num_rows($categories_query))) {
@@ -97,25 +96,22 @@
       }
   }
 ?> 
-          </tr>
-        </table>
+        </tr>
+      </table>
       <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></font>
             </div>
-<!--            <p class="pageBottom"></p>
--->      <?php 
-      $new_products_category_id = $current_category_id; 
-      $exone_single = false; 
-      $exone_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
-      if (tep_db_num_rows($exone_query)) {
-        $exone_single = true; 
-      }
-      if (!$exone_single) {
-        include(DIR_WS_MODULES .'new_products5.php'); 
-      } else {
-        include(DIR_WS_MODULES .'new_products2.php'); 
-      }
-      ?>
-<?php  
+      <?php 
+  $new_products_category_id = $current_category_id;
+  $exone_single = false; 
+  $exone_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
+  if (tep_db_num_rows($exone_query)) {
+    $exone_single = true; 
+  }
+  if (!$exone_single) {
+    include(DIR_WS_MODULES .'new_products5.php'); 
+  } else {
+    include(DIR_WS_MODULES .'new_products2.php'); 
+  }
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h3 class="pageHeading"><span> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</span></h3>' . "\n";
@@ -127,8 +123,8 @@
 ?>
 <?php  if (!empty($seo_category['text_information'])) {
     echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']);
+    
 ?>
-        <!--<p class="pageBottom"></p>-->
 <?php 
         }
 ?>
@@ -137,7 +133,5 @@
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">
-      <!-- right_navigation --> 
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof -->
     </td> 
