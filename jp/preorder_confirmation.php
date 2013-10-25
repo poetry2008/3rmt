@@ -102,7 +102,7 @@ if(!isset($_SESSION['submit_flag'])){
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof //--> 
 <!-- body //--> 
-<?php echo tep_draw_form('preorder_confirmation', FILENAME_PREORDER_PROCESS.'?action=process', 'post', '');?>
+<?php echo tep_draw_form('preorder_confirmation', tep_href_link(FILENAME_PREORDER_PROCESS,'action=process','SSL'), 'post', '');?>
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
 <tr> 
 <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
