@@ -52,6 +52,9 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||strpos($_SERVER['PHP_SELF'], 'checkout_confirmation.php')
     ||strpos($_SERVER['PHP_SELF'], 'checkout_payment.php')
     ||strpos($_SERVER['PHP_SELF'], 'account_edit_process.php')
+    ||strpos($_SERVER['PHP_SELF'], 'change_preorder.php')
+    ||strpos($_SERVER['PHP_SELF'], 'change_preorder_confirm.php')
+    ||strpos($_SERVER['PHP_SELF'], 'change_preorder_success.php')
     ||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))){
 }else{
   if (!((strpos($_SERVER['PHP_SELF'], 'index.php')) && ($category_depth == 'top') && !isset($_GET['manufacturers_id']))) {
@@ -60,7 +63,7 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
       if ($cPath) {
         include(DIR_WS_BOXES . 'list_categories.php');
       } else {
-        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS)) {
+        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
           include(DIR_WS_BOXES . 'list_categories.php');
         } else {
           include(DIR_WS_BOXES . 'categories.php');
@@ -70,7 +73,7 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
       if ($cPath) {
         include(DIR_WS_BOXES . 'list_categories.php');
       } else {
-        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS)) {
+        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
           include(DIR_WS_BOXES . 'list_categories.php');
         } else {
           include(DIR_WS_BOXES . 'categories.php');

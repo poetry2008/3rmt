@@ -227,9 +227,9 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         unset($_SESSION['preorder_products_list']);
         unset($_SESSION['submit_flag']);
         if(tep_session_is_registered('customer_id')){
-          tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
+          tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS,'','SSL'));
         }else{
-          tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS,'from='.$_POST['from'])); 
+          tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS,'from='.$_POST['from'],'SSL')); 
         }
       } else {
         tep_redirect(tep_href_link('non-preorder_auth.php'));

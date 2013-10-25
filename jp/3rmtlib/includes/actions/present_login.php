@@ -55,11 +55,7 @@
       $firstname                   = $customers_result['customers_firstname'];
       $lastname                    = $customers_result['customers_lastname'];
       $email_address               = $customers_result['customers_email_address'];
-      $telephone                   = $customers_result['customers_telephone'];
-      $street_address              = $address_result['entry_street_address'];
       $suburb                      = $address_result['entry_suburb'];
-      $postcode                    = $address_result['entry_postcode'];
-      $city                        = $address_result['entry_city'];
       $zone_id                     = $address_result['entry_zone_id'];
 
         //临时插入信息到session里
@@ -75,11 +71,7 @@
       tep_session_register('firstname');
       tep_session_register('lastname');
       tep_session_register('email_address');
-      tep_session_register('telephone');
-      tep_session_register('street_address');
       tep_session_register('suburb');
-      tep_session_register('postcode');
-      tep_session_register('city');
       tep_session_register('zone_id');
       
       } else {

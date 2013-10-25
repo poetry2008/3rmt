@@ -96,6 +96,7 @@ address_option_show();
     }
   }
 ?>
+<?php //配送地址初始化?>
 function address_option_show(){
 
   arr_new = new Array();
@@ -156,7 +157,7 @@ function address_option_show(){
    ?>
 
 }
-
+<?php //国家选项?>
 function check(select_value){
 
   var arr = new Array();
@@ -187,12 +188,13 @@ function check(select_value){
       $("#td_"+country_fee_id_one).show();
     }
 }
+<?php //地域选项?>
 function country_check(value,select_value){
    
    var arr = new Array();
   <?php 
     $country_array = array();
-    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort,id");
     while($country_area_array = tep_db_fetch_array($country_area_query)){
       
       $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
@@ -232,13 +234,13 @@ function country_check(value,select_value){
       $("#td_"+country_area_id_one).show();
     }
 }
-
+<?php //地域选择动作?>
 function country_area_check(value,select_value){
    
    var arr = new Array();
   <?php
     $country_array = array();
-    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort,id");
     while($country_city_array = tep_db_fetch_array($country_city_query)){
       
       $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
@@ -280,7 +282,7 @@ function country_area_check(value,select_value){
 
     }
 }
-
+<?php //session 赋值?>
 function session_value(){
   var session_array = new Array();
 <?php

@@ -16,6 +16,52 @@ if(isset($_GET['action']) && $_GET['action'] == 'check'){
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER_CONFIRMATION);
 require(DIR_WS_CLASSES . 'payment.php');
 $payment_modules = payment::getInstance(SITE_ID);
+
+$product_info_raw = tep_db_query("
+    select pd.products_id, pd.products_name, pd.products_status, pd.romaji, pd.preorder_status 
+    from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+    where pd.products_id = '" . $_POST['products_id'] . "' 
+      and pd.language_id = '" . $languages_id . "' 
+      and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
+    order by pd.site_id DESC
+    limit 1
+");
+$valid_product = (tep_db_num_rows($product_info_raw) > 0);
+
+if (!$valid_product) {
+  forward404(); 
+}
+$product_info_res = tep_db_fetch_array($product_info_raw);
+
+if ($product_info_res['preorder_status'] != '1') {
+  forward404(); 
+}
+$ca_path = tep_get_product_path($product_info_res['products_id']);
+if (tep_not_null($ca_path)) {
+  $ca_path_array = tep_parse_category_path($ca_path); 
+}
+if (isset($ca_path_array)) {
+  for ($cnum = 0, $ctnum=sizeof($ca_path_array); $cnum<$ctnum; $cnum++) {
+    $categories_query = tep_db_query("
+        select categories_name 
+        from " .  TABLE_CATEGORIES_DESCRIPTION . " 
+        where categories_id = '" .  $ca_path_array[$cnum] . "' 
+          and language_id='" . $languages_id . "' 
+          and (site_id = ".SITE_ID." or site_id = 0)
+        order by site_id DESC
+        limit 1" 
+    );
+    if (tep_db_num_rows($categories_query) > 0) {
+      $categories_info = tep_db_fetch_array($categories_query); $breadcrumb->add($categories_info['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($ca_path_array, 0, ($cnum+1)))));
+    } else {
+      break;
+    }
+  }
+}
+
+$breadcrumb->add($product_info_res['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$product_info_res['products_id']));
+$breadcrumb->add(HEADING_TITLE);
+
 page_head();
 ?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
@@ -408,16 +454,14 @@ if (is_array($payment_modules->modules)) {
       <tr class="infoBoxContents"> 
       <td><table border="0" cellspacing="0" cellpadding="2"> 
       <tr> 
-      <td class="main" colspan="4"><?php
+      <td class="main" colspan="2"><?php
       echo $confirmation['title']; ?></td> 
       </tr> 
       <?php
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php

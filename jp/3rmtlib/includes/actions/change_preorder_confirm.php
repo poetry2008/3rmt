@@ -148,7 +148,7 @@
   require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
   
 
-$form_action_url = tep_href_link('change_preorder_process.php'); 
+$form_action_url = tep_href_link('change_preorder_process.php', '', 'SSL'); 
 if (isset($payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) && $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) {
   $form_action_url = $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url; 
 }

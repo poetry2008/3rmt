@@ -188,7 +188,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 function check_preorder_op(pre_pid) 
 {
    $.ajax({
-     url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_op');?>',
+     url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_op', 'SSL');?>',
      type: 'POST',
      data:'pre_pid='+pre_pid,
      async: false,

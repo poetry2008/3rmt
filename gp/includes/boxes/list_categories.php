@@ -45,7 +45,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
     $ca_arr = $id; 
   }
   $left_show_single = true;
-} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) {
+} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT || basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION) {
   $left_ca_path = tep_get_product_path($_POST['products_id']);
   if (tep_not_null($left_ca_path)) {
     $id = tep_parse_category_path($left_ca_path); 
