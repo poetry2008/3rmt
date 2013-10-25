@@ -273,13 +273,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }  
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($error == false)) {
       $_SESSION['submit_flag'] = time();
-      $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
-      echo tep_draw_form('pform', tep_href_link(FILENAME_PREORDER_PAYMENT));
-      foreach ($_POST as $p_key => $p_value) {
-        if ($p_key != 'x' && $p_key != 'y') {
-          echo tep_draw_hidden_field($p_key, stripslashes($p_value)); 
-        }
-      }
+      $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
       $product_query = tep_db_query("select products_price, products_price_offset, products_tax_class_id, products_small_sum from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
       $product_res = tep_db_fetch_array($product_query);
       $preorder_subtotal = 0; 
@@ -288,11 +282,20 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         $products_price = tep_get_final_price($product_res['products_price'], $product_res['products_price_offset'], $product_res['products_small_sum'], $_POST['quantity']); 
         $preorder_subtotal = tep_add_tax($products_price, $products_tax) * $_POST['quantity']; 
       }
-      echo tep_draw_hidden_field('preorder_subtotal', $preorder_subtotal); 
-      echo '</form>';
-      echo '<script type="text/javascript">';
-      echo 'document.forms.pform.submit();'; 
-      echo '</script>';
+      $_POST['preorder_subtotal'] = $preorder_subtotal;
+      if(isset($_SESSION['preorder_products_list'])){
+        foreach($_SESSION['preorder_products_list'] as $key=>$value){
+
+          if(substr($key,0,3) == 'op_' && !empty($_POST)){
+
+            unset($_SESSION['preorder_products_list'][$key]);
+          }
+        }
+        $_SESSION['preorder_products_list'] = array_merge($_SESSION['preorder_products_list'],$_POST);
+      }else{
+        $_SESSION['preorder_products_list'] = $_POST; 
+      }
+      tep_redirect(tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL')); 
     } else {
       if (tep_session_is_registered('customer_id')) {
         $last_name_prompt = $account_values['customers_lastname'];
@@ -303,12 +306,12 @@ if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
 if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
 if (!isset($_GET['lastname'])) $_GET['lastname'] = NULL; //del notice
 if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
-        $last_name_prompt = tep_draw_input_field('lastname', (($lastname_error == true) ? $_POST['lastname'] : $_GET['lastname']), 'class="input_text" style="width:35%"');
-        $first_name_prompt = tep_draw_input_field('firstname', (($firstname_error == true) ? $_POST['firstname'] : $_GET['firstname']), 'class="input_text" style="width:35%"');
+        $last_name_prompt = tep_draw_input_field('lastname', $_POST['lastname'], 'class="input_text" style="width:35%"');
+        $first_name_prompt = tep_draw_input_field('firstname', $_POST['firstname'], 'class="input_text" style="width:35%"');
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text" style="width:35%"') . TEXT_PHONE_EMAIL_ADDRESS;
+        $your_email_address_prompt = tep_draw_input_field('from', $_POST['from'] , 'size="30" class="input_text" style="width:35%"') . TEXT_PHONE_EMAIL_ADDRESS;
         if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>

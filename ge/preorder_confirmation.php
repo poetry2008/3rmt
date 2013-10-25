@@ -3,6 +3,7 @@
    $Id$
  */
 require('includes/application_top.php');
+$_POST = $_SESSION['preorder_products_list'];
 if(isset($_GET['action']) && $_GET['action'] == 'check'){
 
   if(!isset($_SESSION['submit_flag'])){
@@ -108,7 +109,7 @@ if(!isset($_SESSION['submit_flag'])){
 <!-- left_navigation_eof -->
 <!-- body_text -->
 <div id="content">
-<?php echo tep_draw_form('preorder_confirmation', FILENAME_PREORDER_PROCESS.'?action=process', 'post', '');?>
+<?php echo tep_draw_form('preorder_confirmation', tep_href_link(FILENAME_PREORDER_PROCESS,'action=process','SSL'), 'post', '');?>
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
 <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
@@ -160,7 +161,7 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
   
   </td> 
 </tr>
-<td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT) . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td> 
+<td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
 <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
 </tr> 
@@ -315,13 +316,11 @@ $payment = $_POST['pre_payment'];
 if (!$payment_modules->moduleIsEnabled($payment)){
   //判断支付方法是否存在， 支付方法是否被允许 
   $_SESSION['payment_error'] = ERROR_NO_PAYMENT_MODULE_SELECTED;
-  tep_redirect(tep_href_link(FILENAME_PREORDER_PAYMENT));
+  tep_redirect(tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL'));
 }
 $payment_selection = $payment_modules->selection();
 $pay_info_array = $payment_modules->specialOutput($payment);
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $payment_modules->deal_other_info($payment, $_POST); 
-}
+$payment_modules->deal_other_info($payment, $_POST); 
 //支付方法相关信息
 if (!empty($pay_info_array)) {
 ?>
@@ -336,7 +335,7 @@ if (!empty($pay_info_array)) {
   <b><?php echo $pay_info_array[0];?></b>
 
 <?php
-echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';
+echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';
 ?>
 </td></tr>
 <tr>
@@ -404,7 +403,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT) . '"><span class="o
 <tr class="infoBoxContents"> 
 <td width="35%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <tr> 
-<td class="main" colspan="2"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+<td class="main" colspan="2"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
 </tr> 
 <tr> 
 <td width="10"></td>
@@ -497,7 +496,7 @@ if (tep_not_null($_POST['yourmessage'])) {
     <tr> 
     <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
     <tr> 
-    <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT) . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+    <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
     </tr>
     <tr class="infoBoxContents"> 
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
