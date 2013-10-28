@@ -40,9 +40,8 @@
 <noscript>
 <?php tep_output_warning(TEXT_JAVASCRIPT_ERROR);?> 
 </noscript>
-<div id="header">
-  <div class="h_title">
-  <?php
+<div id="header"> <div class="h_title">
+<?php
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
@@ -51,10 +50,10 @@
     echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href,null)}">'.TEXT_HEADER_PRODUCT_TITLE.'</a>' . "\n";
   } else {
     echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else{window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
-  }  
+  } 
 ?>
-  </div>
-  <div id="title"><img src="images/design/banner.jpg" alt="banner"></div>
+</div>
+<div id="title"><img src="images/design/banner.jpg" alt="banner"></div>
   <div id="header_Menu">
       <div class="header_menu_content">
         <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
@@ -64,7 +63,7 @@
                 <table cellpadding="0" cellspacing="0" summary="search" class="search_info">
                   <tr>
                     <td width="80">&nbsp;</td>
-<?php // --- get categoris list ( parent_id = 0 ) --- //
+<?php 
   $cat1 = '';
   if ($_GET['cPath']) {
     $cat0 = explode('_', $_GET['cPath']);

@@ -240,7 +240,7 @@
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT_ADDRESS, '', 'SSL'));
 ?>
 <?php page_head();?>
-<script language="javascript"><!--
+<script type="text/javascript"><!--
 var selected;
 
 function selectRowEffect(object, buttonSelect) {
@@ -368,7 +368,8 @@ function check_form() {
 }
 --></script>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body> 
+<div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 
   <!-- body --> 

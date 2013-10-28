@@ -4,19 +4,9 @@
 */
 
   require('includes/application_top.php');
-  
-  if(isset($_SESSION['preorder_products_list'])){
-
-    foreach($_SESSION['preorder_products_list'] as $key=>$value){
-
-      if(substr($key,0,3) == 'op_' && !empty($_POST)){
-
-        unset($_SESSION['preorder_products_list'][$key]);
-      }
-    }
-    $_POST = array_merge($_SESSION['preorder_products_list'],$_POST);
-  }else{
-    $_SESSION['preorder_products_list'] = $_POST; 
+  if(!isset($_POST['action'])){
+    $_POST = $_SESSION['preorder_products_list'];
+    unset($_POST['action']);
   }
   if (!isset($_POST['products_id'])) {
     forward404(); 
@@ -171,7 +161,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
 ?>
 <?php page_head();?>
 <?php
-if (isset($_GET['check']) && $_GET['check'] == '1' && !empty($_POST['pre_payment'])) {
+if (isset($_POST['action']) && $_POST['action'] == 'process') {
       $payment_error = false;
       $sn_type = $payment_modules->preorder_confirmation_check($_POST['pre_payment']); 
       if ($sn_type) {
@@ -185,14 +175,8 @@ if (isset($_GET['check']) && $_GET['check'] == '1' && !empty($_POST['pre_payment
 
       if($payment_error == false){
 
-        echo tep_draw_form('payment_form', tep_href_link(FILENAME_PREORDER_CONFIRMATION));
-        foreach ($_POST as $p_key => $p_value) {
-          echo tep_draw_hidden_field($p_key, stripslashes($p_value)); 
-        }
-        echo '</form>';
-        echo '<script type="text/javascript">';
-        echo 'document.forms.payment_form.submit();';
-        echo '</script>';
+        $_SESSION['preorder_products_list'] = array_merge($_SESSION['preorder_products_list'],$_POST);  
+        tep_redirect(tep_href_link(FILENAME_PREORDER_CONFIRMATION, '', 'SSL'));
       }
     }
 ?>
@@ -214,7 +198,7 @@ function check_pre_products(op_info_str, products_id_str) {
     alert('<?php echo JS_ERROR.JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER;?>'); 
   }else{
     $.ajax({
-      url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_products_op');?>',     
+      url: '<?php echo tep_href_link('ajax_notice.php', 'action=check_pre_products_op', 'SSL');?>',     
       type: 'POST',
       data: 'op_info_str='+op_info_str+'&products_id_str='+products_id_str,
       async: false,
@@ -327,7 +311,7 @@ $(document).ready(function(){
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
 </table>
-      <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'check=1')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']).tep_draw_hidden_field('action', 'process'); 
+      <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']).tep_draw_hidden_field('action', 'process'); 
               $op_info_array = array(); 
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);

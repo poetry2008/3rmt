@@ -27,9 +27,8 @@
       </td>
       <!-- body_text -->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?><?php echo SPECIAL_TITLE_LINK_TEXT;?></h1>
-        <div class="comment">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
+        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?><?php echo SPECIAL_TITLE_LINK_TEXT;?></h1> <div class="comment">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
 <?php
 $specials_caid_arr = tep_rr_get_categories_id_by_parent_id(FF_CID);
 $sp_cid_arr = explode(',', FF_CID);
@@ -49,11 +48,13 @@ if (empty($specials_caid_arr)) {
            p.products_small_sum, 
            p.products_tax_class_id, 
            p.products_image, 
+           p.products_date_added,
            p.products_bflag, 
            pd.products_status, 
-           p.products_date_added,
            pd.site_id
-    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where 
+    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+    , ".TABLE_PRODUCTS_TO_CATEGORIES." p2c 
+    where 
       (p.products_price_offset != 0 and not isnull(p.products_price_offset) or p.products_small_sum != '') 
       and p.products_id not in".tep_not_in_disabled_products()." 
       and p.products_id = pd.products_id 
@@ -65,11 +66,11 @@ if (empty($specials_caid_arr)) {
   where site_id = '0'
      or site_id = '".SITE_ID."'
   group by products_id
-  having p.products_status != '0' and p.products_status != '3'
+  having p.products_status != '0' and p.products_status != '3' 
   order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
-   
+  
   $specials_query = tep_db_query($specials_query_raw);
   
   if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
