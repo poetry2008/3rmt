@@ -1684,6 +1684,9 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('general','includes');?>
 </script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
+<script type="text/javascript" >
+var current_udlr = 1;
+</script>
 <script language="javascript" src="includes/javascript/udlr.js"></script>
 <script type="text/javascript" >
 <?php tep_get_javascript('c_admin','includes|set');?>
@@ -1713,6 +1716,19 @@ $belong = str_replace('0_','',$belong);
 ?>
 <?php //本页最大z-index?>
   var z_index = '<?php echo $z_index;?>';
+var c_submit_single = true;
+<?php //移除焦点?>
+function remove_event_focus()
+{
+  if ($('#show_popup_info').css('display') == 'block') {
+    c_submit_single = false;
+  } 
+}
+<?php //恢复焦点?>
+function recover_event_focus()
+{
+  c_submit_single = true;
+}
 <?php //隐藏或显示推荐商品的关联选项?>
 function cattags_show(num){
 
@@ -2560,14 +2576,16 @@ $(document).ready(function() {
         } else if (tmp_click_str.indexOf('set_new_price') >= 0) {
           tmp_click_symbol = '1'; 
         }
-        if (tmp_click_symbol == '1') {
-          $("#show_popup_info").find('input:button').first().trigger("click"); 
-        }else{
-          if(ele_tags_obj != ''){
-             $("#show_popup_info").find('input:button').first().trigger("click"); 
-          } 
-          if ($("#button_save_product")) {
-            $("#button_save_product").trigger("click");
+        if (c_submit_single) {
+          if (tmp_click_symbol == '1') {
+            $("#show_popup_info").find('input:button').first().trigger("click"); 
+          }else{
+            if(ele_tags_obj != ''){
+               $("#show_popup_info").find('input:button').first().trigger("click"); 
+            } 
+            if ($("#button_save_product")) {
+              $("#button_save_product").trigger("click");
+            }
           }
         }
       } 
@@ -5568,7 +5586,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_price_params, 'text'=>$products_price_text);
                 $products_set_price_params .= 'class="dataTableContent" align="center"';
                 if (empty($site_id)) {
-                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="price_error_'.  $products_count.'"></span>';
+                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="price_error_'.  $products_count.'"></span>';
                 } else {
                   $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
                 }
