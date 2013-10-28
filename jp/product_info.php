@@ -371,51 +371,6 @@ function showimage($1) {
                         <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
                       </tr>
                       <?php } ?>
-<?php 
-if (false) {
-$tag_query = tep_db_query("
-    SELECT t.tags_id, 
-           t.tags_images, 
-           t.tags_name 
-    FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
-    WHERE t.tags_id = pt.tags_id 
-      AND pt.products_id='" . $product_info['products_id'] . "'
-");
-if(tep_db_num_rows($tag_query)){
-?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo TEXT_PRODUCT_TAGS;?></font></td>
-                      <td>
-                      <?php
-while($tag = tep_db_fetch_array($tag_query)) {
-  ?>
- <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
-<?php if (
-    (
-    (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
-    || 
-    (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
-    )
-    && $tag['tags_images']
-    )
- {
-   echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
- } else { 
-   echo $tag['tags_name'];
-  }
-  ?>
-</a>
- &nbsp;&nbsp;
- <?php
-}
-?>
-
-                      </td>
-                      </tr>
-                      <?php 
-}
-}
-?>
                     </table></td>
                 </tr>
                 
