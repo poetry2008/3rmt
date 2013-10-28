@@ -1684,9 +1684,6 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('general','includes');?>
 </script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
-<script type="text/javascript" >
-var current_udlr = 1;
-</script>
 <script language="javascript" src="includes/javascript/udlr.js"></script>
 <script type="text/javascript" >
 <?php tep_get_javascript('c_admin','includes|set');?>
@@ -4613,7 +4610,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td>
                 <?php 
                 echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
-              echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; 
+                echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'', 'onkeyup="remove_event_focus();" onblur="recover_event_focus();"') . "\n"; 
               ?>
                 <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
                 </td>

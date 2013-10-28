@@ -26,10 +26,13 @@ $.fn.extend({
     $(this).bind('focus',function(event){
         $(this).select();
     });
+   // $(this).each(function(){
         $(this).bind('keydown',function(e){
-		    e = (e) ? e : ((window.event) ? window.event : "") //fetch keyBoardEvent object
-		    var key = e.keyCode?e.keyCode:e.which; //fetch keyBoardEvent object value
+		    e = (e) ? e : ((window.event) ? window.event : "") //兼容IE和Firefox获得keyBoardEvent对象
+		    var key = e.keyCode?e.keyCode:e.which; //兼容IE和Firefox获得keyBoardEvent对象的键值
+            //
             var  pos = $(this).attr('pos');
+            //
             var  posx = getPos(pos,'x');
             var  posy = getPos(pos,'y');
             switch(key) {
@@ -70,10 +73,6 @@ $.fn.extend({
                 }
                 break;
             case 13:
-                if (typeof current_udlr === 'undefined') {
-                } else {
-                  break; 
-                }
             case 40:
                 //down
                 i = 1;
@@ -95,6 +94,7 @@ $.fn.extend({
                 
             }
         });
+  //  });
 	//  function udlr
 }
 
