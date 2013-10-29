@@ -408,15 +408,6 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
           </td>
         </tr>
         <?php
-        if (false) { 
-        ?>
-        <tr>
-          <td><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
-          <td>
-          </td>
-        </tr>
-        <?php }?> 
-        <?php
         if($products_weight_error == true){
         ?>
         <tr><td colspan="2" align="center"><?php echo '<span class="red">' . TEXT_WEIGHT_ERROR . $products_num . TEXT_WEIGHT_ERROR_ONE .'</span>';?></td></tr>
