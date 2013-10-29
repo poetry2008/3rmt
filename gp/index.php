@@ -164,7 +164,7 @@ if ($category_depth == 'nested') {
     $_categories = tep_get_category_by_id($categories_path[0], SITE_ID, $languages_id);
     echo $_categories['categories_name'];
   } else {
-    echo 'RMT：ゲーム通貨・アイテム・アカウント';
+    echo TEXT_GAME_MONEY_ITEM_ACCOUNT;
   }
  
 ?></h2>
