@@ -934,10 +934,14 @@ function tep_tags_link()
     参数: $param(string) 其它参数   
     返回值: 预约商品的url(string) 
 ------------------------------------ */
-function tep_preorder_href_link($pid, $romaji, $param = null)
+function tep_preorder_href_link($pid, $romaji, $param = null,$request_type='NOSSL')
 {
   global $request_type;
+  if ($request_type == 'NOSSL') {
   $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+}else{
+  $returnstr = HTTPS_SERVER . DIR_WS_CATALOG;
+}
   $param_str = '';  
   if ($param) {
     $param_str = '?'.$param; 
