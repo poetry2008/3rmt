@@ -603,17 +603,12 @@ $(document).ready(function(){
   <tr>
     <td class="main">
         <?php
-        if ($style_display == 'block') {
           echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'address');
           $address_orders_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
           $address_orders_history_num = tep_db_num_rows($address_orders_history_query);
           tep_db_free_result($address_orders_history_query);
           $sylte_none = $address_orders_history_num > 0 ? '' : 'style="display:none;"';
         ?>
-        <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%" class="table_select">
-        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="15%"><?php echo
-        TITLE_ADDRESS_OPTION;?></td><td class="main"><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
-        <input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
         <input type="hidden" id="email" name="email_address" value="">
@@ -623,6 +618,11 @@ $(document).ready(function(){
         <input type="hidden" id="pwd_1" name="confirmation" value="">
         <input type="hidden" id="action_flag" name="action_flag" value="0"> 
         <input type="hidden" name="num_rows" value="<?php echo $address_orders_num_rows;?>">
+        <?php if ($style_display == 'block') { ?>
+        <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%" class="table_select">
+        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="15%"><?php echo
+        TITLE_ADDRESS_OPTION;?></td><td class="main"><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
+        <input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         </td></tr>
         <?php       
           $hm_option->render('','',true); 
