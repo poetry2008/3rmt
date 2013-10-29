@@ -600,9 +600,10 @@ $(document).ready(function(){
   <tr  style="display:<?php echo $style_display;?>">
     <td><h3><?php echo TITLE_ADDRESS; ?></h3></td>
   </tr>
-  <tr style="display:<?php echo $style_display;?>">
+  <tr>
     <td class="main">
         <?php
+        if ($style_display == 'block') {
           echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'address');
           $address_orders_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
           $address_orders_history_num = tep_db_num_rows($address_orders_history_query);
@@ -627,7 +628,9 @@ $(document).ready(function(){
           $hm_option->render('','',true); 
         ?> 
           <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('<?php echo NOTICE_DELETE_CONFIRM_TEXT;?>')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img onmouseover="this.src='includes/languages/japanese/images/buttons/button_delete02_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/button_delete02.gif'" src="includes/languages/japanese/images/buttons/button_delete02.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img onmouseover="this.src='images/design/button/create_hover.gif'" onmouseout="this.src='images/design/button/create.gif'"src="images/design/button/create.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img onmouseover="this.src='images/design/button/save_hover.gif'" onmouseout="this.src='images/design/button/save.gif'" alt ="save" src="images/design/button/save.gif"></a></form></td></tr>
-        </table></form>
+        </table>
+       <?php }?> 
+      </form>
     </td>
  </tr>
 <!-- end -->
