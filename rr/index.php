@@ -182,7 +182,7 @@ if ($category_depth == 'nested') {
     $_categories = tep_get_category_by_id($categories_path[0], SITE_ID, $languages_id);
     echo $_categories['categories_name'];
   } else {
-    echo TEXT_GAME_MONEY_ITEM_ACCOUNT;
+    echo MANUFACTURERS_UPPER_TITTLE;
   }
 ?></h2>
     <?php 
@@ -216,7 +216,7 @@ if ($category_depth == 'nested') {
   <?php
     if (isset($cPath_array)) {
       if ($seo_category['seo_description']) {
-        echo '<h2 class="pageHeading">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</h2>'; 
+        echo '<h2 class="pageHeading">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).TEXT_ABOUT.'</h2>'; 
         echo '<div class="comment"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</font></p></div></div></div>'; 
         }
         if (!empty($seo_category['text_information'])) {
@@ -297,8 +297,8 @@ $update_url = tep_get_popup_url();
 ?>
 </div>
 <div align="center" class="popup_notice_button">
-<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="変更しません" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
-<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="変更します" src="images/design/change.gif"></a>
+<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="<?php echo TEXT_INDEX_PWD_NOCHANGE;?>" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="<?php echo TEXT_INDEX_PWD_CHANGED;?>" src="images/design/change.gif"></a>
 </div>
 </div>
 <?php
