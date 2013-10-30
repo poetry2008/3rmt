@@ -643,23 +643,6 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
                   <?php
       }
 ?>
-                <?php
-                  if ($bflag_cnt == 'View' && false) {
-                    $con_show_fee = calc_buy_handle($order->info['total']); 
-                    if ($con_show_fee != 0) { 
-                ?>
-                    <tr> 
-                      <td colspan="3"><?php echo CONFIRMATION_BUYING_TEXT_TITLE; ?></td> </tr> 
-                    <tr> 
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                      <td><?php echo CONFIRMATION_BUYING_TEXT_FEE.$currencies->format($con_show_fee); ?></td> 
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                      <td>&nbsp;</td> 
-                    </tr> 
-                <?php
-                    }
-                  }
-                ?>
              <?php
     }
   }
