@@ -7489,8 +7489,8 @@ resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_e
         array('text' => $present_input)
     ); 
           $present_y = '<select name="start_y" '.($disabled?$disabled:'').'>';
-          for($y=0;$y<=5;$y++){
-            $nen = $yyyy + $y;
+          for($y=2007;$y<=$yyyy+5;$y++){
+            $nen = $y;
             if($sele_sty == $nen){
               $present_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
             }else{ $present_y .= "<option value=\"$nen\">$nen</option>"."\n"; }
@@ -7531,8 +7531,8 @@ resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_e
               $present_d .= DAY_TEXT.'<br>';
               $present_l_y = KEYWORDS_SEARCH_END_TEXT;
               $present_l_y .= '<select name="limit_y" '.($disabled?$disabled:'').'>';
-          for($y=0;$y<=5;$y++){
-            $nen = $yyyy + $y;
+          for($y=2007;$y<=$yyyy+5;$y++){
+            $nen = $y;
             if($sele_liy == $nen){
               $present_l_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
             }else{
