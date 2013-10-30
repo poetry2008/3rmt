@@ -190,15 +190,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
       $all_show_option[$order->products[$i]['op_attributes'][$j]['item_id']] 
       = $order->products[$i]['op_attributes'][$j];
-      /*
-      $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
-       
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
-      if ($op_price != '0') {
-        echo ' ('.$currencies->format($op_price).')'; 
-      }
-      echo '</i></small>';
-      */
     }
   }
   
@@ -206,14 +197,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
    for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
       $all_show_option[$order->products[$i]['ck_attributes'][$jk]['item_id']] 
       = $order->products[$i]['ck_attributes'][$jk];
-      /*
-      $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
-      if ($cop_price != '0') {
-        echo ' ('.$currencies->format($cop_price).')'; 
-      }
-      echo '</i></small>';
-      */
     }
   }
   // new option list 
@@ -285,8 +268,6 @@ if(!empty($_SESSION['options'])){
  */
 
 
-//$address = tep_db_prepare_input($_POST['address']);
-//$country = tep_db_prepare_input($_POST['country']);
   $country_fee_array = array();
   $country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
