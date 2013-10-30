@@ -791,9 +791,9 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 </td></tr>
 <tr id="date_show_id" style="display:none;">
 <td colspan="2" id="shipping_box">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="information_table">
   <tr id="shipping_list" style="display:none;">
-  <td class="main" width="30%" bgcolor="#eeeeee"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td width="30%" bgcolor="#eeeeee"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
   <td class="main" id="shipping_list_show"></td>
   </tr>
 </table>
