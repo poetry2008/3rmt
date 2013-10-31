@@ -40,9 +40,8 @@
 <noscript>
 <?php tep_output_warning(TEXT_JAVASCRIPT_ERROR);?> 
 </noscript>
-<div id="header">
-  <div id="title">
-  <?php
+<div id="header"> <div id="title">
+<?php
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
@@ -51,9 +50,9 @@
     echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_PRODUCT_TITLE.'</a>' . "\n";
   } else {
     echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
-  }  
+  } 
 ?>
-  </div>
+</div>
   <div id="header_Menu">
       <div class="header_menu_content">
         <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
@@ -62,13 +61,11 @@
                 <?php 
 //this is nossl forever $request_type replace to NONSSL
 echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '','NONSSL', false), 'get')."\n"; 
-
-
 ?>
-                <table cellpadding="0" cellspacing="0" summary="search">
-                  <tr>
-                    <td><img src="images/design/button/search_text.gif" width="85" height="28" alt="<?php echo TEXT_HEADER_SEARCH_IMAGE_ALT;?>"></td>
-                    <td>
+          <table cellpadding="0" cellspacing="0" summary="search">
+            <tr>
+              <td><img src="images/design/button/search_text.gif" width="85" height="28" alt="<?php echo TEXT_HEADER_SEARCH_IMAGE_ALT;?>"></td>
+              <td>
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
   $cat1 = '';
@@ -146,19 +143,18 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
     </div>
   </div>
   <div class="header_Navigation">
-          <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
-          &nbsp;&nbsp;
-          <?php 
-          if ($_SERVER['PHP_SELF'] == '/change_preorder_confirm.php') {
-            echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
-            echo ' &raquo; ';
-            echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
-            echo ' &raquo; ';
-            echo NAVBAR_CHANGE_PREORDER_TITLE; 
-          } else {
-            echo $breadcrumb->trail(' &raquo; '); 
-          }
-          ?>
+    <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a> &nbsp;&nbsp;
+    <?php 
+      if ($_SERVER['PHP_SELF'] == '/change_preorder_confirm.php') {
+        echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
+        echo ' &raquo; ';
+        echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
+        echo ' &raquo; ';
+        echo NAVBAR_CHANGE_PREORDER_TITLE; 
+      } else {
+        echo $breadcrumb->trail(' &raquo; '); 
+      }
+    ?>
 </div>
 <?php
   if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {

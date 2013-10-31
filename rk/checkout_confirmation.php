@@ -17,10 +17,11 @@ $(document).ready(function(){
 unset($_SESSION['shipping_session_flag']);
 }
 ?>
-<body><div align="center"> 
-  <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof --> 
-  <!-- body --> 
+<body>
+<div align="center"> 
+<?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
+<!-- header_eof --> 
+<!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
@@ -161,10 +162,10 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
      
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
-    echo '          <tr>' . "\n" .
-         '            <td class="confirmation_product_num_info" align="right" valign="top">' .  $order->products[$i]['qty'] . '&nbsp;'.NUM_UNIT_TEXT . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+  echo '          <tr>' . "\n" .
+         '            <td class="confirmation_product_num_info" align="right" valign="top">' .  $order->products[$i]['qty'] . '&nbsp;'.NUM_UNIT_TEXT .  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
-    
+
   if ($order->products[$i]['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';
   } else {
@@ -248,23 +249,23 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
          '          </tr>' . "\n";
   }
 ?> 
-                        </table></td> 
-                    </tr> 
-                  </table></td> 
-              </tr> 
-            </table></td> 
-        </tr> 
-        <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
+</table></td> 
+</tr> 
+</table></td> 
+</tr> 
+</table></td> 
+</tr> 
+<tr> 
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
 <?php
 if(!empty($_SESSION['options'])){
-?>  
-          <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
-                <tr> 
-                  <td>
-<table width="100%">
+?>
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+  <tr> 
+  <td>
+  <table width="100%">
   <tr>
   <td class="main" colspan="2"><b><?php echo TEXT_OPTIONS_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
@@ -275,8 +276,8 @@ if(!empty($_SESSION['options'])){
 <?php
   foreach($_SESSION['options'] as $key=>$value){
 ?>
+  <tr>
 
-<tr>
   <td class="main" width="150" valign="top"><?php echo $value[0]; ?>:</td>
   <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
@@ -411,7 +412,8 @@ $_SESSION['weight_fee'] = $weight_fee;
 $_SESSION['free_value'] = $free_value;
 $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fee;
 ?>
-   </table>
+
+  </table>
 </td>
 </tr>
 </table></td>
@@ -431,45 +433,47 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
         <tr>
   <td class="main" colspan="3"><b><?php echo TEXT_TRADE_DATE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
-      <tr>
-      <td class="main" width="150"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
-        <td class="main">
-        <?php 
-          echo str_string($date); 
-          $date_info_array = explode('-', $date); 
-          $tmp_date = date('D', mktime(0, 0, 0, $date_info_array[1], $date_info_array[2], $date_info_array[0]));  
-          switch(strtolower($tmp_date)) {
-             case 'mon':
-               echo '（'.TEXT_DATE_MONDAY.'）'; 
-               break;
-             case 'tue':
-               echo '（'.TEXT_DATE_TUESDAY.'）'; 
-               break;
-             case 'wed':
-               echo '（'.TEXT_DATE_WEDNESDAY.'）'; 
-               break;
-             case 'thu':
-               echo '（'.TEXT_DATE_THURSDAY.'）'; 
-               break;
-             case 'fri':
-               echo '（'.TEXT_DATE_FRIDAY.'）'; 
-               break;
-             case 'sat':
-               echo '（'.TEXT_DATE_STATURDAY.'）'; 
-               break;
-             case 'sun':
-               echo '（'.TEXT_DATE_SUNDAY.'）'; 
-               break;
-             default:
-               break;
-          }
-        ?>
-        </td>
-      </tr>
-      <tr>
-      <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
-        <td class="main">
-      <?php echo $start_hour; ?>
+  <tr>
+
+  <td class="main" width="150"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
+  <td class="main">
+  <?php 
+  echo str_string($date); 
+  $date_info_array = explode('-', $date); 
+  $tmp_date = date('D', mktime(0, 0, 0, $date_info_array[1], $date_info_array[2], $date_info_array[0]));  
+  switch(strtolower($tmp_date)) {
+     case 'mon':
+       echo '（'.TEXT_DATE_MONDAY.'）'; 
+       break;
+     case 'tue':
+       echo '（'.TEXT_DATE_TUESDAY.'）'; 
+       break;
+     case 'wed':
+       echo '（'.TEXT_DATE_WEDNESDAY.'）'; 
+       break;
+     case 'thu':
+       echo '（'.TEXT_DATE_THURSDAY.'）'; 
+       break;
+     case 'fri':
+       echo '（'.TEXT_DATE_FRIDAY.'）'; 
+       break;
+     case 'sat':
+       echo '（'.TEXT_DATE_STATURDAY.'）'; 
+       break;
+     case 'sun':
+       echo '（'.TEXT_DATE_SUNDAY.'）'; 
+       break;
+     default:
+       break;
+  }
+  ?>
+  </td>
+  </tr>
+  <tr>
+  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td class="main">
+
+  <?php echo $start_hour; ?>
 <?php echo TIME_HOUR_TEXT;?>
 <?php echo $start_min; ?>
 <?php echo TIME_MIN_TEXT;?>
@@ -478,18 +482,18 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
 <?php echo TIME_HOUR_TEXT;?>
 <?php echo $end_min; ?>
 <?php echo TIME_MIN_TEXT;?>
-    </td>
-  </tr>
+</td>
+</tr>
 </table>
-          
-          </td> 
-                </tr> 
-              </table></td> 
-          </tr> 
-          <tr> 
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-          </tr> 
-    
+
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+
 <?php
 
 $pay_info_array = $payment_modules->specialOutput($payment);
@@ -559,8 +563,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 <?php
 }
 ?>
-    
-        <tr> 
+<tr> 
           <td  style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">
             <b><?php echo HEADING_BILLING_INFORMATION; ?></b>
           </td> 
@@ -602,38 +605,38 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
     echo $order_total_modules->output();
 }
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-// 计算各个不同顾客的返点率从这开始============================================================
-if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-  //规定期间内，计算订单合计金额------------
-  $ptoday = date("Y-m-d H:i:s", time());
-  $pstday_array = getdate();
-  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
-  
-  $total_buyed_date = 0;
-  
-  $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
-  if(tep_db_num_rows($customer_level_total_query)) {
-    while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
-      $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
-    $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
-  
-      $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
-    $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
-     
-    $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+  // 计算各个不同顾客的返点率从这开始============================================================
+
+  if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+    //规定期间内，计算订单合计金额------------
+    $ptoday = date("Y-m-d H:i:s", time());
+    $pstday_array = getdate();
+    $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+
+    $total_buyed_date = 0;
+    
+    $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
+    if(tep_db_num_rows($customer_level_total_query)) {
+      while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+        $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+        $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+
+        $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+        $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+
+        $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+      }
     }
-  }
-  //----------------------------------------------
-  
-  //计算返点率----------------------------------
-  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
-    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-  $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-  for($j=0; $j<sizeof($back_rate_array); $j++) {
-    $back_rate_array2 = explode(",", $back_rate_array[$j]);
-    if($back_rate_array2[2] <= $total_buyed_date) {
-      $back_rate = $back_rate_array2[1];
-    $back_rate_name = $back_rate_array2[0];
+    //----------------------------------------------
+    //计算返点率----------------------------------
+    if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+      $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+      $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+      for($j=0; $j<sizeof($back_rate_array); $j++) {
+        $back_rate_array2 = explode(",", $back_rate_array[$j]);
+        if($back_rate_array2[2] <= $total_buyed_date) {
+          $back_rate = $back_rate_array2[1];
+          $back_rate_name = $back_rate_array2[0];
     }
   }
   } else {
@@ -663,13 +666,13 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
       $get_point = abs($order->info['subtotal']) * $point_rate;
     }
   }
-if ($guestchk == '1') {
+  if ($guestchk == '1') {
     $get_point = 0;
-}
-tep_session_register('get_point');
+  }
+  tep_session_register('get_point');
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
-echo '<tr>' . "\n";
-if (!tep_only_buy_product()) {
+  echo '<tr>' . "\n";
+  if (!tep_only_buy_product()) {
   echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
 } else {
   if ($get_point == 0) {
@@ -683,26 +686,26 @@ echo '</tr>' . "\n";
 }
 }
 ?> 
-                </table></td> 
-            </tr> 
-          </table></td> 
-      </tr> 
-      <?php
+</table></td> 
+</tr> 
+</table></td> 
+</tr> 
+<?php
 if (is_array($payment_modules->modules)) {
   if ($confirmation = $payment_modules->confirmation($payment)) {
-?> 
+    ?> 
       <tr> 
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
-        <td style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
-        </tr> 
-        <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
-        <tr> 
-          <td>
-            <table class="formArea" width="100%"> 
+      <td style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
+      </tr> 
+      <tr> 
+      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+      </tr> 
+      <tr> 
+      <td>
+      <table class="formArea" width="100%"> 
               <tr> 
                 <td>
                   <table border="0" cellspacing="0" cellpadding="2"> 
@@ -712,16 +715,16 @@ if (is_array($payment_modules->modules)) {
                     <?php
                     if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
-?> 
-                    <tr> 
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                      <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                      <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
-                    </tr> 
-                    <?php
+        ?> 
+          <tr> 
+          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
+          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
+          </tr> 
+          <?php
       }
-?> 
+    ?> 
 
                 <?php
                   if ($bflag_cnt == 'View' && false) {
@@ -775,9 +778,9 @@ if (is_array($payment_modules->modules)) {
         <?php
   }
 ?> 
-        <tr> 
-          <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
-          <tr><td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
+<tr> 
+<td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
+<tr><td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
                 <td align="right" class="main"> <?php
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
@@ -786,13 +789,13 @@ if (is_array($payment_modules->modules)) {
   echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
   echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "</a>\n";
 ?> </td> 
-              </tr> 
-            </table></td> 
-        </tr> 
-        <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr>  
-        </table>
+</tr> 
+</table></td> 
+</tr> 
+<tr> 
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+</table>
         </form> 
         </div>
         <p class="pageBottom"></p>
@@ -812,7 +815,7 @@ if (is_array($payment_modules->modules)) {
 <!-- visites --> 
 <object>
 <noscript>
-<img src="visites.php" alt="Statistics" style="border:0">
+<img src="visites.php" alt="Statistics" style="border:0" />
 </noscript>
 </object>
 <!-- visites -->

@@ -115,7 +115,7 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h3 class="pageHeading"><span> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</span></h3>' . "\n";
-      echo '<div class="comment"><div class="reviews_area"><p>' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p></div></div>' . "\n"; //seo句子
+      echo '<div class="comment"><div class="reviews_area"><p>' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) .  '</p></div></div>' . "\n"; //seo phrase
 ?>
         <p class="pageBottom"></p>
 <?php
