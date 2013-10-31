@@ -126,7 +126,7 @@
 <!-- new_products -->
 <?php 
 if (0 < $num_products) {
-  ?>
+?>
 <h3 class="pageHeading"><?php echo $new_c_name; ?>の新着商品</h3>
 <div class="comment">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">

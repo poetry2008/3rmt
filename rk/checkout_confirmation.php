@@ -114,19 +114,19 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
               <tr> 
                 <?php
   if ($sendto != false) {
-?> 
-                <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                    <tr> 
-                      <td class="main"><?php echo '<b>' . HEADING_DELIVERY_ADDRESS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
-                    </tr> 
-                    <tr> 
-                      <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td> 
-                    </tr> 
-                    <?php
+    ?> 
+    <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+    <tr> 
+    <td class="main"><?php echo '<b>' . HEADING_DELIVERY_ADDRESS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+    </tr> 
+    <tr> 
+    <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td> 
+    </tr> 
+    <?php
     if ($order->info['shipping_method']) {
-?> 
-                    <tr> 
-                      <td class="main"><?php echo '<b>' . HEADING_SHIPPING_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+      ?> 
+      <tr> 
+        <td class="main"><?php echo '<b>' . HEADING_SHIPPING_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                     </tr> 
                     <tr> 
                       <td class="main"><?php echo $order->info['shipping_method']; ?></td> 
@@ -134,25 +134,26 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
                     <?php
     }
 ?> 
-                  </table></td> 
-                <?php
+    </table></td> 
+    <?php
   }
 ?> 
-                <td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="1" cellpadding="2"> 
+<td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top">
+  <table border="0" width="100%" cellspacing="1" cellpadding="2"> 
                    
                           <?php
   if (sizeof($order->info['tax_groups']) > 1) {
-?> 
-                          <tr> 
-                            <td class="main" colspan="2"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
-                            <td class="smallText" align="right"><b><?php echo HEADING_TAX; ?></b></td> 
-                            <td class="smallText" align="right"><b><?php echo HEADING_TOTAL; ?></b></td> 
-                          </tr> 
-                          <?php
+    ?> 
+    <tr> 
+    <td class="main" colspan="2"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+    <td class="smallText" align="right"><b><?php echo HEADING_TAX; ?></b></td> 
+    <td class="smallText" align="right"><b><?php echo HEADING_TOTAL; ?></b></td> 
+    </tr> 
+    <?php
   } else {
-?> 
-                          <tr> 
-                            <td class="main"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+    ?> 
+    <tr> 
+      <td class="main"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                           </tr>
                 <tr><td><table width="100%"> 
                           <?php

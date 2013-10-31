@@ -100,7 +100,7 @@
         </tr>
       </table>
       </div>
-      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></p>
+      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase ?></p>
             <p class="pageBottom"></p>
       <?php 
   $new_products_category_id = $current_category_id;
@@ -117,7 +117,7 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h3 class="pageHeading">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3>' . "\n";
-      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo句子
+      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo phrase
 ?>
         <p class="pageBottom"></p>
 <?php
