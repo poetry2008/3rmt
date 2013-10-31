@@ -409,52 +409,6 @@ if (!$product_info) { // product not found in database
                 sprintf(TEXT_PRODUCT_INFO_POINT_INFO,ds_tep_get_point_value($_GET['products_id'])) ; ?></td>
                 </tr>
                 <?php } ?>
-                <?php
-                if (false) {
-                  $tag_query = tep_db_query("
-                      SELECT t.tags_id, 
-                      t.tags_images, 
-                      t.tags_name 
-                      FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
-                      WHERE t.tags_id = pt.tags_id 
-                      AND pt.products_id='" . $product_info['products_id'] . "'
-                      ");
-                  if (tep_db_num_rows($tag_query)) { 
-                    ?>
-                      <tr> 
-                      <td><b><?php echo TEXT_PRODUCT_INFO_TAG;?></b></td> 
-                      <td>
-                      <ul class="show_tags01"> 
-                      <?php
-                      while($tag = tep_db_fetch_array($tag_query)) {
-                        ?>
-                          <li><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
-                          <?php if (
-                              (
-                               (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
-                               || 
-                               (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
-                              )
-                              && $tag['tags_images']
-                              )
-                          {
-                            echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
-                          } else { 
-                            echo $tag['tags_name'];
-                          }
-                        ?>
-                          </a></li>
-                          &nbsp;&nbsp;
-                        <?php
-                      }
-                    ?>
-                      </ul> 
-                      </td> 
-                      </tr> 
-                      <?php
-                  }
-                }
-  ?>
     </table> 
     <hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none; margin:20px 0 25px 0;">
     <div id="option-detail">  <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')); ?>

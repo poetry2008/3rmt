@@ -249,7 +249,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       $relate_update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_SESSION['user_name']."' where products_id='".$relate_products_id."' and site_id='".$site_id."'";
       tep_db_query($relate_update_sql);
     }
-    tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] .  '&pID=' .  $products_id.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
+    tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] .  '&pID=' .  $products_id.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?'&search='.$_GET['search']:'')));
     break;
     // 保存动作结束
     case 'get_products':
@@ -1684,9 +1684,6 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('general','includes');?>
 </script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
-<script type="text/javascript" >
-var current_udlr = 1;
-</script>
 <script language="javascript" src="includes/javascript/udlr.js"></script>
 <script type="text/javascript" >
 <?php tep_get_javascript('c_admin','includes|set');?>
@@ -4613,7 +4610,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td>
                 <?php 
                 echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
-              echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; 
+                echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'', 'onkeyup="remove_event_focus();" onblur="recover_event_focus();"') . "\n"; 
               ?>
                 <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
                 </td>

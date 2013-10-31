@@ -3351,7 +3351,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
 
   }
   $contents[]['text'] = array( 
-      array('text' => ENTRY_SITE.'<input type="hidden" name="action_type" value="'.$action_type.'">'),
+      array('text' => ENTRY_SITE.':<input type="hidden" name="action_type" value="'.$action_type.'">'),
       array('text' => $site_id_name.'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
   );
   if(isset($_GET['review_products_id_info']) && $_GET['review_products_id_info']){
@@ -3362,7 +3362,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $review_products_id_info = 0;
   }
   $contents[]['text'] = array(
-        array('text' => substr(TEXT_CATEGORY_SELECT, 0, -1)),
+        array('text' => TEXT_CATEGORY_SELECT),
         array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" class="td_select" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
     );
    $result = tep_db_query(" SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' and cd.site_id = '0' and pd.site_id = '0' ORDER BY categories_name");
@@ -3416,7 +3416,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $error_add_id = '<br><span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
     }
     $contents[]['text'] = array(
-        array('text' => substr(ENTRY_PRODUCT, 0, -1)),
+        array('text' => ENTRY_PRODUCT),
         array('text' => $review_select.$ProductOptions.$review_select_end.$error_add_id),
         array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$df_pid.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_id.'">'.'<input type="hidden" id="r_pid" value="'.$df_pid.'">')
     );
@@ -3507,11 +3507,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $date_posted .= '</select>';
 
   $contents[]['text'] = array(
-        array('text' => substr(ENTRY_DATE, 0, -1)),
+        array('text' => ENTRY_DATE),
         array('text' => $date_posted)
     );
   $contents[]['text'] = array(
-        array('text' => substr(ENTRY_FROM, 0, -1)),
+        array('text' => ENTRY_FROM),
         array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'"'.$str_disabled.' />')
     );
     $review_radio = '';
@@ -3529,11 +3529,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
      }
     }
     $contents[]['text'] = array(
-        array('text' => substr(ENTRY_RATING, 0, -1)),
+        array('text' => ENTRY_RATING),
         array('text' =>  TEXT_BAD.$review_radio.TEXT_GOOD)
     );
     $contents[]['text'] = array(
-        array('text' => substr(TEXT_INFO_REVIEW_READ, 0, -1)),
+        array('text' => TEXT_INFO_REVIEW_READ),
         array('text' =>  $rInfo->reviews_read)
     );
     if($rInfo->reviews_text_size == null){
@@ -3542,11 +3542,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         $reviews_average_query = tep_db_query(" select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $reviews['products_id'] . "' ");
         $reviews_average_row = tep_db_fetch_array($reviews_average_query);
     $contents[]['text'] = array(
-        array('text' => substr(TEXT_INFO_REVIEW_SIZE, 0, -1)),
+        array('text' => TEXT_INFO_REVIEW_SIZE),
         array('text' =>  $reviews_text_row['reviews_text_size'] . ' bytes')
     );
     $contents[]['text'] = array(
-        array('text' => substr(TEXT_INFO_PRODUCTS_AVERAGE_RATING, 0, -1)),
+        array('text' => TEXT_INFO_PRODUCTS_AVERAGE_RATING),
         array('text' =>  number_format($reviews_average_row['average_rating'], 2) . '%')
     );
     }
@@ -3564,11 +3564,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $str_rstatus .= '<input type="hidden" value="0" id="r_status">';
   }
   $contents[]['text'] = array(
-    array('text' => substr(TEXT_PRODUCTS_STATUS, 0, -1)),
+    array('text' => TEXT_PRODUCTS_STATUS),
     array('text' => $str_rstatus)
   );
   $contents[]['text'] = array(
-      array('text' => substr(ENTRY_REVIEW, 0, -1)),
+      array('text' => ENTRY_REVIEW),
       array('text' => tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'style="resize: vertical;" id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'.$str_disabled))
   );
 
@@ -3582,12 +3582,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     array('params' => 'class="smallText"','text' => ENTRY_REVIEW_TEXT)
   );
  $contents[]['text'] = array(
-   array('align' => 'left', 'params' => 'width="50%"', 'text' => substr(TEXT_USER_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
-   array('align' => 'left', 'params' => 'width="50%"', 'text' => substr(TEXT_DATE_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
+   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
+   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
   );
   $contents[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="50%"', 'text' => substr(TEXT_USER_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
-    array('align' => 'left', 'params' => 'width="50%"', 'text' => substr(TEXT_DATE_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
+    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
+    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
   );
 
 
@@ -7489,8 +7489,9 @@ resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_e
         array('text' => $present_input)
     ); 
           $present_y = '<select name="start_y" '.($disabled?$disabled:'').'>';
-          for($y=0;$y<=5;$y++){
-            $nen = $yyyy + $y;
+          $start_year = $sele_sty < $yyyy ? 2007 : $yyyy;
+          for($y=$start_year;$y<=$yyyy+5;$y++){
+            $nen = $y;
             if($sele_sty == $nen){
               $present_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
             }else{ $present_y .= "<option value=\"$nen\">$nen</option>"."\n"; }
@@ -7531,8 +7532,9 @@ resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_e
               $present_d .= DAY_TEXT.'<br>';
               $present_l_y = KEYWORDS_SEARCH_END_TEXT;
               $present_l_y .= '<select name="limit_y" '.($disabled?$disabled:'').'>';
-          for($y=0;$y<=5;$y++){
-            $nen = $yyyy + $y;
+          $start_year = $sele_sty < $yyyy ? 2007 : $yyyy;
+          for($y=$start_year;$y<=$yyyy+5;$y++){
+            $nen = $y;
             if($sele_liy == $nen){
               $present_l_y .= "<option value=\"$nen\" selected>$nen</option>"."\n";
             }else{

@@ -358,7 +358,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         echo TEXT_PREORDER_BOOK_INFO_END;
         ?>
       </p>
-      <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($product_info['products_id'], $product_info['romaji'])) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('action', 'process'); ?>
+      <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($product_info['products_id'], $product_info['romaji'],'','SSL')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('action', 'process'); ?>
 
       <p>
         <?php echo TEXT_PREORDER_BOOK_TEXT;?>

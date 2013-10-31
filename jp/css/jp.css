@@ -3019,3 +3019,233 @@ searching
 	margin:2px 5px 0 5px;
 	*margin:-13px 0 0;
 }
+.content_box{
+	margin:5px 0;
+}
+.content_box ul{
+	padding:0;
+	margin:0;
+	height:51px;
+}
+.content_box li{
+	list-style-type: none;
+	float:left;
+	width:175px;
+}
+.content_box li a{
+	font-size:21px;
+	font-weight:bold;
+	text-decoration: none;
+	display:inline-block;
+	height:51px;
+	text-align:center;
+	line-height:50px;
+	width:175px;
+}
+.content_box .space{
+	margin:0 10px 0 9px;
+}
+.page_content h2{
+	margin-left:3px;
+	font-size:18px;
+	font-weight:bold;
+	color:#3F76A8;
+	padding:10px 0;
+}
+.page_content{
+	margin:0 auto;
+	width:540px;
+}
+.page_img{
+	text-align:center;
+	margin-bottom:48px;
+}
+.page_img h2,.page_middle_img h2{
+		background: url(../images/design/beginner/info_title.gif) no-repeat;
+		height:23px;
+		font-size:12px;
+		font-weight:bold;
+		line-height:23px;
+		text-align:left;
+		padding:0 0 10px 13px;
+		color:#506081;
+		width:540px;
+		margin-left:0;
+}
+.page_middle_img{
+	text-align:center;
+}
+.page_link{
+	text-align:left;
+	background: url(../images/design/beginner/link.gif) no-repeat;
+	height:18px;
+	line-height:18px;
+	padding-left:5px;
+	margin:24px 0 35px 0;
+}
+.page_link_bottom{
+	text-align:left;
+	background: url(../images/design/beginner/link.gif) no-repeat;
+	height:18px;
+	line-height:18px;
+	padding-left:5px;
+}
+.swap_link{
+	text-align:left;
+	background: url(../images/design/beginner/link.gif) no-repeat;
+	height:18px;
+	line-height:18px;
+	padding-left:5px;
+	margin:10px 0 35px 0;
+}
+.page_text{
+	text-align:left;
+	color:#656565;
+	font-weight:bold;
+	clear:both;
+	padding:0 0 10px 5px;
+}
+.detailed{
+	clear:both;
+	padding:0 0 10px 0;
+	width:540px;
+	background: url(../images/design/beginner/page_content.jpg) no-repeat;
+	height:120px;
+	margin-top:10px;
+}
+.detailed li{
+	width:170px;
+	line-height:16px;
+}
+.detailed .li_space{
+	margin:0 15px;
+}
+.detailed li h3{
+	text-align:left;
+	font-weight:bold;
+	margin:6px 0 6px 6px;
+}
+.detailed li span{
+	float:right;
+	width:100px;
+	margin-right:2px;
+	text-align:left;
+}
+.page_img p{
+	margin:24px 0 0 0;
+	overflow:hidden;
+}
+.swap_box_top{
+	clear:both;
+	text-align:center;
+	width:540px;
+	margin:10px 0;
+	background: url(../images/design/beginner/swap_top.jpg) no-repeat;
+	height:103px;
+	
+}
+.swap_box_top span{
+	font-size:14px;
+	font-weight: bolder;
+	line-height:37px;
+	width:400px;
+	float:right;
+	text-align:left;
+	color:#696768;
+	padding:12px 10px 0 0;
+}
+.swap_box_middle{
+	clear:both;
+	width:540px;
+	margin-bottom:10px;
+	background: url(../images/design/beginner/swap_middle.jpg) no-repeat;
+	height:178px;
+	
+}
+.swap_box_middle ul{
+	height:130px;
+	float:right;
+	margin-top:5px;
+}
+.swap_box_middle li{
+	clear:both;
+	text-align:left;
+	width:453px;
+	font-size:14px;
+	font-weight: bolder;
+	margin:10px 0 2px 0;
+	color:#696768;
+	line-height:26px;
+}
+.swap_box_middle span{
+	font-size:12px;
+	font-weight: bolder;
+	line-height:34px;
+	*line-height:15px;
+	width:540px;
+	float:left;
+	text-align:left;
+	color:#696768;
+	padding:10px 0 0 86px;
+}
+.swap_box_bottom{
+	clear:both;
+	width:540px;
+	margin:10px 0;
+	background: url(../images/design/beginner/swap_bottom.jpg) no-repeat;
+	height:144px;
+	
+}
+.swap_box_bottom span{
+	font-size:14px;
+	font-weight: bolder;
+	line-height:40px;
+	width:400px;
+	float:right;
+	text-align:left;
+	color:#696768;
+	padding:10px 10px 0 0;
+}
+.box_bottom_list{
+	clear:both;
+	width:540px;
+	margin-bottom:10px;
+	background: url(../images/design/beginner/sell_banner_bottom.jpg) no-repeat;
+	height:387px;
+	
+}
+.box_bottom_list ul{
+	height:287px;
+	float:right;
+	margin-top:5px;
+}
+.box_bottom_list li{
+	clear:both;
+	text-align:left;
+	width:434px;
+	font-size:14px;
+	font-weight: bolder;
+	margin:8px 0;
+	color:#696768;
+	line-height:26px;
+	margin-right:10px;
+}
+.box_bottom_list span{
+	font-size:12px;
+	font-weight: bolder;
+	line-height:24px;
+	width:530px;
+	float:left;
+	text-align:left;
+	color:#696768;
+	padding:0 0 0 10px;
+}
+.box_bottom_list .top_space{
+	margin-top:15px;
+}
+.box_bottom_list .middle_space{
+	margin-top:29px;
+}
+.box_bottom_list .bottom_space{
+	margin-top:17px;
+}

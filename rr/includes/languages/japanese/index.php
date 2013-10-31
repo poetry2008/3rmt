@@ -33,4 +33,9 @@ if ( ($category_depth == 'products') || ($_GET['manufacturers_id']) ||  ($_GET['
 } elseif ($category_depth == 'nested') {
   define('HEADING_TITLE', 'カテゴリー');
 }
-  define('WARN_PRODUCT_STATUS_TEXT', '当商品は、当サイトの都合または運営会社のサービス終了などの理由により現在取り扱いを行っておりません。<br>取り扱いの再開、その他ご意見ご要望などありましたら、お気軽にお問い合わせください。');
+define('WARN_PRODUCT_STATUS_TEXT', '当商品は、当サイトの都合または運営会社のサービス終了などの理由により現在取り扱いを行っておりません。<br>取り扱いの再開、その他ご意見ご要望などありましたら、お気軽にお問い合わせください。');
+define('TEXT_INDEX_PWD_NOCHANGE','変更しません');
+define('TEXT_INDEX_PWD_CHANGED','変更します');
+define('TAG_UPPER_TITTLE', 'RMT：ゲーム通貨・アイテム・アカウント');
+define('MANUFACTURERS_UPPER_TITTLE', 'RMT：ゲーム通貨・アイテム・アカウント');
+define('TEXT_ABOUT','について');

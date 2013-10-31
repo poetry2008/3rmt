@@ -37,3 +37,6 @@ define('WARN_PRODUCT_STATUS_TEXT', '当商品は、当サイトの都合また�
 define('TEXT_INDEX_NEW_PRODUCT_QUANTITY','残り&nbsp;%s個');
 define('TEXT_INDEX_PWD_NOCHANGE','変更しません');
 define('TEXT_INDEX_PWD_CHANGED','変更します');
+define('TAG_UPPER_TITTLE', 'RMT：ゲーム通貨・アイテム・アカウント');
+define('MANUFACTURERS_UPPER_TITTLE', 'RMT：ゲーム通貨・アイテム・アカウント');
+define('TEXT_ABOUT','について');
