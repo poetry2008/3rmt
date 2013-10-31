@@ -337,17 +337,19 @@ if($_POST['num_rows'] > 0){
   }
 }
   if($error == true){ break; }  
-  if($error == false){
+    if($error == false){
+
+    if($_POST['num_rows'] > 0){ 
     //住所信息入库
-      if($_POST['num_rows'] > 0){
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
@@ -359,12 +361,12 @@ if($_POST['num_rows'] > 0){
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
         //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }
- }
+    }
     $sql_data_array = array('new_customers_firstname' => $firstname,
                             'new_customers_lastname' => $lastname,
                             'new_customers_newsletter' => $newsletter,
@@ -460,7 +462,6 @@ if($_POST['num_rows'] > 0){
   }
   tep_db_free_result($address_query);
 
-
   $error_str = false;
   $option_info_array = array(); 
   if (!$hm_option->check()) {
@@ -480,14 +481,14 @@ if($_POST['num_rows'] > 0){
  
   //住所信息入库
   if($error_str == false){
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
@@ -500,7 +501,7 @@ if($_POST['num_rows'] > 0){
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
         //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
@@ -559,15 +560,14 @@ if($_POST['num_rows'] > 0){
 }
 
   //end
-
-
+  
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
 ?>
 <?php page_head();?>
 <?php require('includes/form_check.js.php'); ?>
 </head>
-<body>
+<body> 
 <div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 
@@ -599,17 +599,15 @@ if($_POST['num_rows'] > 0){
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="2" align="center" summary="table"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" align="center" summary="table"> 
                   <tr> 
                     <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                     <td class="main" align="right"><a href="javascript:void(0);" onClick="check_form();"><img src="images/design/button/all_save.gif"></a></td> 
                   </tr> 
-                </table>
-                </td> 
+                </table></td> 
             </tr> 
           </table> 
-        </div>
+          </div> 
         <p class="pageBottom"></p>
         </td> 
       <!-- body_text_eof --> 
@@ -624,18 +622,20 @@ if($_POST['num_rows'] > 0){
   <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof --> 
-</div>
+</div> 
 </div>
 </body>
 </html>
 <script type="text/javascript">
-$(document).ready(function(){ 
+$(document).ready(function(){
 <?php
   if($save_flag == true){
-    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'.  FILENAME_ACCOUNT_EDIT .'";';
+
+    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";';  
   }
   if($del_flag == true){
-    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";'; 
+ 
+    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";';
   }
 ?>
 });

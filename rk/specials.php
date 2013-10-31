@@ -27,9 +27,8 @@
       </td>
       <!-- body_text -->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?><?php echo SPECIAL_TITLE_LINK_TEXT;?></h1>
-        <div class="comment">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?><?php echo SPECIAL_TITLE_LINK_TEXT;?></h1> <div class="comment">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php
   $specials_query_raw = "
   select * 
@@ -41,9 +40,9 @@
            p.products_small_sum, 
            p.products_tax_class_id, 
            p.products_image, 
+           p.products_date_added,
            p.products_bflag, 
            pd.products_status, 
-           p.products_date_added,
            pd.site_id
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where 
@@ -60,7 +59,7 @@
   order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
-   
+  
   $specials_query = tep_db_query($specials_query_raw);
   
   if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {

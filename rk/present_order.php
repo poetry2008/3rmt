@@ -58,7 +58,7 @@ function popupWindow(url) {
 }
 --></script>
 </head>
-<body>
+<body> 
 <div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 
@@ -119,7 +119,7 @@ function popupWindow(url) {
                         <tr <?php echo $_class?"class='".$_class."'":'' ; ?>>
                           <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>">
 <script type="text/javascript" language="javascript"><!--
-  document.write('<?php echo '<a href="' . tep_href_link(FILENAME_PRESENT, 'goods_id=' . (int)$_GET['goods_id']) . ')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '</a>'; ?>');
+  document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"') . '<\'+\'/a>'; ?>');
 --></script>
 <noscript>
 <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
@@ -199,7 +199,7 @@ function popupWindow(url) {
               <td class="main"><?php
       
   if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);
-  $account['entry_country_id'] = STORE_COUNTRY;
+    $account['entry_country_id'] = STORE_COUNTRY;
     echo tep_draw_form('present_account', tep_href_link(FILENAME_PRESENT_ORDER, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL'), 'post', 'onSubmit="return check_form();"'); 
     require(DIR_WS_MODULES . 'present_account_details.php');
     echo '<div align="right">'. tep_draw_hidden_field('goods_id', $present['goods_id']) . tep_image_submit('button_continue.gif', '') .'</div>' . "\n";
@@ -214,7 +214,7 @@ function popupWindow(url) {
       <!-- body_text_eof --> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof --> </td> </tr>
+        <!-- right_navigation_eof --> </td> 
   </table> 
   <!-- body_eof --> 
   <!-- footer --> 

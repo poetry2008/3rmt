@@ -155,9 +155,8 @@ if ($ca_num == 0) {
               $_subcategories[] = $_subcategory;
             }
             ?>
-            <?php if(!empty($_subcategories)) { 
-            ?>
-            <ul class="l_m_category_ul2"> 
+            <?php if($_subcategories){?>
+            <ul class='l_m_category_ul2'> 
 	    <li>
             <?php
               foreach ($_subcategories as $_skey => $_subcategory) {

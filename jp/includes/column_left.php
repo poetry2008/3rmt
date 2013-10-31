@@ -3,6 +3,7 @@
   $Id$
 */
 
+  if ($banner = tep_banner_exists('dynamic', 'left_head')) { echo '<div class="left_top">'.tep_display_banner('static', $banner,'','',true).'</div>'."\n"; }
   if ($banner = tep_banner_exists('dynamic', 'left_top')) { echo '<div class="left_top">'.tep_display_banner('static', $banner,'','',true).'</div>'."\n"; }
   if ( (USE_CACHE == 'true') && !SID ) {
     $tmp_id_array = array();

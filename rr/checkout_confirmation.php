@@ -158,7 +158,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
   echo '          <tr>' . "\n" .
-         '            <td class="confirmation_product_num_info" align="right" valign="top">' .  $order->products[$i]['qty'] . '&nbsp;' .NUM_UNIT_TEXT. (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="confirmation_product_num_info" align="right" valign="top">' .  $order->products[$i]['qty'] . '&nbsp;' .NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2((int)$order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
   if ($order->products[$i]['price'] < 0) {
@@ -754,7 +754,7 @@ if (is_array($payment_modules->modules)) {
               <tr> 
                 <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main"><div class="payment_comment"><?php echo str_replace('<br />', '<br>', nl2br(htmlspecialchars($order->info['comments']))) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
+                      <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($order->info['comments'])) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
                     </tr> 
                   </table></td> 
               </tr> 
