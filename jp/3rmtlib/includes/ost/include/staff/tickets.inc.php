@@ -397,6 +397,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
  </table>
  <table width="100%" border="0" cellspacing=1 cellpadding=2>
     <form action="tickets.php" method="POST" name='tickets' onSubmit="return checkbox_checker(this,1,0);">
+    <input type="hidden" name="url" value="<?php echo trim($_SERVER['QUERY_STRING']) != '' ? $_SERVER['QUERY_STRING'] : '';?>">
     <input type="hidden" name="a" value="mass_process" >
     <input type="hidden" name="status" value="<?=$statusss?>" >
     <tr><td>
