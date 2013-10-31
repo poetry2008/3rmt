@@ -1,3 +1,4 @@
+var delete_flag = false;
 function getCannedResponse(idx,fObj,target)
 {
     if(idx==0) { return false; }
@@ -98,7 +99,7 @@ function checkbox_checker(formObj, min,max,sure,action)
  		return (false);
  	}
  
- 	if (total< min )
+ 	if (total< min && delete_flag == false)
  	{
  		alert("Please make at least " + min + " selections. " + total + " entered so far.")
  		return (false);

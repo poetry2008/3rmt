@@ -227,7 +227,15 @@ if($search && $deep_search) {
 
 $qgroup=' GROUP BY ticket.ticket_id';
 //get ticket count based on the query so far..
+$tids_all = array();
+$tickets_query = db_query("SELECT DISTINCT ticket.ticket_id ticket_id $qfrom $qwhere");
+while($tickets_array = db_fetch_array($tickets_query)){
+  
+  $tids_all[] = $tickets_array['ticket_id'];
+}
+$tids_all_str = implode(',',$tids_all);
 $total=db_count("SELECT count(DISTINCT ticket.ticket_id) $qfrom $qwhere");
+$total_num = $total;
 //pagenate
 $pageNav=new Pagenate($total,$page,$pagelimit);
 $pageNav->setURL('tickets.php',$qstr.'&sort='.urlencode($_REQUEST['sort']).'&order='.urlencode($_REQUEST['order']));
@@ -389,6 +397,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
  </table>
  <table width="100%" border="0" cellspacing=1 cellpadding=2>
     <form action="tickets.php" method="POST" name='tickets' onSubmit="return checkbox_checker(this,1,0);">
+    <input type="hidden" name="url" value="<?php echo trim($_SERVER['QUERY_STRING']) != '' ? $_SERVER['QUERY_STRING'] : '';?>">
     <input type="hidden" name="a" value="mass_process" >
     <input type="hidden" name="status" value="<?=$statusss?>" >
     <tr><td>
@@ -507,6 +516,8 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             if($canDelete) {?>
                 <input class="button" type="submit" name="delete" value="削除" 
                     onClick=' return confirm("選択したお問い合わせを、削除しますか?");'>
+                <input class="button" type="submit" name="delete_all" value="一括削除" 
+                onClick='if(confirm("検索結果の全<?php echo $total_num;?>件のお問い合せを一括削除しますか？")){delete_flag=true;return true;}else{return false;}'><input type="hidden" name="tids_all" value="<?php echo $tids_all_str;?>">
             <?}?>
         </td></tr>
         <? } else {

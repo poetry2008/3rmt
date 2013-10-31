@@ -464,4 +464,4 @@ if (!isset($guestchk)) $guestchk = NULL;
   }
 ?>
 </table>
-<input type="hidden" name="country" value="107">
+<input type="hidden" name="country" value="<?php echo STORE_COUNTRY;?>">
