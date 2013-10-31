@@ -937,11 +937,16 @@ function tep_tags_link()
 function tep_preorder_href_link($pid, $romaji, $param = null,$connection='NOSSL')
 {
   global $request_type;
+  $request_type = $connection != '' ? $connection : $request_type;
   if ($connection == 'NOSSL') {
-  $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
-}else{
-  $returnstr = HTTPS_SERVER . DIR_WS_CATALOG;
-}
+    $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+  }else{
+    if(ENABLE_SSL){
+      $returnstr = HTTPS_SERVER . DIR_WS_CATALOG;
+    }else{
+      $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
+    }
+  }
   $param_str = '';  
   if ($param) {
     $param_str = '?'.$param; 
