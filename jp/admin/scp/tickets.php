@@ -356,13 +356,13 @@ if($_POST && !$errors):
             case 'mass_process':
                 if(!$thisuser->canManageTickets() && !isset($_POST['gomi']))
                     $errors['err']='You do not have permission to mass manage tickets. Contact admin for such access';    
-                elseif(!$_POST['tids'] || !is_array($_POST['tids']))
+                elseif((!$_POST['tids'] || !is_array($_POST['tids'])) && !isset($_POST['delete_all']))
                     $errors['err']='No tickets selected. You must select at least one ticket.';
                 elseif(($_POST['reopen'] || $_POST['close']) && !$thisuser->canCloseTickets())
                     $errors['err']='You do not have permission to close/reopen tickets';
                 elseif($_POST['delete'] && !$thisuser->canDeleteTickets())
                     $errors['err']='You do not have permission to delete tickets';
-                elseif(!$_POST['tids'] || !is_array($_POST['tids']))
+                elseif((!$_POST['tids'] || !is_array($_POST['tids'])) && !isset($_POST['delete_all']))
                     $errors['err']='You must select at least one ticket';
         
                 if(!$errors) {
@@ -418,6 +418,14 @@ if($_POST && !$errors):
                             if($t && @$t->delete()) $i++;
                         }
                         $msg="$i of $count selected tickets deleted";
+                    }elseif(isset($_POST['delete_all'])){
+                        $i=0;
+                        $tids_array = explode(',',$_POST['tids_all']);
+                        foreach($tids_array as $k=>$v) {
+                            $t = new Ticket($v);
+                            if($t && @$t->delete()) $i++;
+                        }
+                        $msg="$i tickets deleted";
                     }
                 }
                 break;
