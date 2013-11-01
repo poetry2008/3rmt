@@ -383,18 +383,18 @@ class buying extends basePayment  implements paymentInterface  {
  功能：输出支付方法
  参数：$session_paymentinfo_name(string) 支付方法名称
  参数：$show_type(boolean) 标识 
+ 参数：$p_info(array) 信息 
  返回值：支付方法数组(array)
  ----------------------------*/
-  function specialOutput($session_paymentinfo_name, $show_type)
+  function specialOutput($session_paymentinfo_name, $show_type, $p_info)
   {
     $buying_info_array = array(); 
     if ($show_type) {
-      global $_POST; 
-      $bank_name = tep_db_prepare_input($_POST['bank_name']);
-      $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
-      $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
-      $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
-      $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
+      $bank_name = tep_db_prepare_input($p_info['bank_name']);
+      $bank_shiten = tep_db_prepare_input($p_info['bank_shiten']);
+      $bank_kamoku = tep_db_prepare_input($p_info['bank_kamoku']);
+      $bank_kouza_num = tep_db_prepare_input($p_info['bank_kouza_num']);
+      $bank_kouza_name = tep_db_prepare_input($p_info['bank_kouza_name']);
     } else {
       $bank_name = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_name']);
       $bank_shiten = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_shiten']);

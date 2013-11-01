@@ -463,12 +463,13 @@ class payment {
  功能：检查方法是否存在
  参数：$payment(string) 支付方法
  参数：$show_type(boolean) 标识
+ 参数：$p_info(array) 信息
  返回值：支付方法的名称(string)
  -----------------------------*/    
-  function specialOutput($payment, $show_type = false) {
+  function specialOutput($payment, $show_type = false, $p_info = null) {
     $p = $this->getModule($payment);
     if(method_exists($p,'specialOutput')){
-      return $p->specialOutput($this->session_paymentvalue_name, $show_type);
+      return $p->specialOutput($this->session_paymentvalue_name, $show_type, $p_info);
     }
     return ''; 
   }
