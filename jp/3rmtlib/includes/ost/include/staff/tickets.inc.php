@@ -166,8 +166,8 @@ if($search):
         $qstr.='&dept='.urlencode($_REQUEST['dept']);
     }
     //dates
-    $startTime  =($_REQUEST['startDate'] && (strlen($_REQUEST['startDate'])>=8))?strtotime($_REQUEST['startDate']):0;
-    $endTime    =($_REQUEST['endDate'] && (strlen($_REQUEST['endDate'])>=8))?strtotime($_REQUEST['endDate']):0;
+    $startTime  =($_REQUEST['startDate'] && (strlen($_REQUEST['startDate'])>=8))?strtotime($_REQUEST['startDate'].' 00:00:00'):0;
+    $endTime    =($_REQUEST['endDate'] && (strlen($_REQUEST['endDate'])>=8))?strtotime($_REQUEST['endDate'].' 23:59:59'):0;
     if( ($startTime && $startTime>time()) or ($startTime>$endTime && $endTime>0)){
         $errors['err']='Entered date span is invalid. Selection ignored.';
         $startTime=$endTime=0;
