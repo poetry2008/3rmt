@@ -526,9 +526,6 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
               </td>
             </tr>
             <tr>
-              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-            </tr>
-            <tr>
               <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
                 <span id="sub_total"><?php echo $currencies->format_total($cart->show_total()); ?></span></b></td>
             </tr>
@@ -561,9 +558,6 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
             <?php   
     if(isset($_GET['limit_error']) && $_GET['limit_error'] == 'true') {
 ?>
-            <tr>
-              <td><?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-            </tr>
             <tr>
               <td align="right" class="main">
                 <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice" summary="rmt">
@@ -672,7 +666,7 @@ if (!empty($_SESSION['history_url'])) {
     if ($cart_products) {
       $h2_show_flag = true;
       foreach($cart_products as $cp){
-        $cp = tep_get_product_by_id($cp, SITE_ID, 4, true, 'shopping_cart', true);
+        $cp = tep_get_product_by_id($cp, SITE_ID, $languages_id, true, 'shopping_cart', true);
         $cp_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$cp['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
         $cp_status_res = tep_db_fetch_array($cp_status_raw);
         if ($cp_status_res['products_status'] == 0) {
@@ -700,13 +694,10 @@ if (!empty($_SESSION['history_url'])) {
   
 <?php
 foreach($cart_products as $cp){
-        $cp = tep_get_product_by_id($cp, SITE_ID, 4, true, 'shopping_cart', true);
+        $cp = tep_get_product_by_id($cp, SITE_ID, $languages_id, true, 'shopping_cart', true);
         $cp_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$cp['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
         $cp_status_res = tep_db_fetch_array($cp_status_raw);
         if ($cp_status_res['products_status'] == 0) {
-          /*
-          echo "<img src='default_images/carttags/". $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
-          */
         } else {
           echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
           echo "<img src='default_images/carttags/". $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";

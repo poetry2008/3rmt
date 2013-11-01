@@ -38,7 +38,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                 'first_name' => tep_db_prepare_input($firstname),
                 'mail' => tep_db_prepare_input($email_address),
                 'postcode' => tep_db_prepare_input($postcode),
-                'prefectures' => tep_db_prepare_input(tep_get_zone_name('107',$state, $zone)),
+                'prefectures' => tep_db_prepare_input(tep_get_zone_name(STORE_COUNTRY,$state, $zone)),
                 'cities' => tep_db_prepare_input($city),
                 'address1' => tep_db_prepare_input($street_address),
                 'address2' => tep_db_prepare_input($suburb),
@@ -339,7 +339,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_STR;?></td> 
-                              <td class="main"><?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
+                              <td class="main"><?php echo tep_get_zone_name(STORE_COUNTRY,$state, $zone); ?></td> 
                             </tr> 
                             <tr> 
                               <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS1;?></td> 
