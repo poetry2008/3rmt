@@ -306,7 +306,7 @@ if (!$payment_modules->moduleIsEnabled($payment)){
   tep_redirect(tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL'));
 }
 $payment_selection = $payment_modules->selection();
-$pay_info_array = $payment_modules->specialOutput($payment);
+$pay_info_array = $payment_modules->specialOutput($payment, true);
 $payment_modules->deal_other_info($payment, $_POST); 
 //支付方法相关信息
 if (!empty($pay_info_array)) {
