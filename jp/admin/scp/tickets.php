@@ -427,6 +427,7 @@ if($_POST && !$errors):
                         }
                         $msg="$i tickets deleted";
                     }
+                    header('Location: tickets.php' . (trim($_POST['url']) != '' ? '?'.$_POST['url'] : ''));
                 }
                 break;
             case 'open2':
