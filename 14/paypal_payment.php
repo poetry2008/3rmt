@@ -1,13 +1,6 @@
 <?php
 require('includes/application_top.php');
 require('includes/modules/payment/paypal.php');
-require(DIR_WS_CLASSES . 'payment.php');
-$payment_modules = payment::getInstance(SITE_ID);
-
-/*
- *  Initiate an Express Checkout transaction. 
-*/
-
 // Set request-specific fields.
 $paymentAmount = urlencode(htmlspecialchars($_REQUEST['amount']));//合计金额
 $currencyID = urlencode('JPY');
@@ -35,17 +28,14 @@ $nvpStr = "&AMT=$paymentAmount".
 
 
 // Execute the API operation; see the PPHttpPost function above.
-
-if($_POST['amount'] != $_REQUEST['amount']){
-  tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'msg=paypal_error'.(isset($_POST['cpre_type'])?'&pre_type=1':'')));
-}
 $httpParsedResponseAr = PPHttpPost('SetExpressCheckout', $nvpStr);
-if(("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"]))&&!$payment_modules->moneyInRange('paypal',$_REQUEST['amount'])) {
+if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
   // Redirect to paypal.com.
   $token = urldecode($httpParsedResponseAr["TOKEN"]);
         $_SESSION['paypaltoken']=$token;
   //$payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=$token";
     $payPalURL = "https://www.paypal.com/webscr&cmd=_express-checkout&token=".$token."&useraction=commit";
+
 
 
 
