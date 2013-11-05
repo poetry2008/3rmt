@@ -597,7 +597,7 @@ sitemap
 .sitemap ul ul li a{
 	color: #555!important;
 }
-.sitemap li ul .subcategory_tree ul{ margin-top:-10px\9;}
+.sitemap li ul .subcategory_tree ul{ *margin-top:-10px;}
 .sitemap ul{
 	list-style-position:inside;
 	list-style-type:square;
