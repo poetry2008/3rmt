@@ -108,7 +108,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="form_content"> 
               <tr> 
                 <?php
   if ($sendto != false) {
@@ -152,7 +152,6 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
                           <tr> 
                             <td class="main"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                           </tr>
-                <tr><td><table border="0" width="100%" cellspacing="1" cellpadding="2"> 
                           <?php
   }
 for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
@@ -228,8 +227,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
          '          </tr>' . "\n";
   }
 ?>   					
-                        </table></td> 
-                    </tr> 
                   </table></td> 
               </tr> 
             </table></td> 
@@ -687,9 +684,9 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php
