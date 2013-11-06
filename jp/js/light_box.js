@@ -2,7 +2,7 @@
 var title_list;
 var now_index=0;
 //create images
-function fnCreate(src){
+function fnCreate(src,num){
         
             image_list = getClass('input','large_image_input');
             title_list = getClass('img','image_alt_list');
@@ -16,7 +16,7 @@ function fnCreate(src){
             }
             
             for(var i=0;i<image_list.length;i++){
-              if(image_list[i].value == src){
+              if(i == num){
                 show_title = title_list[i].alt; 
                 now_index = i+1;
               }
@@ -76,6 +76,7 @@ function fnCreate(src){
             var element_ground = document.createElement('div');
             element_ground.setAttribute('class',ClassName);
             element_ground.setAttribute('style','position: absolute; top: 0; left: 0; z-index: 150;background-color: rgb(0, 0, 0); opacity: 0.8; width:100%; height: '+allheight+'px;');
+            element_ground.setAttribute('onclick',closefunction);
             var element_boder = document.createElement('div');
             var img_parents = document.createElement('div');
             var img_parents_top = document.createElement('div');
@@ -122,13 +123,13 @@ function fnCreate(src){
             var title =  document.createElement('div');
             var title_div = document.createElement('div');
             var title_boder = document.createElement('div');
-            //page div
-            title_page = '<div id="lightbox_title" style="float:left;margin-left:10px;"><small>page '+now_index+' of '+image_lenght+'</small></div>'
             //title div
-            title_close = '<div style="float:right;margin-right:10px;" onclick=\'em=document.getElementsByClassName("'+ClassName+'");for(var i=em.length-1;i>=0;i--){var p=em[i];p.parentNode.removeChild(p);}\'><a href="javascript:void(0);"><img src="images/closelabel.gif"></a></div>';
-            title_text = '<div id="lightbox_title_text" style="width:'+(imgwd+20)+'px;background-color: rgb(255, 255, 255);"><br><small style="margin-left:10px;margin-right:10px;">'+show_title+'</small></div>';
+            title_close = '<div style="height:26px;background-color: rgb(255, 255, 255);">&nbsp;<div style="float:right;background-color: rgb(255, 255, 255);" onclick=\'em=document.getElementsByClassName("'+ClassName+'");for(var i=em.length-1;i>=0;i--){var p=em[i];p.parentNode.removeChild(p);}\'><a href="javascript:void(0);"><img src="images/close.gif"></a></div></div>';
+            title_text = '<div id="lightbox_title_text" style="width:'+(imgwd+20)+'px;background-color: rgb(255, 255, 255);">'+show_title+'('+now_index+'/'+image_lenght+')</div>';
+
+            if(now_index == 0){title_text = '';}
             //close div
-            title.innerHTML = title_page+title_close+title_text;
+            title.innerHTML = title_text+title_close;
             title_boder.appendChild(title);
             title_boder.setAttribute('class',ClassName);
             title_boder.setAttribute('style','width:'+(imgwd+20)+'px;height:22px;margin: 0px auto; z-index: 151;background-color: rgb(255, 255, 255);');
@@ -176,9 +177,7 @@ function NextImg(){
     light_box_title_boder.style.top = '';
     light_box_title_boder.style.top = (light_box_img.height + 100)+'px';
     light_box_title_text = document.getElementById('lightbox_title_text');
-    light_box_title_text.innerHTML = '<br><small style="margin-left:10px;margin-right:10px;">'+title_list[now_index].alt+'</small>';
-    light_box_title = document.getElementById('lightbox_title');
-    light_box_title.innerHTML = '<small>page '+(now_index+1)+' of '+image_list.length+'</small>';
+    light_box_title_text.innerHTML = title_list[now_index].alt+'('+(now_index+1)+'/'+image_list.length+')';
     now_index = now_index+1;
     image_lenght = image_list.length;
     if(now_index > 1){
@@ -212,9 +211,7 @@ function PrevImg(){
     light_box_title_boder.style.top = '';
     light_box_title_boder.style.top = (light_box_img.height + 100)+'px';
     light_box_title_text = document.getElementById('lightbox_title_text');
-    light_box_title_text.innerHTML = '<br><small style="margin-left:10px;margin-right:10px;">'+title_list[now_index-2].alt+'</small>';
-    light_box_title = document.getElementById('lightbox_title');
-    light_box_title.innerHTML = '<small>page '+(now_index-1)+' of '+image_list.length+'</small>';
+    light_box_title_text.innerHTML = title_list[now_index-2].alt+'('+(now_index-1)+'/'+image_list.length+')';
     now_index = now_index-1;
     image_lenght = image_list.length;
     if(now_index > 1){

@@ -33,20 +33,28 @@ foreach($p_image_list as $p_list_row){
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/product_info.js"></script>
-<script type="text/javascript" src="js/jquery.lightbox-0.5.js"></script>
-<link rel="stylesheet" href="css/jquery.lightbox-0.5.css" type="text/css">
+<script type="text/javascript" src="js/light_box.js"></script>
+<link rel="stylesheet" href="css/lightbox.css" type="text/css">
 <?php if($p_image_count>1){ ?>
 <script type="text/javascript" src="js/jquery.featureCarousel.js" ></script>
 <link rel="stylesheet" href="css/feature-carousel.css" type="text/css">
 <script type="text/javascript">
 $(document).ready(function() {
+  $(".carousel-image").click(function (){
+
+    var src = this.src;
+    src_array = Array();
+    src_array = src.split('/');
+    src_length = src_array.length;
+    fnCreate('<?php echo DIR_WS_IMAGES.'products/';?>'+src_array[src_length-1]);
+  });
   var carousel = $("#carousel").featureCarousel({
       largeFeatureWidth:   <?php echo  PRODUCT_INFO_IMAGE_WIDTH;?>,
       largeFeatureHeight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT;?>,
       smallFeatureWidth:   <?php echo  PRODUCT_INFO_IMAGE_WIDTH/2;?>,
       smallFeatureHwight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT/2;?>,
     });
-  $("#carousel a").lightBox();
+  //$("#carousel a").lightBox();
 });
 </script>
 <?php
@@ -465,6 +473,12 @@ if (!$product_info) { // product not found in database
     }
   ?>
     </div> 
+    <?php
+    foreach($p_image_list as $p_list_row){
+
+      echo '<input type="hidden" class="large_image_input" value="'.DIR_WS_IMAGES .'products/'.$p_list_row.'">'; 
+    }
+    ?>
     <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?></form>
     <ul id="detail-ul">
     <hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none;">

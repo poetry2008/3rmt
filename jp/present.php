@@ -57,8 +57,10 @@ function popupWindow(url) {
             <tr>
               <td align="center" class="smallText">
               <?php 
-              if((file_exists(DIR_WS_IMAGES.'present/'.$present['image']) != '') && ($present['image'] != '')){
+                 if((file_exists(DIR_WS_IMAGES.'present/'.$present['image']) != '') && ($present['image'] != '')){
+                 echo '<script language="javascript" type="text/javascript">';
                  require('js/light_box.js');
+                 echo '</script>';
               ?>
               <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES .'present/'.  $present['image'] ;?>')">
               <?php echo tep_image_new(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5" id="lrgproduct" name="lrgproduct"') .  '<br>'.TEXT_PRESENT_ENLARGE;?>
