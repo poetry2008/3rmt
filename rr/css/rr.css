@@ -1627,7 +1627,7 @@ TABLE.formArea {
 	background: #3A3A3A;
 	border:1px solid #4B4A4A;
 }
-TABLE.formArea td{ padding:2px; margin:0;}
+TABLE.formArea td{ margin:0;}
 /* ---------------------------
 TD：Form area (Title)
 --------------------------- */
@@ -2290,7 +2290,7 @@ border:1px solid #CAC6BE;
 .table_a_spacing{ margin-bottom:13px;}
 .table_a_spacing img{ vertical-align:top;}
 .confirmation_product_num_info{ 
-	padding-right:67px;
+	padding-right:71px;
 	line-height:1.5;
 	font-size:12px;
 	width:80px;

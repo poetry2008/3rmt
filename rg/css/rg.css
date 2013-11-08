@@ -597,7 +597,7 @@ sitemap
 .sitemap ul ul li a{
 	color: #555!important;
 }
-.sitemap li ul .subcategory_tree ul{ margin-top:-10px\9;}
+.sitemap li ul .subcategory_tree ul{ *margin-top:-10px;}
 .sitemap ul{
 	list-style-position:inside;
 	list-style-type:square;
@@ -1549,12 +1549,12 @@ SPAN.greetUser {
 }
 /* ---------------------------
 TABLE：Form area (the border)
---------------------------- */
-TABLE.formArea {
+-------------------------- */
+TABLE.formArea,TABLE.form_content {
 	background: #FFF;
 	border: 1px solid #E8E8E8;
 }
-TABLE.formArea td{ padding:2px; margin:0;}
+TABLE.formArea td{ margin:0;}
 /* ---------------------------
 TD：Form area (Title)
 --------------------------- */
@@ -2110,11 +2110,10 @@ border:2px solid #FF8080;
 .table_a_spacing{ margin-bottom:15px;}
 .table_a_spacing img{ vertical-align:top;}
 .confirmation_product_num_info{ 
-	padding-right:67px;
+	padding-right:62px;
 	line-height:1.5;
 	font-size:12px;
-	width:80px;
-	display:block;
+	width:88px;
 }
 .clear_both{
 	clear:both;

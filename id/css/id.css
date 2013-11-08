@@ -1931,7 +1931,7 @@ TABLE.formArea {
 	background-color:#D2CECE;
 	border: 1px solid #BDBCBC;
 }
-TABLE.formArea td{ padding:2px; margin:0;}
+TABLE.formArea td{  margin:0;}
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
@@ -2593,11 +2593,21 @@ searching
 .table_a_spacing{ margin-bottom:10px;}
 .table_a_spacing img{ vertical-align:top;}
 .confirmation_product_num_info{ 
-	padding-right:72px;
 	line-height:1.5;
 	font-size:12px;
-	width:80px;
+	width:67px;
 	display:block;
+	padding-right:12px;
+	padding-right:85px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.confirmation_product_num_info{ 
+	line-height:1.5;
+	font-size:12px;
+	width:67px;
+	display:block;
+	padding-right:85px;
+}
 }
 #form_error{ 
 	line-height:20px;

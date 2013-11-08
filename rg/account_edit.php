@@ -567,7 +567,6 @@ if($_POST['num_rows'] > 0){
 ?>
 <?php page_head();?>
 <?php require('includes/form_check.js.php'); ?>
-<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 </head>
 <body> 
 <div class="body_shadow" align="center"> 

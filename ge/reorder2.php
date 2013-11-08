@@ -192,7 +192,7 @@ if(!isset($email_error)||$email_error == true){?>
         <table width="100%">
 <td width="120">&nbsp;</td>
         <td>
-        <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_CONFIRE;?>" title="<?php echo TEXT_REORDER_CONFIRE;?>" >
+        <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_INFO_CONFIRM;?>" title="<?php echo TEXT_REORDER_INFO_CONFIRM;?>" >
         <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onclick='javascript:document.order.reset();return false;' >
         </td>
 </table>
