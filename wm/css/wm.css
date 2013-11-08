@@ -1937,11 +1937,21 @@ searching
 .table_a_spacing img{ vertical-align:top;}
 .product_info_table td{ font-size:12px; line-height:1.5;}
 #confirmation_product_num_info{ 
-	padding-right:82px;
+	padding-right:67px;
+	padding-right:83px\0;
 	line-height:1.5;
 	font-size:11px;
 	width:85px;
 	display:block;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+#confirmation_product_num_info{ 
+	padding-right:83px;
+	line-height:1.5;
+	font-size:11px;
+	width:85px;
+	display:block;
+}
 }
 .font-size12{ font-size:12px;}
 .sort img{ margin:-2px 0 0 5px;}

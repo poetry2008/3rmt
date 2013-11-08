@@ -207,6 +207,10 @@ require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
+if($payment_modules->moneyInRange($payment,$order->info['total'])){
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS));
+  exit;
+}
 $customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_quantity, is_quited, quited_date from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $customers_referer_array = tep_db_fetch_array($customers_referer_query);
 $referer = $customers_referer_array['referer'];
