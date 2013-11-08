@@ -38,13 +38,15 @@ function fnCreate(src,num){
             }else{
                 clearInterval(timer);
             }
+           
+            if(document.getElementsByClassName){
+              em = document.getElementsByClassName(ClassName)
             
-            em = document.getElementsByClassName(ClassName)
-            
-            for(var i=em.length-1; i>=0; i--){
+              for(var i=em.length-1; i>=0; i--){
                 var p = em[i];
                 p.parentNode.removeChild(p);
-            }    
+              }    
+            }
             
             var htmlWidth = window.innerWidth;        
             var htmlHeight = window.innerHeight;       
@@ -108,8 +110,8 @@ function fnCreate(src,num){
             img_parents.appendChild(img);
             img_parents.appendChild(img_parents_center);
             img_parents.appendChild(img_parents_loading);
-            img_parents_center_right.innerHTML = '<a id="nextLink" onclick="NextImg();" style="height: 596px;" href="javascript:void(0);"></a>';
-            img_parents_center_left.innerHTML = '<a id="prevLink" onclick="PrevImg();" style="height: 596px;" href="javascript:void(0);"></a>';
+            img_parents_center_right.innerHTML = '<a id="nextLink" onclick="NextImg();" href="javascript:void(0);"></a>';
+            img_parents_center_left.innerHTML = '<a id="prevLink" onclick="PrevImg();" href="javascript:void(0);"></a>';
             img_parents_center.appendChild(img_parents_center_left);
             img_parents_center.appendChild(img_parents_center_right);
             element_boder.setAttribute('class',ClassName);
@@ -150,6 +152,8 @@ function fnCreate(src,num){
             element_boder.appendChild(element_title);
             document.body.appendChild(element_ground);
             document.body.appendChild(element);
+            document.getElementById("nextLink").style.height = img.height+20;
+            document.getElementById("prevLink").style.height = img.height+20;
             if(now_index > 1){
            
               document.getElementById("img_parents_border_left").style.display = "block";
@@ -216,7 +220,7 @@ function getClass(tagname, className) {
   if (document.getElementsByClassName) {
     return document.getElementsByClassName(className);
   }else {    
-    var tagname = document.getElementsByTagName_r(tagname);  
+    var tagname = document.getElementsByTagName(tagname);  
     var tagnameAll = [];     
     for (var i = 0; i < tagname.length; i++) {     
       if (tagname[i].className == className) {     
