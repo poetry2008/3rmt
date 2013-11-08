@@ -179,7 +179,7 @@ TABLE.formArea {
 	border:1px solid #ccc;
 	margin-bottom:7px;               
 }
-TABLE.formArea td{ padding:2px; margin:0;}
+TABLE.formArea td{ margin:0;}
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
@@ -1555,8 +1555,8 @@ TEXTAREA {
 }
 .confirmation_product_num_info{
     line-height: 1.5;
-	padding-right:84px;
-    width: 80px;
+	padding-right:70px;
+    width: 95px;
 	display:inline-block;
 }
 .reorder_width{

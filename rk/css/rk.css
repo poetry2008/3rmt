@@ -1744,7 +1744,7 @@ TABLE.formArea {
 	background: #FFFFFF;
 	border:1px solid #E8E8E8;
 }
-TABLE.formArea td{ padding:2px; margin:0;}
+TABLE.formArea td{margin:0;}
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
@@ -2295,12 +2295,22 @@ display:block;
 .table_a_spacing{ margin-bottom:13px;}
 .table_a_spacing img{ vertical-align:top;}
 .confirmation_product_num_info{ 
-	padding-right:70px;
+	padding-right:50px;
+	padding-right:74px\0;
 	line-height:1.5;
 	font-size:11px;
 	*font-size:10px;
-	width:80px;
+	width:76px;
 	display:block;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.confirmation_product_num_info{ 
+	padding-right:73px;
+	line-height:1.5;
+	font-size:11px;
+	width:76px;
+	display:block;
+}
 }
 .clear_both{
 	clear:both;
