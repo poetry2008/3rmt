@@ -11,7 +11,7 @@ class google implements engine {
   var $context;
   //  var $countPreg = "/<div\sid=\"bd\"><div\sid=\"inf\"><strong>.*<\/strong>(.*)<\/div>/";
   //var $countPreg = "/<div\s+id=resultStats>約\s+(.*)件中\s+\d+\s+ページ目<nobr>\s+.(.*)秒.&nbsp;<\/nobr><\/div>/";
-  var $countPreg = "/<div id=resultStats>[^<]*<nobr>/";
+  var $countPreg = "/<div id=\"resultStats\">[^<]*<nobr>/";
   var $searchEnter = 'http://search.yahoo.co.jp/search?p={{keyword}}&search.x=1&fr=top_ga1_sa&tid=top_ga1_sa&ei=UTF-8&aq=&oq=jg';
   var $currentPageNumber = 1;
   var $pageCountNumber =0;
@@ -91,7 +91,7 @@ class google implements engine {
     $resultArray = explode('<li class="g"',$html);
 //    $parsePreg = "/<a\shref=\"(.*)\">(.*)<\/a><div>(.*)<\/div>.*/";
     $parsePreg =
-      '/<h3[^>]*><a[^>]*href=\"\/url\?q=([^"]*)\&amp;sa=U\&amp;ei=([^"]*)\"(.*)<\/a><\/h3>.*<span class=\"st\">(.*)<\/span>.*/';
+      '/<h3.*?>.*?<\/h3>.*?<span class=\"st\">(.*)<\/span>/is';
     $recordArray = array();
     $count = 1;
     unset($resultArray[0]);
@@ -107,17 +107,17 @@ class google implements engine {
       if(preg_match($parsePreg,$result,$match)&&
           !preg_match('/(imagebox|videobox)/',$result)){
       //根据正则判断 该记录是否 有效搜索结果
-      preg_match("/>(.*)$/",$match[3],$title);
+      preg_match('/<a.*?href=\"\/url\?q=(.*?)\&amp.*?>(.*?)<\/a>/is',$match[0],$title);
       $recordArray[] = array(
                              'keyword'=>$this->keyword,
-                             'title'=>$title[1],
-                             'fullurl'=>$match[1],
-                             'description'=>$match[4],
+                             'title'=>$title[2],
+                             'fullurl'=>$title[1],
+                             'description'=>$match[1],
                              'page_number'=>$this->currentPageNumber,
                              'order_number'=>$count,
                              'order_total_number'=>10*($this->currentPageNumber-1)+$count,
                              'created_at'=>time(),
-                             'siteurl'=>getSiteUrl($match[1]),
+                             'siteurl'=>getSiteUrl($title[1]),
                              );
       }else{
         continue;
@@ -125,6 +125,8 @@ class google implements engine {
       $i_res++;
       $count ++;
     }
+    //print_r($recordArray);
+    //exit;
     return $recordArray;
   }
   
