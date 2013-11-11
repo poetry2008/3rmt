@@ -524,6 +524,12 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   require(DIR_WS_FUNCTIONS . 'generalBoth.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
+  if(preg_replace('/^http/','https',HTTP_SERVER) == HTTPS_SERVER&&isset($_GET[tep_session_name()])){
+    if(empty($_POST)){
+      tep_redirect(tep_href_link(basename($PHP_SELF),tep_get_all_get_params(array(tep_session_name())),$request_type));
+      exit;
+    }
+  }
 // currency
   if (!tep_session_is_registered('currency') || isset($_GET['currency']) || ( (USE_DEFAULT_LANGUAGE_CURRENCY == 'true') && (LANGUAGE_CURRENCY != $currency) ) ) {
     if (!tep_session_is_registered('currency')) tep_session_register('currency');

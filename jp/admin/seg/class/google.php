@@ -125,6 +125,8 @@ class google implements engine {
       $i_res++;
       $count ++;
     }
+    //print_r($recordArray);
+    //exit;
     return $recordArray;
   }
   

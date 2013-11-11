@@ -167,10 +167,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
     
     echo '          <tr>' . "\n" .
 		 			'<td align="right" valign="top" class="confirmation_product_num_info">' .
-         $order->products[$i]['qty'] . '&nbsp;' . NUM_UNIT_SYMBOL .
-         (!empty($product_info['products_attention_1_3']) &&
-          tep_get_full_count_in_order2($order->products[$i]['qty'],
-            $order->products[$i]['id']) ? '<br/><span style="font-size:14px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         $order->products[$i]['qty'] . '&nbsp;' . NUM_UNIT_SYMBOL .  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br/><span style="font-size:14px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td valign="top" width="60%">' . $order->products[$i]['name'];
   if ($order->products[$i]['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';

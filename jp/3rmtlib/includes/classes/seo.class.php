@@ -580,8 +580,6 @@ class SEO_URL{
     }
     if (isset($_sid)) {
       // 兼容同域名和不同域名的ssl跳转
-      if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
-      } else {
         //cancel ssl to nossl session 
         if (!defined('NEW_TYPE_SYMBOL')) {
           if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))){
@@ -597,7 +595,6 @@ class SEO_URL{
             $link .= $separator . $_sid;
           }
         }
-      }
     }
   // id 不显示 index.php
   if ($page == 'index.php' && $parameters == '' && !defined('NEW_TYPE_SYMBOL') && !isset($_sid)) {
@@ -656,10 +653,6 @@ class SEO_URL{
     
     if ( isset($_sid) ) {
       // 兼容同域名和不同域名的ssl跳转
-      if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
-        // 同域名不加sid
-        return $link; 
-      } else {
         //cancel ssl to nossl session 
         if (!defined('NEW_TYPE_SYMBOL')) {
           if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
@@ -679,7 +672,6 @@ class SEO_URL{
             return $link . $separator . $_sid;
           }
         }
-      }
     } else {
       return $link; 
     }
