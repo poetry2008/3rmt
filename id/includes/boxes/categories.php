@@ -23,7 +23,7 @@ $categories_query = tep_db_query("
     where site_id = ".SITE_ID."
        or site_id = 0
     group by categories_id
-    having c.categories_status != '1' and c.categories_status != '3'
+    having c.categories_status != '1' and c.categories_status != '3' 
     order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
@@ -70,13 +70,13 @@ if($cPath){
                   and cd.language_id='" . $languages_id ."' 
                 order by cd.site_id DESC
                 ) c
-              where site_id = 0
-                 or site_id = ".SITE_ID."
+              where site_id = ".SITE_ID."
+                 or site_id = 0
               group by categories_id
               having c.categories_status != '1' and c.categories_status != '3' 
               order by sort_order, categories_name
               ");
-         while ($subcategory = tep_db_fetch_array($subcategories_query))  {
+          while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
           ?>
@@ -158,7 +158,7 @@ if($cPath){
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>"><?php echo $subcategory['categories_name'];?></a>
               </li>
             <?php }?>
-          <?}?>
+          <?php }?>
           </ul>
       <?php } else {?>
         <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo str_replace(' RMT', '', $category['categories_name']);?></a></li>

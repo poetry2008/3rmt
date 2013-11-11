@@ -55,6 +55,7 @@ H4 {
 	width: 689px;
  *width: 719px!important;
 	padding:5px 15px;
+	*padding:5px 0;
 	overflow: hidden;
 	*overflow:inherit;
 	background-color:#E9E9E9;
