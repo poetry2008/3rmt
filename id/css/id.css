@@ -53,11 +53,9 @@ H4 {
 .comment {
 	clear:both;
 	width: 689px;
- *width: 719px!important;
+	 *width: 719px!important;
 	padding:5px 15px;
-	*padding:5px 0;
 	overflow: hidden;
-	*overflow:inherit;
 	background-color:#E9E9E9;
 	margin:1px 0 5px 1px;
  *margin-top:0;
