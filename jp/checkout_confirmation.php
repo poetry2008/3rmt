@@ -704,6 +704,7 @@ if (is_array($payment_modules->modules)) {
       echo $confirmation['title']; ?></td> 
       </tr> 
       <?php
+      if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
