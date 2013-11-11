@@ -3,21 +3,20 @@
   $Id$
 */
   $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
-?>
+?> 
       <td valign="top" id="contents">
-      <!-- heading title --> 
 <?php  
-  if (isset($cPath_array)) {
+  if( isset($cPath_array)) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
-      echo '<h1 class="pageHeading"><span class="game_t">'.$seo_category['categories_name'].'</span></h1>';
-    } elseif ($_GET['manufacturers_id']) {
+       echo '<h1 class="pageHeading"><span class="game_t">'.$seo_category['categories_name'].'</span></h1>';
+  } elseif ($_GET['manufacturers_id']) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
        echo '<h1 class="pageHeading"><span class="game_t">'.$seo_manufacturers['manufacturers_name'].'</span></h1>';
-      }
+  }
 ?> 
       <?php
       if (!empty($seo_category['categories_header_text'])) { 
@@ -33,19 +32,19 @@
           <tr align="center">
 <?php
     if (isset($cPath) && ereg('_', $cPath)) {
-    // check to see if there are deeper categories within the current category
+// check to see if there are deeper categories within the current category
       $category_links = array_reverse($cPath_array);
       for($i=0, $n=sizeof($category_links); $i<$n; $i++) {
-         
+        
         $categories_query = tep_db_query("
           select * 
           from (
             select c.categories_id, 
                    cd.categories_name, 
+                   cd.categories_status, 
                    c.categories_image, 
                    c.parent_id,
                    cd.site_id,
-                   cd.categories_status, 
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
             where c.parent_id = '" . $category_links[$i] . "' 
@@ -66,7 +65,7 @@
         }
       }
     } else {
-       
+      
         $categories_query = tep_db_query("
           select * 
           from (
@@ -75,7 +74,7 @@
                    c.categories_image, 
                    c.parent_id,
                    cd.site_id,
-                   cd.categories_status, 
+                   cd.categories_status,
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
             where c.parent_id = '" . $current_category_id . "' 
@@ -86,7 +85,7 @@
           where site_id = 0 
              or site_id = ".SITE_ID."
           group by categories_id
-          having c.categories_status != '1' and c.categories_status != '3' 
+          having c.categories_status != '1' and c.categories_status != '3'  
           order by sort_order, categories_name
         ");
     }
@@ -105,9 +104,9 @@
       }
   }
 ?> 
-          </tr>
-        </table>
-            </div>
+        </tr>
+      </table>
+      </div>
       <?php
       if (!empty($seo_category['categories_footer_text'])) { 
       ?>
@@ -138,14 +137,13 @@
       echo '<h2 class="pageHeading"><span class="game_t">' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</span></h2>' . "\n";
       echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo phrase
     }
-    if (!empty($seo_category['text_information'])) {
-      echo '<p class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']).'</p>';
+?>
+<?php  if (!empty($seo_category['text_information'])) {
+    echo '<p class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']).'</p>';
     }
   }
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">
-      <!-- right_navigation --> 
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof -->
     </td> 

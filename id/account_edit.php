@@ -337,17 +337,19 @@ if($_POST['num_rows'] > 0){
   }
 }
   if($error == true){ break; }  
-  if($error == false){
+    if($error == false){
+
+    if($_POST['num_rows'] > 0){ 
     //住所信息入库
-    if($_POST['num_rows'] > 0){
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
@@ -363,7 +365,7 @@ if($_POST['num_rows'] > 0){
         tep_db_query($address_sql);
       }
     }
-  }
+    }
     $sql_data_array = array('new_customers_firstname' => $firstname,
                             'new_customers_lastname' => $lastname,
                             'new_customers_newsletter' => $newsletter,
@@ -479,14 +481,14 @@ if($_POST['num_rows'] > 0){
  
   //住所信息入库
   if($error_str == false){
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query); 
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
@@ -558,14 +560,14 @@ if($_POST['num_rows'] > 0){
 }
 
   //end
-
+  
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
 ?>
 <?php page_head();?>
 <?php require('includes/form_check.js.php'); ?>
 </head>
-<body>
+<body> 
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 
@@ -583,7 +585,7 @@ if($_POST['num_rows'] > 0){
         <div class="comment">
           <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
             <tr> 
-              <td> <?php
+              <td><?php
  
   $account_query = tep_db_query("select c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a where c.customers_id = '" . $customer_id . "' and a.customers_id = c.customers_id and a.address_book_id = '" .  $customer_default_address_id . "' and c.site_id = '".SITE_ID."'");
   $account = tep_db_fetch_array($account_query);
@@ -598,17 +600,15 @@ if($_POST['num_rows'] > 0){
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="2" align="center" summary="table"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" align="center" summary="table"> 
                   <tr> 
                     <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                     <td class="main" align="right"><a href="javascript:void(0);" onClick="check_form();"><img src="images/design/button/all_save.gif"></a></td> 
                   </tr> 
-                </table>
-                </td> 
+                </table></td> 
             </tr> 
           </table> 
-        </div>
+          </div> 
         </td> 
       <!-- body_text_eof --> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
@@ -625,13 +625,15 @@ if($_POST['num_rows'] > 0){
 </body>
 </html>
 <script type="text/javascript">
-$(document).ready(function(){ 
+$(document).ready(function(){
 <?php
   if($save_flag == true){
-    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'.  FILENAME_ACCOUNT_EDIT .'";'; 
+
+    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";';  
   }
   if($del_flag == true){
-    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";'; 
+ 
+    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";';
   }
 ?>
 });
