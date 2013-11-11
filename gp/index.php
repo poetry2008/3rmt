@@ -62,8 +62,10 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
       <!-- body_text //-->
 <?php
 if ($category_depth == 'nested') {
+  // 一级分类页面, 分类下只有子分类无商品
   require(DIR_WS_ACTIONS.'index_nested.php');
-} elseif ($_GET['tags_id']) {
+} elseif (isset($_GET['tags_id'] )) {
+  // 根据标签tags_id取得产品列表
   require(DIR_WS_ACTIONS.'index_tags.php');
 ?>
   <td valign="top" id="contents_long">
@@ -82,9 +84,10 @@ if ($category_depth == 'nested') {
         <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?></div></div>
         </td>
 <?php
-} elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
+} elseif ($category_depth == 'products' || isset($_GET['manufacturers_id'])) {
+  // 根据当前分类或者生产商manufacturers_id商品列表
   require(DIR_WS_ACTIONS.'index_products.php');
-?> 
+?>
   <td valign="top" id="contents_long">
 <?php
   if (tep_show_warning($current_category_id)) {
@@ -100,8 +103,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1></div>
-    <div class="comment_long"><div class="comment_long_text01"><?php echo
-    str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?>
+    <div class="comment_long"><div class="comment_long_text01"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase ?>
         <?php
           $has_ca_single = false; 
         ?>
@@ -114,9 +116,9 @@ if ($category_depth == 'nested') {
           from (
             select c.categories_id, 
                    cd.categories_name, 
+                   cd.categories_status, 
                    c.categories_image, 
                    c.parent_id,
-                   cd.categories_status, 
                    cd.site_id,
                    c.sort_order
             from " .  TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
@@ -136,7 +138,7 @@ if ($category_depth == 'nested') {
       echo '<td>&nbsp;</td>'; 
     }
     while ($categories = tep_db_fetch_array($categories_query)) {
-      $has_ca_single = true; 
+      $has_ca_single = true;
       $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
@@ -149,14 +151,15 @@ if ($category_depth == 'nested') {
       }
   }
 ?> 
-          </tr>
-        </table>
+      </tr>
+    </table>
     <?php
-     } 
+    } 
     ?>
     <h2 class="line"><?php
-  if($_GET['cPath']) {
+  if(isset($_GET['cPath']) && $_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);
+    //返回一级分类的图像
     $_categories = tep_get_category_by_id($categories_path[0], SITE_ID, $languages_id);
     echo $_categories['categories_name'];
   } else {
@@ -164,7 +167,7 @@ if ($category_depth == 'nested') {
   }
  
 ?></h2>
-      <?php 
+    <?php 
       if (isset($_GET['cPath'])) {
         $listing_tmp_sql = $listing_sql;
         $list_tmp_query = tep_db_query($listing_tmp_sql);
@@ -207,12 +210,12 @@ if ($category_depth == 'nested') {
       ?>
       </td> 
 <?php
-} elseif($_GET['colors'] && !empty($_GET['colors'])) {
+} elseif(isset($_GET['colors']) && !empty($_GET['colors'])) {
+  // 根绝颜色color_id取得商品列表
   require(DIR_WS_ACTIONS.'index_colors.php');
-} elseif($_GET['action'] && $_GET['action'] == 'select') { 
-  require(DIR_WS_ACTIONS.'index_select.php');
-} else { 
-  $default_bottom = true; 
+
+} else {
+  // 默认显示首页
   require(DIR_WS_ACTIONS.'index_default.php');
 ?>
 <?php 
