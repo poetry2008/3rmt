@@ -21,10 +21,10 @@
     tep_session_register('mag_name');
     
     if(empty($mag_name)) {
-      tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_NAME_ERROR), 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_NAME_ERROR), 'SSL'));
     }
     if (!tep_validate_email($mag_mail)) {
-      tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
     }
     
      
@@ -32,17 +32,18 @@
     $regist_result = tep_db_fetch_array($regist_query);
     if($regist_result['cnt'] == '0') {
       //注册
-       
-      tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
-      
-      tep_session_unregister('mag_mail');
-      tep_session_unregister('mag_name');
+ 
+    tep_db_query("insert into " . TABLE_MAIL_MAGAZINE . "(mag_id, mag_email, mag_name, site_id) values ('', '".$mag_mail."', '".$mag_name."', '".SITE_ID."')");
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
       tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_SUCCESS), 'SSL'));
     } else {
       //注册完毕
-      tep_session_unregister('mag_mail');
-      tep_session_unregister('mag_name');
-      tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_ALREADY), 'SSL'));
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_ALREADY), 'SSL'));
     }
     break;
     
@@ -50,25 +51,25 @@
     //删除注册信息（退会）
     $mag_mail = tep_db_prepare_input(tep_an_zen_to_han($_POST['email']));
     if (!tep_validate_email($mag_mail)) {
-      tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_EMAIL_ERROR), 'SSL'));
     }
-
-     
+ 
     $regist_query = tep_db_query("select count(*) as cnt from " .  TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
     $regist_result = tep_db_fetch_array($regist_query);
     if($regist_result['cnt'] == '0') {
       //没有注册信息：错误
-      tep_session_unregister('mag_mail');
-      tep_session_unregister('mag_name');
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
       tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'error_message='.urlencode(TEXT_MAGAZINE_STOP_ERROR), 'SSL'));
     } else {
       //删除注册信息处理（退会）
-       
-      TEP_DB_QUery("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
-      
-      tep_session_unregister('mag_mail');
-      tep_session_unregister('mag_name');
-      tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_STOP), 'SSL'));
+  
+    tep_db_query("delete from " . TABLE_MAIL_MAGAZINE . " where mag_email = '".$mag_mail."' and site_id = '".SITE_ID."'");
+    
+    tep_session_unregister('mag_mail');
+    tep_session_unregister('mag_name');
+    tep_redirect(tep_href_link(FILENAME_MAGAZINE, 'info_message='.urlencode(TEXT_MAGAZINE_STOP), 'SSL'));
     }
     
     break;  
@@ -78,7 +79,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body>
+<body> 
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof --> 

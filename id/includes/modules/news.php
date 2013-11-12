@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- latest_news_index -->
+<!-- latest_news -->
 <div class="latest_news_home">
 <h2 class="pageHeading_05">
 <span class="game_t game_t02">
@@ -30,14 +30,14 @@
     } else {
       $info_box_contents = array();
       $info_box_contents[] = array('align' => 'left',
-                                 'text'  => TABLE_HEADING_LATEST_NEWS);
+                                                'text'  => TABLE_HEADING_LATEST_NEWS);
       // new contentBoxHeading($info_box_contents);
 
     $info_box_contents = array();
     $row = 0;
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES .  'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '28', '14');
+      $latest_news_image = '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '28', '14');
     } else {
       $latest_news_image = '';
     }
@@ -56,5 +56,6 @@ $row++;
     <div align="right" style="padding: 0 10px 0px 0px;">
         <a class="more_news" href='<?php echo tep_href_link('news.php');?>'><?php echo TEXT_MODULE_NEWS_MORE;?></a>
     </div>
-</div><!-- latest_news_eof -->
+</div>
+<!-- latest_news_eof -->
 </div><!-- latest_news_home_eof -->
