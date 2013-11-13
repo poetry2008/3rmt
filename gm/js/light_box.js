@@ -241,7 +241,7 @@ document.onclick=function(e){
   var e=e?e:window.event;  
   var tar = e.srcElement||e.target;  
 
-  if(tar.id!="img_parents_center" && tar.id!="nextLink" && tar.id!="prevLink" && tar.id!="large_image_show" && tar.id!="lightbox_title_text" && tar.id!="lightbox_title_close" && tar.tagName.toLowerCase() == 'div'){  
+  if(tar.id!="img_parents_center" && tar.id!="nextLink" && tar.id!="prevLink" && tar.id!="large_image_show" && tar.id!="lightbox_title_text" && tar.id!="lightbox_title_close" && tar.id!="loading" && tar.tagName.toLowerCase() == 'div'){  
     for(x in close_array){
       if(document.getElementById(close_array[x]+"_close")){
         var em_close=document.getElementById(close_array[x]+"_close");
