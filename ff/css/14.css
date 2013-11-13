@@ -1095,7 +1095,6 @@ Footer
 }
 .subcategory_tree{
 list-style-type:none;
-margin-top:-15px\9;
 }
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
@@ -1403,8 +1402,7 @@ TABLE：Info Box
 	/*background: #fff;
 	border: solid 1px #ddd;*/
 }
-.product_info_box table td a { font-size:12px;}
-.product_info_box td .box_text a { font-size:10px;}
+.product_info_box td .box_text a,.product_info_box table td a { font-size:10px;}
 .product_info_box a { font-size:12px;}
 .product_info_box .small_table{
 	width: 95%;

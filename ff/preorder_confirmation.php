@@ -105,7 +105,7 @@ if(!isset($_SESSION['submit_flag'])){
 <?php echo tep_draw_form('preorder_confirmation', tep_href_link(FILENAME_PREORDER_PROCESS,'action=process','SSL'), 'post', '');?>
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
 <tr> 
-<td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+<td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 <!-- left_navigation_eof //--> </td> 
 <!-- body_text //--> 
@@ -137,7 +137,8 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
 ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <tr> 
-  <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <td width="20%">
+  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <tr> 
   <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
   <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
@@ -166,21 +167,13 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
 </tr> 
 </table></td> 
 </tr> 
-<tr>
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-</tr>
 <tr> 
 <td>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" class="cg_pay_info"> 
+<table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td> 
-<td class="main" align="right"><a href="javascript:void(0);" onclick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a></td> 
+<td class="main" align="right"><a href="javascript:void(0);" onClick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a></td> 
 </tr> 
-</table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-</tr>
 </table>
 <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
 <?php
@@ -307,9 +300,6 @@ $preorder_products_array = array(
 </tr> 
 </table></td> 
 </tr> 
-<tr> 
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-</tr>  
 <?php
 $payment = $_POST['pre_payment'];
 if (!$payment_modules->moduleIsEnabled($payment)){
@@ -384,18 +374,12 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><sp
 </td></tr></table>
 </td>
 </tr>
-<tr>
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-</tr> 
 
 <?php
 }
 ?>
 <tr> 
 <td style="color: #000; font-size: 12px; padding: 10px 10px 10px 8px; background: url(images/design/box/dot.gif) bottom repeat-x;">&nbsp;<b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
-</tr> 
-<tr> 
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 <tr> 
 <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
@@ -443,13 +427,7 @@ if (is_array($payment_modules->modules)) {
   if ($confirmation = $payment_modules->confirmation($payment)) {
     ?> 
       <tr> 
-      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-      </tr> 
-      <tr> 
       <td style="color: #000; font-size: 12px; padding: 10px 10px 10px 8px; background: url(images/design/box/dot.gif) bottom repeat-x;">&nbsp;<b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td> 
-      </tr> 
-      <tr> 
-      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
       <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
@@ -481,10 +459,7 @@ if (is_array($payment_modules->modules)) {
       <?php
   }
 }
-?> 
-<tr> 
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-</tr> 
+?>  
 <?php
 //顾客备注信息
 if (tep_not_null($_POST['yourmessage'])) {
@@ -513,7 +488,7 @@ if (tep_not_null($_POST['yourmessage'])) {
 }
 ?> 
 <tr> 
-<td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="cg_pay_info"> 
+<td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
 <td align="right" class="main"> <?php
@@ -525,9 +500,6 @@ echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER) . '</a></for
 ?> </td> 
 </tr> 
 </table></td> 
-</tr> 
-<tr> 
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 </table>
 </div>
