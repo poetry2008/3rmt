@@ -152,8 +152,8 @@ function fnCreate(src,num){
             element_boder.appendChild(element_title);
             document.body.appendChild(element_ground);
             document.body.appendChild(element);
-            document.getElementById("nextLink").style.height = img.height+20;
-            document.getElementById("prevLink").style.height = img.height+20;
+            document.getElementById("nextLink").style.height = (img.height+20)+'px';
+            document.getElementById("prevLink").style.height = (img.height+20)+'px';
             if(now_index > 1){
            
               document.getElementById("img_parents_border_left").style.display = "block";

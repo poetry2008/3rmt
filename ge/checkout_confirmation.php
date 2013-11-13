@@ -689,9 +689,10 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
               <td>
                 <table border="0" cellspacing="0" cellpadding="2" class="box_des">
                   <tr>
-                    <td class="main" colspan="4"><?php echo str_replace(' />','>',$confirmation['title']); ?></td>
+                    <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td>
                   </tr>
                   <?php
+      if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?>
                   <tr>

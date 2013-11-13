@@ -616,7 +616,6 @@
     // Add event listener to all clicks within the features container
     // This is done to disable any links that aren't within the center feature
     $("a", pluginData.containerIDTag).live("click", function (event) {
-      this.href="javascript:void(0);";
       // travel up to the container
       var $parents = $(this).parentsUntil(pluginData.containerIDTag);
       // now check each of the feature divs within it
