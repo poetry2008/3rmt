@@ -122,7 +122,7 @@
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+      <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border">
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       </td>
       <td valign="top" id="contents"><?php echo tep_draw_form('order', tep_href_link(FILENAME_PREORDER_SUCCESS, 'action=update', 'SSL')); ?>

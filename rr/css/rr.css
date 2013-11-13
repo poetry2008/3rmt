@@ -68,10 +68,9 @@ H4 {
 }
 .comment {
 	width:698px;
-	width:708px\9;
+	*width:708px;
 	background:url(../images/design/comment_middle.gif) repeat-y;
 	overflow:hidden;
-	*overflow:inherit;
 	margin-top:3px;
 	margin-bottom:5px;
 	border-bottom:1px solid #373737;
@@ -664,7 +663,8 @@ Ranking
 	overflow: hidden;
 	padding-left:13px;
 	color:#bbb;
-	width:140px;
+	width:135px;
+	*width:145px;
 	display:block;
 	float:left;
 }
@@ -695,7 +695,11 @@ Ranking
 	padding-bottom: 20px;
 }
 #contents{
-	width:690px;
+	width:708px;
+	float:left;
+}
+#contents_long{
+	width:707px;
 	float:left;
 }
 .left_colum_border{ padding-left:5px; width:173px; padding-top:1px;}
@@ -985,7 +989,8 @@ Page Title
 .pageHeading {
 	background: url(../images/design/contents/headding_title.gif) no-repeat 0 bottom;
 	width:653px;
-	width:708px\9;
+	*width:707px!important;
+	width:653px\0;
 	font-size:12px;
 	font-weight:bold;
     height: 29px;
@@ -1162,7 +1167,6 @@ margin-top:-15px\9;
 	padding:5px;
 }
 .product_list_info{
-	width:684px;
 	padding:10px 0;
 	margin:10px auto;
 }
@@ -1826,6 +1830,7 @@ margin:5px 0 2px 0;
 overflow:hidden;
 padding:5px 7px;
 border:2px solid #FF8080;
+width:690px;
 }
 .waring_product{
 color:#000;
@@ -1834,6 +1839,7 @@ overflow:hidden;
 padding:5px 7px;
 background-color:#e2e2e2;
 border:1px solid #CAC6BE;
+width:690px;
 }
 .product_list02 span{ font-size:10px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
@@ -1872,7 +1878,7 @@ border:1px solid #CAC6BE;
 	color: #fff;
     margin: 3px auto;
     padding: 5px;
-	width:698px;
+
 }
 .p_image01 {
     width: 200px;
