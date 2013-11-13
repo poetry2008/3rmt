@@ -3,6 +3,8 @@ var title_list;
 var now_index=0;
 var close_array = Array('element_ground','element_boder','title_boder','element','title_div','element_title');
 var em_close;
+var min_width = 120;
+var img_width;
 //create images
 function fnCreate(src,num){
        
@@ -30,6 +32,12 @@ function fnCreate(src,num){
             img.setAttribute('src',src);
             var imgwd = img.width;
             var imghg = img.height;
+
+            img_width = img.width;
+            if(img.width < min_width){
+            
+              img_width = min_width;
+            }
             
             if(imgwd<1)
             {
@@ -100,10 +108,10 @@ function fnCreate(src,num){
             img_parents_center.setAttribute('id','img_parents_center');
             img_parents_center_left.setAttribute('id','img_parents_border_left');
             img_parents_center_right.setAttribute('id','img_parents_border_right');
-            img_parents.style.cssText = 'width:'+(img.width+20)+'px;height:100%;margin: 0px auto; z-index: 149;background-color: rgb(255, 255, 255);';
-            img_parents_top.style.cssText = 'width:'+(img.width+20)+'px;height:10px;margin: 0px auto; z-index: 149;background-color: rgb(255, 255, 255);';
-            img_parents_footer.style.cssText = 'width:'+(img.width+20)+'px;height:10px;margin: 0px auto; z-index: 149;background-color: rgb(255, 255, 255);';
-            img_parents_center.style.cssText = 'position:absolute;top:0;width:'+(img.width+20)+'px;height:100%;margin: 0px auto;';
+            img_parents.style.cssText = 'width:'+(img_width+20)+'px;height:100%;margin: 0px auto; z-index: 149;background-color: rgb(255, 255, 255);';
+            img_parents_top.style.cssText = 'width:'+(img_width+20)+'px;height:10px;margin: 0px auto; z-index: 149;background-color: rgb(255, 255, 255);';
+            img_parents_footer.style.cssText = 'width:'+(img_width+20)+'px;height:10px;margin: 0px auto; z-index: 149;background-color: rgb(255, 255, 255);';
+            img_parents_center.style.cssText = 'position:absolute;top:0;width:'+(img_width+20)+'px;height:100%;margin: 0px auto;';
             //create element
             element_boder.appendChild(img_parents_top);
             element_boder.appendChild(img_parents);
@@ -129,7 +137,7 @@ function fnCreate(src,num){
             var title_boder = document.createElement('div');
             //title div
             title_close = '<div id="lightbox_title_close" style="position: relative;z-index: 150;height:26px;background-color: rgb(255, 255, 255);">&nbsp;<div style="float:right;background-color: rgb(255, 255, 255);" onclick=\''+closefunction+'\'><a href="javascript:void(0);"><img src="images/close.gif"></a></div></div>';
-            title_text = '<div id="lightbox_title_text" style="width:'+(imgwd+20)+'px;background-color: rgb(255, 255, 255);"><b>'+show_title+'('+now_index+'/'+image_lenght+')</b></div>';
+            title_text = '<div id="lightbox_title_text" style="width:'+(img_width+20)+'px;background-color: rgb(255, 255, 255);"><b>'+show_title+'('+now_index+'/'+image_lenght+')</b></div>';
 
             if(now_index == 0){title_text = '';}
             //close div
@@ -137,7 +145,7 @@ function fnCreate(src,num){
             title_boder.appendChild(title);
             title_boder.setAttribute('class',ClassName);
             title_boder.setAttribute('id','title_boder_close');
-            title_boder.style.cssText = 'width:'+(imgwd+20)+'px;height:22px;margin: 0px auto; z-index: 151;background-color: rgb(255, 255, 255);';
+            title_boder.style.cssText = 'width:'+(img_width+20)+'px;height:22px;margin: 0px auto; z-index: 151;background-color: rgb(255, 255, 255);';
             title_div.appendChild(title_boder);
             title_div.setAttribute('class',ClassName);
             title_div.setAttribute('id','title_div_close');
