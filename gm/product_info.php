@@ -46,15 +46,6 @@ $(document).ready(function() {
       smallFeatureWidth:   <?php echo  PRODUCT_INFO_IMAGE_WIDTH/2;?>,
       smallFeatureHwight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT/2;?>,
     });
-  //$("#carousel a").lightBox();
-});
-</script>
-<?php
-}else{
-?>
-<script type="text/javascript">
-$(document).ready(function() {
-  $(".light").lightBox();
 });
 </script>
 <?php

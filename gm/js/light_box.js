@@ -8,7 +8,11 @@ function fnCreate(src,num){
        
             //get images info
             image_list = getClass('input','large_image_input');
-            title_list = getClass('img','carousel-image');
+            if(image_list.length > 1){
+              title_list = getClass('img','carousel-image');
+            }else{
+              title_list = getClass('img','product-carousel-image');  
+            }
             var image_lenght = image_list.length;
             if(title_list[0]){
               var show_title = title_list[0].alt;
