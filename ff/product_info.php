@@ -24,12 +24,10 @@
   require(DIR_WS_ACTIONS . 'product_info.php');
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 var jq = jQuery.noConflict();
 </script>
-<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/light_box.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
