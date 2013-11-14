@@ -150,8 +150,8 @@ if (0 < $num_products) {
       </table>
       <div class="dot">&nbsp;</div>
     </td>
-  </tr>
-<?php
+  </tr>     
+<?php      
   }
 ?>
 </table>

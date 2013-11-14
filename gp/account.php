@@ -4,7 +4,7 @@
 */
 
   require('includes/application_top.php');
-
+//如果没有登陆 则在历史中加上此页，并跳转到登录页
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
@@ -47,7 +47,7 @@
       WHERE c.customers_id = '" . $customer_id . "' AND a.customers_id = c.customers_id AND a.address_book_id = '" .  $customer_default_address_id . "' AND  c.site_id = ".SITE_ID);
   $account              = tep_db_fetch_array($account_query);
   $check_ac_single = 1;
-  require(DIR_WS_MODULES . 'account_details.php');
+   require(DIR_WS_MODULES . 'account_details.php');
 ?>
           </td>
         </tr>

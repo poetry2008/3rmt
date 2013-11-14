@@ -96,7 +96,6 @@
   if (0 < $num_products || BOX_NEW_PRODUCTS_DAY_LIMIT) {
     $info_box_contents = array();
     $info_box_contents[] = array('text' => sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')));
- //   new contentBoxHeading($info_box_contents);
     $row = 0;
     $col = 0;
 ?>
