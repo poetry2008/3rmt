@@ -77,9 +77,9 @@
            p.products_small_sum, 
            p.products_tax_class_id, 
            p.products_image, 
+           p.products_date_added,
            p.products_bflag, 
            pd.products_status, 
-           p.products_date_added,
            pd.site_id
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where 
@@ -92,11 +92,11 @@
   where site_id = '0'
      or site_id = '".SITE_ID."'
   group by products_id
-  having p.products_status != '0' and p.products_status != '3'
+  having p.products_status != '0' and p.products_status != '3' 
   order by products_date_added DESC
   ";
   $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
-   
+  
   $specials_query = tep_db_query($specials_query_raw);
   
   if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
@@ -132,7 +132,7 @@
     echo '<img src="images/design/button/button_order.gif" width="69" height="17" alt="'.SPECIAL_CONFIRM_ORDER.'"></a><br>';
     
     echo '<s>' .
-      $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'], $specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
+      $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'],$specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
     if ((($row / 3) == floor($row / 3))) {
 ?>
                 </tr>
