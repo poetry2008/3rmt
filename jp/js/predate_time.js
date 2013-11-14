@@ -209,44 +209,44 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         var temp_value = 0;
         if(hour < 6){
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-              temp_value = -79;
+              temp_value = -80;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -79;
+              temp_value = -80;
             } else {
-              temp_value = -77;
+              temp_value = -79;
             }
           }
         }else if(hour >= 6 && hour <= 11){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-              temp_value = -56;
+              temp_value = -58;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -56;
+              temp_value = -58;
             } else {
-              temp_value = -55;
+              temp_value = -57;
             }
           }
         }else if(hour >= 12 && hour <= 17){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-            temp_value = -34;
+            temp_value = -36;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -34;
+            temp_value = -36;
           } else {
-            temp_value = -33;
+            temp_value = -35;
           }
           }
         }else{
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-            temp_value = -12;
+            temp_value = -14;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -12;
+            temp_value = -14;
           } else {
-            temp_value = -11;
+            temp_value = -13;
           }
           }
         }

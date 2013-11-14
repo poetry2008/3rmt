@@ -1403,7 +1403,6 @@ TABLE：Info Box
 }
 .infoBox .product_info_box{ overflow:hidden; width:500px;}
 .product_info_box{
-	width:680px;
 	margin:2px auto;
 	padding:2px;
 	color:#fff;
@@ -1912,6 +1911,8 @@ width:690px;
  display:block;
  table-layout:fixed;
  width:690px;
+ *width:690px!important;
+  width:670px\0;
 }
 .active_email{width:77%;}
 .active_email input{ width:100%;}

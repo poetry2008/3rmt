@@ -718,7 +718,7 @@ document.forms.order1.submit();
           <?php
           echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'SSL')).tep_draw_hidden_field('action', 'process'); 
           ?>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="2" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
@@ -1317,7 +1317,7 @@ if (isset($time_error)) {
           <br>
           <?php
           }?> 
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="2" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 

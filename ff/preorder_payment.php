@@ -274,8 +274,7 @@ $(document).ready(function(){
 ?>
       <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
             <div class="comment">
-             <table class="product_info_box"><tr><td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
+             <table class="product_info_box" border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
@@ -306,7 +305,7 @@ $(document).ready(function(){
                   </tr> 
                 </table></td> 
             </tr>
-</table>
+            <tr><td>
       <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']).tep_draw_hidden_field('action', 'process'); 
               $op_info_array = array(); 
               foreach ($_POST as $op_s_key => $op_s_value) {

@@ -331,7 +331,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
     </td>
     <!-- body_text -->
     <td valign="top" id="contents">
-      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><h1><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1></div>
+      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></div>
             <div class="comment">
       <p>
         <?php echo STORE_NAME.TEXT_PREORDER_IN;?>
