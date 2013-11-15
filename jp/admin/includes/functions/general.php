@@ -1742,11 +1742,13 @@ function tep_output_generated_category_path($id, $from = 'category') {
     返回值: 无 
  ------------------------------------ */
 function tep_remove_category($category_id) {
+  /*
   $category_image_query = tep_db_query("select categories_image from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
   $category_image = tep_db_fetch_array($category_image_query);
 
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where categories_image = '" . tep_db_input($category_image['categories_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
+  */
 
 
   tep_db_query("delete from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
@@ -1765,11 +1767,13 @@ function tep_remove_category($category_id) {
     返回值: 无
  ------------------------------------ */
 function tep_remove_product($product_id) {
+  /*
   $product_image_query = tep_db_query("select products_image from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   $product_image = tep_db_fetch_array($product_image_query);
 
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " where products_image = '" . tep_db_input($product_image['products_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
+  */
 
   tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
@@ -3416,9 +3420,9 @@ function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
           p.products_real_quantity, 
           p.products_virtual_quantity, 
           p.products_model, 
-          p.products_image, 
-          p.products_image2, 
-          p.products_image3, 
+          pd.products_image, 
+          pd.products_image2, 
+          pd.products_image3, 
           p.products_price, 
           p.products_price_offset, 
           p.products_date_added, 
@@ -3462,9 +3466,9 @@ function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
              p.products_real_quantity, 
              p.products_virtual_quantity, 
              p.products_model, 
-             p.products_image, 
-             p.products_image2, 
-             p.products_image3, 
+             pd.products_image, 
+             pd.products_image2, 
+             pd.products_image3, 
              p.products_price, 
              p.products_price_offset, 
              p.products_date_added, 
@@ -9749,9 +9753,9 @@ function tep_get_pinfo_by_pid($pid,$site_id=0)
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 
                  p.products_model, 
-                 p.products_image,
-                 p.products_image2,
-                 p.products_image3, 
+                 pd.products_image,
+                 pd.products_image2,
+                 pd.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
                  p.products_weight, 

@@ -14,7 +14,7 @@
                p.products_tax_class_id, 
                p.products_bflag, 
                pd.products_status, 
-               p.products_image
+               pd.products_image
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd
         where (p.products_price_offset != '' or p.products_small_sum != '')
           and pd.language_id = '" . $languages_id . "' 
@@ -27,24 +27,6 @@
         order by p.products_date_added desc 
         limit " . MAX_RANDOM_SELECT_SPECIALS
         )) {
-/*
-  if ($random_product = tep_random_select("
-        select p.products_id, 
-               pd.products_name,
-               p.products_price, 
-               p.products_tax_class_id, 
-               p.products_image, 
-               s.specials_new_products_price 
-        from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_SPECIALS . " s 
-        where p.products_status != '0' 
-          and p.products_id = s.products_id 
-          and pd.products_id = s.products_id 
-          and pd.language_id = '" . $languages_id . "' 
-          and s.status = '1' 
-        order by s.specials_date_added desc 
-        limit " . MAX_RANDOM_SELECT_SPECIALS
-        )) {
-*/
 ?>
 <!-- specials //-->
           <tr>
