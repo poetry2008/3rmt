@@ -8,7 +8,7 @@
   if (isset($_GET['products_id'])) {
     
     $orders_sql = "
-        select * from (select o.date_purchased, pd.site_id, pd.products_status, p.products_id, p.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
+        select * from (select o.date_purchased, pd.site_id, pd.products_status, p.products_id, pd.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
           and o.orders_id = opa.orders_id
           and opa.orders_id = opb.orders_id 
           and opb.products_id != '" . (int)$_GET['products_id'] . "' 

@@ -26,7 +26,7 @@
            p.products_id, 
            pd.products_name, 
            pd.products_status, 
-           p.products_image, 
+           pd.products_image, 
            r.customers_name,
            pd.site_id as psid
     from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c 

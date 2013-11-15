@@ -65,9 +65,9 @@ echo "<!-- RSS for " . STORE_NAME . ", generated on " . date('r') . " -->\n";
 <?php
 // Create SQL statement
 if ($_GET['cPath'] != "") {
-  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC";
+  $sql = "SELECT p.products_id, products_model, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC";
 } else {
-  $sql = "SELECT products_id, products_model, products_image, products_price, products_tax_class_id FROM products ORDER BY products_id DESC";
+  $sql = "SELECT products_id, products_model,  products_price, products_tax_class_id FROM products ORDER BY products_id DESC";
 }
 // Execute SQL query and get result
  
@@ -81,10 +81,14 @@ while ($row = mysql_fetch_array($sql_result)) {
   }
   $id = $row["products_id"];
 
+  // RSS Links for Ultimate SEO 
   $link = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $id) ;
 
   $model = $row["products_model"];
-  $image = $row["products_image"];
+  $sql_image = "select products_image from products_description where products_id
+    ='".$row['products_id']."' order by site_id desc limit 1";
+  $image_row = mysql_fetch_array(mysql_query($sql_image));
+  $image = $image_row["products_image"];
   $price = $row["products_price"];
   $tax = $row["products_tax_class_id"];
 //  Add VAt if product subject to VAT (might not be perfect if you have different VAT zones)

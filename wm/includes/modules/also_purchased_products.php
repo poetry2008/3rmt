@@ -10,7 +10,7 @@
           pd.site_id,
           pd.products_status,
           o.date_purchased,
-          p.products_image 
+          pd.products_image 
         from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb,
         " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where opa.products_id = '" .  (int)$_GET['products_id'] . "' 

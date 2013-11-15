@@ -35,7 +35,7 @@
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-               p.products_image, 
+               pd.products_image, 
                p.products_tax_class_id, 
                p.products_price, 
                p.products_price_offset, 
@@ -53,7 +53,7 @@
     $new_products_query = tep_db_query("
         select * from (select distinct p.products_id, 
                         p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                        p.products_image, 
+                        pd.products_image, 
                         p.products_tax_class_id, 
                         p.products_price, 
                         p.products_price_offset, 
