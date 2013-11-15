@@ -87,9 +87,8 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $message->build_message();
   //Administrator
   $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
-  //ost
-  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title); 
-
+  $customer_email = $_SESSION['customer_emailaddress'];
+   
   //当错误发生时，清除SESSION
   
   //customer session destroy
@@ -152,11 +151,24 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   }else{
      $css_random_str = date('YmdHi', time());
   }
+  $_SESSION['error_name'] = $customer_name;
+  $_SESSION['error_email'] = $customer_email; 
+  $_SESSION['error_subject'] = $orders_mail_title; 
+  $_SESSION['error_message'] = strip_tags($orders_mail_text); 
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/notice.js"></script>
 <script type="text/javascript">
+$.ajax({
+  url: 'ajax_confirm_session_error.php?action=session',
+  data: '',
+  type: 'POST',
+  dataType: 'text',
+  async : false,
+  success: function(data){ 
+  }
+});
 $(document).ready(function() {
 var docheight = $(document).height();
 var screenwidth, screenheight, mytop, getPosLeft, getPosTop
