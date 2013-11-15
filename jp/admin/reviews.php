@@ -841,8 +841,9 @@ require("includes/note_js.php");
 
         $products_image_query = tep_db_query("
             select products_image 
-            from " . TABLE_PRODUCTS . " 
-            where products_id = '" . $reviews['products_id'] . "'
+            from " . TABLE_PRODUCTS_DESCRIPTION . " 
+            where products_id = '" . $reviews['products_id'] . "' order by site_id
+            desc limit 1
         ");
         $products_image = tep_db_fetch_array($products_image_query);
 
