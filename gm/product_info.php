@@ -40,29 +40,12 @@ foreach($p_image_list as $p_list_row){
 <link rel="stylesheet" href="css/feature-carousel.css" type="text/css">
 <script type="text/javascript">
 $(document).ready(function() {
-  $(".carousel-image").click(function (){
-
-    var src = this.src;
-    src_array = Array();
-    src_array = src.split('/');
-    src_length = src_array.length;
-    fnCreate('<?php echo DIR_WS_IMAGES.'products/';?>'+src_array[src_length-1]);
-  });
   var carousel = $("#carousel").featureCarousel({
       largeFeatureWidth:   <?php echo  PRODUCT_INFO_IMAGE_WIDTH;?>,
       largeFeatureHeight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT;?>,
       smallFeatureWidth:   <?php echo  PRODUCT_INFO_IMAGE_WIDTH/2;?>,
       smallFeatureHwight:  <?php echo  PRODUCT_INFO_IMAGE_HEIGHT/2;?>,
     });
-  //$("#carousel a").lightBox();
-});
-</script>
-<?php
-}else{
-?>
-<script type="text/javascript">
-$(document).ready(function() {
-  $(".light").lightBox();
 });
 </script>
 <?php

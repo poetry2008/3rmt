@@ -197,7 +197,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
             }
         }
          
-          html_str += '<td><input type="hidden" name="hour" value="'+hour+'"><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><div id="shipping_time_id" class="shipping_time">'+string+'</div></td>';
+          html_str += '<td><input type="hidden" name="hour" value="'+hour+'"><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><div id="shipping_time_id" class="shipping_time_preorder">'+string+'</div></td>';
           
 
           html_str += '</tr><tr></table>'; 
@@ -209,44 +209,44 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         var temp_value = 0;
         if(hour < 6){
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-              temp_value = -79;
+              temp_value = -80;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -79;
+              temp_value = -80;
             } else {
-              temp_value = -77;
+              temp_value = -79;
             }
           }
         }else if(hour >= 6 && hour <= 11){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-              temp_value = -56;
+              temp_value = -58;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -56;
+              temp_value = -58;
             } else {
-              temp_value = -55;
+              temp_value = -57;
             }
           }
         }else if(hour >= 12 && hour <= 17){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-            temp_value = -34;
+            temp_value = -36;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -34;
+            temp_value = -36;
           } else {
-            temp_value = -33;
+            temp_value = -35;
           }
           }
         }else{
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-            temp_value = -12;
+            temp_value = -14;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -12;
+            temp_value = -14;
           } else {
-            temp_value = -11;
+            temp_value = -13;
           }
           }
         }

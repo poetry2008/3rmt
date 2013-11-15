@@ -85,7 +85,62 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $text = $orders_mail_text;
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
+  //Administrator
   $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+  $customer_email = $_SESSION['customer_emailaddress'];
+   
+  //当错误发生时，清除SESSION
+  
+  //customer session destroy
+  tep_session_unregister('customer_id');
+  tep_session_unregister('customer_default_address_id');
+  tep_session_unregister('customer_first_name');
+  tep_session_unregister('customer_last_name');
+  tep_session_unregister('customer_country_id');
+  tep_session_unregister('customer_zone_id');
+  tep_session_unregister('comments');
+  tep_session_unregister('customer_emailaddress');
+
+  //products session destroy
+  tep_session_unregister('shipping');
+  tep_session_unregister('payment');
+  tep_session_unregister('comments');
+  tep_session_unregister('point');
+  tep_session_unregister('get_point');
+  tep_session_unregister('real_point');
+  tep_session_unregister('torihikihouhou');
+  tep_session_unregister('date');
+  tep_session_unregister('hour');
+  tep_session_unregister('min');
+  tep_session_unregister('insert_torihiki_date');
+  unset($_SESSION['character']);
+  unset($_SESSION['option']);
+  unset($_SESSION['referer_adurl']);
+  unset($_SESSION['campaign_fee']);
+  unset($_SESSION['camp_id']);
+  tep_session_unregister('h_code_fee');
+  tep_session_unregister('h_point');
+
+  //shipping session destroy
+  tep_session_unregister('start_hour');
+  tep_session_unregister('start_min');
+  tep_session_unregister('end_hour');
+  tep_session_unregister('end_min');
+  tep_session_unregister('ele');
+  tep_session_unregister('address_option');
+  tep_session_unregister('insert_torihiki_date_end');
+  tep_session_unregister('address_show_list');
+  unset($_SESSION['options']);
+  unset($_SESSION['options_type_array']);
+  unset($_SESSION['weight_fee']);
+  unset($_SESSION['free_value']);
+  tep_session_unregister('hc_point');
+  tep_session_unregister('hc_camp_point');
+  unset($_SESSION['shipping_page_str']);
+  unset($_SESSION['shipping_session_flag']);
+
+  //清空购物车
+  $cart->reset(); 
 
   $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
   $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
@@ -96,11 +151,24 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   }else{
      $css_random_str = date('YmdHi', time());
   }
+  $_SESSION['error_name'] = $customer_name;
+  $_SESSION['error_email'] = $customer_email; 
+  $_SESSION['error_subject'] = $orders_mail_title; 
+  $_SESSION['error_message'] = strip_tags($orders_mail_text); 
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/notice.js"></script>
 <script type="text/javascript">
+$.ajax({
+  url: 'ajax_confirm_session_error.php?action=session',
+  data: '',
+  type: 'POST',
+  dataType: 'text',
+  async : false,
+  success: function(data){ 
+  }
+});
 $(document).ready(function() {
 var docheight = $(document).height();
 var screenwidth, screenheight, mytop, getPosLeft, getPosTop

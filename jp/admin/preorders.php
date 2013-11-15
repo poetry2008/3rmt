@@ -1248,7 +1248,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><?php echo TEXT_ORDER_USERAGENT;?></td>
-                  <td class="main" style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
+                  <td class="main" style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php if ($order->info['orders_user_agent']) {?>
                 <tr>

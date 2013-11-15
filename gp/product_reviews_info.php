@@ -50,8 +50,8 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
-<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
-<script type="text/javascript" src="js/lightbox.js"></script>
+  <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
+<script type="text/javascript" src="js/light_box.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript"><!--
 function popupImageWindow(url) {
@@ -89,7 +89,7 @@ function showimage($1) {
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td class="smallText" align="right">
-          <a href="<?php echo DIR_WS_IMAGES . 'products/' .  $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?></a></td>
+          <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>',0)" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
                   </tr>
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 

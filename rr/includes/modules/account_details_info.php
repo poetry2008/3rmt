@@ -608,7 +608,6 @@ $(document).ready(function(){
           tep_db_free_result($address_orders_history_query);
           $sylte_none = $address_orders_history_num > 0 ? '' : 'style="display:none;"';
   ?>
-        <input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
         <input type="hidden" id="email" name="email_address" value="">
@@ -626,7 +625,7 @@ $(document).ready(function(){
         <td class="main">
         <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%" class="table_select">
         <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="93"><?php echo
-        TITLE_ADDRESS_OPTION;?></td><td class="main"><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
+        TITLE_ADDRESS_OPTION;?></td><td class="main"><input type="hidden" id="address_flag_id" name="address_flag_id" value=""><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
        </td></tr>
         <?php       
           $hm_option->render('','',true); 

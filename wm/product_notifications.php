@@ -123,16 +123,15 @@
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
           <table width="100%">
           <tr>
-            <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
+            <td class="main" colspan="2"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
           <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
+            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
+            <td class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
+            <td align="right" class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
           </form>
-          <td class="smallText" align="right">
-          <table width="100%">
 <?php
   } else {
 ?>
@@ -164,7 +163,7 @@
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
+            <td class="main" align="right"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
           </tr>
           </table>
           </form>
@@ -208,7 +207,7 @@
     ");
     while ($products = tep_db_fetch_array($products_query)) {
       echo '          <tr>' . "\n" .
-           '            <td class="main">' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .
+           '            <td class="main" colspan="2">' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .
            '          </tr>' . "\n";
     }
 ?>
@@ -216,16 +215,11 @@
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo tep_image_submit('button_remove_notifications.gif', IMAGE_BUTTON_REMOVE_NOTIFICATIONS); ?></td>
-            <td class="main">
-            <table width="100%">
+            <td class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
+            <td align="right" class="main"><?php echo tep_image_submit('button_remove_notifications.gif', IMAGE_BUTTON_REMOVE_NOTIFICATIONS); ?></td>
 <?php
   }
 ?>
-          <tr>
-            <td align="right" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
-          </tr>
-        </table></td>
           </tr>
           </table>
           </form>

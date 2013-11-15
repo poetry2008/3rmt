@@ -849,11 +849,12 @@ News
 .reorder_link_info a{ 
 	background:url(../images/design/reorder_link.gif) 3px 0 no-repeat; 
 	width:110px;
-	*width:154px;
+	*width:147px;
 	height: 20px;
 	*height: 24px;
 	*margin-left:-3px;
-    padding: 4px 0 0 40px;
+    padding: 5px 0 0 46px;
+	*padding: 6px 0 0 44px;
 	display:block; 
 	color:#FFFFFF; 
 	font-size:12px; 
@@ -1095,7 +1096,6 @@ Footer
 }
 .subcategory_tree{
 list-style-type:none;
-margin-top:-15px\9;
 }
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both;}
@@ -1399,12 +1399,7 @@ TABLE：Info Box
 	width: 100%;
 /*	border: solid 1px #ddd; */
 }
-.product_info_box table td{
-	/*background: #fff;
-	border: solid 1px #ddd;*/
-}
-.product_info_box table td a { font-size:12px;}
-.product_info_box td .box_text a { font-size:10px;}
+.product_info_box td .box_text a,.product_info_box table td a { font-size:10px;}
 .product_info_box a { font-size:12px;}
 .product_info_box .small_table{
 	width: 95%;
@@ -1853,7 +1848,7 @@ line-height:16px;
 	background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
     margin: 3px 0;
-    padding: 5px;
+	padding:5px;
 }
 .payment_comment{ 
  word-wrap:break-word;
@@ -1879,7 +1874,6 @@ line-height:16px;
     border: 1px solid #CCCCCC;
     margin: 3px 0;
     padding: 5px;
-	padding:0\9;
 }
 .active_email_name { font-size:11px; width:80px;}
 .preorser_formArea{ background-color:#ccc; font-size:13px;}

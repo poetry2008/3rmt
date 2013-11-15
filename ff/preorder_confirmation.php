@@ -105,7 +105,7 @@ if(!isset($_SESSION['submit_flag'])){
 <?php echo tep_draw_form('preorder_confirmation', tep_href_link(FILENAME_PREORDER_PROCESS,'action=process','SSL'), 'post', '');?>
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
 <tr> 
-<td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+<td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 <!-- left_navigation_eof //--> </td> 
 <!-- body_text //--> 
@@ -171,10 +171,10 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
 </tr>
 <tr> 
 <td>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" class="cg_pay_info"> 
+<table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td> 
-<td class="main" align="right"><a href="javascript:void(0);" onclick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a></td> 
+<td class="main" align="right"><a href="javascript:void(0);" onClick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a></td> 
 </tr> 
 </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -513,7 +513,7 @@ if (tep_not_null($_POST['yourmessage'])) {
 }
 ?> 
 <tr> 
-<td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="cg_pay_info"> 
+<td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
 <td align="right" class="main"> <?php

@@ -272,7 +272,7 @@ $(document).ready(function(){
 <?php
   } else {
 ?>
-      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><h1><?php echo HEADING_TITLE; ?></h1></div>
+      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><?php echo HEADING_TITLE; ?></div>
             <div class="comment">
            <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 

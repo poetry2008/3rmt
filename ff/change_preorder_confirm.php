@@ -262,13 +262,13 @@ function check_preorder_op(pre_pid)
           <?php
           echo tep_draw_form('order', $form_action_url, 'post'); 
           ?>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="2" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
-                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
+                <a href="javascript:void(0);" onClick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
               </td>
             </tr>
           </table>
@@ -875,7 +875,7 @@ if (tep_not_null($preorder_array['comment_msg'])) {
 }
 ?>
 </table>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="2" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
@@ -884,7 +884,7 @@ if (tep_not_null($preorder_array['comment_msg'])) {
                 <?php
                 $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
                 ?>
-                <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
+                <a href="javascript:void(0);" onClick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
               </td>
             </tr>
           </table> 

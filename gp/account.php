@@ -4,19 +4,19 @@
 */
 
   require('includes/application_top.php');
-
+//如果没有登陆 则在历史中加上此页，并跳转到登录页
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 
-  # For Guest
+//如果是游客，则不在历史页中记录，仅是跳转 
   if($guestchk == '1') {
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
-
+//加载语言
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_ACCOUNT);
-
+//在面包中加入此 连接
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
 ?>
 <?php page_head();?>
@@ -33,22 +33,21 @@
       <!-- left_navigation_eof -->
       </td>
       <!-- body_text -->
-      <td valign="top" id="contents">
-      <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div>
-      <div class="comment">
+      <td valign="top" id="contents"><div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> <div class="comment">
       <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table" class="product_info_box">
         <tr>
-          <td><?php
-  $is_read_only = true;
-
+          <td>
+<?php
+//设置只读  用户第一次访问此页，并不想修改信息
+  $is_read_only       = true;
  
   $account_query = tep_db_query("
       SELECT c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter
       FROM " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a 
       WHERE c.customers_id = '" . $customer_id . "' AND a.customers_id = c.customers_id AND a.address_book_id = '" .  $customer_default_address_id . "' AND  c.site_id = ".SITE_ID);
-  $account = tep_db_fetch_array($account_query);
+  $account              = tep_db_fetch_array($account_query);
   $check_ac_single = 1;
-  require(DIR_WS_MODULES . 'account_details.php');
+   require(DIR_WS_MODULES . 'account_details.php');
 ?>
           </td>
         </tr>
@@ -109,7 +108,7 @@
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
       <!-- right_navigation_eof -->
       </td>
-    </tr>
+      </tr>
   </table>
   <!-- body_eof -->
   <!-- footer -->

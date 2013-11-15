@@ -12,12 +12,10 @@
   require(DIR_WS_ACTIONS . 'product_info.php');
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 var jq = jQuery.noConflict();
 </script>
-<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/light_box.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
@@ -365,7 +363,7 @@ function showimage($1) {
                         <td class="main"><?php echo $data4[1] ; ?></td>
                       </tr>
                       <?php } ?>
-                      <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ;?>
+                      <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo TEXT_POINT;?></font></td>
                         <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>

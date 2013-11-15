@@ -215,7 +215,7 @@ function check_preorder_op(pre_pid)
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-          <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1></div>
+          <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></div>
           <div class="comment">
           <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
             <tr>

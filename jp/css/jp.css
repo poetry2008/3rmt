@@ -74,6 +74,7 @@ H3 {
 .comment {
 	margin: 10px;
 	line-height:14px;
+	*width:100%;
 }
 .comment img { vertical-align:middle\9;}
 /* ---------------------------
@@ -218,7 +219,7 @@ header
 .header_Navigation_p {
 	line-height: 21px;
 	text-indent: 15px;
-	font-size: 11px;
+	font-size: 10px;
 	color: #2864B4;
 	margin: 0px;
 	padding: 0px;
@@ -726,8 +727,8 @@ TD.main, P.main {
 TD,SPAN：small text（message）
 --------------------------- */
 TD.smallText, SPAN.smallText, P.smallText {
-	font-size: 10px;
 	line-height: 1.5;
+	font-size:12px;
 }
 /* ---------------------------
 TD：account category
@@ -927,9 +928,6 @@ P.description {
 	font-size: 11px;
 	font-weight: bold;
 	color: #4A6175;
-}
-.smallText {
-	font-size: 10px;
 }
 #tabtable {
 	background-image: url(./images/design/top_tab/tab-bg.jpg);
@@ -1394,14 +1392,6 @@ header
 	height: 21px;
 	background-color: #EEF2F7;
 	border-top: 1px solid #ccc;
-}
-.header_Navigation_p {
-	line-height: 21px;
-	text-indent: 15px;
-	font-size: 11px;
-	color: #2864B4;
-	margin: 0px;
-	padding: 0px;
 }
 .left_colum_border {
 	border-right: 1px solid #cccccc;
@@ -1869,23 +1859,9 @@ TD.subBar {
 	font-size: 10px;
 	color: #000000;
 }
-/* ---------------------------
-TD：main
---------------------------- */
-TD.main, P.main {
-	font-size: 12px;
-	line-height: 1.5;
-}
 .main02 {
 	font-size: 11px;
 	padding:8px 0 5px 0;
-}
-/* ---------------------------
-TD,SPAN：small text（message）
---------------------------- */
-TD.smallText, SPAN.smallText, P.smallText {
-	font-size: 10px;
-	line-height: 1.5;
 }
 /* ---------------------------
 TD：account category
@@ -1961,12 +1937,6 @@ SPAN.markProductOutOfStock a{
 SPAN：prices are Catalog of special price 
 --------------------------- */
 SPAN.productSpecialPrice {
-	color: #ff0000;
-}
-/* ---------------------------
-SPAN：error
---------------------------- */
-SPAN.errorText {
 	color: #ff0000;
 }
 /* ---------------------------
@@ -2079,9 +2049,6 @@ P.description {
 	font-size:12px;
 	font-weight: bold;
 	color:#656565;
-}
-.smallText {
-	font-size: 10px;
 }
 #tabtable {
 	background-image: url(./images/design/top_tab/tab-bg.jpg);
@@ -2649,13 +2616,10 @@ searching
 /*shipping*/
 .shipping_error{
 	color:#ff0000;
-	font-size:12px;
 	line-height:1.5;
 }
-.shipping_time{
-/*    width: 338px;
-	*width:358px;
-*/	font-size:12px;
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
+	font-size:12px;
 	background:#383838;
 	line-height:25px;
     position:relative;
@@ -2664,10 +2628,36 @@ searching
 	overflow:hidden;
 	*overflow:none;
 }
-.shipping_time input{
-/*	margin-left:32px;
-	margin-left:28px\9;
-*/}
+.shipping_time_order{
+    width: 359px;
+	right:-16px;
+	*right:-5px;
+}
+.shipping_time_reorder{
+    width: 350px;
+	right:-16px;
+	*right:0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_reorder{
+    width: 350px;
+	right:-16px;
+}
+}
+.shipping_time_preorder{
+    width: 350px;
+	*width: 351px!important;
+	width: 350px\0;
+	right:-14px;
+	*right:-3px!important;
+	right:-14px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_preorder{
+    width: 350px;
+	right:-14px;
+}
+}
 .time_radio{
 	float:left;
 	margin-left:20px;

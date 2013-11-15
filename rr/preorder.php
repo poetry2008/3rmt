@@ -145,7 +145,7 @@ function change_num(value){
 <!-- body -->
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
   <tr>
-    <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+    <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border">
       <!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       <!-- left_navigation_eof -->
@@ -338,7 +338,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
 <!-- body -->
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
   <tr>
-    <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+    <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border">
       <!-- left_navigation -->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       <!-- left_navigation_eof -->
@@ -348,8 +348,9 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1>
             <div class="comment">
       <p>
-        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?>
         <?php 
+        echo $po_game_c.TEXT_PREORDER_BOOK_INFO;
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {

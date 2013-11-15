@@ -396,7 +396,7 @@ if (!isset($guestchk)) $guestchk = NULL;
     ?>
     <tr>
       <td class="main" width="93">&nbsp;</td>
-      <td class="main" style="font-size:10px;">
+      <td class="main">
       <?php echo $p_error_show_str;?> 
       </td>
     </tr>

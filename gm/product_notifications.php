@@ -127,24 +127,24 @@
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
-
-            <td><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
-    
-            </tr>
-
-       
-           <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
-          </tr>
-          
-          <tr>
-
             <td>
   <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
 
-            <div>
-            <?php echo tep_image_submit('button_update.gif',
-                IMAGE_BUTTON_UPDATE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_update.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_update_hover.gif\'"'); ?>           </div>
+            <table width="100%" class="botton-continue">
+              <tr>
+                <td colspan="2"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
+              </tr>
+              <tr>
+                <td align="left">
+                  <?php echo '<a href="' .  tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .  tep_image_button('button_back.gif', IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?>
+                </td>
+                <td align="right">
+                  <?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_update.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_update_hover.gif\'"'); ?>           
+                </td>
+            </table>
 </form>  </td>
           </tr>
 
@@ -183,8 +183,7 @@
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
           </tr>
           <tr>
-            <td><?php echo tep_image_submit('button_update.gif',
-                IMAGE_BUTTON_UPDATE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_update.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_update_hover.gif\'"'); ?></td>
+            <td align="right"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_update.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_update_hover.gif\'"'); ?></td>
           </tr>
           </table>
           </form>
@@ -226,19 +225,14 @@
     ");
     while ($products = tep_db_fetch_array($products_query)) {
       echo '          <tr>' . "\n" .
-           '            <td>' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .
+           '            <td colspan="2">' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .
            '          </tr>' . "\n";
     }
 ?>
           
           <tr>
-           <td align="left"><?php echo '<a href="' .
-            tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .
-            tep_image_button('button_back.gif',
-                IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td>
-            <td align="right"><?php echo tep_image_submit('button_remove_notifications.gif',
-                IMAGE_BUTTON_REMOVE_NOTIFICATIONS,'  onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_remove_notifications.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_remove_notifications_hover.gif\'"'); ?></td>
-            <td>     
+           <td align="left"><?php echo '<a href="' .  tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .  tep_image_button('button_back.gif', IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td>
+            <td align="right"><?php echo tep_image_submit('button_remove_notifications.gif', IMAGE_BUTTON_REMOVE_NOTIFICATIONS,'  onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_remove_notifications.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_remove_notifications_hover.gif\'"'); ?></td>
             </tr>
      <?php
   }
@@ -255,7 +249,6 @@
 	<?php include('includes/float-box.php');?>
 		  </div>
       <!-- body_text_eof --> 
-<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>   
   <!-- body_eof --> 
   <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

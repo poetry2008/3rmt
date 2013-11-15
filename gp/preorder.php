@@ -337,8 +337,9 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
             	<tr>
             		<td>
       <p>
-        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?>
         <?php 
+        echo $po_game_c.TEXT_PREORDER_BOOK_INFO;
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {
