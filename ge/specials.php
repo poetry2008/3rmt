@@ -40,7 +40,7 @@
            p.products_price_offset, 
            p.products_small_sum, 
            p.products_tax_class_id, 
-           p.products_image, 
+           pd.products_image, 
            pd.products_status, 
            p.products_bflag, 
            p.products_date_added,

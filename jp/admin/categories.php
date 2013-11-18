@@ -966,18 +966,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
 
 
-      if ($_POST['products_image']) {
-        $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
-      }
-      if ($_POST['products_image2']) {
-        $sql_data_array['products_image2'] = (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2']));
-      }
-      if ($_POST['products_image3']) {
-        $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
-      }
-      if ($_POST['products_cart_image']) {
-        $sql_data_array['products_cart_image'] = (($_POST['products_cart_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_cart_image']));
-      }
 
 
       if ($_GET['action'] == 'insert_product') {
@@ -1142,6 +1130,20 @@ if (isset($_GET['action']) && $_GET['action']) {
             $sql_data_array['preorder_status'] = $default_preorder_res['preorder_status']; 
           }
         }
+
+        if ($_POST['products_image']) {
+          $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
+        }
+        if ($_POST['products_image2']) {
+          $sql_data_array['products_image2'] = (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2']));
+        }
+        if ($_POST['products_image3']) {
+          $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
+        }
+        if ($_POST['products_cart_image']) {
+          $sql_data_array['products_cart_image'] = (($_POST['products_cart_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_cart_image']));
+        }
+
         if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
           $insert_sql_data = array('products_id' => $products_id,
               'language_id' => $language_id,
@@ -1255,9 +1257,6 @@ if (isset($_GET['action']) && $_GET['action']) {
               insert into " . TABLE_PRODUCTS . " (
                 products_real_quantity, 
                 products_model,
-                products_image,
-                products_image2,
-                products_image3, 
                 products_price, 
                 products_price_offset,
                 products_date_added, 
@@ -1297,9 +1296,6 @@ if (isset($_GET['action']) && $_GET['action']) {
                   ) values (
                     '" . $product['products_real_quantity'] . "', 
                     '" . $product['products_model'] . "', 
-                    '" . $product['products_image'] . "', 
-                    '" . $product['products_image2'] . "', 
-                    '" . $product['products_image3'] . "',
                     '" . $product['products_price'] . "',  
                     '" . $product['products_price_offset'] . "',  
                     now(), 
@@ -1357,7 +1353,10 @@ if (isset($_GET['action']) && $_GET['action']) {
                   products_description_origin,
                   option_image_type,
                   preorder_status,
-                  p_manual
+                  p_manual,
+                  products_image,
+                  products_image2,
+                  products_image3
                   ) values (
                     '" . $dup_products_id . "', 
                     '" . $description['language_id'] . "', 
@@ -1371,7 +1370,10 @@ if (isset($_GET['action']) && $_GET['action']) {
                     '" . $description['products_description_origin']."',
                     '" . $description['option_image_type']."',
                     '" . $description['preorder_status']."',
-                    '" . $description['p_manual']."'
+                    '" . $description['p_manual']."',
+                    '" . $product['products_image'] . "', 
+                    '" . $product['products_image2'] . "', 
+                    '" . $product['products_image3'] . "'
                     )");
           }
           //商品关联标签
@@ -1586,16 +1588,18 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
   if (file_exists($image_location2)) @unlink($image_location2);
-  tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
-  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
+  $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id =  '" . $_GET['pID'] . "' and site_id = 0"));
+  tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
+  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&site_id='.$site_id));
   $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
 }
 if (isset($_GET['mode']) && $_GET['mode'] == 'c_delete') {
   $image_location  = tep_get_upload_dir($site_id). 'carttags/' . $_GET['file'];//原始图像
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
-  tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
-  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
+  $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id =  '" . $_GET['pID'] . "' and site_id = 0"));
+  tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
+  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&site_id='.$site_id));
   $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
 }
 ?>
@@ -2831,9 +2835,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     p.products_real_quantity, 
                     p.products_virtual_quantity, 
                     p.products_model, 
-                    p.products_image,
-                    p.products_image2,
-                    p.products_image3, 
+                    pd.products_image,
+                    pd.products_image2,
+                    pd.products_image3, 
                     p.products_price, 
                     p.products_price_offset,
                     p.products_weight, 
@@ -3323,7 +3327,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     </tr>
                     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
-                    <?php if (!$site_id) {?>
+                    <?php if (true||!$site_id) {?>
                       <tr>
                         <td colspan="2"><fieldset>
                         <legend style="color:#009900 "><?php echo TEXT_PRODUCT_IMAGE_TITLE;?></legend>
@@ -3760,9 +3764,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       p.products_real_quantity, 
                       p.products_virtual_quantity, 
                       p.products_model, 
-                      p.products_image,
-                      p.products_image2,
-                      p.products_image3, 
+                      pd.products_image,
+                      pd.products_image2,
+                      pd.products_image3, 
                       p.products_price, 
                       p.products_bflag,
                       p.products_weight, 
@@ -5108,9 +5112,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                          p.products_attention_1_3,
                          p.products_real_quantity, 
                          p.products_virtual_quantity, 
-                         p.products_image,
-                         p.products_image2,
-                         p.products_image3, 
+                         pd.products_image,
+                         pd.products_image2,
+                         pd.products_image3, 
                          p.products_price, 
                          p.products_price_offset,
                          p.products_small_sum,
@@ -5142,9 +5146,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       p.products_attention_1_3,
                       p.products_real_quantity, 
                       p.products_virtual_quantity, 
-                      p.products_image,
-                      p.products_image2,
-                      p.products_image3, 
+                      pd.products_image,
+                      pd.products_image2,
+                      pd.products_image3, 
                       p.products_price, 
                       p.products_price_offset,
                       p.products_small_sum,

@@ -21,7 +21,7 @@
              r.last_modified, 
              r.reviews_read, 
              pd.products_name, 
-             p.products_image,
+             pd.products_image,
              r.site_id as rsid,
              pd.products_status, 
              pd.site_id as psid

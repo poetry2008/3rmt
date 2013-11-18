@@ -2533,7 +2533,7 @@ searching
 	font-size:12px;
 	line-height:1.5;
 }
-.shipping_time{
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
 	font-size:12px;
 	background:#383838;
 	line-height:25px;
@@ -2541,7 +2541,28 @@ searching
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
-	*overflow:inherit;
+	*overflow:none;
+}
+.shipping_time_order{
+    width: 471px;
+	*width: 470px!important;
+	width: 471px\0;
+	right:0px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_order{
+    width: 470px;
+	right:-1px;
+}
+}
+.shipping_time_reorder{
+    width: 471px;
+	right:0;
+	*right:1px!important;
+}
+.shipping_time_preorder{
+    width: 519px;
+	right:0;
 }
 .time_radio{
 	float:left;

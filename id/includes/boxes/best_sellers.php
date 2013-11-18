@@ -7,7 +7,7 @@
       select *
       from (
         select distinct p.products_id,
-                        p.products_image,
+                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_name,
@@ -37,7 +37,7 @@
       select *
       from (
         select distinct p.products_id,
-                        p.products_image,
+                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_status, 

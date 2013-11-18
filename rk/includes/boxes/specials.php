@@ -15,7 +15,7 @@
                p.products_small_sum,
                p.products_tax_class_id, 
                p.products_bflag, 
-               p.products_image
+               pd.products_image
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd
         where (p.products_price_offset != '' or p.products_small_sum != '')
           and pd.language_id = '" . $languages_id . "' 

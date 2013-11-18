@@ -1902,7 +1902,7 @@ searching
 	*font-size:10px;
 	line-height:1.5;
 }
-.shipping_time{
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
 	font-size:12px;
 	background:#383838;
 	line-height:25px;
@@ -1910,11 +1910,43 @@ searching
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
-	*overflow:inherit;
+	*overflow:none;
+}
+.shipping_time_order{
+    width: 330px;
+	*width: 329px!important;
+	width: 328px\0;
+	right:0;
+	*right:0px!important;
+	right:-2px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_order{
+    width: 330px;
+	right:0;
+}
+}
+.shipping_time_reorder{
+    width: 334px;
+	*width: 333px!important;
+	width: 334px\0;
+	right:-1px;
+	*right:-1px!important;
+	right:0\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_reorder{
+    width: 334px;
+	right:0;
+}
+}
+.shipping_time_preorder{
+    width: 330px;
+	right:0px;
 }
 .time_radio{
 	float:left;
-	margin-left:15px;
+	margin-left:8px;
 	margin-top:3px;
 	margin-top:2px\9;
 	margin-left:18px\9;

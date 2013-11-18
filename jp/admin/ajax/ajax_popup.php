@@ -3182,9 +3182,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $str_disabled = '';
     }
     $products_query = tep_db_query("
-        select products_image 
-        from " . TABLE_PRODUCTS . " 
-        where products_id = '" . $reviews['products_id'] . "'");
+            select products_image 
+            from " . TABLE_PRODUCTS_DESCRIPTION . " 
+            where products_id = '" . $reviews['products_id'] . "' order by site_id
+            desc limit 1
+        ");
     $products = tep_db_fetch_array($products_query);
 
     $products_name_query = tep_db_query("

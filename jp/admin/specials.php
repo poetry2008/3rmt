@@ -196,8 +196,10 @@
 
         $products_query = tep_db_query("
             select products_image 
-            from " . TABLE_PRODUCTS . " 
-            where products_id = '" . $specials['products_id'] . "'");
+            from " . TABLE_PRODUCTS_DESCRIPTION . " 
+            where products_id = '" . $specials['products_id'] . "' order by site_id
+            desc limit 1
+            ");
         $products = tep_db_fetch_array($products_query);
         $sInfo_array = tep_array_merge($specials, $products);
         $sInfo = new objectInfo($sInfo_array);
