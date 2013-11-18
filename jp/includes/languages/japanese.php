@@ -518,4 +518,9 @@ define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入�
 define('IMAGE_BUTTON_PREORDER','予約する');
 define('SEARCH_NO_TOP_CATEGORY', 'データがありません');
 define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ ご予約商品のお支払方法を選択してください。\n');
+define('TEXT_ORDERS_PRODUCTS_POINT','ポイント割引:');
+define('TEXT_ORDERS_PRODUCTS_HANDLE_FEE','手数料:');
+define('TEXT_ORDERS_PRODUCTS_TOTAL','合計:');
+define('TEXT_ORDERS_EARN_POINTS', '今回の獲得予定ポイント:');
+define('TEXT_ORDERS_COMMENTS', 'ご注文についてのコメント:');
 ?>

@@ -24,14 +24,153 @@ $preorder = tep_db_fetch_array($preorder_raw);
 
 if ($preorder) {
 $customer_error = false;
-if(isset($preorder['customers_id'])&&$$preorder['customers_id']!=''){
+if(isset($preorder['customers_id']) && $preorder['customers_id']!=''){
   $flag_customer_info = tep_is_customer_by_id($preorder['customers_id']);
   if(!$flag_customer_info ||
     $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
     $customer_error = true;
   }
 }
-if($customer_error){
+if(!isset($_SESSION['preorder_info_date']) || !isset($_SESSION['preorder_info_hour']) || !isset($_SESSION['preorder_info_min']) || $customer_error){
+//判断配送时间信息丢失或顾客信息错误就弹出错误页面
+/* -------------------------------------
+    功能: 高亮显示指定字符 
+    参数: $str(string) 字符串   
+    参数: $keywords(string) 高亮显示的字符串   
+    返回值: 处理后的字符串(string) 
+------------------------------------ */
+  function tep_high_light_by_keywords($str, $keywords){ 
+      $k = $rk= explode('|',$keywords);
+      foreach($k as $key => $value){
+           $rk[$key] = '<font style="background:red;">'.$value.'</font>';
+      }
+      return str_replace($k, $rk, $str);
+  }
+
+  //错误通知邮件
+  $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+  $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+  $orders_mail_text = $error_mail_array['contents'];
+  $orders_mail_text = str_replace('${ERROR_NUMBER}','001',$orders_mail_text);
+  $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
+
+  $orders_error_contents = "\n\n";
+  $orders_error_contents .= ORDERS_SITE." ".STORE_NAME."\n";
+  $orders_error_contents .= ORDERS_TIME." ".$_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_start_hour'] .':'. $_SESSION['preorder_info_start_min'] .':00'."\n";
+  $orders_error_contents .= ORDERS_OPTION." ".$_SESSION['preorder_info_tori']."\n";
+  $orders_error_contents .= CREATE_ORDERS_DATE." ".date('Y-m-d H:i:s')."\n";
+  $customer_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $preorder['customers_id'] . "'");
+  $customer_array = tep_db_fetch_array($customer_query);
+  tep_db_free_result($customer_query);
+  $customer_type = $customer_array['customers_guest_chk'] == 1 ? TABLE_HEADING_MEMBER_TYPE_GUEST : TEXT_MEMBER;
+  $orders_error_contents .= CUSTOMER_TYPE." ".$customer_type."\n";
+  $customer_name = $preorder['customers_name'];
+  $orders_error_contents .= CUSTOMER_NAME." ".$customer_name."\n";
+  $orders_error_contents .= ORDERS_EMAIL." ".$_SESSION['customer_emailaddress']."\n";
+  $orders_payment = $preorder['payment_method'];
+  $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
+  $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
+  $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
+  $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
+  $orders_error_contents .= CUSTOMER_OS." ".tep_high_light_by_keywords(getOS($_SERVER["HTTP_USER_AGENT"]),OS_LIGHT_KEYWORDS)."\n";
+  $browser_info = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
+  $browser_type = tep_high_light_by_keywords($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_TYPE." ".$browser_type."\n";
+  $browser_language = tep_high_light_by_keywords($_SERVER['HTTP_ACCEPT_LANGUAGE'] ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_LANGUAGE." ".$browser_language."\n";
+  $browser_pc = tep_high_light_by_keywords($_SESSION['systemLanguage'] ? $_SESSION['systemLanguage'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_PC_LANGUAGE." ".$browser_pc."\n";
+  $browser_user = tep_high_light_by_keywords($_SESSION['userLanguage'] ? $_SESSION['userLanguage'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_USER_LANGUAGE." ".$browser_user."\n";
+
+  $orders_mail_text = str_replace('${ERROR_CONTENTS}',$orders_error_contents,$orders_mail_text);
+  $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],$customer_name);
+ 
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $text = $orders_mail_text;
+  $message->add_html(nl2br($orders_mail_text), $text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+  $customer_email = $_SESSION['customer_emailaddress'];
+   
+  //当错误发生时，清除SESSION
+  
+  //customer session destroy
+  tep_session_unregister('customer_id');
+  tep_session_unregister('customer_default_address_id');
+  tep_session_unregister('customer_first_name');
+  tep_session_unregister('customer_last_name');
+  tep_session_unregister('customer_country_id');
+  tep_session_unregister('customer_zone_id');
+  tep_session_unregister('comments');
+  tep_session_unregister('customer_emailaddress');
+
+  //products session destroy
+  tep_session_unregister('shipping');
+  tep_session_unregister('payment');
+  tep_session_unregister('comments');
+  tep_session_unregister('point');
+  tep_session_unregister('get_point');
+  tep_session_unregister('real_point');
+  tep_session_unregister('torihikihouhou');
+  tep_session_unregister('date');
+  tep_session_unregister('hour');
+  tep_session_unregister('min');
+  tep_session_unregister('insert_torihiki_date');
+  unset($_SESSION['character']);
+  unset($_SESSION['option']);
+  unset($_SESSION['referer_adurl']);
+  unset($_SESSION['campaign_fee']);
+  unset($_SESSION['camp_id']);
+  tep_session_unregister('h_code_fee');
+  tep_session_unregister('h_point');
+
+  //shipping session destroy
+  tep_session_unregister('start_hour');
+  tep_session_unregister('start_min');
+  tep_session_unregister('end_hour');
+  tep_session_unregister('end_min');
+  tep_session_unregister('ele');
+  tep_session_unregister('address_option');
+  tep_session_unregister('insert_torihiki_date_end');
+  tep_session_unregister('address_show_list');
+  unset($_SESSION['options']);
+  unset($_SESSION['options_type_array']);
+  unset($_SESSION['weight_fee']);
+  unset($_SESSION['free_value']);
+  tep_session_unregister('hc_point');
+  tep_session_unregister('hc_camp_point');
+  unset($_SESSION['shipping_page_str']);
+  unset($_SESSION['shipping_session_flag']);
+
+  //preorder session destroy
+  tep_session_unregister('preorder_info_tori');
+  tep_session_unregister('preorder_info_date');
+  tep_session_unregister('preorder_info_hour');
+  tep_session_unregister('preorder_info_min');
+  tep_session_unregister('preorder_info_id');
+  tep_session_unregister('preorder_info_pay');
+  tep_session_unregister('preorder_option_info');
+  tep_session_unregister('preorder_information');
+  tep_session_unregister('preorder_shipping_fee');
+  if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+    tep_session_unregister('preorder_point');
+    tep_session_unregister('preorder_real_point');
+    tep_session_unregister('preorder_get_point');
+  }
+  unset($_SESSION['insert_id']);
+  unset($_SESSION['preorder_option']);
+  unset($_SESSION['referer_adurl']);
+
+  unset($_SESSION['preorder_campaign_fee']);
+  unset($_SESSION['preorder_camp_id']);
+  unset($_SESSION['preorders_code_fee']);
+  unset($_SESSION['preorder_payment_info']);
+
+  //清空购物车
+  $cart->reset();
+
   $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
   $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
   $oconfig_res = tep_db_fetch_array($oconfig_raw);
@@ -41,6 +180,11 @@ if($customer_error){
   }else{
      $css_random_str = date('YmdHi', time());
   }
+
+  $_SESSION['error_name'] = $customer_name;
+  $_SESSION['error_email'] = $customer_email; 
+  $_SESSION['error_subject'] = $orders_mail_title; 
+  $_SESSION['error_message'] = strip_tags($orders_mail_text);
 ?>
 <html <?php echo HTML_PARAMS; ?>>
 <head>
@@ -50,6 +194,15 @@ if($customer_error){
 <script type="text/javascript" src="js/notice.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+$.ajax({
+  url: 'ajax_confirm_session_error.php?action=session',
+  data: '',
+  type: 'POST',
+  dataType: 'text',
+  async : false,
+  success: function(data){ 
+  }
+});
 var docheight = $(document).height();
 var screenwidth, screenheight, mytop, getPosLeft, getPosTop
 screenwidth = $(window).width();
