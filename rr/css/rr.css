@@ -2266,15 +2266,47 @@ width:690px;
 	font-size:12px;
 	line-height:1.5;
 }
-.shipping_time{
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
 	font-size:12px;
-	background:#666;
+	background:#383838;
 	line-height:25px;
     position:relative;
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
-	*overflow:inherit;
+	*overflow:none;
+}
+.shipping_time_order{
+    width: 477px;
+	*width: 480px!important;
+	width: 479px\0;
+	right:-18px;
+	*right:-6px!important;
+	right:-18px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_order{
+    width: 477px;
+	right:-18px;
+}
+}
+.shipping_time_reorder{
+    width: 469px;
+	*width: 472px!important;
+	width: 469px\0;
+	right:-14px;
+	*right:-6px!important;
+	right:-14px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_reorder{
+    width: 469px;
+	right:-14px;
+}
+}
+.shipping_time_preorder{
+    width: 528px;
+	right:0px;
 }
 .time_radio{
 	float:left;

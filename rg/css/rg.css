@@ -2083,7 +2083,7 @@ border:2px solid #FF8080;
 	font-size:12px;
 	line-height:1.5;
 }
-.shipping_time{
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
 	font-size:12px;
 	background:#383838;
 	line-height:25px;
@@ -2091,7 +2091,37 @@ border:2px solid #FF8080;
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
-	*overflow:inherit;
+	*overflow:none;
+}
+.shipping_time_order{
+    width: 337px;
+	*width: 336px!important;
+	width: 337px\0;
+	right:0;
+	*right:-1px!important;
+	right:0\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_order{
+    width: 336px;
+	right:-1px;
+}
+}
+.shipping_time_reorder{
+    width: 335px;
+	right:-1px;
+	*right:-1px!important;
+	right:0\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_reorder{
+    width: 335px;
+	right:0;
+}
+}
+.shipping_time_preorder{
+    width: 330px;
+	right:0;
 }
 .time_radio{
 	float:left;

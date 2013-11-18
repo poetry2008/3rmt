@@ -529,8 +529,13 @@ define('TEXT_ORDERS_PRODUCTS_TWENTY_HOUR','分　（24時間表記）');
 define('TEXT_ORDERS_PRODUCTS_ADDRESS_INFO','▼住所情報');
 define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'."\n");
 define('TEXT_PRODUCTS_OPTION_CHANGE_ERROR','<font color="red">商品情報に更新があった為、ショッピングカートから削除されました。お手数ですが、再度最初からお手続きをお願いいたします。</font>');
-define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
+define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です。</font>');
 define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
 define('IMAGE_BUTTON_PREORDER','予約する');
-define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ ご予約商品のお支払方法を選択してください。\n');
+define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ 予約商品のお支払方法を選択してください。\n');
+define('TEXT_ORDERS_PRODUCTS_POINT','ポイント割引:');
+define('TEXT_ORDERS_PRODUCTS_HANDLE_FEE','手数料:');
+define('TEXT_ORDERS_PRODUCTS_TOTAL','合計:');
+define('TEXT_ORDERS_EARN_POINTS', '今回の獲得予定ポイント:');
+define('TEXT_ORDERS_COMMENTS', 'ご注文についてのコメント:');
 ?>
