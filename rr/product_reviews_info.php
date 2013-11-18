@@ -22,7 +22,7 @@
              r.reviews_read, 
              pd.products_name, 
              pd.products_status, 
-             p.products_image,
+             pd.products_image,
              r.site_id as rsid,
              pd.site_id as psid
       FROM (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) 

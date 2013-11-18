@@ -35,7 +35,7 @@ from (
          pd.products_name, 
          pd.site_id,
          pd.products_status,
-         p.products_image, 
+         pd.products_image, 
          p.products_price, 
          p.products_price_offset, 
          p.products_small_sum, 

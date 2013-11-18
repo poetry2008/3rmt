@@ -13,7 +13,7 @@
       select *
       from (
         select p.products_id,
-                        p.products_image,
+                        pd.products_image,
                         p.products_ordered,
                         pd.products_name,
                         pd.products_status, 

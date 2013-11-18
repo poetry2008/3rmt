@@ -4,25 +4,6 @@
 */
 ?>
 <?php
-if ($_SERVER['PHP_SELF'] == '/product_info.php') {
-?>
-<div id="search">
-<div class="menu_top"><span><?php echo LEFT_BOX_TITLE;?></span></div> 
-  <div class="column_left_bg">
-  	<div class="column_left_comment">
-<?php 
-  echo '<div class="left_total_money">'; 
-  echo LEFT_TOTAL_TEXT.':&nbsp;&nbsp;'; 
-  echo '<font color="#ff0000">'.$currencies->format($cart->show_total()).'</font>';
-  echo '</div>';
-  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'"><img src="images/design/s_img_a.gif" alt="'.HEADER_TITLE_CART_CONTENTS.'"></a></div>';
-  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL').'"><img src="images/design/s_img_b.gif" alt="'.HEADER_TITLE_CHECKOUT.'"></a></div>';
-?>
-</div>
-</div>
-</div>
-<?php } ?>
-<?php
 if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||$_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'
     ||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'
@@ -64,7 +45,6 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
         include(DIR_WS_BOXES . 'list_categories.php');
       } else {
         if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
-          include(DIR_WS_BOXES . 'list_categories.php');
         } else {
           include(DIR_WS_BOXES . 'categories.php');
         }
@@ -76,7 +56,9 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
         if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
           include(DIR_WS_BOXES . 'list_categories.php');
         } else {
-          include(DIR_WS_BOXES . 'categories.php');
+          if(basename($_SERVER['PHP_SELF']) != FILENAME_ADVANCED_SEARCH_RESULT){
+            include(DIR_WS_BOXES . 'categories.php');
+          }
         }
       }
     }
@@ -198,6 +180,25 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 </div>
 <?php
 if ($_SERVER['PHP_SELF'] != '/product_info.php') {
+?>
+<div id="search">
+<div class="menu_top"><span><?php echo LEFT_BOX_TITLE;?></span></div> 
+  <div class="column_left_bg">
+  	<div class="column_left_comment">
+<?php 
+  echo '<div class="left_total_money">'; 
+  echo LEFT_TOTAL_TEXT.':&nbsp;&nbsp;'; 
+  echo '<font color="#ff0000">'.$currencies->format($cart->show_total()).'</font>';
+  echo '</div>';
+  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'"><img src="images/design/s_img_a.gif" alt="'.HEADER_TITLE_CART_CONTENTS.'"></a></div>';
+  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL').'"><img src="images/design/s_img_b.gif" alt="'.HEADER_TITLE_CHECKOUT.'"></a></div>';
+?>
+</div>
+</div>
+</div>
+<?php } ?>
+<?php
+if ($_SERVER['PHP_SELF'] == '/product_info.php') {
 ?>
 <div id="search">
 <div class="menu_top"><span><?php echo LEFT_BOX_TITLE;?></span></div> 

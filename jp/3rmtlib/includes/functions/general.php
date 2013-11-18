@@ -2202,7 +2202,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
              }
              // MAX_DISPLAY_SEARCH_RESULTS
              $search  = array_merge($search, array('#CATEGORIES_NAME#','#SEO_NAME#','#SEO_DESCRIPTION#','#CATEGORIES_META_TEXT#','#CATEGORIES_HEADER_TEXT#','#CATEGORIES_FOOTER_TEXT#','#TEXT_INFORMATION#','#META_KEYWORDS#','#META_DESCRIPTION#','#CATEGORIES_ID#',));
-             $replace = array_merge($replace, array($seo_category['categories_name'],$seo_category['seo_name'],$seo_category['seo_description'],$seo_category['categories_meta_text'],$seo_category['categories_header_text'],$seo_category['categories_footer_text'],$seo_category['text_information'],$seo_category['meta_keywords'],$seo_category['meta_description'],$seo_category['categories_id'],));
+             $replace = array_merge($replace, array($seo_category['categories_name'],$seo_category['seo_name'],$seo_category['seo_description_' . ABBR_SITENAME],$seo_category['categories_meta_text'],$seo_category['categories_header_text_' . ABBR_SITENAME],$seo_category['categories_footer_text_' . ABBR_SITENAME],$seo_category['text_information_' . ABBR_SITENAME],$seo_category['meta_keywords_' . ABBR_SITENAME],$seo_category['meta_description_' . ABBR_SITENAME],$seo_category['categories_id'],));
            }
         } elseif ($_GET['manufacturers_id']) {
           if (defined('MODULE_METASEO_MANUFACTURER_TITLE') && strlen(MODULE_METASEO_MANUFACTURER_TITLE)) {
@@ -2918,9 +2918,9 @@ function tep_unlink_temp_dir($dir)
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_model, 
-               p.products_image, 
-               p.products_image2, 
-               p.products_image3, 
+               pd.products_image, 
+               pd.products_image2, 
+               pd.products_image3, 
                p.products_price, 
                p.products_price_offset,
                p.products_date_added, 
@@ -2981,9 +2981,9 @@ function tep_unlink_temp_dir($dir)
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_model, 
-               p.products_image, 
-               p.products_image2, 
-               p.products_image3, 
+               pd.products_image, 
+               pd.products_image2, 
+               pd.products_image3, 
                p.products_price, 
                p.products_price_offset,
                p.products_date_added, 
