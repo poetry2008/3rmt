@@ -1611,10 +1611,14 @@ function tep_get_uploaded_file($filename) {
     参数: $target(string) 指定目录的路径 
     返回值: 无
  ------------------------------------ */
-function tep_copy_uploaded_file($filename, $target) {
+function tep_copy_uploaded_file($filename, $target,$new_filename='') {
   if (substr($target, -1) != '/') $target .= '/';
 
-  $target .= $filename['name'];
+  if($new_filename ==''){
+    $target .= $new_filename;
+  }else{
+    $target .= $filename['name'];
+  }
   move_uploaded_file($filename['tmp_name'], $target);
   chmod($target, 0666);
 }
@@ -12495,3 +12499,24 @@ function tep_new_get_quantity($product_info){
       return $sum/$cnt;
     }
   }
+function tep_defined_product_image_name($image_name){
+  $i=0;
+  while(true){
+    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
+      where products_image ='".$image_name."' 
+      OR products_image2='".$image_name."'
+      OR products_image3='".$image_name."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      $i++;
+      $rand = tep_get_random_item_name(5);
+      $image_name = $rand.$image_name; 
+    }else{
+      break;
+    }
+    if($i>1000){
+      break;
+    }
+  }
+  return $image_name;
+}
