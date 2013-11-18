@@ -215,14 +215,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     
     if (!tep_session_is_registered('customer_id')) {
-      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($last_name)) {
+      $tmp_last_name = str_replace(array('　', ' '), '', $last_name); 
+      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($tmp_last_name)) {
         $lastname_error = true;
         $error = true;
       } else {
         $lasttname_error = false;
       }
       
-      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($first_name)) {
+      $tmp_first_name = str_replace(array('　', ' '), '', $first_name); 
+      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($tmp_first_name)) {
         $firstname_error = true;
         $error = true;
       } else {

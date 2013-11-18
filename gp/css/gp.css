@@ -2454,7 +2454,7 @@ line-height:21px;
 	font-size:12px;
 	line-height:1.5;
 }
-.shipping_time{
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
 	font-size:12px;
 	background:#383838;
 	line-height:25px;
@@ -2462,7 +2462,49 @@ line-height:21px;
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
-	*overflow:inherit;
+	*overflow:none;
+}
+.shipping_time_order{
+    width: 342px;
+	*width: 334px!important;
+	width: 342px\0;
+	right:0px;
+	*right:4px!important;
+	right:0px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_order{
+    width: 342px;
+	right:0px;
+}
+}
+.shipping_time_reorder{
+	width: 343px;
+	*width: 342px!important;
+	width: 343px\0;
+	right:0px;
+	*right:1px!important;
+	right:0px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_reorder{
+    width: 343px;
+	right:0px;
+}
+}
+.shipping_time_preorder{
+    width: 338px;
+	*width: 326px!important;
+	width: 338px\0;
+	right:0px;
+	*right:-5px!important;
+	right:0px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_preorder{
+    width: 338px;
+	right:0px;
+}
 }
 .time_radio{
 	float:left;

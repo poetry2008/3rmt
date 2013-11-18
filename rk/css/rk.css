@@ -2248,7 +2248,7 @@ display:block;
 	*font-size:11px;
 	line-height:1.5;
 }
-.shipping_time{
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
 	font-size:12px;
 	background:#383838;
 	line-height:25px;
@@ -2257,7 +2257,27 @@ display:block;
 	*height:25px;
 	overflow:hidden;
 	margin:0 2px;
-	*overflow:inherit;
+	*overflow:none;
+}
+.shipping_time_order{
+    width: 329px;
+	right:0px;
+}
+.shipping_time_reorder{
+    width: 335px;
+	right:-1px;
+	*right:0!important;
+	right:-1px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_reorder{
+    width: 335px;
+	right:-1px;
+}
+}
+.shipping_time_preorder{
+    width: 330px;
+	right:0;
 }
 .time_radio{
 	float:left;
