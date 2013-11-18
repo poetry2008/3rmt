@@ -51,7 +51,6 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $orders_error_contents = "\n\n";
   $orders_error_contents .= ORDERS_SITE." ".STORE_NAME."\n";
   $orders_error_contents .= ORDERS_TIME." ".$_SESSION['insert_torihiki_date']."\n";
-  $orders_error_contents .= ORDERS_OPTION." ".$_SESSION['torihikihouhou']."\n";
   $orders_error_contents .= CREATE_ORDERS_DATE." ".date('Y-m-d H:i:s')."\n";
   $customer_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $_SESSION['customer_id'] . "'");
   $customer_array = tep_db_fetch_array($customer_query);
@@ -61,9 +60,173 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $customer_name = tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']);
   $orders_error_contents .= CUSTOMER_NAME." ".$customer_name."\n";
   $orders_error_contents .= ORDERS_EMAIL." ".$_SESSION['customer_emailaddress']."\n";
+  //total
+  $orders_total = $cart->total;
+  //point
+  if ($point){
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_POINT." ".$currencies->format(abs($point))."\n";
+    $orders_total -= abs($point);
+  }
+  if (isset($_SESSION['campaign_fee'])) {
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_POINT." ".$currencies->format(abs($_SESSION['campaign_fee']))."\n";
+    $orders_total -= abs($_SESSION['campaign_fee']);
+  }
+  //handle code
+  if(!isset($_SESSION['mailfee'])){
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_HANDLE_FEE." 0".JPMONEY_UNIT_TEXT."\n"; 
+  }else{
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_HANDLE_FEE." ".$_SESSION['mailfee']."\n";
+    $orders_total += abs($_SESSION['mailfee']);
+  }
+  //orders subtotal
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.": ".$currencies->format($cart->total)."\n";
+  //orders total
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_TOTAL." ".$currencies->format($orders_total)."\n";
+  //earn points
+  $orders_error_contents .= TEXT_ORDERS_EARN_POINTS." ".str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format($_SESSION['get_point']))."&nbsp;P\n";  
   $orders_payment = $_SESSION['payment'];
   $orders_payment = payment::changeRomaji($_SESSION['payment'], PAYMENT_RETURN_TYPE_TITLE);
   $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
+  //orders products list
+  $products_ordered = '';
+  $total_tax = 0;
+
+  //获取订单相关信息
+  require(DIR_WS_CLASSES . 'order.php');
+  $order = new order;
+  for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
+
+    //products attributes
+    $attributes_exist = '0';
+    $products_ordered_attributes = '';
+    $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>"); 
+     
+    if (!empty($order->products[$i]['op_attributes'])) {
+      //商品的option信息 
+      $attributes_exist = '1';
+     
+      foreach ($order->products[$i]['op_attributes'] as $op_key => $op_value) {
+       
+      
+        $input_option_array = array('title' => $op_value['front_title'], 'value' => $op_value['value']);
+        $option_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$op_value['item_id']."'"); 
+        $option_item_res = tep_db_fetch_array($option_item_raw); 
+        $op_price = 0; 
+      
+        if ($option_item_res) {
+          if ($option_item_res['type'] == 'radio') {
+             $ao_option_array = @unserialize($option_item_res['option']);
+             if (!empty($ao_option_array['radio_image'])) {
+               foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
+                 if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value['value']))))) {
+                   $op_price = $or_value['money']; 
+                   break; 
+                 }
+               }
+             } 
+          } else if ($option_item_res['type'] == 'textarea') {
+            $to_option_array = @unserialize($option_item_res['option']);
+            $tmp_to_single = false; 
+            if ($to_option_array['require'] == '0') {
+              if ($op_value['value'] == MSG_TEXT_NULL) {
+                $tmp_to_single = true; 
+              }
+            }
+            if ($tmp_to_single) {
+              $op_price = 0; 
+            } else {
+              $op_price = $option_item_res['price']; 
+            }
+          } else {
+            $op_price = $option_item_res['price']; 
+          }
+        } else {
+          $op_price = $op_value['price']; 
+        }
+       
+        $products_ordered_attributes .= "\n" 
+          . $op_value['front_title'] 
+          . ': ' . str_replace($replace_arr, "", $op_value['value']);
+      
+        if ($op_price != '0') {
+          $products_ordered_attributes .= '　('.$currencies->format($op_price).')'; 
+        }
+      }
+    }
+  
+    if (!empty($order->products[$i]['ck_attributes'])) {
+      //登录后选择商品的option信息 
+      foreach ($order->products[$i]['ck_attributes'] as $ck_key => $ck_value) {
+        $input_option_array = array('title' => $ck_value['front_title'], 'value' => $ck_value['value']);
+      
+        $coption_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$ck_value['item_id']."'"); 
+        $coption_item_res = tep_db_fetch_array($coption_item_raw); 
+        $c_op_price = 0; 
+      
+        if ($coption_item_res) {
+          if ($coption_item_res['type'] == 'radio') {
+            $aco_option_array = @unserialize($coption_item_res['option']);
+            if (!empty($aco_option_array['radio_image'])) {
+              foreach ($aco_option_array['radio_image'] as $cor_key => $cor_value) {
+                if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cor_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($ck_value['value']))))) {
+                 $c_op_price = $cor_value['money']; 
+                 break; 
+                }
+              }
+            } 
+          } else if ($coption_item_res['type'] == 'textarea') {
+            $aco_option_array = @unserialize($coption_item_res['option']);
+            $tco_tmp_single = false;
+            if ($aco_option_array['require'] == '0') {
+              if ($ck_value['value'] == MSG_TEXT_NULL) {
+                $tco_tmp_single = true;
+              }
+            }
+            if ($tco_tmp_single) {
+              $c_op_price = 0; 
+            } else {
+              $c_op_price = $coption_item_res['price']; 
+            }
+          } else {
+            $c_op_price = $coption_item_res['price']; 
+          }
+        } else {
+          $c_op_price = $ck_value['price']; 
+        }
+       
+        $products_ordered_attributes .= "\n" 
+          . $ck_value['front_title'] 
+          . ': ' . str_replace($replace_arr, "", $ck_value['value']);
+      
+        if ($c_op_price != '0') {
+          $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
+        }
+      }
+    }
+   
+    $total_weight += ($order->products[$i]['qty'] * $order->products[$i]['weight']);
+    $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
+    $total_cost += $total_products_price;
+
+    $products_ordered .= TEXT_ORDERS_PRODUCTS.': ' . $order->products[$i]['name'];
+    if(tep_not_null($order->products[$i]['model'])) {
+      $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
+    }
+    if ($order->products[$i]['price'] != '0') {
+      $products_ordered .= ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')'; 
+    }
+    $products_ordered .= $products_ordered_attributes . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_NUMBER.': ' . $order->products[$i]['qty'] . NUM_UNIT_TEXT .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_PRICE.': ' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.': ' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_LINE; 
+  } 
+  //orders products
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_LINE.$products_ordered;
+  //orders comments
+  $orders_error_contents .= TEXT_ORDERS_COMMENTS.' '.$_SESSION['comments']."\n";
+  //referer info
+  $orders_error_contents .= 'Referer Info'.": ".$_SESSION['referer']."\n";
   $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
   $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
   $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
