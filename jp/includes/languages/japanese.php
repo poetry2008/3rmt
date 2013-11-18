@@ -416,7 +416,7 @@ define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りま
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');
 define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'">トップページ</a>に戻り再度やり直してください。');
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
-define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
+define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください。');
 
 define('DATE_YEAR_TEXT', '年');
 define('DATE_MONTH_TEXT', '月');
@@ -445,7 +445,7 @@ define('TEXT_HEADER_CATEGORY_TITLE', STORE_NAME.'は安全で安心・信頼で�
 define('TEXT_HEADER_PRODUCT_TITLE', STORE_NAME.'は安全で安心・信頼できる取り引きを目指していきます。');
 define('TEXT_HEADER_OTHER_TITLE', 'RMT専門店！ %sは安全で安心・信頼できる取り引きを目指していきます。');
 define('TEXT_HEADER_SEARCH_IMAGE_ALT', 'RMT検索');
-define('TEXT_HEADER_SEARCH_MUST_INPUT', '入力して下さい');
+define('TEXT_HEADER_SEARCH_MUST_INPUT', '入力してください');
 define('TEXT_SEARCH_ALT', '検索');
 define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
 define('NUM_UNIT_TEXT', '個');
@@ -512,12 +512,12 @@ define('TEXT_ORDERS_PRODUCTS_TWENTY_HOUR','分　（24時間表記）');
 define('TEXT_ORDERS_PRODUCTS_ADDRESS_INFO','▼住所情報');
 define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'."\n");
 define('TEXT_PRODUCTS_OPTION_CHANGE_ERROR','<font color="red">商品情報に更新があった為、ショッピングカートから削除されました。お手数ですが、再度最初からお手続きをお願いいたします。</font>');
-define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
+define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です。</font>');
 define('TEXT_PRODUCTS_SORT_FIRST_FEW','位');
+define('SEARCH_NO_TOP_CATEGORY', 'データがありません。');
 define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
 define('IMAGE_BUTTON_PREORDER','予約する');
-define('SEARCH_NO_TOP_CATEGORY', 'データがありません');
-define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ ご予約商品のお支払方法を選択してください。\n');
+define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ 予約商品のお支払方法を選択してください。\n');
 define('TEXT_ORDERS_PRODUCTS_POINT','ポイント割引:');
 define('TEXT_ORDERS_PRODUCTS_HANDLE_FEE','手数料:');
 define('TEXT_ORDERS_PRODUCTS_TOTAL','合計:');
