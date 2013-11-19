@@ -1611,7 +1611,7 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
       $t_image_location2 = tep_get_upload_dir($site_image_row['id']) .'cache_large/'. $_GET['file'];//缩略图
       if (!file_exists($t_image_location)){
         if (file_exists($t_image_location2)) @unlink($t_image_location2);
-        tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_image_row['id']."'");
+        tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_image_row['id']."' and ".$delete_image." ='".$_GET['file']."'");
       }
     }
   }
@@ -3376,7 +3376,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             if(isset($pInfo->products_image2) && tep_not_null($pInfo->products_image2)){
                               echo '<br>'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
                               ?>
-                                <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
+                                <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
                                 <?php } ?>
                                 </td>
                                 </tr>
@@ -3387,7 +3387,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                 if(isset($pInfo->products_image3) && tep_not_null($pInfo->products_image3)){
                                   echo '<br>'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT , $site_id).'<br>'."\n";
                                   ?>
-                                    <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
+                                    <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
                                     <?php } ?>
                                     </td>
                                     </tr>
