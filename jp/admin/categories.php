@@ -1158,6 +1158,15 @@ if (isset($_GET['action']) && $_GET['action']) {
 
         if ($site_id == 0) {
           tep_db_query("update `".TABLE_PRODUCTS_DESCRIPTION."` set `preorder_status` = '".$_POST['preorder_status']."' where products_id = '".$products_id."' and `site_id` != '0'"); 
+          $update_other_image_site = "select site_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id ='".$products_id."' and site_id !='0'";
+          $update_other_image_site_query = tep_db_query($update_other_image_site);
+          $update_default_image_site = "select products_image,products_image2,products_image3 from ".TABLE_PRODUCTS_DESCRIPTION." where products_id ='".$products_id."' and site_id = '0'";
+          $update_default_image_row = tep_db_fetch_array(tep_db_query($update_default_image_site));
+          while($update_other_image_site_row = tep_db_fetch_array($update_other_image_site_query)){
+            tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_image = '".$update_default_image_row['products_image']."' where products_id ='".$products_id."' and site_id='".$update_other_image_site_row['site_id']."' and (products_image='' or products_image=null)");
+            tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_image2 = '".$update_default_image_row['products_image2']."' where products_id ='".$products_id."' and site_id='".$update_other_image_site_row['site_id']."' and (products_image2='' or products_image2=null)");
+            tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_image3 = '".$update_default_image_row['products_image3']."' where products_id ='".$products_id."' and site_id='".$update_other_image_site_row['site_id']."' and (products_image3='' or products_image3=null)");
+          }
         }
       }
       // option值插入完成
@@ -1588,10 +1597,27 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
   if (file_exists($image_location2)) @unlink($image_location2);
+  if(isset($site_id)&&$site_id!=0){
+    /*
   $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id =  '" . $_GET['pID'] . "' and site_id = 0"));
   tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
+  */
+  tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
+  }else{
+    $all_site_image_query =  tep_db_query("select id from ".  TABLE_SITES); 
+    tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '0'");
+    while($site_image_row = tep_db_fetch_array($all_site_image_query)){
+      $t_image_location  = tep_get_upload_dir($site_image_row['id']). 'products/' . $_GET['file'];//原始图像
+      $t_image_location2 = tep_get_upload_dir($site_image_row['id']) .'cache_large/'. $_GET['file'];//缩略图
+      if (!file_exists($t_image_location)){
+        if (file_exists($t_image_location2)) @unlink($t_image_location2);
+        tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_image_row['id']."'");
+      }
+    }
+  }
   tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&site_id='.$site_id));
   $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
+
 }
 if (isset($_GET['mode']) && $_GET['mode'] == 'c_delete') {
   $image_location  = tep_get_upload_dir($site_id). 'carttags/' . $_GET['file'];//原始图像
@@ -3701,14 +3727,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
 
                   if (is_uploaded_file($products_image['tmp_name'])) {
-                    tep_copy_uploaded_file($products_image, $image_directory);
+                    $products_image['name'] = tep_defined_product_image_name($products_image['name']);
+                    tep_copy_uploaded_file($products_image, $image_directory,$products_image['name']);
                     $products_image_name = $products_image['name'];
-                    $products_image_name2 = $products_image2['name'];
-                    $products_image_name3 = $products_image3['name'];
                   } else {
                     $products_image_name = $_POST['products_previous_image'];
-                    $products_image_name2 = $_POST['products_previous_image2'];
-                    $products_image_name3 = $_POST['products_previous_image3'];
                   }
                   // copy image only if modified 
                   $products_image2 = tep_get_uploaded_file('products_image2');
@@ -3716,13 +3739,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
 
                   if (is_uploaded_file($products_image2['tmp_name'])) {
-                    tep_copy_uploaded_file($products_image2, $image_directory);
+                    $products_image2['name'] = tep_defined_product_image_name($products_image2['name']);
+                    tep_copy_uploaded_file($products_image2, $image_directory,$products_image2['name']);
                     $products_image_name2 = $products_image2['name'];
                   } else {
                     $products_image_name2 = $_POST['products_previous_image2'];
                   }
                   if (is_uploaded_file($products_image3['tmp_name'])) {
-                    tep_copy_uploaded_file($products_image3, $image_directory);
+                    $products_image3['name'] = tep_defined_product_image_name($products_image3['name']);
+                    tep_copy_uploaded_file($products_image3, $image_directory,$products_image3['name']);
                     $products_image_name3 = $products_image3['name'];
                   } else {
                     $products_image_name3 = $_POST['products_previous_image3'];
