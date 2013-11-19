@@ -12499,24 +12499,33 @@ function tep_new_get_quantity($product_info){
       return $sum/$cnt;
     }
   }
-function tep_defined_product_image_name($image_name){
-  $i=0;
-  while(true){
-    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
+function tep_defined_product_image_name($image_name,$i=1,$has_name=array()){
+  $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
       where products_image ='".$image_name."' 
       OR products_image2='".$image_name."'
       OR products_image3='".$image_name."' limit 1";
+  $default_name = true;
+  $tmp_image_name = $image_name;
+  while(true){
     $query = tep_db_query($sql);
-    if($row = tep_db_fetch_array($query)){
-      $i++;
-      $rand = tep_get_random_item_name(5);
-      $image_name = $rand.$image_name; 
+    if($row = tep_db_fetch_array($query)||in_array($tmp_image_name,$has_name)){
+      $arr = explode('.',$image_name);
+      $arr[count($arr)-2] = $arr[count($arr)-2].$i;
+      $new_image_name = implode('.',$arr);
+      $default_name = false;
     }else{
+      if($default_name){
+        $new_image_name = $image_name;
+      }
       break;
     }
-    if($i>1000){
-      break;
-    }
+    $i++;
+    $tmp_image_name = $new_image_name;
+    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
+      where products_image ='".$new_image_name."' 
+      OR products_image2='".$new_image_name."'
+      OR products_image3='".$new_image_name."' limit 1";
   }
-  return $image_name;
+  $arr_res = array('name'=>$new_image_name,'index'=>$i);
+  return $arr_res;
 }

@@ -3725,9 +3725,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   // copy image only if modified
                   $products_image = tep_get_uploaded_file('products_image');
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
+                  $p_image_index = 0;
+                  $p_image_name_array = array();
 
                   if (is_uploaded_file($products_image['tmp_name'])) {
-                    $products_image['name'] = tep_defined_product_image_name($products_image['name']);
+                    $products_image_arr = tep_defined_product_image_name($products_image['name']);
+                    $p_image_index = $products_image_arr['index'];
+                    $products_image['name'] = $products_image_arr['name'];
+                    $p_image_name_array[] = $products_image['name'];
                     tep_copy_uploaded_file($products_image, $image_directory,$products_image['name']);
                     $products_image_name = $products_image['name'];
                   } else {
@@ -3739,14 +3744,19 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
 
                   if (is_uploaded_file($products_image2['tmp_name'])) {
-                    $products_image2['name'] = tep_defined_product_image_name($products_image2['name']);
+                    $products_image_arr2 = tep_defined_product_image_name($products_image2['name'],$p_image_index,$p_image_name_array);
+                    $p_image_index = $products_image_arr2['index'];
+                    $products_image2['name'] = $products_image_arr2['name'];
+                    $p_image_name_array[] = $products_image2['name'];
                     tep_copy_uploaded_file($products_image2, $image_directory,$products_image2['name']);
                     $products_image_name2 = $products_image2['name'];
                   } else {
                     $products_image_name2 = $_POST['products_previous_image2'];
                   }
                   if (is_uploaded_file($products_image3['tmp_name'])) {
-                    $products_image3['name'] = tep_defined_product_image_name($products_image3['name']);
+                    $products_image_arr3 = tep_defined_product_image_name($products_image3['name'],$p_image_index,$p_image_name_array);
+                    $p_image_index = $products_image_arr3['index'];
+                    $products_image3['name'] = $products_image_arr3['name'];
                     tep_copy_uploaded_file($products_image3, $image_directory,$products_image3['name']);
                     $products_image_name3 = $products_image3['name'];
                   } else {
