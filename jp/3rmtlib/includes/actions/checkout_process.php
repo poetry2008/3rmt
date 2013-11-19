@@ -83,7 +83,7 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   //orders total
   $orders_error_contents .= TEXT_ORDERS_PRODUCTS_TOTAL." ".$currencies->format($orders_total)."\n";
   //earn points
-  $orders_error_contents .= TEXT_ORDERS_EARN_POINTS." ".str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format($_SESSION['get_point']))."&nbsp;P\n";  
+  $orders_error_contents .= TEXT_ORDERS_EARN_POINTS." ".str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format($_SESSION['get_point']))." P\n";  
   $orders_payment = $_SESSION['payment'];
   $orders_payment = payment::changeRomaji($_SESSION['payment'], PAYMENT_RETURN_TYPE_TITLE);
   $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
