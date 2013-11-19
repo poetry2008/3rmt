@@ -49,26 +49,183 @@ if(!isset($_SESSION['preorder_info_date']) || !isset($_SESSION['preorder_info_ho
 
   //错误通知邮件
   $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+  //错误邮件标题
   $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
   $orders_mail_text = $error_mail_array['contents'];
   $orders_mail_text = str_replace('${ERROR_NUMBER}','001',$orders_mail_text);
   $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
 
+  //错误邮件正文
   $orders_error_contents = "\n\n";
+  //orders site
   $orders_error_contents .= ORDERS_SITE." ".STORE_NAME."\n";
+  //shipping time
   $orders_error_contents .= ORDERS_TIME." ".$_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_start_hour'] .':'. $_SESSION['preorder_info_start_min'] .':00'."\n";
-  $orders_error_contents .= ORDERS_OPTION." ".$_SESSION['preorder_info_tori']."\n";
+  //orders date
   $orders_error_contents .= CREATE_ORDERS_DATE." ".date('Y-m-d H:i:s')."\n";
+  //customers type
   $customer_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $preorder['customers_id'] . "'");
   $customer_array = tep_db_fetch_array($customer_query);
   tep_db_free_result($customer_query);
   $customer_type = $customer_array['customers_guest_chk'] == 1 ? TABLE_HEADING_MEMBER_TYPE_GUEST : TEXT_MEMBER;
   $orders_error_contents .= CUSTOMER_TYPE." ".$customer_type."\n";
+  //customers name
   $customer_name = $preorder['customers_name'];
   $orders_error_contents .= CUSTOMER_NAME." ".$customer_name."\n";
   $orders_error_contents .= ORDERS_EMAIL." ".$_SESSION['customer_emailaddress']."\n";
+  //orders products list
+  $products_ordered_text = ''; 
+  
+  $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+  $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+  $search_products = tep_get_product_by_id($preorder_product_res['products_id'], 0, $languages_id,true,'product_info');
+
+  //预约订单option的显示 
+  if (isset($_SESSION['preorder_option_info'])) {
+    foreach ($_SESSION['preorder_option_info'] as $cl_key => $cl_value) {
+      $cl_key_info = explode('_', $cl_key);
+      $cl_attr_query = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$cl_key_info['1']."' and id = '".$cl_key_info[3]."'");
+      $cl_attr_values = tep_db_fetch_array($cl_attr_query); 
+    }
+  }
+  $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'");
+
+  while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
+    $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
+  }
+  
+  $show_products_name = tep_get_products_name($preorder_product_res['products_id']); 
+  $products_ordered_text .= TEXT_ORDERS_PRODUCTS.': '.(tep_not_null($show_products_name) ? $show_products_name : $preorder_product_res['products_name']);
+  if (tep_not_null($preorder_product_res['products_model'])) {
+    $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
+  }
+ 
+  if ($preorder_product_res['products_price'] != '0') {
+    $products_ordered_text .= '('.$currencies->display_price($preorder_product_res['products_price'], $preorder_product_res['products_tax']).')'; 
+  } else if ($preorder_product_res['final_price'] != '0') {
+    $products_ordered_text .= '('.$currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']).')'; 
+  }
+  $products_ordered_atttibutes_text = '';
+
+  //预约订单时option信息
+  $mold_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'");
+  while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
+    $mold_attr_info = @unserialize(stripslashes($mold_attr_res['option_info'])); 
+
+    $products_ordered_attributes .= "\n"
+        .$mold_attr_info['title']
+        .': '.str_replace($replace_arr, "", $mold_attr_info['value']);
+      if ($mold_attr_res['options_values_price'] != '0') {
+        if ($preorder_product_res['products_price'] != '0') {
+          $products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']).')';
+        } 
+      }
+
+  }
+
+  if (isset($_SESSION['preorder_option_info'])) {
+    //预约转正式时的option信息
+    foreach ($_SESSION['preorder_option_info'] as $op_key => $op_value) {
+      $op_key_info = explode('_', $op_key);
+      $option_attr_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_info['1']."' and id = '".$op_key_info[3]."'");
+      $option_attr_values = tep_db_fetch_array($option_attr_query);
+      
+      if ($option_attr_values) {
+
+      $input_option_array = array('title' => $option_attr_values['front_title'], 'value' => str_replace(array("<BR>"), "<br>", $op_value));
+      $ao_price = 0; 
+      if ($option_attr_values['type'] == 'radio') {
+         $ao_option_array = @unserialize($option_attr_values['option']);
+         if (!empty($ao_option_array['radio_image'])) {
+           foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
+             if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
+               $ao_price = $or_value['money']; 
+               break; 
+             }
+           }
+         } 
+      } else if ($option_attr_values['type'] == 'textarea') {
+        $to_option_array = @unserialize($option_attr_values['option']);
+        $to_tmp_single = false; 
+        if ($to_option_array['require'] == '0') {
+          if ($op_value == MSG_TEXT_NULL) {
+            $to_tmp_single = true; 
+          }
+        }
+        if ($to_tmp_single) {
+          $ao_price = 0; 
+        } else {
+          $ao_price = $option_attr_values['price']; 
+        }
+      } else {
+        $ao_price = $option_attr_values['price']; 
+      }
+        
+      $products_ordered_attributes .= "\n"
+        .$option_attr_values['front_title'] .': '.str_replace($replace_arr, "", $op_value);
+      if ($ao_price != '0') {
+        $products_ordered_attributes .= '　('.$currencies->format($ao_price).')';
+      }
+    }
+    }
+  }
+
+  $products_ordered_text .= $products_ordered_attributes;
+
+  //products list
+  $products_ordered_text .= "\n".TEXT_ORDERS_PRODUCTS_NUMBER.': ' .  $preorder_product_res['products_quantity'] . NUM_UNIT_TEXT .  tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id'])."\n";
+  $products_ordered_text .= TEXT_ORDERS_PRODUCTS_PRICE.': ' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
+  $products_ordered_text .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.': ' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
+  //total
+  $orders_total = str_replace(array(',',JPMONEY_UNIT_TEXT),'',$currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']));
+  //orders subtotal
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.": ".$currencies->format($orders_total)."\n";
+  //自定义费用
+  $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'");
+  
+  $totals_custom_array = array();
+  while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
+    if($preorder_total_res['class'] == 'ot_custom' && trim($preorder_total_res['title']) != ''){
+
+      $totals_custom_array[] = array('title'=>$preorder_total_res['title'],'value'=>$preorder_total_res['value']);
+    }
+  } 
+  if(!empty($totals_custom_array)){
+    foreach($totals_custom_array as $totals_custom_value){
+
+      $orders_error_contents .= $totals_custom_value['title'].': '.$currencies->format($totals_custom_value['value'])."\n";
+      $orders_total += $totals_custom_value['value'];
+    }
+  }
+  //point
+  if ($preorder_point){
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_POINT." ".$currencies->format(abs($preorder_point))."\n";
+    $orders_total -= abs($preorder_point);
+  }
+  if (isset($_SESSION['preorder_campaign_fee'])) {
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_POINT." ".$currencies->format(abs($_SESSION['preorder_campaign_fee']))."\n";
+    $orders_total -= abs($_SESSION['preorder_campaign_fee']);
+  }
+  //handle code
+  if(!isset($_SESSION['preorders_code_fee'])){
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_HANDLE_FEE." 0".JPMONEY_UNIT_TEXT."\n"; 
+  }else{
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_HANDLE_FEE." ".$_SESSION['preorders_code_fee'].JPMONEY_UNIT_TEXT."\n";
+    $orders_total += abs($_SESSION['preorders_code_fee']);
+  } 
+  //orders total
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_TOTAL." ".$currencies->format($orders_total)."\n";
+  //earn points
+  $orders_error_contents .= TEXT_ORDERS_EARN_POINTS." ".str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format((int)$_SESSION['preorder_get_point']))." P\n";
   $orders_payment = $preorder['payment_method'];
-  $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
+  $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n"; 
+  //orders products
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_LINE.$products_ordered_text.TEXT_ORDERS_PRODUCTS_LINE;
+  //orders comments
+  $orders_error_contents .= TEXT_ORDERS_COMMENTS.' '.trim($preorder['comment_msg'])."\n";
+  //referer info
+  $orders_error_contents .= 'Referer Info'.": ".$_SESSION['referer']."\n";
+  //获取顾客的IP地址、PC的信息
   $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
   $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
   $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
@@ -85,12 +242,12 @@ if(!isset($_SESSION['preorder_info_date']) || !isset($_SESSION['preorder_info_ho
 
   $orders_mail_text = str_replace('${ERROR_CONTENTS}',$orders_error_contents,$orders_mail_text);
   $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],$customer_name);
- 
+
   $message = new email(array('X-Mailer: iimy Mailer'));
   $text = $orders_mail_text;
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
-  //Administrator
+  //给管理员发信
   $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
   $customer_email = $_SESSION['customer_emailaddress'];
    
@@ -181,6 +338,7 @@ if(!isset($_SESSION['preorder_info_date']) || !isset($_SESSION['preorder_info_ho
      $css_random_str = date('YmdHi', time());
   }
 
+  //临时生成SESSION
   $_SESSION['error_name'] = $customer_name;
   $_SESSION['error_email'] = $customer_email; 
   $_SESSION['error_subject'] = $orders_mail_title; 
@@ -194,6 +352,7 @@ if(!isset($_SESSION['preorder_info_date']) || !isset($_SESSION['preorder_info_ho
 <script type="text/javascript" src="js/notice.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+//ajax submit
 $.ajax({
   url: 'ajax_confirm_session_error.php?action=session',
   data: '',
