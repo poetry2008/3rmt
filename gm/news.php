@@ -27,10 +27,10 @@ function popupWindow(url) {
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <?php include('includes/search_include.php');?>
 <div id="main-content">
-<h2><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h2>
+<h2><?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h2>
       <div id="detail-div">
 <?php
-  if ($_GET['news_id']) {  
+  if (isset($_GET['news_id']) && intval($_GET['news_id'])) {  
     if($latest_news['news_image']) {
 ?>
         <table width="100%" border="0" cellpadding="4" cellspacing="1">
@@ -52,7 +52,7 @@ function popupWindow(url) {
 <?php
     }
 ?>
-        <p><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
+        <p><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p>
 <?php
   } else {
     if (($latest_news_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
@@ -107,7 +107,7 @@ function popupWindow(url) {
 <?php
     }
   }
-  if ($_GET['news_id']) { 
+  if (isset($_GET['news_id']) && $_GET['news_id']) { 
 ?>
         <p>
           [ <?php echo tep_date_long($latest_news['date_added']); ?> ]

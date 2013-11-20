@@ -56,7 +56,7 @@ function popupWindow(url) {
               document.write('<?php echo '<a href="javascript:void(0);" onclick=fnCreate(\"'.DIR_WS_IMAGES . $latest_news['news_image'].'\",0)>' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
             //-->
           </script>
-          <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], $latest_news['headline'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
+          <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
           </td>
           <td style="font-size:11px;"><?php echo replace_store_name($latest_news['news_image_description']); ?></td>
   </tr>
@@ -65,7 +65,7 @@ function popupWindow(url) {
 ?>
   <tr>
     <td colspan="2">
-      <p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
+      <p class="main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p>
     </td>
   </tr>
 </table>
