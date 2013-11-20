@@ -320,6 +320,7 @@ if (!$payment_modules->moduleIsEnabled($payment)){
 $payment_selection = $payment_modules->selection();
 $pay_info_array = $payment_modules->specialOutput($payment, true, $_SESSION['preorder_products_list']);
 $payment_modules->deal_other_info($payment, $_POST); 
+$payment_modules->handle_information($payment, $_POST, true); 
 //支付方法相关信息
 if (!empty($pay_info_array)) {
 ?>

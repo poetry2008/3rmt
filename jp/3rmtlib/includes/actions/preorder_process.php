@@ -222,6 +222,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
         }
       }
+      $payment_modules->reset_information($_POST['pre_payment'], true);
       if (!$redirect_single) {
         //unset session
         unset($_SESSION['preorder_products_list']);
