@@ -247,3 +247,4 @@ define('TEXT_ADMIN_POINT_MAIL',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAG
 define('TEXT_STORE_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;会社の電話番号');
 define('TEXT_PRODUCTS_SMALL_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（小）の横幅');
 define('TEXT_PRODUCTS_SMALL_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（小）の縦幅');
+define('TEXT_BILL_MAILING_ADDRESS_SETTING_SHOW',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;ご請求先機能');
