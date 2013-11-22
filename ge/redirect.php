@@ -1,21 +1,23 @@
 <?php
 /*
   $Id$
+
+  跳转
 */
 
   require('includes/application_top.php');
 
   switch ($_GET['action']) {
-     
+ 
     case 'banner': $banner_query = tep_db_query("
                        select banners_url 
                        from " . TABLE_BANNERS . " 
                        where banners_id = '" . intval($_GET['goto']) . "' 
                          and site_id = '" . SITE_ID . "'
-                   ");                   if (tep_db_num_rows($banner_query)) {
+                   ");
+                   if (tep_db_num_rows($banner_query)) {
                      $banner = tep_db_fetch_array($banner_query);
                      tep_update_banner_click_count($_GET['goto']);
-
                      tep_redirect($banner['banners_url']);
                    } else {
                      tep_redirect(tep_href_link(FILENAME_DEFAULT));
@@ -53,6 +55,7 @@
                                 tep_redirect(tep_href_link(FILENAME_DEFAULT));
                               } else {
                                 $manufacturer = tep_db_fetch_array($manufacturer_query);
+//todo: 这里不知道是否应该分开网站
   
                                 tep_db_query("
                                     update " . TABLE_MANUFACTURERS_INFO . " 
