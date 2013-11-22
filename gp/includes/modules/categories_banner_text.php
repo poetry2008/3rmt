@@ -8,7 +8,7 @@ $categories_tab_query1 = tep_db_query("
     select c.categories_id, 
            c.parent_id, 
            cd.categories_status, 
-           c.categories_image, 
+           cd.categories_image, 
            cd.categories_name, 
            cd.categories_meta_text, 
            cd.categories_image2 ,
@@ -54,7 +54,6 @@ $categories_tab_query1 = tep_db_query("
       echo '</tr>' . "\n" . '<tr align="center">' . "\n";
     } else {
       echo '';
-      //echo '<td>'.tep_draw_separator('pixel_trans.gif', '18', '1').'</td>'."\n";
     }
   } 
 ?>

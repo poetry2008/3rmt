@@ -40,7 +40,7 @@
             select c.categories_id, 
                    cd.categories_name, 
                    cd.categories_status, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
@@ -69,7 +69,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status,
@@ -137,7 +137,6 @@
 <?php  if (!empty($seo_category['text_information'])) {
     echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']);
 ?>
-        <!--<p class="pageBottom"></p>-->
 <?php 
         }
 ?>

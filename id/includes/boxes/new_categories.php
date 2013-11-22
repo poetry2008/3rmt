@@ -7,7 +7,7 @@ select c.categories_id,
   cd.categories_name, 
   c.parent_id, 
   c.sort_order,
-  c.categories_image, 
+  cd.categories_image, 
   cd.categories_status, 
   cd.categories_image2,
   cd.site_id
@@ -35,11 +35,9 @@ while ($category = tep_db_fetch_array($categories_query))  {
     if (file_exists(DIR_FS_CATALOG."/".DIR_WS_IMAGES.'categories/'.substr($category['categories_image2'], 0, -4).".ico")) {  
       echo '<img src="./images/categories/'.substr($category['categories_image2'], 0, -4).'.ico'.'" width="27" height="27" alt="'.$category['categories_name'].'">';
     } else {
-      //echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
       $pic_not_exists = true; 
     }
   } else {
-    //echo '<img src="./images/design/tt2.ico" alt="'.$category['categories_name'].'">';
     $pic_not_exists = true; 
   }
   if ($pic_not_exists) {

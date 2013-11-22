@@ -12529,3 +12529,40 @@ function tep_defined_product_image_name($image_name,$i=1,$has_name=array()){
   $arr_res = array('name'=>$new_image_name,'index'=>$i);
   return $arr_res;
 }
+
+/* -------------------------------------
+    功能: 获取分类的新图片名
+    参数: $image_name (string) 名字
+    参数: $i (int) 数值
+    参数: $has_name (array) 数组
+    返回值: 新的图片名的信息(array) 
+ ------------------------------------ */
+function tep_defined_category_image_name($image_name, $i = 1, $has_name = array()){
+  $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." 
+      where categories_image ='".$image_name."' 
+      OR categories_image2='".$image_name."' limit 1";
+  
+  $default_name = true;
+  $tmp_image_name = $image_name;
+  while(true){
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)||in_array($tmp_image_name,$has_name)){
+      $arr = explode('.',$image_name);
+      $arr[count($arr)-2] = $arr[count($arr)-2].$i;
+      $new_image_name = implode('.',$arr);
+      $default_name = false;
+    }else{
+      if($default_name){
+        $new_image_name = $image_name;
+      }
+      break;
+    }
+    $i++;
+    $tmp_image_name = $new_image_name;
+    $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." 
+      where categories_image ='".$new_image_name."' 
+      OR categories_image2='".$new_image_name."' limit 1";
+  }
+  $arr_res = array('name'=>$new_image_name,'index'=>$i);
+  return $arr_res;
+}

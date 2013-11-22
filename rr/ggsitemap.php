@@ -17,7 +17,7 @@
   // 取得全部分类
  
   $categories_query = tep_db_query("select 
-      c.categories_id,c.categories_status,c.categories_image,
+      c.categories_id,c.categories_status,cd.categories_image,
       c.parent_id,c.sort_order,c.date_added,c.last_modified 
       from "
       . TABLE_CATEGORIES ." c left join " . TABLE_CATEGORIES_DESCRIPTION .
@@ -48,7 +48,6 @@
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <?php echo gg_url(HTTP_SERVER, null, null, 0.8);?>
   <?php echo gg_url(HTTP_SERVER.'/login.php', null, null, 0.3);?>
-  <?php //echo gg_url(HTTP_SERVER.'/shopping_cart.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/advanced_search.php', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/news/', null, null, 0.3);?>
   <?php echo gg_url(HTTP_SERVER.'/specials.php', null, null, 0.3);?>

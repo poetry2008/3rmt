@@ -90,7 +90,6 @@ if(isset($_GET['sid'])&&$_GET['sid']){
       ?> 
         <td valign="top" id="contents_long">
         <?php
-#$current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
         if (tep_show_warning($current_category_id)) {
           echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
         }
@@ -116,7 +115,7 @@ if(isset($_GET['sid'])&&$_GET['sid']){
                   select c.categories_id, 
                   cd.categories_name, 
                   cd.categories_status, 
-                  c.categories_image, 
+                  cd.categories_image, 
                   c.parent_id,
                   cd.site_id,
                   c.sort_order
@@ -262,14 +261,12 @@ $oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where key
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
-//  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
 $oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
-//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
 }
 
 ?>

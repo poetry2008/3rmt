@@ -8,7 +8,7 @@ $categories_tab_query1 = tep_db_query("
     select c.categories_id, 
            c.parent_id, 
            cd.categories_status, 
-           c.categories_image, 
+           cd.categories_image, 
            cd.categories_name, 
            cd.categories_meta_text, 
            cd.categories_image2 ,
@@ -38,7 +38,6 @@ $categories_tab_query1 = tep_db_query("
     $number_of_categories ++;
     echo '<td class="smallText">' . "\n";
     echo '<h3 class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['categories_id']) . '">' . "\n";
-    //echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image2'],$cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . '<br>' . "\n";
     $cbt_dec = explode(',',$cbt['categories_name']);
     for($i=0; $i < sizeof($cbt_dec); $i++) {
       if($cbt_dec[$i] != ''){
@@ -51,7 +50,6 @@ $categories_tab_query1 = tep_db_query("
       echo '</tr>' . "\n" . '<tr align="center">' . "\n";
     } else {
       echo '';
-      //echo '<td>'.tep_draw_separator('pixel_trans.gif', '18', '1').'</td>'."\n";
     }
   } 
 ?>
