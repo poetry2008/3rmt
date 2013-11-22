@@ -21,7 +21,7 @@
   }
 ?> 
       <!-- heading title eof-->
-      <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子?></p>
+    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase?></p>
       <table border="0" width="95%" cellspacing="3" cellpadding="3"> 
         <tr> 
 <?php
@@ -35,8 +35,8 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   cd.categories_status, 
-                   c.categories_image, 
+
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
@@ -65,7 +65,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status,
@@ -104,7 +104,7 @@
     if (!empty($seo_category['categories_footer_text'])) { 
     ?>
     <div id="information">
-    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></p>
+    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase ?></p>
     </div>
     <?php
     } 
@@ -163,10 +163,8 @@
   </div>
 </div>
       <?php
-      #echo '</div>'; 
       } 
 ?>
-<!--</div>-->
 <?php } ?>
 </div>
 <div id="r_menu">

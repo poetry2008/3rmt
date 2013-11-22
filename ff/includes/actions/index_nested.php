@@ -26,7 +26,7 @@
           ?>
           <tr>
             <td colspan="2">
-               <font color="#ffffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?></font>
+               <font color="#ffffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase ?></font>
             </td>
           </tr>
           <?php
@@ -44,7 +44,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.categories_status, 
                    cd.site_id,
@@ -74,7 +74,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.categories_status, 
                    cd.site_id,
@@ -113,7 +113,7 @@
           ?>
           <tr>
             <td colspan="2">
-              <font color="#ffffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></font>
+              <font color="#ffffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase?></font>
             </td>
           </tr>
           <?php
@@ -121,8 +121,7 @@
           ?>
         </table>
             </div>
-<!--            <p class="pageBottom"></p>
--->      <?php 
+      <?php 
       $new_products_category_id = $current_category_id; 
       $exone_single = false; 
       $exone_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
@@ -139,7 +138,7 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h3 class="pageHeading"> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3>' . "\n";
-      echo '<div class="comment"><div class="reviews_area"><p>' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p></div></div>' . "\n"; //seo句子
+      echo '<div class="comment"><div class="reviews_area"><p>' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p></div></div>' . "\n"; //seo phrase
 ?>
         <p class="pageBottom"></p>
 <?php

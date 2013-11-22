@@ -31,13 +31,13 @@ function popupWindow(url) {
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <h1 class="pageHeading"><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h1>
+        <h1 class="pageHeading"><?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h1>
                 <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td>
 <?php
-  if ($_GET['news_id']) {  
+  if (isset($_GET['news_id']) && intval($_GET['news_id'])) {  
           echo '<table width="100%">';
     if($latest_news['news_image']) {
           echo '<tr>';
@@ -56,7 +56,7 @@ function popupWindow(url) {
     }
 ?>
   <tr>
-    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p></td>
+    <td colspan="2"><p class="main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p></td>
   </tr>
   </table>
 <?php
@@ -114,7 +114,7 @@ function popupWindow(url) {
 <?php
     }
   }
-  if ($_GET['news_id']) { 
+  if (isset($_GET['news_id']) && $_GET['news_id']) { 
 ?>
                 <p align="right" class="smallText">
                   [ <?php echo tep_date_long($latest_news['date_added']) ;?> ]

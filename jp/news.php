@@ -56,7 +56,7 @@ function popupWindow(url) {
               document.write('<?php echo '<a href="javascript:void(0);" onclick=fnCreate(\"'.DIR_WS_IMAGES . $latest_news['news_image'].'\",0)>' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
             //-->
           </script>
-          <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], $latest_news['headline'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
+          <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
           </td>
           <td style="font-size:11px;"><?php echo replace_store_name($latest_news['news_image_description']); ?></td>
   </tr>
@@ -65,7 +65,7 @@ function popupWindow(url) {
 ?>
   <tr>
     <td colspan="2">
-      <p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
+      <p class="main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p>
     </td>
   </tr>
 </table>
@@ -89,13 +89,13 @@ function popupWindow(url) {
     echo '<ul>' . "\n";
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-        $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags($latest_news['headline']), '15', '15');
+        $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '15', '15');
       } else {
         $latest_news_image = '';
       }
       
       if(time()-strtotime($latest_news['date_added'])<(defined('DS_LATEST_NEWS_NEW_LIMIT')?DS_LATEST_NEWS_NEW_LIMIT:7)*86400){
-        $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags($latest_news['headline']));
+        $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags(replace_store_name($latest_news['headline'])));
       } else {
         $latest_news_new = '';
       }

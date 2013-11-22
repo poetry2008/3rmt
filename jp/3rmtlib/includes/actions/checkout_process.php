@@ -1141,6 +1141,7 @@ if (!empty($check_status_info)) {
 
 // load the after_process function from the payment modules
 $payment_modules->after_process($payment);
+$payment_modules->reset_information($payment, false);
 
 $cart->reset(true);
 

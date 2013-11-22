@@ -69,6 +69,21 @@ class convenience_store extends basePayment  implements paymentInterface  {
         }
       }
     }
+    $c_pos = strpos($_SERVER['PHP_SELF'], FILENAME_CHECKOUT_PAYMENT); 
+    $pre_c_pos = strpos($_SERVER['PHP_SELF'], FILENAME_PREORDER_PAYMENT); 
+    if ($c_pos !== false) {
+      if (isset($_SESSION['order_convenience_email'])) {
+        $default_value = $_SESSION['order_convenience_email']; 
+        $default_again_value = $_SESSION['order_convenience_email']; 
+      }
+    }
+    
+    if ($pre_c_pos !== false) {
+      if (isset($_SESSION['preorder_convenience_email'])) {
+        $default_value = $_SESSION['preorder_convenience_email']; 
+        $default_again_value = $_SESSION['preorder_convenience_email']; 
+      }
+    }
     return array(
                  array(
                        "code"=>'convenience_email',
@@ -188,10 +203,23 @@ class convenience_store extends basePayment  implements paymentInterface  {
       global $_POST;
 
       $s_result = !$_POST['code_fee_error'];
-      
       $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
+      
+      $default_email_str = $_SESSION['h_convenience_email']; 
+      $pre_c_pos = strpos($_SERVER['PHP_SELF'], FILENAME_PREORDER_CONFIRMATION); 
+      $c_pos = strpos($_SERVER['PHP_SELF'], FILENAME_CHECKOUT_CONFIRMATION); 
+      if ($pre_c_pos !== false) {
+        if (isset($_SESSION['preorder_convenience_email'])) {
+          $default_email_str = $_SESSION['preorder_convenience_email']; 
+        }
+      }
+      if ($c_pos !== false) {
+        if (isset($_SESSION['order_convenience_email'])) {
+          $default_email_str = $_SESSION['order_convenience_email']; 
+        }
+      }
       return array(
-                   'title' => str_replace("#USER_MAIL#",$_SESSION['h_convenience_email'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
+                   'title' => str_replace("#USER_MAIL#", $default_email_str, nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
                    'fields' => array(
                                      array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
                                      array('title' => $s_message, 'field' => '')  
@@ -209,7 +237,20 @@ class convenience_store extends basePayment  implements paymentInterface  {
       global $_POST;
       global $order, $point;
 
-
+      $default_email_str = $_SESSION['h_convenience_email']; 
+      $pre_c_pos = strpos($_SERVER['PHP_SELF'], FILENAME_PREORDER_CONFIRMATION); 
+      $c_pos = strpos($_SERVER['PHP_SELF'], FILENAME_CHECKOUT_CONFIRMATION); 
+      if ($pre_c_pos !== false) {
+        if (isset($_SESSION['preorder_convenience_email'])) {
+          $default_email_str = $_SESSION['preorder_convenience_email']; 
+        }
+      }
+      if ($c_pos !== false) {
+        if (isset($_SESSION['order_convenience_email'])) {
+          $default_email_str = $_SESSION['order_convenience_email']; 
+        }
+      }
+      
       $total = $order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && ($payment == 'cod_table')
@@ -237,7 +278,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
                   $currencies->format($_SESSION['h_code_fee']));
 
       return tep_draw_hidden_field('codt_message', $s_message)
-        . tep_draw_hidden_field('convenience_email', $_SESSION['h_convenience_email']) 
+        . tep_draw_hidden_field('convenience_email', $default_email_str) 
         . tep_draw_hidden_field('code_fee',$_SESSION['h_code_fee']); // for ot_codt
     }
 /*------------------------------
@@ -787,5 +828,34 @@ EOT;
     $comment_str = implode("\n",$comment_str_array);
     return $comment_str;
   }
+
+/*--------------------------------
+ 功能：处理其他信息 
+ 参数：$pInfo(string) 便利店数组
+ 参数：$d_type(boolean) 标识
+ 返回值：无
+ -------------------------------*/
+    function handle_information($pInfo, $d_type)
+    {
+      if ($d_type) {
+        $_SESSION['preorder_convenience_email'] = $pInfo['convenience_email']; 
+      } else {
+        $_SESSION['order_convenience_email'] = $pInfo['convenience_email']; 
+      }
+    }
+
+/*--------------------------------
+ 功能：重置一些信息 
+ 参数：$h_type(boolean) 标识
+ 返回值：无
+ -------------------------------*/
+    function reset_information($h_type)
+    {
+      if ($h_type) {
+        unset($_SESSION['preorder_convenience_email']); 
+      } else {
+        unset($_SESSION['order_convenience_email']); 
+      }
+    }
 }
 ?>

@@ -103,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     tep_session_register('h_code_fee');
   }
   $payment_modules->deal_other_info($payment, $_POST); 
+  $payment_modules->handle_information($payment, $_POST, false); 
   header('Location:'.tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'is_finish=1', 'SSL'));
 }
 

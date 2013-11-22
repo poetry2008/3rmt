@@ -49,10 +49,7 @@
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params));
 ?>
 <?php page_head();?>
-<script type="text/javascript"><!--
-$(function() {
-$('a.lightbox').lightBox();
-    }); 
+<script type="text/javascript"><!-- 
 function popupImageWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
@@ -64,13 +61,8 @@ function showimage($1) {
 <body>
 <!-- header //--> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<script type="text/javascript" src="js/jquery.lightbox-0.5.js"></script>
-<link rel="stylesheet" href="css/jquery.lightbox-0.5.css" type="text/css">
-<script type="text/javascript"><!--
-$(function() {
-$('a.lightbox').lightBox();
-    }); 
-//--></script>
+<script type="text/javascript" src="js/light_box.js"></script>
+<link rel="stylesheet" href="css/lightbox.css" type="text/css">
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
@@ -94,7 +86,7 @@ $('a.lightbox').lightBox();
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td class="smallText" align="right">
-          <a href="<?php echo DIR_WS_IMAGES . 'products/' .  $reviews['products_image']; ?>" class="lightbox"><?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?></a></td>
+          <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES . 'products/' .  $reviews['products_image']; ?>',0)" class="lightbox"><?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?></a></td>
                   </tr>
                   <tr> 
                     <td><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td>  

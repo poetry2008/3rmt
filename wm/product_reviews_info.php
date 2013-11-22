@@ -49,8 +49,6 @@
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params));
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/prototype.js"></script>
-  <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/light_box.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script language="javascript"><!--
