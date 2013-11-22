@@ -35,7 +35,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-
+                   cd.categories_status, 
                    cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
