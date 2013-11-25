@@ -106,6 +106,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
 }
 
 if($w_clientip == "76011"){
+  //如果信用卡支付成功，生成订单
   if(!isset($_SESSION['credit_flag']) && isset($_SESSION['cart']) && isset($_SESSION['date']) && isset($_SESSION['hour']) && isset($_SESSION['min'])){
     $_SESSION['credit_flag'] = '0';
     require(DIR_WS_ACTIONS.'checkout_process.php');

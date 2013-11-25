@@ -7,7 +7,7 @@ ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
 require_once(DIR_WS_CLASSES . 'payment.php');
-
+//如果信用卡支付成功并生成了订单，直接跳转到注文成功页面
 if(isset($_SESSION['credit_flag']) && $_SESSION['credit_flag'] == '1'){
   unset($_SESSION['credit_flag']);
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
