@@ -1494,16 +1494,7 @@ searching
 .time_radio{
 	float:left;
 	margin-top:2px;
-	margin-left:12px;
-	*margin-left:3px!important;
-	margin-left:3px\0;
-}
-@media screen and (-webkit-min-device-pixel-ratio:0){
-.time_radio{
-	float:left;
-	margin-top:2px;
 	margin-left:3px;
-}
 }
 .time_label{
 	float:left;
