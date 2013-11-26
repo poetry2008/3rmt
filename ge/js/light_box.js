@@ -137,7 +137,7 @@ function fnCreate(src,num){
             var title_boder = document.createElement('div');
             //title div
             title_close = '<div id="lightbox_title_close" style="position: relative;z-index: 150;height:26px;background-color: rgb(255, 255, 255);">&nbsp;<div style="float:right;background-color: rgb(255, 255, 255);" onclick=\''+closefunction+'\'><a href="javascript:void(0);"><img src="images/close.gif"></a></div></div>';
-            title_text = '<div id="lightbox_title_text" style="width:'+(img_width+20)+'px;background-color: rgb(255, 255, 255);"><b>'+show_title+'('+now_index+'/'+image_lenght+')</b></div>';
+            title_text = '<div id="lightbox_title_text" style="width:'+(img_width+20)+'px;background-color: rgb(255, 255, 255);"><font color="#656565"><b>'+show_title+'('+now_index+'/'+image_lenght+')</b></font></div>';
 
             if(now_index == 0){title_text = '';}
             //close div
