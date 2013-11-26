@@ -1639,6 +1639,31 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'c_delete') {
   tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&site_id='.$site_id));
   $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
 }
+
+//删除分类图片
+if (isset($_GET['mode']) && $_GET['mode'] == 'ca_delete') {
+  $image_location  = tep_get_upload_dir($site_id). 'categories/' . $_GET['file'];
+  $other_image_location = tep_get_upload_dir($site_id) .'cache_lists/'. $_GET['file'];
+  $delete_image = $_GET['cl'];
+  if (file_exists($image_location)) @unlink($image_location);
+  if (file_exists($other_image_location)) @unlink($other_image_location);
+
+  if(isset($site_id) && $site_id != 0){
+    tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '' where categories_id  = '" . $_GET['cID'] . "' and site_id = '".$site_id."'");
+  }else{
+    $all_site_image_query =  tep_db_query("select id from ".  TABLE_SITES); 
+    tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '' where categories_id  = '" . $_GET['cID'] . "' and site_id = '0'");
+    while($site_image_row = tep_db_fetch_array($all_site_image_query)){
+      $t_image_location  = tep_get_upload_dir($site_image_row['id']). 'categories/' . $_GET['file'];
+      $t_other_image_location = tep_get_upload_dir($site_image_row['id']) .'cache_lists/'. $_GET['file'];
+      if (!file_exists($t_image_location)){
+        if (file_exists($t_other_image_location)) @unlink($t_other_image_location);
+        tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '' where categories_id  = '" . $_GET['cID'] . "' and site_id = '".$site_image_row['id']."' and ".$delete_image." ='".$_GET['file']."'");
+      }
+    }
+  }
+  tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_GET['cPath'].'&cID='.$_GET['cID'].'&action='.$_GET['c_action'].'&site_id='.$site_id));
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -4449,6 +4474,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       echo tep_get_upload_dir($site_id).'categories/'; 
                       echo '<br>';
                       echo $cInfo->categories_image2; 
+                      if (tep_not_null($cInfo->categories_image2)) {
+                        if (file_exists(tep_get_upload_dir($site_id).'categories/'.$cInfo->categories_image2)) {
+                          echo '<br>';
+                          echo '<a href="javascript:confirmg(\''.TEXT_PRODUCT_IMAGE_DEL_CONFIRM.'\', \''.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_GET['cPath'].'&cID='.$_GET['cID'].'&cl=categories_image2'.'&c_action='.$_GET['action'].'&file='.$cInfo->categories_image2.'&mode=ca_delete&site_id='.$site_id).'\')" style="color:#0000FF;">'.TEXT_PRODUCT_IMAGE_DEL_TEXT.'</a>';
+                        }
+                      }
                     }
                   ?>
                     </td> 
@@ -4467,6 +4498,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         echo tep_get_upload_dir($site_id).'categories/'; 
                         echo '<br>';
                         echo $cInfo->categories_image; 
+                        if (tep_not_null($cInfo->categories_image)) {
+                          if (file_exists(tep_get_upload_dir($site_id).'categories/'.$cInfo->categories_image)) {
+                            echo '<br>';
+                            echo '<a href="javascript:confirmg(\''.TEXT_PRODUCT_IMAGE_DEL_CONFIRM.'\', \''.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_GET['cPath'].'&cID='.$_GET['cID'].'&cl=categories_image'.'&c_action='.$_GET['action'].'&file='.$cInfo->categories_image.'&mode=ca_delete&site_id='.$site_id).'\')" style="color:#0000FF;">'.TEXT_PRODUCT_IMAGE_DEL_TEXT.'</a>';
+                          }
+                        }
                       }
                     ?>
                     </td>
