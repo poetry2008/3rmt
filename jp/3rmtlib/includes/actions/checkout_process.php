@@ -6,7 +6,12 @@ header("Content-type:text/html;charset=utf-8");
 ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
-require(DIR_WS_CLASSES . 'payment.php');
+require_once(DIR_WS_CLASSES . 'payment.php');
+//如果信用卡支付成功并生成了订单，直接跳转到注文成功页面
+if(isset($_SESSION['credit_flag']) && $_SESSION['credit_flag'] == '1'){
+  unset($_SESSION['credit_flag']);
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+}  
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
@@ -1236,7 +1241,9 @@ tep_session_unregister('hc_point');
 tep_session_unregister('hc_camp_point');
 tep_session_unregister('h_shipping_fee');
 
-tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+if(!isset($_SESSION['credit_flag'])){
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+}
     
 require(DIR_WS_INCLUDES . 'application_bottom.php');
 
