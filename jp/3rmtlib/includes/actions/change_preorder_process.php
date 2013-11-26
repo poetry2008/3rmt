@@ -2,6 +2,11 @@
 /*
   $Id$
 */
+//如果信用卡支付成功并生成了订单，直接跳转到注文成功页面
+if(isset($_SESSION['preorder_credit_flag']) && $_SESSION['preorder_credit_flag'] == '1'){
+  unset($_SESSION['preorder_credit_flag']);
+  tep_redirect(tep_href_link('change_preorder_success.php', '', 'SSL'));
+}
 
 if (!isset($_SESSION['preorder_info_id'])) {
   //判断是否有预约订单id 
@@ -9,7 +14,7 @@ if (!isset($_SESSION['preorder_info_id'])) {
 }
 
 require(DIR_WS_FUNCTIONS . 'visites.php');
-require(DIR_WS_CLASSES . 'payment.php');
+require_once(DIR_WS_CLASSES . 'payment.php');
 
 if (isset($preorder_real_point)) {
   $preorder_point = $preorder_real_point;
@@ -1229,7 +1234,9 @@ unset($_SESSION['preorder_camp_id']);
 unset($_SESSION['preorders_code_fee']);
 unset($_SESSION['preorder_payment_info']);
 
-tep_redirect(tep_href_link('change_preorder_success.php', '', 'SSL'));
+if(!isset($_SESSION['preorder_credit_flag'])){
+  tep_redirect(tep_href_link('change_preorder_success.php', '', 'SSL'));
+}
 
 
 

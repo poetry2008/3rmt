@@ -8,8 +8,8 @@ require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
 require_once(DIR_WS_CLASSES . 'payment.php');
 //如果信用卡支付成功并生成了订单，直接跳转到注文成功页面
-if(isset($_SESSION['credit_flag']) && $_SESSION['credit_flag'] == '1'){
-  unset($_SESSION['credit_flag']);
+if(isset($_SESSION['orders_credit_flag']) && $_SESSION['orders_credit_flag'] == '1'){
+  unset($_SESSION['orders_credit_flag']);
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
 }  
 if(isset($real_point)){
@@ -595,7 +595,7 @@ if($address_error == false && $_SESSION['guestchk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
+     $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
       tep_db_free_result($address_history_add_query);
   }
 }
@@ -1241,7 +1241,7 @@ tep_session_unregister('hc_point');
 tep_session_unregister('hc_camp_point');
 tep_session_unregister('h_shipping_fee');
 
-if(!isset($_SESSION['credit_flag'])){
+if(!isset($_SESSION['orders_credit_flag'])){
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
 }
     
