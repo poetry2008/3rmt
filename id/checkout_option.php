@@ -4,9 +4,6 @@
 */
 
   require('includes/application_top.php');
-  require(DIR_WS_ACTIONS.'checkout_option.php'); 
-  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
-  $_SESSION['shipping_page_str'] = end($page_url_array);
   if ($_GET['action'] == 'check_products_op') {
       $check_products_info = tep_check_less_product_option(); 
       if (!empty($check_products_info)) {
@@ -23,6 +20,9 @@
       echo implode('|||', $return_check_array); 
       exit; 
   }
+  require(DIR_WS_ACTIONS.'checkout_option.php'); 
+  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+  $_SESSION['shipping_page_str'] = end($page_url_array); 
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
