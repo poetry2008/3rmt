@@ -97,10 +97,10 @@ class google implements engine {
     unset($resultArray[0]);
     $i_res=1;
     foreach ($resultArray as $result ){
-      if(preg_match('/\<li class/',$result)){
-          $tmp_result = explode('<li class',$result);
-          $result = $tmp_result[0];
-      }
+      //if(preg_match('/\<li class/',$result)){
+          //$tmp_result = explode('<li class',$result);
+          //$result = $tmp_result[0];
+      //}
       if($i_res > 10){
         break;
       }
