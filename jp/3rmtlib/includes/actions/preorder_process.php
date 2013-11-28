@@ -119,6 +119,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
       
       if (tep_session_is_registered('customer_id')) {
+          //重新获得顾客信息
+          $account = tep_db_query("
+              select customers_firstname, 
+                     customers_lastname, 
+                     customers_email_address 
+              from " .  TABLE_CUSTOMERS . " 
+              where customers_id = '" . $customer_id . "' 
+                and site_id = '".SITE_ID."'
+          ");
+          $account_values = tep_db_fetch_array($account);
           //预约完成邮件认证
           $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
           $preorder_email_text = $preorders_mail_array['contents']; 
