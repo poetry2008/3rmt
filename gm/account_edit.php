@@ -571,6 +571,18 @@ if($_POST['num_rows'] > 0){
 <body>
 <!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
+<script type="text/javascript">
+$(document).ready(function(){ 
+<?php
+  if($save_flag == true){
+    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'.  FILENAME_ACCOUNT_EDIT .'";'; 
+  }
+  if($del_flag == true){
+    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";'; 
+  }
+?>
+});
+</script>
 <!-- header_eof --> 
 <!-- body --> 
 <div id="main">
@@ -614,16 +626,4 @@ $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 
 </body>
 </html>
-<script type="text/javascript">
-$(document).ready(function(){ 
-<?php
-  if($save_flag == true){
-    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'.  FILENAME_ACCOUNT_EDIT .'";'; 
-  }
-  if($del_flag == true){
-    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";'; 
-  }
-?>
-});
-</script>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

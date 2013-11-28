@@ -37,9 +37,9 @@
            p.products_small_sum, 
            p.products_tax_class_id, 
            pd.products_image, 
-           pd.products_status, 
-           p.products_bflag, 
            p.products_date_added,
+           p.products_bflag, 
+           pd.products_status, 
            pd.site_id
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where 
@@ -55,15 +55,15 @@
   having p.products_status != '0' and p.products_status != '3' 
   order by products_date_added DESC
   ";
-    $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
-     
-    $specials_query = tep_db_query($specials_query_raw);
-    
-    if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
+  $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
+  
+  $specials_query = tep_db_query($specials_query_raw);
+  
+  if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
-        <tr>
-          <td>
-            <br>
+          <tr>
+            <td>
+              <br>
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
@@ -74,15 +74,15 @@
                   <td class="smallText"><?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                 </tr>
               </table>
-                        </td>
-                    </tr>
+            </td>
+          </tr>
 <?php
-    }
+  }
 ?>
-                    <tr>
-                        <td>
-                            <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                                <tr>
+          <tr>
+            <td>
+              <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <tr>
 <?php
     $row = 0;
     while ($specials = tep_db_fetch_array($specials_query)) {
