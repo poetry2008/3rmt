@@ -39,7 +39,7 @@
       <table width="100%" border="0" cellpadding="0" cellspacing="0" id="detail-table-noframe">
       <?php
 //设置只读  用户第一次访问此页，并不想修改信息
-  $is_read_only = true;
+  $is_read_only       = true;
 
  
   $account_query = tep_db_query("
