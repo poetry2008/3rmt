@@ -10,6 +10,7 @@
       where categories_id = '".$categories_path[0]."' 
         and language_id = '".$languages_id."' 
         and (site_id = '".SITE_ID."' or site_id = '0')
+      order by site_id DESC
       ");
   $_categories = tep_db_fetch_array($_categories_query);
   $new_c_name = $_categories['categories_name'];
@@ -39,14 +40,15 @@
                p.products_tax_class_id, 
                p.products_price, 
                p.products_price_offset, 
-               p.products_date_added,
                p.products_bflag, 
                pd.site_id,
                pd.products_status,
+               p.products_date_added, 
                p.products_small_sum
         from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
-        where p.products_id = pd.products_id 
-        order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
+        where p.products_id = pd.products_id order by pd.site_id DESC 
+        ) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc 
+        limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
   } else {
     
@@ -75,18 +77,15 @@
   if (0 < $num_products) {
     $info_box_contents = array();
     $info_box_contents[] = array('text' => sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B')));
-
- //   new contentBoxHeading($info_box_contents);
-
     $row = 0;
     $col = 0;
     echo '<table width="100%"  border="0" cellspacing="0" cellpadding="0">';
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
-  
+      
       $new_products['products_name'] = $product_details['products_name'];
       $description_view = strip_tags(mb_substr(replace_store_name($product_details['products_description']),0,110));
-
+  
       $row ++;
 ?>
   <tr>
@@ -109,7 +108,7 @@
       }
 ?>                </td>
                 <td align="right">
-        <?php echo '<span id="' . $new_products['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$new_products['products_id'].'&action=buy_now').'" onClick="sendData(\'' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $new_products['products_id']) . '\',\'' . displaychange . '\',\'' . $new_products['products_id'] . '\'); return false;"><img src="images/design/button/button_in_cart.jpg" border="0"></a></span>'; ?>        
+        <?php echo '<span id="' . $new_products['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$new_products['products_id'].'&action=buy_now').'"  return false;"><img src="images/design/button/button_in_cart.jpg" border="0"></a></span>'; ?>        
         &nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_description.jpg',IMAGE_BUTTON_DEC);?></a></td>
               </tr>
             </table>

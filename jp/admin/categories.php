@@ -1613,7 +1613,8 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
   if (file_exists($image_location)) @unlink($image_location);
   if (file_exists($image_location2)) @unlink($image_location2);
   if(isset($site_id)&&$site_id!=0){
-    tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
+    $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id =  '" . $_GET['pID'] . "' and site_id = 0"));
+    tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
   }else{
     $all_site_image_query =  tep_db_query("select id from ".  TABLE_SITES); 
     tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '0'");
@@ -1649,7 +1650,8 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'ca_delete') {
   if (file_exists($other_image_location)) @unlink($other_image_location);
 
   if(isset($site_id) && $site_id != 0){
-    tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '' where categories_id  = '" . $_GET['cID'] . "' and site_id = '".$site_id."'");
+    $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id =  '" . $_GET['cID'] . "' and site_id = 0"));
+    tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where categories_id  = '" . $_GET['cID'] . "' and site_id = '".$site_id."'");
   }else{
     $all_site_image_query =  tep_db_query("select id from ".  TABLE_SITES); 
     tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '' where categories_id  = '" . $_GET['cID'] . "' and site_id = '0'");
@@ -4469,11 +4471,31 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     <?php
                     if ($_GET['action'] == 'edit_category') {
                       echo '<br>';
-                      echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image2, $cInfo->categories_name);
+                      $hidden_top_single = 0; 
+                      if (tep_not_null($cInfo->categories_image2)) {
+                        if (file_exists(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image2)) {
+                          $hidden_top_single = 1; 
+                        }
+                      } 
+                      
+                      if ($hidden_top_single) {
+                        echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image2, $cInfo->categories_name);
+                      } else {
+                        $default_top_category_raw = tep_db_query("select categories_image2 from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$cInfo->categories_id."' and site_id = '0'"); 
+                        $default_top_category_res = tep_db_fetch_array($default_top_category_raw);
+                        echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_top_category_res['categories_image2'], $cInfo->categories_name);
+                      }
+                      
                       echo '<br>';
-                      echo tep_get_upload_dir($site_id).'categories/'; 
-                      echo '<br>';
-                      echo $cInfo->categories_image2; 
+                      if ($hidden_top_single) {
+                        echo tep_get_upload_dir($site_id).'categories/'; 
+                        echo '<br>';
+                        echo $cInfo->categories_image2; 
+                      } else {
+                        echo tep_get_upload_dir(0).'categories/'; 
+                        echo '<br>';
+                        echo $default_top_category_res['categories_image2']; 
+                      } 
                       if (tep_not_null($cInfo->categories_image2)) {
                         if (file_exists(tep_get_upload_dir($site_id).'categories/'.$cInfo->categories_image2)) {
                           echo '<br>';
@@ -4493,11 +4515,29 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     <?php 
                       if ($_GET['action'] == 'edit_category') {
                         echo '<br>';
-                        echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image, $cInfo->categories_name);
+                        $hidden_child_single = 0; 
+                        if (tep_not_null($cInfo->categories_image)) {
+                          if (file_exists(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image)) {
+                            $hidden_child_single = 1; 
+                          }
+                        } 
+                        if ($hidden_child_single) {
+                          echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image, $cInfo->categories_name);
+                        } else {
+                          $default_child_category_raw = tep_db_query("select categories_image from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$cInfo->categories_id."' and site_id = '0'"); 
+                          $default_child_category_res = tep_db_fetch_array($default_child_category_raw);
+                          echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_child_category_res['categories_image'], $cInfo->categories_name);
+                        }
                         echo '<br>';
-                        echo tep_get_upload_dir($site_id).'categories/'; 
-                        echo '<br>';
-                        echo $cInfo->categories_image; 
+                        if ($hidden_child_single) {
+                          echo tep_get_upload_dir($site_id).'categories/'; 
+                          echo '<br>';
+                          echo $cInfo->categories_image; 
+                        } else {
+                          echo tep_get_upload_dir(0).'categories/'; 
+                          echo '<br>';
+                          echo $default_child_category_res['categories_image']; 
+                        }
                         if (tep_not_null($cInfo->categories_image)) {
                           if (file_exists(tep_get_upload_dir($site_id).'categories/'.$cInfo->categories_image)) {
                             echo '<br>';

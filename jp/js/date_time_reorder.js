@@ -13,6 +13,8 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
             end_time = end_time_old;
           }
         } 
+        $("#date_show_id").show();
+        $("#hour_show_error").hide();
         var array_start = Array();
         array_start = start_time.split('||'); 
 
@@ -45,6 +47,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
           $("#shipping_list").show();
         }else{
           $("#shipping_list").hide();
+          $("#date_show_id").hide();
         }
         $("#shipping_list_show").html(html_str);
 
@@ -60,6 +63,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
 /******************************************************************************/
 function selectHour(start_time,end_time,hour,min_num,ele){
         $("#hour_error").html("");
+        $("#hour_show_error").hide();
         if(hour != ''){
           hour = parseInt(hour); 
           document.getElementById("hour"+hour).style.color="#ffffff";
