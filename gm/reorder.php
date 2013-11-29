@@ -240,7 +240,7 @@ document.onclick=function(e){
     
     $products_ordered .= TEXT_REORDER_ORDER_PRODUCT.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_ORDER_PRODUCT, 'utf-8')))).'：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
-    $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
+      $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
     
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
@@ -296,7 +296,7 @@ document.onclick=function(e){
      default:
        break;
   }
-  $time_info .= $_hour .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+  $time_info .= $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
 
   $mail_info = tep_get_mail_templates('REORDER_MAIL_CONTENT', 0);  
   $mail_title = $mail_info['title'];
@@ -779,8 +779,8 @@ $(document).ready(function(){
   while($j_shipping <= $shipping_time){
     if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
      
-     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
-       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
+      if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
+        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." （l） ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
@@ -798,7 +798,7 @@ $(document).ready(function(){
    </select><br>
    <span id="date_error"></span>
 </td></tr>
-<tr>
+<tr id="date_show_id" style="display:none;">
 <td colspan="2">
 <table width="100%">
   <tr id="shipping_list" style="display:none;">
@@ -819,7 +819,7 @@ $(document).ready(function(){
 <div id="shipping_list_show_min"></div>
 </div>
 </td></tr>
-<tr>
+<tr id="hour_show_error" style="display:none;">
 <td></td>
 <td><span id="hour_error"></span></td>
 </tr>
@@ -857,7 +857,7 @@ function orderConfirmPage(){
   document.getElementById('form_error').style.display = 'none';
   document.getElementById('date_error').innerHTML = "";
   document.getElementById('hour_error').innerHTML = "";
-    // init
+  // init
   productName  = new Array();
   oldAttribute = new Array();
   text         = "";
@@ -956,7 +956,7 @@ function orderConfirmPage(){
         alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div><div>';
   }
 ?>
-    <?php } else {
+<?php } else {
   // enter basic order info
   ?>
     <div class="comment">
@@ -1004,4 +1004,5 @@ function orderConfirmPage(){
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 
 </body>
-</html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+</html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
