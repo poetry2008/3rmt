@@ -836,7 +836,7 @@ $(document).ready(function(){
       <div id='confirm_content' style='text-align:left;'>
       </div>
       <div class="botton-continue">
-      <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_submit_hover.gif'" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
       <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" onmouseout="this.src='includes/languages/japanese/images/buttons/button_back.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_back_hover.gif'" alt="<?php echo TEXT_BACK_TO_HISTORY;?>" title="<?php echo TEXT_BACK_TO_HISTORY;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block';document.getElementById('no_change').value='0';" >
     </div></div>
     <script type="text/javascript">
