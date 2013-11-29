@@ -1,21 +1,23 @@
 <?php
 /*
   $Id$
+
+  一个商品的评论列表页
+
 */
 
   require('includes/application_top.php');
-  
+
 // lets retrieve all $_GET keys and values..
-  $get_params = tep_get_all_get_params();
+  $get_params      = tep_get_all_get_params();
   $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button
-  $get_params = substr($get_params, 0, -1); //remove trailing &
+  $get_params      = substr($get_params, 0, -1); //remove trailing &
   if (tep_not_null($get_params_back)) {
     $get_params_back = substr($get_params_back, 0, -1); //remove trailing &
   } else {
     $get_params_back = $get_params;
   }
 
-   
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) tep_redirect(tep_href_link(FILENAME_REVIEWS));
 
@@ -49,8 +51,6 @@
             <td class="tableHeading"><?php echo TABLE_HEADING_NUMBER; ?></td>
             <td class="tableHeading"><?php echo TABLE_HEADING_AUTHOR; ?></td>
             <td align="center" class="tableHeading"><?php echo TABLE_HEADING_RATING; ?></td>
-            <?php /* <td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td>*/ ?>
-            <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>*/ ?>
           </tr>
 <?php
 

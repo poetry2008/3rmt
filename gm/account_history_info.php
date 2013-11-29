@@ -286,26 +286,28 @@
       $campaign_info = tep_db_fetch_array($campaign_info_query);
       if ($campaign_info) {
         if ($campaign_info['campaign_fee'] == 0) {
+          //配送费用，手续费用
           echo '              <tr>' . "\n" .
-                '                <td align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
-                '                <td align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
+           '                <td align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           echo '              <tr>' . "\n" .
-                '                <td align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
-                '                <td align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
+           '                <td align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           continue; 
         }
       } else {
         if ($order->totals[$i]['value'] == 0) {
+          //配送费用，手续费用
           echo '              <tr>' . "\n" .
-                '                <td align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
-                '                <td align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
+           '                <td align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           echo '              <tr>' . "\n" .
-                '                <td align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
-                '                <td align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
+           '                <td align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
           continue; 
         }
       }
@@ -313,29 +315,31 @@
     echo '              <tr>' . "\n" .
          '                <td align="right" width="100%">' . ($order->totals[$i]['class'] == 'ot_custom' ? $order->totals[$i]['title'].':' : $order->totals[$i]['title']) . '</td>' . "\n" .
          '                <td align="right" nowrap>';
-         if ($order->totals[$i]['class'] == 'ot_point') {
-           $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
-           $campaign_info = tep_db_fetch_array($campaign_info_query);
-           if ($campaign_info) {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
-           } else {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
-           } 
-           echo '</td>' . "\n" .
-         '              </tr>' . "\n";
-           echo '              <tr>' . "\n" .
-                '                <td align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
-                '                <td align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n";
-           echo '              <tr>' . "\n" .
-                '                <td align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
-                '                <td align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
-                '              </tr>' . "\n"; 
-         } else {
-           echo $currencies->format_total($order->totals[$i]['value']); 
-           echo '</td>' . "\n" .
-         '              </tr>' . "\n";
-         } 
+    if ($order->totals[$i]['class'] == 'ot_point') {
+      $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
+      $campaign_info = tep_db_fetch_array($campaign_info_query);
+      if ($campaign_info) {
+        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
+      } else {
+        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
+      }
+      echo '</td>' . "\n" .
+      '              </tr>' . "\n";
+
+      //配送费用，手续费用
+      echo '              <tr>' . "\n" .
+           '                <td align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+      echo '              <tr>' . "\n" .
+           '                <td align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
+           '                <td align="right" nowrap>' .$currencies->format($order->info['code_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n"; 
+    } else {
+      echo $currencies->format_total($order->totals[$i]['value']); 
+      echo '</td>' . "\n" .
+      '              </tr>' . "\n";
+    } 
   }
 ?> 
                       </table></td> 
