@@ -230,7 +230,7 @@ document.onclick=function(e){
       $total_cost = 0;
     }
 
-    $products_ordered .= TEXT_REORDER_ORDER_PRODUCT .  str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_ORDER_PRODUCT, 'utf-8')))).'：'.$o->products[$i]['name'];
+    $products_ordered .= TEXT_REORDER_ORDER_PRODUCT.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_ORDER_PRODUCT, 'utf-8')))).'：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
       $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
@@ -238,7 +238,7 @@ document.onclick=function(e){
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
     
     $products_ordered .= $products_ordered_attributes . "\n";
-    $products_ordered .= TEXT_REORDER_QTY_SUM .  str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_QTY_SUM, 'utf-8')))).'：'.$o->products[$i]['qty'] .TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
+    $products_ordered .= TEXT_REORDER_QTY_SUM.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_QTY_SUM, 'utf-8')))).'：' . $o->products[$i]['qty'] . TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
 
     $products_ordered .= '------------------------------------------' . "\n";
   }
@@ -288,7 +288,7 @@ document.onclick=function(e){
      default:
        break;
   }
-  $time_info .= $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT.TEXT_TIME_LINK.$end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
+  $time_info .= $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
 
   $mail_info = tep_get_mail_templates('REORDER_MAIL_CONTENT', 0);  
   $mail_title = $mail_info['title'];
@@ -761,8 +761,8 @@ $(document).ready(function(){
   while($j_shipping <= $shipping_time){
     if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
      
-     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
-       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
+      if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
+        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." （l） ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
@@ -780,7 +780,7 @@ $(document).ready(function(){
    </select><br>
    <span id="date_error"></span>
 </td></tr>
-<tr>
+<tr id="date_show_id" style="display:none;">
 <td colspan="2">
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr id="shipping_list" style="display:none;">
@@ -804,7 +804,7 @@ $(document).ready(function(){
  </tr>
 </table>
 </td></tr>
-<tr>
+<tr id="hour_show_error" style="display:none;">
 <td></td>
 <td><span id="hour_error"></span></td>
 </tr>
@@ -882,13 +882,13 @@ function orderConfirmPage(){
   text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></td><td>";
 
   if(document.getElementById('new_date').selectedIndex == 0 && document.getElementById('comment').value == ''){
-    document.getElementById('form_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_UNCHANGE_QTY;?></font>";
+      document.getElementById('form_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_UNCHANGE_QTY;?></font>";
       document.getElementById('form_error').style.display = 'block';
       return false;
   }
 
   if(document.getElementById('new_date').selectedIndex == 0 && oldTime_value <= today_value){
-    document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
+      document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
       return false;
   }
 
@@ -900,7 +900,7 @@ function orderConfirmPage(){
     var shipping_time_flag = !document.getElementById('m0');
   } 
   if(shipping_time_flag && document.getElementById('new_date').selectedIndex != 0){
-    document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_SHIPPING_TIME_SELECT;?></font>"; 
+      document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_SHIPPING_TIME_SELECT;?></font>";
       $("#hour_show_error").show();
       return false;
   }
@@ -936,7 +936,7 @@ function orderConfirmPage(){
     echo '<div class="comment">'.TEXT_REORDER_NO_ORDER_ERROR.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div><div>';
   }
 ?>
-    <?php } else {
+<?php } else {
   // enter basic order info
   ?>
     <div class="comment">
@@ -985,4 +985,5 @@ function orderConfirmPage(){
   <!-- footer_eof -->
 </div>
 </body>
-</html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+</html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -48,7 +48,8 @@ document.onclick=function(e){
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
         <!-- left_navigation -->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof --> </td>
+        <!-- left_navigation_eof -->
+      </td>
       <!-- body_text -->
       <td id="contents" valign="top">
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
@@ -733,7 +734,7 @@ $(document).ready(function(){
     $max_time_str = implode('||',array_keys($shi_time_array));
     $min_time_str = implode('||',$shi_time_array);
     $max_time_end_str = implode('||',array_keys($shi_time_end_array));
-    $min_time_end_str = implode('||',$shi_time_end_array);    
+    $min_time_end_str = implode('||',$shi_time_end_array);
   }
   
 
@@ -743,8 +744,7 @@ $(document).ready(function(){
   $work_start_old = $max_time_str_old;
   $work_end_old = $min_time_str_old;
   $work_start_exit = $max_time_end_str;
-  $work_end_exit = $min_time_end_str; 
-
+  $work_end_exit = $min_time_end_str;
 
 
   $m_num = date('m',strtotime("+".$db_set_day." minutes"));
@@ -768,8 +768,8 @@ $(document).ready(function(){
   while($j_shipping <= $shipping_time){
     if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
      
-     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
-       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
+      if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
+        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." （l） ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
@@ -787,7 +787,7 @@ $(document).ready(function(){
    </select><br>
    <span id="date_error"></span>
 </td></tr>
-<tr>
+<tr id="date_show_id" style="display:none;">
 <td colspan="2" id="table_td_p0">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="shipping_box">
   <tr id="shipping_list" style="display:none;">
@@ -811,7 +811,7 @@ $(document).ready(function(){
  </tr>
 </table>
 </td></tr>
-<tr>
+<tr id="hour_show_error" style="display:none;">
 <td></td>
 <td><span id="hour_error"></span></td>
 </tr>
