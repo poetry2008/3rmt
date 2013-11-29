@@ -101,7 +101,8 @@ document.onclick=function(e){
 
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
+        echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
+        // time error
       } else {
         // update time
         //change order status and insert order status history
@@ -151,7 +152,7 @@ document.onclick=function(e){
           ";
           tep_db_query($sql);
         unset($_SESSION['reorder_flag']);
-        echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.' <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="'.TEXT_BACK_TO_TOP.'"></a></div></div>';
+        echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.' <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div>';
         // sent mail to customer
 
   // load selected payment module
@@ -356,7 +357,7 @@ document.onclick=function(e){
     //判断订单状态是否完成 或者 是否取引失败 或者 是否交易完成
     } else if (tep_orders_status_finished($order['orders_status']) || tep_order_transaction_status($order['orders_status']) || tep_orders_transaction_finished($oID)) {
         // status can not change
-        echo '<div class="comment">'.TEXT_REORDER_COMMERN_STATUS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
+        echo '<div class="comment">'.TEXT_REORDER_COMMERN_STATUS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
     } else {
         // edit order
 ?>
@@ -929,7 +930,7 @@ function orderConfirmPage(){
     }
   } else {
     // has no order or info error
-    echo '<div class="comment">'.TEXT_REORDER_NO_ORDER_ERROR.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
+    echo '<div class="comment">'.TEXT_REORDER_NO_ORDER_ERROR.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
   }
 ?>
 <?php } else {
