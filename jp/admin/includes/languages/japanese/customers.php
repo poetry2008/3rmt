@@ -68,3 +68,4 @@ define('CUSTOMERS_YES_TEXT', 'あり');
 define('CUSTOMERS_NO_TEXT', 'なし');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_CUSTOMERS_PREORDERS_SUM','予約回数');

@@ -5018,6 +5018,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
      
    }
    preorders_updated($order_id);  
+   //更新顾客的预约次数
+   tep_db_query("update ".TABLE_CUSTOMERS." set preorders_sum=preorders_sum+1 where customers_id='".$customers_id."'");
    
    if ($is_active == 1) {
      preorder_last_customer_action();

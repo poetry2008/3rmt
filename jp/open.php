@@ -2,10 +2,8 @@
 /*
     $Id$
 */
-//require('client.inc.php');
 $_noemailclass = true;
   require_once('includes/application_top.php');
-//require('includes/configure.php');
 if(isset($_POST)&&$_POST){
   foreach($_POST as $pos_key => $pos_val){
     if(is_array($pos_val)){
@@ -21,7 +19,6 @@ define('SOURCE','Web'); //Ticket source.
 $inc='open.inc.php';    //default include.
 $errors=array();
 if($_POST):
-    //$_POST['deptId']=$_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
     $_POST['emailId']=0; //Just Making sure we don't accept crap...only topicId is expected.
     if(!$thisuser && $cfg->enableCaptcha()){
         if(!$_POST['captcha'])

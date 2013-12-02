@@ -22,8 +22,6 @@ define('TEXT_NEW_CUSTOMER_INTRODUCTION', '<font color="red"><b>会員登録を�
 
 define('HEADING_RETURNING_CUSTOMER', STORE_NAME.'会員の方。');
 define('TEXT_RETURNING_CUSTOMER', 'メールアドレスとパスワードを入力して、ログインしてください。');
-//define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
-//define('ENTRY_PASSWORD', 'パスワード:');
 
 define('TEXT_PASSWORD_FORGOTTEN', 'パスワードをお忘れの場合はこちらをクリック!');
 

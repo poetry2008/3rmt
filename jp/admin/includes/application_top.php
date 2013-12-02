@@ -2,6 +2,28 @@
 /*
   $Id$
 */
+/* -------------------------------------
+    功能: 压缩网页  
+    参数: $content(string) 网页内容
+    返回值: 压缩后的网页内容(string) 
+ ------------------------------------ */
+function ob_gzip($content)
+{  
+    //如果页面头部信息还没有输出 
+    //并且zlib扩展已经加载到PHP中
+    //并且浏览器支持GZIP的页面 
+    if(!headers_sent() && extension_loaded("zlib") && strstr($_SERVER["HTTP_ACCEPT_ENCODING"],"gzip")){
+      //开始压缩网页
+      $content = gzencode($content,6); //压缩级别为6(最小为0，最大为9)
+                                       
+      header("Content-Encoding: gzip");
+      header("Vary: Accept-Encoding");
+      header("Content-Length: ".strlen($content));
+    }
+    return $content;
+}
+//启用页面压缩输出
+ob_start('ob_gzip');
 $GLOBALS['HTTP_GET_VARS']  = $_GET;
 $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
@@ -12,7 +34,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
 
 // Set the level of error reporting
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
