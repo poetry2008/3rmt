@@ -481,8 +481,6 @@
       $cpayment->admin_add_additional_info($sql_data_temp_array, $_POST['payment_method']);
       $_SESSION['create_preorder']['orders'] = $sql_data_temp_array;
       tep_db_perform(TABLE_PREORDERS, $_SESSION['create_preorder']['orders']);
-      //更新顾客的预约次数
-      tep_db_query("update ".TABLE_CUSTOMERS." set preorders_sum=preorders_sum+1 where customers_id='".$_SESSION['create_preorder']['orders']['customers_id']."'");
       preorder_last_customer_action();
       preorders_updated($_SESSION['create_preorder']['orders']['orders_id']);
 
