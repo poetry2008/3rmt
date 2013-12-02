@@ -3391,7 +3391,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     </tr>
                     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
-                    <?php if (true||!$site_id) {?>
                       <tr>
                         <td colspan="2"><fieldset>
                         <legend style="color:#009900 "><?php echo TEXT_PRODUCT_IMAGE_TITLE;?></legend>
@@ -3467,7 +3466,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   ?>
                                     </fieldset></td>
                                     </tr>
-                                    <?php }?>
                                     <tr>
                                     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                                     </tr>
