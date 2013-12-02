@@ -1,7 +1,6 @@
 <?php 
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'payment.php');
-//check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
 
@@ -18,30 +17,7 @@ $w_rel      = $_GET['rel'];
 
 //没有设置参数的时候，设置错误信息
 
-/*
-$w_error="パラメータが不正です";
-if(!isset($w_telno)){
-  $w_telno=$w_error;
-}
-if(!isset($w_email)){
-  $w_email=$w_error;
-}
-if(!isset($w_sendid)){
-  $w_sendid=$w_error;
-}
-if(!isset($w_username)){
-  $w_username=$w_error;
-}
-if(!isset($w_money)){
-  $w_money=$w_error;
-}
-if(!isset($w_cont)){
-  $w_cont=$w_error;
-}
-if(!isset($w_option)){
-  $w_option=$w_error;
-}
-*/
+
 if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
 
   if ($w_rel == 'yes' &&  $w_option != "") {//option是空白的是偶，不搜索option

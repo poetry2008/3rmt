@@ -25,8 +25,6 @@
       $manufacturers_list .= '<tr><td height="20" class="c_menu"><h3><a href="' . tep_href_link(FILENAME_DEFAULT, 'manufacturers_id=' . $manufacturers['manufacturers_id']) . '">' . $manufacturers_name . '</a></h3></td></tr>';
     }
 
-   // $info_box_contents = array();
-  //  $info_box_contents[] = array('text' => substr($manufacturers_list, 0, -4));
   echo $manufacturers_list ;
   
   

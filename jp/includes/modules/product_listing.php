@@ -71,7 +71,6 @@ if ($tmp_sort_str == '4') {
       }
       //buynow
       if($listing['products_quantity'] > 0) {
-        //$BUY_NOW = '<a href="' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $listing['products_id']) . '">' . tep_image_button('button_buy_now.gif', TEXT_BUY . $listing['products_name'] . TEXT_NOW) . '</a>&nbsp;';
       } else {
         $BUY_NOW = STOCK_MARK_PRODUCT_OUT_OF_STOCK;
       }

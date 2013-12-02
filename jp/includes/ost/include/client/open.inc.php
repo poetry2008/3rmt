@@ -88,8 +88,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <?}?>
-    <?if($cfg && $cfg->enableCaptcha()/* && (!$thisclient ||
-                                         !$thisclient->isValid())*/) {
+    <?if($cfg && $cfg->enableCaptcha()) {
         if($_POST && $errors && !$errors['captcha'])
             $errors['captcha']='必須項目エラー';
         ?>

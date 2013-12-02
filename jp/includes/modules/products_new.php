@@ -19,11 +19,7 @@
       } else {
         $products_price = $currencies->display_price(tep_get_price($products_new_array[$i]['price'], $products_new_array[$i]['price_offset'], $products_new_array[$i]['small_sum'], $products_new_array[$i]['products_bflag']), tep_get_tax_rate($products_new_array[$i]['tax_class_id']));
       }
-      /*if (isset($products_new_array[$i]['specials_price'])) {
-        $products_price = '<s>' .  $currencies->display_price($products_new_array[$i]['price'], tep_get_tax_rate($products_new_array[$i]['tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price($products_new_array[$i]['specials_price'], tep_get_tax_rate($products_new_array[$i]['tax_class_id'])) . '</span>';
-      } else {
-        $products_price = $currencies->display_price($products_new_array[$i]['price'], tep_get_tax_rate($products_new_array[$i]['tax_class_id']));
-      }*/
+      
 ?>
 <table class="product_listing_content">
   <tr>

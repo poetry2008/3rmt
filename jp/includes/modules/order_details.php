@@ -20,8 +20,6 @@
   }
 
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-    //$colspan++;
-    //echo '    <td class="tableHeading">' . TABLE_HEADING_MODEL . '</td>' . "\n";
   }
 
   echo '    <td class="tableHeading">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
@@ -45,7 +43,6 @@
 
 // Delete box only for shopping cart
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
 
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
@@ -141,7 +138,6 @@
     }
 // Model
     if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      //echo '    <td class="main" style="">1<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products[$i]['id']) . '">' . $products[$i]['model'] . '</a></td>' . "\n";
     }
   
 // Product name, with or without link
@@ -222,7 +218,6 @@
         // Check Options stock - add ds-style
         if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
           if (STOCK_CHECK == 'true') {
-          //echo $stock_check = tep_check_opstock($opa_value['stock_num'], $products[$i]['quantity']);
       if ($stock_check) $any_out_of_stock = 1;
         }
         }

@@ -61,16 +61,6 @@
   $country = tep_db_prepare_input($_POST['country']);
 
   $error = false; // reset error flag
-/*
-  if (ACCOUNT_GENDER == 'true') {
-    if ( ($gender == 'm') || ($gender == 'f') ) {
-      $entry_gender_error = false;
-    } else {
-      $error = true;
-      $entry_gender_error = true;
-    }
-  }
-*/
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;

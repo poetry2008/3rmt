@@ -4,7 +4,6 @@
 */
 require_once('includes/configure.php');
 if(basename($_SERVER['SCRIPT_NAME'])==basename(__FILE__)) die('Kwaheri rafiki!'); //Say hi to our friend..
-//if(!file_exists('../../includes/ost/main.inc.php')) die('Fatal error..get tech support');
 define('ROOT_PATH','../'); //Path to the root dir.
 require_once(DIR_OST.'/main.inc.php');
 if(!defined('INCLUDE_DIR')) die('Fatal error');
