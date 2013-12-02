@@ -12,4 +12,6 @@
     echo $logger->timer_stop(DISPLAY_PAGE_PARSE_TIME);
     }
   }
+//输出压缩页面
+ob_end_flush();
 ?>
