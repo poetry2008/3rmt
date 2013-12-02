@@ -4753,6 +4753,7 @@ if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'
              ci.customers_info_date_of_last_logon as date_last_logon, 
              ci.customers_info_number_of_logons as number_of_logons,
              c.is_exit_history,
+             c.preorders_sum,
              s.romaji
       from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
       c.customers_id = a.customers_id and c.customers_default_address_id =
@@ -5128,6 +5129,11 @@ if($_GET['cID'] != -1){
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => substr(TEXT_CUSTOMERS_ORDER_COUNT, 0, -1)),
          array('text' => tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
+       );
+        //预约次数
+        $customers_fax_row[]['text'] = array(
+         array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_PREORDERS_SUM),
+         array('text' => $nInfo->preorders_sum)
        );
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => substr(TEXT_INFO_NUMBER_OF_REVIEWS, 0, -1)),

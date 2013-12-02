@@ -68,3 +68,4 @@ define('CUSTOMERS_YES_TEXT', '有');
 define('CUSTOMERS_NO_TEXT', '无');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('TEXT_CUSTOMERS_PREORDERS_SUM','预约数');
