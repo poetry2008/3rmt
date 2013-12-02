@@ -8419,7 +8419,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    }else if(count($return_arr)==1){
      $cid_str = " and p2c.categories_id = '".$return_arr[0]."' ";
    }
-   $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price from ".TABLE_PRODUCTS." 
+   $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price, p.relate_products_id from ".TABLE_PRODUCTS." 
      p,".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p2c.products_id = p.products_id 
      ".$cid_str." and p.products_bflag='".$bflag."'";
    $tmp_query=tep_db_query($tmp_sql);
@@ -8435,11 +8435,30 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
      if(!$tmp_price){
        $tmp_price = $tmp_row['products_price'];
      }
-     if($tmp_row['products_real_quantity'] > tep_get_relate_products_sum($tmp_row['products_id']
-           ,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
-       $result['error'] = true;
-     }else{
+     if (!$result['error']) {
+       $tmp_relate_products_id = (int)$tmp_row['relate_products_id']; 
+       if (empty($tmp_relate_products_id)) {
+         $result['error'] = true;
+       }
+       if (!empty($tmp_relate_products_id)) {
+          $o_count_sql = " select op.products_quantity from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$tmp_row['relate_products_id']."' and os.calc_price = '1'";
+          if($site_id != 0) {
+             $o_count_sql .= " and o.site_id = '".$site_id."' ";
+          }
+          if($start != '' && $end != '') {
+           $o_count_sql .= " and date_purchased between '".$start."' and '".$end."' ";
+          }
+          $o_count_raw = tep_db_query($o_count_sql);     
+          if (!tep_db_num_rows($o_count_raw)) {
+            $result['error'] = true;
+          }
+       }
      }
+     //if($tmp_row['products_real_quantity'] > tep_get_relate_products_sum($tmp_row['products_id']
+           //,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
+       //$result['error'] = true;
+     //}else{
+     //}
      $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
@@ -8465,7 +8484,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
  ------------------------------------ */
 function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
     $start='',$end='',$sort=''){
-  $sql = "select products_real_quantity,products_price from ".TABLE_PRODUCTS." where products_id
+  $sql = "select products_real_quantity,products_price,relate_products_id from ".TABLE_PRODUCTS." where products_id
     ='".$pid."' and products_bflag='".$bflag."'";
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
@@ -8476,11 +8495,28 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
   $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
-  if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
-        $start,$end)&&$row['products_real_quantity']!=0){
+  //if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
+        //$start,$end)&&$row['products_real_quantity']!=0){
+    //$result['error'] = true;
+  //}else{
+    //$result['error'] = false;
+  //}
+  $tmp_relate_products_id = (int)$row['relate_products_id']; 
+  if (empty($tmp_relate_products_id)) {
     $result['error'] = true;
-  }else{
-    $result['error'] = false;
+  }
+  if (!empty($tmp_relate_products_id)) {
+     $o_count_sql = " select op.products_quantity from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$row['relate_products_id']."' and os.calc_price = '1'";
+     if($site_id != 0) {
+        $o_count_sql .= " and o.site_id = '".$site_id."' ";
+     }
+     if($start != '' && $end != '') {
+      $o_count_sql .= " and date_purchased between '".$start."' and '".$end."' ";
+     }
+     $o_count_raw = tep_db_query($o_count_sql);     
+     if (!tep_db_num_rows($o_count_raw)) {
+       $result['error'] = true;
+     }
   }
   $result['quantity_all_product'] = $row['products_real_quantity'];
   $result['asset_all_product'] =$tmp_price*$row['products_real_quantity'];
@@ -8516,13 +8552,23 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
          $sql .= " and date_purchased between '".$start."' and '".$end."' ";
        }
     if($sort=='price_desc'){
-      $sql .= " order by final_price desc ";
+      $sql .= " order by abs(final_price) asc ";
     }else if($sort=='price_asc'){
-      $sql .= " order by final_price asc ";
+      $sql .= " order by abs(final_price) desc ";
     }else{
       $sql .= " order by o.torihiki_date desc";
     }
     $order_history_query = tep_db_query($sql);
+    while($t_row = tep_db_fetch_array($order_history_query)){
+      if ($t_row['final_price'] == '0.0000') {
+        continue; 
+      }
+      if ($t_row['final_price']) {
+        return $t_row['final_price']; 
+      }
+    }
+    return 0;
+    /*
     $sum = 0;
     $cnt = 0;
     while($h = tep_db_fetch_array($order_history_query)){
@@ -8537,6 +8583,7 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
       }
     }
     return $sum/$cnt;
+    */
   }
 
 /* -------------------------------------
