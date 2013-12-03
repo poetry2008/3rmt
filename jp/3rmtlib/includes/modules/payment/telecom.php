@@ -174,7 +174,7 @@ class telecom  extends basePayment  implements paymentInterface  {
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    tep_mail(TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME, SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
     
     $today = date("YmdHis");
     // telecom_option 文档中的$ID
@@ -478,7 +478,7 @@ class telecom  extends basePayment  implements paymentInterface  {
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    tep_mail(TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME, SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
  
 
 

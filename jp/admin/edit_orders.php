@@ -2389,7 +2389,7 @@ function address_option_show(action){
     $address_i++;
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."' group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -2500,7 +2500,7 @@ function address_option_list(value){
     $address_list_arr[] = $address_list_array['name_flag'];
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."' group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
