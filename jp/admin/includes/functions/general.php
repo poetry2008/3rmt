@@ -12613,3 +12613,20 @@ function tep_defined_category_image_name($image_name, $i = 1, $has_name = array(
   $arr_res = array('name'=>$new_image_name,'index'=>$i);
   return $arr_res;
 }
+/* -------------------------------------
+    功能: 获取该顾客在指定网站的预约订单数量 
+    参数: $customers_id(int) 顾客id 
+    参数: $site_id(int) 网站id 
+    返回值: 预约订单数量(int) 
+ ------------------------------------ */
+function tep_get_preorders_by_customers_id($customers_id,$site_id){
+  $preorders_sql = "select distinct o.orders_id from preorders o where  o.customers_id = '".$customers_id."' and o.site_id ='".$site_id."'";
+  $preorders_query = tep_db_query($preorders_sql);
+  $preorders_array = array();
+  while($preorders_row = tep_db_fetch_array($preorders_query)){
+    if(!in_array($preorders_row['orders_id'],$preorders_array)){
+      $preorders_array[] = $preorders_row['orders_id'];
+    }
+  }
+  return count($preorders_array);
+}
