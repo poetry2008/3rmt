@@ -794,6 +794,15 @@ $(document).ready(function(){
   <td width="20%" valign="top"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
   <td id="shipping_list_show"></td>
   </tr>
+  <tr>
+    <td width="20%"></td> 
+    <td>
+    <div id="shipping_list_min" style="display:none;" class="shipping_time_box">
+<input type="hidden" id="ele_id" name="ele" value="">
+<div id="shipping_list_show_min"></div>
+</div>
+    </td>
+  </tr>
 </table>
 <noscript>
 <table cellpadding="0" cellspacing="0" border="0" class="red_box">
@@ -803,10 +812,7 @@ $(document).ready(function(){
  </table>
  </noscript>
 
-<div id="shipping_list_min" style="display:none;" class="shipping_time_box">
-<input type="hidden" id="ele_id" name="ele" value="">
-<div id="shipping_list_show_min"></div>
-</div>
+
 </td></tr>
 <tr id="hour_show_error" style="display:none;">
 <td></td>
