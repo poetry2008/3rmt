@@ -248,7 +248,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
   for ($i = 1; $i < 13; $i++) {
     ?>
-      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>"><?php echo strftime("%B", mktime(0, 0, 0, $i, 1)); ?></option>
+      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
       <?php
   }
   ?>
@@ -334,8 +334,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
   for ($i = 1; $i < 13; $i++) {
     ?>
-      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>">
-      <?php echo strftime("%B", mktime(0, 0, 0, $i, 1)); ?></option>
+      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>"> <?php echo $i; ?></option>
       <?php
   }
   ?>
