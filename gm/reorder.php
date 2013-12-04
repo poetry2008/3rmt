@@ -99,7 +99,8 @@ document.onclick=function(e){
 
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
+        echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS
+          .'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
         // time error
       } else {
         // update time
@@ -150,7 +151,12 @@ document.onclick=function(e){
           ";
           tep_db_query($sql);
         unset($_SESSION['reorder_flag']);
-        echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.' <div align="right" class="botton-continue"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back_home.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_home_hover.gif\'" alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div><div>';
+        echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.'
+          <div align="right" class="botton-continue"><a href="/"><img
+          src="includes/languages/japanese/images/buttons/button_back_home.gif"
+           onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back_home.gif\'"
+           onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_home_hover.gif\'"
+           alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div><div>';
         // sent mail to customer
 
   // load selected payment module
@@ -234,7 +240,7 @@ document.onclick=function(e){
     
     $products_ordered .= TEXT_REORDER_ORDER_PRODUCT.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_ORDER_PRODUCT, 'utf-8')))).'：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
-      $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
+    $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
     
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
@@ -290,7 +296,7 @@ document.onclick=function(e){
      default:
        break;
   }
-  $time_info .= $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
+  $time_info .= $_hour .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
 
   $mail_info = tep_get_mail_templates('REORDER_MAIL_CONTENT', 0);  
   $mail_title = $mail_info['title'];
@@ -356,7 +362,12 @@ document.onclick=function(e){
     //判断订单状态是否完成 或者 是否取引失败 或者 是否交易完成
     } else if (tep_orders_status_finished($order['orders_status']) || tep_order_transaction_status($order['orders_status']) || tep_orders_transaction_finished($oID)) {
         // status can not change
-        echo '<div class="comment">'.TEXT_REORDER_COMMERN_STATUS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div><div>';
+        echo '<div class="comment">'.TEXT_REORDER_COMMERN_STATUS.'<div
+          align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img
+          src="includes/languages/japanese/images/buttons/button_back.gif"
+          onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"
+          onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"
+          alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div><div>';
     } else {
         // edit order
 ?>
@@ -768,8 +779,8 @@ $(document).ready(function(){
   while($j_shipping <= $shipping_time){
     if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
      
-      if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
-        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
+     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
+       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." （l） ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
@@ -852,7 +863,7 @@ function orderConfirmPage(){
   document.getElementById('form_error').style.display = 'none';
   document.getElementById('date_error').innerHTML = "";
   document.getElementById('hour_error').innerHTML = "";
-  // init
+    // init
   productName  = new Array();
   oldAttribute = new Array();
   text         = "";
@@ -938,14 +949,20 @@ function orderConfirmPage(){
 }
 -->
 </script>
-<?php
+    <?php
     }
   } else {
     // has no order or info error
-    echo '<div class="comment"><font color="red">'.TEXT_REORDER_NO_ORDER_ERROR .'</font><div align="left" class="botton-continue"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div><div>';
+    echo '<div class="comment"><font color="red">'.TEXT_REORDER_NO_ORDER_ERROR
+      .'</font><div align="left" class="botton-continue"><a href="javascript:void(0);"
+      onclick="history.go(-1)"><img
+      src="includes/languages/japanese/images/buttons/button_back.gif"
+        onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"
+        onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"
+        alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div><div>';
   }
 ?>
-<?php } else {
+    <?php } else {
   // enter basic order info
   ?>
     <div class="comment">
@@ -971,8 +988,13 @@ function orderConfirmPage(){
           </tr>
           <tr>
             <td colspan='2' align="center" style="text-align:center; padding-top:40px;">
-              <input type='image' onmouseout="this.src='includes/languages/japanese/images/buttons/button_continue.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_continue_hover.gif'" src="includes/languages/japanese/images/buttons/button_continue.gif" alt="<?php echo TEXT_REORDER_NEXT;?>" title="<?php echo TEXT_REORDER_NEXT;?>" >
-              <input type='image' onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset_01.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_01_hover.gif'" src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
+              <input type='image'
+                onmouseout="this.src='includes/languages/japanese/images/buttons/button_continue.gif'"
+                onmouseover="this.src='includes/languages/japanese/images/buttons/button_continue_hover.gif'" src="includes/languages/japanese/images/buttons/button_continue.gif" alt="<?php echo TEXT_REORDER_NEXT;?>" title="<?php echo TEXT_REORDER_NEXT;?>" >
+              <input type='image'
+              onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset_01.gif'"
+              onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_01_hover.gif'" src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo
+              TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
             </td>
           </tr>
         </table>
@@ -988,5 +1010,4 @@ function orderConfirmPage(){
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 
 </body>
-</html>
-<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+</html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

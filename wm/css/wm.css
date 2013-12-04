@@ -1203,7 +1203,6 @@ TD.headerInfo {
 }
 .infoBoxContents td {
 	line-height: 20px;
-	padding: 3px 5px;
 }
 .infoBoxContents td a {
 	color: #06727d;
@@ -1961,7 +1960,7 @@ searching
 #table_td_p0{ padding:0; }
 .shipping_box td{ padding:0 5px;}
 .infoBoxContents .table_spacing{ 
-	padding-left:25px; 
+	padding-left:10px; 
 	font-size:11px;
 	*font-size:10px; 
 	line-height:1.5;

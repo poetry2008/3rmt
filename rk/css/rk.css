@@ -350,6 +350,9 @@ UL {
 	overflow:hidden;
 	padding:5px 7px;
 	border:2px solid #FF8080;
+	width:697px;
+	*width:714px!important;
+	width:697px\0;
 }/*---------------------------
 check out in turn
 --------------------------- */

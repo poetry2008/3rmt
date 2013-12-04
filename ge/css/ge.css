@@ -209,7 +209,8 @@ SPAN.smallText, P.smallText {
 .smallText h3{ border:0;}
 div.headerNavigation {
     font-size: 12px;
-	padding-top:10px;                                                       
+	padding-top:10px;
+	width:460px;                                                      
 }
 /* ---------------------------
 TABLE：information box
@@ -332,7 +333,7 @@ padding-right:10px;
 margin-bottom:6px;
 }
 #body_text h3{
-	margin-bottom:5px;
+	margin:5px 0;
 }
 #information {
     width:460px;

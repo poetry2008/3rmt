@@ -407,7 +407,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><sp
 </tr> 
 <tr> 
 <td width="10"></td>
-<td class="main" width="125"><?php echo payment::changeRomaji($payment); ?></td> 
+<td class="main" width="148"><?php echo payment::changeRomaji($payment); ?></td> 
 </tr> 
 </table></td> 
 <td width="70%" valign="top" align="right">
@@ -464,9 +464,9 @@ if (is_array($payment_modules->modules)) {
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php
