@@ -40,7 +40,6 @@ case 'per':
   $gender = tep_db_prepare_input($_POST['gender']);
   $firstname = tep_db_prepare_input($_POST['firstname']);
   $lastname = tep_db_prepare_input($_POST['lastname']);
-  //add
   if (!isset($_POST['firstname_f'])) $_POST['firstname_f'] =NULL;
   $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
   if (!isset($_POST['lastname_f'])) $_POST['lastname_f'] =NULL;
@@ -51,9 +50,6 @@ case 'per':
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
-  //$newsletter = tep_db_prepare_input($_POST['newsletter']);
-  //$password = tep_db_prepare_input($_POST['password']);
-  //$confirmation = tep_db_prepare_input($_POST['confirmation']);
   if (!isset($_POST['street_address'])) $_POST['street_address'] =NULL;
   $street_address = tep_db_prepare_input($_POST['street_address']);
   if (!isset($_POST['company'])) $_POST['company'] =NULL;
@@ -160,7 +156,6 @@ case 'per':
       
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
         $save_flag = true;
-        //tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
       }else{
 
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");
@@ -233,16 +228,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   $country = tep_db_prepare_input($_POST['country']);
 
   $error = false; // reset error flag
-/*
-  if (ACCOUNT_GENDER == 'true') {
-    if ( ($gender == 'm') || ($gender == 'f') ) {
-      $entry_gender_error = false;
-    } else {
-      $error = true;
-      $entry_gender_error = true;
-    }
-  }
- */
 
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
@@ -362,7 +347,6 @@ if($_POST['num_rows'] > 0){
       foreach($option_info_array as $address_key=>$address_value){
 
          $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
-        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }
@@ -420,7 +404,6 @@ if($_POST['num_rows'] > 0){
       
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
         $save_flag = true;
-        //tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
       }else{
     
     tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");
@@ -502,7 +485,6 @@ if($_POST['num_rows'] > 0){
       foreach($option_info_array as $address_key=>$address_value){
 
          $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
-        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }

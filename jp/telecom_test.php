@@ -56,12 +56,6 @@ echo "<a href='".$_POST['redirect_url']
 .'&sendid=SENDID'
 ."'>next</a>";
 
-//print_r($_GET);
-//print_r($_POST);
-//print_r($_SESSION);
-//print_r($_GET);
-//print_r($_POST);
-//print_r($_SESSION);
 ?>
 <h2>信用卡支付说明</h2>
 <div style="padding-left:50px;">

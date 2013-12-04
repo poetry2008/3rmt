@@ -50,11 +50,9 @@ if($_POST && is_object($ticket) && $ticket->getId()):
             if(!$cfg->allowOnlineAttachments()) //Something wrong with the form...user shouldn't have an option to attach
                 $errors['attachment']='File [ '.$_FILES['attachment']['name'].' ] rejected';
             elseif(!$cfg->canUploadFileType($_FILES['attachment']['name']))
-              //                $errors['attachment']='Invalid file type [ '.$_FILES['attachment']['name'].' ]';
                 $errors['attachment']='無効なファイル形式です [ '.Format::htmlchars($_FILES['attachment']['name']).' ]';
             elseif($_FILES['attachment']['size']>$cfg->getMaxFileSize())
                 $errors['attachment']='添付ファイルの上限サイズ'.$cfg->getMaxFileSize().' bytes  を超えています。';
-            //                $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
         }
                     
         if(!$errors){

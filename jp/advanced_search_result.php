@@ -180,17 +180,11 @@
                     pd.romaji,
                     pd.preorder_status,
                     p.products_price_offset, p.products_small_sum"; 
-  /*
-  if(isset($_GET['colors']) && !empty($_GET['colors'])) {
-    $select_str .= ", cp.color_image ";
-  }
-  */
-
+  
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $select_str .= ", SUM(tr.tax_rate) as tax_rate ";
   }
   
-  //$from_str = "(( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd )left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_COLOR_TO_PRODUCTS." cp";
   $from_str = "( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ";
 
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
@@ -217,11 +211,7 @@
     }
   }
 
-/*
-  if(isset($_GET['colors']) && !empty($_GET['colors'])) {
-    $where_str .= " and p.products_id = cp.products_id and cp.color_id = '".$_GET['colors']."'";
-  }
-*/
+
 
   if (isset($_GET['manufacturers_id']) && tep_not_null($_GET['manufacturers_id'])) {
     $where_str .= " and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "'";
@@ -286,7 +276,6 @@
     if ($pto)   $where_str_temp .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) <= " . $pto . ")";
   }
 
-  //$where_str .= " and pd.site_id = ".SITE_ID;
   
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $where_str_temp .= " group by p.products_id, tr.tax_priority";

@@ -39,7 +39,7 @@ function popupWindow(url) {
         } else { 
           echo HEADING_TITLE; 
         } ?></h1>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0"  cellspacing="0" cellpadding="0" class="td_space">
           <tr>
             <td>
 <?php
