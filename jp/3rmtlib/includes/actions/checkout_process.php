@@ -11,6 +11,7 @@ require_once(DIR_WS_CLASSES . 'payment.php');
 if(isset($_SESSION['orders_credit_flag']) && $_SESSION['orders_credit_flag'] == '1'){
   unset($_SESSION['orders_credit_flag']);
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+  exit;
 }  
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
@@ -21,6 +22,7 @@ if (!tep_session_is_registered('customer_id')) {
 // if the customer is not logged on, redirect them to the login page
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  exit;
 } else {
   if(tep_session_is_registered('customer_id')){
     $flag_customer_info = tep_is_customer_by_id($customer_id);
@@ -289,6 +291,15 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   tep_session_unregister('h_code_fee');
   tep_session_unregister('h_point');
 
+  //注销其他session变量
+  unset($_SESSION['insert_id']);
+  unset($_SESSION['option_list']);
+  unset($_SESSION['campaign_fee']); 
+  unset($_SESSION['camp_id']); 
+  unset($_SESSION['new_payment_error']);
+  unset($_SESSION['comments']);
+  unset($_SESSION['payment_validated']);
+  unset($_SESSION['mailcomments']);
   //shipping session destroy
   tep_session_unregister('start_hour');
   tep_session_unregister('start_min');
@@ -394,11 +405,13 @@ if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
 }
 if ((tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL')); 
+  exit;
 }
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
 // avoid hack attempts during the checkout procedure by checking the internal cartID
   if ($cart->cartID != $cartID) {
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+    exit;
   }
 }
 if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
@@ -407,6 +420,7 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+      exit;
       break;
     }
   }
@@ -426,6 +440,7 @@ if($NewOid['cnt'] > 0) {
     unset($_SESSION['comments']);
     $_SESSION['payment_error'] = $_SESSION['new_payment_error'];
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '' , 'SSL'));
+    exit;
   }
 $comments_info = $payment_modules->dealComment($payment,$comments);
 if (is_array($comments_info)) {
@@ -595,7 +610,7 @@ if($address_error == false && $_SESSION['guestchk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-     $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
       tep_db_free_result($address_history_add_query);
   }
 }
@@ -1243,6 +1258,7 @@ tep_session_unregister('h_shipping_fee');
 
 if(!isset($_SESSION['orders_credit_flag'])){
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+  exit;
 }
     
 require(DIR_WS_INCLUDES . 'application_bottom.php');
