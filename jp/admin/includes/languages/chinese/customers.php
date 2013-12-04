@@ -69,3 +69,4 @@ define('CUSTOMERS_NO_TEXT', '无');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_CUSTOMERS_PREORDERS_SUM','预约数');
+define('TEXT_CUSTOMERS_DELETE_CONFIRM_INFO','以下显示的顾客尚有订单或预约订单，确定删除吗？');
