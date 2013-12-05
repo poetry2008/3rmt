@@ -767,7 +767,7 @@ if (is_array($payment_modules->modules)) {
 <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
 <tr><td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
                 <td align="right" class="main"> <?php
-  if (is_array($payment_modules->modules)) {
+  if (is_array($payment_modules->modules) && $_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $payment_modules->process_button($payment);
   }
 

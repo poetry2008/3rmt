@@ -513,9 +513,6 @@ if (tep_not_null($_POST['yourmessage'])) {
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
 <td align="right" class="main"> <?php
-if (is_array($payment_modules->modules)) {
-  echo $payment_modules->process_button($payment);
-}
 echo '<a href="javascript:void(0);" onclick="check_error();">';
 echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER) . '</a></form>' . "\n";
 ?> </td> 

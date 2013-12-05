@@ -745,7 +745,7 @@ if (tep_not_null($order->info['comments'])) {
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
 <td align="right" class="main"> <?php
-if (is_array($payment_modules->modules)) {
+if (is_array($payment_modules->modules) && $_SERVER['REQUEST_METHOD'] == 'POST') {
   echo $payment_modules->process_button($payment);
 }
 echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
