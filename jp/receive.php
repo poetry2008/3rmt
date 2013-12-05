@@ -1,6 +1,7 @@
 <?php 
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'payment.php');
+check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
 

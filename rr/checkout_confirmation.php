@@ -688,8 +688,8 @@ if (is_array($payment_modules->modules)) {
           <tr> 
           <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-          <td class="main"></td> 
+          <td width="10"></td> 
+          <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php
       }

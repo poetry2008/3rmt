@@ -1684,3 +1684,6 @@ TEXTAREA {
 	margin:2px 5px 0 5px;
 	*margin:0;
 }
+#body_text .pageHeading_long{
+	margin-top:22px;
+}
