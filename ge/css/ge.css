@@ -209,8 +209,7 @@ SPAN.smallText, P.smallText {
 .smallText h3{ border:0;}
 div.headerNavigation {
     font-size: 12px;
-	padding-top:10px;
-	width:460px;                                                      
+	padding-top:10px;                                                       
 }
 /* ---------------------------
 TABLE：information box
