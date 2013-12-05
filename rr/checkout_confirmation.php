@@ -740,7 +740,7 @@ if (is_array($payment_modules->modules)) {
 
   
 
-  if (is_array($payment_modules->modules) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
   }
 

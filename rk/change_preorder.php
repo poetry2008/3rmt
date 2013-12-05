@@ -660,7 +660,6 @@ $preorder_information['pid'] = $preorder_id;
 if (!tep_session_is_registered('preorder_information')) {
    tep_session_register('preorder_information');
 }
-$_SESSION['preorders_send_mail_flag'] = 1;
 tep_redirect(tep_href_link('change_preorder_confirm.php', '', 'SSL'));
 ?>
 <script type="text/javascript">

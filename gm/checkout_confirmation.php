@@ -646,7 +646,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 	<div id="hm-checkout-warp">
         <div class="checkout-title"><b><?php echo TEXT_CONFIRMATION_READ;?></b></div>
   <div class="checkout-bottom"><?php
-  if (is_array($payment_modules->modules) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
   }
   echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';

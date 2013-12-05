@@ -745,7 +745,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
           <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
           <td align="right" class="main">
 <?php
-  if (is_array($payment_modules->modules) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
   }
   //character  
