@@ -3239,3 +3239,17 @@ searching
 .box_bottom_list .bottom_space{
 	margin-top:17px;
 }
+.td_space{
+	width:532px;
+	margin:0 5px;
+}
+.td_space ul{
+	width:520px;
+	padding:0;
+	margin:0;
+}
+.td_space ul li{
+	word-break: break-all; 
+	overflow:hidden;
+	margin:0 5px;
+}

@@ -613,9 +613,9 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?>
                   <tr>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                    <td width="10"></td>
                     <td><?php echo $confirmation['fields'][$i]['title']; ?></td>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                    <td width="10"></td>
                     <td><?php echo $confirmation['fields'][$i]['field']; ?></td>
                   </tr>
                   <?php
