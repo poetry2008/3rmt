@@ -350,7 +350,7 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $_SESSION['error_name'] = $customer_name;
   $_SESSION['error_email'] = $customer_email; 
   $_SESSION['error_subject'] = $orders_mail_title; 
-  $_SESSION['error_message'] = strip_tags($orders_mail_text); 
+  $_SESSION['error_message'] = strip_tags($orders_mail_text."\n-----------------session-------------\n".arr_foreach($_SESSION)); 
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
