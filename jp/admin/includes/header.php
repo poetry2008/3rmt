@@ -28,7 +28,7 @@ var check_head_o_single = '0';
 }
 ?>
 </script>
-<script languages="javascript" src="js2php.php?path=includes|javascript&name=head&type=js&v=<?php echo $back_rand_info;?>"></script>
+<script languages="javascript" src="js2php.php?path=includes|javascript&name=header&type=js&v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
