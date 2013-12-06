@@ -144,8 +144,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;
   } else {
 ?>
   <tr class="productListing-odd">
-        <?php if (!defined('TEXT_NO_PRODUCTS2')) define('TEXT_NO_PRODUCTS2', NULL);?>
-    <td class="smallText">&nbsp;<?php echo (isset($_GET['manufacturers_id']) ? TEXT_NO_PRODUCTS2 : TEXT_NO_PRODUCTS); ?>&nbsp;</td>
+    <td class="smallText">&nbsp;<?php echo TEXT_NO_PRODUCTS; ?>&nbsp;</td>
   </tr>
 <?php
   }

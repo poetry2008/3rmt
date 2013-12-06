@@ -209,8 +209,7 @@ SPAN.smallText, P.smallText {
 .smallText h3{ border:0;}
 div.headerNavigation {
     font-size: 12px;
-	padding-top:10px;
-	width:460px;                                                      
+	padding-top:10px;                                                       
 }
 /* ---------------------------
 TABLE：information box
@@ -1683,4 +1682,7 @@ TEXTAREA {
 	*float: none;
 	margin:2px 5px 0 5px;
 	*margin:0;
+}
+#body_text .pageHeading_long{
+	margin-top:22px;
 }
