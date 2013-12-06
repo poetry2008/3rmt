@@ -475,7 +475,17 @@ require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
-if($payment_modules->moneyInRange($payment,$order->info['total'])){
+$valadate_total = $order->info['total'];
+if ($point){
+  $valadate_total -= abs($point);
+}
+if (isset($_SESSION['campaign_fee'])) {
+  $valadate_total -= abs($_SESSION['campaign_fee']);
+}
+if(isset($_SESSION['mailfee'])){
+  $valadate_total += abs($_SESSION['mailfee']);
+}
+if($payment_modules->moneyInRange($payment,$valadate_total)){
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS));
   exit;
 }
