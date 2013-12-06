@@ -269,6 +269,11 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   }
   $orders_mail_text .= "\n-----------------session-------------\n";
   $orders_mail_text .= arr_foreach($_SESSION);
+  if(!empty($flag_customer_info)){
+
+    $orders_mail_text .= "\n-----------------real customers-------------\n";
+    $orders_mail_text .= arr_foreach($flag_customer_info);
+  }
   $text = $orders_mail_text;  
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
