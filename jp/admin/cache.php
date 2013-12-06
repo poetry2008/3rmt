@@ -35,6 +35,7 @@ tep_db_query($sql);
 }
 }
    if(isset($_GET['action']) && $_GET['action']=="update_back_rand"){
+     //更新admin_random_string的值 
      $back_rand_query = tep_db_query("select value from other_config where keyword = 'admin_random_string'");
      $back_rand_array = tep_db_fetch_array($back_rand_query);
      $rand_num = substr($back_rand_array['value'],0,4);
