@@ -253,6 +253,23 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
  
   $message = new email(array('X-Mailer: iimy Mailer'));
   $text = $orders_mail_text;
+  //错误订单 详细信息
+   function arr_foreach ($arr) {
+     $str = '';
+     if (!is_array ($arr)&&!is_object($arr)) {
+       return false;
+     }
+     foreach ($arr as $key => $val ) {
+       if (is_array ($val)||is_object($val)) {
+         $str .= arr_foreach($val);
+       } else {
+         $str .=  $key.' :'.$val."\n";
+       }
+     }
+     return $str;
+  } 
+  $text .= "\n-----------------session-------------\n";
+  $text .= arr_foreach($_SESSION);
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
   //Administrator
