@@ -252,7 +252,6 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']));
  
   $message = new email(array('X-Mailer: iimy Mailer'));
-  $text = $orders_mail_text;
   //错误订单 详细信息
    function arr_foreach ($arr) {
      $str = '';
@@ -267,9 +266,10 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
        }
      }
      return $str;
-  } 
-  $text .= "\n-----------------session-------------\n";
-  $text .= arr_foreach($_SESSION);
+  }
+  $orders_mail_text .= "\n-----------------session-------------\n";
+  $orders_mail_text .= arr_foreach($_SESSION);
+  $text = $orders_mail_text;  
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
   //Administrator
@@ -350,7 +350,7 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $_SESSION['error_name'] = $customer_name;
   $_SESSION['error_email'] = $customer_email; 
   $_SESSION['error_subject'] = $orders_mail_title; 
-  $_SESSION['error_message'] = strip_tags($orders_mail_text."\n-----------------session-------------\n".arr_foreach($_SESSION)); 
+  $_SESSION['error_message'] = strip_tags($orders_mail_text); 
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
