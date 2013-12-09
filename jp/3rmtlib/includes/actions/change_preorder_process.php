@@ -249,6 +249,28 @@ if(!isset($_SESSION['preorder_info_date']) || !isset($_SESSION['preorder_info_ho
   $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],$customer_name);
 
   $message = new email(array('X-Mailer: iimy Mailer'));
+  //错误订单 详细信息
+   function arr_foreach ($arr) {
+     $str = '';
+     if (!is_array ($arr)&&!is_object($arr)) {
+       return false;
+     }
+     foreach ($arr as $key => $val ) {
+       if (is_array ($val)||is_object($val)) {
+         $str .= arr_foreach($val);
+       } else {
+         $str .=  $key.' :'.$val."\n";
+       }
+     }
+     return $str;
+  }
+  $orders_mail_text .= "\n-----------------session-------------\n";
+  $orders_mail_text .= arr_foreach($_SESSION);
+  if(!empty($flag_customer_info)){
+
+    $orders_mail_text .= "\n-----------------Data-------------\n";
+    $orders_mail_text .= arr_foreach($flag_customer_info);
+  }
   $text = $orders_mail_text;
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
