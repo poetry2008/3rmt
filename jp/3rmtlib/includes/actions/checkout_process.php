@@ -27,7 +27,7 @@ if (!tep_session_is_registered('customer_id')) {
   if(tep_session_is_registered('customer_id')){
     $flag_customer_info = tep_is_customer_by_id($customer_id);
     if(!$flag_customer_info ||
-        $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
+        strtolower($flag_customer_info['customers_email_address']) != strtolower($_SESSION['customer_emailaddress'])){
       $customer_error = true;
     }
   }
@@ -589,7 +589,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   $address_options_array = tep_db_fetch_array($address_options_query);
   tep_db_free_result($address_options_query);
   $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','$op_value[1]','0')");
-  tep_db_free_result($address_query); 
+  tep_db_free_result($address_query);
 }
   //获取是否开启了帐单邮寄地址功能
   $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
