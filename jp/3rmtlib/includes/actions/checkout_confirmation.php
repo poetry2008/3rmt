@@ -104,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
   $payment_modules->deal_other_info($payment, $_POST); 
   $payment_modules->handle_information($payment, $_POST, false); 
+  $_SESSION['orders_send_mail_flag'] = 1;
   header('Location:'.tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'is_finish=1', 'SSL'));
 }
 

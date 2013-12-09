@@ -143,6 +143,16 @@
 
   
   //住所信息处理 
+  //过滤提示字符串
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'op_') {
+      if($options_comment[substr($p_key,3)] == $p_value){
+
+         $_POST[$p_key] = '';
+      }
+    } 
+  }
   $weight_count = $cart->weight;
   $option_info_array = array(); 
   if (!$hm_option->check()) {
@@ -807,9 +817,11 @@ if($cart->weight > 0){
      address_option_list(first_num); 
      <?php
      }else{
+       if($_POST['action'] != 'process'){
      ?>
-     address_option_show('new');
+        address_option_show('new');
      <?php
+       }
      }
      if(isset($_SESSION['options'])){ 
      ?>

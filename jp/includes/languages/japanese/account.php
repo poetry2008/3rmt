@@ -11,4 +11,5 @@ define('TEXT_POINT_NOW', 'ポイント');
 define('TEXT_POINT_ADD', '現在の獲得ポイント:');
 define('TITLE_ADDRESS','お届け先');
 define('TITLE_ADDRESS_OPTION','お届け先から選ぶ');
+define('TEXT_BILLING_ADDRESS', 'ご請求先');
 ?>

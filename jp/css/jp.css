@@ -2463,10 +2463,13 @@ searching
 	width:100%;
 	font-size:12px;
 	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
 }
 .option_name{
 	vertical-align:top;
 	width:85px;
+	line-height:23px;
 }
 .option_input{
 	width:198px;
@@ -2587,6 +2590,7 @@ searching
 .preorder_option{ padding:0;}
 .preorder_option .option_name{
 	width:26%;
+	line-height:22px;
 }
 .option_money{
 	float:right;

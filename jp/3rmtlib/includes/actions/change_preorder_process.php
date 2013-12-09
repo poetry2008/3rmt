@@ -32,7 +32,7 @@ $customer_error = false;
 if(isset($preorder['customers_id']) && $preorder['customers_id']!='' && isset($_SESSION['customer_emailaddress'])){
   $flag_customer_info = tep_is_customer_by_id($preorder['customers_id']);
   if(!$flag_customer_info ||
-    $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
+    strtolower($flag_customer_info['customers_email_address']) != strtolower($_SESSION['customer_emailaddress'])){
     $customer_error = true;
   }
 }
@@ -559,7 +559,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
       tep_db_free_result($address_query);
       $address_id = $address_array['id'];
       $add_list[] = array($address_array['name'],$address_value);
-      $address_add_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." value(NULL,'$orders_id',{$preorder_cus_id},$address_id,'{$address_array['name_flag']}','$address_value')");
+      $address_add_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." value(NULL,'$orders_id',{$preorder_cus_id},$address_id,'{$address_array['name_flag']}','$address_value','0')");
       tep_db_free_result($address_add_query);
     }
   }
@@ -619,13 +619,26 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
         $address_history_array = tep_db_fetch_array($address_history_query);
         tep_db_free_result($address_history_query);
         $address_history_id = $address_history_array['id'];
-        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$orders_id',{$preorder_cus_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
+        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$orders_id',{$preorder_cus_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
         tep_db_free_result($address_history_add_query);
       }
     }
   }
 }
-
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  if($billing_address_show == 'true'){
+    //把帐单邮寄地址的数据存入数据库
+    $billing_address_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$customer_id."' and billing_address='1' order by id");
+    if(tep_db_num_rows($billing_address_query) > 1){
+      while($billing_address_array = tep_db_fetch_array($billing_address_query)){
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$orders_id',{$preorder_cus_id},{$billing_address_array['address_id']},'".$billing_address_array['name']."','".$billing_address_array['value']."','1')");
+        tep_db_free_result($address_query); 
+      }
+      tep_db_free_result($billing_address_query);
+    }
+  }
   //住所信息录入结束
 
   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'");
