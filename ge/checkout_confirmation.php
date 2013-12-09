@@ -748,12 +748,6 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
   }
-  //character  
-  if(isset($_SESSION['character'])){
-    foreach($_SESSION['character'] as $ck => $cv){
-      echo tep_draw_hidden_field("character[$ck]", $cv);
-    }
-  }
   echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
   echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</a>' . "\n";
 ?>
@@ -778,6 +772,5 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 </div>
 <!-- visites --> 
 <object><noscript><img src="visites.php" alt="Statistics" style="border:0" /></noscript></object>
-<!-- /visites -->
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

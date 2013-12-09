@@ -271,9 +271,8 @@ if(!empty($_SESSION['options'])){
   <td class="main" colspan="2"><b><?php echo TEXT_OPTIONS_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
   <tr><td>
-  <?php if (!empty($_SESSION['options'])) {?>
+
   <table>
-  <?php }?>
 <?php
   foreach($_SESSION['options'] as $key=>$value){
 ?>
@@ -285,9 +284,8 @@ if(!empty($_SESSION['options'])){
 <?php
   }
 ?>
-<?php if (!empty($_SESSION['options'])) {?>
-  </table>
-  <?php }?>
+</table>
+
 </td></tr>
 <?php
 /*
@@ -295,8 +293,6 @@ if(!empty($_SESSION['options'])){
  */
 
 
-//$address = tep_db_prepare_input($_POST['address']);
-//$country = tep_db_prepare_input($_POST['country']);
   $country_fee_array = array();
   $country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
@@ -711,7 +707,7 @@ if (is_array($payment_modules->modules)) {
                 <td>
                   <table border="0" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main" colspan="4"><?php echo str_replace('<br />', '<br>', $confirmation['title']); ?></td> 
+                      <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td> 
                     </tr> 
                     <?php
                     if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;

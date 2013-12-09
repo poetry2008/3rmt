@@ -350,9 +350,9 @@ UL {
 	overflow:hidden;
 	padding:5px;
 	border:2px solid #FF8080;
-	width:97%;
-	*width:99.6%!important;
-	width:97%\0;
+	width:700px;
+	*width:688px!important;
+	width:700px\0;
 }/*---------------------------
 check out in turn
 --------------------------- */
@@ -985,8 +985,9 @@ page title
 .pageHeading_long {
 	font-weight: bold;
 	color: #676565;
-	width: 694px;
- *width: 714px;
+	width: 688px;
+ 	*width:714px!important;
+	width: 688px\0;
 	font-size: 12px;
 	background: url(../images/design/contents/headding_title_long.gif) no-repeat;
 	padding-left: 25px;
@@ -2075,11 +2076,14 @@ display:block;
 	*font-size:10px;
 	line-height:1.5;
 	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
 }
 .option_name{
 	width:85px;
 	vertical-align:top;
 	font-weight:bold;
+	line-height:22px;
 }
 .option_input{
 	width:198px;
@@ -2208,6 +2212,7 @@ display:block;
 	padding:0;
 	font-weight:normal;
 	width:25%;
+	line-height:22px;
 }
 .option_money{
 	float:right;
@@ -2313,7 +2318,7 @@ display:block;
 }
 .address_item_info{ margin-left:4px;}
 #shiping_box{ padding:0;}
-.product_info_table td{ font-size:12px; line-height:1.5;}
+.product_info_table td{ font-size:11px; line-height:1.5;}
 .table_a_spacing{ margin-bottom:13px;}
 .table_a_spacing img{ vertical-align:top;}
 .confirmation_product_num_info{ 

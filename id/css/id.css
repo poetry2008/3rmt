@@ -2370,11 +2370,14 @@ searching
 	font-size:12px;
 	line-height:1.5;
 	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
 }
 .option_name{
 	width:100px;
 	vertical-align:top;
 	font-weight:bold;
+	line-height:23px;
 }
 .option_input{
 	width:198px;
@@ -2500,6 +2503,7 @@ searching
 	width:20%;
 	padding:0;
 	font-weight:normal;
+	line-height:22px;
 }
 .option_money{
 	float:right;

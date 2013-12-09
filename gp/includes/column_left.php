@@ -7,9 +7,10 @@
 if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||$_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'
     ||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'
-    ||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'
+    ||$_SERVER['PHP_SELF'] == '/reorder.php'
     ||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'
     ||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'
+    ||strpos($_SERVER['PHP_SELF'], 'contact_us.php')
     ||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')
     ||strpos($_SERVER['PHP_SELF'], 'login.php')
     ||strpos($_SERVER['PHP_SELF'], 'send_mail.php')
@@ -56,7 +57,7 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
         if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
           include(DIR_WS_BOXES . 'list_categories.php');
         } else {
-          if(basename($_SERVER['PHP_SELF']) != FILENAME_ADVANCED_SEARCH_RESULT){
+          if((basename($_SERVER['PHP_SELF']) != FILENAME_ADVANCED_SEARCH_RESULT) && (basename($_SERVER['PHP_SELF']) != FILENAME_MEMBER_AUTH) && (basename($_SERVER['PHP_SELF']) != FILENAME_NON_MEMBER_AUTH)){
             include(DIR_WS_BOXES . 'categories.php');
           }
         }
