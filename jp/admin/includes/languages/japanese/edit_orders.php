@@ -241,4 +241,6 @@ define('TEXT_DATE_TIME_ERROR','過去の日時が選択されています。保�
 define('ORDERS_PRODUCT_ERROR','商品がありません。商品を追加してください。');
 define('EDIT_ORDERS_TOTAL_DETAIL_READ', 'このお客様はゲストです。ポイント割引の入力はできません。');
 define('TEXT_SELECT_PAYMENT_ERROR','<font color="red">選択された支払方法は、現在無効になっています。選びなおしてください。</font>');
+define('TEXT_BILLING_ADDRESS_INFO_HIDE','ご請求先▲');
+define('TEXT_BILLING_ADDRESS_INFO_SHOW','ご請求先▼');
 ?>

@@ -196,8 +196,7 @@ case 'per':
   }
   break;
   case 'address':
-  //住所信息处理
-
+  //住所信息处理 
 if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if (!isset($_POST['gender'])) $_POST['gender'] =NULL;
   $gender = tep_db_prepare_input($_POST['gender']);
@@ -231,7 +230,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if (!isset($_POST['state'])) $_POST['state'] =NULL;
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
-
+  
   $error = false; // reset error flag
 /*
   if (ACCOUNT_GENDER == 'true') {
@@ -321,6 +320,16 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
 
 if($_POST['num_rows'] > 0){
   //住所信息验证
+  //过滤提示字符串
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'op_') {
+      if($options_comment[substr($p_key,3)] == $p_value){
+
+         $_POST[$p_key] = '';
+      }
+    } 
+  } 
   $option_info_array = array(); 
   if (!$hm_option->check()) {
     foreach ($_POST as $p_key => $p_value) {
@@ -339,7 +348,14 @@ if($_POST['num_rows'] > 0){
 }
   if($error == true){ break; }  
     if($error == false){
+    //billing address
+    $billing_address = tep_db_prepare_input($_POST['billing_address']);
+    $billing_address = $billing_address == 1 ? 1 : 0;
 
+    if($billing_address == 1){
+
+      tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set billing_address=0 where customers_id={$_SESSION['customer_id']}");
+    }
     if($_POST['num_rows'] > 0){ 
     //住所信息入库
     $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
@@ -354,14 +370,14 @@ if($_POST['num_rows'] > 0){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
       foreach($option_info_array as $address_key=>$address_value){
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}','{$billing_address}')";
         tep_db_query($address_sql);
       }
     }else{
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}','{$billing_address}')";
         //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
@@ -463,6 +479,16 @@ if($_POST['num_rows'] > 0){
   tep_db_free_result($address_query);
 
   $error_str = false;
+  //过滤提示字符串
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'op_') {
+      if($options_comment[substr($p_key,3)] == $p_value){
+
+         $_POST[$p_key] = '';
+      }
+    } 
+  }
   $option_info_array = array(); 
   if (!$hm_option->check()) {
     foreach ($_POST as $p_key => $p_value) {
@@ -481,6 +507,14 @@ if($_POST['num_rows'] > 0){
  
   //住所信息入库
   if($error_str == false){
+    //billing address
+    $billing_address = tep_db_prepare_input($_POST['billing_address']);
+    $billing_address = $billing_address == 1 ? 1 : 0;
+
+    if($billing_address == 1){
+
+      tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set billing_address=0 where customers_id={$_SESSION['customer_id']}");
+    }
     $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
     $add_list_array = array();
     $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
@@ -493,7 +527,7 @@ if($_POST['num_rows'] > 0){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
       foreach($option_info_array as $address_key=>$address_value){
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}','{$billing_address}')";
         tep_db_query($address_sql);
       }
       $save_flag = true; 
@@ -501,7 +535,7 @@ if($_POST['num_rows'] > 0){
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}','{$billing_address}')";
         //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }

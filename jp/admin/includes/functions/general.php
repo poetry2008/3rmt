@@ -10622,7 +10622,7 @@ function tep_products_shipping_fee($oID,$total){
   $weight = $shipping_weight_total;
 
   $shipping_orders_array = array();
-  $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
   while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
 
     $shipping_orders_array[$shipping_address_orders_array['name']] = $shipping_address_orders_array['value'];
@@ -11402,7 +11402,7 @@ function tep_check_order_variable_data($o_id_array, $comment_info, $title_info, 
       $user_address_pos = strpos($comment_info, '${USER_ADDRESS}');   
       $t_user_address_pos = strpos($title_info, '${USER_ADDRESS}');   
       if (($user_address_pos !== false) || ($t_user_address_pos !== false)) {
-        $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_value."'"); 
+        $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_value."' and billing_address='0'"); 
         if (!tep_db_num_rows($address_order_raw)) {
           if ($is_list) {
             $error_array[$o_value][] = '${USER_ADDRESS}'; 
@@ -11930,7 +11930,7 @@ function tep_check_edit_order_variable_data($o_id_info, $comment_info, $title_in
     $user_address_pos = strpos($comment_info, '${USER_ADDRESS}');   
     $t_user_address_pos = strpos($title_info, '${USER_ADDRESS}');   
     if (($user_address_pos !== false) || ($t_user_address_pos !== false)) {
-      $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_id_info."'"); 
+      $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_id_info."' and billing_address='0'"); 
       if (!tep_db_num_rows($address_order_raw)) {
         $error_array[] = '${USER_ADDRESS}'; 
       }

@@ -116,6 +116,25 @@ if (tep_not_null($action)) {
     $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);    
      
     $error = false;
+
+    $options_comment = array();
+    $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+    while($address_required = tep_db_fetch_array($address_query)){
+    
+      $options_comment[$address_required['name_flag']] = $address_required['comment'];
+    }
+    tep_db_free_result($address_query); 
+      
+    //过滤提示字符串
+    foreach ($_POST as $p_key => $p_value) {
+      $op_single_str = substr($p_key, 0, 3);
+      if ($op_single_str == 'ad_') {
+        if($options_comment[substr($p_key,3)] == $p_value){
+
+          $_POST[$p_key] = '';
+        }
+      } 
+    }
     $options_info_array = array(); 
       if (!$ad_option->check()) {
         foreach ($_POST as $p_key => $p_value) {
@@ -125,7 +144,7 @@ if (tep_not_null($action)) {
           } 
         }
       }else{
-        $address_style = 'display: block;';
+        $address_style = 'display: table;';
         $error = true;
       }
  
@@ -493,10 +512,10 @@ if($orders_exit_flag == true){
       $check_status = tep_db_fetch_array($check_status_query);
 
       //作所信息入库开始
-      $address_num_query = tep_db_query("select count(*) as count_num from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'"); 
+      $address_num_query = tep_db_query("select count(*) as count_num from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'"); 
       $address_num_array = tep_db_fetch_array($address_num_query);
 
-      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."'");
+      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."' and billing_address='0'");
       
       foreach($options_info_array as $op_key=>$op_value){
   
@@ -504,7 +523,7 @@ if($orders_exit_flag == true){
         $address_options_array = tep_db_fetch_array($address_options_query);
         tep_db_free_result($address_options_query);
         $op_value = $op_value == $address_options_array['comment'] ? '' : $op_value;
-        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$address_options_array['id']},'{$address_options_array['name_flag']}','$op_value')");
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$address_options_array['id']},'{$address_options_array['name_flag']}','$op_value','0')");
         tep_db_free_result($address_query);
       }
 
@@ -567,11 +586,24 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$orders_id_flag',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$orders_id_flag',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
       tep_db_free_result($address_history_add_query);
   }
 }
-
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',$_SESSION['sites_id_flag']);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  if($billing_address_show == 'true'){
+    //把帐单邮寄地址的数据存入数据库
+    $billing_address_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$check_status['customers_id']."' and billing_address='1' order by id");
+    if(tep_db_num_rows($billing_address_query) > 1){
+      while($billing_address_array = tep_db_fetch_array($billing_address_query)){
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$billing_address_array['address_id']},'".$billing_address_array['name']."','".$billing_address_array['value']."','1')");
+        tep_db_free_result($address_query); 
+      }
+      tep_db_free_result($billing_address_query);
+    }
+  }
 
      //作所信息入库结束
 
@@ -2248,7 +2280,7 @@ function address_option_show(action){
   }
 
   echo "\n".'var address_str = "";'."\n";
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
   
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -2594,10 +2626,10 @@ var address_select = '';
     }
     tep_db_free_result($products_weight_query);
     $add_array = array();
-    $add_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id={$customer_id_flag} group by orders_id order by orders_id desc limit 0,1");
+    $add_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id={$customer_id_flag} and billing_address='0' group by orders_id order by orders_id desc limit 0,1");
     $add_group_array = tep_db_fetch_array($add_group_query);
     tep_db_free_result($add_group_query);
-    $add_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+    $add_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
     $add_num = tep_db_num_rows($add_query);
     tep_db_free_result($add_query);
     
@@ -2608,7 +2640,7 @@ var address_select = '';
 
       $oID_id = $oID;
     }
-    $address_show_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID_id ."' order by id");
+    $address_show_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID_id ."' and billing_address='0' order by id");
     $add_count = tep_db_num_rows($address_show_query);
     while($address_show_array = tep_db_fetch_array($address_show_query)){
       
@@ -3131,7 +3163,7 @@ if($p_weight_total > 0){
   });
   <?php
     $address_name = array();
-    $address_id_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id='". tep_db_input($oID) ."' and (name='". substr($country_fee_id,3) ."' or name='". substr($country_area_id,3) ."' or name='". substr($country_city_id,3) ."')");
+    $address_id_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id='". tep_db_input($oID) ."' and billing_address='0' and (name='". substr($country_fee_id,3) ."' or name='". substr($country_area_id,3) ."' or name='". substr($country_city_id,3) ."')");
     while($address_id_array = tep_db_fetch_array($address_id_query)){
 
       $address_name[$address_id_array['name']] = $address_id_array['value'];
@@ -3675,7 +3707,7 @@ a.dpicker {
     $weight = $products_weight_total;
 
     $shipping_orders_array = array();
-    $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+    $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
     while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
 
       $shipping_orders_array[$shipping_address_orders_array['name']] = $shipping_address_orders_array['value'];

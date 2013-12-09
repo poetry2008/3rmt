@@ -244,4 +244,5 @@ define('TEXT_TIME_LINK','到');
 define('ORDER_TOP_MANUAL_TEXT', '首页');
 define('ORDER_MANUAL_ALL_SHOW', '展开');
 define('ORDER_MANUAL_ALL_HIDE', '关闭');
+define('HEADING_BILLING_INFORMATION', '帐单邮寄地址');
 ?>

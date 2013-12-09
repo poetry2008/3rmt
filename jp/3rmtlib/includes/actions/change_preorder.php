@@ -114,11 +114,28 @@
   }
   tep_db_free_result($shi_products_query);
     //住所信息处理 
+    $options_comment = array();
+    $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+    while($address_required = tep_db_fetch_array($address_query)){
+    
+      $options_comment[$address_required['name_flag']] = $address_required['comment'];
+    }
+    tep_db_free_result($address_query); 
+    //过滤提示字符串
+    foreach ($_POST as $ad_key => $ad_value) {
+      $ad_single_str = substr($ad_key, 0, 3);
+      if ($ad_single_str == 'ad_') {
+        if($options_comment[substr($ad_key,3)] == $ad_value){
+          $_POST[$ad_key] = '';
+        }
+          
+      } 
+    } 
     $address_option_info_array = array(); 
     if (!$ad_option->check()) {
       foreach ($_POST as $ad_key => $ad_value) {
         $ad_single_str = substr($ad_key, 0, 3);
-        if ($ad_single_str == 'op_') {
+        if ($ad_single_str == 'ad_') {
           $address_option_info_array[$ad_key] = $ad_value; 
         } 
       }

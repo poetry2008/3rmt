@@ -765,7 +765,7 @@ switch ($_GET['action']) {
           }
           //address
           $option_info_array = array();
-          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' and billing_address='0' order by id");
           while($address_array = tep_db_fetch_array($address_query)){
           
             $option_info_array[$address_array['name']] = $address_array['value']; 
@@ -1220,7 +1220,7 @@ switch ($_GET['action']) {
           }
           //address
           $option_info_array = array();
-          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' and billing_address='0' order by id");
           while($address_array = tep_db_fetch_array($address_query)){
           
             $option_info_array[$address_array['name']] = $address_array['value']; 
@@ -3223,7 +3223,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </tr>
             <?php
         }
-            $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+            $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
             $count_num = tep_db_num_rows($address_temp_query);
             if($count_num > 0){
             ?>
@@ -3237,7 +3237,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <td class="main">&nbsp;</td>
             </tr>
             <?php
-        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
         while($address_array = tep_db_fetch_array($address_query)){
 
           $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
@@ -3250,6 +3250,33 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         }
         tep_db_free_result($address_query);
             } 
+        $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1'");
+            $count_num = tep_db_num_rows($address_temp_query);
+            if($count_num > 0){
+            ?>
+            <tr>
+              <td colspan="2">
+              <hr width="100%" style="border-width: medium medium 1px; border-style: none none dashed; height: 2px; margin: 5px 0px; border-color: -moz-use-text-color -moz-use-text-color rgb(204, 204, 204);">
+              </td> 
+            </tr>
+            <tr>
+            <td class="main"><?php echo HEADING_BILLING_INFORMATION;?></td>
+            <td class="main">&nbsp;</td>
+            </tr>
+            <?php
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
+        while($address_array = tep_db_fetch_array($address_query)){
+
+          $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
+          $address_title_array = tep_db_fetch_array($address_title_query);
+          echo '<tr>';
+          echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
+          echo '<td class="main">'. $address_array['value'] .'</td>';
+          echo '</tr>';
+          tep_db_free_result($address_title_query);
+        }
+        tep_db_free_result($address_query);
+            }
             ?>
         </table>
         </div>
