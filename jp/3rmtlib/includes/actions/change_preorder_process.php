@@ -32,7 +32,7 @@ $customer_error = false;
 if(isset($preorder['customers_id']) && $preorder['customers_id']!='' && isset($_SESSION['customer_emailaddress'])){
   $flag_customer_info = tep_is_customer_by_id($preorder['customers_id']);
   if(!$flag_customer_info ||
-    $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
+    strtolower($flag_customer_info['customers_email_address']) != strtolower($_SESSION['customer_emailaddress'])){
     $customer_error = true;
   }
 }
