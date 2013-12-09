@@ -24,6 +24,11 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 <?php
   if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||
       (strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))||
+      (strpos($_SERVER['REQUEST_URI'],FILENAME_PREORDER_CONFIRMATION))||
+      (strpos($_SERVER['REQUEST_URI'],FILENAME_MEMBER_AUTH))||
+      (strpos($_SERVER['REQUEST_URI'],FILENAME_NON_MEMBER_AUTH))||
+      (strpos($_SERVER['REQUEST_URI'],FILENAME_NON_PREORDER_AUTH))||
+      (strpos($_SERVER['REQUEST_URI'],FILENAME_SEND_SUCCESS))||
       (strpos($_SERVER['REQUEST_URI'],'?cmd='))){
   }else{
   if ( (USE_CACHE == 'true') && !SID ) {

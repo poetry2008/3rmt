@@ -256,7 +256,7 @@ td,th{ border:0;font-size:14px; padding:2px;}
 	*display:inline-block;
 	width:100%;
 	text-align:center;
-	padding:5px 0;
+	padding:5px 0 0 0;
 }
 .main-columns{
 	background:url(../images/black_bg.gif);
@@ -1245,7 +1245,7 @@ top:70px;
 .option_table{
 	width:100%;
 }
-.option_table td,.option_table input{ padding-left:0;margin-left:0;}
+.option_table td,.option_table input{ padding-left:2px;margin-left:0;}
 .option_name{
 	width:20%;
 	vertical-align:top;

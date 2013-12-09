@@ -402,7 +402,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           </td>
         </tr>
         <tr>
-          <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+          <td class="main" width="124"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
           <td class="formArea_td_info">
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice

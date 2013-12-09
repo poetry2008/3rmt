@@ -3,7 +3,7 @@
   $Id$
 */
 
-  ini_set("display_errors", "Off");
+  ini_set("display_errors", "On");
   error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 // ddos start 
 require(DIR_WS_FUNCTIONS . 'dos.php');
@@ -60,17 +60,17 @@ $source_host = $_SERVER['HTTP_HOST'];
 // config time 
 $unit_time = 3;
 // confi total
-$unit_total = 15;
+$unit_total = 1500000;
 
 // config time 
 $unit_min_time = 1;
 // confi total
-$unit_min_total = 120;
+$unit_min_total = 1200000;
 
 // config time 
 $unit_hour_time = 1;
 // confi total
-$unit_hour_total = 600;
+$unit_hour_total = 600000;
 
 
 // connect db
@@ -273,6 +273,9 @@ if ($pdo_con) {
   define('FILENAME_TELL_A_FRIEND', 'tell_a_friend.php');
   define('FILENAME_UPCOMING_PRODUCTS', 'upcoming_products.php'); // This is the bottom of default.php (found in modules)
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
+  define('FILENAME_MEMBER_AUTH','member_auth.php');
+  define('FILENAME_NON_MEMBER_AUTH','non-member_auth.php');
+  define('FILENAME_NON_PREORDER_AUTH','non-preorder_auth.php');
 // define the database table names used in the project
   define('TABLE_CONFIGURATION_META', 'configuration_meta');
   define('TABLE_CUSTOMERS_EXIT_HISTORY', 'customers_exit_history');

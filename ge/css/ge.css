@@ -179,7 +179,7 @@ TABLE.formArea {
 	border:1px solid #ccc;
 	margin-bottom:7px;               
 }
-TABLE.formArea td{ margin:0;}
+TABLE.formArea td{ margin:0; padding:0;}
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
@@ -209,7 +209,8 @@ SPAN.smallText, P.smallText {
 .smallText h3{ border:0;}
 div.headerNavigation {
     font-size: 12px;
-	padding-top:10px;                                                       
+	padding-top:10px;
+	width:462px;                                                    
 }
 /* ---------------------------
 TABLE：information box
@@ -1318,6 +1319,7 @@ searching
 	width:85px;
 	padding:0;
 	margin:0;
+	line-height:22px;
 }
 .option_input{
 	width:198px;

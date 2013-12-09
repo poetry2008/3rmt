@@ -1630,7 +1630,7 @@ TABLE.formArea {
 	background: #3A3A3A;
 	border:1px solid #4B4A4A;
 }
-TABLE.formArea td{ margin:0;}
+TABLE.formArea td{ margin:0; padding:0;}
 /* ---------------------------
 TD：Form area (Title)
 --------------------------- */
@@ -1941,7 +1941,7 @@ width:690px;
 }
 .preorser_formArea{ background-color:#fff; font-size:13px; }
 .preorser_formArea td{ background-color:#373737; padding-left:2px; line-height:25px;}
-.formArea_td_info { width:530px\9; color:#FFFFFF; font-size:12px; padding:0; margin:0;}
+.formArea_td_info { width:530px;*width:530px!important;width:530px/0; color:#FFFFFF; font-size:12px; padding:0; margin:0;}
 .active_email_name { font-size:11px; width:80px;}
 .checkout_payment_info{
 	/*border:1px solid #ccc;*/
@@ -2091,15 +2091,15 @@ width:690px;
 	line-height:1.5;
 	color:#fff;
 	margin-left:-3px;
-}
-.option_table td{
-	padding-left:0;
+	*margin-left:-3px!important;
+	margin-left:0\0;
 }
 .option_name{
 	vertical-align:top;
 	color:#FFFFFF;
 	font-weight:bold;
-	width:106px;
+	width:100px;
+	line-height:22px;
 }
 .option_name td{ padding:3px 5px;}
 .option_input{
@@ -2220,9 +2220,12 @@ width:690px;
 	overflow:hidden; 
 }
 .preorder_option .option_name{
-	width:123px;
+	width:126px;
+	*width:126px!important;
+	width:123px\0;
 	padding:0;
 	font-weight:normal;
+	line-height:22px;
 }
 .option_money{
 	float:right;

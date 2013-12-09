@@ -1742,11 +1742,14 @@ searching
 	font-size:11px;
 	line-height:1.5;
 	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
 }
 .option_name{
 	width:85px;
 	vertical-align:top;
 	font-weight:bold;
+	line-height:20px;
 }
 .option_input{
 	width:198px;
@@ -1866,8 +1869,9 @@ searching
 .preorder_option .option_name{
 	padding:0;
 	font-weight:normal;
-	font-size:10px;
+	font-size:11px;
 	width:25%;
+	line-height:22px;
 }
 .option_money{
 	float:right;
@@ -1967,7 +1971,7 @@ searching
 }
 .table_a_spacing{ margin-bottom:8px;}
 .table_a_spacing img{ vertical-align:top;}
-.product_info_table td{ font-size:12px; line-height:1.5;}
+.product_info_table td{ font-size:11px; line-height:1.5;}
 #confirmation_product_num_info{ 
 	padding-right:67px;
 	padding-right:83px\0;
