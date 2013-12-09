@@ -3198,9 +3198,19 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $products_name = tep_db_fetch_array($products_name_query);
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
       $sql_site_where = ' site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+      $sql_list_site_where = ' r.site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+      $tmp_site_list_array = explode('-', $_GET['site_id']); 
     } else {
       $sql_site_where = ' site_id in ('.tep_get_setting_site_info(FILENAME_REVIEWS).')';
+      $sql_list_site_where = ' r.site_id in ('.tep_get_setting_site_info(FILENAME_REVIEWS).')';
+      $tmp_site_list_array = explode('-', tep_get_setting_site_info(FILENAME_REVIEWS)); 
     }
+    $tmp_list_or_str = '';
+    foreach ($tmp_site_list_array as $or_key => $or_value) {
+      $tmp_list_or_str .= "pd.site_id = '".$or_value."' or ";
+    }
+    $tmp_list_or_str = substr($tmp_list_or_str, 0, -3);
+    
     if(isset($_GET['site_id'])&&$_GET['site_id']==''){
       $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info(FILENAME_REVIEWS));
     }
@@ -3244,8 +3254,41 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
          }
          $where_str = ' and r.products_id in ('.implode(',',$p_list_arr).') ';
     }
-    $reviews_query_raw = "
-      select r.reviews_id, 
+    $reviews_order_sort_name = ' date_added'; 
+    $reviews_order_sort = 'desc'; 
+    $reviews_order_help_sotr = ' reviews_id';
+    if (!empty($_GET['r_sort'])) {
+      switch ($_GET['r_sort']) {
+        case 'r_site':
+          $reviews_order_sort_name = ' romaji'; 
+          break;
+        case 'r_name':
+          $reviews_order_sort_name = ' products_name'; 
+          break;
+        case 'r_rate':
+          $reviews_order_sort_name = ' reviews_rating'; 
+          break;
+        case 'r_added':
+          $reviews_order_sort_name = ' date_added'; 
+          break;
+        case 'r_status':
+          $reviews_order_sort_name = ' reviews_status'; 
+          break;
+        case 'r_update':
+          $reviews_order_sort_name = ' last_modified'; 
+          break;
+      }
+    }
+    if (!empty($_GET['r_sort_type'])) {
+      if ($_GET['r_sort_type'] == 'asc') {
+        $reviews_order_sort = 'asc'; 
+      } else {
+        $reviews_order_sort = 'desc'; 
+      }
+    }
+    $reviews_order_sql = $reviews_order_sort_name.' '.$reviews_order_sort.' , '.$reviews_order_help_sotr.' '.$reviews_order_sort; 
+    $reviews_list_query_raw = "
+      select * from (select r.reviews_id, 
              r.products_id, 
              r.date_added, 
              r.last_modified, 
@@ -3256,17 +3299,20 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
              r.reviews_status ,
              s.romaji,
              s.name as site_name
-     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s
-     where r.site_id = s.id
-        and " .$sql_site_where. "".$where_str."
-     order by date_added DESC";
-
-    $reviews_raw_query = tep_db_query($reviews_query_raw);
-    while ($reviews_id = tep_db_fetch_array($reviews_raw_query)) {
-         $rid_array[] = $reviews_id['reviews_id']; 
-         $rsid_array[] = $reviews_id['site_id'];
+     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd
+     where (".$tmp_list_or_str." or pd.site_id = '0') and r.site_id = s.id
+        and p.products_id = r.products_id
+        and p.products_id = pd.products_id
+        and pd.language_id = '".$languages_id."'
+        and " .$sql_list_site_where. "".$where_str."
+        order by pd.site_id desc) p group by reviews_id order by ".$reviews_order_sql;
+    
+    $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_list_query_raw, $reviews_query_numrows); 
+    $reviews_raw_query = tep_db_query($reviews_list_query_raw);
+    while ($reviews_res = tep_db_fetch_array($reviews_raw_query)) {
+         $rid_array[] = $reviews_res['reviews_id']; 
+         $rsid_array[] = $reviews_res['site_id'];
     }
-   
     $rInfo_array = tep_array_merge($reviews, $products, $products_name);
     $rInfo = new objectInfo($rInfo_array);
 //编辑的时候有默认值 新建的时候没有默认值 
@@ -3314,11 +3360,15 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $page_str = '';
   //标题
   if(isset($rID)&&$rID){
-     if ($r_key > 0) { 
-       $page_str .= '<a id="option_prev" onclick=\'show_text_reviews("","'.$_GET['page'].'","'.$rid_array[$r_key-1].'","'.$_GET['site_id'].'","'.$rsid_array[$r_key-1].'")\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_PREV.'</a>&nbsp;&nbsp;';
-     }
+    if ($r_key > 0) { 
+      $page_str .= '<a id="option_prev" onclick=\'show_text_reviews("","'.$_GET['page'].'","'.$rid_array[$r_key-1].'","'.$_GET['site_id'].'","'.$rsid_array[$r_key-1].'", "'.(!empty($_GET['r_sort'])?$_GET['r_sort']:'').'", "'.(!empty($_GET['r_sort_type'])?$_GET['r_sort_type']:'').'")\' href="javascript:void(0);" id="option_next">'.IMAGE_PREV.'</a>&nbsp;&nbsp;';
+    } else {
+      $page_str .= '<font color="#000000">'.IMAGE_PREV.'</font>&nbsp;&nbsp;';   
+    }
      if ($r_key < (count($rid_array) - 1)) {
-       $page_str .= '<a id="option_next" onclick=\'show_text_reviews("","'.$_GET['page'].'","'.$rid_array[$r_key+1].'","'.$_GET['site_id'].'","'.$rsid_array[$r_key+1].'")\' href="javascript:void(0);" id="option_next">'.TEXT_CAMPAIGN_NEXT.'</a>&nbsp;&nbsp;';
+       $page_str .= '<a id="option_next" onclick=\'show_text_reviews("","'.$_GET['page'].'","'.$rid_array[$r_key+1].'","'.$_GET['site_id'].'","'.$rsid_array[$r_key+1].'","'.(!empty($_GET['r_sort'])?$_GET['r_sort']:'').'", "'.(!empty($_GET['r_sort_type'])?$_GET['r_sort_type']:'').'")\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;';
+     } else {
+       $page_str .= '<font color="#000000">'.IMAGE_NEXT.'</font>&nbsp;&nbsp;';   
      }
   }
   if(isset($rID)&&$rID){
@@ -3353,7 +3403,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
 
   }
   $contents[]['text'] = array( 
-      array('text' => ENTRY_SITE.':<input type="hidden" name="action_type" value="'.$action_type.'">'),
+      array('text' => ENTRY_SITE.'<input type="hidden" name="action_type" value="'.$action_type.'">'),
       array('text' => $site_id_name.'<input id="site_id" name="site_id" type="hidden" value="'.$_GET['site_id'].'"><input id="site_hidden" name="site_hidden" type="hidden" value="'.$_GET['site_id'].'">')
   );
   if(isset($_GET['review_products_id_info']) && $_GET['review_products_id_info']){
@@ -3364,7 +3414,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $review_products_id_info = 0;
   }
   $contents[]['text'] = array(
-        array('text' => TEXT_CATEGORY_SELECT),
+        array('text' => substr(TEXT_CATEGORY_SELECT, 0, -1)),
         array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" class="td_select" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
     );
    $result = tep_db_query(" SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' and cd.site_id = '0' and pd.site_id = '0' ORDER BY categories_name");
@@ -3399,13 +3449,17 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       }else{
           $add_product_categories_id = $_GET['review_products_id_info'];
       }
+      if(isset($_GET['action_sid'])&&$_GET['action_sid']){
+        $p_real_sid = $_GET['action_sid'];
+      }else{
+        $p_real_sid = 0;
+      }
       $select_value = "<option value='0'>".TEXT_SELECT_PRODUCT;      
       $review_select = "<select class='td_select' id='add_product_products_id' name=\"add_product_products_id\" onchange='change_hidden_select(this)' ".$str_disabled.">";
       $ProductOptions = $select_value;
              asort($ProductList[$add_product_categories_id]);
              foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName){
-               $ProductName  =
-                 tep_get_products_name($ProductID,$languages_id,$_GET['site_id'],true);
+               $ProductName  = tep_get_products_name($ProductID,$languages_id,$p_real_sid,true);
                  if($df_pid == $ProductID){
                  $ProductOptions .= "<option value='$ProductID' selected> $ProductName\n";
                  }else{
@@ -3418,7 +3472,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $error_add_id = '<br><span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
     }
     $contents[]['text'] = array(
-        array('text' => ENTRY_PRODUCT),
+        array('text' => substr(ENTRY_PRODUCT, 0, -1)),
         array('text' => $review_select.$ProductOptions.$review_select_end.$error_add_id),
         array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$df_pid.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_id.'">'.'<input type="hidden" id="r_pid" value="'.$df_pid.'">')
     );
@@ -3509,11 +3563,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $date_posted .= '</select>';
 
   $contents[]['text'] = array(
-        array('text' => ENTRY_DATE),
+        array('text' => substr(ENTRY_DATE, 0, -1)),
         array('text' => $date_posted)
     );
   $contents[]['text'] = array(
-        array('text' => ENTRY_FROM),
+        array('text' => substr(ENTRY_FROM, 0, -1)),
         array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'"'.$str_disabled.' />')
     );
     $review_radio = '';
@@ -3531,11 +3585,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
      }
     }
     $contents[]['text'] = array(
-        array('text' => ENTRY_RATING),
+        array('text' => substr(ENTRY_RATING, 0, -1)),
         array('text' =>  TEXT_BAD.$review_radio.TEXT_GOOD)
     );
     $contents[]['text'] = array(
-        array('text' => TEXT_INFO_REVIEW_READ),
+        array('text' => substr(TEXT_INFO_REVIEW_READ, 0, -1)),
         array('text' =>  $rInfo->reviews_read)
     );
     if($rInfo->reviews_text_size == null){
@@ -3544,11 +3598,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         $reviews_average_query = tep_db_query(" select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $reviews['products_id'] . "' ");
         $reviews_average_row = tep_db_fetch_array($reviews_average_query);
     $contents[]['text'] = array(
-        array('text' => TEXT_INFO_REVIEW_SIZE),
+        array('text' => substr(TEXT_INFO_REVIEW_SIZE, 0, -1)),
         array('text' =>  $reviews_text_row['reviews_text_size'] . ' bytes')
     );
     $contents[]['text'] = array(
-        array('text' => TEXT_INFO_PRODUCTS_AVERAGE_RATING),
+        array('text' => substr(TEXT_INFO_PRODUCTS_AVERAGE_RATING, 0, -1)),
         array('text' =>  number_format($reviews_average_row['average_rating'], 2) . '%')
     );
     }
@@ -3566,11 +3620,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $str_rstatus .= '<input type="hidden" value="0" id="r_status">';
   }
   $contents[]['text'] = array(
-    array('text' => TEXT_PRODUCTS_STATUS),
+    array('text' => substr(TEXT_PRODUCTS_STATUS, 0, -1)),
     array('text' => $str_rstatus)
   );
   $contents[]['text'] = array(
-      array('text' => ENTRY_REVIEW),
+      array('text' => substr(ENTRY_REVIEW, 0, -1)),
       array('text' => tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'style="resize: vertical;" id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'.$str_disabled))
   );
 
