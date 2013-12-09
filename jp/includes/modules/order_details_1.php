@@ -20,8 +20,6 @@
   }
 
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-    //$colspan++;
-    //echo '    <td class="tableHeading">' . TABLE_HEADING_MODEL . '</td>' . "\n";
   }
 
   echo '    <td class="tableHeading">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
@@ -43,7 +41,6 @@
 
 // Delete box only for shopping cart
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
     
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
@@ -57,7 +54,6 @@
       echo tep_draw_hidden_field('unit_price_' . $products[$i]['id'], $products[$i]['price'], 'id="unit_price_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('small_sum_' . $products[$i]['id'], $product_info['products_small_sum'], ' id="small_sum_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
-      //echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onblur="update_cart(this);" onkeypress="return key(event);"');
       echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'"');
       echo   tep_draw_hidden_field('products_id[]', $products[$i]['id']);
       echo tep_draw_hidden_field('option_info[]', serialize($products[$i]['op_attributes'])); 
@@ -112,7 +108,6 @@
     }
 // Model
     if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      //echo '    <td class="main" style="">1<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products[$i]['id']) . '">' . $products[$i]['model'] . '</a></td>' . "\n";
     }
   
 // Product name, with or without link

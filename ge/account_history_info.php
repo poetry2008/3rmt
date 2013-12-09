@@ -46,7 +46,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body>
+<body> 
 <!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof --> 
@@ -111,7 +111,6 @@
     echo '          <tr>' . "\n" .
          '            <td width="10"></td><td class="main" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . (tep_not_null($show_products_name) ? $show_products_name : $order->products[$i]['name']);
-
     if ($order->products[$i]['price'] != '0') {
       if ($order->products[$i]['price'] < 0) {
         echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
@@ -236,7 +235,7 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox">
                   <tr class="infoBoxContents"> 
                       <td class="main" colspan="2"><table class="box_des"><tr><td><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td></tr></table></td> 
                   </tr> 
@@ -288,6 +287,7 @@
       $campaign_info = tep_db_fetch_array($campaign_info_query);
       if ($campaign_info) {
         if ($campaign_info['campaign_fee'] == 0) {
+          //配送费用，手续费用
           echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
            '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
@@ -300,6 +300,7 @@
         }
       } else {
         if ($order->totals[$i]['value'] == 0) {
+          //配送费用，手续费用
           echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
            '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
@@ -325,6 +326,8 @@
       }
       echo '</td>' . "\n" .
       '              </tr>' . "\n";
+
+      //配送费用，手续费用
       echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
            '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
@@ -363,7 +366,8 @@
          '                <td width="10"></td>
 		 				  <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
-         '                <td class="main" valign="top">' . (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars($statuses['comments']))) . '</td>' . "\n" .
+         '                <td class="main" valign="top">' .
+         (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 

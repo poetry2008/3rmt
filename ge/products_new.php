@@ -1,6 +1,8 @@
 <?php
 /*
   $Id$
+
+  新到商品列表
 */
 
   require('includes/application_top.php');

@@ -76,8 +76,6 @@ $paymentAmount = urlencode(htmlspecialchars($_REQUEST['amount']));//合计金额
 $currencyID = urlencode('JPY');							// or other currency code ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
 $paymentType = urlencode('Sale');				// or 'Sale' or 'Order'
 
-//$itemNumber   = '623083';//商品序号
-//$itemDesc     = 'サイズ';//商品尺寸
 $itemNumAMT   = urlencode(htmlspecialchars($_REQUEST['amount']));//商品单价
 $itemQuantity = urlencode('1');//商品数量
 
@@ -87,7 +85,6 @@ $cancelURL = urlencode(htmlspecialchars($_REQUEST['cancel_return']));
 $pageDefault = urlencode('Billing'); //默认的信用卡输入框
 $location = urlencode('JP');//国家码
 
-//$customOption = urlencode('123456-789');//&CUSTOM=$customOption
 // Add request-specific fields to the request string.
 $nvpStr = "&AMT=$paymentAmount
 		   &ReturnUrl=$returnURL

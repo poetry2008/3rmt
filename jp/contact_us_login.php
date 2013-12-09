@@ -20,7 +20,6 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $email=trim($_POST['lemail']);
     $email=str_replace("\xe2\x80\x8b", '', $email);
     $ticketID=trim($_POST['lticket']);
-    //$_SESSION['_client']=array(); #Uncomment to disable login strikes.
     
     //Check time for last max failed login attempt strike.
     $loginmsg='"メールアドレス" または "問合番号" が一致しませんでした。';

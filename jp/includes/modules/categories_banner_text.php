@@ -9,7 +9,7 @@ $categories_tab_query1 = tep_db_query("
     select c.categories_id, 
            c.parent_id, 
            cd.categories_status, 
-           c.categories_image, 
+           cd.categories_image, 
            cd.categories_name, 
            cd.categories_meta_text, 
            cd.categories_image2 ,

@@ -340,16 +340,18 @@ if($_POST['num_rows'] > 0){
 }
   if($error == true){ break; }  
     if($error == false){
-      if($_POST['num_rows'] > 0){
+
+    if($_POST['num_rows'] > 0){ 
     //住所信息入库
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
@@ -361,12 +363,12 @@ if($_POST['num_rows'] > 0){
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
         //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }
-  }
+    }
     $sql_data_array = array('new_customers_firstname' => $firstname,
                             'new_customers_lastname' => $lastname,
                             'new_customers_newsletter' => $newsletter,
@@ -481,14 +483,14 @@ if($_POST['num_rows'] > 0){
  
   //住所信息入库
   if($error_str == false){
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
@@ -501,7 +503,7 @@ if($_POST['num_rows'] > 0){
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
         //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
@@ -571,6 +573,18 @@ if($_POST['num_rows'] > 0){
 <body>
 <!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
+<script type="text/javascript">
+$(document).ready(function(){ 
+<?php
+  if($save_flag == true){
+    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'.  FILENAME_ACCOUNT_EDIT .'";'; 
+  }
+  if($del_flag == true){
+    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";'; 
+  }
+?>
+});
+</script>
 <!-- header_eof --> 
 <!-- body --> 
 <div id="main">
@@ -614,16 +628,4 @@ $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 
 </body>
 </html>
-<script type="text/javascript">
-$(document).ready(function(){ 
-<?php
-  if($save_flag == true){
-    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'.  FILENAME_ACCOUNT_EDIT .'";'; 
-  }
-  if($del_flag == true){
-    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";'; 
-  }
-?>
-});
-</script>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

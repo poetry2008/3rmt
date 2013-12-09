@@ -57,7 +57,6 @@ if ($category_depth == 'nested') {
 <div id="body_text">
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <?php
-  #$current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
   if (tep_show_warning($current_category_id)) {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
@@ -86,7 +85,7 @@ if ($category_depth == 'nested') {
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status, 
@@ -190,7 +189,6 @@ if (isset($cPath_array)) {
         foreach ($all_game_news as $cgmkey => $cgame_news_rss) {
           if ($cgmkey == CATEGORIES_GAME_NEWS_MAX_DISPLAY)  break;
           echo '<li class="news_list">';
-          //echo '<span>'.tep_date_short($cgame_news_rss['date_added']).'</span>'; 
           echo '<a href="'.$cgame_news_rss['url'].'" class="latest_news_link01" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_rss['headline'],0,95,'...').'</a>'; 
           echo '</li>'; 
         }
@@ -207,8 +205,6 @@ if (isset($cPath_array)) {
 <?php
 } elseif($_GET['colors'] && !empty($_GET['colors'])) {
   require(DIR_WS_ACTIONS.'index_colors.php');
-#} elseif($_GET['action'] && $_GET['action'] == 'select' && 0) { 
-#   require(DIR_WS_ACTIONS.'index_select.php');
 } else {
   require(DIR_WS_ACTIONS.'index_default.php');
 ?>
@@ -251,14 +247,12 @@ $oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where key
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
-//  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
 $oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
-//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
 }
 
 ?>

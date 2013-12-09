@@ -746,6 +746,7 @@ ranking
 	background: #fff;
 	padding: 1px 2px;
 	margin: 2px 0 2px 2px;
+	word-break: break-all;
 }
 #contents, #contents_long {
 	padding-bottom: -2px;

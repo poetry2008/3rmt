@@ -14,11 +14,7 @@
 <script type="text/javascript" language="javascript">
 <!--
 function pass_hidd(CI){
-  /*
-  var idx = document.account_edit.elements["guestchk"].selectedIndex;
-  var CI = document.account_edit.elements["guestchk"].options[idx].value;
-*/
-  if(CI == '0'){
+    if(CI == '0'){
     document.getElementById('trpass1').style.display = "";
   document.getElementById('trpass2').style.display = "";
   }else{

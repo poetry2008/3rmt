@@ -6,7 +6,13 @@ header("Content-type:text/html;charset=utf-8");
 ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
-require(DIR_WS_CLASSES . 'payment.php');
+require_once(DIR_WS_CLASSES . 'payment.php');
+//如果信用卡支付成功并生成了订单，直接跳转到注文成功页面
+if(isset($_SESSION['orders_credit_flag']) && $_SESSION['orders_credit_flag'] == '1'){
+  unset($_SESSION['orders_credit_flag']);
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+  exit;
+}  
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
@@ -16,6 +22,7 @@ if (!tep_session_is_registered('customer_id')) {
 // if the customer is not logged on, redirect them to the login page
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  exit;
 } else {
   if(tep_session_is_registered('customer_id')){
     $flag_customer_info = tep_is_customer_by_id($customer_id);
@@ -245,7 +252,29 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']));
  
   $message = new email(array('X-Mailer: iimy Mailer'));
-  $text = $orders_mail_text;
+  //错误订单 详细信息
+   function arr_foreach ($arr) {
+     $str = '';
+     if (!is_array ($arr)&&!is_object($arr)) {
+       return false;
+     }
+     foreach ($arr as $key => $val ) {
+       if (is_array ($val)||is_object($val)) {
+         $str .= arr_foreach($val);
+       } else {
+         $str .=  $key.' :'.$val."\n";
+       }
+     }
+     return $str;
+  }
+  $orders_mail_text .= "\n-----------------session-------------\n";
+  $orders_mail_text .= arr_foreach($_SESSION);
+  if(!empty($flag_customer_info)){
+
+    $orders_mail_text .= "\n-----------------Data-------------\n";
+    $orders_mail_text .= arr_foreach($flag_customer_info);
+  }
+  $text = $orders_mail_text;  
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
   //Administrator
@@ -284,6 +313,15 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   tep_session_unregister('h_code_fee');
   tep_session_unregister('h_point');
 
+  //注销其他session变量
+  unset($_SESSION['insert_id']);
+  unset($_SESSION['option_list']);
+  unset($_SESSION['campaign_fee']); 
+  unset($_SESSION['camp_id']); 
+  unset($_SESSION['new_payment_error']);
+  unset($_SESSION['comments']);
+  unset($_SESSION['payment_validated']);
+  unset($_SESSION['mailcomments']);
   //shipping session destroy
   tep_session_unregister('start_hour');
   tep_session_unregister('start_min');
@@ -389,11 +427,13 @@ if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
 }
 if ((tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL')); 
+  exit;
 }
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
 // avoid hack attempts during the checkout procedure by checking the internal cartID
   if ($cart->cartID != $cartID) {
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+    exit;
   }
 }
 if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
@@ -402,6 +442,7 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+      exit;
       break;
     }
   }
@@ -421,6 +462,7 @@ if($NewOid['cnt'] > 0) {
     unset($_SESSION['comments']);
     $_SESSION['payment_error'] = $_SESSION['new_payment_error'];
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '' , 'SSL'));
+    exit;
   }
 $comments_info = $payment_modules->dealComment($payment,$comments);
 if (is_array($comments_info)) {
@@ -438,7 +480,17 @@ require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
-if($payment_modules->moneyInRange($payment,$order->info['total'])){
+$valadate_total = $order->info['total'];
+if ($point){
+  $valadate_total -= abs($point);
+}
+if (isset($_SESSION['campaign_fee'])) {
+  $valadate_total -= abs($_SESSION['campaign_fee']);
+}
+if(isset($_SESSION['mailfee'])){
+  $valadate_total += abs($_SESSION['mailfee']);
+}
+if($payment_modules->moneyInRange($payment,$valadate_total)){
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS));
   exit;
 }
@@ -1250,7 +1302,10 @@ tep_session_unregister('hc_point');
 tep_session_unregister('hc_camp_point');
 tep_session_unregister('h_shipping_fee');
 
-tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+if(!isset($_SESSION['orders_credit_flag'])){
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+  exit;
+}
     
 require(DIR_WS_INCLUDES . 'application_bottom.php');
 

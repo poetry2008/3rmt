@@ -19,7 +19,7 @@
   }
 ?> 
       <!-- heading title eof-->
-      <div class="comment"> <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子?></font>
+      <div class="comment"> <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase?></font>
       <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="product_list_page"> 
         <tr align="center">
 <?php
@@ -34,7 +34,7 @@
             select c.categories_id, 
                    cd.categories_name, 
                    cd.categories_status, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
@@ -63,7 +63,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status,
@@ -98,7 +98,7 @@
 ?> 
         </tr>
       </table>
-      <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></font>
+      <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase ?></font>
             </div>
       <?php 
   $new_products_category_id = $current_category_id;

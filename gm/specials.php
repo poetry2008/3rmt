@@ -37,9 +37,9 @@
            p.products_small_sum, 
            p.products_tax_class_id, 
            pd.products_image, 
-           pd.products_status, 
-           p.products_bflag, 
            p.products_date_added,
+           p.products_bflag, 
+           pd.products_status, 
            pd.site_id
     from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
     where 
@@ -55,15 +55,15 @@
   having p.products_status != '0' and p.products_status != '3' 
   order by products_date_added DESC
   ";
-    $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
-     
-    $specials_query = tep_db_query($specials_query_raw);
-    
-    if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
+  $specials_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SPECIAL_PRODUCTS, $specials_query_raw, $specials_numrows);
+  
+  $specials_query = tep_db_query($specials_query_raw);
+  
+  if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
-        <tr>
-          <td>
-            <br>
+          <tr>
+            <td>
+              <br>
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr>
                   <td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
@@ -74,15 +74,15 @@
                   <td class="smallText"><?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                 </tr>
               </table>
-                        </td>
-                    </tr>
+            </td>
+          </tr>
 <?php
-    }
+  }
 ?>
-                    <tr>
-                        <td>
-                            <table border="0" width="100%" cellspacing="0" cellpadding="2">
-                                <tr>
+          <tr>
+            <td>
+              <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <tr>
 <?php
     $row = 0;
     while ($specials = tep_db_fetch_array($specials_query)) {
@@ -91,10 +91,7 @@
         
         echo '<span id="' . $specials['products_id'] . '"><a
           href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$specials['products_id']).'"
-          onClick="sendData(\'' . tep_href_link(basename($PHP_SELF),
-          tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' .
-            $specials['products_id']) . '\',\'' . displaychange . '\',\'' .
-            $specials['products_id'] . '\'); return false;">'.TEXT_BUY_ORDERS_LINK.'</a></span><br>';
+          return false;">'.TEXT_BUY_ORDERS_LINK.'</a></span><br>';
         
         echo '<s>' .
           $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'], $specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";

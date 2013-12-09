@@ -1,7 +1,7 @@
 <?php 
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'payment.php');
-//check_uri('/^\/receive.php/');
+check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
 
@@ -18,30 +18,7 @@ $w_rel      = $_GET['rel'];
 
 //没有设置参数的时候，设置错误信息
 
-/*
-$w_error="パラメータが不正です";
-if(!isset($w_telno)){
-  $w_telno=$w_error;
-}
-if(!isset($w_email)){
-  $w_email=$w_error;
-}
-if(!isset($w_sendid)){
-  $w_sendid=$w_error;
-}
-if(!isset($w_username)){
-  $w_username=$w_error;
-}
-if(!isset($w_money)){
-  $w_money=$w_error;
-}
-if(!isset($w_cont)){
-  $w_cont=$w_error;
-}
-if(!isset($w_option)){
-  $w_option=$w_error;
-}
-*/
+
 if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
 
   if ($w_rel == 'yes' &&  $w_option != "") {//option是空白的是偶，不搜索option
@@ -106,6 +83,21 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
 }
 
 if($w_clientip == "76011"){
+  //如果信用卡支付成功，生成订单
+  if(!isset($_SESSION['orders_credit_flag']) && isset($_SESSION['cart']) && isset($_SESSION['date']) && isset($_SESSION['hour']) && isset($_SESSION['min']) && $w_option == $_SESSION['option']){
+    $_SESSION['orders_credit_flag'] = '0';
+    require(DIR_WS_ACTIONS.'checkout_process.php');
+  }
+  if(!isset($_SESSION['preorder_credit_flag']) && isset($_SESSION['preorder_info_date']) && isset($_SESSION['preorder_info_hour']) && isset($_SESSION['preorder_info_min']) && $w_option == $_SESSION['preorder_option']){
+    $_SESSION['preorder_credit_flag'] = '0';
+    require(DIR_WS_ACTIONS.'change_preorder_process.php');
+  }
+  if(isset($_SESSION['orders_credit_flag']) && $_SESSION['orders_credit_flag'] == '0'){
+    $_SESSION['orders_credit_flag'] = '1';
+  }
+  if(isset($_SESSION['preorder_credit_flag']) && $_SESSION['preorder_credit_flag'] == '0'){
+    $_SESSION['preorder_credit_flag'] = '1';
+  }
   echo "SuccessOK";
 }else{
   echo "不正アクセス";

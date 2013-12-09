@@ -5,7 +5,6 @@
 $_noemailclass = true;
 require_once('includes/application_top.php');
 require_once('includes/ost/secure.inc.php');
-//mysql_select_db(DB_DATABASE);
 //TODO: alert admin on any error on this file.
 if(!$thisclient || !$thisclient->isClient() || !$_GET['id'] || !$_GET['ref']) die('Access Denied');
 

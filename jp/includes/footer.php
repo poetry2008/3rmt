@@ -19,11 +19,7 @@ if (STORE_DB_TRANSACTIONS) {?>
       echo '[' . $log_times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
     }
   }
-   //&& print_r($logger->queries);
-  //print_r($_COOKIE);
-  //print_r($_SESSION);
   ?>
-  <?php //print_r($logger->times);?>
   </pre>
 </div>
 <?php }?>

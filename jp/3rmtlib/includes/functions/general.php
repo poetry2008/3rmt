@@ -2867,7 +2867,7 @@ function tep_unlink_temp_dir($dir)
     $sql = "
         select c.categories_id,
                cd.categories_status,
-               c.categories_image,
+               cd.categories_image,
                c.parent_id,
                c.sort_order,
                c.date_added,
@@ -2877,7 +2877,6 @@ function tep_unlink_temp_dir($dir)
                cd.categories_name,
                cd.seo_name,
                cd.categories_image2,
-               cd.categories_image3,
                cd.categories_meta_text,
                cd.seo_description,
                cd.categories_header_text,

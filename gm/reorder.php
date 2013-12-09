@@ -100,7 +100,7 @@ document.onclick=function(e){
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
         echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS
-          .'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div>';
+          .'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
         // time error
       } else {
         // update time
@@ -367,7 +367,7 @@ document.onclick=function(e){
           src="includes/languages/japanese/images/buttons/button_back.gif"
           onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"
           onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"
-          alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div><div>';
+          alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div><div>';
     } else {
         // edit order
 ?>
@@ -798,12 +798,21 @@ $(document).ready(function(){
    </select><br>
    <span id="date_error"></span>
 </td></tr>
-<tr>
+<tr id="date_show_id" style="display:none;">
 <td colspan="2">
 <table width="100%">
   <tr id="shipping_list" style="display:none;">
   <td width="20%" valign="top"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
   <td id="shipping_list_show"></td>
+  </tr>
+  <tr>
+    <td width="20%"></td> 
+    <td>
+    <div id="shipping_list_min" style="display:none;" class="shipping_time_box">
+<input type="hidden" id="ele_id" name="ele" value="">
+<div id="shipping_list_show_min"></div>
+</div>
+    </td>
   </tr>
 </table>
 <noscript>
@@ -814,12 +823,9 @@ $(document).ready(function(){
  </table>
  </noscript>
 
-<div id="shipping_list_min" style="display:none;" class="shipping_time_box">
-<input type="hidden" id="ele_id" name="ele" value="">
-<div id="shipping_list_show_min"></div>
-</div>
+
 </td></tr>
-<tr>
+<tr id="hour_show_error" style="display:none;">
 <td></td>
 <td><span id="hour_error"></span></td>
 </tr>
@@ -847,8 +853,8 @@ $(document).ready(function(){
       <div id='confirm_content' style='text-align:left;'>
       </div>
       <div class="botton-continue">
-      <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
-      <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" onmouseout="this.src='includes/languages/japanese/images/buttons/button_back.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_back_hover.gif'" alt="<?php IMAGE_BUTTON_BACK;?>" title="<?php echo IMAGE_BUTTON_BACK;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block';document.getElementById('no_change').value='0';" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_submit_hover.gif'" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" onmouseout="this.src='includes/languages/japanese/images/buttons/button_back.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_back_hover.gif'" alt="<?php echo TEXT_BACK_TO_HISTORY;?>" title="<?php echo TEXT_BACK_TO_HISTORY;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block';document.getElementById('no_change').value='0';" >
     </div></div>
     <script type="text/javascript">
 <!---
@@ -953,7 +959,7 @@ function orderConfirmPage(){
       src="includes/languages/japanese/images/buttons/button_back.gif"
         onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"
         onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"
-        alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div><div>';
+        alt="'.TEXT_BACK_TO_HISTORY.'" title="'.TEXT_BACK_TO_HISTORY.'"></a></div></div><div>';
   }
 ?>
     <?php } else {

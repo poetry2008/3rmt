@@ -30,9 +30,6 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
       forward404(); 
     } 
   }
-  //if (isset($_GET['tags_id'])) {
-    //forward404(); 
-  //}
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
@@ -89,7 +86,6 @@ if ($category_depth == 'nested') {
 ?> 
   <td valign="top" id="contents_long">
 <?php
-  #$current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
   if (tep_show_warning($current_category_id)) {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
@@ -116,7 +112,7 @@ if ($category_depth == 'nested') {
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.categories_status, 
                    cd.site_id,
@@ -193,7 +189,6 @@ if ($category_depth == 'nested') {
       }
   ?>
   </div>
-      <!--<div class="pageBottom_long"></div>-->
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
@@ -255,14 +250,12 @@ $oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where key
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
-//  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
 $oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
-//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
 }
 
 ?>

@@ -19,7 +19,7 @@
   }
 ?> 
       <!-- heading title eof//-->
-      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?></p> <div class="comment">
+      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase ?></p> <div class="comment">
       <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
         <tr align="center">
 <?php
@@ -34,7 +34,7 @@
             select c.categories_id, 
                    cd.categories_name, 
                    cd.categories_status, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
@@ -63,7 +63,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status,
@@ -98,7 +98,7 @@
 ?> 
         </tr>
       </table></div>
-      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></p> <p class="pageBottom"></p>
+      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase ?></p> <p class="pageBottom"></p>
       <?php 
   $new_products_category_id = $current_category_id;
   $exone_single = false; 
@@ -114,7 +114,7 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h3 class="pageHeading">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3>' . "\n";
-      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo句子
+      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo phrase
 ?>
         <p class="pageBottom"></p>
 <?php
