@@ -6177,6 +6177,7 @@ function tep_get_orders_address($oid){
     right join ".TABLE_ADDRESS." a
     on ao.address_id=a.id  
     WHERE ao.orders_id='".$oid."' 
+    and ao.billing_address='0' 
     and a.fixed_option != '0'
     order by a.fixed_option";
   $query = tep_db_query($sql);

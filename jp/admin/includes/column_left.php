@@ -5,7 +5,7 @@
 ?>
 <script type="text/javascript" >
 if (typeof window.jQuery == "undefined") {
-    document.write('<script language="javascript" src="includes/javascript/jquery.js"><\/script>');
+    document.write('<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info;?>"><\/script>');
 }
 </script>
 <script>

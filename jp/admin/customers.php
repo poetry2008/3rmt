@@ -1141,7 +1141,7 @@ $(document).ready(function() {
       if(in_array($customers['site_id'],$site_array)){
          $customers_checkbox = '<input type="checkbox" '.(($customers['is_active'] != '1')?'disabled="disabled"':'').' name="customers_id[]" value="'.$customers['customers_id'].'"><input type="hidden" name="customers_site_id_list[]" value="'.$customers['site_id'].'">';
       }else{
-         $customers_checkbox = '<input disabled="disabled" type="checkbox" name="customers_id[]" value="'.$customers['customers_id'].'">';
+         $customers_checkbox = '<input disabled="disabled" type="checkbox" name="customers_id[]" value="'.$customers['customers_id'].'"><input type="hidden" name="customers_site_id_list[]" value="'.$customers['site_id'].'">';
       }
       $customers_info[] = array(
           'params' => 'class="dataTableContent"',

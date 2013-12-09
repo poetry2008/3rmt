@@ -765,7 +765,7 @@ switch ($_GET['action']) {
           }
           //address
           $option_info_array = array();
-          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' and billing_address='0' order by id");
           while($address_array = tep_db_fetch_array($address_query)){
           
             $option_info_array[$address_array['name']] = $address_array['value']; 
@@ -1220,7 +1220,7 @@ switch ($_GET['action']) {
           }
           //address
           $option_info_array = array();
-          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' and billing_address='0' order by id");
           while($address_array = tep_db_fetch_array($address_query)){
           
             $option_info_array[$address_array['name']] = $address_array['value']; 
@@ -2453,204 +2453,15 @@ echo tep_get_orders_edit_title_from_oID($_GET['oID'])." ". HEADING_TITLE;
 else { ?>
 <title><?php echo HEADING_TITLE; ?></title>
 <?php }?>
-        <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-        <script language="javascript" src="includes/javascript/jquery.js"></script>
-        <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-        <script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
-        <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-        <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-        <script language="javascript" src="includes/javascript/all_page.js"></script> 
+        <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+        <script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js&v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/all_page.js?v=<?php echo $back_rand_info?>"></script> 
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=order&type=js&other=<?php echo $_SERVER['PHP_SELF'];?>&v=<?php echo $back_rand_info?>"></script>
         <script language="javascript">
-window.onresize = resizepage;
-<?php //删除订单?>
-function confirm_del_order_info()
-{
-<?php
-if ($ocertify->npermission == 31) {
-?>
-  document.forms.orders.submit();
-<?php
-} else {
-?>
-  $.ajax({
-     url: 'ajax_orders.php?action=getallpwd',
-     type: 'POST',
-     dataType: 'text',
-     data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-     async : false,
-     success: function(data) {
-       var tmp_msg_arr = data.split('|||'); 
-       var pwd_list_array = tmp_msg_arr[1].split(',');
-       if (tmp_msg_arr[0] == '0') {
-         document.forms.orders.submit();
-       } else {
-         var input_pwd_str = window.prompt('<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>', ''); 
-         if (in_array(input_pwd_str, pwd_list_array)) {
-           $.ajax({
-             url: 'ajax_orders.php?action=record_pwd_log',   
-             type: 'POST',
-             dataType: 'text',
-             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.orders.action),
-             async: false,
-             success: function(msg_info) {
-               document.forms.orders.submit();
-             }
-           }); 
-         } else {
-           alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
-         }
-       }
-     }
-   });
-<?php
-}
-?>
-}
-<?php //浏览器窗口缩放时执行的函数?>
-function resizepage(){
-  if($(".note_head").val()== ""&&$("#orders_list_table").width()< 714){
-    $(".box_warp").css('height',$('.compatible').height());
-  }
-}
-<?php //确认邮件标题?>
-function confrim_mail_title(){
-  var _end = $("#mail_title_status").val();
-  
-  var direct_single = false;
-  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-  }else{
-    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-    } else {
-      direct_single = true;
-    }
-  }
-  
-  $.ajax({
-    type:"POST",
-    data:"c_comments="+$('#c_comments').val()+'&o_id=<?php echo $_GET['oID'];?>'+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
-    async:false,
-    url:'ajax_orders.php?action=check_order_variable_data',
-    success: function(msg) {
-      if (msg != '') {
-        if (direct_single == false) {
-          alert(msg); 
-        } 
-      } else {
-        if (direct_single == false) {
-          document.forms.sele_act.submit(); 
-        }
-      } 
-    }
-  }); 
-}
-<?php //确认邮件标题?>
-function confrim_list_mail_title(){
-  var _end = $("#mail_title_status").val();
-  var o_id_list = ''; 
-  var direct_single = false;
-  if (document.sele_act.elements['chk[]']) {
-    if (document.sele_act.elements['chk[]'].length == null) {
-      if (document.sele_act.elements['chk[]'].checked == true) {
-        o_id_list += document.sele_act.elements['chk[]'].value+','; 
-      }
-    } else {
-      for (var i = 0; i < document.sele_act.elements['chk[]'].length; i++) {
-        if (document.sele_act.elements['chk[]'][i].checked == true) {
-          o_id_list += document.sele_act.elements['chk[]'][i].value+','; 
-        }
-      }
-    }
-  }
-  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-  }else{
-    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-    } else {
-      direct_single = true;
-    }
-  }
-  
-  $.ajax({
-    type:"POST",
-    data:"c_comments="+$('#c_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
-    async:false,
-    url:'ajax_orders.php?action=check_order_list_variable_data',
-    success: function(msg) {
-      if (msg != '') {
-        if (direct_single == false) {
-          alert(msg); 
-        } 
-      } else {
-        if (direct_single == false) {
-          document.forms.sele_act.submit(); 
-        }
-      } 
-    }
-  }); 
-}
-<?php //提交表单?>
-function check_list_order_submit() {
-  if (submit_confirm()) {
-    confrim_list_mail_title();
-  }
-}
-        <?php //选中/非选中网站?> 
-        function change_site(site_id,flag,site_list,param_url){  
-          var ele = document.getElementById("site_"+site_id);
-          $.ajax({
-                  dataType: 'text',
-                  type:"POST",
-                  data:'param_url='+param_url+'&flag='+flag+'&site_list='+site_list+'&site_id='+site_id,
-                  async:false, 
-                  url: 'ajax_orders.php?action=select_site',
-                  success: function(data) {
-                    if (data != '') {
-                      if (ele.className == 'site_filter_selected') {
-                        ele.className='';
-                      } else {
-                        ele.className='site_filter_selected';
-                      }
-                      window.location.href = data; 
-                   }
-                 }
-          });
-        }
-        <?php //等待元素隐藏?> 
-        function read_time(){
-    
-          $("#wait").hide();
-        }
-        <?php //给订单加标识?> 
-        function change_read(oid,user){
-          var orders_id = document.getElementById("oid_"+oid); 
-          var orders_id_src = orders_id.src;
-          var orders_id_src_array = new Array();
-          var flag = 0;
-          orders_id_src_array = orders_id_src.split("/"); 
-          if(orders_id_src_array[orders_id_src_array.length-1] == 'green_right.gif'){
-
-            flag = 1;
-          }
-          $.ajax({
-                  type: "POST",
-                  data: 'oid='+oid+'&user='+user+'&flag='+flag,
-                  beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
-                  async:false,
-                  url: 'ajax_orders.php?action=read_flag',
-                  success: function(msg) {
-                    if(flag == 0){
-                      orders_id.src="images/icons/green_right.gif";
-                      orders_id.title=" <?php echo TEXT_FLAG_CHECKED;?> ";
-                      orders_id.alt="<?php echo TEXT_FLAG_CHECKED;?>";
-                    }else{
-                      orders_id.src="images/icons/gray_right.gif";
-                      orders_id.title=" <?php echo TEXT_FLAG_UNCHECK;?> ";
-                      orders_id.alt="<?php echo TEXT_FLAG_UNCHECK;?>";
-                    }
-                    $('body').css('cursor','');
-                    setTimeout('read_time()',500);
-                  }
-               }); 
-        }
         <?php // 用作跳转?>
         var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
         <?php // 非完成状态的订单不显示最终确认?>
@@ -2682,113 +2493,7 @@ foreach ($nomail as $oskey => $value){
 }
 ?>
 
-<?php //以当前时间为付款日?>
-function q_3_2(){
-  if ($('#q_3_1').attr('checked') == true){
-    if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
-      $('#q_3_2_m').val(new Date().getMonth()+1);
-      $('#q_3_2_d').val(new Date().getDate());
-    }
-  }
-}
 
-<?php //以当前时间为付款日?>
-function q_4_3(){
-  if ($('#q_4_2').attr('checked') == true){
-    if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
-      $('#q_4_3_m').val(new Date().getMonth()+1);
-      $('#q_4_3_d').val(new Date().getDate());
-    }
-  }
-}
-<?php //删除订单指定状态?>
-function del_confirm_payment_time(oid, status_id)
-{
-  $.ajax({
-url: 'ajax_orders.php?action=getallpwd',
-type: 'POST',
-dataType: 'text',
-data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-async : false,
-success: function(data) {
-var tmp_msg_arr = data.split('|||'); 
-var pwd_list_array = tmp_msg_arr[1].split(',');
-<?php
-if ($ocertify->npermission == 31) {
-?>
-if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-$.ajax({
-type:"POST", 
-url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-data:"oID="+oid+"&stid="+status_id, 
-success:function(msg) {
-alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-window.location.href = window.location.href; 
-window.location.reload; 
-}
-}); 
-}
-<?php
-} else {
-?>
-if (tmp_msg_arr[0] == '0') {
-if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-$.ajax({
-type:"POST", 
-url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-data:"oID="+oid+"&stid="+status_id, 
-success:function(msg) {
-alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-window.location.href = window.location.href; 
-window.location.reload; 
-}
-}); 
-}
-} else {
- var input_pwd_str = window.prompt('<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>', ''); 
- if (in_array(input_pwd_str, pwd_list_array)) {
-   $.ajax({
-     url: 'ajax_orders.php?action=record_pwd_log',   
-     type: 'POST',
-     dataType: 'text',
-     data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(window.location.href),
-     async: false,
-     success: function(msg_info) {
-      if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-      $.ajax({
-      type:"POST", 
-      url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-      data:"oID="+oid+"&stid="+status_id+"&once_pwd="+input_pwd_str, 
-      success:function(msg) {
-      alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-      window.location.href = window.location.href; 
-      window.location.reload; 
-      }
-      }); 
-      }
-     }
-   }); 
- } else {
-   alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
- }
-}
-<?php
-}
-?>
-}
-});
-}
-<?php //更新orders_comment_flag的值?>
-function validate_comment(){
-  var o_comment = $('textarea|[name=orders_comment]');
-  if(o_comment.val()){
-    return true;
-  }else{
-    o_comment_flag = $('input|[name=orders_comment_flag]');
-    o_comment_flag.val('true');
-    return true;
-  }
-}
 <?php
 if(isset($_GET['keywords'])&&$_GET['keywords']){
   ?>
@@ -2903,60 +2608,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       echo '</td>';
     ?>
 <script>
-<?php //显示手册全部内容?>
-function manual_show(action){
 
-  switch(action){
-
-  case 'top':
-    $("#manual_top_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'top_categories':
-    $("#manual_top_categories_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'categories':
-    $("#manual_categories_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'categories_children':
-    $("#manual_categories_children_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'products':
-    $("#manual_products_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'products\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  }   
-}
-<?php //显示手册部分内容?>
-function manual_hide(action){
-
-  switch(action){
-
-  case 'top':
-    $("#manual_top_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'top_categories':
-    $("#manual_top_categories_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'categories':
-    $("#manual_categories_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'categories_children':
-    $("#manual_categories_children_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'products':
-    $("#manual_products_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_show(\'products\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  }  
-}
 $(document).ready(function(){ 
 <?php
   //当请求为手册显示时执行
@@ -3223,7 +2875,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </tr>
             <?php
         }
-            $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+            $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
             $count_num = tep_db_num_rows($address_temp_query);
             if($count_num > 0){
             ?>
@@ -3237,7 +2889,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <td class="main">&nbsp;</td>
             </tr>
             <?php
-        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
         while($address_array = tep_db_fetch_array($address_query)){
 
           $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
@@ -3250,6 +2902,33 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         }
         tep_db_free_result($address_query);
             } 
+        $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1'");
+            $count_num = tep_db_num_rows($address_temp_query);
+            if($count_num > 0){
+            ?>
+            <tr>
+              <td colspan="2">
+              <hr width="100%" style="border-width: medium medium 1px; border-style: none none dashed; height: 2px; margin: 5px 0px; border-color: -moz-use-text-color -moz-use-text-color rgb(204, 204, 204);">
+              </td> 
+            </tr>
+            <tr>
+            <td class="main"><?php echo HEADING_BILLING_INFORMATION;?></td>
+            <td class="main">&nbsp;</td>
+            </tr>
+            <?php
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
+        while($address_array = tep_db_fetch_array($address_query)){
+
+          $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
+          $address_title_array = tep_db_fetch_array($address_title_query);
+          echo '<tr>';
+          echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
+          echo '<td class="main">'. $address_array['value'] .'</td>';
+          echo '</tr>';
+          tep_db_free_result($address_title_query);
+        }
+        tep_db_free_result($address_query);
+            }
             ?>
         </table>
         </div>
@@ -4020,7 +3699,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
             ?>
-            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title();"'); ?></a></td>
+            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title(\''.$_GET['oID'].'\');"'); ?></a></td>
             </tr>
             </table>
             </td>

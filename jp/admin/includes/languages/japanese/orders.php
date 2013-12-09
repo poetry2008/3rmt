@@ -252,4 +252,5 @@ define('TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL','※ 当社キャラクター名�
 define('ORDER_TOP_MANUAL_TEXT', 'トップ');
 define('ORDER_MANUAL_ALL_SHOW', '続きを読む');
 define('ORDER_MANUAL_ALL_HIDE', 'たたむ');
+define('HEADING_BILLING_INFORMATION', 'ご請求先');
 ?>

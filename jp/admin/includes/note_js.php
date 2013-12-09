@@ -47,15 +47,15 @@ while($row=tep_db_fetch_array($query)){
     </div>';
 }
 ?>
-<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
+<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript" >
 <?php tep_get_javascript('global','includes');?>
 </script>
-<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
-<link rel="stylesheet" type="text/css" href="includes/note_style.css" />
-<link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
-<link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
+<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js?v=<?php echo $back_rand_info;?>'></script>
+<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js?v=<?php echo $back_rand_info;?>'></script>
+<link rel="stylesheet" type="text/css" href="includes/note_style.css?v=<?php echo $back_rand_info;?>" />
+<link rel="stylesheet" type="text/css" href="includes/fancybox.css?v=<?php echo $back_rand_info;?>" />
+<link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css?v=<?php echo $back_rand_info;?>" />
 <script type="text/javascript">
 <?php //最小化窗口?>
 function note_min_window(n_id)
