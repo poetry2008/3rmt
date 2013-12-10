@@ -18,9 +18,20 @@
 
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
     $sql_site_where = ' site_id in ('.str_replace('-', ',', $_GET['site_id']).')'; 
+    $sql_list_site_where = ' r.site_id in ('.str_replace('-', ',', $_GET['site_id']).')'; 
+    $tmp_site_list_array = explode('-', $_GET['site_id']);
   } else {
     $sql_site_where = ' site_id in ('.tep_get_setting_site_info(FILENAME_REVIEWS).')'; 
+    $sql_list_site_where = ' r.site_id in ('.tep_get_setting_site_info(FILENAME_REVIEWS).')'; 
+    $tmp_site_list_array = explode('-', tep_get_setting_site_info(FILENAME_REVIEWS));
   }
+  
+  $tmp_list_or_str = ''; 
+  foreach ($tmp_site_list_array as $or_key => $or_value) {
+    $tmp_list_or_str .= "pd.site_id = '".$or_value."' or "; 
+  }
+  $tmp_list_or_str = substr($tmp_list_or_str, 0, -3);
+  
   if(isset($_GET['site_id'])&&$_GET['site_id']==''){
     $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info(FILENAME_REVIEWS));
   }
@@ -71,7 +82,7 @@
                 WHERE reviews_id = '".$pID."'");
           }
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'].'&site_id='.$_GET['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'].'&site_id='.$_GET['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')));
         break;
       case 'update':
         if($_POST['hidden_select'] == $_POST['hidden_products_name']){
@@ -138,7 +149,7 @@
               set reviews_text = '" . tep_db_input($reviews_text) . "' 
               where reviews_id = '" . tep_db_input($reviews_id) . "'");
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')));
         break;
        } 
         tep_db_query("
@@ -156,7 +167,7 @@
             set reviews_text = '" . tep_db_input($reviews_text) . "' 
             where reviews_id = '" . tep_db_input($reviews_id) . "'");
 
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')));
         break;
       case 'deleteconfirm':
         if($ocertify->npermission >= 15){
@@ -165,13 +176,13 @@
                    tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . $ge_value . "'");
                    tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . $ge_value . "'");
                    }
-                   tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
+                   tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')));
         }
         $reviews_id = tep_db_prepare_input($_GET['rID']);
         tep_db_query(" delete from " . TABLE_REVIEWS . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
         tep_db_query("delete from " . TABLE_REVIEWS_DESCRIPTION . " where reviews_id = '" . tep_db_input($reviews_id) . "'");
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')));
         break;
     }
   }
@@ -438,11 +449,11 @@ $(document).ready(function() {
   });    
 });
 
-function show_text_reviews(ele,page,rID,site_id,action_sid){
+function show_text_reviews(ele,page,rID,site_id,action_sid,sort_name,sort_type){
  var product_name = document.getElementById('keyword').value;
  $.ajax({
  url: 'ajax.php?&action=edit_reviews',
- data: {page:page,rID:rID,site_id:site_id,product_name:product_name,action_sid:action_sid} ,
+ data: {page:page,rID:rID,site_id:site_id,product_name:product_name,action_sid:action_sid,r_sort:sort_name,r_sort_type:sort_type} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -758,17 +769,109 @@ require("includes/note_js.php");
           <tr>
             <td valign="top">
                    <?php
+                    $reviews_table_site_str = '';  
+                    $reviews_table_products_name_str = '';  
+                    $reviews_table_rating_str = '';  
+                    $reviews_table_date_added_str = '';  
+                    $reviews_table_status_str = '';  
+                    $reviews_table_date_edit_str = '';  
+                    $reviews_order_sort_name = ' date_added'; 
+                    $reviews_order_sort = 'desc';
+                    if (isset($_GET['r_sort'])) {
+                      if ($_GET['r_sort_type'] == 'asc') {
+                        $type_str = '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>'; 
+                        $tmp_type_str = 'desc'; 
+                      } else {
+                        $type_str = '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>'; 
+                        $tmp_type_str = 'asc'; 
+                      }
+                    }
+                    $reviews_order_help_sotr = ' reviews_id';
+                    switch ($_GET['r_sort']) {
+                      case 'r_site';
+                        $reviews_table_site_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_site&r_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_SITE.$type_str.'</a>';  
+                        $reviews_table_products_name_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_name&r_sort_type=desc').'">'.TABLE_HEADING_PRODUCTS.'</a>';  
+                        $reviews_table_rating_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_rate&r_sort_type=desc').'">'.TABLE_HEADING_RATING.'</a>';  
+                        $reviews_table_date_added_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_added&r_sort_type=desc').'">'.TABLE_HEADING_DATE_ADDED.'</a>';  
+                        $reviews_table_status_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_status&r_sort_type=desc').'">'.TABLE_HEADING_STATUS.'</a>';  
+                        $reviews_table_date_edit_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_update&r_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>';  
+                        $reviews_order_sort_name = ' romaji'; 
+                        break;
+                      case 'r_name';
+                        $reviews_table_site_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_site&r_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>';  
+                        $reviews_table_products_name_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_name&r_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_PRODUCTS.$type_str.'</a>';  
+                        $reviews_table_rating_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_rate&r_sort_type=desc').'">'.TABLE_HEADING_RATING.'</a>';  
+                        $reviews_table_date_added_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_added&r_sort_type=desc').'">'.TABLE_HEADING_DATE_ADDED.'</a>';  
+                        $reviews_table_status_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_status&r_sort_type=desc').'">'.TABLE_HEADING_STATUS.'</a>';  
+                        $reviews_table_date_edit_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_update&r_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>';  
+                        $reviews_order_sort_name = ' products_name'; 
+                        break;
+                      case 'r_rate';
+                        $reviews_table_site_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_site&r_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>';  
+                        $reviews_table_products_name_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_name&r_sort_type=desc').'">'.TABLE_HEADING_PRODUCTS.'</a>';  
+                        $reviews_table_rating_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_rate&r_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_RATING.$type_str.'</a>';  
+                        $reviews_table_date_added_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_added&r_sort_type=desc').'">'.TABLE_HEADING_DATE_ADDED.'</a>';  
+                        $reviews_table_status_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_status&r_sort_type=desc').'">'.TABLE_HEADING_STATUS.'</a>';  
+                        $reviews_table_date_edit_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_update&r_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>';  
+                        $reviews_order_sort_name = ' reviews_rating'; 
+                        break;
+                      case 'r_added';
+                        $reviews_table_site_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_site&r_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>';  
+                        $reviews_table_products_name_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_name&r_sort_type=desc').'">'.TABLE_HEADING_PRODUCTS.'</a>';  
+                        $reviews_table_rating_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_rate&r_sort_type=desc').'">'.TABLE_HEADING_RATING.'</a>';  
+                        $reviews_table_date_added_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_added&r_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_DATE_ADDED.$type_str.'</a>';  
+                        $reviews_table_status_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_status&r_sort_type=desc').'">'.TABLE_HEADING_STATUS.'</a>';  
+                        $reviews_table_date_edit_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_update&r_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>';  
+                        $reviews_order_sort_name = ' date_added'; 
+                        break;
+                      case 'r_status';
+                        $reviews_table_site_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_site&r_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>';  
+                        $reviews_table_products_name_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_name&r_sort_type=desc').'">'.TABLE_HEADING_PRODUCTS.'</a>';  
+                        $reviews_table_rating_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_rate&r_sort_type=desc').'">'.TABLE_HEADING_RATING.'</a>';  
+                        $reviews_table_date_added_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_added&r_sort_type=desc').'">'.TABLE_HEADING_DATE_ADDED.'</a>';  
+                        $reviews_table_status_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_status&r_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_STATUS.$type_str.'</a>';  
+                        $reviews_table_date_edit_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_update&r_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>';  
+                        $reviews_order_sort_name = ' reviews_status'; 
+                        break;
+                      case 'r_update';
+                        $reviews_table_site_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_site&r_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>';  
+                        $reviews_table_products_name_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_name&r_sort_type=desc').'">'.TABLE_HEADING_PRODUCTS.'</a>';  
+                        $reviews_table_rating_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_rate&r_sort_type=desc').'">'.TABLE_HEADING_RATING.'</a>';  
+                        $reviews_table_date_added_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_added&r_sort_type=desc').'">'.TABLE_HEADING_DATE_ADDED.'</a>';  
+                        $reviews_table_status_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_status&r_sort_type=desc').'">'.TABLE_HEADING_STATUS.'</a>';  
+                        $reviews_table_date_edit_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_update&r_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_ACTION.$type_str.'</a>';  
+                        $reviews_order_sort_name = ' last_modified'; 
+                        break;
+                    }
+                    if (isset($_GET['r_sort_type'])) {
+                      if ($_GET['r_sort_type'] == 'asc') {
+                        $reviews_order_sort = 'asc'; 
+                      } else {
+                        $reviews_order_sort = 'desc'; 
+                      }
+                    }
+                    $reviews_order_sql = $reviews_order_sort_name.' '.$reviews_order_sort.' , '.$reviews_order_help_sotr.' '.$reviews_order_sort; 
+                   
+                    if (!isset($_GET['r_sort_type'])) {
+                      $reviews_table_site_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_site&r_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>';  
+                      $reviews_table_products_name_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_name&r_sort_type=desc').'">'.TABLE_HEADING_PRODUCTS.'</a>';  
+                      $reviews_table_rating_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_rate&r_sort_type=desc').'">'.TABLE_HEADING_RATING.'</a>';  
+                      $reviews_table_date_added_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_added&r_sort_type=desc').'">'.TABLE_HEADING_DATE_ADDED.'</a>';  
+                      $reviews_table_status_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_status&r_sort_type=desc').'">'.TABLE_HEADING_STATUS.'</a>';  
+                      $reviews_table_date_edit_str = '<a href="'.tep_href_link(FILENAME_REVIEWS, tep_get_all_get_params(array('action', 'r_sort_type', 'r_sort', 'site_id')).'r_sort=r_update&r_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>';  
+                    }
+                    
                     $review_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
                     $notice_box = new notice_box('','',$review_table_params);
                     $review_table_row = array();
                     $review_title_row = array();
                     $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => '<input type="checkbox" name="all_check" onclick="all_select_review(\'review_id[]\');">' );
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_SITE);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TABLE_HEADING_PRODUCTS);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_RATING);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_DATE_ADDED);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"', 'text' => TABLE_HEADING_STATUS);
-                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"', 'text' => TABLE_HEADING_ACTION);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $reviews_table_site_str);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => $reviews_table_products_name_str);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"', 'text' => $reviews_table_rating_str);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"', 'text' => $reviews_table_date_added_str);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"', 'text' => $reviews_table_status_str);
+                    $review_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"', 'text' => $reviews_table_date_edit_str);
                     $review_table_row[] = array('params' => 'class="dataTableHeadingRow"', 'text' => $review_title_row);
     if(isset($_GET['product_name']) && $_GET['product_name']){
        $p_list_arr = array();
@@ -809,7 +912,7 @@ require("includes/note_js.php");
          $where_str = ' and r.products_id in ('.implode(',',$p_list_arr).') ';
     }
     $reviews_query_raw = "
-      select r.reviews_id, 
+      select * from (select r.reviews_id, 
              r.products_id, 
              r.date_added, 
              r.last_modified, 
@@ -817,13 +920,17 @@ require("includes/note_js.php");
 	     r.user_update,
              r.site_id,
              r.reviews_rating, 
-             r.reviews_status ,
+             r.reviews_status,
              s.romaji,
+             pd.products_name,
              s.name as site_name
-     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s
-     where r.site_id = s.id
-        and " . $sql_site_where . "".$where_str."
-     order by date_added DESC";
+     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
+     where (pd.site_id = r.site_id or pd.site_id = '0') and r.site_id = s.id
+       and p.products_id = r.products_id
+       and p.products_id = pd.products_id
+       and pd.language_id = '".$languages_id."'
+       and " . $sql_list_site_where . "".$where_str."
+     ) p group by reviews_id order by ".$reviews_order_sql;
     
     $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);
     $reviews_query = tep_db_query($reviews_query_raw);
@@ -899,13 +1006,13 @@ require("includes/note_js.php");
       $action_sid_str = '&action_sid='.$reviews['site_id'];
       if ($reviews['reviews_status'] == '1') {
         if(in_array($reviews['site_id'],$site_array)){
-          $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0&action_sid='.$reviews['site_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+          $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=0&action_sid='.$reviews['site_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
         } else {
           $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT);
         }
       } else {
         if(in_array($reviews['site_id'],$site_array)){
-          $review_image = '<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1&action_sid='.$reviews['site_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+          $review_image = '<a href="javascript:void(0);" onclick="toggle_reviews_action(\'' . tep_href_link(FILENAME_REVIEWS, 'action=setflag&flag=1&action_sid='.$reviews['site_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&page=' . (isset($_GET['page'])?$_GET['page']:'') . '&pID=' .  $reviews['reviews_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
         } else {
           $review_image = tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
         }
@@ -926,13 +1033,11 @@ require("includes/note_js.php");
       $review_date_info = (tep_not_null($reviews['last_modified']) && ($reviews['last_modified'] != '0000-00-00 00:00:00'))?$reviews['last_modified']:$reviews['date_added'];
       $review_info[] = array(
           'params' => 'class="dataTableContent" align="right"',
-          'text'   => '<a href="javascript:void(0);"
-          onclick="show_text_reviews(this,\''.$_GET['page'].'\',\''.$reviews['reviews_id'].'\',\''.$_GET['site_id'].'\',\''.$reviews['site_id'].'\')">'.
-          tep_get_signal_pic_info($review_date_info).'</a>'
+          'text'   => '<a href="javascript:void(0);" onclick="show_text_reviews(this,\''.$_GET['page'].'\',\''.$reviews['reviews_id'].'\',\''.$_GET['site_id'].'\',\''.$reviews['site_id'].'\', \''.(isset($_GET['r_sort'])?$_GET['r_sort']:'').'\', \''.(isset($_GET['r_sort_type'])?$_GET['r_sort_type']:'').'\')">'.  tep_get_signal_pic_info($review_date_info).'</a>'
       );
     $review_table_row[] = array('params' => $review_params, 'text' => $review_info);
     }
-    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, 'page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm'.(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):''));
+    $review_form = tep_draw_form('del_review', FILENAME_REVIEWS, 'page='.$_GET['page'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm'.(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:''));
     $notice_box->get_form($review_form);
     $notice_box->get_contents($review_table_row);
     $notice_box->get_eof(tep_eof_hidden());
@@ -960,7 +1065,7 @@ require("includes/note_js.php");
                   <tr>
                     <td class="smallText" align="right" colspan="2">
                      <div class="td_button">   
-                      <button type="button" onclick="show_text_reviews(this,'<?php echo $_GET['page']; ?>','0','<?php echo $_GET['site_id'];?>','')"><?php echo IMAGE_NEW_PROJECT;?></button>
+                      <button type="button" onclick="show_text_reviews(this,'<?php echo $_GET['page']; ?>','0','<?php echo $_GET['site_id'];?>','','<?php echo (isset($_GET['r_sort'])?$_GET['r_sort']:'');?>', '<?php echo (isset($_GET['r_sort_type'])?$_GET['r_sort_type']:'');?>')"><?php echo IMAGE_NEW_PROJECT;?></button>
                       </div>
                     </td>
                   </tr>

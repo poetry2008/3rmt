@@ -41,7 +41,7 @@
   } else {
     if ($is_member_single) { 
       if ($guestchk == '0') {
-        if ($customer_emailaddress != $preorder_res['customers_email_address']) {
+        if (strtolower($customer_emailaddress) != strtolower($preorder_res['customers_email_address'])) {
           //判断登录的邮箱是否和预约订单中的邮箱是否一致 
           $navigation->set_snapshot();
           
