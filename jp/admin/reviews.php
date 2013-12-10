@@ -149,7 +149,7 @@
               set reviews_text = '" . tep_db_input($reviews_text) . "' 
               where reviews_id = '" . tep_db_input($reviews_id) . "'");
         }
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'').(isset($reviews_id)?'&rID='.$reviews_id:'')));
         break;
        } 
         tep_db_query("
@@ -167,7 +167,7 @@
             set reviews_text = '" . tep_db_input($reviews_text) . "' 
             where reviews_id = '" . tep_db_input($reviews_id) . "'");
 
-        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')));
+        tep_redirect(tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&site_id='.$_POST['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'').(isset($reviews_id)?'&rID='.$reviews_id:'')));
         break;
       case 'deleteconfirm':
         if($ocertify->npermission >= 15){
@@ -356,6 +356,12 @@
             });
          $('#customers_name').val(con_cname);
          $('#reviews_text').val(con_text);
+         if(document.getElementById('back_sort').value!=''&&document.getElementById('back_sort_type').value!=''){
+           document.forms.review.action = document.forms.review.action+'&r_sort='+document.getElementById('back_sort').value+'&r_sort_type='+document.getElementById('back_sort_type').value;
+         }
+         if(rID!=''){
+           document.forms.review.action = document.forms.review.action+'&rID='+rID;
+         }
 
          if (document.getElementById('add_product_products_id').value != 0) {
            if (document.getElementById('reviews_text').value.length < <?php echo REVIEW_TEXT_MIN_LENGTH;?>) {
@@ -732,6 +738,12 @@ require("includes/note_js.php");
 
 <!-- body -->
 <input type="hidden" id="show_info_id" value="show_text_reviews" name="show_info_id">
+<?php if(isset($_GET['r_sort'])&&$_GET['r_sort']){?>
+<input type="hidden" id="back_sort" value="<?php echo $_GET['r_sort'];?>" name="back_sort">
+<?php } ?>
+<?php if(isset($_GET['r_sort_type'])&&$_GET['r_sort_type']){?>
+<input type="hidden" id="back_sort_type" value="<?php echo $_GET['r_sort_type'];?>" name="back_sort_type">
+<?php } ?>
 <div id="show_text_reviews" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
@@ -934,7 +946,10 @@ require("includes/note_js.php");
     
     $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);
     $reviews_query = tep_db_query($reviews_query_raw);
+    $rows = 0;
     while ($reviews = tep_db_fetch_array($reviews_query)) {
+      $self_link = false;
+      $rows++;
       if ( ((!isset($_GET['rID']) || !$_GET['rID']) || ($_GET['rID'] == $reviews['reviews_id'])) && (!isset($rInfo) || !$rInfo) ) {
         $reviews_text_query = tep_db_query("
             select r.reviews_read, 
@@ -981,6 +996,17 @@ require("includes/note_js.php");
       } else {
         $nowColor = $odd; 
       }
+      if ( (isset($rInfo) && is_object($rInfo)) && ($reviews['reviews_id'] == $rInfo->reviews_id) ) {
+        if(!($rows==1&&!isset($_GET['rID']))){
+          $self_link = true;
+          $nowColor = 'dataTableRowSelected';
+        }else{
+          if($rows==1){
+            $self_link = true;
+            $nowColor = 'dataTableRowSelected';
+          }
+        }
+      }
       $review_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
       $review_info = array();
       $site_array = explode(',',$site_arr);
@@ -989,17 +1015,20 @@ require("includes/note_js.php");
       }else{
           $reviews_checkbox = '<input disabled="disabled" type="checkbox" name="review_id[]" value="'.$reviews['reviews_id'].'">';
       }
+      if(!$self_link){
+        $td_review_params = ' onclick="document.location.href=\'' .tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'].'&site_id='.$_GET['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')) .(isset($reviews['reviews_id'])?'&rID='.$reviews['reviews_id']:''). '\'"';
+      }
       $review_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$td_review_params,
           'text'   => $reviews_checkbox 
       );
  
       $review_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$td_review_params,
           'text'   => ''.$reviews['romaji']
       );
       $review_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$td_review_params,
           'text'   =>
           tep_get_products_name($reviews['products_id'],$languages_id,$reviews['site_id'],true)
       );
@@ -1018,11 +1047,11 @@ require("includes/note_js.php");
         }
       }
       $review_info[] = array(
-          'params' => 'class="dataTableContent" align="center"',
+          'params' => 'class="dataTableContent" align="center"'.$td_review_params,
           'text'   => $reviews['reviews_rating'] 
       );
        $review_info[] = array(
-          'params' => 'class="dataTableContent" align="center"',
+          'params' => 'class="dataTableContent" align="center"'.$td_review_params,
           'text'   =>  tep_date_short($reviews['date_added']) . ' ' .date('H:i:s', strtotime($reviews['date_added'])) 
       );
       $review_info[] = array(

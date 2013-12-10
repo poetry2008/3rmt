@@ -193,7 +193,7 @@ if($flag_error == false){
       if ($link_customer_email == '') {
         $_GET['login'] = 'failture';
       } else {
-        if ($email_address != $link_customer_email) {
+        if (strtolower($email_address) != strtolower($link_customer_email)) {
           $_GET['login'] = 'failture';
         } else {
           if (!tep_validate_password($password, $link_customer_res['customers_password'])) {
@@ -220,7 +220,7 @@ if($flag_error == false){
             $customer_id = $link_customer_res['customers_id'];
             $customer_default_address_id = $link_customer_res['customers_default_address_id'];
             $customer_first_name = $link_customer_res['customers_firstname'];
-            $customer_last_name = $link_customer_res['customers_lastname']; 
+            $customer_last_name = $link_customer_res['customers_lastname'];
             $customer_country_id = $check_country['entry_country_id'];
             $customer_zone_id = $check_country['entry_zone_id'];
             tep_session_register('customer_id');

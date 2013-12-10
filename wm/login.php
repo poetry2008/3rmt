@@ -191,7 +191,7 @@ if($flag_error == false){
       if ($link_customer_email == '') {
         $_GET['login'] = 'failture';
       } else {
-        if ($email_address != $link_customer_email) {
+        if (strtolower($email_address) != strtolower($link_customer_email)) {
           $_GET['login'] = 'failture';
         } else {
           if (!tep_validate_password($password, $link_customer_res['customers_password'])) {
