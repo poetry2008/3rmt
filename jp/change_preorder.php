@@ -652,7 +652,7 @@ foreach ($_POST as $post_key => $post_value) {
         $post_value = '';
       }
     }
-      $preorder_information[$post_key] = stripslashes($post_value); 
+      $preorder_information[$post_key] = $post_value; 
   }
 }
 

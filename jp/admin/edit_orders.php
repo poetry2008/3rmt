@@ -484,14 +484,14 @@ if (tep_not_null($action)) {
       foreach ($_POST as $p_key => $p_value) {
         $op_single_str = substr($p_key, 0, 3);
         if ($op_single_str == 'ad_') {
-          $address_info_array[$p_key] = tep_db_prepare_input($p_value); 
+          $address_info_array[$p_key] = $p_value; 
         } 
       }
       if (!$ad_option->check()) {
         foreach ($_POST as $p_key => $p_value) {
           $op_single_str = substr($p_key, 0, 3);
           if ($op_single_str == 'ad_') {
-            $option_info_array[$p_key] = tep_db_prepare_input($p_value); 
+            $option_info_array[$p_key] = $p_value; 
           } 
         }
       }else{
@@ -526,7 +526,7 @@ if (tep_not_null($action)) {
         foreach ($_POST as $p_key => $p_value) {
           $op_single_str = substr($p_key, 0, 3);
           if ($op_single_str == 'ad_') {
-            $billing_option_info_array[$p_key] = tep_db_prepare_input($p_value); 
+            $billing_option_info_array[$p_key] = $p_value; 
           } 
         }
       }else{
