@@ -647,6 +647,7 @@ foreach ($_POST as $post_key => $post_value) {
   } else {
     if(substr($post_key,0,3) == 'ad_'){
 
+      $post_value = tep_db_prepare_input($post_value);
       if($options_comment[substr($post_key,3)] == $post_value){
 
         $post_value = '';

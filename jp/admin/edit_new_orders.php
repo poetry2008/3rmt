@@ -129,6 +129,7 @@ if (tep_not_null($action)) {
     foreach ($_POST as $p_key => $p_value) {
       $op_single_str = substr($p_key, 0, 3);
       if ($op_single_str == 'ad_') {
+        $_POST[$p_key] = tep_db_prepare_input($p_value);
         if($options_comment[substr($p_key,3)] == $p_value){
 
           $_POST[$p_key] = '';
@@ -523,7 +524,7 @@ if($orders_exit_flag == true){
         $address_options_array = tep_db_fetch_array($address_options_query);
         tep_db_free_result($address_options_query);
         $op_value = $op_value == $address_options_array['comment'] ? '' : $op_value;
-        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$address_options_array['id']},'{$address_options_array['name_flag']}','$op_value','0')");
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$address_options_array['id']},'{$address_options_array['name_flag']}','".addslashes($op_value)."','0')");
         tep_db_free_result($address_query);
       }
 
@@ -586,7 +587,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$orders_id_flag',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$orders_id_flag',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value)."','0')");
       tep_db_free_result($address_history_add_query);
   }
 }
@@ -598,7 +599,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
     $billing_address_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$check_status['customers_id']."' and billing_address='1' order by id");
     if(tep_db_num_rows($billing_address_query) > 1){
       while($billing_address_array = tep_db_fetch_array($billing_address_query)){
-        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$billing_address_array['address_id']},'".$billing_address_array['name']."','".$billing_address_array['value']."','1')");
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$billing_address_array['address_id']},'".$billing_address_array['name']."','".addslashes($billing_address_array['value'])."','1')");
         tep_db_free_result($address_query); 
       }
       tep_db_free_result($billing_address_query);

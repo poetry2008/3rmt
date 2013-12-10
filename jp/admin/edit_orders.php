@@ -472,6 +472,7 @@ if (tep_not_null($action)) {
       foreach ($_POST as $p_key => $p_value) {
         $op_single_str = substr($p_key, 0, 3);
         if ($op_single_str == 'ad_') {
+          $_POST[$p_key] = tep_db_prepare_input($p_value);
           if($options_comment[substr($p_key,3)] == $p_value){
 
             $_POST[$p_key] = '';
@@ -516,6 +517,7 @@ if (tep_not_null($action)) {
       foreach ($_POST as $p_key => $p_value) {
         $op_single_str = substr($p_key, 0, 3);
         if ($op_single_str == 'ad_') {
+          $_POST[$p_key] = tep_db_prepare_input($p_value);
           if($options_comment[substr($p_key,3)] == $p_value){
 
             $_POST[$p_key] = '';
@@ -655,7 +657,7 @@ if (tep_not_null($action)) {
         $address_list_array = tep_db_fetch_array($address_list_query);
         $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
    
-        $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value','0')";
+        $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','".addslashes($ad_value)."','0')";
         $ad_query = tep_db_query($ad_sql);
         tep_db_free_result($address_list_query);
         tep_db_free_result($ad_query);
@@ -712,7 +714,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . tep_get_order_end_num()))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . tep_get_order_end_num()))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value)."','0')");
       tep_db_free_result($address_history_add_query);
   }
 }
@@ -727,7 +729,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
           $address_list_array = tep_db_fetch_array($address_list_query);
           $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
    
-          $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value','1')";
+          $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','".addslashes($ad_value)."','1')";
           $ad_query = tep_db_query($ad_sql);
           tep_db_free_result($address_list_query);
           tep_db_free_result($ad_query);
@@ -785,7 +787,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
         $address_history_array = tep_db_fetch_array($address_history_query);
         tep_db_free_result($address_history_query);
         $address_history_id = $address_history_array['id'];
-        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . (tep_get_order_end_num()+1)))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
+        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . (tep_get_order_end_num()+1)))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value)."','0')");
         tep_db_free_result($address_history_add_query);
       }
 }
