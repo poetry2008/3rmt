@@ -111,6 +111,7 @@ case 'per':
                             'send_mail_time' => time()
                             );
     tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
+    tep_db_query("UPDATE `".TABLE_CUSTOMERS."` SET `new_customers_password`= `customers_password` WHERE customers_id = ".tep_db_input($customer_id)." and site_id = '".SITE_ID."'");
    
     $edit_cus_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = ".tep_db_input($customer_id)." and site_id = '".SITE_ID."'");
     $edit_cus_res = tep_db_fetch_array($edit_cus_raw);
