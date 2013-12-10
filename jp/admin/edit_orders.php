@@ -712,7 +712,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$oID',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . tep_get_order_end_num()))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
       tep_db_free_result($address_history_add_query);
   }
 }
@@ -785,7 +785,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
         $address_history_array = tep_db_fetch_array($address_history_query);
         tep_db_free_result($address_history_query);
         $address_history_id = $address_history_array['id'];
-        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$oID',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
+        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . (tep_get_order_end_num()+1)))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
         tep_db_free_result($address_history_add_query);
       }
 }
