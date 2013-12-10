@@ -588,7 +588,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
   $address_options_array = tep_db_fetch_array($address_options_query);
   tep_db_free_result($address_options_query);
-  $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','$op_value[1]','0')");
+  $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','".addslashes($op_value[1])."','0')");
   tep_db_free_result($address_query);
 }
   //获取是否开启了帐单邮寄地址功能
@@ -599,7 +599,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
     $billing_address_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$customer_id."' and billing_address='1' order by id");
     if(tep_db_num_rows($billing_address_query) > 1){
       while($billing_address_array = tep_db_fetch_array($billing_address_query)){
-        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$billing_address_array['address_id']},'".$billing_address_array['name']."','".$billing_address_array['value']."','1')");
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$billing_address_array['address_id']},'".$billing_address_array['name']."','".addslashes($billing_address_array['value'])."','1')");
         tep_db_free_result($address_query); 
       }
       tep_db_free_result($billing_address_query);
@@ -656,7 +656,7 @@ if($address_error == false && $_SESSION['guestchk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]','0')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value[1])."','0')");
       tep_db_free_result($address_history_add_query);
   }
 }
