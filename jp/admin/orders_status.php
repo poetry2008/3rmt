@@ -92,6 +92,24 @@
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($orders_status_id) . "' where configuration_key = 'DEFAULT_ORDERS_STATUS_ID'");
       }
 
+      $back_rand_query = tep_db_query("select value from other_config where keyword = 'admin_random_string'");
+      $back_rand_array = tep_db_fetch_array($back_rand_query);
+      $rand_num = substr($back_rand_array['value'],0,4);
+
+      $rand_num = (int)$rand_num+1;
+      $rand_num = (string)$rand_num;
+      while(strlen($rand_num)<4){
+        $rand_num ="0".$rand_num;
+      }
+      $value = $rand_num.time();
+      if($rand_num == "9999"){
+        $restart = "0000".time();
+        $sql = "update other_config set value='".$restart."' where keyword = 'admin_random_string'";
+        tep_db_query($sql);
+      }else{
+        $sql = "update other_config set value='".$value."' where keyword = 'admin_random_string'";
+        tep_db_query($sql);
+      }
       tep_redirect(tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $orders_status_id));
       break;
     case 'deleteconfirm':
