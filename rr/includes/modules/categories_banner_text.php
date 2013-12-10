@@ -44,7 +44,7 @@ $categories_tab_query1 = tep_db_query("
       continue; 
     }
     echo '<div class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";
-    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], 299, 48) . "\n";
+    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) . "\n";
     echo '<span>'; 
     echo $cbt['categories_name']; 
     echo  '</span></a></div>' . "\n";
