@@ -501,6 +501,7 @@ if (tep_not_null($action)) {
       //帐单邮寄地址信息
       $billing_error_str = false;
       $billing_option_info_array = array(); 
+      $billing_address_flag = false;
       foreach($_POST as $p_key => $p_value){
 
         $op_single_str = substr($p_key, 0, 8);
@@ -508,6 +509,7 @@ if (tep_not_null($action)) {
 
           unset($_POST[$p_key]);
           $_POST['ad_'.substr($p_key, 8)] = $p_value;
+          $billing_address_flag = true;
         }
       }
       //过滤提示字符串
@@ -717,17 +719,19 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
 
       //帐单邮寄地址信息存入数据库
 
-      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."' and billing_address='1'");
-      foreach($billing_option_info_array as $ad_key=>$ad_value){
+      if($billing_address_flag == true){
+        tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."' and billing_address='1'");
+        foreach($billing_option_info_array as $ad_key=>$ad_value){
         
-        $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
-        $address_list_array = tep_db_fetch_array($address_list_query);
-        $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
+          $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
+          $address_list_array = tep_db_fetch_array($address_list_query);
+          $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
    
-        $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value','1')";
-        $ad_query = tep_db_query($ad_sql);
-        tep_db_free_result($address_list_query);
-        tep_db_free_result($ad_query);
+          $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value','1')";
+          $ad_query = tep_db_query($ad_sql);
+          tep_db_free_result($address_list_query);
+          tep_db_free_result($ad_query);
+        }
       }
  
       
