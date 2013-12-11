@@ -39,7 +39,6 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
       (strpos($_SERVER['REQUEST_URI'],FILENAME_PRODUCT_NOTIFICATIONS))||
       (strpos($_SERVER['REQUEST_URI'],FILENAME_BROWSER_IE6X))||
       (strpos($_SERVER['REQUEST_URI'],'?cmd='))){
-    var_dump($_SERVER['REQUEST_URI']);
   }else{
   if ( (USE_CACHE == 'true') && !SID ) {
     include(DIR_WS_BOXES . 'categories.php');
