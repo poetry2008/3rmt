@@ -358,3 +358,74 @@ if ($ocertify->npermission == 31) {
 }
 ?>
 }
+<?php
+$__orders_status_query = tep_db_query("
+    select orders_status_id 
+    from " . TABLE_ORDERS_STATUS . " 
+    where language_id = " . $languages_id . " 
+    order by orders_status_id");
+$__orders_status_ids   = array();
+while($__orders_status = tep_db_fetch_array($__orders_status_query)){
+  $__orders_status_ids[] = $__orders_status['orders_status_id'];
+}
+if(join(',', $__orders_status_ids)!=''){
+  $select_query = tep_db_query("
+      select 
+      orders_status_id,
+      nomail
+      from ".TABLE_ORDERS_STATUS."
+      where language_id = " . $languages_id . " 
+      and orders_status_id IN (".join(',', $__orders_status_ids).")");
+
+  while($select_result = tep_db_fetch_array($select_query)){
+    $osid = $select_result['orders_status_id'];
+
+    //获取对应的邮件模板
+    $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='ORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'");
+    $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+
+    $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+    $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
+    $nomail[$osid] = $select_result['nomail'];
+  }
+}
+
+// 输出订单邮件
+foreach ($mo as $oskey => $value){
+  echo 'window.status_title['.$oskey.'] = new Array();'."\n";
+  foreach ($value as $sitekey => $svalue) {
+    echo 'window.status_title['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
+  }
+}
+
+//content
+foreach ($mt as $oskey => $value){
+  echo 'window.status_text['.$oskey.'] = new Array();'."\n";
+  foreach ($value as $sitekey => $svalue) {
+    echo 'window.status_text['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
+  }
+}
+
+//no mail
+echo 'var nomail = new Array();'."\n";
+foreach ($nomail as $oskey => $value){
+  echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
+}
+?>
+var o_action = <?php echo $_GET['o_action']?>;
+if (o_action == '1') {
+  $(function() {
+    left_show_height = $('#orders_list_table').height();
+    right_show_height = $('#rightinfo').height();
+    if (right_show_height <= left_show_height) {
+      $('#rightinfo').css('height', left_show_height);  
+      }
+    });
+  function showRightInfo() {
+    left_show_height = $('#orders_list_table').height();
+    $('#rightinfo').css('height', left_show_height);  
+  }
+  $(window).resize(function() {
+    showRightInfo();
+  });
+}

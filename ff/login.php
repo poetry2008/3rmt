@@ -187,12 +187,11 @@ if($flag_error == false){
     $email_address = tep_db_prepare_input($_POST['email_address']);
     $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
     $password = tep_db_prepare_input($_POST['password']);
-    
     if (isset($_GET['pid'])) {
       if ($link_customer_email == '') {
         $_GET['login'] = 'failture';
       } else {
-        if ($email_address != $link_customer_email) {
+        if (strtolower($email_address) != strtolower($link_customer_email)) {
           $_GET['login'] = 'failture';
         } else {
           if (!tep_validate_password($password, $link_customer_res['customers_password'])) {
@@ -222,15 +221,15 @@ if($flag_error == false){
             $customer_last_name = $link_customer_res['customers_lastname'];
             $customer_country_id = $check_country['entry_country_id'];
             $customer_zone_id = $check_country['entry_zone_id'];
-            $customer_emailaddress = $email_address;
-            $guestchk = $link_customer_res['customers_guest_chk'];
             tep_session_register('customer_id');
             tep_session_register('customer_default_address_id');
             tep_session_register('customer_first_name');
             tep_session_register('customer_last_name');
             tep_session_register('customer_country_id');
             tep_session_register('customer_zone_id');
+            $customer_emailaddress = $email_address;
             tep_session_register('customer_emailaddress');
+            $guestchk = $link_customer_res['customers_guest_chk'];
             tep_session_register('guestchk');
 
             $date_now = date('Ymd');
@@ -305,16 +304,15 @@ if($flag_error == false){
         $customer_last_name = $check_customer['customers_lastname'];
         $customer_country_id = $check_country['entry_country_id'];
         $customer_zone_id = $check_country['entry_zone_id'];
+        $customer_emailaddress = $email_address; 
+        $guestchk = $check_customer['customers_guest_chk'];
         tep_session_register('customer_id');
         tep_session_register('customer_default_address_id');
         tep_session_register('customer_first_name');
         tep_session_register('customer_last_name');
         tep_session_register('customer_country_id');
         tep_session_register('customer_zone_id');
-        $customer_emailaddress = $email_address;
         tep_session_register('customer_emailaddress');
-
-        $guestchk = $check_customer['customers_guest_chk'];
         tep_session_register('guestchk');
 
         $date_now = date('Ymd');

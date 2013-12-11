@@ -2460,79 +2460,15 @@ else { ?>
         <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
         <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
         <script language="javascript" src="includes/javascript/all_page.js?v=<?php echo $back_rand_info?>"></script> 
-        <script language="javascript" src="js2php.php?path=includes|javascript&name=order&type=js&other=<?php echo $_SERVER['PHP_SELF'];?>&v=<?php echo $back_rand_info?>"></script>
         <script language="javascript">
         <?php // 用作跳转?>
         var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
         <?php // 非完成状态的订单不显示最终确认?>
         var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
         var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
-
-        <?php 
-        // 输出订单邮件
-        // title
-        foreach ($mo as $oskey => $value){
-          echo 'window.status_title['.$oskey.'] = new Array();'."\n";
-          foreach ($value as $sitekey => $svalue) {
-            echo 'window.status_title['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
-          }
-        }
-
-//content
-foreach ($mt as $oskey => $value){
-  echo 'window.status_text['.$oskey.'] = new Array();'."\n";
-  foreach ($value as $sitekey => $svalue) {
-    echo 'window.status_text['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
-  }
-}
-
-//no mail
-echo 'var nomail = new Array();'."\n";
-foreach ($nomail as $oskey => $value){
-  echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
-}
-?>
-
-
-<?php
-if(isset($_GET['keywords'])&&$_GET['keywords']){
-  ?>
-    $("#keywords").val("<?php echo $_GET['keywords'];?>");
-  <?php
-}
-if(isset($_GET['search_type'])&&$_GET['search_type']){
-  ?>
-    $(document).ready(function(){ 
-        $("select[name=search_type]").find("option[value='<?php echo
-          urldecode($_GET['search_type']);?>']").attr("selected", "selected");
-        });
-  <?php
-}
-
-?>
-<?php
-if (!isset($_GET['action'])) {
-  ?>
-    $(function() {
-        left_show_height = $('#orders_list_table').height();
-        right_show_height = $('#rightinfo').height();
-
-        if (right_show_height <= left_show_height) {
-        $('#rightinfo').css('height', left_show_height);  
-        }
-        });
-  function showRightInfo() {
-    left_show_height = $('#orders_list_table').height();
-    $('#rightinfo').css('height', left_show_height);  
-  }
-  $(window).resize(function() {
-      showRightInfo();
-      });
-  <?php
-}
-?>
-var popup_num = 1;
-</script>
+        var popup_num = 1;
+        </script>
+        <script language="javascript" src="js2php.php?path=includes|javascript&name=order&type=js&other=<?php echo $_SERVER['PHP_SELF'];?>&o_action=<?php echo (!isset($_GET['action']))?1:0;?>&v=<?php echo $back_rand_info?>"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -4899,29 +4835,29 @@ if($c_parent_array['parent_id'] == 0){
             <input name="keywords" style="width:310px;" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
             <select name="search_type" onChange='search_type_changed(this)' style="text-align:left;">
             <option value="none"><?php echo TEXT_ORDER_FIND_SELECT;?></option>
-            <option value="orders_id"><?php echo TEXT_ORDER_FIND_OID;?></option>
-            <option value="customers_name"><?php echo TEXT_ORDER_FIND_NAME;?></option>
-            <option value="email"><?php echo TEXT_ORDER_FIND_MAIL_ADD;?></option>
-            <option value="products_name"><?php echo TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
-            <option value="value"><?php echo TEXT_ORDER_AMOUNT_SEARCH;?></option>
+            <option value="orders_id" <?php echo ($_GET['search_type'] == 'orders_id')?'selected':'';?>><?php echo TEXT_ORDER_FIND_OID;?></option>
+            <option value="customers_name" <?php echo ($_GET['search_type'] == 'customers_name')?'selected':'';?>><?php echo TEXT_ORDER_FIND_NAME;?></option>
+            <option value="email" <?php echo ($_GET['search_type'] == 'email')?'selected':'';?>><?php echo TEXT_ORDER_FIND_MAIL_ADD;?></option>
+            <option value="products_name" <?php echo ($_GET['search_type'] == 'products_name')?'selected':'';?>><?php echo TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
+            <option value="value" <?php echo ($_GET['search_type'] == 'value')?'selected':'';?>><?php echo TEXT_ORDER_AMOUNT_SEARCH;?></option>
             <?php
             foreach ($all_search_status as $as_key => $as_value) {
               ?>
-                <option value="<?php echo 'os_'.$as_key?>"><?php echo ORDERS_STATUS_SELECT_PRE.$as_value.ORDERS_STATUS_SELECT_LAST;?></option> 
+                <option value="<?php echo 'os_'.$as_key?>" <?php echo ($_GET['search_type'] == 'os_'.$as_key)?'selected':'';?>><?php echo ORDERS_STATUS_SELECT_PRE.$as_value.ORDERS_STATUS_SELECT_LAST;?></option> 
                 <?php
             }
           foreach ($all_payment_method as $p_method){
             ?>
-              <option value="<?php echo "payment_method|".$p_method;?>"><?php echo
+              <option value="<?php echo "payment_method|".$p_method;?>" <?php echo ($_GET['search_type'] == 'payment_method|'.$p_method)?'selected':'';?>><?php echo
               ORDERS_PAYMENT_METHOD_PRE.$p_method.ORDERS_PAYMENT_METHOD_LAST;?></option> 
               <?php
           }
           ?>
-            <option value="type|sell"><?php echo 
+            <option value="type|sell" <?php echo ($_GET['search_type'] == 'type|sell')?'selected':'';?>><?php echo 
             TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_SELL.TEXT_ORDER_TYPE_LAST;?></option>
-            <option value="type|buy"><?php echo 
+            <option value="type|buy" <?php echo ($_GET['search_type'] == 'type|buy')?'selected':'';?>><?php echo 
             TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_BUY.TEXT_ORDER_TYPE_LAST;?></option>
-            <option value="type|mix"><?php echo 
+            <option value="type|mix" <?php echo ($_GET['search_type'] == 'type|mix')?'selected':'';?>><?php echo 
             TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_MIX.TEXT_ORDER_TYPE_LAST;?></option>
             </select>
             <?php
