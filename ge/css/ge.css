@@ -407,6 +407,9 @@ padding-left:21px;
 }
 .page_top {
     text-align:right;
+	margin-right:10px;
+	*margin-right:0!important;
+	margin-right:10px\0;
 }
 .p_list {
     margin:0px;
@@ -1466,32 +1469,20 @@ searching
 	*overflow:none;
 }
 .shipping_time_order{
-    width: 303px;
-	right:-18px;
-	*right:0px!important;
-	right:-18px\0;
-}
-@media screen and (-webkit-min-device-pixel-ratio:0){
-.shipping_time_order{
-    width: 302px;
+    width: 308px;
 	right:-19px;
-}
+	*right:-1px!important;
+	right:-19px\0;
 }
 .shipping_time_reorder{
 	width: 307px;
 	right:0px;
 }
 .shipping_time_preorder{
-    width: 286px;
-	right:-27px;
-	*right:6px!important;
-	right:-27px\0;
-}
-@media screen and (-webkit-min-device-pixel-ratio:0){
-.shipping_time_preorder{
-    width: 286px;
-	right:-27px;
-}
+    width: 294px;
+	right:-23px;
+	*right:12px!important;
+	right:-23px\0;
 }
 .time_radio{
 	float:left;
