@@ -12,11 +12,17 @@ echo "</form>";
 ?>
 <input type="hidden" value="<?php echo $_SERVER['PHP_SELF'];?>" name="hidden_page_info" id="hidden_page_info">
 <script language="JavaScript" type="text/javascript">
+function note_popup_list(){
+   var note_obj = document.getElementById("note_hide_content");
+   var tmp_top = document.body.scrollTop | document.documentElement.scrollTop; 
+   note_obj.style.top = tmp_top+document.documentElement.clientHeight-$("#note_hide_content").height()+"px"; 
+   setTimeout(function(){note_popup_list();},50);
+}
 $(function() {
   note_popup_list();
 });
 </script>
-<script type="text/javascript" src="includes/javascript/split_page.js?v=<?php echo $back_rand_info?>"></script>
+<script type="text/javascript" src="includes/javascript/split_page.js"></script>
 <script type="text/javascript">
 <?php //更改新的URL?>
 function redirect_new_url(new_object)
