@@ -3256,7 +3256,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }
     $reviews_order_sort_name = ' date_added'; 
     $reviews_order_sort = 'desc'; 
-    $reviews_order_help_sotr = ' reviews_id';
+    $reviews_order_help_sort = ' reviews_id';
     if (!empty($_GET['r_sort'])) {
       switch ($_GET['r_sort']) {
         case 'r_site':
@@ -3286,7 +3286,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         $reviews_order_sort = 'desc'; 
       }
     }
-    $reviews_order_sql = $reviews_order_sort_name.' '.$reviews_order_sort.' , '.$reviews_order_help_sotr.' '.$reviews_order_sort; 
+    $reviews_order_sql = $reviews_order_sort_name.' '.$reviews_order_sort.' , '.$reviews_order_help_sort.' '.$reviews_order_sort; 
     $reviews_list_query_raw = "
       select * from (select r.reviews_id, 
              r.products_id, 
@@ -3298,7 +3298,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
              r.reviews_rating, 
              r.reviews_status ,
              s.romaji,
-             s.name as site_name
+             s.name as site_name,
+             pd.products_name
      from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd
      where (".$tmp_list_or_str." or pd.site_id = '0') and r.site_id = s.id
         and p.products_id = r.products_id
@@ -3648,7 +3649,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
 
 
   if($ocertify->npermission >= 15){
-   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')" id="button_save"').  '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$str_disabled.' onclick="delete_reviews_action(\''.tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').'&action=deleteconfirm'.'\');"').'</a>';
+   $reviews_button[] = tep_html_element_button(IMAGE_SAVE,$str_disabled.'onclick="check_review_submit('.$_GET['rID'].','.$_GET['page'].')" id="button_save"').  '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$str_disabled.' onclick="delete_reviews_action(\''.tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  '&rID=' .  $rInfo->reviews_id) .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'').'&action=deleteconfirm'.'\');"').'</a>';
     if(!empty($reviews_button)){
         $buttons = array('align' => 'center', 'button' => $reviews_button);
      }
@@ -3664,7 +3665,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   }
 
 //生产 表格
-$reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] .  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):''). '&action=update', 'post' , 'onsubmit="return check_review()"');
+$reviews_form =  tep_draw_form('review', FILENAME_REVIEWS, 'page=' .  $_GET['page'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&rID=' .  $_GET['rID'] .  (isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:''). '&action=update', 'post' , 'onsubmit="return check_review()"');
 
  if(!isset($_GET['default_value'])||!$_GET['default_value']){
    unset($_SESSION['r_default_value']);

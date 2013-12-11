@@ -93,7 +93,11 @@ function popup_window_textarea(default_value,id){
 //text
 function popup_window_text(default_value,id){
   var html_str = '';
-  html_str += '<input type="text" value="'+default_value+'" id="default_value_'+id+'">';
+  if (default_value.indexOf('"') > 0) {
+    html_str += '<input type="text" value=\''+default_value+'\' id="default_value_'+id+'">';
+  } else {
+    html_str += '<input type="text" value="'+default_value+'" id="default_value_'+id+'">';
+  }
   return html_str;
 }
 

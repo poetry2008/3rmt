@@ -309,7 +309,7 @@ function address_list(){
       var billing_address_str = '';
       if(billing_address[i] == 1 && billing_address_flag == true){
 
-        billing_address_str='（<?php echo TEXT_BILLING_ADDRESS_TRUE;?>）';
+        billing_address_str='（<?php echo TEXT_BILLING_ADDRESS;?>）';
       }
       address_show_list.options[address_show_list.options.length]=new Option(arr_str+billing_address_str,i,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>);
     }
@@ -659,7 +659,7 @@ $(document).ready(function(){
         ?>
         <tr>
           <td class="main" width="93">&nbsp;</td>
-          <td class="main"><input type="radio" id="billing_address_true" name="billing_address" value="1" style="padding-left:0;margin-left:0;"<?php echo isset($_POST['billing_address']) && $_POST['billing_address'] == 1 ? ' checked="checked"' : '';?>><?php echo TEXT_BILLING_ADDRESS_TRUE;?><input type="radio" id="billing_address_false" name="billing_address" value="0"<?php echo isset($_POST['billing_address']) && $_POST['billing_address'] == 0 ? ' checked="checked"' : '';?>><?php echo TEXT_BILLING_ADDRESS_FALSE;?></td>
+          <td class="main"><input type="radio" id="billing_address_true" name="billing_address" value="1" style="padding-left:0;margin-left:0;"<?php echo isset($_POST['billing_address']) && $_POST['billing_address'] == 1 ? ' checked="checked"' : '';?>><?php echo TEXT_BILLING_ADDRESS;?><input type="radio" id="billing_address_false" name="billing_address" value="0"<?php echo isset($_POST['billing_address']) && $_POST['billing_address'] == 0 ? ' checked="checked"' : '';?>><?php echo TEXT_BILLING_ADDRESS_CANCEL;?></td>
         </tr>
         <?php       
           }

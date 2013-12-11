@@ -60,6 +60,9 @@ if($weight_count > 0){
       break;
     }
   }
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
 ?>
 
 function check(select_value){
@@ -272,6 +275,7 @@ function address_option_show(action){
     $("#address_show_id").show();
     var arr_old  = new Array();
     var arr_name = new Array();
+    var billing_address_num = '';
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   
@@ -308,6 +312,10 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1'){
+
+      echo 'billing_address_num = '.$address_num.';';
+    }
         
   }
 
@@ -366,13 +374,16 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     echo 'var address_show_list_one = first_num;'."\n"; 
   }
         ?>
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==address_show_list_one,i==address_show_list_one);
+      if(billing_address_num !='' && billing_address_num == i){
+
+        var billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）'; 
+      }else{
+        var billing_address_str = '';
+      }
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str+billing_address_str,i,i==address_show_list_one,i==address_show_list_one);
     }
 
   } 
-    <?php if($address_num > 0){?> 
-      //address_option_list(first_num); 
-    <?php }?>
     break;
   }
 }
@@ -647,6 +658,7 @@ foreach ($_POST as $post_key => $post_value) {
   } else {
     if(substr($post_key,0,3) == 'ad_'){
 
+      $post_value = tep_db_prepare_input($post_value);
       if($options_comment[substr($post_key,3)] == $post_value){
 
         $post_value = '';
@@ -1272,7 +1284,18 @@ if (isset($time_error)) {
                   $work_start = $work_start_old;
                   $work_end = $work_end_old;
                 }
-                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_POST['hour'].'").val('.$_POST['min'].');</script>';
+                if($now_time_date == $_POST['date']){
+                  $work_start = $work_start_exit;
+                  $work_end = $work_end_exit;
+                }
+                $hour_show_flag = false;
+                $hour_show_array = explode('||',$work_start);
+                if(!in_array($_POST['hour'],$hour_show_array)){
+                  $hour_show_flag = true;
+                }
+                if($hour_show_flag == false && !isset($time_error) && !isset($date_error)){
+                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_POST['hour'].'").val('.$_POST['min'].');</script>';
+                }
              }else{
 
                 if(isset($_SESSION['preorder_information']['hour']) && $_SESSION['preorder_information']['hour'] != ''){
@@ -1281,7 +1304,18 @@ if (isset($time_error)) {
                     $work_start = $work_start_old;
                     $work_end = $work_end_old;
                   } 
-                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
+                  if($now_time_date == $_SESSION['preorder_information']['date']){
+                    $work_start = $work_start_exit;
+                    $work_end = $work_end_exit;
+                  }
+                  $hour_show_flag = false;
+                  $hour_show_array = explode('||',$work_start);
+                  if(!in_array($_SESSION['preorder_information']['hour'],$hour_show_array)){
+                    $hour_show_flag = true;
+                  }
+                  if($hour_show_flag == false && !isset($time_error) && !isset($date_error)){
+                    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
+                  }
                 }
              } 
              ?> 

@@ -581,7 +581,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
       tep_db_free_result($address_query);
       $address_id = $address_array['id'];
       $add_list[] = array($address_array['name'],$address_value);
-      $address_add_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." value(NULL,'$orders_id',{$preorder_cus_id},$address_id,'{$address_array['name_flag']}','$address_value','0')");
+      $address_add_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." value(NULL,'$orders_id',{$preorder_cus_id},$address_id,'{$address_array['name_flag']}','".addslashes($address_value)."','0')");
       tep_db_free_result($address_add_query);
     }
   }
@@ -641,7 +641,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
         $address_history_array = tep_db_fetch_array($address_history_query);
         tep_db_free_result($address_history_query);
         $address_history_id = $address_history_array['id'];
-        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$orders_id',{$preorder_cus_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value','0')");
+        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$orders_id',{$preorder_cus_id},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value)."','0')");
         tep_db_free_result($address_history_add_query);
       }
     }
@@ -655,7 +655,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
     $billing_address_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$customer_id."' and billing_address='1' order by id");
     if(tep_db_num_rows($billing_address_query) > 1){
       while($billing_address_array = tep_db_fetch_array($billing_address_query)){
-        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$orders_id',{$preorder_cus_id},{$billing_address_array['address_id']},'".$billing_address_array['name']."','".$billing_address_array['value']."','1')");
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$orders_id',{$preorder_cus_id},{$billing_address_array['address_id']},'".$billing_address_array['name']."','".addslashes($billing_address_array['value'])."','1')");
         tep_db_free_result($address_query); 
       }
       tep_db_free_result($billing_address_query);

@@ -2308,8 +2308,12 @@ width:690px;
 }
 }
 .shipping_time_preorder{
-    width: 528px;
-	right:0px;
+    width: 536px;
+	*width: 537px!important;
+	width: 536px\0;
+	right:-2px;
+	*right:6px!important;
+	right:-2px\0;
 }
 .time_radio{
 	float:left;

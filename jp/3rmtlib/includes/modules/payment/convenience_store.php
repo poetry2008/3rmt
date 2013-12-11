@@ -88,13 +88,13 @@ class convenience_store extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'convenience_email',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
-                       "field"=>tep_draw_input_field('convenience_email', $default_value,'onpaste="return false"'.$style_width.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT, 
+                       "field"=>tep_draw_input_field('convenience_email', strtolower($default_value),'onpaste="return false"'.$style_width.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT, 
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_EMAIL),
                        "error_msg" => array(TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE)),
                  array(
                        "code"=>'convenience_email_again',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT,
-                       "field"=>tep_draw_input_field('convenience_email_again', $default_again_value,'onpaste="return false"'.$style_width.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
+                       "field"=>tep_draw_input_field('convenience_email_again', strtolower($default_again_value),'onpaste="return false"'.$style_width.$input_text_id.'').'&nbsp;&nbsp;'.TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
                        "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_SAME_TO,basePayment::RULE_EMAIL),
                        "params_code"=>'convenience_email',
                        "error_msg" => array(TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE) 
