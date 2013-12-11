@@ -34,4 +34,3 @@ define('HEADING_DOWNLOAD', 'ダウンロード・リンク');
 define('TEXT_FEE_HANDLE', '手数料:');
 define('MONEY_UNIT_ATEXT', '円');
 define('TEXT_SHIPPING_FEE','配送料:');
-define('TEXT_BILLING_ADDRESS', 'ご請求先');

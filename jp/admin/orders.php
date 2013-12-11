@@ -2811,6 +2811,32 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </tr>
             <?php
         }
+        //判断配送地址与帐单邮寄地址是否一样
+        $address_diff_arr = array();
+        $address_diff_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'"); 
+        while($address_diff_array = tep_db_fetch_array($address_diff_query)){
+
+          $address_diff_arr[$address_diff_array['address_id']] = $address_diff_array['value'];
+        }
+        $billing_diff_arr = array();
+        $billing_diff_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1'");
+        while($billing_diff_array = tep_db_fetch_array($billing_diff_query)){
+
+          $billing_diff_arr[$billing_diff_array['address_id']] = $billing_diff_array['value'];
+        }
+        $billing_address_flag = false;
+        $address_i = 0;
+        foreach($address_diff_arr as $key=>$value){
+
+          if(trim($value) == trim($billing_diff_arr[$key])){
+
+            $address_i++;
+          }
+        }
+        if(count($address_diff_arr) == $address_i){
+
+          $billing_address_flag = true;
+        }
             $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
             $count_num = tep_db_num_rows($address_temp_query);
             if($count_num > 0){
@@ -2821,8 +2847,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
               </td> 
             </tr>
             <tr>
-            <td class="main"><?php echo TEXT_ADDRESS_INFO;?></td>
-            <td class="main">&nbsp;</td>
+            <td class="main" colspan="2"><?php echo TEXT_ADDRESS_INFO.($billing_address_flag == true ? '（'.TEXT_BILLING_ADDRESS.'）' : '');?></td>
             </tr>
             <?php
         $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
@@ -2830,17 +2855,19 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 
           $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
           $address_title_array = tep_db_fetch_array($address_title_query);
-          echo '<tr>';
-          echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
-          echo '<td class="main">'. $address_array['value'] .'</td>';
-          echo '</tr>';
+          if(trim($address_title_array['name']) != '' && trim($address_array['value']) != ''){
+            echo '<tr>';
+            echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
+            echo '<td class="main">'. $address_array['value'] .'</td>';
+            echo '</tr>';
+          }
           tep_db_free_result($address_title_query);
         }
         tep_db_free_result($address_query);
             } 
         $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1'");
             $count_num = tep_db_num_rows($address_temp_query);
-            if($count_num > 0){
+            if($count_num > 0 && $billing_address_flag == false){
             ?>
             <tr>
               <td colspan="2">
@@ -2848,8 +2875,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
               </td> 
             </tr>
             <tr>
-            <td class="main"><?php echo HEADING_BILLING_INFORMATION;?></td>
-            <td class="main">&nbsp;</td>
+            <td class="main" colspan="2"><?php echo TEXT_BILLING_ADDRESS;?></td>
             </tr>
             <?php
         $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
@@ -2857,10 +2883,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 
           $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
           $address_title_array = tep_db_fetch_array($address_title_query);
-          echo '<tr>';
-          echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
-          echo '<td class="main">'. $address_array['value'] .'</td>';
-          echo '</tr>';
+          if(trim($address_title_array['name']) != '' && trim($address_array['value']) != ''){
+            echo '<tr>';
+            echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
+            echo '<td class="main">'. $address_array['value'] .'</td>';
+            echo '</tr>';
+          }
           tep_db_free_result($address_title_query);
         }
         tep_db_free_result($address_query);

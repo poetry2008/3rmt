@@ -119,7 +119,9 @@ function address_option_list(value){
     while($address_orders_array = tep_db_fetch_array($address_orders_query)){
        
       $address_orders_array['value'] = str_replace("\r\n","<br>",$address_orders_array['value']); 
-      echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+      if(trim($address_orders_array['name']) != '' && trim($address_orders_array['value']) != ''){
+        echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+      }
     }
   $address_num++;
   tep_db_free_result($address_orders_query); 
