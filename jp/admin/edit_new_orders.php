@@ -2129,6 +2129,9 @@ if($p_weight_total > 0){
       break;
     }
   }
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',$_SESSION['sites_id_flag']);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
 ?> 
 <?php //清除地址错误信息?>
 function address_clear_error(){
@@ -2225,6 +2228,7 @@ function address_option_show(action){
     $("#address_list_id").show();
     var arr_old  = new Array();
     var arr_name = new Array();
+    var billing_address_num = '';
 <?php
 
   //根据后台的设置来显示相应的地址列表
@@ -2259,6 +2263,10 @@ function address_option_show(action){
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1'){
+
+      echo 'billing_address_num = '.$address_num.';';
+    }
         
   }
 
@@ -2321,13 +2329,19 @@ function address_option_show(action){
       }
       ++j_num;
       if(j_num == 1){first_num = i;}
+        if(billing_address_num != '' && billing_address_num == i){
+
+          var billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
+        }else{
+          var billing_address_str = ''; 
+        }
         if('<?php echo $_POST['address_show_list'];?>' != ''){
-          address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i=='<?php echo $_POST['address_show_list'];?>',i=='<?php echo $_POST['address_show_list'];?>');
+          address_show_list.options[address_show_list.options.length]=new Option(arr_str+billing_address_str,i,i=='<?php echo $_POST['address_show_list'];?>',i=='<?php echo $_POST['address_show_list'];?>');
         }else{
           if(arr_str == address_str){
-            address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,true,true);
+            address_show_list.options[address_show_list.options.length]=new Option(arr_str+billing_address_str,i,true,true);
           }else{
-            address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,arr_str==address_select,arr_str==address_select); 
+            address_show_list.options[address_show_list.options.length]=new Option(arr_str+billing_address_str,i,arr_str==address_select,arr_str==address_select); 
           }
        }
     }
