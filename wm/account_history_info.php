@@ -193,7 +193,7 @@
                   
             </tr> 
             <?php
-            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='0'");
             $address_num = tep_db_num_rows($address_shipping_num_query);
             tep_db_free_result($address_shipping_num_query);
             if($address_num > 0){
@@ -214,13 +214,15 @@
                               $address_array[$address_list_array['id']] = $address_list_array['name'];
                             }
                             tep_db_free_result($address_list_query);
-                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' order by id");
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='0' order by id");
                             while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                              if(trim($address_array[$address_shipping_array['address_id']]) != '' && trim($address_shipping_array['value']) != ''){
                                 echo '<tr><td width="10"></td><td class="main" width="30%" valign="top">';
                                 echo $address_array[$address_shipping_array['address_id']];
                                 echo ':</td><td class="main">';
                                 echo $address_shipping_array['value']; 
                                 echo '</td></tr>';
+                              }
                             }
                             tep_db_free_result($address_shipping_query);
                       ?>
@@ -235,10 +237,36 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td><table class="infoBoxContents"> 
+              <td><table class="infoBoxContents">  
                         <tr>
                           <td width="30%" valign="top">
-                                	<table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                                        <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+<?php
+            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='1'");
+            $address_num = tep_db_num_rows($address_shipping_num_query);
+            tep_db_free_result($address_shipping_num_query);
+            if($address_num > 0){
+            ?>  
+                      <tr><td class="main" colspan="2"><b><?php echo TEXT_BILLING_ADDRESS; ?></b></td></tr>
+                      <?php
+                            $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
+                            $address_array = array();
+                            while($address_list_array = tep_db_fetch_array($address_list_query)){
+                              
+                              $address_array[$address_list_array['id']] = $address_list_array['name'];
+                            }
+                            tep_db_free_result($address_list_query);
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='1' order by id");
+                            while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                              if(trim($address_array[$address_shipping_array['address_id']]) != '' && trim($address_shipping_array['value']) != ''){
+                                echo '<tr><td width="10"></td><td class="main" valign="top">';
+                                echo $address_shipping_array['value']; 
+                                echo '</td></tr>';
+                              }
+                            }
+                            tep_db_free_result($address_shipping_query);
+            }
+            ?>
                                        <tr> 
                                             <td class="main" colspan="2"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
             							</tr> 

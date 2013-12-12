@@ -547,7 +547,7 @@ function address_option_show(action){
     $("#address_show_id").show();
     var arr_old  = new Array();
     var arr_name = new Array();
-    var billing_address_num = '';
+    var billing_address_num = 'true';
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 
@@ -577,7 +577,6 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
    
   $json_str_list = '';
   unset($json_old_array);
-  $billing_address_num = 0;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -650,7 +649,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
      if(i==address_show_list_one){
         selected_value = ' selected';
       }
-     if(billing_address_num !='' && billing_address_num == i){
+     if(billing_address_num != 'true' && billing_address_num == i){
 
        var billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
      }else{
@@ -837,7 +836,7 @@ if($cart->weight > 0){
      }else{
        if($_POST['action'] != 'process'){
      ?>
-        address_option_show('new');
+     address_option_show('new');
      <?php
        }
      }

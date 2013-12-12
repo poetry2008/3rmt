@@ -260,6 +260,7 @@ if(!empty($_SESSION['options'])){
   </tr>
 <?php
   foreach($_SESSION['options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
 ?>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
@@ -267,6 +268,7 @@ if(!empty($_SESSION['options'])){
   <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
+    }
   }
 ?>
 <?php

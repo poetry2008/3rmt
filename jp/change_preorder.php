@@ -275,7 +275,7 @@ function address_option_show(action){
     $("#address_show_id").show();
     var arr_old  = new Array();
     var arr_name = new Array();
-    var billing_address_num = '';
+    var billing_address_num = 'true';
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   
@@ -374,7 +374,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     echo 'var address_show_list_one = first_num;'."\n"; 
   }
         ?>
-      if(billing_address_num !='' && billing_address_num == i){
+      if(billing_address_num != 'true' && billing_address_num == i){
 
         var billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）'; 
       }else{

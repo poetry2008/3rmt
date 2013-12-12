@@ -60,6 +60,9 @@ if($weight_count > 0){
       break;
     }
   }
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
 ?>
 
 function check(select_value){
@@ -272,6 +275,7 @@ function address_option_show(action){
     $("#address_show_id").show();
     var arr_old  = new Array();
     var arr_name = new Array();
+    var billing_address_num = 'true';
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   
@@ -308,6 +312,10 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1'){
+
+      echo 'billing_address_num = '.$address_num.';';
+    }
         
   }
 
@@ -366,13 +374,16 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     echo 'var address_show_list_one = first_num;'."\n"; 
   }
         ?>
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==address_show_list_one,i==address_show_list_one);
+      if(billing_address_num != 'true' && billing_address_num == i){
+
+        var billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）'; 
+      }else{
+        var billing_address_str = '';
+      }
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str+billing_address_str,i,i==address_show_list_one,i==address_show_list_one);
     }
 
   } 
-    <?php if($address_num > 0){?> 
-      address_option_list(first_num); 
-    <?php }?>
     break;
   }
 }
@@ -647,12 +658,13 @@ foreach ($_POST as $post_key => $post_value) {
   } else {
     if(substr($post_key,0,3) == 'ad_'){
 
+      $post_value = tep_db_prepare_input($post_value);
       if($options_comment[substr($post_key,3)] == $post_value){
 
         $post_value = '';
       }
     }
-      $preorder_information[$post_key] = stripslashes($post_value); 
+      $preorder_information[$post_key] = $post_value; 
   }
 }
 
@@ -1129,7 +1141,7 @@ document.forms.order1.submit();
         </script>
             <tr>
             <td colspan="2" class="main">
-              <input type="radio" name="address_option" value="old" onClick="address_option_show('old');" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
+              <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
               <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
             </td>
             </tr>

@@ -244,6 +244,7 @@ if(!empty($_SESSION['options'])){
   </tr> 
 <?php
   foreach($_SESSION['options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
 ?>
 
 <tr> 
@@ -251,6 +252,7 @@ if(!empty($_SESSION['options'])){
   <td colspan="2"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
 </tr>
 <?php
+    }
   }
 /*
  * 计算配送费用
