@@ -274,7 +274,7 @@
                         </tr> 
                         <tr> 
                           <td width="10"></td> 
-                          <td class="main"><?php echo tep_address_format($order->billing['format_id'], $order->billing, 1, ' ', '<br>'); ?></td> 
+                          <td class="main"><?php echo $order->customer['name']; ?></td> 
                         </tr> 
                         <tr> 
                            <td width="10"></td> 

@@ -273,7 +273,7 @@
                           <td class="table_spacing"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                         </tr> 
                         <tr> 
-                          <td class="table_spacing"><?php echo tep_address_format($order->billing['format_id'], $order->billing, 1, ' ', '<br>'); ?></td> 
+                          <td class="table_spacing"><?php echo $order->customer['name']; ?></td> 
                         </tr> 
                         <tr> 
                           <td class="table_spacing"><b><?php echo HEADING_PAYMENT_METHOD; ?></b></td> 
