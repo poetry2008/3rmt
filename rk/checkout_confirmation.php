@@ -275,6 +275,7 @@ if(!empty($_SESSION['options'])){
   <table>
 <?php
   foreach($_SESSION['options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
 ?>
   <tr>
 
@@ -282,6 +283,7 @@ if(!empty($_SESSION['options'])){
   <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
+    }
   }
 ?>
 </table>

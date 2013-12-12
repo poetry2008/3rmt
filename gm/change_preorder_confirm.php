@@ -455,7 +455,7 @@ foreach($all_show_option_id as $t_item_id){
 <?php
                     foreach($_POST as $ad_key=>$ad_value){
 
-                      if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
+                      if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != '' && trim($_POST[$ad_key]) != ''){
 
                         echo '<tr>';
                         echo '<td class="main" width="20%">'. $_POST[substr($ad_key,3)] .':</td>';                  

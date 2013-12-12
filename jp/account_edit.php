@@ -192,7 +192,7 @@ case 'per':
   }
   break;
   case 'address':
-  //住所信息处理 
+  //住所信息处理
 if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if (!isset($_POST['gender'])) $_POST['gender'] =NULL;
   $gender = tep_db_prepare_input($_POST['gender']);
@@ -226,7 +226,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if (!isset($_POST['state'])) $_POST['state'] =NULL;
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
-  
+
   $error = false; // reset error flag
 
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
@@ -365,7 +365,6 @@ if($_POST['num_rows'] > 0){
       foreach($option_info_array as $address_key=>$address_value){
 
          $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','".addslashes($address_value)."','{$billing_address}')";
-        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }
@@ -523,7 +522,6 @@ if($_POST['num_rows'] > 0){
       foreach($option_info_array as $address_key=>$address_value){
 
          $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','".addslashes($address_value)."','{$billing_address}')";
-        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }

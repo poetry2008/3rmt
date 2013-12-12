@@ -515,4 +515,5 @@ define('TEXT_ORDERS_PRODUCTS_HANDLE_FEE','手数料:');
 define('TEXT_ORDERS_PRODUCTS_TOTAL','合計:');
 define('TEXT_ORDERS_EARN_POINTS', '今回の獲得予定ポイント:');
 define('TEXT_ORDERS_COMMENTS', 'ご注文についてのコメント:');
+define('TEXT_BILLING_ADDRESS', 'ご請求先');
 ?>
