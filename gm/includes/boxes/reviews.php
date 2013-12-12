@@ -21,7 +21,7 @@ if (
 ?>
 <!-- reviews -->
 <?php
-  if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){    
+  if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     $reviews_query = tep_db_query("
         select r.reviews_rating, 
                r.reviews_id, 
@@ -34,7 +34,7 @@ if (
     if(tep_db_num_rows($reviews_query)) {
      echo "<div class='yui3-g main-columns'>";
      echo  '<h3> <span>'.
-       sprintf(TEXT_REVIEWS_TITLE_END,$product_info['products_name'] ).'</span></h3>'."\n" . '<div class="hm-product-content">'."\n" ;
+     sprintf(TEXT_REVIEWS_TITLE_END,$product_info['products_name'] ).'</span></h3>'."\n" . '<div class="hm-product-content">'."\n" ;
          while ($reviews = tep_db_fetch_array($reviews_query)) {
         $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
@@ -70,47 +70,48 @@ if (
            pd.site_id as psid
     from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd
     ";
+      if (isset($subcid) && $subcid) {
+          $random_select .= (", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c");
+      }
+      $random_select .= "
+      where p.products_id = r.products_id 
+        and r.reviews_id = rd.reviews_id 
+        and rd.languages_id = '" . $languages_id . "' 
+        and p.products_id = pd.products_id 
+        and pd.language_id = '" . $languages_id . "' 
+        and r.reviews_status = '1' 
+        and r.site_id = '".SITE_ID."'";
     if (isset($subcid) && $subcid) {
-        $random_select .= (", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c");
+      $random_select .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
+    }
+    if (isset($_GET['products_id'])) {
+      $random_select .= " and p.products_id = '" . (int)$_GET['products_id'] . "'";
     }
     $random_select .= "
-    where p.products_id = r.products_id 
-      and r.reviews_id = rd.reviews_id 
-      and rd.languages_id = '" . $languages_id . "' 
-      and p.products_id = pd.products_id 
-      and pd.language_id = '" . $languages_id . "' 
-      and r.reviews_status = '1' 
-      and r.site_id = '".SITE_ID."'";
-  if (isset($subcid) && $subcid) {
-    $random_select .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
-  }
-  if (isset($_GET['products_id'])) {
-    $random_select .= " and p.products_id = '" . (int)$_GET['products_id'] . "'";
-  }
-  $random_select .= "
-    order by reviews_id, psid DESC
-  ) p
-  where psid = '0'
-     or psid = '".SITE_ID."'
-  group by reviews_id
-  having p.products_status != '0' and p.products_status != '3' 
-  ";
-  $random_select .= " order by reviews_id desc";
-  $random_product = tep_random_select($random_select);
-
-  $info_box_contents = array();
-
-  if ($random_product) {
-// display random review box
-    $review_query = tep_db_query("
-        select reviews_text 
-        from " . TABLE_REVIEWS_DESCRIPTION . " 
-        where reviews_id = '" . $random_product['reviews_id'] . "' 
-          and languages_id = '" . $languages_id . "'
-    ");
-    $review = tep_db_fetch_array($review_query);
-
-    $review = tep_output_string_protected(mb_substr($review['reviews_text'], 0, 250, 'utf-8')).'..';
+      order by reviews_id, psid DESC
+    ) p
+    where psid = '0'
+       or psid = '".SITE_ID."'
+    group by reviews_id
+    having p.products_status != '0' and p.products_status != '3' 
+    ";
+    $random_select .= " order by reviews_id desc";
+    $random_product = tep_random_select($random_select);
+    
+    $info_box_contents = array();
+    
+    if ($random_product) {
+      // display random review box
+      
+      $review_query = tep_db_query("
+          select reviews_text 
+          from " . TABLE_REVIEWS_DESCRIPTION . " 
+          where reviews_id = '" . $random_product['reviews_id'] . "' 
+            and languages_id = '" . $languages_id . "'
+      ");
+      $review = tep_db_fetch_array($review_query);
+    
+      $review = tep_output_string_protected(mb_substr($review['reviews_text'], 0, 250, 'utf-8')).'..';
     echo '<div class="hm-product-content">';
     echo '<table border="0" cellpadding="0" cellspacing="0">'; 
     echo '<tr>'; 
