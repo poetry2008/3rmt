@@ -198,6 +198,7 @@ define('TEXT_OS_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMA
 define('TEXT_TYPE_BROWSER_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;浏览器种类警告字符串');
 define('TEXT_BROWSER_LANGUAGE_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;浏览器语言警告字符串');
 define('TEXT_COMPUTER_LOCALE_WARNING_CHARACTERS',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;计算机语言环境警告字符');
+define('TEXT_CUSTOMER_FAX_WARNING_STRING',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;说明警告字符串');
 define('TEXT_USER_LOCALE_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;用户语言环境警告字符串');
 define('TEXT_SCREEN_RESOLUTION_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;画面分辨率警告字符串');
 define('TEXT_PAGE_COLOR_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;页面颜色警告字符串');

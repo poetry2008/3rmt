@@ -3644,12 +3644,27 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
             <tr>
             <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
-            <td class="main"><textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
+            <td class="main">
+            <div >
+            <div id="customer_fax_textarea" style="display:none">
+            <textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
             <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
             <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+            </div>
+            <div id="customer_fax_text" style="width:98%;height:42px;*height:40px;overflow-y:auto">
+            <?php 
+            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
+            ?>
+            </div>
             </td>
-            <td class="main" width="30"><input type="submit" value="<?php echo
-            TEXT_ORDER_SAVE;?>"></td>
+            <td class="main" width="30">
+            <div id="customer_fax_textarea_input" style="display:none">
+            <input type="submit" value="<?php echo TEXT_ORDER_SAVE;?>">
+            </div>
+            <div id="customer_fax_text_input">
+            <input type="button" onclick="show_edit_fax()" value="<?php echo IMAGE_EDIT;?>">
+            </div>
+            </td>
             </form>
             </tr>
             </table>

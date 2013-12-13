@@ -12630,3 +12630,61 @@ function tep_get_preorders_by_customers_id($customers_id,$site_id){
   }
   return count($preorders_array);
 }
+/* -------------------------------------
+    功能: 根据参数给输入的字符串红色显示 
+    参数: $arr (array)要红色显示的字符串或数组 
+    参数: $str (string)输入的字符串 
+    返回值: 返回字符串(string)
+ ------------------------------------ */
+function tep_replace_to_red($arr,$str){
+  $out_str = str_replace('　',' ',$str);
+  foreach($arr as $value){
+    $nospacev = str_replace(' ','',$value);
+    $nospacev = str_replace('　','',$nospacev);
+    $str_search_arr = str_split_utf8($nospacev);
+    $preg_str = '';
+    foreach($str_search_arr as $search_v){
+      $preg_str .= $search_v.'[\s]{0,}';
+    }
+    if(preg_match_all('/('.$preg_str.')/',$out_str,$match_arr)){
+      if(isset($match_arr)&&!empty($match_arr)){
+        foreach($match_arr[0] as $m_v){
+          $out_str = str_replace($m_v,' <font style="background:red;">'.$m_v.'</font> ',$out_str);
+        }
+      }
+    }
+  }
+  return $out_str;
+}
+/* -------------------------------------
+    功能: 分割字符串 按照UTF8格式 
+    参数: $str (string)输入的字符串 
+    返回值: 返回字符串(string)
+ ------------------------------------ */
+function str_split_utf8($str) {
+    $split = 1;
+    $array = array(); $len = strlen($str);
+    for ( $i = 0; $i < $len; ){
+        $value = ord($str[$i]);
+        if($value > 0x7F){
+            if($value >= 0xC0 && $value <= 0xDF)
+                $split = 2;
+            elseif($value >= 0xE0 && $value <= 0xEF)
+                $split = 3;
+            elseif($value >= 0xF0 && $value <= 0xF7)
+                $split = 4;
+            elseif($value >= 0xF8 && $value <= 0xFB)
+                $split = 5;
+            elseif($value >= 0xFC)
+                $split = 6;
+        } else {
+            $split = 1;
+        }
+        $key = '';
+        for ( $j = 0; $j < $split; ++$j, ++$i ) {
+            $key .= $str[$i];
+        }
+        $array[] = $key;
+    }
+    return $array;
+}
