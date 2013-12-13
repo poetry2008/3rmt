@@ -3653,7 +3653,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </div>
             <div id="customer_fax_text" style="width:98%;height:42px;*height:40px;overflow-y:auto">
             <?php 
-            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
+            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); 
+            echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
             ?>
             </div>
             </td>
@@ -3951,6 +3952,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <?php }?> 
             </tr>
             <?php
+            $comment_warning_arr = explode('|',COMMENT_SHOW_KEYWORDS);
             $cpayment = payment::getInstance($orders['site_id']);
             $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
           $orders_status_history_str = '';
@@ -3994,7 +3996,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                $orders_history_comment = $orders_history['comments'];
            }
            if($orders_history['comments'] != $orders_status_history_str){
-             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment))) . '&nbsp;</p></td>' . "\n";
+             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' .  tep_replace_to_red($comment_warning_arr,nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)))) . '&nbsp;</p></td>' . "\n";
            }else{
 
              echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">&nbsp;</p></td>' . "\n";
