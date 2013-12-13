@@ -201,7 +201,7 @@ define('TEXT_TYPE_BROWSER_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backen
 define('TEXT_BROWSER_LANGUAGE_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ブラウザの言語警告文字列');
 define('TEXT_COMPUTER_LOCALE_WARNING_CHARACTERS',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;パソコンの言語環境警告文字列');
 define('TEXT_CUSTOMER_FAX_WARNING_STRING',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;信用調査警告文字列');
-define('TEXT_COMMENT_WARNING_STRING',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;コメント警告字符串');
+define('TEXT_COMMENT_WARNING_STRING',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;コメント警告文字列');
 define('TEXT_USER_LOCALE_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ユーザーの言語環境警告文字列');
 define('TEXT_SCREEN_RESOLUTION_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;画面の解像度警告文字列');
 define('TEXT_PAGE_COLOR_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;画面の色警告文字列');
