@@ -802,3 +802,8 @@ define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
 define('TABLE_HEADING_NUMBER','No.');
 define('ERROR_VARIABLE_DATA_TEXT', '%sの値が空です。');
 define('TEXT_BILLING_ADDRESS','ご請求先');
+define('DB_CONFIGURATION_TITLE_PRICE_SETTING', '商品単価設定');
+define('TEXT_INPUT_IS_NO_NUMERIC', '0以上の数字を入力してください。');
+define('ERROR_LOW_PROFIT_MESSAGE', '最低利益%sを確保できません。%sの販売単価を%s以上に設定してください。');
+define('ERROR_LOW_PROFIT_OTHER_MESSAGE', '最低利益%sを確保できません。%sの仕入単価を%s以下に設定してください。');
+define('ERROR_WARNING_TEXT', 'この警告を無視しますか？');

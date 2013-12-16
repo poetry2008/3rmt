@@ -798,3 +798,8 @@ define('TEXT_CONTENTS_DELETE_ACTION', '删除勾选项目');
 define('TABLE_HEADING_NUMBER','No.');
 define('ERROR_VARIABLE_DATA_TEXT', '%s的值为空。');
 define('TEXT_BILLING_ADDRESS','帐单邮寄地址');
+define('DB_CONFIGURATION_TITLE_PRICE_SETTING', '商品价格设定');
+define('TEXT_INPUT_IS_NO_NUMERIC', '必须填写数字且不能为负值');
+define('ERROR_LOW_PROFIT_MESSAGE', '不能确保最低利润率%s。请把%s的贩卖单价设置为高于%s。');
+define('ERROR_LOW_PROFIT_OTHER_MESSAGE', '不能确保最低利润率%s。请把%s的进货单价设置为低于%s。');
+define('ERROR_WARNING_TEXT', '无视这个警告吗？');

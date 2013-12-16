@@ -99,6 +99,31 @@
          echo ' <div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style="" onclick="window.location.href=\''.tep_href_link('products_shipping_time.php','','NONSSL').'\';"><span>' . tep_image(DIR_WS_MENU_ICON . 'icon_delivery_time.gif').'</span><span>'.BOX_SHIPPING_TIME.'</span></div>';
          }
        }
+       
+       $other_configuration_groups_img = array();
+       $other_configuration_groups_img = array("998"=>"icon_price_setting.gif");
+       if (!check_whether_is_limited(FILENAME_CONFIGURATION)) {
+         $other_configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " .  TABLE_CONFIGURATION_GROUP . " where visible = '1' and type_info = '1' order by sort_order");
+         while ($other_configuration_groups = tep_db_fetch_array($other_configuration_groups_query)) {
+           if(str_replace('/admin/','',$_SERVER['PHP_SELF']).'?gID='.$_GET['gID'] == FILENAME_CONFIGURATION.'?gID='.$other_configuration_groups['cgID']){
+             echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $other_configuration_groups['cgID'], 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON.$other_configuration_groups_img[$other_configuration_groups['cgID']]).'</span><span>';
+             if(constant($other_configuration_groups['cgTitle'])){
+               echo constant($other_configuration_groups['cgTitle']);
+             }else{
+               echo $other_configuration_groups['cgTitle']; 
+             }
+               echo '</span></div>';
+             }else{
+               echo '<div onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $other_configuration_groups['cgID'], 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON.$other_configuration_groups_img[$other_configuration_groups['cgID']]).'</span><span>';
+               if(constant($other_configuration_groups['cgTitle'])){
+                 echo constant($other_configuration_groups['cgTitle']);
+               }else{
+                 echo $other_configuration_groups['cgTitle']; 
+               }
+               echo '</span></div>';
+             } 
+         }
+       }
        ?>
               </td>
              </tr>
