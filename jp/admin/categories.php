@@ -253,7 +253,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     break;
     // 保存动作结束
     case 'get_products':
-    echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
+    echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\' id="relate_info"');
     exit;
     break;
     case 'get_cart_products':
@@ -2816,22 +2816,28 @@ function check_single_product_price(pid_info, c_permission, c_type) {
   }); 
 }
 <?php //检查编辑商品的价格是否正确?>
-function check_edit_product_profit(pid_info) {
+function check_edit_product_profit() {
   var new_price_value = $('#pp').val(); 
-  $.ajax({
-    type: 'POST',
-    async: false,
-    url: 'ajax_orders.php?action=check_products_profit',
-    dataType: 'text',
-    data: 'products_id='+pid_info+'&new_price='+new_price_value,
-    success:function(msg_info) {
-      if (msg_info != '') {
-        alert(msg_info); 
-      } else {
-        document.forms.new_product.submit(); 
+  var flag_type = $('input:radio:checked[name=products_bflag]').val(); 
+  var relate_value = $('#relate_info').val(); 
+  if (relate_value != '0') {
+    $.ajax({
+      type: 'POST',
+      async: false,
+      url: 'ajax_orders.php?action=check_category_to_products_profit',
+      dataType: 'text',
+      data: 'product_flag='+flag_type+'&new_price='+new_price_value+'&p_relate_id='+relate_value,
+      success:function(msg_info) {
+        if (msg_info != '') {
+          alert(msg_info); 
+        } else {
+          document.forms.new_product.submit(); 
+        }
       }
-    }
-  });
+    });
+  } else {
+    document.forms.new_product.submit(); 
+  }
 }
 </script>
 <?php 
@@ -3083,11 +3089,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td class="main" valign="top"><?php echo $site_id?('<br>'.tep_get_site_name_by_id($site_id)):'';?></td>
                 <td class="main" align="right"><?php 
                 if (empty($site_id)) {
-                  if (isset($pInfo->products_id)) {
-                    echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit(\''.$pInfo->products_id.'\');"') .  '</a>&nbsp;&nbsp;';
-                  } else {
-                    echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
-                  }
+                  echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
                 } else {
                   echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
                 }
@@ -3250,7 +3252,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
                 <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
                 <span id="relate_products">
-                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
+                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)" id="relate_info"');?>
                 </span>
                 <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
                 <input type="hidden" name="products_price_def" value="">
@@ -3770,11 +3772,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     }
                                   echo tep_eof_hidden(); 
                                   if (empty($site_id)) {
-                                    if (isset($pInfo->products_id)) {
-                                      echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit(\''.$pInfo->products_id.'\');"') .  '</a>&nbsp;&nbsp;';
-                                    } else {
-                                      echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
-                                    }
+                                    echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
                                   } else {
                                     echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
                                   }
