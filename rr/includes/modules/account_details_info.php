@@ -249,7 +249,16 @@ function in_array(value,arr){
 function address_list(){
   var arr_old = new Array();
   var arr_name = new Array();
+  var billing_address = new Array();
 <?php
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  if($billing_address_show == 'true'){
+    echo 'var billing_address_flag = true;';
+  }else{
+    echo 'var billing_address_flag = false;'; 
+  }
   $address_i = 0;
   $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
@@ -258,7 +267,7 @@ function address_list(){
     $address_i++;
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id,billing_address from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -273,8 +282,9 @@ function address_list(){
     
     $address_orders_array['value'] = str_replace("\n","",$address_orders_array['value']); 
     $address_orders_array['value'] = str_replace("\r","",$address_orders_array['value']); 
-    echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+    echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";'; 
   }
+  echo 'billing_address['. $address_num .'] = "'.$address_orders_group_array['billing_address'].'";';
 
   $address_num++; 
   tep_db_free_result($address_orders_query); 
@@ -296,7 +306,12 @@ function address_list(){
         }
     }
     if(arr_str != ''){
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>);
+      var billing_address_str = '';
+      if(billing_address[i] == 1 && billing_address_flag == true){
+
+        billing_address_str='（<?php echo TEXT_BILLING_ADDRESS;?>）';
+      }
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str+billing_address_str,i,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>);
     }
 
   }
@@ -318,6 +333,7 @@ function address_option_list(value){
   var arr_list = new Array();
   var arr_flag = new Array();
   var arr_address = new Array();
+  var billing_address = new Array();
 <?php
   $address_list_arr = array();
   $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
@@ -336,7 +352,7 @@ function address_option_list(value){
     $address_k++;
   }
   tep_db_free_result($address_list_name_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id,billing_address from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -354,6 +370,7 @@ function address_option_list(value){
       $address_orders_array['value'] = str_replace("\r","",$address_orders_array['value']); 
       echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
     }
+  echo 'billing_address['. $address_num .'] = "'.$address_orders_group_array['billing_address'].'";';
   $address_num++;
   tep_db_free_result($address_orders_query); 
   }
@@ -385,6 +402,12 @@ if(arr_list.length > 0){
       }
     }
     $("#error_"+x).html("");
+   }
+   if(billing_address[value] == 1){
+
+     $("#billing_address_true").attr('checked','checked');
+   }else{
+     $("#billing_address_true").attr('checked','');
    }
   }
   
@@ -627,7 +650,19 @@ $(document).ready(function(){
         <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="93"><?php echo
         TITLE_ADDRESS_OPTION;?></td><td class="main"><input type="hidden" id="address_flag_id" name="address_flag_id" value=""><select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
        </td></tr>
+        <?php
+          //获取是否开启了帐单邮寄地址功能
+          $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+          $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+          //显示帐单邮寄地址设置功能
+          if($billing_address_show == 'true'){
+        ?>
+        <tr>
+          <td class="main" width="93">&nbsp;</td>
+          <td class="main"><input type="radio" id="billing_address_true" name="billing_address" value="1" style="padding-left:0;margin-left:0;"<?php echo isset($_POST['billing_address']) && $_POST['billing_address'] == 1 ? ' checked="checked"' : '';?>><?php echo TEXT_BILLING_ADDRESS;?><input type="radio" id="billing_address_false" name="billing_address" value="0"<?php echo isset($_POST['billing_address']) && $_POST['billing_address'] == 0 ? ' checked="checked"' : '';?>><?php echo TEXT_BILLING_ADDRESS_CANCEL;?></td>
+        </tr>
         <?php       
+          }
           $hm_option->render('','',true); 
         ?> 
         </table>

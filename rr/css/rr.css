@@ -2148,7 +2148,7 @@ width:690px;
 	display:block;
 }
 .option_checkmark img{vertical-align:bottom;}
-.option_show_border span{ float:left; overflow:hidden; padding:0 4px;}
+.option_show_border span{ float:left; overflow:hidden; padding:2x 4px; line-height:16px;}
 .option_show_border .option_conent{
 	border:2px solid #FF6701;
 	overflow:hidden;
@@ -2184,7 +2184,7 @@ width:690px;
 	line-height:27px;
 	margin:0 3px 0 0;
 }
-.option_hide_border span{ float:left;overflow:hidden; padding:0 4px;}
+.option_hide_border span{ float:left;overflow:hidden; padding:2px 4px; line-height:16px;}
 .option_hide_border a{
 	color:#fff; 
 	display:block;

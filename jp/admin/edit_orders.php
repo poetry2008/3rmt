@@ -2403,7 +2403,7 @@ function billing_address_option_show(action){
     ?>
     var billing_arr_old  = new Array();
     var billing_arr_name = new Array();
-    var billing_address_num = '';
+    var billing_address_num = 'true';
 <?php
 
   //根据后台的设置来显示相应的地址列表
@@ -2504,7 +2504,7 @@ function billing_address_option_show(action){
       ++j_num;
       if(j_num == 1){billing_first_num = i;}
 
-      if(billing_address_num != '' && billing_address_num == i){
+      if(billing_address_num != 'true' && billing_address_num == i){
 
         var billing_address_string = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
       }else{
@@ -3069,7 +3069,7 @@ function address_option_show(action){
     ?>
     var arr_old  = new Array();
     var arr_name = new Array();
-    var orders_billing_address_num = '';
+    var orders_billing_address_num = 'true';
 <?php
 
   //根据后台的设置来显示相应的地址列表
@@ -3170,7 +3170,7 @@ function address_option_show(action){
       ++j_num;
       if(j_num == 1){first_num = i;}
 
-      if(orders_billing_address_num != '' && orders_billing_address_num == i){
+      if(orders_billing_address_num != 'true' && orders_billing_address_num == i){
 
         var orders_billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
       }else{

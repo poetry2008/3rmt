@@ -158,9 +158,9 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
   echo '          <tr>' . "\n" .
-    '            <td align="right" valign="top" class="confirmation_product_num_info">' .
-    $order->products[$i]['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
-    '            <td class="main" valign="top">' . $order->products[$i]['name'];
+         '            <td align="right" valign="top" class="confirmation_product_num_info">' .  $order->products[$i]['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" valign="top">' . $order->products[$i]['name'];
+
   if ($order->products[$i]['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';
   } else {
@@ -386,6 +386,32 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
 ?>
 
   </table>
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+
+<?php
+}
+if(isset($_SESSION['billing_select'])){
+?>
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+  <tr class="infoBoxContents"> 
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="3"><b><?php echo TEXT_BILLING_SELECT; ?>&nbsp;</b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main" width="30%" valign="top"><?php echo $_SESSION['billing_select'] == 1 ? TEXT_BILLING_SELECT_TRUE : TEXT_BILLING_SELECT_FALSE;?></td>
+  <td class="main" width="70%">&nbsp;</td>
+  </tr>
+</table>
 </td>
 </tr>
 </table></td>

@@ -124,6 +124,7 @@
   $address_option_value = tep_db_prepare_input($_POST['address_option']);
   $shipping_ele = tep_db_prepare_input($_POST['ele']);
   $shipping_address_show_list = $_POST['address_show_list'];
+  $shipping_billing_select = $_POST['billing_select'];
 
   //住所
   $options_required = array();
@@ -143,6 +144,17 @@
 
   
   //住所信息处理 
+  //过滤提示字符串
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'op_') {
+      $_POST[$p_key] = tep_db_prepare_input($p_value);
+      if($options_comment[substr($p_key,3)] == $p_value){
+
+         $_POST[$p_key] = '';
+      }
+    } 
+  }
   $weight_count = $cart->weight;
   $option_info_array = array(); 
   if (!$hm_option->check()) {
@@ -217,6 +229,7 @@
     $_SESSION['address_option'] = $address_option_value;
     $_SESSION['insert_torihiki_date'] = $shipping_insert_torihiki_date;
     $_SESSION['insert_torihiki_date_end'] = $shipping_insert_torihiki_date_end; 
+    $_SESSION['billing_select'] = $shipping_billing_select;
     //住所信息 session
     
     $options = array();
@@ -334,6 +347,10 @@ if($cart->weight > 0){
       break;
     }
   }
+
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
 }
 ?>
 
@@ -532,6 +549,7 @@ function address_option_show(action){
     $("#address_show_id").show();
     var arr_old  = new Array();
     var arr_name = new Array();
+    var billing_address_num = 'true';
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 
@@ -561,6 +579,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
    
   $json_str_list = '';
   unset($json_old_array);
+  $billing_address_flag = $billing_address_flag == false ? false : true;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -569,6 +588,12 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1' && $billing_address_flag == false){
+      
+      echo 'billing_address_num = '.$address_num.';';
+      $billing_address_flag = true;
+    }
         
   }
 
@@ -628,7 +653,13 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
      if(i==address_show_list_one){
         selected_value = ' selected';
       }
-      $("#address_show_list").append( "<option value=\""+i+"\""+selected_value+">"+arr_str+"</option>" ); 
+     if(billing_address_num != 'true' && billing_address_num == i){
+
+       var billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
+     }else{
+       var billing_address_str = '';
+     }
+      $("#address_show_list").append( "<option value=\""+i+"\""+selected_value+">"+arr_str+billing_address_str+"</option>" ); 
       selected_value = '';
     }
 
@@ -807,9 +838,11 @@ if($cart->weight > 0){
      address_option_list(first_num); 
      <?php
      }else{
+       if($_POST['action'] != 'process'){
      ?>
      address_option_show('new');
      <?php
+       }
      }
      if(isset($_SESSION['options'])){ 
      ?>
@@ -1496,6 +1529,33 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
                           </table>
 	    </td> 
           </tr>
+<?php
+  }
+  //判断是否开启了帐单邮寄地址功能与顾客是否设置了帐单邮寄地址
+  if($billing_address_show == 'true' && $billing_address_flag == true){
+?>
+          <tr>
+            <td class="main"><b><?php echo TEXT_BILLING_SELECT; ?></b></td>
+          </tr>
+          <tr>
+            <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          </tr>
+          <tr> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                <tr> 
+                  <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                    <tr>
+                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
+                      <td class="main" colspan="2"><input type="radio" name="billing_select" style="padding-left:0;margin-left:0;" value="0"<?php echo isset($_POST['billing_select']) && $_POST['billing_select'] == 0 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 0 ? ' checked="checked"' : (!isset($_POST['billing_select']) && !isset($_SESSION['billing_select']) ? ' checked="checked"' : ''));?>><?php echo TEXT_BILLING_SELECT_FALSE;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="billing_select" value="1"<?php echo isset($_POST['billing_select']) && $_POST['billing_select'] == 1 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 1 ? ' checked="checked"' : '');?>><?php echo TEXT_BILLING_SELECT_TRUE;?></td>
+                    </tr>
+                    </table>
+                  </td>
+                </tr>
+                </table>
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
 <?php
   }
 ?>

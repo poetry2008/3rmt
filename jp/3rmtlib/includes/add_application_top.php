@@ -209,6 +209,10 @@ if ($pdo_con) {
   define('FILENAME_ADDRESS_BOOK_PROCESS', 'address_book_process.php');
   define('FILENAME_ADVANCED_SEARCH', 'advanced_search.php');
   define('FILENAME_ADVANCED_SEARCH_RESULT', 'advanced_search_result.php');
+  define('FILENAME_CHANGE_PREORDER', 'change_preorder.php');
+  define('FILENAME_CHANGE_PREORDER_CONFIRM', 'change_preorder_confirm.php');
+  define('FILENAME_CHANGE_PREORDER_SUCCESS', 'change_preorder_success.php');
+  define('FILENAME_AC_MAIL_FINISH', 'ac_mail_finish.php');
   
   define('FILENAME_AJAX', 'ajax.php');
   define('FILENAME_ALSO_PURCHASED_PRODUCTS', 'also_purchased_products.php'); // This is the bottom of product_info.php (found in modules)

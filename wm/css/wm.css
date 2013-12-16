@@ -1743,7 +1743,7 @@ searching
 	line-height:1.5;
 	margin-left:-3px;
 	*margin-left:-3px!important;
-	margin-left:-3px\0;
+	margin-left:0px\0;
 }
 .option_name{
 	width:85px;
@@ -1798,7 +1798,7 @@ searching
 	display:block;
 }
 .option_checkmark img{vertical-align:bottom;}
-.option_show_border span{ float:left; overflow:hidden; padding:0 5px;}
+.option_show_border span{ float:left; overflow:hidden; padding:2px 5px; line-height:16px;}
 .option_show_border .option_conent{
 		border:2px solid #FF6701;
 		overflow:hidden;
@@ -1831,7 +1831,7 @@ searching
 	line-height:27px;
 	margin:0 3px 0 0;
 }
-.option_hide_border span{ float:left; overflow:hidden; padding:0 5px;}
+.option_hide_border span{ float:left; overflow:hidden; padding:2px 5px; line-height:16px;}
 .option_hide_border a{
 	color:#06727D; 
 	display:block;

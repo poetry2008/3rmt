@@ -30,9 +30,9 @@ define('ERROR_REMOVE_UNLOCKED_NEWSLETTER', '错误: 删除邮件杂志需要解�
 define('ERROR_EDIT_UNLOCKED_NEWSLETTER', '错误: 编辑邮件杂志需要解锁。');
 define('ERROR_SEND_UNLOCKED_NEWSLETTER', '错误: 发送邮件杂志需要解锁。');
 define('NOTICE_SEND_ZERO_MAIL_TEXT', '送信地是0个。中止邮件杂志送信操作。');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_USER_ADDED','创建者:');
-define('TEXT_LAST_MODIFIED','更新日:');
+define('TEXT_USER_UPDATE','更新者');
+define('TEXT_USER_ADDED','创建者');
+define('TEXT_LAST_MODIFIED','更新日');
 
 
 

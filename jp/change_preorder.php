@@ -275,7 +275,7 @@ function address_option_show(action){
     $("#address_show_id").show();
     var arr_old  = new Array();
     var arr_name = new Array();
-    var billing_address_num = '';
+    var billing_address_num = 'true';
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   
@@ -304,6 +304,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
    
   $json_str_list = '';
   unset($json_old_array);
+  $billing_address_flag = $billing_address_flag == true ? true : false;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -312,9 +313,10 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
-    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1'){
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1' && $billing_address_flag == false){
 
       echo 'billing_address_num = '.$address_num.';';
+      $billing_address_flag = true;
     }
         
   }
@@ -374,7 +376,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     echo 'var address_show_list_one = first_num;'."\n"; 
   }
         ?>
-      if(billing_address_num !='' && billing_address_num == i){
+      if(billing_address_num != 'true' && billing_address_num == i){
 
         var billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）'; 
       }else{
@@ -1168,8 +1170,22 @@ document.forms.order1.submit();
         <br>
         <?php 
         }
+        if($billing_address_show == 'true' && $billing_address_flag == true){
         ?>
-        
+        <p class="formBoxTitle"><?php echo TEXT_BILLING_SELECT;?></p> 
+        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+        <tbody><tr class="infoBoxContents"><td>
+        <table width="100%" cellpadding="2" cellspacing="2" border="0">
+        <tr> 
+          <td class="main" colspan="2"><input type="radio" name="preorders_billing_select" value="0"<?php echo isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == 0 ? ' checked="checked"' : (isset($_SESSION['preorder_information']['preorders_billing_select']) && $_SESSION['preorder_information']['preorders_billing_select'] == 0 ? ' checked="checked"' : (!isset($_POST['preorders_billing_select']) && !isset($_SESSION['preorder_information']['preorders_billing_select']) ? ' checked="checked"' : ''));?>><?php echo TEXT_BILLING_SELECT_FALSE;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="preorders_billing_select" value="1"<?php echo isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == 1 ? ' checked="checked"' : (isset($_SESSION['preorder_information']['preorders_billing_select']) && $_SESSION['preorder_information']['preorders_billing_select'] == 1 ? ' checked="checked"' : '');?>><?php echo TEXT_BILLING_SELECT_TRUE;?></td>
+        </tr>
+        </table>
+        </td></tr>
+        </table>
+        <br>
+       <?php
+        }
+       ?>
         <p class="formBoxTitle"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></p> 
         <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
         <tbody><tr class="infoBoxContents"><td>

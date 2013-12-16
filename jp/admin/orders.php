@@ -3644,12 +3644,28 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
             <tr>
             <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
-            <td class="main"><textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
+            <td class="main">
+            <div >
+            <div id="customer_fax_textarea" style="display:none">
+            <textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
             <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
             <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+            </div>
+            <div id="customer_fax_text" style="width:98%;height:42px;*height:40px;overflow-y:auto">
+            <?php 
+            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); 
+            echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
+            ?>
+            </div>
             </td>
-            <td class="main" width="30"><input type="submit" value="<?php echo
-            TEXT_ORDER_SAVE;?>"></td>
+            <td class="main" width="30">
+            <div id="customer_fax_textarea_input" style="display:none">
+            <input type="submit" value="<?php echo TEXT_ORDER_SAVE;?>">
+            </div>
+            <div id="customer_fax_text_input">
+            <input type="button" onclick="show_edit_fax()" value="<?php echo IMAGE_EDIT;?>">
+            </div>
+            </td>
             </form>
             </tr>
             </table>
@@ -3936,6 +3952,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <?php }?> 
             </tr>
             <?php
+            $comment_warning_arr = explode('|',COMMENT_SHOW_KEYWORDS);
             $cpayment = payment::getInstance($orders['site_id']);
             $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
           $orders_status_history_str = '';
@@ -3979,7 +3996,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                $orders_history_comment = $orders_history['comments'];
            }
            if($orders_history['comments'] != $orders_status_history_str){
-             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment))) . '&nbsp;</p></td>' . "\n";
+             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' .  tep_replace_to_red($comment_warning_arr,nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)))) . '&nbsp;</p></td>' . "\n";
            }else{
 
              echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">&nbsp;</p></td>' . "\n";
