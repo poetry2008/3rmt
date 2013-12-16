@@ -12630,3 +12630,54 @@ function tep_get_preorders_by_customers_id($customers_id,$site_id){
   }
   return count($preorders_array);
 }
+
+/* -------------------------------------
+    功能: 生成指定的文本框 
+    参数: $text(string) 默认的内容 
+    参数: $empty_params(string) 值 
+    参数: $params(string) 其他参数 
+    返回值: 指定的文本框(string)
+ ------------------------------------ */
+function tep_new_input($text, $empty_params = '', $params = '') {
+  if($params != ''){
+    return tep_draw_input_field('configuration_value', $text, $params.' style="width:60%; text-align:right;" id="setting_text"').'%';
+  }else{
+    return tep_draw_input_field('configuration_value', $text, 'style="width:60%; text-align:right;" id="setting_text"').'%';
+  }
+}
+
+/* -------------------------------------
+    功能: 检查商品价格是否超过最低利率 
+    参数: $pid(int) 商品id 
+    参数: $price_info(string) 商品价格 
+    返回值: 是否显示错误信息(string)
+ ------------------------------------ */
+function check_products_price_info($pid, $price_info) {
+  global $currencies, $languages_id;
+  $low_price_setting = MIN_PROFIT_SETTING / 100; 
+  $error_str = ''; 
+  if ($low_price_setting) {
+    $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$pid."'");
+    $product_info = tep_db_fetch_array($product_info_raw); 
+    if ($product_info) {
+      $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$product_info['relate_products_id']."'"); 
+      $relate_product = tep_db_fetch_array($relate_product_raw); 
+      if ($relate_product) {
+        $relate_product_name_raw = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$product_info['relate_products_id']."' and site_id = '0'"); 
+        $relate_product_name_res = tep_db_fetch_array($relate_product_name_raw);      
+        if ($product_info['products_bflag'] == '1') {
+          $tmp_value = round((abs($relate_product['products_price']) - abs($price_info))/abs($price_info), 2); 
+          if ($tmp_value < $low_price_setting) {
+            $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($relate_product['products_price']))); 
+          }
+        } else {
+          $tmp_value = round((abs($price_info) - abs($relate_product['products_price']))/abs($relate_product['products_price']), 2); 
+          if ($tmp_value < $low_price_setting) {
+            $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($relate_product['products_price']))); 
+          }
+        }
+      }
+    }
+  } 
+  return $error_str;
+}

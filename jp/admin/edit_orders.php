@@ -2015,23 +2015,97 @@ function products_num_check(orders_products_list_id,products_name,products_list_
 }
 <?php //检查订单商品的重量是否超重?>
 function submit_check_con(){
+  var find_input_name = ''; 
+  var reg_info = new RegExp("update_products\\[[0-9]+\\]\\[p_price\\]"); 
+  var reg_new_info = new RegExp("update_products\\[o_[0-9]+\\]\\[p_price\\]"); 
+  var reg_num_info = new RegExp("update_products\\[[0-9]+\\]\\[qty\\]"); 
+  var next_find_input_name = ''; 
+  var price_list_str = '';
+  var hidden_list_str = '';
+  var num_list_str = ''; 
+  $('#ctable').find('input').each(function() {
+    if ($(this).attr('type') == 'text') {
+      find_input_name = $(this).attr('name'); 
+      if (reg_info.test(find_input_name)) {
+        price_list_str += $(this).val()+'|||'; 
+        hidden_list_str += $(this).next().val()+'|||'; 
+        num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
+      }
+      if (reg_new_info.test(find_input_name)) {
+        price_list_str += $(this).val()+'|||'; 
+        hidden_list_str += 'o_'+$(this).next().val()+'|||'; 
+        num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
+      }
+    }
+  });
+  if (price_list_str != '') {
+    price_list_str = price_list_str.substr(0, price_list_str.length-3);
+    hidden_list_str = hidden_list_str.substr(0, hidden_list_str.length-3);
+    num_list_str = num_list_str.substr(0, num_list_str.length-3);
+    $.ajax({
+      url: 'ajax_orders.php?action=check_order_products_profit',
+      type: 'POST',
+      dataType: 'text',
+      data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
+      async: false,
+      success: function (msg_info) {
+        if (msg_info != '') {
+          if (confirm(msg_info)) {
+            var options = {
+              url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
+              type:  'POST',
+              success: function(data) {
+                if(data != ''){
+                  if(confirm(data)){
 
+                    submitChk('<?php echo $ocertify->npermission;?>'); 
+                  }
+                }else{
+
+                  submitChk('<?php echo $ocertify->npermission;?>'); 
+                } 
+              }
+            };
+            $('#edit_order_id').ajaxSubmit(options);
+          } 
+        } else {
+          var options = {
+            url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
+            type:  'POST',
+            success: function(data) {
+              if(data != ''){
+                if(confirm(data)){
+
+                  submitChk('<?php echo $ocertify->npermission;?>'); 
+                }
+              }else{
+
+                submitChk('<?php echo $ocertify->npermission;?>'); 
+              } 
+            }
+          };
+          $('#edit_order_id').ajaxSubmit(options);
+        } 
+      }
+    }); 
+  } else {
     var options = {
       url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
-    type:  'POST',
-    success: function(data) {
-      if(data != ''){
-        if(confirm(data)){
+      type:  'POST',
+      success: function(data) {
+        if(data != ''){
+          if(confirm(data)){
+
+            submitChk('<?php echo $ocertify->npermission;?>'); 
+          }
+        }else{
 
           submitChk('<?php echo $ocertify->npermission;?>'); 
-        }
-      }else{
-
-        submitChk('<?php echo $ocertify->npermission;?>'); 
-      } 
-    }
-  };
-  $('#edit_order_id').ajaxSubmit(options);
+        } 
+      }
+    };
+    $('#edit_order_id').ajaxSubmit(options);
+  }
 }
 <?php //加减符号?>
 function sign(num){
@@ -4652,10 +4726,17 @@ if (($action == 'edit') && ($order_exists == true)) {
 
       $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price']; 
       if ($is_less_option) {
-        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'">'.TEXT_MONEY_SYMBOL.'</td>'; 
+        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'">'.TEXT_MONEY_SYMBOL;
       } else {
-        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>'; 
+        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL;
       }
+      $check_o_pos = substr($orders_products_id, 0, 2); 
+      if ($check_o_pos == 'o_') {
+        echo '<input type="hidden" name="hidden_pro_id[]" value="'.$order->products[$i]['id'].'">'; 
+      } else {
+        echo '<input type="hidden" name="hidden_pro_id[]" value="'.$orders_products_id.'">'; 
+      }
+      echo '</td>'; 
 
       $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price']; 
       echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='hidden' style='text-align:right' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['final_price'])?$_POST['update_products'][$orders_products_id]['final_price']:$order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" >'.  
