@@ -2419,10 +2419,13 @@ line-height:21px;
 }
 .option_info_text{
 	overflow:hidden;
-	width:100%;
+	width:61%;
+	*width:60.8%!important;
+	width:60.5%\0;
 	margin-bottom:5px;
+	white-space:normal;
 }
-.option_info_text select{ float:left; margin-left:0;}
+.option_info_text select{float:left; margin-left:0; width:100%;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
