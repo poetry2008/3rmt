@@ -731,10 +731,10 @@ define('CSV_HEADER_TEXT', 'アカウント作成日,性別,姓,名,生年月日,
 define('CSV_EXPORT_TEXT', 'CSVエクスポート');
 define('TEXT_ALL','すべて');
 define('MESSAGE_FINISH_ORDER_TEXT', '注文ID%sの成功：取り引きが完了致しました');
-define('TEXT_USER_ADDED','作成者:');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','作成日:');
-define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_USER_ADDED','作成者');
+define('TEXT_USER_UPDATE','更新者');
+define('TEXT_DATE_ADDED','作成日');
+define('TEXT_DATE_UPDATE','更新日');
 define('TEXT_EOF_ERROR_MSG','データ送信が失敗しました。再度送信してください。');
 define('TEXT_UNSET_DATA','データなし');
 define('IMAGE_PREV', '前へ');
