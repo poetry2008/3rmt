@@ -32,10 +32,10 @@ define('TEXT_DELETE_WARNING_PRODUCTS', '<b>警告:</b> このメーカーにリ�
 
 define('ERROR_DIRECTORY_NOT_WRITEABLE', 'エラー: このディレクトリに書き込みできません。正しいユーザ権限を %s に設定してください。');
 define('ERROR_DIRECTORY_DOES_NOT_EXIST', 'エラー: %s ディレクトリが存在しません。');
-define('TEXT_USER_ADDED','登録者:');
-define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_USER_ADDED','登録者');
+define('TEXT_USER_UPDATE','更新者');
 //define('TEXT_DATE_ADDED','作成日:');
-define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_DATE_UPDATE','更新日');
 define('TEXT_MANUFACTURERS_SELECT_ACTION','選択したものを');
 define('TEXT_MANUFACTURERS_DELETE_ACTION', '削除する');
 define('TEXT_MANUFACTURERS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
