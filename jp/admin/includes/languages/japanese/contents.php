@@ -28,10 +28,10 @@ define('ROMAJI_NOT_NULL', '<font color=\'red\'>ローマ字をご入力くださ
 
 define('ROMAJI_EXISTS', '<font color=\'red\'>ローマ字はもう存在しています。</font>');
 define('ROMAJI_WRONG_FORMAT', '英数文字及び「_」で記入してください');
-define('TEXT_USER_ADDED','作成者:');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','作成日:');
-define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_USER_ADDED','作成者');
+define('TEXT_USER_UPDATE','更新者');
+define('TEXT_DATE_ADDED','作成日');
+define('TEXT_DATE_UPDATE','更新日');
 
 define('TEXT_CONTENT_MSG', 'このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。');
 define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');

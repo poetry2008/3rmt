@@ -41,13 +41,10 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||strpos($_SERVER['PHP_SELF'], 'change_preorder.php')
     ||strpos($_SERVER['PHP_SELF'], 'change_preorder_confirm.php')
     ||strpos($_SERVER['PHP_SELF'], 'change_preorder_success.php')
-    ||strpos($_SERVER['PHP_SELF'], 'preorder_success.php')
     ||strpos($_SERVER['PHP_SELF'], 'reorder2.php')
     ||strpos($_SERVER['PHP_SELF'], 'reviews.php')
     ||strpos($_SERVER['PHP_SELF'], 'manufacturers.php')
     ||strpos($_SERVER['PHP_SELF'], 'non-preorder_auth.php')
-    ||strpos($_SERVER['PHP_SELF'], 'preorder_payment.php')
-    ||strpos($_SERVER['PHP_SELF'], 'preorder_confirmation.php')
     ||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))){
 }else{
   if (!((strpos($_SERVER['PHP_SELF'], 'index.php')) && ($category_depth == 'top') && !isset($_GET['manufacturers_id']))) {
@@ -65,7 +62,7 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
       if ($cPath) {
         include(DIR_WS_BOXES . 'list_categories.php');
       } else {
-        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
+        if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) ||(basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
           include(DIR_WS_BOXES . 'list_categories.php');
         } else {
           if((basename($_SERVER['PHP_SELF']) != FILENAME_ADVANCED_SEARCH_RESULT) && (basename($_SERVER['PHP_SELF']) != FILENAME_PREORDER_PAYMENT) && (basename($_SERVER['PHP_SELF']) != FILENAME_MEMBER_AUTH) && (basename($_SERVER['PHP_SELF']) != FILENAME_NON_MEMBER_AUTH)){

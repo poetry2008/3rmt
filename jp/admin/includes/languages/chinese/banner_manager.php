@@ -57,10 +57,10 @@ define('ERROR_UNKNOWN_STATUS_FLAG', "错误: 状态不详。");
 
 define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', "错误:  'graphs' 目录不存在。 请在'images' 目录里创建'graphs'目录。");
 define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', "错误:  '无法编辑images/graphs' 目录。请设置正确的用户权限。");
-define('TEXT_USER_ADDED','创建者:');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日:');
-define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_USER_ADDED','创建者');
+define('TEXT_USER_UPDATE','更新者');
+define('TEXT_DATE_ADDED','创建日');
+define('TEXT_DATE_UPDATE','更新日');
 
 define('TEXT_ADVERTISEMENT_INFO','如果想使用banner功能的话，【注册新banner/组】的命名一定要以adv开头。');
 define('TEXT_REVIEWS_SELECT_ACTION','请选择');

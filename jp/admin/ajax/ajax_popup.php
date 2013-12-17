@@ -553,7 +553,7 @@ if ($_GET['action'] == 'show_category_info') {
     $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
   }
   if (empty($_GET['site_id'])) {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="check_single_product_price(\''.$pInfo->products_id.'\', \''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
   }
   
   $buttons = array('align' => 'center', 'type' => 'div', 'id' => 'order_del', 'params' => 'class="main"' , 'button' => $button);
@@ -2816,7 +2816,7 @@ width:20%;"'))
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CONFIGURATION);
 include(DIR_FS_ADMIN.'classes/notice_box.php');
 $notice_box = new notice_box('popup_order_title','popup_order_info');
-$configuration_query = tep_db_query(" select configuration_id, configuration_title, configuration_key, configuration_value, use_function from " . TABLE_CONFIGURATION . " where configuration_group_id = '" . $_GET['gID'] . "' and `site_id` = '0'  order by sort_order");
+$configuration_query = tep_db_query(" select configuration_id, configuration_title, configuration_key, configuration_value, use_function, type_info from " . TABLE_CONFIGURATION . " where configuration_group_id = '" . $_GET['gID'] . "' and `site_id` = '0'  order by sort_order");
 $site_id = $_GET['site_id'];
 $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
 while($userslist= tep_db_fetch_array($sites_id)){
@@ -2847,7 +2847,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         && (!isset($cInfo) || !$cInfo) 
         && (!isset($_GET['action']) or substr($_GET['action'], 0, 3) != 'new')
     ) {
-  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
+  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update,type_info from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
   $cfg_extra= tep_db_fetch_array($cfg_extra_query);
   $cInfo_array = tep_array_merge($configuration, $cfg_extra);
   $cInfo = new objectInfo($cInfo_array);
@@ -2923,6 +2923,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
             'SEG_CRONTAB_ROW',
             'SEG_CRONTAB_SLEEP',
             'REVIEWS_BAN_CHARACTER',
+            'MIN_PROFIT_SETTING',
             );
   //头部内容
   if(constant($cInfo->configuration_title) == null){
@@ -2985,13 +2986,16 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA)),
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
       );
-  
     //button 内容 
     if(in_array($site_id,$site_array)) { 
     if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
       $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="check_signal_time_select(\''.$ocertify->npermission.'\')"') . '&nbsp;';
     } else {
-      $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="update_configuration_info(\''.$ocertify->npermission.'\');"') . '&nbsp;';
+      if ($cInfo->type_info == '1') {
+        $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="new_update_configuration_info(\''.$ocertify->npermission.'\');"') . '&nbsp;';
+      } else {
+        $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="update_configuration_info(\''.$ocertify->npermission.'\');"') . '&nbsp;';
+      }
     }
     }else{
     if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
@@ -6836,13 +6840,13 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
   
   //作成者，作成时间，更新者，更新时间 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_added'])?$mail_array['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($mail_array['date_added'])))?tep_datetime_short($mail_array['date_added']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_added'])?$mail_array['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($mail_array['date_added'])))?tep_datetime_short($mail_array['date_added']):TEXT_UNSET_DATA))
       );
    
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_update'])?$mail_array['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($mail_array['date_update'])))?tep_datetime_short($mail_array['date_update']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mail_array['user_update'])?$mail_array['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($mail_array['date_update'])))?tep_datetime_short($mail_array['date_update']):TEXT_UNSET_DATA))
       );
     
   //底部内容
@@ -7081,24 +7085,24 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     }
     if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_q['user_added'])?$faq_q['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_q['created_at']))?$faq_q['created_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($faq_q['user_added'])?$faq_q['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($faq_q['created_at']))?$faq_q['created_at']:TEXT_UNSET_DATA))
     );
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).(tep_not_null($faq_c['user_added'])?$faq_c['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).((tep_not_null($faq_c['created_at']))?$faq_c['created_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($faq_c['user_added'])?$faq_c['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($faq_c['created_at']))?$faq_c['created_at']:TEXT_UNSET_DATA))
     );
     }
     if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_q['user_update'])?$faq_q['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_q['updated_at']))?$faq_q['updated_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($faq_q['user_update'])?$faq_q['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($faq_q['updated_at']))?$faq_q['updated_at']:TEXT_UNSET_DATA))
     );
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).(tep_not_null($faq_c['user_update'])?$faq_c['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).((tep_not_null($faq_c['updated_at']))?$faq_c['updated_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($faq_c['user_update'])?$faq_c['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($faq_c['updated_at']))?$faq_c['updated_at']:TEXT_UNSET_DATA))
     );
     }
     if($qInfo->info_type == 'q'){
@@ -7201,12 +7205,12 @@ if($_GET['cID'] == -1){
         array('text' => tep_draw_input_field('sort_order','1000','size="5" style="text-align:right"onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'))
         );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).TEXT_UNSET_DATA), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).TEXT_UNSET_DATA)
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
     );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).TEXT_UNSET_DATA),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).TEXT_UNSET_DATA)
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
     );
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_SAVE, 'id="button_save"onclick="faq_category_form_validator(\''.$current_category_id.'\',\'\',\''.$site_id.'\', \''.$ocertify->npermission.'\')"').  '</a>';
    if(!empty($button)){
@@ -7271,12 +7275,12 @@ if($_GET['qID'] == -1){
         array('text' => tep_draw_input_field('sort_order','1000','size="5"style="text-align:right"'))
         ); 
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_ADDED).TEXT_UNSET_DATA), 
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_ADDED).TEXT_UNSET_DATA)
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp'.TEXT_UNSET_DATA)
     );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_USER_UPDATE).TEXT_UNSET_DATA),
-            array('align' => 'left','text' => str_replace(':','&nbsp;&nbsp;&nbsp;',TEXT_DATE_UPDATE).TEXT_UNSET_DATA)
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp'.TEXT_UNSET_DATA),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp'.TEXT_UNSET_DATA)
     );
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_SAVE, 'id="button_save" onclick="faq_question_form_validator(\''.$current_category_id.'\',\'\',\''.$site_id.'\', \''.$ocertify->npermission.'\');"').  '</a>';
     if(!empty($button)){
@@ -7413,12 +7417,12 @@ if($_GET['type'] == 'mag_orders'){
         );
     $update_data  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_orders'"));
     $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_added'])?$update_data['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['date_added'])))?tep_datetime_short($update_data['date_added']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_added'])?$update_data['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['date_added'])))?tep_datetime_short($update_data['date_added']):TEXT_UNSET_DATA))
       );
     $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_update'])?$update_data['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['last_modified'])))?tep_datetime_short($update_data['last_modified']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_update'])?$update_data['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['last_modified'])))?tep_datetime_short($update_data['last_modified']):TEXT_UNSET_DATA))
       );
     $notice_box->get_form($form_str);
     $notice_box->get_heading($heading);
@@ -7643,12 +7647,12 @@ resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_e
         array('text' => KEYWORDS_SEARCH_START_TEXT.$present_y.YEAR_TEXT.$present_m.MONTH_TEXT.$present_d.$present_l_y.$present_l_m.$present_l_d.'<br><span id="select_error"></span>')
     );
     $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_added'])?$sql1['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_added'])))?tep_datetime_short($sql1['date_added']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_added'])?$sql1['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_added'])))?tep_datetime_short($sql1['date_added']):TEXT_UNSET_DATA))
       );
     $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_update'])?$sql1['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_update'])))?tep_datetime_short($sql1['date_update']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_update'])?$sql1['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_update'])))?tep_datetime_short($sql1['date_update']):TEXT_UNSET_DATA))
       );
     if($disabled){
     $button[] = '<a>'.tep_html_element_button(IMAGE_SAVE,$disabled.'id="button_save"').'</a>'.(($ocertify->npermission >= 15)?'<a>' .  tep_html_element_button(IMAGE_DELETE,$disabled) .  '</a>':'').'<a>' .  tep_html_element_button(PRESENT_LIST,$disabled) . '</a>';
@@ -7799,12 +7803,12 @@ resize:vertical;">'.stripslashes($sql1['text']).'</textarea><br><span id="text_e
         array('text' => KEYWORDS_SEARCH_START_TEXT.$present_y.$present_m.$present_d.$present_l_y.$present_l_m.$present_l_d.'<br><span id="select_error"></span>')
      ); 
     $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_added'])?$sql1['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_added'])))?tep_datetime_short($sql1['date_added']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_added'])?$sql1['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_added'])))?tep_datetime_short($sql1['date_added']):TEXT_UNSET_DATA))
       );
     $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_update'])?$sql1['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_update'])))?tep_datetime_short($sql1['date_update']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($sql1['user_update'])?$sql1['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($sql1['date_update'])))?tep_datetime_short($sql1['date_update']):TEXT_UNSET_DATA))
       );
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(PRESENT_SAVE, 'id="button_save" onclick="msg(\''.$ocertify->npermission.'\');"').'</a>';
     if(!empty($button)){
@@ -8245,12 +8249,12 @@ $banner_query = tep_db_query("
     }
     }
     $contents_end[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($bInfo->user_added)?$bInfo->user_added:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_ADDED).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($bInfo->date_added)))?tep_datetime_short($bInfo->date_added):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($bInfo->user_added)?$bInfo->user_added:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($bInfo->date_added)))?tep_datetime_short($bInfo->date_added):TEXT_UNSET_DATA))
       );
     $contents_end[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_USER_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($bInfo->user_update)?$bInfo->user_update:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($bInfo->date_update)))?tep_datetime_short($bInfo->date_update):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($bInfo->user_update)?$bInfo->user_update:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($bInfo->date_update)))?tep_datetime_short($bInfo->date_update):TEXT_UNSET_DATA))
       );
   $buttons = array();
   if($disabled){

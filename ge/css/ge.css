@@ -1366,12 +1366,12 @@ searching
 	display:block;
 }
 .option_checkmark img{vertical-align:bottom;}
-.option_show_border span{ float:left; overflow:hidden; padding-left:5px;}
+.option_show_border span{ float:left; overflow:hidden;  padding:2px 0 2px 5px; line-height:16px}
 .option_show_border .option_conent{
 	border:2px solid #FF6701;
 	overflow:hidden;
 	float:left;
-	line-height:27px;
+	line-height:20px;
 	margin:0 3px 0 0;
 }
 .option_hide_border {
@@ -1394,7 +1394,7 @@ searching
 	line-height:27px;
 	margin:0 3px 0 0;
 }
-.option_hide_border span{ float:left; overflow:hidden; padding-left:5px;}
+.option_hide_border span{ float:left; overflow:hidden; padding:2px 0 2px 5px; line-height:16px;}
 .option_hide_border a{
 	text-decoration:none;
 	padding-right:5px;
@@ -1438,9 +1438,13 @@ searching
 }
 .option_info_text{
 	overflow:hidden;
-	width:100%;
+	width:73%;
+	*width:72.8%!important;
+	width:72.6%\0;
+	margin-bottom:5px;
+	white-space:normal;
 }
-.option_info_text select{ float:left; margin-left:0; width:285px;}
+.option_info_text select{ float:left; margin-left:0; width:100%;}
 #show_price{
 	font-size:14px;
 	font-weight:bold;

@@ -2706,4 +2706,89 @@ echo json_encode($json_array);
  参数: $_POST['is_customized_fee'] 信息 
  ----------------------------------------*/
   echo tep_check_edit_order_variable_data($_POST['o_id'], $_POST['c_comments'], $_POST['c_title'], $_POST['c_status_id'], $_POST['c_payment'], $_POST['c_name_info'], $_POST['c_mail_info'], $_POST['c_comment_info'], $_POST['is_customized_fee']); 
+} else if ($_GET['action'] == 'check_is_numeric') {
+/*-----------------------------------------
+ 功能: 检查变量是否大于等于0
+ 参数: $_POST['o_params'] 内容 
+ ----------------------------------------*/
+  $show_error_single = false; 
+  if (is_numeric($_POST['o_param'])) {
+    if ($_POST['o_param'] < 0) {
+      $show_error_single = true; 
+    } 
+  } else {
+    $show_error_single = true; 
+  }
+  if ($show_error_single) {
+    echo TEXT_INPUT_IS_NO_NUMERIC; 
+  } else {
+    echo ''; 
+  }
+} else if ($_GET['action'] == 'check_products_profit') {
+/*-----------------------------------------
+ 功能: 检查商品价格是否低于指定利润率
+ 参数: $_POST['products_id'] 商品id 
+ 参数: $_POST['new_price'] 价格 
+ ----------------------------------------*/
+  echo check_products_price_info($_POST['products_id'], $_POST['new_price']);
+} else if ($_GET['action'] == 'check_list_products_profit') {
+/*-----------------------------------------
+ 功能: 检查商品列表里的商品价格是否低于指定利润率
+ 参数: $_POST['products_id_list'] 商品id列表 
+ 参数: $_POST['product_price_list'] 商品价格列表 
+ ----------------------------------------*/
+  $show_error_str = ''; 
+  if (!empty($_POST['product_id_list'])) {
+    $product_list_array = explode('|||', $_POST['product_id_list']); 
+    $product_price_array = explode('|||', $_POST['product_price_list']); 
+    foreach ($product_list_array as $p_key => $p_value) {
+      $tmp_show_error_str = check_products_price_info($p_value, $product_price_array[$p_key]);
+      if (!empty($tmp_show_error_str)) {
+        $show_error_str .= $tmp_show_error_str."\n"; 
+      }
+    }
+  }
+  echo $show_error_str;
+} else if ($_GET['action'] == 'check_order_products_profit') {
+/*-----------------------------------------
+ 功能: 检查商品列表里的商品价格是否低于指定利润率
+ 参数: $_POST['products_list_str'] 商品列表 
+ 参数: $_POST['price_list_str'] 商品价格列表 
+ 参数: $_POST['num_list_str'] 商品数量列表 
+ ----------------------------------------*/
+  $show_error_str = ''; 
+  if ($_POST['price_list_str'] != '') {
+    $price_info_array = explode('|||', $_POST['price_list_str']); 
+    $product_info_array = explode('|||', $_POST['products_list_str']); 
+    $num_info_array = explode('|||', $_POST['num_list_str']); 
+    foreach ($product_info_array as $pi_key => $pi_value) {
+      $tmp_check_str = substr($pi_value, 0, 2); 
+      if ($tmp_check_str != 'o_') {
+        $order_products_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$pi_value."'"); 
+        $order_products_res = tep_db_fetch_array($order_products_raw); 
+        $tmp_products_id = $order_products_res['products_id'];  
+      } else {
+        $tmp_products_id = substr($pi_value, 2); 
+      }
+      if (isset($num_info_array[$pi_key])) {
+        if (!empty($num_info_array[$pi_key])) {
+          $tmp_show_error_str = check_products_price_info((int)$tmp_products_id, $price_info_array[$pi_key]);
+          if ($tmp_show_error_str) {
+            $show_error_str .= $tmp_show_error_str."\n"; 
+          }
+        }
+      }
+    }
+  }
+  if ($show_error_str != '') {
+    echo $show_error_str."\n".ERROR_WARNING_TEXT;
+  }
+} else if ($_GET['action'] == 'check_category_to_products_profit') {
+/*-----------------------------------------
+ 功能: 检查商品价格是否低于指定利润率
+ 参数: $_POST['product_flag'] 标识 
+ 参数: $_POST['new_price'] 价格 
+ 参数: $_POST['p_relate_id'] 关联id 
+ ----------------------------------------*/
+  echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id']);
 }
