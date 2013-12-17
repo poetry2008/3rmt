@@ -2789,6 +2789,7 @@ echo json_encode($json_array);
  参数: $_POST['product_flag'] 标识 
  参数: $_POST['new_price'] 价格 
  参数: $_POST['p_relate_id'] 关联id 
+ 参数: $_POST['num_value'] 数值 
  ----------------------------------------*/
-  echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id']);
+  echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id'], $_POST['num_value']);
 }
