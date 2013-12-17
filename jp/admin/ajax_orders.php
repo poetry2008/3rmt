@@ -2783,4 +2783,13 @@ echo json_encode($json_array);
   if ($show_error_str != '') {
     echo $show_error_str."\n".ERROR_WARNING_TEXT;
   }
+} else if ($_GET['action'] == 'check_category_to_products_profit') {
+/*-----------------------------------------
+ 功能: 检查商品价格是否低于指定利润率
+ 参数: $_POST['product_flag'] 标识 
+ 参数: $_POST['new_price'] 价格 
+ 参数: $_POST['p_relate_id'] 关联id 
+ 参数: $_POST['num_value'] 数值 
+ ----------------------------------------*/
+  echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id'], $_POST['num_value']);
 }

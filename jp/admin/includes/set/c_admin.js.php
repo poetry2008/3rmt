@@ -43,19 +43,20 @@ function all_update(c_permission){
   if (product_id_list != '') {
     product_id_list = product_id_list.substr(0, product_id_list.length-3); 
   }
-  var flg=confirm("<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>");
-  if(flg){
-    $.ajax({
-      url: 'ajax_orders.php?action=check_list_products_profit',   
-      type: 'POST',
-      dataType: 'text',
-      data: 'product_id_list='+product_id_list+'&product_price_list='+product_price_list, 
-      async: false,
-      success: function (msg_info) {
-        if (msg_info != '') {
-          document.myForm1.flg_up.value=0;
-          alert(msg_info); 
-        } else {
+  
+  $.ajax({
+    url: 'ajax_orders.php?action=check_list_products_profit',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'product_id_list='+product_id_list+'&product_price_list='+product_price_list, 
+    async: false,
+    success: function (msg_info) {
+      if (msg_info != '') {
+        document.myForm1.flg_up.value=0;
+        alert(msg_info); 
+      } else {
+        var flg=confirm("<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>");
+        if (flg) {
           document.myForm1.flg_up.value=1;
           if (c_permission == 31) {
             window.document.myForm1.submit();
@@ -91,55 +92,55 @@ function all_update(c_permission){
               }
             });
           }
+        } else {
+          document.myForm1.flg_up.value=0;
+          alert("<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>");
         }
       }
-    });
-  }else{
-    document.myForm1.flg_up.value=0;
-    alert("<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>");
-  }
+    }
+  });
 }
 <?php //检查 radio ?>
 function chek_radio(cnt){
-  var radio_cnt=document.getElementsByName("chk["+cnt+"]");
-  var proid = document.getElementsByName("proid[]");
-  for(var i=0;i < radio_cnt.length;i++){
-    if(radio_cnt[i].checked == true){
-      if(document.getElementById("target_"+cnt+"_"+i).innerHTML != ''){
-        set_money(cnt, false, '1'); 
-        $.ajax({
-          type:'POST', 
-          beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
-          dataType:'text',
-          async:false, 
-          url: 'set_ajax_dougyousya.php?products_id='+proid[cnt].value+'&dougyousya_id='+$('#radio_'+cnt+"_"+i).val(),
-          success: function(msg) {
-            $('body').css('cursor', '');
-            setTimeout('read_space_time()', 500);
-          } 
-        });
-      }
+var radio_cnt=document.getElementsByName("chk["+cnt+"]");
+var proid = document.getElementsByName("proid[]");
+for(var i=0;i < radio_cnt.length;i++){
+  if(radio_cnt[i].checked == true){
+    if(document.getElementById("target_"+cnt+"_"+i).innerHTML != ''){
+      set_money(cnt, false, '1'); 
+      $.ajax({
+        type:'POST', 
+        beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+        dataType:'text',
+        async:false, 
+        url: 'set_ajax_dougyousya.php?products_id='+proid[cnt].value+'&dougyousya_id='+$('#radio_'+cnt+"_"+i).val(),
+        success: function(msg) {
+          $('body').css('cursor', '');
+          setTimeout('read_space_time()', 500);
+        } 
+      });
     }
-  }   
+  }
+}   
 }
 <?php //隐藏wait ID ?>
 function read_space_time()
 {
-  $('#wait').hide(); 
+$('#wait').hide(); 
 }
 <?php //表单提交 ?>
 function cleat_set(url){
-  window.document.myForm1.action = url;
-  window.document.myForm1.method = "POST"; 
-  window.document.myForm1.submit();
+window.document.myForm1.action = url;
+window.document.myForm1.method = "POST"; 
+window.document.myForm1.submit();
 }
 <?php //跳转到list_display.php页 ?>
 function list_display(path,cid,fullpath){
-  location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
+location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
 }
 <?php //更新数量 ?>
 function update_quantity(pid){
-  nquantity = $('#real_pro_num').val();
+nquantity = $('#real_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
     return false;
