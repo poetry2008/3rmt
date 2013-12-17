@@ -2820,13 +2820,14 @@ function check_edit_product_profit() {
   var new_price_value = $('#pp').val(); 
   var flag_type = $('input:radio:checked[name=products_bflag]').val(); 
   var relate_value = $('#relate_info').val(); 
+  var num_value = $('#products_attention_1_3').val(); 
   if (relate_value != '0') {
     $.ajax({
       type: 'POST',
       async: false,
       url: 'ajax_orders.php?action=check_category_to_products_profit',
       dataType: 'text',
-      data: 'product_flag='+flag_type+'&new_price='+new_price_value+'&p_relate_id='+relate_value,
+      data: 'product_flag='+flag_type+'&new_price='+new_price_value+'&p_relate_id='+relate_value+'&num_value='+num_value,
       success:function(msg_info) {
         if (msg_info != '') {
           alert(msg_info); 
