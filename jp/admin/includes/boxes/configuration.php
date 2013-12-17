@@ -52,7 +52,7 @@ $configuration_groups_img = array("901"=>"icon_shop_settings.gif",
         "4"  =>"icon_img.gif"
 );
                 if (!check_whether_is_limited(FILENAME_CONFIGURATION)) {
-                  $configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " . TABLE_CONFIGURATION_GROUP . " where visible = '1' order by sort_order");
+                  $configuration_groups_query = tep_db_query("select configuration_group_id as cgID, configuration_group_title as cgTitle from " . TABLE_CONFIGURATION_GROUP . " where visible = '1' and type_info = '0' order by sort_order");
                   while ($configuration_groups = tep_db_fetch_array($configuration_groups_query)) {
                     if(str_replace('/admin/','',$_SERVER['PHP_SELF']).'?gID='.$_GET['gID'] == FILENAME_CONFIGURATION.'?gID='.$configuration_groups['cgID']){
                       echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_CONFIGURATION, 'gID=' .  $configuration_groups['cgID'], 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON.$configuration_groups_img[$configuration_groups['cgID']]).'</span><span>';

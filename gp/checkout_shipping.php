@@ -124,6 +124,7 @@
   $address_option_value = tep_db_prepare_input($_POST['address_option']);
   $shipping_ele = tep_db_prepare_input($_POST['ele']);
   $shipping_address_show_list = $_POST['address_show_list'];
+  $shipping_billing_select = $_POST['billing_select'];
 
   //住所
   $options_required = array();
@@ -228,6 +229,7 @@
     $_SESSION['address_option'] = $address_option_value;
     $_SESSION['insert_torihiki_date'] = $shipping_insert_torihiki_date;
     $_SESSION['insert_torihiki_date_end'] = $shipping_insert_torihiki_date_end; 
+    $_SESSION['billing_select'] = $shipping_billing_select;
     //住所信息 session
     
     $options = array();
@@ -577,6 +579,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
    
   $json_str_list = '';
   unset($json_old_array);
+  $billing_address_flag = $billing_address_flag == false ? false : true;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -586,9 +589,10 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
 
-    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1'){
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1' && $billing_address_flag == false){
       
       echo 'billing_address_num = '.$address_num.';';
+      $billing_address_flag = true;
     }
         
   }
@@ -1521,6 +1525,33 @@ function check_point(point_num) {
         </table>
 	    </td> 
           </tr>
+<?php
+  }
+  //判断是否开启了帐单邮寄地址功能与顾客是否设置了帐单邮寄地址
+  if($billing_address_show == 'true' && $billing_address_flag == true){
+?>
+          <tr>
+            <td class="main"><b><?php echo TEXT_BILLING_SELECT; ?></b></td>
+          </tr>
+          <tr>
+            <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          </tr>
+          <tr> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                <tr> 
+                  <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                    <tr>
+                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
+                      <td class="main" colspan="2"><input type="radio" name="billing_select" style="padding-left:0;margin-left:0;" value="0"<?php echo isset($_POST['billing_select']) && $_POST['billing_select'] == 0 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 0 ? ' checked="checked"' : (!isset($_POST['billing_select']) && !isset($_SESSION['billing_select']) ? ' checked="checked"' : ''));?>><?php echo TEXT_BILLING_SELECT_FALSE;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="billing_select" value="1"<?php echo isset($_POST['billing_select']) && $_POST['billing_select'] == 1 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 1 ? ' checked="checked"' : '');?>><?php echo TEXT_BILLING_SELECT_TRUE;?></td>
+                    </tr>
+                    </table>
+                  </td>
+                </tr>
+                </table>
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
 <?php
   }
 ?>

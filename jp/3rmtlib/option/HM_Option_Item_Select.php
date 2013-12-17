@@ -162,11 +162,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
          echo '<option value="">'.$this->sedefault.'</option>'; 
        }
        foreach ($this->se_option as $key => $value) {
-         if(strlen(stripslashes($value)) > 50){
-         echo '<option value="'.$value.'"'.(($default_value == stripslashes($value))?'selected ':'').'>'.mb_substr(strip_tags(stripslashes($value)),0,20).'...</option>';  
-         }else{
-         echo '<option value="'.$value.'"'.(($default_value == stripslashes($value))?'selected ':'').'>'.strlen(stripslashes($value)).stripslashes($value).'</option>'; 
-         }
+         echo '<option value="'.$value.'"'.(($default_value == stripslashes($value))?'selected ':'').'>'.stripslashes($value).'</option>'; 
          $i++; 
        }
        echo '</select>';

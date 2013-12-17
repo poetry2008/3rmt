@@ -398,6 +398,32 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
 
 <?php
 }
+if(isset($_SESSION['billing_select'])){
+?>
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+  <tr class="infoBoxContents"> 
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="3"><b><?php echo TEXT_BILLING_SELECT; ?>&nbsp;</b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main" width="30%" valign="top"><?php echo $_SESSION['billing_select'] == 1 ? TEXT_BILLING_SELECT_TRUE : TEXT_BILLING_SELECT_FALSE;?></td>
+  <td class="main" width="70%">&nbsp;</td>
+  </tr>
+</table>
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+
+<?php
+}
 ?>
 <tr> 
 <td><table width="100%" border="0" cellspacing="0" cellpadding="2"  class="infoBoxContents">
