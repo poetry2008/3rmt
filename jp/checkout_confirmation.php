@@ -404,7 +404,7 @@ if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
   <td>
   <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr>
-  <td class="main" colspan="3"><b><?php echo TEXT_BILLING_ADDRESS; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  <td class="main" colspan="3"><b><?php echo TEXT_BILLING_ADDRESS; ?></b>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
 <?php
   foreach($_SESSION['billing_options'] as $key=>$value){
