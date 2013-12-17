@@ -598,7 +598,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   //获取是否开启了帐单邮寄地址功能
   $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
   $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
-  if($billing_address_show == 'true'){
+  if($billing_address_show == 'true' $_SESSION['billing_select'] == '1'){
     
      foreach($_SESSION['billing_options'] as $op_key=>$op_value){
  

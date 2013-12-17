@@ -650,7 +650,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
   //获取是否开启了帐单邮寄地址功能
   $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
   $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
-  if($billing_address_show == 'true'){
+  if($billing_address_show == 'true' && $_SESSION['preorder_information']['preorders_billing_select'] == '1'){
     //把帐单邮寄地址的数据存入数据库
     foreach($_SESSION['preorder_information'] as $address_key=>$address_value){
     if(substr($address_key,0,8) == 'billing_'){
