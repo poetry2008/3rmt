@@ -339,6 +339,10 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   tep_session_unregister('hc_camp_point');
   unset($_SESSION['shipping_page_str']);
   unset($_SESSION['shipping_session_flag']);
+  unset($_SESSION['billing_select']);
+  unset($_SESSION['billing_options']);
+  unset($_SESSION['billing_address_option']);
+  unset($_SESSION['billing_address_show_list']);
 
   //清空购物车
   $cart->reset(); 
@@ -595,15 +599,15 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
   $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
   if($billing_address_show == 'true'){
-    //把帐单邮寄地址的数据存入数据库
-    $billing_address_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$customer_id."' and billing_address='1' order by id");
-    if(tep_db_num_rows($billing_address_query) > 1 && isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 1){
-      while($billing_address_array = tep_db_fetch_array($billing_address_query)){
-        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$billing_address_array['address_id']},'".$billing_address_array['name']."','".addslashes($billing_address_array['value'])."','1')");
-        tep_db_free_result($address_query); 
-      }
-      tep_db_free_result($billing_address_query);
-    }
+    
+     foreach($_SESSION['billing_options'] as $op_key=>$op_value){
+ 
+       $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
+       $address_options_array = tep_db_fetch_array($address_options_query);
+       tep_db_free_result($address_options_query);
+       $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','".addslashes($op_value[1])."','1')");
+       tep_db_free_result($address_query);
+     }  
   }
 
   $address_show_array = array(); 
@@ -1296,6 +1300,9 @@ unset($_SESSION['comments']);
 unset($_SESSION['payment_validated']);
 unset($_SESSION['mailcomments']);
 unset($_SESSION['billing_select']);
+unset($_SESSION['billing_options']);
+unset($_SESSION['billing_address_option']);
+unset($_SESSION['billing_address_show_list']);
 
 tep_session_unregister('h_code_fee');
 tep_session_unregister('h_point');
