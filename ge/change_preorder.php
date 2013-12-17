@@ -744,7 +744,7 @@ document.forms.order1.submit();
           <p class="formAreaTitle"><b><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></b></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="144">
+              <td class="main" width="147">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
               <td class="main">
@@ -769,7 +769,7 @@ document.forms.order1.submit();
           <tr><td>
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td class="main" width="144">
+              <td class="main" width="147">
               <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
               </td>
               <td class="main">
@@ -804,7 +804,7 @@ document.forms.order1.submit();
             <td>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-              <td class="main" width="144"><?php echo $old_attr_info['title'];?>:</td> 
+              <td class="main" width="147"><?php echo $old_attr_info['title'];?>:</td> 
               <td class="main">
               <?php 
               echo str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
@@ -834,7 +834,7 @@ document.forms.order1.submit();
             <td>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-              <td class="main" width="144">
+              <td class="main" width="147">
               <?php echo CHANGE_ORDER_PRODUCT_NUM;?> 
               </td>
               <td class="main">
@@ -1330,7 +1330,7 @@ if (isset($time_error)) {
             ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="144" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main" width="147" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main" valign="top">
               <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;"><br><?php echo $preorder_point;?> 
               <?php 
@@ -1346,7 +1346,7 @@ if (isset($time_error)) {
           ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="144" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main" width="147" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
               <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:(isset($_SESSION['preorder_information']['preorder_campaign_point'])?$_SESSION['preorder_information']['preorder_campaign_point']:'0'));?>" style="text-align:right;">
               <?php 

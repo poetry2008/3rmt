@@ -745,7 +745,7 @@ document.forms.order1.submit();
           <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150">
+              <td class="main" width="144">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
               <td class="main">
@@ -1182,7 +1182,7 @@ document.forms.order1.submit();
         <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
-          <td class="main" width="150">
+          <td class="main" width="144">
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
           </td>
           <td class="main">

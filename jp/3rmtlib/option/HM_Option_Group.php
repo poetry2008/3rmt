@@ -43,13 +43,23 @@ class HM_Option_Group extends Option_DbRecord
   function render($option_error_array, $is_product_info = 0, $pre_item_str = '', $cart_obj = '', $ptype = false, $cflag)
   {
     $pro_pos  = strpos($_SERVER['PHP_SELF'], 'product_info.php');
+    $c_pro_pos  = strpos($_SERVER['PHP_SELF'], 'change_preorder.php');
+    $pre_pro_pos  = strpos($_SERVER['PHP_SELF'], 'preorder.php');
     if ($pro_pos !== false) {
       echo "<table class='option_table' cellspacing='1' cellpadding='3' border='0'>";
     } else {
-      if(NEW_STYLE_WEB===true){
-      echo "<table class='option_table' border='0' cellspacing='0' cellpadding='0'>";
-      }else{
-      echo "<table class='option_table'>";
+      if (($c_pro_pos !== false) || ($pre_pro_pos !== false)) {
+        if(NEW_STYLE_WEB===true){
+          echo "<table class='preorder_option_table' border='0' cellspacing='0' cellpadding='0'>";
+        }else{
+          echo "<table class='preorder_option_table'>";
+        }
+      } else {
+        if(NEW_STYLE_WEB===true){
+          echo "<table class='option_table' border='0' cellspacing='0' cellpadding='0'>";
+        }else{
+          echo "<table class='option_table'>";
+        }
       }
     }
     foreach ($this->items as $item){

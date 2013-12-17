@@ -743,7 +743,7 @@ document.forms.order1.submit();
           <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150">
+              <td class="main" width="146">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
               <td class="main">
@@ -1106,7 +1106,7 @@ document.forms.order1.submit();
           tep_db_free_result($quest_query);
         ?>
         <p class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></p>
-        <table border="0" width="100%" cellspacing="2" cellpadding="2" class="preorder_shipping"> 
+        <table border="0" width="100%" cellspacing="0" cellpadding="2" class="preorder_shipping"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
             $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'");
@@ -1180,7 +1180,7 @@ document.forms.order1.submit();
         <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
-          <td class="main" width="150">
+          <td class="main" width="146">
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
           </td>
           <td class="main">

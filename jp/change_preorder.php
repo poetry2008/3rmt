@@ -1191,7 +1191,7 @@ document.forms.order1.submit();
         <tbody><tr class="infoBoxContents"><td>
         <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>
-          <td class="main" width="150">
+          <td class="main" width="144">
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
           </td>
           <td class="main">

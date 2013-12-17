@@ -1242,13 +1242,13 @@ top:70px;
 .payment-content{ _height:24px;}
 
 /*option*/
-.option_table{
+.option_table,.preorder_option_table{
 	width:100%;
 	margin-left:-2px;
 	*margin-left:-2px!important;
 	margin-left:-2px\0;
 }
-.option_table td,.option_table input{ padding-left:2px;margin-left:0;}
+.option_table td,.option_table input,.preorder_option_table input{ padding-left:2px;margin-left:0;}
 .option_name{
 	width:20%;
 	vertical-align:top;

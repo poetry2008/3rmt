@@ -2018,6 +2018,15 @@ line-height:16px;
 	*font-size:10px;
 	line-height:1.5;
 }
+.preorder_option_table{
+	width:100%;
+	font-size:12px;
+	*font-size:10px;
+	line-height:1.5;
+	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
+}
 .option_name{
 	width:85px;
 	vertical-align:top;
@@ -2049,7 +2058,7 @@ line-height:16px;
 	*width:98%;
 }
 .preorder_option_name{
-	width:150px;
+	width:147px;
 	vertical-align:top;
 }
 .option_product_single_radio{
