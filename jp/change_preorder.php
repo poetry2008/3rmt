@@ -35,6 +35,9 @@
 <script type="text/javascript">
 
 <?php
+//获取是否开启了帐单邮寄地址功能
+$billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+$billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
 if($weight_count > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -59,10 +62,7 @@ if($weight_count > 0){
       break;
       break;
     }
-  }
-  //获取是否开启了帐单邮寄地址功能
-  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
-  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
+  } 
 ?>
 
 function check(select_value){

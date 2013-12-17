@@ -391,6 +391,9 @@ function check_option_change(){
 }
 
 <?php
+//获取是否开启了帐单邮寄地址功能
+$billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+$billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
 if($cart->weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -415,11 +418,7 @@ if($cart->weight > 0){
       break;
       break;
     }
-  }
-
-  //获取是否开启了帐单邮寄地址功能
-  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
-  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  } 
 }
 ?>
 
@@ -920,10 +919,10 @@ function billing_check(select_value){
       i++;
     } 
     if(i == 0){ 
-      $("#billing_td_"+country_fee_id_one).hide();
+      $("#billing_td_"+billing_country_fee_id_one).hide();
     }else{
 
-      $("#billing_td_"+country_fee_id_one).show();
+      $("#billing_td_"+billing_country_fee_id_one).show();
     }
 }
 function billing_country_check(value,select_value){
@@ -965,10 +964,10 @@ function billing_country_check(value,select_value){
       i++;
     }
     if(i == 0){ 
-      $("#billing_td_"+country_area_id_one).hide();
+      $("#billing_td_"+billing_country_area_id_one).hide();
     }else{
       
-      $("#billing_td_"+country_area_id_one).show();
+      $("#billing_td_"+billing_country_area_id_one).show();
     }
 }
 
@@ -1012,10 +1011,10 @@ function billing_country_area_check(value,select_value){
       i++;
     }
     if(i == 0){ 
-      $("#billing_td_"+country_city_id_one).hide();
+      $("#billing_td_"+billing_country_city_id_one).hide();
     }else{
       
-      $("#billing_td_"+country_city_id_one).show();
+      $("#billing_td_"+billing_country_city_id_one).show();
 
     }
 }
@@ -1464,7 +1463,7 @@ $("#"+billing_country_fee_id).change(function(){
   <?php
    }elseif(isset($_SESSION['billing_options'])){
   ?>
-     billing_country_area_check($("#"+billing_country_area_id).val(),"<?php echo $_SESSION['billing_options'][substr($billing_country_city_id,3)][1];?>");
+     billing_country_area_check($("#"+billing_country_area_id).val(),"<?php echo $_SESSION['billing_options'][substr($billing_country_city_id,8)][1];?>");
   <?php
   }else{
   ?>
