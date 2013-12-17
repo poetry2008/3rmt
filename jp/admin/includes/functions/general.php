@@ -12825,7 +12825,20 @@ function new_format_info($str, $length = '2') {
   if ($str_pos !== false) {
     $pre_str = substr($str, 0, $str_pos); 
     $back_str = substr($str, $str_pos+1, 2); 
-    return $pre_str.'.'.$back_str; 
+     
+    $return_str = $pre_str.'.'.$back_str; 
+    if ($return_str == '0.00') {
+      $tmp_array = explode('.', $str); 
+      for ($i = 0; $i <strlen($tmp_array[1]); $i++) {
+        if ($tmp_array[1][$i] != '0') {
+          break; 
+        }
+        $i++; 
+      }
+      $back_str = substr($str, $str_pos+1, $i+1); 
+      $return_str = $pre_str.'.'.$back_str; 
+    }
+    return $return_str; 
   }
   return $str;
 }
