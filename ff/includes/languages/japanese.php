@@ -516,4 +516,6 @@ define('TEXT_BILLING_ADDRESS', 'ご請求先');
 define('TEXT_BILLING_SELECT', '請求書');
 define('TEXT_BILLING_SELECT_TRUE', '必要');
 define('TEXT_BILLING_SELECT_FALSE', '必要ない');
+define('TEXT_BILLING_ADDRESS_OLD', '過去のご請求先を指定する');
+define('TEXT_BILLING_ADDRESS_NEW', '登録先に届ける');
 ?>

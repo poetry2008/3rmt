@@ -1916,6 +1916,14 @@ border:2px solid #FF8080;
 	*margin-left:-3px!important;
 	margin-left:0px\0;
 }
+.preorder_option_table{
+	width:100%;
+	font-size:12px;
+	line-height:1.5;
+	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
+}
 .option_name{
 	width:85px;
 	vertical-align:top;
@@ -1944,7 +1952,7 @@ border:2px solid #FF8080;
 	*width:98%;
 }
 .preorder_option_name{
-	width:150px;
+	width:147px;
 	vertical-align:top;
 }
 .option_product_single_radio{

@@ -15,7 +15,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
       if (NEW_STYLE_WEB === true) {
         echo '<td class="main" width="20%" valign="top"> '; 
       } else {
-        echo '<td class="main" width="150" valign="top"> '; 
+        echo '<td class="main" width="144" valign="top"> '; 
       }
       echo $this->front_title.':'; 
       echo ' </td>'; 
