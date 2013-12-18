@@ -16,7 +16,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
        if (NEW_STYLE_WEB === true) {
          echo '<td class="main" width="20%">'; 
        } else {
-         echo '<td class="main" width="150">'; 
+         echo '<td class="main" width="144">'; 
        }
        echo $this->front_title.':';
        echo '</td>';

@@ -238,7 +238,7 @@
       }
     }
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART) && !in_array($products[$i]['id'],$check_products_option)) {
-      echo '<td align="center"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
+      echo '<td align="center"><a class="button_delete" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a></td>'; 
     }else{
       echo '<td align="center">&nbsp;</td>'; 
     }

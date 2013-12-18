@@ -2789,6 +2789,28 @@ echo json_encode($json_array);
  参数: $_POST['product_flag'] 标识 
  参数: $_POST['new_price'] 价格 
  参数: $_POST['p_relate_id'] 关联id 
+ 参数: $_POST['num_value'] 数值 
  ----------------------------------------*/
-  echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id']);
+  echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id'], $_POST['num_value']);
+} else if ($_GET['action'] == 'check_single_products_profit') {
+/*-----------------------------------------
+ 功能: 检查商品价格是否低于指定利润率
+ 参数: $_POST['products_id'] 商品id 
+ 参数: $_POST['new_price'] 价格 
+ 参数: $_POST['relate_new_price'] 关联价格 
+ ----------------------------------------*/
+  $error_str = '';
+  $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
+  $origin_product = tep_db_fetch_array($origin_product_raw); 
+  if ($origin_product) {
+    $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$origin_product['relate_products_id']."'"); 
+    $relate_product = tep_db_fetch_array($relate_product_raw); 
+    if ($relate_product) {
+      $origin_product_error = check_single_products_price_info($_POST['products_id'], $_POST['new_price'], $_POST['relate_new_price']);
+    }
+    if (!empty($origin_product_error)) {
+      $error_str = $origin_product_error; 
+    }
+  }
+  echo $error_str;
 }

@@ -2094,6 +2094,13 @@ width:690px;
 	*margin-left:-3px!important;
 	margin-left:0\0;
 }
+.preorder_option_table{
+	width:100%;
+	font-size:12px;
+	line-height:1.5;
+	color:#fff;
+	margin-left:-3px;
+}
 .option_name{
 	vertical-align:top;
 	color:#FFFFFF;

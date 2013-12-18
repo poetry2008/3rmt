@@ -391,6 +391,9 @@ function check_option_change(){
 }
 
 <?php
+//获取是否开启了帐单邮寄地址功能
+$billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+$billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
 if($cart->weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -415,11 +418,7 @@ if($cart->weight > 0){
       break;
       break;
     }
-  }
-
-  //获取是否开启了帐单邮寄地址功能
-  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
-  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  } 
 }
 ?>
 
@@ -920,10 +919,10 @@ function billing_check(select_value){
       i++;
     } 
     if(i == 0){ 
-      $("#billing_td_"+country_fee_id_one).hide();
+      $("#billing_td_"+billing_country_fee_id_one).hide();
     }else{
 
-      $("#billing_td_"+country_fee_id_one).show();
+      $("#billing_td_"+billing_country_fee_id_one).show();
     }
 }
 function billing_country_check(value,select_value){
@@ -965,10 +964,10 @@ function billing_country_check(value,select_value){
       i++;
     }
     if(i == 0){ 
-      $("#billing_td_"+country_area_id_one).hide();
+      $("#billing_td_"+billing_country_area_id_one).hide();
     }else{
       
-      $("#billing_td_"+country_area_id_one).show();
+      $("#billing_td_"+billing_country_area_id_one).show();
     }
 }
 
@@ -1012,10 +1011,10 @@ function billing_country_area_check(value,select_value){
       i++;
     }
     if(i == 0){ 
-      $("#billing_td_"+country_city_id_one).hide();
+      $("#billing_td_"+billing_country_city_id_one).hide();
     }else{
       
-      $("#billing_td_"+country_city_id_one).show();
+      $("#billing_td_"+billing_country_city_id_one).show();
 
     }
 }
@@ -1464,7 +1463,7 @@ $("#"+billing_country_fee_id).change(function(){
   <?php
    }elseif(isset($_SESSION['billing_options'])){
   ?>
-     billing_country_area_check($("#"+billing_country_area_id).val(),"<?php echo $_SESSION['billing_options'][substr($billing_country_city_id,3)][1];?>");
+     billing_country_area_check($("#"+billing_country_area_id).val(),"<?php echo $_SESSION['billing_options'][substr($billing_country_city_id,8)][1];?>");
   <?php
   }else{
   ?>
@@ -2174,15 +2173,19 @@ function check_point(point_num) {
       }
   ?>
   <tr><td> 
-    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBox"> 
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="infoBox"> 
                       <tr class="infoBoxContents">
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2">
                             <tr>
                             <td><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
                             <td class="main">
+                            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                            <tr><td class="main" width="164">
                             <input type="radio" name="address_option" value="old" onClick="address_option_show('old');<?php echo $address_option_list_flag;?>" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
+                            </td><td class="main">
                             <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
+                            </td></table>
                             </td></tr>
                           </table>
                        </td>
@@ -2291,7 +2294,11 @@ function check_point(point_num) {
                 <tr><td><table width="100%" border="0" cellspacing="0" cellpadding="2">
                       <tr>
                       <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
-                      <td class="main" colspan="2"><input type="radio" name="orders_billing_select" onclick="$('#billing_address_show').hide();" style="padding-left:0;margin-left:0;" value="0"<?php echo isset($_POST['orders_billing_select']) && $_POST['orders_billing_select'] == 0 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 0 ? ' checked="checked"' : (!isset($_POST['orders_billing_select']) && !isset($_SESSION['billing_select']) ? ' checked="checked"' : ''));?>><?php echo TEXT_BILLING_SELECT_FALSE;?><input type="radio" name="orders_billing_select" onclick="$('#billing_address_show').show();" value="1"<?php echo isset($_POST['orders_billing_select']) && $_POST['orders_billing_select'] == 1 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 1 ? ' checked="checked"' : '');?>><?php echo TEXT_BILLING_SELECT_TRUE;?></td>
+                      <td class="main" colspan="2">
+                        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                        <tr><td class="main" width="164">
+                        <input type="radio" name="orders_billing_select" onclick="$('#billing_address_show').hide();" style="padding-left:0;margin-left:0;" value="0"<?php echo isset($_POST['orders_billing_select']) && $_POST['orders_billing_select'] == 0 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 0 ? ' checked="checked"' : (!isset($_POST['orders_billing_select']) && !isset($_SESSION['billing_select']) ? ' checked="checked"' : ''));?>><?php echo TEXT_BILLING_SELECT_FALSE;?></td>
+                        <td class="main"><input type="radio" name="orders_billing_select" onclick="$('#billing_address_show').show();" value="1"<?php echo isset($_POST['orders_billing_select']) && $_POST['orders_billing_select'] == 1 ? ' checked="checked"' : (isset($_SESSION['billing_select']) && $_SESSION['billing_select'] == 1 ? ' checked="checked"' : '');?>><?php echo TEXT_BILLING_SELECT_TRUE;?></td></tr></table></td>
                      </tr>
                 </table></td></tr>
                 <tr id="billing_address_show"> 
@@ -2299,7 +2306,13 @@ function check_point(point_num) {
                     <table width="100%" border="0" cellspacing="0" cellpadding="2"> 
                     <tr>
                     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td>
-                    <td class="main" colspan="2"><input type="radio" name="orders_billing_address_option" value="old" style="padding-left:0;margin-left:0;" onClick="billing_address_option_show('old');<?php echo $address_option_list_flag;?>"<?php echo $checked_str_old;?>><?php echo TEXT_BILLING_ADDRESS_OLD;?><input type="radio" name="orders_billing_address_option" value="new" onClick="billing_address_option_show('new');"<?php echo $checked_str_new;?>><?php echo TEXT_BILLING_ADDRESS_NEW;?></td>
+                    <td class="main" colspan="2">
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr><td class="main" width="164">
+                    <input type="radio" name="orders_billing_address_option" value="old" style="padding-left:0;margin-left:0;" onClick="billing_address_option_show('old');<?php echo $address_option_list_flag;?>"<?php echo $checked_str_old;?>><?php echo TEXT_BILLING_ADDRESS_OLD;?>
+                    </td>
+                    <td class="main">
+                    <input type="radio" name="orders_billing_address_option" value="new" onClick="billing_address_option_show('new');"<?php echo $checked_str_new;?>><?php echo TEXT_BILLING_ADDRESS_NEW;?></td></tr></table></td>
                     </tr> 
                     <tr id="billing_address_show_id" style="display:<?php echo $show_flag;?>;"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
 <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>

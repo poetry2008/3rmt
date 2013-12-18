@@ -35,6 +35,9 @@
 <script type="text/javascript">
 
 <?php
+//获取是否开启了帐单邮寄地址功能
+$billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+$billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
 if($weight_count > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -59,10 +62,7 @@ if($weight_count > 0){
       break;
       break;
     }
-  }
-  //获取是否开启了帐单邮寄地址功能
-  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
-  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
+  } 
 ?>
 
 function check(select_value){
@@ -1752,8 +1752,12 @@ document.forms.order1.submit();
         </script>
             <tr>
             <td colspan="2" class="main">
+              <table width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tr><td class="main" width="164">
               <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
+              </td><td class="main">
               <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
+            </td></tr></table>
             </td>
             </tr>
             <tr id="address_show_id">
@@ -1773,7 +1777,7 @@ document.forms.order1.submit();
         <br>
         <?php 
         }
-        if($billing_address_show == 'true' && $billing_address_flag == true){
+        if($billing_address_show == 'true'){
           $checked_str_old = '';
           $checked_str_new = '';
           $show_flag = '';
@@ -1805,7 +1809,12 @@ document.forms.order1.submit();
         <tr><td>
         <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr> 
-          <td class="main" colspan="2"><input type="radio" name="preorders_billing_select" onclick="$('#billing_address_show_id').hide();" value="0"<?php echo isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == 0 ? ' checked="checked"' : (isset($_SESSION['preorder_information']['preorders_billing_select']) && $_SESSION['preorder_information']['preorders_billing_select'] == 0 ? ' checked="checked"' : (!isset($_POST['preorders_billing_select']) && !isset($_SESSION['preorder_information']['preorders_billing_select']) ? ' checked="checked"' : ''));?>><?php echo TEXT_BILLING_SELECT_FALSE;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="preorders_billing_select" onclick="$('#billing_address_show_id').show();" value="1"<?php echo isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == 1 ? ' checked="checked"' : (isset($_SESSION['preorder_information']['preorders_billing_select']) && $_SESSION['preorder_information']['preorders_billing_select'] == 1 ? ' checked="checked"' : '');?>><?php echo TEXT_BILLING_SELECT_TRUE;?></td>
+          <td class="main" colspan="2">
+          <table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <tr><td class="main" width="164">
+          <input type="radio" name="preorders_billing_select" onclick="$('#billing_address_show_id').hide();" value="0"<?php echo isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == 0 ? ' checked="checked"' : (isset($_SESSION['preorder_information']['preorders_billing_select']) && $_SESSION['preorder_information']['preorders_billing_select'] == 0 ? ' checked="checked"' : (!isset($_POST['preorders_billing_select']) && !isset($_SESSION['preorder_information']['preorders_billing_select']) ? ' checked="checked"' : ''));?>><?php echo TEXT_BILLING_SELECT_FALSE;?>
+          </td><td class="main">
+          <input type="radio" name="preorders_billing_select" onclick="$('#billing_address_show_id').show();" value="1"<?php echo isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == 1 ? ' checked="checked"' : (isset($_SESSION['preorder_information']['preorders_billing_select']) && $_SESSION['preorder_information']['preorders_billing_select'] == 1 ? ' checked="checked"' : '');?>><?php echo TEXT_BILLING_SELECT_TRUE;?></td></tr></table></td>
         </tr>
         </table>
         </td></tr>
@@ -1845,8 +1854,12 @@ document.forms.order1.submit();
         </script>
             <tr>
             <td colspan="2" class="main">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr><td class="main" width="164">
               <input type="radio" name="preorders_address_option" value="old" onClick="billing_address_option_show('old');billing_address_option_list(billing_first_num);" <?php echo $checked_str_old;?>><?php echo TEXT_BILLING_ADDRESS_OLD; ?> 
+            </td><td class="main">
               <input type="radio" name="preorders_address_option" value="new" onClick="billing_address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TEXT_BILLING_ADDRESS_NEW; ?>
+            </td></tr></table>
             </td>
             </tr>
             <tr id="preorders_address_show_id">
@@ -1882,7 +1895,7 @@ foreach($_POST as $p_key => $p_value){
         <tbody><tr class="infoBoxContents"><td>
         <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>
-          <td class="main" width="150">
+          <td class="main" width="144">
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
           </td>
           <td class="main">
