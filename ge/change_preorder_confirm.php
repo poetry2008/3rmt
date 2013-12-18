@@ -483,9 +483,7 @@ foreach($all_show_option_id as $t_item_id){
 <?php
 if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == '1'){
 ?>
-          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
-          <tbody><tr class="infoBoxContents"><td> 
-          <table width="100%" cellpadding="2" cellspacing="2" border="0">
+          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="formArea">
             <tr>
               <td class="main">
                 <b><?php echo TEXT_BILLING_SELECT;?></b> 
@@ -514,7 +512,6 @@ if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select
               </td>
             </tr>
           </table>
-          </td></tr></table>
           <br> 
 <?php
 }

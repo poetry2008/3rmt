@@ -863,7 +863,7 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
 
   
   //add new variable 
-  $breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
+  $breadcrumb->add(HEADER_TITLE_TOP, tep_href_link(FILENAME_DEFAULT,'','NONSSL'));
 
 // add category names or the manufacturer name to the breadcrumb trail
   if (isset($cPath_array)) {

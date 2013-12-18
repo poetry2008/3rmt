@@ -17,7 +17,7 @@ define('TEXT_NEWSLETTER_MODULE', 'モジュールの選択:');
 define('TEXT_NEWSLETTER_TITLE', 'メールマガジンの題名:');
 define('TEXT_NEWSLETTER_CONTENT', '内容:');
 
-define('TEXT_NEWSLETTER_DATE_ADDED', '作成日:');
+define('TEXT_NEWSLETTER_DATE_ADDED', '作成日');
 define('TEXT_NEWSLETTER_DATE_SENT', '送信日:');
 
 define('TEXT_INFO_DELETE_INTRO', '本当にこのメールマガジンを削除しますか?');

@@ -2179,8 +2179,13 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
       }
   ?>
   <tr><td> 
+     <table border="0" width="100%" cellspacing="0" cellpadding="0">
+     <tr><td class="main" width="164">
      <input type="radio" name="address_option" value="old" onClick="address_option_show('old');<?php echo $address_option_list_flag;?>" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
+     </td><td class="main">
      <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
+     </td>
+     </tr></table>
   </td></tr>
   <?php 
      }
@@ -2266,16 +2271,12 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
       }
   ?>
           <tr>
-            <td class="main"><b><?php echo TEXT_BILLING_SELECT; ?></b></td>
-          </tr>
-          <tr>
-            <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-          </tr>
+            <td class="main"><h3><b><?php echo TEXT_BILLING_SELECT; ?></b></h3></td>
+          </tr> 
           <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                 <tr><td><table width="100%" border="0" cellspacing="0" cellpadding="2">
                       <tr>
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
                       <td class="main" colspan="2">
                         <table border="0" width="100%" cellspacing="0" cellpadding="0">
                         <tr><td class="main" width="164">
@@ -2287,7 +2288,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
                   <td>
                     <table width="100%" border="0" cellspacing="0" cellpadding="2"> 
                     <tr>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td>
                     <td class="main" colspan="2">
                     <table border="0" width="100%" cellspacing="0" cellpadding="0">
                     <tr><td class="main" width="164">
@@ -2296,7 +2296,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
                     <td class="main">
                     <input type="radio" name="orders_billing_address_option" value="new" onClick="billing_address_option_show('new');"<?php echo $checked_str_new;?>><?php echo TEXT_BILLING_ADDRESS_NEW;?></td></tr></table></td>
                     </tr> 
-                    <tr id="billing_address_show_id" style="display:<?php echo $show_flag;?>;"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                    <tr id="billing_address_show_id" style="display:<?php echo $show_flag;?>;">
 <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
 <td class="main">
 <select name="orders_billing_address_show_list" id="billing_address_show_list" onChange="billing_address_option_list(this.value);">
@@ -2322,7 +2322,6 @@ $billing_option->render('', false, false);
                 </table>
             </td>
           </tr>
-          <tr><td>&nbsp;</td></tr>
 <?php
   }
 ?>

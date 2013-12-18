@@ -5,8 +5,8 @@ define('TABLE_HEADING_TAGS_NAME', '标签列表');
 define('TABLE_HEADING_TAGS_IMAGE', '图片');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_INFO_TAGS_NAME', '标签名:');
-define('TEXT_INFO_TAGS_IMAGE', '图片:');
+define('TEXT_INFO_TAGS_NAME', '标签名');
+define('TEXT_INFO_TAGS_IMAGE', '图片');
 define('TEXT_INFO_INSERT_INTRO', '请输入新标签和其数据');
 define('TEXT_INFO_DELETE_INTRO', '确定删除这个标签吗?');
 define('TEXT_INFO_HEADING_NEW_TAG', '新标签');

@@ -401,10 +401,10 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
 if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
 ?> 
 <tr> 
-<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-  <tr class="infoBoxContents"> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 
+  <tr> 
   <td>
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
   <td class="main" colspan="3"><b><?php echo TEXT_BILLING_ADDRESS; ?></b>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
@@ -414,8 +414,8 @@ if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
 ?>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td class="main" width="70%"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  <td class="main" width="150" valign="top"><?php echo $value[0]; ?>:</td>
+  <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
     }

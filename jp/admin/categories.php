@@ -2800,12 +2800,16 @@ function toggle_category_form(c_permission, cf_type)
 <?php //检查商品价格是否正确?>
 function check_single_product_price(pid_info, c_permission, c_type) {
   var new_price_value = $('#pp').val(); 
+  var relate_new_price_value = '0'; 
+  if (typeof($('#r_price').val()) != 'undefined') {
+    relate_new_price_value = $('#r_price').val(); 
+  }
   $.ajax({
     type: 'POST',
     async: false,
-    url: 'ajax_orders.php?action=check_products_profit',
+    url: 'ajax_orders.php?action=check_single_products_profit',
     dataType: 'text',
-    data: 'products_id='+pid_info+'&new_price='+new_price_value,
+    data: 'products_id='+pid_info+'&new_price='+new_price_value+'&relate_new_price='+relate_new_price_value,
     success:function(msg_info) {
       if (msg_info != '') {
         alert(msg_info); 

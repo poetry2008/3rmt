@@ -673,7 +673,7 @@ if ($_GET['action'] == 'show_category_info') {
     
     $relate_product_info_array[]['text'] = array(
           array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'), 
-          array('text' => tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT)
+          array('text' => tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT)
         );
   
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
@@ -974,15 +974,15 @@ if ($_GET['action'] == 'show_category_info') {
   
   $data_info_array = array();
   $data_info_array[]['text'] = array(
-        array('params' => 'width="80"', 'text' => TEXT_USER_ADDED), 
+        array('params' => 'width="80"', 'text' => TEXT_USER_ADDED.':'), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA)), 
-        array('params' => 'width="80"', 'text' => TEXT_DATE_ADDED), 
+        array('params' => 'width="80"', 'text' => TEXT_DATE_ADDED.':'), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA)) 
       ); 
   $data_info_array[]['text'] = array(
-        array('params' => 'width="80"', 'text' => TEXT_USER_UPDATE), 
+        array('params' => 'width="80"', 'text' => TEXT_USER_UPDATE.':'), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)), 
-        array('params' => 'width="80"', 'text' => TEXT_LAST_MODIFIED), 
+        array('params' => 'width="80"', 'text' => TEXT_LAST_MODIFIED.':'), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)) 
       ); 
   
@@ -1270,12 +1270,12 @@ if ($_GET['action'] == 'show_category_info') {
       );
   
   $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE.':'),
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_MARKS_PIC_LIST_TITLE),
         array('text' => tep_draw_input_field('pic_alt', $pic_info_res['pic_alt']))
       );
   
   $pic_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT.':'),
+        array('align' => 'left', 'params' => 'width="220"', 'text' => TABLE_HEADING_MARKS_PIC_LIST_SORT),
         array('text' => tep_draw_input_field('sort_order', $pic_info_res['sort_order']))
       );
   
@@ -2978,13 +2978,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       array('text' => $value_field.'<br>'.$cInfo->configuration_description)
    );
   $configuration_contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA))
       );
   
   $configuration_contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
       );
     //button 内容 
     if(in_array($site_id,$site_array)) { 
@@ -3643,12 +3643,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     array('params' => 'class="smallText"','text' => ENTRY_REVIEW_TEXT)
   );
  $contents[]['text'] = array(
-   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
-   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
+   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
+   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
   );
   $contents[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
-    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
+    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
+    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
   );
 
 
@@ -3885,12 +3885,12 @@ $latest_news_contents[]['text'] = array(
      array('text' => tep_draw_textarea_field('news_image_description', 'soft', '70', '7',isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):'','onfocus="o_submit_single = false;" onblur="o_submit_single = true;" id="news_image_description" style="resize: vertical;"'.$disable))
      );
  $latest_news_contents[]['text'] = array(
-     array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.((tep_not_null($latest_news['author']))?$latest_news['author']:TEXT_UNSET_DATA)), 
-     array('align' => 'left', 'text' => TEXT_DATE_ADDED.((tep_not_null($latest_news['date_added']))?$latest_news['date_added']:TEXT_UNSET_DATA))
+     array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($latest_news['author']))?$latest_news['author']:TEXT_UNSET_DATA)), 
+     array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($latest_news['date_added']))?$latest_news['date_added']:TEXT_UNSET_DATA))
      );
  $latest_news_contents[]['text'] = array(
-     array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($latest_news['update_editor']))?$latest_news['update_editor']:TEXT_UNSET_DATA)),
-     array('align' => 'left', 'text' => TEXT_DATE_UPDATE.((tep_not_null($latest_news['latest_update_date']))?date('Y-m-d H:i:s',$latest_news['latest_update_date']):TEXT_UNSET_DATA))
+     array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($latest_news['update_editor']))?$latest_news['update_editor']:TEXT_UNSET_DATA)),
+     array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($latest_news['latest_update_date']))?date('Y-m-d H:i:s',$latest_news['latest_update_date']):TEXT_UNSET_DATA))
      );
 if($ocertify->npermission >= 15){
 if(isset($disable) && $disable){
@@ -4178,12 +4178,12 @@ if($pw_id != -1){
       }
        $contents[]['text'] = array( array('text' => '&nbsp;'), array('text' => '<div id="user_select" class="user_select" style="display:'.$pw_select_display.'" > '.tep_get_user_select($selected_user).'</div>'));
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($pwInfo->user_added))?$pwInfo->user_added:TEXT_UNSET_DATA)), 
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->user_added))?$pwInfo->user_added:TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
          );
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
         );
     if($ocertify->npermission >= 15){
      if(isset($disable) && $disable){
@@ -4440,12 +4440,12 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
          array('text' => $pwInfo->memo)
         );
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($pwInfo->operator))?$pwInfo->operator:TEXT_UNSET_DATA)), 
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->operator))?$pwInfo->operator:TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
          );
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
         );
  
       if($ocertify->npermission >= 15){
@@ -4600,13 +4600,13 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
       $total_date_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($_POST['current_module']))."_STATUS' and site_id = '0'");
       $total_date = tep_db_fetch_array($total_date_query); 
       $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
        );
       
       $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
        );
     } else {
       if ($disabled_single) {
@@ -5198,12 +5198,12 @@ if($_GET['cID'] != -1){
          array('text' => $nInfo->number_of_reviews)
        );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => substr(TEXT_USER_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_added']))?$customers_info_row['user_added']:TEXT_UNSET_DATA)), 
-           array('align' => 'left','text' => substr(TEXT_DATE_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_created']))?$customers_info_row['customers_info_date_account_created']:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_added']))?$customers_info_row['user_added']:TEXT_UNSET_DATA)), 
+           array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_created']))?$customers_info_row['customers_info_date_account_created']:TEXT_UNSET_DATA))
          );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => substr(TEXT_USER_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_update']))?$customers_info_row['user_update']:TEXT_UNSET_DATA)),
-           array('align' => 'left','text' => substr(TEXT_DATE_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_update']))?$customers_info_row['user_update']:TEXT_UNSET_DATA)),
+           array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
         );
      $customers_fax_str = $notice_box->get_table($customers_fax_row, '', $customers_fax_params);  
        $contents[]['text'] = array(
@@ -5440,13 +5440,13 @@ if($_GET['cID'] != -1){
 
   //作成者，作成时间，更新者，更新时间 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.((tep_not_null($memo_array['user_added'])?$memo_array['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.((tep_not_null(tep_datetime_short($memo_array['date_added'])))?tep_datetime_short($memo_array['date_added']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($memo_array['user_added'])?$memo_array['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($memo_array['date_added'])))?tep_datetime_short($memo_array['date_added']):TEXT_UNSET_DATA))
       );
    
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.((tep_not_null($memo_array['user_update'])?$memo_array['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.((tep_not_null(tep_datetime_short($memo_array['date_update'])))?tep_datetime_short($memo_array['date_update']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($memo_array['user_update'])?$memo_array['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($memo_array['date_update'])))?tep_datetime_short($memo_array['date_update']):TEXT_UNSET_DATA))
       );
     
   //底部内容
@@ -5676,13 +5676,13 @@ if($_GET['cID'] != -1){
 
   //作成者，作成时间，更新者，更新时间 
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.((tep_not_null($buttons_array['user_added'])?$buttons_array['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.((tep_not_null(tep_datetime_short($buttons_array['date_added'])))?tep_datetime_short($buttons_array['date_added']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($buttons_array['user_added'])?$buttons_array['user_added']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($buttons_array['date_added'])))?tep_datetime_short($buttons_array['date_added']):TEXT_UNSET_DATA))
       );
    
   $category_info_row[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.((tep_not_null($buttons_array['user_update'])?$buttons_array['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.((tep_not_null(tep_datetime_short($buttons_array['date_update'])))?tep_datetime_short($buttons_array['date_update']):TEXT_UNSET_DATA))
+       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($buttons_array['user_update'])?$buttons_array['user_update']:TEXT_UNSET_DATA))),
+       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($buttons_array['date_update'])))?tep_datetime_short($buttons_array['date_update']):TEXT_UNSET_DATA))
       );
     
   //底部内容
@@ -6191,13 +6191,13 @@ if($_GET['cID'] != -1){
       );
   
   $new_user_row[]['text'] = array(
-            array('align' => 'left', 'text' => TEXT_USER_ADDED.(tep_not_null($user_info_res['user_added'])?$user_info_res['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left', 'text' => TEXT_DATE_ADDED.((tep_not_null($user_info_res['date_added']) || ($user_info_res['date_added'] != '0000-00-00 00:00:00'))?$user_info_res['date_added']:TEXT_UNSET_DATA))
+            array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_info_res['user_added'])?$user_info_res['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($user_info_res['date_added']) || ($user_info_res['date_added'] != '0000-00-00 00:00:00'))?$user_info_res['date_added']:TEXT_UNSET_DATA))
       );
       
   $new_user_row[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_USER_UPDATE.(tep_not_null($user_info_res['user_update'])?$user_info_res['user_update']:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.((tep_not_null($user_info_res['date_update']) || ($user_info_res['date_update'] != '0000-00-00 00:00:00'))?$user_info_res['date_update']:TEXT_UNSET_DATA))
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_info_res['user_update'])?$user_info_res['user_update']:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($user_info_res['date_update']) || ($user_info_res['date_update'] != '0000-00-00 00:00:00'))?$user_info_res['date_update']:TEXT_UNSET_DATA))
       );
   
   $form_str = tep_draw_form('new_user_form', FILENAME_USERS, 'user_e_id='.$_POST['user_e_id'].'&action=update_user_info&'.$param_str); 
@@ -6361,13 +6361,13 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     $info_query = tep_db_query("select * from information_page where PID='".$cID."'");
     $info_array = tep_db_fetch_array($info_query);
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($info_array['user_added'])?$info_array['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($info_array['date_added']))?$info_array['date_added']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($info_array['user_added'])?$info_array['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($info_array['date_added']))?$info_array['date_added']:TEXT_UNSET_DATA))
       );
       
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($info_array['user_update'])?$info_array['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($info_array['date_update']))?$info_array['date_update']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($info_array['user_update'])?$info_array['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($info_array['date_update']))?$info_array['date_update']:TEXT_UNSET_DATA))
       );
     if($disabled){
         $submit = tep_html_element_button(IMAGE_SAVE,$disabled);
@@ -6563,12 +6563,12 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
           array('text' => $mInfo->products_count)
     );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($mInfo->user_added)?$mInfo->user_added:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($mInfo->date_added))?$mInfo->date_added:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($mInfo->user_added)?$mInfo->user_added:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mInfo->date_added))?$mInfo->date_added:TEXT_UNSET_DATA))
     );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($mInfo->user_update)?$mInfo->user_update:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($mInfo->last_modified))?$mInfo->last_modified:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($mInfo->user_update)?$mInfo->user_update:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mInfo->last_modified))?$mInfo->last_modified:TEXT_UNSET_DATA))
     );
     if ($mInfo->products_count > 0) {
       $delete_products = 'on';
@@ -6631,12 +6631,12 @@ if(!isset($_GET['sort']) || $_GET['sort'] == ''){
           array('text' => tep_draw_input_field('manufacturers_alt','','onfocus="o_submit_single = false;"onblur="o_submit_single = true;"'.(isset($is_u_disabled) && $is_u_disabled?'disabled="disabled"':'')))
     );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($mInfo->user_added)?$mInfo->user_added:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($mInfo->date_added))?$mInfo->date_added:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($mInfo->user_added)?$mInfo->user_added:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mInfo->date_added))?$mInfo->date_added:TEXT_UNSET_DATA))
     );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($mInfo->user_update)?$mInfo->user_update:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($mInfo->last_modified))?$mInfo->last_modified:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($mInfo->user_update)?$mInfo->user_update:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($mInfo->last_modified))?$mInfo->last_modified:TEXT_UNSET_DATA))
     );
     $button[] = '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="toggle_manufacturers_form(\''.$ocertify->npermission.'\')"') .  '</a>';
     if(!empty($button)){
@@ -7085,24 +7085,24 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     }
     if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($faq_q['user_added'])?$faq_q['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($faq_q['created_at']))?$faq_q['created_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($faq_q['user_added'])?$faq_q['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($faq_q['created_at']))?$faq_q['created_at']:TEXT_UNSET_DATA))
     );
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($faq_c['user_added'])?$faq_c['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($faq_c['created_at']))?$faq_c['created_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($faq_c['user_added'])?$faq_c['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($faq_c['created_at']))?$faq_c['created_at']:TEXT_UNSET_DATA))
     );
     }
     if($qInfo->info_type == 'q'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($faq_q['user_update'])?$faq_q['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($faq_q['updated_at']))?$faq_q['updated_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($faq_q['user_update'])?$faq_q['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($faq_q['updated_at']))?$faq_q['updated_at']:TEXT_UNSET_DATA))
     );
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($faq_c['user_update'])?$faq_c['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($faq_c['updated_at']))?$faq_c['updated_at']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($faq_c['user_update'])?$faq_c['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($faq_c['updated_at']))?$faq_c['updated_at']:TEXT_UNSET_DATA))
     );
     }
     if($qInfo->info_type == 'q'){
@@ -8506,12 +8506,12 @@ $banner_query = tep_db_query("
       );
   
   $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'text' => substr(TEXT_USER_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_added'])?$meta_info_res['user_added']:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'text' => substr(TEXT_DATE_ADDED, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['date_added'])?$meta_info_res['date_added']:TEXT_UNSET_DATA))
+        array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_added'])?$meta_info_res['user_added']:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['date_added'])?$meta_info_res['date_added']:TEXT_UNSET_DATA))
       );
   $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'text' => substr(TEXT_USER_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_update'])?$meta_info_res['user_update']:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'text' => substr(TEXT_DATE_UPDATE, 0, -1).'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['last_modified'])?$meta_info_res['last_modified']:TEXT_UNSET_DATA))
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_update'])?$meta_info_res['user_update']:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['last_modified'])?$meta_info_res['last_modified']:TEXT_UNSET_DATA))
       );
   
   $form_str = tep_draw_form('meta_form', FILENAME_CONFIGURATION_META, 'meta_e_id='.$_POST['meta_e_id'].'&action=update_meta_info&'.$param_str);

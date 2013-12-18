@@ -1793,12 +1793,12 @@ document.forms.order1.submit();
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <p class="formBoxTitle"><?php echo TEXT_BILLING_SELECT;?></p>
-        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
-        <tbody><tr class="infoBoxContents"><td>  
+        <p class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_BILLING_SELECT;?></p>
+        <table width="100%" cellspacing="0" cellpadding="2" border="0" class="preorder_shipping">
+        <tbody><tr><td>  
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr><td>
-        <table width="100%" cellpadding="2" cellspacing="2" border="0">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr> 
           <td class="main" colspan="2">
           <table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -1810,7 +1810,7 @@ document.forms.order1.submit();
         </table>
         </td></tr>
         <tr id="billing_address_show_id"><td>
-        <table border="0" width="100%" cellspacing="2" cellpadding="2"> 
+        <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
             $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'");
