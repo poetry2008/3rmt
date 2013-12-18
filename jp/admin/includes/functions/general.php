@@ -12842,3 +12842,60 @@ function new_format_info($str, $length = '5') {
   }
   return $str;
 }
+
+/* -------------------------------------
+    功能: 检查商品价格是否超过最低利率 
+    参数: $pid(int) 商品id 
+    参数: $price_info(string) 商品价格 
+    参数: $relate_price_info(string) 关联商品价格 
+    返回值: 是否显示错误信息(string)
+ ------------------------------------ */
+function check_single_products_price_info($pid, $price_info, $relate_price_info) {
+  global $currencies, $languages_id;
+  $low_price_setting = MIN_PROFIT_SETTING / 100; 
+  $error_str = ''; 
+  if ($low_price_setting) {
+    $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$pid."'");
+    $product_info = tep_db_fetch_array($product_info_raw); 
+    if ($product_info) {
+      $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$product_info['relate_products_id']."'"); 
+      $relate_product = tep_db_fetch_array($relate_product_raw); 
+      if ($relate_product) {
+        $relate_product_name_raw = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$product_info['relate_products_id']."' and site_id = '0'"); 
+        $relate_product_name_res = tep_db_fetch_array($relate_product_name_raw);      
+        if ($product_info['products_attention_1_3']) {
+          $price_origin = new_format_info($price_info/$product_info['products_attention_1_3']); 
+        } else {
+          $price_origin = $price_info; 
+        }
+        if (!empty($relate_product['products_attention_1_3'])) {
+          $price_compare = new_format_info($relate_price_info/$relate_product['products_attention_1_3']); 
+        } else {
+          $price_compare = $relate_price_info; 
+        }
+        if ($product_info['products_bflag'] == '1') {
+          $tmp_value = new_format_info((abs($price_compare) - abs($price_origin))/abs($price_origin)); 
+          if ($relate_product['products_attention_1_3']) {
+            $tmp_price_value = floor(abs($price_origin)*(1+$low_price_setting)*$relate_product['products_attention_1_3']);
+          } else {
+            $tmp_price_value = floor(abs($price_origin)*(1+$low_price_setting));
+          }
+          if ($tmp_value < $low_price_setting) {
+            $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+          }
+        } else {
+          $tmp_value = new_format_info((abs($price_origin) - abs($price_compare))/abs($price_compare)); 
+          if ($relate_product['products_attention_1_3']) {
+            $tmp_price_value = floor(abs($price_origin)*$relate_product['products_attention_1_3']/(1+$low_price_setting));
+          } else {
+            $tmp_price_value = floor(abs($price_origin)/(1+$low_price_setting));
+          }
+          if ($tmp_value < $low_price_setting) {
+            $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+          }
+        }
+      }
+    }
+  } 
+  return $error_str;
+}
