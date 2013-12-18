@@ -553,7 +553,7 @@ if ($_GET['action'] == 'show_category_info') {
     $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
   }
   if (empty($_GET['site_id'])) {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="toggle_category_form(\''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="check_single_product_price(\''.$pInfo->products_id.'\', \''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
   }
   
   $buttons = array('align' => 'center', 'type' => 'div', 'id' => 'order_del', 'params' => 'class="main"' , 'button' => $button);
@@ -673,7 +673,7 @@ if ($_GET['action'] == 'show_category_info') {
     
     $relate_product_info_array[]['text'] = array(
           array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'), 
-          array('text' => tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT)
+          array('text' => tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT)
         );
   
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
@@ -2816,7 +2816,7 @@ width:20%;"'))
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CONFIGURATION);
 include(DIR_FS_ADMIN.'classes/notice_box.php');
 $notice_box = new notice_box('popup_order_title','popup_order_info');
-$configuration_query = tep_db_query(" select configuration_id, configuration_title, configuration_key, configuration_value, use_function from " . TABLE_CONFIGURATION . " where configuration_group_id = '" . $_GET['gID'] . "' and `site_id` = '0'  order by sort_order");
+$configuration_query = tep_db_query(" select configuration_id, configuration_title, configuration_key, configuration_value, use_function, type_info from " . TABLE_CONFIGURATION . " where configuration_group_id = '" . $_GET['gID'] . "' and `site_id` = '0'  order by sort_order");
 $site_id = $_GET['site_id'];
 $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
 while($userslist= tep_db_fetch_array($sites_id)){
@@ -2847,7 +2847,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         && (!isset($cInfo) || !$cInfo) 
         && (!isset($_GET['action']) or substr($_GET['action'], 0, 3) != 'new')
     ) {
-  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
+  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update,type_info from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
   $cfg_extra= tep_db_fetch_array($cfg_extra_query);
   $cInfo_array = tep_array_merge($configuration, $cfg_extra);
   $cInfo = new objectInfo($cInfo_array);
@@ -2923,6 +2923,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
             'SEG_CRONTAB_ROW',
             'SEG_CRONTAB_SLEEP',
             'REVIEWS_BAN_CHARACTER',
+            'MIN_PROFIT_SETTING',
             );
   //头部内容
   if(constant($cInfo->configuration_title) == null){
@@ -2985,13 +2986,16 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA)),
         array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
       );
-  
     //button 内容 
     if(in_array($site_id,$site_array)) { 
     if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {
       $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="check_signal_time_select(\''.$ocertify->npermission.'\')"') . '&nbsp;';
     } else {
-      $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="update_configuration_info(\''.$ocertify->npermission.'\');"') . '&nbsp;';
+      if ($cInfo->type_info == '1') {
+        $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="new_update_configuration_info(\''.$ocertify->npermission.'\');"') . '&nbsp;';
+      } else {
+        $configuration_button[] = '<br>' .  tep_html_element_button(IMAGE_UPDATE, 'onclick="update_configuration_info(\''.$ocertify->npermission.'\');"') . '&nbsp;';
+      }
     }
     }else{
     if ($cInfo->configuration_key == 'DS_ADMIN_SIGNAL_TIME') {

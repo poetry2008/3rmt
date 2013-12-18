@@ -979,12 +979,12 @@ P.description {
 	height:13px;
 }
 /*botton*/
-.button_delete02 {
+.button_delete{
 	display:block;
 	overflow:hidden;
 	text-indent:-2000px;	
 	width:53px;
-	height:25px;
+	height:24px;
 	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 .shopping_cart_continue {
@@ -2099,15 +2099,6 @@ P.description {
 	width:15px;
 	height:13px;
 }
-/*botton*/
-.button_delete02 {
-	display:block;
-	overflow:hidden;
-	text-indent:-2000px;
-	width:53px;
-	height:25px;
-	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
-}
 .shopping_cart_continue {
 	display:block;
 	cursor:pointer;
@@ -2466,6 +2457,13 @@ searching
 	*margin-left:-3px!important;
 	margin-left:0\0;
 }
+.preorder_option_table{
+	width:100%;
+	font-size:12px;
+	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
+}
 .option_name{
 	vertical-align:top;
 	width:85px;
@@ -2494,7 +2492,7 @@ searching
 	*width:98%;
 }
 .preorder_option_name{
-	width:150px;
+	width:147px;
 	vertical-align:top;
 }
 .option_product_single_radio{
@@ -2598,10 +2596,13 @@ searching
 }
 .option_info_text{
 	overflow:hidden;
-	width:100%;
+	width:73%;
+	*width:73%!important;
+	width:72.3%\0;
 	margin-bottom:5px;
+	white-space:normal;
 }
-.option_info_text select{ float:left; margin-left:0;}
+.option_info_text select{ float:left; margin-left:0; width:100%;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;

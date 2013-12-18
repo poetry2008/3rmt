@@ -2090,6 +2090,15 @@ display:block;
 	*margin-left:-3px!important;
 	margin-left:0px\0;
 }
+.preorder_option_table{
+	width:100%;
+	font-size:11px;
+	*font-size:10px;
+	line-height:1.5;
+	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
+}
 .option_name{
 	width:85px;
 	vertical-align:top;
@@ -2121,7 +2130,7 @@ display:block;
 	*width:98%;
 }
 .preorder_option_name{
-	width:150px;
+	width:147px;
 	vertical-align:top;
 }
 .option_product_single_radio{
@@ -2231,10 +2240,13 @@ display:block;
 }
 .option_info_text{
 	overflow:hidden;
-	width:100%;
+	width:73%;
+	*width:72.8%!important;
+	width:72.6%\0;
 	margin-bottom:5px;
+	white-space:normal;
 }
-.option_info_text select{ float:left; margin-left:0;}
+.option_info_text select{ float:left; margin-left:0; width:100%;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;

@@ -250,3 +250,5 @@ define('TEXT_STORE_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES .  'icon_frontend.g
 define('TEXT_PRODUCTS_SMALL_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（小）の横幅');
 define('TEXT_PRODUCTS_SMALL_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（小）の縦幅');
 define('TEXT_BILLING_ADDRESS_SETTING',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ご請求先機能');
+define('MIN_PROFIT_SETTING_TITLE',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;最低利益率');
+define('HEADING_TITLE_998','商品単価設定');

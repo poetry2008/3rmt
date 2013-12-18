@@ -253,7 +253,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     break;
     // 保存动作结束
     case 'get_products':
-    echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
+    echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\' id="relate_info"');
     exit;
     break;
     case 'get_cart_products':
@@ -2797,6 +2797,53 @@ function toggle_category_form(c_permission, cf_type)
     });
   }
 }
+<?php //检查商品价格是否正确?>
+function check_single_product_price(pid_info, c_permission, c_type) {
+  var new_price_value = $('#pp').val(); 
+  var relate_new_price_value = '0'; 
+  if (typeof($('#r_price').val()) != 'undefined') {
+    relate_new_price_value = $('#r_price').val(); 
+  }
+  $.ajax({
+    type: 'POST',
+    async: false,
+    url: 'ajax_orders.php?action=check_single_products_profit',
+    dataType: 'text',
+    data: 'products_id='+pid_info+'&new_price='+new_price_value+'&relate_new_price='+relate_new_price_value,
+    success:function(msg_info) {
+      if (msg_info != '') {
+        alert(msg_info); 
+      } else {
+        toggle_category_form(c_permission, c_type); 
+      }
+    }
+  }); 
+}
+<?php //检查编辑商品的价格是否正确?>
+function check_edit_product_profit() {
+  var new_price_value = $('#pp').val(); 
+  var flag_type = $('input:radio:checked[name=products_bflag]').val(); 
+  var relate_value = $('#relate_info').val(); 
+  var num_value = $('#products_attention_1_3').val(); 
+  if (relate_value != '0') {
+    $.ajax({
+      type: 'POST',
+      async: false,
+      url: 'ajax_orders.php?action=check_category_to_products_profit',
+      dataType: 'text',
+      data: 'product_flag='+flag_type+'&new_price='+new_price_value+'&p_relate_id='+relate_value+'&num_value='+num_value,
+      success:function(msg_info) {
+        if (msg_info != '') {
+          alert(msg_info); 
+        } else {
+          document.forms.new_product.submit(); 
+        }
+      }
+    });
+  } else {
+    document.forms.new_product.submit(); 
+  }
+}
 </script>
 <?php 
 require("includes/note_js.php");
@@ -3046,7 +3093,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td class="main" valign="top"><?php echo $site_id?('<br>'.tep_get_site_name_by_id($site_id)):'';?></td>
                 <td class="main" align="right"><?php 
-                echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
+                if (empty($site_id)) {
+                  echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
+                } else {
+                  echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
+                }
               if (isset($_GET['rdirect'])) {
                 echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; 
               } else {
@@ -3206,7 +3257,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
                 <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
                 <span id="relate_products">
-                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
+                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)" id="relate_info"');?>
                 </span>
                 <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
                 <input type="hidden" name="products_price_def" value="">
@@ -3725,7 +3776,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                       echo tep_draw_hidden_field('rdirect', 'all'); 
                                     }
                                   echo tep_eof_hidden(); 
-                                  echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;'; 
+                                  if (empty($site_id)) {
+                                    echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
+                                  } else {
+                                    echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
+                                  }
                                   if (isset($_GET['rdirect'])) {
                                     echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; 
                                   } else {
@@ -5699,7 +5754,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_price_params, 'text'=>$products_price_text);
                 $products_set_price_params .= 'class="dataTableContent" align="center"';
                 if (empty($site_id)) {
-                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="price_error_'.  $products_count.'"></span>';
+                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><input type="hidden" name="hidden_products_id[]" value="'.$products['products_id'].'"><span id="price_error_'.  $products_count.'"></span>';
                 } else {
                   $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
                 }
