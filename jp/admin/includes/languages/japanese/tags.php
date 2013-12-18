@@ -5,8 +5,8 @@ define('TABLE_HEADING_TAGS_NAME', 'タグリスト');
 define('TABLE_HEADING_TAGS_IMAGE', '画像');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_INFO_TAGS_NAME', 'タグ名:');
-define('TEXT_INFO_TAGS_IMAGE', '画像:');
+define('TEXT_INFO_TAGS_NAME', 'タグ名');
+define('TEXT_INFO_TAGS_IMAGE', '画像');
 define('TEXT_INFO_INSERT_INTRO', '新しいタグとそのデータを入力してください');
 define('TEXT_INFO_DELETE_INTRO', '本当にこのタグを削除しますか?');
 define('TEXT_INFO_HEADING_NEW_TAG', '新しいタグ');

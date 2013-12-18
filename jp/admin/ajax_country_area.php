@@ -170,7 +170,7 @@ if($id != 0){
 if(tep_not_null($user_added)){?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_USER_ADDED;?>
 </td>
 <td>
@@ -181,7 +181,7 @@ if(tep_not_null($user_added)){?>
 ?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_USER_ADDED;?>
 </td>
 <td>
@@ -192,7 +192,7 @@ if(tep_not_null($user_added)){?>
 } if(tep_not_null(tep_datetime_short($date_added))){?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_DATE_ADDED;?>
 </td>
 <td>
@@ -203,7 +203,7 @@ if(tep_not_null($user_added)){?>
 ?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_DATE_ADDED;?>
 </td>
 <td>
@@ -214,7 +214,7 @@ if(tep_not_null($user_added)){?>
 }if(tep_not_null($user_update)){?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_USER_UPDATE;?>
 </td>
 <td>
@@ -225,7 +225,7 @@ if(tep_not_null($user_added)){?>
 ?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_USER_UPDATE;?>
 </td>
 <td>
@@ -236,7 +236,7 @@ if(tep_not_null($user_added)){?>
 } if(tep_not_null(tep_datetime_short($date_update))){?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_DATE_UPDATE;?>
 </td>
 <td>
@@ -246,7 +246,7 @@ if(tep_not_null($user_added)){?>
 <?php }else{ ?>
 <tr>
 <td>
-&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
 <?php echo TEXT_DATE_UPDATE;?>
 </td>
 <td>

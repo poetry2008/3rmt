@@ -123,7 +123,6 @@ onkeypress="SomeJavaScriptCode" onclick="if (document.all)
                 <?php 
             echo '<input type="hidden" name="search_in_description" value="1">';
             echo '<input type="hidden" name="inc_subcat" value="1">';
-            echo tep_hide_session_id(); 
         ?>
                 </form>
             </td>
@@ -146,7 +145,7 @@ onkeypress="SomeJavaScriptCode" onclick="if (document.all)
           &nbsp;&nbsp;
           <?php 
           if ($_SERVER['PHP_SELF'] == '/change_preorder_confirm.php') {
-            echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
+            echo '<a href="'.tep_href_link(FILENAME_DEFAULT,'','NONSSL').'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
             echo ' &raquo; ';
             echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
             echo ' &raquo; ';
