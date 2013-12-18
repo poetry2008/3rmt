@@ -1793,9 +1793,9 @@ document.forms.order1.submit();
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <p class="formBoxTitle"><?php echo TEXT_BILLING_SELECT;?></p>
-        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
-        <tbody><tr class="infoBoxContents"><td>  
+        <p class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_BILLING_SELECT;?></p>
+        <table width="100%" cellspacing="1" cellpadding="2" border="0" class="formArea">
+        <tbody><tr><td>  
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr><td>
         <table width="100%" cellpadding="2" cellspacing="2" border="0">

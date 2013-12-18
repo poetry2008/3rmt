@@ -2179,8 +2179,13 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
       }
   ?>
   <tr><td> 
+     <table border="0" width="100%" cellspacing="0" cellpadding="0">
+     <tr><td class="main" width="164">
      <input type="radio" name="address_option" value="old" onClick="address_option_show('old');<?php echo $address_option_list_flag;?>" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
+     </td><td class="main">
      <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
+     </td>
+     </tr></table>
   </td></tr>
   <?php 
      }
@@ -2317,7 +2322,6 @@ $billing_option->render('', false, false);
                 </table>
             </td>
           </tr>
-          <tr><td>&nbsp;</td></tr>
 <?php
   }
 ?>
