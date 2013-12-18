@@ -16,14 +16,14 @@ define('TEXT_HEADING_DELETE_MANUFACTURER', 'メーカーを削除');
 define('TEXT_MANUFACTURERS', 'メーカー:');
 define('TEXT_DATE_ADDED', '登録日:');
 define('TEXT_LAST_MODIFIED', '更新日:');
-define('TEXT_PRODUCTS', '商品数:');
+define('TEXT_PRODUCTS', '商品数');
 
 define('TEXT_NEW_INTRO', '新しいメーカーの情報を入力してください。');
 define('TEXT_EDIT_INTRO', '必要な変更をしてください。');
 
-define('TEXT_MANUFACTURERS_NAME', 'メーカー名:');
-define('TEXT_MANUFACTURERS_IMAGE', 'メーカー画像:');
-define('TEXT_MANUFACTURERS_URL', 'メーカーURL:');
+define('TEXT_MANUFACTURERS_NAME', 'メーカー名');
+define('TEXT_MANUFACTURERS_IMAGE', 'メーカー画像');
+define('TEXT_MANUFACTURERS_URL', 'メーカーURL');
 
 define('TEXT_DELETE_INTRO', '本当にこのメーカーを削除しますか？');
 define('TEXT_DELETE_IMAGE', 'メーカー画像を削除しますか？');

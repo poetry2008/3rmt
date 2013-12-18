@@ -4767,7 +4767,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name'])){
 	$str .= '<tr>';
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_ADDED;
+	$str .= TEXT_USER_ADDED.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	if(isset($orders['user_added']) && $orders['user_added'] != ""){
@@ -4780,7 +4780,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
 	$str .= '<tr>';
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_ADDED;
+	$str .= TEXT_USER_ADDED.  '：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         $str .= TEXT_UNSET_DATA;	
@@ -4790,7 +4790,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['date_purchased'])){
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_ADDED;
+	$str .= TEXT_DATE_ADDED.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= $orders['date_purchased'];
@@ -4799,7 +4799,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_ADDED;
+	$str .= TEXT_DATE_ADDED.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= TEXT_UNSET_DATA;
@@ -4809,7 +4809,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['user_update']) || tep_not_null($orders['customers_name'])){
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_UPDATE;
+	$str .= TEXT_USER_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         if(isset($orders['user_update']) && $orders['user_update'] != ""){
@@ -4822,7 +4822,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_UPDATE;
+	$str .= TEXT_USER_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         $str .= TEXT_UNSET_DATA;	
@@ -4831,7 +4831,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['last_modified']) || tep_not_null($orders['date_purchased'])){ 
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_UPDATE;
+	$str .= TEXT_DATE_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         if(isset($orders['last_modified']) && $orders['last_modified'] != ""){
@@ -4844,7 +4844,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_UPDATE;
+	$str .= TEXT_DATE_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= TEXT_UNSET_DATA;
