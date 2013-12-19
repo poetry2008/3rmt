@@ -378,7 +378,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <div class="formAreaTitle"><b><?php echo FORM_TITLE_FRIEND_DETAILS; ?></b></div>
       <table width="100%" cellpadding="2" cellspacing="1" border="0" class="formArea">
         <tr>
-        <td class="main" valign="top" width="130"><?php echo PREORDER_PRODUCTS_NAME;?></td>
+        <td class="main" valign="top" width="135"><?php echo PREORDER_PRODUCTS_NAME;?></td>
           <td class="formArea_td_info">
           <strong>
           <?php 
@@ -401,7 +401,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           </td>
         </tr>
         <tr>
-          <td class="main" width="130"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+          <td class="main" width="135"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
           <td class="formArea_td_info">
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice

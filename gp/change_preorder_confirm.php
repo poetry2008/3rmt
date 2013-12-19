@@ -485,9 +485,7 @@ foreach($all_show_option_id as $t_item_id){
 <?php
 if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == '1'){
 ?>
-          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
-          <tbody><tr class="infoBoxContents"><td> 
-          <table width="100%" cellpadding="2" cellspacing="2" border="0">
+          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="formArea">
             <tr>
               <td class="main">
                 <b><?php echo TEXT_BILLING_SELECT;?></b> 
@@ -496,16 +494,14 @@ if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select
             </tr>
             <tr>
               <td class="main">
-                <table width="100%" cellspacing="1" cellpadding="2" border="0">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0">
 <?php
                     foreach($_POST as $ad_key=>$ad_value){
 
                       if(substr($ad_key,0,8)=='billing_' && $_POST[substr($ad_key,8)] != '' && trim($_POST[$ad_key]) != ''){
 
                         echo '<tr>';
-						echo '<td width="10"></td>';
-						echo '<td class="main" width="150">'. $_POST[substr($ad_key,8)] .':</td>';                  
-
+			echo '<td class="main" width="150">'. $_POST[substr($ad_key,8)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
                         echo '</tr>';
@@ -516,7 +512,6 @@ if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select
               </td>
             </tr>
           </table>
-          </td></tr></table>
           <br> 
 <?php
 }

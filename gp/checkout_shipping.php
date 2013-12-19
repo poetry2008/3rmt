@@ -2269,10 +2269,9 @@ function check_point(point_num) {
             <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                <tr><td><table width="100%" border="0" cellspacing="0" cellpadding="2">
+            <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea"> 
+                <tr><td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
                       <td class="main" colspan="2">
                         <table border="0" width="100%" cellspacing="0" cellpadding="0">
                         <tr><td class="main" width="164">
@@ -2282,9 +2281,8 @@ function check_point(point_num) {
                 </table></td></tr>
                 <tr id="billing_address_show"> 
                   <td>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="2"> 
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0"> 
                     <tr>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td>
                     <td class="main" colspan="2">
                     <table border="0" width="100%" cellspacing="0" cellpadding="0">
                     <tr><td class="main" width="164">
@@ -2293,7 +2291,7 @@ function check_point(point_num) {
                     <td class="main">
                     <input type="radio" name="orders_billing_address_option" value="new" onClick="billing_address_option_show('new');"<?php echo $checked_str_new;?>><?php echo TEXT_BILLING_ADDRESS_NEW;?></td></tr></table></td>
                     </tr> 
-                    <tr id="billing_address_show_id" style="display:<?php echo $show_flag;?>;"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                    <tr id="billing_address_show_id" style="display:<?php echo $show_flag;?>;">
 <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
 <td class="main">
 <select name="orders_billing_address_show_list" id="billing_address_show_list" onChange="billing_address_option_list(this.value);">
@@ -2311,7 +2309,7 @@ foreach($_POST as $p_key => $p_value){
     $_POST['op_'.substr($p_key, 8)] = $p_value;
   }
 }
-$billing_option->render('', false, false);
+$billing_option->render('', false, true);
 ?>
                     </table>
                   </td>

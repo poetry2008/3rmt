@@ -6,7 +6,7 @@ define('TABLE_HEADING_BILL_TEMPLATES_NAME', '請求書のテンプレート');
 define('TABLE_HEADING_ACTION', '操作');
 
 define('TEXT_INFO_EDIT_INTRO', '必要な変更を加えてください');
-define('TEXT_INFO_BILL_TEMPLATES_NAME', '請求書のテンプレート名:');
+define('TEXT_INFO_BILL_TEMPLATES_NAME', '請求書のテンプレート名');
 define('TEXT_INFO_BILL_TEMPLATES_IMAGE', '画像:');
 define('TEXT_INFO_INSERT_INTRO', '新しい請求書のテンプレートとそのデータを入力してください');
 define('TEXT_INFO_DELETE_INTRO', '本当にこの請求書のテンプレートを削除しますか?');

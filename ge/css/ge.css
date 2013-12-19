@@ -1180,7 +1180,7 @@ searching
 	width:120px;
 	width:132px\9;
 }
-.formArea_td_info{ width:315px\9; margin-bottom:5px;}
+.formArea_td_info{ width:315px;*width:300px!important;width:267px\0; margin-bottom:5px;}
 .formArea_td_info span{ line-height:20px;}
 .formArea_td_info select{
 	margin:0;
@@ -1439,7 +1439,9 @@ searching
 	font-weight:normal;
 }
 .preorder_option_table .option_name{
-	width:134px;
+width:134px;
+*width:134px;
+	width:137px\0;
 	font-weight:normal;
 }
 .option_money{
