@@ -12741,7 +12741,7 @@ function check_products_price_info($pid, $price_info) {
             $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)));
           }
           if ($tmp_value < $low_price_setting) {
-            if ($tmp_price_value != '0') {
+            if ($tmp_value !== false) {
               $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
             } 
           }
@@ -12753,7 +12753,7 @@ function check_products_price_info($pid, $price_info) {
             $tmp_price_value = intval(strval(abs($price_origin)/(1+$low_price_setting)));
           }
           if ($tmp_value < $low_price_setting) {
-            if ($tmp_price_value != '0') {
+            if ($tmp_value !== false) {
               $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
             } 
           }
@@ -12800,7 +12800,7 @@ function check_new_products_price_info($p_flag, $price_info, $p_relate_id, $num_
           $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)));
         }
         if ($tmp_value < $low_price_setting) {
-          if ($tmp_price_value != '0') {
+          if ($tmp_value !== false) {
             $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
           } 
         }
@@ -12812,7 +12812,7 @@ function check_new_products_price_info($p_flag, $price_info, $p_relate_id, $num_
           $tmp_price_value = intval(strval(abs($price_origin)/(1+$low_price_setting)));
         }
         if ($tmp_value < $low_price_setting) {
-          if ($tmp_price_value != '0') {
+          if ($tmp_value !== false) {
             $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
           } 
         }
@@ -12889,7 +12889,7 @@ function check_single_products_price_info($pid, $price_info, $relate_price_info)
             $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)));
           }
           if ($tmp_value < $low_price_setting) {
-            if ($tmp_price_value != '0') {
+            if ($tmp_value !== false) {
               $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
             }
           }
@@ -12901,7 +12901,7 @@ function check_single_products_price_info($pid, $price_info, $relate_price_info)
             $tmp_price_value = intval(strval(abs($price_origin)/(1+$low_price_setting)));
           }
           if ($tmp_value < $low_price_setting) {
-            if ($tmp_price_value != '0') {
+            if ($tmp_value !== false) {
               $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
             } 
           }
