@@ -473,7 +473,9 @@ class SEO_URL{
   
     // id 不显示 index.php
     if ($page == 'index.php' && $parameters == '' && !defined('NEW_TYPE_SYMBOL') && !isset($_sid)) {
-      $link = HTTP_SERVER . DIR_WS_CATALOG;
+      if(($request_type == 'SSL' && $connection == 'SSL')||($request_type == 'NONSSL' && $connection == 'NONSSL')){
+        $link = HTTP_SERVER . DIR_WS_CATALOG;
+      }
     }
     
     $this->stop($this->timestamp, $time);
@@ -581,7 +583,6 @@ class SEO_URL{
     if (isset($_sid)) {
       // 兼容同域名和不同域名的ssl跳转
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
-        return $link; 
       }else{
         //cancel ssl to nossl session 
         if (!defined('NEW_TYPE_SYMBOL')) {
@@ -602,7 +603,9 @@ class SEO_URL{
     }
   // id 不显示 index.php
   if ($page == 'index.php' && $parameters == '' && !defined('NEW_TYPE_SYMBOL') && !isset($_sid)) {
-    $link = HTTP_SERVER . DIR_WS_CATALOG;
+    if(($request_type == 'SSL' && $connection == 'SSL')||($request_type == 'NONSSL' && $connection == 'NONSSL')){
+      $link = HTTP_SERVER . DIR_WS_CATALOG;
+    }
   }
   $this->performance['NUMBER_STANDARD_URLS_GENERATED']++;
   $this->cache['STANDARD_URLS'][] = $link;

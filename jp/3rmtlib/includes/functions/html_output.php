@@ -417,8 +417,13 @@
     参数: 无   
     返回值: 生成session隐藏的input(string) 
 ------------------------------------ */
-  function tep_hide_session_id() {
-    if (defined('SID') && tep_not_null(SID)) return tep_draw_hidden_field(tep_session_name(), tep_session_id());
+  function tep_hide_session_id($show_hidden=false) {
+    if (defined('SID') && tep_not_null(SID)) 
+    if($show_hidden){
+      return tep_draw_hidden_field(tep_session_name(), tep_session_id());
+    }else{
+      return '';
+    }
   }
 
 /* -------------------------------------
