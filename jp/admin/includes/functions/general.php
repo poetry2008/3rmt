@@ -12828,14 +12828,14 @@ function check_new_products_price_info($p_flag, $price_info, $p_relate_id, $num_
     参数: $length(int) 长度 
     返回值: 输出(string)
  ------------------------------------ */
-function new_format_info($str, $length = '5') {
+function new_format_info($str, $length = '15') {
   $str_pos = strpos($str, '.'); 
   if ($str_pos !== false) {
     $pre_str = substr($str, 0, $str_pos); 
     $back_str = substr($str, $str_pos+1, $length); 
      
     $return_str = $pre_str.'.'.$back_str; 
-    if ($return_str == '0.00000') {
+    if ($return_str == '0.000000000000000') {
       $tmp_array = explode('.', $str); 
       for ($i = 0; $i <strlen($tmp_array[1]); $i++) {
         if ($tmp_array[1][$i] != '0') {
