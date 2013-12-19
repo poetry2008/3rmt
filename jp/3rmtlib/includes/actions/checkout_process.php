@@ -598,8 +598,11 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   //获取是否开启了帐单邮寄地址功能
   $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
   $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  $billing_address_list_flag = false;
   if($billing_address_show == 'true' && $_SESSION['billing_select'] == '1'){
     
+     $billing_address_list = array();
+     $billing_address_list_flag = true;
      foreach($_SESSION['billing_options'] as $op_key=>$op_value){
  
        $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
@@ -607,6 +610,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
        tep_db_free_result($address_options_query);
        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','".addslashes($op_value[1])."','1')");
        tep_db_free_result($address_query);
+       $billing_address_list[$address_options_array['id']] = $op_value[1];
      }  
   }
 
@@ -1076,7 +1080,9 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   foreach($_SESSION['options'] as $ad_value){
     $ad_len = mb_strlen($ad_value[0],'utf8');
     $temp_str = str_repeat('　',$maxlen-$ad_len);
-    $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+    if(trim($ad_value[0]) != '' && trim($ad_value[1]) != ''){
+      $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+    }
   }
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $email_order = str_replace('${USER_ADDRESS}',$email_address_str,$email_order);
@@ -1087,6 +1093,41 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
 }
 $email_order = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order);
 $email_order = str_replace('${CUSTOMIZED_FEE}','',$email_order);
+
+//帐单邮寄地址
+$address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
+$address_array = array();
+while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+  $address_array[$address_list_array['id']] = $address_list_array['name'];
+}
+tep_db_free_result($address_list_query);
+if($billing_address_show == 'true' && $billing_address_list_flag == true){
+
+  $billing_address_len_array = array();
+  foreach($billing_address_list as $billing_address_key=>$billing_address_value){
+
+    $billing_address_len_array[] = strlen($address_array[$billing_address_key]);
+  }
+  $maxlen = max($billing_address_len_array);
+  $email_billing_address_str = "";
+  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
+  $maxlen = 9;
+  foreach($billing_address_list as $billing_key=>$billing_value){
+    $billing_len = mb_strlen($address_array[$billing_key],'utf8');
+    $temp_str = str_repeat('　',$maxlen-$billing_len);
+    if(trim($address_array[$billing_key]) != '' && trim($billing_value) != ''){
+      $email_billing_address_str .= $address_array[$billing_key].$temp_str.'：'.$billing_value."\n";
+    }
+  }
+  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
+  $email_order = str_replace('${BILLING_ADDRESS}',$email_billing_address_str,$email_order);
+}else{
+
+  $email_order = str_replace("\n".'${BILLING_ADDRESS}','',$email_order); 
+  $email_order = str_replace('${BILLING_ADDRESS}','',$email_order);
+  $email_order = str_replace("\n".TEXT_ORDERS_CUSTOMER_STRING.TEXT_BILLING_ADDRESS,'',$email_order);
+}
 $email_order = tep_replace_mail_templates($email_order,$order->customer['email_address'],tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
 //订单邮件
 $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_MAILSTRING',SITE_ID);
@@ -1181,6 +1222,14 @@ if($email_address_str != ''){
   $email_printing_order = str_replace("\n".'${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace('${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace("\n".str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',TEXT_ORDERS_PRODUCTS_ADDRESS_INFO),'',$email_printing_order);
+}
+//帐单邮寄地址
+if($email_billing_address_str != ''){
+  $email_printing_order = str_replace('${BILLING_ADDRESS}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$email_billing_address_str),$email_printing_order);
+}else{
+  $email_printing_order = str_replace("\n".'${BILLING_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace('${BILLING_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace("\n".TEXT_BILLING_ADDRESS,'',$email_printing_order);
 }
 
 # ------------------------------------------
