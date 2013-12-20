@@ -244,7 +244,9 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject); 
-    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      tep_mail('', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    }
     
     $today = date("YmdHis");
 
@@ -691,7 +693,10 @@ function getpreexpress($pre_value, $pre_pid){
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS,$subject, $mail_body, '', '');
+    if(isset($_SESSION['preorders_send_mail_flag']) && $_SESSION['preorders_send_mail_flag'] == 1){
+      tep_mail('', SENTMAIL_ADDRESS,$subject, $mail_body, '', '');
+      unset($_SESSION['preorders_send_mail_flag']);
+    }
     
     $hidden_param_str = ''; 
     $hidden_param_str .= tep_draw_hidden_field('cpre_type', '1');
