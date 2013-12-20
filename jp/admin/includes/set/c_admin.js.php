@@ -407,7 +407,9 @@ function set_new_price(pid, cnt) {
       data:'products_id='+pid+"&new_price="+nquantity,
       success: function(msg_info) {
         if (msg_info != '') {
-          alert(msg_info); 
+          $("#new_price_button").attr("id", 'tmp_new_price_button'); 
+          alert(msg_info);
+          setTimeout('$("#tmp_new_price_button").attr("id", "new_price_button")', 100);
         } else {
           $.ajax({
             type:'POST', 

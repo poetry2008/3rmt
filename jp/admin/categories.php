@@ -2638,21 +2638,27 @@ $(document).ready(function() {
           tmp_click_symbol = '1'; 
         } else if (tmp_click_str.indexOf('update_quantity') >= 0) {
           tmp_click_symbol = '1'; 
-        } else if (tmp_click_str.indexOf('set_new_price') >= 0) {
-          tmp_click_symbol = '1'; 
-        }
-        if (c_submit_single) {
-          if (tmp_click_symbol == '1') {
-            $("#show_popup_info").find('input:button').first().trigger("click"); 
-          }else{
-            if(ele_tags_obj != ''){
-               $("#show_popup_info").find('input:button').first().trigger("click"); 
-            } 
-            if ($("#button_save_product")) {
-              $("#button_save_product").trigger("click");
+        } 
+         
+        tmp_click_str = $("#show_popup_info").find('input:button').first().attr('id'); 
+         
+        if (tmp_click_str == 'new_price_button') {
+          $("#new_price_button").trigger("click");
+        } else {
+          if (c_submit_single) {
+            if (tmp_click_symbol == '1') {
+              $("#show_popup_info").find('input:button').first().trigger("click"); 
+            }else{
+              if(ele_tags_obj != ''){
+                 $("#show_popup_info").find('input:button').first().trigger("click"); 
+              } 
+              if ($("#button_save_product")) {
+                $("#button_save_product").trigger("click");
+              }
             }
           }
         }
+        
       } 
     }
     if (event.ctrlKey && event.which == 37) {
@@ -2812,7 +2818,9 @@ function check_single_product_price(pid_info, c_permission, c_type) {
     data: 'products_id='+pid_info+'&new_price='+new_price_value+'&relate_new_price='+relate_new_price_value,
     success:function(msg_info) {
       if (msg_info != '') {
-        alert(msg_info); 
+        $("#button_save_product").attr("id", 'tmp_button_save_product');
+        alert(msg_info);
+        setTimeout('$("#tmp_button_save_product").attr("id", "button_save_product")', 100); 
       } else {
         toggle_category_form(c_permission, c_type); 
       }

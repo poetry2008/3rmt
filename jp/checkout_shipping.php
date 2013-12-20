@@ -2178,7 +2178,7 @@ function check_point(point_num) {
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2">
                             <tr>
-                            <td><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                            <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
                             <td class="main">
                             <table border="0" width="100%" cellspacing="0" cellpadding="0">
                             <tr><td class="main" width="164">
@@ -2356,7 +2356,7 @@ $billing_option->render('', false, false);
           
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
+    <td width="6"><?php echo tep_draw_separator('pixel_trans.gif', '6', '1');?></td> 
   <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main">
 <?php
