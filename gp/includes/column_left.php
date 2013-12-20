@@ -11,6 +11,7 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'
     ||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'
     ||(strpos($_SERVER['REQUEST_URI'],'game/'))
+    ||strpos($_SERVER['PHP_SELF'], 'tickets.php')
     ||strpos($_SERVER['PHP_SELF'], 'view.php')
     ||strpos($_SERVER['PHP_SELF'], 'contact_us.php')
     ||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')
