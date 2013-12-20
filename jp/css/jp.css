@@ -2808,9 +2808,10 @@ searching
 	background-color:#efefef;
 	font-size:23px;
 	color:#0079c1;
-	width:546px;
-	height:90px; 
-	margin:5px auto 23px auto; 
+	width:546px; 
+	margin:5px auto 23px auto;
+	overflow:hidden;
+	padding-bottom:12px;
 }
 #contents .title_box img ,#contents .title_box span{
 	float:left;
