@@ -374,14 +374,45 @@ if(!isset($_SESSION['preorder_info_date']) || !isset($_SESSION['preorder_info_ho
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+<?php
+  if(isset($_SESSION['preorder_credit_flag'])){
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo '../css/'.$site_romaji.'.css?v='.$css_random_str;?>">
+<script type="text/javascript" src="../js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+function close_popup_notice(){
+  $("#popup_notice").css("display", "none");
+  $("#greybackground").remove();
+}
+
+function update_notice(url){
+  $.ajax({
+    url: '../ajax_notice.php?action=process',    
+    type:'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $("#popup_notice").css("display", "none");
+      $("#greybackground").remove();
+      window.location.href='../'+url;
+    }
+  });
+}   
+</script>
+<?php
+  }else{
+?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/notice.js"></script>
+<?php
+  }
+?>
 <script type="text/javascript">
 $(document).ready(function() {
 //ajax submit
 $.ajax({
-  url: 'ajax_confirm_session_error.php?action=session',
+  url: '<?php echo isset($_SESSION['preorder_credit_flag']) ? '../ajax_confirm_session_error.php?action=session' : 'ajax_confirm_session_error.php?action=session';?>',
   data: '',
   type: 'POST',
   dataType: 'text',
@@ -427,14 +458,15 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
 ?>
 </div>
 <div align="center" class="popup_notice_button">
-<a href="javascript:void(0);" onClick="update_notice('index.php')"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="images/design/href_home.gif"></a>&nbsp;&nbsp;
-<a href="javascript:void(0);" onClick="update_notice('contact_us.php')"><img alt="<?php echo CONTACT_US;?>" src="images/design/contact_us.gif"></a>
+<a href="javascript:void(0);" onClick="update_notice('index.php');"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="<?php echo isset($_SESSION['preorder_credit_flag']) ? '../images/design/href_home.gif' : 'images/design/href_home.gif';?>"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('contact_us.php');"><img alt="<?php echo CONTACT_US;?>" src="<?php echo isset($_SESSION['preorder_credit_flag']) ? '../images/design/contact_us.gif' : 'images/design/contact_us.gif';?>"></a>
 </div>
 </div>
 </body>
 </html>
 
 <?php
+  unset($_SESSION['preorder_credit_flag']);
   exit;
   }
 
