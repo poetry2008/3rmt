@@ -155,14 +155,17 @@ class BasePayment
     }
   }
 /*-----------------------------
- 功能：验证数字
+ 功能：验证数字、中线
  参数：$value(string) 数值
  返回值：判断是否验证数字成功(boolean/string)
  ----------------------------*/
   function validation_is_number($value)
   {
     $value = trim($value);
-    if(preg_match('/^[0-9]+$/',$value)){
+    $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/－/');
+    $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
+    $value = preg_replace($mode_array,$replace_array,$value);
+    if(preg_match('/^[0-9-]+$/',$value)){
       return true;
     }else{
       if (!empty($this->p_error_msg)) {

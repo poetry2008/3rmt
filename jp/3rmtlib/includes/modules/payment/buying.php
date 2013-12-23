@@ -106,7 +106,7 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_kouza_num',
                        "title"=>TS_TEXT_BANK_KOUZA_NUM,
-                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'],''.$style_width.$input_text_id.''),
+                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'],'onchange="check_payment_input(this);"'.$style_width.$input_text_id.''),
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER),
                        "error_msg" => array(TS_TEXT_BANK_ERROR_KOUZA_NUM, TS_TEXT_BANK_ERROR_KOUZA_NUM2) 
                        ),
@@ -357,6 +357,11 @@ class buying extends basePayment  implements paymentInterface  {
   {
     //global $bank_name,$bank_shiten,$bank_kamoku,$bank_kouza_num,$bank_kouza_name;
     if(isset($_SESSION[$session_paymentinfo_name]['bank_name'])) {
+      //把全角的数字、中线转换成半角的及删除空格
+      $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] = trim($_SESSION[$session_paymentinfo_name]['bank_kouza_num']);
+      $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/－/');
+      $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
+      $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] = preg_replace($mode_array,$replace_array,$_SESSION[$session_paymentinfo_name]['bank_kouza_num']);  
       $bbbank = TS_TEXT_BANK_NAME .   $_SESSION[$session_paymentinfo_name]['bank_name'] . "\n";
       $bbbank .= TS_TEXT_BANK_SHITEN .  $_SESSION[$session_paymentinfo_name]['bank_shiten'] . "\n";
       $bbbank .= TS_TEXT_BANK_KAMOKU .  $_SESSION[$session_paymentinfo_name]['bank_kamoku'] . "\n";
@@ -364,6 +369,11 @@ class buying extends basePayment  implements paymentInterface  {
       $bbbank .= TS_TEXT_BANK_KOUZA_NAME .  $_SESSION[$session_paymentinfo_name]['bank_kouza_name'];
     }else{
       global $_POST;
+      //把全角的数字、中线转换成半角的及删除空格
+      $_POST['bank_kouza_num'] = trim($_POST['bank_kouza_num']);
+      $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/－/');
+      $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
+      $_POST['bank_kouza_num'] = preg_replace($mode_array,$replace_array,$_POST['bank_kouza_num']);
       $bbbank = TS_TEXT_BANK_NAME .  $_POST['bank_name'] . "\n";
       $bbbank .= TS_TEXT_BANK_SHITEN .  $_POST['bank_shiten'] . "\n";
       $bbbank .= TS_TEXT_BANK_KAMOKU .  $_POST['bank_kamoku'] . "\n";

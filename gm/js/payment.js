@@ -101,3 +101,23 @@ function check_confirm_payment(payment_str)
   
   return false;
 }
+
+//check payment input
+function check_payment_input(ele){
+
+  ele_value = ele.value;
+  ele_value = ele_value.replace(/\s/g,'');
+  ele_value = ele_value.replace(/　/g,'');
+  ele_value = ele_value.replace(/－/g,'-');
+  ele_value = ele_value.replace(/１/g,'1');
+  ele_value = ele_value.replace(/２/g,'2');
+  ele_value = ele_value.replace(/３/g,'3');
+  ele_value = ele_value.replace(/４/g,'4');
+  ele_value = ele_value.replace(/５/g,'5');
+  ele_value = ele_value.replace(/６/g,'6');
+  ele_value = ele_value.replace(/７/g,'7');
+  ele_value = ele_value.replace(/８/g,'8');
+  ele_value = ele_value.replace(/９/g,'9');
+  ele_value = ele_value.replace(/０/g,'0');
+  ele.value = ele_value;
+}
