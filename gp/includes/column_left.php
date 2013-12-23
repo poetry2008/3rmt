@@ -10,6 +10,9 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||$_SERVER['PHP_SELF'] == '/reorder.php'
     ||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'
     ||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'
+    ||(strpos($_SERVER['REQUEST_URI'],'game/'))
+    ||strpos($_SERVER['PHP_SELF'], 'tickets.php')
+    ||strpos($_SERVER['PHP_SELF'], 'view.php')
     ||strpos($_SERVER['PHP_SELF'], 'contact_us.php')
     ||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')
     ||strpos($_SERVER['PHP_SELF'], 'login.php')
@@ -22,6 +25,8 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||strpos($_SERVER['PHP_SELF'], 'ac_mail_finish.php')
     ||strpos($_SERVER['PHP_SELF'], 'product_notifications.php')
     ||strpos($_SERVER['PHP_SELF'], 'account.php')
+    ||strpos($_SERVER['PHP_SELF'], 'password_success.php')
+    ||strpos($_SERVER['PHP_SELF'], 'password_token.php')
     ||strpos($_SERVER['PHP_SELF'], 'account_history.php')
     ||strpos($_SERVER['PHP_SELF'], 'account_history_info.php')
     ||strpos($_SERVER['PHP_SELF'], 'account_edit.php')
