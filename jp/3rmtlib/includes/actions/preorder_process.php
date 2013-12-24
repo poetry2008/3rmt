@@ -119,6 +119,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
       
       if (tep_session_is_registered('customer_id')) {
+          //重新获得顾客信息
+          $account = tep_db_query("
+              select customers_firstname, 
+                     customers_lastname, 
+                     customers_email_address 
+              from " .  TABLE_CUSTOMERS . " 
+              where customers_id = '" . $customer_id . "' 
+                and site_id = '".SITE_ID."'
+          ");
+          $account_values = tep_db_fetch_array($account);
           //预约完成邮件认证
           $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
           $preorder_email_text = $preorders_mail_array['contents']; 
@@ -159,7 +169,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             $preorder_email_text = str_replace($old_str_array, $new_str_array, $preorder_mail_array['contents']); 
             $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, $preorder_mail_array['title']); 
             $unactive_customers_single = true; 
-            $send_to_owner = true;  
             tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$exists_customer_res['customers_id']."'");  
           } else {
             //预约完成邮件认证
@@ -185,7 +194,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
           $redirect_single = 1; 
-          $send_to_owner = true;  
           $encode_param_str = md5(time().$tmp_customer_id.$_POST['from']); 
           $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
           
@@ -206,9 +214,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         if (!isset($c_is_send_mail)) {
           tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
         }
-        if (isset($send_to_owner)) {
-          tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, $from_name, $_POST['from']); 
-        }
+        tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, $from_name, $_POST['from']); 
       }
       
       $send_preorder_id = $preorder_id;
@@ -222,6 +228,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
         }
       }
+      $payment_modules->reset_information($_POST['pre_payment'], true);
       if (!$redirect_single) {
         //unset session
         unset($_SESSION['preorder_products_list']);

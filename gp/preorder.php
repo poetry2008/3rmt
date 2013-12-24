@@ -201,14 +201,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     
     if (!tep_session_is_registered('customer_id')) {
-      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($last_name)) {
+      $tmp_last_name = str_replace(array('　', ' '), '', $last_name); 
+      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($tmp_last_name)) {
         $lastname_error = true;
         $error = true;
       } else {
         $lasttname_error = false;
       }
       
-      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($first_name)) {
+      $tmp_first_name = str_replace(array('　', ' '), '', $first_name); 
+      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($tmp_first_name)) {
         $firstname_error = true;
         $error = true;
       } else {
@@ -337,8 +339,9 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
             	<tr>
             		<td>
       <p>
-        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?>
         <?php 
+        echo $po_game_c.TEXT_PREORDER_BOOK_INFO;
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {

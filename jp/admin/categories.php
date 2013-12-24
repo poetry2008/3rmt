@@ -253,7 +253,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     break;
     // 保存动作结束
     case 'get_products':
-    echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
+    echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\' id="relate_info"');
     exit;
     break;
     case 'get_cart_products':
@@ -490,24 +490,38 @@ if (isset($_GET['action']) && $_GET['action']) {
 
         $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
         tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array);
+        $c_image_index = 0;
+        $c_image_name_array = array();
         //categories_image2 upload => INSERT
         $categories_image2 = tep_get_uploaded_file('categories_image2');
         $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
         if (is_uploaded_file($categories_image2['tmp_name'])) {
-          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $categories_image2['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
-          tep_copy_uploaded_file($categories_image2, $image_directory);
+          $categories_image_array = tep_defined_category_image_name($categories_image2['name']);
+          $c_image_index = $categories_image_array['index'];
+          $categories_image2['name'] = $categories_image_array['name'];  
+          $c_image_name_array[] = $categories_image2['name']; 
+          $tmp_category_image2 = $categories_image2['name']; 
+          tep_copy_uploaded_file($categories_image2, $image_directory, $categories_image2['name']);
         }
-        //categories_image3 upload => INSERT
-        $categories_image3 = tep_get_uploaded_file('categories_image3');
+        
+        $categories_image = tep_get_uploaded_file('categories_image');
         $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
-        if (is_uploaded_file($categories_image3['tmp_name'])) {
-          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image3 = '" . $categories_image3['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
-          tep_copy_uploaded_file($categories_image3, $image_directory);
+        if (is_uploaded_file($categories_image['tmp_name'])) {
+          $categories_image_info_array = tep_defined_category_image_name($categories_image['name'], $c_image_index, $c_image_name_array);
+          $c_image_index = $categories_image_info_array['index'];
+          $categories_image['name'] = $categories_image_info_array['name'];  
+          $tmp_category_image = $categories_image['name']; 
+          tep_copy_uploaded_file($categories_image, $image_directory, $categories_image['name']);
         }
-
-
+        
+        if (isset($tmp_category_image2)) {
+          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $tmp_category_image2 . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
+        }
+        if (isset($tmp_category_image)) {
+          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image = '" . $tmp_category_image . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
+        }
       } elseif ($_GET['action'] == 'update_category') {
         if(!tep_check_romaji($sql_data_array['romaji'])){
           $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
@@ -519,39 +533,40 @@ if (isset($_GET['action']) && $_GET['action']) {
         }
         tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\' and language_id = \'' . $languages[$i]['id'] . '\' and site_id = \''.$site_id.'\'');
 
+        $c_image_index = 0;
+        $c_image_name_array = array();
         //categories_image2 upload => UPDATE
         $categories_image2 = tep_get_uploaded_file('categories_image2');
         $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
         if (is_uploaded_file($categories_image2['tmp_name'])) {
-          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $categories_image2['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
-          tep_copy_uploaded_file($categories_image2, $image_directory);
+          $categories_image_array = tep_defined_category_image_name($categories_image2['name']);
+          $c_image_index = $categories_image_array['index'];
+          $categories_image2['name'] = $categories_image_array['name'];  
+          $c_image_name_array[] = $categories_image2['name']; 
+          $tmp_category_image2 = $categories_image2['name']; 
+          tep_copy_uploaded_file($categories_image2, $image_directory, $categories_image2['name']);
         }
-        //categories_image3 upload => UPDATE
-        $categories_image3 = tep_get_uploaded_file('categories_image3');
-
-        if (is_uploaded_file($categories_image2['tmp_name'])) {
-          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $categories_image2['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
-          tep_copy_uploaded_file($categories_image2, $image_directory);
-        }
-        //categories_image3 upload => UPDATE
-        $categories_image3 = tep_get_uploaded_file('categories_image3');
+        $categories_image = tep_get_uploaded_file('categories_image');
         $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
 
-        if (is_uploaded_file($categories_image3['tmp_name'])) {
-          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image3 = '" . $categories_image3['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id = '".$site_id."'");
-          tep_copy_uploaded_file($categories_image3, $image_directory);
+        if (is_uploaded_file($categories_image['tmp_name'])) {
+          $categories_image_info_array = tep_defined_category_image_name($categories_image['name'], $c_image_index, $c_image_name_array);
+          $c_image_index = $categories_image_info_array['index'];
+          $categories_image['name'] = $categories_image_info_array['name'];  
+          $tmp_category_image = $categories_image['name']; 
+          tep_copy_uploaded_file($categories_image, $image_directory, $categories_image['name']);
+        }
+        
+        if (isset($tmp_category_image2)) {
+          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image2 = '" . $tmp_category_image2 . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
+        }
+        if (isset($tmp_category_image)) {
+          tep_db_query("update " . TABLE_CATEGORIES_DESCRIPTION . " set categories_image = '" . $tmp_category_image . "' where categories_id = '" . tep_db_input($categories_id) . "' and site_id='".$site_id."'");
         }
       }
     }
-
-    $categories_image = tep_get_uploaded_file('categories_image');
-    $image_directory = tep_get_local_path(tep_get_upload_dir($site_id) . 'categories/');
-
-    if (is_uploaded_file($categories_image['tmp_name'])) {
-      tep_db_query("update " . TABLE_CATEGORIES . " set categories_image = '" . $categories_image['name'] . "' where categories_id = '" . tep_db_input($categories_id) . "'");
-      tep_copy_uploaded_file($categories_image, $image_directory);
-    }
+    
 
     if ((($site_id == '') || ($site_id == 0))) {
       //删除没有关系的mission 
@@ -572,8 +587,7 @@ if (isset($_GET['action']) && $_GET['action']) {
               tep_db_query($sql_del_no_categories_mission);
               tep_db_query($sql_del_no_mission_session);
               tep_db_query($sql_del_no_mission_record);
-              break;
-              }
+              } else {
               // 修改  只存在唯一一个mission即同名mission为同一mission
               // 1.判断 keyword是否在 mission 中存在,如果存在,则关联,如果不存在,则新建,并关联
               $mission_to_categories_whith_keyword_exist = "SELECT c2m.categories_id ,c2m.mission_id from " .TABLE_CATEGORIES_TO_MISSION.' c2m, ' .TABLE_MISSION .' m ' ."WHERE m.keyword='".$kWord."' " ."AND c2m.mission_id = m.id " ."AND c2m.categories_id = ".$categories_id;
@@ -622,6 +636,7 @@ if (isset($_GET['action']) && $_GET['action']) {
 
               unset($tmpArray);
               unset($tmpResultArray);
+              }
               }
     }
 
@@ -966,18 +981,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       }
 
 
-      if ($_POST['products_image']) {
-        $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
-      }
-      if ($_POST['products_image2']) {
-        $sql_data_array['products_image2'] = (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2']));
-      }
-      if ($_POST['products_image3']) {
-        $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
-      }
-      if ($_POST['products_cart_image']) {
-        $sql_data_array['products_cart_image'] = (($_POST['products_cart_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_cart_image']));
-      }
 
 
       if ($_GET['action'] == 'insert_product') {
@@ -1142,6 +1145,20 @@ if (isset($_GET['action']) && $_GET['action']) {
             $sql_data_array['preorder_status'] = $default_preorder_res['preorder_status']; 
           }
         }
+
+        if ($_POST['products_image']) {
+          $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
+        }
+        if ($_POST['products_image2']) {
+          $sql_data_array['products_image2'] = (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2']));
+        }
+        if ($_POST['products_image3']) {
+          $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
+        }
+        if ($_POST['products_cart_image']) {
+          $sql_data_array['products_cart_image'] = (($_POST['products_cart_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_cart_image']));
+        }
+
         if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
           $insert_sql_data = array('products_id' => $products_id,
               'language_id' => $language_id,
@@ -1156,6 +1173,15 @@ if (isset($_GET['action']) && $_GET['action']) {
 
         if ($site_id == 0) {
           tep_db_query("update `".TABLE_PRODUCTS_DESCRIPTION."` set `preorder_status` = '".$_POST['preorder_status']."' where products_id = '".$products_id."' and `site_id` != '0'"); 
+          $update_other_image_site = "select site_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id ='".$products_id."' and site_id !='0'";
+          $update_other_image_site_query = tep_db_query($update_other_image_site);
+          $update_default_image_site = "select products_image,products_image2,products_image3 from ".TABLE_PRODUCTS_DESCRIPTION." where products_id ='".$products_id."' and site_id = '0'";
+          $update_default_image_row = tep_db_fetch_array(tep_db_query($update_default_image_site));
+          while($update_other_image_site_row = tep_db_fetch_array($update_other_image_site_query)){
+            tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_image = '".$update_default_image_row['products_image']."' where products_id ='".$products_id."' and site_id='".$update_other_image_site_row['site_id']."' and (products_image='' or products_image=null)");
+            tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_image2 = '".$update_default_image_row['products_image2']."' where products_id ='".$products_id."' and site_id='".$update_other_image_site_row['site_id']."' and (products_image2='' or products_image2=null)");
+            tep_db_query("update ".TABLE_PRODUCTS_DESCRIPTION." set products_image3 = '".$update_default_image_row['products_image3']."' where products_id ='".$products_id."' and site_id='".$update_other_image_site_row['site_id']."' and (products_image3='' or products_image3=null)");
+          }
         }
       }
       // option值插入完成
@@ -1255,9 +1281,6 @@ if (isset($_GET['action']) && $_GET['action']) {
               insert into " . TABLE_PRODUCTS . " (
                 products_real_quantity, 
                 products_model,
-                products_image,
-                products_image2,
-                products_image3, 
                 products_price, 
                 products_price_offset,
                 products_date_added, 
@@ -1297,9 +1320,6 @@ if (isset($_GET['action']) && $_GET['action']) {
                   ) values (
                     '" . $product['products_real_quantity'] . "', 
                     '" . $product['products_model'] . "', 
-                    '" . $product['products_image'] . "', 
-                    '" . $product['products_image2'] . "', 
-                    '" . $product['products_image3'] . "',
                     '" . $product['products_price'] . "',  
                     '" . $product['products_price_offset'] . "',  
                     now(), 
@@ -1357,7 +1377,10 @@ if (isset($_GET['action']) && $_GET['action']) {
                   products_description_origin,
                   option_image_type,
                   preorder_status,
-                  p_manual
+                  p_manual,
+                  products_image,
+                  products_image2,
+                  products_image3
                   ) values (
                     '" . $dup_products_id . "', 
                     '" . $description['language_id'] . "', 
@@ -1371,7 +1394,10 @@ if (isset($_GET['action']) && $_GET['action']) {
                     '" . $description['products_description_origin']."',
                     '" . $description['option_image_type']."',
                     '" . $description['preorder_status']."',
-                    '" . $description['p_manual']."'
+                    '" . $description['p_manual']."',
+                    '" . $product['products_image'] . "', 
+                    '" . $product['products_image2'] . "', 
+                    '" . $product['products_image3'] . "'
                     )");
           }
           //商品关联标签
@@ -1586,17 +1612,59 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'p_delete') {
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
   if (file_exists($image_location2)) @unlink($image_location2);
-  tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
-  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
+  if(isset($site_id)&&$site_id!=0){
+    $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id =  '" . $_GET['pID'] . "' and site_id = 0"));
+    tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
+  }else{
+    $all_site_image_query =  tep_db_query("select id from ".  TABLE_SITES); 
+    tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '0'");
+    while($site_image_row = tep_db_fetch_array($all_site_image_query)){
+      $t_image_location  = tep_get_upload_dir($site_image_row['id']). 'products/' . $_GET['file'];//原始图像
+      $t_image_location2 = tep_get_upload_dir($site_image_row['id']) .'cache_large/'. $_GET['file'];//缩略图
+      if (!file_exists($t_image_location)){
+        if (file_exists($t_image_location2)) @unlink($t_image_location2);
+        tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_image_row['id']."' and ".$delete_image." ='".$_GET['file']."'");
+      }
+    }
+  }
+  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&site_id='.$site_id));
   $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
+
 }
 if (isset($_GET['mode']) && $_GET['mode'] == 'c_delete') {
   $image_location  = tep_get_upload_dir($site_id). 'carttags/' . $_GET['file'];//原始图像
   $delete_image = $_GET['cl'];
   if (file_exists($image_location)) @unlink($image_location);
-  tep_db_query("update  " . TABLE_PRODUCTS . " set ".$delete_image." = '' where products_id  = '" . $_GET['pID'] . "'");
-  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action']));
+  $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_PRODUCTS_DESCRIPTION." where products_id =  '" . $_GET['pID'] . "' and site_id = 0"));
+  tep_db_query("update  " . TABLE_PRODUCTS_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where products_id  = '" . $_GET['pID'] . "' and site_id = '".$site_id."'");
+  tep_redirect(tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&site_id='.$site_id));
   $messageStack->add(CATEGORY_PIC_DEL_SUCCESS_NOTICE, 'success');
+}
+
+//删除分类图片
+if (isset($_GET['mode']) && $_GET['mode'] == 'ca_delete') {
+  $image_location  = tep_get_upload_dir($site_id). 'categories/' . $_GET['file'];
+  $other_image_location = tep_get_upload_dir($site_id) .'cache_lists/'. $_GET['file'];
+  $delete_image = $_GET['cl'];
+  if (file_exists($image_location)) @unlink($image_location);
+  if (file_exists($other_image_location)) @unlink($other_image_location);
+
+  if(isset($site_id) && $site_id != 0){
+    $tmp_image_row = tep_db_fetch_array(tep_db_query("select ".$delete_image." from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id =  '" . $_GET['cID'] . "' and site_id = 0"));
+    tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '".$tmp_image_row[$delete_image]."' where categories_id  = '" . $_GET['cID'] . "' and site_id = '".$site_id."'");
+  }else{
+    $all_site_image_query =  tep_db_query("select id from ".  TABLE_SITES); 
+    tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '' where categories_id  = '" . $_GET['cID'] . "' and site_id = '0'");
+    while($site_image_row = tep_db_fetch_array($all_site_image_query)){
+      $t_image_location  = tep_get_upload_dir($site_image_row['id']). 'categories/' . $_GET['file'];
+      $t_other_image_location = tep_get_upload_dir($site_image_row['id']) .'cache_lists/'. $_GET['file'];
+      if (!file_exists($t_image_location)){
+        if (file_exists($t_other_image_location)) @unlink($t_other_image_location);
+        tep_db_query("update  " . TABLE_CATEGORIES_DESCRIPTION . " set ".$delete_image." = '' where categories_id  = '" . $_GET['cID'] . "' and site_id = '".$site_image_row['id']."' and ".$delete_image." ='".$_GET['file']."'");
+      }
+    }
+  }
+  tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_GET['cPath'].'&cID='.$_GET['cID'].'&action='.$_GET['c_action'].'&site_id='.$site_id));
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -2570,21 +2638,27 @@ $(document).ready(function() {
           tmp_click_symbol = '1'; 
         } else if (tmp_click_str.indexOf('update_quantity') >= 0) {
           tmp_click_symbol = '1'; 
-        } else if (tmp_click_str.indexOf('set_new_price') >= 0) {
-          tmp_click_symbol = '1'; 
-        }
-        if (c_submit_single) {
-          if (tmp_click_symbol == '1') {
-            $("#show_popup_info").find('input:button').first().trigger("click"); 
-          }else{
-            if(ele_tags_obj != ''){
-               $("#show_popup_info").find('input:button').first().trigger("click"); 
-            } 
-            if ($("#button_save_product")) {
-              $("#button_save_product").trigger("click");
+        } 
+         
+        tmp_click_str = $("#show_popup_info").find('input:button').first().attr('id'); 
+         
+        if (tmp_click_str == 'new_price_button') {
+          $("#new_price_button").trigger("click");
+        } else {
+          if (c_submit_single) {
+            if (tmp_click_symbol == '1') {
+              $("#show_popup_info").find('input:button').first().trigger("click"); 
+            }else{
+              if(ele_tags_obj != ''){
+                 $("#show_popup_info").find('input:button').first().trigger("click"); 
+              } 
+              if ($("#button_save_product")) {
+                $("#button_save_product").trigger("click");
+              }
             }
           }
         }
+        
       } 
     }
     if (event.ctrlKey && event.which == 37) {
@@ -2729,6 +2803,55 @@ function toggle_category_form(c_permission, cf_type)
     });
   }
 }
+<?php //检查商品价格是否正确?>
+function check_single_product_price(pid_info, c_permission, c_type) {
+  var new_price_value = $('#pp').val(); 
+  var relate_new_price_value = '0'; 
+  if (typeof($('#r_price').val()) != 'undefined') {
+    relate_new_price_value = $('#r_price').val(); 
+  }
+  $.ajax({
+    type: 'POST',
+    async: false,
+    url: 'ajax_orders.php?action=check_single_products_profit',
+    dataType: 'text',
+    data: 'products_id='+pid_info+'&new_price='+new_price_value+'&relate_new_price='+relate_new_price_value,
+    success:function(msg_info) {
+      if (msg_info != '') {
+        $("#button_save_product").attr("id", 'tmp_button_save_product');
+        alert(msg_info);
+        setTimeout('$("#tmp_button_save_product").attr("id", "button_save_product")', 100); 
+      } else {
+        toggle_category_form(c_permission, c_type); 
+      }
+    }
+  }); 
+}
+<?php //检查编辑商品的价格是否正确?>
+function check_edit_product_profit() {
+  var new_price_value = $('#pp').val(); 
+  var flag_type = $('input:radio:checked[name=products_bflag]').val(); 
+  var relate_value = $('#relate_info').val(); 
+  var num_value = $('#products_attention_1_3').val(); 
+  if (relate_value != '0') {
+    $.ajax({
+      type: 'POST',
+      async: false,
+      url: 'ajax_orders.php?action=check_category_to_products_profit',
+      dataType: 'text',
+      data: 'product_flag='+flag_type+'&new_price='+new_price_value+'&p_relate_id='+relate_value+'&num_value='+num_value,
+      success:function(msg_info) {
+        if (msg_info != '') {
+          alert(msg_info); 
+        } else {
+          document.forms.new_product.submit(); 
+        }
+      }
+    });
+  } else {
+    document.forms.new_product.submit(); 
+  }
+}
 </script>
 <?php 
 require("includes/note_js.php");
@@ -2831,9 +2954,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     p.products_real_quantity, 
                     p.products_virtual_quantity, 
                     p.products_model, 
-                    p.products_image,
-                    p.products_image2,
-                    p.products_image3, 
+                    pd.products_image,
+                    pd.products_image2,
+                    pd.products_image3, 
                     p.products_price, 
                     p.products_price_offset,
                     p.products_weight, 
@@ -2978,7 +3101,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td class="main" valign="top"><?php echo $site_id?('<br>'.tep_get_site_name_by_id($site_id)):'';?></td>
                 <td class="main" align="right"><?php 
-                echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
+                if (empty($site_id)) {
+                  echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
+                } else {
+                  echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
+                }
               if (isset($_GET['rdirect'])) {
                 echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; 
               } else {
@@ -3138,7 +3265,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
                 <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
                 <span id="relate_products">
-                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
+                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)" id="relate_info"');?>
                 </span>
                 <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
                 <input type="hidden" name="products_price_def" value="">
@@ -3323,7 +3450,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     </tr>
                     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                     </tr>
-                    <?php if (!$site_id) {?>
                       <tr>
                         <td colspan="2"><fieldset>
                         <legend style="color:#009900 "><?php echo TEXT_PRODUCT_IMAGE_TITLE;?></legend>
@@ -3346,7 +3472,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             if(isset($pInfo->products_image2) && tep_not_null($pInfo->products_image2)){
                               echo '<br>'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
                               ?>
-                                <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete') ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
+                                <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
                                 <?php } ?>
                                 </td>
                                 </tr>
@@ -3357,7 +3483,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                 if(isset($pInfo->products_image3) && tep_not_null($pInfo->products_image3)){
                                   echo '<br>'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT , $site_id).'<br>'."\n";
                                   ?>
-                                    <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete') ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
+                                    <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
                                     <?php } ?>
                                     </td>
                                     </tr>
@@ -3399,7 +3525,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   ?>
                                     </fieldset></td>
                                     </tr>
-                                    <?php }?>
                                     <tr>
                                     <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                                     </tr>
@@ -3659,7 +3784,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                       echo tep_draw_hidden_field('rdirect', 'all'); 
                                     }
                                   echo tep_eof_hidden(); 
-                                  echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;'; 
+                                  if (empty($site_id)) {
+                                    echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_PREVIEW, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
+                                  } else {
+                                    echo tep_html_element_submit(IMAGE_PREVIEW) .  '&nbsp;&nbsp;';
+                                  }
                                   if (isset($_GET['rdirect'])) {
                                     echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id=0&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; 
                                   } else {
@@ -3695,16 +3824,18 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   // copy image only if modified
                   $products_image = tep_get_uploaded_file('products_image');
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
+                  $p_image_index = 0;
+                  $p_image_name_array = array();
 
                   if (is_uploaded_file($products_image['tmp_name'])) {
-                    tep_copy_uploaded_file($products_image, $image_directory);
+                    $products_image_arr = tep_defined_product_image_name($products_image['name']);
+                    $p_image_index = $products_image_arr['index'];
+                    $products_image['name'] = $products_image_arr['name'];
+                    $p_image_name_array[] = $products_image['name'];
+                    tep_copy_uploaded_file($products_image, $image_directory,$products_image['name']);
                     $products_image_name = $products_image['name'];
-                    $products_image_name2 = $products_image2['name'];
-                    $products_image_name3 = $products_image3['name'];
                   } else {
                     $products_image_name = $_POST['products_previous_image'];
-                    $products_image_name2 = $_POST['products_previous_image2'];
-                    $products_image_name3 = $_POST['products_previous_image3'];
                   }
                   // copy image only if modified 
                   $products_image2 = tep_get_uploaded_file('products_image2');
@@ -3712,13 +3843,20 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
 
                   if (is_uploaded_file($products_image2['tmp_name'])) {
-                    tep_copy_uploaded_file($products_image2, $image_directory);
+                    $products_image_arr2 = tep_defined_product_image_name($products_image2['name'],$p_image_index,$p_image_name_array);
+                    $p_image_index = $products_image_arr2['index'];
+                    $products_image2['name'] = $products_image_arr2['name'];
+                    $p_image_name_array[] = $products_image2['name'];
+                    tep_copy_uploaded_file($products_image2, $image_directory,$products_image2['name']);
                     $products_image_name2 = $products_image2['name'];
                   } else {
                     $products_image_name2 = $_POST['products_previous_image2'];
                   }
                   if (is_uploaded_file($products_image3['tmp_name'])) {
-                    tep_copy_uploaded_file($products_image3, $image_directory);
+                    $products_image_arr3 = tep_defined_product_image_name($products_image3['name'],$p_image_index,$p_image_name_array);
+                    $p_image_index = $products_image_arr3['index'];
+                    $products_image3['name'] = $products_image_arr3['name'];
+                    tep_copy_uploaded_file($products_image3, $image_directory,$products_image3['name']);
                     $products_image_name3 = $products_image3['name'];
                   } else {
                     $products_image_name3 = $_POST['products_previous_image3'];
@@ -3760,9 +3898,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       p.products_real_quantity, 
                       p.products_virtual_quantity, 
                       p.products_model, 
-                      p.products_image,
-                      p.products_image2,
-                      p.products_image3, 
+                      pd.products_image,
+                      pd.products_image2,
+                      pd.products_image3, 
                       p.products_price, 
                       p.products_bflag,
                       p.products_weight, 
@@ -4213,9 +4351,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       cd.categories_status, 
                       cd.categories_name, 
                       cd.categories_image2, 
-                      cd.categories_image3, 
                       cd.categories_meta_text, 
-                      c.categories_image, 
+                      cd.categories_image, 
                       c.parent_id, 
                       c.sort_order, 
                       c.date_added, 
@@ -4376,8 +4513,18 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <legend style="color:#ff0000"><?php echo CATEGORY_PIC_TITLE;?></legend> 
                 <table border="0" cellspacing="0" cellpadding="2">
                 <?php
+                $hidden_top_category = false; 
+                $hidden_child_category = false; 
+                
+                if ($current_category_id) {
+                  $hidden_top_category = true; 
+                } else {
+                  $hidden_child_category = true; 
+                }
+                
                 for ($ci_num = 0, $cn_num = sizeof($c_languages); $ci_num < $cn_num; $ci_num++) {
                   ?>
+                    <?php if (!$hidden_top_category) {?> 
                     <tr>
                     <td class="main" valign="top" width="180"><?php echo CATEGORY_IMAGE_SHOW_TEXT;?></td> 
                     <td class="main">
@@ -4385,53 +4532,87 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     <?php
                     if ($_GET['action'] == 'edit_category') {
                       echo '<br>';
-                      echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image2, $cInfo->categories_name);
+                      $hidden_top_single = 0; 
+                      if (tep_not_null($cInfo->categories_image2)) {
+                        if (file_exists(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image2)) {
+                          $hidden_top_single = 1; 
+                        }
+                      } 
+                      
+                      if ($hidden_top_single) {
+                        echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image2, $cInfo->categories_name);
+                      } else {
+                        $default_top_category_raw = tep_db_query("select categories_image2 from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$cInfo->categories_id."' and site_id = '0'"); 
+                        $default_top_category_res = tep_db_fetch_array($default_top_category_raw);
+                        echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_top_category_res['categories_image2'], $cInfo->categories_name);
+                      }
+                      
                       echo '<br>';
-                      echo tep_get_upload_dir($site_id).'categories/'; 
-                      echo '<br>';
-                      echo $cInfo->categories_image2; 
+                      if ($hidden_top_single) {
+                        echo tep_get_upload_dir($site_id).'categories/'; 
+                        echo '<br>';
+                        echo $cInfo->categories_image2; 
+                      } else {
+                        echo tep_get_upload_dir(0).'categories/'; 
+                        echo '<br>';
+                        echo $default_top_category_res['categories_image2']; 
+                      } 
+                      if (tep_not_null($cInfo->categories_image2)) {
+                        if (file_exists(tep_get_upload_dir($site_id).'categories/'.$cInfo->categories_image2)) {
+                          echo '<br>';
+                          echo '<a href="javascript:confirmg(\''.TEXT_PRODUCT_IMAGE_DEL_CONFIRM.'\', \''.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_GET['cPath'].'&cID='.$_GET['cID'].'&cl=categories_image2'.'&c_action='.$_GET['action'].'&file='.$cInfo->categories_image2.'&mode=ca_delete&site_id='.$site_id).'\')" style="color:#0000FF;">'.TEXT_PRODUCT_IMAGE_DEL_TEXT.'</a>';
+                        }
+                      }
                     }
                   ?>
                     </td> 
                     </tr>
+                    <?php }?> 
+                    <?php if (!$hidden_child_category) {?> 
                     <tr>
-                    <td class="main" valign="top"><?php echo CATEGORY_SECOND_IMAGE_SHOW_TEXT;?></td> 
+                    <td class="main" valign="top" width="180"><?php echo TEXT_CATEGORIES_IMAGE;?></td> 
                     <td class="main">
-                    <input type="file" name="categories_image3" class="tdul"> 
-                    <?php
-                    if ($_GET['action'] == 'new_category') {
-                      echo '<br>'.CATEGORY_INSERT_IMAGE_READ; 
-                    }
-                  if ($_GET['action'] == 'edit_category') {
-                    echo '<br>';
-                    echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image3, $cInfo->categories_name);
-                    echo '<br>';
-                    echo tep_get_upload_dir($site_id).'categories/'; 
-                    echo '<br>';
-                    echo $cInfo->categories_image3; 
-                  }
-                  ?>
-                    </td> 
+                    <input type="file" name="categories_image" class="tdul"> 
+                    <?php 
+                      if ($_GET['action'] == 'edit_category') {
+                        echo '<br>';
+                        $hidden_child_single = 0; 
+                        if (tep_not_null($cInfo->categories_image)) {
+                          if (file_exists(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image)) {
+                            $hidden_child_single = 1; 
+                          }
+                        } 
+                        if ($hidden_child_single) {
+                          echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image, $cInfo->categories_name);
+                        } else {
+                          $default_child_category_raw = tep_db_query("select categories_image from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$cInfo->categories_id."' and site_id = '0'"); 
+                          $default_child_category_res = tep_db_fetch_array($default_child_category_raw);
+                          echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_child_category_res['categories_image'], $cInfo->categories_name);
+                        }
+                        echo '<br>';
+                        if ($hidden_child_single) {
+                          echo tep_get_upload_dir($site_id).'categories/'; 
+                          echo '<br>';
+                          echo $cInfo->categories_image; 
+                        } else {
+                          echo tep_get_upload_dir(0).'categories/'; 
+                          echo '<br>';
+                          echo $default_child_category_res['categories_image']; 
+                        }
+                        if (tep_not_null($cInfo->categories_image)) {
+                          if (file_exists(tep_get_upload_dir($site_id).'categories/'.$cInfo->categories_image)) {
+                            echo '<br>';
+                            echo '<a href="javascript:confirmg(\''.TEXT_PRODUCT_IMAGE_DEL_CONFIRM.'\', \''.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_GET['cPath'].'&cID='.$_GET['cID'].'&cl=categories_image'.'&c_action='.$_GET['action'].'&file='.$cInfo->categories_image.'&mode=ca_delete&site_id='.$site_id).'\')" style="color:#0000FF;">'.TEXT_PRODUCT_IMAGE_DEL_TEXT.'</a>';
+                          }
+                        }
+                      }
+                    ?>
+                    </td>
                     </tr>
+                    <?php }?> 
                     <?php
                 }
               ?>
-                <tr>
-                <td class="main" valign="top"><?php echo TEXT_CATEGORIES_IMAGE;?></td> 
-                <td class="main">
-                <input type="file" name="categories_image" class="tdul"> 
-                <?php 
-                if ($_GET['action'] == 'edit_category') {
-                  echo '<br>';
-                  echo tep_image(tep_get_web_upload_dir($site_id).'categories/'.$cInfo->categories_image, $cInfo->categories_name);
-                  echo '<br>';
-                  echo tep_get_upload_dir($site_id).'categories/'; 
-                  echo '<br>';
-                  echo $cInfo->categories_image; 
-                }
-              ?>
-                </td>
-                </tr>
                 </table> 
                 </fieldset>
                 <br> 
@@ -4734,11 +4915,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                          cd.categories_status, 
                          cd.categories_name, 
                          cd.categories_image2, 
-                         cd.categories_image3, 
                          cd.categories_meta_text, 
                          cd.character_romaji,
                          cd.alpha_romaji,
-                         c.categories_image, 
+                         cd.categories_image, 
                          c.parent_id, 
                          c.sort_order, 
                          c.date_added, 
@@ -4762,9 +4942,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       cd.categories_status, 
                       cd.categories_name, 
                       cd.categories_image2, 
-                      cd.categories_image3, 
                       cd.categories_meta_text, 
-                      c.categories_image, 
+                      cd.categories_image, 
                       c.parent_id, 
                       c.sort_order, 
                       c.date_added, 
@@ -4844,7 +5023,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $categories_name_params .= 'class="dataTableContent" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .  $_GET['page']) : '') . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
                     .'\'" ';
                 }
-                $categories_name_text .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
+                $categories_name_text .= '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').(isset($_GET['search'])?'&search='.$_GET['search']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($site_id)?'&site_id='.$site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                 $categories_name_text .=  '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>&nbsp;'; 
                 $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . $categories['categories_name'].'&nbsp;' .  '</a>';
@@ -5108,9 +5287,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                          p.products_attention_1_3,
                          p.products_real_quantity, 
                          p.products_virtual_quantity, 
-                         p.products_image,
-                         p.products_image2,
-                         p.products_image3, 
+                         pd.products_image,
+                         pd.products_image2,
+                         pd.products_image3, 
                          p.products_price, 
                          p.products_price_offset,
                          p.products_small_sum,
@@ -5142,9 +5321,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       p.products_attention_1_3,
                       p.products_real_quantity, 
                       p.products_virtual_quantity, 
-                      p.products_image,
-                      p.products_image2,
-                      p.products_image3, 
+                      pd.products_image,
+                      pd.products_image2,
+                      pd.products_image3, 
                       p.products_price, 
                       p.products_price_offset,
                       p.products_small_sum,
@@ -5583,7 +5762,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_price_params, 'text'=>$products_price_text);
                 $products_set_price_params .= 'class="dataTableContent" align="center"';
                 if (empty($site_id)) {
-                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="price_error_'.  $products_count.'"></span>';
+                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><input type="hidden" name="hidden_products_id[]" value="'.$products['products_id'].'"><span id="price_error_'.  $products_count.'"></span>';
                 } else {
                   $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
                 }

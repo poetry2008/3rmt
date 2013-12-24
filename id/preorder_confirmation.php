@@ -118,7 +118,7 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
       foreach ($_POST as $p_key => $p_value) {
         if ($p_key != 'x' && $p_key != 'y') {
-          echo tep_draw_hidden_field($p_key, stripslashes($p_value)); 
+          echo '<input type="hidden" name="'.$p_key.'" value="'.stripslashes($p_value).'">'; 
         }
       }
       $product_query = tep_db_query("select products_price, products_price_offset, products_tax_class_id, products_small_sum from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
@@ -317,6 +317,7 @@ if (!$payment_modules->moduleIsEnabled($payment)){
 $payment_selection = $payment_modules->selection();
 $pay_info_array = $payment_modules->specialOutput($payment, true, $_SESSION['preorder_products_list']);
 $payment_modules->deal_other_info($payment, $_POST); 
+$payment_modules->handle_information($payment, $_POST, true); 
 //支付方法相关信息
 if (!empty($pay_info_array)) {
 ?>
@@ -512,9 +513,6 @@ if (tep_not_null($_POST['yourmessage'])) {
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
 <td align="right" class="main"> <?php
-if (is_array($payment_modules->modules)) {
-  echo $payment_modules->process_button($payment);
-}
 echo '<a href="javascript:void(0);" onclick="check_error();">';
 echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER) . '</a></form>' . "\n";
 ?> </td> 

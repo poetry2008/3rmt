@@ -10,7 +10,6 @@ $connection = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD)  
 // select database
 $db = mysql_select_db(DB_DATABASE, $connection) or die(mysql_error());
 
-// Si la langue n'est pas spfi
 if (!isset($_GET['language']) || !$_GET['language']) {
   
   $lang_query = tep_db_query("
@@ -30,7 +29,6 @@ if (!isset($_GET['language']) || !$_GET['language']) {
   ");
 }
 
-// Rp le code (fr, en, etc.) et l'id (1, 2, etc.) de la langue courante
 if (tep_db_num_rows($lang_query)) {
   $lang_a = tep_db_fetch_array($lang_query);
     $lang_code = $lang_a['code'];
@@ -52,8 +50,8 @@ define('DESCRIPTION', TITLE);
 
 Header("Content-Type: text/xml");
 echo '<?xml version="1.0" encoding="UTF-8" ?>';
-echo '<?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="EUC-JP"?>' . "\n";
-echo "<!-- RSS for " . STORE_NAME . ", generated on " . date("r") . " -->\n";
+echo '<?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="UTF-8"?>' . "\n";
+echo "<!-- RSS for " . STORE_NAME . ", generated on " . date('r') . " -->\n";
 ?>
 <rss version="0.92">
 <channel>
@@ -67,13 +65,14 @@ echo "<!-- RSS for " . STORE_NAME . ", generated on " . date("r") . " -->\n";
 <?php
 // Create SQL statement
 if ($_GET['cPath'] != "") {
-  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc, products_description pd WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC";
+  $sql = "SELECT p.products_id, products_model, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC";
 } else {
-  $sql = "SELECT p.products_id, p.products_model, p.products_image, p.products_price, p.products_tax_class_id FROM products p ORDER BY products_id DESC";
+  $sql = "SELECT products_id, products_model,  products_price, products_tax_class_id FROM products ORDER BY products_id DESC";
 }
 // Execute SQL query and get result
  
 $sql_result = mysql_query($sql,$connection) or die("Couldn't execute query.");
+
 $i = 1;
 // Format results by row
 while ($row = mysql_fetch_array($sql_result)) {
@@ -86,7 +85,10 @@ while ($row = mysql_fetch_array($sql_result)) {
   $link = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $id) ;
 
   $model = $row["products_model"];
-  $image = $row["products_image"];
+  $sql_image = "select products_image from products_description where products_id
+    ='".$row['products_id']."' order by site_id desc limit 1";
+  $image_row = mysql_fetch_array(mysql_query($sql_image));
+  $image = $image_row["products_image"];
   $price = $row["products_price"];
   $tax = $row["products_tax_class_id"];
 //  Add VAt if product subject to VAT (might not be perfect if you have different VAT zones)
@@ -115,7 +117,6 @@ while ($row = mysql_fetch_array($sql_result)) {
     continue; 
   }
   $name = $row2["products_name"];
-  
   $desc = replace_store_name($row2['products_description']);
 
 // add extra data here
@@ -131,7 +132,6 @@ while ($row = mysql_fetch_array($sql_result)) {
 //    $desc = strtr ($desc, $trans_tbl);
 
 // dumb method , but it works
-  
   $name = str_replace ('&amp;','&',$name);
   $desc = str_replace ('&amp;','&',$desc);
   $name = str_replace ('&eacute;','・',$name);
@@ -152,7 +152,9 @@ while ($row = mysql_fetch_array($sql_result)) {
   $desc = str_replace ('&ocirc;','・',$desc);
   $name = str_replace ('&nbsp;',' ',$name);
   $desc = str_replace ('&nbsp;',' ',$desc);
- 
+  $name = str_replace ('&times;',TEXT_RIDE_RSS,$name);
+  $desc = str_replace ('&times;',TEXT_RIDE_RSS,$desc);
+  
   echo "<item>
   <title>" . htmlspecialchars($name) . "</title>
   <link>" . $link . "</link>

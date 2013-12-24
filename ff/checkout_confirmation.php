@@ -156,7 +156,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .
-         '            <td class="confirmation_product_num_info" align="right" valign="top">' .  $order->products[$i]['qty'] . '&nbsp;'.NUM_UNIT_TEXT . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="confirmation_product_num_info" align="right" valign="top">' .  $order->products[$i]['qty'] . '&nbsp;'.NUM_UNIT_TEXT . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
   if ($order->products[$i]['price'] < 0) {
@@ -250,6 +250,7 @@ if(!empty($_SESSION['options'])){
   <?php }?>
 <?php
   foreach($_SESSION['options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
 ?>
 
 <tr>
@@ -257,6 +258,7 @@ if(!empty($_SESSION['options'])){
   <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
+    }
   }
 ?>
 <?php if (!empty($_SESSION['options'])) {?>
@@ -392,6 +394,38 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 
+<?php
+}
+if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
+?> 
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+  <tr> 
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="2"><b><?php echo TEXT_BILLING_ADDRESS; ?></b>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+<?php
+  foreach($_SESSION['billing_options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
+?>
+  <tr>
+  <td class="main" width="150" valign="top"><?php echo $value[0]; ?>:</td>
+  <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  </tr>
+<?php
+    }
+  }
+?>
+  </table>
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr>
 <?php
 }
 ?>
@@ -671,16 +705,16 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
                 <td>
                   <table border="0" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main" colspan="4"><?php echo str_replace('<br />', '<br>', $confirmation['title']); ?></td> 
+                      <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td> 
                     </tr> 
                     <?php
                     if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?> 
                     <tr> 
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                      <td width="10"></td> 
                       <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+                      <td width="10"></td> 
                       <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
                     </tr> 
                     <?php
@@ -711,7 +745,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
                       <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                     </tr> 
                     <tr> 
-                      <td class="main"><div class="payment_comment"><?php echo str_replace('<br />', '<br>', nl2br(htmlspecialchars($order->info['comments']))) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
+                      <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($order->info['comments'])) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
                     </tr> 
                   </table></td> 
               </tr> 
@@ -766,7 +800,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 <!-- visites --> 
 <object>
 <noscript>
-<img src="visites.php" alt="Statistics" style="border:0">
+<img src="visites.php" alt="Statistics" style="border:0" />
 </noscript>
 </object>
 <!-- visites -->

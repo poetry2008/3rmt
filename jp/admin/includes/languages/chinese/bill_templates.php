@@ -6,7 +6,7 @@ define('TABLE_HEADING_BILL_TEMPLATES_NAME', '账单模板');
 define('TABLE_HEADING_ACTION', '操作');
 
 define('TEXT_INFO_EDIT_INTRO', '请添加必要的更改');
-define('TEXT_INFO_BILL_TEMPLATES_NAME', '账单模板名称:');
+define('TEXT_INFO_BILL_TEMPLATES_NAME', '账单模板名称');
 define('TEXT_INFO_BILL_TEMPLATES_IMAGE', '图片:');
 define('TEXT_INFO_INSERT_INTRO', '请输入新账单模板和数据');
 define('TEXT_INFO_DELETE_INTRO', '确定删除这个账单模板吗?');
@@ -32,8 +32,8 @@ define('TEXT_INFO_BILL_TEMPLATES_DATA11','DATA10:');
 define('TEXT_INFO_BILL_TEMPLATES_EMAIL','E-Mail:');
 define('TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE','名称:');
 define('TEXT_INFO_BILL_TEMPLATES_SORT_ORDER','排列顺序:');
-define('TEXT_USER_ADDED','创建者:');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日:');
-define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_USER_ADDED','创建者');
+define('TEXT_USER_UPDATE','更新者');
+define('TEXT_DATE_ADDED','创建日');
+define('TEXT_DATE_UPDATE','更新日');
 

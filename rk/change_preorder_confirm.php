@@ -451,6 +451,7 @@ foreach($all_show_option_id as $t_item_id){
             <tr>
               <td class="main">
                 <b><?php echo TEXT_ADDRESS;?></b> 
+                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
               </td>
             </tr>
             <tr>
@@ -459,7 +460,7 @@ foreach($all_show_option_id as $t_item_id){
 <?php
                     foreach($_POST as $ad_key=>$ad_value){
 
-                      if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
+                      if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != '' && trim($_POST[$ad_key]) != ''){
 
                         echo '<tr>';
                         echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
@@ -470,6 +471,40 @@ foreach($all_show_option_id as $t_item_id){
                     }
 ?> 
                   
+                </table> 
+              </td>
+            </tr>
+          </table>
+          <br> 
+<?php
+}
+?>
+<?php
+if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == '1'){
+?>
+          <table width="100%" cellspacing="2" cellpadding="2" border="0" class="formArea">
+            <tr>
+              <td class="main">
+                <b><?php echo TEXT_BILLING_SELECT;?></b> 
+                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
+              </td>
+            </tr>
+            <tr>
+              <td class="main">
+                <table width="100%" cellspacing="0" cellpadding="2" border="0">
+<?php
+                    foreach($_POST as $ad_key=>$ad_value){
+
+                      if(substr($ad_key,0,8)=='billing_' && $_POST[substr($ad_key,8)] != '' && trim($_POST[$ad_key]) != ''){
+
+                        echo '<tr>';
+			echo '<td class="main" width="150">'. $_POST[substr($ad_key,8)] .':</td>';                  
+                        echo '<td class="main">';
+                        echo $_POST[$ad_key];
+                        echo '</tr>';
+                      }
+                    }
+?>
                 </table> 
               </td>
             </tr>
@@ -810,9 +845,9 @@ if (is_array($payment_modules->modules)) {
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php
@@ -869,7 +904,7 @@ if (tep_not_null($preorder_array['comment_msg'])) {
               </td>
               <td class="main" align="right">
                 <?php
-                $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
+                  $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
                 ?>
                 <a href="javascript:void(0);" onclick="check_preorder_op('<?php echo $_POST['pid'];?>');"><?php echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a> 
               </td>

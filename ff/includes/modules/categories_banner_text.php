@@ -8,7 +8,7 @@ $categories_tab_query1 = tep_db_query("
     select c.categories_id, 
            c.parent_id, 
            cd.categories_status, 
-           c.categories_image, 
+           cd.categories_image, 
            cd.categories_name, 
            cd.categories_meta_text, 
            cd.categories_image2 ,
@@ -41,15 +41,7 @@ $categories_tab_query1 = tep_db_query("
     }
     echo '<div class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";
     echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], 210, 48) . "\n";
-    /* 
-    $cbt_dec = explode(',',$cbt['categories_meta_text']);
-    for($i=0; $i < sizeof($cbt_dec); $i++) {
-      if($cbt_dec[$i] != ''){
-        echo strip_tags(mb_substr($cbt_dec[$i],0,36,"UTF-8")) . "\n";
-      }
-    }
-    */ 
-	echo '<span>'; 
+    echo '<span>'; 
     echo $cbt['categories_name']; 
     echo  '</span></a></div>' . "\n";
   

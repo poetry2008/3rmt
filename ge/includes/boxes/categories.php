@@ -44,7 +44,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
     $id = tep_parse_category_path($left_ca_path); 
   }
   $left_show_single = true;
-} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) {
+} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT || basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION) { 
   $left_ca_path = tep_get_product_path($_POST['products_id']);
   if (tep_not_null($left_ca_path)) {
     $id = tep_parse_category_path($left_ca_path); 
@@ -68,11 +68,11 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
         <li class='l_m_category_li2'>
           <a class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
-            <strong> 
+              <strong> 
             <?php }?>
             <?php echo $category['categories_name'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
-            </strong> 
+              </strong> 
             <?php }?>
           </a>
         <?php
@@ -93,8 +93,8 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
                   and cd.language_id='" . $languages_id ."' 
                 order by cd.site_id DESC
                 ) c
-              where site_id = 0
-                 or site_id = ".SITE_ID."
+              where site_id = ".SITE_ID."
+                 or site_id = 0
               group by categories_id
               having c.categories_status != '1' and c.categories_status != '3' 
               order by sort_order, categories_name
@@ -169,11 +169,12 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
             <?php }?>
           <?php }?>
           </ul>
-      <?php } else { ?>
+      <?php } else {?>
         <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
       <?php }?>
     <?php }?>
-  <li class="l_m_category_li">
+
+    <li class="l_m_category_li">
     <a class='l_m_category_a' href="<?php echo tep_href_link('reorder.php');?>"><?php echo LINK_REORDER_TEXT;?></a>
   </li>
   </ul>

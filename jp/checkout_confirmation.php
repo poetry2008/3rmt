@@ -158,9 +158,9 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
   echo '          <tr>' . "\n" .
-    '            <td align="right" valign="top" class="confirmation_product_num_info">' .
-    $order->products[$i]['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
-    '            <td class="main" valign="top">' . $order->products[$i]['name'];
+         '            <td align="right" valign="top" class="confirmation_product_num_info">' .  $order->products[$i]['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" valign="top">' . $order->products[$i]['name'];
+
   if ($order->products[$i]['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';
   } else {
@@ -186,15 +186,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
       $all_show_option[$order->products[$i]['op_attributes'][$j]['item_id']] 
       = $order->products[$i]['op_attributes'][$j];
-      /*
-      $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
-       
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
-      if ($op_price != '0') {
-        echo ' ('.$currencies->format($op_price).')'; 
-      }
-      echo '</i></small>';
-      */
+      
     }
   }
   
@@ -202,14 +194,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
    for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
       $all_show_option[$order->products[$i]['ck_attributes'][$jk]['item_id']] 
       = $order->products[$i]['ck_attributes'][$jk];
-      /*
-      $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
-      if ($cop_price != '0') {
-        echo ' ('.$currencies->format($cop_price).')'; 
-      }
-      echo '</i></small>';
-      */
+      
     }
   }
   // new option list 
@@ -266,6 +251,7 @@ if(!empty($_SESSION['options'])){
   </tr>
 <?php
   foreach($_SESSION['options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
 ?>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
@@ -273,6 +259,7 @@ if(!empty($_SESSION['options'])){
   <td class="main" width="70%"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
+    }
   }
 ?>
 <?php
@@ -281,8 +268,6 @@ if(!empty($_SESSION['options'])){
  */
 
 
-//$address = tep_db_prepare_input($_POST['address']);
-//$country = tep_db_prepare_input($_POST['country']);
   $country_fee_array = array();
   $country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
@@ -409,6 +394,39 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 
+<?php
+}
+if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
+?> 
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+  <tr class="infoBoxContents"> 
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="3"><b><?php echo TEXT_BILLING_ADDRESS; ?></b>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+<?php
+  foreach($_SESSION['billing_options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
+?>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
+  <td class="main" width="70%"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  </tr>
+<?php
+    }
+  }
+?>
+  </table>
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr>
 <?php
 }
 ?>
@@ -704,20 +722,18 @@ if (is_array($payment_modules->modules)) {
       echo $confirmation['title']; ?></td> 
       </tr> 
       <?php
+      if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php
       }
     ?> 
-      <?php
-
-      ?>
       </table></td> 
       </tr> 
       </table></td> 

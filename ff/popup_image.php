@@ -10,12 +10,12 @@
  
   $products_query = tep_db_query("
       select * from (select pd.products_name, 
-             p.products_image,
+             pd.products_image,
              pd.products_id,
              pd.site_id, 
              pd.products_status,
-             p.products_image2,
-             p.products_image3 
+             pd.products_image2,
+             pd.products_image3 
       from " . TABLE_PRODUCTS .  " p 
         left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id 
       where p.products_id = '" .  (int)$_GET['pIID'] . "' 

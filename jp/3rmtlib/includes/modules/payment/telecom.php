@@ -174,7 +174,9 @@ class telecom  extends basePayment  implements paymentInterface  {
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      tep_mail('', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    }
     
     $today = date("YmdHis");
     // telecom_option 文档中的$ID
@@ -478,7 +480,10 @@ class telecom  extends basePayment  implements paymentInterface  {
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-    tep_mail('TS_MODULE_PAYMENT_TELECOM_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    if(isset($_SESSION['preorders_send_mail_flag']) && $_SESSION['preorders_send_mail_flag'] == 1){
+      tep_mail('', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+      unset($_SESSION['preorders_send_mail_flag']);
+    }
  
 
 

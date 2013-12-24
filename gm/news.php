@@ -8,6 +8,8 @@
   require(DIR_WS_ACTIONS.'news.php');
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="js/light_box.js"></script>
+<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
@@ -25,10 +27,10 @@ function popupWindow(url) {
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <?php include('includes/search_include.php');?>
 <div id="main-content">
-<h2><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h2>
+<h2><?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h2>
       <div id="detail-div">
 <?php
-  if ($_GET['news_id']) {  
+  if (isset($_GET['news_id']) && intval($_GET['news_id'])) {  
     if($latest_news['news_image']) {
 ?>
         <table width="100%" border="0" cellpadding="4" cellspacing="1">
@@ -36,7 +38,7 @@ function popupWindow(url) {
             <td class="infoBoxContents">
               <script type="text/javascript">
                 <!--
-                  document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
+              document.write('<?php echo '<a href="javascript:void(0);" onclick=fnCreate(\"'.DIR_WS_IMAGES . $latest_news['news_image'].'\",0)>' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
                 //-->
               </script>
               <noscript>
@@ -50,7 +52,7 @@ function popupWindow(url) {
 <?php
     }
 ?>
-        <p><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
+        <p><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p>
 <?php
   } else {
     if (($latest_news_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
@@ -105,7 +107,7 @@ function popupWindow(url) {
 <?php
     }
   }
-  if ($_GET['news_id']) { 
+  if (isset($_GET['news_id']) && $_GET['news_id']) { 
 ?>
         <p>
           [ <?php echo tep_date_long($latest_news['date_added']); ?> ]

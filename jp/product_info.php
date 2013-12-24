@@ -12,12 +12,10 @@
   require(DIR_WS_ACTIONS . 'product_info.php');
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 var jq = jQuery.noConflict();
 </script>
-<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/light_box.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
@@ -365,7 +363,7 @@ function showimage($1) {
                         <td class="main"><?php echo $data4[1] ; ?></td>
                       </tr>
                       <?php } ?>
-                      <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ;?>
+                      <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo TEXT_POINT;?></font></td>
                         <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
@@ -427,7 +425,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                 <tr>
                   <td align="center" class="smallText"><script type="text/javascript"><!-- 
                   document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES
-                  . 'products/'.  $product_info['products_image'].'\") href="javascript:void(0)" >' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
+                  . 'products/'.  $product_info['products_image'].'\",0) href="javascript:void(0)" >' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
 --> </script>
                     <noscript>
                     <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' . urlencode($product_info['products_image'])) . '">' . tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
@@ -438,17 +436,17 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   <td align="center"><table border="0" cellspacing="6" cellpadding="0">
                       <tr>
                         <?php if (tep_not_null($product_info['products_image'])) { ?>
-                        <td width="60" height="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image'] ; ?>')" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'.  $product_info['products_image'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
+                        <td width="60" height="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image'] ; ?>',0)" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'.  $product_info['products_image'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
                           <input type="hidden" class="large_image_input" value="<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image'];?>">
                           </td>
                         <?php } ?>
                         <?php if (tep_not_null($product_info['products_image2'])) { ?>
-                        <td width="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES .  'products/'.$product_info['products_image2'] ; ?>')" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image2'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
+                        <td width="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES .  'products/'.$product_info['products_image2'] ; ?>',1)" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image2'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
                           <input type="hidden" class="large_image_input" value="<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image2'];?>">
                           </td>
                         <?php } ?>
                         <?php if (tep_not_null($product_info['products_image3'])) { ?>
-                        <td width="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES.'products/'.$product_info['products_image3'] ; ?>')" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image3'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
+                        <td width="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES.'products/'.$product_info['products_image3'] ; ?>',2)" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image3'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
                           <input type="hidden" class="large_image_input" value="<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image3'];?>">
                           </td>
                         <?php } ?>

@@ -1611,10 +1611,14 @@ function tep_get_uploaded_file($filename) {
     参数: $target(string) 指定目录的路径 
     返回值: 无
  ------------------------------------ */
-function tep_copy_uploaded_file($filename, $target) {
+function tep_copy_uploaded_file($filename, $target,$new_filename='') {
   if (substr($target, -1) != '/') $target .= '/';
 
-  $target .= $filename['name'];
+  if($new_filename ==''){
+    $target .= $new_filename;
+  }else{
+    $target .= $filename['name'];
+  }
   move_uploaded_file($filename['tmp_name'], $target);
   chmod($target, 0666);
 }
@@ -1742,11 +1746,13 @@ function tep_output_generated_category_path($id, $from = 'category') {
     返回值: 无 
  ------------------------------------ */
 function tep_remove_category($category_id) {
+  /*
   $category_image_query = tep_db_query("select categories_image from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
   $category_image = tep_db_fetch_array($category_image_query);
 
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where categories_image = '" . tep_db_input($category_image['categories_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
+  */
 
 
   tep_db_query("delete from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
@@ -1765,11 +1771,13 @@ function tep_remove_category($category_id) {
     返回值: 无
  ------------------------------------ */
 function tep_remove_product($product_id) {
+  /*
   $product_image_query = tep_db_query("select products_image from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   $product_image = tep_db_fetch_array($product_image_query);
 
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " where products_image = '" . tep_db_input($product_image['products_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
+  */
 
   tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
@@ -3416,9 +3424,9 @@ function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
           p.products_real_quantity, 
           p.products_virtual_quantity, 
           p.products_model, 
-          p.products_image, 
-          p.products_image2, 
-          p.products_image3, 
+          pd.products_image, 
+          pd.products_image2, 
+          pd.products_image3, 
           p.products_price, 
           p.products_price_offset, 
           p.products_date_added, 
@@ -3462,9 +3470,9 @@ function tep_get_product_by_id($pid,$site_id, $lid, $default = true){
              p.products_real_quantity, 
              p.products_virtual_quantity, 
              p.products_model, 
-             p.products_image, 
-             p.products_image2, 
-             p.products_image3, 
+             pd.products_image, 
+             pd.products_image2, 
+             pd.products_image3, 
              p.products_price, 
              p.products_price_offset, 
              p.products_date_added, 
@@ -4759,7 +4767,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name'])){
 	$str .= '<tr>';
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_ADDED;
+	$str .= TEXT_USER_ADDED.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	if(isset($orders['user_added']) && $orders['user_added'] != ""){
@@ -4772,7 +4780,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
 	$str .= '<tr>';
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_ADDED;
+	$str .= TEXT_USER_ADDED.  '：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         $str .= TEXT_UNSET_DATA;	
@@ -4782,7 +4790,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['date_purchased'])){
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_ADDED;
+	$str .= TEXT_DATE_ADDED.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= $orders['date_purchased'];
@@ -4791,7 +4799,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_ADDED;
+	$str .= TEXT_DATE_ADDED.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= TEXT_UNSET_DATA;
@@ -4801,7 +4809,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['user_update']) || tep_not_null($orders['customers_name'])){
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_UPDATE;
+	$str .= TEXT_USER_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         if(isset($orders['user_update']) && $orders['user_update'] != ""){
@@ -4814,7 +4822,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_UPDATE;
+	$str .= TEXT_USER_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         $str .= TEXT_UNSET_DATA;	
@@ -4823,7 +4831,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['last_modified']) || tep_not_null($orders['date_purchased'])){ 
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_UPDATE;
+	$str .= TEXT_DATE_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
         if(isset($orders['last_modified']) && $orders['last_modified'] != ""){
@@ -4836,7 +4844,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_UPDATE;
+	$str .= TEXT_DATE_UPDATE.'：';
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= TEXT_UNSET_DATA;
@@ -8411,7 +8419,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    }else if(count($return_arr)==1){
      $cid_str = " and p2c.categories_id = '".$return_arr[0]."' ";
    }
-   $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price from ".TABLE_PRODUCTS." 
+   $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price, p.relate_products_id from ".TABLE_PRODUCTS." 
      p,".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p2c.products_id = p.products_id 
      ".$cid_str." and p.products_bflag='".$bflag."'";
    $tmp_query=tep_db_query($tmp_sql);
@@ -8427,11 +8435,30 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
      if(!$tmp_price){
        $tmp_price = $tmp_row['products_price'];
      }
-     if($tmp_row['products_real_quantity'] > tep_get_relate_products_sum($tmp_row['products_id']
-           ,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
-       $result['error'] = true;
-     }else{
+     if (!$result['error']) {
+       $tmp_relate_products_id = (int)$tmp_row['relate_products_id']; 
+       if (empty($tmp_relate_products_id)) {
+         $result['error'] = true;
+       }
+       if (!empty($tmp_relate_products_id)) {
+          $o_count_sql = " select op.products_quantity from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$tmp_row['relate_products_id']."' and os.calc_price = '1'";
+          if($site_id != 0) {
+             $o_count_sql .= " and o.site_id = '".$site_id."' ";
+          }
+          if($start != '' && $end != '') {
+           $o_count_sql .= " and date_purchased between '".$start."' and '".$end."' ";
+          }
+          $o_count_raw = tep_db_query($o_count_sql);     
+          if (!tep_db_num_rows($o_count_raw)) {
+            $result['error'] = true;
+          }
+       }
      }
+     //if($tmp_row['products_real_quantity'] > tep_get_relate_products_sum($tmp_row['products_id']
+           //,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
+       //$result['error'] = true;
+     //}else{
+     //}
      $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
@@ -8457,7 +8484,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
  ------------------------------------ */
 function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
     $start='',$end='',$sort=''){
-  $sql = "select products_real_quantity,products_price from ".TABLE_PRODUCTS." where products_id
+  $sql = "select products_real_quantity,products_price,relate_products_id from ".TABLE_PRODUCTS." where products_id
     ='".$pid."' and products_bflag='".$bflag."'";
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
@@ -8468,11 +8495,28 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
   $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
-  if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
-        $start,$end)&&$row['products_real_quantity']!=0){
+  //if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
+        //$start,$end)&&$row['products_real_quantity']!=0){
+    //$result['error'] = true;
+  //}else{
+    //$result['error'] = false;
+  //}
+  $tmp_relate_products_id = (int)$row['relate_products_id']; 
+  if (empty($tmp_relate_products_id)) {
     $result['error'] = true;
-  }else{
-    $result['error'] = false;
+  }
+  if (!empty($tmp_relate_products_id)) {
+     $o_count_sql = " select op.products_quantity from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$row['relate_products_id']."' and os.calc_price = '1'";
+     if($site_id != 0) {
+        $o_count_sql .= " and o.site_id = '".$site_id."' ";
+     }
+     if($start != '' && $end != '') {
+      $o_count_sql .= " and date_purchased between '".$start."' and '".$end."' ";
+     }
+     $o_count_raw = tep_db_query($o_count_sql);     
+     if (!tep_db_num_rows($o_count_raw)) {
+       $result['error'] = true;
+     }
   }
   $result['quantity_all_product'] = $row['products_real_quantity'];
   $result['asset_all_product'] =$tmp_price*$row['products_real_quantity'];
@@ -8508,13 +8552,23 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
          $sql .= " and date_purchased between '".$start."' and '".$end."' ";
        }
     if($sort=='price_desc'){
-      $sql .= " order by final_price desc ";
+      $sql .= " order by abs(final_price) asc ";
     }else if($sort=='price_asc'){
-      $sql .= " order by final_price asc ";
+      $sql .= " order by abs(final_price) desc ";
     }else{
       $sql .= " order by o.torihiki_date desc";
     }
     $order_history_query = tep_db_query($sql);
+    while($t_row = tep_db_fetch_array($order_history_query)){
+      if ($t_row['final_price'] == '0.0000') {
+        continue; 
+      }
+      if ($t_row['final_price']) {
+        return $t_row['final_price']; 
+      }
+    }
+    return 0;
+    /*
     $sum = 0;
     $cnt = 0;
     while($h = tep_db_fetch_array($order_history_query)){
@@ -8529,6 +8583,7 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
       }
     }
     return $sum/$cnt;
+    */
   }
 
 /* -------------------------------------
@@ -9749,9 +9804,9 @@ function tep_get_pinfo_by_pid($pid,$site_id=0)
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 
                  p.products_model, 
-                 p.products_image,
-                 p.products_image2,
-                 p.products_image3, 
+                 pd.products_image,
+                 pd.products_image2,
+                 pd.products_image3, 
                  p.products_price, 
                  p.products_price_offset,
                  p.products_weight, 
@@ -10614,7 +10669,7 @@ function tep_products_shipping_fee($oID,$total){
   $weight = $shipping_weight_total;
 
   $shipping_orders_array = array();
-  $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
   while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
 
     $shipping_orders_array[$shipping_address_orders_array['name']] = $shipping_address_orders_array['value'];
@@ -11394,7 +11449,7 @@ function tep_check_order_variable_data($o_id_array, $comment_info, $title_info, 
       $user_address_pos = strpos($comment_info, '${USER_ADDRESS}');   
       $t_user_address_pos = strpos($title_info, '${USER_ADDRESS}');   
       if (($user_address_pos !== false) || ($t_user_address_pos !== false)) {
-        $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_value."'"); 
+        $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_value."' and billing_address='0'"); 
         if (!tep_db_num_rows($address_order_raw)) {
           if ($is_list) {
             $error_array[$o_value][] = '${USER_ADDRESS}'; 
@@ -11922,7 +11977,7 @@ function tep_check_edit_order_variable_data($o_id_info, $comment_info, $title_in
     $user_address_pos = strpos($comment_info, '${USER_ADDRESS}');   
     $t_user_address_pos = strpos($title_info, '${USER_ADDRESS}');   
     if (($user_address_pos !== false) || ($t_user_address_pos !== false)) {
-      $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_id_info."'"); 
+      $address_order_raw = tep_db_query("select * from ".TABLE_ADDRESS_ORDERS." where orders_id = '".$o_id_info."' and billing_address='0'"); 
       if (!tep_db_num_rows($address_order_raw)) {
         $error_array[] = '${USER_ADDRESS}'; 
       }
@@ -12491,3 +12546,368 @@ function tep_new_get_quantity($product_info){
       return $sum/$cnt;
     }
   }
+function tep_defined_product_image_name($image_name,$i=1,$has_name=array()){
+  $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
+      where products_image ='".$image_name."' 
+      OR products_image2='".$image_name."'
+      OR products_image3='".$image_name."' limit 1";
+  $default_name = true;
+  $tmp_image_name = $image_name;
+  while(true){
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)||in_array($tmp_image_name,$has_name)){
+      $arr = explode('.',$image_name);
+      $arr[count($arr)-2] = $arr[count($arr)-2].$i;
+      $new_image_name = implode('.',$arr);
+      $default_name = false;
+    }else{
+      if($default_name){
+        $new_image_name = $image_name;
+      }
+      break;
+    }
+    $i++;
+    $tmp_image_name = $new_image_name;
+    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
+      where products_image ='".$new_image_name."' 
+      OR products_image2='".$new_image_name."'
+      OR products_image3='".$new_image_name."' limit 1";
+  }
+  $arr_res = array('name'=>$new_image_name,'index'=>$i);
+  return $arr_res;
+}
+
+/* -------------------------------------
+    功能: 获取分类的新图片名
+    参数: $image_name (string) 名字
+    参数: $i (int) 数值
+    参数: $has_name (array) 数组
+    返回值: 新的图片名的信息(array) 
+ ------------------------------------ */
+function tep_defined_category_image_name($image_name, $i = 1, $has_name = array()){
+  $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." 
+      where categories_image ='".$image_name."' 
+      OR categories_image2='".$image_name."' limit 1";
+  
+  $default_name = true;
+  $tmp_image_name = $image_name;
+  while(true){
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)||in_array($tmp_image_name,$has_name)){
+      $arr = explode('.',$image_name);
+      $arr[count($arr)-2] = $arr[count($arr)-2].$i;
+      $new_image_name = implode('.',$arr);
+      $default_name = false;
+    }else{
+      if($default_name){
+        $new_image_name = $image_name;
+      }
+      break;
+    }
+    $i++;
+    $tmp_image_name = $new_image_name;
+    $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." 
+      where categories_image ='".$new_image_name."' 
+      OR categories_image2='".$new_image_name."' limit 1";
+  }
+  $arr_res = array('name'=>$new_image_name,'index'=>$i);
+  return $arr_res;
+}
+/* -------------------------------------
+    功能: 获取该顾客在指定网站的预约订单数量 
+    参数: $customers_id(int) 顾客id 
+    参数: $site_id(int) 网站id 
+    返回值: 预约订单数量(int) 
+ ------------------------------------ */
+function tep_get_preorders_by_customers_id($customers_id,$site_id){
+  $preorders_sql = "select distinct o.orders_id from preorders o where  o.customers_id = '".$customers_id."' and o.site_id ='".$site_id."'";
+  $preorders_query = tep_db_query($preorders_sql);
+  $preorders_array = array();
+  while($preorders_row = tep_db_fetch_array($preorders_query)){
+    if(!in_array($preorders_row['orders_id'],$preorders_array)){
+      $preorders_array[] = $preorders_row['orders_id'];
+    }
+  }
+  return count($preorders_array);
+}
+/* -------------------------------------
+    功能: 根据参数给输入的字符串红色显示 
+    参数: $arr (array)要红色显示的字符串或数组 
+    参数: $str (string)输入的字符串 
+    返回值: 返回字符串(string)
+ ------------------------------------ */
+function tep_replace_to_red($arr,$str){
+  $out_str = str_replace('　',' ',$str);
+  foreach($arr as $value){
+    $nospacev = str_replace(' ','',$value);
+    $nospacev = str_replace('　','',$nospacev);
+    $str_search_arr = str_split_utf8($nospacev);
+    $preg_str = '';
+    foreach($str_search_arr as $search_v){
+      $preg_str .= $search_v.'[\s]{0,}';
+    }
+    if(preg_match_all('/('.$preg_str.')/',$out_str,$match_arr)){
+      if(isset($match_arr)&&!empty($match_arr)){
+        foreach($match_arr[0] as $m_v){
+          $out_str = str_replace($m_v,' <font style="background:red;">'.$m_v.'</font> ',$out_str);
+        }
+      }
+    }
+  }
+  return $out_str;
+}
+/* -------------------------------------
+    功能: 分割字符串 按照UTF8格式 
+    参数: $str (string)输入的字符串 
+    返回值: 返回字符串(string)
+ ------------------------------------ */
+function str_split_utf8($str) {
+    $split = 1;
+    $array = array(); $len = strlen($str);
+    for ( $i = 0; $i < $len; ){
+        $value = ord($str[$i]);
+        if($value > 0x7F){
+            if($value >= 0xC0 && $value <= 0xDF)
+                $split = 2;
+            elseif($value >= 0xE0 && $value <= 0xEF)
+                $split = 3;
+            elseif($value >= 0xF0 && $value <= 0xF7)
+                $split = 4;
+            elseif($value >= 0xF8 && $value <= 0xFB)
+                $split = 5;
+            elseif($value >= 0xFC)
+                $split = 6;
+        } else {
+            $split = 1;
+        }
+        $key = '';
+        for ( $j = 0; $j < $split; ++$j, ++$i ) {
+            $key .= $str[$i];
+        }
+        $array[] = $key;
+    }
+    return $array;
+}
+
+/* -------------------------------------
+    功能: 生成指定的文本框 
+    参数: $text(string) 默认的内容 
+    参数: $empty_params(string) 值 
+    参数: $params(string) 其他参数 
+    返回值: 指定的文本框(string)
+ ------------------------------------ */
+function tep_new_input($text, $empty_params = '', $params = '') {
+  if($params != ''){
+    return tep_draw_input_field('configuration_value', $text, $params.' style="width:60%; text-align:right;" id="setting_text"').'%';
+  }else{
+    return tep_draw_input_field('configuration_value', $text, 'style="width:60%; text-align:right;" id="setting_text"').'%';
+  }
+}
+
+/* -------------------------------------
+    功能: 检查商品价格是否超过最低利率 
+    参数: $pid(int) 商品id 
+    参数: $price_info(string) 商品价格 
+    返回值: 是否显示错误信息(string)
+ ------------------------------------ */
+function check_products_price_info($pid, $price_info) {
+  global $currencies, $languages_id;
+  $low_price_setting = MIN_PROFIT_SETTING / 100; 
+  $error_str = ''; 
+  if ($low_price_setting) {
+    $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$pid."'");
+    $product_info = tep_db_fetch_array($product_info_raw); 
+    if ($product_info) {
+      $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$product_info['relate_products_id']."'"); 
+      $relate_product = tep_db_fetch_array($relate_product_raw); 
+      if ($relate_product) {
+        $relate_product_name_raw = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$product_info['relate_products_id']."' and site_id = '0'"); 
+        $relate_product_name_res = tep_db_fetch_array($relate_product_name_raw);      
+        if ($product_info['products_attention_1_3']) {
+          $price_origin = new_format_info($price_info/$product_info['products_attention_1_3']); 
+        } else {
+          $price_origin = $price_info; 
+        }
+        if (!empty($relate_product['products_attention_1_3'])) {
+          $price_compare = new_format_info($relate_product['products_price']/$relate_product['products_attention_1_3']); 
+        } else {
+          $price_compare = $relate_product['products_price']; 
+        }
+        if ($product_info['products_bflag'] == '1') {
+          $tmp_value = new_format_info((abs($price_compare) - abs($price_origin))/abs($price_origin)); 
+          if ($relate_product['products_attention_1_3']) {
+            $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)*$relate_product['products_attention_1_3']));
+          } else {
+            $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)));
+          }
+          if ($tmp_value < $low_price_setting) {
+            if ($tmp_value !== false) {
+              $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+            } 
+          }
+        } else {
+          $tmp_value = new_format_info((abs($price_origin) - abs($price_compare))/abs($price_compare)); 
+          if ($relate_product['products_attention_1_3']) {
+            $tmp_price_value = intval(strval(abs($price_origin)*$relate_product['products_attention_1_3']/(1+$low_price_setting)));
+          } else {
+            $tmp_price_value = intval(strval(abs($price_origin)/(1+$low_price_setting)));
+          }
+          if ($tmp_value < $low_price_setting) {
+            if ($tmp_value !== false) {
+              $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+            } 
+          }
+        }
+      }
+    }
+  } 
+  return $error_str;
+}
+
+/* -------------------------------------
+    功能: 检查商品价格是否超过最低利率 
+    参数: $p_flag(int) 标识 
+    参数: $price_info(string) 商品价格 
+    参数: $p_relate_id(int) 关联id 
+    参数: $num_value(int) 数值 
+    返回值: 是否显示错误信息(string)
+ ------------------------------------ */
+function check_new_products_price_info($p_flag, $price_info, $p_relate_id, $num_value) {
+  global $currencies, $languages_id;
+  $low_price_setting = MIN_PROFIT_SETTING / 100; 
+  $error_str = ''; 
+  if ($low_price_setting) {
+    $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$p_relate_id."'"); 
+    $relate_product = tep_db_fetch_array($relate_product_raw); 
+    if ($relate_product) {
+      $relate_product_name_raw = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$p_relate_id."' and site_id = '0'"); 
+      $relate_product_name_res = tep_db_fetch_array($relate_product_name_raw);      
+      if ($num_value) {
+        $price_origin = new_format_info($price_info/$num_value); 
+      } else {
+        $price_origin = $price_info; 
+      }
+      if (!empty($relate_product['products_attention_1_3'])) {
+        $price_compare = new_format_info($relate_product['products_price']/$relate_product['products_attention_1_3']); 
+      } else {
+        $price_compare = $relate_product['products_price']; 
+      }
+      if ($p_flag == '1') {
+        $tmp_value = new_format_info((abs($price_compare) - abs($price_origin))/abs($price_origin)); 
+        if ($relate_product['products_attention_1_3']) {
+          $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)*$relate_product['products_attention_1_3']));
+        } else {
+          $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)));
+        }
+        if ($tmp_value < $low_price_setting) {
+          if ($tmp_value !== false) {
+            $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+          } 
+        }
+      } else {
+        $tmp_value = new_format_info((abs($price_origin) - abs($price_compare))/abs($price_compare)); 
+        if ($relate_product['products_attention_1_3']) {
+          $tmp_price_value = intval(strval(abs($price_origin)*$relate_product['products_attention_1_3']/(1+$low_price_setting)));
+        } else {
+          $tmp_price_value = intval(strval(abs($price_origin)/(1+$low_price_setting)));
+        }
+        if ($tmp_value < $low_price_setting) {
+          if ($tmp_value !== false) {
+            $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+          } 
+        }
+      }
+    }
+  } 
+  return $error_str;
+}
+
+/* -------------------------------------
+    功能: 指定格式输出 
+    参数: $str(string) 字符串 
+    参数: $length(int) 长度 
+    返回值: 输出(string)
+ ------------------------------------ */
+function new_format_info($str, $length = '15') {
+  $str_pos = strpos($str, '.'); 
+  if ($str_pos !== false) {
+    $pre_str = substr($str, 0, $str_pos); 
+    $back_str = substr($str, $str_pos+1, $length); 
+     
+    $return_str = $pre_str.'.'.$back_str; 
+    if ($return_str == '0.000000000000000') {
+      $tmp_array = explode('.', $str); 
+      for ($i = 0; $i <strlen($tmp_array[1]); $i++) {
+        if ($tmp_array[1][$i] != '0') {
+          break; 
+        }
+        $i++; 
+      }
+      $back_str = substr($str, $str_pos+1, $i+1); 
+      $return_str = $pre_str.'.'.$back_str; 
+    }
+    return $return_str; 
+  }
+  return $str;
+}
+
+/* -------------------------------------
+    功能: 检查商品价格是否超过最低利率 
+    参数: $pid(int) 商品id 
+    参数: $price_info(string) 商品价格 
+    参数: $relate_price_info(string) 关联商品价格 
+    返回值: 是否显示错误信息(string)
+ ------------------------------------ */
+function check_single_products_price_info($pid, $price_info, $relate_price_info) {
+  global $currencies, $languages_id;
+  $low_price_setting = MIN_PROFIT_SETTING / 100; 
+  $error_str = ''; 
+  if ($low_price_setting) {
+    $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$pid."'");
+    $product_info = tep_db_fetch_array($product_info_raw); 
+    if ($product_info) {
+      $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$product_info['relate_products_id']."'"); 
+      $relate_product = tep_db_fetch_array($relate_product_raw); 
+      if ($relate_product) {
+        $relate_product_name_raw = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$product_info['relate_products_id']."' and site_id = '0'"); 
+        $relate_product_name_res = tep_db_fetch_array($relate_product_name_raw);      
+        if ($product_info['products_attention_1_3']) {
+          $price_origin = new_format_info($price_info/$product_info['products_attention_1_3']); 
+        } else {
+          $price_origin = $price_info; 
+        }
+        if (!empty($relate_product['products_attention_1_3'])) {
+          $price_compare = new_format_info($relate_price_info/$relate_product['products_attention_1_3']); 
+        } else {
+          $price_compare = $relate_price_info; 
+        }
+        if ($product_info['products_bflag'] == '1') {
+          $tmp_value = new_format_info((abs($price_compare) - abs($price_origin))/abs($price_origin)); 
+          if ($relate_product['products_attention_1_3']) {
+            $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)*$relate_product['products_attention_1_3']));
+          } else {
+            $tmp_price_value = ceil(strval(abs($price_origin)*(1+$low_price_setting)));
+          }
+          if ($tmp_value < $low_price_setting) {
+            if ($tmp_value !== false) {
+              $error_str = sprintf(ERROR_LOW_PROFIT_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+            }
+          }
+        } else {
+          $tmp_value = new_format_info((abs($price_origin) - abs($price_compare))/abs($price_compare)); 
+          if ($relate_product['products_attention_1_3']) {
+            $tmp_price_value = intval(strval(abs($price_origin)*$relate_product['products_attention_1_3']/(1+$low_price_setting)));
+          } else {
+            $tmp_price_value = intval(strval(abs($price_origin)/(1+$low_price_setting)));
+          }
+          if ($tmp_value < $low_price_setting) {
+            if ($tmp_value !== false) {
+              $error_str = sprintf(ERROR_LOW_PROFIT_OTHER_MESSAGE, MIN_PROFIT_SETTING.'%', $relate_product_name_res['products_name'], $currencies->format(abs($tmp_price_value))); 
+            } 
+          }
+        }
+      }
+    }
+  } 
+  return $error_str;
+}

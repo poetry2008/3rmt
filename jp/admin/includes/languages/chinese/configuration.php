@@ -28,8 +28,8 @@ define('HEADING_TITLE_100','设置评论安全');
 define('HEADING_TITLE_30','警告字符串设置');
 define('HEADING_TITLE_2030','简易订单信息');
 define('HEADING_TITLE_3000','混合图表设置');
-define('TEXT_USER_ADDED','创建者:');
-define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_USER_ADDED','创建者');
+define('TEXT_USER_UPDATE','更新者');
 define('TEXT_CAMPAIGN_PREV','＜上一项');
 define('TEXT_CAMPAIGN_NEXT','下一项＞');
 define('TEXT_APL_KEYS',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;API Keys');
@@ -198,6 +198,8 @@ define('TEXT_OS_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMA
 define('TEXT_TYPE_BROWSER_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;浏览器种类警告字符串');
 define('TEXT_BROWSER_LANGUAGE_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;浏览器语言警告字符串');
 define('TEXT_COMPUTER_LOCALE_WARNING_CHARACTERS',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;计算机语言环境警告字符');
+define('TEXT_CUSTOMER_FAX_WARNING_STRING',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;信用调查警告字符串');
+define('TEXT_COMMENT_WARNING_STRING',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;说明警告字符串');
 define('TEXT_USER_LOCALE_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;用户语言环境警告字符串');
 define('TEXT_SCREEN_RESOLUTION_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;画面分辨率警告字符串');
 define('TEXT_PAGE_COLOR_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;页面颜色警告字符串');
@@ -245,3 +247,6 @@ define('TEXT_ADMIN_POINT_MAIL',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAG
 define('TEXT_STORE_TELEPHONE_NUMBER',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;公司电话号码');
 define('TEXT_PRODUCTS_SMALL_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品页面显示的小图像的宽度');
 define('TEXT_PRODUCTS_SMALL_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品页面显示的小图像的高度');
+define('TEXT_BILLING_ADDRESS_SETTING',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;申请帐单邮寄地址功能');
+define('MIN_PROFIT_SETTING_TITLE',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;最低利润率');
+define('HEADING_TITLE_998','商品价格设定');

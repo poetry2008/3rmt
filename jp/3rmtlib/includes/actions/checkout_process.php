@@ -6,7 +6,13 @@ header("Content-type:text/html;charset=utf-8");
 ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // load selected payment module
-require(DIR_WS_CLASSES . 'payment.php');
+require_once(DIR_WS_CLASSES . 'payment.php');
+//如果信用卡支付成功并生成了订单，直接跳转到注文成功页面
+if(isset($_SESSION['orders_credit_flag']) && $_SESSION['orders_credit_flag'] == '1'){
+  unset($_SESSION['orders_credit_flag']);
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+  exit;
+}  
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
@@ -16,11 +22,12 @@ if (!tep_session_is_registered('customer_id')) {
 // if the customer is not logged on, redirect them to the login page
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  exit;
 } else {
   if(tep_session_is_registered('customer_id')){
     $flag_customer_info = tep_is_customer_by_id($customer_id);
     if(!$flag_customer_info ||
-        $flag_customer_info['customers_email_address'] != $_SESSION['customer_emailaddress']){
+        strtolower($flag_customer_info['customers_email_address']) != strtolower($_SESSION['customer_emailaddress'])){
       $customer_error = true;
     }
   }
@@ -51,7 +58,6 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $orders_error_contents = "\n\n";
   $orders_error_contents .= ORDERS_SITE." ".STORE_NAME."\n";
   $orders_error_contents .= ORDERS_TIME." ".$_SESSION['insert_torihiki_date']."\n";
-  $orders_error_contents .= ORDERS_OPTION." ".$_SESSION['torihikihouhou']."\n";
   $orders_error_contents .= CREATE_ORDERS_DATE." ".date('Y-m-d H:i:s')."\n";
   $customer_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $_SESSION['customer_id'] . "'");
   $customer_array = tep_db_fetch_array($customer_query);
@@ -61,9 +67,173 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $customer_name = tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']);
   $orders_error_contents .= CUSTOMER_NAME." ".$customer_name."\n";
   $orders_error_contents .= ORDERS_EMAIL." ".$_SESSION['customer_emailaddress']."\n";
+  //total
+  $orders_total = $cart->total;
+  //point
+  if ($point){
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_POINT." ".$currencies->format(abs($point))."\n";
+    $orders_total -= abs($point);
+  }
+  if (isset($_SESSION['campaign_fee'])) {
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_POINT." ".$currencies->format(abs($_SESSION['campaign_fee']))."\n";
+    $orders_total -= abs($_SESSION['campaign_fee']);
+  }
+  //handle code
+  if(!isset($_SESSION['mailfee'])){
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_HANDLE_FEE." 0".JPMONEY_UNIT_TEXT."\n"; 
+  }else{
+    $orders_error_contents .= TEXT_ORDERS_PRODUCTS_HANDLE_FEE." ".$_SESSION['mailfee']."\n";
+    $orders_total += abs($_SESSION['mailfee']);
+  }
+  //orders subtotal
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.": ".$currencies->format($cart->total)."\n";
+  //orders total
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_TOTAL." ".$currencies->format($orders_total)."\n";
+  //earn points
+  $orders_error_contents .= TEXT_ORDERS_EARN_POINTS." ".str_replace(JPMONEY_UNIT_TEXT,'',$currencies->format($_SESSION['get_point']))." P\n";  
   $orders_payment = $_SESSION['payment'];
   $orders_payment = payment::changeRomaji($_SESSION['payment'], PAYMENT_RETURN_TYPE_TITLE);
   $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
+  //orders products list
+  $products_ordered = '';
+  $total_tax = 0;
+
+  //获取订单相关信息
+  require(DIR_WS_CLASSES . 'order.php');
+  $order = new order;
+  for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
+
+    //products attributes
+    $attributes_exist = '0';
+    $products_ordered_attributes = '';
+    $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>"); 
+     
+    if (!empty($order->products[$i]['op_attributes'])) {
+      //商品的option信息 
+      $attributes_exist = '1';
+     
+      foreach ($order->products[$i]['op_attributes'] as $op_key => $op_value) {
+       
+      
+        $input_option_array = array('title' => $op_value['front_title'], 'value' => $op_value['value']);
+        $option_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$op_value['item_id']."'"); 
+        $option_item_res = tep_db_fetch_array($option_item_raw); 
+        $op_price = 0; 
+      
+        if ($option_item_res) {
+          if ($option_item_res['type'] == 'radio') {
+             $ao_option_array = @unserialize($option_item_res['option']);
+             if (!empty($ao_option_array['radio_image'])) {
+               foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
+                 if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value['value']))))) {
+                   $op_price = $or_value['money']; 
+                   break; 
+                 }
+               }
+             } 
+          } else if ($option_item_res['type'] == 'textarea') {
+            $to_option_array = @unserialize($option_item_res['option']);
+            $tmp_to_single = false; 
+            if ($to_option_array['require'] == '0') {
+              if ($op_value['value'] == MSG_TEXT_NULL) {
+                $tmp_to_single = true; 
+              }
+            }
+            if ($tmp_to_single) {
+              $op_price = 0; 
+            } else {
+              $op_price = $option_item_res['price']; 
+            }
+          } else {
+            $op_price = $option_item_res['price']; 
+          }
+        } else {
+          $op_price = $op_value['price']; 
+        }
+       
+        $products_ordered_attributes .= "\n" 
+          . $op_value['front_title'] 
+          . ': ' . str_replace($replace_arr, "", $op_value['value']);
+      
+        if ($op_price != '0') {
+          $products_ordered_attributes .= '　('.$currencies->format($op_price).')'; 
+        }
+      }
+    }
+  
+    if (!empty($order->products[$i]['ck_attributes'])) {
+      //登录后选择商品的option信息 
+      foreach ($order->products[$i]['ck_attributes'] as $ck_key => $ck_value) {
+        $input_option_array = array('title' => $ck_value['front_title'], 'value' => $ck_value['value']);
+      
+        $coption_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$ck_value['item_id']."'"); 
+        $coption_item_res = tep_db_fetch_array($coption_item_raw); 
+        $c_op_price = 0; 
+      
+        if ($coption_item_res) {
+          if ($coption_item_res['type'] == 'radio') {
+            $aco_option_array = @unserialize($coption_item_res['option']);
+            if (!empty($aco_option_array['radio_image'])) {
+              foreach ($aco_option_array['radio_image'] as $cor_key => $cor_value) {
+                if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cor_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($ck_value['value']))))) {
+                 $c_op_price = $cor_value['money']; 
+                 break; 
+                }
+              }
+            } 
+          } else if ($coption_item_res['type'] == 'textarea') {
+            $aco_option_array = @unserialize($coption_item_res['option']);
+            $tco_tmp_single = false;
+            if ($aco_option_array['require'] == '0') {
+              if ($ck_value['value'] == MSG_TEXT_NULL) {
+                $tco_tmp_single = true;
+              }
+            }
+            if ($tco_tmp_single) {
+              $c_op_price = 0; 
+            } else {
+              $c_op_price = $coption_item_res['price']; 
+            }
+          } else {
+            $c_op_price = $coption_item_res['price']; 
+          }
+        } else {
+          $c_op_price = $ck_value['price']; 
+        }
+       
+        $products_ordered_attributes .= "\n" 
+          . $ck_value['front_title'] 
+          . ': ' . str_replace($replace_arr, "", $ck_value['value']);
+      
+        if ($c_op_price != '0') {
+          $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
+        }
+      }
+    }
+   
+    $total_weight += ($order->products[$i]['qty'] * $order->products[$i]['weight']);
+    $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
+    $total_cost += $total_products_price;
+
+    $products_ordered .= TEXT_ORDERS_PRODUCTS.': ' . $order->products[$i]['name'];
+    if(tep_not_null($order->products[$i]['model'])) {
+      $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
+    }
+    if ($order->products[$i]['price'] != '0') {
+      $products_ordered .= ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')'; 
+    }
+    $products_ordered .= $products_ordered_attributes . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_NUMBER.': ' . $order->products[$i]['qty'] . NUM_UNIT_TEXT .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_PRICE.': ' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_SUBTOTAL.': ' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+    $products_ordered .= TEXT_ORDERS_PRODUCTS_LINE; 
+  } 
+  //orders products
+  $orders_error_contents .= TEXT_ORDERS_PRODUCTS_LINE.$products_ordered;
+  //orders comments
+  $orders_error_contents .= TEXT_ORDERS_COMMENTS.' '.$_SESSION['comments']."\n";
+  //referer info
+  $orders_error_contents .= 'Referer Info'.": ".$_SESSION['referer']."\n";
   $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
   $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
   $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
@@ -82,10 +252,100 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']));
  
   $message = new email(array('X-Mailer: iimy Mailer'));
-  $text = $orders_mail_text;
+  //错误订单 详细信息
+   function arr_foreach ($arr) {
+     $str = '';
+     if (!is_array ($arr)&&!is_object($arr)) {
+       return false;
+     }
+     foreach ($arr as $key => $val ) {
+       if (is_array ($val)||is_object($val)) {
+         $str .= arr_foreach($val);
+       } else {
+         $str .=  $key.' :'.$val."\n";
+       }
+     }
+     return $str;
+  }
+  $orders_mail_text .= "\n-----------------session-------------\n";
+  $orders_mail_text .= arr_foreach($_SESSION);
+  if(!empty($flag_customer_info)){
+
+    $orders_mail_text .= "\n-----------------Data-------------\n";
+    $orders_mail_text .= arr_foreach($flag_customer_info);
+  }
+  $text = $orders_mail_text;  
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
+  //Administrator
   $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+  $customer_email = $_SESSION['customer_emailaddress'];
+   
+  //当错误发生时，清除SESSION
+  
+  //customer session destroy
+  tep_session_unregister('customer_id');
+  tep_session_unregister('customer_default_address_id');
+  tep_session_unregister('customer_first_name');
+  tep_session_unregister('customer_last_name');
+  tep_session_unregister('customer_country_id');
+  tep_session_unregister('customer_zone_id');
+  tep_session_unregister('comments');
+  tep_session_unregister('customer_emailaddress');
+
+  //products session destroy
+  tep_session_unregister('shipping');
+  tep_session_unregister('payment');
+  tep_session_unregister('comments');
+  tep_session_unregister('point');
+  tep_session_unregister('get_point');
+  tep_session_unregister('real_point');
+  tep_session_unregister('torihikihouhou');
+  tep_session_unregister('date');
+  tep_session_unregister('hour');
+  tep_session_unregister('min');
+  tep_session_unregister('insert_torihiki_date');
+  unset($_SESSION['character']);
+  unset($_SESSION['option']);
+  unset($_SESSION['referer_adurl']);
+  unset($_SESSION['campaign_fee']);
+  unset($_SESSION['camp_id']);
+  tep_session_unregister('h_code_fee');
+  tep_session_unregister('h_point');
+
+  //注销其他session变量
+  unset($_SESSION['insert_id']);
+  unset($_SESSION['option_list']);
+  unset($_SESSION['campaign_fee']); 
+  unset($_SESSION['camp_id']); 
+  unset($_SESSION['new_payment_error']);
+  unset($_SESSION['comments']);
+  unset($_SESSION['payment_validated']);
+  unset($_SESSION['mailcomments']);
+  //shipping session destroy
+  tep_session_unregister('start_hour');
+  tep_session_unregister('start_min');
+  tep_session_unregister('end_hour');
+  tep_session_unregister('end_min');
+  tep_session_unregister('ele');
+  tep_session_unregister('address_option');
+  tep_session_unregister('insert_torihiki_date_end');
+  tep_session_unregister('address_show_list');
+  unset($_SESSION['options']);
+  unset($_SESSION['options_type_array']);
+  unset($_SESSION['weight_fee']);
+  unset($_SESSION['free_value']);
+  tep_session_unregister('hc_point');
+  tep_session_unregister('hc_camp_point');
+  unset($_SESSION['shipping_page_str']);
+  unset($_SESSION['shipping_session_flag']);
+  unset($_SESSION['billing_select']);
+  unset($_SESSION['billing_options']);
+  unset($_SESSION['billing_address_option']);
+  unset($_SESSION['billing_address_show_list']);
+
+  //清空购物车
+  $cart->reset(); 
 
   $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
   $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
@@ -96,11 +356,53 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
   }else{
      $css_random_str = date('YmdHi', time());
   }
+  $_SESSION['error_name'] = $customer_name;
+  $_SESSION['error_email'] = $customer_email; 
+  $_SESSION['error_subject'] = $orders_mail_title; 
+  $_SESSION['error_message'] = strip_tags($orders_mail_text); 
+  if(isset($_SESSION['orders_credit_flag'])){
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo '../css/'.$site_romaji.'.css?v='.$css_random_str;?>">
+<script type="text/javascript" src="../js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+function close_popup_notice(){
+  $("#popup_notice").css("display", "none");
+  $("#greybackground").remove();
+}
+
+function update_notice(url){
+  $.ajax({
+    url: '../ajax_notice.php?action=process',    
+    type:'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $("#popup_notice").css("display", "none");
+      $("#greybackground").remove();
+      window.location.href='../'+url;
+    }
+  });
+}   
+</script>
+<?php
+  }else{
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/notice.js"></script>
+<?php
+  }
+?>
 <script type="text/javascript">
+$.ajax({
+  url: '<?php echo isset($_SESSION['orders_credit_flag']) ? '../ajax_confirm_session_error.php?action=session' : 'ajax_confirm_session_error.php?action=session';?>',
+  data: '',
+  type: 'POST',
+  dataType: 'text',
+  async : false,
+  success: function(data){ 
+  }
+});
 $(document).ready(function() {
 var docheight = $(document).height();
 var screenwidth, screenheight, mytop, getPosLeft, getPosTop
@@ -138,12 +440,13 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
 ?>
 </div>
 <div align="center" class="popup_notice_button">
-<a href="javascript:void(0);" onClick="update_notice('index.php')"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="images/design/href_home.gif"></a>&nbsp;&nbsp;
-<a href="javascript:void(0);" onClick="update_notice('contact_us.php')"><img alt="<?php echo CONTACT_US;?>" src="images/design/contact_us.gif"></a>
+<a href="javascript:void(0);" onClick="update_notice('index.php');"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="<?php echo isset($_SESSION['orders_credit_flag']) ? '../images/design/href_home.gif' : 'images/design/href_home.gif';?>"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('contact_us.php');"><img alt="<?php echo CONTACT_US;?>" src="<?php echo isset($_SESSION['orders_credit_flag']) ? '../images/design/contact_us.gif' : 'images/design/contact_us.gif';?>"></a>
 </div>
 </div>
 
 <?php
+  unset($_SESSION['orders_credit_flag']);
   exit;
 }
 $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id
@@ -158,11 +461,13 @@ if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
 }
 if ((tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL')); 
+  exit;
 }
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
 // avoid hack attempts during the checkout procedure by checking the internal cartID
   if ($cart->cartID != $cartID) {
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+    exit;
   }
 }
 if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
@@ -171,6 +476,7 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+      exit;
       break;
     }
   }
@@ -190,6 +496,7 @@ if($NewOid['cnt'] > 0) {
     unset($_SESSION['comments']);
     $_SESSION['payment_error'] = $_SESSION['new_payment_error'];
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '' , 'SSL'));
+    exit;
   }
 $comments_info = $payment_modules->dealComment($payment,$comments);
 if (is_array($comments_info)) {
@@ -207,6 +514,20 @@ require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
+$valadate_total = $order->info['total'];
+if ($point){
+  $valadate_total -= abs($point);
+}
+if (isset($_SESSION['campaign_fee'])) {
+  $valadate_total -= abs($_SESSION['campaign_fee']);
+}
+if(isset($_SESSION['mailfee'])){
+  $valadate_total += abs($_SESSION['mailfee']);
+}
+if($payment_modules->moneyInRange($payment,$valadate_total)){
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS));
+  exit;
+}
 $customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_quantity, is_quited, quited_date from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $customers_referer_array = tep_db_fetch_array($customers_referer_query);
 $referer = $customers_referer_array['referer'];
@@ -301,9 +622,27 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
   $address_options_array = tep_db_fetch_array($address_options_query);
   tep_db_free_result($address_options_query);
-  $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','$op_value[1]')");
+  $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','".addslashes($op_value[1])."','0')");
   tep_db_free_result($address_query);
 }
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  $billing_address_list_flag = false;
+  if($billing_address_show == 'true' && $_SESSION['billing_select'] == '1'){
+    
+     $billing_address_list = array();
+     $billing_address_list_flag = true;
+     foreach($_SESSION['billing_options'] as $op_key=>$op_value){
+ 
+       $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
+       $address_options_array = tep_db_fetch_array($address_options_query);
+       tep_db_free_result($address_options_query);
+       $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','".addslashes($op_value[1])."','1')");
+       tep_db_free_result($address_query);
+       $billing_address_list[$address_options_array['id']] = $op_value[1];
+     }  
+  }
 
   $address_show_array = array(); 
   $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
@@ -355,7 +694,7 @@ if($address_error == false && $_SESSION['guestchk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value[1])."','0')");
       tep_db_free_result($address_history_add_query);
   }
 }
@@ -771,7 +1110,9 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   foreach($_SESSION['options'] as $ad_value){
     $ad_len = mb_strlen($ad_value[0],'utf8');
     $temp_str = str_repeat('　',$maxlen-$ad_len);
-    $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+    if(trim($ad_value[0]) != '' && trim($ad_value[1]) != ''){
+      $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+    }
   }
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $email_order = str_replace('${USER_ADDRESS}',$email_address_str,$email_order);
@@ -782,6 +1123,41 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
 }
 $email_order = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order);
 $email_order = str_replace('${CUSTOMIZED_FEE}','',$email_order);
+
+//帐单邮寄地址
+$address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
+$address_array = array();
+while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+  $address_array[$address_list_array['id']] = $address_list_array['name'];
+}
+tep_db_free_result($address_list_query);
+if($billing_address_show == 'true' && $billing_address_list_flag == true){
+
+  $billing_address_len_array = array();
+  foreach($billing_address_list as $billing_address_key=>$billing_address_value){
+
+    $billing_address_len_array[] = strlen($address_array[$billing_address_key]);
+  }
+  $maxlen = max($billing_address_len_array);
+  $email_billing_address_str = "";
+  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
+  $maxlen = 9;
+  foreach($billing_address_list as $billing_key=>$billing_value){
+    $billing_len = mb_strlen($address_array[$billing_key],'utf8');
+    $temp_str = str_repeat('　',$maxlen-$billing_len);
+    if(trim($address_array[$billing_key]) != '' && trim($billing_value) != ''){
+      $email_billing_address_str .= $address_array[$billing_key].$temp_str.'：'.$billing_value."\n";
+    }
+  }
+  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
+  $email_order = str_replace('${BILLING_ADDRESS}',$email_billing_address_str,$email_order);
+}else{
+
+  $email_order = str_replace("\n".'${BILLING_ADDRESS}','',$email_order); 
+  $email_order = str_replace('${BILLING_ADDRESS}','',$email_order);
+  $email_order = str_replace("\n".TEXT_ORDERS_CUSTOMER_STRING.TEXT_BILLING_ADDRESS,'',$email_order);
+}
 $email_order = tep_replace_mail_templates($email_order,$order->customer['email_address'],tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
 //订单邮件
 $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_MAILSTRING',SITE_ID);
@@ -877,6 +1253,14 @@ if($email_address_str != ''){
   $email_printing_order = str_replace('${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace("\n".str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',TEXT_ORDERS_PRODUCTS_ADDRESS_INFO),'',$email_printing_order);
 }
+//帐单邮寄地址
+if($email_billing_address_str != ''){
+  $email_printing_order = str_replace('${BILLING_ADDRESS}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$email_billing_address_str),$email_printing_order);
+}else{
+  $email_printing_order = str_replace("\n".'${BILLING_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace('${BILLING_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace("\n".TEXT_BILLING_ADDRESS,'',$email_printing_order);
+}
 
 # ------------------------------------------
 $email_printing_order = tep_replace_mail_templates($email_printing_order,$order->customer['email_address'],tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
@@ -906,6 +1290,7 @@ if (!empty($check_status_info)) {
 
 // load the after_process function from the payment modules
 $payment_modules->after_process($payment);
+$payment_modules->reset_information($payment, false);
 
 $cart->reset(true);
 
@@ -993,6 +1378,10 @@ unset($_SESSION['new_payment_error']);
 unset($_SESSION['comments']);
 unset($_SESSION['payment_validated']);
 unset($_SESSION['mailcomments']);
+unset($_SESSION['billing_select']);
+unset($_SESSION['billing_options']);
+unset($_SESSION['billing_address_option']);
+unset($_SESSION['billing_address_show_list']);
 
 tep_session_unregister('h_code_fee');
 tep_session_unregister('h_point');
@@ -1000,7 +1389,10 @@ tep_session_unregister('hc_point');
 tep_session_unregister('hc_camp_point');
 tep_session_unregister('h_shipping_fee');
 
-tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+if(!isset($_SESSION['orders_credit_flag'])){
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
+  exit;
+}
     
 require(DIR_WS_INCLUDES . 'application_bottom.php');
 

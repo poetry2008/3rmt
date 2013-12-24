@@ -10,6 +10,8 @@
   require(DIR_WS_ACTIONS.'news.php');
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="js/light_box.js"></script>
+<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
@@ -37,7 +39,7 @@ function popupWindow(url) {
         } else { 
           echo HEADING_TITLE; 
         } ?></h1>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0"  cellspacing="0" cellpadding="0" class="td_space">
           <tr>
             <td>
 <?php
@@ -51,10 +53,10 @@ function popupWindow(url) {
           <td  width="60" align="left">
           <script type="text/javascript">
             <!--
-              document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
+              document.write('<?php echo '<a href="javascript:void(0);" onclick=fnCreate(\"'.DIR_WS_IMAGES . $latest_news['news_image'].'\",0)>' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
             //-->
           </script>
-          <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], $latest_news['headline'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
+          <noscript><?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . $latest_news['news_image']) . '">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], replace_store_name($latest_news['headline']), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?></noscript>
           </td>
           <td style="font-size:11px;"><?php echo replace_store_name($latest_news['news_image_description']); ?></td>
   </tr>
@@ -63,7 +65,7 @@ function popupWindow(url) {
 ?>
   <tr>
     <td colspan="2">
-      <p class="main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
+      <p class="main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p>
     </td>
   </tr>
 </table>
@@ -87,13 +89,13 @@ function popupWindow(url) {
     echo '<ul>' . "\n";
     while ($latest_news = tep_db_fetch_array($latest_news_query)) {
       if($latest_news['news_image'] != '') { 
-        $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags($latest_news['headline']), '15', '15');
+        $latest_news_image = tep_image(DIR_WS_IMAGES . 'infobox/photo.gif', strip_tags(replace_store_name($latest_news['headline'])), '15', '15');
       } else {
         $latest_news_image = '';
       }
       
       if(time()-strtotime($latest_news['date_added'])<(defined('DS_LATEST_NEWS_NEW_LIMIT')?DS_LATEST_NEWS_NEW_LIMIT:7)*86400){
-        $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags($latest_news['headline']));
+        $latest_news_new = tep_image(DIR_WS_IMAGES . 'design/latest_news_new.gif', strip_tags(replace_store_name($latest_news['headline'])));
       } else {
         $latest_news_new = '';
       }

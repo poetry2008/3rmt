@@ -3,7 +3,7 @@
   $Id$
 */
 
-  ini_set("display_errors", "Off");
+  ini_set("display_errors", "On");
   error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 // ddos start 
 require(DIR_WS_FUNCTIONS . 'dos.php');
@@ -60,17 +60,17 @@ $source_host = $_SERVER['HTTP_HOST'];
 // config time 
 $unit_time = 3;
 // confi total
-$unit_total = 15;
+$unit_total = 1500000;
 
 // config time 
 $unit_min_time = 1;
 // confi total
-$unit_min_total = 120;
+$unit_min_total = 1200000;
 
 // config time 
 $unit_hour_time = 1;
 // confi total
-$unit_hour_total = 600;
+$unit_hour_total = 600000;
 
 
 // connect db
@@ -209,6 +209,10 @@ if ($pdo_con) {
   define('FILENAME_ADDRESS_BOOK_PROCESS', 'address_book_process.php');
   define('FILENAME_ADVANCED_SEARCH', 'advanced_search.php');
   define('FILENAME_ADVANCED_SEARCH_RESULT', 'advanced_search_result.php');
+  define('FILENAME_CHANGE_PREORDER', 'change_preorder.php');
+  define('FILENAME_CHANGE_PREORDER_CONFIRM', 'change_preorder_confirm.php');
+  define('FILENAME_CHANGE_PREORDER_SUCCESS', 'change_preorder_success.php');
+  define('FILENAME_AC_MAIL_FINISH', 'ac_mail_finish.php');
   
   define('FILENAME_AJAX', 'ajax.php');
   define('FILENAME_ALSO_PURCHASED_PRODUCTS', 'also_purchased_products.php'); // This is the bottom of product_info.php (found in modules)
@@ -273,6 +277,9 @@ if ($pdo_con) {
   define('FILENAME_TELL_A_FRIEND', 'tell_a_friend.php');
   define('FILENAME_UPCOMING_PRODUCTS', 'upcoming_products.php'); // This is the bottom of default.php (found in modules)
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
+  define('FILENAME_MEMBER_AUTH','member_auth.php');
+  define('FILENAME_NON_MEMBER_AUTH','non-member_auth.php');
+  define('FILENAME_NON_PREORDER_AUTH','non-preorder_auth.php');
 // define the database table names used in the project
   define('TABLE_CONFIGURATION_META', 'configuration_meta');
   define('TABLE_CUSTOMERS_EXIT_HISTORY', 'customers_exit_history');
@@ -524,6 +531,12 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   require(DIR_WS_FUNCTIONS . 'generalBoth.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
+  if(preg_replace('/^http/','https',HTTP_SERVER) == HTTPS_SERVER&&isset($_GET[tep_session_name()])){
+    if(empty($_POST)){
+      tep_redirect(tep_href_link(basename($PHP_SELF),tep_get_all_get_params(array(tep_session_name())),$request_type));
+      exit;
+    }
+  }
 // currency
   if (!tep_session_is_registered('currency') || isset($_GET['currency']) || ( (USE_DEFAULT_LANGUAGE_CURRENCY == 'true') && (LANGUAGE_CURRENCY != $currency) ) ) {
     if (!tep_session_is_registered('currency')) tep_session_register('currency');
@@ -850,7 +863,7 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
 
   
   //add new variable 
-  $breadcrumb->add(HEADER_TITLE_TOP, HTTP_SERVER);
+  $breadcrumb->add(HEADER_TITLE_TOP, tep_href_link(FILENAME_DEFAULT,'','NONSSL'));
 
 // add category names or the manufacturer name to the breadcrumb trail
   if (isset($cPath_array)) {

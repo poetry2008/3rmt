@@ -182,6 +182,26 @@ if (isset($_POST['action']) && $_POST['action'] == 'process') {
 ?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
+//check payment input
+function check_payment_input(ele){
+
+  ele_value = ele.value;
+  ele_value = ele_value.replace(/\s/g,'');
+  ele_value = ele_value.replace(/　/g,'');
+  ele_value = ele_value.replace(/－/g,'-');
+  ele_value = ele_value.replace(/ー/g,'-');
+  ele_value = ele_value.replace(/１/g,'1');
+  ele_value = ele_value.replace(/２/g,'2');
+  ele_value = ele_value.replace(/３/g,'3');
+  ele_value = ele_value.replace(/４/g,'4');
+  ele_value = ele_value.replace(/５/g,'5');
+  ele_value = ele_value.replace(/６/g,'6');
+  ele_value = ele_value.replace(/７/g,'7');
+  ele_value = ele_value.replace(/８/g,'8');
+  ele_value = ele_value.replace(/９/g,'9');
+  ele_value = ele_value.replace(/０/g,'0');
+  ele.value = ele_value;
+}
 function check_pre_products(op_info_str, products_id_str) {
   var pre_payment = document.getElementsByName("pre_payment");  
   var pre_payment_length = pre_payment.length;
@@ -430,7 +450,7 @@ $(document).ready(function(){
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
-                  echo tep_draw_hidden_field($op_s_key, stripslashes($op_s_value)); 
+                  echo '<input type="hidden" name="'.$op_s_key.'" value="'.stripslashes($op_s_value).'">'; 
                   $op_info_array[] = $op_s_key.'||||||'.stripslashes($op_s_value); 
                 }
               }
@@ -457,7 +477,7 @@ $(document).ready(function(){
        foreach ($_POST as $op_key => $op_value) {
          $op_single_str = substr($op_key, 0, 3);
          if ($op_single_str == 'op_') {
-           echo tep_draw_hidden_field($op_key, stripslashes($op_value)); 
+           echo '<input type="hidden" name="'.$op_key.'" value="'.stripslashes($op_value).'">'; 
          }
        }
     ?>

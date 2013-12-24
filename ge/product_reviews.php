@@ -1,21 +1,23 @@
 <?php
 /*
   $Id$
+
+  一个商品的评论列表页
+
 */
 
   require('includes/application_top.php');
-  
+
 // lets retrieve all $_GET keys and values..
-  $get_params = tep_get_all_get_params();
+  $get_params      = tep_get_all_get_params();
   $get_params_back = tep_get_all_get_params(array('reviews_id')); // for back button
-  $get_params = substr($get_params, 0, -1); //remove trailing &
+  $get_params      = substr($get_params, 0, -1); //remove trailing &
   if (tep_not_null($get_params_back)) {
     $get_params_back = substr($get_params_back, 0, -1); //remove trailing &
   } else {
     $get_params_back = $get_params;
   }
 
-   
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id);
   if (!$product_info) tep_redirect(tep_href_link(FILENAME_REVIEWS));
 
@@ -51,8 +53,6 @@
             <td class="tableHeading"><?php echo TABLE_HEADING_NUMBER; ?></td>
             <td class="tableHeading"><?php echo TABLE_HEADING_AUTHOR; ?></td>
             <td align="center" class="tableHeading"><?php echo TABLE_HEADING_RATING; ?></td>
-            <?php /* <td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td>*/ ?>
-            <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>*/ ?>
           </tr>
           <tr>
             <td colspan="3"><hr></td>
@@ -86,6 +86,8 @@
       echo '            <td class="smallText">' . tep_row_number_format($row) . '.</td>' . "\n" .
            '            <td class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, $get_params . '&reviews_id=' . $reviews['reviews_id']) . '">' . tep_output_string_protected($reviews['customers_name']) . '</a></td>' . "\n" .
            '            <td align="center" class="smallText">' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '</td>' . "\n" .
+           //'            <td align="center" class="smallText">' . $reviews['reviews_read'] . '</td>' . "\n" .
+           //'            <td align="right" class="smallText">' . tep_date_short($reviews['date_added']) . '</td>' . "\n" .
            '          </tr>' . "\n";
     }
   } else {
@@ -102,7 +104,9 @@
           <tr>
             <td class="main" colspan="3"><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, $get_params_back) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
+                <td class="main"><?php echo '<a href="' .
+                tep_href_link(FILENAME_PRODUCT_INFO, $get_params_back) . '">' .
+                tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
                 <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, $get_params) . '">' . tep_image_button('button_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>'; ?></td>
               </tr>
             </table></td>

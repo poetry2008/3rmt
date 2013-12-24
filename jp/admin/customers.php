@@ -442,7 +442,66 @@ function delete_select_customers(customers_str, c_permission){
                }
          }
        if (sel_num == 1) {
-         if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
+       <?php //判断选中的顾客是否有订单或预约存在?>
+         var customers_id_list = '';
+         var customers_id_list_all = '';
+         for (i = 0; i < document.del_customers.elements[customers_str].length; i++) {
+           if(document.del_customers.elements[customers_str][i].checked == true) {
+             if(i < document.del_customers.elements[customers_str].length-1){
+               customers_id_list += document.del_customers.elements[customers_str][i].value+',';
+             }else{
+               customers_id_list += document.del_customers.elements[customers_str][i].value; 
+             }
+           }
+           if(i < document.del_customers.elements[customers_str].length-1){
+             customers_id_list_all += document.del_customers.elements[customers_str][i].value+',';
+           }else{
+             customers_id_list_all += document.del_customers.elements[customers_str][i].value; 
+           }
+         }
+         var customers_site_str = 'customers_site_id_list[]';
+         var customers_site_id_list = '';
+         for (i = 0; i < document.del_customers.elements[customers_site_str].length; i++) {
+           if(i < document.del_customers.elements[customers_site_str].length-1){
+             customers_site_id_list += document.del_customers.elements[customers_site_str][i].value+',';
+           }else{
+             customers_site_id_list += document.del_customers.elements[customers_site_str][i].value; 
+           }
+         }
+         var customers_id_flag = false;
+         var customers_id_confirm_str = '';
+         $.ajax({
+              url: 'ajax.php?&action=check_customers',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'customers_id_list='+customers_id_list+'&customers_site_id_list='+customers_site_id_list+'&customers_id_list_all='+customers_id_list_all, 
+              async: false,
+              success: function(msg) {
+                if(msg != ''){
+                  customers_id_flag = true;
+                  customers_id_confirm_str = msg;
+                }
+              }
+         });
+
+         var customers_id_confirm_flag = false;
+         if(customers_id_flag == true){
+
+           if(confirm('<?php echo TEXT_CUSTOMERS_DELETE_CONFIRM_INFO;?>'+"\n"+customers_id_confirm_str)){
+
+             if(confirm('<?php echo TEXT_DEL_NEWS;?>')){
+
+               customers_id_confirm_flag = true;
+             }
+           }
+         }else{
+
+           if(confirm('<?php echo TEXT_DEL_NEWS;?>')){
+
+             customers_id_confirm_flag = true;
+           } 
+         }
+         if (customers_id_confirm_flag) {
            if (c_permission == 31) {
              document.forms.del_customers.submit(); 
            } else {
@@ -1080,9 +1139,9 @@ $(document).ready(function() {
     }
       $customers_info = array();
       if(in_array($customers['site_id'],$site_array)){
-         $customers_checkbox = '<input type="checkbox" '.(($customers['is_active'] != '1')?'disabled="disabled"':'').' name="customers_id[]" value="'.$customers['customers_id'].'">';
+         $customers_checkbox = '<input type="checkbox" '.(($customers['is_active'] != '1')?'disabled="disabled"':'').' name="customers_id[]" value="'.$customers['customers_id'].'"><input type="hidden" name="customers_site_id_list[]" value="'.$customers['site_id'].'">';
       }else{
-         $customers_checkbox = '<input disabled="disabled" type="checkbox" name="customers_id[]" value="'.$customers['customers_id'].'">';
+         $customers_checkbox = '<input disabled="disabled" type="checkbox" name="customers_id[]" value="'.$customers['customers_id'].'"><input type="hidden" name="customers_site_id_list[]" value="'.$customers['site_id'].'">';
       }
       $customers_info[] = array(
           'params' => 'class="dataTableContent"',

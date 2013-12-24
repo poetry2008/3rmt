@@ -10,7 +10,6 @@
   if (isset($cPath_array)) {
        echo '<div id="current">'.$breadcrumb->trail(' <img src="images/point.gif"> ').'</div>';
        include('includes/search_include.php');
-       //include('includes/search_include.php');
        echo "<div id='main-content'>";
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
@@ -41,7 +40,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status, 
@@ -71,7 +70,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status, 
@@ -142,12 +141,10 @@
   </table>
  </div>
       <?php
-      #echo '</div>'; 
 ?>
 
 
   </div>
-<!--</div>-->
 <?php } ?>
 </div>
 <?php include('includes/float-box.php');?>

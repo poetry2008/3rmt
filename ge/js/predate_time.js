@@ -2,48 +2,6 @@
 /*                            Time select box                             /
 /******************************************************************************/
 function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_time,start_time_exit,end_time_exit,exit_time){
-	//var num    = document.order.date.selectedIndex; //'Select a number of select box
-	//var myD    = new Date();                        //'Date object
-//	var myHour = myD.getHours();                    //'Time
-//	var myMin  = myD.getMinutes();                  //'Minutes
-		//myMin  = Math.ceil(myMin/10) * 10;          //'Minutes carry dealt
-	//var plus   = 20;                                //'Add the initial value of minutes
-
-
-	//'Integerized
-	//myHour = parseInt(myHour);
-	//myMin  = parseInt(myMin);
-
-
-	//'Create a select box value
-	//document.order.min.options.length  = 1;
-	//document.order.hour.options.length = 1;
-
-
-	//'Obtain the range of values of the time select box
-	//'
-	//'
-        /*
-	if (num == 0) {
-		return false;
-
-	} else if (num == 1) {
-		hour = myHour;
-
-		if ((myMin+plus) > 59) {
-			hour = hour + 1;
-		}
-		if (hour > 23) {
-			hour = 10;
-		}
-	} else {
-		hour = 10;
-	}
-	hour = (hour < 10)? 10 : hour;
-        */
-
-        
-
         if(now_time != value){
       
           if(exit_time == value){
@@ -71,7 +29,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
             }
           } 
           if(flag == true){
-            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(56, 56, 56)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}$(\'#time_error_id\').hide();$(\'#time_error\').html(\'\');">'+j+'<input type="hidden" id="h_c_'+j+'" value="0"></td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(56, 56, 56)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'<input type="hidden" id="h_c_'+j+'" value="0"></td>';
           }else{
             html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#cccccc;" align="center">'+j+'</td>';
           }
@@ -92,16 +50,6 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
 
         $("#shipping_list_show_min").html('');
         $("#shipping_list_min").hide();
-
-
-	//'Create a select box value
-	//for (i=hour; i<24; i++) {
-		//document.order.hour.options[document.order.hour.options.length]=new Option(i, i);
-		//if(document.layers){
-			//top.resizeBy(-10,-10)
-			//top.resizeBy(10,10)
-		//}
-	//}
 }
 
 
@@ -111,6 +59,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
 /*                            Minutes select box                               /
 /******************************************************************************/
 function selectHour(start_time,end_time,hour,min_num,ele){ 
+        $("#time_error").remove();
         if(hour != ''){
           hour = parseInt(hour); 
           document.getElementById("hour"+hour).style.color="#ffffff";
@@ -196,7 +145,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
             }
         }
          
-          html_str += '<td><input type="hidden" name="hour" value="'+hour+'"><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><div id="shipping_time_id" class="shipping_time">'+string+'</div></td>';
+          html_str += '<td><input type="hidden" name="hour" value="'+hour+'"><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><div id="shipping_time_id" class="shipping_time_preorder">'+string+'</div></td>';
           
 
           html_str += '</tr><tr></table>'; 
@@ -252,30 +201,11 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         $('#shipping_time_id').css('top', temp_value).show();
         if(typeof(ele) != "object"){
         
-          //$('#shipping_time_id').css('top', ele).show();
           $("#ele_id").val(ele);
         }else{
           
           $("#ele_id").val(temp_value);
         }
-	//'Create a select box value
-        /*
-	for (i=min; i<60; i=i+10) {
-		if (i == 0) {
-			document.order.min.options[document.order.min.options.length]=new Option("00", "00");
-			if(document.layers){
-				top.resizeBy(-10,-10)
-				top.resizeBy(10,10)
-			}
-		} else {
-			document.order.min.options[document.order.min.options.length]=new Option(i, i);
-			if(document.layers){
-				top.resizeBy(-10,-10)
-				top.resizeBy(10,10)
-			}
-		}
-	}
-        */
 }
 
 

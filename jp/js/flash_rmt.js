@@ -58,11 +58,13 @@ else
     if (document.all && !window.opera)
       document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="900" height="70">'+
           '<param name="movie" value="images/rmt.swf" />'+
+          '<param name="wmode" value="transparent" />'+
           '<param name="quality" value="high" />'+
           '</object>'+
           '');
     else
       document.write('<object type="application/x-shockwave-flash" data="images/rmt.swf" width="900" height="70">'+
+          '<param value="transparent" name="wmode" />'+
           '<param name="quality" value="high" />'+
           '</object>'+
           '');

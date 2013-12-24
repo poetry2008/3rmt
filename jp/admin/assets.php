@@ -248,7 +248,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
   for ($i = 1; $i < 13; $i++) {
     ?>
-      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>"><?php echo strftime("%B", mktime(0, 0, 0, $i, 1)); ?></option>
+      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
       <?php
   }
   ?>
@@ -334,8 +334,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
   for ($i = 1; $i < 13; $i++) {
     ?>
-      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>">
-      <?php echo strftime("%B", mktime(0, 0, 0, $i, 1)); ?></option>
+      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>"> <?php echo $i; ?></option>
       <?php
   }
   ?>
@@ -399,7 +398,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     if($temp_row['quantity_all_product']!=0){
       $all_true_row ++;
       $all_quantity += $temp_row['quantity_all_product'];
-      $all_asset_price += $temp_row['asset_all_product'];
+      $all_asset_price += abs($temp_row['asset_all_product']);
     }
     if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''&&false){
       if($temp_row['asset_all_product'] == 0){
@@ -426,11 +425,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     $tmp_arr = tep_get_all_asset_product_by_pid($product['products_id'],
         $bflag,$site_id,$start,$end,$sort);
     $tmp_arr['products_name'] = $product['products_name'];
-    $tmp_arr['products_real_quantity'] = $product['products_real_quantity'];
-    if($tmp_arr['quantity_all_product']!=0){
+    $tmp_arr['products_real_quantity'] = tep_get_quantity($product['products_id']);
+    if(!$tmp_arr['error']){
       $all_true_row ++;
       $all_quantity += $tmp_arr['quantity_all_product'];
-      $all_asset_price += $tmp_arr['asset_all_product'];
+      $all_asset_price += abs($tmp_arr['asset_all_product']);
     }
 
     if($product['relate_id']==0){
@@ -518,10 +517,18 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         echo $all_product[$k]['products_real_quantity'].TEXT_ROW;
         echo "</td>";
         echo "<td align='right'>";
-        echo $currencies->format($all_product[$k]['price']);
+        if($all_product[$k]['error']){
+          echo $currencies->format(0);
+        } else {
+          echo $currencies->format($all_product[$k]['price']);
+        }
         echo "</td>";
         echo "<td align='right'>";
-        echo $currencies->format($all_product[$k]['asset_all_product']);
+        if($all_product[$k]['error']){
+          echo $currencies->format(0);
+        } else {
+          echo $currencies->format($all_product[$k]['asset_all_product']);
+        }
         echo "</td>";
         echo "</tr>";
 

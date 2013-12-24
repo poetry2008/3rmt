@@ -765,7 +765,7 @@ switch ($_GET['action']) {
           }
           //address
           $option_info_array = array();
-          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' and billing_address='0' order by id");
           while($address_array = tep_db_fetch_array($address_query)){
           
             $option_info_array[$address_array['name']] = $address_array['value']; 
@@ -1220,7 +1220,7 @@ switch ($_GET['action']) {
           }
           //address
           $option_info_array = array();
-          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' order by id");
+          $address_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id = '".$oID."' and billing_address='0' order by id");
           while($address_array = tep_db_fetch_array($address_query)){
           
             $option_info_array[$address_array['name']] = $address_array['value']; 
@@ -3223,7 +3223,33 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </tr>
             <?php
         }
-            $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+        //判断配送地址与帐单邮寄地址是否一样
+        $address_diff_arr = array();
+        $address_diff_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'"); 
+        while($address_diff_array = tep_db_fetch_array($address_diff_query)){
+
+          $address_diff_arr[$address_diff_array['address_id']] = $address_diff_array['value'];
+        }
+        $billing_diff_arr = array();
+        $billing_diff_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1'");
+        while($billing_diff_array = tep_db_fetch_array($billing_diff_query)){
+
+          $billing_diff_arr[$billing_diff_array['address_id']] = $billing_diff_array['value'];
+        }
+        $billing_address_flag = false;
+        $address_i = 0;
+        foreach($address_diff_arr as $key=>$value){
+
+          if(trim($value) == trim($billing_diff_arr[$key])){
+
+            $address_i++;
+          }
+        }
+        if(count($address_diff_arr) == $address_i){
+
+          $billing_address_flag = true;
+        }
+            $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
             $count_num = tep_db_num_rows($address_temp_query);
             if($count_num > 0){
             ?>
@@ -3233,23 +3259,52 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
               </td> 
             </tr>
             <tr>
-            <td class="main"><?php echo TEXT_ADDRESS_INFO;?></td>
-            <td class="main">&nbsp;</td>
+            <td class="main" colspan="2"><?php echo TEXT_ADDRESS_INFO.($billing_address_flag == true ? '（'.TEXT_BILLING_ADDRESS.'）' : '');?></td>
             </tr>
             <?php
-        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
         while($address_array = tep_db_fetch_array($address_query)){
 
           $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
           $address_title_array = tep_db_fetch_array($address_title_query);
-          echo '<tr>';
-          echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
-          echo '<td class="main">'. $address_array['value'] .'</td>';
-          echo '</tr>';
+          if(trim($address_title_array['name']) != '' && trim($address_array['value']) != ''){
+            echo '<tr>';
+            echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
+            echo '<td class="main">'. $address_array['value'] .'</td>';
+            echo '</tr>';
+          }
           tep_db_free_result($address_title_query);
         }
         tep_db_free_result($address_query);
             } 
+        $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1'");
+            $count_num = tep_db_num_rows($address_temp_query);
+            if($count_num > 0 && $billing_address_flag == false){
+            ?>
+            <tr>
+              <td colspan="2">
+              <hr width="100%" style="border-width: medium medium 1px; border-style: none none dashed; height: 2px; margin: 5px 0px; border-color: -moz-use-text-color -moz-use-text-color rgb(204, 204, 204);">
+              </td> 
+            </tr>
+            <tr>
+            <td class="main" colspan="2"><?php echo TEXT_BILLING_ADDRESS;?></td>
+            </tr>
+            <?php
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
+        while($address_array = tep_db_fetch_array($address_query)){
+
+          $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
+          $address_title_array = tep_db_fetch_array($address_title_query);
+          if(trim($address_title_array['name']) != '' && trim($address_array['value']) != ''){
+            echo '<tr>';
+            echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
+            echo '<td class="main">'. $address_array['value'] .'</td>';
+            echo '</tr>';
+          }
+          tep_db_free_result($address_title_query);
+        }
+        tep_db_free_result($address_query);
+            }
             ?>
         </table>
         </div>
@@ -3268,7 +3323,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td class="main" valign="top" width="30%"><?php echo TEXT_USER_AGENT;?></td>
-        <td class="main" style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
+        <td class="main" style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
         </tr>
         <?php if ($order->info['orders_user_agent']) {?>
           <tr>
@@ -3589,12 +3644,28 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
             <tr>
             <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
-            <td class="main"><textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
+            <td class="main">
+            <div >
+            <div id="customer_fax_textarea" style="display:none">
+            <textarea name="orders_credit" style="width:98%;height:42px;*height:40px;"><?php echo tep_get_customers_fax_by_id($order->customer['id']);?></textarea>
             <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
             <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+            </div>
+            <div id="customer_fax_text" style="width:98%;height:42px;*height:40px;overflow-y:auto">
+            <?php 
+            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); 
+            echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
+            ?>
+            </div>
             </td>
-            <td class="main" width="30"><input type="submit" value="<?php echo
-            TEXT_ORDER_SAVE;?>"></td>
+            <td class="main" width="30">
+            <div id="customer_fax_textarea_input" style="display:none">
+            <input type="submit" value="<?php echo TEXT_ORDER_SAVE;?>">
+            </div>
+            <div id="customer_fax_text_input">
+            <input type="button" onclick="show_edit_fax()" value="<?php echo IMAGE_EDIT;?>">
+            </div>
+            </td>
             </form>
             </tr>
             </table>
@@ -3881,6 +3952,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <?php }?> 
             </tr>
             <?php
+            $comment_warning_arr = explode('|',COMMENT_SHOW_KEYWORDS);
             $cpayment = payment::getInstance($orders['site_id']);
             $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments, user_added from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
           $orders_status_history_str = '';
@@ -3924,7 +3996,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                $orders_history_comment = $orders_history['comments'];
            }
            if($orders_history['comments'] != $orders_status_history_str){
-             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment))) . '&nbsp;</p></td>' . "\n";
+             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' .  tep_replace_to_red($comment_warning_arr,nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)))) . '&nbsp;</p></td>' . "\n";
            }else{
 
              echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">&nbsp;</p></td>' . "\n";

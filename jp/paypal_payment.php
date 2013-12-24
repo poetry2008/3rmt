@@ -18,7 +18,6 @@ $returnURL = urlencode(htmlspecialchars($_REQUEST['RETURNURL']));
 $cancelURL = urlencode(htmlspecialchars($_REQUEST['CANCELURL']));
 $pageDefault = urlencode('Billing'); //默认的信用卡输入框
 $location = urlencode('JP');//国家码
-//$customOption = urlencode('123456-789');//&CUSTOM=$customOption
 // Add request-specific fields to the request string.
 
 $nvpStr = "&AMT=$paymentAmount".

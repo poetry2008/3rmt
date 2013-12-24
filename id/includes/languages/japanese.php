@@ -510,5 +510,16 @@ define('TEXT_PRODUCTS_SORT','RMTランキング');
 define('TEXT_PRODUCTS_SORT_FIRST_FEW','位');
 define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
 define('IMAGE_BUTTON_PREORDER','予約する');
-define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ ご予約商品のお支払方法を選択してください。\n');
+define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ 予約商品のお支払方法を選択してください。\n');
+define('TEXT_ORDERS_PRODUCTS_POINT','ポイント割引:');
+define('TEXT_ORDERS_PRODUCTS_HANDLE_FEE','手数料:');
+define('TEXT_ORDERS_PRODUCTS_TOTAL','合計:');
+define('TEXT_ORDERS_EARN_POINTS', '今回の獲得予定ポイント:');
+define('TEXT_ORDERS_COMMENTS', 'ご注文についてのコメント:');
+define('TEXT_BILLING_ADDRESS', 'ご請求先');
+define('TEXT_BILLING_SELECT', '請求書');
+define('TEXT_BILLING_SELECT_TRUE', '必要');
+define('TEXT_BILLING_SELECT_FALSE', '必要ない');
+define('TEXT_BILLING_ADDRESS_OLD', '過去のご請求先を指定する');
+define('TEXT_BILLING_ADDRESS_NEW', '登録先に届ける');
 ?>

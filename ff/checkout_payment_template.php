@@ -87,7 +87,7 @@
                   <tr class="infoBoxContents"> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td><textarea name="comments" cols="60" rows="5"></textarea><?php echo tep_draw_hidden_field('comments_added', 'YES'); ?></td> 
+                          <td><?php echo tep_draw_textarea_field('comments', 'soft', '60', '5').tep_draw_hidden_field('comments_added', 'YES'); ?></td> 
                         </tr> 
                       </table></td> 
                   </tr> 

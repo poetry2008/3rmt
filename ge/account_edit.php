@@ -8,7 +8,6 @@
   require(DIR_FS_3RMTLIB.'address_info/AD_Option_Group.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_ACCOUNT_EDIT);
   $hm_option = new AD_Option();
-
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
@@ -19,7 +18,7 @@
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
   //start
-  //将全角的英数字改成半角
+  // 全角的英数字改成半角
   $save_flag = false;
   $del_flag = false; 
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
@@ -41,7 +40,6 @@ case 'per':
   $gender = tep_db_prepare_input($_POST['gender']);
   $firstname = tep_db_prepare_input($_POST['firstname']);
   $lastname = tep_db_prepare_input($_POST['lastname']);
-  //add
   if (!isset($_POST['firstname_f'])) $_POST['firstname_f'] =NULL;
   $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
   if (!isset($_POST['lastname_f'])) $_POST['lastname_f'] =NULL;
@@ -52,9 +50,6 @@ case 'per':
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
-  //$newsletter = tep_db_prepare_input($_POST['newsletter']);
-  //$password = tep_db_prepare_input($_POST['password']);
-  //$confirmation = tep_db_prepare_input($_POST['confirmation']);
   if (!isset($_POST['street_address'])) $_POST['street_address'] =NULL;
   $street_address = tep_db_prepare_input($_POST['street_address']);
   if (!isset($_POST['company'])) $_POST['company'] =NULL;
@@ -116,6 +111,7 @@ case 'per':
                             'send_mail_time' => time()
                             );
     tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
+    tep_db_query("UPDATE `".TABLE_CUSTOMERS."` SET `new_customers_password`= `customers_password` WHERE customers_id = ".tep_db_input($customer_id)." and site_id = '".SITE_ID."'");
    
     $edit_cus_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = ".tep_db_input($customer_id)." and site_id = '".SITE_ID."'");
     $edit_cus_res = tep_db_fetch_array($edit_cus_raw);
@@ -161,7 +157,6 @@ case 'per':
       
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
         $save_flag = true;
-        //tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
       }else{
 
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");
@@ -198,7 +193,6 @@ case 'per':
   break;
   case 'address':
   //住所信息处理
-
 if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if (!isset($_POST['gender'])) $_POST['gender'] =NULL;
   $gender = tep_db_prepare_input($_POST['gender']);
@@ -234,16 +228,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   $country = tep_db_prepare_input($_POST['country']);
 
   $error = false; // reset error flag
-/*
-  if (ACCOUNT_GENDER == 'true') {
-    if ( ($gender == 'm') || ($gender == 'f') ) {
-      $entry_gender_error = false;
-    } else {
-      $error = true;
-      $entry_gender_error = true;
-    }
-  }
- */
 
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
@@ -322,6 +306,17 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
 
 if($_POST['num_rows'] > 0){
   //住所信息验证
+  //过滤提示字符串
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'op_') {
+      $_POST[$p_key] = tep_db_prepare_input($p_value);
+      if($options_comment[substr($p_key,3)] == $p_value){
+
+         $_POST[$p_key] = '';
+      }
+    } 
+  } 
   $option_info_array = array(); 
   if (!$hm_option->check()) {
     foreach ($_POST as $p_key => $p_value) {
@@ -331,7 +326,7 @@ if($_POST['num_rows'] > 0){
 
           $p_value = '';
         }
-        $option_info_array[$p_key] = tep_db_input($p_value); 
+        $option_info_array[$p_key] = $p_value; 
       } 
     }
   }else{
@@ -340,33 +335,40 @@ if($_POST['num_rows'] > 0){
 }
   if($error == true){ break; }  
     if($error == false){
-      if($_POST['num_rows'] > 0){
+    //billing address
+    $billing_address = tep_db_prepare_input($_POST['billing_address']);
+    $billing_address = $billing_address == 1 ? 1 : 0;
+
+    if($billing_address == 1){
+
+      tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set billing_address=0 where customers_id={$_SESSION['customer_id']}");
+    }
+    if($_POST['num_rows'] > 0){ 
     //住所信息入库
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
       foreach($option_info_array as $address_key=>$address_value){
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','".addslashes($address_value)."','{$billing_address}')";
         tep_db_query($address_sql);
       }
     }else{
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
-        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','".addslashes($address_value)."','{$billing_address}')";
         tep_db_query($address_sql);
       }
     }
-  }
+    }
     $sql_data_array = array('new_customers_firstname' => $firstname,
                             'new_customers_lastname' => $lastname,
                             'new_customers_newsletter' => $newsletter,
@@ -396,7 +398,6 @@ if($_POST['num_rows'] > 0){
         
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
 
-
         $sql_data_array = array('entry_street_address' => $street_address,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,
@@ -421,7 +422,6 @@ if($_POST['num_rows'] > 0){
       
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
         $save_flag = true;
-        //tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
       }else{
     
     tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");
@@ -462,7 +462,19 @@ if($_POST['num_rows'] > 0){
     $options_comment[$address_required['name_flag']] = $address_required['comment'];
   }
   tep_db_free_result($address_query);
+
   $error_str = false;
+  //过滤提示字符串
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'op_') {
+      $_POST[$p_key] = tep_db_prepare_input($p_value);
+      if($options_comment[substr($p_key,3)] == $p_value){
+
+         $_POST[$p_key] = '';
+      }
+    } 
+  }
   $option_info_array = array(); 
   if (!$hm_option->check()) {
     foreach ($_POST as $p_key => $p_value) {
@@ -472,7 +484,7 @@ if($_POST['num_rows'] > 0){
 
           $p_value = '';
         }
-        $option_info_array[$p_key] = tep_db_input($p_value); 
+        $option_info_array[$p_key] = $p_value; 
       } 
     }
   }else{
@@ -481,19 +493,27 @@ if($_POST['num_rows'] > 0){
  
   //住所信息入库
   if($error_str == false){
-      $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+    //billing address
+    $billing_address = tep_db_prepare_input($_POST['billing_address']);
+    $billing_address = $billing_address == 1 ? 1 : 0;
+
+    if($billing_address == 1){
+
+      tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set billing_address=0 where customers_id={$_SESSION['customer_id']}");
+    }
+    $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
     if($address_flag_id == ''){
       
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
       foreach($option_info_array as $address_key=>$address_value){
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','".addslashes($address_value)."','{$billing_address}')";
         tep_db_query($address_sql);
       }
       $save_flag = true; 
@@ -501,8 +521,7 @@ if($_POST['num_rows'] > 0){
       tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
-        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','".addslashes($address_value)."','{$billing_address}')";
         tep_db_query($address_sql);
       }
     }
@@ -560,8 +579,7 @@ if($_POST['num_rows'] > 0){
 }
 
   //end
-
-
+  
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
 ?>
@@ -594,7 +612,7 @@ if($_POST['num_rows'] > 0){
   $email_address = isset($_POST['email_address']) && isset($_POST['action']) && ($_POST['action'] == 'per' ||($_POST['action'] == 'address' && $_POST['action_flag'] == 1 ))? $_POST['email_address'] : $account['customers_email_address'];
 
   require(DIR_WS_MODULES . 'account_details_info.php');
-?>
+?> 
 <input type="hidden" name="old_email_1" value="<?php echo $account['customers_email_address'];?>">
 </td> 
             </tr> 

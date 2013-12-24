@@ -16,6 +16,7 @@
     }
   }
   $ad_option = new AD_Option();
+  $billing_option = new AD_Option();
 
   $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
   $preorder_res = tep_db_fetch_array($preorder_raw); 
@@ -41,7 +42,7 @@
   } else {
     if ($is_member_single) { 
       if ($guestchk == '0') {
-        if ($customer_emailaddress != $preorder_res['customers_email_address']) {
+        if (strtolower($customer_emailaddress) != strtolower($preorder_res['customers_email_address'])) {
           //判断登录的邮箱是否和预约订单中的邮箱是否一致 
           $navigation->set_snapshot();
           
@@ -114,17 +115,89 @@
   }
   tep_db_free_result($shi_products_query);
     //住所信息处理 
+    $options_comment = array();
+    $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+    while($address_required = tep_db_fetch_array($address_query)){
+    
+      $options_comment[$address_required['name_flag']] = $address_required['comment'];
+    }
+    tep_db_free_result($address_query); 
+    //过滤提示字符串
+    foreach ($_POST as $ad_key => $ad_value) {
+      $ad_single_str = substr($ad_key, 0, 3);
+      if ($ad_single_str == 'ad_') {
+        if($options_comment[substr($ad_key,3)] == $ad_value){
+          $_POST[$ad_key] = '';
+        }
+          
+      } 
+    } 
+    $address_info_array = array();
+    foreach ($_POST as $p_key => $p_value) {
+      $op_single_str = substr($p_key, 0, 3);
+      if ($op_single_str == 'ad_') {
+        $address_info_array[$p_key] = $p_value; 
+      } 
+    }
     $address_option_info_array = array(); 
     if (!$ad_option->check()) {
       foreach ($_POST as $ad_key => $ad_value) {
         $ad_single_str = substr($ad_key, 0, 3);
-        if ($ad_single_str == 'op_') {
+        if ($ad_single_str == 'ad_') {
           $address_option_info_array[$ad_key] = $ad_value; 
         } 
       }
     }else{
       $error_str = true;
     }
+
+if($_POST['preorders_billing_select'] == '1'){
+  //帐单邮寄地址信息
+  $billing_option_info_array = array(); 
+  foreach($_POST as $p_key => $p_value){
+
+    $op_single_str = substr($p_key, 0, 8);
+    if ($op_single_str == 'billing_'){
+
+      unset($_POST[$p_key]);
+      $_POST['ad_'.substr($p_key, 8)] = $p_value;
+    }
+  }
+  //过滤提示字符串
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'ad_') {
+      $_POST[$p_key] = tep_db_prepare_input($p_value);
+      if($options_comment[substr($p_key,3)] == $p_value){
+
+         $_POST[$p_key] = '';
+      }
+    } 
+  }
+  if (!$billing_option->check()) {
+    foreach ($_POST as $p_key => $p_value) {
+       $op_single_str = substr($p_key, 0, 3);
+       if ($op_single_str == 'ad_') {
+          $billing_option_info_array[$p_key] = $p_value; 
+        } 
+    }
+  }else{
+    $error_str = true;
+  }
+  foreach($_POST as $p_key => $p_value){
+
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'ad_'){
+
+      unset($_POST[$p_key]);
+      $_POST['billing_'.substr($p_key, 3)] = $p_value;
+    }
+  }
+  foreach($address_info_array as $info_key=>$info_value){
+
+    $_POST[$info_key] = $info_value;
+  }
+}
     
     if($error_str == true){
 
@@ -256,5 +329,8 @@
       }
       tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'].'&is_check=1', 'SSL'));
       }
+    }
+    if($error == false){
+      $_SESSION['preorders_send_mail_flag'] = 1; 
     }
   }

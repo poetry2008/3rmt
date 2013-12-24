@@ -17,7 +17,7 @@ define('TEXT_NEWSLETTER_MODULE', 'モジュールの選択:');
 define('TEXT_NEWSLETTER_TITLE', 'メールマガジンの題名:');
 define('TEXT_NEWSLETTER_CONTENT', '内容:');
 
-define('TEXT_NEWSLETTER_DATE_ADDED', '作成日:');
+define('TEXT_NEWSLETTER_DATE_ADDED', '作成日');
 define('TEXT_NEWSLETTER_DATE_SENT', '送信日:');
 
 define('TEXT_INFO_DELETE_INTRO', '本当にこのメールマガジンを削除しますか?');
@@ -31,9 +31,9 @@ define('ERROR_REMOVE_UNLOCKED_NEWSLETTER', 'エラー: 削除するにはメー�
 define('ERROR_EDIT_UNLOCKED_NEWSLETTER', 'エラー: 編集するにはメールマガジンのロックが必要です。');
 define('ERROR_SEND_UNLOCKED_NEWSLETTER', 'エラー: 送信するにはメールマガジンのロックが必要です。');
 define('NOTICE_SEND_ZERO_MAIL_TEXT', '送信先が0件です。メールマガジン送信処理を中止します。');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_USER_ADDED','作成者:');
-define('TEXT_LAST_MODIFIED','更新日:');
+define('TEXT_USER_UPDATE','更新者');
+define('TEXT_USER_ADDED','作成者');
+define('TEXT_LAST_MODIFIED','更新日');
 
 
 ?>

@@ -2,6 +2,29 @@
 /*
  * confirm session error
  */
+if($_GET['action'] == 'session'){
+  //contact us
+  $_noemailclass = true;
+  require('includes/application_top.php');
+  require_once(DIR_OST.'client.inc.php');
+  define('SOURCE','Web');
+  $customer_name = $_SESSION['error_name'];
+  $customer_email = $_SESSION['error_email'];
+  $orders_mail_title = $_SESSION['error_subject'];
+  $orders_mail_text = $_SESSION['error_message'];
+  $array = array('name'=>$customer_name,
+                 'email'=>$customer_email,
+                 'subject'=>$orders_mail_title,
+                 'message'=>$orders_mail_text,
+                 'emailId'=>0);
+  $error = array();
+  $ticket=Ticket::create($array,$error,SOURCE);
+  unset($_SESSION['error_name']);
+  unset($_SESSION['error_email']);
+  unset($_SESSION['error_subject']);
+  unset($_SESSION['error_message']);
+  exit;
+}
 require('includes/application_top.php');
 if ($cart->count_contents(true) < 1) {
    echo 'no_count';

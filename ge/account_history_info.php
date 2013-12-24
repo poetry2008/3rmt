@@ -46,7 +46,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body>
+<body> 
 <!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof --> 
@@ -111,7 +111,6 @@
     echo '          <tr>' . "\n" .
          '            <td width="10"></td><td class="main" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . (tep_not_null($show_products_name) ? $show_products_name : $order->products[$i]['name']);
-
     if ($order->products[$i]['price'] != '0') {
       if ($order->products[$i]['price'] < 0) {
         echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
@@ -194,7 +193,7 @@
                 </table></td> 
             </tr> 
             <?php
-            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='0'");
             $address_num = tep_db_num_rows($address_shipping_num_query);
             tep_db_free_result($address_shipping_num_query);
             if($address_num > 0){
@@ -215,13 +214,15 @@
                               $address_array[$address_list_array['id']] = $address_list_array['name'];
                             }
                             tep_db_free_result($address_list_query);
-                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' order by id");
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='0' order by id");
                             while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                              if(trim($address_array[$address_shipping_array['address_id']]) != '' && trim($address_shipping_array['value']) != ''){
                                 echo '<tr><td width="10"></td><td class="main" width="30%" valign="top">';
                                 echo $address_array[$address_shipping_array['address_id']];
                                 echo ':</td><td class="main">';
                                 echo $address_shipping_array['value']; 
                                 echo '</td></tr>';
+                              }
                             }
                             tep_db_free_result($address_shipping_query);
                       ?>
@@ -236,19 +237,45 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox">
                   <tr class="infoBoxContents"> 
                       <td class="main" colspan="2"><table class="box_des"><tr><td><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td></tr></table></td> 
                   </tr> 
                   <tr class="infoBoxContents"> 
                     <td width="30%" valign="top"><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                        <?php
+            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='1'");
+            $address_num = tep_db_num_rows($address_shipping_num_query);
+            tep_db_free_result($address_shipping_num_query);
+            if($address_num > 0){
+            ?>  
+                      <tr><td width="10"></td><td class="main"><b><?php echo TEXT_BILLING_ADDRESS; ?></b></td></tr>
+                      <?php
+                            $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
+                            $address_array = array();
+                            while($address_list_array = tep_db_fetch_array($address_list_query)){
+                              
+                              $address_array[$address_list_array['id']] = $address_list_array['name'];
+                            }
+                            tep_db_free_result($address_list_query);
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' and billing_address='1' order by id");
+                            while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                              if(trim($address_array[$address_shipping_array['address_id']]) != '' && trim($address_shipping_array['value']) != ''){
+                                echo '<tr><td width="10"></td><td class="main" valign="top">';
+                                echo $address_shipping_array['value']; 
+                                echo '</td></tr>';
+                              }
+                            }
+                            tep_db_free_result($address_shipping_query);
+            }
+            ?>
                         <tr> 
                           <td width="10"></td>
                           <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                         </tr> 
                         <tr> 
                           <td width="10"></td>
-                          <td class="main"><?php echo tep_address_format($order->billing['format_id'], $order->billing, 1, ' ', '<br>'); ?></td> 
+                          <td class="main"><?php echo $order->customer['name']; ?></td> 
                         </tr> 
                         <tr> 
                           <td width="10"></td>
@@ -288,6 +315,7 @@
       $campaign_info = tep_db_fetch_array($campaign_info_query);
       if ($campaign_info) {
         if ($campaign_info['campaign_fee'] == 0) {
+          //配送费用，手续费用
           echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
            '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
@@ -300,6 +328,7 @@
         }
       } else {
         if ($order->totals[$i]['value'] == 0) {
+          //配送费用，手续费用
           echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
            '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
@@ -325,6 +354,8 @@
       }
       echo '</td>' . "\n" .
       '              </tr>' . "\n";
+
+      //配送费用，手续费用
       echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
            '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
@@ -363,7 +394,8 @@
          '                <td width="10"></td>
 		 				  <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
-         '                <td class="main" valign="top">' . (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars($statuses['comments']))) . '</td>' . "\n" .
+         '                <td class="main" valign="top">' .
+         (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 

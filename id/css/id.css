@@ -53,10 +53,9 @@ H4 {
 .comment {
 	clear:both;
 	width: 689px;
- *width: 719px!important;
+	 *width: 719px!important;
 	padding:5px 15px;
 	overflow: hidden;
-	*overflow:inherit;
 	background-color:#E9E9E9;
 	margin:1px 0 5px 1px;
  *margin-top:0;
@@ -747,6 +746,7 @@ ranking
 	background: #fff;
 	padding: 1px 2px;
 	margin: 2px 0 2px 2px;
+	word-break: break-all;
 }
 #contents, #contents_long {
 	padding-bottom: -2px;
@@ -1931,7 +1931,7 @@ TABLE.formArea {
 	background-color:#D2CECE;
 	border: 1px solid #BDBCBC;
 }
-TABLE.formArea td{ padding:2px; margin:0;}
+TABLE.formArea td{  margin:0;}
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
@@ -2370,11 +2370,22 @@ searching
 	font-size:12px;
 	line-height:1.5;
 	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:0px\0;
+}
+.preorder_option_table{
+	width:100%;
+	font-size:12px;
+	line-height:1.5;
+	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
 }
 .option_name{
 	width:100px;
 	vertical-align:top;
 	font-weight:bold;
+	line-height:23px;
 }
 .option_input{
 	width:198px;
@@ -2400,7 +2411,7 @@ searching
 	*width:98%;
 }
 .preorder_option_name{
-	width:150px;
+	width:147px;
 	vertical-align:top;
 }
 .option_product_single_radio{
@@ -2422,7 +2433,7 @@ searching
 	display:block;
 }
 .option_checkmark img{vertical-align:bottom;}
-.option_show_border span{ float:left; overflow:hidden; padding:0 4px;}
+.option_show_border span{ float:left; overflow:hidden; padding:2px 4px; line-height:16px;}
 .option_show_border .option_conent{
 	border:2px solid #FF6701;
 	overflow:hidden;
@@ -2458,7 +2469,7 @@ searching
 	line-height:27px;
 	margin:0 3px 0 0;
 }
-.option_hide_border span{ float:left;overflow:hidden; padding:0 4px;}
+.option_hide_border span{ float:left;overflow:hidden; padding:2px 4px; line-height:16px;}
 .option_hide_border a{
 	color:#656565; 
 	display:block;
@@ -2500,6 +2511,7 @@ searching
 	width:20%;
 	padding:0;
 	font-weight:normal;
+	line-height:22px;
 }
 .option_money{
 	float:right;
@@ -2507,10 +2519,13 @@ searching
 }
 .option_info_text{
 	overflow:hidden;
-	width:100%;
+	width:73%;
+	*width:72.8%!important;
+	width:72.6%\0;
 	margin-bottom:5px;
+	white-space:normal;
 }
-.option_info_text select{ float:left; margin-left:0;}
+.option_info_text select{  float:left; margin-left:0; width:100%;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
@@ -2534,7 +2549,7 @@ searching
 	font-size:12px;
 	line-height:1.5;
 }
-.shipping_time{
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
 	font-size:12px;
 	background:#383838;
 	line-height:25px;
@@ -2542,7 +2557,28 @@ searching
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
-	*overflow:inherit;
+	*overflow:none;
+}
+.shipping_time_order{
+    width: 471px;
+	*width: 470px!important;
+	width: 471px\0;
+	right:0px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_order{
+    width: 470px;
+	right:-1px;
+}
+}
+.shipping_time_reorder{
+    width: 471px;
+	right:0;
+	*right:1px!important;
+}
+.shipping_time_preorder{
+    width: 519px;
+	right:0;
 }
 .time_radio{
 	float:left;
@@ -2593,11 +2629,21 @@ searching
 .table_a_spacing{ margin-bottom:10px;}
 .table_a_spacing img{ vertical-align:top;}
 .confirmation_product_num_info{ 
-	padding-right:72px;
 	line-height:1.5;
 	font-size:12px;
-	width:80px;
+	width:67px;
 	display:block;
+	padding-right:12px;
+	padding-right:85px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.confirmation_product_num_info{ 
+	line-height:1.5;
+	font-size:12px;
+	width:67px;
+	display:block;
+	padding-right:85px;
+}
 }
 #form_error{ 
 	line-height:20px;

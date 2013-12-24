@@ -69,7 +69,7 @@ if ($category_depth == 'nested') {
             select c.categories_id, 
                    cd.categories_name, 
                    cd.categories_status, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
@@ -140,7 +140,7 @@ if ($category_depth == 'nested') {
         include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
       } 
     ?> 
-    <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></p>
+    <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase ?></p>
     <?php
       if (isset($_GET['cPath'])) {
     ?>
@@ -173,9 +173,6 @@ if ($category_depth == 'nested') {
   // 根绝颜色color_id取得商品列表
   require(DIR_WS_ACTIONS.'index_colors.php');
 
-// 选择页面左侧的快捷链接, JP中无此功能
-//} elseif(isset($_GET['action']) && $_GET['action'] == 'select') {
-  //   require(DIR_WS_ACTIONS.'index_select.php');
 } else {
   // 默认显示首页
   require(DIR_WS_ACTIONS.'index_default.php');
@@ -219,14 +216,12 @@ $oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where key
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
-//  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
 $oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
-//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
 }
 
 ?>

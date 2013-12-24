@@ -19,7 +19,7 @@
   }
 ?> 
       <!-- heading title eof-->
-      <div class="comment"> <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子?></font>
+      <div class="comment"> <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase?></font>
       <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="product_list_page"> 
         <tr align="center">
 <?php
@@ -34,7 +34,7 @@
             select c.categories_id, 
                    cd.categories_name, 
                    cd.categories_status, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
@@ -63,7 +63,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status,
@@ -87,7 +87,7 @@
     $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
-      echo '<td class="smallText"><h2 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES .'categories/'. $categories['categories_image'], $categories['categories_name'], 299, 48) ;
+      echo '<td class="smallText"><h2 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES .'categories/'. $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
                              if(tep_not_null($categories['categories_image'])) { echo '<br>' ; } 
                    echo $categories['categories_name'] . '</a></h2></td>' . "\n";
       if ((($rows / 2) == floor($rows / 2)) && ($rows != tep_db_num_rows($categories_query))) {
@@ -98,7 +98,7 @@
 ?> 
         </tr>
       </table>
-      <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo句子 ?></font>
+      <font color="#FFFFFF"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seo phrase ?></font>
             </div>
       <?php 
   $new_products_category_id = $current_category_id;

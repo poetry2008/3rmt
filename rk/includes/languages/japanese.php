@@ -316,7 +316,7 @@ define('ICON_WARNING', '警告');
 
 define('TEXT_GREETING_PERSONAL', 'いらっしゃいませ、<span class="greetUser">%s さん</span>。 <a href="%s"><u>新着商品</u></a> をご覧になりますか？');
 define('TEXT_GREETING_PERSONAL_RELOGON', '<small>もしあなたが %s さんでなければ、お客様情報を入力して <a href="%s"><u>ログイン</u></a> してください。</small>');
-define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s">会員登録</u></a>をしますか？');
+define('TEXT_GREETING_GUEST', '<span class="greetUser">ゲストさん</span>、いらっしゃいませ。 <a href="%s"><u>ログイン</u></a>しますか？ それとも、<a href="%s"><u>会員登録</u></a>をしますか？');
 
 define('TEXT_SORT_PRODUCTS', '商品を並び替える ');
 define('TEXT_DESCENDINGLY', '降順');
@@ -503,8 +503,19 @@ define('TEXT_ORDERS_PRODUCTS_TWENTY_HOUR','分　（24時間表記）');
 define('TEXT_ORDERS_PRODUCTS_ADDRESS_INFO','▼住所情報');
 define('TEXT_ORDERS_PRODUCTS_THICK','━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'."\n");
 define('TEXT_PRODUCTS_OPTION_CHANGE_ERROR','<font color="red">商品情報に更新があった為、ショッピングカートから削除されました。お手数ですが、再度最初からお手続きをお願いいたします。</font>');
-define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です!</font>');
+define('TEXT_EMAIL_ADDRESS','<font color=\'red\'>入力されたメールアドレスは不正です。</font>');
 define('TEXT_PRODUCT_QUANTITY_ERROR','<font color="#FF0000">半角数字で入力してください。</font>');
 define('IMAGE_BUTTON_PREORDER','予約する');
-define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ ご予約商品のお支払方法を選択してください。\n');
+define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED_PREORDER', '※ 予約商品のお支払方法を選択してください。\n');
+define('TEXT_ORDERS_PRODUCTS_POINT','ポイント割引:');
+define('TEXT_ORDERS_PRODUCTS_HANDLE_FEE','手数料:');
+define('TEXT_ORDERS_PRODUCTS_TOTAL','合計:');
+define('TEXT_ORDERS_EARN_POINTS', '今回の獲得予定ポイント:');
+define('TEXT_ORDERS_COMMENTS', 'ご注文についてのコメント:');
+define('TEXT_BILLING_ADDRESS', 'ご請求先');
+define('TEXT_BILLING_SELECT', '請求書');
+define('TEXT_BILLING_SELECT_TRUE', '必要');
+define('TEXT_BILLING_SELECT_FALSE', '必要ない');
+define('TEXT_BILLING_ADDRESS_OLD', '過去のご請求先を指定する');
+define('TEXT_BILLING_ADDRESS_NEW', '登録先に届ける');
 ?>

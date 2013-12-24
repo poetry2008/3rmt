@@ -1,12 +1,14 @@
 <?php
 /*
   $Id$
+
+  跳转
 */
 
   require('includes/application_top.php');
 
   switch ($_GET['action']) {
-     
+ 
     case 'banner': $banner_query = tep_db_query("
                        select banners_url 
                        from " . TABLE_BANNERS . " 
@@ -54,6 +56,7 @@
                                 tep_redirect(tep_href_link(FILENAME_DEFAULT));
                               } else {
                                 $manufacturer = tep_db_fetch_array($manufacturer_query);
+//todo: 这里不知道是否应该分开网站
   
                                 tep_db_query("
                                     update " . TABLE_MANUFACTURERS_INFO . " 

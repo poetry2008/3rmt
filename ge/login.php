@@ -188,7 +188,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       if ($link_customer_email == '') {
         $_GET['login'] = 'failture';
       } else {
-        if ($email_address != $link_customer_email) {
+        if (strtolower($email_address) != strtolower($link_customer_email)) {
           $_GET['login'] = 'failture';
         } else {
           if (!tep_validate_password($password, $link_customer_res['customers_password'])) {
@@ -364,20 +364,11 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
             $navigation->clear_snapshot();
           } else {
-            if(ENABLE_SSL && $request_type == 'SSL'){
-              $origin_href = tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?' . tep_session_name().'='.tep_session_id(); 
-            } else {
-              $origin_href = tep_href_link(FILENAME_DEFAULT); 
-            }
+            $origin_href = tep_href_link(FILENAME_DEFAULT); 
           }
           tep_redirect($origin_href);
         } else {
-          if (ENABLE_SSL && $request_type == 'SSL') {
-            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?'.tep_session_name().'='.tep_session_id());
-            //tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
-          } else {
-            tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
-          }
+           tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
         }
       }
     }

@@ -7,7 +7,7 @@
       select *
       from (
         select distinct p.products_id,
-                        p.products_image,
+                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_name,
@@ -37,7 +37,7 @@
       select *
       from (
         select distinct p.products_id,
-                        p.products_image,
+                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_status, 
@@ -97,7 +97,7 @@
                    <td width="50" align="center" valign="middle"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" class="ranking_money_ico"><?php echo tep_image(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'],$best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); ?></a></td>
           <td valign="top" class="bestseller_description">
             <p>
-              <?php echo mb_substr(strip_tags(replace_store_name($best_sellers['products_description'])),0,52); ?>...
+              <?php echo mb_substr(strip_tags(replace_store_name($best_sellers['products_description'])),0,45); ?>...
                       </p>
                     </td>
                 </tr>

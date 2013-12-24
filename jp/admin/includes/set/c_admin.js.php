@@ -16,89 +16,131 @@ function all_update(c_permission){
     alert(error_msg);
     error_msg = '';
   }
-  var flg=confirm("<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>");
-  if(flg){
-    document.myForm1.flg_up.value=1;
-    if (c_permission == 31) {
-      window.document.myForm1.submit();
+  var product_price_list = '';
+  var product_id_list = '';
+  if (document.myForm1.elements['price[]']) {
+    if (document.myForm1.elements['price[]'].length == null) {
+      product_price_list = document.myForm1.elements['price[]'].value; 
     } else {
-      $.ajax({
-        url: 'ajax_orders.php?action=getallpwd',   
-        type: 'POST',
-        dataType: 'text',
-        data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
-        async: false,
-        success: function(msg) {
-          var tmp_msg_arr = msg.split('|||'); 
-          var pwd_list_array = tmp_msg_arr[1].split(',');
-          if (tmp_msg_arr[0] == '0') {
+      for (var pu = 0; pu < document.myForm1.elements['price[]'].length; pu++) {
+        product_price_list += document.myForm1.elements['price[]'][pu].value+'|||'; 
+      }
+    }
+  }
+  if (document.myForm1.elements['hidden_products_id[]']) {
+    if (document.myForm1.elements['hidden_products_id[]'].length == null) {
+      product_id_list = document.myForm1.elements['hidden_products_id[]'].value; 
+    } else {
+      for (var pm = 0; pm < document.myForm1.elements['hidden_products_id[]'].length; pm++) {
+        product_id_list += document.myForm1.elements['hidden_products_id[]'][pm].value+'|||'; 
+      }
+    }
+  }
+  if (product_price_list != '') {
+    product_price_list = product_price_list.substr(0, product_price_list.length-3); 
+  }
+  
+  if (product_id_list != '') {
+    product_id_list = product_id_list.substr(0, product_id_list.length-3); 
+  }
+  
+  $.ajax({
+    url: 'ajax_orders.php?action=check_list_products_profit',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'product_id_list='+product_id_list+'&product_price_list='+product_price_list, 
+    async: false,
+    success: function (msg_info) {
+      if (msg_info != '') {
+        document.myForm1.flg_up.value=0;
+        alert(msg_info); 
+      } else {
+        var flg=confirm("<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>");
+        if (flg) {
+          document.myForm1.flg_up.value=1;
+          if (c_permission == 31) {
             window.document.myForm1.submit();
           } else {
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              $.ajax({
-                url: 'ajax_orders.php?action=record_pwd_log',   
-                type: 'POST',
-                dataType: 'text',
-                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.myForm1.action),
-                async: false,
-                success: function(msg_info) {
+            $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
+              async: false,
+              success: function(msg) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
                   window.document.myForm1.submit();
+                } else {
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.myForm1.action),
+                      async: false,
+                      success: function(msg_info) {
+                        window.document.myForm1.submit();
+                      }
+                    }); 
+                  } else {
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
                 }
-              }); 
-            } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-            }
+              }
+            });
           }
+        } else {
+          document.myForm1.flg_up.value=0;
+          alert("<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>");
         }
-      });
+      }
     }
-  }else{
-    document.myForm1.flg_up.value=0;
-    alert("<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>");
-  }
+  });
 }
 <?php //检查 radio ?>
 function chek_radio(cnt){
-  var radio_cnt=document.getElementsByName("chk["+cnt+"]");
-  var proid = document.getElementsByName("proid[]");
-  for(var i=0;i < radio_cnt.length;i++){
-    if(radio_cnt[i].checked == true){
-      if(document.getElementById("target_"+cnt+"_"+i).innerHTML != ''){
-        set_money(cnt, false, '1'); 
-        $.ajax({
-          type:'POST', 
-          beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
-          dataType:'text',
-          async:false, 
-          url: 'set_ajax_dougyousya.php?products_id='+proid[cnt].value+'&dougyousya_id='+$('#radio_'+cnt+"_"+i).val(),
-          success: function(msg) {
-            $('body').css('cursor', '');
-            setTimeout('read_space_time()', 500);
-          } 
-        });
-      }
+var radio_cnt=document.getElementsByName("chk["+cnt+"]");
+var proid = document.getElementsByName("proid[]");
+for(var i=0;i < radio_cnt.length;i++){
+  if(radio_cnt[i].checked == true){
+    if(document.getElementById("target_"+cnt+"_"+i).innerHTML != ''){
+      set_money(cnt, false, '1'); 
+      $.ajax({
+        type:'POST', 
+        beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+        dataType:'text',
+        async:false, 
+        url: 'set_ajax_dougyousya.php?products_id='+proid[cnt].value+'&dougyousya_id='+$('#radio_'+cnt+"_"+i).val(),
+        success: function(msg) {
+          $('body').css('cursor', '');
+          setTimeout('read_space_time()', 500);
+        } 
+      });
     }
-  }   
+  }
+}   
 }
 <?php //隐藏wait ID ?>
 function read_space_time()
 {
-  $('#wait').hide(); 
+$('#wait').hide(); 
 }
 <?php //表单提交 ?>
 function cleat_set(url){
-  window.document.myForm1.action = url;
-  window.document.myForm1.method = "POST"; 
-  window.document.myForm1.submit();
+window.document.myForm1.action = url;
+window.document.myForm1.method = "POST"; 
+window.document.myForm1.submit();
 }
 <?php //跳转到list_display.php页 ?>
 function list_display(path,cid,fullpath){
-  location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
+location.href="list_display.php?cpath="+path+"&cid="+cid+'&fullpath='+fullpath;
 }
 <?php //更新数量 ?>
 function update_quantity(pid){
-  nquantity = $('#real_pro_num').val();
+nquantity = $('#real_pro_num').val();
   if (nquantity && false == /^\d+$/.test(nquantity)) {
     alert('<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>');
     return false;
@@ -359,20 +401,36 @@ function set_new_price(pid, cnt) {
   if (nquantity !== '' && nquantity !== null) {
     $.ajax({
       type:'POST', 
-      dataType:'text',
-      beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
-      data:'products_id='+pid+"&new_price="+nquantity, 
       async:false, 
-      url: 'ajax_orders.php?action=set_new_price',
-      success: function(msg) {
-        msg_array = msg.split('|||'); 
-        $(c_ele).html(msg_array[0]); 
-        $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
-        $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
-        $(c_ele).next().next().next().next().find('a').html(msg_array[3]);  
-        set_money(cnt, false, '1'); 
-        setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
+      url: 'ajax_orders.php?action=check_products_profit',
+      dataType:'text',
+      data:'products_id='+pid+"&new_price="+nquantity,
+      success: function(msg_info) {
+        if (msg_info != '') {
+          $("#new_price_button").attr("id", 'tmp_new_price_button'); 
+          alert(msg_info);
+          setTimeout('$("#tmp_new_price_button").attr("id", "new_price_button")', 100);
+        } else {
+          $.ajax({
+            type:'POST', 
+            dataType:'text',
+            beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+            data:'products_id='+pid+"&new_price="+nquantity, 
+            async:false, 
+            url: 'ajax_orders.php?action=set_new_price',
+            success: function(msg) {
+              msg_array = msg.split('|||'); 
+              $(c_ele).html(msg_array[0]); 
+              $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
+              $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
+              $(c_ele).next().next().next().next().find('a').html(msg_array[3]);  
+              set_money(cnt, false, '1'); 
+              setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
+            }
+          });
+        }
       }
     }); 
+     
   }
 }

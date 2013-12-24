@@ -260,6 +260,7 @@ if(!empty($_SESSION['options'])){
   </tr>
 <?php
   foreach($_SESSION['options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
 ?>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
@@ -267,6 +268,7 @@ if(!empty($_SESSION['options'])){
   <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
+    }
   }
 ?>
 <?php
@@ -397,6 +399,39 @@ $shipping_fee = $cart->total-$_SESSION['h_point'] > $free_value ? 0 : $weight_fe
 </tr>
 </td></tr></table>
 </td></tr>
+<?php
+}
+if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
+?> 
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+  <tr> 
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="box_des">
+  <tr>
+  <td class="main" colspan="3"><b><?php echo TEXT_BILLING_ADDRESS; ?></b>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+<?php
+  foreach($_SESSION['billing_options'] as $key=>$value){
+    if(trim($value[0]) != '' && trim($value[1]) != ''){
+?>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main" width="150" valign="top"><?php echo $value[0]; ?>:</td>
+  <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  </tr>
+<?php
+    }
+  }
+?>
+  </table>
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr>
 <?php
 }
 ?>
@@ -689,15 +724,16 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
               <td>
                 <table border="0" cellspacing="0" cellpadding="2" class="box_des">
                   <tr>
-                    <td class="main" colspan="4"><?php echo str_replace(' />','>',$confirmation['title']); ?></td>
+                    <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td>
                   </tr>
                   <?php
+      if (!isset($confirmation['fields'])) $confirmation['fields'] = NULL;
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?>
                   <tr>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                    <td width="10"></td>
                     <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                    <td width="10"></td>
                     <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td>
                   </tr>
                   <?php
@@ -747,12 +783,6 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
   }
-  //character  
-  if(isset($_SESSION['character'])){
-    foreach($_SESSION['character'] as $ck => $cv){
-      echo tep_draw_hidden_field("character[$ck]", $cv);
-    }
-  }
   echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
   echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</a>' . "\n";
 ?>
@@ -777,6 +807,5 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 </div>
 <!-- visites --> 
 <object><noscript><img src="visites.php" alt="Statistics" style="border:0" /></noscript></object>
-<!-- /visites -->
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

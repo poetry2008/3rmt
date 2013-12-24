@@ -5,7 +5,6 @@
 $_noemailclass = true;
   require_once('includes/application_top.php');
   $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
-//require('includes/configure.php');
 require_once('includes/ost/client.inc.php');
 
 //We are only showing landing page to users who are not logged in.

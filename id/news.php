@@ -8,6 +8,8 @@
   require(DIR_WS_ACTIONS.'news.php');
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="js/light_box.js"></script>
+<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
@@ -26,7 +28,7 @@ function popupWindow(url) {
       <td valign="top" id="contents">
         <h1 class="pageHeading">
         <span class="game_t">
-        <?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?>
+        <?php if (isset($_GET['news_id']) && $_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?>
         </span>
         </h1>
                 <div class="comment">
@@ -34,7 +36,7 @@ function popupWindow(url) {
           <tr>
             <td>
 <?php
-  if ($_GET['news_id']) {  
+  if (isset($_GET['news_id']) && intval($_GET['news_id'])) {  
           echo '<table width="100%">';
     if($latest_news['news_image']) {
           echo '<tr>';
@@ -42,8 +44,7 @@ function popupWindow(url) {
 ?>
                       <script type="text/javascript">
                         <!--
-                          //document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link(FILENAME_POPUP_IMAGE_NEWS, 'nID=' . $latest_news['news_id']) . '\\\')">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
-                          document.write('<?php echo '<a href="'.DIR_WS_IMAGES.$latest_news['news_image'].'" rel="lightbox[products]">' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
+                          document.write('<?php echo '<a href="javascript:void(0);" onclick=fnCreate(\"'.DIR_WS_IMAGES . $latest_news['news_image'].'\",0)>' . tep_image_new(DIR_WS_IMAGES . $latest_news['news_image'], addslashes(replace_store_name($latest_news['headline'])), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '</a>'; ?>');
                         //-->
                       </script>
                       <noscript>
@@ -59,7 +60,7 @@ function popupWindow(url) {
 ?>
   <tr>
   <td colspan="2">
-                <p class="main big_main" style="font-size:12px;"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
+                <p class="main big_main" style="font-size:12px;"><?php echo str_replace('<br />', '<br>', nl2br(replace_store_name($latest_news['content']))); ?></p>
                 </td>
                 </tr>
                 </table>
@@ -118,7 +119,7 @@ function popupWindow(url) {
 <?php
     }
   }
-  if ($_GET['news_id']) { 
+  if (isset($_GET['news_id']) && $_GET['news_id']) { 
 ?>
                 <p align="right" class="smallText">
                   [ <?php echo tep_date_long($latest_news['date_added']) ;?> ]

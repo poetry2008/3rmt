@@ -7,7 +7,7 @@
   select * 
   from (
     select pd.products_name, 
-           p.products_image, 
+           pd.products_image, 
            cp.color_id, 
            cp.color_image, 
            p.products_id, 

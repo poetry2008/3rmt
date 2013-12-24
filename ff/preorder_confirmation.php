@@ -105,7 +105,7 @@ if(!isset($_SESSION['submit_flag'])){
 <?php echo tep_draw_form('preorder_confirmation', tep_href_link(FILENAME_PREORDER_PROCESS,'action=process','SSL'), 'post', '');?>
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
 <tr> 
-<td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+<td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 <!-- left_navigation_eof //--> </td> 
 <!-- body_text //--> 
@@ -121,7 +121,7 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
       foreach ($_POST as $p_key => $p_value) {
         if ($p_key != 'x' && $p_key != 'y') {
-          echo tep_draw_hidden_field($p_key, stripslashes($p_value)); 
+          echo '<input type="hidden" name="'.$p_key.'" value="'.stripslashes($p_value).'">'; 
         }
       }
       $product_query = tep_db_query("select products_price, products_price_offset, products_tax_class_id, products_small_sum from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
@@ -171,10 +171,10 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
 </tr>
 <tr> 
 <td>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" class="cg_pay_info"> 
+<table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td> 
-<td class="main" align="right"><a href="javascript:void(0);" onclick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a></td> 
+<td class="main" align="right"><a href="javascript:void(0);" onClick="check_error();"><?php echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER);?></a></td> 
 </tr> 
 </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -320,6 +320,7 @@ if (!$payment_modules->moduleIsEnabled($payment)){
 $payment_selection = $payment_modules->selection();
 $pay_info_array = $payment_modules->specialOutput($payment, true, $_SESSION['preorder_products_list']);
 $payment_modules->deal_other_info($payment, $_POST); 
+$payment_modules->handle_information($payment, $_POST, true); 
 //支付方法相关信息
 if (!empty($pay_info_array)) {
 ?>
@@ -406,7 +407,7 @@ echo '<a href="' .  tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL') . '"><sp
 </tr> 
 <tr> 
 <td width="10"></td>
-<td class="main" width="125"><?php echo payment::changeRomaji($payment); ?></td> 
+<td class="main" width="148"><?php echo payment::changeRomaji($payment); ?></td> 
 </tr> 
 </table></td> 
 <td width="70%" valign="top" align="right">
@@ -463,9 +464,9 @@ if (is_array($payment_modules->modules)) {
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php
@@ -513,13 +514,10 @@ if (tep_not_null($_POST['yourmessage'])) {
 }
 ?> 
 <tr> 
-<td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="cg_pay_info"> 
+<td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
 <tr> 
 <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
 <td align="right" class="main"> <?php
-if (is_array($payment_modules->modules)) {
-  echo $payment_modules->process_button($payment);
-}
 echo '<a href="javascript:void(0);" onclick="check_error();">';
 echo tep_image_button('button_preorder.gif', IMAGE_BUTTON_PREORDER) . '</a></form>' . "\n";
 ?> </td> 

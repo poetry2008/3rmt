@@ -11,10 +11,19 @@ function in_array(value,arr){
 }
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] !=''){
+  //获取是否开启了帐单邮寄地址功能
+  $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
+  $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  if($billing_address_show == 'true'){
+    echo 'var billing_address_flag = true;';
+  }else{
+    echo 'var billing_address_flag = false;'; 
+  }
 ?>
 function address_list(){
   var arr_old = new Array();
   var arr_name = new Array();
+  var billing_address_num = 'true';
 <?php
 //根据后台的设置来显示相应的地址列表
   $address_i = 0;
@@ -41,6 +50,10 @@ function address_list(){
      
     $address_orders_array['value'] = str_replace("\r\n","<br>",$address_orders_array['value']); 
     echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+    if($address_orders_array['billing_address'] == 1){
+
+      echo 'billing_address_num = '.$address_num.';';
+    }
   }
 
   $address_num++; 
@@ -63,6 +76,7 @@ function address_list(){
         }
     }
     if(arr_str != ''){
+      arr_str = billing_address_num != 'true' && billing_address_num == i && billing_address_flag == true ? arr_str+'（<?php echo TEXT_BILLING_ADDRESS;?>）' : arr_str;
       address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
     }
 
@@ -105,7 +119,9 @@ function address_option_list(value){
     while($address_orders_array = tep_db_fetch_array($address_orders_query)){
        
       $address_orders_array['value'] = str_replace("\r\n","<br>",$address_orders_array['value']); 
-      echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+      if(trim($address_orders_array['name']) != '' && trim($address_orders_array['value']) != ''){
+        echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+      }
     }
   $address_num++;
   tep_db_free_result($address_orders_query); 
@@ -396,7 +412,7 @@ if (!isset($guestchk)) $guestchk = NULL;
     ?>
     <tr>
       <td class="main" width="93">&nbsp;</td>
-      <td class="main" style="font-size:10px;">
+      <td class="main">
       <?php echo $p_error_show_str;?> 
       </td>
     </tr>

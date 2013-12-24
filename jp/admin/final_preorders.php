@@ -1082,12 +1082,71 @@ function submit_order_check(products_id,op_id){
           type:'POST',
           async: false,
           success: function(data) {
+            var reg_info = new RegExp("update_products\\[[0-9]+\\]\\[p_price\\]"); 
+            var find_input_name = ''; 
+            var price_list_str = '';
+            var hidden_list_str = '';
+            var num_list_str = '';
+            $('#preorder_list').find('input').each(function() {
+              if ($(this).attr('type') == 'text') {
+                find_input_name = $(this).attr('name'); 
+                if (reg_info.test(find_input_name)) {
+                  price_list_str += $(this).val()+'|||'; 
+                  hidden_list_str += $(this).next().val()+'|||'; 
+                  num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||'; 
+                }
+              }
+            }); 
             if(data != ''){
               if(confirm(data)){
-                check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+                if (price_list_str != '') {
+                  price_list_str = price_list_str.substr(0, price_list_str.length-3);
+                  hidden_list_str = hidden_list_str.substr(0, hidden_list_str.length-3);
+                  num_list_str = num_list_str.substr(0, num_list_str.length-3);
+                  $.ajax({
+                    url: 'ajax_preorders.php?action=check_preorder_products_profit', 
+                    type: 'POST',
+                    dataType: 'text',
+                    data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
+                    async: false,
+                    success: function (msg_info) {
+                      if (msg_info != '') {
+                        if (confirm(msg_info)) {
+                          check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+                        }
+                      } else {
+                        check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+                      }
+                    }
+                  }); 
+                } else {
+                  check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+                }
               }
             }else{
-              check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+              if (price_list_str != '') {
+                price_list_str = price_list_str.substr(0, price_list_str.length-3);
+                hidden_list_str = hidden_list_str.substr(0, hidden_list_str.length-3);
+                num_list_str = num_list_str.substr(0, num_list_str.length-3);
+                $.ajax({
+                  url: 'ajax_preorders.php?action=check_preorder_products_profit', 
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
+                  async: false,
+                  success: function (msg_info) {
+                    if (msg_info != '') {
+                      if (confirm(msg_info)) {
+                        check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+                      }
+                    } else {
+                      check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+                    }
+                  }
+                });
+              } else {
+                check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
+              }
             }
           }
         });
@@ -2211,7 +2270,7 @@ require("includes/note_js.php");
   
 ?>
 <?php // Version without editable names & prices ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="2">
+<table border="0" width="100%" cellspacing="0" cellpadding="2" id="preorder_list">
   <tr class="dataTableHeadingRow">
     <td class="dataTableHeadingContent" colspan="2" width="35%"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
@@ -2337,7 +2396,7 @@ require("includes/note_js.php");
         }
         $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         if(is_array($all_show_option[$t_item_id]['option_info'])){
-        $item_default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
+        $item_default_value = strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;")) . "'>: " . 
            '</div><div class="order_option_value">'; 
         if ($less_op_single) {
@@ -2345,7 +2404,7 @@ require("includes/note_js.php");
         } else {
           echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".$item_default_value."</u></a>";
         }
-        echo "<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
+        echo "<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo "'></div></div>";
         echo '<div class="order_option_price">';
         if ($less_op_single) {
@@ -2364,7 +2423,7 @@ require("includes/note_js.php");
           echo '<div class="order_option_width">&nbsp;<i>';
           echo '<div class="order_option_info">';
           echo '<div class="order_option_title"> - '.tep_parse_input_field_data($ex_value['option_info']['title'], array("'" => "&quot;"))."<input type='hidden' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][option]' value='".tep_parse_input_field_data($ex_value['option_info']['title'], array("'" => "&quot;"))."'>".'</div>';
-          echo "<div class=\"order_option_value\">".$ex_value['option_info']['value']."<input type='hidden' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][value]' value='".tep_parse_input_field_data($ex_value['option_info']['value'], array("'" => "&quot;"))."'></div>";
+          echo "<div class=\"order_option_value\">".$ex_value['option_info']['value']."<input type='hidden' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][value]' value='".strtr($ex_value['option_info']['value'], array("'" => "&quot;"))."'></div>";
           echo '</div>'; 
           echo '<div class="order_option_price">';
           $tmp_op_price = (isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]))?$_SESSION['preorder_products'][$_GET['oID']]['attr'][$ex_value['id']]:(int)$ex_value['price']; 
@@ -2442,7 +2501,7 @@ require("includes/note_js.php");
         $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($option_item_array['front_title'], array("'"=>"&quot;"))."<input type='hidden' class='option_input_width' name='new_update_products_op_title[$t_item_id]' value='" .  tep_parse_input_field_data($option_item_array['front_title'], array("'"=>"&quot;")) . "'>: " . 
            '</div><div class="order_option_value">' . 
-           "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($option_item_array['front_title'], array("'"=>"&quot;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".tep_parse_input_field_data($option_default_value, array("'"=>"&quot;"))."</u></a><input type='hidden' class='option_input_width' name='new_update_products_op_value[$t_item_id]' value='"; 
+           "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($option_item_array['front_title'], array("'"=>"&quot;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".strtr($option_default_value, array("'"=>"&quot;"))."</u></a><input type='hidden' class='option_input_width' name='new_update_products_op_value[$t_item_id]' value='"; 
         echo "'></div></div>";
         echo '<div class="order_option_price">';
         echo "<input type='text' size='9' name='new_update_products_op_price[$t_item_id]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$option_item_array['price'])."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\">"; 
@@ -2461,11 +2520,12 @@ require("includes/note_js.php");
       $orders_products_type = '−';
     }
     if ($less_op_single) {
-      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;background: none repeat scroll 0 0
-#CCCCCC" readonly class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'">'.TEXT_MONEY_SYMBOL.'</td>'; 
+      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ?  tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'">'.TEXT_MONEY_SYMBOL;
     } else {
-      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ? tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
+      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ?  tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL;
     }
+    echo '<input type="hidden" name="hidden_pro_id[]" value="'.$orders_products_id.'">'; 
+    echo '</td>'; 
     
     echo '<td class="' . $RowStyle . '" align="right">';
       echo "<input type='hidden' style='text-align:right;' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\', \''.$op_info_str.'\');" >';

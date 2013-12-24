@@ -456,6 +456,7 @@ foreach($all_show_option_id as $t_item_id){
             <tr>
               <td class="main">
                 <b><?php echo TEXT_ADDRESS;?></b> 
+                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
               </td>
             </tr>
             <tr>
@@ -464,7 +465,7 @@ foreach($all_show_option_id as $t_item_id){
 <?php
                     foreach($_POST as $ad_key=>$ad_value){
 
-                      if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
+                      if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != '' && trim($_POST[$ad_key]) != ''){
 
                         echo '<tr>';
 						echo '<td width="10"></td>';
@@ -477,6 +478,45 @@ foreach($all_show_option_id as $t_item_id){
                     }
 ?> 
                   
+                </table> 
+              </td>
+            </tr>
+          </table>
+          </td></tr></table>
+          <br> 
+<?php
+}
+?>
+<?php
+if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select'] == '1'){
+?>
+          <table width="100%" cellspacing="1" cellpadding="2" border="0" class="infoBox">
+          <tbody><tr class="infoBoxContents"><td> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
+            <tr>
+              <td class="main">
+                <b><?php echo TEXT_BILLING_SELECT;?></b> 
+                <?php echo ' <a href="' . tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';?>
+              </td>
+            </tr>
+            <tr>
+              <td class="main">
+                <table width="100%" cellspacing="1" cellpadding="2" border="0">
+<?php
+                    foreach($_POST as $ad_key=>$ad_value){
+
+                      if(substr($ad_key,0,8)=='billing_' && $_POST[substr($ad_key,8)] != '' && trim($_POST[$ad_key]) != ''){
+
+                        echo '<tr>';
+						echo '<td width="10"></td>';
+						echo '<td class="main" width="150">'. $_POST[substr($ad_key,8)] .':</td>';                  
+
+                        echo '<td class="main">';
+                        echo $_POST[$ad_key];
+                        echo '</tr>';
+                      }
+                    }
+?>
                 </table> 
               </td>
             </tr>
@@ -833,9 +873,9 @@ if (is_array($payment_modules->modules)) {
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
         ?> 
           <tr> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td> 
-          <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+          <td width="10"></td> 
           <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td> 
           </tr> 
           <?php

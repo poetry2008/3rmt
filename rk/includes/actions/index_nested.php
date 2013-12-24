@@ -9,12 +9,12 @@
 <?php  
   if( isset($cPath_array)) {
       if ($category['categories_status'] != '0') {
-        echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
+        echo '<div class="short_waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
        echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
   } elseif ($_GET['manufacturers_id']) {
       if ($category['categories_status'] != '0') {
-        echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
+        echo '<div class="short_waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
   }
@@ -35,7 +35,7 @@
             select c.categories_id, 
                    cd.categories_name, 
                    cd.categories_status, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    c.sort_order
@@ -64,7 +64,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status,

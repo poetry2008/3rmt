@@ -2,7 +2,6 @@
 
 function calc($out,$in,$ship = 40){
   echo $out.'/'.$in."=";
-  //echo (($out * (1200 + 1688)) - (1200*$in) - (1800 + 500) - (($in - $out) * 200));
   echo 1200*$in;
   echo '/';
   echo (($out * (1200 + 1648)) - (1200*$in) - (1800 + 500) + (($in - $out) * (1200 - 40)));

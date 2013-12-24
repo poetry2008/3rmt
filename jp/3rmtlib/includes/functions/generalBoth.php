@@ -31,7 +31,12 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
     返回值: 设置数值(string/boolean) 
 ------------------------------------ */
 function get_configuration_by_site_id_or_default($key,$site_id){
-  return get_configuration_by_site_id($key,$site_id)===false?get_configuration_by_site_id($key,0):get_configuration_by_site_id($key,$site_id);
+  $res = get_configuration_by_site_id($key,$site_id);
+  if($res===false){
+    return get_configuration_by_site_id($key,0);
+  }else{
+    return $res;
+  }
 }
 
 /* -------------------------------------

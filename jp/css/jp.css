@@ -74,6 +74,7 @@ H3 {
 .comment {
 	margin: 10px;
 	line-height:14px;
+	*width:100%;
 }
 .comment img { vertical-align:middle\9;}
 /* ---------------------------
@@ -218,7 +219,7 @@ header
 .header_Navigation_p {
 	line-height: 21px;
 	text-indent: 15px;
-	font-size: 11px;
+	font-size: 10px;
 	color: #2864B4;
 	margin: 0px;
 	padding: 0px;
@@ -726,8 +727,8 @@ TD.main, P.main {
 TD,SPAN：small text（message）
 --------------------------- */
 TD.smallText, SPAN.smallText, P.smallText {
-	font-size: 10px;
 	line-height: 1.5;
+	font-size:12px;
 }
 /* ---------------------------
 TD：account category
@@ -928,9 +929,6 @@ P.description {
 	font-weight: bold;
 	color: #4A6175;
 }
-.smallText {
-	font-size: 10px;
-}
 #tabtable {
 	background-image: url(./images/design/top_tab/tab-bg.jpg);
 	background-repeat: repeat-y;
@@ -981,12 +979,12 @@ P.description {
 	height:13px;
 }
 /*botton*/
-.button_delete02 {
+.button_delete{
 	display:block;
 	overflow:hidden;
 	text-indent:-2000px;	
 	width:53px;
-	height:25px;
+	height:24px;
 	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 .shopping_cart_continue {
@@ -1394,14 +1392,6 @@ header
 	height: 21px;
 	background-color: #EEF2F7;
 	border-top: 1px solid #ccc;
-}
-.header_Navigation_p {
-	line-height: 21px;
-	text-indent: 15px;
-	font-size: 11px;
-	color: #2864B4;
-	margin: 0px;
-	padding: 0px;
 }
 .left_colum_border {
 	border-right: 1px solid #cccccc;
@@ -1869,23 +1859,9 @@ TD.subBar {
 	font-size: 10px;
 	color: #000000;
 }
-/* ---------------------------
-TD：main
---------------------------- */
-TD.main, P.main {
-	font-size: 12px;
-	line-height: 1.5;
-}
 .main02 {
 	font-size: 11px;
 	padding:8px 0 5px 0;
-}
-/* ---------------------------
-TD,SPAN：small text（message）
---------------------------- */
-TD.smallText, SPAN.smallText, P.smallText {
-	font-size: 10px;
-	line-height: 1.5;
 }
 /* ---------------------------
 TD：account category
@@ -1961,12 +1937,6 @@ SPAN.markProductOutOfStock a{
 SPAN：prices are Catalog of special price 
 --------------------------- */
 SPAN.productSpecialPrice {
-	color: #ff0000;
-}
-/* ---------------------------
-SPAN：error
---------------------------- */
-SPAN.errorText {
 	color: #ff0000;
 }
 /* ---------------------------
@@ -2080,9 +2050,6 @@ P.description {
 	font-weight: bold;
 	color:#656565;
 }
-.smallText {
-	font-size: 10px;
-}
 #tabtable {
 	background-image: url(./images/design/top_tab/tab-bg.jpg);
 	background-repeat: repeat-y;
@@ -2131,15 +2098,6 @@ P.description {
 .top_and_bottom a img {
 	width:15px;
 	height:13px;
-}
-/*botton*/
-.button_delete02 {
-	display:block;
-	overflow:hidden;
-	text-indent:-2000px;
-	width:53px;
-	height:25px;
-	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 .shopping_cart_continue {
 	display:block;
@@ -2496,10 +2454,20 @@ searching
 	width:100%;
 	font-size:12px;
 	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:0\0;
+}
+.preorder_option_table{
+	width:100%;
+	font-size:12px;
+	margin-left:-3px;
+	*margin-left:-3px!important;
+	margin-left:-3px\0;
 }
 .option_name{
 	vertical-align:top;
 	width:85px;
+	line-height:23px;
 }
 .option_input{
 	width:198px;
@@ -2524,7 +2492,7 @@ searching
 	*width:98%;
 }
 .preorder_option_name{
-	width:150px;
+	width:147px;
 	vertical-align:top;
 }
 .option_product_single_radio{
@@ -2547,7 +2515,7 @@ searching
 	display:block;
 }
 .option_checkmark img{vertical-align:bottom;}
-.option_show_border span{ float:left; overflow:hidden; padding:0 4px;}
+.option_show_border span{ float:left; overflow:hidden; padding:2px 4px; line-height:16px;}
 .option_show_border .option_conent{
 	border:2px solid #FF6701;
 	overflow:hidden;
@@ -2582,7 +2550,7 @@ searching
 	line-height:27px;
 	margin:0 3px 0 0;
 }
-.option_hide_border span{ float:left;overflow:hidden; padding:0 4px;}
+.option_hide_border span{ float:left;overflow:hidden; padding:2px 4px; line-height:16px;}
 .option_hide_border a{
 	color:#000000; 
 	display:block;
@@ -2620,6 +2588,7 @@ searching
 .preorder_option{ padding:0;}
 .preorder_option .option_name{
 	width:26%;
+	line-height:22px;
 }
 .option_money{
 	float:right;
@@ -2627,10 +2596,13 @@ searching
 }
 .option_info_text{
 	overflow:hidden;
-	width:100%;
+	width:73%;
+	*width:73%!important;
+	width:72.3%\0;
 	margin-bottom:5px;
+	white-space:normal;
 }
-.option_info_text select{ float:left; margin-left:0;}
+.option_info_text select{ float:left; margin-left:0; width:100%;}
 #show_price{
 	font-size:20px;
 	font-weight:bold;
@@ -2649,13 +2621,10 @@ searching
 /*shipping*/
 .shipping_error{
 	color:#ff0000;
-	font-size:12px;
 	line-height:1.5;
 }
-.shipping_time{
-/*    width: 338px;
-	*width:358px;
-*/	font-size:12px;
+.shipping_time_order,.shipping_time_reorder,.shipping_time_preorder{
+	font-size:12px;
 	background:#383838;
 	line-height:25px;
     position:relative;
@@ -2664,10 +2633,36 @@ searching
 	overflow:hidden;
 	*overflow:none;
 }
-.shipping_time input{
-/*	margin-left:32px;
-	margin-left:28px\9;
-*/}
+.shipping_time_order{
+    width: 359px;
+	right:-16px;
+	*right:-5px;
+}
+.shipping_time_reorder{
+    width: 350px;
+	right:-16px;
+	*right:0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_reorder{
+    width: 350px;
+	right:-16px;
+}
+}
+.shipping_time_preorder{
+    width: 350px;
+	*width: 351px!important;
+	width: 350px\0;
+	right:-14px;
+	*right:-3px!important;
+	right:-14px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+.shipping_time_preorder{
+    width: 350px;
+	right:-14px;
+}
+}
 .time_radio{
 	float:left;
 	margin-left:20px;
@@ -2813,9 +2808,10 @@ searching
 	background-color:#efefef;
 	font-size:23px;
 	color:#0079c1;
-	width:546px;
-	height:90px; 
-	margin:5px auto 23px auto; 
+	width:546px; 
+	margin:5px auto 23px auto;
+	overflow:hidden;
+	padding-bottom:12px;
 }
 #contents .title_box img ,#contents .title_box span{
 	float:left;
@@ -3248,4 +3244,18 @@ searching
 }
 .box_bottom_list .bottom_space{
 	margin-top:17px;
+}
+.td_space{
+	width:532px;
+	margin:0 5px;
+}
+.td_space ul{
+	width:520px;
+	padding:0;
+	margin:0;
+}
+.td_space ul li{
+	word-break: break-all; 
+	overflow:hidden;
+	margin:0 5px;
 }

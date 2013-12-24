@@ -64,7 +64,7 @@ if (
     select r.reviews_id, 
            r.reviews_rating, 
            p.products_id, 
-           p.products_image, 
+           pd.products_image, 
            pd.products_name,
            pd.products_status, 
            r.site_id as rsid,

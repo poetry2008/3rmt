@@ -200,14 +200,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     
     if (!tep_session_is_registered('customer_id')) {
-      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($last_name)) {
+      $tmp_last_name = str_replace(array('　', ' '), '', $last_name); 
+      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($tmp_last_name)) {
         $lastname_error = true;
         $error = true;
       } else {
         $lasttname_error = false;
       }
       
-      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($first_name)) {
+      $tmp_first_name = str_replace(array('　', ' '), '', $first_name); 
+      if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($tmp_first_name)) {
         $firstname_error = true;
         $error = true;
       } else {
@@ -334,8 +336,9 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1>
             <div class="comment">
       <div>
-        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?>
         <?php 
+        echo $po_game_c.TEXT_PREORDER_BOOK_INFO;
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {
@@ -373,9 +376,9 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         </tr>
       </table>
       <div class="formAreaTitle"><b><?php echo FORM_TITLE_FRIEND_DETAILS; ?></b></div>
-      <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+      <table width="100%" cellpadding="2" cellspacing="1" border="0" class="formArea">
         <tr>
-        <td class="main" valign="top" width="30%"><?php echo PREORDER_PRODUCTS_NAME;?></td>
+        <td class="main" valign="top" width="135"><?php echo PREORDER_PRODUCTS_NAME;?></td>
           <td class="formArea_td_info">
           <strong>
           <?php 
@@ -398,7 +401,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           </td>
         </tr>
         <tr>
-          <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+          <td class="main" width="135"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
           <td class="formArea_td_info">
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice

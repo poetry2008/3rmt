@@ -20,8 +20,6 @@ if ( ($category_depth == 'products') || (isset($_GET['manufacturers_id']) && $_G
   define('TABLE_HEADING_PRICE', '価格');
   define('TABLE_HEADING_WEIGHT', '重量');
   define('TABLE_HEADING_BUY_NOW', '今すぐ購入');
-  //define('TEXT_NO_PRODUCTS', 'このカテゴリーの商品はありません...');
-  define('TEXT_NO_PRODUCTS2', 'このメーカーの商品はありません...');
   define('TEXT_NUMBER_OF_PRODUCTS', '在庫数: ');
   define('TEXT_SHOW', '<b>絞込み:</b> ');
   define('TEXT_BUY', '今すぐ ');

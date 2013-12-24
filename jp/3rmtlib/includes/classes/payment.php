@@ -1264,5 +1264,38 @@ class payment {
   {
     return get_configuration_by_site_id_or_default('MODULE_PAYMENT_'.strtoupper($payment).'_ORDER_STATUS_ID', $site_id); 
   }
+
+/*----------------------
+ 功能：处理其他信息
+ 参数：$payment(string) 支付方法
+ 参数：$pInfo(string) 信息
+ 参数：$d_type(boolean) 标识
+ 返回值：无
+ ---------------------*/
+  function handle_information($payment, $pInfo, $d_type)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'handle_information')) {
+        $module->handle_information($pInfo, $d_type); 
+      }
+    }
+  }
+
+/*----------------------
+ 功能：重置一些信息
+ 参数：$payment(string) 支付方法
+ 参数：$h_type(boolean) 标识
+ 返回值：无
+ ---------------------*/
+  function reset_information($payment, $h_type)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'reset_information')) {
+        $module->reset_information($h_type); 
+      }
+    }
+  }
 }
 ?>

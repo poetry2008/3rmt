@@ -14,6 +14,7 @@ require('option/HM_Option.php');
 require('option/HM_Option_Group.php');
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 $ad_option = new AD_Option();
+$billing_option = new AD_Option();
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
 require(DIR_WS_CLASSES . 'currencies.php');
@@ -459,27 +460,102 @@ if (tep_not_null($action)) {
         break;
       }
       //住所信息
+      $options_comment = array();
+      $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+      while($address_required = tep_db_fetch_array($address_query)){
+    
+        $options_comment[$address_required['name_flag']] = $address_required['comment'];
+      }
+      tep_db_free_result($address_query); 
+      
+      //过滤提示字符串
+      foreach ($_POST as $p_key => $p_value) {
+        $op_single_str = substr($p_key, 0, 3);
+        if ($op_single_str == 'ad_') {
+          $_POST[$p_key] = tep_db_prepare_input($p_value);
+          if($options_comment[substr($p_key,3)] == $p_value){
+
+            $_POST[$p_key] = '';
+          }
+        } 
+      }
       $error_str = false;
+      $address_info_array = array();
       $option_info_array = array(); 
+      foreach ($_POST as $p_key => $p_value) {
+        $op_single_str = substr($p_key, 0, 3);
+        if ($op_single_str == 'ad_') {
+          $address_info_array[$p_key] = $p_value; 
+        } 
+      }
       if (!$ad_option->check()) {
         foreach ($_POST as $p_key => $p_value) {
           $op_single_str = substr($p_key, 0, 3);
           if ($op_single_str == 'ad_') {
-            $option_info_array[$p_key] = tep_db_prepare_input($p_value); 
+            $option_info_array[$p_key] = $p_value; 
           } 
         }
       }else{
         $error_str = true;
-        $address_style = 'display: block;';
+        $address_style = 'display: table;';
       }      
+      //帐单邮寄地址信息
+      $billing_error_str = false;
+      $billing_option_info_array = array(); 
+      $billing_address_flag = false;
+      foreach($_POST as $p_key => $p_value){
 
+        $op_single_str = substr($p_key, 0, 8);
+        if ($op_single_str == 'billing_'){
 
-      if ($error_str == true){
+          unset($_POST[$p_key]);
+          $_POST['ad_'.substr($p_key, 8)] = $p_value;
+          $billing_address_flag = true;
+        }
+      }
+      //过滤提示字符串
+      foreach ($_POST as $p_key => $p_value) {
+        $op_single_str = substr($p_key, 0, 3);
+        if ($op_single_str == 'ad_') {
+          $_POST[$p_key] = tep_db_prepare_input($p_value);
+          if($options_comment[substr($p_key,3)] == $p_value){
+
+            $_POST[$p_key] = '';
+          }
+        } 
+      }
+      if (!$billing_option->check()) {
+        foreach ($_POST as $p_key => $p_value) {
+          $op_single_str = substr($p_key, 0, 3);
+          if ($op_single_str == 'ad_') {
+            $billing_option_info_array[$p_key] = $p_value; 
+          } 
+        }
+      }else{
+        $billing_error_str = true;
+        $billing_address_style = 'display: table;';
+      }
+      foreach($_POST as $p_key => $p_value){
+
+        $op_single_str = substr($p_key, 0, 3);
+        if ($op_single_str == 'ad_'){
+
+          unset($_POST[$p_key]);
+          $_POST['billing_'.substr($p_key, 3)] = $p_value;
+        }
+      }
+      foreach($address_info_array as $info_key=>$info_value){
+
+        $_POST[$info_key] = $info_value;
+      }
+
+      
+      if ($error_str == true || $billing_error_str == true){
 
         $action = 'edit';
         break;
       } 
-    $comment_arr = $payment_modules->dealComment($payment_method,$comment); 
+      $comment_arr = $payment_modules->dealComment($payment_method,$comment); 
        
       //end 
       foreach ($update_totals as $up_key => $up_total) {
@@ -573,7 +649,7 @@ if (tep_not_null($action)) {
 
       //住所信息入库
 
-      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."'");
+      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."' and billing_address='0'");
       tep_db_query("update `".TABLE_ORDERS."` set `user_update` = '".$_SESSION['user_name']."' where `orders_id` = '".$oID."'");
       foreach($option_info_array as $ad_key=>$ad_value){
         
@@ -581,7 +657,7 @@ if (tep_not_null($action)) {
         $address_list_array = tep_db_fetch_array($address_list_query);
         $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
    
-        $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value')";
+        $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','".addslashes($ad_value)."','0')";
         $ad_query = tep_db_query($ad_sql);
         tep_db_free_result($address_list_query);
         tep_db_free_result($ad_query);
@@ -638,9 +714,82 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$oID',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . tep_get_order_end_num()))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value)."','0')");
       tep_db_free_result($address_history_add_query);
   }
+}
+
+      //帐单邮寄地址信息存入数据库
+
+      if($billing_address_flag == true){
+        tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."' and billing_address='1'");
+        foreach($billing_option_info_array as $ad_key=>$ad_value){
+        
+          $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
+          $address_list_array = tep_db_fetch_array($address_list_query);
+          $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
+   
+          $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','".addslashes($ad_value)."','1')";
+          $ad_query = tep_db_query($ad_sql);
+          tep_db_free_result($address_list_query);
+          tep_db_free_result($ad_query);
+        }
+      }
+ 
+      
+      $address_show_array = array(); 
+      $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+      while($address_show_list_array = tep_db_fetch_array($address_show_list_query)){
+
+        $address_show_array[$address_show_list_array['id']] = $address_show_list_array['name_flag'];
+      }
+      tep_db_free_result($address_show_list_query);
+      $address_temp_str = '';
+      foreach($billing_option_info_array as $address_his_key=>$address_his_value){
+    
+        if(in_array(substr($address_his_key,3),$address_show_array)){
+
+           $address_temp_str .= $address_his_value;
+        }
+      }
+  
+      $address_error = false;
+      $orders_id_temp = '';
+      $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' group by orders_id");
+      while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
+
+        $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."' order by id");
+        $add_temp_str = '';
+        while($address_sh_array = tep_db_fetch_array($address_sh_query)){
+     
+          if(in_array($address_sh_array['name'],$address_show_array)){
+
+            $add_temp_str .= $address_sh_array['value'];
+          }  
+        }
+        if($address_temp_str == $add_temp_str){
+
+          $address_error = true;
+          $orders_id_temp = $address_sh_his_array['orders_id'];
+          break;
+        }
+        tep_db_free_result($address_sh_query);
+      }
+      tep_db_free_result($address_sh_his_query);
+      //update address info
+      if($address_error == true && $orders_id_temp != ''){
+
+        tep_db_query("update ". TABLE_ADDRESS_HISTORY ." set orders_id='".(date("Ymd") . '-' . date("His",strtotime("+1 seconds")) . tep_get_order_end_num())."' where orders_id='".$orders_id_temp."'"); 
+      }
+      if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
+      foreach($billing_option_info_array as $address_history_key=>$address_history_value){
+        $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
+        $address_history_array = tep_db_fetch_array($address_history_query);
+        tep_db_free_result($address_history_query);
+        $address_history_id = $address_history_array['id'];
+        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'".((date("Ymd") . '-' . date("His") . (tep_get_order_end_num()+1)))."',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value)."','0')");
+        tep_db_free_result($address_history_add_query);
+      }
 }
 
       // fin mise ・jour
@@ -1611,7 +1760,7 @@ foreach($shipping_array as $shipping_value){
 $weight = $shipping_weight_total;
 
 $shipping_orders_array = array();
-$shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+$shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
 while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
 
   $shipping_orders_array[$shipping_address_orders_array['name']] = $shipping_address_orders_array['value'];
@@ -1866,23 +2015,97 @@ function products_num_check(orders_products_list_id,products_name,products_list_
 }
 <?php //检查订单商品的重量是否超重?>
 function submit_check_con(){
+  var find_input_name = ''; 
+  var reg_info = new RegExp("update_products\\[[0-9]+\\]\\[p_price\\]"); 
+  var reg_new_info = new RegExp("update_products\\[o_[0-9]+\\]\\[p_price\\]"); 
+  var reg_num_info = new RegExp("update_products\\[[0-9]+\\]\\[qty\\]"); 
+  var next_find_input_name = ''; 
+  var price_list_str = '';
+  var hidden_list_str = '';
+  var num_list_str = ''; 
+  $('#ctable').find('input').each(function() {
+    if ($(this).attr('type') == 'text') {
+      find_input_name = $(this).attr('name'); 
+      if (reg_info.test(find_input_name)) {
+        price_list_str += $(this).val()+'|||'; 
+        hidden_list_str += $(this).next().val()+'|||'; 
+        num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
+      }
+      if (reg_new_info.test(find_input_name)) {
+        price_list_str += $(this).val()+'|||'; 
+        hidden_list_str += 'o_'+$(this).next().val()+'|||'; 
+        num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
+      }
+    }
+  });
+  if (price_list_str != '') {
+    price_list_str = price_list_str.substr(0, price_list_str.length-3);
+    hidden_list_str = hidden_list_str.substr(0, hidden_list_str.length-3);
+    num_list_str = num_list_str.substr(0, num_list_str.length-3);
+    $.ajax({
+      url: 'ajax_orders.php?action=check_order_products_profit',
+      type: 'POST',
+      dataType: 'text',
+      data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
+      async: false,
+      success: function (msg_info) {
+        if (msg_info != '') {
+          if (confirm(msg_info)) {
+            var options = {
+              url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
+              type:  'POST',
+              success: function(data) {
+                if(data != ''){
+                  if(confirm(data)){
 
+                    submitChk('<?php echo $ocertify->npermission;?>'); 
+                  }
+                }else{
+
+                  submitChk('<?php echo $ocertify->npermission;?>'); 
+                } 
+              }
+            };
+            $('#edit_order_id').ajaxSubmit(options);
+          } 
+        } else {
+          var options = {
+            url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
+            type:  'POST',
+            success: function(data) {
+              if(data != ''){
+                if(confirm(data)){
+
+                  submitChk('<?php echo $ocertify->npermission;?>'); 
+                }
+              }else{
+
+                submitChk('<?php echo $ocertify->npermission;?>'); 
+              } 
+            }
+          };
+          $('#edit_order_id').ajaxSubmit(options);
+        } 
+      }
+    }); 
+  } else {
     var options = {
       url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
-    type:  'POST',
-    success: function(data) {
-      if(data != ''){
-        if(confirm(data)){
+      type:  'POST',
+      success: function(data) {
+        if(data != ''){
+          if(confirm(data)){
+
+            submitChk('<?php echo $ocertify->npermission;?>'); 
+          }
+        }else{
 
           submitChk('<?php echo $ocertify->npermission;?>'); 
-        }
-      }else{
-
-        submitChk('<?php echo $ocertify->npermission;?>'); 
-      } 
-    }
-  };
-  $('#edit_order_id').ajaxSubmit(options);
+        } 
+      }
+    };
+    $('#edit_order_id').ajaxSubmit(options);
+  }
 }
 <?php //加减符号?>
 function sign(num){
@@ -1910,6 +2133,476 @@ function add_option(ele){
     $("#point_id").parent().parent().before(add_str);
   }
 <?php
+//获取是否开启了帐单邮寄地址功能
+$billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',$orders_update_time_array['site_id']);
+$billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show;
+//判断此订单是否关联了帐单邮寄地址
+$billing_address_flag_query = tep_db_query("select id from ".TABLE_ADDRESS_ORDERS." where orders_id='".$oID."' and billing_address='1'");
+$billing_address_num = tep_db_num_rows($billing_address_flag_query);
+tep_db_free_result($billing_address_flag_query);
+
+if($billing_address_num > 0){
+//生成帐单邮寄地址
+$address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
+
+    switch($address_fixed_array['fixed_option']){
+/* -----------------------------------------------------
+   case '1' 国家id的html值    
+   case '2' 区域id的html值   
+   case '3' 城市id的html值   
+------------------------------------------------------*/
+    case '1':
+      echo 'var billing_country_fee_id = "billing_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var billing_country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $billing_country_fee_id = 'billing_'.$address_fixed_array['name_flag'];
+      break;
+    case '2':
+      echo 'var billing_country_area_id = "billing_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var billing_country_area_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $billing_country_area_id = 'billing_'.$address_fixed_array['name_flag'];
+      break;
+    case '3':
+      echo 'var billing_country_city_id = "billing_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var billing_country_city_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $billing_country_city_id = 'billing_'.$address_fixed_array['name_flag'];
+      break;
+    }
+  }
+?>
+<?php //生成帐单地址的国家列表?>
+function billing_check(select_value){
+
+  $("#billing_td_"+billing_country_fee_id_one).hide();
+  $("#billing_td_"+billing_country_area_id_one).hide();
+  $("#billing_td_"+billing_country_city_id_one).hide();
+  var billing_arr = new Array();
+  <?php  
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
+    while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+      echo 'billing_arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
+    }
+    tep_db_free_result($country_fee_query);
+   ?>
+  if(document.getElementById(billing_country_fee_id)){
+    var billing_country_fee = document.getElementById(billing_country_fee_id);
+    billing_country_fee.options.length = 0;
+    var i = 0;
+    for(x in billing_arr){
+
+      billing_country_fee.options[billing_country_fee.options.length]=new Option(billing_arr[x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#billing_td_"+billing_country_fee_id_one).hide();
+    }else{
+
+      $("#billing_td_"+billing_country_fee_id_one).show();
+    } 
+  }
+}
+<?php //生成帐单地址的区域列表?>
+function billing_country_check(value,select_value){
+   
+   var billing_arr = new Array();
+  <?php 
+    $country_array = array();
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
+    while($country_area_array = tep_db_fetch_array($country_area_query)){
+      
+      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
+      $country_fee_fid_array = tep_db_fetch_array($country_fee_fid_query);
+      tep_db_free_result($country_fee_fid_query);
+      $country_array[$country_fee_fid_array['name']][$country_area_array['name']] = $country_area_array['name'];
+      
+    }
+    tep_db_free_result($country_area_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'billing_arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'billing_arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+  if(document.getElementById(billing_country_area_id)){ 
+    var billing_country_area = document.getElementById(billing_country_area_id);
+    billing_country_area.options.length = 0;
+    var i = 0;
+    for(x in billing_arr[value]){
+
+      billing_country_area.options[billing_country_area.options.length]=new Option(billing_arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#billing_td_"+billing_country_area_id_one).hide();
+    }else{
+
+      $("#billing_td_"+billing_country_area_id_one).show();
+    }
+  }
+
+}
+<?php //生成帐单地址的城市列表?>
+function billing_country_area_check(value,select_value){
+   
+   var billing_arr = new Array();
+  <?php
+    $country_array = array();
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
+    while($country_city_array = tep_db_fetch_array($country_city_query)){
+      
+      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
+      $country_area_fid_array = tep_db_fetch_array($country_area_fid_query);
+      tep_db_free_result($country_area_fid_query); 
+      $country_array[$country_area_fid_array['name']][$country_city_array['name']] = $country_city_array['name'];
+      
+    }
+    tep_db_free_result($country_city_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'billing_arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'billing_arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+  if(document.getElementById(billing_country_city_id)){
+    var billing_country_city = document.getElementById(billing_country_city_id);
+    billing_country_city.options.length = 0;
+    var i = 0;
+    for(x in billing_arr[value]){
+
+      billing_country_city.options[billing_country_city.options.length]=new Option(billing_arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#billing_td_"+billing_country_city_id_one).hide();
+    }else{
+      
+      $("#billing_td_"+billing_country_city_id_one).show();
+    }
+  }
+
+}
+<?php //清除帐单邮寄地址错误?>
+function billing_address_clear_error(){
+  
+  var billing_list_error = new Array();
+  <?php 
+    $error_i = 0; 
+    $address_error_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($address_error_array = tep_db_fetch_array($address_error_query)){
+     
+      echo 'billing_list_error['. $error_i .'] = "'. $address_error_array['name_flag'] .'";';
+      $error_i++;
+    }
+    tep_db_free_result($address_error_query);
+   ?>
+   
+    for(x in billing_list_error){
+      
+      $("#billing_error_"+billing_list_error[x]).html("");
+    }
+
+}
+<?php //判断该值是否在数组里?>
+function billing_in_array(value,arr){
+
+  for(vx in arr){
+    if(value == arr[vx]){
+
+      return true;
+    } 
+  }
+  return false;
+}
+// end in_array
+var billing_first_num = 0;
+//帐单邮寄地址属性显示
+function billing_address_option_show(action){
+  switch(action){
+
+  case 'new' :
+    billing_arr_new = new Array();
+    billing_arr_color = new Array();
+    $("#billing_address_list_id").hide();
+    billing_check();
+    billing_country_check($('#'+billing_country_fee_id).val());
+    billing_country_area_check($('#'+billing_country_area_id).val());
+    
+<?php 
+  $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  while($address_new_array = tep_db_fetch_array($address_new_query)){
+    $address_new_arr = unserialize($address_new_array['type_comment']);
+    if($address_new_array['type'] == 'textarea'){
+      if($address_new_arr['set_value'] != ''){
+        echo 'billing_arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['set_value'] .'";';
+        echo 'billing_arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+      }else{
+        echo 'billing_arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
+        echo 'billing_arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+      }
+    }elseif($address_new_array['type'] == 'option' && $address_new_arr['select_value'] !=''){
+      echo 'billing_arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['select_value'] .'";';
+      echo 'billing_arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+    }else{
+
+      echo 'billing_arr_new["'. $address_new_array['name_flag'] .'"] = "";';
+      echo 'billing_arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+
+
+    }
+  }
+  tep_db_free_result($address_new_query);
+?>
+  for(x in billing_arr_new){
+    if(document.getElementById("billing_"+x)){ 
+      var billing_list_options = document.getElementById("billing_"+x);
+      billing_list_options.value = billing_arr_new[x];
+      billing_list_options.style.color = billing_arr_color[x];
+      $("#billing_error_"+x).html('');
+      <?php
+      if(!isset($_POST['orders_billing_address_option']) || $_POST['orders_billing_address_option'] == 'old'){
+      ?>
+        if(document.getElementById("billing_l_"+x)){
+          if($("#billing_l_"+x).val() == 'true'){
+            $("#billing_r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
+          }
+        }
+      <?php
+      }
+      ?>
+    }
+    }
+    break;
+  case 'old' :
+    <?php
+      if($customer_guest['customers_guest_chk'] == 0 && $orders_update_time_array['is_guest'] == 0){
+    ?>  
+        $("#billing_address_list_id").show();
+    <?php
+      }else{
+    ?>
+       $("#billing_address_list_id").hide(); 
+    <?php
+      }
+    ?>
+    var billing_arr_old  = new Array();
+    var billing_arr_name = new Array();
+    var billing_address_num = 'true';
+<?php
+
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_i = 0;
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+    echo 'billing_arr_name['. $address_i .'] = "'. $address_list_array['name_flag'] .'";';
+    $address_i++;
+  }
+  tep_db_free_result($address_list_query);
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."' group by orders_id order by orders_id desc");
+  
+   
+  $address_num = 0;
+  $json_str_array = array();
+  $json_old_array = array();
+
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+   
+  $json_str_list = '';
+  unset($json_old_array);
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if(in_array($address_orders_array['name'],$address_list_arr)){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1'){
+
+      echo 'billing_address_num = '.$address_num.';';
+    }
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[$address_num] = $json_str_list; 
+      echo 'billing_arr_old['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        
+        $value = str_replace("\n","",$value); 
+        $value = str_replace("\r","",$value); 
+        echo 'billing_arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+  }
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+
+  echo "\n".'var billing_address_str = "";'."\n";
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+  
+    if(in_array($address_orders_array['name'],$address_list_arr)){
+
+      echo "\n".'billing_address_str += "'. $address_orders_array['value'] .'";'."\n";
+    }
+  }
+  tep_db_free_result($address_orders_query);
+?>
+  var billing_address_show_list = document.getElementById("billing_address_show_list");
+
+  if(document.getElementById("billing_address_show_list")){
+    billing_address_show_list.options.length = 0;
+  }
+
+  len = billing_arr_old.length;
+  j_num = 0;
+  for(i = 0;i < len;i++){
+    billing_arr_str = '';
+    for(x in billing_arr_old[i]){
+        if(billing_in_array(x,billing_arr_name)){
+          billing_arr_str += billing_arr_old[i][x];
+        }
+        <?php
+        if(!isset($_POST['orders_billing_address_option']) || $_POST['orders_billing_address_option'] == 'new'){ 
+        ?>
+        if(document.getElementById("billing_l_"+x)){
+          if($("#billing_l_"+x).val() == 'true'){
+            $("#billing_r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
+          }
+        }
+        <?php
+        }
+        ?>
+    }
+  if(document.getElementById("billing_address_show_list")){
+    if(billing_arr_str != ''){
+      ++j_num;
+      if(j_num == 1){billing_first_num = i;}
+
+      if(billing_address_num != 'true' && billing_address_num == i){
+
+        var billing_address_string = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
+      }else{
+        var billing_address_string = ''; 
+      }
+      if('<?php echo $_POST['orders_billing_address_show_list'];?>' != ''){
+        billing_address_show_list.options[billing_address_show_list.options.length]=new Option(billing_arr_str+billing_address_string,i,i=='<?php echo $_POST['orders_billing_address_show_list'];?>',i=='<?php echo $_POST['orders_billing_address_show_list'];?>');
+      }else{
+        if(billing_arr_str == billing_address_str){
+          billing_address_show_list.options[billing_address_show_list.options.length]=new Option(billing_arr_str+billing_address_string,i,true,true);
+        }else{
+          billing_address_show_list.options[billing_address_show_list.options.length]=new Option(billing_arr_str+billing_address_string,i);
+        }
+      }
+    }
+  }
+
+  }
+    break;
+  }
+}
+<?php //帐单邮寄地址属性列表?>
+function billing_address_option_list(value){
+  var billing_arr_list = new Array();
+<?php
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+  }
+  tep_db_free_result($address_list_query);
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."' group by orders_id order by orders_id desc");
+  
+   
+  $address_num = 0;
+  $json_str_list = '';
+  $json_str_array = array();
+  
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
+  
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if(in_array($address_orders_array['name'],$address_list_arr)){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[] = $json_str_list; 
+      echo 'billing_arr_list['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        
+        $value = str_replace("\n","",$value); 
+        $value = str_replace("\r","",$value); 
+        echo 'billing_arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+    }
+    $json_str_list = '';
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+?>
+  ii = 0;
+  for(x in billing_arr_list[value]){
+   if(document.getElementById("billing_"+x)){
+     var billing_list_option = document.getElementById("billing_"+x);
+     if('<?php echo $billing_country_fee_id;?>' == 'billing_'+x){
+      billing_check(billing_arr_list[value][x]);
+    }else if('<?php echo $billing_country_area_id;?>' == 'billing_'+x){
+      billing_country_check(document.getElementById(billing_country_fee_id).value,billing_arr_list[value][x]);
+     
+    }else if('<?php echo $billing_country_city_id;?>' == 'billing_'+x){
+      billing_country_area_check(document.getElementById(billing_country_area_id).value,billing_arr_list[value][x]);
+    }else{
+      billing_list_option.style.color = '#000';
+      billing_list_option.value = billing_arr_list[value][x];   
+    }
+     
+    $("#billing_error_"+x).html('');
+    $("#billing_r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
+    ii++; 
+   }
+  }
+
+}
+<?php
+}
 if($weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -2376,6 +3069,7 @@ function address_option_show(action){
     ?>
     var arr_old  = new Array();
     var arr_name = new Array();
+    var orders_billing_address_num = 'true';
 <?php
 
   //根据后台的设置来显示相应的地址列表
@@ -2389,7 +3083,7 @@ function address_option_show(action){
     $address_i++;
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."' group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -2409,6 +3103,10 @@ function address_option_show(action){
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    if($billing_address_show == 'true' && $address_orders_array['billing_address'] == '1'){
+
+      echo 'orders_billing_address_num = '.$address_num.';';
+    }
         
   }
 
@@ -2431,7 +3129,7 @@ function address_option_show(action){
   }
 
   echo "\n".'var address_str = "";'."\n";
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
   
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -2472,13 +3170,19 @@ function address_option_show(action){
       ++j_num;
       if(j_num == 1){first_num = i;}
 
+      if(orders_billing_address_num != 'true' && orders_billing_address_num == i){
+
+        var orders_billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
+      }else{
+        var orders_billing_address_str = ''; 
+      }
       if('<?php echo $_POST['address_show_list'];?>' != ''){
-        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i=='<?php echo $_POST['address_show_list'];?>',i=='<?php echo $_POST['address_show_list'];?>');
+        address_show_list.options[address_show_list.options.length]=new Option(arr_str+orders_billing_address_str,i,i=='<?php echo $_POST['address_show_list'];?>',i=='<?php echo $_POST['address_show_list'];?>');
       }else{
         if(arr_str == address_str){
-          address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,true,true);
+          address_show_list.options[address_show_list.options.length]=new Option(arr_str+orders_billing_address_str,i,true,true);
         }else{
-          address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+          address_show_list.options[address_show_list.options.length]=new Option(arr_str+orders_billing_address_str,i);
         }
       }
     }
@@ -2500,7 +3204,7 @@ function address_option_list(value){
     $address_list_arr[] = $address_list_array['name_flag'];
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."' group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -2632,7 +3336,53 @@ echo 'var nomail = new Array();'."\n";
 foreach ($nomail as $oskey => $value){
   echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
+?>
+<?php //切换帐单邮寄地址显示?>
+function billing_address_show(){
+  
+  var style = $("#billing_address_show_id").css("display");
+  if(style == 'none'){
+    $("#billing_address_show_id").show(); 
+    $("#billing_address_font").html("<?php echo TEXT_BILLING_ADDRESS_INFO_HIDE;?>");
+ 
+  }else{
 
+    $("#billing_address_show_id").hide();
+    $("#billing_address_font").html("<?php echo TEXT_BILLING_ADDRESS_INFO_SHOW;?>");
+  }
+}
+<?php //帐单邮寄地址列表?>
+function  billing_address_list(){
+
+  var arr_list = new Array();
+<?php
+  $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+ 
+    echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';
+
+  }
+  tep_db_free_result($address_list_query);
+?>
+  for(x in arr_list){
+   if(document.getElementById("billing_"+x)){ 
+     var op_list = document.getElementById("billing_"+x);
+     if('<?php echo $billing_country_fee_id;?>' == 'billing_'+x){
+      billing_check(arr_list[x]);
+    }else if('<?php echo $billing_country_area_id;?>' == 'billing_'+x){
+      billing_country_check(document.getElementById(billing_country_fee_id).value,arr_list[x]);
+     
+    }else if('<?php echo $billing_country_city_id;?>' == 'billing_'+x){
+      billing_country_area_check(document.getElementById(billing_country_area_id).value,arr_list[x]);
+    }else{
+      op_list.style.color = '#000';
+      $("#billing_"+x).val(arr_list[x]);
+    }
+    
+   }
+  }
+}
+<?php
 if($weight > 0){
 ?>
 <?php //切换地址显示?>
@@ -2654,7 +3404,7 @@ function address_list(){
 
   var arr_list = new Array();
 <?php
-  $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
+  $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
  
     echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';
@@ -2770,6 +3520,107 @@ $(document).ready(function(){
    }
   }
 $(document).ready(function(){
+<?php //加载帐单邮寄地址的列表
+if($billing_address_num > 0){
+?>
+  if($("#billing_address_show_id").html()){
+    var billing_address_html = $("#billing_address_show_id").html();
+    billing_address_html = billing_address_html.replace(/"ad_/g,'"billing_');
+    billing_address_html = billing_address_html.replace(/"td_/g,'"billing_td_');
+    billing_address_html = billing_address_html.replace(/"error_/g,'"billing_error_');
+    billing_address_html = billing_address_html.replace(/"l_/g,'"billing_l_'); 
+    billing_address_html = billing_address_html.replace(/"r_/g,'"billing_r_');
+    $("#billing_address_show_id").html(billing_address_html);
+  }
+<?php
+    $address_name = array();
+    $address_id_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id='". tep_db_input($oID) ."' and billing_address='1' and (name='". substr($billing_country_fee_id,3) ."' or name='". substr($billing_country_area_id,3) ."' or name='". substr($billing_country_city_id,3) ."')");
+    while($address_id_array = tep_db_fetch_array($address_id_query)){
+
+      $address_name[$address_id_array['name']] = $address_id_array['value'];
+    }
+    tep_db_free_result($address_id_query);
+    if(isset($_POST[$billing_country_fee_id])){
+  ?>  
+    billing_check("<?php echo isset($_POST[$billing_country_fee_id]) ? $_POST[$billing_country_fee_id] : '';?>");
+  <?php
+   }elseif(!empty($address_name)){
+  ?>
+    billing_check("<?php echo $address_name[substr($billing_country_fee_id,3)];?>");
+  <?php
+  }else{
+  ?>
+    billing_check();
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$billing_country_area_id])){
+  ?>
+    billing_country_check($("#"+billing_country_fee_id).val(),"<?php echo $_POST[$billing_country_area_id];?>");
+  <?php
+   }elseif(!empty($address_name)){
+  ?>
+    billing_country_check($("#"+billing_country_fee_id).val(),"<?php echo $address_name[substr($billing_country_area_id,3)];?>");
+  <?php
+   }else{
+  ?>
+    billing_country_check($("#"+billing_country_fee_id).val());
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$billing_country_city_id])){
+  ?>
+     
+     billing_country_area_check($("#"+billing_country_area_id).val(),"<?php echo $_POST[$billing_country_city_id];?>");
+  <?php
+   }elseif(!empty($address_name)){
+  ?>
+    billing_country_area_check($("#"+billing_country_area_id).val(),"<?php echo $address_name[substr($billing_country_city_id,3)];?>");
+  <?php
+   }else{
+  ?>
+    billing_country_area_check($("#"+billing_country_area_id).val());
+  <?php
+   }
+  if(!isset($_POST[$billing_country_city_id])){
+?>
+    billing_address_list();
+<?php
+  }
+?>
+  $("#"+billing_country_fee_id).change(function(){
+    billing_country_check($("#"+billing_country_fee_id).val());
+    billing_country_area_check($("#"+billing_country_area_id).val());
+  }); 
+  $("#"+billing_country_area_id).change(function(){
+    billing_country_area_check($("#"+billing_country_area_id).val());
+  });
+  <?php
+  if(!($_POST['orders_billing_address_option'] == 'new')){
+  ?>
+  billing_address_option_show('old');
+  <?php
+  }
+  if(!isset($_POST['orders_billing_address_option'])){
+  ?> 
+  billing_address_list();
+  billing_address_clear_error();
+  <?php
+  }
+  if(isset($_POST['orders_billing_address_option']) && $_POST['orders_billing_address_option'] == 'new'){
+  ?>
+  $("#billing_address_list_id").hide();
+  <?php
+  }
+  if(isset($_POST['orders_billing_address_option']) && $_POST['orders_billing_address_option'] == 'old'){
+  ?>
+  billing_address_option_show('old');
+  <?php
+  }
+}
+  ?>
   hidden_payment(1); 
   $("#fetch_year").change(function(){
     var date_value = document.getElementById("fetch_year").value;
@@ -2871,7 +3722,7 @@ if($weight > 0){
   });
   <?php
     $address_name = array();
-    $address_id_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id='". tep_db_input($oID) ."' and (name='". substr($country_fee_id,3) ."' or name='". substr($country_area_id,3) ."' or name='". substr($country_city_id,3) ."')");
+    $address_id_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id='". tep_db_input($oID) ."' and billing_address='0' and (name='". substr($country_fee_id,3) ."' or name='". substr($country_area_id,3) ."' or name='". substr($country_city_id,3) ."')");
     while($address_id_array = tep_db_fetch_array($address_id_query)){
 
       $address_name[$address_id_array['name']] = $address_id_array['value'];
@@ -3509,7 +4360,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     </td>
     </tr>
     <?php
-      $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+      $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0'");
       $count_num = tep_db_num_rows($address_temp_query);
       if($count_num > 0){
     ?>
@@ -3545,6 +4396,57 @@ if (($action == 'edit') && ($order_exists == true)) {
 
     <?php
       $ad_option->render('');
+    ?>
+    </table></td></tr>
+    <?php
+      }
+    ?>
+<?php
+      //帐单邮寄地址
+      $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1'");
+      $count_num = tep_db_num_rows($address_temp_query);
+      if($count_num > 0){
+    ?>
+    <tr>
+    <td class="main" valign="top"><a href="javascript:void(0);" onclick="billing_address_show();"><font color="blue"><u><span id="billing_address_font"><?php echo TEXT_BILLING_ADDRESS_INFO_SHOW;?></span></u></font></a></td>
+    <td class="main">
+    </td>
+    </tr>
+    <tr>
+    <?php
+        $address_style = isset($billing_address_style) && $billing_address_style != '' ? $billing_address_style : 'display: none;';  
+        $old_checked = !isset($_POST['orders_billing_address_option']) || $_POST['orders_billing_address_option'] == 'old' ? 'checked' : '';
+        $new_checked = isset($_POST['orders_billing_address_option']) && $_POST['orders_billing_address_option'] == 'new' ? 'checked' : '';
+    ?>
+      <td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="billing_address_show_id" style="<?php echo $address_style;?>">
+      <tr>
+        <td class="main" width="30%">&nbsp;</td>
+        <td class="main" width="70%"><table border="0" cellpadding="0" cellspacing="0">
+         <tr><td>
+         <input type="radio" name="orders_billing_address_option" value="old" style="margin: 0 4px 2px 0;" onClick="billing_address_option_show('old');billing_address_list();billing_address_clear_error();" <?php echo $old_checked;?>></td><td><?php echo TABLE_OPTION_OLD; ?></td><td>
+        <input type="radio" name="orders_billing_address_option" value="new" style="margin: 0 4px 2px 15px;" onClick="billing_address_option_show('new');" <?php echo $new_checked;?>></td><td><?php echo TABLE_OPTION_NEW; ?></td> 
+        </tr>
+        </table>
+        </td>
+      </tr>
+      <tr id="billing_address_list_id">
+<td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
+<td class="main" width="70%">
+<select name="orders_billing_address_show_list" id="billing_address_show_list" onChange="billing_address_option_list(this.value);">
+<option value="">--</option>
+</select>
+</td></tr>
+    <?php
+      foreach($_POST as $p_key => $p_value){
+
+        $op_single_str = substr($p_key, 0, 8);
+        if ($op_single_str == 'billing_'){
+
+          unset($_POST[$p_key]);
+          $_POST['ad_'.substr($p_key, 8)] = $p_value;
+        }
+      }
+        $billing_option->render('');
     ?>
     </table></td></tr>
     <?php
@@ -3776,7 +4678,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         }
         $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         if(is_array($all_show_option[$t_item_id]['option_info'])){
-        $default_value = tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
+        $default_value = strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
           .tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
           '</div><div class="order_option_value">: ';
@@ -3785,7 +4687,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         } else {
           echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\")' href='javascript:void(0);'><u>".$default_value."</u></a>";
         }
-        echo "<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")));
+        echo "<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?strtr($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")));
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
           if ($is_less_option) {
@@ -3824,10 +4726,17 @@ if (($action == 'edit') && ($order_exists == true)) {
 
       $order->products[$i]['price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['p_price'] : $order->products[$i]['price']; 
       if ($is_less_option) {
-        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'">'.TEXT_MONEY_SYMBOL.'</td>'; 
+        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'">'.TEXT_MONEY_SYMBOL;
       } else {
-        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL.'</td>'; 
+        echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="clearLibNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');">'.TEXT_MONEY_SYMBOL;
       }
+      $check_o_pos = substr($orders_products_id, 0, 2); 
+      if ($check_o_pos == 'o_') {
+        echo '<input type="hidden" name="hidden_pro_id[]" value="'.$order->products[$i]['id'].'">'; 
+      } else {
+        echo '<input type="hidden" name="hidden_pro_id[]" value="'.$orders_products_id.'">'; 
+      }
+      echo '</td>'; 
 
       $order->products[$i]['final_price'] = isset($_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price']) ? $_SESSION['orders_update_products'][$_GET['oID']][$orders_products_id]['final_price'] : $order->products[$i]['final_price']; 
       echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='hidden' style='text-align:right' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['final_price'])?$_POST['update_products'][$orders_products_id]['final_price']:$order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\',\''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" >'.  
@@ -4480,7 +5389,7 @@ if($index_num > 0){
                 echo '<div class="order_option_list"><small>&nbsp;<i><div
                   class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($new_products_temp_add[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . ': ' . 
                   '</div><div class="order_option_value">' . 
-                  str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"))); 
+                  str_replace(array("<br>", "<BR>"), '', strtr($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
                 if ((int)$new_products_temp_add[$i]['attributes'][$j]['price'] < 0) {
@@ -4720,7 +5629,7 @@ if($index_num > 0){
     {
       $op_pos = substr($op_key, 0, 3); 
       if ($op_pos == 'op_') {
-        print "<input type='hidden' name='".$op_key."' value='".tep_parse_input_field_data(stripslashes($op_value), array("'" => "&quot;"))."'>";
+        print "<input type='hidden' name='".$op_key."' value='".strtr(stripslashes($op_value), array("'" => "&quot;"))."'>";
       } 
     }
     print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

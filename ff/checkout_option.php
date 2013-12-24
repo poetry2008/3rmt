@@ -4,9 +4,6 @@
 */
 
   require('includes/application_top.php');
-  require(DIR_WS_ACTIONS.'checkout_option.php'); 
-  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
-  $_SESSION['shipping_page_str'] = end($page_url_array);
   if ($_GET['action'] == 'check_products_op') {
       $check_products_info = tep_check_less_product_option(); 
       if (!empty($check_products_info)) {
@@ -23,6 +20,9 @@
       echo implode('|||', $return_check_array); 
       exit; 
   }
+  require(DIR_WS_ACTIONS.'checkout_option.php'); 
+  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+  $_SESSION['shipping_page_str'] = end($page_url_array); 
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
@@ -81,7 +81,7 @@ unset($_SESSION['shipping_session_flag']);
       <!-- body_text //--> 
       <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
         <div class="comment">
-        <table class="product_info_box" width="100%"><tr><td>
+        <table class="product_info_box" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>
         <form name="option_form" action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
@@ -115,7 +115,7 @@ unset($_SESSION['shipping_session_flag']);
             </td> 
           </tr> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
                 <tr> 
                   <td class="main"><?php echo CHECKOUT_OPTION_BUTTON_TEXT;?></td> 
                   <td class="main" align="right"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></a></td> 
@@ -197,7 +197,7 @@ unset($_SESSION['shipping_session_flag']);
         </table>
         <table border="0" width="100%" cellspacing="1" cellpadding="2"> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
                 <tr> 
                   <td class="main"><?php echo CHECKOUT_OPTION_BUTTON_TEXT;?></td> 
                   <td class="main" align="right"><a href="javascript:void(0);" onClick="check_option_change();"><?php echo tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?></a></td> 

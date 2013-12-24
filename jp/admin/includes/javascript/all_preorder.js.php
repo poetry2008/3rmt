@@ -989,3 +989,9 @@ function preorders_disable()
   });
   $("#oa_dynamic_submit").attr('disabled',true);
 }
+function show_edit_fax(){
+  document.getElementById('customer_fax_textarea').style.display ="block";  
+  document.getElementById('customer_fax_textarea_input').style.display ="block";  
+  document.getElementById('customer_fax_text').style.display ="none";  
+  document.getElementById('customer_fax_text_input').style.display ="none";  
+}

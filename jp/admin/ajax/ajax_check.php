@@ -112,5 +112,49 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }
   echo $products_list_str;
   echo "</select>";
+}else if(isset($_GET['action']) && $_GET['action'] == 'check_customers'){
+  /* -----------------------------------------------------
+    功能: 判断选中的顾客中是否有订单或预约存在 
+    参数: $_POST['customers_id_list'] 选中的顾客ID列表
+    参数: $_POST['customers_site_id_list'] 选中的顾客所属网站ID列表
+ -----------------------------------------------------*/
+  $customers_id_list = $_POST['customers_id_list']; 
+  $customers_id_list_all = $_POST['customers_id_list_all'];
+  $customers_site_id_all_list = $_POST['customers_site_id_list'];
+  $customers_id_array = array();
+  $customers_id_all_array = array();
+  $customers_site_id_all_array = array();
+  $customers_id_array = explode(',',$customers_id_list);
+  $customers_id_all_array = explode(',',$customers_id_list_all);
+  $customers_site_id_all_array = explode(',',$customers_site_id_all_list);
+  $customers_id_array = array_filter($customers_id_array);
+  $customers_id_all_array = array_filter($customers_id_all_array);
+  $customers_site_id_all_array = array_filter($customers_site_id_all_array);
+
+  $customers_site_id_array = array();
+  foreach($customers_id_array as $value){
+
+    $customers_key = array_search($value,$customers_id_all_array);
+    $customers_site_id_array[] = $customers_site_id_all_array[$customers_key];
+  }
+
+  $customers_name_array = array(); 
+  foreach($customers_id_array as $key=>$value){
+
+    if(tep_get_preorders_by_customers_id($value,$customers_site_id_array[$key]) > 0){
+
+      $customers_name_array[$value] = tep_customers_name($value);
+    }
+    if(tep_get_orders_by_customers_id($value,$customers_site_id_array[$key]) > 0){
+     
+      $customers_name_array[$value] = tep_customers_name($value);
+    }
+  } 
+
+  if(!empty($customers_name_array)){
+    echo implode("\n",$customers_name_array);
+  }else{
+    echo ''; 
+  }
 }
 ?>

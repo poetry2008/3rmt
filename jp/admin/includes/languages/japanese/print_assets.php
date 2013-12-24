@@ -3,7 +3,7 @@ define('TEXT_TOP','トップ');
 define('ASSETS_TITLE', '資産管理');
 define('TEXT_PRODUCTS_NAME','カテゴリー/商品');
 define('TEXT_PRODUCTS_QUANTITY','実在庫数');
-define('TEXT_PRODUCTS_PRICE','平均単価');
+define('TEXT_PRODUCTS_PRICE','単価');
 define('TEXT_PRODUCTS_PRICE_SUM','総額');
 
 define('TEXT_ORDER_PRODUCTS_DATE','注文日');

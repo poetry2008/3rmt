@@ -88,7 +88,6 @@ if ($category_depth == 'nested') {
 ?> 
   <td valign="top" id="contents_long">
 <?php
-  #$current_category    = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id='".$current_category_id."'"));
   if (tep_show_warning($current_category_id)) {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
@@ -110,7 +109,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></span></h1>
-    <div class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo句子 ?>
+    <div class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seo phrase?>
         <?php
         $has_ca_single = false; 
         ?>
@@ -120,7 +119,7 @@ if ($category_depth == 'nested') {
           from (
             select c.categories_id, 
                    cd.categories_name, 
-                   c.categories_image, 
+                   cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
                    cd.categories_status, 
@@ -212,14 +211,11 @@ if ($category_depth == 'nested') {
       }
       if (!empty($seo_category['text_information'])) {
         echo '<div>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']).'</div>'; 
-        //echo '<div class="comment">'.$seo_category['text_information'].'</div>'; 
       }
     }
   ?>
      <?php
         if (isset($cPath) && !ereg('_', $cPath)) {
-          //$cgame_news_query = tep_db_query("select ns.headline, ns.date_added, ns.url from ". TABLE_CATEGORIES_ALIAS." a, ".TABLE_CATEGORIES_NEWS." ns where a.categories_id = '".$current_category_id."' and a.alias = ns.categories_name"); 
-          //if (tep_db_num_rows($cgame_news_query)) { 
           $all_game_news = tep_get_categories_rss($current_category_id);
           if ($all_game_news) {
             ?>
@@ -230,7 +226,6 @@ if ($category_depth == 'nested') {
             <div id="game_news">
               <ul>
             <?php 
-            //while ($cgame_news_res = tep_db_fetch_array($cgame_news_query)) {
             foreach($all_game_news as $key => $cgame_news_res){
               if($key == CATEGORIES_GAME_NEWS_MAX_DISPLAY)break;
               echo '<li><a href="'.$cgame_news_res['url'].'" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_res['headline'],0,95,'...').'</a>'; 
@@ -296,14 +291,12 @@ $oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where key
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
-//  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
 $oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
-//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
 }
 
 ?>

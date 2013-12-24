@@ -35,7 +35,6 @@ if($cPath){
     $id = array();
   }
 }
-
 $left_show_single = false;
 if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
   $left_products_id = tep_preorder_get_products_id_by_param();
@@ -44,7 +43,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
     $id = tep_parse_category_path($left_ca_path); 
   }
   $left_show_single = true;
-} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) {
+} else if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT || basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION) { 
   $left_ca_path = tep_get_product_path($_POST['products_id']);
   if (tep_not_null($left_ca_path)) {
     $id = tep_parse_category_path($left_ca_path); 
@@ -64,7 +63,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
 <div id='categories'>
   <img width="171" height="25" alt="<?php echo BOX_HEADING_CATEGORIES;?>" src="images/design/box/menu.gif">
   <ul class='l_m_category_ul'>
-    <?php foreach($categories as $key => $category) {?>
+    <?php foreach($categories as $key => $category) { ?>
       <?php if(($cPath && in_array($category['categories_id'], $id)) || ($left_show_single && in_array($category['categories_id'], $id))) {?>
         <li class='l_m_category_li2'>
           <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">

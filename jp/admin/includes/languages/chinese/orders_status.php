@@ -32,10 +32,10 @@ define('TEXT_ORDERS_STATUS_SET_PRICE_CALCULATION','平均单价的计算条件�
 
 define('TEXT_ORDERS_STATUS_DESCRIPTION','名称：${NAME}<br>邮件地址：${MAIL}<br>订购日期：${ORDER_D}<br>订单号：${ORDER_N}<br>支付方法：${PAY}<br>订单金额：${ORDER_M}<br>交易方式：${TRADING}<br>订单状态：${ORDER_S}<br>邮件内容的注意事项：${ORDER_A}<br>网站名：${SITE_NAME}<br>网站URL：${SITE_URL}<br>联系邮箱：${SUPPORT_EMAIL}<br>银行营业日：${PAY_DATE}');
 define('TEXT_ORDERS_FETCH_CONDITION', '交易情况');
-define('TEXT_USER_ADDED','创建者:');
-define('TEXT_USER_UPDATE','更新者:');
-define('TEXT_DATE_ADDED','创建日:');
-define('TEXT_DATE_UPDATE','更新日:');
+define('TEXT_USER_ADDED','创建者');
+define('TEXT_USER_UPDATE','更新者');
+define('TEXT_DATE_ADDED','创建日');
+define('TEXT_DATE_UPDATE','更新日');
 define('TEXT_ORDERS_STATUS_OPTION', '选项');
 define('TEXT_ORDERS_STATUS_OPTION_NORMAL', '交易中');
 define('TEXT_ORDERS_STATUS_OPTION_SUCCESS', '交易成功');
