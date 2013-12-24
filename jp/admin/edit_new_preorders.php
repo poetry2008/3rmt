@@ -873,6 +873,25 @@ $(document).ready(function(){
     var comments_text = document.getElementsByName("comments_text")[0].value;
     orders_session('comments_text',comments_text);
   });
+  $("input[name='bank_kouza_num']").blur(function(){
+    var ele = document.getElementsByName("bank_kouza_num")[0];
+    ele_value = ele.value;
+    ele_value = ele_value.replace(/\s/g,'');
+    ele_value = ele_value.replace(/　/g,'');
+    ele_value = ele_value.replace(/－/g,'-');
+    ele_value = ele_value.replace(/ー/g,'-');
+    ele_value = ele_value.replace(/１/g,'1');
+    ele_value = ele_value.replace(/２/g,'2');
+    ele_value = ele_value.replace(/３/g,'3');
+    ele_value = ele_value.replace(/４/g,'4');
+    ele_value = ele_value.replace(/５/g,'5');
+    ele_value = ele_value.replace(/６/g,'6');
+    ele_value = ele_value.replace(/７/g,'7');
+    ele_value = ele_value.replace(/８/g,'8');
+    ele_value = ele_value.replace(/９/g,'9');
+    ele_value = ele_value.replace(/０/g,'0');
+    ele.value = ele_value;
+  });
 });
 
 <?php //加减符号?>
