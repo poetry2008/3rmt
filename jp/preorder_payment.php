@@ -182,6 +182,26 @@ if (isset($_POST['action']) && $_POST['action'] == 'process') {
 ?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
+//check payment input
+function check_payment_input(ele){
+
+  ele_value = ele.value;
+  ele_value = ele_value.replace(/\s/g,'');
+  ele_value = ele_value.replace(/　/g,'');
+  ele_value = ele_value.replace(/－/g,'-');
+  ele_value = ele_value.replace(/ー/g,'-');
+  ele_value = ele_value.replace(/１/g,'1');
+  ele_value = ele_value.replace(/２/g,'2');
+  ele_value = ele_value.replace(/３/g,'3');
+  ele_value = ele_value.replace(/４/g,'4');
+  ele_value = ele_value.replace(/５/g,'5');
+  ele_value = ele_value.replace(/６/g,'6');
+  ele_value = ele_value.replace(/７/g,'7');
+  ele_value = ele_value.replace(/８/g,'8');
+  ele_value = ele_value.replace(/９/g,'9');
+  ele_value = ele_value.replace(/０/g,'0');
+  ele.value = ele_value;
+}
 function check_pre_products(op_info_str, products_id_str) {
   var pre_payment = document.getElementsByName("pre_payment");  
   var pre_payment_length = pre_payment.length;

@@ -212,7 +212,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
         '${ORDER_DATE}',
         '${ORDER_TOTAL}',
         '${ORDER_PRODUCTS}',
-        '${SHIPPING_DATE}',
         '${SHIPPING_TIME}',
         '${IP}',
         '${USER_AGENT}',
@@ -225,8 +224,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
         tep_date_long(time()),
         $currencies->format($total),
         $order_product_list,
-        $_SESSION["insert_torihiki_date"],
-        $_SESSION["torihikihouhou"],
+        str_string(date('Y-m-d',strtotime($_SESSION["insert_torihiki_date"]))) . date('H',strtotime($_SESSION["insert_torihiki_date"])) . TIME_HOUR_TEXT . date('i',strtotime($_SESSION["insert_torihiki_date"])) . TEXT_ORDERS_PRODUCTS_LINK. date('H',strtotime($_SESSION["insert_torihiki_date_end"])) .TIME_HOUR_TEXT. date('i',strtotime($_SESSION["insert_torihiki_date_end"])) .TEXT_ORDERS_PRODUCTS_TWENTY_HOUR,
         $_SERVER["REMOTE_ADDR"],
         @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
         $_SERVER["HTTP_USER_AGENT"],
@@ -244,7 +242,9 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject); 
-    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      tep_mail('', SENTMAIL_ADDRESS, $subject, $mail_body, '', '');
+    }
     
     $today = date("YmdHis");
 
@@ -658,7 +658,6 @@ function getpreexpress($pre_value, $pre_pid){
         '${ORDER_DATE}',
         '${ORDER_TOTAL}',
         '${ORDER_PRODUCTS}',
-        '${SHIPPING_DATE}',
         '${SHIPPING_TIME}',
         '${IP}',
         '${USER_AGENT}',
@@ -671,8 +670,7 @@ function getpreexpress($pre_value, $pre_pid){
         tep_date_long(time()),
         $currencies->format($preorder_total),
         $preorder_product_list,
-        $_SESSION["preorder_info_date"].' '.$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00",
-        $_SESSION["preorder_info_tori"],
+        str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_start_hour'] . TIME_HOUR_TEXT . $_SESSION['preorder_info_start_min'] .  TEXT_ORDERS_PRODUCTS_LINK. $_SESSION['preorder_info_end_hour'].TIME_HOUR_TEXT. $_SESSION['preorder_info_end_min'].TEXT_ORDERS_PRODUCTS_TWENTY_HOUR,
         $_SERVER["REMOTE_ADDR"],
         @gethostbyaddr($_SERVER["REMOTE_ADDR"]),
         $_SERVER["HTTP_USER_AGENT"],
@@ -691,7 +689,10 @@ function getpreexpress($pre_value, $pre_pid){
                              STORE_NAME 
                            );
     $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-    tep_mail('TS_MODULE_PAYMENT_PAYPAL_MAIL_TO_NAME', SENTMAIL_ADDRESS,$subject, $mail_body, '', '');
+    if(isset($_SESSION['preorders_send_mail_flag']) && $_SESSION['preorders_send_mail_flag'] == 1){
+      tep_mail('', SENTMAIL_ADDRESS,$subject, $mail_body, '', '');
+      unset($_SESSION['preorders_send_mail_flag']);
+    }
     
     $hidden_param_str = ''; 
     $hidden_param_str .= tep_draw_hidden_field('cpre_type', '1');

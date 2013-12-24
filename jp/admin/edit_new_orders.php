@@ -1945,7 +1945,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
         error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NUM;?>'+"\n\n";
       }else{
         var reg = /^[\x00-\xff]+$/; 
-        var reg_num = /^[0-9]+$/;
+        var reg_num = /^[0-9-]+$/;
         if(!reg.test(b_num_value) || !reg_num.test(b_num_value)){
           payment_error = true;
           error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NUM2;?>'+"\n\n";
@@ -3113,6 +3113,25 @@ $(document).ready(function(){
     notify_comments = notify_comments == true ? 1 : 0;
     orders_session('notify_comments',notify_comments);
   }); 
+  $("input[name='bank_kouza_num']").blur(function(){
+    var ele = document.getElementsByName("bank_kouza_num")[0];
+    ele_value = ele.value;
+    ele_value = ele_value.replace(/\s/g,'');
+    ele_value = ele_value.replace(/　/g,'');
+    ele_value = ele_value.replace(/－/g,'-');
+    ele_value = ele_value.replace(/ー/g,'-');
+    ele_value = ele_value.replace(/１/g,'1');
+    ele_value = ele_value.replace(/２/g,'2');
+    ele_value = ele_value.replace(/３/g,'3');
+    ele_value = ele_value.replace(/４/g,'4');
+    ele_value = ele_value.replace(/５/g,'5');
+    ele_value = ele_value.replace(/６/g,'6');
+    ele_value = ele_value.replace(/７/g,'7');
+    ele_value = ele_value.replace(/８/g,'8');
+    ele_value = ele_value.replace(/９/g,'9');
+    ele_value = ele_value.replace(/０/g,'0');
+    ele.value = ele_value;
+  });
 });
 <?php
 if($p_weight_total > 0){
