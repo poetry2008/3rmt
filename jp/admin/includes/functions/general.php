@@ -4342,7 +4342,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   }
   
-    $str .= '<tr><td class="main" width="120">支払方法：</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
+    $str .= '<tr><td class="main" width="120">支払方法</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
     
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
@@ -4350,10 +4350,10 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
       $time_str = '入金まだ'; 
     }
     if($time_str){
-    $str .= '<tr><td class="main">入金日：</td><td class="main" style="color:red;">'.$time_str.'</td></tr>';
+    $str .= '<tr><td class="main">入金日</td><td class="main" style="color:red;">'.$time_str.'</td></tr>';
     }
     if(trim($orders['torihiki_houhou']) != ''){
-      $str .= '<tr><td class="main">オプション：</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
+      $str .= '<tr><td class="main">オプション</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
     }
 
   $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
@@ -4384,16 +4384,16 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
     if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
-      $str .= '<tr><td class="main">商品：<font color="red">「入」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
+      $str .= '<tr><td class="main">商品<font color="red">「入」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
     }else{
-      $str .= '<tr><td class="main">商品：<font color="red">「未」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
+      $str .= '<tr><td class="main">商品<font color="red">「未」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
     }
-    $str .= '<tr><td class="main">個数：</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+    $str .= '<tr><td class="main">個数</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
       $input_option = @unserialize(stripslashes($pa['option_info']));
       if ($input_option) {
         if (isset($input_option['title'])) {
-          $str .= '<tr><td class="main">'.$input_option['title'].'：</td><td class="main">'.$input_option['value'].'</td></tr>';
+          $str .= '<tr><td class="main">'.$input_option['title'].'</td><td class="main">'.$input_option['value'].'</td></tr>';
         }
       }
     }
@@ -4766,10 +4766,10 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   }
 if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name'])){
 	$str .= '<tr>';
-	$str .= '<td class="main">';  
-	$str .= TEXT_USER_ADDED.'：';
+	$str .= '<td class="main" width="30%">';  
+	$str .= TEXT_USER_ADDED;
 	$str .= '</td>';
-	$str .= '<td class="main">';
+	$str .= '<td class="main" width="70%">';
 	if(isset($orders['user_added']) && $orders['user_added'] != ""){
    $str .= $orders['user_added'];	
 	}else{
@@ -4779,10 +4779,10 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 	$str .= '</tr>';
 }else{
 	$str .= '<tr>';
-	$str .= '<td class="main">';  
-	$str .= TEXT_USER_ADDED.  '：';
+	$str .= '<td class="main" width="30%">';  
+	$str .= TEXT_USER_ADDED;
 	$str .= '</td>';
-	$str .= '<td class="main">';
+	$str .= '<td class="main" width="70%">';
         $str .= TEXT_UNSET_DATA;	
 	$str .= '</td>';
 	$str .= '</tr>';
@@ -4790,7 +4790,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['date_purchased'])){
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_ADDED.'：';
+	$str .= TEXT_DATE_ADDED;
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= $orders['date_purchased'];
@@ -4799,7 +4799,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_ADDED.'：';
+	$str .= TEXT_DATE_ADDED;
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= TEXT_UNSET_DATA;
@@ -4809,7 +4809,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['user_update']) || tep_not_null($orders['customers_name'])){
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_UPDATE.'：';
+	$str .= TEXT_USER_UPDATE;
 	$str .= '</td>';
 	$str .= '<td class="main">';
         if(isset($orders['user_update']) && $orders['user_update'] != ""){
@@ -4822,7 +4822,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_USER_UPDATE.'：';
+	$str .= TEXT_USER_UPDATE;
 	$str .= '</td>';
 	$str .= '<td class="main">';
         $str .= TEXT_UNSET_DATA;	
@@ -4831,7 +4831,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }if(tep_not_null($orders['last_modified']) || tep_not_null($orders['date_purchased'])){ 
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_UPDATE.'：';
+	$str .= TEXT_DATE_UPDATE;
 	$str .= '</td>';
 	$str .= '<td class="main">';
         if(isset($orders['last_modified']) && $orders['last_modified'] != ""){
@@ -4844,7 +4844,7 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 }else{
         $str .= '<tr>';	
 	$str .= '<td class="main">';  
-	$str .= TEXT_DATE_UPDATE.'：';
+	$str .= TEXT_DATE_UPDATE;
 	$str .= '</td>';
 	$str .= '<td class="main">';
 	$str .= TEXT_UNSET_DATA;
