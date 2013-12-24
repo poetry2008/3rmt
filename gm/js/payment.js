@@ -109,6 +109,7 @@ function check_payment_input(ele){
   ele_value = ele_value.replace(/\s/g,'');
   ele_value = ele_value.replace(/　/g,'');
   ele_value = ele_value.replace(/－/g,'-');
+  ele_value = ele_value.replace(/ー/g,'-');
   ele_value = ele_value.replace(/１/g,'1');
   ele_value = ele_value.replace(/２/g,'2');
   ele_value = ele_value.replace(/３/g,'3');

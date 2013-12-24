@@ -155,7 +155,11 @@ class buying extends basePayment  implements paymentInterface  {
     if($preorder_bank_kouza_num == '') {
       return 4; 
     }
-    if (!preg_match("/^[0-9]+$/", $preorder_bank_kouza_num)) {
+    $preorder_bank_kouza_num = trim($preorder_bank_kouza_num);
+    $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/[－|ー]/');
+    $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
+    $preorder_bank_kouza_num = preg_replace($mode_array,$replace_array,$preorder_bank_kouza_num);
+    if (!preg_match("/^[0-9-]+$/", $preorder_bank_kouza_num)) {
       return 5; 
     } 
     if($preorder_bank_kouza_name == '') {
@@ -359,7 +363,7 @@ class buying extends basePayment  implements paymentInterface  {
     if(isset($_SESSION[$session_paymentinfo_name]['bank_name'])) {
       //把全角的数字、中线转换成半角的及删除空格
       $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] = trim($_SESSION[$session_paymentinfo_name]['bank_kouza_num']);
-      $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/－/');
+      $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/[－|ー]/');
       $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
       $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] = preg_replace($mode_array,$replace_array,$_SESSION[$session_paymentinfo_name]['bank_kouza_num']);  
       $bbbank = TS_TEXT_BANK_NAME .   $_SESSION[$session_paymentinfo_name]['bank_name'] . "\n";
@@ -371,7 +375,7 @@ class buying extends basePayment  implements paymentInterface  {
       global $_POST;
       //把全角的数字、中线转换成半角的及删除空格
       $_POST['bank_kouza_num'] = trim($_POST['bank_kouza_num']);
-      $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/－/');
+      $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/[－|ー]/');
       $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
       $_POST['bank_kouza_num'] = preg_replace($mode_array,$replace_array,$_POST['bank_kouza_num']);
       $bbbank = TS_TEXT_BANK_NAME .  $_POST['bank_name'] . "\n";

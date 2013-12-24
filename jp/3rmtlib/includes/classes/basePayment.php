@@ -162,7 +162,7 @@ class BasePayment
   function validation_is_number($value)
   {
     $value = trim($value);
-    $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/－/');
+    $mode_array = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/','/[\s|　]/','/[－|ー]/');
     $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
     $value = preg_replace($mode_array,$replace_array,$value);
     if(preg_match('/^[0-9-]+$/',$value)){
