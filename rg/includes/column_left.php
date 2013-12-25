@@ -49,6 +49,8 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
       (strpos($_SERVER['REQUEST_URI'],FILENAME_CREATE_ACCOUNT_SUCCESS))||
       (strpos($_SERVER['PHP_SELF'],FILENAME_PAGE))||
       (strpos($_SERVER['PHP_SELF'],FILENAME_TAGS))||
+      (strpos($_SERVER['PHP_SELF'],FILENAME_PREORDER_CONFIRMATION))||
+      (strpos($_SERVER['PHP_SELF'],FILENAME_PREORDER_PROCESS))||
       (strpos($_SERVER['PHP_SELF'],FILENAME_SITEMAP))||
       (strpos($_SERVER['REQUEST_URI'],FILENAME_CONTACT_US))||
       (strpos($_SERVER['PHP_SELF'],FILENAME_PREORDER))||
