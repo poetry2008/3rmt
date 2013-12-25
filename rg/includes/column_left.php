@@ -22,9 +22,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 </form>
 </div>
 <?php
-  if((strpos($_SERVER['PHP_SELF'],FILENAME_PREORDER_PAYMENT)) || (strpos($_SERVER['PHP_SELF'],FILENAME_PREORDER_CONFIRMATION))){ 
-    include(DIR_WS_BOXES . 'categories.php');
-  }else if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||
+  if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||
       (strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))||
       (strpos($_SERVER['REQUEST_URI'],'game/'))||
       (strpos($_SERVER['REQUEST_URI'],FILENAME_MEMBER_AUTH))||
@@ -53,7 +51,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
       (strpos($_SERVER['PHP_SELF'],FILENAME_TAGS))||
       (strpos($_SERVER['PHP_SELF'],FILENAME_SITEMAP))||
       (strpos($_SERVER['REQUEST_URI'],FILENAME_CONTACT_US))||
-      (strpos($_SERVER['REQUEST_URI'],FILENAME_PREORDER))||
+      (strpos($_SERVER['PHP_SELF'],FILENAME_PREORDER))||
       (strpos($_SERVER['REQUEST_URI'],FILENAME_ADVANCED_SEARCH))||
       (strpos($_SERVER['REQUEST_URI'],FILENAME_CHANGE_PREORDER))||
       (strpos($_SERVER['REQUEST_URI'],FILENAME_CHANGE_PREORDER_CONFIRM))||

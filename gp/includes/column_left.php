@@ -68,7 +68,6 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
         include(DIR_WS_BOXES . 'list_categories.php');
       } else {
         if ((basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) ||(basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_PAYMENT) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_SUCCESS) || (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER_CONFIRMATION)) {
-          include(DIR_WS_BOXES . 'list_categories.php');
         } else {
           if((basename($_SERVER['PHP_SELF']) != FILENAME_ADVANCED_SEARCH_RESULT) && (basename($_SERVER['PHP_SELF']) != FILENAME_PREORDER_PAYMENT) && (basename($_SERVER['PHP_SELF']) != FILENAME_MEMBER_AUTH) && (basename($_SERVER['PHP_SELF']) != FILENAME_NON_MEMBER_AUTH)){
             include(DIR_WS_BOXES . 'categories.php');

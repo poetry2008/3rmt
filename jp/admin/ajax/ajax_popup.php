@@ -579,12 +579,12 @@ if ($_GET['action'] == 'show_category_info') {
   $inventory['min']  = $pInfo->min_inventory; 
   
   $product_info_array[]['text'] = array(
-        array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'),
+        array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT),
         array('text' => (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;':'').((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' . (int)$pInfo->products_price .  CATEGORY_MONEY_UNIT_TEXT)
       );
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
     $product_info_array[]['text'] = array(
-          array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1).':'),
+          array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1)),
           array('text' => @display_price(tep_new_get_avg_by_pid($pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
         );
   }
@@ -596,7 +596,7 @@ if ($_GET['action'] == 'show_category_info') {
   }
   if($radices!=''&&$radices!=1&&$radices!=0){
   $product_info_array[]['text'] = array(
-        array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
+        array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY),
         array('text' => ((!empty($_GET['site_id']))?tep_new_get_quantity($pInfo):tep_draw_input_field('products_quantity', tep_new_get_quantity($pInfo),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($pInfo->products_real_quantity/$radices) .CATEGORY_GE_UNIT_TEXT)
       );
   $product_info_array[]['text'] = array(
@@ -605,13 +605,13 @@ if ($_GET['action'] == 'show_category_info') {
       );
   }else{
   $product_info_array[]['text'] = array(
-        array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
+        array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY),
         array('text' => ((!empty($_GET['site_id']))?$pInfo->products_real_quantity:tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT)
       );
   }
   
   $product_info_array[]['text'] = array(
-        array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE.':'),
+        array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE),
         array('text' => ((!empty($_GET['site_id']))?$pInfo->products_virtual_quantity:tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity .  CATEGORY_GE_UNIT_TEXT)
       );
  
@@ -622,12 +622,12 @@ if ($_GET['action'] == 'show_category_info') {
   
   if(empty($site_id)) {
     $product_info_array[]['text'] = array(
-          array('params' => 'nowrap="nowrap"', 'text' => TEXT_MAX.':'),
+          array('params' => 'nowrap="nowrap"', 'text' => TEXT_MAX),
           array('text' => (($isstaff)?$inventory['max']:tep_draw_input_field('inventory_max',$inventory['max']))) 
         );
     
     $product_info_array[]['text'] = array(
-          array('params' => 'nowrap="nowrap"', 'text' => TEXT_MIN.':'),
+          array('params' => 'nowrap="nowrap"', 'text' => TEXT_MIN),
           array('text' => (($isstaff)?$inventory['min']:tep_draw_input_field('inventory_min',$inventory['min']))) 
         );
   }
@@ -672,13 +672,13 @@ if ($_GET['action'] == 'show_category_info') {
         );
     
     $relate_product_info_array[]['text'] = array(
-          array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT.':'), 
+          array('params' => 'width="130" nowrap="nowrap"', 'text' => TABLE_HEADING_JIAGE_TEXT), 
           array('text' => tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)$relate_pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT)
         );
   
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
       $relate_product_info_array[]['text'] = array(
-            array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1).':'),
+            array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1)),
             array('text' => @display_price(tep_new_get_avg_by_pid($relate_pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
           );
     }
@@ -692,7 +692,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
     $relate_product_info_array[]['text'] = array(
-          array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
+          array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY),
           array('text' => ((!empty($_GET['site_id']))?tep_new_get_quantity($relate_pInfo):tep_draw_input_field('relate_products_quantity', tep_new_get_quantity($relate_pInfo),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' .  (int)($relate_pInfo->products_real_quantity/$relate_radices) . CATEGORY_GE_UNIT_TEXT)
         );
     $relate_product_info_array[]['text'] = array(
@@ -701,13 +701,13 @@ if ($_GET['action'] == 'show_category_info') {
         );
   }else{
     $relate_product_info_array[]['text'] = array(
-          array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY.':'),
+          array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_REAL_QUANTITY),
           array('text' => ((!empty($_GET['site_id']))?$relate_pInfo->products_real_quantity:tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT.  '&nbsp;&nbsp;&larr;&nbsp;' . $relate_pInfo->products_real_quantity . CATEGORY_GE_UNIT_TEXT)
         );
   }
 
     $relate_product_info_array[]['text'] = array(
-          array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE.':'),
+          array('params' => 'nowrap="nowrap"', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_VIRTUAL_STORE),
           array('text' => ((!empty($_GET['site_id']))?$relate_pInfo->products_virtual_quantity:tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $relate_pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT)
         );
     
@@ -717,12 +717,12 @@ if ($_GET['action'] == 'show_category_info') {
         );
     if(empty($site_id)){
       $relate_product_info_array[]['text'] = array(
-            array('params' => 'nowrap="nowrap"', 'text' => TEXT_MAX.':'),
+            array('params' => 'nowrap="nowrap"', 'text' => TEXT_MAX),
             array('text' => (($isstaff)?$inventory['max']:tep_draw_input_field('relate_inventory_max',$inventory['max'])))
           );
       
       $relate_product_info_array[]['text'] = array(
-            array('params' => 'nowrap="nowrap"', 'text' => TEXT_MIN.':'),
+            array('params' => 'nowrap="nowrap"', 'text' => TEXT_MIN),
             array('text' => (($isstaff)?$inventory['min']:tep_draw_input_field('relate_inventory_min',$inventory['min'])))
           );
     }
@@ -974,15 +974,15 @@ if ($_GET['action'] == 'show_category_info') {
   
   $data_info_array = array();
   $data_info_array[]['text'] = array(
-        array('params' => 'width="80"', 'text' => TEXT_USER_ADDED.':'), 
+        array('params' => 'width="80"', 'text' => TEXT_USER_ADDED), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA)), 
-        array('params' => 'width="80"', 'text' => TEXT_DATE_ADDED.':'), 
+        array('params' => 'width="80"', 'text' => TEXT_DATE_ADDED), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA)) 
       ); 
   $data_info_array[]['text'] = array(
-        array('params' => 'width="80"', 'text' => TEXT_USER_UPDATE.':'), 
+        array('params' => 'width="80"', 'text' => TEXT_USER_UPDATE), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)), 
-        array('params' => 'width="80"', 'text' => TEXT_LAST_MODIFIED.':'), 
+        array('params' => 'width="80"', 'text' => TEXT_LAST_MODIFIED), 
         array('params' => 'width="120"', 'text' => (!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)) 
       ); 
   
@@ -2978,13 +2978,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       array('text' => $value_field.'<br>'.$cInfo->configuration_description)
    );
   $configuration_contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->user_added))?$cInfo->user_added:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->date_added))?$cInfo->date_added:TEXT_UNSET_DATA))
       );
   
   $configuration_contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->user_update))?$cInfo->user_update:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($cInfo->last_modified))?$cInfo->last_modified:TEXT_UNSET_DATA))
       );
     //button 内容 
     if(in_array($site_id,$site_array)) { 
@@ -3088,13 +3088,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     array('text' => $value_field.'<br>'.$cInfo->configuration_description)
     );
   $contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.((tep_not_null($configuration_user_update['user_added']))?$configuration_user_update['user_added']:TEXT_UNSET_DATA)), 
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($configuration_user_update['date_added']))?$configuration_user_update['date_added']:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.((tep_not_null($configuration_user_update['user_added']))?$configuration_user_update['user_added']:TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.((tep_not_null($configuration_user_update['date_added']))?$configuration_user_update['date_added']:TEXT_UNSET_DATA))
       );
   
   $contents[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($configuration_user_update['user_update']))?$configuration_user_update['user_update']:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($configuration_user_update['last_modified']))?$configuration_user_update['last_modified']:TEXT_UNSET_DATA))
+        array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.((tep_not_null($configuration_user_update['user_update']))?$configuration_user_update['user_update']:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.((tep_not_null($configuration_user_update['last_modified']))?$configuration_user_update['last_modified']:TEXT_UNSET_DATA))
       );
  
   //if exists ,can be delete ,or  can not 
@@ -3643,12 +3643,12 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     array('params' => 'class="smallText"','text' => ENTRY_REVIEW_TEXT)
   );
  $contents[]['text'] = array(
-   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
-   array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
+   array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_added))?$rInfo->user_added:TEXT_UNSET_DATA)), 
+   array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->date_added))?$rInfo->date_added:TEXT_UNSET_DATA))
   );
   $contents[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
-    array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
+    array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->user_update))?$rInfo->user_update:TEXT_UNSET_DATA)),
+    array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($rInfo->last_modified))?$rInfo->last_modified:TEXT_UNSET_DATA))
   );
 
 
@@ -4178,12 +4178,12 @@ if($pw_id != -1){
       }
        $contents[]['text'] = array( array('text' => '&nbsp;'), array('text' => '<div id="user_select" class="user_select" style="display:'.$pw_select_display.'" > '.tep_get_user_select($selected_user).'</div>'));
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->user_added))?$pwInfo->user_added:TEXT_UNSET_DATA)), 
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->user_added))?$pwInfo->user_added:TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
          );
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
         );
     if($ocertify->npermission >= 15){
      if(isset($disable) && $disable){
@@ -4440,12 +4440,12 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
          array('text' => $pwInfo->memo)
         );
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->operator))?$pwInfo->operator:TEXT_UNSET_DATA)), 
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->operator))?$pwInfo->operator:TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->created_at))?$pwInfo->created_at:TEXT_UNSET_DATA))
          );
        $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->update_user))?$pwInfo->update_user:TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($pwInfo->updated_at))?$pwInfo->updated_at:TEXT_UNSET_DATA))
         );
  
       if($ocertify->npermission >= 15){
@@ -4600,13 +4600,13 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
       $total_date_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($_POST['current_module']))."_STATUS' and site_id = '0'");
       $total_date = tep_db_fetch_array($total_date_query); 
       $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
+            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
        );
       
       $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
+            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
        );
     } else {
       if ($disabled_single) {
@@ -4621,13 +4621,13 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
       }
       
       $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
+            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
+            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
        );
       
       $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
+            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
+            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
        );
     }
   } else {

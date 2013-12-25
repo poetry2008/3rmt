@@ -181,7 +181,7 @@ define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
 define('ENTRY_FIRST_NAME_F', '名(フリガナ):');
 define('ENTRY_LAST_NAME_F', '姓(フリガナ):');
 define('ENTRY_DATE_OF_BIRTH', '生年月日:');
-define('ENTRY_EMAIL_ADDRESS', 'E-Mail アドレス:');
+define('ENTRY_EMAIL_ADDRESS', 'E-Mail アドレス');
 define('ENTRY_QUITED_DATE','退会日時:');
 define('ENTRY_COMPANY', '会社名:');
 define('ENTRY_STREET_ADDRESS', '住所1:');
@@ -490,12 +490,12 @@ define('HEADER_TEXT_CATEGORIES_ADMIN','価格調整');
 define('TEXT_FOOTER_ONE_TIME','チェックされている権限のワンタイムを使えばアクセスできる');
 define('TEXT_FOOTER_CHECK_SAVE','保存');
 //footer end
-define('RIGHT_ORDER_INFO_ORDER_FROM', '注文書サイト：');
-define('RIGHT_ORDER_INFO_ORDER_FETCH_TIME', 'お届け日時：');
+define('RIGHT_ORDER_INFO_ORDER_FROM', '注文書サイト');
+define('RIGHT_ORDER_INFO_ORDER_FETCH_TIME', 'お届け日時');
 define('RIGHT_ORDER_INFO_ORDER_OPTION', 'オプション：');
-define('RIGHT_ORDER_INFO_ORDER_ID', 'ご注文番号：');
-define('RIGHT_ORDER_INFO_ORDER_DATE', '注文日：');
-define('RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE', '顧客種別：');
+define('RIGHT_ORDER_INFO_ORDER_ID', 'ご注文番号');
+define('RIGHT_ORDER_INFO_ORDER_DATE', '注文日');
+define('RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE', '顧客種別');
 define('RIGHT_CUSTOMER_INFO_ORDER_IP', 'IPアドレス：');
 define('RIGHT_CUSTOMER_INFO_ORDER_HOST', 'ホスト名：');
 define('RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT', 'ユーザーエージェント：');
@@ -517,8 +517,8 @@ define('RIGHT_CUSTOMER_INFO_ORDER_JAVA', 'Java：');
 define('RIGHT_TICKIT_ID_TITLE', '問合番号を新規作成します');
 define('RIGHT_TICKIT_EMAIL', 'メール');
 define('RIGHT_TICKIT_CARD', 'クレカ');
-define('RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME', '顧客名：');
-define('RIGHT_ORDER_INFO_ORDER_EMAIL', 'E-Mail アドレス：');
+define('RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME', '顧客名');
+define('RIGHT_ORDER_INFO_ORDER_EMAIL', 'E-Mail アドレス');
 define('RIGHT_ORDER_INFO_ORDER_CREDITCARD_TYPE', 'クレジットカード種別：');
 define('RIGHT_ORDER_INFO_ORDER_CREDITCARD_OWNER', 'クレジットカード所有者：');
 define('RIGHT_ORDER_INFO_ORDER_CREDITCARD_ID', 'クレジットカード番号：');
@@ -529,7 +529,7 @@ define('RIGHT_ORDER_INFO_INPUT_FINISH', '入力済み');
 define('RIGHT_ORDER_INFO_REPUTAION_SEARCH', '信用調査：');
 //user pama
 define('TEXT_ECECUTE_PASSWORD_USER','パスワード変更');
-define('RIGHT_ORDER_COMMENT_TITLE', 'コメント：');
+define('RIGHT_ORDER_COMMENT_TITLE', 'コメント');
 define('BOX_LOCALIZATION_PREORDERS_STATUS', '予約ステータス設定');
 define('HEADER_TEXT_PREORDERS', '予約一覧');
 
@@ -537,9 +537,9 @@ define('HEADER_TEXT_PREORDERS', '予約一覧');
 //order div 
 
 define('TEXT_FUNCTION_ORDER_ORDER_DATE','取引日：');
-define('TEXT_FUNCTION_HEADING_CUSTOMERS', '顧客名：');
+define('TEXT_FUNCTION_HEADING_CUSTOMERS', '顧客名');
 define('TEXT_FUNCTION_HEADING_ORDER_TOTAL', '注文総額：');
-define('TEXT_FUNCTION_HEADING_DATE_PURCHASED', '注文日：');
+define('TEXT_FUNCTION_HEADING_DATE_PURCHASED', '注文日');
 define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER','会員');
 define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER','ゲスト');
 
@@ -567,13 +567,13 @@ define('HEADER_TEXT_CREATE_PREORDER', '予約作成');
 define('TEXT_TORIHIKI_REPLACE_STR','～');
 define('TEXT_TORIHIKI_HOUR_STR','時');
 define('TEXT_TORIHIKI_MIN_STR','分');
-define('TEXT_PREORDER_PAYMENT_METHOD', '支払方法：');
+define('TEXT_PREORDER_PAYMENT_METHOD', '支払方法');
 define('TEXT_PREORDER_NOT_COST', '入金まだ');
-define('TEXT_PREORDER_COST_DATE', '入金日：');
-define('TEXT_PREORDER_PRODUCTS_NAME', '商品：');
+define('TEXT_PREORDER_COST_DATE', '入金日');
+define('TEXT_PREORDER_PRODUCTS_NAME', '商品');
 define('TEXT_PREORDER_PRODUCTS_NOENTRANCE', '未'); 
 define('TEXT_PREORDER_PRODUCTS_ENTRANCE', '入');
-define('TEXT_PREORDER_PRODUCTS_NUM', '個数：');
+define('TEXT_PREORDER_PRODUCTS_NUM', '個数');
 define('TEXT_PREORDER_PRODUCTS_UNIT', '個');
 
 
@@ -617,10 +617,10 @@ define('TEXT_ONE_TIME_ADMIN_CONFIRM','Adminのチェックを入れてくださ�
 define('TEXT_SITE_COPYRIGHT' ,'Copyright © %s Haomai');
 
 define('SECOND_TEXT','秒');
-define('PAYMENT_METHOD','支払方法：');
+define('PAYMENT_METHOD','支払方法');
 define('DEPOSIT_STILL','入金まだ');
 define('PAYMENT_DAY','入金日：');
-define('PRODUCT','商品：');
+define('PRODUCT','商品');
 define('INPUT','「入」');
 define('NOT','「未」');
 define('MANUAL','マニュアル');
@@ -752,9 +752,9 @@ define('TEXT_STATUS_MAIL_TITLE_CHANGED','ステータスと送信されるメー
 define('BOX_TOOLS_MARKS_MANAGER', 'マーク管理');
 define('TEXT_OPERATE_USER', '操作者');
 define('TEXT_TIMEOUT_RELOGIN','無操作が一定時間を超えた為、自動的にログアウトしました。再度ログインしてください。');
-define('TEXT_PREORDER_ENSURE_DATE', '確保期限：');
-define('TEXT_PREORDER_ID_NUM', '予約番号：');
-define('TEXT_PREORDER_DATE_TEXT', '予約日：');
+define('TEXT_PREORDER_ENSURE_DATE', '確保期限');
+define('TEXT_PREORDER_ID_NUM', '予約番号');
+define('TEXT_PREORDER_DATE_TEXT', '予約日');
 define('NOTICE_LESS_PRODUCT_OPTION_TEXT', '商品の登録内容が更新されています。この商品を変更したい場合は、削除してから再度追加してください。');
 define('NOTICE_LESS_PRODUCT_PRE_OPTION_TEXT', '商品の登録内容が更新されています。この商品を変更したい場合は、最初から予約注文を作成しなおす必要があります。');
 define('NOTICE_COMPLETE_ERROR_TEXT','のデータに不備があります。ページを更新し、最初からやりなおしてください。');

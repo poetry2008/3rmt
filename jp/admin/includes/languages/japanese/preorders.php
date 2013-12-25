@@ -53,7 +53,7 @@ define('ENTRY_SHIPPING', '配送:');
 define('ENTRY_TOTAL', '合計:');
 define('ENTRY_DATE_PURCHASED', '注文日:');
 define('ENTRY_STATUS', 'ステータス:');
-define('ENTRY_DATE_LAST_UPDATED', '更新日:');
+define('ENTRY_DATE_LAST_UPDATED', '更新日');
 define('ENTRY_NOTIFY_CUSTOMER', '処理状況を通知:');
 define('ENTRY_NOTIFY_COMMENTS', 'コメントを追加:');
 define('ENTRY_PRINTABLE', '納品書をプリント');
