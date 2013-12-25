@@ -3015,18 +3015,20 @@ searching
 	margin:2px 5px 0 5px;
 	*margin:-13px 0 0;
 }
+
+
 .content_box{
-	margin:5px 0;
+	margin:5px 0 5px 2px;
 }
 .content_box ul{
 	padding:0;
-	margin:0;
+	margin:0 0 10px 0;
 	height:51px;
 }
 .content_box li{
 	list-style-type: none;
 	float:left;
-	width:175px;
+	width:174px;
 }
 .content_box li a{
 	font-size:21px;
@@ -3068,6 +3070,18 @@ searching
 		width:540px;
 		margin-left:0;
 }
+.page_middle_space h2{
+		background: url(../images/design/beginner/info_title.gif) no-repeat;
+		height:23px;
+		font-size:12px;
+		font-weight:bold;
+		line-height:23px;
+		text-align:left;
+		padding:0 0 0 13px;
+		color:#506081;
+		width:540px;
+		margin-left:0;
+}
 .page_middle_img{
 	text-align:center;
 }
@@ -3077,7 +3091,7 @@ searching
 	height:18px;
 	line-height:18px;
 	padding-left:5px;
-	margin:24px 0 35px 0;
+	margin:24px 0 42px 0;
 }
 .page_link_bottom{
 	text-align:left;
@@ -3099,15 +3113,21 @@ searching
 	color:#656565;
 	font-weight:bold;
 	clear:both;
-	padding:0 0 10px 5px;
+	padding:26px 0 10px 5px;
+	clear:both;
 }
 .detailed{
 	clear:both;
-	padding:0 0 10px 0;
+	padding:0;
 	width:540px;
 	background: url(../images/design/beginner/page_content.jpg) no-repeat;
 	height:120px;
-	margin-top:10px;
+}
+.content_box .detailed ul{
+	overflow:hidden;
+	height:120px;
+	padding:0;
+	margin:0;
 }
 .detailed li{
 	width:170px;
@@ -3143,43 +3163,49 @@ searching
 .swap_box_top span{
 	font-size:14px;
 	font-weight: bolder;
-	line-height:37px;
-	width:400px;
+	line-height:27px;
+	width:390px;
+	*width:400px!important;
+	width:390px\0;
 	float:right;
 	text-align:left;
 	color:#696768;
-	padding:12px 10px 0 0;
+	padding:25px 10px 0 0;
 }
 .swap_box_middle{
 	clear:both;
 	width:540px;
 	margin-bottom:10px;
 	background: url(../images/design/beginner/swap_middle.jpg) no-repeat;
-	height:178px;
+	height:189px;
 	
 }
-.swap_box_middle ul{
+.content_box .swap_box_middle ul{
 	height:130px;
 	float:right;
-	margin-top:5px;
+	margin:5px 5px 0 0;
 }
-.swap_box_middle li{
+.content_box .swap_box_middle li{
 	clear:both;
 	text-align:left;
-	width:453px;
+	width:396px;
+	*width:397px!important;
+	width:396px\0;
 	font-size:14px;
 	font-weight: bolder;
 	margin:10px 0 2px 0;
 	color:#696768;
 	line-height:26px;
 }
-.swap_box_middle span{
+.content_box .swap_box_middle span{
 	font-size:12px;
 	font-weight: bolder;
 	line-height:34px;
 	*line-height:15px;
-	width:540px;
-	float:left;
+	width:401px;
+	*width:489px!important;
+	width:401px\0;
+	float:right;
 	text-align:left;
 	color:#696768;
 	padding:10px 0 0 86px;
@@ -3195,12 +3221,14 @@ searching
 .swap_box_bottom span{
 	font-size:14px;
 	font-weight: bolder;
-	line-height:40px;
-	width:400px;
+	line-height:30px;
+	width:390px;
+	*width:400px!important;
+	width:390px;
 	float:right;
 	text-align:left;
 	color:#696768;
-	padding:10px 10px 0 0;
+	padding:26px 10px 0 0;
 }
 .box_bottom_list{
 	clear:both;
@@ -3228,7 +3256,6 @@ searching
 }
 .box_bottom_list span{
 	font-size:12px;
-	font-weight: bolder;
 	line-height:24px;
 	width:530px;
 	float:left;
