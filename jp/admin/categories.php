@@ -984,13 +984,7 @@ if (isset($_GET['action']) && $_GET['action']) {
 
 
       if ($_GET['action'] == 'insert_product') {
-        if(isset($products_attention_1_3)
-            &&$products_attention_1_3!=0
-            &&$products_attention_1_3!=''){
-          $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity'])*$products_attention_1_3;
-        }else{
-          $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
-        }
+        $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
         if ($site_id == 0) {
           $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
           $option_group_res = tep_db_fetch_array($option_group_raw);
