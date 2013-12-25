@@ -3495,7 +3495,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $customer_email_res = tep_db_fetch_array($customer_email_raw); 
       $history_list_array = array(); 
       //判断此顾客邮箱是否有预约订单
-      $preorder_num = tep_db_num_rows(tep_db_query("select orders_id from ".TABLE_PREORDERS." where customers_email_address = '".$customer_email_res['customers_email_address']."'"));
+      $preorder_num_query = tep_db_query("select orders_id,date_purchased from ".TABLE_PREORDERS." where customers_email_address = '".$customer_email_res['customers_email_address']."'"); 
+      $preorder_num = tep_db_num_rows($preorder_num_query);
       if($preorder_num > 0){
         //判断此顾客邮箱预约订单是否大于等于5个
         if($preorder_num >= 5){
@@ -3507,11 +3508,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             limit 5
           ");
         }else{
-          $preorder_history_query = tep_db_query("
-            select orders_id, date_purchased 
-            from ".TABLE_PREORDERS." 
-            where   customers_email_address = '".$customer_email_res['customers_email_address']."'
-          "); 
+          $preorder_history_query = $preorder_num_query; 
         }
         while ($preorder_history_res = tep_db_fetch_array($preorder_history_query)) {
           $history_list_array['p_'.$preorder_history_res['orders_id']] = strtotime($preorder_history_res['date_purchased']); 
@@ -3519,7 +3516,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       }
 
       //判断此顾客邮箱订单是否大于等于5个
-      $order_num = tep_db_num_rows(tep_db_query("select orders_id from ".TABLE_ORDERS." where customers_email_address = '".$customer_email_res['customers_email_address']."'")); 
+      $order_num_query = tep_db_query("select orders_id,date_purchased from ".TABLE_ORDERS." where customers_email_address = '".$customer_email_res['customers_email_address']."'"); 
+      $order_num = tep_db_num_rows($order_num_query); 
       if($order_num >= 5){
         $order_history_query = tep_db_query("
           select orders_id, date_purchased 
@@ -3529,11 +3527,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           limit 5
           ");
       }else{
-        $order_history_query = tep_db_query("
-          select orders_id, date_purchased 
-          from ".TABLE_ORDERS." 
-          where   customers_email_address = '".$customer_email_res['customers_email_address']."'
-          ");
+        $order_history_query = $order_num_query; 
       }
 
       while ($order_history_res = tep_db_fetch_array($order_history_query)) {
