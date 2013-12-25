@@ -3059,7 +3059,7 @@ searching
 	margin-bottom:48px;
 }
 .page_img h2,.page_middle_img h2{
-		background: url(../images/design/beginner/info_title.gif) no-repeat;
+		background: url(../images/design/beginner/background_image_info.gif) no-repeat;
 		height:23px;
 		font-size:12px;
 		font-weight:bold;
@@ -3071,7 +3071,7 @@ searching
 		margin-left:0;
 }
 .page_middle_space h2{
-		background: url(../images/design/beginner/info_title.gif) no-repeat;
+		background: url(../images/design/beginner/background_image_info.gif) no-repeat;
 		height:23px;
 		font-size:12px;
 		font-weight:bold;
@@ -3120,7 +3120,7 @@ searching
 	clear:both;
 	padding:0;
 	width:540px;
-	background: url(../images/design/beginner/page_content.jpg) no-repeat;
+	background: url(../images/design/beginner/pay_procedure.jpg) no-repeat;
 	height:120px;
 }
 .content_box .detailed ul{
@@ -3156,7 +3156,7 @@ searching
 	text-align:center;
 	width:540px;
 	margin:10px 0;
-	background: url(../images/design/beginner/swap_top.jpg) no-repeat;
+	background: url(../images/design/beginner/shopping_cart.jpg) no-repeat;
 	height:103px;
 	
 }
@@ -3176,7 +3176,7 @@ searching
 	clear:both;
 	width:540px;
 	margin-bottom:10px;
-	background: url(../images/design/beginner/swap_middle.jpg) no-repeat;
+	background: url(../images/design/beginner/part1_3.jpg) no-repeat;
 	height:189px;
 	
 }
@@ -3214,7 +3214,7 @@ searching
 	clear:both;
 	width:540px;
 	margin:10px 0;
-	background: url(../images/design/beginner/swap_bottom.jpg) no-repeat;
+	background: url(../images/design/beginner/background_image_hint.jpg) no-repeat;
 	height:144px;
 	
 }
@@ -3234,7 +3234,7 @@ searching
 	clear:both;
 	width:540px;
 	margin-bottom:10px;
-	background: url(../images/design/beginner/sell_banner_bottom.jpg) no-repeat;
+	background: url(../images/design/beginner/background_image_icons.jpg) no-repeat;
 	height:387px;
 	
 }
