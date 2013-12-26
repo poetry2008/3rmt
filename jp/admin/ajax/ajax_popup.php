@@ -6445,13 +6445,13 @@ while ($contents = tep_db_fetch_array($contents_query)) {
          array('text' => tep_draw_textarea_field('text_information', 'soft', '70', '20', '',$disabled.'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="resize: vertical;"'))
     );
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_ADDED.(tep_not_null($info_array['user_added'])?$info_array['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left','text' => TEXT_DATE_ADDED.((tep_not_null($info_array['date_added']))?$info_array['date_added']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($info_array['user_added'])?$info_array['user_added']:TEXT_UNSET_DATA)), 
+            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($info_array['date_added']))?$info_array['date_added']:TEXT_UNSET_DATA))
       );
       
     $contents[]['text'] = array(
-            array('align' => 'left','text' => TEXT_USER_UPDATE.(tep_not_null($info_array['user_update'])?$info_array['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left','text' => TEXT_DATE_UPDATE.((tep_not_null($info_array['date_update']))?$info_array['date_update']:TEXT_UNSET_DATA))
+            array('align' => 'left','text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($info_array['user_update'])?$info_array['user_update']:TEXT_UNSET_DATA)),
+            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($info_array['date_update']))?$info_array['date_update']:TEXT_UNSET_DATA))
       );
 
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="check_contents('.$ocertify->npermission.');"').'</a>';

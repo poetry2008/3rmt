@@ -12,12 +12,12 @@ define('TABLE_HEADING_SENT', '发送状态');
 define('TABLE_HEADING_STATUS', '状态');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_NEWSLETTER_MODULE', '模块的选择:');
-define('TEXT_NEWSLETTER_TITLE', '邮件杂志的标题:');
-define('TEXT_NEWSLETTER_CONTENT', '内容:');
+define('TEXT_NEWSLETTER_MODULE', '模块的选择');
+define('TEXT_NEWSLETTER_TITLE', '邮件杂志的标题');
+define('TEXT_NEWSLETTER_CONTENT', '内容');
 
 define('TEXT_NEWSLETTER_DATE_ADDED', '创建日');
-define('TEXT_NEWSLETTER_DATE_SENT', '发送日期:');
+define('TEXT_NEWSLETTER_DATE_SENT', '发送日期');
 
 define('TEXT_INFO_DELETE_INTRO', '确定要删除这个邮件杂志吗?');
 

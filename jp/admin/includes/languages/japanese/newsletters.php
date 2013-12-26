@@ -13,12 +13,12 @@ define('TABLE_HEADING_SENT', '送信状態');
 define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_NEWSLETTER_MODULE', 'モジュールの選択:');
-define('TEXT_NEWSLETTER_TITLE', 'メールマガジンの題名:');
-define('TEXT_NEWSLETTER_CONTENT', '内容:');
+define('TEXT_NEWSLETTER_MODULE', 'モジュールの選択');
+define('TEXT_NEWSLETTER_TITLE', 'メールマガジンの題名');
+define('TEXT_NEWSLETTER_CONTENT', '内容');
 
 define('TEXT_NEWSLETTER_DATE_ADDED', '作成日');
-define('TEXT_NEWSLETTER_DATE_SENT', '送信日:');
+define('TEXT_NEWSLETTER_DATE_SENT', '送信日');
 
 define('TEXT_INFO_DELETE_INTRO', '本当にこのメールマガジンを削除しますか?');
 
