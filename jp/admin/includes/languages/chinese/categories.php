@@ -37,7 +37,7 @@ define('TEXT_EDIT_CATEGORIES_IMAGE', '分类图片:');
 define('TEXT_EDIT_SORT_ORDER', '排列顺序:');
 
 define('TEXT_INFO_COPY_TO_INTRO', '请选择该商品复制到的目录分类');
-define('TEXT_INFO_CURRENT_CATEGORIES', '现有分类:');
+define('TEXT_INFO_CURRENT_CATEGORIES', '现有分类');
 
 define('TEXT_INFO_HEADING_NEW_CATEGORY', '新分类');
 define('TEXT_INFO_HEADING_EDIT_CATEGORY', '编辑分类');
@@ -170,7 +170,7 @@ define('TEXT_PRODUCT_RESULT_CONFIRM', '结果确认');
 define('CATEGORY_TREE_SELECT_TEXT', '分类跳转▼');
 define('CATEGORY_BUTTON_UPDATE_TEXT', '请仔细确认后再按');
 define('CATEGORY_MONEY_UNIT_TEXT', '日元');
-define('CATEGORY_AVERAGE_PRICE', '实际库存的平均采购价格：');
+define('CATEGORY_AVERAGE_PRICE', '实际库存的平均采购价格');
 define('CATEGORY_SHIKU_TEXT', '实际&nbsp;在&nbsp;&nbsp;库：&nbsp;');
 define('CATEGORY_GE_UNIT_TEXT', '个');
 define('CATEGORY_JIAKONGZAIKU_TEXT', '虚拟库存：');
@@ -183,8 +183,8 @@ define('TABLE_HEADING_FETCHTIME_TEXT', '交易日');
 define('TABLE_HEADING_GESHU', '个数');
 define('TABLE_HEADING_DANJIA', '单价');
 define('TABLE_HEADING_OSTATUS', '状态');
-define('CATEGORY_TOTALNUM_TEXT', '合计:');
-define('CATEGORY_AVERAGENUM_TEXT', '平均:');
+define('CATEGORY_TOTALNUM_TEXT', '合计');
+define('CATEGORY_AVERAGENUM_TEXT', '平均');
 define('TABLE_HEADING_JIAGE_TEXT', '价格');
 define('TABLE_HEADING_NUM_TEXT', '数量');
 define('CATEGORY_PRO_ZAIKU_TEXT', '没有库存');
