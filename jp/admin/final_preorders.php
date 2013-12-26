@@ -584,8 +584,8 @@
         if (sizeof($order->products[$i]['attributes']) > 0) {
           for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
             $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-            $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")) . '　　　　　：';
-            $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&#39;",'"'=>"&#34;")) . "\n";
+            $products_ordered_mail .=  "\t" .  $order->products[$i]['attributes'][$j]['option_info']['title'] . '　　　　　：';
+            $products_ordered_mail .= str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']) . "\n";
           }
         }
 

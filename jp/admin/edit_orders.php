@@ -1240,8 +1240,8 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
             if (sizeof($order->products[$i]['attributes']) > 0) {
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                $products_ordered_mail .=  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
-                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&#39;",'"'=>"&#34;"));
+                $products_ordered_mail .=  $order->products[$i]['attributes'][$j]['option_info']['title'] . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
+                $products_ordered_mail .= str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']);
                 if ($order->products[$i]['attributes'][$j]['price'] != '0') {
                   $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
                 }
