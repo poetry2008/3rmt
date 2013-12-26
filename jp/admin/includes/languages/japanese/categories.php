@@ -37,7 +37,7 @@ define('TEXT_EDIT_CATEGORIES_IMAGE', 'カテゴリー画像:');
 define('TEXT_EDIT_SORT_ORDER', '整列順:');
 
 define('TEXT_INFO_COPY_TO_INTRO', 'この商品をコピーする先のカテゴリーを選んでください');
-define('TEXT_INFO_CURRENT_CATEGORIES', '現在のカテゴリー:');
+define('TEXT_INFO_CURRENT_CATEGORIES', '現在のカテゴリー');
 
 define('TEXT_INFO_HEADING_NEW_CATEGORY', '新しいカテゴリー');
 define('TEXT_INFO_HEADING_EDIT_CATEGORY', 'カテゴリーを編集');
@@ -170,7 +170,7 @@ define('TEXT_PRODUCT_RESULT_CONFIRM', '結果確認');
 define('CATEGORY_TREE_SELECT_TEXT', 'ジャンプ▼');
 define('CATEGORY_BUTTON_UPDATE_TEXT', 'よく確認してから押しなさい');
 define('CATEGORY_MONEY_UNIT_TEXT', '円');
-define('CATEGORY_AVERAGE_PRICE', '実在庫の平均仕入価格：');
+define('CATEGORY_AVERAGE_PRICE', '実在庫の平均仕入価格');
 define('CATEGORY_SHIKU_TEXT', '実&nbsp;在&nbsp;&nbsp;庫：&nbsp;');
 define('CATEGORY_GE_UNIT_TEXT', '個');
 define('CATEGORY_JIAKONGZAIKU_TEXT', '架空在庫：');
@@ -183,8 +183,8 @@ define('TABLE_HEADING_FETCHTIME_TEXT', '取引日');
 define('TABLE_HEADING_GESHU', '個数');
 define('TABLE_HEADING_DANJIA', '単価');
 define('TABLE_HEADING_OSTATUS', 'ステータス');
-define('CATEGORY_TOTALNUM_TEXT', '合計:');
-define('CATEGORY_AVERAGENUM_TEXT', '平均:'); 
+define('CATEGORY_TOTALNUM_TEXT', '合計');
+define('CATEGORY_AVERAGENUM_TEXT', '平均'); 
 define('TABLE_HEADING_JIAGE_TEXT', '価格');
 define('TABLE_HEADING_NUM_TEXT', '数量');
 define('CATEGORY_PRO_ZAIKU_TEXT', '在庫切れ');

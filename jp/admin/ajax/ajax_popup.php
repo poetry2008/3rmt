@@ -584,7 +584,7 @@ if ($_GET['action'] == 'show_category_info') {
       );
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
     $product_info_array[]['text'] = array(
-          array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1)),
+          array('params' => 'nowrap="nowrap"', 'text' => CATEGORY_AVERAGE_PRICE),
           array('text' => @display_price(tep_new_get_avg_by_pid($pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
         );
   }
@@ -678,7 +678,7 @@ if ($_GET['action'] == 'show_category_info') {
   
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
       $relate_product_info_array[]['text'] = array(
-            array('params' => 'nowrap="nowrap"', 'text' => mb_substr(CATEGORY_AVERAGE_PRICE,0, -1)),
+            array('params' => 'nowrap="nowrap"', 'text' => CATEGORY_AVERAGE_PRICE),
             array('text' => @display_price(tep_new_get_avg_by_pid($relate_pInfo)).CATEGORY_MONEY_UNIT_TEXT) 
           );
     }
@@ -835,7 +835,7 @@ if ($_GET['action'] == 'show_category_info') {
     $sum_quantity = tep_number_format($sum_quantity,',');
     $sum_quantity = display_quantity($sum_quantity);
     $product_history_row_quantity[]['text'] = array(
-          array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT) 
+          array('align' => 'right', 'text' => $sum_quantity.CATEGORY_GE_UNIT_TEXT.'') 
         );
     
     $product_history_row_quantity_str = $notice_box->get_table($product_history_row_quantity, '', $product_history_table_params); 
@@ -1198,7 +1198,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $copy_product_info = array();
   $copy_product_info[]['text'] = array(
-        array('text' => str_replace(':','',TEXT_INFO_CURRENT_CATEGORIES).tep_draw_hidden_field('products_id', $pInfo->products_id)),
+        array('text' => TEXT_INFO_CURRENT_CATEGORIES.tep_draw_hidden_field('products_id', $pInfo->products_id)),
         array('text' => tep_output_generated_category_path($pInfo->products_id, 'product'))
       );
   $copy_product_info[]['text'] = array(
@@ -1384,7 +1384,6 @@ if ($_GET['action'] == 'show_category_info') {
     }
   }
   $param_str = substr($param_str, 0, -1); 
-  
   $page_str = '';
   
   if (isset($_POST['search'])) {
@@ -3419,7 +3418,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $review_products_id_info = 0;
   }
   $contents[]['text'] = array(
-        array('text' => substr(TEXT_CATEGORY_SELECT, 0, -1)),
+        array('text' => TEXT_CATEGORY_SELECT),
         array('text' => tep_draw_pull_down_menu('review_products_id', tep_get_category_tree(),$review_products_id_info,'id="review_products_id" class="td_select" onchange="change_review_products_id(this,'.$_GET['page'].','.$rID.','.$_GET['site_id'].')"'.$str_disabled) .'<input type="hidden" id="r_cid" value="'.$df_cid.'">') 
     );
    $result = tep_db_query(" SELECT products_name, p.products_id, cd.categories_name, ptc.categories_id FROM " . TABLE_PRODUCTS . " p LEFT JOIN " .  TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id where pd.language_id = '" . (int)$languages_id . "' and cd.site_id = '0' and pd.site_id = '0' ORDER BY categories_name");
@@ -3477,7 +3476,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
       $error_add_id = '<br><span id="p_error" style="color:#ff0000;">'.TEXT_CLEAR_SELECTION.'</span>'; 
     }
     $contents[]['text'] = array(
-        array('text' => substr(ENTRY_PRODUCT, 0, -1)),
+        array('text' => ENTRY_PRODUCT),
         array('text' => $review_select.$ProductOptions.$review_select_end.$error_add_id),
         array('text' => '<input type="hidden" id="hidden_select" name="hidden_select" value="'.$df_pid.'"><input type="hidden" name="hidden_products_name" value="'.$rInfo->products_id.'">'.'<input type="hidden" id="r_pid" value="'.$df_pid.'">')
     );
@@ -3568,11 +3567,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $date_posted .= '</select>';
 
   $contents[]['text'] = array(
-        array('text' => substr(ENTRY_DATE, 0, -1)),
+        array('text' => ENTRY_DATE),
         array('text' => $date_posted)
     );
   $contents[]['text'] = array(
-        array('text' => substr(ENTRY_FROM, 0, -1)),
+        array('text' => ENTRY_FROM),
         array('text' => '<input type="text" id="customers_name" name="customers_name" value="'.tep_output_string_protected($rInfo->customers_name).'"'.$str_disabled.' />')
     );
     $review_radio = '';
@@ -3590,11 +3589,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
      }
     }
     $contents[]['text'] = array(
-        array('text' => substr(ENTRY_RATING, 0, -1)),
+        array('text' => ENTRY_RATING),
         array('text' =>  TEXT_BAD.$review_radio.TEXT_GOOD)
     );
     $contents[]['text'] = array(
-        array('text' => substr(TEXT_INFO_REVIEW_READ, 0, -1)),
+        array('text' => TEXT_INFO_REVIEW_READ),
         array('text' =>  $rInfo->reviews_read)
     );
     if($rInfo->reviews_text_size == null){
@@ -3603,11 +3602,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         $reviews_average_query = tep_db_query(" select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $reviews['products_id'] . "' ");
         $reviews_average_row = tep_db_fetch_array($reviews_average_query);
     $contents[]['text'] = array(
-        array('text' => substr(TEXT_INFO_REVIEW_SIZE, 0, -1)),
+        array('text' => TEXT_INFO_REVIEW_SIZE),
         array('text' =>  $reviews_text_row['reviews_text_size'] . ' bytes')
     );
     $contents[]['text'] = array(
-        array('text' => substr(TEXT_INFO_PRODUCTS_AVERAGE_RATING, 0, -1)),
+        array('text' => TEXT_INFO_PRODUCTS_AVERAGE_RATING),
         array('text' =>  number_format($reviews_average_row['average_rating'], 2) . '%')
     );
     }
@@ -3625,11 +3624,11 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     $str_rstatus .= '<input type="hidden" value="0" id="r_status">';
   }
   $contents[]['text'] = array(
-    array('text' => substr(TEXT_PRODUCTS_STATUS, 0, -1)),
+    array('text' => TEXT_PRODUCTS_STATUS),
     array('text' => $str_rstatus)
   );
   $contents[]['text'] = array(
-      array('text' => substr(ENTRY_REVIEW, 0, -1)),
+      array('text' => ENTRY_REVIEW),
       array('text' => tep_draw_textarea_field('reviews_text', 'soft', '60', '15', $rInfo->reviews_text, 'style="resize: vertical;" id="reviews_text" onkeypress="word_count(this)" onchange="word_count(this)"'.$str_disabled))
   );
 
@@ -5055,15 +5054,15 @@ if($_GET['cID'] != -1){
          array('text' => $site_id_name)
        );
     $customers_guest_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_FIRST_NAME)),
+         array('params' => 'nowrap="nowrap"','text' => ENTRY_FIRST_NAME),
          array('text' => tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'id="customers_firstname"style="width:60%" maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="customers_firstname_error"></span>')
        );
     $customers_guest_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_LAST_NAME)),
+         array('params' => 'nowrap="nowrap"','text' => ENTRY_LAST_NAME),
          array('text' => tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'id="customers_lastname" style="width:60%" maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="customers_lastname_error"></span>')
        );
       $customers_guest_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => str_replace(':','',ENTRY_EMAIL_ADDRESS)),
+         array('params' => 'nowrap="nowrap"','text' => ENTRY_EMAIL_ADDRESS),
          array('text' => tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'id="customers_email_address" style="width:60%" maxlength="96" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="error_email"></span><span id="check_email"></span> <span id="error_email_info"></span><input type="hidden" id="customers_email_address_value" value="'.$cInfo->customers_email_address.'"')
        );
      $customers_guest_str = $notice_box->get_table($customers_guest_row, '', $customers_guest_params);  
@@ -5089,7 +5088,7 @@ if($_GET['cID'] != -1){
      $customers_newsletter_row = array();
      $customers_newsletter_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');
      $customers_newsletter_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap" width="30%"','text' => str_replace(':','',ENTRY_NEWSLETTER)),
+         array('params' => 'nowrap="nowrap" width="30%"','text' => ENTRY_NEWSLETTER),
          array('text' => '<span>'.tep_draw_pull_down_menu('customers_newsletter', $newsletter_array, $cInfo->customers_newsletter,($disabled?$disabled:$is_active_single)).'</span>')
        );
       if ($cInfo->is_quited == 1) {
@@ -5172,20 +5171,20 @@ if($_GET['cID'] != -1){
           $customers_fax = $cInfo->customers_fax;
         }
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap" width="30%"','text' => str_replace(':','',CUSTOMER_COMMUNITY_SEARCH_TEXT)),
+         array('params' => 'nowrap="nowrap" width="30%"','text' => CUSTOMER_COMMUNITY_SEARCH_TEXT),
          array('text' => '<textarea '.($disabled?$disabled:$is_active_single).' name="customers_fax" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:60%;height:42px;*height:40px;">'.$customers_fax.'</textarea>')
        );
       }
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_INFO_DATE_LAST_LOGON, 0, -1)),
+         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_DATE_LAST_LOGON),
          array('text' => tep_date_short($nInfo->date_last_logon))
        );
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_INFO_NUMBER_OF_LOGONS, 0, -1)),
+         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_LOGONS),
          array('text' => $nInfo->number_of_logons)
        );
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_CUSTOMERS_ORDER_COUNT, 0, -1)),
+         array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_ORDER_COUNT),
          array('text' => tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
        );
         //预约次数
@@ -5194,7 +5193,7 @@ if($_GET['cID'] != -1){
          array('text' => tep_get_preorders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
        );
         $customers_fax_row[]['text'] = array(
-         array('params' => 'nowrap="nowrap"','text' => substr(TEXT_INFO_NUMBER_OF_REVIEWS, 0, -1)),
+         array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_REVIEWS),
          array('text' => $nInfo->number_of_reviews)
        );
        $customers_fax_row[]['text'] = array(
