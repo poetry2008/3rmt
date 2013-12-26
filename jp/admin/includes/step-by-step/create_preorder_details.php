@@ -149,9 +149,9 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
               $orders_products_attributes_array = $_SESSION['create_preorder']['orders_products_attributes'][$new_products_temp_add['products_id']];
               for ($j=0; $j<sizeof($orders_products_attributes_array); $j++) {
                 echo '<div class="order_option_list"><small>&nbsp;<i><div
-                  class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['title'], array("'"=>"&quot;"))) . ': ' . 
+                  class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))) . ': ' . 
                   '</div><div class="order_option_value">' . 
-                  str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['value'], array("'"=>"&quot;"))); 
+                  str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
                 echo isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : (int)$orders_products_attributes_array[$j]['options_values_price'];
@@ -400,7 +400,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       foreach ($_POST as $op_key => $op_value) {
         $op_pos = substr($op_key, 0, 3);
         if ($op_pos == 'op_') {
-          echo "<input type='hidden' name='".$op_key."' value='".tep_parse_input_field_data(stripslashes($op_value), array("'" => "&quot;"))."'>"; 
+          echo "<input type='hidden' name='".$op_key."' value='".tep_parse_input_field_data(stripslashes($op_value), array("'" => "&#39;",'"'=>"&#34;"))."'>"; 
         }
       }
       echo "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

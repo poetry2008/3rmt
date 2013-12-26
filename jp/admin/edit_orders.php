@@ -1240,8 +1240,8 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
             if (sizeof($order->products[$i]['attributes']) > 0) {
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                $products_ordered_mail .=  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
-                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&quot;"));
+                $products_ordered_mail .=  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
+                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&#39;",'"'=>"&#34;"));
                 if ($order->products[$i]['attributes'][$j]['price'] != '0') {
                   $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
                 }
@@ -4678,16 +4678,16 @@ if (($action == 'edit') && ($order_exists == true)) {
         }
         $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         if(is_array($all_show_option[$t_item_id]['option_info'])){
-        $default_value = strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")) == '' ? TEXT_UNSET_DATA : strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
+        $default_value = strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;")) == '' ? TEXT_UNSET_DATA : strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
-          .tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
+          .tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&#39;",'"'=>"&#34;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))) . "'>" .
           '</div><div class="order_option_value">: ';
         if ($is_less_option) {
           echo $default_value; 
         } else {
-          echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))."\",\"".$item_list."\")' href='javascript:void(0);'><u>".$default_value."</u></a>";
+          echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."\",\"".$item_list."\")' href='javascript:void(0);'><u>".$default_value."</u></a>";
         }
-        echo "<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?strtr($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")));
+        echo "<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?strtr($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&#39;",'"'=>"&#34;")):strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;")));
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
           if ($is_less_option) {
@@ -4703,7 +4703,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         foreach ($order->products[$i]['attributes'] as $ex_key => $ex_value) {
           if (!in_array($ex_value['id'], $op_include_array)) {
              echo '<br>';
-             echo '<div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - '.tep_parse_input_field_data($ex_value['option_info']['title'], array("'"=>"&quot;"));
+             echo '<div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - '.tep_parse_input_field_data($ex_value['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"));
              echo "<input type='hidden' class='option_input_width' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][option]' value='".(isset($_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['option'])?:$ex_value['option_info']['title'])."'></div><div class=\"order_option_value\">: ".$ex_value['option_info']['value']."<input type='hidden' name='update_products[".$orders_products_id."][attributes][".$ex_value['id']."][value]'class='option_input_width' value='".$ex_value['option_info']['value']."'></div></div>";
              echo '<div class="order_option_price">';
              $tmp_op_price = (int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$ex_value['id']]['price']:$ex_value['price']);   
@@ -5387,9 +5387,9 @@ if($index_num > 0){
               for ($j=0; $j<sizeof($new_products_temp_add[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $new_products_temp_add[$i]['attributes'][$j]['id'];
                 echo '<div class="order_option_list"><small>&nbsp;<i><div
-                  class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($new_products_temp_add[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . ': ' . 
+                  class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($new_products_temp_add[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))) . ': ' . 
                   '</div><div class="order_option_value">' . 
-                  str_replace(array("<br>", "<BR>"), '', strtr($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"))); 
+                  str_replace(array("<br>", "<BR>"), '', strtr($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
                 if ((int)$new_products_temp_add[$i]['attributes'][$j]['price'] < 0) {
@@ -5629,7 +5629,7 @@ if($index_num > 0){
     {
       $op_pos = substr($op_key, 0, 3); 
       if ($op_pos == 'op_') {
-        print "<input type='hidden' name='".$op_key."' value='".strtr(stripslashes($op_value), array("'" => "&quot;"))."'>";
+        print "<input type='hidden' name='".$op_key."' value='".strtr(stripslashes($op_value), array("'" => "&#39;",'"'=>"&#34;"))."'>";
       } 
     }
     print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

@@ -150,6 +150,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        }
       $default_value = stripslashes($default_value);
+      $default_value = strtr($default_value,array("'"=>"&#39;",'"'=>"&#34;"));
       if(NEW_STYLE_WEB===true){
          $style_width = 'style="width:43%"';
       }
