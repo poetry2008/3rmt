@@ -2,6 +2,7 @@
 require_once('includes/application_top.php');
 require_once('includes/step-by-step/new_application_top.php');
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
+$current_language = $language;
 include(DIR_WS_CLASSES . 'order.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 require('option/HM_Option.php');

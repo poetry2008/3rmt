@@ -16,6 +16,7 @@ include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 $ad_option = new AD_Option();
 $billing_option = new AD_Option();
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
+$current_language = $language;
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
@@ -5571,7 +5572,8 @@ if($index_num > 0){
     print "<td class='dataTableContent' align='right'>&nbsp;</td>\n";
     print "</tr>\n";
   }
-  
+   
+  $language = $current_language;
   $hm_option = new HM_Option();
   
   if (($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
