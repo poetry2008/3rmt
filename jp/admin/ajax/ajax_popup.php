@@ -4287,12 +4287,12 @@ if($site_id == 0){
           array('text' => '<div id="user_select" class="user_select" style="display:none">'.tep_get_user_select($selected_user).'</div>')
       );
      $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA), 
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA), 
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
          );
      $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA),
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA),
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
       );
       $button[] = "<input ".$disable." style='font-size:12px' type='button' value='".IMAGE_SAVE."' onclick=\"valdata('".$ocertify->npermission."')\" id='button_save'>" .  '&nbsp;' .  "<input style='font-size:12px' type='button' ".$disable."  onclick='hidden_info_box()' value='".TEXT_BUTTON_CLEAR."'>"; 
       if(!empty($button)){

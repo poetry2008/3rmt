@@ -1,6 +1,62 @@
 <?php
 require('includes/application_top.php');
 require(DIR_FS_ADMIN . 'classes/notice_box.php');
+        if($_GET['sort'] == 'priority'){
+           if($_GET['type'] == 'desc'){
+               $id_priority = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_priority = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
+        if($_GET['sort'] == 'loginurl'){
+           if($_GET['type'] == 'desc'){
+               $id_loginurl = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_loginurl = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
+        if($_GET['sort'] == 'title'){
+           if($_GET['type'] == 'desc'){
+               $id_title = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_title = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
+        if($_GET['sort'] == 'username'){
+           if($_GET['type'] == 'desc'){
+               $id_username = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_username = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
+        if($_GET['sort'] == 'password'){
+           if($_GET['type'] == 'desc'){
+               $id_password = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_password = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
+        if($_GET['sort'] == 'operator'){
+           if($_GET['type'] == 'desc'){
+               $id_operator = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_operator = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
+        if($_GET['sort'] == 'nextdate'){
+           if($_GET['type'] == 'desc'){
+               $id_nextdate = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_nextdate = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
+        if($_GET['sort'] == 'updated_at'){
+           if($_GET['type'] == 'desc'){
+               $id_updated_at = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+            }else{
+               $id_updated_at = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+            }
+        }
 if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
   define('MAX_DISPLAY_PW_MANAGER_LOG_RESULTS',20);
   if($ocertify->npermission < 15){
@@ -415,41 +471,45 @@ require("includes/note_js.php");
        $manager_title_row = array();
        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<input type="checkbox" name="all_check" onclick="all_select_pw_manager_log(\'pw_manager_log_id[]\');">');
       if ($HTTP_GET_VARS['sort'] == 'priority') {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=priority&type='.$type_str).'">'.TEXT_PRIORITY.'</a> ');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=priority&type='.$type_str).'">'.TEXT_PRIORITY.$id_priority.'</a> ');
       } else {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=priority&type=asc').'">'.TEXT_PRIORITY.'</a> ');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=priority&type=asc').'">'.TEXT_PRIORITY.$id_priority.'</a> ');
       }
       if ($HTTP_GET_VARS['sort'] == 'loginurl') {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=loginurl&type='.$type_str).'">'.TEXT_LOGINURL.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=loginurl&type='.$type_str).'">'.TEXT_LOGINURL.$id_loginurl.'</a>');
       } else {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=loginurl&type=asc').'">'.TEXT_LOGINURL.'</a> ');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=loginurl&type=asc').'">'.TEXT_LOGINURL.$id_loginurl.'</a> ');
       }
       if ($HTTP_GET_VARS['sort'] == 'title') {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type='.$type_str).'">'.TEXT_INFO_TITLE.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type='.$type_str).'">'.TEXT_INFO_TITLE.$id_title.'</a>');
       } else {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER_LOG, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type=asc').'">'.TEXT_INFO_TITLE.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=title&type=asc').'">'.TEXT_INFO_TITLE.$id_title.'</a>');
       }
       if ($HTTP_GET_VARS['sort'] == 'username') {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=username&type='.$type_str).'">'.TEXT_USERNAME.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=username&type='.$type_str).'">'.TEXT_USERNAME.$id_username.'</a>');
       } else {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=username&type=asc').'">'.TEXT_USERNAME.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=username&type=asc').'">'.TEXT_USERNAME.$id_username.'</a>');
       }
       if ($HTTP_GET_VARS['sort'] == 'password') {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=password&type='.$type_str).'">'.TEXT_PASSWORD.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=password&type='.$type_str).'">'.TEXT_PASSWORD.$id_password.'</a>');
       } else {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=password&type=asc').'">'.TEXT_PASSWORD.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=password&type=asc').'">'.TEXT_PASSWORD.$id_password.'</a>');
       }
       if ($HTTP_GET_VARS['sort'] == 'operator') {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type='.$type_str).'">'.TEXT_PRIVILEGE.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type='.$type_str).'">'.TEXT_PRIVILEGE.$id_operator.'</a>');
       } else {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type=asc').'">'.TEXT_PRIVILEGE.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=operator&type=asc').'">'.TEXT_PRIVILEGE.$id_operator.'</a>');
       }
       if ($HTTP_GET_VARS['sort'] == 'nextdate') {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type='.$type_str).'">'.TEXT_NEXTDATE.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type='.$type_str).'">'.TEXT_NEXTDATE.$id_nextdate.'</a>');
       } else {
-        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=asc').'">'.TEXT_NEXTDATE.'</a>');
+        $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=asc').'">'.TEXT_NEXTDATE.$id_nextdate.'</a>');
       }
-       $manager_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_ACTION);
+      if ($HTTP_GET_VARS['sort'] == 'updated_at') {
+       $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=updated_at&type='.$type_str).'">'.TABLE_HEADING_ACTION.$id_updated_at.'</a>');
+      }else{
+       $manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => ' <a href="'.tep_href_link(FILENAME_PW_MANAGER, tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=updated_at&type=desc').'">'.TABLE_HEADING_ACTION.$id_updated_at.'</a>');
+      }
        $manager_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $manager_title_row);
     if(isset($site_id)&&$site_id){
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
@@ -499,7 +559,7 @@ require("includes/note_js.php");
       } else {
         $nowColor = $odd; 
       }
-    if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) {
+    if (isset($pwInfo) && (is_object($pwInfo)) && (($pw_manager_row['id'] == $_GET['log_id'])) ) {
         $manager_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"' . "\n";
     } else {
         $manager_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
@@ -515,32 +575,32 @@ require("includes/note_js.php");
         case '3':
             $priority_str .="red";
           break;
-
       }
       $priority_str .= "' >".$pw_manager_row['priority']."</font>";
       $manager_info = array();
+      $manager_info_str = 'onclick="document.location.href=\''.tep_href_link(FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&page=' . $_GET['page']. '&pw_id=' .$_GET['pw_id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&log_id='.$pw_manager_row['id']).'\'"';
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent" ',
           'text'   => '<input type="checkbox" name="pw_manager_log_id[]" value="'.$pw_manager_row['id'].'">'
           );
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => $priority_str
           );
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => $pw_manager_row['loginurl']
           );
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => mb_substr($pw_manager_row['title'],0,12,'utf-8')
           );
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => mb_substr($pw_manager_row['username'],0,8,'utf-8')
           );
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => mb_substr($pw_manager_row['password'],0,8,'utf-8')
           );
         if($pw_manager_row['privilege'] =='7'){
@@ -556,11 +616,11 @@ require("includes/note_js.php");
          }
         }
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => $info
           );
       $manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => $pw_manager_row['nextdate']
           );
       if($site_id == ''){
@@ -1728,62 +1788,6 @@ require("includes/note_js.php");
          <tr>
           <td valign="top">
        <?php 
-        if($_GET['sort'] == 'priority'){
-           if($_GET['type'] == 'desc'){
-               $id_priority = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_priority = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
-        if($_GET['sort'] == 'loginurl'){
-           if($_GET['type'] == 'desc'){
-               $id_loginurl = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_loginurl = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
-        if($_GET['sort'] == 'title'){
-           if($_GET['type'] == 'desc'){
-               $id_title = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_title = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
-        if($_GET['sort'] == 'username'){
-           if($_GET['type'] == 'desc'){
-               $id_username = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_username = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
-        if($_GET['sort'] == 'password'){
-           if($_GET['type'] == 'desc'){
-               $id_password = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_password = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
-        if($_GET['sort'] == 'operator'){
-           if($_GET['type'] == 'desc'){
-               $id_operator = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_operator = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
-        if($_GET['sort'] == 'nextdate'){
-           if($_GET['type'] == 'desc'){
-               $id_nextdate = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_nextdate = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
-        if($_GET['sort'] == 'updated_at'){
-           if($_GET['type'] == 'desc'){
-               $id_updated_at = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
-            }else{
-               $id_updated_at = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
-            }
-        }
        echo'<input type="hidden" id="pw_manager_sort" value="'.$_GET['sort'].'"><input type="hidden" id="pw_manager_type" value="'.$_GET['type'].'"><input type="hidden" id="pw_manager_keywords" value="'.$_GET['keywords'].'"><input type="hidden" id="pw_manager_search_type" value="'.$_GET['search_type'].'">';
        $pw_manager_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
        $notice_box = new notice_box('','',$pw_manager_table_params);
@@ -1826,9 +1830,9 @@ require("includes/note_js.php");
        $pw_manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('id_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=desc').'">'.TEXT_NEXTDATE.$id_nextdate.'</a>');
       }
      if ($HTTP_GET_VARS['sort'] == 'updated_at') {
-       $pw_manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','align' => 'right','text' =>'<a href="'.tep_href_link('id_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=updated_at&type='.$type_str).'">'.TABLE_HEADING_ACTION.$id_update_date.'</a>');
+       $pw_manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','align' => 'right','text' =>'<a href="'.tep_href_link('id_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=updated_at&type='.$type_str).'">'.TABLE_HEADING_ACTION.$id_updated_at.'</a>');
      }else{
-       $pw_manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','align' => 'right','text' =>'<a href="'.tep_href_link('id_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=updated_at&type=desc').'">'.TABLE_HEADING_ACTION.$id_update_date.'</a>');
+       $pw_manager_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','align' => 'right','text' =>'<a href="'.tep_href_link('id_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=updated_at&type=desc').'">'.TABLE_HEADING_ACTION.$id_updated_at.'</a>');
      }
        $pw_manager_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $pw_manager_title_row);
       ?>
@@ -1852,7 +1856,7 @@ require("includes/note_js.php");
         $nowColor = $odd; 
       }
     $pw_manager_info = array();
-    if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) {
+    if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $_GET['pw_id']) ) {
       $pw_manager_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
     } else {
       $pw_manager_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
@@ -1871,21 +1875,22 @@ require("includes/note_js.php");
 
       }
       $priority_str .= "' >".$pw_manager_row['priority']."</font>";
+      $manager_info_str = 'onclick="document.location.href=\''.tep_href_link(FILENAME_PW_MANAGER, 'sort='.$_GET['sort'].'&type='.$_GET['type'].'&page=' . $_GET['page'].  '&pw_id=' .$_GET['pw_id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').'&pw_id='.$pw_manager_row['id']).'\'"';
       $pw_manager_info[] = array(
           'params' => 'class="dataTableContent"',
           'text'   => '<input type="checkbox" name="pw_manager_id[]" value="'.$pw_manager_row['id'].'">'
       );
  
       $pw_manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => $priority_str 
       );
       $pw_manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => '<a target="_blank" href="'.make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL).'">'.tep_image_button('button_url.gif',IMAGE_CREATE).  '<a>'
       );
       $pw_manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => '<a target="_blank" href="'.make_blank_url($pw_manager_row['url'],FILENAME_REDIREC_URL).'">'.mb_substr($pw_manager_row['title'],0,12,'utf-8').'</a>'
       );
       $pw_manager_info[] = array(
@@ -1909,11 +1914,11 @@ require("includes/note_js.php");
          }
         }
       $pw_manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => $info
       );
       $pw_manager_info[] = array(
-          'params' => 'class="dataTableContent"',
+          'params' => 'class="dataTableContent"'.$manager_info_str,
           'text'   => $pw_manager_row['nextdate'] 
       );
 
