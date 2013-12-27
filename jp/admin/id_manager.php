@@ -1889,7 +1889,7 @@ require("includes/note_js.php");
       );
       $pw_manager_info[] = array(
           'params' => 'class="dataTableContent"'.$manager_info_str,
-          'text'   => '<a target="_blank" href="'.make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL).'">'.tep_image_button('button_url.gif',IMAGE_CREATE).  '<a>'
+          'text'   => '<a target="_blank" href="'.make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL).'">'.tep_image_button('button_url.gif','img').  '<a>'
       );
       $pw_manager_info[] = array(
           'params' => 'class="dataTableContent"'.$manager_info_str,
