@@ -119,6 +119,7 @@ if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
 <?php //执行动作?>
 function toggle_idpw_log_action(idpwd_url_str, c_permission)
 {
+if (confirm('<?php echo TEXT_DEL_PW_MANAGER;?>')) {
   if (c_permission == 31) {
     window.location.href = idpwd_url_str; 
   } else {
@@ -153,6 +154,7 @@ function toggle_idpw_log_action(idpwd_url_str, c_permission)
       }
     });
   }
+ }
 }
 <?php //AJAX弹出页面?>
 function show_pw_manager_log(ele,pw_id,page,site_id,pw_l_id){
