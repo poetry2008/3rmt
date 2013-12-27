@@ -295,7 +295,6 @@ require("includes/note_js.php");
 <?php
   $heading = array();
   $contents = array();
-  $explanation = TEXT_ORDERS_STATUS_DESCRIPTION;
   switch (isset($_GET['action'])?$_GET['action']:null) {
 /* -----------------------------------------------------
    case 'new' 右侧新建订单状态页面    
