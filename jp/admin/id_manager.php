@@ -635,7 +635,7 @@ require("includes/note_js.php");
           );
 $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_info);
     }
-       $manager_form = tep_draw_form('del_pw_manager_log', FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&page=' .  $_GET['page'] . '&pw_id='.$_GET['pw_id'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
+       $manager_form = tep_draw_form('del_pw_manager_log', FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&page=' .  $_GET['page'] .  '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id='.$_GET['pw_id'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
        $notice_box->get_form($manager_form);
        $notice_box->get_contents($manager_table_row);
        $notice_box->get_eof(tep_eof_hidden());
@@ -1934,7 +1934,7 @@ require("includes/note_js.php");
       );
     $pw_manager_table_row[] = array('params' => $pw_manager_params,'text' => $pw_manager_info);
     }
-   $pw_manager_form = tep_draw_form('del_pw_manager', FILENAME_PW_MANAGER, 'page=' .  $_GET['page'] . '&pw_id=' . $pwInfo->id . '&site_id='.$_GET['site_id'].'&action=deleteconfirm');
+   $pw_manager_form = tep_draw_form('del_pw_manager', FILENAME_PW_MANAGER, 'page=' .  $_GET['page'] . '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id=' . $pwInfo->id . '&site_id='.$_GET['site_id'].'&action=deleteconfirm');
    $notice_box->get_form($pw_manager_form);
    $notice_box->get_contents($pw_manager_table_row);
    $notice_box->get_eof(tep_eof_hidden());
