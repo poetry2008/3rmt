@@ -17,7 +17,7 @@ define('TEXT_ITEM_CHARACTER_UNIT', '文字');
 define('TEXT_ITEM_CHECK_READ', '入力可能文字タイプ');
 define('TEXT_ITEM_INPUT_MAX_READ', '入力可能文字数の上限');
 define('TEXT_ITEM_CHECK_TYPE_ALL', '全て');
-define('TEXT_ITEM_CHECK_TYPE_JAP', 'カタカナ');
+define('TEXT_ITEM_CHECK_TYPE_JAP', 'カナ');
 define('TEXT_ITEM_CHECK_TYPE_ALPHA_NUM', '英数字');
 define('TEXT_ITEM_CHECK_TYPE_ALPHA', 'アルファベット');
 define('TEXT_ITEM_CHECK_TYPE_NUM', '数値');
