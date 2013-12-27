@@ -739,6 +739,7 @@ if($index > 0){
           print "<td class='dataTableContent'>&nbsp;</td>\n";
           print "</tr>\n";
         }
+        $language = $current_language;
         $hm_option = new HM_Option();
         if(($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
           if (!$hm_option->check()) {
