@@ -92,7 +92,7 @@ if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
         tep_db_query("delete from " . TABLE_IDPW_LOG . " where id = '" .tep_db_input($pwlid) . "'");
         }
         }
-        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&page='. $_GET['page'].'&pw_id='.$pwid.'&site_id='.$site_id));
+        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='. $_GET['page'].'&pw_id='.$pwid.'&site_id='.$site_id));
         break;
     }
   }
@@ -868,7 +868,7 @@ if(isset($_GET['action']) &&
         tep_db_query($sql_del);
         $sql_del_log = 'delete from '.TABLE_IDPW_LOG.' where idpw_id = "'.$pwid.'"';
         tep_db_query($sql_del_log);
-        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'page=' .  $_GET['page'].'&site_id='.$_GET['site_id']));
+        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$_GET['site_id']));
         break;
 
     }
