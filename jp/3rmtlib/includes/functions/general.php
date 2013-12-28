@@ -6213,6 +6213,7 @@ function tep_check_less_product_option($check_type = false)
       $option_front_item_array = array(); 
       $option_front_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$products_exists['belong_to_option']."' and status = '1' and place_type = '0'");  
       while ($option_front_item = tep_db_fetch_array($option_front_item_query)) {
+        //如果没有选项值存在，此选项不计数
         $option_flag = false;
         $option_str_array = array();
         if($option_front_item['type'] == 'select'){
@@ -6231,6 +6232,7 @@ function tep_check_less_product_option($check_type = false)
       $option_back_item_array = array(); 
       $option_back_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$products_exists['belong_to_option']."' and status = '1' and place_type = '1'");  
       while ($option_back_item = tep_db_fetch_array($option_back_item_query)) {
+        //如果没有选项值存在，此选项不计数
         $option_flag = false;
         $option_str_array = array();
         if($option_back_item['type'] == 'select'){
@@ -6425,6 +6427,7 @@ function tep_pre_check_less_product_option($products_id)
     $tmp_op_array = array(); 
     $item_list_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$exists_products['belong_to_option']."' and status = '1' and place_type = '1'"); 
     while ($item_list = tep_db_fetch_array($item_list_query)) {
+        //如果没有选项值存在，此选项不计数
         $option_flag = false;
         $option_str_array = array();
         if($item_list['type'] == 'select'){
@@ -6544,6 +6547,7 @@ function tep_pre_check_less_product_option_by_products_info($op_info_array, $pro
     $tmp_op_array = array(); 
     $item_list_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$exists_products['belong_to_option']."' and status = '1' and place_type = '0'"); 
     while ($item_list = tep_db_fetch_array($item_list_query)) {
+        //如果没有选项值存在，此选项不计数
         $option_flag = false;
         $option_str_array = array();
         if($item_list['type'] == 'select'){
