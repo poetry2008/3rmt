@@ -92,7 +92,7 @@ if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
         tep_db_query("delete from " . TABLE_IDPW_LOG . " where id = '" .tep_db_input($pwlid) . "'");
         }
         }
-        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&page='. $_GET['page'].'&pw_id='.$pwid.'&site_id='.$site_id));
+        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='. $_GET['page'].'&pw_id='.$pwid.'&site_id='.$site_id));
         break;
     }
   }
@@ -119,6 +119,7 @@ if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
 <?php //执行动作?>
 function toggle_idpw_log_action(idpwd_url_str, c_permission)
 {
+if (confirm('<?php echo TEXT_DEL_PW_MANAGER;?>')) {
   if (c_permission == 31) {
     window.location.href = idpwd_url_str; 
   } else {
@@ -153,6 +154,7 @@ function toggle_idpw_log_action(idpwd_url_str, c_permission)
       }
     });
   }
+ }
 }
 <?php //AJAX弹出页面?>
 function show_pw_manager_log(ele,pw_id,page,site_id,pw_l_id){
@@ -633,7 +635,7 @@ require("includes/note_js.php");
           );
 $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_info);
     }
-       $manager_form = tep_draw_form('del_pw_manager_log', FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&page=' .  $_GET['page'] . '&pw_id='.$_GET['pw_id'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
+       $manager_form = tep_draw_form('del_pw_manager_log', FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&page=' .  $_GET['page'] .  '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id='.$_GET['pw_id'].'&site_id='.$_GET['site_id'].'&action=deleteconfirm');
        $notice_box->get_form($manager_form);
        $notice_box->get_contents($manager_table_row);
        $notice_box->get_eof(tep_eof_hidden());
@@ -866,7 +868,7 @@ if(isset($_GET['action']) &&
         tep_db_query($sql_del);
         $sql_del_log = 'delete from '.TABLE_IDPW_LOG.' where idpw_id = "'.$pwid.'"';
         tep_db_query($sql_del_log);
-        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'page=' .  $_GET['page'].'&site_id='.$_GET['site_id']));
+        tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$_GET['site_id']));
         break;
 
     }
@@ -1887,7 +1889,7 @@ require("includes/note_js.php");
       );
       $pw_manager_info[] = array(
           'params' => 'class="dataTableContent"'.$manager_info_str,
-          'text'   => '<a target="_blank" href="'.make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL).'">'.tep_image_button('button_url.gif',IMAGE_CREATE).  '<a>'
+          'text'   => '<a target="_blank" href="'.make_blank_url($pw_manager_row['loginurl'],FILENAME_REDIREC_URL).'">'.tep_image_button('button_url.gif','img').  '<a>'
       );
       $pw_manager_info[] = array(
           'params' => 'class="dataTableContent"'.$manager_info_str,
@@ -1932,7 +1934,7 @@ require("includes/note_js.php");
       );
     $pw_manager_table_row[] = array('params' => $pw_manager_params,'text' => $pw_manager_info);
     }
-   $pw_manager_form = tep_draw_form('del_pw_manager', FILENAME_PW_MANAGER, 'page=' .  $_GET['page'] . '&pw_id=' . $pwInfo->id . '&site_id='.$_GET['site_id'].'&action=deleteconfirm');
+   $pw_manager_form = tep_draw_form('del_pw_manager', FILENAME_PW_MANAGER, 'page=' .  $_GET['page'] . '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id=' . $pwInfo->id . '&site_id='.$_GET['site_id'].'&action=deleteconfirm');
    $notice_box->get_form($pw_manager_form);
    $notice_box->get_contents($pw_manager_table_row);
    $notice_box->get_eof(tep_eof_hidden());
