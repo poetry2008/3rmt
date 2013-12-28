@@ -40,3 +40,4 @@ define('TEXT_ITEM_PIC_NAME', '图像');
 define('TEXT_ITEM_DELETE_PIC', '清除');
 define('ERROR_OPTION_ITEM_RADIO_IS_SAME', '选择项的内容不能重复。');
 define('TEXT_OPTION_MUST_SELECT', '请至少选择一项');
+define('TEXT_OPTION_MUST_ENTER', '请至少填写一项');

@@ -40,3 +40,4 @@ define('TEXT_ITEM_PIC_NAME', '画像');
 define('TEXT_ITEM_DELETE_PIC', 'クリア');
 define('ERROR_OPTION_ITEM_RADIO_IS_SAME', '選択肢の内容を繰り返すことができません。');
 define('TEXT_OPTION_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
+define('TEXT_OPTION_MUST_ENTER', '少なくとも1つの項目を入力してください。');
