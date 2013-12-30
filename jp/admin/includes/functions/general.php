@@ -10038,7 +10038,20 @@ function tep_check_less_option_product($opa_id, $is_pre_single = false)
       if (tep_db_num_rows($item_list_raw)) {
         $item_list_array = array();
         while ($item_list = tep_db_fetch_array($item_list_raw)) {
-          $item_list_array[] = $item_list; 
+          //如果没有选项值存在，此选项不计数
+          $option_flag = false;
+          $option_str_array = array();
+          if($item_list['type'] == 'select'){
+
+            $option_str_array = unserialize($item_list['option']);  
+            if(!isset($option_str_array['se_option']) || empty($option_str_array['se_option'])){
+
+              $option_flag = true;
+            }
+          }
+          if($option_flag == false){
+            $item_list_array[] = $item_list; 
+          }
         }
         $orders_attr_array = array(); 
         if ($is_pre_single) {
@@ -10177,7 +10190,20 @@ function tep_check_less_option_product_by_products_id($products_id, $pro_attr_in
     $item_list_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$exists_product['belong_to_option']."' and status = '1'");
     if (tep_db_num_rows($item_list_query)) {
       while ($item_list = tep_db_fetch_array($item_list_query)) {
-        $item_list_array[] = $item_list; 
+          //如果没有选项值存在，此选项不计数
+          $option_flag = false;
+          $option_str_array = array();
+          if($item_list['type'] == 'select'){
+
+            $option_str_array = unserialize($item_list['option']);  
+            if(!isset($option_str_array['se_option']) || empty($option_str_array['se_option'])){
+
+              $option_flag = true;
+            }
+          }
+          if($option_flag == false){
+            $item_list_array[] = $item_list; 
+          }
       }
       $op_num = count($item_list_array); 
       if (!empty($pro_attr_info)) {

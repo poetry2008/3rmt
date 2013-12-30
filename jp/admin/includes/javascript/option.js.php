@@ -558,6 +558,33 @@ function check_item_info()
 {
   var item_title = document.getElementById('title').value; 
   var item_front_title = document.getElementById('front_title').value; 
+  if($("#type").val() == 'Select'){
+    var option_flag = 'false';
+    $(".option_text").each(function() {
+      var option_text_name = $(this).attr("name");
+      if(option_text_name.substr(0,3) == 'op_'){
+        var option_str = $(this).val();
+        option_str = option_str.replace(/\s/g,'');
+        option_str = option_str.replace(/　/g,'');
+        if(option_str != ''){
+          option_flag = 'true';
+        }
+      }
+    });
+  }else if($("#type").val() == 'Radio'){
+    var option_flag = 'false';
+    $(".option_text").each(function() {
+      var option_text_name = $(this).attr("name");
+      if(option_text_name.substr(0,3) == 'ro_'){
+        var option_str = $(this).val();
+        option_str = option_str.replace(/\s/g,'');
+        option_str = option_str.replace(/　/g,'');
+        if(option_str != ''){
+          option_flag = 'true';
+        }
+      }
+    });
+  }
   var r_str = '';
   var reg = /^ro_[0-9]+$/; 
   
@@ -574,13 +601,16 @@ function check_item_info()
       url: 'ajax_orders.php?action=check_item',
       type: 'POST',
       dataType: 'text',
-      data:'ititle='+item_title+'&ifront_title='+item_front_title+'&r_str='+r_str,
+      data:'ititle='+item_title+'&ifront_title='+item_front_title+'&r_str='+r_str+'&option_flag='+option_flag,
       async:false,
       success: function (data) {
         var error_arr = data.split('||');
         $('#title_error').html(error_arr[0]);
         $('#front_error').html(error_arr[1]);
         $('#rname_error').html(error_arr[2]);
+        if(error_arr[3] && error_arr[3] != ''){
+          alert(error_arr[3]);
+        }
         
         if (data == '||||') {
         <?php 

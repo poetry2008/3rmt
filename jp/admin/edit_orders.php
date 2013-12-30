@@ -16,6 +16,7 @@ include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 $ad_option = new AD_Option();
 $billing_option = new AD_Option();
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
+$current_language = $language;
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
@@ -1240,8 +1241,8 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
             if (sizeof($order->products[$i]['attributes']) > 0) {
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                $products_ordered_mail .=  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
-                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&#39;",'"'=>"&#34;"));
+                $products_ordered_mail .=  $order->products[$i]['attributes'][$j]['option_info']['title'] . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
+                $products_ordered_mail .= str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']);
                 if ($order->products[$i]['attributes'][$j]['price'] != '0') {
                   $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
                 }
@@ -5572,6 +5573,7 @@ if($index_num > 0){
     print "</tr>\n";
   }
   
+  $language = $current_language;
   $hm_option = new HM_Option();
   
   if (($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {

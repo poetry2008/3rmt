@@ -4190,7 +4190,7 @@ if($pw_id != -1){
        $button_history = "<input style='font-size:12px' type='button' ".$disable." value='".TEXT_BUTTON_HISTORY."'>";
      }else{
        $button_history = "<input style='font-size:12px' type='button' onclick=\"location.href='".  tep_href_link(FILENAME_PW_MANAGER, 'log=id_manager_log&pw_id='.$pwInfo->id.'&site_id='.$site_id) ."'\" value='".TEXT_BUTTON_HISTORY."'>";
-       $button_del = "<input type='button' style='font-size:12px' onclick=\"toggle_idpw_action('".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] .  '&site_id='.$_GET['site_id'].'&pw_id=' .  $pwInfo->id .  '&action=deleteconfirm')  ."', '".$ocertify->npermission."');\" value='".TEXT_BUTTON_DELETE."'>";
+       $button_del = "<input type='button' style='font-size:12px' onclick=\"toggle_idpw_action('".  tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] .  '&sort='.$_GET['sort'].'&type='.$_GET['type'].'&site_id='.$_GET['site_id'].'&pw_id=' .  $pwInfo->id .  '&action=deleteconfirm')  ."', '".$ocertify->npermission."');\" value='".TEXT_BUTTON_DELETE."'>";
      }
     }   
       $button[] = "<input ".$disable." style='font-size:12px'type='button' value='".IMAGE_SAVE."' onclick=\"valdata('".$ocertify->npermission."')\" id='button_save'>" .  '&nbsp;'.$button_del."&nbsp;".$button_history;
@@ -4287,12 +4287,12 @@ if($site_id == 0){
           array('text' => '<div id="user_select" class="user_select" style="display:none">'.tep_get_user_select($selected_user).'</div>')
       );
      $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA), 
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA), 
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
          );
      $contents[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA),
-           array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA),
+           array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA)
       );
       $button[] = "<input ".$disable." style='font-size:12px' type='button' value='".IMAGE_SAVE."' onclick=\"valdata('".$ocertify->npermission."')\" id='button_save'>" .  '&nbsp;' .  "<input style='font-size:12px' type='button' ".$disable."  onclick='hidden_info_box()' value='".TEXT_BUTTON_CLEAR."'>"; 
       if(!empty($button)){

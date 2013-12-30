@@ -1493,7 +1493,20 @@ function tep_pre_check_less_option_product($products_id, $pro_attr_info)
     $item_list_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$exists_product['belong_to_option']."' and status = '1' and place_type = '0'");
     if (tep_db_num_rows($item_list_query)) {
       while ($item_list = tep_db_fetch_array($item_list_query)) {
-        $item_list_array[] = $item_list; 
+        //如果没有选项值存在，此选项不计数
+        $option_flag = false;
+        $option_str_array = array();
+        if($item_list['type'] == 'select'){
+
+          $option_str_array = unserialize($item_list['option']);  
+          if(!isset($option_str_array['se_option']) || empty($option_str_array['se_option'])){
+
+            $option_flag = true;
+          }
+        }
+        if($option_flag == false){
+          $item_list_array[] = $item_list; 
+        }
       }
       $op_num = count($item_list_array); 
       if (!empty($pro_attr_info)) {

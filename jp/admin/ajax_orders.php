@@ -1834,6 +1834,7 @@ echo json_encode($json_array);
   $ititle = str_replace('　', '', $ititle);
   $ifront_title = str_replace(' ', '', $_POST['ifront_title']);
   $ifront_title = str_replace('　', '', $ifront_title);
+  $option_flag = $_POST['option_flag'];
   
   if ($ititle == '') {
     $error_array['title'] = ERROR_OPTION_IS_NULL;
@@ -1860,6 +1861,10 @@ echo json_encode($json_array);
     if ($r_count != $ru_count) {
       $error_array['rname'] = ERROR_OPTION_ITEM_RADIO_IS_SAME; 
     }
+  }
+  if($option_flag == 'false'){
+
+    $error_array['option_flag'] = TEXT_OPTION_MUST_ENTER;
   }
   echo implode('||', $error_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='search_item_title') {

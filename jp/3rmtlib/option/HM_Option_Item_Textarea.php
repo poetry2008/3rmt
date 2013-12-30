@@ -289,6 +289,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
     
      if ($input_text_str != '') {
        $item_type_error = false; 
+       $item_type_error_str = '';
        switch ($this->ictype) {
 /* -----------------------------------------------------
    case '1' 是否是片假名    
@@ -299,25 +300,30 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
 ------------------------------------------------------*/
          case 1;
            $item_type_error = $this->check_character($input_text_str); 
+           $item_type_error_str = ERROR_OPTION_TYPE_KATAKANA;
            break;
          case 2;
            if (!preg_match('/^[0-9a-zA-Z]+$/', $input_text_str)) {
              $item_type_error = true; 
+             $item_type_error_str = ERROR_OPTION_TYPE_ENGLISH_DIGITAL;
            }
            break;
          case 3;
            if (!preg_match('/^[a-zA-Z]+$/', $input_text_str)) {
              $item_type_error = true; 
+             $item_type_error_str = ERROR_OPTION_TYPE_ENGLISH;
            }
            break;
          case 4;
            if (!preg_match('/^[0-9]+$/', $input_text_str)) {
              $item_type_error = true; 
+             $item_type_error_str = ERROR_OPTION_TYPE_DIGITAL;
            }
            break;
          case 5;
            if (!preg_match('/^[a-zA-Z0-9_\-\.\+]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/', $input_text_str)) {
              $item_type_error = true; 
+             $item_type_error_str = ERROR_OPTION_TYPE_EMAIL;
            }
            break;
          default;
@@ -325,7 +331,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
        
        if ($item_type_error) {
-         $option_error_array[$pre_error_str.$this->formname] = ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
+         $option_error_array[$pre_error_str.$this->formname] = $item_type_error_str;  
          return true; 
        }
      }
