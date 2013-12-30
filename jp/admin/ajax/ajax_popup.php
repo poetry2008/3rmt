@@ -4817,6 +4817,9 @@ if($_GET['site_id'] == -1){
     }
     $customers_order_sql = $customers_order_sort_name.' '.$customers_order_sort; 
     
+    if ($customers_order_sort_name != ' customers_id') {
+      $customers_order_sql .= ' , customers_id desc'; 
+    }
     $search_single = 0;    
     $strip_blank_front_str = '';
     $strip_blank_end_str = '';
@@ -5100,9 +5103,9 @@ if($_GET['site_id'] == -1){
         $end_order_customer_ref_info_str = implode(' or ',$end_order_customer_ref_info_arr);
         $order_where_sql = '';
         if ($_GET['search_con'] == '1') {
-          $order_where_sql = ' and ('.$front_order_customer_ref_info_str.') and ('.$end_order_customer_ref_info_str.')';
+          $order_where_sql = ' and (('.$front_order_customer_ref_info_str.') or ('.$end_order_customer_ref_info_str.'))';
         }else{
-          $order_where_sql = ' and ('.$front_order_customer_ref_info_str.') or ('.$end_order_customer_ref_info_str.')';
+          $order_where_sql = ' and ('.$front_order_customer_ref_info_str.') and ('.$end_order_customer_ref_info_str.')';
         }
         $order_where_raw = 'select o.customers_id
         from '.TABLE_ORDERS.' o,'.TABLE_SITES.' s where 
@@ -5149,9 +5152,9 @@ if($_GET['site_id'] == -1){
           } 
         }
         if ($_GET['search_con'] == '1') {
-          $customer_where_sql = ' and ('.$front_customer_fax_str.') and ('.$end_customer_fax_str.')';
+          $customer_where_sql = ' and (('.$front_customer_fax_str.') or ('.$end_customer_fax_str.'))';
         }else{
-          $customer_where_sql = ' and ('.$front_customer_fax_str.') or ('.$end_customer_fax_str.')';
+          $customer_where_sql = ' and ('.$front_customer_fax_str.') and ('.$end_customer_fax_str.')';
         }
         $customer_where_raw = 'select customers_id from '.TABLE_CUSTOMERS.' c where 1 '.$customer_where_sql;
         $customer_fax_where_flag = false;
@@ -5211,9 +5214,9 @@ if($_GET['site_id'] == -1){
         $end_order_products_address_str = implode(' or ',$end_order_products_address_arr);
         $order_pa_where_sql = '';
         if ($_GET['search_con'] == '1') {
-          $order_pa_where_sql = ' and ('.$front_order_products_address_str.') and ('.$end_order_products_address_str.')';
+          $order_pa_where_sql = ' and (('.$front_order_products_address_str.') or ('.$end_order_products_address_str.'))';
         }else{
-          $order_pa_where_sql = ' and ('.$front_order_products_address_str.') or ('.$end_order_products_address_str.')';
+          $order_pa_where_sql = ' and ('.$front_order_products_address_str.') and ('.$end_order_products_address_str.')';
         }
         $order_pa_where_raw = 'select o.customers_id from '.TABLE_ORDERS.' 
         o left join '.TABLE_ORDERS_PRODUCTS_ATTRIBUTES.' opa on o.orders_id =
@@ -5273,9 +5276,9 @@ if($_GET['site_id'] == -1){
         $end_order_status_history_str = implode(' or ',$end_order_status_history_arr);
         $order_oh_where_sql = '';
         if ($_GET['search_con'] == '1') {
-          $order_oh_where_sql = ' and ('.$front_order_status_history_str.') and ('.$end_order_status_history_str.')';
+          $order_oh_where_sql = ' and (('.$front_order_status_history_str.') or ('.$end_order_status_history_str.'))';
         }else{
-          $order_oh_where_sql = ' and ('.$front_order_status_history_str.') or ('.$end_order_status_history_str.')';
+          $order_oh_where_sql = ' and ('.$front_order_status_history_str.') and ('.$end_order_status_history_str.')';
         }
         $order_oh_where_raw = 'select o.customers_id from '.TABLE_ORDERS.' 
         o ,'.TABLE_ORDERS_STATUS_HISTORY.' osh ,'.TABLE_ORDERS_STATUS.' os 

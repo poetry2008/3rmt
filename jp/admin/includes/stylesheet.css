@@ -2116,3 +2116,6 @@ google hack
 #banner_graph .td_bottom td {
      vertical-align: bottom;
 }
+.search_space td{
+	padding-top:4px;
+}
