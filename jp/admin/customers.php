@@ -264,7 +264,7 @@
 <?php //切换搜索?>
 function toggle_search_content() {
    var search_type = $('#search_toggle').val();
-   //var search_html = ''; 
+   var origin_height = $('#show_customers_list').offset().top; 
    if (search_type == '1') {
      $('#search_toggle').val('2');
      $('#search_comment').css('display', 'block');
@@ -275,6 +275,14 @@ function toggle_search_content() {
      $('#search_comment').css('display', 'none');
      $('#show_second_search').css('display', 'block');
      $('#show_first_search').css('display', 'none');
+   }
+
+   if ($('#show_customers').css('display') == 'block') {
+     var new_height = $('#show_customers_list').offset().top; 
+     var popup_height = parseInt($('#show_customers').css('top')); 
+     var tmp_height = popup_height+(new_height-origin_height);
+     
+     $('#show_customers').css('top', tmp_height+'px');
    }
 }
 function check_guest(guest_value){
