@@ -6514,7 +6514,18 @@ function tep_pre_check_less_product_option($products_id)
       if ($group_info) {
         $item_exists_query  = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_info['id']."' and status = '1' and place_type = '1' limit 1"); 
         $item_exists = tep_db_fetch_array($item_exists_query); 
-        if ($item_exists) {
+        //如果没有选项值存在，此选项不计数
+        $option_flag = false;
+        $option_str_array = array();
+        if($item_exists['type'] == 'select'){
+
+          $option_str_array = unserialize($item_exists['option']);  
+          if(!isset($option_str_array['se_option']) || empty($option_str_array['se_option'])){
+
+            $option_flag = true;
+          }
+        }
+        if ($item_exists && $option_flag == false) {
           return true; 
         }
       }
