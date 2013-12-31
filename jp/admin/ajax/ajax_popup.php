@@ -5814,14 +5814,30 @@ if($_GET['cID'] != -1){
          array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_LOGONS),
          array('text' => $nInfo->number_of_logons)
        );
+        $order_num_str = '';
+        $order_num = tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id);
+        if($order_num > 0){
+          $order_num_str = "<a href='javascript:void(0)' onclick='show_customers_order_preorder_id(\"".$nInfo->customers_id."\",\"1\")'>".
+            $order_num."</a>";
+        }else{
+          $order_num_str = $order_num;
+        }
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_ORDER_COUNT),
-         array('text' => tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
+         array('text' => $order_num_str)
        );
         //预约次数
+        $preorder_num_str = '';
+        $preorder_num = tep_get_preorders_by_customers_id($nInfo->customers_id,$nInfo->site_id);
+        if($preorder_num > 0){
+          $preorder_num_str = "<a href='javascript:void(0)' onclick='show_customers_order_preorder_id(\"".$nInfo->customers_id."\",\"2\")'>".
+            $preorder_num."</a>";
+        }else{
+          $preorder_num_str = $preorder_num;
+        }
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_PREORDERS_SUM),
-         array('text' => tep_get_preorders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
+         array('text' => $preorder_num_str)
        );
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_REVIEWS),

@@ -612,6 +612,73 @@ $(document).ready(function() {
     }
   });    
 });
+function show_customers_order_preorder_id(cID,show_type){
+  var o_po_info_str = '&customers_id='+cID+'&show_type='+show_type;
+ $.ajax({
+ url: 'ajax.php?action=show_customer_other_info&'+o_po_info_str,
+ dataType: 'text',
+ type: 'POST', 
+ data: data_info_str, 
+ async : false,
+ success: function(data){
+  $("div#show_customers").html(data);
+ele = ele.parentNode;
+head_top = $('.compatible_head').height();
+box_warp_height = 0;
+if(cID != -1){
+if(document.documentElement.clientHeight < document.body.scrollHeight){
+if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+if(ele.offsetTop < $('#show_customers').height()){
+offset = ele.offsetTop+$("#show_customers_list").position().top+ele.offsetHeight+head_top;
+box_warp_height = offset-head_top;
+}else{
+if (((head_top+ele.offsetTop+$('#show_customers').height()) > $('.box_warp').height())&&($('#show_customers').height()<ele.offsetTop+parseInt(head_top)-$("#show_customers_list").position().top-1)) {
+offset = ele.offsetTop+$("#show_customers_list").position().top-1-$('#show_customers').height()+head_top;
+} else {
+offset = ele.offsetTop+$("#show_customers_list").position().top+$(ele).height()+head_top;
+offset = offset + parseInt($('#show_customers_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+}
+box_warp_height = offset-head_top;
+}
+}else{
+  if (((head_top+ele.offsetTop+$('#show_customers').height()) > $('.box_warp').height())&&($('#show_customers').height()<ele.offsetTop+parseInt(head_top)-$("#show_customers_list").position().top-1)) {
+    offset = ele.offsetTop+$("#show_customers_list").position().top-1-$('#show_customers').height()+head_top;
+  } else {
+    offset = ele.offsetTop+$("#show_customers_list").position().top+$(ele).height()+head_top;
+    offset = offset + parseInt($('#show_customers_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+  }
+}
+$('#show_customers').css('top',offset);
+}else{
+  if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+    if (((head_top+ele.offsetTop+$('#show_customers').height()) > $('.box_warp').height())&&($('#show_customers').height()<ele.offsetTop+parseInt(head_top)-$("#show_customers_list").position().top-1)) {
+      offset = ele.offsetTop+$("#show_customers_list").position().top-1-$('#show_customers').height()+head_top;
+    } else {
+      offset = ele.offsetTop+$("#show_customers_list").position().top+$(ele).height()+head_top;
+      offset = offset + parseInt($('#show_customers_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+    }
+    box_warp_height = offset-head_top;
+  }else{
+    offset = ele.offsetTop+$("#show_customers_list").position().top+ele.offsetHeight+head_top;
+    box_warp_height = offset-head_top;
+  }
+  $('#show_customers').css('top',offset);
+}
+}
+box_warp_height = box_warp_height + $('#show_customers').height();
+if($('.show_left_menu').width()){
+  leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+}else{
+  leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
+} 
+if(cID == -1){
+  $('#show_customers').css('top',$('#show_customers_list').offset().top);
+}
+$('#show_customers').css('z-index','1');
+$('#show_customers').css('left',leftset);
+ }
+ });
+}
 
 function show_customers(ele,cID,page,action_sid,sort_name,sort_type,search_front,search_end,search_con,search_name,search_mail,search_type,search_char,search_blank,search_other,search_info){
  site_id = '<?php echo (isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1');?>';
@@ -1128,8 +1195,6 @@ $(document).ready(function() {
                     $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
                     $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
                     $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
                     $customers_order_sort_name = ' romaji'; 
                     break;
                   case 'm_type':
@@ -1140,8 +1205,6 @@ $(document).ready(function() {
                     $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
                     $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
                     $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
                     $customers_order_sort_name = ' customers_guest_chk'; 
                     break;
                   case 'has_exit':
@@ -1152,8 +1215,6 @@ $(document).ready(function() {
                     $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
                     $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
                     $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
                     $customers_order_sort_name = ' is_exit_history'; 
                     break;
                   case 'lastname':
@@ -1164,8 +1225,6 @@ $(document).ready(function() {
                     $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
                     $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
                     $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
                     $customers_order_sort_name = ' customers_lastname'; 
                     break;
                   case 'firstname':
@@ -1176,8 +1235,6 @@ $(document).ready(function() {
                     $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_FIRSTNAME.$type_str.'</a>'; 
                     $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
                     $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
                     $customers_order_sort_name = ' customers_firstname'; 
                     break;
                   case 'create_at':
@@ -1188,8 +1245,6 @@ $(document).ready(function() {
                     $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
                     $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_ACCOUNT_CREATED.$type_str.'</a>'; 
                     $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
                     $customers_order_sort_name = ' date_account_created'; 
                     break;
                   case 'update_at':
@@ -1200,33 +1255,7 @@ $(document).ready(function() {
                     $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
                     $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
                     $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_ACTION.$type_str.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
                     $customers_order_sort_name = ' date_account_last_modified'; 
-                    break;
-                  case 'order':
-                    $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
-                    $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=m_type&customers_sort_type=desc').'">'.TABLE_HEADING_MEMBER_TYPE.'</a>'; 
-                    $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=has_exit&customers_sort_type=desc').'">'.BUTTON_EXIT_HISTORY_TEXT.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=lastname&customers_sort_type=desc').'">'.TABLE_HEADING_LASTNAME.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
-                    $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type='.$tmp_type_str).'">'.CUSTOMERS_HEADING_ORDER_TITLE.$type_str.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
-                    $customers_order_sort_name = ' order_count'; 
-                    break;
-                  case 'preorder':
-                    $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
-                    $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=m_type&customers_sort_type=desc').'">'.TABLE_HEADING_MEMBER_TYPE.'</a>'; 
-                    $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=has_exit&customers_sort_type=desc').'">'.BUTTON_EXIT_HISTORY_TEXT.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=lastname&customers_sort_type=desc').'">'.TABLE_HEADING_LASTNAME.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
-                    $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                    $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type='.$tmp_type_str).'">'.CUSTOMERS_HEADING_PREORDER_TITLE.$type_str.'</a>'; 
-                    $customers_order_sort_name = ' preorder_count'; 
                     break;
                 }
               }
@@ -1250,8 +1279,6 @@ $(document).ready(function() {
                 $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=firstname&customers_sort_type=desc').'">'.TABLE_HEADING_FIRSTNAME.'</a>'; 
                 $customers_table_create_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=create_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACCOUNT_CREATED.'</a>'; 
                 $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                $customers_table_order_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=order&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_ORDER_TITLE.'</a>'; 
-                $customers_table_preorder_str = '<a href="'.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=preorder&customers_sort_type=desc').'">'.CUSTOMERS_HEADING_PREORDER_TITLE.'</a>'; 
               }
               $customers_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
               $notice_box = new notice_box('','',$news_table_params);
@@ -1260,8 +1287,6 @@ $(document).ready(function() {
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_customers(\'customers_id[]\');">'); 
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_id_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_type_str);
-              $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_order_str);
-              $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_preorder_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_exit_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_lastname_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_firstname_str);
@@ -1633,148 +1658,6 @@ $(document).ready(function() {
         if($temp_row_customer =  tep_db_fetch_array(tep_db_query($customer_where_raw.' limit 1'))){
           $customer_fax_where_flag = true;
         }
-        /*
-        //产品信息和价格
-        $front_order_products_address_str ='';
-        $end_order_products_address_str ='';
-        $front_order_products_address_arr =array();
-        $end_order_products_address_arr =array();
-        $sc_op_array = array(
-          'op.final_price',
-          'op.products_name',
-          'op.products_price',
-          'op.products_tax',
-          'op.products_quantity',
-          'op.products_model',
-          'opa.options_values_price',
-          'opa.option_info',
-          'ot.value');
-        foreach($sc_op_array as $sc_op_v){
-          if (isset($_GET['search_type'])) {
-            if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
-                $front_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              } else {
-                $front_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-              }
-            }
-           
-            if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
-                $end_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              } else {
-                $end_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-              }
-            }
-          } else {
-            if ($search_front_str != '') {
-              $front_order_products_address_arr[] = '(binary '.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_order_products_address_arr[] = '(binary '.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-            }
-            if (isset($_GET['search_char'])) {
-              if ($search_front_str != '') {
-                $front_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              }
-              if ($search_end_str != '') {
-                $end_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              }
-            } 
-          }
-        }
-        $front_order_products_address_str = implode(' or ',$front_order_products_address_arr);
-        $end_order_products_address_str = implode(' or ',$end_order_products_address_arr);
-        $order_pa_where_sql = '';
-        if ($_GET['search_con'] == '1') {
-          $order_pa_where_sql = ' (('.$front_order_products_address_str.') or ('.$end_order_products_address_str.'))';
-        }else{
-          $order_pa_where_sql = ' (('.$front_order_products_address_str.') and ('.$end_order_products_address_str.'))';
-        }
-        if($front_order_products_address_str==''){
-          $order_pa_where_sql = ' ('.$end_order_products_address_str.') ';
-        }
-        if($end_order_products_address_str==''){
-          $order_pa_where_sql = ' ('.$front_order_products_address_str.') ';
-        }
-        $order_pa_where_raw = 'select distinct o.customers_id from '.TABLE_ORDERS.' 
-        o left join '.TABLE_ORDERS_PRODUCTS_ATTRIBUTES.' opa on o.orders_id =
-        opa.orders_id ,'.TABLE_ORDERS_PRODUCTS.' op,'.  TABLE_ORDERS_TOTAL.' ot 
-        where o.orders_id = op.orders_id 
-        and o.orders_id = ot.orders_id and '.$order_pa_where_sql;
-        // 判断是否 查找订单产品和订单价格
-        $order_pa_where_flag = false;
-        if($temp_row_order_pa = tep_db_fetch_array(tep_db_query($order_pa_where_raw.' limit 1'))){
-          $order_pa_where_flag= true;
-        }
-        //订单状态
-        $front_order_status_history_str ='';
-        $end_order_status_history_str ='';
-        $front_order_status_history_arr=array();
-        $end_order_status_history_arr =array();
-        $sc_oh_array = array(
-          'osh.comments',
-          'osh.user_added',
-          'osh.date_added',
-          'os.orders_status_name');
-        foreach($sc_oh_array as $sc_oh_v){
-          if (isset($_GET['search_type'])) {
-            if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
-                $front_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              } else {
-                $front_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-              }
-            }
-           
-            if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
-                $end_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              } else {
-                $end_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-              }
-            }
-          } else {
-            if ($search_front_str != '') {
-              $front_order_status_history_arr[] = '(binary '.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_order_status_history_arr[] = '(binary '.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-            }
-            if (isset($_GET['search_char'])) {
-              if ($search_front_str != '') {
-                $front_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              }
-              if ($search_end_str != '') {
-                $end_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              }
-            } 
-          }
-        }
-        $front_order_status_history_str = implode(' or ',$front_order_status_history_arr);
-        $end_order_status_history_str = implode(' or ',$end_order_status_history_arr);
-        $order_oh_where_sql = '';
-        if ($_GET['search_con'] == '1') {
-          $order_oh_where_sql = ' (('.$front_order_status_history_str.') or ('.$end_order_status_history_str.'))';
-        }else{
-          $order_oh_where_sql = ' (('.$front_order_status_history_str.') and ('.$end_order_status_history_str.'))';
-        }
-        if($front_order_status_history_str==''){
-          $order_oh_where_sql = ' ('.$end_order_status_history_str.') ';
-        }
-        if($end_order_status_history_str==''){
-          $order_oh_where_sql = ' ('.$front_order_status_history_str.') ';
-        }
-        $order_oh_where_raw = 'select distinct o.customers_id from '.TABLE_ORDERS.' 
-        o ,'.TABLE_ORDERS_STATUS_HISTORY.' osh ,'.TABLE_ORDERS_STATUS.' os 
-        where o.orders_id = osh.orders_id and
-        osh.orders_status_id = os.orders_status_id and '.$order_oh_where_sql;
-        // 判断是否 查找订单产品和订单价格
-        $order_oh_where_flag = false;
-        if($temp_row_order_oh = tep_db_fetch_array(tep_db_query($order_oh_where_raw.' limit 1'))){
-          $order_oh_where_flag= true;
-        }
-        */
         $customers_query_raw_search_culom = "select distinct
                  c.customers_id, 
                  c.site_id,
@@ -1927,14 +1810,6 @@ $(document).ready(function() {
       $customers_info[] = array(
            'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
            'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').$type.(($customers['is_active'] != '1')?'</font>':'') 
-          );
-      $customers_info[] = array(
-           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
-           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').'order'.(($customers['is_active'] != '1')?'</font>':'') 
-          );
-      $customers_info[] = array(
-           'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
-           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').'preorder'.(($customers['is_active'] != '1')?'</font>':'') 
           );
       if ($customers['is_exit_history'] == '1') {
         $has_exit_history = CUSTOMERS_YES_TEXT; 
