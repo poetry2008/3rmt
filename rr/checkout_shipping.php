@@ -1323,7 +1323,7 @@ $(document).ready(function(){
 <?php
 if($billing_address_show == 'true'){
 ?>
-if($("#billing_address_show_id").html()){
+if($("#billing_address_show").html()){
     var billing_address_html = $("#billing_address_show").html();
     billing_address_html = billing_address_html.replace(/"op_/g,'"billing_');
     billing_address_html = billing_address_html.replace(/"td_/g,'"billing_td_');
@@ -2260,6 +2260,7 @@ function check_point(point_num) {
      </script>
   <?php
       }
+  }
   ?>
           <tr>
             <td class="main"><b><?php echo TEXT_BILLING_SELECT; ?></b></td>
@@ -2282,6 +2283,9 @@ function check_point(point_num) {
                   <td>
                     <table width="100%" border="0" cellspacing="0" cellpadding="2"> 
                     <tr>
+<?php
+if($quest_array['customers_guest_chk'] == 0){
+?>
                     <td class="main" colspan="2">
                     <table border="0" width="100%" cellspacing="0" cellpadding="0">
                     <tr><td class="main" width="164">
