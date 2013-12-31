@@ -1480,7 +1480,7 @@ $(document).ready(function() {
           c.customers_id = a.customers_id and c.customers_default_address_id =
           a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
           c.customers_id = ci.customers_info_id and c.site_id = s.id
-          ".$sql_where_str_and." and " .$sql_site_where. " order by customers_id";
+          ".$sql_where_str_and." and " .$sql_site_where;
       if (isset($_GET['search_other'])) {
         //搜索其他 
         // table order info customer info and ref
@@ -1816,8 +1816,7 @@ $(document).ready(function() {
           $customers_query_raw_where .= " and (".$where_column_str.") ";
         }
         //所有的 检索判断 ".$sql_where_str."
-        $customers_query_raw_orderby = " order by customers_id ";
-        $customers_query_raw = $customers_query_raw_search_culom.$customers_query_raw_table.$customers_query_raw_where.$customers_query_raw_orderby;
+        $customers_query_raw = $customers_query_raw_search_culom.$customers_query_raw_table.$customers_query_raw_where;
       }
     }
     
@@ -1842,8 +1841,9 @@ $(document).ready(function() {
         c.customers_id = a.customers_id and c.customers_default_address_id =
         a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
         c.customers_id = ci.customers_info_id and c.site_id = s.id and "
-        .$sql_site_where. " " .$search." order by customers_id ";
+        .$sql_site_where. " " .$search;
     }
+    $customers_query_raw .= ' order by '.$customers_order_sql;
     // 订单 预约 次数处理
 //    $customers_query_raw = "select t3.*,count(t3.customers_id) as preorder_count from (select t1.*,count(t1.customers_id) as order_count from (".$customers_query_raw.") t1 left join ".TABLE_ORDERS." t2 on t1.customers_id = t2.customers_id and t1.site_id = t2.site_id group by t1.customers_id) t3 left join ".TABLE_PREORDERS." t4 on t4.customers_id=t3.customers_id and t3.site_id = t4.site_id group by t3.customers_id order by ".$customers_order_sql;
     
