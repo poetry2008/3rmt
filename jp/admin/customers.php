@@ -1263,8 +1263,10 @@ $(document).ready(function() {
     $strip_blank_front_str = '';
     $strip_blank_end_str = '';
     
-    $tmp_search_front_str = str_replace(array('　', ''), '', $_GET['search_front']); 
-    $tmp_search_end_str = str_replace(array('　', ''), '', $_GET['search_end']);
+    $tmp_search_front_str = str_replace(array('　', ' '), '', $_GET['search_front']); 
+    $tmp_search_end_str = str_replace(array('　', ' '), '', $_GET['search_end']);
+    $_GET['search_front'] = str_replace(array('　', ' '), '', $_GET['search_front']);
+    $_GET['search_end'] = str_replace(array('　', ' '), '', $_GET['search_end']);
     
     $search_front_str = $_GET['search_front']; 
     $search_end_str = $_GET['search_end'];

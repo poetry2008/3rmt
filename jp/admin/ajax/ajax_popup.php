@@ -4823,6 +4823,8 @@ if($_GET['site_id'] == -1){
     
     $tmp_search_front_str = str_replace(array('　', ''), '', $_GET['search_front']); 
     $tmp_search_end_str = str_replace(array('　', ''), '', $_GET['search_end']);
+    $_GET['search_front'] = str_replace(array('　', ' '), '', $_GET['search_front']); 
+    $_GET['search_end'] = str_replace(array('　', ' '), '', $_GET['search_end']);
     
     $search_front_str = $_GET['search_front']; 
     $search_end_str = $_GET['search_end'];
@@ -4852,7 +4854,7 @@ if($_GET['site_id'] == -1){
         foreach($keywords as $key => $key_value){
           $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
         }
-        $tmp_search_str = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_front']) . "%' or c.customers_id = '".trim($_GET['search_front'])."')";
+        $tmp_search_str = "and (".$key_search." c.customers_email_address like '%" .  $_GET['search_front'] . "%' or c.customers_id = '".$_GET['search_front'])."'";
       }
     }
     
