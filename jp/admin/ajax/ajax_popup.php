@@ -9271,14 +9271,14 @@ $banner_query = tep_db_query("
   if ($_GET['show_type'] == '1') {
     $show_text_str = CUSTOMERS_ORDER_ID_TEXT; 
     $order_list_raw = tep_db_query("select orders_id, customers_id from ".TABLE_ORDERS." where customers_id = '".$_GET['customers_id']."'");  
-    while ($order_list_raw = tep_db_fetch_array($order_list_raw)) {
-      $show_list_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$order_list_raw['orders_id'].'&search_type=orders_id&oID='.$order_list_raw['orders_id'].'&action=edit').'">'.$order_list_raw['orders_id'].'</a><br>'; 
+    while ($order_list = tep_db_fetch_array($order_list_raw)) {
+      $show_list_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$order_list['orders_id'].'&search_type=orders_id&oID='.$order_list['orders_id'].'&action=edit').'" target="_blank">'.$order_list['orders_id'].'</a><br>'; 
     }
   } else {
     $show_text_str = CUSTOMERS_PREORDER_ID_TEXT; 
     $preorder_list_raw = tep_db_query("select orders_id, customers_id from ".TABLE_PREORDERS." where customers_id = '".$_GET['customers_id']."'");  
-    while ($preorder_list_raw = tep_db_fetch_array($preorder_list_raw)) {
-      $show_list_str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, 'keywords='.$preorder_list_raw['orders_id'].'&search_type=orders_id&oID='.$preorder_list_raw['orders_id'].'&action=edit').'">'.$preorder_list_raw['orders_id'].'</a><br>'; 
+    while ($preorder_list = tep_db_fetch_array($preorder_list_raw)) {
+      $show_list_str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, 'keywords='.$preorder_list['orders_id'].'&search_type=orders_id&oID='.$preorder_list['orders_id'].'&action=edit').'" target="_blank">'.$preorder_list['orders_id'].'</a><br>'; 
     }
   }
   $customer_info_row[]['text'] = array(
