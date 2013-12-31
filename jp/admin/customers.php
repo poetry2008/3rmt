@@ -613,7 +613,7 @@ $(document).ready(function() {
   });    
 });
 
-function show_customers(ele,cID,page,action_sid,sort_name,sort_type,search_front,search_end,search_con,search_name,search_mail,search_type,search_char,search_blank,search_other,search_info,search_total){
+function show_customers(ele,cID,page,action_sid,sort_name,sort_type,search_front,search_end,search_con,search_name,search_mail,search_type,search_char,search_blank,search_other,search_info){
  site_id = '<?php echo (isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1');?>';
  var data_info_str = 'search_info=1';
  var origin_data_info_str = 'cID='+cID+'&page='+page+'&site_id='+site_id+'&search='+search_info+'&action_sid='+action_sid+'&customers_sort='+sort_name+'&customers_sort_type='+sort_type;
@@ -643,9 +643,6 @@ function show_customers(ele,cID,page,action_sid,sort_name,sort_type,search_front
  }
  if (search_other) {
    data_info_str += '&search_other='+search_other; 
- }
- if (search_total) {
-   data_info_str += '&search_total='+search_total; 
  }
  $.ajax({
  url: 'ajax.php?&action=edit_customers&'+origin_data_info_str,
@@ -1073,7 +1070,7 @@ $(document).ready(function() {
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td>
-                <?php echo CUSTOMERS_SEARCH_FRONT_TEXT.' '.tep_draw_input_field('search_total');?>
+                <?php echo CUSTOMERS_SEARCH_FRONT_TEXT.' '.tep_draw_input_field('search_front');?>
                 <input type="hidden" name="search" value="2"> 
                 <input type="submit" value="<?php echo IMAGE_SEARCH?>">
                 </td> 
@@ -1290,14 +1287,14 @@ $(document).ready(function() {
     $search = ''; 
     if ($_GET['search'] == '2') {
       $search_single = 2;
-      if (tep_not_null($_GET['search_total'])) {
-        $keywords = tep_db_input(tep_db_prepare_input($_GET['search_total']));
+      if (tep_not_null($_GET['search_front'])) {
+        $keywords = tep_db_input(tep_db_prepare_input($_GET['search_front']));
         $keywords = explode(" ",$keywords);
         $key_search = '';
         foreach($keywords as $key => $key_value){
           $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
         }
-        $search = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_total']) . "%' or c.customers_id = '".trim($_GET['search_total'])."')";
+        $search = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_front']) . "%' or c.customers_id = '".trim($_GET['search_front'])."')";
       }
     }
     
@@ -1942,10 +1939,10 @@ $(document).ready(function() {
            'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').tep_date_short($customers['date_account_created']).(($customers['is_active'] != '1')?'</font>':'') 
           );
        $customers_info[] = array(
-           'params' => 'class="dataTableContent"', 'text'   => '<a href="javascript:void(0)" onclick="show_customers(this,'.$customers['customers_id'].','.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\', \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\',\''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\',\''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\',\''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\',\''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\',\''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\',\''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\',\''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\',\''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\',\''.(isset($_GET['search'])?$_GET['search']:'').'\',\''.(isset($_GET['search_total'])?$_GET['search_total']:'').'\')">' .  tep_get_signal_pic_info(isset($customers['date_account_last_modified']) && $customers['date_account_last_modified'] != null?$customers['date_account_last_modified']:$customers['date_account_created']) . '</a>');
+           'params' => 'class="dataTableContent"', 'text'   => '<a href="javascript:void(0)" onclick="show_customers(this,'.$customers['customers_id'].','.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\', \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\',\''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\',\''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\',\''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\',\''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\',\''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\',\''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\',\''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\',\''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\',\''.(isset($_GET['search'])?$_GET['search']:'').'\')">' .  tep_get_signal_pic_info(isset($customers['date_account_last_modified']) && $customers['date_account_last_modified'] != null?$customers['date_account_last_modified']:$customers['date_account_created']) . '</a>');
        $customers_table_row[] = array('params' => $customers_params, 'text' => $customers_info);
     }
-    $news_form = tep_draw_form('del_customers',FILENAME_CUSTOMERS,'action=deleteconfirm&site_id='.$_GET['site_id'].'&page='.$_GET['page'].(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['customers_sort'])?'&customers_sort='.$_GET['customers_sort']:'').(isset($_GET['customers_sort_type'])?'&customers_sort_type='.$_GET['customers_sort_type']:'').(isset($_GET['search_front'])?'&search_front='.$_GET['search_front']:'').(isset($_GET['search_end'])?'&search_end='.$_GET['search_end']:'').(isset($_GET['search_con'])?'&search_con='.$_GET['search_con']:'').(isset($_GET['search_name'])?'&search_name='.$_GET['search_name']:'').(isset($_GET['search_mail'])?'&search_mail='.$_GET['search_mail']:'').(isset($_GET['search_type'])?'&search_type='.$_GET['search_type']:'').(isset($_GET['search_char'])?'&search_char='.$_GET['search_char']:'').(isset($_GET['search_blank'])?'&search_blank='.$_GET['search_blank']:'').(isset($_GET['search_other'])?'&search_other='.$_GET['search_other']:'').(isset($_GET['search_total'])?'&search_total='.$_GET['search_total']:''));
+    $news_form = tep_draw_form('del_customers',FILENAME_CUSTOMERS,'action=deleteconfirm&site_id='.$_GET['site_id'].'&page='.$_GET['page'].(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['customers_sort'])?'&customers_sort='.$_GET['customers_sort']:'').(isset($_GET['customers_sort_type'])?'&customers_sort_type='.$_GET['customers_sort_type']:'').(isset($_GET['search_front'])?'&search_front='.$_GET['search_front']:'').(isset($_GET['search_end'])?'&search_end='.$_GET['search_end']:'').(isset($_GET['search_con'])?'&search_con='.$_GET['search_con']:'').(isset($_GET['search_name'])?'&search_name='.$_GET['search_name']:'').(isset($_GET['search_mail'])?'&search_mail='.$_GET['search_mail']:'').(isset($_GET['search_type'])?'&search_type='.$_GET['search_type']:'').(isset($_GET['search_char'])?'&search_char='.$_GET['search_char']:'').(isset($_GET['search_blank'])?'&search_blank='.$_GET['search_blank']:'').(isset($_GET['search_other'])?'&search_other='.$_GET['search_other']:''));
     $notice_box->get_form($news_form);
     $notice_box->get_contents($customers_table_row);
     $notice_box->get_eof(tep_eof_hidden());
@@ -1979,7 +1976,7 @@ $(document).ready(function() {
                        <?php  
                        //通过site_id判断是否允许新建
                        if(array_intersect($show_list_array,$site_array)){
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\', \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\',\''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\',\''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\',\''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\',\''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\',\''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\',\''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\',\''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\',\''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\',\''.(isset($_GET['search'])?$_GET['search']:'').'\',\''.(isset($_GET['search_total'])?$_GET['search_total']:'').'\');check_guest(1)">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\', \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\',\''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\',\''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\',\''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\',\''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\',\''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\',\''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\',\''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\',\''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\',\''.(isset($_GET['search'])?$_GET['search']:'').'\');check_guest(1)">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
                        }else{
                        echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
                        }
