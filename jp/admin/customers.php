@@ -1002,12 +1002,12 @@ $(document).ready(function() {
               </tr>
             </table>  
             </td>
-            <td class="smallText" align="right" id="search_content" width="230">
+            <td class="smallText" align="right" id="search_content" width="320">
             <div id="show_second_search" style="<?php echo ($_GET['search'] == '1')?'display:block':'display:none';?>;"> 
             <?php echo tep_draw_form('search', FILENAME_CUSTOMERS, '', 'get'); ?>
-            <table width="100%" border="0" cellspacing="5" cellpadding="0">
+            <table width="100%" border="0" cellspacing="5" cellpadding="0" class="top_space">
               <tr>
-                <td align="left" nowrap="nowrap" width="10%">
+                <td align="left" nowrap="nowrap" width="55">
                 <?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?> 
                 </td>
                 <td align="left" width="120">
@@ -1019,7 +1019,7 @@ $(document).ready(function() {
                 </td>
               </tr>
               <tr>
-                <td align="left" nowrap="nowrap" width="10%">
+                <td align="left" nowrap="nowrap" width="55">
                 <?php echo CUSTOMERS_SEARCH_CONDITION_TEXT;?> 
                 </td>
                 <td colspan="2" align="left">
@@ -1028,7 +1028,7 @@ $(document).ready(function() {
                 </td>
               </tr>
               <tr>
-                <td align="left" nowrap="nowrap" width="10%">
+                <td align="left" nowrap="nowrap" width="55">
                 <?php echo CUSTOMERS_SEARCH_END_TEXT;?> 
                 </td>
                 <td colspan="2" align="left" width="120">
@@ -1036,25 +1036,25 @@ $(document).ready(function() {
                 </td>
               </tr>
               <tr>
-                <td align="left" valign="top" nowrap="nowrap" width="10%">
+                <td align="left" valign="top" nowrap="nowrap" width="55">
                 <?php echo CUSTOMERS_SEARCH_OPTION_TEXT;?> 
                 </td>
                 <td colspan="2">
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td align="left" nowrap="nowrap">
+                      <td align="left">
                       <?php echo tep_draw_checkbox_field('search_name', '1', (($_GET['search'] == '1')?(($_GET['search_name'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OPTION_NAME;?> 
                       <?php echo tep_draw_checkbox_field('search_type', '1', (($_GET['search'] == '1')?(($_GET['search_type'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_TYPE_TEXT;?> 
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" nowrap="nowrap">
+                      <td align="left">
                       <?php echo tep_draw_checkbox_field('search_mail', '1', (($_GET['search'] == '1')?(($_GET['search_mail'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OPTION_MAIL;?> 
                       <?php echo tep_draw_checkbox_field('search_char', '1', (($_GET['search'] == '1')?(($_GET['search_char'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_CHARACTER_TEXT;?> 
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" nowrap="nowrap">
+                      <td align="left">
                       <?php echo tep_draw_checkbox_field('search_other', '1', (($_GET['search'] == '1')?(($_GET['search_other'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OTHER_TEXT;?> 
                       <?php echo tep_draw_checkbox_field('search_blank', '1', (($_GET['search'] == '1')?(($_GET['search_blank'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_BLANK_TEXT;?> 
                       </td>
@@ -1067,13 +1067,18 @@ $(document).ready(function() {
             </div> 
             <div id="show_first_search" style="<?php echo ($_GET['search'] != '1')?'display:block':'display:none';?>;"> 
             <?php echo tep_draw_form('search_form', FILENAME_CUSTOMERS, '', 'get'); ?>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <table width="100%" border="0" cellspacing="5" cellpadding="0">
               <tr>
-                <td>
-                <?php echo CUSTOMERS_SEARCH_FRONT_TEXT.' '.tep_draw_input_field('search_front');?>
+                <td align="left" nowrap="nowrap" width="55">
+                <?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?>
+                </td> 
+                <td align="left" width="120">
+                <?php echo tep_draw_input_field('search_front');?>  
+                </td>
+                <td align="left">
                 <input type="hidden" name="search" value="2"> 
                 <input type="submit" value="<?php echo IMAGE_SEARCH?>">
-                </td> 
+                </td>
               </tr>
             </table>
             </form> 
