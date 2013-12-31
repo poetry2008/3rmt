@@ -9228,4 +9228,51 @@ $banner_query = tep_db_query("
   $notice_box->get_eof(tep_eof_hidden()); 
  
   echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_CONFIGURAION_META);
+}else if($_GET['action'] == 'show_customer_other_info'){
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CUSTOMERS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  
+  $customers_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$_GET['customers_id']."'"); 
+  $customers_info = tep_db_fetch_array($customers_info_raw); 
+  
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  if ($_GET['show_type'] == '1') {
+    $heading[] = array('align' => 'left', 'text' => sprintf(CUSTOMERS_ORDER_TITLE, $customers_info['customers_lastname'].' '.$customers_info['customers_firstname']));
+  } else {
+    $heading[] = array('align' => 'left', 'text' => sprintf(CUSTOMERS_PREORDER_TITLE, $customers_info['customers_lastname'].' '.$customers_info['customers_firstname']));
+  }
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+ 
+  $customer_info_row = array();
+  $buttons = array();
+  $show_text_str = ''; 
+  $show_list_str = ''; 
+  if ($_GET['show_type'] == '1') {
+    $show_text_str = CUSTOMERS_ORDER_ID_TEXT; 
+    $order_list_raw = tep_db_query("select orders_id, customers_id from ".TABLE_ORDERS." where customers_id = '".$_GET['customers_id']."'");  
+    while ($order_list_raw = tep_db_fetch_array($order_list_raw)) {
+      $show_list_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$order_list_raw['orders_id'].'&search_type=orders_id&oID='.$order_list_raw['orders_id'].'&action=edit').'">'.$order_list_raw['orders_id'].'</a><br>'; 
+    }
+  } else {
+    $show_text_str = CUSTOMERS_PREORDER_ID_TEXT; 
+    $preorder_list_raw = tep_db_query("select orders_id, customers_id from ".TABLE_PREORDERS." where customers_id = '".$_GET['customers_id']."'");  
+    while ($preorder_list_raw = tep_db_fetch_array($preorder_list_raw)) {
+      $show_list_str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, 'keywords='.$preorder_list_raw['orders_id'].'&search_type=orders_id&oID='.$preorder_list_raw['orders_id'].'&action=edit').'">'.$preorder_list_raw['orders_id'].'</a><br>'; 
+    }
+  }
+  $customer_info_row[]['text'] = array(
+        array('align' => 'left','params' => 'width="30%"', 'text' => $show_text_str), 
+        array('align' => 'left','params' => 'width="70%"','text' => $show_list_str), 
+      );
+  
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($customer_info_row, $buttons);
+  echo $notice_box->show_notice();
+ 
 }
