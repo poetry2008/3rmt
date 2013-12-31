@@ -1425,27 +1425,31 @@ $(document).ready(function() {
         }
         if ($_GET['search_con'] == '1') {
           if ($front_condition_str != '') {
-            $sql_where_str = ' and (('.$front_condition_str.')'; 
+            $sql_where_str = ' (('.$front_condition_str.')'; 
             if ($end_condition_str != '') {
               $sql_where_str .= ' or ('.$end_condition_str.')'; 
             }
             $sql_where_str .= ')'; 
           } else {
             if ($end_condition_str != '') {
-              $sql_where_str .= ' and ('.$end_condition_str.')'; 
+              $sql_where_str .= ' ('.$end_condition_str.')'; 
             }
           }
         } else {
           if ($front_condition_str != '') {
-            $sql_where_str = ' and ('.$front_condition_str.')'; 
+            $sql_where_str = ' ('.$front_condition_str.')'; 
             if ($end_condition_str != '') {
               $sql_where_str .= ' and ('.$end_condition_str.')'; 
             }
           } else {
             if ($end_condition_str != '') {
-              $sql_where_str .= ' and ('.$end_condition_str.')'; 
+              $sql_where_str .= ' ('.$end_condition_str.')'; 
             }
           }
+        }
+        $sql_where_str_and = '';
+        if($sql_where_str!=''){
+          $sql_where_str_and = ' and '.$sql_where_str;
         }
         
         $customers_query_raw = "
@@ -1468,7 +1472,7 @@ $(document).ready(function() {
           c.customers_id = a.customers_id and c.customers_default_address_id =
           a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
           c.customers_id = ci.customers_info_id and c.site_id = s.id
-          ".$sql_where_str." and " .$sql_site_where. " order by customers_id";
+          ".$sql_where_str_and." and " .$sql_site_where. " order by customers_id";
       if (isset($_GET['search_other'])) {
         //搜索其他 
         // table order info customer info and ref
@@ -1537,13 +1541,19 @@ $(document).ready(function() {
         $end_order_customer_ref_info_str = implode(' or ',$end_order_customer_ref_info_arr);
         $order_where_sql = '';
         if ($_GET['search_con'] == '1') {
-          $order_where_sql = ' and (('.$front_order_customer_ref_info_str.') or ('.$end_order_customer_ref_info_str.'))';
+          $order_where_sql = ' (('.$front_order_customer_ref_info_str.') or ('.$end_order_customer_ref_info_str.'))';
         }else{
-          $order_where_sql = ' and ('.$front_order_customer_ref_info_str.') and ('.$end_order_customer_ref_info_str.')';
+          $order_where_sql = ' (('.$front_order_customer_ref_info_str.') and ('.$end_order_customer_ref_info_str.'))';
+        }
+        if($front_order_customer_ref_info_str == ''){
+          $order_where_sql = ' ('.$end_order_customer_ref_info_str.')';
+        }
+        if($end_order_customer_ref_info_str ==''){
+          $order_where_sql = ' ('.$front_order_customer_ref_info_str.')';
         }
         $order_where_raw = 'select o.customers_id
         from '.TABLE_ORDERS.' o,'.TABLE_SITES.' s where 
-        o.site_id = s.id and o.customers_id != 0 '.$order_where_sql.' 
+        o.site_id = s.id and o.customers_id != 0 and '.$order_where_sql.' 
         group by o.customers_id';
         // 判断是否 查找订单信息
         $order_where_flag = false;
@@ -1586,11 +1596,17 @@ $(document).ready(function() {
           } 
         }
         if ($_GET['search_con'] == '1') {
-          $customer_where_sql = ' and (('.$front_customer_fax_str.') or ('.$end_customer_fax_str.'))';
+          $customer_where_sql = ' (('.$front_customer_fax_str.') or ('.$end_customer_fax_str.'))';
         }else{
-          $customer_where_sql = ' and ('.$front_customer_fax_str.') and ('.$end_customer_fax_str.')';
+          $customer_where_sql = ' (('.$front_customer_fax_str.') and ('.$end_customer_fax_str.'))';
         }
-        $customer_where_raw = 'select customers_id from '.TABLE_CUSTOMERS.' c where 1 '.$customer_where_sql;
+        if($front_customer_fax_str == ''){
+          $customer_where_sql = ' ('.$end_customer_fax_str.') ';
+        }
+        if($end_customer_fax_str==''){
+          $customer_where_sql = ' ('.$front_customer_fax_str.') ';
+        }
+        $customer_where_raw = 'select c.customers_id from '.TABLE_CUSTOMERS.' c where '.$customer_where_sql;
         $customer_fax_where_flag = false;
         if($temp_row_customer =  tep_db_fetch_array(tep_db_query($customer_where_raw.' limit 1'))){
           $customer_fax_where_flag = true;
@@ -1648,15 +1664,21 @@ $(document).ready(function() {
         $end_order_products_address_str = implode(' or ',$end_order_products_address_arr);
         $order_pa_where_sql = '';
         if ($_GET['search_con'] == '1') {
-          $order_pa_where_sql = ' and (('.$front_order_products_address_str.') or ('.$end_order_products_address_str.'))';
+          $order_pa_where_sql = ' (('.$front_order_products_address_str.') or ('.$end_order_products_address_str.'))';
         }else{
-          $order_pa_where_sql = ' and ('.$front_order_products_address_str.') and ('.$end_order_products_address_str.')';
+          $order_pa_where_sql = ' (('.$front_order_products_address_str.') and ('.$end_order_products_address_str.'))';
         }
-        $order_pa_where_raw = 'select o.customers_id from '.TABLE_ORDERS.' 
+        if($front_order_products_address_str==''){
+          $order_pa_where_sql = ' ('.$end_order_products_address_str.') ';
+        }
+        if($end_order_products_address_str==''){
+          $order_pa_where_sql = ' ('.$front_order_products_address_str.') ';
+        }
+        $order_pa_where_raw = 'select distinct o.customers_id from '.TABLE_ORDERS.' 
         o left join '.TABLE_ORDERS_PRODUCTS_ATTRIBUTES.' opa on o.orders_id =
         opa.orders_id ,'.TABLE_ORDERS_PRODUCTS.' op,'.  TABLE_ORDERS_TOTAL.' ot 
         where o.orders_id = op.orders_id 
-        and o.orders_id = ot.orders_id '.$order_pa_where_sql;
+        and o.orders_id = ot.orders_id and '.$order_pa_where_sql;
         // 判断是否 查找订单产品和订单价格
         $order_pa_where_flag = false;
         if($temp_row_order_pa = tep_db_fetch_array(tep_db_query($order_pa_where_raw.' limit 1'))){
@@ -1710,14 +1732,20 @@ $(document).ready(function() {
         $end_order_status_history_str = implode(' or ',$end_order_status_history_arr);
         $order_oh_where_sql = '';
         if ($_GET['search_con'] == '1') {
-          $order_oh_where_sql = ' and (('.$front_order_status_history_str.') or ('.$end_order_status_history_str.'))';
+          $order_oh_where_sql = ' (('.$front_order_status_history_str.') or ('.$end_order_status_history_str.'))';
         }else{
-          $order_oh_where_sql = ' and ('.$front_order_status_history_str.') and ('.$end_order_status_history_str.')';
+          $order_oh_where_sql = ' (('.$front_order_status_history_str.') and ('.$end_order_status_history_str.'))';
         }
-        $order_oh_where_raw = 'select o.customers_id from '.TABLE_ORDERS.' 
+        if($front_order_status_history_str==''){
+          $order_oh_where_sql = ' ('.$end_order_status_history_str.') ';
+        }
+        if($end_order_status_history_str==''){
+          $order_oh_where_sql = ' ('.$front_order_status_history_str.') ';
+        }
+        $order_oh_where_raw = 'select distinct o.customers_id from '.TABLE_ORDERS.' 
         o ,'.TABLE_ORDERS_STATUS_HISTORY.' osh ,'.TABLE_ORDERS_STATUS.' os 
         where o.orders_id = osh.orders_id and
-        osh.orders_status_id = os.orders_status_id '.$order_oh_where_sql;
+        osh.orders_status_id = os.orders_status_id and '.$order_oh_where_sql;
         // 判断是否 查找订单产品和订单价格
         $order_oh_where_flag = false;
         if($temp_row_order_oh = tep_db_fetch_array(tep_db_query($order_oh_where_raw.' limit 1'))){
@@ -1744,6 +1772,8 @@ $(document).ready(function() {
           TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and
           c.customers_default_address_id = a.address_book_id left join 
           ".TABLE_ORDERS." o on c.customers_id = o.customers_id ";
+        $order_oh_where_flag = false;
+        $order_pa_where_flag = false;
         if($order_pa_where_flag){
           $customers_query_raw_table .= " left join ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa on o.orders_id = opa.orders_id ,";
           $customers_query_raw_table .= TABLE_ORDERS_PRODUCTS." op,".  TABLE_ORDERS_TOTAL." ot";
@@ -1753,19 +1783,31 @@ $(document).ready(function() {
         }
         $customers_query_raw_table .= ", ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s ";
 
-        $customers_query_raw_where = " where c.customers_id = ci.customers_info_id and c.site_id = s.id ".$sql_where_str." and " .$sql_site_where;
+        $customers_query_raw_where = " where c.customers_id = ci.customers_info_id and c.site_id = s.id  and " .$sql_site_where;
+        $where_column_arr = array();
+        if($sql_where_str!=""){
+          $where_column_arr[] = $sql_where_str;
+        }
         if($order_where_flag){
-          $customers_query_raw_where .= " and o.site_id = s.id and o.customers_id != 0 ".$order_where_sql;
+          $customers_query_raw_where .= " and o.site_id = s.id and o.customers_id != 0 ";
+          $where_column_arr[] = $order_where_sql;
         }
         if($customer_fax_where_flag){
-          $customers_query_raw_where .= $customer_where_sql;
+          $where_column_arr[] = $customer_where_sql;
         }
         if($order_oh_where_flag){
-          $customers_query_raw_where .= " and o.orders_id = osh.orders_id and osh.orders_status_id = os.orders_status_id ".$order_oh_where_sql;;
+          $customers_query_raw_where .= " and o.orders_id = osh.orders_id and osh.orders_status_id = os.orders_status_id ";
+          $where_column_arr[] = $order_oh_where_sql;
         }
         if($order_pa_where_flag){
-          $customers_query_raw_where .= " and o.orders_id = op.orders_id and o.orders_id = ot.orders_id ".$order_pa_where_sql;
+          $customers_query_raw_where .= " and o.orders_id = op.orders_id and o.orders_id = ot.orders_id ";
+          $where_column_arr[] = $order_pa_where_sql;
         }
+        if(!empty($where_column_arr)){
+          $where_column_str = implode(' or ',$where_column_arr);
+          $customers_query_raw_where .= " and (".$where_column_str.") ";
+        }
+        //所有的 检索判断 ".$sql_where_str."
         $customers_query_raw_orderby = " order by customers_id ";
         $customers_query_raw = $customers_query_raw_search_culom.$customers_query_raw_table.$customers_query_raw_where.$customers_query_raw_orderby;
       }
@@ -1795,7 +1837,7 @@ $(document).ready(function() {
         .$sql_site_where. " " .$search." order by customers_id ";
     }
     // 订单 预约 次数处理
-    $customers_query_raw = "select t3.*,count(t3.customers_id) as preorder_count from (select t1.*,count(t1.customers_id) as order_count from (".$customers_query_raw.") t1 left join ".TABLE_ORDERS." t2 on t1.customers_id = t2.customers_id and t1.site_id = t2.site_id group by t1.customers_id) t3 left join ".TABLE_PREORDERS." t4 on t4.customers_id=t3.customers_id and t3.site_id = t4.site_id group by t3.customers_id order by ".$customers_order_sql;
+//    $customers_query_raw = "select t3.*,count(t3.customers_id) as preorder_count from (select t1.*,count(t1.customers_id) as order_count from (".$customers_query_raw.") t1 left join ".TABLE_ORDERS." t2 on t1.customers_id = t2.customers_id and t1.site_id = t2.site_id group by t1.customers_id) t3 left join ".TABLE_PREORDERS." t4 on t4.customers_id=t3.customers_id and t3.site_id = t4.site_id group by t3.customers_id order by ".$customers_order_sql;
     
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
@@ -1862,11 +1904,11 @@ $(document).ready(function() {
           );
       $customers_info[] = array(
            'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
-           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').$customers['order_count'].(($customers['is_active'] != '1')?'</font>':'') 
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').'order'.(($customers['is_active'] != '1')?'</font>':'') 
           );
       $customers_info[] = array(
            'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
-           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').$customers['preorder_count'].(($customers['is_active'] != '1')?'</font>':'') 
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').'preorder'.(($customers['is_active'] != '1')?'</font>':'') 
           );
       if ($customers['is_exit_history'] == '1') {
         $has_exit_history = CUSTOMERS_YES_TEXT; 
