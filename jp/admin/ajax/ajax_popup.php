@@ -4765,9 +4765,6 @@ if (isset($_POST['search_blank'])) {
 if (isset($_POST['search_other'])) {
   $_GET['search_other'] = $_POST['search_other'];
 }
-if (isset($_POST['search_total'])) {
-  $_GET['search_total'] = $_POST['search_total'];
-}
 if($_GET['site_id'] == -1){
   $_GET['site_id'] = '';
 }
@@ -4848,14 +4845,14 @@ if($_GET['site_id'] == -1){
    
     if ($_GET['search'] == '2') {
       $search_single = 2;
-      if (tep_not_null($_GET['search_total'])) {
-        $keywords = tep_db_input(tep_db_prepare_input($_GET['search_total']));
+      if (tep_not_null($_GET['search_front'])) {
+        $keywords = tep_db_input(tep_db_prepare_input($_GET['search_front']));
         $keywords = explode(" ",$keywords);
         $key_search = '';
         foreach($keywords as $key => $key_value){
           $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
         }
-        $tmp_search_str = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_total']) . "%' or c.customers_id = '".trim($_GET['search_total'])."')";
+        $tmp_search_str = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_front']) . "%' or c.customers_id = '".trim($_GET['search_front'])."')";
       }
     }
     
@@ -5599,14 +5596,14 @@ if($_GET['cID'] != -1){
   if ($c_key > 0) {
     $prev_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key-1]."'"); 
     $prev_customer_res = tep_db_fetch_array($prev_customer_query); 
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].', '.$prev_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\' , \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\', \''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\', \''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\', \''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\', \''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\', \''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\', \''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\', \''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\', \''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\', \''.(isset($_GET['search'])?$_GET['search']:'').'\', \''.(isset($_GET['search_total'])?$_GET['search_total']:'').'\')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].', '.$prev_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\' , \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\', \''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\', \''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\', \''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\', \''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\', \''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\', \''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\', \''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\', \''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\', \''.(isset($_GET['search'])?$_GET['search']:'').'\')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000"><'.IMAGE_PREV.'</font>'; 
   }
   if ($c_key < (count($cid_array) - 1)) {
     $next_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key+1]."'"); 
     $next_customer_res = tep_db_fetch_array($next_customer_query); 
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].', '.$next_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\' , \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\', \''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\', \''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\', \''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\', \''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\', \''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\', \''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\', \''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\', \''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\', \''.(isset($_GET['search'])?$_GET['search']:'').'\', \''.(isset($_GET['search_total'])?$_GET['search_total']:'').'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].', '.$next_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\' , \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\', \''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\', \''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\', \''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\', \''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\', \''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\', \''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\', \''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\', \''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\', \''.(isset($_GET['search'])?$_GET['search']:'').'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
   }
