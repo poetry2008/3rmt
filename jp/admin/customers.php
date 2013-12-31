@@ -1002,7 +1002,7 @@ $(document).ready(function() {
               </tr>
             </table>  
             </td>
-            <td class="smallText" align="right" id="search_content" width="320">
+            <td class="smallText" align="right" id="search_content" width="340">
             <div id="show_second_search" style="<?php echo ($_GET['search'] == '1')?'display:block':'display:none';?>;"> 
             <?php echo tep_draw_form('search', FILENAME_CUSTOMERS, '', 'get'); ?>
             <table width="100%" border="0" cellspacing="5" cellpadding="0" class="top_space">
@@ -1043,19 +1043,19 @@ $(document).ready(function() {
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left">
-                      <?php echo tep_draw_checkbox_field('search_name', '1', (($_GET['search'] == '1')?(($_GET['search_name'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OPTION_NAME;?> 
+                      <div class="wrap_space"><?php echo tep_draw_checkbox_field('search_name', '1', (($_GET['search'] == '1')?(($_GET['search_name'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OPTION_NAME;?></div> 
                       <?php echo tep_draw_checkbox_field('search_type', '1', (($_GET['search'] == '1')?(($_GET['search_type'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_TYPE_TEXT;?> 
                       </td>
                     </tr>
                     <tr>
                       <td align="left">
-                      <?php echo tep_draw_checkbox_field('search_mail', '1', (($_GET['search'] == '1')?(($_GET['search_mail'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OPTION_MAIL;?> 
+                      <div class="wrap_space"><?php echo tep_draw_checkbox_field('search_mail', '1', (($_GET['search'] == '1')?(($_GET['search_mail'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OPTION_MAIL;?></div> 
                       <?php echo tep_draw_checkbox_field('search_char', '1', (($_GET['search'] == '1')?(($_GET['search_char'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_CHARACTER_TEXT;?> 
                       </td>
                     </tr>
                     <tr>
                       <td align="left">
-                      <?php echo tep_draw_checkbox_field('search_other', '1', (($_GET['search'] == '1')?(($_GET['search_other'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OTHER_TEXT;?> 
+                      <div class="wrap_space"><?php echo tep_draw_checkbox_field('search_other', '1', (($_GET['search'] == '1')?(($_GET['search_other'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_OTHER_TEXT;?></div> 
                       <?php echo tep_draw_checkbox_field('search_blank', '1', (($_GET['search'] == '1')?(($_GET['search_blank'] == '1')?true:false):true)).'&nbsp;'.CUSTOMERS_SEARCH_BLANK_TEXT;?> 
                       </td>
                     </tr>

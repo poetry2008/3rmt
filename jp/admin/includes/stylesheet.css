@@ -2122,3 +2122,7 @@ google hack
 .top_space{
 	margin-top:1px;
 }
+.wrap_space{
+	width:100px;
+	float:left;
+}
