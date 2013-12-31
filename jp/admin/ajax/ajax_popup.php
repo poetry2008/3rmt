@@ -5067,11 +5067,17 @@ if($_GET['site_id'] == -1){
             'o.orders_comment',
             'o.shipping_fee',
             'o.code_fee');
+        $no_collate_array = array(
+            'o.date_purchased',
+            'o.torihiki_date',
+            'o.torihiki_date_end',
+            'o.shipping_fee',
+            'o.code_fee');
         
         foreach($sc_array as $sc_v){
           if (isset($_GET['search_type'])) {
             if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
+              if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
                 $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
               } else {
                 $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
@@ -5079,7 +5085,7 @@ if($_GET['site_id'] == -1){
             }
            
             if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
+              if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
                 $end_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
               } else {
                 $end_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
@@ -5092,7 +5098,7 @@ if($_GET['site_id'] == -1){
             if ($search_end_str != '') {
               $end_order_customer_ref_info_arr[] = '(binary '.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
             }
-            if (isset($_GET['search_char'])) {
+            if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
               if ($search_front_str != '') {
                 $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
               }
@@ -5177,6 +5183,7 @@ if($_GET['site_id'] == -1){
         if($temp_row_customer =  tep_db_fetch_array(tep_db_query($customer_where_raw.' limit 1'))){
           $customer_fax_where_flag = true;
         }
+        /*
         //产品信息和价格
         $front_order_products_address_str ='';
         $end_order_products_address_str ='';
@@ -5317,6 +5324,7 @@ if($_GET['site_id'] == -1){
         if($temp_row_order_oh = tep_db_fetch_array(tep_db_query($order_oh_where_raw.' limit 1'))){
           $order_oh_where_flag= true;
         }
+        */
         $customers_query_raw_search_culom = "select distinct
                  c.customers_id, 
                  c.site_id,

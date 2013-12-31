@@ -1509,11 +1509,17 @@ $(document).ready(function() {
             'o.orders_comment',
             'o.shipping_fee',
             'o.code_fee');
+        $no_collate_array = array(
+            'o.date_purchased',
+            'o.torihiki_date',
+            'o.torihiki_date_end',
+            'o.shipping_fee',
+            'o.code_fee');
         
         foreach($sc_array as $sc_v){
           if (isset($_GET['search_type'])) {
             if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
+              if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
                 $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
               } else {
                 $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
@@ -1521,7 +1527,7 @@ $(document).ready(function() {
             }
            
             if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
+              if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
                 $end_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
               } else {
                 $end_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
@@ -1534,7 +1540,7 @@ $(document).ready(function() {
             if ($search_end_str != '') {
               $end_order_customer_ref_info_arr[] = '(binary '.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
             }
-            if (isset($_GET['search_char'])) {
+            if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
               if ($search_front_str != '') {
                 $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
               }
