@@ -618,7 +618,6 @@ function show_customers_order_preorder_id(cID,show_type){
  url: 'ajax.php?action=show_customer_other_info&'+o_po_info_str,
  dataType: 'text',
  type: 'POST', 
- data: data_info_str, 
  async : false,
  success: function(data){
   $("div#show_customers").html(data);
