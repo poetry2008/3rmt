@@ -1005,7 +1005,7 @@ $(document).ready(function() {
               </tr>
             </table>  
             </td>
-            <td class="smallText" align="right" id="search_content" width="15%">
+            <td class="smallText" align="right" id="search_content" width="230">
             <div id="show_second_search" style="<?php echo ($_GET['search'] == '1')?'display:block':'display:none';?>;"> 
             <?php echo tep_draw_form('search', FILENAME_CUSTOMERS, '', 'get'); ?>
             <table width="100%" border="0" cellspacing="5" cellpadding="0">
