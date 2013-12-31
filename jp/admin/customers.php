@@ -1619,6 +1619,7 @@ $(document).ready(function() {
         if($temp_row_customer =  tep_db_fetch_array(tep_db_query($customer_where_raw.' limit 1'))){
           $customer_fax_where_flag = true;
         }
+        /*
         //产品信息和价格
         $front_order_products_address_str ='';
         $end_order_products_address_str ='';
@@ -1759,6 +1760,7 @@ $(document).ready(function() {
         if($temp_row_order_oh = tep_db_fetch_array(tep_db_query($order_oh_where_raw.' limit 1'))){
           $order_oh_where_flag= true;
         }
+        */
         $customers_query_raw_search_culom = "select distinct
                  c.customers_id, 
                  c.site_id,
