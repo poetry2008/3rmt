@@ -644,6 +644,10 @@ function show_customers(ele,cID,page,action_sid,sort_name,sort_type,search_front
  if (search_other) {
    data_info_str += '&search_other='+search_other; 
  }
+ var c_list = document.getElementById('customer_list_str').value;
+ if(c_list){
+   origin_data_info_str += '&c_list='+c_list;
+ }
  $.ajax({
  url: 'ajax.php?&action=edit_customers&'+origin_data_info_str,
  data:data_info_str, 
@@ -1862,7 +1866,9 @@ $(document).ready(function() {
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
     $customers_numrows = tep_db_num_rows($customers_query);
+    $list_customers_arr = array();
     while ($customers = tep_db_fetch_array($customers_query)) {
+      $list_customers_arr[] = $customers['customers_id'];
       if (
           ((!isset($_GET['cID']) || !$_GET['cID']) || (@$_GET['cID'] == $customers['customers_id'])) 
           && (!isset($cInfo) || !$cInfo)
@@ -1960,6 +1966,9 @@ $(document).ready(function() {
     $notice_box->get_contents($customers_table_row);
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
+    if(!empty($list_customers_arr)){
+      echo '<input type="hidden" value="'.implode('-',$list_customers_arr).'" id="customer_list_str" >';
+    }
 
 ?>
               <tr>
