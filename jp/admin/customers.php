@@ -1503,7 +1503,6 @@ $(document).ready(function() {
                  c.customers_lastname, 
                  c.customers_firstname, 
                  c.customers_email_address, 
-                 a.entry_country_id, 
                  c.customers_guest_chk,
                  ci.user_update,
                  ci.customers_info_date_account_created as date_account_created, 
@@ -1512,9 +1511,7 @@ $(document).ready(function() {
                  ci.customers_info_number_of_logons as number_of_logons,
                  c.is_exit_history,
                  s.romaji
-          from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
-          c.customers_id = a.customers_id and c.customers_default_address_id =
-          a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
+          from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
           c.customers_id = ci.customers_info_id and c.site_id = s.id
           ".$sql_where_str_and." and " .$sql_site_where;
       if (isset($_GET['search_other'])) {
@@ -1654,7 +1651,6 @@ $(document).ready(function() {
                  c.customers_lastname, 
                  c.customers_firstname, 
                  c.customers_email_address, 
-                 a.entry_country_id, 
                  c.customers_guest_chk,
                  ci.user_update,
                  ci.customers_info_date_account_created as date_account_created, 
@@ -1664,9 +1660,7 @@ $(document).ready(function() {
                  c.is_exit_history,
                  s.romaji
         from ";
-        $customers_query_raw_table = TABLE_CUSTOMERS . " c left join " .
-          TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and
-          c.customers_default_address_id = a.address_book_id left join 
+        $customers_query_raw_table = TABLE_CUSTOMERS . " c left join 
           ".TABLE_ORDERS." o on c.customers_id = o.customers_id ";
         $order_oh_where_flag = false;
         $order_pa_where_flag = false;
@@ -1699,7 +1693,6 @@ $(document).ready(function() {
                c.customers_lastname, 
                c.customers_firstname, 
                c.customers_email_address, 
-               a.entry_country_id, 
                c.customers_guest_chk,
                ci.user_update,
                ci.customers_info_date_account_created as date_account_created, 
@@ -1708,9 +1701,7 @@ $(document).ready(function() {
                ci.customers_info_number_of_logons as number_of_logons,
                c.is_exit_history,
                s.romaji
-        from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
-        c.customers_id = a.customers_id and c.customers_default_address_id =
-        a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
+        from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
         c.customers_id = ci.customers_info_id and c.site_id = s.id and "
         .$sql_site_where. " " .$search;
     }
@@ -1728,6 +1719,7 @@ $(document).ready(function() {
           ((!isset($_GET['cID']) || !$_GET['cID']) || (@$_GET['cID'] == $customers['customers_id'])) 
           && (!isset($cInfo) || !$cInfo)
         ) {
+        /*
         $country_query = tep_db_query("
             select countries_name 
             from " . TABLE_COUNTRIES . " 
@@ -1745,6 +1737,8 @@ $(document).ready(function() {
 
         $cInfo_array = tep_array_merge($customers, $customer_info);
         $cInfo = new objectInfo($cInfo_array);
+        */
+        $cInfo = new objectInfo($customers);
       }
 
     if($customers['customers_guest_chk'] == 1) {
