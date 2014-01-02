@@ -5047,7 +5047,6 @@ if($_GET['site_id'] == -1){
             'o.torihiki_date',
             'o.torihiki_date_end',
             'o.orders_id',
-            'o.customers_name',
             'o.payment_method',
             'o.date_purchased',
             'o.orders_ip',
