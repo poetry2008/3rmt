@@ -1080,10 +1080,10 @@ $(document).ready(function() {
                 <td align="left" nowrap="nowrap" width="55">
                 <?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?> 
                 </td>
-                <td align="left" width="120">
-                <?php echo tep_draw_input_field('search_front');?>  
-                </td>
                 <td align="left">
+                <?php echo tep_draw_input_field('search_front', '', 'size="40"');?>  
+                </td>
+                <td align="right">
                 <input type="hidden" name="search" value="1"> 
                 <input type="submit" value="<?php echo IMAGE_SEARCH;?>"> 
                 </td>
@@ -1102,7 +1102,7 @@ $(document).ready(function() {
                 <?php echo CUSTOMERS_SEARCH_END_TEXT;?> 
                 </td>
                 <td colspan="2" align="left" width="120">
-                <?php echo tep_draw_input_field('search_end');?>  
+                <?php echo tep_draw_input_field('search_end', '', 'size="40"');?>  
                 </td>
               </tr>
               <tr>
@@ -1142,10 +1142,10 @@ $(document).ready(function() {
                 <td align="left" nowrap="nowrap" width="55">
                 <?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?>
                 </td> 
-                <td align="left" width="120">
-                <?php echo tep_draw_input_field('search_front');?>  
-                </td>
                 <td align="left">
+                <?php echo tep_draw_input_field('search_front', '', 'size="40"');?>  
+                </td>
+                <td align="right">
                 <input type="hidden" name="search" value="2"> 
                 <input type="submit" value="<?php echo IMAGE_SEARCH?>">
                 </td>
