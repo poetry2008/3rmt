@@ -1324,11 +1324,15 @@ $(document).ready(function() {
       $search_single = 2;
       if (tep_not_null($_GET['search_front'])) {
         $keywords = tep_db_input(tep_db_prepare_input($_GET['search_front']));
+        $keywords = str_replace(array('　', ' '), '',$keywords);
+        $key_search = 'concat(c.customers_firstname,c.customers_lastname) like \'%'.$keywords .'%\'or ';
+        /*
         $keywords = explode(" ",$keywords);
         $key_search = '';
         foreach($keywords as $key => $key_value){
           $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
         }
+        */
         $search = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_front']) . "%' or c.customers_id = '".trim($_GET['search_front'])."')";
       }
     }
@@ -1597,15 +1601,6 @@ $(document).ready(function() {
         if($end_order_customer_ref_info_str ==''){
           $order_where_sql = ' ('.$front_order_customer_ref_info_str.')';
         }
-        $order_where_raw = 'select o.customers_id
-        from '.TABLE_ORDERS.' o,'.TABLE_SITES.' s where 
-        o.site_id = s.id and o.customers_id != 0 and '.$order_where_sql.' 
-        group by o.customers_id';
-        // 判断是否 查找订单信息
-        $order_where_flag = false;
-        if($temp_row_order = tep_db_fetch_array(tep_db_query($order_where_raw.' limit 1'))){
-          $order_where_flag = true;
-        }
         //信用调查
         $front_customer_fax_str ='';
         $end_customer_fax_str ='';
@@ -1652,11 +1647,6 @@ $(document).ready(function() {
         if($end_customer_fax_str==''){
           $customer_where_sql = ' ('.$front_customer_fax_str.') ';
         }
-        $customer_where_raw = 'select c.customers_id from '.TABLE_CUSTOMERS.' c where '.$customer_where_sql;
-        $customer_fax_where_flag = false;
-        if($temp_row_customer =  tep_db_fetch_array(tep_db_query($customer_where_raw.' limit 1'))){
-          $customer_fax_where_flag = true;
-        }
         $customers_query_raw_search_culom = "select distinct
                  c.customers_id, 
                  c.site_id,
@@ -1680,35 +1670,12 @@ $(document).ready(function() {
           ".TABLE_ORDERS." o on c.customers_id = o.customers_id ";
         $order_oh_where_flag = false;
         $order_pa_where_flag = false;
-        if($order_pa_where_flag){
-          $customers_query_raw_table .= " left join ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa on o.orders_id = opa.orders_id ,";
-          $customers_query_raw_table .= TABLE_ORDERS_PRODUCTS." op,".  TABLE_ORDERS_TOTAL." ot";
-        }
-        if($order_oh_where_flag){
-          $customers_query_raw_table .= ", ".TABLE_ORDERS_STATUS_HISTORY." osh ,".TABLE_ORDERS_STATUS." os";
-        }
         $customers_query_raw_table .= ", ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s ";
-
         $customers_query_raw_where = " where c.customers_id = ci.customers_info_id and c.site_id = s.id  and " .$sql_site_where;
         $where_column_arr = array();
-        if($sql_where_str!=""){
-          $where_column_arr[] = $sql_where_str;
-        }
-        if($order_where_flag){
-          $customers_query_raw_where .= " and o.site_id = s.id and o.customers_id != 0 ";
-          $where_column_arr[] = $order_where_sql;
-        }
-        if($customer_fax_where_flag){
-          $where_column_arr[] = $customer_where_sql;
-        }
-        if($order_oh_where_flag){
-          $customers_query_raw_where .= " and o.orders_id = osh.orders_id and osh.orders_status_id = os.orders_status_id ";
-          $where_column_arr[] = $order_oh_where_sql;
-        }
-        if($order_pa_where_flag){
-          $customers_query_raw_where .= " and o.orders_id = op.orders_id and o.orders_id = ot.orders_id ";
-          $where_column_arr[] = $order_pa_where_sql;
-        }
+        $where_column_arr[] = $sql_where_str;
+        $where_column_arr[] = $order_where_sql;
+        $where_column_arr[] = $customer_where_sql;
         if(!empty($where_column_arr)){
           $where_column_str = implode(' or ',$where_column_arr);
           $customers_query_raw_where .= " and (".$where_column_str.") ";
