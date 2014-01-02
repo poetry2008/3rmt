@@ -921,6 +921,48 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
         } else { 
           // b.) null quantity found --> delete
           if(count($products_session_string_array) <= 1){
+            //删除商品时，删除关联OA中的相关记录
+            $formtype = tep_check_order_type($oID);
+            $payment_romaji = tep_get_payment_code_by_order_id($oID);
+            //获取OA的模板
+            $oa_form_query = tep_db_query("select id from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'");
+            $oa_form_array = tep_db_fetch_array($oa_form_query);
+            tep_db_free_result($oa_form_query);
+            //获取OA的组，及OA的选项
+            $oa_form_group_query = tep_db_query("select group_id from ".TABLE_OA_FORM_GROUP." where form_id='".$oa_form_array['id']."'");
+            while($oa_form_group_array = tep_db_fetch_array($oa_form_group_query)){
+
+              $oa_item_query = tep_db_query("select id from ".TABLE_OA_ITEM." where group_id='".$oa_form_group_array['group_id']."' and `type`='autocalculate'");
+              if(tep_db_num_rows($oa_item_query) > 0){
+
+                $oa_item_array = tep_db_fetch_array($oa_item_query);
+                $oa_group_id = $oa_form_group_array['group_id'];
+                $oa_item_id = $oa_item_array['id'];
+                tep_db_free_result($oa_item_query);
+                break;
+              }
+            }
+            tep_db_free_result($oa_form_group_query);
+            //删除商品对应的OA信息
+            $oa_products_query = tep_db_query("select id,value from ".TABLE_OA_FORMVALUE." where orders_id='".$oID."' and form_id='".$oa_form_array['id']."' and group_id='".$oa_group_id."' and item_id='".$oa_item_id."'");
+            $oa_products_array = tep_db_fetch_array($oa_products_query);
+            tep_db_free_result($oa_products_query);
+            $oa_value_array = explode('_',$oa_products_array['value']);
+            $oa_products_flag = false;
+            foreach($oa_value_array as $key=>$value){
+
+              $oa_temp_array = explode('|',$value);
+              if(trim(end($oa_temp_array)) == $orders_products_id){
+
+                unset($oa_value_array[$key]);
+                $oa_products_flag = true;
+              }
+            }
+            $oa_value_str = '';
+            if($oa_products_flag == true && !empty($oa_value_array)){
+              $oa_value_str = implode('_',$oa_value_array);
+              tep_db_query("update ".TABLE_OA_FORMVALUE." set value='".$oa_value_str."' where id='".$oa_products_array['id']."'");
+            }
             $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id = '$orders_products_id';";
             tep_db_query($Query);
             $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_products_id = '$orders_products_id';";
