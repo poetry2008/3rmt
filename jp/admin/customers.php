@@ -1679,7 +1679,7 @@ $(document).ready(function() {
         if($order_where_sql!=''){
           $where_column_arr[] = $order_where_sql;
         }
-        if($customer_where_sqli!=''){
+        if($customer_where_sql!=''){
           $where_column_arr[] = $customer_where_sql;
         }
         if(!empty($where_column_arr)){
@@ -1717,7 +1717,7 @@ $(document).ready(function() {
     $customers_query_raw .= ' order by '.$customers_order_sql;
     // 订单 预约 次数处理
 //    $customers_query_raw = "select t3.*,count(t3.customers_id) as preorder_count from (select t1.*,count(t1.customers_id) as order_count from (".$customers_query_raw.") t1 left join ".TABLE_ORDERS." t2 on t1.customers_id = t2.customers_id and t1.site_id = t2.site_id group by t1.customers_id) t3 left join ".TABLE_PREORDERS." t4 on t4.customers_id=t3.customers_id and t3.site_id = t4.site_id group by t3.customers_id order by ".$customers_order_sql;
-    
+    var_dump($customers_query_raw); 
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
     $customers_query = tep_db_query($customers_query_raw);
     $customers_numrows = tep_db_num_rows($customers_query);
