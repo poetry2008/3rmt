@@ -4844,16 +4844,47 @@ if($_GET['site_id'] == -1){
       $strip_blank_front_str = 'replace(replace(replace(replace(replace(';
       $strip_blank_end_str = ', " ", ""), "　", ""), "\r\n", ""), "\r", ""), "\n", "")';
     }
+
+    if(isset($_GET['c_list'])&&$_GET['c_list']!=null&&$_GET['c_list']!=''){
+      $t_arr = explode('-',$_GET['c_list']);
+      $customers_query_raw = "
+        select c.customers_id, 
+               c.site_id,
+               c.is_active,
+               c.customers_lastname, 
+               c.customers_firstname, 
+               c.customers_email_address, 
+               c.customers_guest_chk,
+               ci.user_update,
+               ci.customers_info_date_account_created as date_account_created, 
+               ci.customers_info_date_account_last_modified as date_account_last_modified, 
+               ci.customers_info_date_of_last_logon as date_last_logon, 
+               ci.customers_info_number_of_logons as number_of_logons,
+               c.is_exit_history,
+               s.romaji
+        from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
+        c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where;
+      if(!empty($t_arr)){
+        $customers_query_raw .= " and c.customers_id in (".  str_replace('-',',',$_GET['c_list']).") ";
+      }else{
+        $customers_query_raw .= " and c.customers_id = '".$_GET['c_list']."' ";
+      }
+    }else{
    
     if ($_GET['search'] == '2') {
       $search_single = 2;
       if (tep_not_null($_GET['search_front'])) {
+        $keywords = tep_db_input(tep_db_prepare_input($_GET['search_front']));
+        $keywords = str_replace(array('　', ' '), '',$keywords);
+        $key_search = 'concat(c.customers_firstname,c.customers_lastname) like \'%'.$keywords .'%\'or ';
+        /*
         $keywords = tep_db_input(tep_db_prepare_input($_GET['search_front']));
         $keywords = explode(" ",$keywords);
         $key_search = '';
         foreach($keywords as $key => $key_value){
           $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
         }
+        */
         $tmp_search_str = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_front']) . "%' or c.customers_id = '".trim($_GET['search_front'])."'";
       }
     }
@@ -5226,33 +5257,6 @@ if($_GET['site_id'] == -1){
         .$sql_site_where. " " .$tmp_search_str;
     }
     
-    if(isset($_GET['c_list'])&&$_GET['c_list']!=null&&$_GET['c_list']!=''){
-      $t_arr = explode('-',$_GET['c_list']);
-      $customers_query_raw = "
-        select c.customers_id, 
-               c.site_id,
-               c.is_active,
-               c.customers_lastname, 
-               c.customers_firstname, 
-               c.customers_email_address, 
-               a.entry_country_id, 
-               c.customers_guest_chk,
-               ci.user_update,
-               ci.customers_info_date_account_created as date_account_created, 
-               ci.customers_info_date_account_last_modified as date_account_last_modified, 
-               ci.customers_info_date_of_last_logon as date_last_logon, 
-               ci.customers_info_number_of_logons as number_of_logons,
-               c.is_exit_history,
-               s.romaji
-        from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
-        c.customers_id = a.customers_id and c.customers_default_address_id =
-        a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
-        c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where;
-      if(!empty($t_arr)){
-        $customers_query_raw .= " and c.customers_id in (".  str_replace('-',',',$_GET['c_list']).") ";
-      }else{
-        $customers_query_raw .= " and c.customers_id = '".$_GET['c_list']."' ";
-      }
     }
     $customers_query_raw .= ' order by '.$customers_order_sql; 
     //$customers_query_raw = "select t3.*,count(t3.customers_id) as preorder_count from (select t1.*,count(t1.customers_id) as order_count from (".$customers_query_raw.") t1 left join ".TABLE_ORDERS." t2 on t1.customers_id = t2.customers_id and t1.site_id = t2.site_id group by t1.customers_id) t3 left join ".TABLE_PREORDERS." t4 on t4.customers_id=t3.customers_id and t3.site_id = t4.site_id group by t3.customers_id order by ".$customers_order_sql;
