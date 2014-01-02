@@ -1543,6 +1543,7 @@ $(document).ready(function() {
             'o.orders_flash_version',
             'o.orders_ref',
             'o.orders_comment',
+            'o.orders_user_agent',
             'o.shipping_fee',
             'o.code_fee');
         $no_collate_array = array(
