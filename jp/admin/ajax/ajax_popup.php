@@ -5024,7 +5024,6 @@ if($_GET['site_id'] == -1){
                  c.customers_lastname, 
                  c.customers_firstname, 
                  c.customers_email_address, 
-                 a.entry_country_id, 
                  c.customers_guest_chk,
                  ci.user_update,
                  ci.customers_info_date_account_created as date_account_created, 
@@ -5033,9 +5032,7 @@ if($_GET['site_id'] == -1){
                  ci.customers_info_number_of_logons as number_of_logons,
                  c.is_exit_history,
                  s.romaji
-          from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
-          c.customers_id = a.customers_id and c.customers_default_address_id =
-          a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
+          from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
           c.customers_id = ci.customers_info_id and c.site_id = s.id
           ".$sql_where_str_and." and " .$sql_site_where;
       if (isset($_GET['search_other'])) {
@@ -5051,7 +5048,6 @@ if($_GET['site_id'] == -1){
             'o.torihiki_date_end',
             'o.orders_id',
             'o.customers_name',
-            'o.customers_email_address',
             'o.payment_method',
             'o.date_purchased',
             'o.orders_ip',
@@ -5064,6 +5060,7 @@ if($_GET['site_id'] == -1){
             'o.orders_flash_version',
             'o.orders_ref',
             'o.orders_comment',
+            'o.orders_user_agent',
             'o.shipping_fee',
             'o.code_fee');
         $no_collate_array = array(
@@ -5122,15 +5119,6 @@ if($_GET['site_id'] == -1){
         if($end_order_customer_ref_info_str ==''){
           $order_where_sql = ' ('.$front_order_customer_ref_info_str.')';
         }
-        $order_where_raw = 'select o.customers_id
-        from '.TABLE_ORDERS.' o,'.TABLE_SITES.' s where 
-        o.site_id = s.id and o.customers_id != 0 and '.$order_where_sql.' 
-        group by o.customers_id';
-        // 判断是否 查找订单信息
-        $order_where_flag = false;
-        if($temp_row_order = tep_db_fetch_array(tep_db_query($order_where_raw.' limit 1'))){
-          $order_where_flag = true;
-        }
         //信用调查
         $front_customer_fax_str ='';
         $end_customer_fax_str ='';
@@ -5177,153 +5165,6 @@ if($_GET['site_id'] == -1){
         if($end_customer_fax_str==''){
           $customer_where_sql = ' ('.$front_customer_fax_str.') ';
         }
-        $customer_where_raw = 'select c.customers_id from '.TABLE_CUSTOMERS.' c where '.$customer_where_sql;
-        $customer_fax_where_flag = false;
-        if($temp_row_customer =  tep_db_fetch_array(tep_db_query($customer_where_raw.' limit 1'))){
-          $customer_fax_where_flag = true;
-        }
-        /*
-        //产品信息和价格
-        $front_order_products_address_str ='';
-        $end_order_products_address_str ='';
-        $front_order_products_address_arr =array();
-        $end_order_products_address_arr =array();
-        $sc_op_array = array(
-          'op.final_price',
-          'op.products_name',
-          'op.products_price',
-          'op.products_tax',
-          'op.products_quantity',
-          'op.products_model',
-          'opa.options_values_price',
-          'opa.option_info',
-          'ot.value');
-        foreach($sc_op_array as $sc_op_v){
-          if (isset($_GET['search_type'])) {
-            if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
-                $front_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              } else {
-                $front_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-              }
-            }
-           
-            if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
-                $end_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              } else {
-                $end_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-              }
-            }
-          } else {
-            if ($search_front_str != '') {
-              $front_order_products_address_arr[] = '(binary '.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_order_products_address_arr[] = '(binary '.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-            }
-            if (isset($_GET['search_char'])) {
-              if ($search_front_str != '') {
-                $front_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              }
-              if ($search_end_str != '') {
-                $end_order_products_address_arr[] = '('.$strip_blank_front_str.$sc_op_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              }
-            } 
-          }
-        }
-        $front_order_products_address_str = implode(' or ',$front_order_products_address_arr);
-        $end_order_products_address_str = implode(' or ',$end_order_products_address_arr);
-        $order_pa_where_sql = '';
-        if ($_GET['search_con'] == '1') {
-          $order_pa_where_sql = ' (('.$front_order_products_address_str.') or ('.$end_order_products_address_str.'))';
-        }else{
-          $order_pa_where_sql = ' (('.$front_order_products_address_str.') and ('.$end_order_products_address_str.'))';
-        }
-        if($front_order_products_address_str==''){
-          $order_pa_where_sql = ' ('.$end_order_products_address_str.') ';
-        }
-        if($end_order_products_address_str==''){
-          $order_pa_where_sql = ' ('.$front_order_products_address_str.') ';
-        }
-        $order_pa_where_raw = 'select distinct o.customers_id from '.TABLE_ORDERS.' 
-        o left join '.TABLE_ORDERS_PRODUCTS_ATTRIBUTES.' opa on o.orders_id =
-        opa.orders_id ,'.TABLE_ORDERS_PRODUCTS.' op,'.  TABLE_ORDERS_TOTAL.' ot 
-        where o.orders_id = op.orders_id 
-        and o.orders_id = ot.orders_id and '.$order_pa_where_sql;
-        // 判断是否 查找订单产品和订单价格
-        $order_pa_where_flag = false;
-        if($temp_row_order_pa = tep_db_fetch_array(tep_db_query($order_pa_where_raw.' limit 1'))){
-          $order_pa_where_flag= true;
-        }
-        //订单状态
-        $front_order_status_history_str ='';
-        $end_order_status_history_str ='';
-        $front_order_status_history_arr=array();
-        $end_order_status_history_arr =array();
-        $sc_oh_array = array(
-          'osh.comments',
-          'osh.user_added',
-          'osh.date_added',
-          'os.orders_status_name');
-        foreach($sc_oh_array as $sc_oh_v){
-          if (isset($_GET['search_type'])) {
-            if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
-                $front_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              } else {
-                $front_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-              }
-            }
-           
-            if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
-                $end_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              } else {
-                $end_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-              }
-            }
-          } else {
-            if ($search_front_str != '') {
-              $front_order_status_history_arr[] = '(binary '.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_order_status_history_arr[] = '(binary '.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-            }
-            if (isset($_GET['search_char'])) {
-              if ($search_front_str != '') {
-                $front_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              }
-              if ($search_end_str != '') {
-                $end_order_status_history_arr[] = '('.$strip_blank_front_str.$sc_oh_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              }
-            } 
-          }
-        }
-        $front_order_status_history_str = implode(' or ',$front_order_status_history_arr);
-        $end_order_status_history_str = implode(' or ',$end_order_status_history_arr);
-        $order_oh_where_sql = '';
-        if ($_GET['search_con'] == '1') {
-          $order_oh_where_sql = ' (('.$front_order_status_history_str.') or ('.$end_order_status_history_str.'))';
-        }else{
-          $order_oh_where_sql = ' (('.$front_order_status_history_str.') and ('.$end_order_status_history_str.'))';
-        }
-        if($front_order_status_history_str==''){
-          $order_oh_where_sql = ' ('.$end_order_status_history_str.') ';
-        }
-        if($end_order_status_history_str==''){
-          $order_oh_where_sql = ' ('.$front_order_status_history_str.') ';
-        }
-        $order_oh_where_raw = 'select distinct o.customers_id from '.TABLE_ORDERS.' 
-        o ,'.TABLE_ORDERS_STATUS_HISTORY.' osh ,'.TABLE_ORDERS_STATUS.' os 
-        where o.orders_id = osh.orders_id and
-        osh.orders_status_id = os.orders_status_id and '.$order_oh_where_sql;
-        // 判断是否 查找订单产品和订单价格
-        $order_oh_where_flag = false;
-        if($temp_row_order_oh = tep_db_fetch_array(tep_db_query($order_oh_where_raw.' limit 1'))){
-          $order_oh_where_flag= true;
-        }
-        */
         $customers_query_raw_search_culom = "select distinct
                  c.customers_id, 
                  c.site_id,
@@ -5331,7 +5172,6 @@ if($_GET['site_id'] == -1){
                  c.customers_lastname, 
                  c.customers_firstname, 
                  c.customers_email_address, 
-                 a.entry_country_id, 
                  c.customers_guest_chk,
                  ci.user_update,
                  ci.customers_info_date_account_created as date_account_created, 
@@ -5341,40 +5181,21 @@ if($_GET['site_id'] == -1){
                  c.is_exit_history,
                  s.romaji
         from ";
-        $customers_query_raw_table = TABLE_CUSTOMERS . " c left join " .
-          TABLE_ADDRESS_BOOK . " a on c.customers_id = a.customers_id and
-          c.customers_default_address_id = a.address_book_id left join 
+        $customers_query_raw_table = TABLE_CUSTOMERS . " c left join 
           ".TABLE_ORDERS." o on c.customers_id = o.customers_id ";
         $order_oh_where_flag = false;
         $order_pa_where_flag = false;
-        if($order_pa_where_flag){
-          $customers_query_raw_table .= " left join ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa on o.orders_id = opa.orders_id ,";
-          $customers_query_raw_table .= TABLE_ORDERS_PRODUCTS." op,".  TABLE_ORDERS_TOTAL." ot";
-        }
-        if($order_oh_where_flag){
-          $customers_query_raw_table .= ", ".TABLE_ORDERS_STATUS_HISTORY." osh ,".TABLE_ORDERS_STATUS." os";
-        }
         $customers_query_raw_table .= ", ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s ";
-
         $customers_query_raw_where = " where c.customers_id = ci.customers_info_id and c.site_id = s.id  and " .$sql_site_where;
         $where_column_arr = array();
-        if($sql_where_str!=""){
+        if($sql_where_str!=''){
           $where_column_arr[] = $sql_where_str;
         }
-        if($order_where_flag){
-          $customers_query_raw_where .= " and o.site_id = s.id and o.customers_id != 0 ";
+        if($order_where_sql!=''){
           $where_column_arr[] = $order_where_sql;
         }
-        if($customer_fax_where_flag){
+        if($customer_where_sql!=''){
           $where_column_arr[] = $customer_where_sql;
-        }
-        if($order_oh_where_flag){
-          $customers_query_raw_where .= " and o.orders_id = osh.orders_id and osh.orders_status_id = os.orders_status_id ";
-          $where_column_arr[] = $order_oh_where_sql;
-        }
-        if($order_pa_where_flag){
-          $customers_query_raw_where .= " and o.orders_id = op.orders_id and o.orders_id = ot.orders_id ";
-          $where_column_arr[] = $order_pa_where_sql;
         }
         if(!empty($where_column_arr)){
           $where_column_str = implode(' or ',$where_column_arr);
@@ -5393,7 +5214,6 @@ if($_GET['site_id'] == -1){
                c.customers_lastname, 
                c.customers_firstname, 
                c.customers_email_address, 
-               a.entry_country_id, 
                c.customers_guest_chk,
                ci.user_update,
                ci.customers_info_date_account_created as date_account_created, 
@@ -5402,11 +5222,11 @@ if($_GET['site_id'] == -1){
                ci.customers_info_number_of_logons as number_of_logons,
                c.is_exit_history,
                s.romaji
-        from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
-        c.customers_id = a.customers_id and c.customers_default_address_id =
-        a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
-        c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where. " " .$tmp_search_str;
+        from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
+        c.customers_id = ci.customers_info_id and c.site_id = s.id and "
+        .$sql_site_where. " " .$tmp_search_str;
     }
+    
     if(isset($_GET['c_list'])&&$_GET['c_list']!=null&&$_GET['c_list']!=''){
       $t_arr = explode('-',$_GET['c_list']);
       $customers_query_raw = "
