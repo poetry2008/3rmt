@@ -2823,14 +2823,29 @@ echo json_encode($json_array);
  功能: 检查商品图片是否存在多个同名
  参数: $_POST['colum_name'] 列明
  参数: $_POST['colum_value'] 列值
+ 参数: $_POST['image_name'] 全部搜索图片名
  ----------------------------------------*/
-  $c_name= $_POST['colum_name'];
-  $c_value= $_POST['colum_value'];
-  $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where ".$c_name."='".$c_value."'";
-  $res = tep_db_fetch_array(tep_db_query($sql));
-  if($res['con'] > 1){
-    echo 'true';
+  if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
+    $image_name = $_POST['image_name'];
+    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
+      where products_image ='".$image_name."' 
+      OR products_image2='".$image_name."'
+      OR products_image3='".$image_name."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      echo 'true';
+    }else{
+      echo 'false';
+    }
   }else{
-    echo 'false';
+    $c_name= $_POST['colum_name'];
+    $c_value= $_POST['colum_value'];
+    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where ".$c_name."='".$c_value."'";
+    $res = tep_db_fetch_array(tep_db_query($sql));
+    if($res['con'] > 1){
+      echo 'true';
+    }else{
+      echo 'false';
+    }
   }
 }
