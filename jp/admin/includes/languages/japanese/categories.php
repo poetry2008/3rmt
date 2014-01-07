@@ -279,3 +279,4 @@ define('MANUAL_LINK_TEXT', 'マニュアル');
 define('TEXT_RELATE_PRODUCT_RADICES','1個（%s）での計算とします。');
 define('IMAGE_LINK','リンク');
 define('IMAGE_LINK_TO','リンク先');
+define('TEXT_IS_OVERWRITE_IMAGE','は既に存在します。上書きしますか？');

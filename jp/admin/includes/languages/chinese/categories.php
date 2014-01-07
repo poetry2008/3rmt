@@ -271,4 +271,5 @@ define('MANUAL_LINK_TEXT', '手册');
 define('TEXT_RELATE_PRODUCT_RADICES','按照1个（%s）计算。');
 define('IMAGE_LINK','链接');
 define('IMAGE_LINK_TO','链接到');
+define('TEXT_IS_OVERWRITE_IMAGE','已经存在。是否覆盖？');
 ?>

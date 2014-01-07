@@ -726,9 +726,8 @@ if (isset($_GET['action']) && $_GET['action']) {
       $product_id = tep_db_prepare_input($products_value);
       $product_categories = tep_generate_category_path($product_id, 'product');
 
-      for ($i = 0, $n = sizeof($product_categories); $i < $n; $i++) {
-        tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" . tep_db_input($product_categories[$i][sizeof($product_categories[$i])-1]['id']) . "'");
-      }
+      //删除当前页面的产品连接
+      tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" .  tep_db_input($current_category_id). "'");
 
       $product_categories_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
       $product_categories = tep_db_fetch_array($product_categories_query);
@@ -1764,7 +1763,26 @@ function getFileName(path){
 }
 <?php // 给图片前的文本框赋值 ?>
 function change_image_text(_this,change_name){
-  $("input[name="+change_name+"]").val(getFileName(_this.value));
+  var image_name = getFileName(_this.value);
+  $.ajax({
+    url: 'ajax_orders.php?action=has_pimage',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'image_name='+image_name, 
+    async: false,
+    success: function(msg) {
+      if(msg=='true'){
+        if(confirm(image_name+' <?php echo TEXT_IS_OVERWRITE_IMAGE;?>')){
+          $("input[name="+change_name+"]").val(image_name);
+          $("#overwrite").val('yes');
+        }else{
+          _this.value='';
+        }
+      }else if(msg=='false'){
+        $("input[name="+change_name+"]").val(image_name);
+      }
+    }
+  });
 }
 <?php // 取消所有图片对应的信息 ?>
 function clear_image(file_name,input_name){
@@ -3474,6 +3492,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     <td colspan="2"><?php 
                     echo tep_draw_separator('pixel_trans.gif', '1', '10'); 
                     echo tep_draw_hidden_field('hidd_pid',$pInfo->products_id,' id="hidd_pid" ');
+                    echo tep_draw_hidden_field('overwrite','no',' id="overwrite" ');
                     ?></td>
                     </tr>
                       <tr>
@@ -3489,12 +3508,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         <?php
                         if(isset($pInfo->products_image) && tep_not_null($pInfo->products_image)){
                           echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
-                          /*
-                          echo tep_draw_separator('pixel_trans.gif', '24', '15');
-                          ?>
-                            <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image&action='.$_GET['action'].'&file='.(isset($pInfo->products_image)?$pInfo->products_image:'').'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
-                            <?php 
-                            */
                           ?>
                           <?php } ?>
                             </td>
@@ -3508,12 +3521,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             <?php
                             if(isset($pInfo->products_image2) && tep_not_null($pInfo->products_image2)){
                               echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
-                           /*   
-                              echo tep_draw_separator('pixel_trans.gif', '24', '15');
-                              ?>
-                                <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
-                                <?php 
-                                */
                           ?>
                           <?php } ?>
                                 </td>
@@ -3527,12 +3534,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                 <?php
                                 if(isset($pInfo->products_image3) && tep_not_null($pInfo->products_image3)){
                                   echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT , $site_id).'<br>'."\n";
-                                  /*
-                                  echo tep_draw_separator('pixel_trans.gif', '24', '15');
-                                  ?>
-                                    <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
-                                    <?php 
-                                    */
                           ?>
                           <?php } ?>
                                     </td>
