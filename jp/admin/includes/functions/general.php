@@ -1614,7 +1614,7 @@ function tep_get_uploaded_file($filename) {
 function tep_copy_uploaded_file($filename, $target,$new_filename='') {
   if (substr($target, -1) != '/') $target .= '/';
 
-  if($new_filename ==''){
+  if($new_filename !=''){
     $target .= $new_filename;
   }else{
     $target .= $filename['name'];
