@@ -50,7 +50,7 @@ if ($tmp_sort_str == '4') {
 ?>
 <!--select search_eof// -->
 <div class="underline">&nbsp;</div>
-<table border="0" width="689" cellspacing="0" cellpadding="0">
+<table border="0" width="710" cellspacing="0" cellpadding="0">
   <tr>
     <td>
 <?php
