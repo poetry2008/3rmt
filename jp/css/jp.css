@@ -61,7 +61,7 @@ H3 {
 	color: #C85050;
 }
 .line {
-	width: 689px;
+	width: 715px;
 	background-image: url(../images/design/contents/parcer_space.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;
@@ -1243,17 +1243,6 @@ H3 {
 }
 .red {
 	color: #C85050;
-}
-.line {
-	width: 689px;
-	background-image: url(../images/design/contents/parcer_space.gif);
-	background-repeat: repeat-x;
-	background-position: bottom;
-	font-weight: bold;
-	text-align: right;
-	padding-bottom: 5px;
-	margin-top: 4px;
-	margin-bottom: 10px;
 }
 .comment img { vertical-align:middle\9;}
 /* ---------------------------

@@ -419,6 +419,9 @@ td,th{ border:0;font-size:14px; padding:2px;}
 	padding:9px 0 8px 0;
 	overflow:hidden;
 }
+#main-content h3 span{
+        font-weight:normal; 
+}
 #main-content h4{
 	color:#fff;
 	font-size:14px;

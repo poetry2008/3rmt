@@ -377,13 +377,13 @@ if ($_GET['action'] == 'show_category_info') {
       );
   
   $update_info_array[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_SHOW.':'), 
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_SHOW), 
         array('align' => 'left', 'text' => $_POST['origin_num'].
           '<input type="hidden" id="is_radices" value="1">'), 
       );
   
   $update_info_array[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_EDIT.':'), 
+        array('align' => 'left', 'text' => TEXT_POPUP_WINDOW_EDIT), 
         array('align' => 'left', 'text' => tep_draw_input_field('real_pro_num', $_POST['origin_num'], 'id="real_pro_num"')), 
       );
   
