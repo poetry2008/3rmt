@@ -2818,4 +2818,19 @@ echo json_encode($json_array);
     }
   }
   echo $error_str;
+}else if ($_GET['action'] == 'has_pimage'){
+/*-----------------------------------------
+ 功能: 检查商品图片是否存在多个同名
+ 参数: $_POST['colum_name'] 列明
+ 参数: $_POST['colum_value'] 列值
+ ----------------------------------------*/
+  $c_name= $_POST['colum_name'];
+  $c_value= $_POST['colum_value'];
+  $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where ".$c_name."='".$c_value."'";
+  $res = tep_db_fetch_array(tep_db_query($sql));
+  if($res['con'] > 1){
+    echo 'true';
+  }else{
+    echo 'false';
+  }
 }

@@ -2119,3 +2119,10 @@ google hack
 .search_space td{
 	padding-top:4px;
 }
+.top_space{
+	margin-top:1px;
+}
+.wrap_space{
+	width:100px;
+	float:left;
+}

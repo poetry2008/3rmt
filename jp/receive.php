@@ -77,12 +77,6 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
 
     ));
   }
-} else {
-
-  // 不正确
-}
-
-if($w_clientip == "76011"){
   //如果信用卡支付成功，生成订单
   if(!isset($_SESSION['orders_credit_flag']) && $w_option == $_SESSION['option']){
     $_SESSION['orders_credit_flag'] = '0';
@@ -98,6 +92,12 @@ if($w_clientip == "76011"){
   if(isset($_SESSION['preorder_credit_flag']) && $_SESSION['preorder_credit_flag'] == '0'){
     $_SESSION['preorder_credit_flag'] = '1';
   }
+} else {
+
+  // 不正确
+}
+
+if($w_clientip == "76011"){
   echo "SuccessOK";
 }else{
   echo "不正アクセス";

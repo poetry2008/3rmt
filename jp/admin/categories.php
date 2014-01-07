@@ -1140,15 +1140,9 @@ if (isset($_GET['action']) && $_GET['action']) {
           }
         }
 
-        if ($_POST['products_image']) {
-          $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
-        }
-        if ($_POST['products_image2']) {
-          $sql_data_array['products_image2'] = (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2']));
-        }
-        if ($_POST['products_image3']) {
-          $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
-        }
+        $sql_data_array['products_image'] = (($_POST['products_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image']));
+        $sql_data_array['products_image2'] = (($_POST['products_image2'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image2']));
+        $sql_data_array['products_image3'] = (($_POST['products_image3'] == 'none') ? '' : tep_db_prepare_input($_POST['products_image3']));
         if ($_POST['products_cart_image']) {
           $sql_data_array['products_cart_image'] = (($_POST['products_cart_image'] == 'none') ? '' : tep_db_prepare_input($_POST['products_cart_image']));
         }
@@ -1757,6 +1751,41 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
 <script language="javascript">
+<?php // JS 获得文件名?>
+function getFileName(path){
+  var pos1 = path.lastIndexOf('/');
+  var pos2 = path.lastIndexOf('\\');
+  var pos  = Math.max(pos1, pos2)
+  if( pos<0 ){
+    return path;
+  }else{
+    return path.substring(pos+1);
+  }
+}
+<?php // 给图片前的文本框赋值 ?>
+function change_image_text(_this,change_name){
+  $("input[name="+change_name+"]").val(getFileName(_this.value));
+}
+<?php // 取消所有图片对应的信息 ?>
+function clear_image(file_name,input_name){
+  var image_name = $("input[name="+input_name+"]").val();
+  var pid = $("hidd_pid").val();
+  $.ajax({
+    url: 'ajax_orders.php?action=has_pimage',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'colum_name='+file_name+'&colum_value='+image_name, 
+    async: false,
+    success: function(msg) {
+      if(msg=='true'){
+        $("input[name="+file_name+"]").val('');
+        $("input[name="+input_name+"]").val('');
+      }else if(msg=='false'){
+        confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&mode=p_delete&site_id='.$site_id) ; ?>&file='+image_name+'&cl='+file_name);
+      }
+    }
+  });
+}
 <?php
 //获得页面最大的z-index值 
   $z_index = '1';
@@ -3442,43 +3471,70 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     </table>
                     </fieldset></td>
                     </tr>
-                    <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                    <td colspan="2"><?php 
+                    echo tep_draw_separator('pixel_trans.gif', '1', '10'); 
+                    echo tep_draw_hidden_field('hidd_pid',$pInfo->products_id,' id="hidd_pid" ');
+                    ?></td>
                     </tr>
                       <tr>
                         <td colspan="2"><fieldset>
                         <legend style="color:#009900 "><?php echo TEXT_PRODUCT_IMAGE_TITLE;?></legend>
                         <table>
                         <tr>
-                        <td class="main"><?php echo TEXT_PRODUCTS_IMAGE; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('products_image') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($pInfo->products_image)?$pInfo->products_image:'') . tep_draw_hidden_field('products_previous_image', isset($pInfo->products_image)?$pInfo->products_image:''); ?>
+                        <td class="main" valign="top"><?php echo TEXT_PRODUCTS_IMAGE; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'. tep_draw_input_field('products_previous_image', isset($pInfo->products_image)?$pInfo->products_image:'') .'&nbsp;'. tep_draw_file_field('products_image',false," onchange=\"change_image_text(this,'products_previous_image')\" " );
+              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; 
+                    ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image\',\'products_previous_image\');"');?></a><?php 
+              echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; ?>
                         <?php
                         if(isset($pInfo->products_image) && tep_not_null($pInfo->products_image)){
-                          echo '<br>'.tep_info_image('products/'.$pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
+                          echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
+                          /*
+                          echo tep_draw_separator('pixel_trans.gif', '24', '15');
                           ?>
                             <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image&action='.$_GET['action'].'&file='.(isset($pInfo->products_image)?$pInfo->products_image:'').'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
-                            <?php } ?>
+                            <?php 
+                            */
+                          ?>
+                          <?php } ?>
                             </td>
                             </tr>
                             <tr>
-                            <td class="main"><?php echo TEXT_PRODUCTS_IMAGE; ?>2</td>
-                            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('products_image2') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($pInfo->products_image2)?$pInfo->products_image2:'') . tep_draw_hidden_field('products_previous_image2', isset($pInfo->products_image2)?$pInfo->products_image2:''); ?>
+                            <td class="main" valign="top"><?php echo TEXT_PRODUCTS_IMAGE; ?>2</td>
+                            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.  tep_draw_input_field('products_previous_image2', isset($pInfo->products_image2)?$pInfo->products_image2:'') .'&nbsp;'. tep_draw_file_field('products_image2',false," onchange=\"change_image_text(this,'products_previous_image2')\" " );
+              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; 
+                    ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image2\',\'products_previous_image2\');"');?></a><?php 
+                          echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' ; ?>
                             <?php
                             if(isset($pInfo->products_image2) && tep_not_null($pInfo->products_image2)){
-                              echo '<br>'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
+                              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
+                           /*   
+                              echo tep_draw_separator('pixel_trans.gif', '24', '15');
                               ?>
                                 <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image2&action='.$_GET['action'].'&file='.$pInfo->products_image2.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
-                                <?php } ?>
+                                <?php 
+                                */
+                          ?>
+                          <?php } ?>
                                 </td>
                                 </tr>
                                 <tr>
-                                <td class="main"><?php echo TEXT_PRODUCTS_IMAGE; ?>3</td>
-                                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_file_field('products_image3') . '<br>' . tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . (isset($pInfo->products_image3)?$pInfo->products_image3:'') . tep_draw_hidden_field('products_previous_image3', isset($pInfo->products_image3)?$pInfo->products_image3:''); ?>
+                                <td class="main" valign="top"><?php echo TEXT_PRODUCTS_IMAGE; ?>3</td>
+                                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;' .  tep_draw_input_field('products_previous_image3', isset($pInfo->products_image3)?$pInfo->products_image3:'') .'&nbsp;'.  tep_draw_file_field('products_image3',false," onchange=\"change_image_text(this,'products_previous_image3')\" " );
+              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; 
+                    ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image3\',\'products_previous_image3\');"');?></a><?php 
+                          echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' ; ?>
                                 <?php
                                 if(isset($pInfo->products_image3) && tep_not_null($pInfo->products_image3)){
-                                  echo '<br>'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT , $site_id).'<br>'."\n";
+                                  echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT , $site_id).'<br>'."\n";
+                                  /*
+                                  echo tep_draw_separator('pixel_trans.gif', '24', '15');
                                   ?>
                                     <a href="javascript:confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&cl=products_image3&action='.$_GET['action'].'&file='.$pInfo->products_image3.'&mode=p_delete&site_id='.$site_id) ; ?>');" style="color:#0000FF;"><?php echo TEXT_PRODUCT_IMAGE_DEL_TEXT;?></a>
-                                    <?php } ?>
+                                    <?php 
+                                    */
+                          ?>
+                          <?php } ?>
                                     </td>
                                     </tr>
                                     </table>
@@ -3817,40 +3873,24 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
                   // copy image only if modified
                   $products_image = tep_get_uploaded_file('products_image');
-                  $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
-                  $p_image_index = 0;
-                  $p_image_name_array = array();
-
-                  if (is_uploaded_file($products_image['tmp_name'])) {
-                    $products_image_arr = tep_defined_product_image_name($products_image['name']);
-                    $p_image_index = $products_image_arr['index'];
-                    $products_image['name'] = $products_image_arr['name'];
-                    $p_image_name_array[] = $products_image['name'];
-                    tep_copy_uploaded_file($products_image, $image_directory,$products_image['name']);
-                    $products_image_name = $products_image['name'];
-                  } else {
-                    $products_image_name = $_POST['products_previous_image'];
-                  }
-                  // copy image only if modified 
                   $products_image2 = tep_get_uploaded_file('products_image2');
                   $products_image3 = tep_get_uploaded_file('products_image3');
                   $image_directory = tep_get_local_path(tep_get_upload_dir($site_id).'products/');
 
+                  if (is_uploaded_file($products_image['tmp_name'])) {
+                    tep_copy_uploaded_file($products_image, $image_directory);
+                    $products_image_name = $products_image['name'];
+                  } else {
+                    $products_image_name = $_POST['products_previous_image'];
+                  }
                   if (is_uploaded_file($products_image2['tmp_name'])) {
-                    $products_image_arr2 = tep_defined_product_image_name($products_image2['name'],$p_image_index,$p_image_name_array);
-                    $p_image_index = $products_image_arr2['index'];
-                    $products_image2['name'] = $products_image_arr2['name'];
-                    $p_image_name_array[] = $products_image2['name'];
-                    tep_copy_uploaded_file($products_image2, $image_directory,$products_image2['name']);
+                    tep_copy_uploaded_file($products_image2, $image_directory);
                     $products_image_name2 = $products_image2['name'];
                   } else {
                     $products_image_name2 = $_POST['products_previous_image2'];
                   }
                   if (is_uploaded_file($products_image3['tmp_name'])) {
-                    $products_image_arr3 = tep_defined_product_image_name($products_image3['name'],$p_image_index,$p_image_name_array);
-                    $p_image_index = $products_image_arr3['index'];
-                    $products_image3['name'] = $products_image_arr3['name'];
-                    tep_copy_uploaded_file($products_image3, $image_directory,$products_image3['name']);
+                    tep_copy_uploaded_file($products_image3, $image_directory);
                     $products_image_name3 = $products_image3['name'];
                   } else {
                     $products_image_name3 = $_POST['products_previous_image3'];

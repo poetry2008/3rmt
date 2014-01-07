@@ -84,3 +84,7 @@ define('CUSTOMERS_SEARCH_OR_TEXT', 'または');
 define('CUSTOMERS_SEARCH_AND_TEXT', 'かつ');
 define('CUSTOMERS_HEADING_ORDER_TITLE', '注文');
 define('CUSTOMERS_HEADING_PREORDER_TITLE', '予約');
+define('CUSTOMERS_ORDER_TITLE', '%s様の注文履歴');
+define('CUSTOMERS_PREORDER_TITLE', '%s様の予約履歴');
+define('CUSTOMERS_ORDER_ID_TEXT', '注文番号');
+define('CUSTOMERS_PREORDER_ID_TEXT', '予約番号');

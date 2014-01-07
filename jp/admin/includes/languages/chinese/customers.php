@@ -84,3 +84,7 @@ define('CUSTOMERS_SEARCH_OR_TEXT', '或者');
 define('CUSTOMERS_SEARCH_AND_TEXT', '并且');
 define('CUSTOMERS_HEADING_ORDER_TITLE', '订单');
 define('CUSTOMERS_HEADING_PREORDER_TITLE', '预约');
+define('CUSTOMERS_ORDER_TITLE', '%s的注文履历');
+define('CUSTOMERS_PREORDER_TITLE', '%s的预约履历');
+define('CUSTOMERS_ORDER_ID_TEXT', '订单号');
+define('CUSTOMERS_PREORDER_ID_TEXT', '预约号');
