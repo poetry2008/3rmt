@@ -265,11 +265,19 @@ function playSound()
   var node=document.getElementById('warn_sound');  
   if(node!=null)  
   {  
-   if (node.controls) {
-    node.controls.play();  
-   } else {
-    node.play();  
-   }
+    $.ajax({
+      dataType: 'text', 
+      url: 'ajax_orders.php?action=check_play_sound',
+      success: function(sound_msg) {
+       if (sound_msg == '1') {
+         if (node.controls) {
+          node.controls.play();  
+         } else {
+          node.play();  
+         }
+       }
+      }
+    });
   }
 }
 <?php // 当ele选中，则id必须同时被选中 ?>

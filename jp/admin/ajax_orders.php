@@ -2868,4 +2868,19 @@ echo json_encode($json_array);
 }else if ($_GET['action'] == 'change_pimage'){
   $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set ".$_POST['col_name']."='' where products_id='".$_POST['pid']."' and site_id='".$_POST['site_id']."'";
   tep_db_query($update_sql);
+}else if ($_GET['action'] == 'check_play_sound'){
+/*-----------------------------------------
+ 功能: 检查是否播放声音
+ 参数: 无
+ ----------------------------------------*/
+  if (PERSONAL_SETTING_BELL_SOUND == '') {
+    echo '1'; 
+  } else {
+    $sound_array = @unserialize(PERSONAL_SETTING_BELL_SOUND);
+    if (isset($sound_array[$ocertify->auth_user])) {
+      echo $sound_array[$ocertify->auth_user]; 
+    } else {
+      echo '1'; 
+    }
+  }
 }
