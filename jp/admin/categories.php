@@ -726,8 +726,9 @@ if (isset($_GET['action']) && $_GET['action']) {
       $product_id = tep_db_prepare_input($products_value);
       $product_categories = tep_generate_category_path($product_id, 'product');
 
-      //删除当前页面的产品连接
-      tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" .  tep_db_input($current_category_id). "'");
+      for ($i = 0, $n = sizeof($product_categories); $i < $n; $i++) {
+        tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" . tep_db_input($product_categories[$i][sizeof($product_categories[$i])-1]['id']) . "'");
+      }
 
       $product_categories_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
       $product_categories = tep_db_fetch_array($product_categories_query);
@@ -1787,15 +1788,25 @@ function change_image_text(_this,change_name){
 <?php // 取消所有图片对应的信息 ?>
 function clear_image(file_name,input_name){
   var image_name = $("input[name="+input_name+"]").val();
-  var pid = $("hidd_pid").val();
+  var pid = $("input[name=hidd_pid]").val();
   $.ajax({
     url: 'ajax_orders.php?action=has_pimage',   
     type: 'POST',
     dataType: 'text',
-    data: 'colum_name='+file_name+'&colum_value='+image_name, 
+    data: 'image_value='+image_name, 
     async: false,
     success: function(msg) {
       if(msg=='true'){
+        $.ajax({
+          url: 'ajax_orders.php?action=change_pimage',   
+          type: 'POST',
+          dataType: 'text',
+          data: 'col_name='+file_name+'&pid='+pid+'&site_id=<?php echo $site_id;?>', 
+          async: false,
+          success: function(msg) {
+          }
+        });
+        
         $("input[name="+file_name+"]").val('');
         $("input[name="+input_name+"]").val('');
       }else if(msg=='false'){

@@ -2821,8 +2821,6 @@ echo json_encode($json_array);
 }else if ($_GET['action'] == 'has_pimage'){
 /*-----------------------------------------
  功能: 检查商品图片是否存在多个同名
- 参数: $_POST['colum_name'] 列明
- 参数: $_POST['colum_value'] 列值
  参数: $_POST['image_name'] 全部搜索图片名
  ----------------------------------------*/
   if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
@@ -2838,14 +2836,20 @@ echo json_encode($json_array);
       echo 'false';
     }
   }else{
-    $c_name= $_POST['colum_name'];
-    $c_value= $_POST['colum_value'];
-    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where ".$c_name."='".$c_value."'";
+    $image_name = $_POST['image_value'];
+    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where products_image ='".$image_name."'"; 
+    $sql2 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where products_image2='".$image_name."'";
+    $sql3 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where products_image3='".$image_name."'";
     $res = tep_db_fetch_array(tep_db_query($sql));
-    if($res['con'] > 1){
+    $res2 = tep_db_fetch_array(tep_db_query($sql2));
+    $res3 = tep_db_fetch_array(tep_db_query($sql3));
+    if(($res['con']+$res2['con']+$res3['con']) > 1){
       echo 'true';
     }else{
       echo 'false';
     }
   }
+}else if ($_GET['action'] == 'change_pimage'){
+  $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set ".$_POST['col_name']."='' where products_id='".$_POST['pid']."' and site_id='".$_POST['site_id']."'";
+  tep_db_query($update_sql);
 }
