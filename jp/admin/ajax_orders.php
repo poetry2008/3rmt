@@ -2828,7 +2828,8 @@ echo json_encode($json_array);
     $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
       where products_image ='".$image_name."' 
       OR products_image2='".$image_name."'
-      OR products_image3='".$image_name."' limit 1";
+      OR products_image3='".$image_name."'
+      and site_id = '".$_POST['site_id']."'limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       echo 'true';
@@ -2837,13 +2838,28 @@ echo json_encode($json_array);
     }
   }else{
     $image_name = $_POST['image_value'];
-    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where products_image ='".$image_name."'"; 
-    $sql2 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where products_image2='".$image_name."'";
-    $sql3 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where products_image3='".$image_name."'";
+    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
+      " where products_image ='".$image_name."' 
+      and site_id = '".$_POST['site_id']."'"; 
+    $sql2 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
+    " where products_image2='".$image_name."'
+    and site_id = '".$_POST['site_id']."'";
+    $sql3 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
+      " where products_image3='".$image_name."'
+      and site_id = '".$_POST['site_id']."'";
     $res = tep_db_fetch_array(tep_db_query($sql));
     $res2 = tep_db_fetch_array(tep_db_query($sql2));
     $res3 = tep_db_fetch_array(tep_db_query($sql3));
-    if(($res['con']+$res2['con']+$res3['con']) > 1){
+    $con = $res['con']+$res2['con']+$res3['con'];
+    $sql_self = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION.
+      " where ".$_POST['col_name']."='".$image_name."'
+      and products_id='".$_POST['pid']."' 
+      and site_id = '".$_POST['site_id']."' limit 1";
+    $query_self = tep_db_query($sql_self);
+    if($res_self=tep_db_fetch_array($query_self)){
+      $con--;
+    }
+    if($con > 0){
       echo 'true';
     }else{
       echo 'false';

@@ -969,7 +969,7 @@ if (isset($_GET['action']) && $_GET['action']) {
           'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
           );
       //处理 发售日 时间
-      if(!isset($site_id)||$site_id==''||$site_id==0){
+      if(!isset($site_id)||$site_id==''||$site_id==0||(isset($_POST['create_type'])&&$_POST['create_type']=='sub_site')){
         $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
         $sql_data_array = array_merge($sql_data_array,
             array(
@@ -985,7 +985,7 @@ if (isset($_GET['action']) && $_GET['action']) {
 
       if ($_GET['action'] == 'insert_product') {
         $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
-        if ($site_id == 0) {
+        if ($site_id == 0||(isset($_POST['create_type'])&&$_POST['create_type']=='sub_site')) {
           $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
           $option_group_res = tep_db_fetch_array($option_group_raw);
           if ($option_group_res) {
@@ -1155,6 +1155,20 @@ if (isset($_GET['action']) && $_GET['action']) {
               'site_id' => $site_id);
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array);
+          if($site_id!=0&&$site_id!=''){
+            $default_sql_data_array = array(
+                  'products_id' => $products_id,
+                  'products_name' => $sql_data_array['products_name'],
+                  'romaji' => tep_db_prepare_input(str_replace('_', '-', $_POST['romaji'])),
+                  'language_id' => $language_id,
+                  'products_user_update' => $_SESSION['user_name'], 
+                  'products_last_modified' => date('Y-m-d H:i:s', time()), 
+                  'site_id' => '0',
+                  'products_status' => '1',
+                  'preorder_status' => '0'
+                );
+            tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $default_sql_data_array);
+          }
         } elseif ($_GET['action'] == 'update_product') {
           tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\' and language_id = \'' . $language_id . '\' and site_id =\''.$site_id.'\'');
         }
@@ -1769,7 +1783,7 @@ function change_image_text(_this,change_name){
     url: 'ajax_orders.php?action=has_pimage',   
     type: 'POST',
     dataType: 'text',
-    data: 'image_name='+image_name, 
+    data: 'image_name='+image_name+'&site_id=<?php echo $site_id;?>', 
     async: false,
     success: function(msg) {
       if(msg=='true'){
@@ -1788,12 +1802,13 @@ function change_image_text(_this,change_name){
 <?php // 取消所有图片对应的信息 ?>
 function clear_image(file_name,input_name){
   var image_name = $("input[name="+input_name+"]").val();
+  var f_name = $("input[name="+file_name+"]").val();
   var pid = $("input[name=hidd_pid]").val();
   $.ajax({
     url: 'ajax_orders.php?action=has_pimage',   
     type: 'POST',
     dataType: 'text',
-    data: 'image_value='+image_name, 
+    data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id=<?php echo $site_id;?>', 
     async: false,
     success: function(msg) {
       if(msg=='true'){
@@ -1810,7 +1825,7 @@ function clear_image(file_name,input_name){
         $("input[name="+file_name+"]").val('');
         $("input[name="+input_name+"]").val('');
       }else if(msg=='false'){
-        confirmg('<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&mode=p_delete&site_id='.$site_id) ; ?>&file='+image_name+'&cl='+file_name);
+        confirmg(image_name+' <?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&mode=p_delete&site_id='.$site_id) ; ?>&file='+image_name+'&cl='+file_name);
       }
     }
   });
@@ -2991,6 +3006,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <?php
             if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
+              $disabled_flag = true;
+              if(isset($_GET['type'])&&$_GET['type']=='sub_site'){
+                $disabled_flag = false;
+              }
+              if(!isset($_GET['site_id'])||$_GET['site_id']=='0'||$_GET['site_id']==''){
+                $disabled_flag = false;
+              }
               //新建/更新商品页 
               if ( isset($_GET['pID']) && ($_GET['pID']) && (!$_POST) ) {
                 $site_id = isset($_GET['site_id']) ?$_GET['site_id']:0;
@@ -3191,22 +3213,29 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_BUY_AND_SELL; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($site_id?'disabled':'')) . '&nbsp;' .  TEXT_PRODUCT_USUALLY . '&nbsp;' .  tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($site_id?'disabled':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($disabled_flag?'disabled':'')) . '&nbsp;' .  TEXT_PRODUCT_USUALLY . '&nbsp;' .  tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($disabled_flag?'disabled':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?>
                 <?php
+                /*
                 if ($site_id) {
                   echo tep_draw_hidden_field('products_bflag', $pInfo->products_bflag); 
                 }
+                */
               ?>
                 </td>
                 <td class="main">&nbsp;</td>
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_PREORDER_TEXT;?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15'). '&nbsp;'.tep_draw_radio_field('preorder_status', '1', $pInfo->preorder_status == '1', '', ($site_id?'disabled':'')).'&nbsp;On'.tep_draw_radio_field('preorder_status', '0', (isset($pInfo->preorder_status)?($pInfo->preorder_status == '0'):true), '', ($site_id?'disabled':'')).'&nbsp;Off'?>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15'). '&nbsp;'.tep_draw_radio_field('preorder_status', '1', $pInfo->preorder_status == '1', '', ($disabled_flag?'disabled':'')).'&nbsp;On'.tep_draw_radio_field('preorder_status', '0', (isset($pInfo->preorder_status)?($pInfo->preorder_status == '0'):true), '', ($disabled_flag?'disabled':'')).'&nbsp;Off'?>
                 <?php
+                if(isset($_GET['type'])){
+                  echo tep_draw_hidden_field('create_type', $_GET['type']); 
+                }
+                /*
                 if ($site_id) {
                   echo tep_draw_hidden_field('preorder_status', $pInfo->preorder_status); 
                 }
+                */
               ?>
                 </td>
                 </tr>
@@ -3219,7 +3248,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td class="main">
                 <div class="yui3-skin-sam yui3-g">
                 <?php echo tep_draw_separator('pixel_trans.gif', '24', '15').
-                tep_draw_input_field('products_date_available','',(($site_id)?'class="readonly" disabled value="'.$pInfo->products_date_available.'"':'class="cal-TextBox" value="'.$pInfo->products_date_available.'"'));?>
+                tep_draw_input_field('products_date_available','',(($disabled_flag)?'class="readonly" disabled value="'.$pInfo->products_date_available.'"':'class="cal-TextBox" value="'.$pInfo->products_date_available.'"'));?>
                 <input id="date_orders" type="hidden" name='date_orders' size='15' value='<?php echo $pInfo->products_date_available;?>'>
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
@@ -3238,19 +3267,19 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_MANUFACTURER; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'', ($disabled_flag ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
                 <td class="main">&nbsp;</td>
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCT_SORT_ORDER_TEXT; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .  tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' .  ($site_id ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .  tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' .  ($disabled_flag ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
                 <td class="main">&nbsp;</td>
                 </tr>
                 <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <?php
-                $products_shipping_time = '<select name="products_shipping_time"'. ($site_id ?  'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'>';
+                $products_shipping_time = '<select name="products_shipping_time"'. ($disabled_flag ?  'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'>';
               $products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
               while($products_shipping_array = tep_db_fetch_array($products_shipping_query)){
 
@@ -3315,9 +3344,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td class="main"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT; ?></td>
                 <td class="main" colspan="2">
                 <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
-                <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
+                <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($disabled_flag ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
                 <span id="relate_products">
-                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)" id="relate_info"');?>
+                <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($disabled_flag ? 'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)" id="relate_info"');?>
                 </span>
                 <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
                 <input type="hidden" name="products_price_def" value="">
@@ -3336,7 +3365,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
                 tep_draw_input_field('products_price',
                     isset($pInfo->products_price)?(abs($pInfo->products_price)?abs($pInfo->products_price):'0'):'','
-                    onkeyup="clearNoNum(this)" id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                    onkeyup="clearNoNum(this)" id="pp"' . ($disabled_flag ? 'class="readonly" readonly' : '')); ?></td>
 
                 </tr>
                 <tr>
@@ -3344,7 +3373,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue">'.TEXT_PRODUCT_ADDORSUB_VALUE.'</font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset, ($site_id ? 'class="readonly" readonly' : 'id="products_add_del"')); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset, ($disabled_flag ? 'class="readonly" readonly' : 'id="products_add_del"')); ?></td>
                 </tr>
                 <tr>
                 <td class="main">&nbsp;</td>
@@ -3357,7 +3386,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td class="main" valign="top"><?php echo TEXT_PRODUCTS_SMALL_SUM; ?></td>
-                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:'', ($site_id ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
+                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_small_sum', 'soft', '70', '5', isset($pInfo->products_small_sum)?$pInfo->products_small_sum:'', ($disabled_flag ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
                 </tr>
                 <tr>
                 <td class="main">&nbsp;</td>
@@ -3377,7 +3406,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue">' . TEXT_PRODUCTS_REAL_QUANTITY . '</font>'; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity : ($_GET['action'] == 'new_product' ? '' : '0'), ($site_id ? 'class="readonly" readonly' : 'id="products_real_quantity" onkeyup="clearLibNum(this);"')); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="products_real_quantity" onkeyup="clearLibNum(this);"')); ?></td>
                 </tr>
                 <tr>
                 <td>&nbsp;</td>
@@ -3388,7 +3417,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
-                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($disabled_flag ? 'class="readonly" readonly' : '')); ?></td>
                 <td class="fieldRequired"><?php echo TEXT_PRODUCT_SEARCH_READ;?></td>
                 </tr>
                 <tr>
@@ -3396,13 +3425,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php 
                 echo '<span class="categories_input01">' 
                 . TEXT_PRODUCT_XIANGMU_NAME.'&nbsp;' .
-                tep_draw_input_field('products_attention_1_1', isset($pInfo->products_attention_1_1)?$pInfo->products_attention_1_1:(isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+                tep_draw_input_field('products_attention_1_1', isset($pInfo->products_attention_1_1)?$pInfo->products_attention_1_1:(isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:''), 'style="width:100px;" '.($disabled_flag ? 'class="readonly" readonly' : ''))
                 . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTONE_TEXT.'&nbsp;' .
-                tep_draw_input_field('products_attention_1_2', isset($pInfo->products_attention_1_2)?$pInfo->products_attention_1_2:(isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+                tep_draw_input_field('products_attention_1_2', isset($pInfo->products_attention_1_2)?$pInfo->products_attention_1_2:(isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:''), 'style="width:100px;" '.($disabled_flag ? 'class="readonly" readonly' : ''))
                 . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_SHUZHI_TEXT.'&nbsp;' .
-                tep_draw_input_field('products_attention_1_3', isset($pInfo->products_attention_1_3)?$pInfo->products_attention_1_3:(isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : 'id="products_attention_1_3" onkeyup="clearLibNum(this);"'))
+                tep_draw_input_field('products_attention_1_3', isset($pInfo->products_attention_1_3)?$pInfo->products_attention_1_3:(isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:''), 'style="width:100px;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="products_attention_1_3" onkeyup="clearLibNum(this);"'))
                 . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTTWO_TEXT.'&nbsp;' .
-                tep_draw_input_field('products_attention_1_4', isset($pInfo->products_attention_1_4)?$pInfo->products_attention_1_4:(isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+                tep_draw_input_field('products_attention_1_4', isset($pInfo->products_attention_1_4)?$pInfo->products_attention_1_4:(isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:''), 'style="width:100px;" '.($disabled_flag ? 'class="readonly" readonly' : ''))
                 .'</span>'; ?>
                 </td>
                 </tr>
@@ -3410,27 +3439,27 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>１</td>
                 <td class="main" colspan="2">
                 <?php 
-                echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_jan', isset($pInfo->products_jan)?$pInfo->products_jan:(isset($des_result['products_attention_1'])?$des_result['products_attention_1']:''), ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?><br>
+                echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_jan', isset($pInfo->products_jan)?$pInfo->products_jan:(isset($des_result['products_attention_1'])?$des_result['products_attention_1']:''), ($disabled_flag ? 'class="readonly" readonly' : '')).'</span>'; ?><br>
                 <span class="smallText"><?php echo TEXT_PRODUCT_PROJECT_READ;?></span></td>
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>２</td>
-                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_size', isset($pInfo->products_size)?$pInfo->products_size:(isset($des_result['products_attention_2'])?$des_result['products_attention_2']:''), ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_size', isset($pInfo->products_size)?$pInfo->products_size:(isset($des_result['products_attention_2'])?$des_result['products_attention_2']:''), ($disabled_flag ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>３</td>
-                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_naiyou', isset($pInfo->products_naiyou)?$pInfo->products_naiyou:(isset($des_result['products_attention_3'])?$des_result['products_attention_3']:''), ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_naiyou', isset($pInfo->products_naiyou)?$pInfo->products_naiyou:(isset($des_result['products_attention_3'])?$des_result['products_attention_3']:''), ($disabled_flag ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCT_PROJECT_TEXT;?>４</td>
-                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_zaishitu', isset($pInfo->products_zaishitu)?$pInfo->products_zaishitu:(isset($des_result['products_attention_4'])?$des_result['products_attention_4']:''), ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
+                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_input01">' . tep_draw_input_field('products_zaishitu', isset($pInfo->products_zaishitu)?$pInfo->products_zaishitu:(isset($des_result['products_attention_4'])?$des_result['products_attention_4']:''), ($disabled_flag ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
                 </tr>
                 <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr>
                 <td class="main" valign="top"><?php echo TEXT_PRODUCT_ATTFIVE_TITLE;?></td>
-                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($pInfo->products_attention_5)?$pInfo->products_attention_5:(isset($des_result['products_attention_5'])?$des_result['products_attention_5']:''), ($site_id ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
+                <td class="main" colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<div class="textarea_box">' .  tep_draw_textarea_field('products_attention_5', 'soft', '70', '15', isset($pInfo->products_attention_5)?$pInfo->products_attention_5:(isset($des_result['products_attention_5'])?$des_result['products_attention_5']:''), ($disabled_flag ? 'class="readonly" readonly' : '')).'</div>'; ?></td>
                 </tr>
                 </table>
                 </fieldset></td>
@@ -3470,7 +3499,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </td>
                 <td class="main">
                 <?php
-                if (!$_GET['site_id']) { 
+                if (!$_GET['site_id']||!$disabled_flag) { 
                   $option_keyword_str = ''; 
                   if (isset($pInfo->belong_to_option)) {
                     $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."'"); 
@@ -3512,8 +3541,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         <table>
                         <tr>
                         <td class="main" valign="top"><?php echo TEXT_PRODUCTS_IMAGE; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'. tep_draw_input_field('products_previous_image', isset($pInfo->products_image)?$pInfo->products_image:'') .'&nbsp;'. tep_draw_file_field('products_image',false," onchange=\"change_image_text(this,'products_previous_image')\" " );
-              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; 
+                        <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'. tep_draw_input_field('products_previous_image', isset($pInfo->products_image)?$pInfo->products_image:'') .'&nbsp;'. tep_draw_file_field('products_image',false," onchange=\"change_image_text(this,'products_previous_image')\" id='b_image' style='display:none'" );
+              echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.b_image.click()"');
                     ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image\',\'products_previous_image\');"');?></a><?php 
               echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; ?>
                         <?php
@@ -3525,8 +3554,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             </tr>
                             <tr>
                             <td class="main" valign="top"><?php echo TEXT_PRODUCTS_IMAGE; ?>2</td>
-                            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.  tep_draw_input_field('products_previous_image2', isset($pInfo->products_image2)?$pInfo->products_image2:'') .'&nbsp;'. tep_draw_file_field('products_image2',false," onchange=\"change_image_text(this,'products_previous_image2')\" " );
-              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; 
+                            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.  tep_draw_input_field('products_previous_image2', isset($pInfo->products_image2)?$pInfo->products_image2:'') .'&nbsp;'. tep_draw_file_field('products_image2',false," onchange=\"change_image_text(this,'products_previous_image2')\"  id='b_image2' style='display:none'" );
+              echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.b_image2.click()"');
                     ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image2\',\'products_previous_image2\');"');?></a><?php 
                           echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' ; ?>
                             <?php
@@ -3538,8 +3567,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                 </tr>
                                 <tr>
                                 <td class="main" valign="top"><?php echo TEXT_PRODUCTS_IMAGE; ?>3</td>
-                                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;' .  tep_draw_input_field('products_previous_image3', isset($pInfo->products_image3)?$pInfo->products_image3:'') .'&nbsp;'.  tep_draw_file_field('products_image3',false," onchange=\"change_image_text(this,'products_previous_image3')\" " );
-              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; 
+                                <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;' .  tep_draw_input_field('products_previous_image3', isset($pInfo->products_image3)?$pInfo->products_image3:'') .'&nbsp;'.  tep_draw_file_field('products_image3',false," onchange=\"change_image_text(this,'products_previous_image3')\"  id='b_image3' style='display:none'" );
+              echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.b_image3.click()"');
                     ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image3\',\'products_previous_image3\');"');?></a><?php 
                           echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' ; ?>
                                 <?php
@@ -3753,8 +3782,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <td colspan="2">
                                     <fieldset><legend style="color:#009900 "><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></legend>
                                     <table width="100%">
-                                    <tr><td width="150"><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></td><td width="100"><input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(0);"><?php echo
-                                    TEXT_PRODUCT_CARTFLAG_NO;?> </td><td><input type="radio" <?php echo ($site_id)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(1);"><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
+                                    <tr><td width="150"><?php echo
+                                    TEXT_PRODUCT_CARTFLAG_TITLE;?></td><td
+                                    width="100"><input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(0);"><?php echo
+                                    TEXT_PRODUCT_CARTFLAG_NO;?> </td><td><input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(1);"><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
                                     </td></tr>
                                     <tr id="cattags_list"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                                     <td width="150" align="left">&nbsp;</td>
@@ -4770,7 +4801,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php echo tep_draw_input_field('sort_order',
                     (($_GET['action'] ==
                       'edit_category')?$cInfo->sort_order:''),
-                    'onkeyup="clearLibNum(this);" '.( ($site_id)?'class="readonly" disabled':'class="tdul"')); 
+                    'onkeyup="clearLibNum(this);" '.( ($disabled_flag)?'class="readonly" disabled':'class="tdul"')); 
               ?>
                 </td>
                 </tr>
@@ -6056,7 +6087,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   if (empty($_GET['cPath']) && empty($site_id)) {
                     echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action', 'info', 'x', 'y', 'site_id')).'&action=edit_top_manual').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
                   }
-                  echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'')) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
+                  if(isset($site_id)&&$site_id!=0&&$site_id!=''){
+                    $pram_str = '&type=sub_site&site_id='.$site_id;
+                  }else{
+                    $pram_str = '';
+                  }
+                  echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&action=new_category') . '">' .  tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'').$pram_str) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
                 }
               ?>
                 <?php if (empty($site_id)) {?> 
