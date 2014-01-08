@@ -72,23 +72,31 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
   }
   
   if (document.getElementById('leave_time_'+nid)) {
-    if(alarm_flag == '1'){
-      document.getElementById('leave_time_'+nid).innerHTML = alarm_date; 
-    }else{ 
-      document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>';
-    }
-    if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
-      document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
-      var n_node=document.getElementById('head_notice');  
-      if (n_node.controls) {
-        n_node.controls.play();  
-      } else {
-        if (check_exists_function('play')) {
-          n_node.play();  
+   $.ajax({
+    dataType: 'text', 
+    url: 'ajax_orders.php?action=check_play_sound',
+    success: function(msg) {
+      if(alarm_flag == '1'){
+        document.getElementById('leave_time_'+nid).innerHTML = alarm_date; 
+      }else{ 
+        document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>';
+      }
+      if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
+        document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
+        var n_node=document.getElementById('head_notice');  
+        if (msg == '1') {
+          if (n_node.controls) {
+            n_node.controls.play();  
+          } else {
+            if (check_exists_function('play')) {
+              n_node.play();  
+            }
+          }
         }
       }
+      setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date)}, 5000); 
     }
-    setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date)}, 5000); 
+   }); 
   } 
 }
 <?php //显示所有订单通知 ?>
@@ -303,11 +311,19 @@ function playHeadSound()
   var hnode=document.getElementById('head_sound');  
   if(hnode!=null)  
   {  
-   if (hnode.controls) {
-    hnode.controls.play();  
-   } else {
-    hnode.play();  
-   }
+   $.ajax({
+    dataType: 'text', 
+    url: 'ajax_orders.php?action=check_play_sound',
+    success: function(msg) {
+      if (msg == '1') {
+        if (hnode.controls) {
+          hnode.controls.play();  
+        } else {
+          hnode.play();  
+        }
+      }
+    }
+   }); 
   }
 }
 <?php //检查预约头部 ?>
@@ -364,11 +380,19 @@ function playOrderHeadSound()
   var ohnode=document.getElementById('head_warn');  
   if(ohnode!=null)  
   {  
-   if (ohnode.controls) {
-    ohnode.controls.play();  
-   } else {
-    ohnode.play();  
-   }
+   $.ajax({
+    dataType: 'text', 
+    url: 'ajax_orders.php?action=check_play_sound',
+    success: function(msg) {
+      if (msg == '1') {
+        if (ohnode.controls) {
+          ohnode.controls.play();  
+        } else {
+          ohnode.play();  
+        }
+      }
+    }
+   });
   }
 }
 <?php //检查头部订单 ?>
