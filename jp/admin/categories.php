@@ -1811,21 +1811,26 @@ function clear_image(file_name,input_name){
     data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id=<?php echo $site_id;?>', 
     async: false,
     success: function(msg) {
-      if(msg=='true'){
-        $.ajax({
-          url: 'ajax_orders.php?action=change_pimage',   
-          type: 'POST',
-          dataType: 'text',
-          data: 'col_name='+file_name+'&pid='+pid+'&site_id=<?php echo $site_id;?>', 
-          async: false,
-          success: function(msg) {
-          }
-        });
-        
-        $("input[name="+file_name+"]").val('');
-        $("input[name="+input_name+"]").val('');
-      }else if(msg=='false'){
-        confirmg(image_name+' <?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&mode=p_delete&site_id='.$site_id) ; ?>&file='+image_name+'&cl='+file_name);
+      msg_arr = msg.split('|||'); 
+      if (msg_arr[1] == '1') {
+        if(msg_arr[0]=='true'){
+          $.ajax({
+            url: 'ajax_orders.php?action=change_pimage',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'col_name='+file_name+'&pid='+pid+'&site_id=<?php echo $site_id;?>', 
+            async: false,
+            success: function(msg) {
+            }
+          });
+          
+          $("input[name="+file_name+"]").val('');
+          $("input[name="+input_name+"]").val('');
+        }else if(msg_arr[0]=='false'){
+          confirmg(image_name+' <?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>','<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&mode=p_delete&site_id='.$site_id) ; ?>&file='+image_name+'&cl='+file_name);
+        }
+      } else {
+        alert('<?php echo NOTICE_NO_ACCESS_READ_TEXT;?>'); 
       }
     }
   });

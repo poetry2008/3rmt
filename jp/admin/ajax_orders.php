@@ -2823,6 +2823,17 @@ echo json_encode($json_array);
  功能: 检查商品图片是否存在多个同名
  参数: $_POST['image_name'] 全部搜索图片名
  ----------------------------------------*/
+  if (isset($_SESSION['site_permission'])) {
+    $site_arr = $_SESSION['site_permission'];  
+  } else {
+    $site_arr = '';  
+  }
+  $tmp_single = editPermission($site_arr, $_POST['site_id']); 
+  if ($tmp_single) {
+    $tmp_info = 1; 
+  } else {
+    $tmp_info = 0; 
+  }
   if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
     $image_name = $_POST['image_name'];
     $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
@@ -2832,9 +2843,9 @@ echo json_encode($json_array);
       and site_id = '".$_POST['site_id']."'limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
-      echo 'true';
+      echo 'true|||'.$tmp_info;
     }else{
-      echo 'false';
+      echo 'false|||'.$tmp_info;
     }
   }else{
     $image_name = $_POST['image_value'];
@@ -2860,9 +2871,9 @@ echo json_encode($json_array);
       $con--;
     }
     if($con > 0){
-      echo 'true';
+      echo 'true|||'.$tmp_info;
     }else{
-      echo 'false';
+      echo 'false|||'.$tmp_info;
     }
   }
 }else if ($_GET['action'] == 'change_pimage'){
