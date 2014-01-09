@@ -19,7 +19,7 @@ define('TEXT_PERSONAL_SETTING_HIDE_TRANSACTION_FINISH', '取引完了を非表�
 define('TEXT_PERSONAL_SETTING_PREORDERS_SHOW_TRANSACTION_FINISH', '予約終了を表示');
 define('TEXT_PERSONAL_SETTING_PREORDERS_HIDE_TRANSACTION_FINISH', '予約終了を非表示');
 define('TEXT_PERSONAL_SETTING_SOUND', 'サウンド');
-define('TEXT_PERSONAL_SETTING_BELL_SOUND', '通知音');
+define('TEXT_PERSONAL_SETTING_NOTIFICATION_SOUND', '通知音');
 define('TEXT_PERSONAL_SETTING_ON_TEXT', 'オン');
 define('TEXT_PERSONAL_SETTING_OFF_TEXT', 'オフ');
 ?>

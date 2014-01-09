@@ -54,15 +54,15 @@ if($_GET['action'] == 'update'){
 
   if($error == false){
     $personal_sound_temp_array = array();
-    if(PERSONAL_SETTING_BELL_SOUND == ''){
+    if(PERSONAL_SETTING_NOTIFICATION_SOUND == ''){
       $personal_sound_temp_array = array($ocertify->auth_user=>$bell_sound);
     }else{
-      $personal_sound_str_array = unserialize(PERSONAL_SETTING_BELL_SOUND); 
+      $personal_sound_str_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND); 
       $personal_sound_str_array[$ocertify->auth_user] = $bell_sound;
       $personal_sound_temp_array = $personal_sound_str_array;
     }
     $personal_sound_str = serialize($personal_sound_temp_array);
-    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_sound_str."' where configuration_key='PERSONAL_SETTING_BELL_SOUND'");
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_sound_str."' where configuration_key='PERSONAL_SETTING_NOTIFICATION_SOUND'");
     
     $personal_language_temp_array = array();
     if(PERSONAL_SETTING_LANGUAGE == ''){
@@ -596,12 +596,12 @@ require("includes/note_js.php");
               </tr>
               <tr>
                 <td>
-                <?php echo TEXT_PERSONAL_SETTING_BELL_SOUND;?>
+                <?php echo TEXT_PERSONAL_SETTING_NOTIFICATION_SOUND;?>
                 <?php
-                  if (PERSONAL_SETTING_BELL_SOUND == '') {
+                  if (PERSONAL_SETTING_NOTIFICATION_SOUND == '') {
                     $sound_flag = '1';
                   } else {
-                    $personal_sound_array = unserialize(PERSONAL_SETTING_BELL_SOUND);
+                    $personal_sound_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
                     if (array_key_exists($ocertify->auth_user, $personal_sound_array)) {
                       $sound_flag = $personal_sound_array[$ocertify->auth_user]; 
                     } else {

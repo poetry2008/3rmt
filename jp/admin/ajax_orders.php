@@ -2873,10 +2873,10 @@ echo json_encode($json_array);
  功能: 检查是否播放声音
  参数: 无
  ----------------------------------------*/
-  if (PERSONAL_SETTING_BELL_SOUND == '') {
+  if (PERSONAL_SETTING_NOTIFICATION_SOUND == '') {
     echo '1'; 
   } else {
-    $sound_array = @unserialize(PERSONAL_SETTING_BELL_SOUND);
+    $sound_array = @unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
     if (isset($sound_array[$ocertify->auth_user])) {
       echo $sound_array[$ocertify->auth_user]; 
     } else {
