@@ -1787,15 +1787,20 @@ function change_image_text(_this,change_name){
     data: 'image_name='+image_name+'&site_id=<?php echo $site_id;?>', 
     async: false,
     success: function(msg) {
-      if(msg=='true'){
-        if(confirm(image_name+' <?php echo TEXT_IS_OVERWRITE_IMAGE;?>')){
+      msg_arr = msg.split('|||'); 
+      if (msg_arr[1] == '1') {
+        if(msg_arr[0]=='true'){
+          if(confirm(image_name+' <?php echo TEXT_IS_OVERWRITE_IMAGE;?>')){
+            $("input[name="+change_name+"]").val(image_name);
+            $("#overwrite").val('yes');
+          }else{
+            _this.value='';
+          }
+        }else if(msg_arr[0]=='false'){
           $("input[name="+change_name+"]").val(image_name);
-          $("#overwrite").val('yes');
-        }else{
-          _this.value='';
         }
-      }else if(msg=='false'){
-        $("input[name="+change_name+"]").val(image_name);
+      } else {
+        alert('<?php echo NOTICE_NO_ACCESS_READ_TEXT;?>'); 
       }
     }
   });
