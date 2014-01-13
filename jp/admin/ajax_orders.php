@@ -2837,10 +2837,10 @@ echo json_encode($json_array);
   if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
     $image_name = $_POST['image_name'];
     $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
-      where products_image ='".$image_name."' 
+      where (products_image ='".$image_name."' 
       OR products_image2='".$image_name."'
-      OR products_image3='".$image_name."'
-      and site_id = '".$_POST['site_id']."'limit 1";
+      OR products_image3='".$image_name."')
+      and site_id = '".$_POST['site_id']."' limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       echo 'true|||'.$tmp_info;
@@ -2912,7 +2912,7 @@ echo json_encode($json_array);
   }
   if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
     $image_name = $_POST['image_name'];
-    $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_image ='".$image_name."' OR categories_image2='".$image_name."' and site_id = '".$_POST['site_id']."'limit 1";
+    $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where (categories_image ='".$image_name."' OR categories_image2='".$image_name."') and site_id = '".$_POST['site_id']."' limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       echo 'true|||'.$tmp_info;
