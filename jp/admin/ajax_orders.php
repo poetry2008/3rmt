@@ -2894,4 +2894,50 @@ echo json_encode($json_array);
       echo '1'; 
     }
   }
+}else if ($_GET['action'] == 'has_cimage'){
+/*-----------------------------------------
+ 功能: 检查分类图片是否存在多个同名
+ 参数: $_POST['image_name'] 全部搜索图片名
+ ----------------------------------------*/
+  if (isset($_SESSION['site_permission'])) {
+    $site_arr = $_SESSION['site_permission'];  
+  } else {
+    $site_arr = '';  
+  }
+  $tmp_single = editPermission($site_arr, $_POST['site_id']); 
+  if ($tmp_single) {
+    $tmp_info = 1; 
+  } else {
+    $tmp_info = 0; 
+  }
+  if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
+    $image_name = $_POST['image_name'];
+    $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_image ='".$image_name."' OR categories_image2='".$image_name."' and site_id = '".$_POST['site_id']."'limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      echo 'true|||'.$tmp_info;
+    }else{
+      echo 'false|||'.$tmp_info;
+    }
+  }else{
+    $image_name = $_POST['image_value'];
+    $sql = "select count(*) as con from ".TABLE_CATEGORIES_DESCRIPTION.  " where categories_image='".$image_name."' and site_id = '".$_POST['site_id']."'";
+    $sql2 = "select count(*) as con from ".TABLE_CATEGORIES_DESCRIPTION.  " where categories_image2='".$image_name."' and site_id = '".$_POST['site_id']."'";
+    $res = tep_db_fetch_array(tep_db_query($sql));
+    $res2 = tep_db_fetch_array(tep_db_query($sql2));
+    $con = $res['con']+$res2['con'];
+    $sql_self = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION.  " where ".$_POST['col_name']."='".$image_name."' and categories_id='".$_POST['e_cid']."' and site_id = '".$_POST['site_id']."' limit 1";
+    $query_self = tep_db_query($sql_self);
+    if($res_self=tep_db_fetch_array($query_self)){
+      $con--;
+    }
+    if($con > 0){
+      echo 'true|||'.$tmp_info;
+    }else{
+      echo 'false|||'.$tmp_info;
+    }
+  }
+}else if ($_GET['action'] == 'change_cimage'){
+  $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set ".$_POST['col_name']."='' where categories_id='".$_POST['e_cid']."' and site_id='".$_POST['site_id']."'";
+  tep_db_query($update_sql);
 }
