@@ -4710,7 +4710,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       } else {
                         $default_top_category_raw = tep_db_query("select categories_image2 from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$cInfo->categories_id."' and site_id = '0'"); 
                         $default_top_category_res = tep_db_fetch_array($default_top_category_raw);
-                        echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_top_category_res['categories_image2'], $cInfo->categories_name);
+                        if (tep_not_null($default_top_category_res['categories_image2'])) {
+                          echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_top_category_res['categories_image2'], $cInfo->categories_name);
+                        }
                       }
                       
                       echo '<br>';
@@ -4753,7 +4755,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         } else {
                           $default_child_category_raw = tep_db_query("select categories_image from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$cInfo->categories_id."' and site_id = '0'"); 
                           $default_child_category_res = tep_db_fetch_array($default_child_category_raw);
-                          echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_child_category_res['categories_image'], $cInfo->categories_name);
+                          if (tep_not_null($default_child_category_res['categories_image'])) {
+                            echo tep_image(tep_get_web_upload_dir(0).'categories/'.$default_child_category_res['categories_image'], $cInfo->categories_name);
+                          }
                         }
                         echo '<br>';
                         if ($hidden_child_single) {
