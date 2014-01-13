@@ -4707,7 +4707,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     if ($_GET['action'] == 'edit_category') {
                       if (isset($cInfo->categories_image2) && tep_not_null($cInfo->categories_image2)) {
                         echo '<br>';
-                        echo tep_info_image('categories/'.$cInfo->categories_image2,$cInfo->categories_name, '', '', $site_id); 
+                        echo tep_info_image('categories/'.$cInfo->categories_image2,$cInfo->categories_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id); 
                       }
                     }
                   ?>
@@ -4729,7 +4729,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       if ($_GET['action'] == 'edit_category') {
                         if (isset($cInfo->categories_image) && tep_not_null($cInfo->categories_image)) {
                           echo '<br>';
-                          echo tep_info_image('categories/'.$cInfo->categories_image,$cInfo->categories_name, '', '', $site_id); 
+                          echo tep_info_image('categories/'.$cInfo->categories_image,$cInfo->categories_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id); 
                         }
                       }
                     ?>
