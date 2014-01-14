@@ -2822,31 +2822,123 @@ echo json_encode($json_array);
 }else if ($_GET['action'] == 'has_pimage'){
 /*-----------------------------------------
  功能: 检查商品图片是否存在多个同名
- 参数: $_POST['colum_name'] 列明
- 参数: $_POST['colum_value'] 列值
  参数: $_POST['image_name'] 全部搜索图片名
  ----------------------------------------*/
+  if (isset($_SESSION['site_permission'])) {
+    $site_arr = $_SESSION['site_permission'];  
+  } else {
+    $site_arr = '';  
+  }
+  $tmp_single = editPermission($site_arr, $_POST['site_id']); 
+  if ($tmp_single) {
+    $tmp_info = 1; 
+  } else {
+    $tmp_info = 0; 
+  }
   if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
     $image_name = $_POST['image_name'];
     $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
-      where products_image ='".$image_name."' 
+      where (products_image ='".$image_name."' 
       OR products_image2='".$image_name."'
-      OR products_image3='".$image_name."' limit 1";
+      OR products_image3='".$image_name."')
+      and site_id = '".$_POST['site_id']."' limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
-      echo 'true';
+      echo 'true|||'.$tmp_info;
     }else{
-      echo 'false';
+      echo 'false|||'.$tmp_info;
     }
   }else{
-    $c_name= $_POST['colum_name'];
-    $c_value= $_POST['colum_value'];
-    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION." where ".$c_name."='".$c_value."'";
+    $image_name = $_POST['image_value'];
+    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
+      " where products_image ='".$image_name."' 
+      and site_id = '".$_POST['site_id']."'"; 
+    $sql2 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
+    " where products_image2='".$image_name."'
+    and site_id = '".$_POST['site_id']."'";
+    $sql3 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
+      " where products_image3='".$image_name."'
+      and site_id = '".$_POST['site_id']."'";
     $res = tep_db_fetch_array(tep_db_query($sql));
-    if($res['con'] > 1){
-      echo 'true';
+    $res2 = tep_db_fetch_array(tep_db_query($sql2));
+    $res3 = tep_db_fetch_array(tep_db_query($sql3));
+    $con = $res['con']+$res2['con']+$res3['con'];
+    $sql_self = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION.
+      " where ".$_POST['col_name']."='".$image_name."'
+      and products_id='".$_POST['pid']."' 
+      and site_id = '".$_POST['site_id']."' limit 1";
+    $query_self = tep_db_query($sql_self);
+    if($res_self=tep_db_fetch_array($query_self)){
+      $con--;
+    }
+    if($con > 0){
+      echo 'true|||'.$tmp_info;
     }else{
-      echo 'false';
+      echo 'false|||'.$tmp_info;
     }
   }
+}else if ($_GET['action'] == 'change_pimage'){
+  $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set ".$_POST['col_name']."='' where products_id='".$_POST['pid']."' and site_id='".$_POST['site_id']."'";
+  tep_db_query($update_sql);
+}else if ($_GET['action'] == 'check_play_sound'){
+/*-----------------------------------------
+ 功能: 检查是否播放声音
+ 参数: 无
+ ----------------------------------------*/
+  if (PERSONAL_SETTING_NOTIFICATION_SOUND == '') {
+    echo '1'; 
+  } else {
+    $sound_array = @unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
+    if (isset($sound_array[$ocertify->auth_user])) {
+      echo $sound_array[$ocertify->auth_user]; 
+    } else {
+      echo '1'; 
+    }
+  }
+}else if ($_GET['action'] == 'has_cimage'){
+/*-----------------------------------------
+ 功能: 检查分类图片是否存在多个同名
+ 参数: $_POST['image_name'] 全部搜索图片名
+ ----------------------------------------*/
+  if (isset($_SESSION['site_permission'])) {
+    $site_arr = $_SESSION['site_permission'];  
+  } else {
+    $site_arr = '';  
+  }
+  $tmp_single = editPermission($site_arr, $_POST['site_id']); 
+  if ($tmp_single) {
+    $tmp_info = 1; 
+  } else {
+    $tmp_info = 0; 
+  }
+  if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
+    $image_name = $_POST['image_name'];
+    $sql = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where (categories_image ='".$image_name."' OR categories_image2='".$image_name."') and site_id = '".$_POST['site_id']."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      echo 'true|||'.$tmp_info;
+    }else{
+      echo 'false|||'.$tmp_info;
+    }
+  }else{
+    $image_name = $_POST['image_value'];
+    $sql = "select count(*) as con from ".TABLE_CATEGORIES_DESCRIPTION.  " where categories_image='".$image_name."' and site_id = '".$_POST['site_id']."'";
+    $sql2 = "select count(*) as con from ".TABLE_CATEGORIES_DESCRIPTION.  " where categories_image2='".$image_name."' and site_id = '".$_POST['site_id']."'";
+    $res = tep_db_fetch_array(tep_db_query($sql));
+    $res2 = tep_db_fetch_array(tep_db_query($sql2));
+    $con = $res['con']+$res2['con'];
+    $sql_self = "select categories_id from ".TABLE_CATEGORIES_DESCRIPTION.  " where ".$_POST['col_name']."='".$image_name."' and categories_id='".$_POST['e_cid']."' and site_id = '".$_POST['site_id']."' limit 1";
+    $query_self = tep_db_query($sql_self);
+    if($res_self=tep_db_fetch_array($query_self)){
+      $con--;
+    }
+    if($con > 0){
+      echo 'true|||'.$tmp_info;
+    }else{
+      echo 'false|||'.$tmp_info;
+    }
+  }
+}else if ($_GET['action'] == 'change_cimage'){
+  $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set ".$_POST['col_name']."='' where categories_id='".$_POST['e_cid']."' and site_id='".$_POST['site_id']."'";
+  tep_db_query($update_sql);
 }

@@ -17,6 +17,7 @@ if($_GET['action'] == 'update'){
   $personal_language = tep_db_prepare_input($_POST['personal_language']);
   $is_transaction = tep_db_prepare_input($_POST['is_transaction']);
   $preorders_is_transaction = tep_db_prepare_input($_POST['preorders_is_transaction']);
+  $bell_sound = tep_db_prepare_input($_POST['bell']);
   
   $error = false;
   //订单管理页是否选择网站 
@@ -52,6 +53,17 @@ if($_GET['action'] == 'update'){
   }
 
   if($error == false){
+    $personal_sound_temp_array = array();
+    if(PERSONAL_SETTING_NOTIFICATION_SOUND == ''){
+      $personal_sound_temp_array = array($ocertify->auth_user=>$bell_sound);
+    }else{
+      $personal_sound_str_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND); 
+      $personal_sound_str_array[$ocertify->auth_user] = $bell_sound;
+      $personal_sound_temp_array = $personal_sound_str_array;
+    }
+    $personal_sound_str = serialize($personal_sound_temp_array);
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_sound_str."' where configuration_key='PERSONAL_SETTING_NOTIFICATION_SOUND'");
+    
     $personal_language_temp_array = array();
     if(PERSONAL_SETTING_LANGUAGE == ''){
       $personal_language_temp_array = array($ocertify->auth_user=>$personal_language);
@@ -575,7 +587,34 @@ require("includes/note_js.php");
                    echo '&nbsp;<font color="#FF0000">'.$preorders_sort_error.'</font>'; 
                  }
                ?>
+               <br>
+               <br>
                </td>
+              </tr>
+              <tr>
+                <td><?php echo TEXT_PERSONAL_SETTING_SOUND;?></td> 
+              </tr>
+              <tr>
+                <td>
+                <?php echo TEXT_PERSONAL_SETTING_NOTIFICATION_SOUND;?>
+                <?php
+                  if (PERSONAL_SETTING_NOTIFICATION_SOUND == '') {
+                    $sound_flag = '1';
+                  } else {
+                    $personal_sound_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
+                    if (array_key_exists($ocertify->auth_user, $personal_sound_array)) {
+                      $sound_flag = $personal_sound_array[$ocertify->auth_user]; 
+                    } else {
+                      $sound_flag = '1'; 
+                    }
+                  }
+                  if (isset($_POST['bell'])) {
+                    $sound_flag = $_POST['bell']; 
+                  }
+                ?>
+                <input type="radio" name="bell" value="1" <?php echo (($sound_flag == '1')?' checked':'');?>><?php echo TEXT_PERSONAL_SETTING_ON_TEXT;?> 
+                <input type="radio" name="bell" value="0" <?php echo (($sound_flag == '0')?' checked':'');?>><?php echo TEXT_PERSONAL_SETTING_OFF_TEXT;?> 
+                </td> 
               </tr>
               <tr><td align="right"><a href="javascript:void(0);"><?php echo tep_html_element_button(TEXT_SAVE, 'onclick="check_setting_submit();"');?></a></td></tr>
               <?php 

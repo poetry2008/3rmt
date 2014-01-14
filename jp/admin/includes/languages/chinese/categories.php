@@ -221,7 +221,7 @@ define('TEXT_CATEGORY_HEAD_IMAGE_NEXT','下一个分类');
 define('NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT', '因为这个网站的商品没有注册所以所有的状态都是连动的。想改变某个商品时，请按编辑按钮保存内容后变更状态。');
 define('NOTICE_HAS_NO_PREVILEGE_EDIT', '没有权限');
 define('TEXT_CATEGORY_ROMAJI', '罗马字:');
-define('TEXT_RELATE_ROW_COUNT', '%s在过去%d日里有%d个订单。');
+define('TEXT_RELATE_ROW_COUNT', '%s在过去%d日里有%d个商品被购买。');
 define('TEXT_PRODUCTS_PREORDER_TEXT', '预约:');
 define('TEXT_PRODUCTS_OPTION_TEXT', '选择组:');
 define('OPTION_PREVIEW', '评论');
@@ -272,4 +272,5 @@ define('TEXT_RELATE_PRODUCT_RADICES','按照1个（%s）计算。');
 define('IMAGE_LINK','链接');
 define('IMAGE_LINK_TO','链接到');
 define('TEXT_IS_OVERWRITE_IMAGE','已经存在。是否覆盖？');
+define('TEXT_UPLOAD_FILE','选择文件');
 ?>
