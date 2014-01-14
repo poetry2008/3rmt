@@ -66,11 +66,13 @@ if (!empty($_POST['camp_point'])) {
   $campaign_res = tep_db_fetch_array($campaign_query); 
   if ($campaign_res) {
     if ($cart->show_total() > 0) {
-      if ($cart->show_total() <= $campaign_res['limit_value']) {
+      if ($cart->show_total() < $campaign_res['limit_value']) {
         $campaign_error = true;
       } 
     } else {
-      if ($cart->show_total() >= $campaign_res['limit_value']) {
+      if (($cart->show_total() < $campaign_res['limit_value']) && $campaign_res['range_type'] == 1) {
+        $campaign_error = true;
+      }else if ($cart->show_total() > $campaign_res['limit_value'] && $campaign_res['range_type'] == 2) {
         $campaign_error = true;
       } 
     }
@@ -120,7 +122,9 @@ if (!empty($_POST['point'])) {
         if ($campaign_res['type'] != '1') {
           $campaign_error = true;
         } else {
-          if ($cart->show_total() <= $campaign_res['limit_value']) {
+          if (($cart->show_total() < $campaign_res['limit_value']) && $campaign_res['range_type'] == 1) {
+            $campaign_error = true;
+          }else if (($cart->show_total() > $campaign_res['limit_value']) && $campaign_res['range_type'] == 2) {
             $campaign_error = true;
           }
         }
@@ -138,9 +142,6 @@ if (!empty($_POST['point'])) {
           $percent_pos = strpos($campaign_res['point_value'], '%'); 
           if ($percent_pos !== false) {
             $campaign_fee = $order->info['subtotal']*substr($campaign_res['point_value'], 0, -1)/100; 
-            if ($campaign_fee > 0) {
-              $campaign_fee = 0 - $campaign_fee; 
-            }
           } else {
             $campaign_fee = $campaign_res['point_value']; 
           }

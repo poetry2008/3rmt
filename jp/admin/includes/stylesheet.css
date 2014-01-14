@@ -1454,7 +1454,7 @@ campaign
 	min-width:550px;
 }
 .campaign_input_num{
-	width:20%;
+	width:10%;
 	text-align:right;
 }
 /* ---------------------------
@@ -2125,4 +2125,7 @@ google hack
 .wrap_space{
 	width:100px;
 	float:left;
+}
+#limit_value_error {
+        float:left;
 }

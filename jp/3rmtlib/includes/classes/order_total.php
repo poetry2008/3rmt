@@ -156,8 +156,11 @@
                                 '                <td align="right" class="main">';
               if ($class == 'ot_point') {
                 if (isset($_SESSION['campaign_fee'])) {
-                 
+                  if(strstr($_SESSION['campaign_fee'],'-')){
                   $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .  '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                  }else{
+                  $output_string .= str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                  }
                 } else {
                   $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($GLOBALS[$class]->output[$i]['value'])) . '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
                 }

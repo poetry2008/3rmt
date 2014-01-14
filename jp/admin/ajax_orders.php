@@ -1170,39 +1170,46 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>'; 
   $html_str .= '<td>'; 
   if ($campaign_res['type'] == 1) {
-    $html_str .= tep_draw_radio_field('type',1,true,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_SELL.'&nbsp;'.tep_draw_radio_field('type',2,false,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_BUY; 
-    $limit_value_text = TEXT_CAMPAIGN_LIMIT_VALUE_READ_UP;
+    $html_str .= TEXT_CAMPAIGN_TYPE_SELL;
+    $html_str .= '<select name="type" id="type" onclick="toggle_type_info(this);">';
+    $html_str .= '<option value="1" selected="selected">+</option>';
+    $html_str .= '<option value="2">-</option>';
+    $html_str .= '</select>';
   } else {
-    $html_str .= tep_draw_radio_field('type',1,false,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_SELL.'&nbsp;'.tep_draw_radio_field('type',2,true,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_BUY; 
-    $limit_value_text = TEXT_CAMPAIGN_LIMIT_VALUE_READ_DOWN;
+    $html_str .= TEXT_CAMPAIGN_TYPE_SELL;
+    $html_str .= '<select name="type" id="type" onclick="toggle_type_info(this);">';
+    $html_str .= '<option value="1">+</option>';
+    $html_str .= '<option value="2" selected="selected">-</option>';
+    $html_str .= '</select>';
   }
-  $html_str .= '</td>'; 
-  $html_str .= '</tr>'; 
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
-  $html_str .= '&nbsp;'; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  if ($campaign_res['type'] == 1) {
-    $html_str .= '<span id="type_symbol">+</span>';
-  } else {
-    $html_str .= '<span id="type_symbol">-</span>';
-  }
-  $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('limit_value', abs($campaign_res['limit_value']), 'id="limit_value" class="campaign_input_num"').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= tep_draw_input_field('limit_value', abs($campaign_res['limit_value']), 'id="limit_value" class="campaign_input_num"').'&nbsp;'.TEXT_MONEY_SYMBOL; 
   $html_str .= '<span id="limit_value_text">';
-  $html_str .= $limit_value_text;
+  if ($campaign_res['range_type'] == 1 || $campaign_res['range_type'] == 0) {
+  $html_str .= '<select name="range_type">';
+  $html_str .= '<option value="1" selected="selected">'.TEXT_CAMPAIGN_UP.'</option>';
+  $html_str .= '<option value="2">'.TEXT_CAMPAIGN_DOWN.'</option>';
+  $html_str .= '</select>';
+  }else if($campaign_res['range_type'] == 2) {
+  $html_str .= '<select name="range_type">';
+  $html_str .= '<option value="1">'.TEXT_CAMPAIGN_UP.'</option>';
+  $html_str .= '<option value="2" selected="selected">'.TEXT_CAMPAIGN_DOWN.'</option>';
+  $html_str .= '</select>';
+  }
+  $html_str .= TEXT_CAMPAIGN_WHEN;
   $html_str .= '</span>';
   $html_str .= '<div id="limit_value_error"></div>'; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
-  $html_str .= TEXT_INFO_POINT_VALUE; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= '-&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('point_value',
-      substr($campaign_res['point_value'],1), 
-      'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  if(strstr($campaign_res['point_value'],'-')){
+  $html_str .= '<select name="up_or_down">';
+  $html_str .= '<option value="-" selected="selected">-</option>';
+  $html_str .= '<option value="+">+</option>';
+  $html_str .= '</select>';
+  }else{
+  $html_str .= '<select name="up_or_down">';
+  $html_str .= '<option value="-">-</option>';
+  $html_str .= '<option value="+" selected="selected">+</option>';
+  $html_str .= '</select>';
+  }
+  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_CAMPAIGN_ADD; 
   $html_str .= '<div id="point_value_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1442,31 +1449,25 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_CAMPAIGN_TYPE; 
   $html_str .= '</td>'; 
   $html_str .= '<td>'; 
-  $html_str .= tep_draw_radio_field('type',1,true,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_SELL.'&nbsp;'.tep_draw_radio_field('type',2,false,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_BUY; 
-  $limit_value_text = TEXT_CAMPAIGN_LIMIT_VALUE_READ_UP;
-  $html_str .= '</td>'; 
-  $html_str .= '</tr>'; 
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
-  $html_str .= '&nbsp;'; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= '<span
-    id="type_symbol">+</span>&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('limit_value',
-        '', 'id="limit_value" class="campaign_input_num" ').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= TEXT_CAMPAIGN_TYPE_SELL;
+  $html_str .= '<select name="type" id="type" onclick="toggle_type_info(this);">';
+  $html_str .= '<option value="1" selected="selected">+</option>';
+  $html_str .= '<option value="2">-</option>';
+  $html_str .= '</select>';
+  $html_str .= tep_draw_input_field('limit_value', abs($campaign_res['limit_value']), 'id="limit_value" class="campaign_input_num"').'&nbsp;'.TEXT_MONEY_SYMBOL; 
   $html_str .= '<span id="limit_value_text">';
-  $html_str .= $limit_value_text;
+  $html_str .= '<select name="range_type">';
+  $html_str .= '<option value="1" selected="selected">'.TEXT_CAMPAIGN_UP.'</option>';
+  $html_str .= '<option value="2">'.TEXT_CAMPAIGN_DOWN.'</option>';
+  $html_str .= '</select>';
+  $html_str .= TEXT_CAMPAIGN_WHEN;
   $html_str .= '</span>';
   $html_str .= '<div id="limit_value_error"></div>'; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
-  $html_str .= TEXT_INFO_POINT_VALUE; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= '-&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('point_value', '',
-      'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= '<select name="up_or_down">';
+  $html_str .= '<option value="-" selected="selected">-</option>';
+  $html_str .= '<option value="+">+</option>';
+  $html_str .= '</select>';
+  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_CAMPAIGN_ADD; 
   $html_str .= '<div id="point_value_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';

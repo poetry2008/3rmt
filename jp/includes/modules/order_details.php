@@ -13,7 +13,7 @@
     $colspan +=2;
   }
 
-  echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_QUANTITY . '</td>' . "\n";
+  echo '    <td align="center" class="tableHeading" width="90">' . TABLE_HEADING_QUANTITY . '</td>' . "\n";
 
   if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)){
     echo '    <td align="center" class="tableHeading" width="60">' . TABLE_HEADING_IMAGE. '</td>' . "\n";
@@ -22,11 +22,11 @@
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
   }
 
-  echo '    <td class="tableHeading">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
+  echo '    <td class="tableHeading" width="280">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
 
   if (!strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
     $colspan++;
-    echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_TAX . '</td>' . "\n";
+    echo '    <td align="center" class="tableHeading" width="280">' . TABLE_HEADING_TAX . '</td>' . "\n";
   }
 
   echo '    <td align="right" class="tableHeading" width="60">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .

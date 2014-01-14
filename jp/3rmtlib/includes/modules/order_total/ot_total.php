@@ -27,7 +27,6 @@
 
     function process() {
       global $order, $currencies, $payment, $point, $_POST, $cart;
-
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           && isset($_SESSION['h_code_fee'])
@@ -59,10 +58,25 @@
         $total += $buying_fee; 
       }
     }
-    
-    if (isset($_SESSION['campaign_fee'])) {
-      $total += $_SESSION['campaign_fee']; 
-    }
+      if($_SESSION['c_point']){
+         $campaign_query = tep_db_query("select * from " .  TABLE_CAMPAIGN . " where keyword = '".$_SESSION['c_point']."'");
+         $campaign_row   = tep_db_fetch_array($campaign_query);
+         if($campaign_row['range_type'] == 2){
+           if($total <= $campaign_row['limit_value']){
+             if(isset($_SESSION['campaign_fee'])){
+              $total += $_SESSION['campaign_fee'];
+             }
+           }
+         }else if($campaign_row['range_type'] == 1){
+           if($total >= $campaign_row['limit_value']){
+             if(isset($_SESSION['campaign_fee'])){
+              $total += $_SESSION['campaign_fee'];
+             }
+           }
+         } 
+      }else if (isset($_SESSION['campaign_fee'])) {
+              $total += $_SESSION['campaign_fee']; 
+      }
     
 
 

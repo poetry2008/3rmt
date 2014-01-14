@@ -76,9 +76,17 @@
          }
          $percent_pos = strpos($_POST['point_value'], '%');
          if ($percent_pos !== false) {
-           $point_value = '-'.$_POST['point_value']; 
+           if($_POST['up_or_down'] == '+'){
+              $point_value = $_POST['point_value']; 
+           }else {
+              $point_value = '-'.$_POST['point_value']; 
+           }
          } else {
-           $point_value = 0-$_POST['point_value']; 
+           if($_POST['up_or_down'] == '+'){
+              $point_value = $_POST['point_value']; 
+           }else{
+              $point_value = 0-$_POST['point_value']; 
+           }
          }
          $sql_data_array = array(
             'title' => tep_db_prepare_input($_POST['title']),
@@ -91,6 +99,7 @@
             'point_value' => tep_db_prepare_input($point_value),
             'limit_value' => tep_db_prepare_input($limit_value),
             'type' => tep_db_prepare_input($_POST['type']),
+            'range_type' => tep_db_prepare_input($_POST['range_type']),
             );
          if($_GET['action']=='update'){
            $update_sql_date = array(
@@ -347,12 +356,10 @@ function toggle_type_info(ele)
 {
   if (ele.value == '1') {
     document.getElementById('type_symbol').innerHTML = '+'; 
-    document.getElementById('limit_value_text').innerHTML = '<?php
-      echo TEXT_CAMPAIGN_LIMIT_VALUE_READ_UP;?>'; 
+//    document.getElementById('limit_value_text').innerHTML = '<?php echo TEXT_CAMPAIGN_LIMIT_VALUE_READ_UP;?>'; 
   } else {
     document.getElementById('type_symbol').innerHTML = '-'; 
-    document.getElementById('limit_value_text').innerHTML = '<?php
-      echo TEXT_CAMPAIGN_LIMIT_VALUE_READ_DOWN;?>'; 
+   // document.getElementById('limit_value_text').innerHTML = '<?php echo TEXT_CAMPAIGN_LIMIT_VALUE_READ_DOWN;?>'; 
   }
 }
 <?php //执行动作?>

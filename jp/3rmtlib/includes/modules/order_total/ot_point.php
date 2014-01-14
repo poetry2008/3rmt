@@ -18,7 +18,11 @@
 
 	  
 	  $this->code = 'ot_point';
-      $this->title = MODULE_ORDER_TOTAL_POINT_TITLE;
+      if(strstr($_SESSION['campaign_fee'],'-')){
+        $this->title = MODULE_ORDER_TOTAL_POINT_TITLE;
+      }else{
+        $this->title = MODULE_ORDER_TOTAL_COST_TITLE;
+      }
       $this->description = MODULE_ORDER_TOTAL_POINT_DESCRIPTION;
       $this->enabled = ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true') ? true : false);
       $this->sort_order = MODULE_ORDER_TOTAL_POINT_SORT_ORDER;
