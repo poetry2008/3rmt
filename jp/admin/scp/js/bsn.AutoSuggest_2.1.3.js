@@ -250,7 +250,7 @@ _b.AutoSuggest.prototype.doAjaxRequest = function (input)
 	var input = this.sInp;
 	
 	var onSuccessFunc = function (req) { pointer.setSuggestions(req, input) };
-	var onErrorFunc = function (status) { alert("AJAX error: "+status); };
+	var onErrorFunc = '';
 
 	var myAjax = new _b.Ajax();
 	myAjax.makeRequest( url, meth, onSuccessFunc, onErrorFunc );
