@@ -12,6 +12,54 @@ var alert_update_id = '';
 $(function() {
    setTimeout(function() {show_head_notice(1)}, 35000);
 });
+
+function Sound(source,volume,loop)
+{
+    this.source=source;
+    this.volume=volume;
+    this.loop=loop;
+    var son;
+    this.son=son;
+    this.finish=false;
+    this.stop=function()
+    {
+//        document.body.removeChild(this.son);
+      $("#hidden_mp3").remove();
+    }
+    this.start=function()
+    {
+        if(this.finish)return false;
+        this.son=document.createElement("embed");
+        this.son.setAttribute("src",this.source);
+        this.son.setAttribute("hidden","true");
+        this.son.setAttribute("volume",this.volume);
+        this.son.setAttribute("autostart","true");
+        this.son.setAttribute("loop",this.loop);
+//        document.body.appendChild(this.son);
+        $("#hidden_mp3").append(this.son);
+    }
+    this.remove=function()
+    {
+      $("#hidden_mp3").remove();
+//        document.body.removeChild(this.son);
+        this.finish=true;
+    }
+    this.init=function(volume,loop)
+    {
+        this.finish=false;
+        this.volume=volume;
+        this.loop=loop;
+    }
+}
+
+function splay(url){
+  if(sou){
+    sou.remove();
+  }
+  var sou = new Sound(url,0,true);
+  sou.start();
+}
+
 <?php //检查存在的功能 ?>
 function check_exists_function(funcName){
   try{
@@ -71,7 +119,7 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
     n_minute = 0;
   }
   
-  if (document.getElementById('leave_time_'+nid)) {
+  if (document.getElementById('leave_time_'+nid)||true) {
    $.ajax({
     dataType: 'text', 
     url: 'ajax_orders.php?action=check_play_sound',
@@ -85,13 +133,7 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
         document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
         var n_node=document.getElementById('head_notice');  
         if (msg == '1') {
-          if (n_node.controls) {
-            n_node.controls.play();  
-          } else {
-            if (check_exists_function('play')) {
-              n_node.play();  
-            }
-          }
+              splay('images/notice.mp3');
         }
       }
       setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date)}, 5000); 
@@ -316,11 +358,7 @@ function playHeadSound()
     url: 'ajax_orders.php?action=check_play_sound',
     success: function(msg) {
       if (msg == '1') {
-        if (hnode.controls) {
-          hnode.controls.play();  
-        } else {
-          hnode.play();  
-        }
+            splay('images/presound.mp3');
       }
     }
    }); 
@@ -385,11 +423,7 @@ function playOrderHeadSound()
     url: 'ajax_orders.php?action=check_play_sound',
     success: function(msg) {
       if (msg == '1') {
-        if (ohnode.controls) {
-          ohnode.controls.play();  
-        } else {
-          ohnode.play();  
-        }
+            splay('images/warn.mp3');
       }
     }
    });
@@ -426,6 +460,7 @@ $(function(){
 <noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
+<div id="hidden_mp3"></div>
 <div class="compatible_head">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>

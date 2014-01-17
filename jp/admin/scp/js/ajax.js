@@ -70,7 +70,7 @@ var Http = {
 			callback.apply(null, cb_params);
 		};
 		
-		Http.req.send(params.body || null);
+		Http.req.send(params.body || null) throw 'XmlHttpRequest is wrong';
 	}
 	
 };
