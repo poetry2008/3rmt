@@ -119,15 +119,11 @@ if (!empty($_POST['point'])) {
       
       $campaign_res = tep_db_fetch_array($campaign_query); 
       if ($campaign_res) {
-        if ($campaign_res['type'] != '1') {
-          $campaign_error = true;
-        } else {
           if (($cart->show_total() < $campaign_res['limit_value']) && $campaign_res['range_type'] == 1) {
             $campaign_error = true;
           }else if (($cart->show_total() > $campaign_res['limit_value']) && $campaign_res['range_type'] == 2) {
             $campaign_error = true;
           }
-        }
          
         $max_campaign_query = tep_db_query("select count(*) as total from ".TABLE_CUSTOMER_TO_CAMPAIGN." where customer_id = '".$customer_id."' and campaign_id = '".$campaign_res['id']."'"); 
         $max_campaign_res = tep_db_fetch_array($max_campaign_query); 

@@ -15,13 +15,22 @@
       global $point;
 
       $this->site_id = $site_id;
-
-	  
 	  $this->code = 'ot_point';
+        if(isset($_SESSION['c_point'])){
+           $c_point = $_SESSION['c_point'];
+        }else if(isset($_SESSION['hc_camp_point'])){
+           $c_point = $_SESSION['hc_camp_point'];
+        }
+      $campaign_query = tep_db_query("select * from " .  TABLE_CAMPAIGN .  " where keyword = '".$c_point."'");
+      $campaign_row   = tep_db_fetch_array($campaign_query);
       if(strstr($_SESSION['campaign_fee'],'-')){
-        $this->title = MODULE_ORDER_TOTAL_POINT_TITLE;
+           $this->title = MODULE_ORDER_TOTAL_COST_TITLE;
       }else{
-        $this->title = MODULE_ORDER_TOTAL_COST_TITLE;
+        if($campaign_row){
+           $this->title = MODULE_ORDER_TOTAL_COST_TITLE;
+        }else{
+           $this->title = MODULE_ORDER_TOTAL_POINT_TITLE;
+        }
       }
       $this->description = MODULE_ORDER_TOTAL_POINT_DESCRIPTION;
       $this->enabled = ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true') ? true : false);
