@@ -157,7 +157,18 @@
               if ($class == 'ot_point') {
                 if (isset($_SESSION['campaign_fee'])) {
                   if(strstr($_SESSION['campaign_fee'],'-')){
-                  $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .  '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                       if(isset($_SESSION['c_point'])){
+                            $c_point = $_SESSION['c_point'];
+                       }else if(isset($_SESSION['hc_camp_point'])){
+                            $c_point = $_SESSION['hc_camp_point'];
+                       }
+                    $campaign_query = tep_db_query("select * from " .  TABLE_CAMPAIGN .  " where keyword = '".$c_point."'");
+                    $campaign_row   = tep_db_fetch_array($campaign_query);
+                   if(strstr($campaign_row['point_value'],'-')){
+                     $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .  '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                   }else{
+                     $output_string .= str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                   }
                   }else{
                   $output_string .= str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
                   }

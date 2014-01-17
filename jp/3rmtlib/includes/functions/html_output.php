@@ -970,7 +970,7 @@ function tep_preorder_href_link($pid, $romaji, $param = null,$connection='NOSSL'
       $returnstr .= 'preorder/'.$categoriesToString.urlencode($romaji).'.html'.$param_str;
     } else {
         if ($request_type == 'SSL') {
-          $returnstr .= "preorder/".$categoriesToString.urlencode($romaji).".html".$param_str.'&'.tep_session_name()."=".tep_session_id();
+          $returnstr .= "preorder/".$categoriesToString.urlencode($romaji).".html".$param_str;
         } else {
           $returnstr .= "preorder/".$categoriesToString.urlencode($romaji).".html".$param_str;
         }

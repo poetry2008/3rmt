@@ -2035,16 +2035,18 @@ if (isset($time_error)) {
           }
           if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total > 0)) { 
             ?>
+          <?php echo TEXT_PREORDER_POINT_TEXT;?> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main" valign="top">
-              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
+              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;">&nbsp;&nbsp;
               <?php 
+              if (isset($point_error)) { echo '<font color="#ff0000">'.$point_error.'</font>'; }
+              echo '</td>';
+              echo '<td class="main" align="right">';
+              echo $preorder_point;
               echo TEXT_PREORDER_POINT_READ; 
-              if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
-              }
+              echo '</td>';
               ?>
               </td> 
             </tr>

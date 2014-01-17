@@ -136,9 +136,11 @@
     if ($campaign_res) {
       $percent_pos = strpos($campaign_res['point_value'], '%'); 
       if ($percent_pos !== false) {
-        $preorder_campaign_fee = $preorder_subtotal*substr($campaign_res['point_value'], 0, -1)/100; 
+        $preorder_campaign_fee = $preorder_subtotal*$campaign_res['point_value']/100; 
         if ($preorder_campaign_fee > 0) {
-          $preorder_campaign_fee = 0 - $preorder_campaign_fee; 
+          if(strstr($preorder_campaign_fee,'-')){
+            $preorder_campaign_fee = 0 - $preorder_campaign_fee; 
+          }
         }
       } else {
         $preorder_campaign_fee = $campaign_res['point_value']; 

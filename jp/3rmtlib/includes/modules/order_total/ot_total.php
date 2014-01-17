@@ -64,22 +64,33 @@
          if($campaign_row['range_type'] == 2){
            if($total <= $campaign_row['limit_value']){
              if(isset($_SESSION['campaign_fee'])){
-              $total += $_SESSION['campaign_fee'];
+               if((!strstr($campaign_row['point_value'],'-')) && $campaign_row['type'] == 2){
+                  $total += abs($_SESSION['campaign_fee']);
+               }else{
+                  $total += $_SESSION['campaign_fee'];
+               }
              }
            }
          }else if($campaign_row['range_type'] == 1){
            if($total >= $campaign_row['limit_value']){
              if(isset($_SESSION['campaign_fee'])){
-              $total += $_SESSION['campaign_fee'];
+               if((!strstr($campaign_row['point_value'],'-')) && $campaign_row['type'] == 2){
+                  $total += abs($_SESSION['campaign_fee']);
+               }else{
+                  $total += $_SESSION['campaign_fee'];
+               }
              }
            }
          } 
       }else if (isset($_SESSION['campaign_fee'])) {
+         $campaign_query = tep_db_query("select * from " .  TABLE_CAMPAIGN . " where keyword = '".$_SESSION['hc_camp_point']."'");
+         $campaign_row   = tep_db_fetch_array($campaign_query);
+            if(strstr($campaign_row['point_value'],'-')){
               $total += $_SESSION['campaign_fee']; 
+            }else{
+              $total -= $_SESSION['campaign_fee']; 
+            }
       }
-    
-
-
       if(isset($_SESSION['h_shipping_fee'])){
         $total += $_SESSION['h_shipping_fee'];  
       }
