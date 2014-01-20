@@ -688,7 +688,13 @@ if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select
                       }
                     }
                     if($preorder_total_res['class'] == 'ot_point'){
-                      $preorder_point_title = $preorder_total_res['title'];
+                      $campaign_query = tep_db_query("select * from " .  TABLE_CAMPAIGN .  " where keyword = '".$_POST['preorder_campaign_info']."'");
+                      $campaign_row   = tep_db_fetch_array($campaign_query);
+                      if($campaign_row){
+                         $preorder_point_title = MODULE_ORDER_TOTAL_COST_TITLE;
+                      }else{
+                         $preorder_point_title = $preorder_total_res['title'];
+                      }
                     }else{
                    ?>
                   
@@ -699,7 +705,11 @@ if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select
                     }
                     if ($preorder_total_res['class'] == 'ot_point') {
                       if (isset($_SESSION['preorder_campaign_fee'])) {
+                        if(strstr($_SESSION['preorder_campaign_fee'],'-')){
                         $preorder_point_value =  '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['preorder_campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT;
+                        }else{
+                        $preorder_point_value =  str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['preorder_campaign_fee']))).JPMONEY_UNIT_TEXT;
+                        }
                       } else {
                         $preorder_point_value = '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total((int)$preorder_point)).'</font>'.JPMONEY_UNIT_TEXT;
                       }

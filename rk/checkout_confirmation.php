@@ -208,14 +208,6 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
    for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
       $all_show_option[$order->products[$i]['ck_attributes'][$jk]['item_id']] 
       = $order->products[$i]['ck_attributes'][$jk];
-      /*
-      $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
-      if ($cop_price != '0') {
-        echo ' ('.$currencies->format($cop_price).')'; 
-      }
-      echo '</i></small>';
-      */
     }
   }
   // new option list 
@@ -696,10 +688,25 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     }
   } else {
     if (isset($_SESSION['campaign_fee'])) {
-      $get_point = (abs($order->info['subtotal'])+abs($_SESSION['campaign_fee'])) * $point_rate;
-    } else {
-      $get_point = abs($order->info['subtotal']) * $point_rate;
-    }
+      if(isset($_SESSION['c_point'])){
+         $c_point = $_SESSION['c_point'];
+       }else if(isset($_SESSION['hc_camp_point'])){
+         $c_point = $_SESSION['hc_camp_point'];
+       }
+      $campaign_query = tep_db_query("select * from " .  TABLE_CAMPAIGN .  " where keyword = '".$c_point."'");
+      $campaign_row   = tep_db_fetch_array($campaign_query);
+      if(strstr($campaign_row['point_value'],'-')){
+        $get_point = ($order->info['subtotal']+$_SESSION['campaign_fee']) *
+        $point_rate;
+       }else{
+        $get_point = ($order->info['subtotal']+abs($_SESSION['campaign_fee'])) * $point_rate;
+       }
+     } else {
+       $get_point = abs($order->info['subtotal']) * $point_rate;
+     }
+  }
+  if(strstr($get_point,'-')){
+      $get_point = abs($get_point);
   }
   if ($guestchk == '1') {
     $get_point = 0;
