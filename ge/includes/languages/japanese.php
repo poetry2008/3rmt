@@ -534,4 +534,5 @@ define('TEXT_BILLING_SELECT_FALSE', '必要ない');
 define('TEXT_BILLING_ADDRESS_OLD', '過去のご請求先を指定する');
 define('TEXT_BILLING_ADDRESS_NEW', '登録先に届ける');
 define('MODULE_ORDER_TOTAL_COST_TITLE', 'キャンペーン調整額');
+define('MODULE_ORDER_TOTAL_POINT_TITLE', '割引');
 ?>

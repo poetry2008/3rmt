@@ -691,13 +691,19 @@ if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select
                       }
                     }
                     if($preorder_total_res['class'] == 'ot_point'){
-                      $campaign_query = tep_db_query("select * from " .  TABLE_CAMPAIGN .  " where keyword = '".$_POST['preorder_campaign_info']."'");
-                      $campaign_row   = tep_db_fetch_array($campaign_query);
-                      if($campaign_row){
-                         $preorder_point_title = MODULE_ORDER_TOTAL_COST_TITLE;
-                      }else{
-                         $preorder_point_title = $preorder_total_res['title'];
-                      }
+                         if(isset($_POST['preorder_campaign_info'])){
+                           if(is_numeric($_POST['preorder_campaign_info'])){
+                            $preorder_point_title = MODULE_ORDER_TOTAL_POINT_TITLE.':';
+                           }else{
+                            $preorder_point_title = MODULE_ORDER_TOTAL_COST_TITLE.':';
+                           }
+                         }else if(isset($_POST['preorder_point'])){
+                           if(is_numeric($_POST['preorder_point'])){
+                            $preorder_point_title = MODULE_ORDER_TOTAL_POINT_TITLE.':';
+                           }else{
+                            $preorder_point_title = MODULE_ORDER_TOTAL_COST_TITLE.':';
+                           }
+                         }
                     }else{
                    ?>
                   
