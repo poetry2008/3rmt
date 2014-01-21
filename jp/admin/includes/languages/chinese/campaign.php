@@ -48,4 +48,3 @@ define('TEXT_CAMPAIGN_LIMIT_VALUE_WRONG', '上限值设置有误。');
 define('TEXT_CAMPAIGN_UP','以上');
 define('TEXT_CAMPAIGN_DOWN','以下');
 define('TEXT_CAMPAIGN_WHEN','的时候,小计的值增加');
-define('TEXT_CAMPAIGN_ADD','');

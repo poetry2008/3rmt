@@ -192,15 +192,6 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
     for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
       $all_show_option[$order->products[$i]['op_attributes'][$j]['item_id']] 
       = $order->products[$i]['op_attributes'][$j];
-      /*
-      $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
-       
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
-      if ($op_price != '0') {
-        echo ' ('.$currencies->format($op_price).')'; 
-      }
-      echo '</i></small>';
-      */
     }
   }
   
