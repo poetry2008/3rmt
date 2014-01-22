@@ -1209,7 +1209,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '<option value="+" selected="selected">+</option>';
   $html_str .= '</select>';
   }
-  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_CAMPAIGN_ADD; 
+  if($_SESSION['language'] != 'chinese'){
+     $campaign_add = TEXT_CAMPAIGN_ADD;
+  }
+  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num" ').'&nbsp;'.$campaign_add; 
   $html_str .= '<div id="point_value_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1467,7 +1470,10 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '<option value="-" selected="selected">-</option>';
   $html_str .= '<option value="+">+</option>';
   $html_str .= '</select>';
-  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_CAMPAIGN_ADD; 
+  if($_SESSION['language'] != 'chinese'){
+     $campaign_add = TEXT_CAMPAIGN_ADD;
+  }
+  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num" ').'&nbsp;'.$campaign_add; 
   $html_str .= '<div id="point_value_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';

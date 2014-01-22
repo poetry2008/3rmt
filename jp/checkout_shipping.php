@@ -2539,13 +2539,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
                           }
                         ?>
                         <input type="text" value="<?php echo $default_point_value;?>" name="point" size="24" style="text-align:right"> 
-                  &nbsp;&nbsp;
-                  <?php
-                  if ($campaign_error) {
-                    echo '<span class="shipping_error">'.CAMPAIGN_ERROR_TEXT.'</span>'; 
-                  }
-                  ?>
-
+                        &nbsp;&nbsp; <?php if ($campaign_error) { echo '<span class="shipping_error">'.CAMPAIGN_ERROR_TEXT.'</span>'; } ?>
                         </td> 
                         <td class="main" align="right">
                         <?php echo $point['point']; ?><?php echo TEXT_POINT_READ;?>

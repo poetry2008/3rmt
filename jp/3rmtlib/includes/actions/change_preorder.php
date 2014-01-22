@@ -231,7 +231,10 @@ if($_POST['preorders_billing_select'] == '1'){
           }
         } 
     }
-    
+    if(isset($_SESSION['send_preorder_id'])){
+          $preorders_total = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where  orders_id  = '".$_SESSION['send_preorder_id']."' and class='ot_subtotal'"); 
+          $preorders_total_row = tep_db_fetch_array($preorders_total);
+    }
     if (isset($_POST['preorder_point'])) {
       //判断点数或者优惠券信息是否正确 
       $_POST['preorder_point'] = get_strip_campaign_info($_POST['preorder_point']); 
@@ -257,10 +260,11 @@ if($_POST['preorders_billing_select'] == '1'){
             $preorder_subtotal = 0; 
             $preorder_total_info_array = get_preorder_total_info(payment::changeRomaji($preorder_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $preorder_res['orders_id'], $n_option_info_array);  
             $preorder_subtotal = $preorder_total_info_array['subtotal'];            
-            if (($_SESSION['cart']->abs < $campaign_res['limit_value']) && $campaign_res['range_type'] == 1) {
+           if($preorders_total_row){
+            if (($preorders_total_row['value'] < $campaign_res['limit_value']) && $campaign_res['range_type'] == 1) {
               $error = true;
               $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
-            } else if ($_SESSION['cart']->abs > $campaign_res['limit_value'] && $campaign_res['range_type'] == 2){
+            } else if ($preorders_total_row['value'] > $campaign_res['limit_value'] && $campaign_res['range_type'] == 2){
               $error = true;
               $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
             }else{
@@ -268,6 +272,7 @@ if($_POST['preorders_billing_select'] == '1'){
               $_POST['preorder_campaign_id'] = $campaign_res['id'];
               $_POST['preorder_campaign_info'] = $campaign_res['keyword'];
             }
+           }
           } else {
             $error = true;
             $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
@@ -292,16 +297,18 @@ if($_POST['preorders_billing_select'] == '1'){
             $preorder_subtotal = 0; 
             $preorder_total_info_array = get_preorder_total_info(payment::changeRomaji($preorder_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $preorder_res['orders_id'], $n_option_info_array);  
             $preorder_subtotal = $preorder_total_info_array['subtotal'];            
-            if (($_SESSION['cart']->total < $campaign_res['limit_value']) && $campaign_res['range_type'] == 1) {
+           if($preorders_total_row){
+            if (($preorders_total_row['value'] < $campaign_res['limit_value']) && $campaign_res['range_type'] == 1) {
               $error = true;
               $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
-            } else if ($_SESSION['cart']->total > $campaign_res['limit_value'] && $campaign_res['range_type'] == 2){
+            } else if ($preorders_total_row['value'] > $campaign_res['limit_value'] && $campaign_res['range_type'] == 2){
               $error = true;
               $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
             }else{
               $_POST['preorder_campaign_id'] = $campaign_res['id'];
               $_POST['preorder_campaign_info'] = $campaign_res['keyword'];
             }
+           }
           } else {
             $error = true;
             $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
