@@ -807,3 +807,14 @@ define('TEXT_INPUT_IS_NO_NUMERIC', '0以上の数字を入力してください�
 define('ERROR_LOW_PROFIT_MESSAGE', '最低利益%sを確保できません。%sの販売単価を%s以上に設定してください。');
 define('ERROR_LOW_PROFIT_OTHER_MESSAGE', '最低利益%sを確保できません。%sの仕入単価を%s以下に設定してください。');
 define('ERROR_WARNING_TEXT', 'この警告を無視しますか？');
+define('JS_TEXT_ALL_ORDER_SAVED','の保存が完了しました');
+define('JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION','取引完了');
+define('JS_TEXT_ALL_ORDER_SAVE','保存');
+define('JS_TEXT_ALL_ORDER_BROWER_REJECTED','ブラウザに拒絶されました！\nブラウザのアドレス欄に\'about:config\'を入力してEnterキーを押します\nそれと\'signed.applets.codebase_principal_support\'数を\'true\'にしてください');
+define('JS_TEXT_ALL_ORDER_NO_OPTION_ORDER','注文書はまだ選択していません。');
+define('JS_TEXT_ALL_ORDER_NOT_CHOOSE','複数の選択はできません。');
+define('JS_TEXT_ALL_ORDER_COPY_TO_CLIPBOARD','クリップボードにコピーしました！');
+define('JS_TEXT_NOTICE_INPUT_TITLE','タイトルを入力してください');
+define('JS_TEXT_NOTICE_INPUT_INFO','内容を入力してください');
+define('JS_TEXT_NOTICE_INFO_SAVED','内容を保存しました。');
+define('JS_TEXT_NOTICE_IS_DELETE','削除を実行しますか？');

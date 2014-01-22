@@ -2453,204 +2453,19 @@ echo tep_get_orders_edit_title_from_oID($_GET['oID'])." ". HEADING_TITLE;
 else { ?>
 <title><?php echo HEADING_TITLE; ?></title>
 <?php }?>
-        <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-        <script language="javascript" src="includes/javascript/jquery.js"></script>
-        <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-        <script language="javascript" src="js2php.php?path=includes|javascript&name=all_order&type=js"></script>
-        <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-        <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-        <script language="javascript" src="includes/javascript/all_page.js"></script> 
+        <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+        <script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/all_page.js?v=<?php echo $back_rand_info?>"></script> 
         <script language="javascript">
-window.onresize = resizepage;
-<?php //删除订单?>
-function confirm_del_order_info()
-{
-<?php
-if ($ocertify->npermission == 31) {
-?>
-  document.forms.orders.submit();
-<?php
-} else {
-?>
-  $.ajax({
-     url: 'ajax_orders.php?action=getallpwd',
-     type: 'POST',
-     dataType: 'text',
-     data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-     async : false,
-     success: function(data) {
-       var tmp_msg_arr = data.split('|||'); 
-       var pwd_list_array = tmp_msg_arr[1].split(',');
-       if (tmp_msg_arr[0] == '0') {
-         document.forms.orders.submit();
-       } else {
-         var input_pwd_str = window.prompt('<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>', ''); 
-         if (in_array(input_pwd_str, pwd_list_array)) {
-           $.ajax({
-             url: 'ajax_orders.php?action=record_pwd_log',   
-             type: 'POST',
-             dataType: 'text',
-             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.orders.action),
-             async: false,
-             success: function(msg_info) {
-               document.forms.orders.submit();
-             }
-           }); 
-         } else {
-           alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
-         }
-       }
-     }
-   });
-<?php
-}
-?>
-}
-<?php //浏览器窗口缩放时执行的函数?>
-function resizepage(){
-  if($(".note_head").val()== ""&&$("#orders_list_table").width()< 714){
-    $(".box_warp").css('height',$('.compatible').height());
-  }
-}
-<?php //确认邮件标题?>
-function confrim_mail_title(){
-  var _end = $("#mail_title_status").val();
-  
-  var direct_single = false;
-  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-  }else{
-    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-    } else {
-      direct_single = true;
-    }
-  }
-  
-  $.ajax({
-    type:"POST",
-    data:"c_comments="+$('#c_comments').val()+'&o_id=<?php echo $_GET['oID'];?>'+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
-    async:false,
-    url:'ajax_orders.php?action=check_order_variable_data',
-    success: function(msg) {
-      if (msg != '') {
-        if (direct_single == false) {
-          alert(msg); 
-        } 
-      } else {
-        if (direct_single == false) {
-          document.forms.sele_act.submit(); 
-        }
-      } 
-    }
-  }); 
-}
-<?php //确认邮件标题?>
-function confrim_list_mail_title(){
-  var _end = $("#mail_title_status").val();
-  var o_id_list = ''; 
-  var direct_single = false;
-  if (document.sele_act.elements['chk[]']) {
-    if (document.sele_act.elements['chk[]'].length == null) {
-      if (document.sele_act.elements['chk[]'].checked == true) {
-        o_id_list += document.sele_act.elements['chk[]'].value+','; 
-      }
-    } else {
-      for (var i = 0; i < document.sele_act.elements['chk[]'].length; i++) {
-        if (document.sele_act.elements['chk[]'][i].checked == true) {
-          o_id_list += document.sele_act.elements['chk[]'][i].value+','; 
-        }
-      }
-    }
-  }
-  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-  }else{
-    if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-    } else {
-      direct_single = true;
-    }
-  }
-  
-  $.ajax({
-    type:"POST",
-    data:"c_comments="+$('#c_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
-    async:false,
-    url:'ajax_orders.php?action=check_order_list_variable_data',
-    success: function(msg) {
-      if (msg != '') {
-        if (direct_single == false) {
-          alert(msg); 
-        } 
-      } else {
-        if (direct_single == false) {
-          document.forms.sele_act.submit(); 
-        }
-      } 
-    }
-  }); 
-}
-<?php //提交表单?>
-function check_list_order_submit() {
-  if (submit_confirm()) {
-    confrim_list_mail_title();
-  }
-}
-        <?php //选中/非选中网站?> 
-        function change_site(site_id,flag,site_list,param_url){  
-          var ele = document.getElementById("site_"+site_id);
-          $.ajax({
-                  dataType: 'text',
-                  type:"POST",
-                  data:'param_url='+param_url+'&flag='+flag+'&site_list='+site_list+'&site_id='+site_id,
-                  async:false, 
-                  url: 'ajax_orders.php?action=select_site',
-                  success: function(data) {
-                    if (data != '') {
-                      if (ele.className == 'site_filter_selected') {
-                        ele.className='';
-                      } else {
-                        ele.className='site_filter_selected';
-                      }
-                      window.location.href = data; 
-                   }
-                 }
-          });
-        }
-        <?php //等待元素隐藏?> 
-        function read_time(){
-    
-          $("#wait").hide();
-        }
-        <?php //给订单加标识?> 
-        function change_read(oid,user){
-          var orders_id = document.getElementById("oid_"+oid); 
-          var orders_id_src = orders_id.src;
-          var orders_id_src_array = new Array();
-          var flag = 0;
-          orders_id_src_array = orders_id_src.split("/"); 
-          if(orders_id_src_array[orders_id_src_array.length-1] == 'green_right.gif'){
-
-            flag = 1;
-          }
-          $.ajax({
-                  type: "POST",
-                  data: 'oid='+oid+'&user='+user+'&flag='+flag,
-                  beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
-                  async:false,
-                  url: 'ajax_orders.php?action=read_flag',
-                  success: function(msg) {
-                    if(flag == 0){
-                      orders_id.src="images/icons/green_right.gif";
-                      orders_id.title=" <?php echo TEXT_FLAG_CHECKED;?> ";
-                      orders_id.alt="<?php echo TEXT_FLAG_CHECKED;?>";
-                    }else{
-                      orders_id.src="images/icons/gray_right.gif";
-                      orders_id.title=" <?php echo TEXT_FLAG_UNCHECK;?> ";
-                      orders_id.alt="<?php echo TEXT_FLAG_UNCHECK;?>";
-                    }
-                    $('body').css('cursor','');
-                    setTimeout('read_time()',500);
-                  }
-               }); 
-        }
+        var tmp_other_str = '<?php echo $_SERVER['PHP_SELF'];?>'; 
+        var notice_relogin_str = '<?php echo TEXT_TIMEOUT_RELOGIN;?>'; 
+        </script> 
+        <script language="javascript" src="includes/javascript/all_order.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/javascript/order.js?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript">
         <?php // 用作跳转?>
         var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
         <?php // 非完成状态的订单不显示最终确认?>
@@ -2682,113 +2497,7 @@ foreach ($nomail as $oskey => $value){
 }
 ?>
 
-<?php //以当前时间为付款日?>
-function q_3_2(){
-  if ($('#q_3_1').attr('checked') == true){
-    if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
-      $('#q_3_2_m').val(new Date().getMonth()+1);
-      $('#q_3_2_d').val(new Date().getDate());
-    }
-  }
-}
 
-<?php //以当前时间为付款日?>
-function q_4_3(){
-  if ($('#q_4_2').attr('checked') == true){
-    if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
-      $('#q_4_3_m').val(new Date().getMonth()+1);
-      $('#q_4_3_d').val(new Date().getDate());
-    }
-  }
-}
-<?php //删除订单指定状态?>
-function del_confirm_payment_time(oid, status_id)
-{
-  $.ajax({
-url: 'ajax_orders.php?action=getallpwd',
-type: 'POST',
-dataType: 'text',
-data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-async : false,
-success: function(data) {
-var tmp_msg_arr = data.split('|||'); 
-var pwd_list_array = tmp_msg_arr[1].split(',');
-<?php
-if ($ocertify->npermission == 31) {
-?>
-if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-$.ajax({
-type:"POST", 
-url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-data:"oID="+oid+"&stid="+status_id, 
-success:function(msg) {
-alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-window.location.href = window.location.href; 
-window.location.reload; 
-}
-}); 
-}
-<?php
-} else {
-?>
-if (tmp_msg_arr[0] == '0') {
-if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-$.ajax({
-type:"POST", 
-url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-data:"oID="+oid+"&stid="+status_id, 
-success:function(msg) {
-alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-window.location.href = window.location.href; 
-window.location.reload; 
-}
-}); 
-}
-} else {
- var input_pwd_str = window.prompt('<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>', ''); 
- if (in_array(input_pwd_str, pwd_list_array)) {
-   $.ajax({
-     url: 'ajax_orders.php?action=record_pwd_log',   
-     type: 'POST',
-     dataType: 'text',
-     data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(window.location.href),
-     async: false,
-     success: function(msg_info) {
-      if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-      $.ajax({
-      type:"POST", 
-      url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-      data:"oID="+oid+"&stid="+status_id+"&once_pwd="+input_pwd_str, 
-      success:function(msg) {
-      alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-      window.location.href = window.location.href; 
-      window.location.reload; 
-      }
-      }); 
-      }
-     }
-   }); 
- } else {
-   alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
- }
-}
-<?php
-}
-?>
-}
-});
-}
-<?php //更新orders_comment_flag的值?>
-function validate_comment(){
-  var o_comment = $('textarea|[name=orders_comment]');
-  if(o_comment.val()){
-    return true;
-  }else{
-    o_comment_flag = $('input|[name=orders_comment_flag]');
-    o_comment_flag.val('true');
-    return true;
-  }
-}
 <?php
 if(isset($_GET['keywords'])&&$_GET['keywords']){
   ?>
@@ -2882,7 +2591,7 @@ require("includes/note_js.php");
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
+    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>', '<?php echo JS_TEXT_INPUT_ONETIME_PWD?>', '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>');
   </script>
     <?php }?>
     <!-- header -->
@@ -2903,60 +2612,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       echo '</td>';
     ?>
 <script>
-<?php //显示手册全部内容?>
-function manual_show(action){
 
-  switch(action){
-
-  case 'top':
-    $("#manual_top_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'top_categories':
-    $("#manual_top_categories_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'categories':
-    $("#manual_categories_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'categories_children':
-    $("#manual_categories_children_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  case 'products':
-    $("#manual_products_show").css({"height":"","overflow":"hidden"}); 
-    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_hide(\'products\');"><u><?php echo ORDER_MANUAL_ALL_HIDE;?></u></a>');
-    break;
-  }   
-}
-<?php //显示手册部分内容?>
-function manual_hide(action){
-
-  switch(action){
-
-  case 'top':
-    $("#manual_top_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_top_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'top_categories':
-    $("#manual_top_categories_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_top_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'top_categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'categories':
-    $("#manual_categories_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_categories_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'categories_children':
-    $("#manual_categories_children_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_categories_children_all").html('<a href="javascript:void(0);" onclick="manual_show(\'categories_children\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  case 'products':
-    $("#manual_products_show").css({"height":"200px","overflow":"hidden"});
-    $("#manual_products_all").html('<a href="javascript:void(0);" onclick="manual_show(\'products\');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a>');
-    break;
-  }  
-}
 $(document).ready(function(){ 
 <?php
   //当请求为手册显示时执行
@@ -3072,7 +2728,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     <?php if ($ocertify->npermission) { ?>
       <?php 
         if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']&&($ocertify->npermission != 31)){
-          echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\', \''.$ocertify->npermission.'\')"');
+          echo tep_html_element_button(IMAGE_EDIT, 'onclick="once_pwd_redircet_new_url(\''.  tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) .'&action=edit') .'\', \''.$ocertify->npermission.'\', \''.JS_TEXT_INPUT_ONETIME_PWD.'\', \''.JS_TEXT_ONETIME_PWD_ERROR.'\')"');
         }else{
           echo '<a href="' . tep_href_link(FILENAME_ORDERS_EDIT, tep_get_all_get_params(array('action','status','questions_type')) . '&action=edit') . '">';
           echo tep_html_element_button(IMAGE_EDIT);
@@ -3195,7 +2851,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       }
       $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
       ?>
-        <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="'.TEXT_CREATE_NEW_NUMBER_SEARCH.'" href="'.$remoteurl.'" target="_blank">'.TEXT_EMAIL_ADDRESS.'</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">'.TEXT_TEL_UNKNOW.'</a>'; 
+        <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' .  tep_output_string_protected($order->customer['email_address']) . '\', \''.JS_TEXT_ALL_ORDER_BROWER_REJECTED.'\', \''.JS_TEXT_ALL_ORDER_COPY_TO_CLIPBOARD.'\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="'.TEXT_CREATE_NEW_NUMBER_SEARCH.'" href="'.$remoteurl.'" target="_blank">'.TEXT_EMAIL_ADDRESS.'</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">'.TEXT_TEL_UNKNOW.'</a>'; 
       ?></td>
         </tr>
         <tr>
@@ -4024,7 +3680,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                 echo '<td>';
                 $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
                 $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
-                echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\', \''.$orders_history['orders_status_history_id'].'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
+                echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\', \''.$orders_history['orders_status_history_id'].'\', \''.NOTICE_DEL_CONFIRM_PAYEMENT_TIME.'\', \''.NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS.'\', \''.TEXT_INPUT_ONE_TIME_PASSWORD.'\', \''.TEXT_INPUT_PASSWORD_ERROR.'\', \''.$ocertify->npermission.'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
                 echo '</td>';
               }
               echo '</tr>' . "\n";
@@ -4050,7 +3706,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <table width="100%" border="0">
             <tr>
             <td class="main"><?php echo ENTRY_STATUS; ?>
-            <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')" id="mail_title_status"'); ?>
+            <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\', \''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_title_status"'); ?>
             </td>
             </tr>
             <?php
@@ -4109,7 +3765,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
             ?>
-            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title();"'); ?></a></td>
+            <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title(\''.$_GET['oID'].'\', \''.TEXT_STATUS_MAIL_TITLE_CHANGED.'\');"'); ?></a></td>
             </tr>
             </table>
             </td>
@@ -4211,7 +3867,7 @@ $params="oID=".$oID."&page=".$page;
 <div id="manual_top_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top" style="display:none;">
 <?php 
 $tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
@@ -4232,7 +3888,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_top_categories_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4248,7 +3904,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_categories_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4260,7 +3916,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_categories_children_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4272,7 +3928,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_products_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
 </div>
@@ -4929,7 +4585,7 @@ $title_cp = $get_categories_title['categories_name'].'/';
 <div id="manual_top_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top" style="display:none;">
 <?php 
 $tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
@@ -4948,7 +4604,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_top_categories_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4965,7 +4621,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_categories_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4977,7 +4633,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_categories_children_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -4990,7 +4646,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_products_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
 </div>
@@ -5067,7 +4723,7 @@ $title_cp = $get_categories_title['categories_name'].'/';
 <div id="manual_top_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top" style="display:none;">
 <?php 
 $tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
@@ -5088,7 +4744,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_top_categories_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_top_categories_all"><a href="javascript:void(0);" onclick="manual_show('top_categories', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top_categories" style="display:none;">
 <?php echo $get_categories_array['c_manual']!='' ? stripslashes($get_categories_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -5104,7 +4760,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_categories_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -5116,7 +4772,7 @@ $get_categories_array = tep_db_fetch_array($get_categories_info);
 <div id="manual_categories_children_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_categories_children_all"><a href="javascript:void(0);" onclick="manual_show('categories_children', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories_children" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -5192,7 +4848,7 @@ $c_title          = $cp_manual_array['categories_name'].'/'.$c_manual_array['cat
 <div id="manual_top_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_top_all"><a href="javascript:void(0);" onclick="manual_show('top', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_top" style="display:none;">
 <?php 
 $tmp_top_manual = get_configuration_by_site_id('TOP_MANUAL_CONTENT');
@@ -5210,7 +4866,7 @@ if($c_parent_array['parent_id'] == 0){
 <div id="manual_products_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $c_manual_content = $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';
 ?>
@@ -5226,7 +4882,7 @@ if($c_parent_array['parent_id'] == 0){
 <div id="manual_products_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_products_all"><a href="javascript:void(0);" onclick="manual_show('products', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_products" style="display:none;">
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -5238,7 +4894,7 @@ if($c_parent_array['parent_id'] == 0){
 <div id="manual_categories_show">
 </div>
 <br>
-<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
+<div align="left" style="display:none;" id="manual_categories_all"><a href="javascript:void(0);" onclick="manual_show('categories', '<?php echo ORDER_MANUAL_ALL_HIDE;?>', '<?php echo ORDER_MANUAL_ALL_SHOW;?>');"><u><?php echo ORDER_MANUAL_ALL_SHOW;?></u></a></div>
 <div id="manual_categories" style="display:none;">
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 </div>
@@ -5809,7 +5465,7 @@ if($c_parent_array['parent_id'] == 0){
             if ($ocertify->npermission) {
               ?>
                 <td style="border-bottom:1px solid #000000;" class="dataTableContent">
-                <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this);">
+                <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this, '<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>', '<?php echo JS_TEXT_ALL_ORDER_SAVE;?>');">
                 </td>
                 <?php 
             }
@@ -5872,15 +5528,15 @@ if($c_parent_array['parent_id'] == 0){
 <?php
   $read_flag_str_array = explode('|||',$orders['read_flag']);
   if($orders['read_flag'] == ''){
-    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
+    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
   }else{
 
     if(in_array($user_info['name'],$read_flag_str_array)){
 
-      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
     }else{
 
-      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
     }
   }
 ?>
@@ -5966,9 +5622,7 @@ if($c_parent_array['parent_id'] == 0){
               <table width="100%" id="select_send" style="display:none">
               <tr>
               <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
-              <td class="main"><?php echo tep_draw_pull_down_menu('status',
-                  $orders_statuses, $select_select,
-                  'onChange="mail_text(\'status\',\'comments\',\'os_title\')" id="mail_title_status"'); ?> <?php
+              <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select, 'onChange="mail_text(\'status\',\'comments\',\'os_title\',\''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_title_status"'); ?> <?php
               if($ocertify->npermission > 7 ) { ?>&nbsp;<a href="<?php echo
                 tep_href_link(FILENAME_ORDERS_STATUS,'',SSL);?>"><?php echo
                   TEXT_EDIT_MAIL_TEXT;?></a><?php } ?></td>
@@ -6015,7 +5669,7 @@ if($c_parent_array['parent_id'] == 0){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_list_order_submit()"'); ?></a></td>
+                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_list_order_submit(\''.TEXT_STATUS_MAIL_TITLE_CHANGED.'\')"'); ?></a></td>
                   </tr>
                   </table>
                   </td>

@@ -47,47 +47,20 @@ while($row=tep_db_fetch_array($query)){
     </div>';
 }
 ?>
-<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
-<script type="text/javascript" >
-<?php tep_get_javascript('global','includes');?>
+<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js?v=<?php echo $back_rand_info;?>"></script>
+<script language="javascript">
+var notice_input_info_str = '<?php echo JS_TEXT_NOTICE_INPUT_INFO;?>';
+var notice_input_title_str = '<?php echo JS_TEXT_NOTICE_INPUT_TITLE;?>';
+var notice_save_str = '<?php echo IMAGE_SAVE;?>';
+var notice_input_is_del_str = '<?php echo JS_TEXT_NOTICE_IS_DELETE;?>';
+var notice_info_save_str = '<?php echo JS_TEXT_NOTICE_INFO_SAVED;?>';
 </script>
-<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
-<link rel="stylesheet" type="text/css" href="includes/note_style.css" />
-<link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
-<link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
-<script type="text/javascript">
-<?php //最小化窗口?>
-function note_min_window(n_id)
-{
-  $.ajax({
-    type: 'POST',
-    data:'note_id='+n_id,
-    async:false,
-    url: 'ajax_orders.php?action=hide_note',
-    success: function(msg) {
-      msg_note_info = msg.split('|||');  
-      $('#note_'+n_id).css('display', 'none'); 
-      note_add_str = '<li><a href="javascript:void(0);" onclick="note_revert_window(this, \''+n_id+'\');"><img src="images/icons/note_'+msg_note_info[0]+'_window.gif" title="'+msg_note_info[1]+'" alt="'+msg_note_info[1]+'"></a></li>'; 
-      $('.note_hide_list').append(note_add_str); 
-    }
-  });
-}
-<?php //还原窗口?>
-function note_revert_window(n_obj, n_id)
-{
-  $.ajax({
-    type: 'POST',
-    data:'note_id='+n_id,
-    async:false,
-    url: 'ajax_orders.php?action=show_note',
-    success: function(msg) {
-      $(n_obj).remove();
-      $('#note_'+n_id).css('display', 'block');
-    } 
-  });
-}
-</script>
+<script type="text/javascript" src="includes/javascript/note.js?v=<?php echo $back_rand_info?>"></script>
+<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js?v=<?php echo $back_rand_info;?>'></script>
+<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js?v=<?php echo $back_rand_info;?>'></script>
+<link rel="stylesheet" type="text/css" href="includes/note_style.css?v=<?php echo $back_rand_info;?>" />
+<link rel="stylesheet" type="text/css" href="includes/fancybox.css?v=<?php echo $back_rand_info;?>" />
+<link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css?v=<?php echo $back_rand_info;?>" />
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
@@ -121,17 +94,6 @@ foreach($note_arr as $note_row){
 }
 ?>
 });
-function changeLayer(obj) {
-  arr = new Array(); 
-  var i = 0 
-  $('.note').each(function(i) {
-    arr[i] = $(this).css("z-index");  
-    i++; 
-  });
-  arr.sort();
-  max = arr[arr.length-1]+1;
-  $(obj).css('z-index', max);
-}
 </script>
 <?php }?>
 

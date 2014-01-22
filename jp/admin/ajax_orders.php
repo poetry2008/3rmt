@@ -1708,7 +1708,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>';
   $html_str .= '</tr>'; 
   $html_str .= '<tr>'; 
-  $html_str .= '<td colspan="3" align="center"><a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="confirm_del_order_info();"').'</a>'; 
+  $html_str .= '<td colspan="3" align="center"><a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="confirm_del_order_info(\''.TEXT_INPUT_ONE_TIME_PASSWORD.'\', \''.TEXT_INPUT_PASSWORD_ERROR.'\', \''.$ocertify->npermission.'\');"').'</a>'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_order_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>';
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 

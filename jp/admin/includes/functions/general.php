@@ -9636,7 +9636,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '</td>'; 
     $html_str .= '<td align="right"  id="alert_close">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$order_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
-    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0, '.$alarm_flag_array['alarm_flag'].', \''.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'\');});</script>'; 
+    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0, '.$alarm_flag_array['alarm_flag'].', \''.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'\', \''.DAY_TEXT.'\', \''.HOUR_TEXT.'\', \''.MINUTE_TEXT.'\');});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
@@ -9692,7 +9692,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '</td>'; 
     $html_str .= '<td align="right" id="alert_close">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
-    $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0);});</script>'; 
+    $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0, \''.DAY_TEXT.'\', \''.HOUR_TEXT.'\', \''.MINUTE_TEXT.'\');});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
