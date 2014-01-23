@@ -31,7 +31,9 @@ class notice_box {
   function get_form($form){
     $this->form = $form;
   }
-  function get_table($arr,$class='',$param_arr=array(),$show_type = false){
+  function get_table($arr,$class='',$param_arr=array(),$show_type =
+      false,$is_diff=false){
+    $last_style = true;
     //获得表格头
     if(empty($param_arr)&&!empty($this->table_params)){
       $param_arr = $this->table_params;
@@ -82,10 +84,29 @@ class notice_box {
     if ($show_type) {
       $table_str .= $arr; 
     } else {
+      $con = count($arr);
+      $i=0;
       foreach($arr as $row){
+        $i++;
         $table_str .= '<tr';
         if($row['params']){
           $table_str .= ' ' .$row['params'];
+          $last_style = false;
+        }else if($is_diff){
+          if(isset($row['mouse'])&&$row['mouse']){
+            if($i%2==0){
+              $table_str .= ' onmouseout="this.className=\'divDataTableRow\'" onmouseover="this.className=\'divDataTableRowOver\';this.style.cursor=\'hand\'" class="divDataTableRow" ';
+            }else{
+              $table_str .= ' onmouseout="this.className=\'divDataTableSecondRow\'" onmouseover="this.className=\'divDataTableRowOver\';this.style.cursor=\'hand\'" class="divDataTableSecondRow" ';
+            }
+          }
+          if($i!=1&&$last_style){
+            if($i%2==0){
+              $table_str .= ' onmouseout="this.className=\'divDataTableRow\'" onmouseover="this.className=\'divDataTableRowOver\';this.style.cursor=\'hand\'" class="divDataTableRow" ';
+            }else{
+              $table_str .= ' onmouseout="this.className=\'divDataTableSecondRow\'" onmouseover="this.className=\'divDataTableRowOver\';this.style.cursor=\'hand\'" class="divDataTableSecondRow" ';
+            }
+          }
         }
         $table_str .= '>';
         if(isset($row['text'])&&$row['text']){
@@ -131,8 +152,8 @@ class notice_box {
     $arr[] = array('text'=> $this->heading);
     return $this->get_table($arr,$this->heading_class);
   }
-  function format_contents(){
-    $table_str = $this->get_table($this->contents['info'],$this->contents_class);
+  function format_contents($is_diff=false){
+    $table_str = $this->get_table($this->contents['info'],$this->contents_class,array(),false,$is_diff);
     $table_str .= $this->format_button();
     return $table_str;
   }
@@ -164,7 +185,7 @@ class notice_box {
     // end button 按钮 处理结束
     return $table_str;
   }
-  function show_notice(){
+  function show_notice($is_diff=false){
     $show_notice_str = '';
     //输出 所有信息
     if(isset($this->heading)&&$this->heading){
@@ -177,7 +198,7 @@ class notice_box {
       $show_notice_str .= $this->form;
     }
     if(isset($this->contents)&&$this->contents){
-      $show_notice_str .= $this->format_contents();
+      $show_notice_str .= $this->format_contents($is_diff);
     }
     if($form_set){
       if(isset($this->eof)&&$this->eof!=''){
