@@ -280,4 +280,6 @@ define('TEXT_IS_OVERWRITE_IMAGE','已经存在。是否覆盖？');
 define('TEXT_UPLOAD_FILE','选择文件');
 define('TEXT_PRODUCT_INFO','商品情报');
 define('TEXT_PRODUCTS_ORDER_INFO','订单情报');
+define('TABLE_HEADING_DANJIA_TEXT','单价（日元）');
+define('TEXT_RADICES_PRODUCT_INFO', '1个:%s在库');
 ?>

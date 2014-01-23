@@ -288,3 +288,5 @@ define('TEXT_IS_OVERWRITE_IMAGE','は既に存在します。上書きします�
 define('TEXT_UPLOAD_FILE','ファイルを選択');
 define('TEXT_PRODUCT_INFO','商品情報');
 define('TEXT_PRODUCTS_ORDER_INFO','注文情報');
+define('TABLE_HEADING_DANJIA_TEXT','単価（円）');
+define('TEXT_RADICES_PRODUCT_INFO', '1個:%s在庫');
