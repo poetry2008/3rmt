@@ -46,8 +46,8 @@ function splay(url){
 }
 
 
-<?php //表格处理的通知时间 ?>
-function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
+//handle notice time
+function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, notice_day_title, notice_hour_title, notice_min_title)
 {
 
   if(alert_update_id == ''){
@@ -103,7 +103,7 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
         if(alarm_flag == '1'){
           document.getElementById('leave_time_'+nid).innerHTML = alarm_date; 
         }else{ 
-          document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>';
+          document.getElementById('leave_time_'+nid).innerHTML = n_show_day+notice_day_title+n_show_hour+notice_hour_title+n_show_minute+notice_min_title;
         }
         if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
           document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
@@ -112,12 +112,12 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date)
             splay('images/notice.mp3');
           }
         }
-        setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date)}, 5000); 
+        setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date, notice_day_title, notice_hour_title, notice_min_title)}, 5000); 
       }
     });
   } 
 }
-<?php //显示所有订单通知 ?>
+//show all notice
 function expend_all_notice(aid)
 {
   if ($('#show_all_notice').css('display') == 'none') {
@@ -137,7 +137,7 @@ function expend_all_notice(aid)
     $('#show_all_notice').html(''); 
   }
 }
-<?php //删除报警通知 ?>
+//delete alarm notice
 function delete_alarm_notice(nid, e_type)
 {
   $.ajax({
@@ -160,7 +160,7 @@ function delete_alarm_notice(nid, e_type)
       } 
       });
 }
-<?php //删除通知 ?>
+//delete notice
 function delete_micro_notice(nid, e_type)
 {
   $.ajax({
@@ -176,7 +176,7 @@ function delete_micro_notice(nid, e_type)
       } 
       });
 }
-<?php //显示头部通知 ?> 
+//show header notice
 function show_head_notice(no_type)
 {
   $.ajax({
@@ -225,7 +225,7 @@ function show_head_notice(no_type)
           }else{
             $("#alarm_id_"+data_info[4]).html('OFF'); 
           }
-          $("#alarm_user_"+data_info[4]).html(data_info[6]+'&nbsp;<?php echo HEADER_TEXT_ALERT_LINK;?>');
+          $("#alarm_user_"+data_info[4]).html(data_info[6]+'&nbsp;'+header_text_alert_link);
           $("#icon_images_id").html(data_info[4]);
           $("#memo_contents").html(data_info[5]);
         } else {
@@ -255,7 +255,7 @@ function show_head_notice(no_type)
       });
 }
 
-<?php //检查头部的订单?>
+//check new preorder
 function checkHeadPreOrders(t)
 {
   $.ajax({
@@ -270,7 +270,7 @@ function checkHeadPreOrders(t)
     }
   });
 }
-<?php //声音播放 ?>
+//play sound
 function playHeadSound()  
 {  
   var hnode=document.getElementById('head_sound');  
@@ -287,7 +287,7 @@ function playHeadSound()
    }); 
   }
 }
-<?php //检查预约头部 ?>
+//check preorder header
 function check_preorder_head() {
   $.ajax({
     dataType: 'text',
@@ -307,7 +307,7 @@ function check_preorder_head() {
   setTimeout(function(){check_preorder_head()}, 70000);
 }
   
-<?php //检查头部订单 ?>
+//check new order
 function checkHeadOrders(t)
 {
   $.ajax({
@@ -322,7 +322,7 @@ function checkHeadOrders(t)
     }
   });
 }
-<?php //播放订单音乐 ?>
+//play sound
 function playOrderHeadSound()  
 {  
   var ohnode=document.getElementById('head_warn');  
@@ -339,7 +339,7 @@ function playOrderHeadSound()
    });
   }
 }
-<?php //检查头部订单 ?>
+//check order header
 function check_order_head() {
   $.ajax({
     dataType: 'text',

@@ -356,10 +356,8 @@ function toggle_type_info(ele)
 {
   if (ele.value == '1') {
     document.getElementById('type_symbol').innerHTML = '+'; 
-//    document.getElementById('limit_value_text').innerHTML = '<?php echo TEXT_CAMPAIGN_LIMIT_VALUE_READ_UP;?>'; 
   } else {
     document.getElementById('type_symbol').innerHTML = '-'; 
-   // document.getElementById('limit_value_text').innerHTML = '<?php echo TEXT_CAMPAIGN_LIMIT_VALUE_READ_DOWN;?>'; 
   }
 }
 <?php //执行动作?>

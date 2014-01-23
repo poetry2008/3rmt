@@ -2036,16 +2036,9 @@ if (isset($time_error)) {
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" valign="top">
-              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;">    
-              <?php 
-              if (isset($point_error)) {
-                echo '<font color="#ff0000">'.$point_error.'</font>'; 
-              }
-              echo '<td class="main" align="right">'; 
-              echo $preorder_point;
-              echo TEXT_PREORDER_POINT_READ; 
-              echo '</td>';
-              ?> 
+              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;"> <?php if (isset($point_error)) { echo '<font color="#ff0000">'.$point_error.'</font>'; } ?> 
+              </td><td align="right" class="main"> <?php  echo $preorder_point; echo TEXT_PREORDER_POINT_READ;  
+              ?>
               </td> 
             </tr>
           </table>

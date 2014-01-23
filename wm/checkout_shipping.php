@@ -6,6 +6,7 @@
   require('includes/classes/http_client.php');
   require(DIR_WS_CLASSES . 'order.php'); 
   $order = new order;
+  $_SESSION['c_point'] = $_POST['point'];
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $billing_option = new AD_Option();
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);

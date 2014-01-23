@@ -413,7 +413,7 @@ define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りま
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');
 define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">トップページ</a>に戻り再度やり直してください。');
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
-define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
+define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください。');
 
 define('DATE_YEAR_TEXT', '年');
 define('DATE_MONTH_TEXT', '月');
@@ -518,4 +518,6 @@ define('TEXT_BILLING_SELECT_TRUE', '必要');
 define('TEXT_BILLING_SELECT_FALSE', '必要ない');
 define('TEXT_BILLING_ADDRESS_OLD', '過去のご請求先を指定する');
 define('TEXT_BILLING_ADDRESS_NEW', '登録先に届ける');
+define('MODULE_ORDER_TOTAL_COST_TITLE', 'キャンペーン調整額');
+define('MODULE_ORDER_TOTAL_POINT_TITLE', '割引');
 ?>
