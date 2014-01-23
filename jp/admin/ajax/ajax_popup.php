@@ -647,7 +647,7 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_product[] = $pInfo->products_attention_1_3;
   }
   $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-  $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $products_sub_date, 0,$radices);
+  $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
   $arr_td_product[] = $product_row_count.'&nbsp;'.TEXT_PREORDER_PRODUCTS_UNIT.'/'.$product_sub_date.'&nbsp;'.DAY_TEXT;
   
   $relate_exists_single = false;
@@ -733,7 +733,7 @@ if ($_GET['action'] == 'show_category_info') {
   '';
   
 
-  $history_table_params = array('width' => '100%', 'cellpadding' => '2', 'cellspacing' => '0');
+  $history_table_params = array('width' => '100%', 'cellpadding' => '0', 'cellspacing' => '0');
   $product_history_info_str = '';
   //主站不要的功能
   /*
@@ -943,7 +943,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => $tv,'params' => 'width="20%"'), 
         array('text' => $arr_td_product[$tk],'params' => 'width="27%"'), 
         array('text' => '','params' => 'width="7%"'),
-        array('text' => $arr_td_relate[$tk])
+        array('text' => $arr_td_relate[$tk],'align'=>'center')
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
