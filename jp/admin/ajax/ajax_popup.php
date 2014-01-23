@@ -608,7 +608,7 @@ if ($_GET['action'] == 'show_category_info') {
   $arr_td_product[] = $pInfo->products_name;
   
   $p_price_end_str = (int)$pInfo->products_price .'&nbsp;'. CATEGORY_MONEY_UNIT_TEXT.'<br>';
-  $arr_td_product[] = (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;':'').$p_price_end_str.((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="20" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp;' . CATEGORY_MONEY_UNIT_TEXT;
+  $arr_td_product[] = (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;':'').$p_price_end_str.((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="16" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp;' . CATEGORY_MONEY_UNIT_TEXT;
   
   $arr_td_product[] = $pInfo->products_price_offset.'&nbsp;&nbsp;&nbsp;&nbsp;';
   
@@ -636,8 +636,8 @@ if ($_GET['action'] == 'show_category_info') {
 
   
   if(empty($site_id)) {
-    $arr_td_product[] = (($isstaff)?$inventory['max']:tep_draw_input_field('inventory_max',$inventory['max'],' style="text-align: right;font: bold small sans-serif"')).'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
-    $arr_td_product[] = (($isstaff)?$inventory['min']:tep_draw_input_field('inventory_min',$inventory['min'],' style="text-align: right;font: bold small sans-serif"')).'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (($isstaff)?$inventory['max']:tep_draw_input_field('inventory_max',$inventory['max'],' style="text-align: right;font: bold small sans-serif" size="16" ')).'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (($isstaff)?$inventory['min']:tep_draw_input_field('inventory_min',$inventory['min'],' style="text-align: right;font: bold small sans-serif" size="16" ')).'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
   }
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%&nbsp;&nbsp;&nbsp;&nbsp;'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'');
@@ -682,7 +682,7 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = $relate_pInfo->products_name;
     
     $r_price_end_str = (int)$relate_pInfo->products_price .'&nbsp;'. CATEGORY_MONEY_UNIT_TEXT.'<br>';
-    $arr_td_relate[] = tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').$r_price_end_str.((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="20" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT ;
+    $arr_td_relate[] = tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').$r_price_end_str.((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)"  size="16" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT ;
     
     $arr_td_relate[] =  $relate_pInfo->products_price_offset.'&nbsp;&nbsp;&nbsp;&nbsp;';
     
@@ -712,8 +712,8 @@ if ($_GET['action'] == 'show_category_info') {
     
 
     if(empty($site_id)){
-      $arr_td_relate[] = (($isstaff)?$inventory['max']:tep_draw_input_field('relate_inventory_max',$inventory['max'],' style="text-align: right;font: bold small sans-serif"')).'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
-      $arr_td_relate[] = (($isstaff)?$inventory['min']:tep_draw_input_field('relate_inventory_min',$inventory['min'],' style="text-align: right;font: bold small sans-serif"')).'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (($isstaff)?$inventory['max']:tep_draw_input_field('relate_inventory_max',$inventory['max'],' style="text-align: right;font: bold small sans-serif" size="16" ')).'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (($isstaff)?$inventory['min']:tep_draw_input_field('relate_inventory_min',$inventory['min'],' style="text-align: right;font: bold small sans-serif" size="16" ')).'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
     }
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%&nbsp;&nbsp;&nbsp;&nbsp;'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'');
@@ -777,10 +777,10 @@ if ($_GET['action'] == 'show_category_info') {
   
   $product_history_array = array();
   $product_history_array[] = array('text' => array(
-        array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
-        array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>'),
+        array('align' => 'left', 'params' => 'width="35%"', 'text' => RIGHT_ORDER_INFO_ORDER_FETCH_TIME), 
+        array('align' => 'left', 'params' => 'width="20%"', 'text' => TABLE_HEADING_OSTATUS),
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => TABLE_HEADING_GESHU), 
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => TABLE_HEADING_DANJIA_TEXT),
         ),'mouse' => true 
       );      
 
@@ -855,10 +855,10 @@ if ($_GET['action'] == 'show_category_info') {
     
     $relate_product_history_array = array();
     $relate_product_history_array[] = array('text' => array(
-        array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
-        array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>')
+        array('align' => 'left', 'params' => 'width="35%"', 'text' => RIGHT_ORDER_INFO_ORDER_FETCH_TIME), 
+        array('align' => 'left', 'params' => 'width="20%"', 'text' => TABLE_HEADING_OSTATUS),
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => TABLE_HEADING_GESHU), 
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => TABLE_HEADING_DANJIA_TEXT)
         ),'mouse' => true
       );      
     if (tep_db_num_rows($relate_order_history_query)) {
@@ -941,20 +941,20 @@ if ($_GET['action'] == 'show_category_info') {
       if($tk == 0){
         $contents[] = array('text' => array(
         array('text' => $tv,'params' => 'width="20%"'), 
-        array('text' => $arr_td_product[$tk],'params' => 'width="35%"'), 
-        array('text' => '','params' => 'width="50px"'),
+        array('text' => $arr_td_product[$tk],'params' => 'width="27%"'), 
+        array('text' => '','params' => 'width="7%"'),
         array('text' => $arr_td_relate[$tk])
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
         array('text' => $tv,'params' => 'width="20%"'), 
-        array('text' => $arr_td_product[$tk],'params' => 'width="35%"','align'=>'right'), 
-        array('text' => '','params' => 'width="50px"','align'=>'right'),
+        array('text' => $arr_td_product[$tk],'params' => 'width="27%"','align'=>'right'), 
+        array('text' => '','params' => 'width="7%"','align'=>'right'),
         array('text' => $arr_td_relate[$tk],'align'=>'right')
         );
       }
     }
-    $contents[]['text'] = array(array('text' => '<b>'.TEXT_PRODUCTS_ORDER_INFO.'</b>', 'params' => 'colspan = "4"'));;
+    $contents[]['text'] = array(array('text' => TEXT_PRODUCTS_ORDER_INFO, 'params' => 'colspan = "4"'));;
     $contents[] = array('text' => array(
     	  array('text' => $product_history_info_str,'params' => 'colspan="2"'),
     	  array('text' => '','params' => 'width="50px"'),
