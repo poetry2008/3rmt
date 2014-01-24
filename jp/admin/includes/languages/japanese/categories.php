@@ -292,3 +292,4 @@ define('TEXT_PRODUCTS_ORDER_INFO','注文情報');
 define('TABLE_HEADING_DANJIA_TEXT','単価（円）');
 define('TEXT_RADICES_PRODUCT_INFO', '1個あたり%s');
 define('TEXT_PRODUCT_ORDER_HISTORY_INFO','%s日間あたり%d 個');
+define('TEXT_NO_ORDERS','注文がない');
