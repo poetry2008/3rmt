@@ -603,7 +603,7 @@ if ($_GET['action'] == 'show_category_info') {
   $arr_td_title[] = TEXT_PRODUCTS_AVERAGE_RATING;
   $arr_td_title[] = TEXT_PRODUCT_RATE;
   //商品履历 数字
-  $arr_td_title[] = TABLE_HEADING_PRODUCT_HISTORY;
+  $arr_td_title[] = TEXT_PRODUCT_ORDER_HISTORY;
   
   $arr_td_product[] = $pInfo->products_name;
   
@@ -645,13 +645,13 @@ if ($_GET['action'] == 'show_category_info') {
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%&nbsp;&nbsp;&nbsp;&nbsp;'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'');
   if($radices!=''){
-    $arr_td_product[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($pInfo->products_attention_1_3));
+    $arr_td_product[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($pInfo->products_attention_1_3)).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
     $arr_td_product[] = $pInfo->products_attention_1_3;
   }
   $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
   $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
-  $arr_td_product[] = $product_row_count.'&nbsp;'.TEXT_PREORDER_PRODUCTS_UNIT.'/'.$product_sub_date.'&nbsp;'.DAY_TEXT;
+  $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,$product_row_count);
   
   $relate_exists_single = false;
   if (!empty($pInfo->relate_products_id)) {
@@ -724,13 +724,13 @@ if ($_GET['action'] == 'show_category_info') {
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%&nbsp;&nbsp;&nbsp;&nbsp;'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'');
     if($relate_radices!=''){
-      $arr_td_relate[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($relate_pInfo->products_attention_1_3));
+      $arr_td_relate[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($relate_pInfo->products_attention_1_3)).'&nbsp;&nbsp;&nbsp;&nbsp;';
     }else{
       $arr_td_relate[] = $relate_pInfo->products_attention_1_3;
     }
     $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
     $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
-    $arr_td_relate[] = $relate_row_count.'&nbsp;'.TEXT_PREORDER_PRODUCTS_UNIT.'/'.$relate_sub_date.'&nbsp;'.DAY_TEXT;
+    $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,$relate_row_count);
   }
 
 
@@ -918,9 +918,9 @@ if ($_GET['action'] == 'show_category_info') {
       if($tk == 0){
         $contents[] = array('text' => array(
         array('text' => $tv,'params' => 'width="20%"'), 
-        array('text' => $arr_td_product[$tk],'params' => 'width="27%"'), 
-        array('text' => '','params' => 'width="7%"'),
-        array('text' => $arr_td_relate[$tk],'align'=>'center')
+        array('text' => $arr_td_product[$tk],'params' => 'width="27%"','align'=>'right'), 
+        array('text' => '','params' => 'width="7%"','align'=>'right'),
+        array('text' => $arr_td_relate[$tk],'align'=>'right')
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
