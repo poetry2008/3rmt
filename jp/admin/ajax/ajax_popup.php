@@ -588,6 +588,8 @@ if ($_GET['action'] == 'show_category_info') {
   
   $arr_td_title[] = CATEGORY_AVERAGE_PRICE;
   
+  $arr_td_title[] = TEXT_PRODUCT_ORDER_HISTORY;
+  
   $arr_td_title[] = TEXT_PRODUCTS_QUANTITY_TEXT;
   
   $arr_td_title[] = TEXT_PRODUCTS_REAL_QUANTITY_TEXT;
@@ -603,12 +605,11 @@ if ($_GET['action'] == 'show_category_info') {
   $arr_td_title[] = TEXT_PRODUCTS_AVERAGE_RATING;
   $arr_td_title[] = TEXT_PRODUCT_RATE;
   //商品履历 数字
-  $arr_td_title[] = TEXT_PRODUCT_ORDER_HISTORY;
+  
   
   $arr_td_product[] = $pInfo->products_name;
   
-  $p_price_end_str = (int)$pInfo->products_price .'&nbsp;'. CATEGORY_MONEY_UNIT_TEXT.'<br>';
-  $arr_td_product[] = (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;':'').$p_price_end_str.((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="12" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp;' . CATEGORY_MONEY_UNIT_TEXT;
+  $arr_td_product[] = (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['site_id'])?(int)$pInfo->products_price. '&rarr;':'') .((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT;
   
   $arr_td_product[] = $pInfo->products_price_offset.'&nbsp;&nbsp;&nbsp;&nbsp;';
   
@@ -617,6 +618,9 @@ if ($_GET['action'] == 'show_category_info') {
     $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo)).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT;
   }
   $arr_td_product[] = $product_td_avg_price;
+  $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
+  $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
+  $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,$product_row_count);
   //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
   if (isset($pInfo->products_attention_1_3)) {
     $radices = (int)$pInfo->products_attention_1_3;
@@ -624,34 +628,28 @@ if ($_GET['action'] == 'show_category_info') {
     $radices = 1;
   }
   if($radices!=''&&$radices!=1&&$radices!=0){
-    $product_td_real_quantity = (int)($pInfo->products_real_quantity/$radices) .'&nbsp;'.CATEGORY_GE_UNIT_TEXT.
-    tep_draw_hidden_field('products_real_quantity', $pInfo->products_real_quantity);
-    $product_td_quantity = $pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $product_td_real_quantity = (empty($_GET['site_id'])?(int)($pInfo->products_real_quantity/$radices). '&rarr;':'') . ((!empty($_GET['site_id']))?tep_new_get_quantity($pInfo):tep_draw_input_field('products_quantity', tep_new_get_quantity($pInfo),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $product_td_quantity = (empty($_GET['site_id'])?$pInfo->products_real_quantity. '&rarr;':'') . ((!empty($_GET['site_id']))?$pInfo->products_real_quantity:tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $product_td_real_quantity = $pInfo->products_real_quantity .'&nbsp;'.CATEGORY_GE_UNIT_TEXT.
-    tep_draw_hidden_field('products_real_quantity', $pInfo->products_real_quantity);
-    $product_td_quantity = $pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $product_td_real_quantity = (empty($_GET['site_id'])?$pInfo->products_real_quantity. '&rarr;':'') . ((!empty($_GET['site_id']))?$pInfo->products_real_quantity:tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $product_td_quantity = (empty($_GET['site_id'])?$pInfo->products_real_quantity. '&rarr;':'') .((!empty($_GET['site_id']))?$pInfo->products_real_quantity:tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
-  $arr_td_product[] = $pInfo->products_virtual_quantity .'&nbsp;'.  CATEGORY_GE_UNIT_TEXT.
-  tep_draw_hidden_field('products_virtual_quantity', $pInfo->products_virtual_quantity);
+  $arr_td_product[] = (empty($_GET['site_id'])?$pInfo->products_virtual_quantity .'&rarr;':'').((!empty($_GET['site_id']))?$pInfo->products_virtual_quantity:tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
 
   
   if(empty($site_id)) {
-    $arr_td_product[] = (($isstaff)?$inventory['max']:tep_draw_input_field('inventory_max',$inventory['max'],' style="text-align: right;font: bold small sans-serif" size="12" ')).'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
-    $arr_td_product[] = (($isstaff)?$inventory['min']:tep_draw_input_field('inventory_min',$inventory['min'],' style="text-align: right;font: bold small sans-serif" size="12" ')).'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?$inventory['max'].'&rarr;':'').(($isstaff)?$inventory['max']:tep_draw_input_field('inventory_max',$inventory['max'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?$inventory['min'].'&rarr;':'').(($isstaff)?$inventory['min']:tep_draw_input_field('inventory_min',$inventory['min'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
   }
 
-  $arr_td_product[] = number_format($pInfo->average_rating,2).'%&nbsp;&nbsp;&nbsp;&nbsp;'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'');
+  $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
   if($radices!=''){
     $arr_td_product[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($pInfo->products_attention_1_3)).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
     $arr_td_product[] = $pInfo->products_attention_1_3;
   }
-  $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-  $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
-  $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,$product_row_count);
   
   $relate_exists_single = false;
   if (!empty($pInfo->relate_products_id)) {
@@ -684,8 +682,7 @@ if ($_GET['action'] == 'show_category_info') {
     
     $arr_td_relate[] = $relate_pInfo->products_name;
     
-    $r_price_end_str = (int)$relate_pInfo->products_price .'&nbsp;'. CATEGORY_MONEY_UNIT_TEXT.'<br>';
-    $arr_td_relate[] = tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;':'').$r_price_end_str.((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)"  size="12" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT ;
+    $arr_td_relate[] = tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['site_id'])?(int)$relate_pInfo->products_price.'&rarr;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT;
     
     $arr_td_relate[] =  $relate_pInfo->products_price_offset.'&nbsp;&nbsp;&nbsp;&nbsp;';
     
@@ -694,7 +691,9 @@ if ($_GET['action'] == 'show_category_info') {
       $relate_td_avg_price = @display_price(tep_new_get_avg_by_pid($relate_pInfo)).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT;
     }
     $arr_td_relate[] = $relate_td_avg_price;
-
+    $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
+    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
+    $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,$relate_row_count);
 
   if (isset($relate_pInfo->products_attention_1_3)) {
     $relate_radices = (int)$relate_pInfo->products_attention_1_3;
@@ -703,34 +702,29 @@ if ($_GET['action'] == 'show_category_info') {
   }
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-    $relate_td_real_quantity = (int)($relate_pInfo->products_real_quantity/$relate_radices) .'&nbsp;'. CATEGORY_GE_UNIT_TEXT.
-    tep_draw_hidden_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity);
-    $relate_td_quantity = $relate_pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $relate_td_real_quantity = (empty($_GET['site_id'])?(int)($relate_pInfo->products_real_quantity/$relate_radices).'&rarr;':'').((!empty($_GET['site_id']))?tep_new_get_quantity($relate_pInfo):tep_draw_input_field('relate_products_quantity', tep_new_get_quantity($relate_pInfo),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $relate_td_quantity = (empty($_GET['site_id'])?$relate_pInfo->products_real_quantity.'&rarr;':'').((!empty($_GET['site_id']))?$relate_pInfo->products_real_quantity:tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" id="relate_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $relate_td_real_quantity = $relate_pInfo->products_real_quantity .'&nbsp;'. CATEGORY_GE_UNIT_TEXT.
-    tep_draw_hidden_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity);
-    $relate_td_quantity = $relate_pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $relate_td_real_quantity = (empty($_GET['site_id'])?$relate_pInfo->products_real_quantity.'&rarr;':'').((!empty($_GET['site_id']))?$relate_pInfo->products_real_quantity:tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $relate_td_quantity = (empty($_GET['site_id'])?$relate_pInfo->products_real_quantity.'&rarr;':'').((!empty($_GET['site_id']))?$relate_pInfo->products_real_quantity:tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
-    $arr_td_relate[] = $relate_pInfo->products_virtual_quantity .'&nbsp;'. CATEGORY_GE_UNIT_TEXT.
-    tep_draw_hidden_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity);
+    $arr_td_relate[] = (empty($_GET['site_id'])?$relate_pInfo->products_virtual_quantity .'&rarr;':'').((!empty($_GET['site_id']))?$relate_pInfo->products_virtual_quantity:tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
     
 
     if(empty($site_id)){
-      $arr_td_relate[] = (($isstaff)?$inventory['max']:tep_draw_input_field('relate_inventory_max',$inventory['max'],' style="text-align: right;font: bold small sans-serif" size="12" ')).'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
-      $arr_td_relate[] = (($isstaff)?$inventory['min']:tep_draw_input_field('relate_inventory_min',$inventory['min'],' style="text-align: right;font: bold small sans-serif" size="12" ')).'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?$inventory['max'].'&rarr;':'').(($isstaff)?$inventory['max']:tep_draw_input_field('relate_inventory_max',$inventory['max'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?$inventory['min'].'&rarr;':'').(($isstaff)?$inventory['min']:tep_draw_input_field('relate_inventory_min',$inventory['min'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
     }
     
-    $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%&nbsp;&nbsp;&nbsp;&nbsp;'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'');
+    $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
     if($relate_radices!=''){
       $arr_td_relate[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($relate_pInfo->products_attention_1_3)).'&nbsp;&nbsp;&nbsp;&nbsp;';
     }else{
       $arr_td_relate[] = $relate_pInfo->products_attention_1_3;
     }
-    $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
-    $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,$relate_row_count);
+
   }
 
 
@@ -754,10 +748,10 @@ if ($_GET['action'] == 'show_category_info') {
   
   $product_history_array = array();
   $product_history_array[] = array('text' => array(
-        array('align' => 'left', 'params' => 'width="35%"', 'text' => RIGHT_ORDER_INFO_ORDER_FETCH_TIME), 
-        array('align' => 'left', 'params' => 'width="20%"', 'text' => TABLE_HEADING_OSTATUS),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => TABLE_HEADING_GESHU), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => TABLE_HEADING_DANJIA_TEXT),
+        array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
+        array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>'),
         ),'mouse' => true 
       );      
 
@@ -832,10 +826,10 @@ if ($_GET['action'] == 'show_category_info') {
     
     $relate_product_history_array = array();
     $relate_product_history_array[] = array('text' => array(
-        array('align' => 'left', 'params' => 'width="35%"', 'text' => RIGHT_ORDER_INFO_ORDER_FETCH_TIME), 
-        array('align' => 'left', 'params' => 'width="20%"', 'text' => TABLE_HEADING_OSTATUS),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => TABLE_HEADING_GESHU), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => TABLE_HEADING_DANJIA_TEXT)
+        array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
+        array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>')
         ),'mouse' => true
       );      
     if (tep_db_num_rows($relate_order_history_query)) {
@@ -917,42 +911,42 @@ if ($_GET['action'] == 'show_category_info') {
       $countents[] = array();
       if($tk == 0){
         $contents[] = array('text' => array(
-        array('text' => $tv,'params' => 'width="20%"'), 
+        array('text' => '<b>'.$tv.'</b>','params' => 'width="20%"'), 
         array('text' => $arr_td_product[$tk],'params' => 'width="27%"','align'=>'right'), 
         array('text' => '','params' => 'width="7%"','align'=>'right'),
         array('text' => $arr_td_relate[$tk],'align'=>'right')
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-        array('text' => $tv,'params' => 'width="20%"'), 
+        array('text' => '<b>'.$tv.'</b>','params' => 'width="20%"'), 
         array('text' => $arr_td_product[$tk],'params' => 'width="27%"','align'=>'right'), 
         array('text' => '','params' => 'width="7%"','align'=>'right'),
         array('text' => $arr_td_relate[$tk],'align'=>'right')
         );
       }
     }
-    $contents[]['text'] = array(array('text' => TEXT_PRODUCTS_ORDER_INFO, 'params' => 'colspan = "4"'));;
+    $contents[]['text'] = array(array('text' => '<b>'.TEXT_PRODUCTS_ORDER_INFO.'</b>', 'params' => 'colspan = "4"'));;
     $contents[] = array('text' => array(
     	  array('text' => $product_history_info_str,'params' => 'colspan="2"'),
     	  array('text' => '','params' => 'width="50px"'),
     	  array('text' => $relate_history_info_str)),'params' => ' style="" ');
     $contents[]['text'] = array(
-    	  array('text' =>  TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA),'params'=>' colspan="3" '),
-          array('text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)));
+    	  array('text' =>  '<b>'.TEXT_USER_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA),'params'=>' colspan="3" '),
+          array('text' => '<b>'.TEXT_USER_UPDATE.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)));
     $contents[]['text'] = array(
-    	  array('text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA),'params'=>' colspan="3" '),
-          array('text' => TEXT_LAST_MODIFIED.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)));
+    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA),'params'=>' colspan="3" '),
+          array('text' => '<b>'.TEXT_LAST_MODIFIED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)));
   }else{
     foreach($arr_td_title as $tk => $tv){
       $countents[] = array();
       if($tk == 0){
       	$contents[] = array('text' => array(
-          array('text' => $tv), 
-          array('text' => $arr_td_product[$tk])
+          array('text' => '<b>'.$tv.'</b>'), 
+          array('text' => $arr_td_product[$tk],'align'=>'right')
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-          array('text' => $tv), 
+          array('text' => '<b>'.$tv.'</b>'), 
           array('text' => $arr_td_product[$tk],'align'=>'right')
         );
       }
@@ -961,11 +955,11 @@ if ($_GET['action'] == 'show_category_info') {
     $contents[] = array('text' => array(
     	  array('text' => $product_history_info_str,'params' => ' colspan = "2"')),'params' => ' style="" ');
     $contents[]['text'] = array(
-    	  array('text' =>  TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA)),
-          array('text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)));
+    	  array('text' =>  '<b>'.TEXT_USER_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA)),
+          array('text' => '<b>'.TEXT_USER_UPDATE.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)));
     $contents[]['text'] = array(
-    	  array('text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA)),
-          array('text' => TEXT_LAST_MODIFIED.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)));
+    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA)),
+          array('text' => '<b>'.TEXT_LAST_MODIFIED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)));
   }
 
   
