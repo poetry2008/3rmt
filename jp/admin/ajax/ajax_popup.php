@@ -624,15 +624,18 @@ if ($_GET['action'] == 'show_category_info') {
     $radices = 1;
   }
   if($radices!=''&&$radices!=1&&$radices!=0){
-    $product_td_real_quantity = (int)($pInfo->products_real_quantity/$radices) .'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+    $product_td_real_quantity = (int)($pInfo->products_real_quantity/$radices) .'&nbsp;'.CATEGORY_GE_UNIT_TEXT.
+    tep_draw_hidden_field('products_real_quantity', $pInfo->products_real_quantity);
     $product_td_quantity = $pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $product_td_real_quantity = $pInfo->products_real_quantity .'&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+    $product_td_real_quantity = $pInfo->products_real_quantity .'&nbsp;'.CATEGORY_GE_UNIT_TEXT.
+    tep_draw_hidden_field('products_real_quantity', $pInfo->products_real_quantity);
     $product_td_quantity = $pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
-  $arr_td_product[] = $pInfo->products_virtual_quantity .'&nbsp;'.  CATEGORY_GE_UNIT_TEXT;
+  $arr_td_product[] = $pInfo->products_virtual_quantity .'&nbsp;'.  CATEGORY_GE_UNIT_TEXT.
+  tep_draw_hidden_field('products_virtual_quantity', $pInfo->products_virtual_quantity);
 
   
   if(empty($site_id)) {
@@ -700,15 +703,18 @@ if ($_GET['action'] == 'show_category_info') {
   }
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-    $relate_td_real_quantity = (int)($relate_pInfo->products_real_quantity/$relate_radices) .'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
+    $relate_td_real_quantity = (int)($relate_pInfo->products_real_quantity/$relate_radices) .'&nbsp;'. CATEGORY_GE_UNIT_TEXT.
+    tep_draw_hidden_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity);
     $relate_td_quantity = $relate_pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $relate_td_real_quantity = $relate_pInfo->products_real_quantity .'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
+    $relate_td_real_quantity = $relate_pInfo->products_real_quantity .'&nbsp;'. CATEGORY_GE_UNIT_TEXT.
+    tep_draw_hidden_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity);
     $relate_td_quantity = $relate_pInfo->products_real_quantity.'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
-    $arr_td_relate[] = $relate_pInfo->products_virtual_quantity .'&nbsp;'. CATEGORY_GE_UNIT_TEXT;
+    $arr_td_relate[] = $relate_pInfo->products_virtual_quantity .'&nbsp;'. CATEGORY_GE_UNIT_TEXT.
+    tep_draw_hidden_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity);
     
 
     if(empty($site_id)){
