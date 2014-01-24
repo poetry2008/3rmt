@@ -282,6 +282,6 @@ define('TEXT_PRODUCT_ORDER_HISTORY','订单履历');
 define('TEXT_PRODUCT_INFO','商品情报');
 define('TEXT_PRODUCTS_ORDER_INFO','订单情报');
 define('TABLE_HEADING_DANJIA_TEXT','单价（日元）');
-define('TEXT_RADICES_PRODUCT_INFO', '1个每%s');
+define('TEXT_RADICES_PRODUCT_INFO', '每1个相当于%s');
 define('TEXT_PRODUCT_ORDER_HISTORY_INFO','每%s天%d 个');
 ?>
