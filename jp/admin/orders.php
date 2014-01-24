@@ -5396,6 +5396,12 @@ if($c_parent_array['parent_id'] == 0){
         //获取订单状态标记的过期警告数组
         $orders_expired_array = array();
         $orders_expired_array = check_orders_transaction_expired();
+        $show_all_site = array(); 
+        $show_all_site[0] = 'all'; 
+        $show_all_site_raw = tep_db_query("select * from ".TABLE_SITES); 
+        while ($show_all_site_res = tep_db_fetch_array($show_all_site_raw)) {
+          $show_all_site[$show_all_site_res['id']] = $show_all_site_res['romaji']; 
+        }
         while ($orders = tep_db_fetch_array($orders_query)) {
           $orders_i++;
           if (!isset($orders['site_id'])) {
@@ -5470,7 +5476,7 @@ if($c_parent_array['parent_id'] == 0){
                 <?php 
             }
           ?>
-            <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo tep_get_site_romaji_by_id($orders['site_id']);?></td>
+            <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo isset($show_all_site[$orders['site_id']])?$show_all_site[$orders['site_id']]:'';?></td>
             <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
             <div class="float_left"><a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
@@ -5486,18 +5492,12 @@ if($c_parent_array['parent_id'] == 0){
                     <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
                     </font>
                     <?php 
-                    $customers_info_raw = tep_db_query("select pic_icon from ".TABLE_CUSTOMERS." where customers_id = '".$orders['customers_id']."'"); 
+                    $customers_info_raw = tep_db_query("select c.pic_icon, pl.pic_alt from ".TABLE_CUSTOMERS." c, ".TABLE_CUSTOMERS_PIC_LIST." pl where c.customers_id = '".$orders['customers_id']."' and c.pic_icon = pl.pic_name limit 1"); 
                     $customers_info_res = tep_db_fetch_array($customers_info_raw);
                     if ($customers_info_res) {
                       if (!empty($customers_info_res['pic_icon'])) {
                         if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
-                          $pic_icon_title_str = ''; 
-                          $pic_icon_title_raw = tep_db_query("select pic_alt from ".TABLE_CUSTOMERS_PIC_LIST." where pic_name = '".$customers_info_res['pic_icon']."'"); 
-                          $pic_icon_title_res = tep_db_fetch_array($pic_icon_title_raw); 
-                          if ($pic_icon_title_res) {
-                            $pic_icon_title_str = $pic_icon_title_res['pic_alt']; 
-                          }
-                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
+                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $customers_info_res['pic_alt']); 
                         }
                       }
                     }
