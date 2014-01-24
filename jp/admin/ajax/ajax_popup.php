@@ -781,7 +781,7 @@ if ($_GET['action'] == 'show_category_info') {
         $oh_pq = $order_history['products_quantity'];
       }
       if ($order_history['calc_price'] == '1') {
-        $sum_price += abs($order_history['final_price']) * $order_history['products_quantity'];
+        $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
         $sum_quantity += $oh_pq; 
       }
       $oh_pq = tep_number_format($oh_pq,',');
@@ -857,7 +857,7 @@ if ($_GET['action'] == 'show_category_info') {
           $relate_oh_pq = $relate_order_history['products_quantity'];
         }
         if ($relate_order_history['calc_price'] == '1') {
-          $sum_price += abs($relate_order_history['final_price']) * $relate_order_history['products_quantity'];
+          $sum_price += $relate_order_history['final_price'] * $relate_order_history['products_quantity'];
           $sum_quantity += $relate_oh_pq; 
         }
         $relate_oh_pq = tep_number_format($relate_oh_pq,',');
@@ -909,32 +909,35 @@ if ($_GET['action'] == 'show_category_info') {
   if($relate_exists_single){
     foreach($arr_td_title as $tk => $tv){
       $countents[] = array();
+      $left_td = '';
+      $left_td .= '<table width="100%"><tr>';
+      $left_td .= '<td align="left">'.'<b>'.$tv.'</b>'.'</td>';
+      $left_td .= '<td align="right">'.$arr_td_product[$tk].'</td>';
+      $left_td .= '</tr></table>';
       if($tk == 0){
         $contents[] = array('text' => array(
-        array('text' => '<b>'.$tv.'</b>','params' => 'width="20%"'), 
-        array('text' => $arr_td_product[$tk],'params' => 'width="27%"','align'=>'right'), 
-        array('text' => '','params' => 'width="7%"','align'=>'right'),
+        array('text' => $left_td), 
+        array('text' => '','params' => 'width="50px"','align'=>'right'),
         array('text' => $arr_td_relate[$tk],'align'=>'right')
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-        array('text' => '<b>'.$tv.'</b>','params' => 'width="20%"'), 
-        array('text' => $arr_td_product[$tk],'params' => 'width="27%"','align'=>'right'), 
-        array('text' => '','params' => 'width="7%"','align'=>'right'),
+        array('text' => $left_td), 
+        array('text' => '','params' => 'width="50px"','align'=>'right'),
         array('text' => $arr_td_relate[$tk],'align'=>'right')
         );
       }
     }
-    $contents[]['text'] = array(array('text' => '<b>'.TEXT_PRODUCTS_ORDER_INFO.'</b>', 'params' => 'colspan = "4"'));;
+    $contents[]['text'] = array(array('text' => '<b>'.TEXT_PRODUCTS_ORDER_INFO.'</b>', 'params' => 'colspan = "3"'));;
     $contents[] = array('text' => array(
-    	  array('text' => $product_history_info_str,'params' => 'colspan="2"'),
+    	  array('text' => $product_history_info_str,'params' => ' style="" '),
     	  array('text' => '','params' => 'width="50px"'),
     	  array('text' => $relate_history_info_str)),'params' => ' style="" ');
     $contents[]['text'] = array(
-    	  array('text' =>  '<b>'.TEXT_USER_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA),'params'=>' colspan="3" '),
+    	  array('text' =>  '<b>'.TEXT_USER_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA),'params'=>' colspan="2" '),
           array('text' => '<b>'.TEXT_USER_UPDATE.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)));
     $contents[]['text'] = array(
-    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA),'params'=>' colspan="3" '),
+    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA),'params'=>' colspan="2" '),
           array('text' => '<b>'.TEXT_LAST_MODIFIED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)));
   }else{
     foreach($arr_td_title as $tk => $tv){
