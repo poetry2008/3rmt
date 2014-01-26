@@ -910,7 +910,7 @@ if ($_GET['action'] == 'show_category_info') {
       $countents[] = array();
       $left_td = '';
       $left_td .= '<table width="100%"><tr>';
-      $left_td .= '<td align="left">'.'<b>'.$tv.'</b>'.'</td>';
+      $left_td .= '<td align="left" nowrap="nowrap">'.'<b>'.$tv.'</b>'.'</td>';
       $left_td .= '<td align="right">'.$arr_td_product[$tk].'</td>';
       $left_td .= '</tr></table>';
       $right_td = '';
@@ -948,7 +948,7 @@ if ($_GET['action'] == 'show_category_info') {
       $countents[] = array();
       $left_td = '';
       $left_td .= '<table width="100%"><tr>';
-      $left_td .= '<td align="left">'.'<b>'.$tv.'</b>'.'</td>';
+      $left_td .= '<td align="left" nowrap="nowrap">'.'<b>'.$tv.'</b>'.'</td>';
       $left_td .= '</tr></table>';
       $right_td = '';
       $right_td .= '<table width="100%"><tr>';
