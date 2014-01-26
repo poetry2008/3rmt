@@ -611,7 +611,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $arr_td_product[] = (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['site_id'])?number_format((int)$pInfo->products_price, 0, '.', ',').  '&rarr;':'') .((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',','):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT;
   
-  $arr_td_product[] = $pInfo->products_price_offset.'&nbsp;&nbsp;&nbsp;&nbsp;';
+  $arr_td_product[] = number_format($pInfo->products_price_offset).'&nbsp;&nbsp;&nbsp;&nbsp;';
   
   $product_td_avg_price = '';
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
@@ -684,7 +684,7 @@ if ($_GET['action'] == 'show_category_info') {
     
     $arr_td_relate[] = tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['site_id'])?number_format((int)$relate_pInfo->products_price,0,'.',',').'&rarr;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',','):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT;
     
-    $arr_td_relate[] =  $relate_pInfo->products_price_offset.'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $arr_td_relate[] =  number_format($relate_pInfo->products_price_offset).'&nbsp;&nbsp;&nbsp;&nbsp;';
     
     $relate_td_avg_price = '';
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
@@ -730,7 +730,6 @@ if ($_GET['action'] == 'show_category_info') {
 
   
 
-  '';
   
 
   $history_table_params = array('width' => '100%', 'cellpadding' => '0', 'cellspacing' => '0');
@@ -806,7 +805,7 @@ if ($_GET['action'] == 'show_category_info') {
     	
   } else {
     $product_history_array[]['text'] = array(
-          array('params' => 'colspan="4"', 'text' => 'no orders') 
+          array('params' => 'colspan="4"', 'text' => TEXT_NO_ORDERS) 
         ); 
   }
   $product_history_info_str .= $notice_box->get_table($product_history_array, '', $history_table_params,false,true);
@@ -883,7 +882,7 @@ if ($_GET['action'] == 'show_category_info') {
       
     } else {
       $relate_product_history_array[]['text'] = array(
-            array('params' => 'colspan="4"', 'text' => 'no orders') 
+            array('params' => 'colspan="4"', 'text' => TEXT_NO_ORDERS) 
           ); 
     }
     $relate_history_info_str .= $notice_box->get_table($relate_product_history_array, '', $history_table_params,false,true);
