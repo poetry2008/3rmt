@@ -909,25 +909,25 @@ if ($_GET['action'] == 'show_category_info') {
     foreach($arr_td_title as $tk => $tv){
       $countents[] = array();
       $left_td = '';
-      $left_td .= '<table width="100%"><tr>';
+      $left_td .= '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>';
       $left_td .= '<td align="left" nowrap="nowrap">'.'<b>'.$tv.'</b>'.'</td>';
       $left_td .= '<td align="right">'.$arr_td_product[$tk].'</td>';
       $left_td .= '</tr></table>';
       $right_td = '';
-      $right_td .= '<table width="100%"><tr>';
+      $right_td .= '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>';
       $right_td .= '<td align="left"></td>';
       $right_td .= '<td align="right">'.$arr_td_relate[$tk].'</td>';
       $right_td .= '</tr></table>';
       if($tk == 0){
         $contents[] = array('text' => array(
         array('text' => $left_td), 
-        array('text' => '','params' => 'width="50px"','align'=>'right'),
+        array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
         array('text' => $left_td), 
-        array('text' => '','params' => 'width="50px"','align'=>'right'),
+        array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         );
       }
@@ -935,7 +935,7 @@ if ($_GET['action'] == 'show_category_info') {
     $contents[]['text'] = array(array('text' => '<b>'.TEXT_PRODUCTS_ORDER_INFO.'</b>', 'params' => 'colspan = "3"'));;
     $contents[] = array('text' => array(
     	  array('text' => $product_history_info_str,'params' => ' style="" '),
-    	  array('text' => '','params' => 'width="50px"'),
+    	  array('text' => '','params' => 'width="30px"'),
     	  array('text' => $relate_history_info_str)),'params' => ' style="" ');
     $contents[]['text'] = array(
     	  array('text' =>  '<b>'.TEXT_USER_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA),'params'=>' colspan="2" '),
@@ -947,11 +947,11 @@ if ($_GET['action'] == 'show_category_info') {
     foreach($arr_td_title as $tk => $tv){
       $countents[] = array();
       $left_td = '';
-      $left_td .= '<table width="100%"><tr>';
+      $left_td .= '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>';
       $left_td .= '<td align="left" nowrap="nowrap">'.'<b>'.$tv.'</b>'.'</td>';
       $left_td .= '</tr></table>';
       $right_td = '';
-      $right_td .= '<table width="100%"><tr>';
+      $right_td .= '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>';
       $right_td .= '<td align="right">'.$arr_td_product[$tk].'</td>';
       $right_td .= '</tr></table>';
       if($tk == 0){
