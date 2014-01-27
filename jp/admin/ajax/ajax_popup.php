@@ -785,11 +785,15 @@ if ($_GET['action'] == 'show_category_info') {
       }
       $oh_pq = tep_number_format($oh_pq,',');
       $oh_fp = tep_number_format($oh_fp,',');
+      $tmp_oh_pq = display_quantity($oh_pq);
+      $tmp_pq_pos = substr($tmp_oh_pq, -1); 
+      $tmp_oh_fp = display_quantity($oh_fp);
+      $tmp_fp_pos = substr($tmp_oh_fp, -1); 
       $product_history_array[]['text'] = array(
             array('params' => 'class="main" width="120"', 'text' => substr($order_history['torihiki_date'],0,strlen($order_history['torihiki_date'])-3)), 
             array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_history['orders_status_name'].'</a>'),
-            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($oh_pq)), 
-            array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($oh_fp))
+            array('align' => 'right', 'params' => 'class="main" width="100"', 'text' => (($tmp_pq_pos == '.')?substr($tmp_oh_pq, 0, -1):$tmp_oh_pq)), 
+            array('align' => 'right', 'params' => 'class="main"', 'text' => (($tmp_fp_pos == '.')?substr($tmp_oh_fp, 0, -1):$tmp_oh_fp))
            );   
     }
 
@@ -861,11 +865,15 @@ if ($_GET['action'] == 'show_category_info') {
         }
         $relate_oh_pq = tep_number_format($relate_oh_pq,',');
         $relate_oh_fp = tep_number_format($relate_oh_fp,',');
+        $tmp_relate_oh_pq = display_quantity($relate_oh_pq);
+        $tmp_relate_pq_pos = substr($tmp_relate_oh_pq, -1); 
+        $tmp_relate_oh_fp = display_quantity($relate_oh_fp);
+        $tmp_relate_fp_pos = substr($tmp_relate_oh_fp, -1); 
         $relate_product_history_array[]['text'] = array(
               array('params' => 'class="main" width="120"', 'text' => substr($relate_order_history['torihiki_date'],0,strlen($relate_order_history['torihiki_date'])-3)), 
               array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$relate_order_history['orders_id'].'&action=edit').'" target="_blank">'.$relate_order_history['orders_status_name'].'</a>') ,
-              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($relate_oh_pq)), 
-              array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($relate_oh_fp))
+              array('align' => 'right', 'params' => 'class="main" width="100"', 'text' => (($tmp_relate_pq_pos == '.')?substr($tmp_relate_oh_pq, 0, -1):$tmp_relate_oh_pq)), 
+              array('align' => 'right', 'params' => 'class="main"', 'text' => (($tmp_relate_fp_pos == '.')?substr($tmp_relate_oh_fp, 0, -1):$tmp_relate_oh_fp))
               
             );   
       } 
