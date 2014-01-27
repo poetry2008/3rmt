@@ -737,7 +737,7 @@ if ($_GET['action'] == 'show_category_info') {
 
   //商品历史记录 
   $order_history_query = tep_db_query("
-    select op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
+    select o.orders_id, op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
     from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
     where 
     op.products_id='".$pInfo->products_id."'
@@ -787,7 +787,7 @@ if ($_GET['action'] == 'show_category_info') {
       $oh_fp = tep_number_format($oh_fp,',');
       $product_history_array[]['text'] = array(
             array('params' => 'class="main" width="120"', 'text' => substr($order_history['torihiki_date'],0,strlen($order_history['torihiki_date'])-3)), 
-            array('params' => 'class="main" width="80"', 'text' => $order_history['orders_status_name']),
+            array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_history['orders_status_name'].'</a>'),
             array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($oh_pq)), 
             array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($oh_fp))
            );   
@@ -814,7 +814,7 @@ if ($_GET['action'] == 'show_category_info') {
   if ($relate_exists_single) {
     $history_info_str .= '<br>'; 
     $relate_order_history_query = tep_db_query("
-      select op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
+      select o.orders_id, op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
       from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
       where 
       op.products_id='".$pInfo->relate_products_id."'
@@ -863,7 +863,7 @@ if ($_GET['action'] == 'show_category_info') {
         $relate_oh_fp = tep_number_format($relate_oh_fp,',');
         $relate_product_history_array[]['text'] = array(
               array('params' => 'class="main" width="120"', 'text' => substr($relate_order_history['torihiki_date'],0,strlen($relate_order_history['torihiki_date'])-3)), 
-              array('params' => 'class="main" width="80"', 'text' => $relate_order_history['orders_status_name']) ,
+              array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$relate_order_history['orders_id'].'&action=edit').'" target="_blank">'.$relate_order_history['orders_status_name'].'</a>') ,
               array('align' => 'right', 'params' => 'class="main" width="100"', 'text' =>display_quantity($relate_oh_pq)), 
               array('align' => 'right', 'params' => 'class="main"', 'text' => display_quantity($relate_oh_fp))
               
