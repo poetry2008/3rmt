@@ -875,7 +875,7 @@ if ($_GET['action'] == 'show_category_info') {
       $sum_vga = tep_number_format($sum_price/$sum_quantity,',');
       $sum_vga = display_quantity($sum_vga);
       $sum_quantity = tep_number_format($sum_quantity,',');
-      $sum_quantity = display_quantity($sum_quantity, ',');
+      $sum_quantity = display_quantity($sum_quantity);
       $relate_product_history_array[]['text'] = array(
         array('params' => 'colspan="3" ','align' => 'right' ,'text' => CATEGORY_TOTALNUM_TEXT.' '.$sum_quantity),
         array('align' => 'right' ,'text' => CATEGORY_AVERAGENUM_TEXT.'  '.$sum_vga));

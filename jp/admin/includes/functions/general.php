@@ -11033,6 +11033,10 @@ function display_quantity($float){
       }
       $res = preg_replace('/0+$/','',$res);
     }
+    $tmp_substr = substr($res, -1); 
+    if ($tmp_substr == '.') {
+      return substr($res, 0, -1); 
+    }
     return $res;
   }
 }
