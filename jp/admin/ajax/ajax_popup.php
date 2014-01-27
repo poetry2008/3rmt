@@ -620,7 +620,7 @@ if ($_GET['action'] == 'show_category_info') {
   $arr_td_product[] = $product_td_avg_price;
   $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
   $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
-  $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,$product_row_count);
+  $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,number_format($product_row_count));
   //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
   if (isset($pInfo->products_attention_1_3)) {
     $radices = (int)$pInfo->products_attention_1_3;
@@ -693,7 +693,7 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = $relate_td_avg_price;
     $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
     $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
-    $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,$relate_row_count);
+    $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,number_format($relate_row_count));
 
   if (isset($relate_pInfo->products_attention_1_3)) {
     $relate_radices = (int)$relate_pInfo->products_attention_1_3;
@@ -939,9 +939,9 @@ if ($_GET['action'] == 'show_category_info') {
     	  array('text' => $relate_history_info_str)),'params' => ' style="" ');
     $contents[]['text'] = array(
     	  array('text' =>  '<b>'.TEXT_USER_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA),'params'=>' colspan="2" '),
-          array('text' => '<b>'.TEXT_USER_UPDATE.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)));
+    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA)));
     $contents[]['text'] = array(
-    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA),'params'=>' colspan="2" '),
+          array('text' => '<b>'.TEXT_USER_UPDATE.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA),'params'=>' colspan="2" '),
           array('text' => '<b>'.TEXT_LAST_MODIFIED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)));
   }else{
     foreach($arr_td_title as $tk => $tv){
@@ -971,9 +971,9 @@ if ($_GET['action'] == 'show_category_info') {
     	  array('text' => $product_history_info_str,'params' => ' colspan = "2"')),'params' => ' style="" ');
     $contents[]['text'] = array(
     	  array('text' =>  '<b>'.TEXT_USER_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_added)?$pInfo->products_user_added:TEXT_UNSET_DATA)),
-          array('text' => '<b>'.TEXT_USER_UPDATE.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)));
+    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA)));
     $contents[]['text'] = array(
-    	  array('text' => '<b>'.TEXT_DATE_ADDED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_date_added)?tep_datetime_short($pInfo->products_date_added):TEXT_UNSET_DATA)),
+          array('text' => '<b>'.TEXT_USER_UPDATE.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_user_update)?$pInfo->products_user_update:TEXT_UNSET_DATA)),
           array('text' => '<b>'.TEXT_LAST_MODIFIED.'</b>'.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.(!empty($pInfo->products_last_modified)?tep_datetime_short($pInfo->products_last_modified):TEXT_UNSET_DATA)));
   }
 
