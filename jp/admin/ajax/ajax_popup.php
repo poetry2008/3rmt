@@ -805,7 +805,7 @@ if ($_GET['action'] == 'show_category_info') {
     	
   } else {
     $product_history_array[]['text'] = array(
-          array('params' => 'colspan="4"', 'text' => TEXT_NO_ORDERS) 
+          array('params' => 'colspan="4"', 'text' => TEXT_DATA_IS_EMPTY) 
         ); 
   }
   $product_history_info_str .= $notice_box->get_table($product_history_array, '', $history_table_params,false,true);
@@ -882,7 +882,7 @@ if ($_GET['action'] == 'show_category_info') {
       
     } else {
       $relate_product_history_array[]['text'] = array(
-            array('params' => 'colspan="4"', 'text' => TEXT_NO_ORDERS) 
+            array('params' => 'colspan="4"', 'text' => TEXT_DATA_IS_EMPTY) 
           ); 
     }
     $relate_history_info_str .= $notice_box->get_table($relate_product_history_array, '', $history_table_params,false,true);
