@@ -148,13 +148,17 @@ if ($ocertify->npermission != 31) {
    
     $preorder_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'");
     while ($preorder_attr_res = tep_db_fetch_array($preorder_attr_raw)) {
+      $tmp_option_info = @unserialize(stripslashes($preorder_attr_res['option_info']));      
+      if ($tmp_option_info == false) {
+        $tmp_option_info = @unserialize($preorder_attr_res['option_info']);      
+      }
       $_SESSION['create_preorder']['orders_products_attributes'][$preorders_product['products_id']][] = array(
            'orders_id' => $insert_id,
            'orders_products_id' => $preorders_product['orders_products_id'],
            'options_values_price' => $preorder_attr_res['options_values_price'],
            'option_group_id' => $preorder_attr_res['option_group_id'],
            'option_item_id' => $preorder_attr_res['option_item_id'],
-           'option_info' => @unserialize(stripslashes($preorder_attr_res['option_info'])),
+           'option_info' => $tmp_option_info,
             );
     }
     tep_redirect(tep_href_link('edit_new_preorders.php', 'oID='.$insert_id.'&action=edit&dtype=1'));

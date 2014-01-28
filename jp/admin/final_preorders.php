@@ -2256,9 +2256,13 @@ require("includes/note_js.php");
 
     if (tep_db_num_rows($attributes_query)) {
     while ($attributes = tep_db_fetch_array($attributes_query)) {
+      $tmp_option_info = @unserialize(stripslashes($attributes['option_info'])); 
+      if ($tmp_option_info == false) {
+        $tmp_option_info = @unserialize($attributes['option_info']); 
+      }
       $order->products[$index]['attributes'][$subindex] = array(
           'id'              => $attributes['orders_products_attributes_id'],
-          'option_info'     => @unserialize(stripslashes($attributes['option_info'])),
+          'option_info'     => $tmp_option_info,
           'price'           => $attributes['options_values_price'],
           'option_item_id'  => $attributes['option_item_id'],
           'option_group_id' => $attributes['option_group_id']);

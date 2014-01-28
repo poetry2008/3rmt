@@ -76,6 +76,9 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
                 $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
                 if ($o_attributes_res) {
                   $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                  if ($old_option_info == false) {
+                    $old_option_info = @unserialize($o_attributes_res['option_info']);  
+                  }
                   $default_value = $old_option_info['value']; 
                 }
               }
@@ -96,6 +99,9 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
                   $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
                   if ($o_attributes_res) {
                     $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                    if ($old_option_info == false) {
+                      $old_option_info = @unserialize($o_attributes_res['option_info']);  
+                    }
                     $default_value = $old_option_info['value']; 
                   }
                 }
@@ -143,13 +149,38 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
                 $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
                 if ($o_attributes_res) {
                   $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                  if ($old_option_info == false) {
+                    $old_option_info = @unserialize($o_attributes_res['option_info']);  
+                  }
                   $default_value = $old_option_info['value']; 
                 }
               }
             }
          }
        }
-      $default_value = stripslashes($default_value);
+      
+      $tmp_single = false; 
+      if ($ac_pos !== false) {
+        $tmp_single = true; 
+        if (isset($_POST['action_process'])) {
+          $tmp_single = false; 
+        }
+      }
+      if ($pre_ac_pos !== false) {
+        $tmp_single = true; 
+        if (isset($_POST['action_process'])) {
+          $tmp_single = false; 
+        }
+      }
+      if ($ed_pos !== false) {
+        $tmp_single = true; 
+        if (isset($_POST['action_process'])) {
+          $tmp_single = false; 
+        }
+      }
+      if (!$tmp_single) {
+        $default_value = stripslashes($default_value);
+      }
       $default_value = strtr($default_value,array("'"=>"&#39;",'"'=>"&#34;"));
       if(NEW_STYLE_WEB===true){
          $style_width = 'style="width:43%"';

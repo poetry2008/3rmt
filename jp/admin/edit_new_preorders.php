@@ -1937,7 +1937,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         }else if($item_type == 'text'){
           $item_type = 'textarea'; 
         } 
-        $default_value = strtr(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&#39;",'"'=>"&#34;")) == '' ? TEXT_UNSET_DATA : strtr(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&#39;",'"'=>"&#34;"));
+        $default_value = strtr($order_products_attributes[$pid][$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;")) == '' ? TEXT_UNSET_DATA : strtr($order_products_attributes[$pid][$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"));
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&#39;",'"'=>"&#34;")).'<input type="hidden" class="option_input_width" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&#39;",'"'=>"&#34;")) . '\'>: ' . 
            '</div><div class="order_option_value">';
         if ($less_op_single) {
@@ -1945,7 +1945,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         } else {
           echo '<a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&#39;",'"'=>"&#34;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' .  $default_value.'</u></a>';
         }
-        echo '<input type="hidden" class="option_input_width" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" value=\'' .  strtr(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&#39;",'"'=>"&#34;")).'\'></div></div>';
+        echo '<input type="hidden" class="option_input_width" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" value=\'' .  strtr($order_products_attributes[$pid][$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;")).'\'></div></div>';
         echo '<div class="order_option_price">';
         $order_products_attributes[$pid][$j]['price'] = isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : $order_products_attributes[$pid][$j]['price'];
         if ($less_op_single) {
