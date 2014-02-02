@@ -913,7 +913,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $products_ordered_attributes .= "\n" 
         . $op_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($op_value['front_title'], 'utf-8'))))
-        . '：' . str_replace($replace_arr, "", $op_value['value']);
+        . '：' . htmlspecialchars(str_replace($replace_arr, "", $op_value['value']));
       
       if ($op_price != '0') {
         $products_ordered_attributes .= '　('.$currencies->format($op_price).')'; 
@@ -982,7 +982,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $products_ordered_attributes .= "\n" 
         . $ck_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($ck_value['front_title'], 'utf-8'))))
-        . '：' . str_replace($replace_arr, "", $ck_value['value']);
+        . '：' . htmlspecialchars(str_replace($replace_arr, "", $ck_value['value']));
       
       if ($c_op_price != '0') {
         $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
@@ -1169,6 +1169,7 @@ $title_replace_array = array(
                              STORE_NAME 
                            );
 $subject = str_replace($title_mode_array,$title_replace_array,$subject);
+
 if ($customers_referer_array['is_send_mail'] != '1') {
   //判断是否给该顾客发送邮件 
   tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], $subject, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
@@ -1264,6 +1265,7 @@ if($email_billing_address_str != ''){
 
 # ------------------------------------------
 $email_printing_order = tep_replace_mail_templates($email_printing_order,$order->customer['email_address'],tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
+
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
