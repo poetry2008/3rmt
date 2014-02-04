@@ -4396,7 +4396,8 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
       }
       if ($input_option) {
         if (isset($input_option['title'])) {
-          $str .= '<tr><td class="main">'.$input_option['title'].'</td><td class="main">'.$input_option['value'].'</td></tr>';
+          $str .= '<tr><td class="main">'.$input_option['title'].'</td><td
+            class="main">'.tep_output_string_protected($input_option['value']).'</td></tr>';
         }
       }
     }
