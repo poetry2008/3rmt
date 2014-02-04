@@ -74,7 +74,7 @@
       }
       echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onkeypress="return key(event);" onblur="money_blur_update(\'quantity_'.$products[$i]['id'].'\', \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')"'.$disabled);
       echo   tep_draw_hidden_field('products_id[]', $products[$i]['id']);
-      echo tep_draw_hidden_field('option_info[]', serialize($products[$i]['op_attributes'])); 
+      echo tep_draw_hidden_field('option_info[]', htmlspecialchars(serialize($products[$i]['op_attributes']))); 
       
       $sh_option_info = array();
       foreach ($products[$i]['add_op_attributes'] as $hp_key => $hp_value) {
@@ -195,7 +195,7 @@
 
     if ($attributes_exist == 1) {
       foreach ($products[$i]['add_op_attributes'] as $ap_key => $ap_value) {
-        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i></small>';
+        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), '', $ap_value['option_value'])) . '</i></small>';
       }
     }
 
@@ -208,7 +208,6 @@
 
 // Product price  
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
-      //echo '    <td align="right" class="main" style=" background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'"><b>' .  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</b></span>';
       // edit total 
       echo '    <td align="right" class="main" style="background:#FFFFFF"><br><span id="pri_'.$products[$i]['id'] .'">';
       if ($products[$i]['price'] < 0) {

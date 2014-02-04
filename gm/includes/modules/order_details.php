@@ -17,8 +17,6 @@
   echo '    <td align="center" class="tableHeading" width="10%">' . TABLE_HEADING_IMAGE . '</td>' . "\n";
 
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-    //$colspan++;
-    //echo '    <td class="tableHeading">' . TABLE_HEADING_MODEL . '</td>' . "\n";
   }
 
   echo '    <td width="50%">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
@@ -44,7 +42,6 @@ height:2px; border-top:none; border-left:none; border-right:none; margin:10px
 
 // Delete box only for shopping cart
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
 
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
@@ -71,7 +68,7 @@ height:2px; border-top:none; border-left:none; border-right:none; margin:10px
       }
       echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onkeypress="return key(event);" onblur="money_blur_update(\'quantity_'.$products[$i]['id'].'\', \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')"'.$disabled);
       echo   tep_draw_hidden_field('products_id[]', $products[$i]['id']);
-      echo tep_draw_hidden_field('option_info[]', serialize($products[$i]['op_attributes'])); 
+      echo tep_draw_hidden_field('option_info[]', htmlspecialchars(serialize($products[$i]['op_attributes']))); 
       
       $sh_option_info = array();
       foreach ($products[$i]['add_op_attributes'] as $hp_key => $hp_value) {
@@ -187,7 +184,7 @@ height:2px; border-top:none; border-left:none; border-right:none; margin:10px
 
     if ($attributes_exist == 1) {
       foreach ($products[$i]['add_op_attributes'] as $ap_key => $ap_value) {
-        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i></small>';
+        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), '', $ap_value['option_value'])) . '</i></small>';
       }
     }
 

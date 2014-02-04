@@ -147,7 +147,7 @@
         $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']);
         $op_include_array[] = $all_show_option[$t_item_id]['id'];  
         if(is_array($all_show_option[$t_item_id]['option_info'])){
-          echo '<br><small>&nbsp;<i> - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['option_info']['value']);
+          echo '<br><small>&nbsp;<i> - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['option_info']['value']));
           if ((int)$all_show_option[$t_item_id]['price'] != '0') {
             if ($all_show_option[$t_item_id]['price'] < 0) {
               echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($all_show_option[$t_item_id]['price'])).'</font>'.JPMONEY_UNIT_TEXT.')';        
@@ -160,7 +160,7 @@
       }
       foreach ($order->products[$i]['op_attributes'] as $ex_key => $ex_value) {
         if (!in_array($ex_value['id'], $op_include_array)) {
-          echo '<br><small>&nbsp;<i> - ' .  $ex_value['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ex_value['option_info']['value']);
+          echo '<br><small>&nbsp;<i> - ' .  $ex_value['option_info']['title'] . ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), '', $ex_value['option_info']['value']));
           if ((int)$ex_value['price'] != '0') {
             if ($ex_value['price'] < 0) {
               echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($ex_value['price'])).'</font>'.JPMONEY_UNIT_TEXT.')';        

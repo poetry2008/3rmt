@@ -207,7 +207,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
         $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']); 
       if(trim($all_show_option[$t_item_id]['value']) != ''){
         echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
-             ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
+             ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']));
         if ($op_price != '0') {
           if ($op_price < 0) {
             echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($op_price)).'</font>'.JPMONEY_UNIT_TEXT.')'; 

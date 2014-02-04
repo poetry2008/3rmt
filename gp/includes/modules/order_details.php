@@ -17,8 +17,6 @@
   echo '    <td align="center" class="tableHeading" width="60">' . TABLE_HEADING_IMAGE . '</td>' . "\n";
 
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-    //$colspan++;
-    //echo '    <td class="tableHeading">' . TABLE_HEADING_MODEL . '</td>' . "\n";
   }
 
   echo '    <td class="tableHeading">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
@@ -30,11 +28,6 @@
 
   echo '    <td align="right" class="tableHeading" width="60">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
        '    <td align="center" class="tableHeading" width="53">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
-       /*
-       '  </tr>' . "\n" .
-       '  <tr>' . "\n" .
-       '    <td colspan="' . $colspan . '" style=" background: #ddd; line-height: 0px; font-size: 0px;">' . tep_draw_separator('pixel_trans.gif', '1', '1') . '</td>' . "\n" .
-       */
        '  </tr>' . "\n";
 
   //检查商品的OPTION是否改动
@@ -44,7 +37,6 @@
 
 // Delete box only for shopping cart
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      //echo '    <td align="center" height="25"  style=" background:#dbfdff">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
 
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
@@ -73,7 +65,7 @@
       }
       echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onkeypress="return key(event);" onblur="money_blur_update(\'quantity_'.$products[$i]['id'].'\', \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')"'.$disabled);
       echo   tep_draw_hidden_field('products_id[]', $products[$i]['id']);
-      echo tep_draw_hidden_field('option_info[]', serialize($products[$i]['op_attributes'])); 
+      echo tep_draw_hidden_field('option_info[]', htmlspecialchars(serialize($products[$i]['op_attributes']))); 
       
       $sh_option_info = array();
       foreach ($products[$i]['add_op_attributes'] as $hp_key => $hp_value) {
@@ -145,7 +137,6 @@
     }
 // Model
     if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      //echo '    <td class="main" style=" background:#dbfdff">1<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products[$i]['id']) . '">' . $products[$i]['model'] . '</a></td>' . "\n";
     }
   
 // Product name, with or without link
@@ -186,6 +177,7 @@
       }
     }
 
+// Display marker if stock weight insufficient
     if($products_error == true && $stock_check == ''){
 
       echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($products[$i]['name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
@@ -195,7 +187,7 @@
 
     if ($attributes_exist == 1) {
       foreach ($products[$i]['add_op_attributes'] as $ap_key => $ap_value) {
-        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i></small>';
+        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), '', $ap_value['option_value'])) . '</i></small>';
       }
     }
 
@@ -208,8 +200,6 @@
 
 // Product price  
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
-      //echo '    <td align="right" class="main" style=" background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'"><b>' .  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</b></span>';
-      // edit total 
       echo '    <td align="right" class="main" style="background:#f4f4f4"><br><span id="pri_'.$products[$i]['id'] .'">';
       if ($products[$i]['price'] < 0) {
         echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity'])).'</font>'.JPMONEY_UNIT_TEXT;
