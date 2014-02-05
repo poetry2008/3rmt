@@ -266,6 +266,8 @@
       $preorders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
       $preorders_status_history_array = tep_db_fetch_array($preorders_status_history_query);
       tep_db_free_result($preorders_status_history_query);
+      $sql_data_array = array('last_modified' => 'now()','user_update' => $_SESSION['user_name']);
+      tep_db_perform(TABLE_PREORDERS, $sql_data_array, 'update', "orders_id='".$oID."'");
       tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$preorders_status_history_array['comments']."', '".tep_db_input($update_user_info['name'])."')");
 
       $order_updated = true;
@@ -519,6 +521,8 @@
     $preorders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".tep_db_input($oID)."' order by date_added desc limit 0,1");
     $preorders_status_history_array = tep_db_fetch_array($preorders_status_history_query);
     tep_db_free_result($preorders_status_history_query);
+    $sql_data_array = array('last_modified' => 'now()','user_update' => $_SESSION['user_name']);
+    tep_db_perform(TABLE_PREORDERS, $sql_data_array, 'update', "orders_id='".$oID."'");
     tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  $customer_notified . "', '".$preorders_status_history_array['comments']."', '".tep_db_input($update_user_info['name'])."')");
     // 同步问答
     $order_updated = true;
