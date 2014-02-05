@@ -3410,8 +3410,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
   }
   foreach ($order->products[$i]['attributes'] as $ex_key => $ex_value) {
     if (!in_array($ex_value['id'], $op_include_array)) {
-      echo '<table><tr><td valign="top">-&nbsp; </td><td>' .
-      $ex_value['option_info']['title'] . ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), "",$ex_value['option_info']['value']));
+      echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $ex_value['option_info']['title'] . ': ' .  htmlspecialchars(str_replace(array("<br>", "<BR>"), "",$ex_value['option_info']['value']));
       if ($ex_value['price'] != '0') {
         if ($ex_value['price'] < 0) {
           echo ' (<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '',$currencies->format($ex_value['price'], true, $order->info['currency'], $order->info['currency_value'])) . '</font>'.TEXT_MONEY_SYMBOL.')';
@@ -5498,7 +5497,13 @@ if($c_parent_array['parent_id'] == 0){
                     if ($customers_info_res) {
                       if (!empty($customers_info_res['pic_icon'])) {
                         if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
-                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $customers_info_res['pic_alt']); 
+                          $pic_icon_title_str = ''; 
+                          $pic_icon_title_raw = tep_db_query("select pic_alt from ".TABLE_CUSTOMERS_PIC_LIST." where pic_name = '".$customers_info_res['pic_icon']."'"); 
+                          $pic_icon_title_res = tep_db_fetch_array($pic_icon_title_raw); 
+                          if ($pic_icon_title_res) {
+                            $pic_icon_title_str = $pic_icon_title_res['pic_alt']; 
+                          }
+                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
                         }
                       }
                     }
