@@ -2,7 +2,10 @@
 BODY{
 	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 }
-INPUT TEXTAREA{
+INPUT{
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
+}
+TEXTAREA{
 	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 }
 a:link{ 
