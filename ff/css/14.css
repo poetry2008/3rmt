@@ -1,6 +1,9 @@
 /* ---------------------------
 Text decoration
 --------------------------- */
+input{
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
+}
 a{
 	font-size: 10px;
 	color:#656565;

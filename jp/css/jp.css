@@ -8,6 +8,9 @@ BODY {
 	padding: 0px;
 	color: #656565;
 }
+input{
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
+}
 /* ---------------------------
 A：link
 --------------------------- */

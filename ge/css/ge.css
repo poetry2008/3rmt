@@ -1,5 +1,8 @@
 /* all construct
 */
+input{
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
+}
 body {
     font-family: "MS PGothic", "Osaka", Arial, sans-serif;
     font-size:12px;

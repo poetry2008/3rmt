@@ -1,4 +1,10 @@
 /*body*/
+BODY{
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
+}
+input{
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
+}
 a:link{ 
 	color:#66DFFF;
 	text-decoration: underline;

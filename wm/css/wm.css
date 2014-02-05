@@ -1,4 +1,7 @@
 /*text decorate*/
+input{
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
+}
 a {
 	font-size: 10px;
 }
@@ -1082,7 +1085,7 @@ h3.game_list a {
 }
 /*BODY：body*/
 BODY {
-	font-family: Osaka, Verdana, Arial, sans-serif;
+	font-family: "MS PGothic", "Osaka", Arial, sans-serif;
 	background-color: #FFFFFF;
 	margin: 0px;
 	padding: 0px;
