@@ -12941,3 +12941,50 @@ function check_single_products_price_info($pid, $price_info, $relate_price_info)
   } 
   return $error_str;
 }
+function tep_get_avg_by_rpid($rpid,$product_quantity,$p_radices){
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      $product_quantity = $product_quantity/$p_radices;
+    }
+    $order_history_query = tep_db_query("
+        select * 
+        from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
+        where 
+        op.products_id='".$rpid."'
+        and os.calc_price = '1'
+        order by o.torihiki_date desc
+        ");
+    $sum = 0;
+    $cnt = 0;
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      $product_quantity = $product_quantity*$p_radices;
+    }
+    while($h = tep_db_fetch_array($order_history_query)){
+      if(isset($h['products_rate'])&&$h['products_rate']!=''&&$h['products_rate']!=0){
+        $h_pq = $h['products_quantity']*$h['products_rate'];
+        $h_fp = $h['final_price']/$h['products_rate'];
+      }else{
+        if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+          $h_pq = $h['products_quantity']*$p_radices;
+          $h_fp = $h['final_price']/$p_radices;
+        }else{
+          $h_pq = $h['products_quantity'];
+          $h_fp = $h['final_price'];
+        }
+      }
+      if ($cnt + $h_pq > $product_quantity) {
+        $sum += ($product_quantity - $cnt) * abs($h_fp);
+        $cnt = $product_quantity;
+        break;
+      } else {
+        $sum += $h_pq * abs($h_fp);
+        $cnt += $h_pq;
+      }
+    }
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      return $sum/$cnt*$p_radices;
+    }else{
+      return $sum/$cnt;
+    }
+  }
+
+

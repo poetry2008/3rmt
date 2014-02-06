@@ -818,3 +818,4 @@ define('JS_TEXT_NOTICE_INPUT_TITLE','タイトルを入力してください');
 define('JS_TEXT_NOTICE_INPUT_INFO','内容を入力してください');
 define('JS_TEXT_NOTICE_INFO_SAVED','内容を保存しました。');
 define('JS_TEXT_NOTICE_IS_DELETE','削除を実行しますか？');
+define('ERROR_AVG_MESSAGE',"現在庫の平均原価（%s円）を下回っています。\n\n □ 危険を理解した上で保存する。\n 何が起きていて何が問題なのか理解できているのであれば、上記チェックボックスを選択し、[ OK ]をクリック してください。");

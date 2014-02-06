@@ -411,6 +411,22 @@ function set_new_price(pid, cnt) {
           alert(msg_info);
           setTimeout('$("#tmp_new_price_button").attr("id", "new_price_button")', 100);
         } else {
+    $.ajax({
+      type:'POST', 
+      async:false, 
+      url: 'ajax_orders.php?action=check_products_avg',
+      dataType:'text',
+      data:'products_id='+pid+"&new_price="+nquantity,
+      success: function(msg_avg) {
+        var save_flag = false;
+        if(msg_avg!=''){
+          if(confirm(msg_avg)){
+            save_flag = true;
+          }
+        }else{
+          save_flag = true;
+        }
+          if(save_flag){ 
           $.ajax({
             type:'POST', 
             dataType:'text',
@@ -430,7 +446,10 @@ function set_new_price(pid, cnt) {
           });
         }
       }
+      });
+          
+        }
+      }
     }); 
-     
   }
 }
