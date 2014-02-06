@@ -93,8 +93,9 @@
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td>
-                          <textarea id="text_comments" name="comments"  cols="60" rows="5"><?php if(isset($_SESSION['mailcomments']) && $_SESSION['mailcomments']) { echo $_SESSION['mailcomments']; } ?></textarea> 
-						  <?php echo tep_draw_hidden_field('comments_added', 'YES'); ?></td> 
+                            <textarea id="text_comments" name="comments" rows="5" cols="60" wrap="soft" style="resize:vertical;"><?php echo htmlspecialchars($_SESSION['comments']); ?></textarea>
+                            <?php echo tep_draw_hidden_field('comments_added', 'YES'); ?>
+                          </td>
                         </tr> 
                       </table></td> 
                   </tr> 
