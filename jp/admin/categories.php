@@ -2973,16 +2973,34 @@ function check_single_product_price(pid_info, c_permission, c_type) {
         alert(msg_info);
         setTimeout('$("#tmp_button_save_product").attr("id", "button_save_product")', 100); 
       } else {
-        new_product_quantity = $('#product_qtr').val();
-        p_radices = $('#product_radices').val();
         relate_value = $('input:[name=relate_products_id]').val(); 
-        if(new_product_quantity!=undefined&&p_radices!=undefined&&relate_value!=undefined){
+        if(typeof($('#relate_qtr').val())!='undefined'){
+          r_quantity = $('#relate_qtr').val();
+        }else{
+          r_quantity = 0;
+        }
+        if(typeof($('#product_qtr').val())!='undefined'){
+          p_quantity = $('#product_qtr').val();
+        }else{
+          p_quantity = 0;
+        }
+        if(typeof($('#product_radices').val())!='undefined'){
+          p_radices = $('#product_radices').val();
+        }else{
+          p_radices = 0;
+        }
+        if(typeof($('#relate_radices').val())!='undefined'){
+          r_radices = $('#relate_radices').val();
+        }else{
+          r_radices = 0;
+        }
+        if(typeof(relate_value)!='undefined'){
         $.ajax({
           type: 'POST',
           async: false,
-          url: 'ajax_orders.php?action=check_category_to_products_avg',
+          url: 'ajax_orders.php?action=check_single_products_avg',
           dataType: 'text',
-          data: 'new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+p_radices,
+          data: 'products_id='+pid_info+'&new_price='+new_price_value+'&relate_new_price='+relate_new_price_value+'&relate_id='+relate_value+'&p_quantity='+p_quantity+'&r_quantity='+r_quantity+'&p_radices='+p_radices+'&r_radices='+r_radices,
           success:function(msg_avg){
             if(msg_avg != ''){
               if(confirm(msg_avg)){

@@ -2806,15 +2806,42 @@ echo json_encode($json_array);
   echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id'], $_POST['num_value']);
 } else if ($_GET['action'] == 'check_category_to_products_avg') {
 /*-----------------------------------------
- 功能: 检查商品价格是否低于指定利润率
+ 功能: 检查商品价格是否低于评价士入价格
  参数: $_POST['p_relate_id'] 关联产品ID
  参数: $_POST['product_quantity'] 实际库存（与汇率相乘的结果）
  参数: $_POST['p_radices'] 汇率
  参数: $_POST['new_price'] 价格 
  ----------------------------------------*/
+  $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_POST['p_relate_id']."' and products_bflag='1'"); 
+  $origin_product = tep_db_fetch_array($origin_product_raw); 
   $new_avg_price = tep_get_avg_by_rpid($_POST['p_relate_id'],$_POST['product_quantity'],$_POST['p_radices']);
-  if($_POST['new_price']<$new_avg_price){
-    echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+  if($origin_product){
+    if($_POST['new_price']<$new_avg_price){
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+    }
+  }
+} else if ($_GET['action'] == 'check_single_products_avg') {
+/*-----------------------------------------
+ 功能: 检查商品价格是否低于评价士入价格
+ 参数: $_POST['products_id'] 商品id 
+ 参数: $_POST['p_relate_id'] 关联商品id 
+ 参数: $_POST['new_price'] 价格 
+ 参数: $_POST['relate_new_price'] 关联价格 
+ ----------------------------------------*/
+  $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."' and products_bflag='1'"); 
+  $origin_product = tep_db_fetch_array($origin_product_raw); 
+  $r_origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_POST['relate_id']."' and products_bflag='1'"); 
+  $r_origin_product = tep_db_fetch_array($r_origin_product_raw); 
+  if($origin_product){
+    $new_avg_price = tep_get_avg_by_rpid($_POST['products_id'],$_POST['r_quantity'],$_POST['r_radices']);
+    if($_POST['relate_new_price']<$new_avg_price){
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+    }
+  }else if($r_origin_product){
+    $new_avg_price = tep_get_avg_by_rpid($_POST['relate_id'],$_POST['p_quantity'],$_POST['p_radices']);
+    if($_POST['new_price']<$new_avg_price){
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+    }
   }
 } else if ($_GET['action'] == 'check_single_products_profit') {
 /*-----------------------------------------
