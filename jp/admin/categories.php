@@ -2973,7 +2973,29 @@ function check_single_product_price(pid_info, c_permission, c_type) {
         alert(msg_info);
         setTimeout('$("#tmp_button_save_product").attr("id", "button_save_product")', 100); 
       } else {
-        toggle_category_form(c_permission, c_type); 
+        new_product_quantity = $('#product_qtr').val();
+        p_radices = $('#product_radices').val();
+        relate_value = $('input:[name=relate_products_id]').val(); 
+        if(new_product_quantity!=undefined&&p_radices!=undefined&&relate_value!=undefined){
+        $.ajax({
+          type: 'POST',
+          async: false,
+          url: 'ajax_orders.php?action=check_category_to_products_avg',
+          dataType: 'text',
+          data: 'new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+p_radices,
+          success:function(msg_avg){
+            if(msg_avg != ''){
+              if(confirm(msg_avg)){
+                toggle_category_form(c_permission, c_type); 
+              }
+            }else{
+              toggle_category_form(c_permission, c_type); 
+            }
+          }
+        });
+        }else{
+          toggle_category_form(c_permission, c_type); 
+        }
       }
     }
   }); 
@@ -2995,7 +3017,23 @@ function check_edit_product_profit() {
         if (msg_info != '') {
           alert(msg_info); 
         } else {
-          document.forms.new_product.submit(); 
+          new_product_quantity = $('#products_real_quantity').val();
+          $.ajax({
+            type: 'POST',
+            async: false,
+            url: 'ajax_orders.php?action=check_category_to_products_avg',
+            dataType: 'text',
+            data: 'new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+num_value,
+            success:function(msg_avg){
+              if(msg_avg != ''){
+                if(confirm(msg_avg)){
+                  document.forms.new_product.submit();
+                }
+              }else{
+                document.forms.new_product.submit(); 
+              }
+            }
+          });
         }
       }
     });

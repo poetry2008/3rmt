@@ -2804,6 +2804,18 @@ echo json_encode($json_array);
  参数: $_POST['num_value'] 数值 
  ----------------------------------------*/
   echo check_new_products_price_info($_POST['product_flag'], $_POST['new_price'], $_POST['p_relate_id'], $_POST['num_value']);
+} else if ($_GET['action'] == 'check_category_to_products_avg') {
+/*-----------------------------------------
+ 功能: 检查商品价格是否低于指定利润率
+ 参数: $_POST['p_relate_id'] 关联产品ID
+ 参数: $_POST['product_quantity'] 实际库存（与汇率相乘的结果）
+ 参数: $_POST['p_radices'] 汇率
+ 参数: $_POST['new_price'] 价格 
+ ----------------------------------------*/
+  $new_avg_price = tep_get_avg_by_rpid($_POST['p_relate_id'],$_POST['product_quantity'],$_POST['p_radices']);
+  if($_POST['new_price']<$new_avg_price){
+    echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+  }
 } else if ($_GET['action'] == 'check_single_products_profit') {
 /*-----------------------------------------
  功能: 检查商品价格是否低于指定利润率
