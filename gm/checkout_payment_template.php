@@ -163,7 +163,7 @@ if(true) {
      <?php
     } 
 ?>
-   <textarea name="comments"rows="5" cols="60" wrap="soft" style="resize:vertical;"><?php echo htmlspecialchars($_SESSION['comments']); ?></textarea>
+   <textarea name="comments"rows="5" cols="60" wrap="soft" style="resize:vertical;width:100%;"><?php echo htmlspecialchars($_SESSION['comments']); ?></textarea>
    <?php echo tep_draw_hidden_field('comments_added', 'YES'); ?>
 </div>
 <?php
