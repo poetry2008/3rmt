@@ -2758,7 +2758,8 @@ echo json_encode($json_array);
     if ($relate_product) {
       $new_avg_price = tep_get_avg_by_pid($_POST['products_id']);
       if($_POST['new_price']<$new_avg_price){
-        echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
+        echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+            .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
       }
     }
   }
@@ -2836,7 +2837,8 @@ echo json_encode($json_array);
   if($origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['p_relate_id'],$_POST['product_quantity'],$_POST['p_radices']);
     if($_POST['new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+            .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
     }
   }
 } else if ($_GET['action'] == 'check_single_products_avg') {
@@ -2854,12 +2856,14 @@ echo json_encode($json_array);
   if($origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['products_id'],$_POST['r_quantity'],$_POST['r_radices']);
     if($_POST['relate_new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+            .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
     }
   }else if($r_origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['relate_id'],$_POST['p_quantity'],$_POST['p_radices']);
     if($_POST['new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+            .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
     }
   }
 } else if ($_GET['action'] == 'check_single_products_profit') {

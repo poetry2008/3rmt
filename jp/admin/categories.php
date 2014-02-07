@@ -1774,6 +1774,83 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
 <script language="javascript">
+function avg_div_checkbox(){
+  document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
+}
+function confirm_div(str,cnt,pid,c_permission,c_type){
+  var ClassName = "thumbviewbox";
+  var allheight = document.body.scrollHeight;
+  var ec_top = (window.screen.availHeight-170)/2;
+  //ground div 
+  var element_ground = document.createElement('div');
+  element_ground.setAttribute('class',ClassName);
+  element_ground.setAttribute('id','element_ground_close');
+  element_ground.style.cssText = 'position: absolute; top: 0px; left: 0; z-index: 150;background-color: rgb(0, 0, 0); opacity: 0.01; width:100%; height: '+allheight+'px;';
+  element_ground.style.filter="alpha(opacity=1)";
+  // text str 
+  var element_boder = document.createElement('div');
+  element_boder.setAttribute('class',ClassName);
+  element_boder.setAttribute('id','element_boder_close');
+  element_boder.style.cssText = 'margin: 0 auto; line-height: 1.4em;width:500px;;background-color: rgb(255,255,255)';
+  ok_input_html =  '<input type="button" onclick=\'save_div_action(\"'+cnt+'\",\"'+pid+'\",\"'+c_permission+'\",\"'+c_type+'\")\' value="'+'<?php echo DIV_TEXT_OK;?>'+'">';
+  clear_input_html = '<input type="button" onclick="clear_confirm_div()" value="'+'<?php echo DIV_TEXT_CLEAR;?>'+'">';
+  alert_div_html = '<div style="padding:10px;text-align:left">'+str+'</div>';
+  alert_div_html = alert_div_html+'<div style="text-align:center">'+ok_input_html+'&nbsp;&nbsp;'+clear_input_html+'</div>'
+  element_boder.innerHTML = '<div style="padding:10px;text-align:left">'+alert_div_html+'</div>';
+
+  //center div 
+  var element = document.createElement('div');
+  element.appendChild(element_boder);
+  element.setAttribute('class',ClassName);
+  element.setAttribute('id','element_close');
+  element.style.cssText = 'width:100%;position:fixed;z-index:151;text-align:center;line-height:0;top:'+ec_top+'px;';
+
+
+// add div 
+  document.body.appendChild(element_ground);
+  document.body.appendChild(element);
+}
+function save_div_action(cnt,pid,c_permission,c_type){
+  if(document.getElementById("alert_div_id").checked){
+  if(pid!=''){
+    nquantity = $('#new_confirm_price').val();
+    $.ajax({
+      type:'POST', 
+      dataType:'text',
+      beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+      data:'products_id='+pid+"&new_price="+nquantity, 
+      async:false, 
+      url: 'ajax_orders.php?action=set_new_price',
+      success: function(msg) {
+        msg_array = msg.split('|||'); 
+        $(c_ele).html(msg_array[0]); 
+        $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
+        $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
+        $(c_ele).next().next().next().next().find('a').html(msg_array[3]);  
+        set_money(cnt, false, '1'); 
+        setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
+      }
+    });
+    clear_confirm_div()
+  }else if(c_permission!=''&&c_type!=''){
+    toggle_category_form(c_permission, c_type);
+  }else if(pid==''&&c_permission==''&&c_type==''){
+    document.forms.new_product.submit();
+  }
+  }else{
+    var em_close=document.getElementById("element_ground_close");
+    em_close.parentNode.removeChild(em_close);
+    var em_close=document.getElementById("element_close");
+    em_close.parentNode.removeChild(em_close);
+  }
+}
+
+function clear_confirm_div(){
+  var em_close=document.getElementById("element_ground_close");
+  em_close.parentNode.removeChild(em_close);
+  var em_close=document.getElementById("element_close");
+  em_close.parentNode.removeChild(em_close);
+}
 <?php // JS 获得文件名?>
 function getFileName(path){
   var pos1 = path.lastIndexOf('/');
@@ -3003,9 +3080,7 @@ function check_single_product_price(pid_info, c_permission, c_type) {
           data: 'products_id='+pid_info+'&new_price='+new_price_value+'&relate_new_price='+relate_new_price_value+'&relate_id='+relate_value+'&p_quantity='+p_quantity+'&r_quantity='+r_quantity+'&p_radices='+p_radices+'&r_radices='+r_radices,
           success:function(msg_avg){
             if(msg_avg != ''){
-              if(confirm(msg_avg)){
-                toggle_category_form(c_permission, c_type); 
-              }
+              confirm_div(msg_avg,'','',c_permission,c_type)
             }else{
               toggle_category_form(c_permission, c_type); 
             }
@@ -3044,9 +3119,7 @@ function check_edit_product_profit() {
             data: 'new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+num_value,
             success:function(msg_avg){
               if(msg_avg != ''){
-                if(confirm(msg_avg)){
-                  document.forms.new_product.submit();
-                }
+                confirm_div(msg_avg,'','','','')
               }else{
                 document.forms.new_product.submit(); 
               }
