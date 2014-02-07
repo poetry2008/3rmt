@@ -1381,7 +1381,6 @@ switch ($_GET['action']) {
                               'user_added' => $update_user_info['name']
           );
       tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-      // tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".$update_user_info['name']."')");
       // 同步问答
       $order_updated = true;
     }
