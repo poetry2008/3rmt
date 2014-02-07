@@ -2743,6 +2743,25 @@ echo json_encode($json_array);
  参数: $_POST['new_price'] 价格 
  ----------------------------------------*/
   echo check_products_price_info($_POST['products_id'], $_POST['new_price']);
+} else if ($_GET['action'] == 'check_products_avg') {
+/*-----------------------------------------
+ 功能: 检查商品价格是否低于指定利润率
+ 参数: $_POST['products_id'] 商品id 
+ 参数: $_POST['new_price'] 价格 
+ ----------------------------------------*/
+  $error_str = '';
+  $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
+  $origin_product = tep_db_fetch_array($origin_product_raw); 
+  if ($origin_product) {
+    $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$origin_product['relate_products_id']."'"); 
+    $relate_product = tep_db_fetch_array($relate_product_raw); 
+    if ($relate_product) {
+      $new_avg_price = tep_get_avg_by_pid($_POST['products_id']);
+      if($_POST['new_price']<$new_avg_price){
+        echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
+      }
+    }
+  }
 } else if ($_GET['action'] == 'check_list_products_profit') {
 /*-----------------------------------------
  功能: 检查商品列表里的商品价格是否低于指定利润率
@@ -2814,10 +2833,10 @@ echo json_encode($json_array);
  ----------------------------------------*/
   $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_POST['p_relate_id']."' and products_bflag='1'"); 
   $origin_product = tep_db_fetch_array($origin_product_raw); 
-  $new_avg_price = tep_get_avg_by_rpid($_POST['p_relate_id'],$_POST['product_quantity'],$_POST['p_radices']);
   if($origin_product){
+    $new_avg_price = tep_get_avg_by_rpid($_POST['p_relate_id'],$_POST['product_quantity'],$_POST['p_radices']);
     if($_POST['new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
     }
   }
 } else if ($_GET['action'] == 'check_single_products_avg') {
@@ -2835,12 +2854,12 @@ echo json_encode($json_array);
   if($origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['products_id'],$_POST['r_quantity'],$_POST['r_radices']);
     if($_POST['relate_new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
     }
   }else if($r_origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['relate_id'],$_POST['p_quantity'],$_POST['p_radices']);
     if($_POST['new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2));
+      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" id="alert_div_id">');
     }
   }
 } else if ($_GET['action'] == 'check_single_products_profit') {

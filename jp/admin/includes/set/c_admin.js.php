@@ -420,13 +420,8 @@ function set_new_price(pid, cnt) {
       success: function(msg_avg) {
         var save_flag = false;
         if(msg_avg!=''){
-          if(confirm(msg_avg)){
-            save_flag = true;
-          }
+          confirm_div(msg_avg,cnt,pid,'','');
         }else{
-          save_flag = true;
-        }
-          if(save_flag){ 
           $.ajax({
             type:'POST', 
             dataType:'text',
@@ -444,8 +439,9 @@ function set_new_price(pid, cnt) {
               setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
             }
           });
+
         }
-      }
+       }
       });
           
         }
