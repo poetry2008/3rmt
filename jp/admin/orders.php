@@ -910,8 +910,14 @@ switch ($_GET['action']) {
         tep_db_free_result($orders_status_history_query);
         $sql_data_array = array('last_modified' => 'now()','user_update' => $_SESSION['user_name']);
         tep_db_perform(TABLE_ORDERS, $sql_data_array, 'update', "orders_id='".$oID."'");
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".tep_db_input($update_user_info['name'])."')");
-
+        $sql_data_array = array('orders_id' => tep_db_input($oID),
+                              'orders_status_id' => tep_db_input($status),
+                              'date_added' => 'now()',
+                              'customer_notified' => $customer_notified,
+                              'comments' => $orders_status_history_array['comments'],
+                              'user_added' => $update_user_info['name']
+          );
+        tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
         $order_updated = true;
 
       }
@@ -1367,7 +1373,15 @@ switch ($_GET['action']) {
       tep_db_free_result($orders_status_history_query);
       $sql_data_array = array('last_modified' => 'now()','user_update' => $_SESSION['user_name']);
       tep_db_perform(TABLE_ORDERS, $sql_data_array, 'update', "orders_id='".$oID."'");
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".$update_user_info['name']."')");
+      $sql_data_array = array('orders_id' => tep_db_input($oID),
+                              'orders_status_id' => tep_db_input($status),
+                              'date_added' => 'now()',
+                              'customer_notified' => $customer_notified,
+                              'comments' => $orders_status_history_array['comments'],
+                              'user_added' => $update_user_info['name']
+          );
+      tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+      // tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments, user_added) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$orders_status_history_array['comments']."', '".$update_user_info['name']."')");
       // 同步问答
       $order_updated = true;
     }
