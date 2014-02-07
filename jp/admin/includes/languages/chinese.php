@@ -814,6 +814,7 @@ define('JS_TEXT_NOTICE_INPUT_TITLE','请输入标题');
 define('JS_TEXT_NOTICE_INPUT_INFO','请输入内容');
 define('JS_TEXT_NOTICE_INFO_SAVED','内容已保存。');
 define('JS_TEXT_NOTICE_IS_DELETE','是否实行删除？');
-define('ERROR_AVG_MESSAGE',"实际库存的平均采购价格（%s日元）过低。<br> <br>%s 已了解风险,并保存。<br>如果已了解保存后可能存在问题的风险,请点击选框同意。<br><br>");
+define('ERROR_AVG_MESSAGE',"实际库存的平均采购价格（%s日元）过低。<br> <br>%s<br>如果已了解保存后可能存在问题的风险,请点击选框同意。<br><br>");
+define('ERROR_AVG_MESSAGE_CHECKBOX_STR',' 已了解风险,并保存。');
 define('DIV_TEXT_CLEAR','取消');
 define('DIV_TEXT_OK','OK');
