@@ -278,10 +278,11 @@ define('IMAGE_LINK','链接');
 define('IMAGE_LINK_TO','链接到');
 define('TEXT_IS_OVERWRITE_IMAGE','已经存在。是否覆盖？');
 define('TEXT_UPLOAD_FILE','选择文件');
-define('TEXT_PRODUCT_ORDER_HISTORY','订单履历');
+define('TEXT_PRODUCT_ORDER_HISTORY','最近的订单数');
 define('TEXT_PRODUCT_INFO','商品情报');
 define('TEXT_PRODUCTS_ORDER_INFO','订单情报');
 define('TABLE_HEADING_DANJIA_TEXT','单价（日元）');
 define('TEXT_RADICES_PRODUCT_INFO', '每1个相当于%s');
 define('TEXT_PRODUCT_ORDER_HISTORY_INFO','每%s天%s 个');
+define('TEXT_PRODUCT_INVENTORY_INFO','可以使用的计算符号：+　-　*　/　()');
 ?>

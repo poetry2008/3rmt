@@ -598,10 +598,10 @@ if ($_GET['action'] == 'show_category_info') {
   
   //这里预留插入在库变数
   
-  if(empty($site_id)) {
-    $arr_td_title[] = TEXT_MAX;
-    $arr_td_title[] = TEXT_MIN;
-  }
+  //if(empty($site_id)) {
+    //$arr_td_title[] = TEXT_MAX;
+    //$arr_td_title[] = TEXT_MIN;
+  //}
   $arr_td_title[] = TEXT_PRODUCTS_AVERAGE_RATING;
   $arr_td_title[] = TEXT_PRODUCT_RATE;
   //商品履历 数字
@@ -637,12 +637,6 @@ if ($_GET['action'] == 'show_category_info') {
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
   $arr_td_product[] = (empty($_GET['site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
-
-  
-  if(empty($site_id)) {
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format($inventory['max']).'&rarr;':'').(($isstaff)?$inventory['max']:tep_draw_input_field('inventory_max',$inventory['max'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format($inventory['min']).'&rarr;':'').(($isstaff)?$inventory['min']:tep_draw_input_field('inventory_min',$inventory['min'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-  }
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
   if($radices!=''){
@@ -711,12 +705,6 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
     $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
-    
-
-    if(empty($site_id)){
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($inventory['max']).'&rarr;':'').(($isstaff)?$inventory['max']:tep_draw_input_field('relate_inventory_max',$inventory['max'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($inventory['min']).'&rarr;':'').(($isstaff)?$inventory['min']:tep_draw_input_field('relate_inventory_min',$inventory['min'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-    }
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
     if($relate_radices!=''){
