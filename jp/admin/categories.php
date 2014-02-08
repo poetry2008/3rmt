@@ -3664,15 +3664,17 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_MAX;?></td>
-                <td class="main"><span class="categories_input01"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('inventory_max', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? $pInfo->max_inventory : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="inventory_max"')).'<br>'.TEXT_PRODUCT_INVENTORY_INFO; ?></span></td>
+                <td class="main"><span class="categories_input01"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('inventory_max', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? $pInfo->max_inventory : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="inventory_max"')); ?></span></td>
                 </tr>
+                <tr><td class="main">&nbsp;</td><td class="main"><?php echo TEXT_PRODUCT_INVENTORY_INFO;?></td></tr>
                 <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_MIN;?></td>
-                <td class="main"><span class="categories_input01"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('inventory_min', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? $pInfo->min_inventory : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="inventory_min"')).'<br>'.TEXT_PRODUCT_INVENTORY_INFO; ?></span></td>
+                <td class="main"><span class="categories_input01"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('inventory_min', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? $pInfo->min_inventory : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="inventory_min"')); ?></span></td>
                 </tr>
+                <tr><td class="main">&nbsp;</td><td class="main"><?php echo TEXT_PRODUCT_INVENTORY_INFO;?></td></tr>
                 <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
