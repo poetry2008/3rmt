@@ -735,9 +735,8 @@ if (isset($_GET['action']) && $_GET['action']) {
       $product_id = tep_db_prepare_input($products_value);
       $product_categories = tep_generate_category_path($product_id, 'product');
 
-      for ($i = 0, $n = sizeof($product_categories); $i < $n; $i++) {
-        tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" . tep_db_input($product_categories[$i][sizeof($product_categories[$i])-1]['id']) . "'");
-      }
+      //删除当前页面的产品连接
+      tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" .  tep_db_input($current_category_id). "'");
 
       $product_categories_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
       $product_categories = tep_db_fetch_array($product_categories_query);
@@ -1780,7 +1779,6 @@ function avg_div_checkbox(){
 function confirm_div(str,cnt,pid,c_permission,c_type){
   var ClassName = "thumbviewbox";
   var allheight = document.body.scrollHeight;
-  var ec_top = (window.screen.availHeight-170)/2;
   //ground div 
   var element_ground = document.createElement('div');
   element_ground.setAttribute('class',ClassName);
@@ -1791,8 +1789,8 @@ function confirm_div(str,cnt,pid,c_permission,c_type){
   var element_boder = document.createElement('div');
   element_boder.setAttribute('class',ClassName);
   element_boder.setAttribute('id','element_boder_close');
-  element_boder.style.cssText = 'margin: 0 auto; line-height: 1.4em;width:500px;;background-color: rgb(255,255,255)';
-  ok_input_html =  '<input type="button" onclick=\'save_div_action(\"'+cnt+'\",\"'+pid+'\",\"'+c_permission+'\",\"'+c_type+'\")\' value="'+'<?php echo DIV_TEXT_OK;?>'+'">';
+  element_boder.style.cssText = 'margin: 0 auto; line-height: 1.4em;width:500px;background-color: rgb(255,255,255)';
+  ok_input_html =  '<input type="button" id="alert_div_submit" onclick=\'save_div_action(\"'+cnt+'\",\"'+pid+'\",\"'+c_permission+'\",\"'+c_type+'\")\' value="'+'<?php echo DIV_TEXT_OK;?>'+'">';
   clear_input_html = '<input type="button" onclick="clear_confirm_div()" value="'+'<?php echo DIV_TEXT_CLEAR;?>'+'">';
   alert_div_html = '<div style="padding:10px;text-align:left">'+str+'</div>';
   alert_div_html = alert_div_html+'<div style="text-align:center">'+ok_input_html+'&nbsp;&nbsp;'+clear_input_html+'</div>'
@@ -1803,12 +1801,14 @@ function confirm_div(str,cnt,pid,c_permission,c_type){
   element.appendChild(element_boder);
   element.setAttribute('class',ClassName);
   element.setAttribute('id','element_close');
-  element.style.cssText = 'width:100%;position:fixed;z-index:151;text-align:center;line-height:0;top:'+ec_top+'px;';
+  element.style.cssText = 'width:100%;position:fixed;z-index:151;text-align:center;line-height:0;top:25%';
 
 
 // add div 
   document.body.appendChild(element_ground);
   document.body.appendChild(element);
+  var Apdiv=document.getElementById("alert_div_id");
+  Apdiv.focus();
 }
 function save_div_action(cnt,pid,c_permission,c_type){
   if(document.getElementById("alert_div_id").checked){
@@ -1836,6 +1836,8 @@ function save_div_action(cnt,pid,c_permission,c_type){
     toggle_category_form(c_permission, c_type);
   }else if(pid==''&&c_permission==''&&c_type==''){
     document.forms.new_product.submit();
+  }else if(pid==''&&cnt==''&&c_type==''){
+    save_permission(c_permission)
   }
   }else{
     var em_close=document.getElementById("element_ground_close");
@@ -2853,12 +2855,19 @@ $(document).ready(function() {
   $(document).keyup(function(event) {
     if (event.which == 27) {
       <?php //esc?> 
-      if ($('#show_popup_info').css('display') != 'none') {
-        hidden_info_box(); 
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          clear_confirm_div();
+      }else{
+        if ($('#show_popup_info').css('display') != 'none') {
+          hidden_info_box(); 
+        }
       }
     }
     if (event.which == 13) {
       <?php //回车?> 
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+        $('#alert_div_submit').trigger('click');
+      }else{
       if ($('#show_popup_info').css('display') != 'none') {
         tmp_click_str = $("#show_popup_info").find('input:button').first().attr('onclick'); 
         tmp_click_symbol = '0'; 
@@ -2888,6 +2897,7 @@ $(document).ready(function() {
         }
         
       } 
+    }
     }
     if (event.ctrlKey && event.which == 37) {
       <?php //Ctrl+方向左?> 
@@ -3111,12 +3121,13 @@ function check_edit_product_profit() {
           alert(msg_info); 
         } else {
           new_product_quantity = $('#products_real_quantity').val();
+          products_name = $('#pname').val();
           $.ajax({
             type: 'POST',
             async: false,
             url: 'ajax_orders.php?action=check_category_to_products_avg',
             dataType: 'text',
-            data: 'new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+num_value,
+            data: 'products_name='+products_name+'&new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+num_value,
             success:function(msg_avg){
               if(msg_avg != ''){
                 confirm_div(msg_avg,'','','','')

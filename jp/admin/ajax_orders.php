@@ -2749,16 +2749,16 @@ echo json_encode($json_array);
  参数: $_POST['products_id'] 商品id 
  参数: $_POST['new_price'] 价格 
  ----------------------------------------*/
-  $error_str = '';
   $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
   $origin_product = tep_db_fetch_array($origin_product_raw); 
   if ($origin_product) {
-    $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$origin_product['relate_products_id']."'"); 
+    $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$origin_product['relate_products_id']."' and products_bflag='1'"); 
     $relate_product = tep_db_fetch_array($relate_product_raw); 
     if ($relate_product) {
       $new_avg_price = tep_get_avg_by_pid($_POST['products_id']);
       if($_POST['new_price']<$new_avg_price){
-        echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+        echo sprintf(ERROR_AVG_MESSAGE_PRODUCT,tep_get_products_name($_POST['products_id']),number_format($new_avg_price,2));
+        echo sprintf(ERROR_AVG_MESSAGE_END,'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
             .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
       }
     }
@@ -2781,6 +2781,81 @@ echo json_encode($json_array);
     }
   }
   echo $show_error_str;
+} else if ($_GET['action'] == 'check_list_products_avg') {
+/*-----------------------------------------
+ 功能: 检查商品列表里的商品价格是否低于评价士入价格
+ 参数: $_POST['products_id_list'] 商品id列表 
+ 参数: $_POST['product_price_list'] 商品价格列表 
+ ----------------------------------------*/
+  $show_error_str = ''; 
+  if (!empty($_POST['product_id_list'])) {
+    $product_list_array = explode('|||', $_POST['product_id_list']); 
+    $product_price_array = explode('|||', $_POST['product_price_list']); 
+    foreach ($product_list_array as $p_key => $p_value) {
+      $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$p_value."'"); 
+      $origin_product = tep_db_fetch_array($origin_product_raw); 
+      if ($origin_product) {
+        $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$origin_product['relate_products_id']."' and products_bflag='1'"); 
+        $relate_product = tep_db_fetch_array($relate_product_raw); 
+        if ($relate_product) {
+          $new_avg_price = tep_get_avg_by_pid($p_value);
+          if($product_price_array[$p_key]<$new_avg_price){
+            $show_error_str .= sprintf(ERROR_AVG_MESSAGE_PRODUCT,tep_get_products_name($p_value),number_format($new_avg_price,2));
+          }
+        }
+      }
+    }
+  }
+  if ($show_error_str != '') {
+    echo $show_error_str;
+    echo sprintf(ERROR_AVG_MESSAGE_END,'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+         .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
+  }
+} else if ($_GET['action'] == 'check_order_products_avg') {
+/*-----------------------------------------
+ 功能: 检查商品列表里的商品价格是否低于指定利润率
+ 参数: $_POST['products_list_str'] 商品列表 
+ 参数: $_POST['price_list_str'] 商品价格列表 
+ 参数: $_POST['num_list_str'] 商品数量列表 
+ ----------------------------------------*/
+  $show_error_str = ''; 
+  if ($_POST['price_list_str'] != '') {
+    $price_info_array = explode('|||', $_POST['price_list_str']); 
+    $product_info_array = explode('|||', $_POST['products_list_str']); 
+    $num_info_array = explode('|||', $_POST['num_list_str']); 
+    foreach ($product_info_array as $pi_key => $pi_value) {
+      $tmp_check_str = substr($pi_value, 0, 2); 
+      if ($tmp_check_str != 'o_') {
+        $order_products_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$pi_value."'"); 
+        $order_products_res = tep_db_fetch_array($order_products_raw); 
+        $tmp_products_id = $order_products_res['products_id'];  
+      } else {
+        $tmp_products_id = substr($pi_value, 2); 
+      }
+      if (isset($num_info_array[$pi_key])) {
+        if (!empty($num_info_array[$pi_key])) {
+           $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$tmp_products_id."'"); 
+           $origin_product = tep_db_fetch_array($origin_product_raw); 
+           if ($origin_product) {
+              $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$origin_product['relate_products_id']."' and products_bflag='1'"); 
+              $relate_product = tep_db_fetch_array($relate_product_raw); 
+              if ($relate_product) {
+                $new_avg_price = tep_get_avg_by_pid($tmp_products_id);
+                if($price_info_array[$pi_key]<$new_avg_price){
+                  $show_error_str .= sprintf(ERROR_AVG_MESSAGE_PRODUCT,tep_get_products_name($tmp_products_id,$_POST['languages_id'],$_POST['site_id']),number_format($new_avg_price,2));
+               }
+            }
+          }
+
+        }
+      }
+    }
+  }
+  if ($show_error_str != '') {
+    echo $show_error_str;
+    echo sprintf(ERROR_AVG_MESSAGE_END,'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+         .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
+  }
 } else if ($_GET['action'] == 'check_order_products_profit') {
 /*-----------------------------------------
  功能: 检查商品列表里的商品价格是否低于指定利润率
@@ -2837,7 +2912,8 @@ echo json_encode($json_array);
   if($origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['p_relate_id'],$_POST['product_quantity'],$_POST['p_radices']);
     if($_POST['new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+      echo sprintf(ERROR_AVG_MESSAGE_PRODUCT,$_POST['products_name'],number_format($new_avg_price,2));
+      echo sprintf(ERROR_AVG_MESSAGE_END,'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
             .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
     }
   }
@@ -2856,13 +2932,15 @@ echo json_encode($json_array);
   if($origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['products_id'],$_POST['r_quantity'],$_POST['r_radices']);
     if($_POST['relate_new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+      echo sprintf(ERROR_AVG_MESSAGE_PRODUCT,tep_get_products_name($_POST['relate_id']),number_format($new_avg_price,2));
+      echo sprintf(ERROR_AVG_MESSAGE_END,'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
             .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
     }
   }else if($r_origin_product){
     $new_avg_price = tep_get_avg_by_rpid($_POST['relate_id'],$_POST['p_quantity'],$_POST['p_radices']);
     if($_POST['new_price']<$new_avg_price){
-      echo sprintf(ERROR_AVG_MESSAGE,number_format($new_avg_price,2),'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+      echo sprintf(ERROR_AVG_MESSAGE_PRODUCT,tep_get_products_name($_POST['products_id']),number_format($new_avg_price,2));
+      echo sprintf(ERROR_AVG_MESSAGE_END,'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
             .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
     }
   }
