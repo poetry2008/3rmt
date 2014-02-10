@@ -783,6 +783,29 @@
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script>
+var avg_div_flag = 1;
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          clear_confirm_div();
+      }
+    }
+    if (event.which == 13) {
+      <?php //回车?> 
+      if (avg_div_flag == 0 ){
+        avg_div_flag = 1;
+      }else{
+        if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          $('#alert_div_submit').trigger('click');
+          avg_div_flag = 1;
+        }
+      }
+    }
+  });
+});
 function avg_div_checkbox(){
   document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
 }
@@ -840,7 +863,7 @@ function confirm_div_init(hidden_list_str,price_list_str,num_list_str){
     url: 'ajax_preorders.php?action=check_preorder_products_avg',
     type: 'POST',
     dataType: 'text',
-    data: 'language_id=<?php echo $languages_id;?>'+'&site_id=<?php echo $order->Info['site_id'];?>'+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1',
+    data: 'language_id=<?php echo $languages_id;?>'+'&site_id=<?php echo $order->Info['site_id'];?>'+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1&preorder_type=new',
     async: false,
     success: function (msg_info) {
       if (msg_info != '') {
@@ -1054,7 +1077,7 @@ function submit_order_check(products_id,op_id){
                     url: 'ajax_preorders.php?action=check_preorder_products_profit',
                     type: 'POST',
                     dateType: 'text',
-                    data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1',
+                    data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1&preorder_type=new',
                     async: false,
                     success: function (new_msg_info) {
                       if (new_msg_info != '') {
@@ -1079,7 +1102,7 @@ function submit_order_check(products_id,op_id){
                   url: 'ajax_preorders.php?action=check_preorder_products_profit',
                   type: 'POST',
                   dateType: 'text',
-                  data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1',
+                  data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1&preorder_type=new',
                   async: false,
                   success: function (new_msg_info) {
                     if (new_msg_info != '') {

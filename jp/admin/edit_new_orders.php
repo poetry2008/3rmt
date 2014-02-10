@@ -1899,6 +1899,30 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script language="javascript" src="includes/jquery.form.js"></script>
     <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
     <script type="text/javascript"> 
+var avg_div_flag = 1;
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          clear_confirm_div();
+      }
+    }
+    if (event.which == 13) {
+      <?php //回车?> 
+      if (avg_div_flag == 0 ){
+        avg_div_flag = 1;
+      }else{
+        if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          $('#alert_div_submit').trigger('click');
+          avg_div_flag = 1;
+        }
+      }
+    }
+  });
+});
+
 function avg_div_checkbox(){
   document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
 }
@@ -2138,6 +2162,7 @@ function clear_confirm_div(){
       success: function (msg_info) {
         if (msg_info != '') {
           if (confirm(msg_info)) {
+            avg_div_flag = 0;
             confirm_div_init(hidden_list_str,price_list_str,num_list_str);
           }
         } else {

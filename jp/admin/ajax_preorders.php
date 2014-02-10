@@ -1237,6 +1237,9 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     $product_info_array = explode('|||', $_POST['products_list_str']); 
     $num_info_array = explode('|||', $_POST['num_list_str']); 
     foreach ($product_info_array as $pi_key => $pi_value) {
+      if (isset($_POST['preorder_type'])&&$_POST['preorder_type']=='new'&&($price_info_array[$pi_key]==0||$price_info_array[$pi_key]='')){
+        continue;
+      }
       if (isset($_POST['check_type'])) {
         $tmp_products_id = $pi_value; 
       } else {
@@ -1281,6 +1284,9 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     $product_info_array = explode('|||', $_POST['products_list_str']); 
     $num_info_array = explode('|||', $_POST['num_list_str']); 
     foreach ($product_info_array as $pi_key => $pi_value) {
+      if (isset($_POST['preorder_type'])&&$_POST['preorder_type']=='new'&&($price_info_array[$pi_key]==0||$price_info_array[$pi_key]='')){
+        continue;
+      }
       if (isset($_POST['check_type'])) {
         $tmp_products_id = $pi_value; 
       } else {
