@@ -869,7 +869,7 @@ function confirm_div_init(hidden_list_str,price_list_str,num_list_str){
       if (msg_info != '') {
         confirm_div(msg_info);
       } else {
-        edit_order_weight();
+        edit_preorder_weight();
       } 
     }
   }); 
