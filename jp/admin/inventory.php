@@ -141,7 +141,7 @@ require("includes/note_js.php");
            on p.products_id=p2i.products_id left join 
            ".TABLE_PRODUCTS_DESCRIPTION." pd on
            pd.products_id = p.products_id 
-           where p2i.inventory_status not in ('ok','error') 
+           where p2i.inventory_status not in ('ok','up','error') 
            and pd.site_id = '0' 
            order by p2i.cpath ASC";
          $products_split = new splitPageResults($_GET['page'],
