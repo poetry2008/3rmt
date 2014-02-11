@@ -1082,7 +1082,7 @@ function confirm_div(str){
 function save_div_action(){
   if(document.getElementById("alert_div_id").checked){
     clear_confirm_div();
-    edit_preorder_weight();
+    check_mail_product_status('<?php echo $_GET['oID'];?>', '<?php echo $ocertify->npermission;?>');
   }else{
     clear_confirm_div();
   }
@@ -1203,7 +1203,6 @@ function submit_order_check(products_id,op_id){
                     success: function (msg_info) {
                       if (msg_info != '') {
                         if (confirm(msg_info)) {
-                          avg_div_flag = 0;
                           confirm_div_init(hidden_list_str,price_list_str,num_list_str);
                         }
                       } else {

@@ -1922,6 +1922,7 @@ $(document).ready(function() {
     }
   });
 });
+
 function avg_div_checkbox(){
   document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
 }
