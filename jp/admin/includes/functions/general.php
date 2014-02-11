@@ -5586,8 +5586,22 @@ function tep_display_google_results($from_url='', $c_type=false){
       $parent_id = tep_get_category_parent_id($categories_id);
     }
     $inventory_arr = tep_get_product_inventory($pid);
-    $inventory_arr['max'] = tep_inventory_operations($inventory_arr['max'],$pid,0);
-    $inventory_arr['min'] = tep_inventory_operations($inventory_arr['min'],$pid,0);
+    $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
+                             '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
+                             '$unit_price',//商品单价(参数)
+                             '$related_unit_price',//关联商品单价(参数)
+                             '$stocks_average_cost'//实际库存的平均价格(参数)
+                           );
+    if(strlen($inventory_arr['max']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['max']))){
+      $inventory_arr['max'] = tep_inventory_operations($inventory_arr['max'],$pid,0);
+    }else{
+      $inventory_arr['max'] = tep_operations($inventory_arr['max']);
+    }
+    if(strlen($inventory_arr['min']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['min']))){
+      $inventory_arr['min'] = tep_inventory_operations($inventory_arr['min'],$pid,0);
+    }else{
+      $inventory_arr['min'] = tep_operations($inventory_arr['min']);
+    }
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
   }
