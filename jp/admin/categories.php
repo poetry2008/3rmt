@@ -1871,6 +1871,7 @@ function save_div_action(cnt,pid,c_permission,c_type){
   }else if(pid==''&&c_permission==''&&c_type==''){
     document.forms.new_product.submit();
   }else if(pid==''&&cnt==''&&c_type==''){
+    clear_confirm_div();
     save_permission(c_permission)
   }
   }else{
