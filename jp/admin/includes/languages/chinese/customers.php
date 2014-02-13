@@ -88,3 +88,6 @@ define('CUSTOMERS_ORDER_TITLE', '%s的注文履历');
 define('CUSTOMERS_PREORDER_TITLE', '%s的预约履历');
 define('CUSTOMERS_ORDER_ID_TEXT', '订单号');
 define('CUSTOMERS_PREORDER_ID_TEXT', '预约号');
+define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英文字母（abcdef...z）需要至少1个。请用英文字母加数字的组合进行设置。</font>');
+define('ENTRY_PASSWORD_IS_ALPHA', '<font color="#FF0000">数字（0123456789）需要至少1个。请用英文字母加数字的组合进行设置。</font>');
+define('ENTRY_PASSWORD_IS_NUM_ALPHA', '<font color="#FF0000">请用英文字母加数字的组合进行设置。</font>');

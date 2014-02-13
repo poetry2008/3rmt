@@ -24,6 +24,8 @@
       $site_arr = $userslist['site_permission'];
    }
       $site_array = explode(',',$site_arr);
+   $customers_array = array('customers_firstname','customers_lastname');
+   $customers_strlen = tep_get_column_len(TABLE_CUSTOMERS,$customers_array);
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
 /*----------------------------
@@ -34,12 +36,12 @@
         tep_isset_eof(); 
         $customers_firstname     = tep_db_prepare_input($_POST['customers_firstname']);
         $customers_lastname      = tep_db_prepare_input($_POST['customers_lastname']);
-        $customers_firstname_f   = tep_db_prepare_input($_POST['customers_firstname_f']);
-        $customers_lastname_f    = tep_db_prepare_input($_POST['customers_lastname_f']);
+        $customers_firstname_f   = htmlspecialchars(tep_db_prepare_input($_POST['customers_firstname_f']));
+        $customers_lastname_f    = htmlspecialchars(tep_db_prepare_input($_POST['customers_lastname_f']));
         $customers_email_address = tep_db_prepare_input($_POST['customers_email_address']);
         $customers_email_address = str_replace("\xe2\x80\x8b", '',$customers_email_address);
         $customers_telephone     = tep_db_prepare_input($_POST['customers_telephone']);
-        $customers_fax           = tep_db_prepare_input($_POST['customers_fax']);
+        $customers_fax           = htmlspecialchars(tep_db_prepare_input($_POST['customers_fax']));
         $customers_newsletter    = tep_db_prepare_input($_POST['customers_newsletter']);
         $customers_gender        = tep_db_prepare_input($_POST['customers_gender']);
         $customers_dob           = tep_db_prepare_input($_POST['customers_dob']);
@@ -59,11 +61,37 @@
         }else {
 	$reset_flag = 0;
         }
-        $customers_sql = "insert into ".TABLE_CUSTOMERS."
-          (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk,is_active,is_calc_quantity,point)
-          values
-          (null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','".$reset_flag."','".$reset_success."','".$_POST['site_id']."','".$customers_password."','".$origin_password."','".$customers_guest_chk."','1','".$customers_is_calc_quantity."','".(int)$point."')";
-        tep_db_query($customers_sql);
+        $sql_data_array = array(
+                  'customers_id' => null,
+                  'customers_firstname' => mb_substr($customers_firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                  'customers_lastname'  => mb_substr($customers_lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
+                  'customers_firstname_f' => $customers_firstname_f,
+                  'customers_lastname_f'  => $customers_lastname_f,
+                  'customers_email_address' => $customers_email_address,
+                  'customers_telephone'   => $customers_telephone,
+                  'customers_fax' => $customers_fax,
+                  'customers_newsletter' => $customers_newsletter,
+                  'customers_gender' => $customers_gender,
+                  'customers_dob' => $customers_dob,
+                  'is_seal' => $customers_is_seal,
+                  'pic_icon' => $customers_pic_icon,
+                  'is_send_mail' => $customers_is_send_mail,
+                  'send_mail_time' => time(),
+                  'reset_flag' => $reset_flag,
+                  'reset_success' => $reset_success,
+                  'site_id' => $_POST['site_id'],
+                  'customers_password' => $customers_password,
+                  'origin_password' => $origin_password,
+                  'customers_guest_chk' => $customers_guest_chk,
+                  'is_active' => '1',
+                  'is_calc_quantity' => $customers_is_calc_quantity,
+                  'point' => (int)$point
+            );
+        //$customers_sql = "insert into ".TABLE_CUSTOMERS." 
+       // (customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,customers_telephone,customers_fax,customers_newsletter,customers_gender,customers_dob,is_seal,pic_icon,is_send_mail,send_mail_time,reset_flag,reset_success,site_id,customers_password,origin_password,customers_guest_chk,is_active,is_calc_quantity,point) values 
+        //(null,'".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$customers_telephone."','".$customers_fax."','".$customers_newsletter."','".$customers_gender."','".$customers_dob."','".$customers_is_seal."','".$customers_pic_icon."','".$customers_is_send_mail."','".time()."','".$reset_flag."','".$reset_success."','".$_POST['site_id']."','".$customers_password."','".$origin_password."','".$customers_guest_chk."','1','".$customers_is_calc_quantity."','".(int)$point."')";
+       // tep_db_query($customers_sql);
+        tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
         $customer_id = tep_db_insert_id();
         $ac_email_srandom = md5(time().$customer_id.$customers_email_address);
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customer_id."'");
@@ -107,12 +135,12 @@
         $customers_id            = tep_db_prepare_input($_GET['cID']);
         $customers_firstname     = tep_db_prepare_input($_POST['customers_firstname']);
         $customers_lastname      = tep_db_prepare_input($_POST['customers_lastname']);
-        $customers_firstname_f   = tep_db_prepare_input($_POST['customers_firstname_f']);
-        $customers_lastname_f    = tep_db_prepare_input($_POST['customers_lastname_f']);
+        $customers_firstname_f   = htmlspecialchars(tep_db_prepare_input($_POST['customers_firstname_f']));
+        $customers_lastname_f    = htmlspecialchars(tep_db_prepare_input($_POST['customers_lastname_f']));
         $customers_email_address = tep_db_prepare_input($_POST['customers_email_address']);
         $customers_email_address = str_replace("\xe2\x80\x8b", '',$customers_email_address);
         $customers_telephone     = tep_db_prepare_input($_POST['customers_telephone']);
-        $customers_fax           = tep_db_prepare_input($_POST['customers_fax']);
+        $customers_fax           = htmlspecialchars(tep_db_prepare_input($_POST['customers_fax']));
         $customers_newsletter    = tep_db_prepare_input($_POST['customers_newsletter']);
         $customers_gender        = tep_db_prepare_input($_POST['customers_gender']);
         $customers_dob           = tep_db_prepare_input($_POST['customers_dob']);
@@ -128,8 +156,8 @@
 	$reset_flag = 0;
         }
 
-        $sql_data_array = array('customers_firstname'     => $customers_firstname,
-                                'customers_lastname'      => $customers_lastname,
+        $sql_data_array = array('customers_firstname'     => mb_substr($customers_firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                'customers_lastname'      => mb_substr($customers_lastname,0,$customers_strlen['customers_firstname'],'utf-8'),
                                 'customers_firstname_f'   => $customers_firstname_f,
                                 'customers_lastname_f'    => $customers_lastname_f,
                                 'customers_email_address' => $customers_email_address,
@@ -312,7 +340,8 @@ function check_password(value, c_permission){
  if(customers_email_address_value != post_email){
  $.ajax({
  url: 'ajax.php?action=check_email',
- data: {post_email:post_email,post_site:post_site} ,
+ data:
+ {post_email:post_email,post_site:post_site,password:password,once_again_password:once_again_password} ,
  type: 'POST',
  dataType: 'text',
  async : false,
@@ -328,11 +357,17 @@ function check_password(value, c_permission){
    }else{
      check_email = 'false';
    }
+   if(data_info[2] == 1){
+     error_password = 'true';
+   }else{
+     error_password = 'false';
+   }
    }
  });
  }else{
  var email_error = 'false';
  var check_email = 'false';
+ var error_password = 'false';
  }
  customers_firstname = $("#customers_firstname").val();
  customers_lastname = $("#customers_lastname").val();
@@ -380,7 +415,16 @@ if(check_is_active == 1){
  }
  if(check_is_active == 1 && password != once_again_password){
     $("#error_info_o").html("<?php echo TEXT_ERROR_INFO;?>"); 
+    document.getElementById("password").value = ""; 
+    document.getElementById("once_again_password").value = ""; 
     check_error = 'true';
+  }else if(error_password == 'true'){
+    $("#error_info_o").html(data_info[3]); 
+    document.getElementById("password").value = ""; 
+    document.getElementById("once_again_password").value = ""; 
+    check_error = 'true';
+  }else if(password == ''){
+    $("#error_info_o").html("<?php echo TEXT_ERROR_INFO;?>"); 
   }else{
     $("#error_info").html(""); 
   }
@@ -1786,11 +1830,11 @@ $(document).ready(function() {
           );
        $customers_info[] = array(
            'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
-           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').htmlspecialchars($customers['customers_lastname']).(($customers['is_active'] != '1')?'</font>':'') 
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').htmlspecialchars(html_entity_decode($customers['customers_lastname'])).(($customers['is_active'] != '1')?'</font>':'') 
           );
         $customers_info[] = array(
            'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',
-           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').htmlspecialchars($customers['customers_firstname']).(($customers['is_active'] != '1')?'</font>':'') 
+           'text'   => (($customers['is_active'] != '1')?'<font color="#999999">':'').htmlspecialchars(html_entity_decode($customers['customers_firstname'])).(($customers['is_active'] != '1')?'</font>':'') 
           );
        $customers_info[] = array(
            'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action', 'current_cuid')).'current_cuid='.$customers['customers_id']).'\';"',

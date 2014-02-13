@@ -396,19 +396,20 @@
     参数: $parameters(string) 其它参数   
     返回值: 生成隐藏的input的html(string) 
 ------------------------------------ */
-  function tep_draw_hidden_field($name, $value = '', $parameters = '') {
+  function tep_draw_hidden_field($name, $value = '', $parameters = '',$stripslashes = true) {
     $field = '<input type="hidden" name="' . tep_output_string($name) . '"';
 
     if (tep_not_null($value)) {
       $field .= ' value="' . tep_output_string($value) . '"';
-    } elseif (isset($GLOBALS[$name])) {
+    } elseif (isset($GLOBALS[$name]) && $stripslashes == true) {
       $field .= ' value="' . tep_output_string(stripslashes($GLOBALS[$name])) . '"';
+    }elseif (isset($GLOBALS[$name]) && $stripslashes == false){
+      $field .= ' value="' . tep_output_string($GLOBALS[$name]) . '"';
     }
 
     if (tep_not_null($parameters)) $field .= ' ' . $parameters;
 
     $field .= '>';
-
     return $field;
   }
 

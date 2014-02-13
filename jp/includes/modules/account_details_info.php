@@ -538,29 +538,29 @@ $(document).ready(function(){
 
   // firstname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_firstname'],false,true);
+      $a_value = htmlspecialchars(tep_output_string($account['customers_firstname'],false,true));
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
-          $a_value = tep_draw_input_field('firstname','','class="input_text"') . ENTRY_FIRST_NAME_ERROR;
+          $a_value = tep_draw_input_field('firstname','',' class="input_text"') . ENTRY_FIRST_NAME_ERROR;
       } else {
-          $a_value = $firstname .  tep_draw_hidden_field('firstname','','class="input_text"');
+          $a_value = htmlspecialchars($firstname) .  tep_draw_hidden_field('firstname','','class="input_text"',false);
       }
   } else {
-      $a_value = tep_draw_input_field('firstname', $account['customers_firstname'],'class="input_text"') . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname', $account['customers_firstname'],' class="input_text"') . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
   // lastname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_lastname'],false,true);
+      $a_value = htmlspecialchars(tep_output_string($account['customers_lastname'],false,true));
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
           $a_value = tep_draw_input_field('lastname','','class="input_text"') . ENTRY_LAST_NAME_ERROR;
       } else {
-          $a_value = $lastname . tep_draw_hidden_field('lastname','','class="input_text"');
+          $a_value = htmlspecialchars($lastname) .  tep_draw_hidden_field('lastname','','class="input_text"',false);
       }
   } else {
-      $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],'class="input_text"') . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],' class="input_text"') . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -577,7 +577,7 @@ $(document).ready(function(){
       } elseif ($entry_guest_not_active == true) {
           $a_value = tep_draw_input_field('email_address','','class="input_text"') .  ENTRY_GUEST_EMAIL_NOT_ACTIVE;
       } else {
-          $a_value = $email_address . tep_draw_hidden_field('email_address','','class="input_text"');
+          $a_value = $email_address .  tep_draw_hidden_field('email_address','','class="input_text"',false);
       }
   } else {
       $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],'class="input_text"') . ENTRY_EMAIL_ADDRESS_TEXT;

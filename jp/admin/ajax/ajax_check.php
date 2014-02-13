@@ -48,15 +48,41 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }
 }else if(isset($_GET['action']) && $_GET['action'] == 'check_email'){
   require('includes/step-by-step/new_application_top.php');
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CUSTOMERS);
   $check_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address ='".$_POST['post_email']."' and site_id ='".$_POST['post_site']."'");
   $check_num = tep_db_num_rows($check_query);
   tep_db_free_result($check_query);
+  $hicuizd = trim($_POST['post_email']);
+  $hicuizd = preg_match('/\\\/',$hicuizd);
   if(!tep_validate_email($_POST['post_email'])){
      $check_email_error = '1';
+  }else if($hicuizd){
+     $check_email_error = '1'; 
   }else{
      $check_email_error = '0';
   }
-  echo  $check_email_error.','.$check_num;
+  if((!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $_POST['password'])) && $_POST['password'] != ''){
+      $error_password = '1'; 
+      if (preg_match('/^[0-9]+$/', $password)) {
+             $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM;
+      } else if (preg_match('/^[a-zA-Z0-9]+$/', $password)) {
+             $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA;
+      }else{
+            $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM_ALPHA;
+      }
+  }else if((!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $_POST['once_again_password']))&& $_POST['once_again_password'] != ''){
+      $error_password = '1'; 
+      if (preg_match('/^[0-9]+$/', $confirmation)) {
+            $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM;
+      } else if (preg_match('/^[a-zA-Z0-9]+$/', $confirmation)) {
+            $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA;
+      }else{
+            $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM_ALPHA;
+      }
+  }else{
+      $error_password = '0'; 
+  }
+  echo $check_email_error.','.$check_num.','.$error_password.','.$entry_password_error_msg;
 }else if(isset($_GET['action']) && $_GET['action'] == 'check_email_exists'){
   /* -----------------------------------------------------
     功能: 检测指定网站下的电子邮箱是否存在 

@@ -14,7 +14,9 @@
     while (list($key, $value) = each($ar)) {
       if (is_array($value)) {
         do_magic_quotes_gpc($value);
-      } else {
+      }else if(($key == 'email_address')&& ($_SERVER['PHP_SELF'] == '/'.FILENAME_ACCOUNT_EDIT || $_SERVER['PHP_SELF'] == '/'.FILENAME_CREATE_ACCOUNT_PROCESS || $_SERVER['PHP_SELF'] == '/'.FILENAME_CREATE_ACCOUNT)){
+        $ar[$key] = $value;
+      }else {
         $ar[$key] = addslashes($value);
       }
     }
@@ -32,7 +34,6 @@
     do_magic_quotes_gpc($_POST);
     do_magic_quotes_gpc($HTTP_COOKIE_VARS);
   }
-
   if (!function_exists('array_splice')) {
 /* -------------------------------------
     功能: 在数组中根据条件删除一段值 
