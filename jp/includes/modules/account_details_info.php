@@ -542,7 +542,9 @@ $(document).ready(function(){
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
           $a_value = tep_draw_input_field('firstname','',' class="input_text"') . ENTRY_FIRST_NAME_ERROR;
-      } else {
+      }else if($strlen_firstname_error == true){
+          $a_value = tep_draw_input_field('firstname','',' class="input_text"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);
+      }else {
           $a_value = htmlspecialchars($firstname) .  tep_draw_hidden_field('firstname','','class="input_text"',false);
       }
   } else {
@@ -556,7 +558,9 @@ $(document).ready(function(){
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
           $a_value = tep_draw_input_field('lastname','','class="input_text"') . ENTRY_LAST_NAME_ERROR;
-      } else {
+      }else if($strlen_lastname_error == true){
+          $a_value = tep_draw_input_field('lastname','','class="input_text"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
+      }else {
           $a_value = htmlspecialchars($lastname) .  tep_draw_hidden_field('lastname','','class="input_text"',false);
       }
   } else {

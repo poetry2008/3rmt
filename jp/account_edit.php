@@ -72,14 +72,20 @@ case 'per':
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
-  } else {
+  }else if(mb_strlen($firstname,'utf8') > $customers_strlen['customers_firstname']){
+    $error = true;
+    $strlen_firstname_error = true;
+  }else {
     $entry_firstname_error = false;
   }
 
   if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_lastname_error = true;
-  } else {
+  }else if(mb_strlen($lastname,'utf8') > $customers_strlen['customers_lastname']){
+    $error = true;
+    $strlen_lastname_error = true;
+  }else {
     $entry_lastname_error = false;
   }
 
@@ -234,20 +240,24 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if (!isset($_POST['state'])) $_POST['state'] =NULL;
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
-
   $error = false; // reset error flag
-
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
-  } else {
+  }else if(mb_strlen($firstname,'utf8') > $customers_strlen['customers_firstname']){
+    $error = true;
+    $strlen_firstname_error = true;
+  }else {
     $entry_firstname_error = false;
   }
 
   if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_lastname_error = true;
-  } else {
+  }else if(mb_strlen($lastname,'utf8') > $customers_strlen['customers_lastname']){
+    $error = true;
+    $strlen_lastname_error = true;
+  }else {
     $entry_lastname_error = false;
   }
   if (strlen($email_address) < ENTRY_EMAIL_ADDRESS_MIN_LENGTH) {

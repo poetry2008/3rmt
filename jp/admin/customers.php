@@ -386,11 +386,17 @@ if(check_is_active == 1){
  if(customers_firstname == ''){
     $("#customers_firstname_error").html("<?php echo TEXT_ERROR_NULL;?>");   
     check_error = 'true';
+ }else if(<?php echo $customers_strlen['customers_firstname']; ?> < customers_firstname.length){
+    $("#customers_firstname_error").html("<?php echo sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);?>");   
+    check_error = 'true';
  }else{
     $("#customers_firstname_error").html("");   
  }
  if(customers_lastname == ''){
     $("#customers_lastname_error").html("<?php echo TEXT_ERROR_NULL;?>");
+    check_error = 'true';
+ }else if(<?php echo $customers_strlen['customers_lastname']; ?> < customers_lastname.length){
+    $("#customers_lastname_error").html("<?php echo sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);?>");
     check_error = 'true';
  }else{
     $("#customers_lastname_error").html("");

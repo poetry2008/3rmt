@@ -44,18 +44,23 @@
   $guestchk       = tep_db_prepare_input($_POST['guestchk']);
   $referer        = tep_db_prepare_input($_SESSION['referer']);
   $error = false; // reset error flag
-
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
-  } else {
+  }else if(mb_strlen($firstname,'utf8') > $customers_strlen['customers_firstname']){
+    $error = true;
+    $strlen_firstname_error = true;
+  }else {
     $entry_firstname_error = false;
   }
 
   if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_lastname_error = true;
-  } else {
+  }else if(mb_strlen($lastname,'utf8') > $customers_strlen['customers_lastname']){
+    $error = true;
+    $strlen_lastname_error = true;
+  }else {
     $entry_lastname_error = false;
   }
 

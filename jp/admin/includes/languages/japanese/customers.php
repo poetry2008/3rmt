@@ -91,3 +91,4 @@ define('CUSTOMERS_PREORDER_ID_TEXT', '予約番号');
 define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_ALPHA', '<font color="#FF0000">数字（0123456789）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM_ALPHA', '<font color="#FF0000">英字と数字を組み合わせて設定してください。</font>');
+define('ERROR_FIRST_ITEM_TEXT_NUM_MAX','&nbsp;&nbsp;<font color=\'red\'>文字数は%sを超えてはいけません。</font>');
