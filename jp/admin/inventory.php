@@ -141,7 +141,7 @@ require("includes/note_js.php");
            on p.products_id=p2i.products_id left join 
            ".TABLE_PRODUCTS_DESCRIPTION." pd on
            pd.products_id = p.products_id 
-           where p2i.inventory_status not in ('ok','error') 
+           where p2i.inventory_status not in ('ok','up','error') 
            and pd.site_id = '0' 
            order by p2i.cpath ASC";
          $products_split = new splitPageResults($_GET['page'],
@@ -171,24 +171,6 @@ require("includes/note_js.php");
           href="categories.php?cPath=<?php echo $link_cpath;?>&pID=<?php
           echo $link_product_id;?>">
           <?php echo $products['products_name'];?></a>&nbsp;&nbsp;
-          <?php
-            //关联商品
-            $relate_products_id = $products['relate_products_id'];
-            if($relate_products_id){
-            $relate_inv = tep_get_inventory($relate_products_id);
-            krsort($relate_inv['cpath']);
-            $link_relate = implode('_',$relate_inv['cpath']);
-          ?>
-          <a class="relate_product_link"
-          href="categories.php?cPath=<?php echo $link_relate;?>&pID=<?php
-          echo $relate_products_id;?>&action=new_product_preview&read=only">
-            <img src="images/icons/arrow_right.gif"/>
-          </a>&nbsp;&nbsp;
-          <?php
-            }else{
-            ?>
-            <img src="images/icons/arrow_right.gif"/>
-            <?php }?>
           </td>
           <?php
   //架空

@@ -783,6 +783,101 @@
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
 <script>
+var avg_div_flag = 1;
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          clear_confirm_div();
+      }
+    }
+    if (event.which == 13) {
+      <?php //回车?> 
+      if (avg_div_flag == 0 ){
+        avg_div_flag = 1;
+      }else{
+        if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          $('#alert_div_submit').trigger('click');
+          avg_div_flag = 1;
+        }
+      }
+    }
+  });
+});
+function avg_div_checkbox(){
+  document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
+}
+function confirm_div(str){
+  var ClassName = "thumbviewbox";
+  var allheight = document.body.scrollHeight;
+  //ground div 
+  var element_ground = document.createElement('div');
+  element_ground.setAttribute('class',ClassName);
+  element_ground.setAttribute('id','element_ground_close');
+  element_ground.style.cssText = 'position: absolute; top: 0px; left: 0; z-index: 150;background-color: rgb(0, 0, 0); opacity: 0.01; width:100%; height: '+allheight+'px;';
+  element_ground.style.filter="alpha(opacity=1)";
+  // text str 
+  var element_boder = document.createElement('div');
+  element_boder.setAttribute('class',ClassName);
+  element_boder.setAttribute('id','element_boder_close');
+  element_boder.style.cssText = 'margin: 0 auto; line-height: 1.4em;width:500px;;background-color: rgb(255,255,255)';
+  ok_input_html =  '<input type="button" id="alert_div_submit" onclick=\'save_div_action()\' value="'+'<?php echo DIV_TEXT_OK;?>'+'">';
+  clear_input_html = '<input type="button" onclick="clear_confirm_div()" value="'+'<?php echo DIV_TEXT_CLEAR;?>'+'">';
+  alert_div_html = '<div style="padding:10px;text-align:left">'+str+'</div>';
+  alert_div_html = alert_div_html+'<div style="text-align:center">'+ok_input_html+'&nbsp;&nbsp;'+clear_input_html+'</div>'
+  element_boder.innerHTML = '<div style="padding:10px;text-align:left">'+alert_div_html+'</div>';
+
+  //center div 
+  var element = document.createElement('div');
+  element.appendChild(element_boder);
+  element.setAttribute('class',ClassName);
+  element.setAttribute('id','element_close');
+  element.style.cssText = 'width:100%;position:fixed;z-index:151;text-align:center;line-height:0;top:25%';
+
+
+// add div 
+  document.body.appendChild(element_ground);
+  document.body.appendChild(element);
+  var Apdiv=document.getElementById("alert_div_id");
+  Apdiv.focus();
+}
+function save_div_action(){
+  if(document.getElementById("alert_div_id").checked){
+    clear_confirm_div();
+    edit_preorder_weight();
+  }else{
+    clear_confirm_div();
+  }
+}
+
+function clear_confirm_div(){
+  var em_close=document.getElementById("element_ground_close");
+  em_close.parentNode.removeChild(em_close);
+  var em_close=document.getElementById("element_close");
+  em_close.parentNode.removeChild(em_close);
+}
+function confirm_div_init(hidden_list_str,price_list_str,num_list_str){
+  $.ajax({
+    url: 'ajax_preorders.php?action=check_preorder_products_avg',
+    type: 'POST',
+    dataType: 'text',
+    data: 'language_id=<?php echo $languages_id;?>'+'&site_id=<?php echo $order->Info['site_id'];?>'+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1&preorder_type=new',
+    async: false,
+    success: function (msg_info) {
+      if (msg_info != '') {
+        confirm_div(msg_info);
+      } else {
+        edit_preorder_weight();
+      } 
+    }
+  }); 
+}
+function edit_preorder_weight(){
+  createPreorderChk('<?php echo $ocertify->npermission;?>');
+  document.edit_order.submit();
+}
 var session_orders_id = '<?php echo $_GET['oID'];?>';
 <?php //把值放入session里?>
 function orders_session(type,value){
@@ -982,23 +1077,20 @@ function submit_order_check(products_id,op_id){
                     url: 'ajax_preorders.php?action=check_preorder_products_profit',
                     type: 'POST',
                     dateType: 'text',
-                    data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1',
+                    data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1&preorder_type=new',
                     async: false,
                     success: function (new_msg_info) {
                       if (new_msg_info != '') {
                         if (confirm(new_msg_info)) {
-                          createPreorderChk('<?php echo $ocertify->npermission;?>');
-                          document.edit_order.submit();
+                          confirm_div_init(hidden_list_str,price_list_str,num_list_str);
                         } 
                       } else {
-                        createPreorderChk('<?php echo $ocertify->npermission;?>');
-                        document.edit_order.submit();
+                        confirm_div_init(hidden_list_str,price_list_str,num_list_str);
                       }
                     }
                   });  
                 } else {
-                  createPreorderChk('<?php echo $ocertify->npermission;?>');
-                  document.edit_order.submit();
+                  edit_preorder_weight();
                 }
               }
             }else{
@@ -1010,23 +1102,21 @@ function submit_order_check(products_id,op_id){
                   url: 'ajax_preorders.php?action=check_preorder_products_profit',
                   type: 'POST',
                   dateType: 'text',
-                  data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1',
+                  data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&check_type=1&preorder_type=new',
                   async: false,
                   success: function (new_msg_info) {
                     if (new_msg_info != '') {
                       if (confirm(new_msg_info)) {
-                        createPreorderChk('<?php echo $ocertify->npermission;?>');
-                        document.edit_order.submit();
+                        avg_div_flag = 0;
+                        confirm_div_init(hidden_list_str,price_list_str,num_list_str);
                       } 
                     } else {
-                      createPreorderChk('<?php echo $ocertify->npermission;?>');
-                      document.edit_order.submit();
+                      confirm_div_init(hidden_list_str,price_list_str,num_list_str);
                     }
                   }
                 });
               } else {
-                createPreorderChk('<?php echo $ocertify->npermission;?>');
-                document.edit_order.submit();
+                edit_preorder_weight();
               }
             }
           }

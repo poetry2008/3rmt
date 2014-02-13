@@ -640,8 +640,8 @@ if ($_GET['action'] == 'show_category_info') {
 
   
   if(empty($site_id)) {
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format($inventory['max']).'&rarr;':'').(($isstaff)?$inventory['max']:tep_draw_input_field('inventory_max',$inventory['max'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format($inventory['min']).'&rarr;':'').(($isstaff)?$inventory['min']:tep_draw_input_field('inventory_min',$inventory['min'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
   }
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -714,8 +714,8 @@ if ($_GET['action'] == 'show_category_info') {
     
 
     if(empty($site_id)){
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($inventory['max']).'&rarr;':'').(($isstaff)?$inventory['max']:tep_draw_input_field('relate_inventory_max',$inventory['max'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($inventory['min']).'&rarr;':'').(($isstaff)?$inventory['min']:tep_draw_input_field('relate_inventory_min',$inventory['min'],'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')).'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
     }
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';

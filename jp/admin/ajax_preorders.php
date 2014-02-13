@@ -1224,6 +1224,53 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
  参数: $_POST['is_customized_fee'] 信息 
  ----------------------------------------*/
   echo tep_check_edit_preorder_variable_data($_POST['o_id'], $_POST['c_comments'], $_POST['c_title'], $_POST['ensure_date'], $_POST['c_status_id'], $_POST['c_name_info'], $_POST['c_mail_info'], $_POST['c_payment'], $_POST['is_customized_fee']);
+} else if ($_GET['action'] == 'check_preorder_products_avg') {
+/*-----------------------------------------
+ 功能: 检查商品列表里的商品价格是否低于指定利润率
+ 参数: $_POST['products_list_str'] 商品列表 
+ 参数: $_POST['price_list_str'] 商品价格列表 
+ 参数: $_POST['num_list_str'] 商品数量列表 
+ ----------------------------------------*/
+  $show_error_str = ''; 
+  if ($_POST['price_list_str'] != '') {
+    $price_info_array = explode('|||', $_POST['price_list_str']); 
+    $product_info_array = explode('|||', $_POST['products_list_str']); 
+    $num_info_array = explode('|||', $_POST['num_list_str']); 
+    foreach ($product_info_array as $pi_key => $pi_value) {
+      if (isset($_POST['preorder_type'])&&$_POST['preorder_type']=='new'&&($price_info_array[$pi_key]==0||$price_info_array[$pi_key]='')){
+        continue;
+      }
+      if (isset($_POST['check_type'])) {
+        $tmp_products_id = $pi_value; 
+      } else {
+        $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_products_id = '".$pi_value."'"); 
+        $preorder_products_res = tep_db_fetch_array($preorder_products_raw); 
+        $tmp_products_id = $preorder_products_res['products_id']; 
+      }
+      if (isset($num_info_array[$pi_key])) {
+        if (!empty($num_info_array[$pi_key])) {
+           $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$tmp_products_id."'"); 
+           $origin_product = tep_db_fetch_array($origin_product_raw); 
+           if ($origin_product) {
+              $relate_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$origin_product['relate_products_id']."' and products_bflag='1'"); 
+              $relate_product = tep_db_fetch_array($relate_product_raw); 
+              if ($relate_product) {
+                $new_avg_price = tep_get_avg_by_pid($tmp_products_id);
+                if($price_info_array[$pi_key]<$new_avg_price){
+                  $show_error_str .= sprintf(ERROR_AVG_MESSAGE_PRODUCT,tep_get_products_name($tmp_products_id,$_POST['languages_id'],$_POST['site_id']),number_format($new_avg_price,2));
+               }
+            }
+          }
+
+        }
+      }
+    }
+  }
+  if ($show_error_str != '') {
+    echo $show_error_str;
+    echo sprintf(ERROR_AVG_MESSAGE_END,'<input type="checkbox" style="vertical-align:middle" id="alert_div_id">'
+         .'<span onclick="avg_div_checkbox()" style="vertical-align:middle" >'.ERROR_AVG_MESSAGE_CHECKBOX_STR.'</span>');
+  }
 } else if ($_GET['action'] == 'check_preorder_products_profit') {
 /*-----------------------------------------
  功能: 检查商品列表里的商品价格是否低于指定利润率
@@ -1237,6 +1284,9 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     $product_info_array = explode('|||', $_POST['products_list_str']); 
     $num_info_array = explode('|||', $_POST['num_list_str']); 
     foreach ($product_info_array as $pi_key => $pi_value) {
+      if (isset($_POST['preorder_type'])&&$_POST['preorder_type']=='new'&&($price_info_array[$pi_key]==0||$price_info_array[$pi_key]='')){
+        continue;
+      }
       if (isset($_POST['check_type'])) {
         $tmp_products_id = $pi_value; 
       } else {

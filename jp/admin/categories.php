@@ -219,8 +219,6 @@ if (isset($_GET['action']) && $_GET['action']) {
     //指定%的情况下，计算价格
     $HTTP_POST_VARS['products_price_offset'] = SBC2DBC($HTTP_POST_VARS['products_price_offset']);
     $update_sql_data = array(
-        'max_inventory'             => tep_db_prepare_input($_POST['inventory_max']),
-        'min_inventory'             => tep_db_prepare_input($_POST['inventory_min']),
         'products_real_quantity'    => tep_db_prepare_input($_POST['products_real_quantity']),
         'products_virtual_quantity' => tep_db_prepare_input($_POST['products_virtual_quantity']),
         'products_price'            => tep_get_bflag_by_product_id($products_id) ? 0 - abs(tep_db_prepare_input($_POST['products_price'])): abs(tep_db_prepare_input($_POST['products_price'])));
@@ -230,8 +228,6 @@ if (isset($_GET['action']) && $_GET['action']) {
       $HTTP_POST_VARS['relate_products_price_offset'] = SBC2DBC($HTTP_POST_VARS['relate_products_price_offset']);
       // jiakong
       $relate_update_sql_data = array(
-          'max_inventory'             => tep_db_prepare_input($_POST['relate_inventory_max']),
-          'min_inventory'             => tep_db_prepare_input($_POST['relate_inventory_min']),
           'products_real_quantity'    => tep_db_prepare_input($_POST['relate_products_real_quantity']),
           'products_virtual_quantity' => tep_db_prepare_input($_POST['relate_products_virtual_quantity']),
           'products_price'            => tep_get_bflag_by_product_id($relate_products_id) ? 0 - abs(tep_db_prepare_input($_POST['relate_products_price'])): abs(tep_db_prepare_input($_POST['relate_products_price'])));
@@ -373,7 +369,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     $max_inventory = $_POST['max_inventory'];
     $min_inventory = $_POST['min_inventory'];
     if($max_inventory&&
-        $max_inventory<$min_inventory){
+        tep_inventory_operations($max_inventory,$products_id,0)<tep_inventory_operations($min_inventory,$products_id,0)){
       $error = true;
     }
     if($error){
@@ -735,9 +731,8 @@ if (isset($_GET['action']) && $_GET['action']) {
       $product_id = tep_db_prepare_input($products_value);
       $product_categories = tep_generate_category_path($product_id, 'product');
 
-      for ($i = 0, $n = sizeof($product_categories); $i < $n; $i++) {
-        tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" . tep_db_input($product_categories[$i][sizeof($product_categories[$i])-1]['id']) . "'");
-      }
+      //删除当前页面的产品连接
+      tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" .  tep_db_input($current_category_id). "'");
 
       $product_categories_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
       $product_categories = tep_db_fetch_array($product_categories_query);
@@ -923,6 +918,12 @@ if (isset($_GET['action']) && $_GET['action']) {
     $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
     //如果实际库存为空时,默认为0
     $_POST['products_real_quantity'] = $_POST['products_real_quantity'] == '' ? 0 : $_POST['products_real_quantity'];
+    //如果最大库存为空时,默认为0
+    $_POST['inventory_max'] = $_POST['inventory_max'] == '' ? 0 : $_POST['inventory_max'];
+    $inventory_max = $_POST['inventory_max'];
+    //如果最小库存为空时,默认为0
+    $_POST['inventory_min'] = $_POST['inventory_min'] == '' ? 0 : $_POST['inventory_min'];
+    $inventory_min = $_POST['inventory_min'];
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
     else $site_arr="";
     forward401Unless(editPermission($site_arr, $site_id));
@@ -991,7 +992,9 @@ if (isset($_GET['action']) && $_GET['action']) {
 
 
 
-
+      //把最大库存、最小库存放入数组，以备保存到数据库
+      $sql_data_array['max_inventory'] = tep_db_prepare_input($inventory_max);
+      $sql_data_array['min_inventory'] = tep_db_prepare_input($inventory_min);
       if ($_GET['action'] == 'insert_product') {
         $sql_data_array['products_real_quantity'] = tep_db_prepare_input($_POST['products_real_quantity']);
         if ($site_id == 0||(isset($_POST['create_type'])&&$_POST['create_type']=='sub_site')) {
@@ -1774,6 +1777,117 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
 <script language="javascript">
+function inventory_operations(num){
+
+  var inventory_contents_value;
+  if(num == 1){
+
+    inventory_contents_value = $("#max_inventory").val();
+  }else{
+
+    inventory_contents_value = $("#min_inventory").val();
+  }
+  inventory_contents_value = inventory_contents_value.replace(/\+/g,'<<<');
+
+  $.ajax({
+    url: 'ajax_orders.php?action=inventory_operations',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'inventory_contents='+inventory_contents_value+'&pid=<?php echo $_GET['pID'];?>&site_id=<?php echo $_GET['site_id'];?>', 
+    async: false,
+    success: function(msg) {
+
+      if(num == 1){
+
+        $("#max_inventory_contents").val(msg);
+      }else{
+
+        $("#min_inventory_contents").val(msg);
+      }
+    }
+  });
+}
+function avg_div_checkbox(){
+  document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
+}
+function confirm_div(str,cnt,pid,c_permission,c_type){
+  var ClassName = "thumbviewbox";
+  var allheight = document.body.scrollHeight;
+  //ground div 
+  var element_ground = document.createElement('div');
+  element_ground.setAttribute('class',ClassName);
+  element_ground.setAttribute('id','element_ground_close');
+  element_ground.style.cssText = 'position: absolute; top: 0px; left: 0; z-index: 150;background-color: rgb(0, 0, 0); opacity: 0.01; width:100%; height: '+allheight+'px;';
+  element_ground.style.filter="alpha(opacity=1)";
+  // text str 
+  var element_boder = document.createElement('div');
+  element_boder.setAttribute('class',ClassName);
+  element_boder.setAttribute('id','element_boder_close');
+  element_boder.style.cssText = 'margin: 0 auto; line-height: 1.4em;width:500px;background-color: rgb(255,255,255)';
+  ok_input_html =  '<input type="button" id="alert_div_submit" onclick=\'save_div_action(\"'+cnt+'\",\"'+pid+'\",\"'+c_permission+'\",\"'+c_type+'\")\' value="'+'<?php echo DIV_TEXT_OK;?>'+'">';
+  clear_input_html = '<input type="button" onclick="clear_confirm_div()" value="'+'<?php echo DIV_TEXT_CLEAR;?>'+'">';
+  alert_div_html = '<div style="padding:10px;text-align:left">'+str+'</div>';
+  alert_div_html = alert_div_html+'<div style="text-align:center">'+ok_input_html+'&nbsp;&nbsp;'+clear_input_html+'</div>'
+  element_boder.innerHTML = '<div style="padding:10px;text-align:left">'+alert_div_html+'</div>';
+
+  //center div 
+  var element = document.createElement('div');
+  element.appendChild(element_boder);
+  element.setAttribute('class',ClassName);
+  element.setAttribute('id','element_close');
+  element.style.cssText = 'width:100%;position:fixed;z-index:151;text-align:center;line-height:0;top:25%';
+
+
+// add div 
+  document.body.appendChild(element_ground);
+  document.body.appendChild(element);
+  var Apdiv=document.getElementById("alert_div_id");
+  Apdiv.focus();
+}
+function save_div_action(cnt,pid,c_permission,c_type){
+  if(document.getElementById("alert_div_id").checked){
+  if(pid!=''){
+    nquantity = $('#new_confirm_price').val();
+    $.ajax({
+      type:'POST', 
+      dataType:'text',
+      beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+      data:'products_id='+pid+"&new_price="+nquantity, 
+      async:false, 
+      url: 'ajax_orders.php?action=set_new_price',
+      success: function(msg) {
+        msg_array = msg.split('|||'); 
+        $(c_ele).html(msg_array[0]); 
+        $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
+        $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
+        $(c_ele).next().next().next().next().find('a').html(msg_array[3]);  
+        set_money(cnt, false, '1'); 
+        setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
+      }
+    });
+    clear_confirm_div()
+  }else if(c_permission!=''&&c_type!=''){
+    toggle_category_form(c_permission, c_type);
+  }else if(pid==''&&c_permission==''&&c_type==''){
+    document.forms.new_product.submit();
+  }else if(pid==''&&cnt==''&&c_type==''){
+    clear_confirm_div();
+    save_permission(c_permission)
+  }
+  }else{
+    var em_close=document.getElementById("element_ground_close");
+    em_close.parentNode.removeChild(em_close);
+    var em_close=document.getElementById("element_close");
+    em_close.parentNode.removeChild(em_close);
+  }
+}
+
+function clear_confirm_div(){
+  var em_close=document.getElementById("element_ground_close");
+  em_close.parentNode.removeChild(em_close);
+  var em_close=document.getElementById("element_close");
+  em_close.parentNode.removeChild(em_close);
+}
 <?php // JS 获得文件名?>
 function getFileName(path){
   var pos1 = path.lastIndexOf('/');
@@ -2776,12 +2890,19 @@ $(document).ready(function() {
   $(document).keyup(function(event) {
     if (event.which == 27) {
       <?php //esc?> 
-      if ($('#show_popup_info').css('display') != 'none') {
-        hidden_info_box(); 
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+          clear_confirm_div();
+      }else{
+        if ($('#show_popup_info').css('display') != 'none') {
+          hidden_info_box(); 
+        }
       }
     }
     if (event.which == 13) {
       <?php //回车?> 
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+        $('#alert_div_submit').trigger('click');
+      }else{
       if ($('#show_popup_info').css('display') != 'none') {
         tmp_click_str = $("#show_popup_info").find('input:button').first().attr('onclick'); 
         tmp_click_symbol = '0'; 
@@ -2811,6 +2932,7 @@ $(document).ready(function() {
         }
         
       } 
+    }
     }
     if (event.ctrlKey && event.which == 37) {
       <?php //Ctrl+方向左?> 
@@ -3003,9 +3125,7 @@ function check_single_product_price(pid_info, c_permission, c_type) {
           data: 'products_id='+pid_info+'&new_price='+new_price_value+'&relate_new_price='+relate_new_price_value+'&relate_id='+relate_value+'&p_quantity='+p_quantity+'&r_quantity='+r_quantity+'&p_radices='+p_radices+'&r_radices='+r_radices,
           success:function(msg_avg){
             if(msg_avg != ''){
-              if(confirm(msg_avg)){
-                toggle_category_form(c_permission, c_type); 
-              }
+              confirm_div(msg_avg,'','',c_permission,c_type)
             }else{
               toggle_category_form(c_permission, c_type); 
             }
@@ -3036,17 +3156,16 @@ function check_edit_product_profit() {
           alert(msg_info); 
         } else {
           new_product_quantity = $('#products_real_quantity').val();
+          products_name = $('#pname').val();
           $.ajax({
             type: 'POST',
             async: false,
             url: 'ajax_orders.php?action=check_category_to_products_avg',
             dataType: 'text',
-            data: 'new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+num_value,
+            data: 'products_name='+products_name+'&new_price='+new_price_value+'&product_quantity='+new_product_quantity+'&p_relate_id='+relate_value+'&p_radices='+num_value,
             success:function(msg_avg){
               if(msg_avg != ''){
-                if(confirm(msg_avg)){
-                  document.forms.new_product.submit();
-                }
+                confirm_div(msg_avg,'','','','')
               }else{
                 document.forms.new_product.submit(); 
               }
@@ -3552,6 +3671,18 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td>&nbsp;</td>
                 <td class="smallText" colspan="2"><?php echo TEXT_PRODUCT_KUSHUOMING_TEXT;?></td>
                 </tr>
+                <tr>
+                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                </tr>
+                <tr>
+                <td class="main"><?php echo TEXT_PRODUCT_INVENTORY_STANDARD;?></td>
+                <td class="main" colspan="2"><?php echo str_replace(TEXT_PRODUCTS_QUANTITY_TEXT,'',TEXT_MAX) .'&nbsp;'. tep_draw_input_field('inventory_max', $pInfo->max_inventory, 'style="width:63%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="max_inventory" onblur="inventory_operations(1);"')); ?>&nbsp;<?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_max_contents', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? ''.tep_inventory_operations($pInfo->max_inventory,$pInfo->products_id,$site_id) : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="max_inventory_contents" style="text-align:right;width:15%"');?></td>
+                </tr>
+                <tr>
+                <td class="main">&nbsp;</td>
+                <td class="main" colspan="2"><?php echo str_replace(TEXT_PRODUCTS_QUANTITY_TEXT,'',TEXT_MIN) .'&nbsp;'. tep_draw_input_field('inventory_min', $pInfo->min_inventory, 'style="width:63%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="min_inventory" onblur="inventory_operations(0);"')); ?>&nbsp;<?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_min_contents', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? ''.tep_inventory_operations($pInfo->min_inventory,$pInfo->products_id,$site_id) : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="min_inventory_contents" style="text-align:right;width:15%"');?></td>
+                </tr>
+                <tr><td class="main">&nbsp;</td><td class="main" colspan="2"><?php echo TEXT_PRODUCT_INVENTORY_INFO;?></td></tr>
                 <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
