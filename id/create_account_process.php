@@ -10,6 +10,8 @@
   if (!isset($_POST['action'])) {
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
+  $customers_array = array('customers_firstname','customers_lastname');
+  $customers_strlen = tep_get_column_len(TABLE_CUSTOMERS,$customers_array);
   $active_single = 0;
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
@@ -21,17 +23,17 @@
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
   
-  $firstname_f    = tep_db_prepare_input($_POST['firstname_f']);
-  $lastname_f     = tep_db_prepare_input($_POST['lastname_f']);
+  $firstname_f    = htmlspecialchars(tep_db_prepare_input($_POST['firstname_f']));
+  $lastname_f     = htmlspecialchars(tep_db_prepare_input($_POST['lastname_f']));
   
   $dob            = tep_db_prepare_input($_POST['dob']);
-  $email_address  = tep_db_prepare_input($_POST['email_address']);
+  $email_address  = htmlspecialchars($_POST['email_address']);
   $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $telephone      = tep_db_prepare_input($_POST['telephone']);
   $fax            = tep_db_prepare_input($_POST['fax']);
   $newsletter     = tep_db_prepare_input($_POST['newsletter']);
-  $password       = tep_db_prepare_input($_POST['password']);
-  $confirmation   = tep_db_prepare_input($_POST['confirmation']);
+  $password       = htmlspecialchars(tep_db_prepare_input($_POST['password']));
+  $confirmation   = htmlspecialchars(tep_db_prepare_input($_POST['confirmation']));
   $street_address = tep_db_prepare_input($_POST['street_address']);
   $company        = tep_db_prepare_input($_POST['company']);
   $suburb         = tep_db_prepare_input($_POST['suburb']);
@@ -47,14 +49,20 @@
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
-  } else {
+  }else if(mb_strlen($firstname,'utf8') > $customers_strlen['customers_firstname']){
+    $error = true;
+    $strlen_firstname_error = true;
+  }else {
     $entry_firstname_error = false;
   }
 
   if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_lastname_error = true;
-  } else {
+  }else if(mb_strlen($lastname,'utf8') > $customers_strlen['customers_lastname']){
+    $error = true;
+    $strlen_lastname_error = true;
+  }else {
     $entry_lastname_error = false;
   }
 
@@ -71,7 +79,11 @@
   } else {
     $entry_email_address_check_error = false;
   }
-  
+    $hicuizd = addslashes(trim($email_address));
+  if(preg_match('/\/',$hicuizd)||preg_match('/\\/',$hicuizd)||preg_match('/\\\/',$hicuizd)){
+    $error = true;
+    $entry_email_address_check_error = true;
+  }
   if($guestchk == '0') {
     $passlen = strlen($password);
     if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
@@ -137,8 +149,8 @@
       if (($check_email_res['is_active'] == 0) && $guestchk == 0) {
         $NewPass = $password;
         
-        $sql_data_array = array('customers_firstname' => $firstname,
-                                  'customers_lastname' => $lastname,
+        $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                  'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                   'customers_firstname_f' => $firstname_f,
                                   'customers_lastname_f' => $lastname_f,
                                   'customers_email_address' => $email_address,
@@ -205,8 +217,8 @@
         $error = true; 
         $entry_guest_not_active = true; 
         $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-        $sql_data_array = array('customers_firstname' => $firstname,
-                                  'customers_lastname' => $lastname,
+        $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                  'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                   'customers_firstname_f' => $firstname_f,
                                   'customers_lastname_f' => $lastname_f,
                                   'customers_email_address' => $email_address,
@@ -376,8 +388,8 @@ function pass_hidd(CI){
         $active_single = 0; 
       }
       $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-      $sql_data_array = array('customers_firstname' => $firstname,
-                                'customers_lastname' => $lastname,
+      $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
@@ -428,8 +440,8 @@ function pass_hidd(CI){
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
       $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-      $sql_data_array = array('customers_firstname' => $firstname,
-                                'customers_lastname' => $lastname,
+      $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
@@ -476,7 +488,7 @@ function pass_hidd(CI){
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".tep_get_fullname($firstname, $lastname)."','".tep_get_fullname($firstname, $lastname)."')");
+        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".tep_db_input(tep_get_fullname(mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'), mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8')))."','".tep_db_input(tep_get_fullname(mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'), mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8')))."')");
       }
   } else {
       $active_single = 1; 
@@ -487,8 +499,8 @@ function pass_hidd(CI){
       tep_db_query("delete from  ".TABLE_USER_LOGIN." where account = '".tep_db_input($email_address)."' and site_id = '".SITE_ID."'"); 
     }
     $NewPass = $password;
-    $sql_data_array = array('customers_firstname' => $firstname,
-                                'customers_lastname' => $lastname,
+    $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
@@ -545,8 +557,8 @@ function pass_hidd(CI){
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
     } else {
       $NewPass = $password;
-      $sql_data_array = array('customers_firstname' => $firstname,
-                                'customers_lastname' => $lastname,
+      $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
@@ -594,7 +606,7 @@ function pass_hidd(CI){
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".tep_get_fullname($firstname, $lastname)."','".tep_get_fullname($firstname, $lastname)."')");
+      tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".tep_db_input(tep_get_fullname(mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'), mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8')))."','".tep_db_input(tep_get_fullname(mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'), mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8')))."')");
     }
   }
 

@@ -274,7 +274,7 @@
                         </tr> 
                         <tr> 
                            <td width="10"></td>
-                          <td class="main"><?php echo $order->customer['name']; ?></td> 
+                          <td class="main"><?php echo htmlspecialchars($order->customer['name']); ?></td> 
                         </tr> 
                         <tr> 
                            <td width="10"></td>

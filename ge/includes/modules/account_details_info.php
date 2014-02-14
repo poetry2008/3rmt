@@ -538,12 +538,14 @@ $(document).ready(function(){
 
   // firstname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_firstname'],false,true);
+      $a_value = htmlspecialchars(tep_output_string($account['customers_firstname'],false,true));
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
           $a_value = tep_draw_input_field('firstname','','class="input_text"') . ENTRY_FIRST_NAME_ERROR;
-      } else {
-          $a_value = $firstname .  tep_draw_hidden_field('firstname','','class="input_text"');
+      }else if($strlen_firstname_error == true){
+          $a_value = tep_draw_input_field('firstname','',' class="input_text"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);
+      }else {
+          $a_value = htmlspecialchars($firstname) .  tep_draw_hidden_field('firstname','','class="input_text"',false);
       }
   } else {
       $a_value = tep_draw_input_field('firstname', $account['customers_firstname'],'class="input_text"') . ENTRY_FIRST_NAME_TEXT;
@@ -552,12 +554,14 @@ $(document).ready(function(){
 
   // lastname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_lastname'],false,true);
+      $a_value = htmlspecialchars(tep_output_string($account['customers_lastname'],false,true));
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
           $a_value = tep_draw_input_field('lastname','','class="input_text"') . ENTRY_LAST_NAME_ERROR;
-      } else {
-          $a_value = $lastname . tep_draw_hidden_field('lastname');
+      }else if($strlen_lastname_error == true){
+          $a_value = tep_draw_input_field('lastname','','class="input_text"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
+      }else {
+          $a_value = htmlspecialchars($lastname) .  tep_draw_hidden_field('lastname','','class="input_text"',false);
       }
   } else {
       $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],'class="input_text"') . ENTRY_LAST_NAME_TEXT;

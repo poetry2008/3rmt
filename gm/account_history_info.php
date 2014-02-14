@@ -273,7 +273,7 @@
                           <td class="table_spacing"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                         </tr> 
                         <tr> 
-                          <td class="table_spacing"><?php echo $order->customer['name']; ?></td> 
+                          <td class="table_spacing"><?php echo htmlspecialchars($order->customer['name']); ?></td> 
                         </tr> 
                         <tr> 
                           <td class="table_spacing"><b><?php echo HEADING_PAYMENT_METHOD; ?></b></td> 

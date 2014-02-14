@@ -24,4 +24,5 @@ define('EMAIL_WARNING',
 
 define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
 define('ENTRY_PASSWORD_ENGLISH','英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。');
+define('ERROR_FIRST_ITEM_TEXT_NUM_MAX','&nbsp;&nbsp;<font color="red">文字数は%sを超えてはいけません。</font>');
 ?>

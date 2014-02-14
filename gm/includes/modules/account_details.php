@@ -152,13 +152,16 @@ $(document).ready(function(){
 <?php
 /*
   $Id$
-  确认文件代码
+
+  顾客详细信息页
 */
+//设置是否有新信息的多语言 
   $newsletter_array = array(array('id' => '1',
                                   'text' => ENTRY_NEWSLETTER_YES),
                             array('id' => '0',
                                   'text' => ENTRY_NEWSLETTER_NO));
 
+//如果没有设置 只读，则为否
   if (!isset($is_read_only)) $is_read_only = false;
   if (!isset($processed)) $processed = false;
 
@@ -167,29 +170,33 @@ $(document).ready(function(){
 
   // firstname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_firstname'],false,true);
+      $a_value = htmlspecialchars(html_entity_decode($account['customers_firstname']));
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
           $a_value = tep_draw_input_field('firstname','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
-      } else {
-          $a_value = $firstname .  tep_draw_hidden_field('firstname','',"class='input_text' style='width:35%'");
+      }else if($strlen_firstname_error == true){
+          $a_value = tep_draw_input_field('firstname','',' class="input_text"') .'<br>'.  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);
+      }else {
+          $a_value = htmlspecialchars($firstname) .  tep_draw_hidden_field('firstname','','class="input_text"',false);
       }
   } else {
-      $a_value = tep_draw_input_field('firstname', $account['customers_firstname'], "class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname',tep_db_output($account['customers_firstname']),'tyle=\'width:35%\'') . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
   // lastname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_lastname'],false,true);
+      $a_value = htmlspecialchars(html_entity_decode($account['customers_lastname']));
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
           $a_value = tep_draw_input_field('lastname','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
-      } else {
-          $a_value = $lastname .  tep_draw_hidden_field('lastname','',"class='input_text' style='width:35%'");
+      }else if($strlen_lastname_error == true){
+          $a_value = tep_draw_input_field('lastname','','class="input_text"') .'<br>'.  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
+      }else {
+          $a_value = htmlspecialchars($lastname) .  tep_draw_hidden_field('lastname','','class="input_text"',false);
       }
   } else {
-      $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname', tep_db_output($account['customers_lastname']),'tyle=\'width:35%\'') . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -206,12 +213,10 @@ $(document).ready(function(){
       } elseif ($entry_guest_not_active == true) {
           $a_value = tep_draw_input_field('email_address','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
       } else {
-          $a_value = $email_address .
-            tep_draw_hidden_field('email_address','',"class='input_text' style='width:35%'");
+          $a_value = $email_address .  tep_draw_hidden_field('email_address','','tyle=\'width:35%\'',false);
       }
   } else {
-      $a_value = tep_draw_input_field('email_address',
-          $account['customers_email_address'],"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address', tep_db_output($account['customers_email_address']),'tyle=\'width:35%\'') . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
