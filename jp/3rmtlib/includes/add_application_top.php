@@ -611,6 +611,16 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   }
   $navigation->add_current_page();
 
+
+  if(tep_session_is_registered('customer_id')){
+    $flag_customer_info = tep_is_customer_by_id($customer_id);
+    if(!$flag_customer_info || strtolower($flag_customer_info['customers_email_address']) != strtolower($_SESSION['customer_emailaddress'])){
+      tep_logoff_user();
+      $cart->reset();
+      tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+      exit;
+    }
+  }
 // Shopping cart actions
   if (isset($_GET['action'])) {
     if (DISPLAY_CART == 'true') {
