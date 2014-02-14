@@ -292,4 +292,5 @@ define('TEXT_PRODUCTS_ORDER_INFO','注文情報');
 define('TABLE_HEADING_DANJIA_TEXT','単価（円）');
 define('TEXT_RADICES_PRODUCT_INFO', '1個あたり%s');
 define('TEXT_PRODUCT_ORDER_HISTORY_INFO','%s日間あたり%s 個');
-define('TEXT_PRODUCT_INVENTORY_INFO','使える計算式：+　-　*　/　()<br>使えるパラメータ<br>商品直近の流通数：$recent_ordered_number_of_unit<br>関連商品直近の流通数：$recent_ordered_number_of_related_unit<br>単価：$unit_price<br>関連商品単価：$related_unit_price<br>現在庫の平均原価：$stocks_average_cost');
+define('TEXT_PRODUCT_INVENTORY_STANDARD','在庫水準');
+define('TEXT_PRODUCT_INVENTORY_INFO','<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td colspan="2">使える計算式：+　-　*　/　()</td></tr><tr><td colspan="2">使えるパラメータ：</td></tr><tr><td width="48%">単価：$unit_price</td><td>関連商品単価：$related_unit_price</td></tr><tr><td>現在庫の平均原価：$stocks_average_cost</td><td>商品直近の流通数：$recent_ordered_number_of_unit</td></tr><tr><td colspan="2">関連商品直近の流通数：$recent_ordered_number_of_related_unit</td></tr></table>');

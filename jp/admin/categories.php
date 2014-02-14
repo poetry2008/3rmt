@@ -369,7 +369,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     $max_inventory = $_POST['max_inventory'];
     $min_inventory = $_POST['min_inventory'];
     if($max_inventory&&
-        $max_inventory<$min_inventory){
+        tep_inventory_operations($max_inventory,$products_id,0)<tep_inventory_operations($min_inventory,$products_id,0)){
       $error = true;
     }
     if($error){
@@ -916,44 +916,14 @@ if (isset($_GET['action']) && $_GET['action']) {
     case 'update_product':
     tep_isset_eof();
     $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
-    $pInfo = tep_get_pinfo_by_pid(tep_db_prepare_input($_GET['pID']), $site_id);
     //如果实际库存为空时,默认为0
     $_POST['products_real_quantity'] = $_POST['products_real_quantity'] == '' ? 0 : $_POST['products_real_quantity'];
-    //用于计算最大库存、最小库存参数对应值的数组
-    $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-    //近期订购商品数
-    $radices = tep_get_radices(tep_db_prepare_input($_GET['pID'])); 
-    $product_row_count = tep_get_relate_product_history_sum(tep_db_prepare_input($_GET['pID']), $product_sub_date, 0,$radices); 
-    $product_row_count = $product_row_count == '' ? 0 : $product_row_count;
-    //近期订购关联商品数
-    $relate_radices = tep_get_radices($pInfo->relate_products_id); 
-    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $product_sub_date, 0,$relate_radices);
-    $relate_row_count = $relate_row_count == '' ? 0 : $relate_row_count;
-    //关联商品单价
-    $relate_price_array = tep_db_fetch_array(tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id='".$pInfo->relate_products_id."'"));
-    //实际库存的平均价格
-    $product_td_avg_price = '';
-    if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
-      $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo));
-    } 
-    $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数
-                             '$recent_ordered_number_of_related_unit',//近期订购关联商品数 
-                             '$unit_price',//商品单价
-                             '$related_unit_price',//关联商品单价
-                             '$stocks_average_cost'//实际库存的平均价格
-                           );
-    $inventory_replace_array = array($product_row_count,//近期订购商品数
-                             $relate_row_count,//近期订购关联商品数 
-                             abs(tep_db_prepare_input($_POST['products_price'])),//商品单价
-                             abs($relate_price_array['products_price']),//关联商品单价
-                             $product_td_avg_price//实际库存的平均价格
-                            );
     //如果最大库存为空时,默认为0
     $_POST['inventory_max'] = $_POST['inventory_max'] == '' ? 0 : $_POST['inventory_max'];
-    $inventory_max = tep_operations(str_replace($inventory_mode_array,$inventory_replace_array,$_POST['inventory_max']));
+    $inventory_max = $_POST['inventory_max'];
     //如果最小库存为空时,默认为0
     $_POST['inventory_min'] = $_POST['inventory_min'] == '' ? 0 : $_POST['inventory_min'];
-    $inventory_min = tep_operations(str_replace($inventory_mode_array,$inventory_replace_array,$_POST['inventory_min']));
+    $inventory_min = $_POST['inventory_min'];
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
     else $site_arr="";
     forward401Unless(editPermission($site_arr, $site_id));
@@ -1022,7 +992,7 @@ if (isset($_GET['action']) && $_GET['action']) {
 
 
 
-      //把最大库存、最小库存的计算结果放入数组，以备保存到数据库
+      //把最大库存、最小库存放入数组，以备保存到数据库
       $sql_data_array['max_inventory'] = tep_db_prepare_input($inventory_max);
       $sql_data_array['min_inventory'] = tep_db_prepare_input($inventory_min);
       if ($_GET['action'] == 'insert_product') {
@@ -1807,6 +1777,36 @@ $belong = str_replace('0_','',$belong);
 <?php tep_get_javascript('one_time_pwd','includes|javascript');?>
 </script>
 <script language="javascript">
+function inventory_operations(num){
+
+  var inventory_contents_value;
+  if(num == 1){
+
+    inventory_contents_value = $("#max_inventory").val();
+  }else{
+
+    inventory_contents_value = $("#min_inventory").val();
+  }
+  inventory_contents_value = inventory_contents_value.replace(/\+/g,'<<<');
+
+  $.ajax({
+    url: 'ajax_orders.php?action=inventory_operations',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'inventory_contents='+inventory_contents_value+'&pid=<?php echo $_GET['pID'];?>&site_id=<?php echo $_GET['site_id'];?>', 
+    async: false,
+    success: function(msg) {
+
+      if(num == 1){
+
+        $("#max_inventory_contents").val(msg);
+      }else{
+
+        $("#min_inventory_contents").val(msg);
+      }
+    }
+  });
+}
 function avg_div_checkbox(){
   document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
 }
@@ -1871,6 +1871,7 @@ function save_div_action(cnt,pid,c_permission,c_type){
   }else if(pid==''&&c_permission==''&&c_type==''){
     document.forms.new_product.submit();
   }else if(pid==''&&cnt==''&&c_type==''){
+    clear_confirm_div();
     save_permission(c_permission)
   }
   }else{
@@ -3665,7 +3666,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr bgcolor="#CCCCCC">
                 <td class="main"><?php echo '<font color="blue">' . TEXT_PRODUCTS_REAL_QUANTITY . '</font>'; ?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="products_real_quantity" onkeyup="clearLibNum(this);"')); ?></td>
-                </tr> 
+                </tr>
                 <tr>
                 <td>&nbsp;</td>
                 <td class="smallText" colspan="2"><?php echo TEXT_PRODUCT_KUSHUOMING_TEXT;?></td>
@@ -3674,18 +3675,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr>
-                <td class="main"><?php echo TEXT_MAX;?></td>
-                <td class="main"><span class="categories_input01"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('inventory_max', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? $pInfo->max_inventory : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="inventory_max"')); ?></span></td>
-                </tr>
-                <tr><td class="main">&nbsp;</td><td class="main"><?php echo TEXT_PRODUCT_INVENTORY_INFO;?></td></tr>
-                <tr>
-                <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                <td class="main"><?php echo TEXT_PRODUCT_INVENTORY_STANDARD;?></td>
+                <td class="main" colspan="2"><?php echo str_replace(TEXT_PRODUCTS_QUANTITY_TEXT,'',TEXT_MAX) .'&nbsp;'. tep_draw_input_field('inventory_max', $pInfo->max_inventory, 'style="width:63%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="max_inventory" onblur="inventory_operations(1);"')); ?>&nbsp;<?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_max_contents', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? ''.tep_inventory_operations($pInfo->max_inventory,$pInfo->products_id,$site_id) : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="max_inventory_contents" style="text-align:right;width:15%"');?></td>
                 </tr>
                 <tr>
-                <td class="main"><?php echo TEXT_MIN;?></td>
-                <td class="main"><span class="categories_input01"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('inventory_min', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? $pInfo->min_inventory : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="inventory_min"')); ?></span></td>
+                <td class="main">&nbsp;</td>
+                <td class="main" colspan="2"><?php echo str_replace(TEXT_PRODUCTS_QUANTITY_TEXT,'',TEXT_MIN) .'&nbsp;'. tep_draw_input_field('inventory_min', $pInfo->min_inventory, 'style="width:63%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="min_inventory" onblur="inventory_operations(0);"')); ?>&nbsp;<?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_min_contents', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? ''.tep_inventory_operations($pInfo->min_inventory,$pInfo->products_id,$site_id) : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="min_inventory_contents" style="text-align:right;width:15%"');?></td>
                 </tr>
-                <tr><td class="main">&nbsp;</td><td class="main"><?php echo TEXT_PRODUCT_INVENTORY_INFO;?></td></tr>
+                <tr><td class="main">&nbsp;</td><td class="main" colspan="2"><?php echo TEXT_PRODUCT_INVENTORY_INFO;?></td></tr>
                 <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>

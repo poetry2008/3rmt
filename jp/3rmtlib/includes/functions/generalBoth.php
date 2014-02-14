@@ -119,3 +119,40 @@ function tep_get_default_language(){
     }
     return $languages_dir;
 }
+/*----------------------------------
+  功能: 获得数据库字段长度 
+  参数: $table (string)类型  表名
+  参数: $cname (string  array)  字段名
+  返回:  (string  array)  字段长度
+----------------------------------*/
+function tep_get_column_len($table,$cname){
+  $sql = "desc ".$table;
+  $query = tep_db_query($sql);
+  if(is_array($cname)){
+    $res_arr=array();
+    while($res = tep_db_fetch_array($query)){
+      $type='';
+      $arr=array();
+      if(in_array($res['Field'],$cname)){
+        $type = $res['Type'];
+        if(preg_match("/(\d+)/",$type,$arr)){
+           $res_arr[$res['Field']] = $arr[1];
+        }else{
+           $res_arr[$res['Field']] = '';
+        }
+      }
+    }
+    return $res_arr;
+  }else{
+    while($res = tep_db_fetch_array($query)){
+      if($res['Field'] == $cname){
+        $type = $res['Type'];
+        if(preg_match("/(\d+)/",$type,$arr)){
+          return $arr[1];
+        }else{
+          return 0;
+        }
+      }
+    }
+  }
+}

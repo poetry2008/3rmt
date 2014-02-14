@@ -598,10 +598,10 @@ if ($_GET['action'] == 'show_category_info') {
   
   //这里预留插入在库变数
   
-  //if(empty($site_id)) {
-    //$arr_td_title[] = TEXT_MAX;
-    //$arr_td_title[] = TEXT_MIN;
-  //}
+  if(empty($site_id)) {
+    $arr_td_title[] = TEXT_MAX;
+    $arr_td_title[] = TEXT_MIN;
+  }
   $arr_td_title[] = TEXT_PRODUCTS_AVERAGE_RATING;
   $arr_td_title[] = TEXT_PRODUCT_RATE;
   //商品履历 数字
@@ -637,6 +637,12 @@ if ($_GET['action'] == 'show_category_info') {
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
   $arr_td_product[] = (empty($_GET['site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+
+  
+  if(empty($site_id)) {
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+  }
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
   if($radices!=''){
@@ -705,6 +711,12 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
     $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+    
+
+    if(empty($site_id)){
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+    }
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
     if($relate_radices!=''){
@@ -5290,6 +5302,7 @@ if($_GET['site_id'] == -1){
           and s.id = c.site_id
           and c.customers_id = '" . (int)$_GET['cID'] . "' 
     ");
+    $customers_lastname_row = tep_db_fetch_array(tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_id ='".(int)$_GET['cID']."'"));
     if($_GET['cID'] != -1){
     $customers_info = tep_db_query("select * from ".TABLE_CUSTOMERS_INFO." where customers_info_id=".$_GET['cID']);  
     $customers_info_row = tep_db_fetch_array($customers_info);
@@ -5437,7 +5450,7 @@ if($_GET['cID'] != -1){
     $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
     $heading = array();
     $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-    $heading[] = array('align' => 'left', 'text' => ($_GET['cID'] != -1?$cInfo->customers_firstname.$cInfo->customers_lastname:HEADING_TITLE).'&nbsp;&nbsp;');
+    $heading[] = array('align' => 'left', 'text' => htmlspecialchars(html_entity_decode(($_GET['cID'] != -1?$customers_lastname_row['customers_firstname'].$customers_lastname_row['customers_lastname']:HEADING_TITLE))).'&nbsp;&nbsp;');
     $heading[] = array('align' => 'right', 'text' => $page_str);
     if($_GET['cID'] != -1){
     if(isset($cInfo->customers_guest_chk) && $cInfo->customers_guest_chk == 0){
@@ -5482,15 +5495,15 @@ if($_GET['cID'] != -1){
        );
     $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => ENTRY_FIRST_NAME),
-         array('text' => tep_draw_input_field('customers_firstname', $cInfo->customers_firstname, 'id="customers_firstname"style="width:60%" maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="customers_firstname_error"></span>')
+         array('text' => tep_draw_input_field('customers_firstname',html_entity_decode($customers_lastname_row['customers_firstname']), 'id="customers_firstname"style="width:60%"  onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="customers_firstname_error"></span>')
        );
     $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => ENTRY_LAST_NAME),
-         array('text' => tep_draw_input_field('customers_lastname', $cInfo->customers_lastname, 'id="customers_lastname" style="width:60%" maxlength="32" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="customers_lastname_error"></span>')
+         array('text' => tep_draw_input_field('customers_lastname', html_entity_decode($customers_lastname_row['customers_lastname']), 'id="customers_lastname" style="width:60%"  onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="customers_lastname_error"></span>')
        );
       $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => ENTRY_EMAIL_ADDRESS),
-         array('text' => tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'id="customers_email_address" style="width:60%" maxlength="96" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="error_email"></span><span id="check_email"></span> <span id="error_email_info"></span><input type="hidden" id="customers_email_address_value" value="'.$cInfo->customers_email_address.'"')
+         array('text' => tep_draw_input_field('customers_email_address', html_entity_decode($cInfo->customers_email_address), 'id="customers_email_address" style="width:60%" maxlength="96" onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.($disabled?$disabled:$is_active_single), false).'<br><span id="error_email"></span><span id="check_email"></span> <span id="error_email_info"></span><input type="hidden" id="customers_email_address_value" value="'.$cInfo->customers_email_address.'">')
        );
      $customers_guest_str = $notice_box->get_table($customers_guest_row, '', $customers_guest_params);  
      $contents[]['text'] = array(
@@ -5599,7 +5612,7 @@ if($_GET['cID'] != -1){
         }
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap" width="30%"','text' => CUSTOMER_COMMUNITY_SEARCH_TEXT),
-         array('text' => '<textarea '.($disabled?$disabled:$is_active_single).' name="customers_fax" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:60%;height:42px;*height:40px;">'.$customers_fax.'</textarea>')
+         array('text' => '<textarea '.($disabled?$disabled:$is_active_single).' name="customers_fax" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:60%;height:42px;*height:40px;">'.html_entity_decode($customers_fax).'</textarea>')
        );
       }
         $customers_fax_row[]['text'] = array(
@@ -5640,11 +5653,11 @@ if($_GET['cID'] != -1){
          array('text' => $nInfo->number_of_reviews)
        );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_added']))?$customers_info_row['user_added']:TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_added']))?htmlspecialchars($customers_info_row['user_added']):TEXT_UNSET_DATA)), 
            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_created']))?$customers_info_row['customers_info_date_account_created']:TEXT_UNSET_DATA))
          );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_update']))?$customers_info_row['user_update']:TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_update']))?htmlspecialchars($customers_info_row['user_update']):TEXT_UNSET_DATA)),
            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
         );
      $customers_fax_str = $notice_box->get_table($customers_fax_row, '', $customers_fax_params);  

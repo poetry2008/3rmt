@@ -5586,6 +5586,22 @@ function tep_display_google_results($from_url='', $c_type=false){
       $parent_id = tep_get_category_parent_id($categories_id);
     }
     $inventory_arr = tep_get_product_inventory($pid);
+    $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
+                             '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
+                             '$unit_price',//商品单价(参数)
+                             '$related_unit_price',//关联商品单价(参数)
+                             '$stocks_average_cost'//实际库存的平均价格(参数)
+                           );
+    if(strlen($inventory_arr['max']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['max']))){
+      $inventory_arr['max'] = tep_inventory_operations($inventory_arr['max'],$pid,0);
+    }else{
+      $inventory_arr['max'] = tep_operations($inventory_arr['max']);
+    }
+    if(strlen($inventory_arr['min']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['min']))){
+      $inventory_arr['min'] = tep_inventory_operations($inventory_arr['min'],$pid,0);
+    }else{
+      $inventory_arr['min'] = tep_operations($inventory_arr['min']);
+    }
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
   }
@@ -13080,4 +13096,49 @@ function tep_operations($expression){
 		}
 	}
 	return $mystack[0];	
+}
+/* -------------------------------------
+    功能: 计算库存的表达式 
+    参数: $inventory_contents(string) 表达式 
+    参数: $pid(int) 商品ID 
+    参数: $site_id(int) 网站ID 
+    返回值: 库存表达式计算后的结果(int)
+ ------------------------------------ */
+function tep_inventory_operations($inventory_contents,$pid,$site_id){
+
+    $site_id = isset($site_id)?$site_id:0;
+    $pInfo = tep_get_pinfo_by_pid(tep_db_prepare_input($pid), $site_id);
+    //用于计算最大库存、最小库存参数对应值的数组
+    $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
+    //近期订购商品数
+    $radices = tep_get_radices(tep_db_prepare_input($pid)); 
+    $product_row_count = tep_get_relate_product_history_sum(tep_db_prepare_input($pid), $product_sub_date, 0,$radices); 
+    $product_row_count = $product_row_count == '' ? 0 : $product_row_count;
+    //近期订购关联商品数
+    $relate_radices = tep_get_radices($pInfo->relate_products_id); 
+    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $product_sub_date, 0,$relate_radices);
+    $relate_row_count = $relate_row_count == '' ? 0 : $relate_row_count;
+    //关联商品单价
+    $relate_price_array = tep_db_fetch_array(tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id='".$pInfo->relate_products_id."'"));
+    //实际库存的平均价格
+    $product_td_avg_price = '';
+    if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
+      $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo));
+    } 
+    $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
+                             '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
+                             '$unit_price',//商品单价(参数)
+                             '$related_unit_price',//关联商品单价(参数)
+                             '$stocks_average_cost'//实际库存的平均价格(参数)
+                           );
+    $inventory_replace_array = array($product_row_count,//近期订购商品数(值)
+                             $relate_row_count,//近期订购关联商品数(值) 
+                             abs(tep_db_prepare_input($pInfo->products_price)),//商品单价(值)
+                             abs($relate_price_array['products_price']),//关联商品单价(值)
+                             $product_td_avg_price//实际库存的平均价格(值)
+                            );
+    //如果库存为空时,默认为0
+    $inventory_contents = $inventory_contents == '' ? 0 : $inventory_contents;
+    $inventory_contents = tep_operations(str_replace($inventory_mode_array,$inventory_replace_array,str_replace('<<<','+',trim($inventory_contents))));
+    return round($inventory_contents);
 }

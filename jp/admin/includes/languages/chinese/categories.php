@@ -284,5 +284,6 @@ define('TEXT_PRODUCTS_ORDER_INFO','订单情报');
 define('TABLE_HEADING_DANJIA_TEXT','单价（日元）');
 define('TEXT_RADICES_PRODUCT_INFO', '每1个相当于%s');
 define('TEXT_PRODUCT_ORDER_HISTORY_INFO','每%s天%s 个');
-define('TEXT_PRODUCT_INVENTORY_INFO','可以使用的计算符号：+　-　*　/　()<br>可以使用的参数<br>商品最近的订单数：$recent_ordered_number_of_unit<br>关联商品最近的订单数：$recent_ordered_number_of_related_unit<br>商品单价：$unit_price<br>关联商品单价：$related_unit_price<br>实际库存的平均价格：$stocks_average_cost');
+define('TEXT_PRODUCT_INVENTORY_STANDARD','库存标准');
+define('TEXT_PRODUCT_INVENTORY_INFO','<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td colspan="2">可以使用的计算符号：+　-　*　/　()</td></tr><tr><td colspan="2">可以使用的参数：</td></tr><tr><td width="48%">商品单价：$unit_price</td><td>关联商品单价：$related_unit_price</td></tr><tr><td>实际库存的平均价格：$stocks_average_cost</td><td>商品最近的订单数：$recent_ordered_number_of_unit</td></tr><tr><td colspan="2">关联商品最近的订单数：$recent_ordered_number_of_related_unit</td></tr></table>');
 ?>

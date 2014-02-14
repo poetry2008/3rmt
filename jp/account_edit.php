@@ -17,6 +17,9 @@
   if($guestchk == '1') {
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
+  
+  $customers_array = array('customers_firstname','customers_lastname');
+  $customers_strlen = tep_get_column_len(TABLE_CUSTOMERS,$customers_array);
   //start
   // 全角的英数字改成半角
   $save_flag = false;
@@ -41,11 +44,11 @@ case 'per':
   $firstname = tep_db_prepare_input($_POST['firstname']);
   $lastname = tep_db_prepare_input($_POST['lastname']);
   if (!isset($_POST['firstname_f'])) $_POST['firstname_f'] =NULL;
-  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+  $firstname_f = htmlspecialchars(tep_db_prepare_input($_POST['firstname_f']));
   if (!isset($_POST['lastname_f'])) $_POST['lastname_f'] =NULL;
-  $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
+  $lastname_f = htmlspecialchars(tep_db_prepare_input($_POST['lastname_f']));
   $dob = tep_db_prepare_input($_POST['dob']);
-  $email_address = tep_db_prepare_input($_POST['email_address']);
+  $email_address = htmlspecialchars($_POST['email_address']);
   $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
@@ -69,14 +72,20 @@ case 'per':
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
-  } else {
+  }else if(mb_strlen($firstname,'utf8') > $customers_strlen['customers_firstname']){
+    $error = true;
+    $strlen_firstname_error = true;
+  }else {
     $entry_firstname_error = false;
   }
 
   if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_lastname_error = true;
-  } else {
+  }else if(mb_strlen($lastname,'utf8') > $customers_strlen['customers_lastname']){
+    $error = true;
+    $strlen_lastname_error = true;
+  }else {
     $entry_lastname_error = false;
   }
 
@@ -87,14 +96,17 @@ case 'per':
   } else {
     $entry_email_address_error = false;
   }
-
   if (!tep_validate_email($email_address)) {
     $error = true;
     $entry_email_address_check_error = true;
   } else {
     $entry_email_address_check_error = false;
   } 
- 
+    $hicuizd = trim($email_address);
+  if(preg_match('/\/',$hicuizd)||preg_match('/\\/',$hicuizd)||preg_match('/\\\/',$hicuizd)){
+    $error = true;
+    $entry_email_address_check_error = true;
+  }
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
   if ($check_email['total'] > 0) {
@@ -103,6 +115,7 @@ case 'per':
   } else {
     $entry_email_address_exists = false;
   }
+
 
   if($error == false){
     $sql_data_array = array('new_customers_firstname' => $firstname,
@@ -115,10 +128,11 @@ case 'per':
    
     $edit_cus_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = ".tep_db_input($customer_id)." and site_id = '".SITE_ID."'");
     $edit_cus_res = tep_db_fetch_array($edit_cus_raw);
+
     if ($edit_cus_res) {
       if ($edit_cus_res['customers_email_address'] == $email_address) {
-        $sql_data_array = array('customers_firstname' => $firstname,
-                                'customers_lastname' => $lastname,
+        $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_telephone' => $telephone,
@@ -200,11 +214,11 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   $lastname = tep_db_prepare_input($_POST['lastname']);
   //add
   if (!isset($_POST['firstname_f'])) $_POST['firstname_f'] =NULL;
-  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
+  $firstname_f = htmlspecialchars(tep_db_prepare_input($_POST['firstname_f']));
   if (!isset($_POST['lastname_f'])) $_POST['lastname_f'] =NULL;
-  $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
+  $lastname_f = htmlspecialchars(tep_db_prepare_input($_POST['lastname_f']));
   $dob = tep_db_prepare_input($_POST['dob']);
-  $email_address = tep_db_prepare_input($_POST['email_address']);
+  $email_address = htmlspecialchars($_POST['email_address']);
   $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
@@ -226,20 +240,24 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if (!isset($_POST['state'])) $_POST['state'] =NULL;
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
-
   $error = false; // reset error flag
-
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
-  } else {
+  }else if(mb_strlen($firstname,'utf8') > $customers_strlen['customers_firstname']){
+    $error = true;
+    $strlen_firstname_error = true;
+  }else {
     $entry_firstname_error = false;
   }
 
   if (strlen($lastname) < ENTRY_LAST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_lastname_error = true;
-  } else {
+  }else if(mb_strlen($lastname,'utf8') > $customers_strlen['customers_lastname']){
+    $error = true;
+    $strlen_lastname_error = true;
+  }else {
     $entry_lastname_error = false;
   }
   if (strlen($email_address) < ENTRY_EMAIL_ADDRESS_MIN_LENGTH) {
@@ -256,7 +274,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     $entry_email_address_check_error = false;
   }
 
-  if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
+  if(!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $password)){
       $error = true;
       $error_pwd = true;
       $entry_password_english_error = true;
@@ -369,8 +387,8 @@ if($_POST['num_rows'] > 0){
       }
     }
     }
-    $sql_data_array = array('new_customers_firstname' => $firstname,
-                            'new_customers_lastname' => $lastname,
+    $sql_data_array = array('new_customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                            'new_customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                             'new_customers_newsletter' => $newsletter,
                             'new_email_address' => $email_address,
                             'send_mail_time' => time(),
@@ -381,8 +399,8 @@ if($_POST['num_rows'] > 0){
     $edit_cus_res = tep_db_fetch_array($edit_cus_raw);
     if ($edit_cus_res) {
       if ($edit_cus_res['customers_email_address'] == $email_address) {
-        $sql_data_array = array('customers_firstname' => $firstname,
-                                'customers_lastname' => $lastname,
+        $sql_data_array = array('customers_firstname' => mb_substr($firstname,0,$customers_strlen['customers_firstname'],'utf-8'),
+                                'customers_lastname' => mb_substr($lastname,0,$customers_strlen['customers_lastname'],'utf-8'),
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $old_email_address,
@@ -540,7 +558,7 @@ if($_POST['num_rows'] > 0){
     $error_pwd = false;
     $password = tep_db_prepare_input($_POST['password']);
     $confirmation = tep_db_prepare_input($_POST['confirmation']); 
-    if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
+    if(!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $password)){
       $error_pwd = true;
       $entry_password_english_error = true;
     }else{
@@ -608,7 +626,6 @@ if($_POST['num_rows'] > 0){
   $account_query = tep_db_query("select c.customers_gender, c.customers_firstname, c.customers_lastname, c.customers_firstname_f, c.customers_lastname_f, c.customers_dob, c.customers_email_address, a.entry_company, a.entry_street_address, a.entry_suburb, a.entry_postcode, a.entry_city, a.entry_zone_id, a.entry_state, a.entry_country_id, c.customers_telephone, c.customers_fax, c.customers_newsletter from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a where c.customers_id = '" . $customer_id . "' and a.customers_id = c.customers_id and a.address_book_id = '" .  $customer_default_address_id . "' and c.site_id = '".SITE_ID."'");
   $account = tep_db_fetch_array($account_query);
   $email_address = isset($_POST['email_address']) && isset($_POST['action']) && ($_POST['action'] == 'per' ||($_POST['action'] == 'address' && $_POST['action_flag'] == 1 ))? $_POST['email_address'] : $account['customers_email_address'];
-
   require(DIR_WS_MODULES . 'account_details_info.php');
 ?> 
 <input type="hidden" name="old_email_1" value="<?php echo $account['customers_email_address'];?>">

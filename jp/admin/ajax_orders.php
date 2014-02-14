@@ -3087,4 +3087,10 @@ echo json_encode($json_array);
 }else if ($_GET['action'] == 'change_cimage'){
   $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set ".$_POST['col_name']."='' where categories_id='".$_POST['e_cid']."' and site_id='".$_POST['site_id']."'";
   tep_db_query($update_sql);
+}else if ($_GET['action'] == 'inventory_operations'){
+
+  $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+  $pid = tep_db_prepare_input($_POST['pid']);
+  $inventory_contents = $_POST['inventory_contents'];
+  echo tep_inventory_operations($inventory_contents,$pid,$site_id); 
 }
