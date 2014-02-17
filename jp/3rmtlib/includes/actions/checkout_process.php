@@ -628,11 +628,8 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   //获取是否开启了帐单邮寄地址功能
   $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
   $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
-  $billing_address_list_flag = false;
   if($billing_address_show == 'true' && $_SESSION['billing_select'] == '1'){
     
-     $billing_address_list = array();
-     $billing_address_list_flag = true;
      foreach($_SESSION['billing_options'] as $op_key=>$op_value){
  
        $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
@@ -640,7 +637,6 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
        tep_db_free_result($address_options_query);
        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','".addslashes($op_value[1])."','1')");
        tep_db_free_result($address_query);
-       $billing_address_list[$address_options_array['id']] = $op_value[1];
      }  
   }
 
@@ -913,7 +909,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $products_ordered_attributes .= "\n" 
         . $op_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($op_value['front_title'], 'utf-8'))))
-        . '：' . htmlspecialchars(str_replace($replace_arr, "", $op_value['value']));
+        . '：' . tep_db_input(str_replace($replace_arr, "", $op_value['value']));
       
       if ($op_price != '0') {
         $products_ordered_attributes .= '　('.$currencies->format($op_price).')'; 
@@ -982,7 +978,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $products_ordered_attributes .= "\n" 
         . $ck_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($ck_value['front_title'], 'utf-8'))))
-        . '：' . htmlspecialchars(str_replace($replace_arr, "", $ck_value['value']));
+        . '：' . tep_db_input(str_replace($replace_arr, "", $ck_value['value']));
       
       if ($c_op_price != '0') {
         $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
@@ -1069,10 +1065,10 @@ $mailoption['ORDER_TOTAL']      = str_replace(JPMONEY_UNIT_TEXT,'',$currencies->
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['PAYMENT']    = $payment_class->title ;
 $mailoption['SHIPPING_TIME']      =  str_string($date) . $start_hour . TIME_HOUR_TEXT . $start_min . TEXT_ORDERS_PRODUCTS_LINK. $end_hour .TIME_HOUR_TEXT. $end_min .TEXT_ORDERS_PRODUCTS_TWENTY_HOUR ;
-$mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
+$mailoption['ORDER_COMMENT']    = tep_db_prepare_input($_SESSION['mailcomments']);//
 unset($_SESSION['comments']);
 $mailoption['ADD_INFO']    = $comments_info['payment_info'];
-$mailoption['ORDER_PRODUCTS']   = $products_ordered ;
+$mailoption['ORDER_PRODUCTS']   = tep_db_prepare_input($products_ordered) ;
 $mailoption['SHIPPING_METHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
@@ -1110,9 +1106,7 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   foreach($_SESSION['options'] as $ad_value){
     $ad_len = mb_strlen($ad_value[0],'utf8');
     $temp_str = str_repeat('　',$maxlen-$ad_len);
-    if(trim($ad_value[0]) != '' && trim($ad_value[1]) != ''){
-      $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
-    }
+   $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
   }
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $email_order = str_replace('${USER_ADDRESS}',$email_address_str,$email_order);
@@ -1123,41 +1117,6 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
 }
 $email_order = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order);
 $email_order = str_replace('${CUSTOMIZED_FEE}','',$email_order);
-
-//帐单邮寄地址
-$address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
-$address_array = array();
-while($address_list_array = tep_db_fetch_array($address_list_query)){
-
-  $address_array[$address_list_array['id']] = $address_list_array['name'];
-}
-tep_db_free_result($address_list_query);
-if($billing_address_show == 'true' && $billing_address_list_flag == true){
-
-  $billing_address_len_array = array();
-  foreach($billing_address_list as $billing_address_key=>$billing_address_value){
-
-    $billing_address_len_array[] = strlen($address_array[$billing_address_key]);
-  }
-  $maxlen = max($billing_address_len_array);
-  $email_billing_address_str = "";
-  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
-  $maxlen = 9;
-  foreach($billing_address_list as $billing_key=>$billing_value){
-    $billing_len = mb_strlen($address_array[$billing_key],'utf8');
-    $temp_str = str_repeat('　',$maxlen-$billing_len);
-    if(trim($address_array[$billing_key]) != '' && trim($billing_value) != ''){
-      $email_billing_address_str .= $address_array[$billing_key].$temp_str.'：'.$billing_value."\n";
-    }
-  }
-  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
-  $email_order = str_replace('${BILLING_ADDRESS}',$email_billing_address_str,$email_order);
-}else{
-
-  $email_order = str_replace("\n".'${BILLING_ADDRESS}','',$email_order); 
-  $email_order = str_replace('${BILLING_ADDRESS}','',$email_order);
-  $email_order = str_replace("\n".TEXT_ORDERS_CUSTOMER_STRING.TEXT_BILLING_ADDRESS,'',$email_order);
-}
 $email_order = tep_replace_mail_templates($email_order,$order->customer['email_address'],tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
 //订单邮件
 $orders_mail_templates = tep_get_mail_templates('MODULE_PAYMENT_'.strtoupper($payment).'_MAILSTRING',SITE_ID);
@@ -1169,7 +1128,6 @@ $title_replace_array = array(
                              STORE_NAME 
                            );
 $subject = str_replace($title_mode_array,$title_replace_array,$subject);
-
 if ($customers_referer_array['is_send_mail'] != '1') {
   //判断是否给该顾客发送邮件 
   tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], $subject, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
@@ -1254,18 +1212,9 @@ if($email_address_str != ''){
   $email_printing_order = str_replace('${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace("\n".str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',TEXT_ORDERS_PRODUCTS_ADDRESS_INFO),'',$email_printing_order);
 }
-//帐单邮寄地址
-if($email_billing_address_str != ''){
-  $email_printing_order = str_replace('${BILLING_ADDRESS}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$email_billing_address_str),$email_printing_order);
-}else{
-  $email_printing_order = str_replace("\n".'${BILLING_ADDRESS}','',$email_printing_order);
-  $email_printing_order = str_replace('${BILLING_ADDRESS}','',$email_printing_order);
-  $email_printing_order = str_replace("\n".TEXT_BILLING_ADDRESS,'',$email_printing_order);
-}
 
 # ------------------------------------------
 $email_printing_order = tep_replace_mail_templates($email_printing_order,$order->customer['email_address'],tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
-
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   //发送打印邮件 
   tep_mail('', PRINT_EMAIL_ADDRESS, str_replace('${SITE_NAME}',STORE_NAME,$orders_print_mail_templates['title']), $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
