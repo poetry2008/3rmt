@@ -173,7 +173,7 @@ $(document).ready(function(){
       $a_value = htmlspecialchars(html_entity_decode($account['customers_firstname']));
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
-          $a_value = tep_draw_input_field('firstname', '', "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
+          $a_value = tep_draw_input_field('firstname','','class="input_text"') . ENTRY_FIRST_NAME_ERROR;
       }else if($strlen_firstname_error == true){
           $a_value = tep_draw_input_field('firstname','',' class="input_text"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);
       }else {
@@ -189,7 +189,7 @@ $(document).ready(function(){
       $a_value = htmlspecialchars(html_entity_decode($account['customers_lastname']));
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
-          $a_value = tep_draw_input_field('lastname', '', "class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
+          $a_value = tep_draw_input_field('lastname','','class="input_text"') . ENTRY_LAST_NAME_ERROR;
       }else if($strlen_lastname_error == true){
           $a_value = tep_draw_input_field('lastname','','class="input_text"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
       }else {
@@ -207,7 +207,7 @@ $(document).ready(function(){
       if ($entry_email_address_error == true) {
           $a_value = tep_draw_input_field('email_address', '', 'class="input_text"') . str_replace('&nbsp;','',ENTRY_EMAIL_ADDRESS_ERROR);
       } elseif ($entry_email_address_check_error == true) {
-          $a_value = tep_draw_input_field('email_address', '', 'class="input_text:') . str_replace('&nbsp;','',ENTRY_EMAIL_ADDRESS_CHECK_ERROR);
+          $a_value = tep_draw_input_field('email_address', '', 'class="input_text"') . str_replace('&nbsp;','',ENTRY_EMAIL_ADDRESS_CHECK_ERROR);
       } elseif ($entry_email_address_exists == true) {
           $a_value = tep_draw_input_field('email_address', '', 'class="input_text"') . str_replace('&nbsp;','',ENTRY_EMAIL_ADDRESS_ERROR_EXISTS);
       } elseif ($entry_guest_not_active == true) {
