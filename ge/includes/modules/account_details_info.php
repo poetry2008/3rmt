@@ -581,7 +581,7 @@ $(document).ready(function(){
       } elseif ($entry_guest_not_active == true) {
           $a_value = tep_draw_input_field('email_address','','class="input_text"') .  '&nbsp;<div>' .  ENTRY_GUEST_EMAIL_NOT_ACTIVE.'</div>';
       } else {
-          $a_value = $email_address . tep_draw_hidden_field('email_address','','class="input_text"');
+          $a_value = $email_address .  tep_draw_hidden_field('email_address','','class="input_text"',false);
       }
   } else {
       $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],'class="input_text"') . '&nbsp;<div>' . ENTRY_EMAIL_ADDRESS_TEXT.'</div>';
