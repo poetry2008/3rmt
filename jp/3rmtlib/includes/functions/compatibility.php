@@ -8,13 +8,13 @@
     参数: $ar(array) 数组   
     返回值: 无 
 ------------------------------------ */
-  function do_magic_quotes_gpc(&$ar) {
+  function do_magic_quotes_gpc(&$ar,$excep_key) {
     if (!is_array($ar)) return false;
 
     while (list($key, $value) = each($ar)) {
       if (is_array($value)) {
         do_magic_quotes_gpc($value);
-      }else if(($key == 'email_address')&& ($_SERVER['PHP_SELF'] == '/'.FILENAME_ACCOUNT_EDIT || $_SERVER['PHP_SELF'] == '/'.FILENAME_CREATE_ACCOUNT_PROCESS || $_SERVER['PHP_SELF'] == '/'.FILENAME_CREATE_ACCOUNT)){
+      }else if(($key == $excep_key)&& ($_SERVER['PHP_SELF'] == '/'.FILENAME_ACCOUNT_EDIT || $_SERVER['PHP_SELF'] == '/'.FILENAME_CREATE_ACCOUNT_PROCESS || $_SERVER['PHP_SELF'] == '/'.FILENAME_CREATE_ACCOUNT)){
         $ar[$key] = $value;
       }else {
         $ar[$key] = addslashes($value);
@@ -31,7 +31,7 @@
 // handle magic_quotes_gpc turned off.
   if (!get_magic_quotes_gpc()) {
     do_magic_quotes_gpc($_GET);
-    do_magic_quotes_gpc($_POST);
+    do_magic_quotes_gpc($_POST,'email_address');
     do_magic_quotes_gpc($HTTP_COOKIE_VARS);
   }
   if (!function_exists('array_splice')) {

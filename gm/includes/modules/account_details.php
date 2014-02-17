@@ -180,7 +180,7 @@ $(document).ready(function(){
           $a_value = htmlspecialchars($firstname) .  tep_draw_hidden_field('firstname','','class="input_text"',false);
       }
   } else {
-      $a_value = tep_draw_input_field('firstname',tep_db_output($account['customers_firstname']),'tyle=\'width:35%\'') . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname',tep_db_output($account['customers_firstname']),'class=\'input_text\'style=\'width:35%\'') . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -196,7 +196,7 @@ $(document).ready(function(){
           $a_value = htmlspecialchars($lastname) .  tep_draw_hidden_field('lastname','','class="input_text"',false);
       }
   } else {
-      $a_value = tep_draw_input_field('lastname', tep_db_output($account['customers_lastname']),'tyle=\'width:35%\'') . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname', tep_db_output($account['customers_lastname']),'class=\'input_text\' style=\'width:35%\'') . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -213,10 +213,10 @@ $(document).ready(function(){
       } elseif ($entry_guest_not_active == true) {
           $a_value = tep_draw_input_field('email_address','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
       } else {
-          $a_value = $email_address .  tep_draw_hidden_field('email_address','','tyle=\'width:35%\'',false);
+          $a_value = $email_address .  tep_draw_hidden_field('email_address','','style=\'width:35%\'',false);
       }
   } else {
-      $a_value = tep_draw_input_field('email_address', tep_db_output($account['customers_email_address']),'tyle=\'width:35%\'') . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address', tep_db_output($account['customers_email_address']),'class=\'input_text\'style=\'width:35%\'') . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>

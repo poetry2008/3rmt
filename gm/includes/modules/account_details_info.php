@@ -543,7 +543,7 @@ $(document).ready(function(){
       if ($entry_firstname_error == true) {
           $a_value = tep_draw_input_field('firstname','','style="width:35%"') . '&nbsp;' . ENTRY_FIRST_NAME_ERROR;
       }else if($strlen_firstname_error == true){
-          $a_value = tep_draw_input_field('firstname','','style="width:35%"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);
+          $a_value = tep_draw_input_field('firstname','','style="width:35%"') .'<br>'.  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);
       }else {
           $a_value = htmlspecialchars($firstname) .  tep_draw_hidden_field('firstname','','class="input_text"',false);
       }
@@ -559,7 +559,7 @@ $(document).ready(function(){
       if ($entry_lastname_error == true) {
           $a_value = tep_draw_input_field('lastname','','style="width:35%"') . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
       }else if($strlen_lastname_error == true){
-          $a_value = tep_draw_input_field('lastname','','style="width:35%"') .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
+          $a_value = tep_draw_input_field('lastname','','style="width:35%"') .'<br>'.  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
       }else {
           $a_value = htmlspecialchars($lastname) .  tep_draw_hidden_field('lastname','','class="input_text"',false);
       }

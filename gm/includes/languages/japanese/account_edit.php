@@ -23,4 +23,4 @@ define('NOTICE_DELETE_CONFIRM_TEXT', 'このデータを削除してもよろし
 define('NOTICE_PASSWORD_NOT_SAME', 'ご入力されたパスワードが一致しておりません');
 define('NOTICE_SET_NEW_PASSWORD', '安全のため、古いパスワードと違うパスワードを設定してください。');
 define('TEXT_BILLING_ADDRESS_CANCEL','請求書は不要です');
-define('ERROR_FIRST_ITEM_TEXT_NUM_MAX','&nbsp;&nbsp;<font color="red">文字数は%sを超えてはいけません。</font>');
+define('ERROR_FIRST_ITEM_TEXT_NUM_MAX','<font color="red">文字数は%sを超えてはいけません。</font>');
