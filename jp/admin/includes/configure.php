@@ -6,11 +6,11 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
   //define('HTTP_SERVER', 'http://aionbunsin.3322.org'); // eg, http://localhost or - https://localhost should not be empty for productive servers
-  define('HTTP_SERVER', 'http://jposc3rmt.hm1002.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_SERVER', 'http://3rmt.hm1002.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
   //define('HTTP_CATALOG_SERVER', 'http://aionbunsin.3322.org');
-  define('HTTP_CATALOG_SERVER', 'http://jposc3rmt.hm1002.200.com');
+  define('HTTP_CATALOG_SERVER', 'http://3rmt.hm1002.200.com');
   //define('HTTPS_CATALOG_SERVER', 'https://aionbunsin.3322.org');
-  define('HTTPS_CATALOG_SERVER', 'http://jposc3rmt.hm1002.200.com');
+  define('HTTPS_CATALOG_SERVER', 'http://3rmt.hm1002.200.com');
   define('BACKEND_LAN_URL_ENABLED',false);
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
 
@@ -53,7 +53,7 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '123456');
-  define('DB_DATABASE', 'hm1002_osc_3rmt');
+  define('DB_DATABASE', '3rmt');
   
   define('USE_PCONNECT', 'false'); // use persisstent connections?
   define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'

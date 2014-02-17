@@ -8,7 +8,7 @@
 // * DIR_WS_* = Webserver directories (virtual/URL)
 //  define('HTTP_SERVER', 'http://3xy.szn.200.com'); // eg, http://localhost - should not be empty for productive servers
   define('HTTP_SERVER', 'http://gposc3rmt.hm1002.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTPS_SERVER', 'https://https.200.com/gposc3rmt.hm1002.200.com'); // eg, https://localhost - should not be empty for productive servers
+  define('HTTPS_SERVER', 'http://gposc3rmt.hm1002.200.com'); // eg, https://localhost - should not be empty for productive servers
   define('URL_ROMAJI_ENABLED', true);
   define('ENABLE_SSL', true); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required

@@ -7,7 +7,7 @@
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
 //  define('HTTP_SERVER', 'http://3jp.bobhero.200.com'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTP_SERVER', 'http://jposc3rmt.hm1002.200.com'); // eg, http://localhost - should not be empty for productive servers
+  define('HTTP_SERVER', 'http://3rmt.hm1002.200.com'); // eg, http://localhost - should not be empty for productive servers
 //  define('HTTP_SERVER', 'http://hmtest9.3322.org');
 
   define('HTTPS_SERVER', 'https://cchm.vicp.net'); // eg, https://localhost - should not be empty for productive servers
@@ -65,3 +65,4 @@
   define("my_api_signature","AFcWxV21C7fd0v3bYYYRCpSSRl31A-xnmo0jnYaLEu6YtiFKRwhz.27E");
   define('DDOS_SEND_MAIL', 'bobhero.chen@gmail.com');
   define('DDOS_SEND_MAIL_TITLE', 'ddos info');
+  define('NEW_TYPE_SYMBOL', true);

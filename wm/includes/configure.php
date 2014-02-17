@@ -48,4 +48,5 @@
   //define('DIR_OST',DIR_FS_DOCUMENT_ROOT.DIR_WS_INCLUDES.'ost/');
   define('DIR_OST','includes/ost/');
   define('SITE_TOPIC_ID',4); 
+  define('NEW_TYPE_SYMBOL', true);
 

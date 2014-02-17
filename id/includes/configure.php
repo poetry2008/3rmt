@@ -9,7 +9,7 @@
   define('URL_SUB_SITE', 'idosc3rmt.hm1002.200.com');
   define('URL_SUB_SITE_ENABLED', 1);
   ini_set('session.cookie_domain', '.'.URL_SUB_SITE);
-  define('HTTP_SERVER', 'http://idosc3rmt.hm1002.200.com'); // eg, http://localhost - should not be empty for productive servers
+  define('HTTP_SERVER', 'http://www.idosc3rmt.hm1002.200.com'); // eg, http://localhost - should not be empty for productive servers
   define('HTTPS_SERVER', 'https://idosc3rmt.hm1002.200.com'); // eg, https://localhost - should not be empty for productive servers
   define('ENABLE_SSL', false); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
@@ -29,7 +29,7 @@
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
   
-  define('DIR_FS_3RMTLIB', '/home/hm1002/OSC_3RMT/jp/3rmtlib');
+  define('DIR_FS_3RMTLIB', '/home/hm1002/OSC_3RMT/jp/3rmtlib/');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
