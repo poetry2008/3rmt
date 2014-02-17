@@ -189,7 +189,7 @@ $(document).ready(function(){
       $a_value = htmlspecialchars(html_entity_decode($account['customers_lastname']));
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
-          $a_value = tep_draw_input_field('lastname','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
+          $a_value = tep_draw_input_field('lastname','','class="input_text" style="width:35%"') . '&nbsp;' . ENTRY_LAST_NAME_ERROR;
       }else if($strlen_lastname_error == true){
           $a_value = tep_draw_input_field('lastname','','class="input_text" style=\'width:35%\'') .'<br>'.  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
       }else {
@@ -205,13 +205,13 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_email_address'],false,true);
   } elseif ($error == true) {
       if ($entry_email_address_error == true) {
-          $a_value = tep_draw_input_field('email_address','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
+          $a_value = tep_draw_input_field('email_address','','class="input_text" style="width:35%"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
       } elseif ($entry_email_address_check_error == true) {
-          $a_value = tep_draw_input_field('email_address','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+          $a_value = tep_draw_input_field('email_address','','class="input_text" style="width:35%"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       } elseif ($entry_email_address_exists == true) {
-          $a_value = tep_draw_input_field('email_address','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
+          $a_value = tep_draw_input_field('email_address','','class="input_text" style="width:35%"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
       } elseif ($entry_guest_not_active == true) {
-          $a_value = tep_draw_input_field('email_address','',"class='input_text' style='width:35%'") . '&nbsp;' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
+          $a_value = tep_draw_input_field('email_address','','class="input_text" style="width:35%"') . '&nbsp;' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
       } else {
           $a_value = $email_address .  tep_draw_hidden_field('email_address','','style=\'width:35%\'',false);
       }
