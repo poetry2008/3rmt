@@ -273,7 +273,11 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   } else {
     $entry_email_address_check_error = false;
   }
-
+    $hicuizd = trim($email_address);
+  if(preg_match('/\/',$hicuizd)||preg_match('/\\/',$hicuizd)||preg_match('/\\\/',$hicuizd)){
+    $error = true;
+    $entry_email_address_check_error = true;
+  }
   if(!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $password)){
       $error = true;
       $error_pwd = true;
