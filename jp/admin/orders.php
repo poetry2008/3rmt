@@ -2838,7 +2838,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <?php
         } 
         ?>
-        <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a>
+        <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo htmlspecialchars($order->customer['name']); ?></a>
         <?php
         if ($order->info['is_gray'] == '1') {
         ?>
@@ -5505,7 +5505,7 @@ if($c_parent_array['parent_id'] == 0){
                 <?php } else { ?>
                   <font color="#000">
                     <?php } ?>
-                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'type=cid&search=' .  tep_output_string_protected($orders['customers_id']));?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
+                    <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'type=cid&search=' .  tep_output_string_protected($orders['customers_id']).'&site_id='.$orders['site_id']);?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
                     <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
                     </font>
                     <?php 

@@ -2954,7 +2954,7 @@ if (tep_db_num_rows($orders_history_query)) {
       } 
     } 
     echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-         '    <td class="smallText" align="left">' . $orders_history['user_added'] . '</td>' . "\n";
+         '    <td class="smallText" align="left">' .  htmlspecialchars($orders_history['user_added']) . '</td>' . "\n";
     echo '  </tr>' . "\n";
     $orders_status_history_str = $orders_history['comments'];
   }

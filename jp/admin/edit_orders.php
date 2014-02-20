@@ -587,7 +587,7 @@ if (tep_not_null($action)) {
 
       // 1.1 UPDATE ORDER INFO #####
       $UpdateOrders = "update " . TABLE_ORDERS . " set 
-                       customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
+                       customers_name = '" . tep_db_input($update_customer_name) . "',
                        customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
                        customers_company = '" . tep_db_input(stripslashes($update_customer_company)) . "',
                        customers_street_address = '" . tep_db_input(stripslashes($update_customer_street_address)) . "',
@@ -5263,7 +5263,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         }
       }
       echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-        '    <td class="smallText" align="left">' . $orders_history['user_added'] . '&nbsp;</td>' . "\n";
+        '    <td class="smallText" align="left">' .  htmlspecialchars($orders_history['user_added']) . '&nbsp;</td>' . "\n";
       echo '  </tr>' . "\n";
       $orders_status_history_str = $orders_history['comments'];
     }
