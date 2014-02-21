@@ -1175,7 +1175,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   <?php
                   } 
                   ?>
-                  <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id'].'&site_id='.$order->info['site_id']);?>"><?php echo htmlspecialchars($order->customer['name']); ?></a>
+                  <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo htmlspecialchars($order->customer['name']); ?></a>
                   <?php
                   if ($order->info['is_gray'] == '1') {
                   ?>
@@ -3225,7 +3225,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
   ?>
           <a style="text-decoration:underline;" href="javascript:void(0);">
   <?php } else { ?>
-          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'type=cid&search=' .  tep_output_string_protected($orders['customers_id']).'&site_id='.$orders['site_id']);?>">
+          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'type=cid&search=' .  tep_output_string_protected($orders['customers_id']));?>">
   <?php }?>
           <?php 
   if ($orders['is_active'] == '0') {
