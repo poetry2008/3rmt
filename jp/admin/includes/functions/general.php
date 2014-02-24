@@ -13142,3 +13142,16 @@ function tep_inventory_operations($inventory_contents,$pid,$site_id){
     $inventory_contents = tep_operations(str_replace($inventory_mode_array,$inventory_replace_array,str_replace('<<<','+',trim($inventory_contents))));
     return round($inventory_contents);
 }
+/* -------------------------------------
+    功能: 判断是否存在订单 
+    参数: $oid 订单号
+    返回值: 返回是否存  如果存在 返回新订单号 否则返回原订单号 
+ ------------------------------------ */
+function tep_is_has_order($oid){
+  $sql = "select * from ".TABLE_ORDERS." where orders_id='".$oid."'";
+  $query = tep_db_query($sql);
+  if($res = tep_db_fetch_array($query)){
+    return date("Ymd") . '-' . date("His") . tep_get_order_end_num();
+  }
+  return $oid;
+}
