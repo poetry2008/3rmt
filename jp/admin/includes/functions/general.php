@@ -4517,7 +4517,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME.'</td>';
     $str .= '<td class="main">';
-    $str .= '<a href="">'.$orders['customers_name'].'</a>'; 
+    $str .= '<a href="">'.htmlspecialchars($orders['customers_name']).'</a>'; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
@@ -4775,9 +4775,9 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 	$str .= '</td>';
 	$str .= '<td class="main" width="70%">';
 	if(isset($orders['user_added']) && $orders['user_added'] != ""){
-   $str .= $orders['user_added'];	
+   $str .= htmlspecialchars($orders['user_added']);	
 	}else{
-   $str .= $orders['customers_name'];	
+   $str .= htmlspecialchars($orders['customers_name']);	
 	}	
 	$str .= '</td>';
 	$str .= '</tr>';
@@ -4817,9 +4817,9 @@ if(tep_not_null($orders['user_added']) || tep_not_null($orders['customers_name']
 	$str .= '</td>';
 	$str .= '<td class="main">';
         if(isset($orders['user_update']) && $orders['user_update'] != ""){
-        $str .= $orders['user_update'];	
+        $str .= htmlspecialchars($orders['user_update']);	
         }else{
-        $str .= $orders['customers_name'];
+        $str .= htmlspecialchars($orders['customers_name']);
         }
 	$str .= '</td>';
 	$str .= '</tr>';

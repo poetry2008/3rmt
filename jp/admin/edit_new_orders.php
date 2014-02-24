@@ -266,10 +266,8 @@ if (tep_not_null($action)) {
 			'site_id'                     => $_SESSION['sites_id_flag'],
 			'orders_wait_flag'            => '1'
 			); 
-       
        //更新订单
        tep_db_perform(TABLE_ORDERS, $sql_data_array,'update','orders_id=\''.$oID.'\'');
-
        last_customer_action();
        orders_updated($insert_id);
        $orders_type_str = tep_get_order_type_info($oID);
@@ -460,7 +458,7 @@ if($orders_exit_flag == true){
             
       // 1.1 UPDATE ORDER INFO #####
       $UpdateOrders = "update " . TABLE_ORDERS . " set 
-        customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
+        customers_name = '" . tep_db_input($update_customer_name) . "',
                        customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
                        customers_company = '" . tep_db_input(stripslashes($update_customer_company)) . "',
                        customers_street_address = '" . tep_db_input(stripslashes($update_customer_street_address)) . "',
@@ -2110,7 +2108,9 @@ function clear_confirm_div(){
     }
     $.ajax({
       type: "POST",
-      data:"o_id_info=<?php echo $_GET['oID'];?>&c_comments="+$('#c_comments').val()+'&fetch_date='+fetch_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#s_status').val()+'&c_payment='+payment_str+'&c_name_info=<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?>'+'&c_mail_info=<?php echo $orders_exit_flag == true ?  $order->customer['email_address'] : $_SESSION['email_address'];?>'+'&site_id_info=<?php echo (isset($_SESSION['sites_id_flag'])?$_SESSION['sites_id_flag']:'');?>'+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
+      data:"o_id_info=<?php echo
+      $_GET['oID'];?>&c_comments="+$('#c_comments').val()+'&fetch_date='+fetch_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#s_status').val()+'&c_payment='+payment_str+'&c_name_info=<?php
+      echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.addslashes($_SESSION['firstname'])); ?>'+'&c_mail_info=<?php echo $orders_exit_flag == true ?  $order->customer['email_address'] : $_SESSION['email_address'];?>'+'&site_id_info=<?php echo (isset($_SESSION['sites_id_flag'])?$_SESSION['sites_id_flag']:'');?>'+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
       async: false,
       url:'ajax_orders.php?action=check_new_order_variable_data',
       success: function(msg_info) {
@@ -3557,7 +3557,7 @@ a.dpicker {
             </tr>
             <tr>
             <td class="main" valign="top"><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></td>
-            <td class="main"><?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?></td>
+            <td class="main"><?php echo $orders_exit_flag == true ?  tep_html_quotes(htmlspecialchars($order->customer['name'])) : tep_html_quotes(htmlspecialchars($_SESSION['lastname']).' '.htmlspecialchars($_SESSION['firstname'])); ?></td>
             </tr>
             <tr>
             <td class="main" valign="top"><?php echo EDIT_ORDERS_EMAIL;?></td>

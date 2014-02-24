@@ -1646,7 +1646,7 @@ if (($action == 'edit') && ($order_exists == true)) {
               </tr>
               <tr>
                 <td class="main" valign="top"><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></td>
-                <td class="main"><?php echo tep_html_quotes($order['customers_name']); ?></td>
+                <td class="main"><?php echo tep_html_quotes(htmlspecialchars($order['customers_name'])); ?></td>
               </tr>
               <tr>
                 <td class="main" valign="top"><?php echo EDIT_ORDERS_EMAIL;?></td>

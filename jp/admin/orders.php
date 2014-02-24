@@ -2838,7 +2838,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <?php
         } 
         ?>
-        <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a>
+        <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo htmlspecialchars($order->customer['name']); ?></a>
         <?php
         if ($order->info['is_gray'] == '1') {
         ?>

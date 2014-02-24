@@ -1175,7 +1175,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   <?php
                   } 
                   ?>
-                  <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo $order->customer['name']; ?></a>
+                  <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo htmlspecialchars($order->customer['name']); ?></a>
                   <?php
                   if ($order->info['is_gray'] == '1') {
                   ?>
@@ -1833,7 +1833,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           }else{
             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">&nbsp;</p></td>' . "\n";  
           }
-          echo '<td class="smallText">'.$orders_history['user_added'].'</td>'; 
+          echo '<td class="smallText">'.htmlspecialchars($orders_history['user_added']).'</td>'; 
           if ($ocertify->npermission >= 15) {
             echo '<td>';
             $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".tep_db_input($oID)."'"); 
