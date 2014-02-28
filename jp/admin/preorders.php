@@ -1647,7 +1647,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           foreach($all_show_option_id as $t_item_id){
             $op_include_array[] = $all_show_option[$t_item_id]['id']; 
             if (is_array($all_show_option[$t_item_id]['option_info'])) {
-              echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
+              echo '<table><tr><td valign="top">-&nbsp; </td><td>' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",htmlspecialchars($all_show_option[$t_item_id]['option_info']['value']));
               if ($all_show_option[$t_item_id]['price'] != '0'){
                 if ($all_show_option[$t_item_id]['price'] < 0) {
                   echo ' (<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '',$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value'])) . '</font>'.TEXT_MONEY_SYMBOL.')';
@@ -1829,7 +1829,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
            $orders_history_comment = $orders_history['comments'];
           }
           if($orders_history['comments'] != $orders_status_history_str){
-            echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' .  tep_replace_to_red($comment_warning_arr,nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)))) . '&nbsp;</p></td>' . "\n";
+            echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' .  tep_replace_to_red($comment_warning_arr,nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),stripslashes($orders_history_comment))))) . '&nbsp;</p></td>' . "\n";
           }else{
             echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">&nbsp;</p></td>' . "\n";  
           }

@@ -33,4 +33,5 @@ define('TEXT_ORDERS_QTY','個は注文可能です。');
 define('TEXT_PREORDER_HERE','コチラ');
 define('TEXT_PREORDER_FROM',' からお手続きください。 ');
 define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
+define('ERROR_FIRST_ITEM_TEXT_NUM_MAX','<font color="red">文字数は%sを超えてはいけません。</font>');
 ?>

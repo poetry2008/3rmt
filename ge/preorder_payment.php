@@ -371,7 +371,7 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
-                  $op_info_array[] = $op_s_key.'||||||'.stripslashes($op_s_value); 
+                  $op_info_array[] = $op_s_key.'||||||'.htmlspecialchars(addslashes($op_s_value)); 
                 }
               }
               $op_info_tmp_str = implode('<<<<<<', $op_info_array);
@@ -476,14 +476,14 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
       </div>
       <div class="formAreaTitle"><b><?php echo PREORDER_EXPECT_CTITLE; ?></b></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-        <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 53, 8, $_POST['yourmessage']);?></td></tr>
+        <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 53, 8, stripslashes($_POST['yourmessage']));?></td></tr>
       </table>
       <br>
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <?php
               if (!tep_session_is_registered('customer_id')) {
-                echo tep_draw_hidden_field('lastname', $_POST['lastname']); 
-                echo tep_draw_hidden_field('firstname', $_POST['firstname']); 
+                echo tep_draw_hidden_field('lastname', stripslashes($_POST['lastname'])); 
+                echo tep_draw_hidden_field('firstname', stripslashes($_POST['firstname'])); 
                 echo tep_draw_hidden_field('from', $_POST['from']); 
               }
               echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
@@ -493,7 +493,7 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
                   echo '<input type="hidden" name="'.$op_s_key.'" value="'.stripslashes($op_s_value).'">'; 
-                  $op_info_array[] = $op_s_key.'||||||'.stripslashes($op_s_value); 
+                  $op_info_array[] = $op_s_key.'||||||'.htmlspecialchars(addslashes($op_s_value)); 
                 }
               }
               $op_info_tmp_str = implode('<<<<<<', $op_info_array); 
@@ -519,8 +519,8 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
     <?php
        echo tep_draw_form('form1', tep_preorder_href_link($product_info['products_id'], $product_info['romaji'])); 
        if (!tep_session_is_registered('customer_id')) {
-         echo tep_draw_hidden_field('lastname', $_POST['lastname']); 
-         echo tep_draw_hidden_field('firstname', $_POST['firstname']); 
+         echo tep_draw_hidden_field('lastname', stripslashes($_POST['lastname'])); 
+         echo tep_draw_hidden_field('firstname', stripslashes($_POST['firstname'])); 
          echo tep_draw_hidden_field('from', $_POST['from']); 
        }
        echo tep_draw_hidden_field('quantity', $_POST['quantity']); 

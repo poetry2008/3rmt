@@ -49,7 +49,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
            $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?htmlspecialchars($_POST[$pre_item_str.'op_'.$this->formname]):$this->itext);
          }
        } else {
-         $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?htmlspecialchars($_POST[$pre_item_str.'op_'.$this->formname]):$this->itext);
+         $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?htmlspecialchars(stripslashes($_POST[$pre_item_str.'op_'.$this->formname])):$this->itext);
        }
        
        if ($sp_pos !== false) {
@@ -116,7 +116,11 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        if ($cp_pos !== false) {
          if ($_SERVER['REQUEST_METHOD'] == 'GET') {
            if (isset($_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname])) {
-             $default_value = $_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname]; 
+             if(isset($_POST['date']) && $_POST['date'] == ''){
+                $default_value = $_POST[$pre_item_str.'op_'.$this->formname]; 
+             }else{
+                $default_value = stripslashes($_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname]); 
+             }
            } else {
              $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'"); 
              $preorder_res = tep_db_fetch_array($preorder_raw); 
@@ -135,7 +139,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
                        if ($old_option_info == false) {
                          $old_option_info = @unserialize($o_attributes_res['option_info']);  
                        }
-                       $default_value = $old_option_info['value']; 
+                       $default_value = stripslashes($old_option_info['value']); 
                      }
                    }
                  }
@@ -199,7 +203,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
         }
       }
       if (!$tmp_single) {
-        $default_value = stripslashes($default_value);
+        $default_value = $default_value;
       }
       $default_value = strtr($default_value,array("'"=>"&#39;",'"'=>"&#34;"));
       if(NEW_STYLE_WEB===true){

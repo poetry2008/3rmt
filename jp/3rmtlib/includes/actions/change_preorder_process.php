@@ -836,7 +836,7 @@ if (isset($_SESSION['preorder_option_info'])) {
 $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'");
 
 while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
-  $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
+  $old_attr_info = @unserialize($old_attr_res['option_info']); 
   $cl_len_array[] = mb_strlen($old_attr_info['title'], 'utf-8');
 }
 
@@ -864,7 +864,7 @@ if($cl_max_len < 4) {
 //option信息
 $mold_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'");
 while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
-  $mold_attr_info = @unserialize(stripslashes($mold_attr_res['option_info'])); 
+  $mold_attr_info = @unserialize($mold_attr_res['option_info']); 
 
   $sql_data_array = array('orders_id' => $orders_id,
                           'orders_products_id' => $order_products_id,

@@ -1353,7 +1353,7 @@ document.forms.order1.submit();
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
               <td class="main">
-              <?php echo $preorder_res['customers_name'];?> 
+              <?php echo htmlspecialchars($preorder_res['customers_name']);?> 
               </td>
             </tr>
             <tr>
@@ -1404,7 +1404,7 @@ document.forms.order1.submit();
                 where prea.orders_id = '".$preorder_id."' 
                 order by it.sort_num,it.title"); 
             while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
-              $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
+              $old_attr_info = @unserialize($old_attr_res['option_info']); 
             ?>
             <tr>
             <td>
@@ -1413,7 +1413,7 @@ document.forms.order1.submit();
               <td class="main" width="144"><?php echo $old_attr_info['title'];?>:</td> 
               <td class="main">
               <?php 
-              echo str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
+              echo htmlspecialchars(str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']));
               ?>
               </td> 
             </tr>

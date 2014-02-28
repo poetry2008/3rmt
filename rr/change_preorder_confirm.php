@@ -350,9 +350,9 @@ echo '<br>';
 foreach($all_show_option_id as $t_item_id){
   if(isset($all_show_option[$t_item_id]['option_info'])&&
     $all_show_option[$t_item_id]['option_info']!=''){
-    $all_attr_info = @unserialize(stripslashes($all_show_option[$t_item_id]['option_info'])); 
+    $all_attr_info = @unserialize($all_show_option[$t_item_id]['option_info']); 
     if(is_array($all_attr_info)){
-    echo '<small>&nbsp;<i> - '.$all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
+    echo '<small>&nbsp;<i> - '.$all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', htmlspecialchars($all_attr_info['value']));
     if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
       if ((int)$preorder_product_res['products_price'] != '0') {
         if($all_show_option[$t_item_id]['options_values_price'] < 0){
@@ -366,8 +366,7 @@ foreach($all_show_option_id as $t_item_id){
     }
   }else{
     if($all_show_option[$t_item_id]['front_title']){
-    echo '<small>&nbsp;<i> - '.$all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
-      '', $all_show_option[$t_item_id]['of_value']); 
+    echo '<small>&nbsp;<i> - '.$all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"), '', htmlspecialchars($all_show_option[$t_item_id]['of_value'])); 
     }
     if ($all_show_option[$t_item_id]['type'] == 'radio') {
       $r_option_array = @unserialize($all_show_option[$t_item_id]['option']);
@@ -946,10 +945,10 @@ if (tep_not_null($preorder_array['comment_msg'])) {
             }
             if (is_array($post_value)) {
               foreach ($post_value as $ps_key => $ps_value) {
-                echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
+                echo tep_draw_hidden_field($post_key.'['.$ps_key.']', htmlspecialchars(stripslashes($ps_value))); 
               }
             } else {
-              echo tep_draw_hidden_field($post_key, stripslashes($post_value)); 
+              echo tep_draw_hidden_field($post_key, htmlspecialchars(stripslashes($post_value))); 
             }
           }
           echo '</form>';

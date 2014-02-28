@@ -27,6 +27,8 @@
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 
+  $customers_array = array('customers_firstname','customers_lastname');
+  $customers_strlen = tep_get_column_len(TABLE_CUSTOMERS,$customers_array);
 
   $valid_product = false;
   
@@ -182,8 +184,8 @@ $products_num = tep_get_quantity($_POST['products_id']) + $products_num_array['p
 if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
 if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
 if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
-      $first_name = $_POST['firstname'];
-      $last_name = $_POST['lastname'];
+      $first_name = stripslashes($_POST['firstname']);
+      $last_name = stripslashes($_POST['lastname']);
       $from_name = tep_get_fullname($_POST['firstname'], $_POST['lastname']); 
       $from_email_address = $_POST['from'];
     }
@@ -214,13 +216,24 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         $firstname_error = false;
       }
     } 
-    
+    if(mb_strlen($first_name,'utf8') > $customers_strlen['customers_firstname']){
+       $error = true;
+       $strlen_firstname_error = true; 
+    }  
+    if(mb_strlen($last_name,'utf8') > $customers_strlen['customers_lastname']){
+       $error = true;
+       $strlen_lastname_error = true; 
+    }
     if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
       if ($hm_option->check()) {
         $error = true;
       }
     } 
-    
+      $hicuizd = trim($from_email_address);
+    if(preg_match('/\/',$hicuizd)||preg_match('/\\/',$hicuizd)||preg_match('/\\\/',$hicuizd)){
+        $error = true;
+        $entry_email_address_check_error = true;
+    }
     if(isset($_POST['action']) && ($_POST['action'] == 'process') && !empty($_POST['quantity'])){
 
       $weight_count = 0;
@@ -300,21 +313,31 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       tep_redirect(tep_href_link(FILENAME_PREORDER_PAYMENT, '', 'SSL')); 
     } else {
       if (tep_session_is_registered('customer_id')) {
-        $last_name_prompt = $account_values['customers_lastname'];
-        $first_name_prompt = $account_values['customers_firstname'];
+        $last_name_prompt = htmlspecialchars($account_values['customers_lastname']);
+        $first_name_prompt = htmlspecialchars($account_values['customers_firstname']);
         $your_email_address_prompt = $account_values['customers_email_address'];
       } else {
 if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
 if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
 if (!isset($_GET['lastname'])) $_GET['lastname'] = NULL; //del notice
 if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
-        $last_name_prompt = tep_draw_input_field('lastname', $_POST['lastname'], 'class="input_text" style="width:35%"');
-        $first_name_prompt = tep_draw_input_field('firstname', $_POST['firstname'], 'class="input_text" style="width:35%"');
-        if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
-        if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
+        $last_name_prompt = tep_draw_input_field('lastname', htmlspecialchars(stripslashes($_POST['lastname'])), 'class="input_text"');
+        $first_name_prompt = tep_draw_input_field('firstname', htmlspecialchars(stripslashes($_POST['firstname'])), 'class="input_text"');
+        if ($lastname_error == true) {
+          $last_name_prompt .= '&nbsp;<span class="errorText"><br>' . PREORDER_TEXT_REQUIRED . '</span>';
+        }else if($strlen_lastname_error == true){
+          $last_name_prompt .= '&nbsp;<span class="errorText"><br>' .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']) . '</span>';
+        }
+        if ($firstname_error == true){ 
+          $first_name_prompt .= '&nbsp;<span class="errorText"><br>' . PREORDER_TEXT_REQUIRED . '</span>';
+        }else if($strlen_firstname_error == true){
+          $first_name_prompt .= '&nbsp;<span class="errorText"><br>' .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']) . '</span>';
+        }
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         $your_email_address_prompt = tep_draw_input_field('from', $_POST['from'] , 'size="30" class="input_text" style="width:35%"') . TEXT_PHONE_EMAIL_ADDRESS;
-        if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        if ($fromemail_error == true || $entry_email_address_check_error == true){
+          $your_email_address_prompt .="<br><div class='text_box'>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR.'</div>';
+        }
       }
 ?>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>

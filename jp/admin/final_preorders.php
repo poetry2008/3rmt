@@ -20,7 +20,6 @@
   $currencies = new currencies(2);
 
   include(DIR_WS_CLASSES . 'preorder.php');
-
   $preorders_update_time_query = tep_db_query("select last_modified from ". TABLE_PREORDERS ." where orders_id='".$_GET['oID']."'");
   $preorders_update_time_array = tep_db_fetch_array($preorders_update_time_query);
   tep_db_free_result($preorders_update_time_query);
@@ -196,7 +195,7 @@
       
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_PREORDERS . " set 
-      customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
+      customers_name = '" . tep_db_input($update_customer_name) . "',
       customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
       customers_company = '" . tep_db_input(stripslashes($update_customer_company)) . "',
       customers_street_address = '" . tep_db_input(stripslashes($update_customer_street_address)) . "',
@@ -2498,7 +2497,7 @@ require("includes/note_js.php");
         if ($less_op_single) {
           echo $item_default_value; 
         } else {
-          echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".$item_default_value."</u></a>";
+          echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".htmlspecialchars($item_default_value)."</u></a>";
         }
         echo "<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"));
         echo "'></div></div>";
@@ -2945,7 +2944,7 @@ if (tep_db_num_rows($orders_history_query)) {
       }
     if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
       echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
-           '    <td class="smallText" align="left">' . tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)) . '&nbsp;</td>' . "\n";
+           '    <td class="smallText" align="left">' .  tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),stripslashes($orders_history_comment))) . '&nbsp;</td>' . "\n";
     }else{
       if($CommentsWithStatus){
 

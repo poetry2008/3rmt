@@ -118,7 +118,7 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
       foreach ($_POST as $p_key => $p_value) {
         if ($p_key != 'x' && $p_key != 'y') {
-          echo '<input type="hidden" name="'.$p_key.'" value="'.stripslashes($p_value).'">'; 
+          echo '<input type="hidden" name="'.$p_key.'" value="'.htmlspecialchars(stripslashes($p_value)).'">'; 
         }
       }
       $product_query = tep_db_query("select products_price, products_price_offset, products_tax_class_id, products_small_sum from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
@@ -274,8 +274,7 @@ $preorder_products_array = array(
       $op_price = tep_get_show_attributes_price( $all_show_option[$t_item_id]['item_id'],
         $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']); 
       if(trim($all_show_option[$t_item_id]['value']) != ''){
-        echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
-             ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
+        echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .  ': ' .  str_replace(array("<br>", "<BR>"), '', stripslashes(htmlspecialchars($all_show_option[$t_item_id]['value'])));
         if ($op_price != '0') {
           $op_price = 0;
           if ($op_price < 0) {
@@ -496,7 +495,7 @@ if (tep_not_null($_POST['yourmessage'])) {
     <tr class="infoBoxContents"> 
     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
     <tr> 
-    <td class="main"><div><?php echo nl2br(htmlspecialchars($_POST['yourmessage'])); ?></div></td> 
+    <td class="main"><div><?php echo nl2br(htmlspecialchars(stripslashes($_POST['yourmessage']))); ?></div></td> 
     </tr> 
     </table></td> 
     </tr> 

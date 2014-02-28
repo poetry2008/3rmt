@@ -4738,8 +4738,8 @@ function tep_create_tmp_guest($email, $last_name, $first_name)
 { 
   
   $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-  $sql_data_array = array('customers_firstname' => $first_name,
-                            'customers_lastname' => $last_name,
+    $sql_data_array = array('customers_firstname' => stripslashes($first_name),
+                            'customers_lastname' => stripslashes($last_name),
                             'customers_firstname_f' => '',
                             'customers_lastname_f' => '',
                             'customers_email_address' => $email,
@@ -4759,8 +4759,8 @@ function tep_create_tmp_guest($email, $last_name, $first_name)
 
     $sql_data_array = array('customers_id' => $customer_id,
                             'address_book_id' => 1,
-                            'entry_firstname' => $first_name,
-                            'entry_lastname' => $last_name,
+                            'entry_firstname' =>stripslashes($first_name),
+                            'entry_lastname' => stripslashes($last_name),
                             'entry_firstname_f' => '',
                             'entry_lastname_f' => '',
                             'entry_street_address' => '',
@@ -4865,11 +4865,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
   $billing_address = tep_db_fetch_array($billing_address_query);
    
    $order_id = $preorder_id;
-   
    $sql_data_array = array('orders_id' => $order_id,
                            'customers_id' => $customers_id, 
-                           'customers_name' => ($exists_single)?tep_get_fullname($pInfo['firstname'],$pInfo['lastname']):tep_get_fullname($customers_res['customers_firstname'],
-                             $customers_res['customers_lastname']), 
+                           'customers_name' => ($exists_single)?tep_get_fullname(stripslashes($pInfo['firstname']),stripslashes($pInfo['lastname'])):tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']), 
                            'customers_email_address' => $customers_res['customers_email_address'], 
                            'customers_street_address' => $customers_res['entry_street_address'], 
                            'customers_suburb' => $customers_res['entry_suburb'], 
@@ -4917,7 +4915,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
-                           'comment_msg' => $pInfo['yourmessage'], 
+                           'comment_msg' => stripslashes($pInfo['yourmessage']), 
                            );
    if ($customers_res['is_quited'] == '1') {
      $sql_data_array['is_gray'] = '2';
@@ -4953,7 +4951,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'date_added' => 'now()', 
                            'customer_notified' => $customer_notification,
                            'comments' => $sh_comments,
-                           'user_added' => ($exists_single)?tep_get_fullname($pInfo['firstname'],$pInfo['lastname']):tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname'])
+                           'user_added' => ($exists_single)?tep_get_fullname(stripslashes($pInfo['firstname']),stripslashes($pInfo['lastname'])):tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname'])
                            );
    tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
   
@@ -5559,7 +5557,7 @@ function tep_get_show_attributes_price($item_id, $group_id, $att_value)
       $option_array = @unserialize($item_res['option']);
       if (!empty($option_array)) {
         foreach ($option_array['radio_image'] as $key => $value) {
-          if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_value))))) {
+          if (trim(str_replace($replace_arr, '', nl2br($value['title']))) == trim(str_replace($replace_arr, '', nl2br($att_value)))) {
             return $value['money']; 
           }
         }
