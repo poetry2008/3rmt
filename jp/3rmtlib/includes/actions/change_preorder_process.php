@@ -480,6 +480,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
     }
   }
   $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
+  $orders_id = tep_is_has_order($orders_id);
   $payment_modules = payment::getInstance($preorder['site_id']);   
   $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
   

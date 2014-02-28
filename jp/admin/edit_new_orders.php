@@ -19,6 +19,12 @@ require(DIR_WS_CLASSES . 'currencies.php');
 $payment_info_array = array();
 $currencies = new currencies(2);
 $oID = tep_db_input($_GET['oID']);
+$update_op_flag = false;
+$oID = tep_is_has_order($oID);
+if($oID != tep_db_input($_GET['oID'])){
+  $update_op_flag = true;
+}
+$_GET['oID'] = $oID;
 $orders_oid_query = tep_db_query("select orders_id from ". TABLE_ORDERS ." where orders_id='".$oID."'");
 $ordres_oid_num_rows = tep_db_num_rows($orders_oid_query);
 tep_db_free_result($orders_oid_query);
@@ -311,6 +317,10 @@ if($orders_exit_flag == true){
       $cart_shipping_time = array(); //商品配送时间
       foreach($update_products as $update_key=>$update_value){
         
+        if($update_op_flag){
+          tep_db_query("update ".TABLE_ORDERS_PRODUCTS." SET orders_id ='".$oID."' where
+              where orders_products_id='". $update_key ."'");
+        }
         $update_weight_query = tep_db_query("select products_id,final_price from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
         $update_weight_array = tep_db_fetch_array($update_weight_query);
         tep_db_free_result($update_weight_query);

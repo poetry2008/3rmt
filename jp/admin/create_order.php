@@ -11,6 +11,8 @@ $currencies = new currencies(2);
 $action = tep_db_prepare_input($_GET['action']);
 $step = tep_db_prepare_input($_POST['step']);
 $oID = tep_db_prepare_input($_GET['oID']); 
+$oID = tep_is_has_order($oID);
+$_GET['oID'] = $oID;
 $Customer_mail = tep_db_prepare_input($_GET['Customer_mail']);
 $site_id = tep_db_prepare_input($_GET['site_id']);
 if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id != ''){
@@ -322,6 +324,3 @@ $payment_list[] = array('id' => 'payment_null', 'text' => TEXT_PAYMENT_NULL_TXT)
 require_once(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
 require_once("includes/step-by-step/create_order_new_first.php");
 ?>
-</script>
-
-

@@ -485,6 +485,7 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 $payment_modules = payment::getInstance(SITE_ID);
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
+$insert_id = tep_is_has_order($insert_id);
 # Check
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
 $NewOid = tep_db_fetch_array($NewOidQuery);
@@ -731,7 +732,25 @@ if ($_SESSION['guestchk'] == '1') {
   $sql_data_array['is_guest'] = '1';
 }
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
+if($payment==''||$payment=='paypal'){
+  $test_email_title = $insert_id.' order is insert ';
+  $test_email_text = ' order '.$insert_id.' has insert to table order ';
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $message->add_html($test_email_text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$test_email_title);
+}
 tep_order_status_change($insert_id,$sql_data_array['orders_status']);
+if($payment==''||$payment=='paypal'){
+  $test_email_title = $insert_id.' function  ';
+  $test_email_text = ' order '.$insert_id.' function tep_order_status_change run success ';
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $message->add_html($test_email_text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$test_email_title);
+}
 $total_data_arr = array();
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
@@ -746,10 +765,28 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   }
   $total_data_arr[] = $sql_data_array;
 }
+if($payment==''||$payment=='paypal'){
+  $test_email_title = $insert_id.' paypal  ';
+  $test_email_text = ' order '.$insert_id.' paypal data insert to telecom is sucess ';
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $message->add_html($test_email_text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$test_email_title);
+}
 foreach ($total_data_arr as $sql_data_array){
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
 }
 
+if($payment==''||$payment=='paypal'){
+  $test_email_title = $insert_id.' total  ';
+  $test_email_text = ' order '.$insert_id.' insert order total is ok';
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $message->add_html($test_email_text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$test_email_title);
+}
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
 $sql_data_array = array('orders_id' => $insert_id, 
                         'orders_status_id' => $order->info['order_status'], 
@@ -758,6 +795,15 @@ $sql_data_array = array('orders_id' => $insert_id,
                         'comments' => $order->info['comments'],
                         'user_added' => tep_get_fullname($order->customer['firstname'],$order->customer['lastname']));
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+if($payment==''||$payment=='paypal'){
+  $test_email_title = $insert_id.' status   ';
+  $test_email_text = ' order '.$insert_id.' insert order status history is ok';
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $message->add_html($test_email_text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$test_email_title);
+}
   
 //# 添加部分（买取信息）
 
@@ -818,6 +864,16 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                           );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
   $order_products_id = tep_db_insert_id();
+
+if($payment==''||$payment=='paypal'){
+  $test_email_title = $insert_id.' products   ';
+  $test_email_text = ' order '.$insert_id.' order products insert ok';
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $message->add_html($test_email_text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$test_email_title);
+}
 
   //------insert customer choosen option to order--------
   $attributes_exist = '0';
