@@ -10,7 +10,6 @@
 ------------------------------------ */
   function do_magic_quotes_gpc(&$ar,$excep_key) {
     if (!is_array($ar)) return false;
-
     while (list($key, $value) = each($ar)) {
       if (is_array($value)) {
         do_magic_quotes_gpc($value);
