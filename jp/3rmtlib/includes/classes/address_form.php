@@ -182,7 +182,7 @@
  参数：$value(string) 绘制输入字段 
  返回值：无
  --------------------------*/
-    function setFormLine($name, $title, $value){
+    function setFormLine($name, $title, $value, $html = false){
         $this->formlines[$name]['title'] = $title;
         $this->formlines[$name]['value'] = $value;
     }

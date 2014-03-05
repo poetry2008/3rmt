@@ -41,42 +41,57 @@
         . tep_draw_radio_field('gender', 'f', $female) . '&nbsp;&nbsp;' . FEMALE . '&nbsp;' . ENTRY_GENDER_TEXT;
   }
   $address_form->setFormLine('gender',ENTRY_GENDER,$a_value);
-
   // firstname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_firstname'],false,true);
+      $a_value = htmlspecialchars(html_entity_decode($account['customers_firstname'],false,true));
+      $html = true;
   } elseif ($error == true) {
       if ($entry_firstname_error == true) {
           $a_value = tep_draw_input_field('firstname','','class="input_text"') . '<br>' . ENTRY_FIRST_NAME_ERROR;
-      } else {
-          $a_value = $firstname . tep_draw_hidden_field('firstname');
+          $html = false;
+      }else if($strlen_firstname_error == true){
+          $a_value = tep_draw_input_field('firstname','','class="input_text"') .  '<br>' .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_firstname']);
+          $html = false;
+      }else {
+          $a_value = htmlspecialchars($firstname) . tep_draw_hidden_field('firstname','','',false);
+          $html = true;
       }
   } else {
       $a_value = tep_draw_input_field('firstname', $account['customers_firstname'],'class="input_text"') . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+      $html = false;
   }
   if(tep_session_is_registered('customer_id')){
 
-    $a_value = $account_info['customers_firstname'];
+    $a_value = htmlspecialchars($account_info['customers_firstname']);
+    $html = true;
   }
-  $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
+  $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value,$html);
 
   // lastname
   if ($is_read_only == true) {
-      $a_value = tep_output_string($account['customers_lastname'],false,true);
+      $a_value = htmlspecialchars(html_entity_decode($account['customers_lastname'],false,true));
+      $html = true;
   } elseif ($error == true) {
       if ($entry_lastname_error == true) {
           $a_value = tep_draw_input_field('lastname','','class="input_text"') . '<br>' . ENTRY_LAST_NAME_ERROR;
-      } else {
-          $a_value = $lastname . tep_draw_hidden_field('lastname');
+          $html = false;
+      }else if($strlen_lastname_error == true){
+          $a_value = tep_draw_input_field('lastname','','class="input_text"') .  '<br>' .  sprintf(ERROR_FIRST_ITEM_TEXT_NUM_MAX,$customers_strlen['customers_lastname']);
+          $html = false;
+      }else {
+          $a_value = htmlspecialchars($lastname) .  tep_draw_hidden_field('lastname','','',false);
+          $html = true;
       }
   } else {
       $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],'class="input_text"') . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+      $html = false;
   }
   if(tep_session_is_registered('customer_id')){
 
-    $a_value = $account_info['customers_lastname'];
+    $a_value = htmlspecialchars($account_info['customers_lastname']);
+    $html = true;
   }
-  $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
+  $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value,$html);
 
   // dob
   if ($is_read_only == true) {
@@ -98,24 +113,31 @@
   // email_address
   if ($is_read_only == true) {
       $a_value = tep_output_string($account['customers_email_address'],false,true);
+      $html = true;
   } elseif ($error == true) {
       if ($entry_email_address_error == true) {
           $a_value = tep_draw_input_field('email_address','','class="input_text"') . '<br>' . ENTRY_EMAIL_ADDRESS_ERROR;
+          $html = false;
       } elseif ($entry_email_address_check_error == true) {
           $a_value = tep_draw_input_field('email_address','','class="input_text"') . '<br>' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+          $html = false;
       } elseif ($entry_email_address_exists == true) {
           $a_value = tep_draw_input_field('email_address','','class="input_text"') . '<br>' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
+          $html = false;
       } else {
           $a_value = $email_address . tep_draw_hidden_field('email_address');
+          $html = true;
       }
   } else {
       $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],'class="input_text"') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $html = false;
   }
   if(tep_session_is_registered('customer_id')){
 
     $a_value = $account_info['customers_email_address'];
+    $html = true;
   }
-  $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
+  $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value,$html);
   
   // suburb
   if ($is_read_only == true) {

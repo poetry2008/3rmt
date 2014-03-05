@@ -8325,7 +8325,7 @@ $sql2 = tep_db_fetch_array($sele2);
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => PRESENT_CUSTOMER_NAME),
-        array('text' => $sql2['family_name'].$sql2['first_name'])
+        array('text' => htmlspecialchars($sql2['family_name'].$sql2['first_name']))
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_EMAIL),

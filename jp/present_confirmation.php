@@ -36,10 +36,9 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
     $i = 0;
     $sum = count($_SESSION['address_present']);
     foreach($_SESSION['address_present'] as $op_key=>$op_value){
-  
       if($_SESSION['present_type_array'][$op_key] == 'num'){
      
-        $input_text_str = $op_value[1];
+        $input_text_str = htmlspecialchars($op_value[1]);
         $mode = array('/\s/','/－/','/－/','/-/');
         $replace = array('','','','');
         $mode_half = array('1','2','3','4','5','6','7','8','9','0');
@@ -48,33 +47,30 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
         $input_text_str = preg_replace($mode_all,$mode_half,$input_text_str);
         $op_value[1] = $input_text_str;
       } 
-
       $address_info_query = tep_db_query("select name from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
       $address_info_array = tep_db_fetch_array($address_info_query);
       tep_db_free_result($address_info_query);
       $i++;
-      if($i == $sum){
+      if($i == $sium){
         if(trim($op_value[1]) != ''){
-          $present_address_info .= $address_info_array['name'].'&nbsp;:&nbsp;'.$op_value[1];
+          $present_address_info .= $address_info_array['name'].'&nbsp;:&nbsp;'.htmlspecialchars($op_value[1]);
         }
       }else{
         if(trim($op_value[1]) != ''){
-          $present_address_info .= $address_info_array['name'].'&nbsp;:&nbsp;'.$op_value[1].'<br>'; 
+          $present_address_info .= $address_info_array['name'].'&nbsp;:&nbsp;'.htmlspecialchars($op_value[1]).'<br>'; 
         }
       }
     }
-    
     //insert present_aplicant
     $sql_data_array = array(
                 'goods_id'    => tep_db_prepare_input($_GET['goods_id']),
                 'customer_id' => tep_db_prepare_input($pc_id),
-                'family_name' => tep_db_prepare_input($lastname),
-                'first_name'  => tep_db_prepare_input($firstname),
+                'family_name' => $lastname,
+                'first_name'  => $firstname,
                 'mail'        => tep_db_prepare_input($email_address),
                 'tourokubi'   => tep_db_prepare_input($now),
-                'address'     => tep_db_prepare_input($present_address_info)
+                'address'     => $present_address_info
                 );
-
     tep_db_perform(TABLE_PRESENT_APPLICANT, $sql_data_array);
 
     //address history info
@@ -324,12 +320,12 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             <tr> 
                               <td class="main" width="10">&nbsp;</td>
                               <td class="main" width="30%"><?php echo TEXT_PRESENT_CON_FAM;?></td> 
-                              <td class="main"><?php echo $lastname; ?></td> 
+                              <td class="main"><?php echo htmlspecialchars($lastname); ?></td> 
                             </tr> 
                             <tr> 
                               <td class="main" width="10">&nbsp;</td>
                               <td class="main" width="30%"><?php echo TEXT_PRESENT_CON_NAME;?></td> 
-                              <td class="main"><?php echo $firstname; ?></td> 
+                              <td class="main"><?php echo htmlspecialchars($firstname); ?></td> 
                             </tr> 
                             <tr> 
                               <td class="main" width="10">&nbsp;</td>
@@ -362,7 +358,7 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                             <tr>
                               <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                               <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
-                              <td class="main" width="70%"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+                              <td class="main" width="70%"><?php echo htmlspecialchars($value[1]); ?><span id="<?php echo $key;?>"></span></td>
                             </tr>
                             <?php
                              }

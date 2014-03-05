@@ -31,4 +31,5 @@ define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1','文字以上必要です');
 define('ENTRY_PASSWORD_ENGLISH','<font color="#ff0000">英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
 define('NOTICE_PASSWORD_NOT_SAME', '<font color="#ff0000">ご入力されたパスワードが一致しておりません</font>');
 define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
+define('ERROR_FIRST_ITEM_TEXT_NUM_MAX','<font color="red">文字数は%sを超えてはいけません。</font>');
 ?>

@@ -287,9 +287,9 @@ function session_value(){
   var session_array = new Array();
 <?php
   foreach($_SESSION['address_present'] as $see_key=>$see_value){
-    $see_value[1] = str_replace("\n","",$see_value[1]);
-    $see_value[1] = str_replace("\r","",$see_value[1]);
-    echo 'session_array["'. $see_key .'"] = "'. $see_value[1] .'";';
+    $see_value[1] = str_replace("\n","",html_entity_decode(addslashes($see_value[1])));
+    $see_value[1] = str_replace("\r","",html_entity_decode(addslashes($see_value[1])));
+    echo 'session_array["'. $see_key .'"] = "'. stripslashes($see_value[1]) .'";';
   }
 ?>
   for(x in session_array){

@@ -22,6 +22,8 @@
     $error = false;
 
     //address info
+    $customers_array = array('customers_firstname','customers_lastname');
+    $customers_strlen = tep_get_column_len(TABLE_CUSTOMERS,$customers_array);
     $options_comment = array();
     $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
     while($address_required = tep_db_fetch_array($address_query)){
@@ -69,7 +71,10 @@
     //名是否小于指定长度
     $error = true;
     $entry_firstname_error = true;
-    } else {
+    }else if(!tep_session_is_registered('customer_id') && mb_strlen($firstname,'utf8') > $customers_strlen['customers_firstname']){
+    $error = true;
+    $strlen_firstname_error = true;
+    }else {
     $entry_firstname_error = false;
     }
   
@@ -77,7 +82,10 @@
     //姓是否小于指定长度
     $error = true;
     $entry_lastname_error = true;
-    } else {
+    }else if(!tep_session_is_registered('customer_id') && mb_strlen($lastname,'utf8') > $customers_strlen['customers_lastname']){
+    $error = true;
+    $strlen_lastname_error = true;
+    }else {
     $entry_lastname_error = false;
     }
     
@@ -88,7 +96,6 @@
     } else {
     $entry_email_address_error = false;
     }
-  
     if (!tep_session_is_registered('customer_id') && !tep_validate_email($email_address)) {
     //邮箱地址是否符合规范
     $error = true;
@@ -96,7 +103,12 @@
     } else {
     $entry_email_address_check_error = false;
     }
-  
+    $hicuizd = addslashes(trim($email_address));
+    if(preg_match('/\/',$hicuizd)||preg_match('/\\/',$hicuizd)||preg_match('/\\\/',$hicuizd)){
+     $error = true;
+     $entry_email_address_check_error = true;
+    }
+ 
     if (ACCOUNT_STATE == 'true') {
     //state
     if ($entry_country_error == true) {
@@ -561,8 +573,8 @@
         }
 
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
-        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".tep_get_fullname($firstname, $lastname)."','".tep_get_fullname($firstname, $lastname)."')");
-      $mail_name = tep_get_fullname($firstname, $lastname);
+        tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created,customers_info_date_account_last_modified,user_update,user_added) values ('" . tep_db_input($customer_id) . "', '0', now(),now(),'".addslashes(tep_get_fullname($firstname, $lastname))."','".addslashes(tep_get_fullname($firstname, $lastname))."')");
+      $mail_name = addslashes(tep_get_fullname($firstname, $lastname));
       tep_session_unregister('customer_id');
       
       $gu_email_srandom = md5(time().$customer_id.$email_address); 

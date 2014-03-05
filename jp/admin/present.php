@@ -281,6 +281,7 @@ now(),
       if($mess == true){
       }
     header("location: present.php");
+    exit;
   }
   if(isset($_GET['action']) && $_GET['action'] == 'list_delete'){
     if(!empty($_POST['present_id'])){
@@ -293,6 +294,7 @@ now(),
     $dele = "delete from ".TABLE_PRESENT_APPLICANT." where id = '".$dele_id."'";
     $mess = mysql_query($dele) or die(DATA_APPEND_ERROR);
     header("location: present.php?action=list&cID=".$_GET['cID'].'&site_id='.$_GET['site_id'].'&page='.$_GET['page'].($_GET['sort']?'&sort='.$_GET['sort']:'').($_GET['type']?'&type='.$_GET['type']:'').($_GET['list_id']?'&list_id='.$_GET['list_id']:''));
+    exit;
   }
 
 ?>
