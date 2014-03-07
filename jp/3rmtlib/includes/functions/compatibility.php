@@ -8,7 +8,7 @@
     参数: $ar(array) 数组   
     返回值: 无 
 ------------------------------------ */
-  function do_magic_quotes_gpc(&$ar,$excep_key) {
+  function do_magic_quotes_gpc(&$ar,$excep_key='') {
     if (!is_array($ar)) return false;
     while (list($key, $value) = each($ar)) {
       if (is_array($value)) {
