@@ -389,7 +389,7 @@ $(document).ready(function(){
           </tr>
           <tr>
           <td><?php echo TEXT_REORDER_OID_NAME;?></td>
-            <td class="reorder_width"><?php echo $order['customers_name']?></td>
+            <td class="reorder_width"><?php echo htmlspecialchars($order['customers_name'])?></td>
           </tr>
           <tr>
             <td><?php echo TEXT_REORDER_EMAIL_TITLE;?></td>

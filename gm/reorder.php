@@ -403,7 +403,7 @@ $(document).ready(function(){
           </tr>
           <tr>
             <td><?php echo TEXT_REORDER_OID_NAME;?></td>
-            <td><?php echo $order['customers_name']?></td>
+            <td><?php echo htmlspecialchars($order['customers_name'])?></td>
           </tr>
           <tr>
             <td><?php echo TEXT_REORDER_EMAIL_TITLE;?></td>
