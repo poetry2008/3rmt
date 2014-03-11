@@ -397,7 +397,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
  </tr>
  <tr>
  <th bgcolor="#eeeeee"><?php echo TEXT_REORDER_OID_NAME;?></th>
-  <td bgcolor="#FFFFFF"><?php echo $order['customers_name']?></td>
+  <td bgcolor="#FFFFFF"><?php echo htmlspecialchars($order['customers_name'])?></td>
  </tr>
  <tr>
  <th bgcolor="#eeeeee"><?php echo TEXT_REORDER_EMAIL_TITLE;?></th>
