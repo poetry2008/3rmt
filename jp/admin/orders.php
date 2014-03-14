@@ -1427,6 +1427,7 @@ $__orders_status_query = tep_db_query("
     where language_id = " . $languages_id . " 
     order by orders_status_id");
 $__orders_status_ids   = array();
+/*
 while($__orders_status = tep_db_fetch_array($__orders_status_query)){
   $__orders_status_ids[] = $__orders_status['orders_status_id'];
 }
@@ -1463,6 +1464,7 @@ while($select_result = tep_db_fetch_array($select_query)){
   $nomail[$osid] = $select_result['nomail'];
 }
 }
+*/
 
 if(isset($_GET['reload'])) {
   switch($_GET['reload']) {
@@ -2490,6 +2492,7 @@ else { ?>
         var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
         <?php 
+        /*
         // 输出订单邮件
         // title
         foreach ($mo as $oskey => $value){
@@ -2512,6 +2515,7 @@ echo 'var nomail = new Array();'."\n";
 foreach ($nomail as $oskey => $value){
   echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
+*/
 ?>
 
 
@@ -3275,7 +3279,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <form action="ajax_orders.php" onsubmit="return validate_comment()" id='form_orders_comment' method="post">
 
         <textarea name="orders_comment" cols="100" rows="10" 
-        style = "overflow-y:auto"class="pageHeading_box_textarea"><?php echo $order->info['orders_comment'];?></textarea><br>
+        style = "overflow-y:auto"class="pageHeading_box_textarea"><?php echo stripslashes($order->info['orders_comment']);?></textarea><br>
         <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
         <input type="hidden" name="orders_comment_flag" value="">
         <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
@@ -3777,10 +3781,12 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <?php echo tep_draw_hidden_field('qu_type', $orders_questions_type);?> 
             <br><font color="#FF0000;">
             <?php
+            /*
                   foreach($orders_statuses as $o_status){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
+            */
             ?>
             <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title(\''.$_GET['oID'].'\', \''.TEXT_STATUS_MAIL_TITLE_CHANGED.'\');"'); ?></a></td>
             </tr>
@@ -5419,6 +5425,7 @@ if($c_parent_array['parent_id'] == 0){
         while ($show_all_site_res = tep_db_fetch_array($show_all_site_raw)) {
           $show_all_site[$show_all_site_res['id']] = $show_all_site_res['romaji']; 
         }
+        $customer_image = array();
         while ($orders = tep_db_fetch_array($orders_query)) {
           $orders_i++;
           if (!isset($orders['site_id'])) {
@@ -5509,6 +5516,12 @@ if($c_parent_array['parent_id'] == 0){
                     <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
                     </font>
                     <?php 
+                    if(isset($customer_image[$orders['customers_id']])&&!empty($customer_image[$orders['customers_id']])){
+                      if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customer_image[$orders['customers_id']]['src'])) {
+                        echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customer_image[$orders['customers_id']]['src'],
+                            $customer_image[$orders['customers_id']]['alt']);
+                      }
+                    }else{
                     $customers_info_raw = tep_db_query("select c.pic_icon, pl.pic_alt from ".TABLE_CUSTOMERS." c, ".TABLE_CUSTOMERS_PIC_LIST." pl where c.customers_id = '".$orders['customers_id']."' and c.pic_icon = pl.pic_name limit 1"); 
                     $customers_info_res = tep_db_fetch_array($customers_info_raw);
                     if ($customers_info_res) {
@@ -5520,9 +5533,13 @@ if($c_parent_array['parent_id'] == 0){
                           if ($pic_icon_title_res) {
                             $pic_icon_title_str = $pic_icon_title_res['pic_alt']; 
                           }
+                          $customer_image[$orders['customers_id']]=array();
+                          $customer_image[$orders['customers_id']]['src'] = $customers_info_res['pic_icon'];
+                          $customer_image[$orders['customers_id']]['alt'] = $pic_icon_title_str;
                           echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
                         }
                       }
+                    }
                     }
                     ?>
                         <?php if ($orders['orders_care_flag']) { ?>
@@ -5578,7 +5595,7 @@ if($c_parent_array['parent_id'] == 0){
             $___orders_status_ids[] = $___orders_status['orders_status_id'];
           }
           if ($___orders_status_ids) {
-            $_orders_status_history_query_raw = "select * from `".TABLE_ORDERS_STATUS."` WHERE `orders_status_id` IN (".join(',',$___orders_status_ids).")";
+            $_orders_status_history_query_raw = "select orders_status_id,orders_status_image from `".TABLE_ORDERS_STATUS."` WHERE `orders_status_id` IN (".join(',',$___orders_status_ids).")";
             $_orders_status_history_query     = tep_db_query($_orders_status_history_query_raw);     $_osh = array();
             $_osi = false;
             while ($_orders_status_history = tep_db_fetch_array($_orders_status_history_query)){
@@ -5641,7 +5658,9 @@ if($c_parent_array['parent_id'] == 0){
                 return true;
               }
             </script>
-              <table width="100%"><tr><td width="70%">
+              <table width="100%"><tr><td width="70%" id="send_mail_td">
+              <?php  //移动代码开始 
+              /* ?>
               <table width="100%" id="select_send" style="display:none">
               <tr>
               <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
@@ -5698,6 +5717,8 @@ if($c_parent_array['parent_id'] == 0){
                   </td>
                   </tr>
                   </table>
+                  <?php  */
+                  //移动代码结束 ?>
                   </td><td valign="top" align="right" width="30%">
                   <div id='select_question' style="display:none" >
                   <table width="100%">
