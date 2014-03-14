@@ -467,7 +467,7 @@ foreach($all_show_option_id as $t_item_id){
                         echo '<tr>';
                         echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
-                        echo $_POST[$ad_key];
+                        echo htmlspecialchars($_POST[$ad_key]);
                         echo '</tr>';
                       }
                     }
@@ -502,7 +502,7 @@ if(isset($_POST['preorders_billing_select']) && $_POST['preorders_billing_select
                         echo '<tr>';
 			echo '<td class="main" width="150">'. $_POST[substr($ad_key,8)] .':</td>';                  
                         echo '<td class="main">';
-                        echo $_POST[$ad_key];
+                        echo htmlspecialchars($_POST[$ad_key]);
                         echo '</tr>';
                       }
                     }

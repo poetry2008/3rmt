@@ -29,7 +29,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
       $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" '; 
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
       echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
-      echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" '. $style_size .' value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
+      echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" '. $style_size .' value="'.  htmlspecialchars((isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment)) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
       echo '<font id="r_'.$this->formname.'" color="red">';
       if($this->required == 'true' && !isset($option_error_array[$this->formname]) && !isset($_POST['ad_'.$this->formname])){
 

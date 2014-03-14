@@ -256,7 +256,7 @@ if(!empty($_SESSION['options'])){
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td class="main" width="70%"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  <td class="main" width="70%"><?php echo htmlspecialchars($value[1]); ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
     }
@@ -413,7 +413,7 @@ if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td class="main" width="70%"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  <td class="main" width="70%"><?php echo htmlspecialchars($value[1]); ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
     }

@@ -492,7 +492,7 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
-                  echo '<input type="hidden" name="'.$op_s_key.'" value="'.stripslashes($op_s_value).'">'; 
+                  echo '<input type="hidden" name="'.$op_s_key.'" value="'.htmlspecialchars(stripslashes($op_s_value)).'">'; 
                   $op_info_array[] = $op_s_key.'||||||'.htmlspecialchars(addslashes($op_s_value)); 
                 }
               }
@@ -527,7 +527,7 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
        foreach ($_POST as $op_key => $op_value) {
          $op_single_str = substr($op_key, 0, 3);
          if ($op_single_str == 'op_') {
-           echo '<input type="hidden" name="'.$op_key.'" value="'.stripslashes($op_value).'">'; 
+           echo '<input type="hidden" name="'.$op_key.'" value="'.htmlspecialchars(stripslashes($op_value)).'">'; 
          }
        }
     ?>

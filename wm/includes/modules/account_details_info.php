@@ -280,9 +280,7 @@ function address_list(){
   echo 'arr_old['. $address_num .'] = new Array();';
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
-    $address_orders_array['value'] = str_replace("\n","",$address_orders_array['value']); 
-    $address_orders_array['value'] = str_replace("\r","",$address_orders_array['value']); 
-    echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";'; 
+    echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'.  addslashes($address_orders_array['value']) .'";'; 
   }
   echo 'billing_address['. $address_num .'] = "'.$address_orders_group_array['billing_address'].'";';
 
@@ -368,7 +366,7 @@ function address_option_list(value){
        
       $address_orders_array['value'] = str_replace("\n","",$address_orders_array['value']); 
       $address_orders_array['value'] = str_replace("\r","",$address_orders_array['value']); 
-      echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+      echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. addslashes($address_orders_array['value']) .'";';
     }
   echo 'billing_address['. $address_num .'] = "'.$address_orders_group_array['billing_address'].'";';
   $address_num++;

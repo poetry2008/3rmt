@@ -218,7 +218,7 @@
                                 echo '<tr><td width="10"></td><td class="main" width="30%" valign="top">';
                                 echo $address_array[$address_shipping_array['address_id']];
                                 echo ':</td><td class="main">';
-                                echo $address_shipping_array['value']; 
+                                echo htmlspecialchars($address_shipping_array['value']); 
                                 echo '</td></tr>';
                               }
                             }
@@ -261,7 +261,7 @@
                             while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
                               if(trim($address_array[$address_shipping_array['address_id']]) != '' && trim($address_shipping_array['value']) != ''){
                                 echo '<tr><td width="10"></td><td class="main" valign="top">';
-                                echo $address_shipping_array['value']; 
+                                echo htmlspecialchars($address_shipping_array['value']); 
                                 echo '</td></tr>';
                               }
                             }

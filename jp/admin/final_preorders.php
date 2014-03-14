@@ -2104,7 +2104,7 @@ require("includes/note_js.php");
               <tr>
                 <td class="main" valign="top"><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></td>
                 <td class="main">
-                  <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes(isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name'] : $order->customer['name']); ?>">
+                  <input name="update_customer_name" size="25" value="<?php echo htmlspecialchars(tep_html_quotes(isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']) ?  $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name'] : $order->customer['name'])); ?>">
                   <br><span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
                 </td>
               </tr>
@@ -2298,7 +2298,7 @@ require("includes/note_js.php");
                   <input type="hidden" name="update_viladate" value="true">
                   <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
                   <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
-                  <input name="update_delivery_name" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name']); ?>">
+                  <input name="update_delivery_name" size="25" type='hidden' value="<?php echo htmlspecialchars(tep_html_quotes($order->delivery['name'])); ?>">
                   <input name="update_customer_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['name_f']); ?>">
                   <input name="update_delivery_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name_f']); ?>">
                   <input name="update_customer_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['street_address']); ?>">

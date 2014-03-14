@@ -673,9 +673,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
       $json_str_array[$address_num] = $json_str_list; 
       echo 'arr_old['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
-        $value = str_replace("\n","",$value);
-        $value = str_replace("\r","",$value);
-        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
   }
@@ -787,9 +785,7 @@ function address_option_list(value){
       $json_str_array[] = $json_str_list; 
       echo 'arr_list['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
-        $value = str_replace("\n","",$value);
-        $value = str_replace("\r","",$value);
-        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
     }
@@ -827,9 +823,7 @@ function session_value(){
   var session_array = new Array();
 <?php
   foreach($_SESSION['options'] as $see_key=>$see_value){
-    $see_value[1] = str_replace("\n","",$see_value[1]);
-    $see_value[1] = str_replace("\r","",$see_value[1]);
-    echo 'session_array["'. $see_key .'"] = "'. $see_value[1] .'";';
+    echo 'session_array["'. $see_key .'"] = "'. addslashes($see_value[1]) .'";';
   }
 ?>
   for(x in session_array){
@@ -1143,9 +1137,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
       $json_str_array[$address_num] = $json_str_list; 
       echo 'arr_old['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
-        $value = str_replace("\n","",$value);
-        $value = str_replace("\r","",$value);
-        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
   }
@@ -1256,9 +1248,7 @@ function billing_address_option_list(value){
       $json_str_array[] = $json_str_list; 
       echo 'arr_list['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
-        $value = str_replace("\n","",$value);
-        $value = str_replace("\r","",$value);
-        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
     }
@@ -1296,9 +1286,7 @@ function billing_session_value(){
   var session_array = new Array();
 <?php
   foreach($_SESSION['billing_options'] as $see_key=>$see_value){
-    $see_value[1] = str_replace("\n","",$see_value[1]);
-    $see_value[1] = str_replace("\r","",$see_value[1]);
-    echo 'session_array["'. $see_key .'"] = "'. $see_value[1] .'";';
+    echo 'session_array["'. $see_key .'"] = "'. addslashes($see_value[1]) .'";';
   }
 ?>
   for(x in session_array){

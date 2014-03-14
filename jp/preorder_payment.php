@@ -2,8 +2,7 @@
 /*
   $Id$
 */
-
-  require('includes/application_top.php');
+  require('includes/application_top.php'); 
   if(!isset($_POST['action'])){
     $_POST = $_SESSION['preorder_products_list'];
     unset($_POST['action']);
@@ -482,7 +481,7 @@ $(document).ready(function(){
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
-                  echo '<input type="hidden" name="'.$op_s_key.'" value="'.stripslashes($op_s_value).'">'; 
+                  echo '<input type="hidden" name="'.$op_s_key.'" value="'.htmlspecialchars(stripslashes($op_s_value)).'">'; 
                   $op_info_array[] = $op_s_key.'||||||'.htmlspecialchars(addslashes($op_s_value)); 
                 }
               }
@@ -517,7 +516,7 @@ $(document).ready(function(){
        foreach ($_POST as $op_key => $op_value) {
          $op_single_str = substr($op_key, 0, 3);
          if ($op_single_str == 'op_') {
-           echo '<input type="hidden" name="'.$op_key.'" value="'.stripslashes($op_value).'">'; 
+           echo '<input type="hidden" name="'.$op_key.'" value="'.htmlspecialchars(stripslashes($op_value)).'">'; 
          }
        }
     ?>
