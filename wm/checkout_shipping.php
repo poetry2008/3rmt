@@ -1137,7 +1137,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
       $json_str_array[$address_num] = $json_str_list; 
       echo 'arr_old['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
-        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
   }
@@ -1248,7 +1248,7 @@ function billing_address_option_list(value){
       $json_str_array[] = $json_str_list; 
       echo 'arr_list['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
-        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
     }
