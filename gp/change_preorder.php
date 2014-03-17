@@ -191,7 +191,7 @@ function session_value(){
 
       if(substr($p_key,0,3) == 'ad_'){
 
-        echo 'session_array["'. $p_key .'"] = "'. $p_value .'";'."\n";
+        echo 'session_array["'. $p_key .'"] = "'. addslashes($p_value) .'";'."\n";
       }
     }
   ?>
@@ -660,7 +660,7 @@ function billing_session_value(){
 
       if(substr($p_key,0,8) == 'billing_'){
 
-        echo 'session_array["'. $p_key .'"] = "'. $p_value .'";'."\n";
+        echo 'session_array["'. $p_key .'"] = "'. addslashes($p_value) .'";'."\n";
       }
     }
   ?>

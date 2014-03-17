@@ -2947,7 +2947,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           if(trim($address_title_array['name']) != '' && trim($address_array['value']) != ''){
             echo '<tr>';
             echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
-            echo '<td class="main">'. $address_array['value'] .'</td>';
+            echo '<td class="main">'. htmlspecialchars($address_array['value']) .'</td>';
             echo '</tr>';
           }
           tep_db_free_result($address_title_query);
@@ -2975,7 +2975,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           if(trim($address_title_array['name']) != '' && trim($address_array['value']) != ''){
             echo '<tr>';
             echo '<td class="main" valign="top">'. $address_title_array['name'] .':</td>';
-            echo '<td class="main">'. $address_array['value'] .'</td>';
+            echo '<td class="main">'. htmlspecialchars($address_array['value']) .'</td>';
             echo '</tr>';
           }
           tep_db_free_result($address_title_query);

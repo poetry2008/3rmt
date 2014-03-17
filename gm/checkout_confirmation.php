@@ -249,7 +249,7 @@ if(!empty($_SESSION['options'])){
 
 <tr> 
   <td width="20%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td colspan="2"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  <td colspan="2"><?php echo htmlspecialchars($value[1]); ?><span id="<?php echo $key;?>"></span></td>
 </tr>
 <?php
     }
@@ -386,7 +386,7 @@ if($_SESSION['billing_select'] == '1' && isset($_SESSION['billing_options'])){
 ?>
   <tr>
   <td class="main" width="20%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
+  <td class="main"><?php echo htmlspecialchars($value[1]); ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
     }

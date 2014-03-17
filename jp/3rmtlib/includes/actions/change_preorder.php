@@ -332,7 +332,11 @@ if($_POST['preorders_billing_select'] == '1'){
             $preorder_information[$post_e_key][$ps_e_key] = $ps_e_value; 
           }
         } else {
-          $preorder_information[$post_e_key] = stripslashes($post_e_value); 
+          if(substr($post_e_key,0,8) == 'billing_'){
+            $preorder_information[$post_e_key] = addslashes($post_e_value); 
+          }else{
+            $preorder_information[$post_e_key] = stripslashes($post_e_value); 
+          }
         }
       }
       $preorder_information['pid'] = $preorder_id; 
