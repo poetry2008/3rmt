@@ -3465,7 +3465,7 @@ function  billing_address_list(){
   $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
  
-    echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';
+    echo "arr_list['". $address_list_array['name'] ."'] = '".  $address_list_array['value'] ."';";
 
   }
   tep_db_free_result($address_list_query);
@@ -3513,7 +3513,7 @@ function address_list(){
   $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
  
-    echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';
+    echo "arr_list['". $address_list_array['name'] ."'] = '".  $address_list_array['value'] ."';";
 
   }
   tep_db_free_result($address_list_query);
