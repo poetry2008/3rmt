@@ -1427,7 +1427,7 @@ $__orders_status_query = tep_db_query("
     where language_id = " . $languages_id . " 
     order by orders_status_id");
 $__orders_status_ids   = array();
-/*
+if(isset($_GET['action'])&&$_GET['action']=='edit'){
 while($__orders_status = tep_db_fetch_array($__orders_status_query)){
   $__orders_status_ids[] = $__orders_status['orders_status_id'];
 }
@@ -1464,7 +1464,7 @@ while($select_result = tep_db_fetch_array($select_query)){
   $nomail[$osid] = $select_result['nomail'];
 }
 }
-*/
+}
 
 if(isset($_GET['reload'])) {
   switch($_GET['reload']) {
@@ -2492,7 +2492,7 @@ else { ?>
         var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
         <?php 
-        /*
+if(isset($_GET['action'])&&$_GET['action']=='edit'){
         // 输出订单邮件
         // title
         foreach ($mo as $oskey => $value){
@@ -2515,7 +2515,7 @@ echo 'var nomail = new Array();'."\n";
 foreach ($nomail as $oskey => $value){
   echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
-*/
+}
 ?>
 
 
@@ -3781,12 +3781,12 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <?php echo tep_draw_hidden_field('qu_type', $orders_questions_type);?> 
             <br><font color="#FF0000;">
             <?php
-            /*
+if(isset($_GET['action'])&&$_GET['action']=='edit'){
                   foreach($orders_statuses as $o_status){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-            */
+}
             ?>
             <?php echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title(\''.$_GET['oID'].'\', \''.TEXT_STATUS_MAIL_TITLE_CHANGED.'\');"'); ?></a></td>
             </tr>
@@ -5398,8 +5398,6 @@ if($c_parent_array['parent_id'] == 0){
           <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
           </tr>
           <?php
-          ini_set('display_error',"On");
-        error_reporting(E_ALL);
  $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows, $sql_count_query);
         //echo $orders_query_raw;
         if(isset($_GET['oID'])){
@@ -5660,7 +5658,8 @@ if($c_parent_array['parent_id'] == 0){
             </script>
               <table width="100%"><tr><td width="70%" id="send_mail_td">
               <?php  //移动代码开始 
-              /* ?>
+if(isset($_GET['action'])&&$_GET['action']=='edit'){
+               ?>
               <table width="100%" id="select_send" style="display:none">
               <tr>
               <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
@@ -5717,7 +5716,8 @@ if($c_parent_array['parent_id'] == 0){
                   </td>
                   </tr>
                   </table>
-                  <?php  */
+                  <?php  
+}
                   //移动代码结束 ?>
                   </td><td valign="top" align="right" width="30%">
                   <div id='select_question' style="display:none" >
