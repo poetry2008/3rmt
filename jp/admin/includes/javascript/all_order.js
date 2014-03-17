@@ -44,7 +44,7 @@ function all_check(){
     }
   }
 var select_send = $("#select_send").offset();
-var select_send_top = select_send.top;
+var select_send_top = $("#select_send_top").top;
 var select_send_height = $("#select_send").height();
 var box_warp_top = $(".box_warp").height();
 if((select_send_top+select_send_height) > box_warp_top){
@@ -82,16 +82,23 @@ function chg_td_color(bbb){
 
 //open mail box
 function field_on(){
+    $.ajax({
+dataType: 'text',
+url: 'ajax_orders.php?action=show_status_mail_send',
+success: function(text) {
+  document.getElementById('send_mail_td').innerHTML=text;
   if(f_flag == 'off'){
-    f_flag = 'on';
     document.getElementById("select_send").style.display = "block";
   }
+}
+});
 }
 //close mail box
 function field_off(){
   if(f_flag == 'on'){
     f_flag = 'off';
     document.getElementById("select_send").style.display = "none";
+    document.getElementById('send_mail_td').innerHTML='';
   }
 }
 //fax color
@@ -141,7 +148,7 @@ function mail_text(st,tt,ot,notice_no_choose,notice_no_order){
   }
 
 
-  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${MAIL_COMMENT}') != -1){
+  if((chk.length > 1)  && document.getElementById('status_text_'+CI+'_0').value.indexOf('${MAIL_COMMENT}') != -1){
     alert(notice_no_choose);
     document.sele_act.elements[st].options[window.last_status].selected = true;
     return false;
@@ -156,21 +163,22 @@ function mail_text(st,tt,ot,notice_no_choose,notice_no_order){
   //update form content 
   if (st == 'status') {
     //list page    
-    if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
-      document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
-      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
-    } else if (typeof(window.status_title[CI]) != 'undefined'){
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
+    if (document.getElementById('status_title_'+CI+'_0') != null && document.getElementById('status_title'+CI+'_'+window.orderSite[chk[0]]) != null) {
+      alert('status_title_'+CI+'_'+window.orderSite[chk[0]]);
+      document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_'+window.orderSite[chk[0]]).value;
+      v_text = document.getElementById('status_text_'+CI+'_'+window.orderSite[chk[0]]).value;
+      document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
+    } else if (document.getElementById('status_title_'+CI+'_0') != null){
+      document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
+      v_text = document.getElementById('status_text_'+CI+'_0').value;
+      document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
     }
   } else {
     //detail page 
-    if (typeof(window.status_title[CI]) != 'undefined') {
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
-    } else if (typeof(window.status_title[CI]) != 'undefined'){
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
+    if (document.getElementById('status_title_'+CI+'_0') != null){
+      document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
+      v_text = document.getElementById('status_text_'+CI+'_0').value;
+      document.sele_act.elements[tt].value = v_text.value.replace('${MAIL_COMMENT}', window.orderStr);
     }
   }
   //replace ${PAY_DATE} 
@@ -185,7 +193,7 @@ document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.repl
 }
 
 //mail and notice checkbox
-if (nomail[CI] == '1') {
+if (document.getElementById('nomail_'+CI) == '1') {
   $('#notify_comments').attr('checked','');
   $('#notify').attr('checked','');
 } else {
