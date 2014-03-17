@@ -2560,7 +2560,7 @@ function billing_address_option_show(action){
         
         $value = str_replace("\n","",$value); 
         $value = str_replace("\r","",$value); 
-        echo 'billing_arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'billing_arr_old['. $address_num .']["'. $key .'"] = "'.  addslashes($value) .'";';
       }
       $address_num++;
   }
@@ -2675,7 +2675,7 @@ function billing_address_option_list(value){
         
         $value = str_replace("\n","",$value); 
         $value = str_replace("\r","",$value); 
-        echo 'billing_arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'billing_arr_list['. $address_num .']["'. $key .'"] = "'.  addslashes($value) .'";';
       }
       $address_num++;
     }
@@ -3226,7 +3226,7 @@ function address_option_show(action){
         
         $value = str_replace("\n","",$value); 
         $value = str_replace("\r","",$value); 
-        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
   }
@@ -3341,7 +3341,7 @@ function address_option_list(value){
         
         $value = str_replace("\n","",$value); 
         $value = str_replace("\r","",$value); 
-        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
     }
@@ -3465,7 +3465,7 @@ function  billing_address_list(){
   $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
  
-    echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';
+    echo 'arr_list["'. $address_list_array['name'] .'"] = "'.  addslashes($address_list_array['value']) .'";';
 
   }
   tep_db_free_result($address_list_query);
@@ -3513,7 +3513,7 @@ function address_list(){
   $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
  
-    echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';
+    echo 'arr_list["'. $address_list_array['name'] .'"] = "'.  addslashes($address_list_array['value']) .'";';
 
   }
   tep_db_free_result($address_list_query);
@@ -4166,7 +4166,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td class="main" valign="top"><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></td>
     <td class="main">
-    <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes(isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']) ? $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']: $order->customer['name']); ?>">
+    <input name="update_customer_name" size="25" value="<?php echo htmlspecialchars(tep_html_quotes(isset($_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']) ?  $_SESSION['orders_update_products'][$_GET['oID']]['update_customer_name']: $order->customer['name'])); ?>">
     <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
     </td>
     </tr>
@@ -4563,7 +4563,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <input type="hidden" name="update_viladate" value="true">
     <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
     <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
-    <input name="update_delivery_name" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name']); ?>">
+    <input name="update_delivery_name" size="25" type='hidden' value="<?php echo htmlspecialchars(tep_html_quotes($order->delivery['name'])); ?>">
     <input name="update_customer_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['name_f']); ?>">
     <input name="update_delivery_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name_f']); ?>">
     <input name="update_customer_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['street_address']); ?>">

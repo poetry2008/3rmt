@@ -124,8 +124,8 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
         $address_history_array = tep_db_fetch_array($address_history_query);
         tep_db_free_result($address_history_query);
         $address_history_id = $address_history_array['id'];
-  
-        $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'".(date("Ymd") . '-' . date("His") . tep_get_order_end_num())."',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]','0')");
+        var_dump(htmlspecialchars($address_history_value[1]));
+        $address_history_add_query = tep_db_query("insert into ".  TABLE_ADDRESS_HISTORY ." value(NULL,'".(date("Ymd") . '-' . date("His") .  tep_get_order_end_num())."',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','".addslashes($address_history_value[1])."','0')");
         tep_db_free_result($address_history_add_query);
       }
     }
