@@ -586,8 +586,7 @@ if(isset($_SESSION['create_preorder']['orders_products']) && !empty($_SESSION['c
               for ($j=0; $j<sizeof($orders_products_attributes_array); $j++) {
                 echo '<div class="order_option_list"><small>&nbsp;<i><div
                   class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))) . ': ' . 
-                  '</div><div class="order_option_value">' . 
-                  str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"))); 
+                  '</div><div class="order_option_value">' .  htmlspecialchars(html_entity_decode(str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($orders_products_attributes_array[$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"))))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
                 echo isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$j]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$j] : (int)$orders_products_attributes_array[$j]['options_values_price'];

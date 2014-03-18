@@ -695,7 +695,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
               }
       }      
       $ensure_date_arr = explode(' ', $select_products_res['ensure_deadline']);
-      $email = $_POST['comments']; 
+      $email = stripslashes($_POST['comments']); 
       $email = str_replace(array(
         '${USER_NAME}',
         '${USER_MAIL}',
@@ -794,6 +794,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$status."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
         $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
+        $email = htmlspecialchars($email);
         $search_products_name_query = tep_db_query("select products_name from ". TABLE_PRODUCTS_DESCRIPTION ." where products_id='".$num_product_res['products_id']."' and language_id='".$check_status['language_id']."' and (site_id='".$order->info['site_id']."' or site_id='0') order by site_id DESC");
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);

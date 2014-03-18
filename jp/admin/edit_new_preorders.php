@@ -105,7 +105,7 @@
   $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
   $payment_modules = payment::getInstance($_SESSION['create_preorder']['orders']['site_id']);
   $validateModule = $payment_modules->admin_confirmation_check($payment_method);
-  $comments_text = tep_db_input($_POST['comments_text']);
+  $comments_text = stripslashes(tep_db_input($_POST['comments_text']));
   $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);
 
   if ($validateModule['validated']===false){
@@ -684,6 +684,7 @@
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
         $email = tep_replace_mail_templates($email,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']);
+        $email = htmlspecialchars($email);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           
@@ -718,6 +719,7 @@
         
         $preorder_email_text = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$preorder_email_text);
         $email = tep_replace_mail_templates($email,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']);
+        $email = htmlspecialchars($email);
         tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
 
         $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']); 

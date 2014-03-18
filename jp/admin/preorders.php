@@ -53,7 +53,7 @@
       $oID      = $value;
       $status   = tep_db_prepare_input($_POST['status']);
       $title    = tep_db_prepare_input($_POST['os_title']);
-      $comments = tep_db_prepare_input($_POST['comments']);
+      $comments = stripslashes(tep_db_prepare_input($_POST['comments']));
       $site_id  = tep_get_pre_site_id_by_orders_id($value);
     
       $order_updated = false;
@@ -250,6 +250,7 @@
           $comments = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$comments);
 
           $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
+          $comments = htmlspecialchars($comments);
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         } 
@@ -506,6 +507,7 @@
         tep_db_free_result($totals_email_query);
         $comments = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$comments);
         $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
+        $comments = htmlspecialchars($comments);
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS',$site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
       }
@@ -1576,7 +1578,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             </div>
             <div id="customer_fax_text" style="width:98%;height:42px;*height:40px;overflow-y:auto">
             <?php
-            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
+            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); echo htmlspecialchars(stripslashes(str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])))));
             ?>
             </div>
             </td>
