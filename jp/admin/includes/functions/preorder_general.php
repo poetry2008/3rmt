@@ -1173,7 +1173,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= RIGHT_ORDER_COMMENT_TITLE; 
     $str .= '</td>';
     $str .= '<td class="main">';
-    $str .= nl2br($orders['orders_comment']); 
+    $str .= htmlspecialchars(stripslashes(nl2br($orders['orders_comment']))); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }

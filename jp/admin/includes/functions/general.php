@@ -4764,7 +4764,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= RIGHT_ORDER_COMMENT_TITLE; 
     $str .= '</td>';
     $str .= '<td class="main">';
-    $str .= nl2br($orders['orders_comment']); 
+    $str .= htmlspecialchars(stripslashes(nl2br($orders['orders_comment']))); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }
@@ -5288,30 +5288,38 @@ function tep_get_pay_day($time = null){
 
   //重复周
   $cl_week_array = array();
+  if(is_array($cl_repeat_array[1])){
   foreach($cl_repeat_array[1] as $cl_week_key=>$cl_week_value){
 
       $cl_week_array[$cl_week_value] = $cl_week_key;
   }
+  }
 
   //每月重复的日
   $cl_month_day_array = array();
+  if(is_array($cl_repeat_array[2])){
   foreach($cl_repeat_array[2] as $cl_month_key=>$cl_month_value){
 
       $cl_month_day_array[$cl_month_value] = $cl_month_key;
   }
+  }
 
   //每月重复固定周
   $cl_month_week_array = array();
+  if(is_array($cl_repeat_array[3])){
   foreach($cl_repeat_array[3] as $cl_month_week_key=>$cl_month_week_value){
 
       $cl_month_week_array[$cl_month_week_value[0]][$cl_month_week_value[1]] = $cl_month_week_key;
   }
+  }
 
   //每年重复的月日
   $cl_year_month_array = array();
+  if(is_array($cl_repeat_array[4])){
   foreach($cl_repeat_array[4] as $cl_year_month_key=>$cl_year_month_value){
 
       $cl_year_month_array[$cl_year_month_value] = $cl_year_month_key; 
+  }
   }
   //获取可支付的时间 
   return tep_get_pay_time($time,$cl_status_array,$repeat_array,$cl_repeat_array,$default_is_handle,$default_cl_id,$cl_week_array,$cl_month_day_array,$cl_month_week_array,$cl_year_month_array);  
