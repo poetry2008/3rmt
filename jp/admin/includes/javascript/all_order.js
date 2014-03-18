@@ -323,7 +323,11 @@ function playSound()
       url: 'ajax_orders.php?action=check_play_sound',
       success: function(sound_msg) {
         if (sound_msg == '1') {
-          splay('images/warn.mp3');
+          if (node.controls) {
+            node.controls.play();
+          } else {
+            node.play();
+          }
         }
       }
     });
