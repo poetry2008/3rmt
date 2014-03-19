@@ -3174,6 +3174,15 @@ foreach($orders_statuses as $o_status){
     '" value="'.$mo[$o_status['id']][0].'">';
 }
 ?>
+<?php
+$allorders = $_SESSION['order_id_list'];
+foreach($allorders as $key=>$orders){
+  echo tep_draw_textarea_field('temp_orderstr', 'hard', '74', '30', orders_a($orders['orders_id'], $allorders), 'style="display:none" id="orderstr_'.$orders['orders_id'].'"'); 
+  echo '<input type="hidden" id="ordersite_'.$orders['orders_id'].  '" value="'.$orders['site_id'].'">';
+  echo '<input type="hidden" id="ordertype_'.$orders['orders_id'].  '" value="'.tep_check_order_type($orders['orders_id']).'">';
+
+}
+?>
               <table width="100%" id="select_send" style="display:none">
               <tr>
               <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
