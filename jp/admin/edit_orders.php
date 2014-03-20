@@ -20,7 +20,6 @@ $current_language = $language;
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
-
 include(DIR_WS_CLASSES . 'order.php');
 
 $orders_update_time_query = tep_db_query("select site_id,payment_method,code_fee,last_modified,is_guest from ". TABLE_ORDERS ." where orders_id='".$_GET['oID']."'");
@@ -362,7 +361,6 @@ if (tep_not_null($action)) {
  }
 
 }
-
   $shipping_money_total = $shipping_money_sum;
     if($city_weight_fee != ''){
 
@@ -2425,7 +2423,7 @@ function billing_address_clear_error(){
     }
 
 }
-<?php //判断该值是否在数组里?>
+<?php //判断该值是否在数组里)?>
 function billing_in_array(value,arr){
 
   for(vx in arr){
@@ -3886,6 +3884,7 @@ if($weight > 0){
 
 });
 <?php //开启日历?>
+
 function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
@@ -4349,7 +4348,9 @@ if (($action == 'edit') && ($order_exists == true)) {
       $fetch_date_array[0] = isset($_SESSION['orders_update_products'][$_GET['oID']]['fetch_year']) ? $_SESSION['orders_update_products'][$_GET['oID']]['fetch_year'] : $fetch_date_array[0];
       $default_fetch_year = (isset($_POST['fetch_year']))?$_POST['fetch_year']:$fetch_date_array[0]; 
       for ($f_num = 2006; $f_num <= 2050; $f_num++) {
-        echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
+	if($default_fetch_year == $f_num || $f_num >= date('Y',time())){
+        	echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
+      	}	
       }
     ?>
     </select>

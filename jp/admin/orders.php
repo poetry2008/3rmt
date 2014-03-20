@@ -1466,6 +1466,24 @@ while($select_result = tep_db_fetch_array($select_query)){
   $nomail[$osid] = $select_result['nomail'];
 }
 }
+}else{
+  $image_name_list = array();
+  $image_alt_list = array();
+  $c_image_sql = "select count(id) as con from ".TABLE_CUSTOMERS_PIC_LIST;
+  $c_image_query = tep_db_query($c_image_sql);
+  if($c_image_raw = tep_db_fetch_array($c_image_query)){
+    if($c_image_raw['con'] < MAX_DISPLAY_SEARCH_RESULTS){
+      $c_image_list_sql = "select pic_name,pic_alt from ".TABLE_CUSTOMERS_PIC_LIST;
+      $c_image_list_query = tep_db_query($c_image_list_sql);
+      while($c_image_list_raw = tep_db_fetch_array($c_image_list_query)){
+        $image_name_list[] = $c_image_list_raw['pic_name']; 
+        $image_alt_list[] = $c_image_list_raw['pic_alt'];
+      }
+    }
+  }
+  $_SESSION['c_image_list'] = array();
+  $_SESSION['c_image_list']['name'] = $image_name_list;
+  $_SESSION['c_image_list']['alt'] = $image_alt_list;
 }
 
 if(isset($_GET['reload'])) {
@@ -5426,6 +5444,7 @@ if($c_parent_array['parent_id'] == 0){
           $show_all_site[$show_all_site_res['id']] = $show_all_site_res['romaji']; 
         }
         $customer_image = array();
+        $tmp_order_id_list = array();
         while ($orders = tep_db_fetch_array($orders_query)) {
           $orders_i++;
           if (!isset($orders['site_id'])) {
@@ -5435,6 +5454,9 @@ if($c_parent_array['parent_id'] == 0){
                   where orders_id='".$orders['orders_id']."'
                   "));
           }
+          $tmp_order_id_list[] = array(
+              'orders_id'=>$orders['orders_id'],
+              'site_id'=>$orders['site_id']);
           $allorders[] = $orders;
           if (((!isset($_GET['oID']) || !$_GET['oID']) || 
                 (isset($_GET['oID'])&&$_GET['oID']&&
@@ -5522,6 +5544,24 @@ if($c_parent_array['parent_id'] == 0){
                             $customer_image[$orders['customers_id']]['alt']);
                       }
                     }else{
+                    if(isset($_SESSION['c_image_list'])&&!empty($_SESSION['c_image_list']['name'])&&!empty($_SESSION['c_image_list']['alt'])){
+                       $customers_info_raw = tep_db_query("select c.pic_icon from ".TABLE_CUSTOMERS." c 
+                           where c.customers_id = '".$orders['customers_id']."'"); 
+                      $customers_info_res = tep_db_fetch_array($customers_info_raw);
+                      if ($customers_info_res) {
+                        if (!empty($customers_info_res['pic_icon'])
+                           &&in_array($customers_info_res['pic_icon'],$_SESSION['c_image_list']['name'])) {
+                          if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
+                            $pic_icon_title_str =
+                              $_SESSION['c_image_list']['alt'][array_search($customers_info_res['pic_icon'],$_SESSION['c_image_list']['name'])]; 
+                            $customer_image[$orders['customers_id']]=array();
+                            $customer_image[$orders['customers_id']]['src'] = $customers_info_res['pic_icon'];
+                            $customer_image[$orders['customers_id']]['alt'] = $pic_icon_title_str;
+                            echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
+                          }
+                        }
+                      }
+                    }else{
                     $customers_info_raw = tep_db_query("select c.pic_icon, pl.pic_alt from ".TABLE_CUSTOMERS." c, ".TABLE_CUSTOMERS_PIC_LIST." pl where c.customers_id = '".$orders['customers_id']."' and c.pic_icon = pl.pic_name limit 1"); 
                     $customers_info_res = tep_db_fetch_array($customers_info_raw);
                     if ($customers_info_res) {
@@ -5539,6 +5579,7 @@ if($c_parent_array['parent_id'] == 0){
                           echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
                         }
                       }
+                    }
                     }
                     }
                     ?>
@@ -5628,7 +5669,12 @@ if($c_parent_array['parent_id'] == 0){
                 <?php echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
              ?>&nbsp;</td>
           </tr>
-            <?php }?>
+            <?php }
+       if(isset($_GET['action'])&&$_GET['action']=='edit'){
+       }else{
+         $_SESSION['order_id_list'] = $tmp_order_id_list;
+       }
+        ?>
             </table>
             <script language="javascript">
             window.orderStr = new Array();
@@ -5637,11 +5683,13 @@ if($c_parent_array['parent_id'] == 0){
           <?php // 0 空 1 卖 2 买 3 混?>
           var orderType = new Array();
           var questionShow = new Array();
+<?php if(isset($_GET['action'])&&$_GET['action']=='edit'){ ?>
           <?php foreach($allorders as $key=>$orders){?>
             window.orderStr['<?php echo $orders['orders_id'];?>']  = "<?php echo str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($orders['orders_id'], $allorders));?>";
             window.orderSite['<?php echo $orders['orders_id'];?>'] = "<?php echo $orders['site_id'];?>";
             orderType['<?php echo $orders['orders_id'];?>']        = "<?php echo tep_check_order_type($orders['orders_id']);?>";
-            <?php }?>
+            <?php }
+}?>
               function submit_confirm()
               {
                 var idx = document.sele_act.elements['status'].selectedIndex;

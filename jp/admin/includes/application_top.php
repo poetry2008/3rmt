@@ -588,6 +588,11 @@ $_SESSION['onetime_pwd'] = true;
     $c_user_info = tep_get_user_info($ocertify->auth_user);
     $_SESSION['user_name'] = $c_user_info['name'];
   }
+  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"
+        &&$PHP_SELF!=DIR_WS_ADMIN.FILENAME_ORDERS) {
+    unset($_SESSION['order_id_list']);
+    unset($_SESSION['c_image_list']);
+  }
 
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
   header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");

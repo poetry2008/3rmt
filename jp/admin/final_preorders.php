@@ -2261,8 +2261,10 @@ require("includes/note_js.php");
                     <?php
                       $default_update_ensure_year = (isset($_POST['update_ensure_year']))?$_POST['update_ensure_year']:isset($_SESSION['orders_update_products'][$_GET['oID']]['update_ensure_year']) ? $_SESSION['orders_update_products'][$_GET['oID']]['update_ensure_year'] : $update_ensure_array[0]; 
                       for ($f_num = 2006; $f_num <= 2050; $f_num++) {
-                        echo '<option value="'.$f_num.'"'.(($default_update_ensure_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
-                      }
+                        if($default_update_ensure_year == $f_num || $f_num >= date('Y',time())){
+				echo '<option value="'.$f_num.'"'.(($default_update_ensure_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
+                        }
+		      }	
                     ?>
                     </select>
                     <select name="update_ensure_month" id="update_ensure_month" onchange="change_ensure_date();">

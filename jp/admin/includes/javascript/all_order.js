@@ -163,15 +163,25 @@ function mail_text(st,tt,ot,notice_no_choose,notice_no_order){
   //update form content 
   if (st == 'status') {
     //list page    
-    if (document.getElementById('status_title_'+CI+'_0') != null && document.getElementById('status_title'+CI+'_'+window.orderSite[chk[0]]) != null) {
-      alert('status_title_'+CI+'_'+window.orderSite[chk[0]]);
-      document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_'+window.orderSite[chk[0]]).value;
-      v_text = document.getElementById('status_text_'+CI+'_'+window.orderSite[chk[0]]).value;
-      document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
+    if (document.getElementById('ordersite_'+chk[0])!=null){
+      site_chk = document.getElementById('ordersite_'+chk[0]).value;
+    }else{
+      site_chk = 0;
+    }
+    if (document.getElementById('orderstr_'+chk[0])!=null){
+      str_chk = document.getElementById('orderstr_'+chk[0]).value;
+    }else{
+      str_chk = '';
+    }
+    if (document.getElementById('status_title_'+CI+'_0') != null && document.getElementById('status_title'+CI+'_'+site_chk) != null) {
+      alert('status_title_'+CI+'_'+site_chk);
+      document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_'+site_chk).value;
+      v_text = document.getElementById('status_text_'+CI+'_'+site_chk).value;
+      document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', str_chk);
     } else if (document.getElementById('status_title_'+CI+'_0') != null){
       document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
       v_text = document.getElementById('status_text_'+CI+'_0').value;
-      document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
+      document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', str_chk);
     }
   } else {
     //detail page 

@@ -4511,8 +4511,10 @@ if($orders_exit_flag == true){
                 $fetch_date_array[0] = isset($_SESSION['orders_update_products'][$_GET['oID']]['fetch_year']) ? $_SESSION['orders_update_products'][$_GET['oID']]['fetch_year'] : $fetch_date_array[0];
                 $default_fetch_year = (isset($_POST['fetch_year']))?$_POST['fetch_year']:$fetch_date_array[0]; 
                 for ($f_num = 2006; $f_num <= 2050; $f_num++) {
-                  echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
-                }
+                 if($default_fetch_year == $f_num || $f_num >= date('Y',time())){
+			 echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
+                 }
+		}
               ?>
               </select>
               <select name="fetch_month" id="fetch_month" onchange="change_fetch_date();">
