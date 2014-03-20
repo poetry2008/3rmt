@@ -4815,7 +4815,7 @@ if($orders_exit_flag == true){
                 if ($less_op_single) {
                   echo $default_value; 
                 } else {
-                  echo '<a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' .  $default_value .'</u></a>';
+                  echo '<a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' .  htmlspecialchars(html_entity_decode($default_value)) .'</u></a>';
                 }
                 echo '<input type="hidden" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" value="' .  strtr($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"));
                 echo '"></div></div>';
