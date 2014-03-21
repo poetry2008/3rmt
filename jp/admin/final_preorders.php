@@ -810,6 +810,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         }
         $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
         $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
+        $email = html_entity_decode($email);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
           
@@ -2498,9 +2499,9 @@ require("includes/note_js.php");
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")) . "'>: " . 
            '</div><div class="order_option_value">'; 
         if ($less_op_single) {
-          echo $item_default_value; 
+          echo htmlspecialchars($item_default_value); 
         } else {
-          echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".htmlspecialchars($item_default_value)."</u></a>";
+          echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".htmlspecialchars(html_entity_decode($item_default_value))."</u></a>";
         }
         echo "<input type='hidden' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  strtr($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"));
         echo "'></div></div>";

@@ -1423,6 +1423,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
             $search_products_name_list[] = $search_products_name_array['products_name'];
           }
           $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']); 
+          $email = html_entity_decode(htmlspecialchars($email));
           if ($customer_guest['is_send_mail'] != '1')
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
@@ -4796,7 +4797,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           .tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."<input type='hidden' onkeyup='recalc_order_price(\"".$oID."\", \"".$orders_products_id."\", \"2\", \"".$op_info_str."\",\"".$orders_products_list."\");price_total(\"".TEXT_MONEY_SYMBOL."\");' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&#39;",'"'=>"&#34;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))) . "'>" .
           '</div><div class="order_option_value">: ';
         if ($is_less_option) {
-          echo $default_value; 
+          echo htmlspecialchars($default_value); 
         } else {
           echo "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))."\",\"".$item_list."\")' href='javascript:void(0);'><u>".$default_value."</u></a>";
         }

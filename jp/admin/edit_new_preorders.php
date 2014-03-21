@@ -684,7 +684,7 @@
         $search_products_name_array = tep_db_fetch_array($search_products_name_query);
         tep_db_free_result($search_products_name_query);
         $email = tep_replace_mail_templates($email,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']);
-        $email = htmlspecialchars($email);
+        $email = html_entity_decode(htmlspecialchars($email));
         if ($s_status_res['nomail'] != 1) {
           tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           
@@ -719,7 +719,7 @@
         
         $preorder_email_text = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$preorder_email_text);
         $email = tep_replace_mail_templates($email,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']);
-        $email = htmlspecialchars($email);
+        $email = html_entity_decode(htmlspecialchars($email));
         tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
 
         $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']); 
@@ -2033,7 +2033,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&#39;",'"'=>"&#34;")).'<input type="hidden" class="option_input_width" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&#39;",'"'=>"&#34;")) . '\'>: ' . 
            '</div><div class="order_option_value">';
         if ($less_op_single) {
-          echo $default_value; 
+          echo htmlspecialchars($default_value); 
         } else {
           echo '<a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&#39;",'"'=>"&#34;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' .  htmlspecialchars(html_entity_decode($default_value)).'</u></a>';
         }

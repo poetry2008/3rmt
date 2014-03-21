@@ -841,7 +841,7 @@ switch ($_GET['action']) {
             $search_products_name_list[] = $search_products_name_array['products_name'];
           }
           $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
-          $comments = htmlspecialchars($comments);
+          $comments = html_entity_decode(htmlspecialchars($comments));
           if ($customer_info_res['is_send_mail'] != '1') {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           } 
@@ -1305,7 +1305,7 @@ switch ($_GET['action']) {
           $search_products_name_list[] = $search_products_name_array['products_name'];
         }
         $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
-        $comments = htmlspecialchars($comments);
+        $comments = html_entity_decode(htmlspecialchars($comments));
         if ($customer_info_res['is_send_mail'] != '1') {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }

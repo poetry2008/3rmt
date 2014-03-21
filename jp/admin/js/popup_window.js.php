@@ -153,10 +153,40 @@ function popup_window_select(list,default_value,id){
 //save
 function popup_window_save(id){
   var default_value = $("#default_value_"+id).val() == '' ? '<?php echo TEXT_UNSET_DATA;?>' : $("#default_value_"+id).val();
-  $("#popup_window_value_"+id).html('<u>'+default_value+'</u>');
+  $("#popup_window_value_"+id).html('<u>'+ToHtmlString(default_value)+'</u>');
   $("#popup_window_hidden_value_"+id).val($("#default_value_"+id).val());
   $("#popup_window").hide();
 }
+
+//Html结构转字符串形式显示 支持<br>换行
+function ToHtmlString(htmlStr) {
+  return toTXT(htmlStr).replace(/\<\;br[\&ensp\;|\&emsp\;]*[\/]?\>\;|\r\n|\n/g, "<br/>");
+}
+//Html结构转字符串形式显示
+function toTXT(str) {
+  var RexStr = /\<|\>|\"|\'|\&|　| /g
+    str = str.replace(RexStr,
+        function (MatchStr) {
+        switch (MatchStr) {
+        case "<": return "&lt;";
+        break;
+        case ">": return ">";
+        break;
+        case "\"": return "\"";
+        break;
+        case "'": return "'";
+        break;
+        case "&": return "&";
+        break;
+        case " ": return " ";
+        break;
+        default:
+        break;
+        }
+        }
+  )
+    return str;
+} 
 
 //close
 function close_window(){
