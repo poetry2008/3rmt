@@ -1578,7 +1578,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             </div>
             <div id="customer_fax_text" style="width:98%;height:42px;*height:40px;overflow-y:auto">
             <?php
-            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); echo htmlspecialchars(stripslashes(str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])))));
+            $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
             ?>
             </div>
             </td>
