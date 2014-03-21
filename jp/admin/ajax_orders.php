@@ -3240,4 +3240,80 @@ foreach($allorders as $key=>$orders){
                   </tr>
                   </table>
   <?php
+}else if ($_GET['action'] == 'edit_order_send_mail'){
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ORDERS);
+$orders_status_query = tep_db_query("select orders_status_id, orders_status_name, is_reorder from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
+
+while ($orders_status = tep_db_fetch_array($orders_status_query)) {
+  if ( $orders_status['is_reorder'] != 1)
+    $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
+}
+$suu = 0;
+$text_suu = 0;  
+$__orders_status_query = tep_db_query("
+    select orders_status_id 
+    from " . TABLE_ORDERS_STATUS . " 
+    where language_id = " . $languages_id . " 
+    order by orders_status_id");
+$__orders_status_ids   = array();
+while($__orders_status = tep_db_fetch_array($__orders_status_query)){
+  $__orders_status_ids[] = $__orders_status['orders_status_id'];
+}
+if(join(',', $__orders_status_ids)!=''){
+$select_query = tep_db_query("
+    select 
+    orders_status_id,
+    nomail
+    from ".TABLE_ORDERS_STATUS."
+    where language_id = " . $languages_id . " 
+    and orders_status_id IN (".join(',', $__orders_status_ids).")");
+
+while($select_result = tep_db_fetch_array($select_query)){
+  if($suu == 0){
+    $select_select = $select_result['orders_status_id'];
+    $suu = 1;
+  }
+
+  $osid = $select_result['orders_status_id'];
+
+  //获取对应的邮件模板
+  $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='ORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'");
+  $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+  tep_db_free_result($mail_templates_query);
+  if($text_suu == 0){
+    $select_text = $mail_templates_array['contents'];
+    $select_title = $mail_templates_array['title'];
+    $text_suu = 1;
+    $select_nomail = $select_result['nomail'];
+  }
+
+  $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+  $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
+  $nomail[$osid] = $select_result['nomail'];
+}
+}
+
+  ?>
+<?php 
+// 输出订单邮件
+// title
+foreach ($mo as $oskey => $value){
+  foreach ($value as $sitekey => $svalue) {
+    echo '<input type="hidden" id="status_title_'.$oskey.'_'.$sitekey.'" value="'.str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue).'">';
+  }
+}
+
+//content
+foreach ($mt as $oskey => $value){
+  foreach ($value as $sitekey => $svalue) {
+    echo tep_draw_textarea_field('temp_comment', 'hard', '74', '30', $svalue, 'style="display:none" id="status_text_'.$oskey.'_'.$sitekey.'"'); 
+  }
+}
+
+//no mail
+foreach ($nomail as $oskey => $value){
+  echo '<input type="hidden" id="nomail_'.$oskey.'" value="'.$value.'">';
+}
+echo '<input type="hidden" id="hidd_order_status_id" value="'.$_GET['o_status'].'">';
+echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'], array(array('orders_id' => $_GET['oid']))).'">';
 }
