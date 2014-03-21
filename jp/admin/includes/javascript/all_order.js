@@ -1,6 +1,7 @@
 // use orders.php
 var f_flag = 'off';
 var old_color = '';
+var send_mail = false;
 window.status_text  = new Array();
 window.status_title = new Array();
 window.last_status  = 0;
@@ -141,10 +142,6 @@ function mail_text(st,tt,ot,notice_no_choose,notice_no_order){
   if (st == 'status') {
     //list page    
     chk = getCheckboxValue('chk[]');
-  } else {
-    //detail page 
-    chk = new Array();
-    chk[0] = 0;
   }
 
 
@@ -182,13 +179,6 @@ function mail_text(st,tt,ot,notice_no_choose,notice_no_order){
       document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
       v_text = document.getElementById('status_text_'+CI+'_0').value;
       document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', str_chk);
-    }
-  } else {
-    //detail page 
-    if (document.getElementById('status_title_'+CI+'_0') != null){
-      document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
-      v_text = document.getElementById('status_text_'+CI+'_0').value;
-      document.sele_act.elements[tt].value = v_text.value.replace('${MAIL_COMMENT}', window.orderStr);
     }
   }
   //replace ${PAY_DATE} 
@@ -772,52 +762,21 @@ if (c_permission == 31) {
 }
 //new mail text
 function new_mail_text(ele,st,tt,ot,notice_no_choose,notice_no_order){
+  if(send_mail){
+
   //select index 
   var idx = document.sele_act.elements[st].selectedIndex;
   //select value 
   var CI  = document.sele_act.elements[st].options[idx].value;
   //select checkbox 
-  if (st == 'status') {
-    //list page 
-    chk = getCheckboxValue('chk[]');
-  } else {
-    //detail page 
-    chk = new Array();
-    chk[0] = 0;
-  }
-
-
-  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${MAIL_COMMENT}') != -1){
-    alert(notice_no_choose);
-    document.sele_act.elements[st].options[window.last_status].selected = true;
-    return false;
-  }
-  if(chk.length < 1){
-    alert(notice_no_order);
-    document.sele_act.elements[st].options[window.last_status].selected = true;
-    return false;
-  }
-  //record last status 
   window.last_status = idx;
   //update form content 
-  if (st == 'status') {
-    //page list 
-    if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
-      document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
-      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
-    } else if (typeof(window.status_title[CI]) != 'undefined'){
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr[chk[0]]);
-    }
-  } else {
     //detail page 
-    if (typeof(window.status_title[CI]) != 'undefined') {
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
-    } else if (typeof(window.status_title[CI]) != 'undefined'){
-      document.sele_act.elements[ot].value = window.status_title[CI][0];
-      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${MAIL_COMMENT}', window.orderStr);
-    }
+  if (document.getElementById('status_title_'+CI+'_0') != null) {
+    document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
+    str_chk = document.getElementById('hidd_order_str').value;
+    v_text = document.getElementById('status_text_'+CI+'_0').value;
+    document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', str_chk);
   }
   //replace ${PAY_DATE}
   if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
@@ -831,7 +790,7 @@ document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.repl
 }
 
 //mail and notice checkbox
-if (nomail[CI] == '1') {
+if (document.getElementById('nomail_'+CI) == '1') {
   $('#notify_comments').attr('checked','');
   $('#notify').attr('checked','');
 } else {
@@ -841,6 +800,7 @@ if (nomail[CI] == '1') {
 
 if ($(ele).val() == 20) {
   $('#notify').attr('checked', false);  
+}
 }
 }
 //preorder flag
@@ -1093,4 +1053,17 @@ function show_edit_fax(){
   document.getElementById('customer_fax_textarea_input').style.display ="block";  
   document.getElementById('customer_fax_text').style.display ="none";  
   document.getElementById('customer_fax_text_input').style.display ="none";  
+}
+function init_send_mail(oid,os){
+  if(!send_mail){
+    $.ajax({
+      dataType: 'text',
+      url: 'ajax_orders.php?action=edit_order_send_mail&oid='+oid+'&o_status='+os,
+      success: function(msg) {
+        document.getElementById('edit_order_send_mail').innerHTML=msg;
+        send_mail = true;
+      }
+      });
+
+  }
 }

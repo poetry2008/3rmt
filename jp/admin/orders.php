@@ -503,7 +503,7 @@ switch ($_GET['action']) {
       $oID      = $value;
       $status   = tep_db_prepare_input($_POST['status']);
       $title    = tep_db_prepare_input($_POST['os_title']);
-      $comments = stripslashes(tep_db_prepare_input($_POST['comments']));
+      $comments = tep_db_prepare_input($_POST['comments']);
       $site_id  = tep_get_site_id_by_orders_id($value);
 
       $order_updated = false;
@@ -841,7 +841,6 @@ switch ($_GET['action']) {
             $search_products_name_list[] = $search_products_name_array['products_name'];
           }
           $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
-          $comments = htmlspecialchars($comments);
           if ($customer_info_res['is_send_mail'] != '1') {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           } 
@@ -1305,7 +1304,6 @@ switch ($_GET['action']) {
           $search_products_name_list[] = $search_products_name_array['products_name'];
         }
         $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
-        $comments = htmlspecialchars($comments);
         if ($customer_info_res['is_send_mail'] != '1') {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($mode_products_name_list,$search_products_name_list,$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
@@ -1429,7 +1427,7 @@ $__orders_status_query = tep_db_query("
     where language_id = " . $languages_id . " 
     order by orders_status_id");
 $__orders_status_ids   = array();
-if(isset($_GET['action'])&&$_GET['action']=='edit'){
+if(isset($_GET['action'])&&$_GET['action']=='edit'&&false){
 while($__orders_status = tep_db_fetch_array($__orders_status_query)){
   $__orders_status_ids[] = $__orders_status['orders_status_id'];
 }
@@ -2512,7 +2510,7 @@ else { ?>
         var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
         <?php 
-if(isset($_GET['action'])&&$_GET['action']=='edit'){
+if(isset($_GET['action'])&&$_GET['action']=='edit'&&false){
         // 输出订单邮件
         // title
         foreach ($mo as $oskey => $value){
@@ -2752,10 +2750,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   // edit start
   $order = new order($oID);
   ?>
-    <script>
-    var orders_status_id = <?php echo $order->info['orders_status'];?>;
-  window.orderStr = '<?php echo  str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($order->info['orders_id'], array(array('orders_id' => $order->info['orders_id']))));?>';
-  </script>
     <tr>
     <td width="100%">
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -3368,7 +3362,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <div id="customer_fax_text" style="width:98%;height:42px;*height:40px;overflow-y:auto">
             <?php 
             $fax_arr = explode('|',CUSTOMER_FAX_KEYWORDS); 
-            echo htmlspecialchars(stripslashes(str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])))));
+            echo str_replace("\n","<br>",tep_replace_to_red($fax_arr,tep_get_customers_fax_by_id($order->customer['id'])));
             ?>
             </div>
             </td>
@@ -3747,7 +3741,8 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <table width="100%" border="0">
             <tr>
             <td class="main"><?php echo ENTRY_STATUS; ?>
-            <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\', \''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_title_status"'); ?>
+            <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onclick="init_send_mail(\''.$order->info['orders_id'].'\',\''.$order->info['orders_status'].'\')" onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\', \''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_title_status"'); ?>
+            <div style="display:none" id='edit_order_send_mail'></div>
             </td>
             </tr>
             <?php
@@ -3801,7 +3796,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <?php echo tep_draw_hidden_field('qu_type', $orders_questions_type);?> 
             <br><font color="#FF0000;">
             <?php
-if(isset($_GET['action'])&&$_GET['action']=='edit'){
+if(isset($_GET['action'])&&$_GET['action']=='edit'&&false){
                   foreach($orders_statuses as $o_status){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
@@ -5683,7 +5678,7 @@ if($c_parent_array['parent_id'] == 0){
           <?php // 0 空 1 卖 2 买 3 混?>
           var orderType = new Array();
           var questionShow = new Array();
-<?php if(isset($_GET['action'])&&$_GET['action']=='edit'){ ?>
+<?php if(isset($_GET['action'])&&$_GET['action']=='edit'&&false){ ?>
           <?php foreach($allorders as $key=>$orders){?>
             window.orderStr['<?php echo $orders['orders_id'];?>']  = "<?php echo str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($orders['orders_id'], $allorders));?>";
             window.orderSite['<?php echo $orders['orders_id'];?>'] = "<?php echo $orders['site_id'];?>";
