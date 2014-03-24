@@ -1198,7 +1198,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
               $search_products_name_list[] = $search_products_name_array['products_name'];
             }
             $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
-            $email = htmlspecialchars($email);
+            $email = html_entity_decode(htmlspecialchars(stripslashes($email)));
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), str_replace($mode_products_name_list,$search_products_name_list,$email), get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
             tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), str_replace('${SITE_NAME}',get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),$orders_mail_templates['title']), $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           }
@@ -1208,7 +1208,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
           $email_credit_info =  $payment_modules->admin_process_pay_email( payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE), $order,$total_price_mail,$order->info['site_id']);
           $email_credit = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email_credit_info[0]);
           $email_credit = tep_replace_mail_templates($email_credit,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
-          $email_credit = htmlspecialchars($email_credit);
+          $email_credit = html_entity_decode(htmlspecialchars(stripslashes($email_credit)));
           if($email_credit){
             if ($customer_guest['is_send_mail'] != '1'){
                 tep_mail($check_status['customers_name'], $check_status['customers_email_address'], str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME',$order->info['site_id']), $email_credit_info[1]) , $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
@@ -1431,7 +1431,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
               ),$comments);
         $comments = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $comments);
         $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
-        $comments = htmlspecialchars($comments);
+        $comments = html_entity_decode(htmlspecialchars(stripslashes($comments)));
         if ($customer_guest['is_send_mail'] != '1') {
 
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
@@ -1624,7 +1624,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_printing_order = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL, $email_printing_order); 
   # ------------------------------------------
   $email_printing_order = tep_replace_mail_templates($email_printing_order,$check_status['customers_email_address'],$check_status['customers_name'],$site_id_flag);  
-  $email_printing_order = htmlspecialchars($email_printing_order);
+  $email_printing_order = html_entity_decode(htmlspecialchars(stripslashes($email_printing_order)));
   tep_mail('',
       get_configuration_by_site_id('PRINT_EMAIL_ADDRESS',$site_id_flag),
       $email_printing_order_title,
@@ -4815,7 +4815,7 @@ if($orders_exit_flag == true){
                 echo '<br><div class="order_option_width">&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")) .'<input type="hidden" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'1\', \''.$op_info_str.'\',\''.$orders_products_list.'\');price_total(\''.TEXT_MONEY_SYMBOL.'\');" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")) . '">: ' . 
                   '</div><div class="order_option_value">';
                 if ($less_op_single) {
-                  echo $default_value; 
+                  echo htmlspecialchars($default_value); 
                 } else {
                   echo '<a onclick="popup_window(this,\''.$item_type.'\',\''.tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;")).'\',\''.$item_list.'\');" href="javascript:void(0);"><u>' .  htmlspecialchars(html_entity_decode($default_value)) .'</u></a>';
                 }
