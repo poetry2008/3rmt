@@ -5503,7 +5503,7 @@ if($index_num > 0){
                 echo '<div class="order_option_list"><small>&nbsp;<i><div
                   class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($new_products_temp_add[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&#39;",'"'=>"&#34;"))) . ': ' . 
                   '</div><div class="order_option_value">' . 
-                  str_replace(array("<br>", "<BR>"), '', strtr($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"))); 
+                  str_replace(array("<br>", "<BR>"), '', htmlspecialchars(html_entity_decode(strtr($new_products_temp_add[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&#39;",'"'=>"&#34;"))))); 
                 echo '</div></div>';
                 echo '<div class="order_option_price">';
                 if ((int)$new_products_temp_add[$i]['attributes'][$j]['price'] < 0) {
