@@ -3292,6 +3292,11 @@ while($select_result = tep_db_fetch_array($select_query)){
   $nomail[$osid] = $select_result['nomail'];
 }
 }
+$orders_status_query = tep_db_query("select orders_status_id, orders_status_name, is_reorder from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
+while ($orders_status = tep_db_fetch_array($orders_status_query)) {
+  if ( $orders_status['is_reorder'] != 1)
+    $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
+}
 
   ?>
 <?php 
@@ -3313,6 +3318,10 @@ foreach ($mt as $oskey => $value){
 //no mail
 foreach ($nomail as $oskey => $value){
   echo '<input type="hidden" id="nomail_'.$oskey.'" value="'.$value.'">';
+}
+foreach($orders_statuses as $o_status){
+  echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].'"
+    value="'.$mo[$o_status['id']][0].'">';
 }
 echo '<input type="hidden" id="hidd_order_status_id" value="'.$_GET['o_status'].'">';
 echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'], array(array('orders_id' => $_GET['oid']))).'">';
