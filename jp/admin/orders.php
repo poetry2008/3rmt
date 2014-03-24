@@ -3678,7 +3678,8 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
             <table width="100%" border="0">
             <tr>
             <td class="main"><?php echo ENTRY_STATUS; ?>
-            <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onclick="init_send_mail(\''.$order->info['orders_id'].'\',\''.$order->info['orders_status'].'\')" onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\', \''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_title_status"'); ?>
+            <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, ' onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\', \''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_title_status"'); ?>
+            <input type="hidden" name="tmp_orders_id" id="tmp_orders_id" value="<?php echo $order->info['orders_id'];?>">
             <div style="display:none" id='edit_order_send_mail'></div>
             </td>
             </tr>

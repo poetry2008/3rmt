@@ -762,8 +762,9 @@ if (c_permission == 31) {
 }
 //new mail text
 function new_mail_text(ele,st,tt,ot,notice_no_choose,notice_no_order){
-  if(send_mail){
 
+  var _end = $("#mail_title_status").val();
+  var oid = $("#tmp_orders_id").val();
   //select index 
   var idx = document.sele_act.elements[st].selectedIndex;
   //select value 
@@ -772,6 +773,8 @@ function new_mail_text(ele,st,tt,ot,notice_no_choose,notice_no_order){
   window.last_status = idx;
   //update form content 
     //detail page 
+  if(send_mail){
+
   if (document.getElementById('status_title_'+CI+'_0') != null) {
     document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
     str_chk = document.getElementById('hidd_order_str').value;
@@ -801,6 +804,47 @@ if (document.getElementById('nomail_'+CI) == '1') {
 if ($(ele).val() == 20) {
   $('#notify').attr('checked', false);  
 }
+}else{
+
+    $.ajax({
+      dataType: 'text',
+      async:false,
+      url: 'ajax_orders.php?action=edit_order_send_mail&oid='+oid+'&o_status='+_end,
+      success: function(msg) {
+        document.getElementById('edit_order_send_mail').innerHTML=msg;
+        send_mail = true;
+  if (document.getElementById('status_title_'+CI+'_0') != null) {
+    document.sele_act.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
+    str_chk = document.getElementById('hidd_order_str').value;
+    v_text = document.getElementById('status_text_'+CI+'_0').value;
+    document.sele_act.elements[tt].value = v_text.replace('${MAIL_COMMENT}', str_chk);
+  }
+  //replace ${PAY_DATE}
+  if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
+    $.ajax({
+dataType: 'text',
+url: 'ajax_orders.php?action=paydate',
+success: function(text) {
+document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.replace('${PAY_DATE}',text);
+}
+});
+}
+
+//mail and notice checkbox
+if (document.getElementById('nomail_'+CI) == '1') {
+  $('#notify_comments').attr('checked','');
+  $('#notify').attr('checked','');
+} else {
+  $('#notify_comments').attr('checked',true);
+  $('#notify').attr('checked',true);
+}
+
+if ($(ele).val() == 20) {
+  $('#notify').attr('checked', false);  
+}
+
+      }
+      });
 }
 }
 //preorder flag
@@ -1054,16 +1098,4 @@ function show_edit_fax(){
   document.getElementById('customer_fax_text').style.display ="none";  
   document.getElementById('customer_fax_text_input').style.display ="none";  
 }
-function init_send_mail(oid,os){
-  if(!send_mail){
-    $.ajax({
-      dataType: 'text',
-      url: 'ajax_orders.php?action=edit_order_send_mail&oid='+oid+'&o_status='+os,
-      success: function(msg) {
-        document.getElementById('edit_order_send_mail').innerHTML=msg;
-        send_mail = true;
-      }
-      });
 
-  }
-}
