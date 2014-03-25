@@ -2424,7 +2424,7 @@ function billing_address_clear_error(){
     }
 
 }
-<?php //判断该值是否在数组里)?>
+<?php //判断该值是否在数组里?>
 function billing_in_array(value,arr){
 
   for(vx in arr){
