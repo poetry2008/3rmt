@@ -30,7 +30,7 @@ define('PRESENT_NAME_TEXT', 'タイトル');
 define('PRESENT_IMAGE_TEXT', '画像');
 define('PRESENT_COMMENT_TEXT', '本文');
 define('PRESENT_HTML_READ', 'HTMLを許可する');
-define('PRESENT_DATE_TEXT', '期間');
+define('PRESENT_DATE_TEXT', '有効期限');
 define('PRESENT_UPDATE_TITLE', 'プレゼント登録（更新）');
 define('PRESENT_CUSTOMER_TITLE', '顧客情報');
 define('PRESENT_CUSTOMER_NAME', '姓名');
