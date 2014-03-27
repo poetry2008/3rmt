@@ -5613,7 +5613,7 @@ if($c_parent_array['parent_id'] == 0){
                 var idx = document.sele_act.elements['status'].selectedIndex;
                 var CI  = document.sele_act.elements['status'].options[idx].value;
                 chk = getCheckboxValue('chk[]')
-                  if((chk.length > 1 || chk.length < 1) && window.status_text[CI].indexOf('${MAIL_COMMENT}') != -1){
+                  if((chk.length > 1 || chk.length < 1) && document.getElementById('status_text_'+CI+'_0').value.indexOf('${MAIL_COMMENT}') != -1){
                     if(chk.length > 1){
                       alert('<?php echo TEXT_SELECT_MORE;?>');
                     } else {
