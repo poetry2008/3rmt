@@ -910,7 +910,11 @@ $products_arr = $sort_products_arr;
           if (isset($value2[$key3+1])){
             $x.=',';
           }
-          $y.= round(($value3['dougyosya_kakaku']-$lenkakumin)/$lenkaku*100);
+          if($lenkaku == 0){
+            $y.= 0;
+          }else{
+            $y.= round(($value3['dougyosya_kakaku']-$lenkakumin)/$lenkaku*100);
+          }
           if (isset($value2[$key3+1])){
             $y.=',';
           }
