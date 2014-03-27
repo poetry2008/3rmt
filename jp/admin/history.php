@@ -691,8 +691,8 @@ case 'dougyousya_categories':
       <input type="hidden" name="b2" value="<?php echo TEXT_SIGN_IN;?>">
       <input type='hidden' id='orderstring1' name='orderstring' />
       <input type='hidden' id='targetstring1' name='targetstring' />
-      <input type="button" onclick="get_last_date()" value="LAST DATA">
-      <input type="button" onclick="$('.udlr').val('')" value="RESET">
+      <input type="button" onclick="get_last_date()" value="<?php echo HISTORY_LAST_DATA;?>">
+      <input type="button" onclick="$('.udlr').val('')" value="<?php echo HISTORY_RESET;?>">
     </td>
   </tr>
   </table>
@@ -746,7 +746,7 @@ case 'dougyousya_categories':
       echo "<td class='dataTableContent' ><input pos='".$i."_".$j."' class='udlr input_number' type='text' size='7px'
         name='TARGET_INPUT[]' ></td>";//价格同行 
     }
-    echo '<td><input type="button" onclick="get_last_date_line('.$i.')" value="LAST DATA"></td>';
+    echo '<td><input type="button" onclick="get_last_date_line('.$i.')" value="'.HISTORY_LAST_DATA.'"></td>';
     echo "</tr>";
     $x++;
   }

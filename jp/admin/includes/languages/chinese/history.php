@@ -8,4 +8,6 @@ define('TEXT_CLASSIFICATION','分类商品');
 define('TEXT_SIGN_IN','登陆');
 define('TEXT_UNIFIED','统一');
 define('HISTORY_SET_NAME_TEXT', '同行名称设置');
+define('HISTORY_LAST_DATA','最后的数据');
+define('HISTORY_RESET','重置');
 ?>

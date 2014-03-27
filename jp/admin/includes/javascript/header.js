@@ -137,12 +137,19 @@ function expend_all_notice(aid)
     $('#show_all_notice').html(''); 
   }
 }
+//delete all notice
+function delete_notice(all_notice){
+  if(confirm(all_notice)){
+  delete_alarm_notice('','1','1');
+  delete_micro_notice('','1','1');
+  }
+}
 //delete alarm notice
-function delete_alarm_notice(nid, e_type)
+function delete_alarm_notice(nid, e_type,all_del)
 {
   $.ajax({
       url: 'ajax_notice.php?action=delete_alarm',
-      data: 'nid='+nid,
+      data: {nid:nid,all_del:all_del},
       type: 'POST',
       dataType: 'text',
       async: false,
@@ -161,11 +168,11 @@ function delete_alarm_notice(nid, e_type)
       });
 }
 //delete notice
-function delete_micro_notice(nid, e_type)
+function delete_micro_notice(nid, e_type,all_del)
 {
   $.ajax({
       url: 'ajax_notice.php?action=delete_micro',
-      data: 'nid='+nid,
+      data: {nid:nid,all_del:all_del},
       type: 'POST',
       dataType: 'text',
       async: false,

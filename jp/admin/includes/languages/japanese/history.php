@@ -8,4 +8,6 @@ define('TEXT_CLASSIFICATION','カテゴリー / 商品');
 define('TEXT_SIGN_IN','登録');
 define('TEXT_UNIFIED','統一');
 define('HISTORY_SET_NAME_TEXT', '同業者の名前設定');
+define('HISTORY_LAST_DATA','ラストデータ');
+define('HISTORY_RESET','リセット');
 ?>

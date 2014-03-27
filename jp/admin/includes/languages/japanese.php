@@ -823,3 +823,4 @@ define('ERROR_AVG_MESSAGE_END','<br>%s<br>何が起きていて何が問題な�
 define('ERROR_AVG_MESSAGE_CHECKBOX_STR',' 危険を理解した上で保存する。');
 define('DIV_TEXT_CLEAR','キャンセル');
 define('DIV_TEXT_OK','OK');
+define('DELETE_ALL_NOTICE','全ての内容をクリアしてもよろしいでしょうか？');

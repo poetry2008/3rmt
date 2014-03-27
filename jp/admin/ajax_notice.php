@@ -221,6 +221,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       echo '</td>'; 
       echo '</tr>'; 
     }
+    echo '<tr><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_notice(\''.DELETE_ALL_NOTICE.'\')">'.tep_html_element_button(TEXT_CLEAR).'</a></td></tr>';
     echo '</table>'; 
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='delete_alarm') {
@@ -228,11 +229,26 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 删除指定的notice
     参数: $_POST['nid'] notcie的id值 
  -----------------------------------------------------*/
+  if($_POST['all_del'] == '1'){
+       $cid_array = array();
+       $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where deleted = '' and type = '0'");
+       while($notice = tep_db_fetch_array($notice_raw)){
+           $cid_array[] = $notice['id']; 
+       }
+      if($notice['deleted'] == ''){
+         $notice_users_str = $ocertify->auth_user; 
+       }else{
+         $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
+       }
+       foreach($cid_array as $key => $value){
+            tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$value."'");
+       }
+  }
   $notice_raw = tep_db_query("select deleted from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '0'");
   $notice = tep_db_fetch_array($notice_raw);
 
   $notice_users_str = ''; 
-  if ($notice) {
+  if ($notice && $_POST['all_del'] == '') {
 
     if($notice['deleted'] == ''){
 
@@ -248,11 +264,27 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 把指定的micro_log的id和当前用户关联
     参数: $_POST['nid'] micro_log的id值 
  -----------------------------------------------------*/
+  if($_POST['all_del'] == '1'){
+       $cid_array = array();
+       $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where deleted = '' and type = '1'");
+       while($notice = tep_db_fetch_array($notice_raw)){
+           $cid_array[] = $notice['id']; 
+       }
+      if($notice['deleted'] == ''){
+         $notice_users_str = $ocertify->auth_user; 
+       }else{
+         $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
+       }
+       foreach($cid_array as $key => $value){
+         tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$value."'");
+       }
+  }
+
   $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '1'");
   $notice = tep_db_fetch_array($notice_raw);
 
   $notice_users_str = ''; 
-  if ($notice) {
+  if ($notice && $_POST['all_del'] == '') {
 
     if($notice['deleted'] == ''){
 
