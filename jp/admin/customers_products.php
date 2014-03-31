@@ -727,7 +727,7 @@ require("includes/note_js.php");
                       }
                       
                       echo '>';
-                      echo $product_history['customers_name'];
+                      echo str_replace('<','&lt;',$product_history['customers_name']);
                     } else {
                       echo '&nbsp;';
                     }

@@ -2,50 +2,6 @@ var alert_update_id = '';
 $(function() {
    setTimeout(function() {show_head_notice(1)}, 35000);
 });
-
-function Sound(source,volume,loop)
-{
-    this.source=source;
-    this.volume=volume;
-    this.loop=loop;
-    var son;
-    this.son=son;
-    this.finish=false;
-    this.stop=function()
-    {
-      $("#hidden_mp3").remove();
-    }
-    this.start=function()
-    {
-        if(this.finish)return false;
-        this.son=document.createElement("embed");
-        this.son.setAttribute("src",this.source);
-        this.son.setAttribute("hidden","true");
-        this.son.setAttribute("volume",this.volume);
-        this.son.setAttribute("autostart","true");
-        this.son.setAttribute("loop",this.loop);
-        $("#hidden_mp3").append(this.son);
-    }
-    this.remove=function()
-    {
-      $("#hidden_mp3").remove();
-        this.finish=true;
-    }
-    this.init=function(volume,loop)
-    {
-        this.finish=false;
-        this.volume=volume;
-        this.loop=loop;
-    }
-}
-
-function splay(url){
-  $("#hidden_mp3").empty();
-  var sou = new Sound(url,0,true);
-  sou.start();
-}
-
-
 //handle notice time
 function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, notice_day_title, notice_hour_title, notice_min_title)
 {
@@ -109,7 +65,13 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, n
           document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
           var n_node=document.getElementById('head_notice');  
           if (msg == '1') {
-            splay('images/notice.mp3');
+            if (n_node.controls) {
+              n_node.controls.play();  
+            } else {
+              if (check_exists_function('play')) {
+                n_node.play();  
+              }
+            }
           }
         }
         setTimeout(function(){calc_notice_time(leave_time, nid, 1, alarm_flag, alarm_date, notice_day_title, notice_hour_title, notice_min_title)}, 5000); 
@@ -288,7 +250,11 @@ function playHeadSound()
     url: 'ajax_orders.php?action=check_play_sound',
     success: function(msg) {
       if (msg == '1') {
-        splay('images/presound.mp3');
+        if (hnode.controls) {
+          hnode.controls.play();  
+        } else {
+          hnode.play();  
+        }
       }
     }
    }); 
@@ -340,7 +306,11 @@ function playOrderHeadSound()
     url: 'ajax_orders.php?action=check_play_sound',
     success: function(msg) {
       if (msg == '1') {
-        splay('images/warn.mp3');
+        if (ohnode.controls) {
+          ohnode.controls.play();  
+        } else {
+          ohnode.play();  
+        }
       }
     }
    });

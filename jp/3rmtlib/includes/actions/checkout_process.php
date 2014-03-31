@@ -274,6 +274,12 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
     $orders_mail_text .= "\n-----------------Data-------------\n";
     $orders_mail_text .= arr_foreach($flag_customer_info);
   }
+  if(!empty($_SESSION['cart'])){
+    $orders_mail_text .= "\n-----------------cart-------------\n";
+    $orders_mail_text .= arr_foreach($_SESSION['cart']);
+  }else{
+    $orders_mail_text .= "\n cart is null\n";
+  }
   $text = $orders_mail_text;  
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
