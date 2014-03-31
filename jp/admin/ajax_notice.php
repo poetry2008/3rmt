@@ -229,7 +229,6 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 删除指定的notice
     参数: $_POST['nid'] notcie的id值 
  -----------------------------------------------------*/
-  exit;
   if($_POST['all_del'] == '1'){
   $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
 
