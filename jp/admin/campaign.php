@@ -195,7 +195,7 @@ function show_campaign_info(ele, cid, sid)
   temp_id = cid;
   ele = ele.parentNode; 
   $.ajax({
-    url: 'ajax_orders.php?<?php echo "sort=".$_GET['sort']?>&action=edit_campaign',     
+    url: 'ajax_orders.php?<?php echo "sort=".$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']?>&action=edit_campaign',     
     data:'cid='+cid+'&st_id='+sid, 
     type: 'POST',
     dataType: 'text',
@@ -668,7 +668,7 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
 		    <td valign="top" class="smallText">
                     <?php
                     if($ocertify->npermission >= 15){
-                    echo '<select name="news_action" disabled="disabled>';
+                    echo '<select disabled="disabled">';
                     echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';
                     echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
                     echo '</select>';
