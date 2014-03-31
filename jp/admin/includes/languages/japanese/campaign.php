@@ -13,7 +13,7 @@ define('TABLE_HEADING_CAMPAIGN_USE_NUM', '使用上限');
 define('TABLE_HEADING_CAMPAIGN_VALUE', '値');
 define('TABLE_HEADING_CAMPAIGN_STATUS', 'ステータス');
 define('TABLE_HEADING_CAMPAIGN_FETCH_USE_NUM', '利用数');
-define('TABLE_HEADING_CAMPAIGN_ACTION', 'アクション');
+define('TABLE_HEADING_CAMPAIGN_ACTION', '操作');
 define('TEXT_INFO_HEADING_NEW_ITEM', 'クーポン設置');
 define('TEXT_INFO_TITLE', 'タイトル');
 define('TEXT_INFO_NAME', '表示名');

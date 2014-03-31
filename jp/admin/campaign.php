@@ -4,13 +4,26 @@
 */
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
-
+  if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+                        $sql_site_where = 'c.site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+                        $show_list_array = explode('-',$_GET['site_id']);
+                } else {
+                        $show_list_str = tep_get_setting_site_info(FILENAME_CAMPAIGN);
+                        $sql_site_where = 'c.site_id in ('.$show_list_str.')';
+                        $show_list_array = explode(',',$show_list_str);
+                        $show_list_str1 = strtr($show_list_str,',','-');
+                }
   if(isset($_GET['campaign_id'])&&$_GET['campaign_id']){
     $c_id = tep_db_prepare_input($_GET['campaign_id']);
   }else if(isset($_POST['campaign_id'])&&$_POST['campaign_id']){
     $c_id = tep_db_prepare_input($_POST['campaign_id']);
   }
   if (isset($_GET['action']) && $_GET['action']) {
+	if(isset($_GET['st_id'])){
+		$show_list_str2 = $_GET['st_id'];
+	}else{
+		$show_list_str2 = $show_list_str1;
+	}
     switch ($_GET['action']) {
 /* -----------------------------------------------------
    case 'setflag' 设置优惠券状态   
@@ -20,7 +33,7 @@
 ------------------------------------------------------*/
       case 'setflag';
         tep_db_query("update `".TABLE_CAMPAIGN."` set `status` = '".(int)$_GET['flag']."' where id = '".$_GET['campaign_id']."'");
-        tep_redirect(tep_href_link(FILENAME_CAMPAIGN, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'')); 
+        tep_redirect(tep_href_link(FILENAME_CAMPAIGN, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):$show_list_str2)); 
         break;
       case 'update':
       case 'insert':
@@ -122,9 +135,9 @@
           tep_db_perform(TABLE_CAMPAIGN, $sql_data_array);
         }
         if (isset($_GET['st_id'])) {
-          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.(int)$_GET['st_id']));
+          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.$show_list_str2));
         } else {
-          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.(int)$_GET['site_id']));
+          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.$show_list_str2));
         }
         }
         if ($_GET['action'] == 'update') {
@@ -362,6 +375,28 @@ function toggle_type_info(ele)
   }
 }
 <?php //执行动作?>
+function change_show_site(site_id,flag,site_list,param_url,current_file){
+var ele = document.getElementById("site_"+site_id);
+var unshow_list = document.getElementById("unshow_site_list").value;
+var last_site_list = document.getElementById("show_site_id").value;
+$.ajax({
+dataType: 'text',
+type:"POST",
+data:'param_url='+param_url+'&flag='+flag+'&site_list='+site_list+'&site_id='+site_id+'&current_file='+current_file+'&unshow_list='+unshow_list+'&last_site_list='+last_site_list,
+async:false,
+url: 'ajax_orders.php?action=select_all_site',
+success: function(msg) {
+if (msg != '') {
+if (ele.className == 'site_filter_selected') {
+ele.className='';
+} else {
+ele.className='site_filter_selected';
+}
+window.location.href = msg;
+}
+}
+});
+}
 function toggle_campaign_action(c_permission, action_url_str)
 {
   if (c_permission == 31) {
@@ -437,14 +472,14 @@ require("includes/note_js.php");
       </tr>
       <tr>
         <td>
-        <div id="show_campaign_info" style="display:none;"></div> 
-        <?php tep_site_filter(FILENAME_CAMPAIGN);?>
+        <div id="show_campaign_info" style="display:none;"></div>
+        <?php tep_show_site_filter('campaign.php','ture',array(0));?>
         <table id="campaign_list_box" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
 	<?php
 if(isset($_GET['sort'])){
-	if($_GET['sort'] == 'site_id' || $_GET['sort'] == 'name' || $_GET['sort'] == 'title' || $_GET['sort'] == 'end_date' || $_GET['sort'] == 'keyword' || $_GET['sort'] == 'max_use' 	    || $_GET['sort'] == 'point_value' || $_GET['sort'] == 'used' ){
+	if($_GET['sort'] == 'site_id' || $_GET['sort'] == 'name' || $_GET['sort'] == 'title' || $_GET['sort'] == 'end_date' || $_GET['sort'] == 'keyword' || $_GET['sort'] == 'max_use' 	    || $_GET['sort'] == 'point_value' || $_GET['sort'] == 'cnt' || $_GET['sort'] == 'status' || $_GET['date_update']){
 		
 		$sort = $_GET['sort'];
 	}else{
@@ -475,47 +510,60 @@ if(isset($_GET['sort'])){
 		$notice_box = new notice_box('','',$present_table_params);
 		$present_table_row = array();
 		$present_title_row = array();
+		$present_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_present(\'presen     t_id[]\');">');
 		if(isset($_GET['sort']) && $_GET['sort'] == 'site_id'){
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=site_id&page='.$_GET['page'].'&type='.$re_type).'">'.TABLE_HEADING_SITE.$present_type_name.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=site_id&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_SITE.$present_type_name.'</a>');
                 }else{
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=site_id&page='.$_GET['page'].'&type=desc').'">'.TABLE_HEADING_SITE.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=site_id&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_SITE.'</a>');
                 }
 		if(isset($_GET['sort']) && $_GET['sort'] == 'title'){
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=title&page='.$_GET['page'].'&type='.$re_type).'">'.TABLE_HEADING_CAMPAIGN_TITLE.$present_type_name.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=title&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_TITLE.$present_type_name.'</a>');
                 }else{
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=title&page='.$_GET['page'].'&type=desc').'">'.TABLE_HEADING_CAMPAIGN_TITLE.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=title&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_TITLE.'</a>');
                 }
 		if(isset($_GET['sort']) && $_GET['sort'] == 'name'){
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=name&page='.$_GET['page'].'&type='.$re_type).'">'.TABLE_HEADING_CAMPAIGN_NAME.$present_type_name.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=name&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_NAME.$present_type_name.'</a>');
                 }else{
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=name&page='.$_GET['page'].'&type=desc').'">'.TABLE_HEADING_CAMPAIGN_NAME.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=name&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_NAME.'</a>');
                 }
 		if(isset($_GET['sort']) && $_GET['sort'] == 'keyword'){
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=keyword&page='.$_GET['page'].'&type='.$re_type).'">'.TABLE_HEADING_CAMPAIGN_KEYWORD.$present_type_name.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=keyword&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_KEYWORD.$present_type_name.'</a>');
                 }else{
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=keyword&page='.$_GET['page'].'&type=desc').'">'.TABLE_HEADING_CAMPAIGN_KEYWORD.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=keyword&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_KEYWORD.'</a>');
                 }
 		if(isset($_GET['sort']) && $_GET['sort'] == 'end_date'){
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=end_date&page='.$_GET['page'].'&type='.$re_type).'">'.TABLE_HEADING_CAMPAIGN_EFFECT_DATE.$present_type_name.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=end_date&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_EFFECT_DATE.$present_type_name.'</a>');
                 }else{
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=end_date&page='.$_GET['page'].'&type=desc').'">'.TABLE_HEADING_CAMPAIGN_EFFECT_DATE.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="left"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=end_date&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_EFFECT_DATE.'</a>');
                 }
 		if(isset($_GET['sort']) && $_GET['sort'] == 'max_use'){
                 $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=max_use&page='.$_GET['page'].'&type='.$re_type).'">'.TABLE_HEADING_CAMPAIGN_USE_NUM.$present_type_name.'</a>');
                 }else{
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=max_use&page='.$_GET['page'].'&type=desc').'">'.TABLE_HEADING_CAMPAIGN_USE_NUM.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=max_use&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_USE_NUM.'</a>');
                 }
 		if(isset($_GET['sort']) && $_GET['sort'] == 'point_value'){
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=point_value&page='.$_GET['page'].'&type='.$re_type).'">'.TABLE_HEADING_CAMPAIGN_VALUE.$present_type_name.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=point_value&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_VALUE.$present_type_name.'</a>');
                 }else{
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=point_value&page='.$_GET['page'].'&type=desc').'">'.TABLE_HEADING_CAMPAIGN_VALUE.'</a>');
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=point_value&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_VALUE.'</a>');
                 }
-		$present_title_row[] = array('params' => 'class="dataTableHeadingContent" align="center"','text' => TABLE_HEADING_CAMPAIGN_STATUS);
-                $present_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_CAMPAIGN_FETCH_USE_NUM);
-		$present_title_row[] = array('params' => 'class="dataTableHeadingContent" align="right"','text' => TABLE_HEADING_CAMPAIGN_ACTION);
+		if(isset($_GET['sort']) && $_GET['sort'] == 'status'){
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=status&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_STATUS.$present_type_name.'</a>');
+                }else{
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="center"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=status&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_STATUS.'</a>');
+                }
+		if(isset($_GET['sort']) && $_GET['sort'] == 'cnt'){
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=cnt&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_FETCH_USE_NUM.$present_type_name.'</a>');
+                }else{
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=cnt&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_FETCH_USE_NUM.'</a>');
+                }
+		if(isset($_GET['sort']) && $_GET['sort'] == 'date_update'){
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=date_update&page='.$_GET['page'].'&type='.$re_type.'&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_ACTION.$present_type_name.'</a>');
+                }else{
+                $present_title_row[] = array('params' => 'class="dataTableHeadingContent_order" align="right"','text' => '<a href="'.tep_href_link(FILENAME_CAMPAIGN,'sort=date_update&page='.$_GET['page'].'&type=desc&site_id='.$_GET['site_id']).'">'.TABLE_HEADING_CAMPAIGN_ACTION.'</a>');
+                }
 		$present_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $present_title_row);
 		
-	$present_table_row[] = array('params' => 'class="dataTableRowSelected" id="" onmouseover="this.style.cursor=\'hand\'">','text' => '');
+	$present_table_row[] = array('params' => 'class="dataTableRowSelected" id="" onmouseover="this.style.cursor=\'hand\'"','text' => '');
 	$present_table_row[] = array('params' => 'class="" id="" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'','text' => '');
 		$notice_box->get_contents($present_table_row);
 		echo $notice_box->show_notice();
@@ -525,7 +573,8 @@ if(isset($_GET['sort'])){
     $rows = 0;
     
     $campaign_query_raw = '
-        select c.id, 
+        select count(c.id) as cnt,
+	       c.id, 
                c.name, 
                c.title, 
                c.keyword, 
@@ -539,16 +588,13 @@ if(isset($_GET['sort'])){
                c.status,
                c.site_id,
                c.date_update
-        from ' . TABLE_CAMPAIGN . ' c
-        where 1 
-        ' . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and (c.site_id = '" . intval($_GET['site_id']) . "') " : '') . '
+        from ' . TABLE_CAMPAIGN . ' c left join customer_to_campaign c2c on c.id = c2c.campaign_id where '.$sql_site_where.' group by c.id
         order by '.$sort.' '.$type
     ;
     $campaign_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $campaign_query_raw, $campaign_query_numrows);
     $campaign_query = tep_db_query($campaign_query_raw);
     while ($campaign = tep_db_fetch_array($campaign_query)) {
       $rows++;
-      
       if ( ((!isset($_GET['campaign_id']) || !$_GET['campaign_id']) || ($_GET['campaign_id'] == $campaign['id'])) && (!isset($selected_item) || !$selected_item) && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') ) {
         $selected_item = $campaign;
       }
@@ -565,6 +611,7 @@ if(isset($_GET['sort'])){
         echo '              <tr class="'.$nowColor.'" id="show_value_'.$campaign['id'].'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       }
 ?>
+		<td class="dataTableHeadingContent" ><input type="checkbox" name="all_check"></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CAMPAIGN, 'page='.$_GET['page'].'&campaign_id=' .  $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):''));?>'"><?php echo '&nbsp;'.tep_get_site_romaji_by_id($campaign['site_id']); ?></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CAMPAIGN, 'page='.$_GET['page'].'&campaign_id=' .  $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):''));?>'"><?php echo '&nbsp;' . $campaign['title']; ?></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CAMPAIGN, 'page='.$_GET['page'].'&campaign_id=' .  $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):''));?>'"><?php echo '&nbsp;' . $campaign['name']; ?></td>
@@ -606,7 +653,7 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
                 <td class="dataTableContent" align="right">
 <?php
       $campaigin_date_info = (tep_not_null($campaign['date_update']) && ($campaign['date_update'] != '0000-00-00 00:00:00'))?$campaign['date_update']:$campaign['created_at'];
-      echo '<a href="javascript:void(0);" onclick="show_campaign_info(this, \''.$campaign['id'].'\', \''.(!empty($_GET['site_id'])?$_GET['site_id']:0).'\');">' .  tep_get_signal_pic_info($campaigin_date_info) . '</a>'; 
+      echo '<a href="javascript:void(0);" onclick="show_campaign_info(this, \''.$campaign['id'].'\', \''.(!empty($_GET['site_id'])?$_GET['site_id']:$show_list_str1).'\');">' .  tep_get_signal_pic_info($campaigin_date_info) . '</a>'; 
     ?>&nbsp;
     </td>
               </tr>
@@ -623,7 +670,7 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
                   <tr>
                     <td colspan="2" align="right" class="smallText">
                     <?php 
-                    echo '&nbsp;<a href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="show_new_campaign(\''.(!empty($_GET['site_id'])?$_GET['site_id']:0).'\');"') . '</a>'; 
+                    echo '&nbsp;<a href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="show_new_campaign(\''.(!empty($_GET['site_id'])?$_GET['site_id']:$show_list_str1).'\');"') . '</a>'; 
                     ?>
                     &nbsp;
                     </td>
