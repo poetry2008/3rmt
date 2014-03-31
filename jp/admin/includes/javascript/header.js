@@ -138,18 +138,18 @@ function expend_all_notice(aid)
   }
 }
 //delete all notice
-function delete_notice(all_notice){
+function delete_notice(all_notice,aid){
   if(confirm(all_notice)){
-  delete_alarm_notice('','1','1');
-  delete_micro_notice('','1','1');
+  delete_alarm_notice('','1','1',aid);
+  delete_micro_notice('','1','1',aid);
   }
 }
 //delete alarm notice
-function delete_alarm_notice(nid, e_type,all_del)
+function delete_alarm_notice(nid, e_type,all_del,aid)
 {
   $.ajax({
       url: 'ajax_notice.php?action=delete_alarm',
-      data: {nid:nid,all_del:all_del},
+      data: {nid:nid,all_del:all_del,aid:aid},
       type: 'POST',
       dataType: 'text',
       async: false,
@@ -168,11 +168,11 @@ function delete_alarm_notice(nid, e_type,all_del)
       });
 }
 //delete notice
-function delete_micro_notice(nid, e_type,all_del)
+function delete_micro_notice(nid, e_type,all_del,aid)
 {
   $.ajax({
       url: 'ajax_notice.php?action=delete_micro',
-      data: {nid:nid,all_del:all_del},
+      data: {nid:nid,all_del:all_del,aid:aid},
       type: 'POST',
       dataType: 'text',
       async: false,
