@@ -759,8 +759,8 @@ case 'dougyousya_categories':
       <input type="hidden" name="b1" value="<?php echo TEXT_SIGN_IN;?>">
       <input type='hidden' id='orderstring' name='orderstring' />
       <input type='hidden' id='targetstring' name='targetstring' />
-      <input type="button" onclick="get_last_date()" value="LAST DATA">
-      <input type="button" onclick="$('.udlr').val('')" value="RESET">
+      <input type="button" onclick="get_last_date()" value="<?php echo HISTORY_LAST_DATA;?>">
+      <input type="button" onclick="$('.udlr').val('')" value="<?php echo HISTORY_RESET;?>">
     </td>
   </tr>
      </table>

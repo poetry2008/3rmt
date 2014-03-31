@@ -359,7 +359,6 @@ if($flag_error == false){
         $cart->restore_contents();
 	if($_SESSION['referer']!=""){
 		  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
-		  unset($_SESSION['referer']);
 		                 }
         if (sizeof($navigation->snapshot) > 0) {
           if ($navigation->snapshot['page'] != 'change_preorder.php') {
