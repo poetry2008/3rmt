@@ -126,6 +126,7 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
           $("#notice_id_str").remove();
           $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">');
         }
+      window.location.reload();
       } 
       });
 }
@@ -142,6 +143,7 @@ function delete_micro_notice(nid, e_type,all_del,aid)
         $('#show_all_notice').css('display', 'none');
         $('#show_all_notice').html(''); 
         show_head_notice(0);
+        window.location.reload();
       } 
       });
 }
