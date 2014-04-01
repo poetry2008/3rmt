@@ -18,8 +18,9 @@
     $errorno += 1;
     $error = 1;
   }
-
+  if (!isset($_GET['dfrom'])) $_GET['dfrom'] = NULL;
   $dfrom_to_check = (($_GET['dfrom'] == DOB_FORMAT_STRING) ? '' : $_GET['dfrom']);
+  if (!isset($_GET['dto'])) $_GET['dto'] = NULL;
   $dto_to_check = (($_GET['dto'] == DOB_FORMAT_STRING) ? '' : $_GET['dto']);
 
   if (strlen($dfrom_to_check) > 0) {
@@ -43,6 +44,7 @@
     }
   }
 
+  if (!isset($_GET['pfrom'])) $_GET['pfrom'] = NULL;
   if (strlen($_GET['pfrom']) > 0) {
     $pfrom_to_check = $_GET['pfrom'];
     if (!settype($pfrom_to_check, "double")) {
@@ -51,6 +53,7 @@
     }
   }
 
+  if (!isset($_GET['pto'])) $_GET['pto'] = NULL;
   if (strlen($_GET['pto']) > 0) {
     $pto_to_check = $_GET['pto'];
     if (!settype($pto_to_check, "double")) {
@@ -76,14 +79,12 @@
   if ($error == 1) {
     tep_redirect(tep_href_link(FILENAME_ADVANCED_SEARCH, 'errorno=' . $errorno . '&' . tep_get_all_get_params(array('x', 'y'))));
   } else {
-   // $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_ADVANCED_SEARCH));
-   // $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $_GET['keywords'] . '&search_in_description=' .  isset($_GET['search_in_description'])?  $_GET['search_in_description']:''. '&categories_id=' .  $_GET['categories_id'] . '&inc_subcat=' .  isset($_GET['inc_subcat'])?$_GET['inc_subcat']:'' . '&manufacturers_id=' . $_GET['manufacturers_id'] . '&pfrom=' . $_GET['pfrom'] . '&pto=' . $_GET['pto'] . '&dfrom=' . $_GET['dfrom'] . '&dto=' . $_GET['dto']));
 ?>
 <?php page_head();?>
 <?php
   if($ajax == 'on') {
-    echo '<script type="text/javascript" src="./ajax/js/jk-ajax.js"></script>'."\n";
-    echo '<script type="text/javascript" src="./ajax/js/in-cart.js"></script>'."\n";
+    echo '<script language="javascript" src="./ajax/js/jk-ajax.js"></script>'."\n";
+    echo '<script language="javascript" src="./ajax/js/in-cart.js"></script>'."\n";
   }
 ?>
 <script type="text/javascript" src="js/sort.js"></script>
@@ -117,7 +118,9 @@
                        'PRODUCT_LIST_QUANTITY' => PRODUCT_LIST_QUANTITY, 
                        'PRODUCT_LIST_WEIGHT' => PRODUCT_LIST_WEIGHT, 
                        'PRODUCT_LIST_IMAGE' => PRODUCT_LIST_IMAGE, 
-                       'PRODUCT_LIST_BUY_NOW' => PRODUCT_LIST_BUY_NOW);
+                       'PRODUCT_LIST_BUY_NOW' => PRODUCT_LIST_BUY_NOW,
+                       'PRODUCT_LIST_ORDERED' => PRODUCT_LIST_ORDERED
+  );
   asort($define_list);
 
   $column_list = array();
@@ -153,6 +156,9 @@
       case 'PRODUCT_LIST_WEIGHT':
         $select_column_list .= 'p.products_weight';
         break;
+      case 'PRODUCT_LIST_ORDERED':
+        $select_column_list .= 'p.products_ordered';
+        break;
     }
   }
 
@@ -174,19 +180,13 @@
                     pd.site_id,
                     p.sort_order,
                     pd.romaji,
-                    pd.preorder_status, 
+                    pd.preorder_status,
                     p.products_price_offset, p.products_small_sum"; 
-  /*
-  if(isset($_GET['colors']) && !empty($_GET['colors'])) {
-    $select_str .= ", cp.color_image ";
-  }
-  */
 
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $select_str .= ", SUM(tr.tax_rate) as tax_rate ";
   }
   
-  #$from_str = "(( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd )left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, ".TABLE_COLOR_TO_PRODUCTS." cp";
   $from_str = "( " . TABLE_PRODUCTS . " p ) left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ";
 
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
@@ -194,7 +194,6 @@
       $customer_country_id = STORE_COUNTRY;
       $customer_zone_id = STORE_ZONE;
     }
-    // maker
     $from_str = '(('.$from_str.") left join " . TABLE_TAX_RATES . " tr on p.products_tax_class_id = tr.tax_class_id) left join " . TABLE_ZONES_TO_GEO_ZONES . " gz on tr.tax_zone_id = gz.geo_zone_id and (gz.zone_country_id is null or gz.zone_country_id = '0' or gz.zone_country_id = '" . $customer_country_id . "') and (gz.zone_id is null or gz.zone_id = '0' or gz.zone_id = '" . $customer_zone_id . "')";
   }
 
@@ -213,12 +212,6 @@
       $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $_GET['categories_id'] . "'";
     }
   }
-
-/*
-  if(isset($_GET['colors']) && !empty($_GET['colors'])) {
-    $where_str .= " and p.products_id = cp.products_id and cp.color_id = '".$_GET['colors']."'";
-  }
-  */
 
   if (isset($_GET['manufacturers_id']) && tep_not_null($_GET['manufacturers_id'])) {
     $where_str .= " and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "'";
@@ -251,6 +244,11 @@
             tep_db_free_result($tags_query);
             $where_str .= "(pd.products_name like '%" . addslashes($search_keywords[$i]) . "%' or p.products_model like '%" . addslashes($search_keywords[$i]) . "%' or m.manufacturers_name like '%" . addslashes($search_keywords[$i]) . "%'";
             if (isset($_GET['search_in_description']) && ($_GET['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%'";
+
+            $where_str .= " or p.products_attention_1 like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_attention_2 like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_attention_3 like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_attention_4 like '%" .  addslashes($search_keywords[$i]) . "%'";
               $where_str .= ')';
             break;
         }
@@ -282,12 +280,10 @@
     if ($pfrom) $where_str_temp .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) >= " . $pfrom . ")";
     if ($pto)   $where_str_temp .= " and (IF(p.products_price_offset, p.products_price + p.products_price_offset, p.products_price) <= " . $pto . ")";
   }
-  
-  // $where_str .= " and pd.site_id = '".SITE_ID."'";
+
   
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
-    $where_str_temp .= " group by p.products_id, tr.tax_priority
-      ";
+    $where_str_temp .= " group by p.products_id, tr.tax_priority";
   }
   $where_str .= $where_str_temp."
     order by pd.site_id DESC ) p 
