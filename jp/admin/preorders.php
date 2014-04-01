@@ -476,7 +476,7 @@
         $ensure_date_arr[0], 
         $num_product,
         $num_product_res['products_name'], 
-        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+        str_replace(SENDMAIL_EDIT_ORDERS_PRICE_UNIT,'',$currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax'])),
         $ot_sub_total,
         preorders_a($oID)
       ),$comments);
