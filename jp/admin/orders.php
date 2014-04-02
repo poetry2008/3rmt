@@ -5470,39 +5470,42 @@ if($c_parent_array['parent_id'] == 0){
                       }
                     }else{
                     if(isset($_SESSION['c_image_list'])&&!empty($_SESSION['c_image_list']['name'])&&!empty($_SESSION['c_image_list']['alt'])){
-                       $customers_info_raw = tep_db_query("select c.pic_icon from ".TABLE_CUSTOMERS." c 
-                           where c.customers_id = '".$orders['customers_id']."'"); 
+                      $customers_info_raw = tep_db_query("select c.pic_icon from ".TABLE_CUSTOMERS." c where c.customers_id = '".$orders['customers_id']."'"); 
                       $customers_info_res = tep_db_fetch_array($customers_info_raw);
                       if ($customers_info_res) {
-                        if (!empty($customers_info_res['pic_icon'])
-                           &&in_array($customers_info_res['pic_icon'],$_SESSION['c_image_list']['name'])) {
-                          if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
-                            $pic_icon_title_str =
-                              $_SESSION['c_image_list']['alt'][array_search($customers_info_res['pic_icon'],$_SESSION['c_image_list']['name'])]; 
+                        $customers_pic = explode(',',$customers_info_res['pic_icon']);
+                        if (!empty($customers_info_res['pic_icon']) &&array_intersect($customers_pic,$_SESSION['c_image_list']['name'])) {
+                          foreach($customers_pic as $key => $pic_value){
+                          if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$pic_value)) {
+                            $pic_icon_title_str = $_SESSION['c_image_list']['alt'][array_search($customers_info_res['pic_icon'],$_SESSION['c_image_list']['name'])]; 
                             $customer_image[$orders['customers_id']]=array();
                             $customer_image[$orders['customers_id']]['src'] = $customers_info_res['pic_icon'];
                             $customer_image[$orders['customers_id']]['alt'] = $pic_icon_title_str;
-                            echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
+                              echo tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_value, $pic_icon_title_str); 
+                            }
                           }
                         }
                       }
                     }else{
                     $customers_info_raw = tep_db_query("select c.pic_icon, pl.pic_alt from ".TABLE_CUSTOMERS." c, ".TABLE_CUSTOMERS_PIC_LIST." pl where c.customers_id = '".$orders['customers_id']."' and c.pic_icon = pl.pic_name limit 1"); 
                     $customers_info_res = tep_db_fetch_array($customers_info_raw);
+                    $customers_pic = explode(',',$customers_info_res['pic_icon']);
                     if ($customers_info_res) {
                       if (!empty($customers_info_res['pic_icon'])) {
-                        if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'])) {
+                        foreach($customers_pic as $key => $pic_value){
+                        if (file_exists(DIR_FS_DOCUMENT_ROOT.DIR_WS_IMAGES.'icon_list/'.$pic_value)) {
                           $pic_icon_title_str = ''; 
-                          $pic_icon_title_raw = tep_db_query("select pic_alt from ".TABLE_CUSTOMERS_PIC_LIST." where pic_name = '".$customers_info_res['pic_icon']."'"); 
+                          $pic_icon_title_raw = tep_db_query("select pic_alt from ".TABLE_CUSTOMERS_PIC_LIST." where pic_name = '".$pic_value."'"); 
                           $pic_icon_title_res = tep_db_fetch_array($pic_icon_title_raw); 
                           if ($pic_icon_title_res) {
                             $pic_icon_title_str = $pic_icon_title_res['pic_alt']; 
                           }
                           $customer_image[$orders['customers_id']]=array();
-                          $customer_image[$orders['customers_id']]['src'] = $customers_info_res['pic_icon'];
+                          $customer_image[$orders['customers_id']]['src'] = $pic_value;
                           $customer_image[$orders['customers_id']]['alt'] = $pic_icon_title_str;
-                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$customers_info_res['pic_icon'], $pic_icon_title_str); 
+                          echo tep_image(DIR_WS_IMAGES.'icon_list/'.$pic_value, $pic_icon_title_str); 
                         }
+                       }
                       }
                     }
                     }

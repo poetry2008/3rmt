@@ -13,6 +13,17 @@ $order_status_info = tep_get_orders_status_array();
 $limit_time_info = 30; //限制天数
 $befor_orders = tep_get_beforday_orders($limit_time_info);
 $action = (isset($_GET['action']) ? $_GET['action'] : '');
+$sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+while($userslist= tep_db_fetch_array($sites_id)){
+      $site_permission = $userslist['site_permission'];
+}
+if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+else $site_arr="";
+$site_array = explode(',',$site_arr);
+if(!isset($_GET['site_id'])) $_GET['site_id'] = 0;
+if(!in_array($_GET['site_id'],$site_array)){
+    $disabled = 'disabled="disabled"';
+}
 if ( eregi("(insert|update|setflag)", $action) ) include_once('includes/reset_seo_cache.php');
 
 if (isset($_GET['action']) && $_GET['action']) {
@@ -5379,13 +5390,21 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                               if ($unaccept_edit_single) {
                                 $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '').'</a> ';
                               } else {
+                                if($disabled){
+                                $categories_status_text .= '<a href="javascript:void(0);" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif').'</a> ';
+                                }else{
                                 $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', '').'</a> ';
+                                }
                               }
                           } else {
                             if ($unaccept_edit_single) {
                               $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');" >'.tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '').'</a> ';
                             } else {
-                              $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '').'</a> ';
+                              if($disabled){
+                              $categories_status_text .= '<a href="javascript:void(0);">'.tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif').'</a> ';
+                              }else{
+                              $categories_status_text .= '<a href="javascript:void(0);" '.$disabled.' onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '').'</a> ';
+                              }
                             }
                           }
                           break;
@@ -5396,13 +5415,21 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                               if ($unaccept_edit_single) {
                                 $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '').'</a> ';
                               } else {
-                                $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '').'</a> ';
+                                if($disabled){
+                                $categories_status_text .= '<a href="javascript:void(0);"  title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '').'</a> ';
+                                }else{
+                                $categories_status_text .= '<a href="javascript:void(0);" '.$disabled.'  onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '').'</a> ';
+                                }
                               }
                           } else {
                             if ($unaccept_edit_single) {
                               $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">'.tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '').'</a> ';
                             } else {
-                              $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '').'</a> ';
+                              if($disabled){
+                              $categories_status_text .= '<a href="javascript:void(0);" >'.tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '').'</a> ';
+                              }else{
+                              $categories_status_text .= '<a href="javascript:void(0);" '.$disabled.' onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '').'</a> ';
+                              }
                             }
                           }
                           break;
@@ -5411,13 +5438,21 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             if ($unaccept_edit_single) {
                               $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES .  'icon_status_black.gif', '').'</a> ';
                             } else {
-                              $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_black.gif', '').'</a> ';
+                              if($disabled){
+                              $categories_status_text .= '<a href="javascript:void(0);" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_black.gif', '').'</a> ';
+                              }else{
+                              $categories_status_text .= '<a href="javascript:void(0);" '.$disabled.' onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_black.gif', '').'</a> ';
+                              }
                             }
                           } else {
                             if ($unaccept_edit_single) {
                               $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">'.tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '').'</a> ';
                             } else {
-                              $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                              if($disabled){
+                              $categories_status_text .= '<a href="javascript:void(0);" >'.tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                              }else{
+                              $categories_status_text .= '<a href="javascript:void(0);" '.$disabled.' onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                              }
                             }
                           }
                           break;
@@ -5426,13 +5461,21 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             if ($unaccept_edit_single) {
                               $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '').'</a> ';
                             } else {
-                              $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '').'</a> ';
+                              if($disabled){
+                              $categories_status_text .= '<a href="javascript:void(0);" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '').'</a> ';
+                              }else{
+                              $categories_status_text .= '<a href="javascript:void(0);" '.$disabled.' onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" title="'.implode(',', $cas_value).'">'.tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '').'</a> ';
+                              }
                             }
                           } else {
                             if ($unaccept_edit_single) {
                               $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''. NOTICE_HAS_NO_PREVILEGE_EDIT.'\');" >'.tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '').'</a> ';
                             } else {
-                              $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '').'</a> ';
+                              if($disabled){
+                              $categories_status_text .= '<a href="javascript:void(0);" >'.tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '').'</a> ';
+                              }else{
+                              $categories_status_text .= '<a href="javascript:void(0);" '.$disabled.' onclick="check_toggle_status(\''.tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')" >'.tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', '').'</a> ';
+                              }
                             }
                           }
                           break;
@@ -5465,6 +5508,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''.
                             NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">'. tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '').'</a> ';
                         } else {
+                          if($disabled){
+                          $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '').'</a> ';
+                          $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '').'</a> ';
+                          $categories_status_text .= tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '');
+                          $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                          }else{
                           $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.
                             tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                                 '&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.
@@ -5478,6 +5527,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                                 '&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.
                                 tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                          }
                         }
                       }
                     } else if($categories['categories_status'] == '2'){
@@ -5499,6 +5549,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''.
                             NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">'. tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '').'</a> ';
                         } else {
+                          if($disabled){
+                          $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '').'</a> ';
+                          $categories_status_text .= tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '');
+                          $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '').'</a> ';
+                          $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                          }else{
                           $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.
                             tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                                 '&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.
@@ -5512,6 +5568,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                                 '&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.
                                 tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                          }
                         }
                       }
                     } else if($categories['categories_status'] == '3'){
@@ -5542,6 +5599,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                               NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">'. tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '').'</a> ';
                             $categories_status_text .= tep_image(DIR_WS_IMAGES.'icon_status_black.gif', '');
                           } else {
+                            if($disabled){
+                            $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '').'</a> ';
+                            $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '').'</a> ';
+                            $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '').'</a> ';
+                            $categories_status_text .= tep_image(DIR_WS_IMAGES.'icon_status_black.gif', '');
+                            }else{
                             $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.
                               tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                                   '&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.
@@ -5555,6 +5618,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   '&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.
                                   tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '').'</a> ';
                             $categories_status_text .= tep_image(DIR_WS_IMAGES.'icon_status_black.gif', '');
+                            }
                           }
                         }
                       }
@@ -5568,6 +5632,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $categories_status_text .= '<a href="javascript:void(0);" onclick="window.alert(\''.
                           NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">'. tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '').'</a> ';
                       } else {
+                        if($disabled){
+                        $categories_status_text .= tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');
+                        $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '').'</a> ';
+                        $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '').'</a> ';
+                        $categories_status_text .= '<a href="javascript:void(0);">'.  tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                        }else{
                         $categories_status_text .= tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');
                         $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_status(\''.
                           tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
@@ -5581,6 +5651,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                               '&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.
                               tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '').'</a> ';
+                        }
                       }
                     }
                   }

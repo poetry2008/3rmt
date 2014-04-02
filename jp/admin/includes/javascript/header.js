@@ -103,7 +103,6 @@ function expend_all_notice(aid)
 function delete_notice(all_notice,aid){
   if(confirm(all_notice)){
   delete_alarm_notice('','1','1',aid);
-  delete_micro_notice('','1','1',aid);
   }
 }
 //delete alarm notice
@@ -131,11 +130,11 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
       });
 }
 //delete notice
-function delete_micro_notice(nid, e_type,all_del,aid)
+function delete_micro_notice(nid, e_type)
 {
   $.ajax({
       url: 'ajax_notice.php?action=delete_micro',
-      data: {nid:nid,all_del:all_del,aid:aid},
+      data: 'nid='+nid,
       type: 'POST',
       dataType: 'text',
       async: false,
@@ -143,7 +142,6 @@ function delete_micro_notice(nid, e_type,all_del,aid)
         $('#show_all_notice').css('display', 'none');
         $('#show_all_notice').html(''); 
         show_head_notice(0);
-        window.location.reload();
       } 
       });
 }

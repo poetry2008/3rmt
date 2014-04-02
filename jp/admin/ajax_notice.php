@@ -277,20 +277,22 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     while ($notice_list = tep_db_fetch_array($notice_list_raw)) {
        $notice_id_array[] = $notice_list['id'];
     }
-      if($notice_list['deleted'] == ''){
+       foreach($notice_id_array as $key => $value){
+         $notice_list_deleted = tep_db_fetch_array(tep_db_query("select * from ".TABLE_NOTICE." where id ='".$value."'"));
+      if($notice_list_deleted['deleted'] == ''){
          $notice_users_str = $ocertify->auth_user; 
        }else{
-         $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
+         $notice_users_str = $notice_list_deleted['deleted'].','.$ocertify->auth_user;
        }
-       foreach($notice_id_array as $key => $value){
             tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$value."'");
        }
    }
      if(isset($_POST['aid'])){
-           if($notice['deleted'] == ''){
+         $notice_list_deleted = tep_db_fetch_array(tep_db_query("select * from ".TABLE_NOTICE." where id ='".$_POST['aid']."'"));
+           if($notice_list_deleted['deleted'] == ''){
               $notice_users_str = $ocertify->auth_user; 
             }else{
-              $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
+              $notice_users_str = $notice_list_deleted['deleted'].','.$ocertify->auth_user;
             }
             tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$_POST['aid']."'");
      }
@@ -315,80 +317,11 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 把指定的micro_log的id和当前用户关联
     参数: $_POST['nid'] micro_log的id值 
  -----------------------------------------------------*/
-  if($_POST['all_del'] == '1'){
-  $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
-
-  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.type = '1' and n.is_show='1' and bm.is_show='1' and bm.deleted='0'"; 
-
-  $notice_micro_query = tep_db_query($notice_micro_sql);
-  $notice_id_array = array();
-  $memo_id_array = array();
-  $memo_cid_array = array();
-  while($notice_micro_array = tep_db_fetch_array($notice_micro_query)){
-
-    if($notice_micro_array['to_users'] == ''){
-
-      $notice_id_array[] = $notice_micro_array['id'];
-      $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
-      $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
-    }else{
-
-      $users_id_array = array();
-      $users_id_array = explode(',',$notice_micro_array['to_users']);
-      array_push($users_id_array,$notice_micro_array['from_users']);
-
-      if(in_array($ocertify->auth_user,$users_id_array)){
-
-        $notice_id_array[] = $notice_micro_array['id'];
-        $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
-        $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
-      }
-    }
-  }
-  tep_db_free_result($notice_micro_query);
-  $notice_id_str = implode(',',$notice_id_array);
-
-  if($notice_id_str != ''){
-    $notice_micro_sqls = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n where n.id in (".$notice_id_str.")";
-  }
-
-  //警告提示
-  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
-  
-  $notice_total_sql = "select * from (".$notice_order_sql.($notice_id_str != '' ? " union ".$notice_micro_sqls : '')." union ".$alarm_order_sql.") taf where id != '".$_POST['aid']."' order by created_at desc,set_time asc, type asc"; 
-  
-  $notice_list_raw = tep_db_query($notice_total_sql);
-   $notice_id_array = array();
-   if (tep_db_num_rows($notice_list_raw) > 0) {
-    while ($notice_list = tep_db_fetch_array($notice_list_raw)) {
-       $notice_id_array[] = $notice_list['id'];
-    }
-      if($notice_list['deleted'] == ''){
-         $notice_users_str = $ocertify->auth_user; 
-       }else{
-         $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
-       }
-       foreach($notice_id_array as $key => $value){
-            tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$value."'");
-       }
-        if(empty($notice_id_array)){
-            tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$_POST['aid']."'");
-       }
-   }
-        if(isset($_POST['aid'])){
-           if($notice['deleted'] == ''){
-              $notice_users_str = $ocertify->auth_user; 
-            }else{
-              $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
-            }
-            tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$_POST['aid']."'");
-        }
-  }
   $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '1'");
   $notice = tep_db_fetch_array($notice_raw);
 
   $notice_users_str = ''; 
-  if ($notice && $_POST['all_del'] == '') {
+  if ($notice) {
 
     if($notice['deleted'] == ''){
 
