@@ -18,9 +18,8 @@
     $errorno += 1;
     $error = 1;
   }
-  if (!isset($_GET['dfrom'])) $_GET['dfrom'] = NULL;
+
   $dfrom_to_check = (($_GET['dfrom'] == DOB_FORMAT_STRING) ? '' : $_GET['dfrom']);
-  if (!isset($_GET['dto'])) $_GET['dto'] = NULL;
   $dto_to_check = (($_GET['dto'] == DOB_FORMAT_STRING) ? '' : $_GET['dto']);
 
   if (strlen($dfrom_to_check) > 0) {
@@ -117,7 +116,9 @@
                        'PRODUCT_LIST_QUANTITY' => PRODUCT_LIST_QUANTITY, 
                        'PRODUCT_LIST_WEIGHT' => PRODUCT_LIST_WEIGHT, 
                        'PRODUCT_LIST_IMAGE' => PRODUCT_LIST_IMAGE, 
-                       'PRODUCT_LIST_BUY_NOW' => PRODUCT_LIST_BUY_NOW);
+                       'PRODUCT_LIST_BUY_NOW' => PRODUCT_LIST_BUY_NOW,
+                       'PRODUCT_LIST_ORDERED' => PRODUCT_LIST_ORDERED
+  );
   asort($define_list);
 
   $column_list = array();
@@ -153,6 +154,9 @@
       case 'PRODUCT_LIST_WEIGHT':
         $select_column_list .= 'p.products_weight';
         break;
+      case 'PRODUCT_LIST_ORDERED':
+        $select_column_list .= 'p.products_ordered';
+        break;
     }
   }
 
@@ -166,17 +170,17 @@
     select distinct " . $select_column_list . " 
                     m.manufacturers_id, 
                     p.products_bflag, 
-                    p.products_id, 
+                    p.products_id,
+                    p.sort_order,
                     pd.products_name, 
-                    pd.products_status, 
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
-                    p.sort_order,
+                    pd.products_status, 
                     pd.romaji,
                     pd.preorder_status,
                     p.products_price_offset, p.products_small_sum"; 
-
+  
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $select_str .= ", SUM(tr.tax_rate) as tax_rate ";
   }
