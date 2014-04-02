@@ -243,6 +243,11 @@
           default:
             $where_str .= "(pd.products_name like '%" . addslashes($search_keywords[$i]) . "%' or p.products_model like '%" . addslashes($search_keywords[$i]) . "%' or m.manufacturers_name like '%" . addslashes($search_keywords[$i]) . "%'";
             if (isset($_GET['search_in_description']) && ($_GET['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%' or t.tags_name like '%".addslashes($search_keywords[$i])  ."%'";
+
+            $where_str .= " or p.products_attention_1 like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_attention_2 like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_attention_3 like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_attention_4 like '%" .  addslashes($search_keywords[$i]) . "%'";
               $where_str .= ')';
             break;
         }

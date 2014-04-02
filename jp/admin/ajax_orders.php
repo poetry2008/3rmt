@@ -1133,7 +1133,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
   $html_str .= '</table>'; 
-  $html_str .= tep_draw_form('campaign', FILENAME_CAMPAIGN, 'action=update&site_id='.$campaign_res['site_id'].'&st_id='.$_POST['st_id']); 
+  $html_str .= tep_draw_form('campaign', FILENAME_CAMPAIGN, 'sort='.$_GET['sort'].'&page='.$_GET['page'].'&type='.$_GET['type'].'&action=update&site_id='.$campaign_res['site_id'].'&st_id='.$_POST['st_id']); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   
   $html_str .= '<tr>';
@@ -1417,7 +1417,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
   $html_str .= '</table>'; 
-  $html_str .= tep_draw_form('campaign', FILENAME_CAMPAIGN, 'action=insert&site_id='.$_POST['site_id']); 
+  $html_str .= tep_draw_form('campaign', FILENAME_CAMPAIGN, 'action=insert&site_id='.$_POST['site_id'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';

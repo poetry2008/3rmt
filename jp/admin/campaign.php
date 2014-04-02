@@ -34,7 +34,7 @@
 ------------------------------------------------------*/
       case 'setflag';
         tep_db_query("update `".TABLE_CAMPAIGN."` set `status` = '".(int)$_GET['flag']."' where id = '".$_GET['campaign_id']."'");
-        tep_redirect(tep_href_link(FILENAME_CAMPAIGN, isset($_GET['site_id'])?('site_id='.$_GET['site_id'].'&sort='.$_GET['sort']):$show_list_str2.'&sort='.$_GET['sort'])); 
+        tep_redirect(tep_href_link(FILENAME_CAMPAIGN, isset($_GET['site_id'])?('site_id='.$_GET['site_id'].'&sort='.$_GET['sort'].'&page='.$_GET['page'].'&type='.$_GET['type']):$show_list_str2.'&sort='.$_GET['sort'].'&page='.$_GET['page'].'&type='.$_GET['type'])); 
         break;
       case 'update':
       case 'insert':
@@ -136,9 +136,9 @@
           tep_db_perform(TABLE_CAMPAIGN, $sql_data_array);
         }
         if (isset($_GET['st_id'])) {
-          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.$show_list_str2).'&sort='.$_GET['sort']);
+          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.$show_list_str2).'&sort='.$_GET['sort'].'&page='.$_GET['page'].'&type='.$_GET['type']);
         } else {
-          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.$show_list_str2).'&sort='.$_GET['sort']);
+          tep_redirect(tep_href_link(FILENAME_CAMPAIGN, 'site_id='.$show_list_str2).'&sort='.$_GET['sort'].'&page='.$_GET['page'].'&type='.$_GET['type']);
         }
         }
         if ($_GET['action'] == 'update') {
@@ -195,7 +195,7 @@ function show_campaign_info(ele, cid, sid)
   temp_id = cid;
   ele = ele.parentNode; 
   $.ajax({
-    url: 'ajax_orders.php?<?php echo "sort=".$_GET['sort']?>&action=edit_campaign',     
+    url: 'ajax_orders.php?<?php echo "sort=".$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']?>&action=edit_campaign',     
     data:'cid='+cid+'&st_id='+sid, 
     type: 'POST',
     dataType: 'text',
@@ -284,7 +284,7 @@ function close_campaign_info()
 function show_new_campaign(std)
 {
   $.ajax({
-    url: 'ajax_orders.php?action=new_campaign',     
+    url: 'ajax_orders.php?<?php echo "sort=".$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']?>&action=new_campaign',     
     data: 'site_id='+std, 
     type: 'POST',
     dataType: 'text',
@@ -668,7 +668,7 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
 		    <td valign="top" class="smallText">
                     <?php
                     if($ocertify->npermission >= 15){
-                    echo '<select name="news_action" disabled="disabled>';
+                    echo '<select disabled="disabled">';
                     echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';
                     echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
                     echo '</select>';
