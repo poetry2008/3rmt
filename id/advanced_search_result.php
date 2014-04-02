@@ -176,7 +176,6 @@
                     p.products_id,
                     p.sort_order,
                     pd.products_name, 
-                    pd.products_status,
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
