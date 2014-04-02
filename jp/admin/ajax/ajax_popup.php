@@ -5595,9 +5595,14 @@ if($_GET['cID'] != -1){
     }
        $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
         $table_img_list = '<ul class="table_img_list" style="width:100%">'; 
+        $pic_icon_array = explode(',',$cInfo->pic_icon);
         while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
-         $table_img_list .= '<li><input type="radio" name="pic_icon" '.($disabled?$disabled:$is_active_single).' style="padding-left:0;margin-left:0;" value="'.$pic_list_res['pic_name'].'"'.(($cInfo->pic_icon == $pic_list_res['pic_name'])?' checked':'').' onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+         if(in_array($pic_list_res['pic_name'],$pic_icon_array)){
+            $table_img_list .= '<li><input type="checkbox" name="pic_icon[]" '.($disabled?$disabled:$is_active_single).'checked style="padding-left:0;margin-left:0;" value="'.$pic_list_res['pic_name'].'" checked onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+         }else{
+         $table_img_list .= '<li><input type="checkbox" name="pic_icon[]" '.($disabled?$disabled:$is_active_single).' style="padding-left:0;margin-left:0;" value="'.$pic_list_res['pic_name'].'" onclick="check_radio_status(this);"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
          }
+        }
         $table_img_list .='</ul>'; 
         $customers_fax_row = array();
         $customers_fax_params = array('width' => '100%', 'border' => '0', 'cellspacing' => '0', 'cellpadding' => '0');

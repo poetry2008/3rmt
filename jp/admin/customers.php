@@ -128,6 +128,14 @@
         foreach ($an_cols as $col) {
           $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
         }
+        $pic_icon_array = '';
+        foreach($_POST['pic_icon'] as $key => $value){
+           if($key == 0){
+             $pic_icon_array .= $value; 
+           }else{
+             $pic_icon_array .= ','.$value; 
+           }
+        }
         $customers_id            = tep_db_prepare_input($_GET['cID']);
         $customers_firstname     = tep_db_prepare_input($_POST['customers_firstname']);
         $customers_lastname      = tep_db_prepare_input($_POST['customers_lastname']);
@@ -142,7 +150,7 @@
         $customers_dob           = tep_db_prepare_input($_POST['customers_dob']);
         $customers_is_seal           = tep_db_prepare_input($_POST['is_seal']);
         
-        $customers_pic_icon           = tep_db_prepare_input($_POST['pic_icon']);
+        $customers_pic_icon           = tep_db_prepare_input($pic_icon_array);
         $customers_is_send_mail           = tep_db_prepare_input($_POST['is_send_mail']);
         $customers_is_calc_quantity          = tep_db_prepare_input($_POST['is_calc_quantity']);
         if ($_POST['reset_flag'] == 'on') {
