@@ -19,8 +19,8 @@
     $error = 1;
   }
 
-  $dfrom_to_check = (($notice_dfrom == DOB_FORMAT_STRING) ? '' : $notice_dfrom);
-  $dto_to_check = (($notice_dto == DOB_FORMAT_STRING) ? '' : $notice_dto);
+  $dfrom_to_check = (($_GET['dfrom'] == DOB_FORMAT_STRING) ? '' : $_GET['dfrom']);
+  $dto_to_check = (($_GET['dto'] == DOB_FORMAT_STRING) ? '' : $_GET['dto']);
 
   if (strlen($dfrom_to_check) > 0) {
     if (!tep_checkdate($dfrom_to_check, DOB_FORMAT_STRING, $dfrom_array)) {
@@ -43,6 +43,7 @@
     }
   }
 
+  if (!isset($_GET['pfrom'])) $_GET['pfrom'] = NULL;
   if (strlen($_GET['pfrom']) > 0) {
     $pfrom_to_check = $_GET['pfrom'];
     if (!settype($pfrom_to_check, "double")) {
@@ -51,6 +52,7 @@
     }
   }
 
+  if (!isset($_GET['pto'])) $_GET['pto'] = NULL;
   if (strlen($_GET['pto']) > 0) {
     $pto_to_check = $_GET['pto'];
     if (!settype($pto_to_check, "double")) {
@@ -107,7 +109,6 @@
               <td>
 
 <?php
-
   // create column list
   $define_list = array('PRODUCT_LIST_MODEL' => PRODUCT_LIST_MODEL,
                        'PRODUCT_LIST_NAME' => PRODUCT_LIST_NAME,
@@ -170,13 +171,13 @@
     select distinct " . $select_column_list . " 
                     m.manufacturers_id, 
                     p.products_bflag, 
-                    p.products_id, 
+                    p.products_id,
+                    p.sort_order,
                     pd.products_name, 
-                    pd.products_status, 
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
-                    p.sort_order,
+                    pd.products_status, 
                     pd.romaji,
                     pd.preorder_status,
                     p.products_price_offset, p.products_small_sum"; 
@@ -210,8 +211,6 @@
       $where_str .= " and p2c.products_id = p.products_id and p2c.products_id = pd.products_id and pd.language_id = '" . $languages_id . "' and p2c.categories_id = '" . $_GET['categories_id'] . "'";
     }
   }
-
-
 
   if (isset($_GET['manufacturers_id']) && tep_not_null($_GET['manufacturers_id'])) {
     $where_str .= " and m.manufacturers_id = '" . $_GET['manufacturers_id'] . "'";
@@ -305,7 +304,6 @@
     $listing_sql = "select * from ((".$listing_sql.") union (".$listing_tags_sql.")) t_p ";
   }
   require(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING);
-
 ?>
 <br>
 <br>

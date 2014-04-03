@@ -18,9 +18,8 @@
     $errorno += 1;
     $error = 1;
   }
-  if (!isset($_GET['dfrom'])) $_GET['dfrom'] = NULL;
+
   $dfrom_to_check = (($_GET['dfrom'] == DOB_FORMAT_STRING) ? '' : $_GET['dfrom']);
-  if (!isset($_GET['dto'])) $_GET['dto'] = NULL;
   $dto_to_check = (($_GET['dto'] == DOB_FORMAT_STRING) ? '' : $_GET['dto']);
 
   if (strlen($dfrom_to_check) > 0) {
@@ -172,17 +171,17 @@
     select distinct " . $select_column_list . " 
                     m.manufacturers_id, 
                     p.products_bflag, 
-                    p.products_id, 
+                    p.products_id,
+                    p.sort_order,
                     pd.products_name, 
-                    pd.products_status, 
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
-                    p.sort_order,
+                    pd.products_status, 
                     pd.romaji,
                     pd.preorder_status,
                     p.products_price_offset, p.products_small_sum"; 
-
+  
   if ( (DISPLAY_PRICE_WITH_TAX == 'true') && ( (isset($_GET['pfrom']) && tep_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && tep_not_null($_GET['pto']))) ) {
     $select_str .= ", SUM(tr.tax_rate) as tax_rate ";
   }
@@ -326,7 +325,7 @@
 
 </body>
 </html>
-       <?php
+<?php
   }
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');
