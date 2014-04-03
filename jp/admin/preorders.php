@@ -2206,7 +2206,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       echo "</a>";
       ?>
       </td>
-      <td class="dataTableHeadingContent_order">
+      <td class="dataTableHeadingContent_order" width="35%">
       <?php 
       if ($HTTP_GET_VARS['order_sort'] == 'customers_name'){
         echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
@@ -3221,7 +3221,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
           ?>
           <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' .  tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
           </div>
-          <div class="comp_width">
+          <div class="">
            
           <?php 
   if ($orders['is_active'] == '0') {

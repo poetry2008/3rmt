@@ -5180,6 +5180,7 @@ if($c_parent_array['parent_id'] == 0){
           }
         echo "</a>";
         ?></td>
+	  <td class="dataTableHeadingContent_order" align="center"></td>
           <td class="dataTableHeadingContent_order" align="center"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'torihiki_date'){
             echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
@@ -5525,13 +5526,14 @@ if($c_parent_array['parent_id'] == 0){
                                   <?php echo str_replace(array('<b>', '</b>'), '', tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
                                     <?php }?>
                                     </td>
-                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><table><tr><td width='20%' align='right'><?php echo $expired_orders.$next_mark; ?></td><td><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">
+				    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center"><?php echo $expired_orders.$next_mark; ?></td>
+                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">
                                     <?php 
                                     echo tep_datetime_short_torihiki($orders['torihiki_date']); 
                                     $tmp_date_end = explode(' ', $orders['torihiki_date_end']); 
                                     echo TEXT_TIME_LINK.$tmp_date_end[1]; 
                                     ?>
-                                    </font></td></tr></table>
+                                    </font>
 </td>
 <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left">
 <?php
