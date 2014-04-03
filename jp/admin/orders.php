@@ -4107,7 +4107,7 @@ if (isset($_GET['keyword'])) {
 <table border="0" width="100%" cellspacing="0" cellpadding="2" >
 
 <tr class="dataTableHeadingRow">
-<td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
+<td class="dataTableHeadingContent">qqqq<?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
 <td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
@@ -5076,7 +5076,7 @@ if($c_parent_array['parent_id'] == 0){
           }
         echo "</a>";
         ?></td>
-          <td class="dataTableHeadingContent_order"><?php 
+          <td class="dataTableHeadingContent_order" width="22%"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'customers_name'){
             echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
@@ -5453,7 +5453,7 @@ if($c_parent_array['parent_id'] == 0){
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
             tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php
             echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a></div>
-            <div class="comp_width">
+            <div class="">
             <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
               <font color="#999">
                 <?php } else { ?>
@@ -5525,13 +5525,13 @@ if($c_parent_array['parent_id'] == 0){
                                   <?php echo str_replace(array('<b>', '</b>'), '', tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
                                     <?php }?>
                                     </td>
-                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $expired_orders.$next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">
+                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><table><tr><td width='20%' align='right'><?php echo $expired_orders.$next_mark; ?></td><td><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">
                                     <?php 
                                     echo tep_datetime_short_torihiki($orders['torihiki_date']); 
                                     $tmp_date_end = explode(' ', $orders['torihiki_date_end']); 
                                     echo TEXT_TIME_LINK.$tmp_date_end[1]; 
                                     ?>
-                                    </font>
+                                    </font></td></tr></table>
 </td>
 <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left">
 <?php
