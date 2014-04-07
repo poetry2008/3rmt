@@ -802,13 +802,20 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         foreach($update_totals as $value){
 
           if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
-
-
-            $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+            //$totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+		$t=0;
+		for($i=0;$i<mb_strlen($value['title']);$i++){
+			$title_str = mb_substr($value['title'],$i,1);
+			if(strlen($title_str)>1){
+				++$t;
+			}
+		}
+		$totals_email_str .= $value['title'].str_repeat('&nbsp', intval((16 -mb_strlen($value['title'])-$t))).'：'.$currencies->format($value['value'])."\n";
+	//	echo $value['title'].str_repeat('&nbsp', intval((16 -mb_strlen($value['title'])-$t))).'：'.$currencies->format($value['value'])."\n".mb_strlen($value['title'])."<br>";
           }
         }
         $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
-        $email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
+ 	$email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
         $email = html_entity_decode($email);
         if ($s_status_res['nomail'] != 1) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
