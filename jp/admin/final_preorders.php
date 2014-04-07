@@ -810,8 +810,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 				++$t;
 			}
 		}
-		$totals_email_str .= $value['title'].str_repeat('</xmp>&nbsp<xmp>', intval((16 -mb_strlen($value['title'])-$t))).'：'.$currencies->format($value['value'])."\n";
-		//echo $value['title'].str_repeat('　', intval((16 -mb_strlen($value['title'])-$t))).'：'.$currencies->format($value['value'])."\n".mb_strlen($value['title'])."<br>";
+		if((mb_strlen($value['title'])-$t)%2 == 0){
+			$totals_email_str .= $value['title'].str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n";
+		}else{
+			$totals_email_str .= $value['title'].' '.str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n";
+		}
+		//echo $value['title'].str_repeat('&nbsp', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n".mb_strlen($value['title'])."<br>";
           }
         }
         $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
