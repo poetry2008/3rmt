@@ -729,11 +729,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $ensure_date_arr[0],
         $num_product.$num_product_end,
         $num_product_res['products_name'],
-        str_replace(SENDMAIL_EDIT_ORDERS_PRICE_UNIT,'',$currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']).($totals_email_i != 0 ? "\n".$totals_email_str : '')),
+        mb_substr($currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']).($totals_email_i != 0 ? "\n".$totals_email_str : ''),0,-1),
         str_replace(SENDMAIL_EDIT_ORDERS_PRICE_UNIT,'',$currencies->format($newtotal)),
         preorders_a($order->info['orders_id'])
       ),$email);
-      
       if ($customer_guest['is_send_mail'] != '1') {
         $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
         $site_url_res = tep_db_fetch_array($site_url_raw); 
