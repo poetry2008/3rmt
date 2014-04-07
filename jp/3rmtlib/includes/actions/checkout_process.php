@@ -13,6 +13,10 @@ if(isset($_SESSION['orders_credit_flag']) && $_SESSION['orders_credit_flag'] == 
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
   exit;
 }  
+//当购物车为空时，跳转到购物车页面
+if ($cart->count_contents(true) < 1) {
+  tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+}
 if(isset($real_point)){
 // user new point value it from checkout_confirmation.php 
   $point = $real_point;
