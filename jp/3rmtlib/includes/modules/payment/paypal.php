@@ -996,7 +996,7 @@ function PPHttpPost($methodName_, $nvpStr_) {
   // Set the curl parameters.
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $API_Endpoint);
-  curl_setopt($ch, CURLOPT_VERBOSE, 1);
+  curl_setopt($ch, CURLOPT_VERBOSE, 0);
   // Turn off the server and peer verification (TrustManager Concept).
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -1012,8 +1012,28 @@ function PPHttpPost($methodName_, $nvpStr_) {
 
   // Get response from the server.
   $httpResponse = curl_exec($ch);
+  $error = curl_error($ch);
+  if (curl_errno($ch) != 0) {
+    $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+    $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+    $message = new email(array('X-Mailer: iimy Mailer'));
+    $orders_mail_text = "$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')';
+    $text = $orders_mail_text;
+    $message->add_html(nl2br($orders_mail_text), $text);
+    $message->build_message();
+    $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+    exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
+  }
 
   if(!$httpResponse) {
+    $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+    $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+    $message = new email(array('X-Mailer: iimy Mailer'));
+    $orders_mail_text = "$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')';
+    $text = $orders_mail_text;
+    $message->add_html(nl2br($orders_mail_text), $text);
+    $message->build_message();
+    $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
     exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
   }
 
@@ -1029,6 +1049,13 @@ function PPHttpPost($methodName_, $nvpStr_) {
   }
 
   if((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+    $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+    $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+    $message = new email(array('X-Mailer: iimy Mailer'));
+    $orders_mail_text = "Invalid HTTP Response for POST request(".$nvpreq.") to ".$API_Endpoint;
+    $text = $orders_mail_text;
+    $message->add_html(nl2br($orders_mail_text), $text);
+    $message->build_message();
     exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
   }
 
