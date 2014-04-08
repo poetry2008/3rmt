@@ -799,8 +799,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         tep_db_free_result($search_products_name_query);
         //自定义费用列表 
         $totals_email_str = '';
+	$num_update_totals = 0;
         foreach($update_totals as $value){
-
+	  $num_update_totals++;
           if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
             //$totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
 		$t=0;
@@ -811,9 +812,17 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 			}
 		}
 		if((mb_strlen($value['title'])-$t)%2 == 0){
-			$totals_email_str .= $value['title'].str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n";
+			if(count($update_totals)== $num_update_totals+1){
+				$totals_email_str .= $value['title'].str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value']);
+			}else{
+				$totals_email_str .= $value['title'].str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n";
+			}
 		}else{
-			$totals_email_str .= $value['title'].' '.str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n";
+			if(count($update_totals)== $num_update_totals+1){
+				$totals_email_str .= $value['title'].' '.str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value']);
+			}else{
+				$totals_email_str .= $value['title'].' '.str_repeat('　', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n";
+			}
 		}
 		//echo $value['title'].str_repeat('&nbsp', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n".mb_strlen($value['title'])."<br>";
           }
