@@ -252,15 +252,15 @@
                 }
                 if((mb_strlen($totals_email_result['title'])-$t)%2 == 0){
                         if($num_array_totals_rows == $num_update_totals){
-                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title']);
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
                         }else{
-                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title'])."\n";
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
                         }
                 }else{
                         if($num_array_totals_rows == $num_update_totals){
-                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title']);
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
                         }else{
-                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title'])."\n";
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
                         }
                 }
 
@@ -531,15 +531,15 @@
                 }
                 if((mb_strlen($totals_email_result['title'])-$t)%2 == 0){
                         if($num_array_totals_rows == $num_update_totals){
-                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title']);
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
                         }else{
-                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title'])."\n";
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
                         }
                 }else{
                         if($num_array_totals_rows == $num_update_totals){
-                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title']);
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
                         }else{
-                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['title'])."\n";
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
                         }
                 }
 
