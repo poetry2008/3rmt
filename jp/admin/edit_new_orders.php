@@ -11,6 +11,7 @@ ini_set("display_errors","Off");
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/' . FILENAME_EDIT_ORDERS);
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
+require(DIR_WS_LANGUAGES . $language . '/javascript/'. FILENAME_ALL_ORDERS);
 if(!isset($_SESSION['sites_id_flag']) || !isset($_SESSION['customer_id']) || !isset($_SESSION['email_address']) || !isset($_SESSION['firstname']) || !isset($_SESSION['lastname'])){
   tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
 }
@@ -1901,15 +1902,24 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script type="text/javascript">
     var session_orders_id = '<?php echo $_GET['oID'];?>';
     var session_site_id = '<?php echo $_SESSION['sites_id_flag'];?>';
+    var text_unset_data = '<?php echo TEXT_UNSET_DATA;?>';
+    var image_icon_info = '<?php echo IMAGE_ICON_INFO;?>';
+    var text_popup_window_show = '<?php echo TEXT_POPUP_WINDOW_SHOW;?>';
+    var text_popup_window_edit = '<?php echo TEXT_POPUP_WINDOW_EDIT;?>';
+    var image_save = '<?php echo IMAGE_SAVE;?>';
+    var tmp_other_str = '<?php echo $_SERVER['PHP_SELF'];?>'; 
+    var notice_relogin_str = '<?php echo TEXT_TIMEOUT_RELOGIN;?>'; 
+    var js_text_all_orders_not_choose = '<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>';
+    var js_text_all_orders_no_option_order = '<?php echo JS_TEXT_ALL_ORDERS_NO_OPTION_ORDER;?>';
     </script>
     <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-    <script language="javascript" src="js2php.php?path=includes|javascript&name=all_orders&type=js"></script>
-    <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+    <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+    <script language="javascript" src="includes/javascript/all_order.js"></script>
     <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
     <script language="javascript" src="includes/jquery.form.js"></script>
-    <script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
+    <script language="javascript" src="js/popup_window.js"></script>
     <script type="text/javascript"> 
 var avg_div_flag = 1;
 $(document).ready(function() {
@@ -2752,6 +2762,7 @@ while($select_result = tep_db_fetch_array($select_query)){
 
         // 输出订单邮件
         // title
+/*
         foreach ($mo as $oskey => $value){
           echo 'window.status_title['.$oskey.'] = new Array();'."\n";
           foreach ($value as $sitekey => $svalue) {
@@ -2766,6 +2777,7 @@ foreach ($mt as $oskey => $value){
     echo 'window.status_text['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
   }
 }
+*/
 
 //no mail
 echo 'var nomail = new Array();'."\n";
@@ -3449,7 +3461,7 @@ require("includes/note_js.php");
     <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
     <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
       <script language='javascript'>
-        one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
+        one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>', '<?php echo JS_TEXT_INPUT_ONETIME_PWD?>', '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>');
       </script>
         <?php }?>
         <!-- header -->
@@ -4593,6 +4605,7 @@ if($orders_exit_flag == true){
       <tr id="address_list_id">
 <td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
 <td class="main" width="70%">
+<div style="display:none" id='edit_order_send_mail'></div>
 <select name="address_show_list" id="address_show_list" onChange="address_option_list(this.value);">
 <option value="">--</option>
 </select>

@@ -461,7 +461,7 @@ if($index > 0){
         print ADDPRODUCT_TEXT_STEP1_TITLE; 
         print '</td>'; 
         print '<td>'; 
-        print tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
+        print tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree_new(tep_get_all_category()), $current_category_id, 'onChange="this.form.submit();"');
         print "<input type='hidden' name='step' value='2'>";
         print '<td></tr>'; 
         print '</table>'; 
