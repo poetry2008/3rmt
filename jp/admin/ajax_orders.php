@@ -366,8 +366,9 @@ if (isset($_POST['orders_id']) && (isset($_POST['orders_comment'])||$_POST['orde
                                                                                                                       strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
                                                                                                                     <?php }?>
                                                                                                                     </td>
+<td class="dataTableContent" align="center" style="border-bottom:1px solid #000000;background-color: darkred;"></td>
                                                                                                                         <td style="border-bottom:1px solid
-#000000;background-color: darkred;" class="dataTableContent" align="right"
+#000000;background-color: darkred;" class="dataTableContent" align="center"
                                                                                                                         onClick="chg_td_color(<?php echo $orders['orders_id'];?>);
 				window.location.href='<?php echo
 					tep_href_link(FILENAME_ORDERS,

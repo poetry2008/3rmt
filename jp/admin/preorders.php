@@ -238,12 +238,33 @@
           //自定义费用列表 
           $totals_email_str = '';
           $totals_email_query = tep_db_query("select title,value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_custom'");
-          while($totals_email_result = tep_db_fetch_array($totals_email_query)){
-
+          $num_update_totals = 0;
+	  $num_array_totals_rows = tep_db_num_rows($totals_email_query);
+	  while($totals_email_result = tep_db_fetch_array($totals_email_query)){
+	    $num_update_totals++;
             if($totals_email_result['title'] != '' && $totals_email_result['value'] != ''){
+		$t=0;
+                for($i=0;$i<mb_strlen($totals_email_result['title']);$i++){
+                        $title_str = mb_substr($totals_email_result['title'],$i,1);
+                        if(strlen($title_str)>1){
+                                ++$t;
+                        }
+                }
+                if((mb_strlen($totals_email_result['title'])-$t)%2 == 0){
+                        if($num_array_totals_rows == $num_update_totals){
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
+                        }else{
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+                        }
+                }else{
+                        if($num_array_totals_rows == $num_update_totals){
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
+                        }else{
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+                        }
+                }
 
-
-              $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+             // $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
             }
           }
           tep_db_free_result($totals_email_query);
@@ -496,15 +517,36 @@
         //自定义费用列表 
         $totals_email_str = '';
         $totals_email_query = tep_db_query("select title,value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_custom'");
-        while($totals_email_result = tep_db_fetch_array($totals_email_query)){
+        $num_update_totals = 0;
+        $num_array_totals_rows = tep_db_num_rows($totals_email_query);
+          while($totals_email_result = tep_db_fetch_array($totals_email_query)){
+            $num_update_totals++;
+            if($totals_email_result['title'] != '' && $totals_email_result['value'] != ''){
+                $t=0;
+                for($i=0;$i<mb_strlen($totals_email_result['title']);$i++){
+                        $title_str = mb_substr($totals_email_result['title'],$i,1);
+                        if(strlen($title_str)>1){
+                                ++$t;
+                        }
+                }
+                if((mb_strlen($totals_email_result['title'])-$t)%2 == 0){
+                        if($num_array_totals_rows == $num_update_totals){
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
+                        }else{
+                                $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+                        }
+                }else{
+                        if($num_array_totals_rows == $num_update_totals){
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value']);
+                        }else{
+                                $totals_email_str .= $totals_email_result['title'].' '.str_repeat('　', intval((16 -mb_strlen($totals_email_result['title'])-$t)/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+                        }
+                }
 
-          if($totals_email_result['title'] != '' && $totals_email_result['value'] != ''){
-
-
-            $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+             // $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
+            }
           }
-        }
-        tep_db_free_result($totals_email_query);
+	tep_db_free_result($totals_email_query);
         $comments = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$comments);
         $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
         $comments = html_entity_decode(htmlspecialchars($comments));
@@ -2206,7 +2248,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       echo "</a>";
       ?>
       </td>
-      <td class="dataTableHeadingContent_order">
+      <td class="dataTableHeadingContent_order" width="35%">
       <?php 
       if ($HTTP_GET_VARS['order_sort'] == 'customers_name'){
         echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_PREORDERS,
@@ -3221,7 +3263,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
           ?>
           <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' .  tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
           </div>
-          <div class="comp_width">
+          <div class="">
            
           <?php 
   if ($orders['is_active'] == '0') {
