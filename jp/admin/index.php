@@ -57,7 +57,7 @@ while($row=tep_db_fetch_array($query)){
 <link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
-<script type="text/javascript" src="includes/javascript/admin_index.js" />
+<script type="text/javascript" src='includes/javascript/admin_index.js'></script>
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
