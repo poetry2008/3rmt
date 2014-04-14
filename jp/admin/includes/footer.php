@@ -150,7 +150,7 @@ $testArray = array();
     </pre>
     </div>
     <?php }?>
-<?php if(isset($mode_flag)){ ?>
+<?php if(isset($mode_flag)||FILENAME_DEFAULT == 'index.php'){ ?>
 <div style="position:absolute;right:0;z-index:20000;" id="note_hide_content">
 <?php
 if($mode_flag){
