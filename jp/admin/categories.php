@@ -3822,7 +3822,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'  ; ?>
                         <?php
                         if(isset($pInfo->products_image) && tep_not_null($pInfo->products_image)){
-                          echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
+                          echo '<br>'.tep_draw_separator('pixel_trans.gif', '24',
+                              '15') .
+                            '&nbsp;'.tep_info_image('products/'.$pInfo->products_image,$pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, $site_id).'<br>'."\n";
                           ?>
                           <?php } ?>
                             </td>
@@ -3835,7 +3837,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' ; ?>
                             <?php
                             if(isset($pInfo->products_image2) && tep_not_null($pInfo->products_image2)){
-                              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id).'<br>'."\n";
+                              echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image2,$pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, $site_id).'<br>'."\n";
                           ?>
                           <?php } ?>
                                 </td>
@@ -3848,7 +3850,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' ; ?>
                                 <?php
                                 if(isset($pInfo->products_image3) && tep_not_null($pInfo->products_image3)){
-                                  echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT , $site_id).'<br>'."\n";
+                                  echo '<br>'.tep_draw_separator('pixel_trans.gif', '24', '15') .  '&nbsp;'.tep_info_image('products/'.$pInfo->products_image3,$pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST , $site_id).'<br>'."\n";
                           ?>
                           <?php } ?>
                                     </td>
@@ -4566,11 +4568,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       </tr>
                       <tr>
                       <td class="main"><?php echo $pInfo->products_description;?><hr size="1" noshade><table width=""><tr><td>
-                      <?php if ($products_image_name) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="" hspace="5" vspace="5"');?>
+                      <?php if ($products_image_name) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' .  $products_image_name, $pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, 'align="" hspace="5" vspace="5"');?>
                       </td><td>
-                      <?php if ($products_image_name2) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name2, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"');?>
+                      <?php if ($products_image_name2) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' .  $products_image_name2, $pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, 'align="right" hspace="5" vspace="5"');?>
                       </td><td align="right">
-                      <?php if ($products_image_name3) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' . $products_image_name3, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="right" hspace="5" vspace="5"');?>
+                      <?php if ($products_image_name3) echo tep_image(tep_get_web_upload_dir($site_id) . 'products/' .  $products_image_name3, $pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, 'align="right" hspace="5" vspace="5"');?>
                       </td></tr></table></td>
                       </tr>
                       <?php
@@ -4898,7 +4900,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     if ($_GET['action'] == 'edit_category') {
                       if (isset($cInfo->categories_image2) && tep_not_null($cInfo->categories_image2)) {
                         echo '<br>';
-                        echo tep_info_image('categories/'.$cInfo->categories_image2,$cInfo->categories_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id); 
+                        echo tep_info_image('categories/'.$cInfo->categories_image2,$cInfo->categories_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, $site_id); 
                       }
                     }
                   ?>
@@ -4920,7 +4922,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       if ($_GET['action'] == 'edit_category') {
                         if (isset($cInfo->categories_image) && tep_not_null($cInfo->categories_image)) {
                           echo '<br>';
-                          echo tep_info_image('categories/'.$cInfo->categories_image,$cInfo->categories_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $site_id); 
+                          echo tep_info_image('categories/'.$cInfo->categories_image,$cInfo->categories_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, $site_id); 
                         }
                       }
                     ?>

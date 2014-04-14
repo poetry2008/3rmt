@@ -140,8 +140,8 @@ define('TEXT_CUSTOMER_ORDER_HISTORY_TABLE',tep_image(DIR_WS_IMAGES . 'icon_front
 define('TEXT_ORDER_HISTORY',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;注文履歴');
 define('TEXT_PRODUCTS_SHOW_NUMBER',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;新着商品表示数');
 define('TEXT_PRODUCTS_LIST_DISPLAY',tep_image(DIR_WS_IMAGES . 'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;商品リスト表示件数');
-define('TEXT_COMMODITY_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;一覧に表示される商品画像の横幅');
-define('TEXT_COMMODITY_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;一覧に表示される商品画像の縦幅');
+define('TEXT_COMMODITY_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;F_&nbsp;一覧に表示される商品画像の横幅');
+define('TEXT_COMMODITY_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;F_&nbsp;一覧に表示される商品画像の縦幅');
 define('TEXT_COMMODITY_SPECIFIC_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（大）の横幅');
 define('TEXT_COMMODITY_SPECIFIC_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;商品ページに表示される画像（大）の縦幅');
 define('TEXT_HEAD_IMAGE_WIDTH',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'F_&nbsp;ヘッダ画像の横幅');

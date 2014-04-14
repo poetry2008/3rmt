@@ -820,3 +820,5 @@ define('ERROR_AVG_MESSAGE_CHECKBOX_STR',' 已了解风险,并保存。');
 define('DIV_TEXT_CLEAR','取消');
 define('DIV_TEXT_OK','OK');
 define('DELETE_ALL_NOTICE','所有的内容都清空吗？');
+define('SMALL_IMAGE_WIDTH_TEST','60');
+define('SMALL_IMAGE_HEIGHT_TEST','60');

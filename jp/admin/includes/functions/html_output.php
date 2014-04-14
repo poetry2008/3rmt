@@ -87,37 +87,6 @@
     返回值: 生成的img(string) 
 ------------------------------------ */
   function tep_image($src, $alt = '', $width = '', $height = '', $params = '') {
-    if($image_size = @getimagesize($src)){
-      if(($image_size[1] > $height && $height != '') || ($image_size[0] > $width && $width != '')){
-       if ( $width=="100%" ) {
-           $width = $image_size[0];
-       } elseif ( $height=="100%" ) {
-           $height = $image_size[1];
-       } elseif ( $width==0 ) {
-           unset($width);
-       } elseif ( $height==0 ) {
-           unset($height);
-       }
-       if($height==0){
-           $t_height = 0;
-       }else{
-           $t_height = ($image_size[1]/$height);
-       }
-       if($width==0){
-           $t_width = 0;
-       }else{
-           $t_width = ($image_size[0]/$width);
-       }
-       if ((($t_height) > ($t_width) ) && $height>0){
-          $width=ceil(($image_size[0]/$image_size[1])* $height);
-       } elseif ($width>0) {
-          $height=ceil($width/($image_size[0]/$image_size[1]));
-       }
-    }else if(($image_size[1] < $height && $height !='') && ($image_size[0] < $width && $width != '')){
-       $width  = $image_size[0];
-       $height = $image_size[1];
-    }
-    }
     $image = '<img src="' . $src . '" border="0" alt="' . $alt . '"';
     if ($alt) {
       $image .= ' title=" ' . $alt . ' "';

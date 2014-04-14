@@ -9040,7 +9040,7 @@ function get_campaign_link_page($cid, $site_id, $st_id)
     }
     $pre_campaign_res = tep_db_fetch_array($pre_campaign_query); 
     if ($pre_campaign_res) {
-      $return_str .= '<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$pre_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_PREV.'</a>'; 
+      $return_str .= '<a href="javascript:void(0)" id="option_prev" onclick="show_link_campaign_info(\''.$pre_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_PREV.'</a>'; 
     }
     
     if (empty($st_id)) {
@@ -9050,7 +9050,7 @@ function get_campaign_link_page($cid, $site_id, $st_id)
     }
     $next_campaign_res = tep_db_fetch_array($next_campaign_query); 
     if ($next_campaign_res) {
-      $return_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$next_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_NEXT.'</a>'; 
+      $return_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" id="option_next" onclick="show_link_campaign_info(\''.$next_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_NEXT.'</a>'; 
     }
   }
   
