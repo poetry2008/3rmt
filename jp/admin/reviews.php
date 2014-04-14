@@ -525,7 +525,7 @@ require("includes/note_js.php");
         $td_review_params = ' onclick="document.location.href=\'' .tep_href_link(FILENAME_REVIEWS, 'page=' .  $_GET['page'].'&site_id='.$_GET['site_id'].(isset($_GET['product_name'])?('&product_name='.$_GET['product_name']):'').(isset($_GET['r_sort'])?'&r_sort='.$_GET['r_sort']:'').(isset($_GET['r_sort_type'])?'&r_sort_type='.$_GET['r_sort_type']:'')) .(isset($reviews['reviews_id'])?'&rID='.$reviews['reviews_id']:''). '\'"';
       }
       $review_info[] = array(
-          'params' => 'class="dataTableContent"'.$td_review_params,
+          'params' => 'class="dataTableContent"',
           'text'   => $reviews_checkbox 
       );
  

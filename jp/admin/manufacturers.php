@@ -363,7 +363,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         'text'   => $manufacturers_checkbox
         );
     $manufacturers_info[] = array(
-        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MANUFACTURERS,'mID='.$manufacturers['manufacturers_id']).'\';"',
+        'params' => 'class="dataTableContent" onclick="document.location.href=\''.tep_href_link(FILENAME_MANUFACTURERS,'page='.$_GET['page'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&mID='.$manufacturers['manufacturers_id']).'\';"',
         'text'   => $manufacturers['manufacturers_name'] 
         );
     $manufacturers_info[] = array(
