@@ -4107,7 +4107,7 @@ if (isset($_GET['keyword'])) {
 <table border="0" width="100%" cellspacing="0" cellpadding="2" >
 
 <tr class="dataTableHeadingRow">
-<td class="dataTableHeadingContent">qqqq<?php echo SEARCH_CAT_PRO_TITLE;?> </td>
+<td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
 <td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
@@ -5454,7 +5454,7 @@ if($c_parent_array['parent_id'] == 0){
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
             tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php
             echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a></div>
-            <div class="">
+            <div>
             <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
               <font color="#999">
                 <?php } else { ?>

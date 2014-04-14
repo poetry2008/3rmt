@@ -617,16 +617,16 @@ if ($_GET['action'] == 'show_category_info') {
   if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
     $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo)).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT;
   }
-  $arr_td_product[] = $product_td_avg_price;
-  $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-  $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
-  $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,number_format($product_row_count));
   //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
   if (isset($pInfo->products_attention_1_3)) {
     $radices = (int)$pInfo->products_attention_1_3;
   } else {
     $radices = 1;
   }
+  $arr_td_product[] = $product_td_avg_price;
+  $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
+  $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
+  $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,number_format($product_row_count));
   if($radices!=''&&$radices!=1&&$radices!=0){
     $product_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
     $product_td_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -690,16 +690,16 @@ if ($_GET['action'] == 'show_category_info') {
     if (!$relate_pInfo->products_bflag && $relate_pInfo->relate_products_id) {
       $relate_td_avg_price = @display_price(tep_new_get_avg_by_pid($relate_pInfo)).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT;
     }
-    $arr_td_relate[] = $relate_td_avg_price;
-    $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
-    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
-    $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,number_format($relate_row_count));
 
   if (isset($relate_pInfo->products_attention_1_3)) {
     $relate_radices = (int)$relate_pInfo->products_attention_1_3;
   } else {
     $relate_radices = 1;
   }
+    $arr_td_relate[] = $relate_td_avg_price;
+    $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
+    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $relate_sub_date, 0,$relate_radices);
+    $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,number_format($relate_row_count));
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
     $relate_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
