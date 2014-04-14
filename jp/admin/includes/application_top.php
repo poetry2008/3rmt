@@ -159,6 +159,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_ALERT_LOG','alert_log.php');
   define('FILENAME_BUSINESS_MEMO','business_memo.php');
   define('FILENAME_MAIL_TEMPLATES','mail_templates.php');
+  define('FILENAME_ALL_ORDERS','all_orders.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
