@@ -1777,7 +1777,7 @@ require("includes/note_js.php");
   from " . TABLE_TAGS . " t order by t.tags_order,t.tags_name";
   if(isset($_GET['sort'])&&$_GET['sort']){
     $tags_query_raw = "
-      select t.tags_id, t.tags_name, t.tags_images, t.tags_checked
+      select t.tags_id, t.tags_name, t.tags_images, t.tags_checked, t.user_added,t.date_added,t.user_update,t.date_update
       from " . TABLE_TAGS ." t ";
     switch($_GET['sort']){
 /*----------------------------
