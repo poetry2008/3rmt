@@ -192,11 +192,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript" >
 	var js_site_id = '<?php echo $_GET['site_id'];?>';
@@ -209,7 +209,7 @@
 	var js_notice_totalnum_error = '<?php echo REVIEWS_NOTICE_TOTALNUM_ERROR;?>';
 	var js_reviews_npermission = '<?php echo $ocertify->npermission;?>';
 </script>
-<script language="javascript" src="includes/javascript/admin_reviews.js"></script>
+<script language="javascript" src="includes/javascript/admin_reviews.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -230,7 +230,7 @@ if($belong_temp_array[0][0] != '' && $belong_temp_array[0][0] != 'action=delete'
 }
 require("includes/note_js.php");
 ?>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js?v=<?php echo $back_rand_info?>"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <!-- header -->
