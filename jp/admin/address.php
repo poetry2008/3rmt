@@ -229,11 +229,11 @@ div#show {
   position:absolute;
 }
 </style>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script language="javascript" src="includes/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
