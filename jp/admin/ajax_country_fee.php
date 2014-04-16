@@ -55,13 +55,13 @@ if($id == 0){
   $prev_str = '';
   if($id > $minsort){
 
-    $prev_str = '<a href="javascript:show_text_fee('. $id .',\'\',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
+    $prev_str = '<a id="option_prev" href="javascript:void(0);" onclick="show_text_fee('. $id .',\'\',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
 
   }
   $next_str = '';
   if($id < $maxsort){
 
-    $next_str = '<a href="javascript:show_text_fee('. $id .',\'\',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
+    $next_str = '<a id="option_next" href="javascript:void(0);" onclick="show_text_fee('. $id .',\'\',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
 
   }
 ?>
@@ -128,7 +128,7 @@ if(tep_not_null($country_fee_array['user_added'])){ ?>
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TEXT_DATE_UPDATE;?></td><td><?php echo TEXT_UNSET_DATA;?></td></tr>
 <?php } } ?>
 </td></tr>
-<tr><td  align="center" colspan="2"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save', '<?php echo $ocertify->npermission;?>');}else{return check_form();}">&nbsp;
+<tr><td  align="center" colspan="2"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input id="button_save" type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save', '<?php echo $ocertify->npermission;?>');}else{return check_form();}">&nbsp;
 
 <?php
 if($id != 0){

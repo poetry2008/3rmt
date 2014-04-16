@@ -333,15 +333,15 @@ if($id == 0 || $maxid == $minid){
   $next_str = '';
   if($sort == $maxsort && $id == $maxid){
 
-    $prev_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
+    $prev_str = '<a id="option_prev" href="javascript:void(0);" onclick="show_text('. $id .',\'\',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
 
   }elseif($sort == $minsort && $id == $minid){
  
-    $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
+    $next_str = '<a id="option_next" href="javascript:void(0);" onclick="show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
   }else{
     
-    $prev_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
-    $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
+    $prev_str = '<a id="option_prev" href="javascript:void(0);" onclick="show_text('. $id .',\'\',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
+    $next_str = '<a id="option_next" href="javascript:void(0);" onclick="show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
   }
 ?>
   <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><?php echo $title.TABLE_TITLE_1;?></td><td align="right" onmouseover="this.style.cursor='hand';"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
@@ -604,7 +604,7 @@ if(tep_not_null($address_array['user_added'])){
   <td><?php echo TEXT_UNSET_DATA;?></td>
 </tr>
 <?php } } ?>
-<tr><td colspan="2" align="center"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_address('save', '<?php echo $ocertify->npermission;?>');}else{return check_form();}">&nbsp;
+<tr><td colspan="2" align="center"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input id="button_save" type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_address('save', '<?php echo $ocertify->npermission;?>');}else{return check_form();}">&nbsp;
 
 <?php
 if($id != 0 && $fixed_option == '0'){
