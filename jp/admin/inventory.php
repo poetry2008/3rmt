@@ -144,8 +144,7 @@ require("includes/note_js.php");
            where p2i.inventory_status not in ('ok','up','error') 
            and pd.site_id = '0' 
            order by p2i.cpath ASC";
-         $products_split = new splitPageResults($_GET['page'],
-             MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
+         $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
          $products_query = tep_db_query($products_query_rows);
          while($products = tep_db_fetch_array($products_query)){
            $products['products_quantity'] = tep_get_quantity($products['products_id'],true);
@@ -233,9 +232,9 @@ require("includes/note_js.php");
           <tr>
             <td class="smallText" valign="top"><?php echo
             $products_split->display_count($products_query_numrows,
-                MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'],
+                MAX_DISPLAY_PRODUCTS, $_GET['page'],
                 TEXT_DISPLAY_NUMBER_OF_NIVENTORY); ?></td>
-            <td class="smallText" align="right"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?></td>
+            <td class="smallText" align="right"><?php echo $products_split->display_links($products_query_numrows, MAX_DISPLAY_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?></td>
           </tr>
         </table>
       </td>
