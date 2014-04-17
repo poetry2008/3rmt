@@ -99,249 +99,27 @@ case 'delete':
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo CLEATE_LIST_SETNAME_BUTTON;?> </title>
-  <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-  <script type="text/javascript" src="includes/javascript/jquery.js"></script>
-  <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+  <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+  <script type="text/javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+  <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+  <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
   <script type="text/javascript">
-  var html = new Array();
-var i=0;
-<?php //添加输入形式 ?>
-function input_add(){
-      
-  var cbox_head = "<div class='add_link'><?php echo BUTTON_ADD_TEXT;?>:<input type='text' name='set_oroshi[]'></div>"; 
-  var cbox  = document.getElementById("oo_input").innerHTML;
-  cbox = cbox.replace(/ocid/g,'ocid['+i+']');
-  html[i] = cbox_head+cbox;
-  var html_text='';
-  var o;
-  if(i>0){
-    for(o=0;o<html.length;o++){
-      html_text+=html[o];
-    }
-  }else{
-    html_text=html[0]
-  }
-  document.getElementById("o_input").innerHTML=html_text;
-  if(document.getElementById("change_one")){
-    document.getElementById("change_one").innerHTML='';
-    document.getElementById("orrshi_id").value='';
-  }
-  i++;
-}
-<?php //链接cleate_list.php页面 ?>
-function jump_oroshi_data(id,oid){
-  location.href = 'cleate_list.php?cPath='+id+'&cpath='+id+'&oid='+oid;
-}
-<?php //跳转cleate_oroshi.php页 ?>
-function resset_cb(){
-  location.href="cleate_oroshi.php";
-}
-var valmethod = true;
-<?php //更新排序 ?>
-function notval(){
-  valmethod = false;
-}
-<?php //关闭设置 ?>    
-function w_close(c_permission, co_type){
-  if (co_type == 1) {
-    valmethod = false;
-    document.getElementById("h_sort").innerHTML = '<input type="hidden" name="sort" value="<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT;?>">';
-  }
-  var o_error = false; 
-  if(valmethod){
-  if((!document.getElementById("orrshi_id")||document.getElementsByName('set_oroshi[]')[0])&&html.length==1){
-    var j;
-    var o_cid;
-    var test;
-    var o_name = document.getElementsByName('set_oroshi[]');
-      o_cid = document.getElementsByName('ocid[0][]');
-      if(o_name[0].value == null||o_name[0].value == ''){
-        o_error = true; 
-        alert('<?php echo TRADE_NAME; ?>');
-      }else {
-        var ex_name =  document.getElementsByName('exist_name[]');
-        var z;
-        for(z=0;z<ex_name.length;z++){
-          if(ex_name[z].value==o_name[0].value){
-             o_error = true; 
-             alert(o_name[0].value+'<?php echo ALREADY_EXISTS; ?>');
-          }
-        }
-        test=0;
-        for (j=0 ;j<o_cid.length; j++){
-          if(!o_cid[j].checked){
-            test++;
-          }
-        }
-        if (test == j) {
-          o_error = true; 
-          alert('<?php echo PLEASE_GAME_TITLE; ?>');
-        }
-      }
-  }else if(document.getElementById("orrshi_id")){
-    var o_cid = document.getElementById("orrshi_id").value;
-    if(document.getElementById("name_"+o_cid)){
-    var o_name = document.getElementById("name_"+o_cid).value;
-    var s_name = document.getElementById("src_name_"+o_cid).value;
-    var ocid = document.getElementsByName('ocid[]');
-    var test = 0;
-    if (o_name == ''||o_name == null){
-      o_error = true; 
-      alert('<?php echo TRADE_NAME; ?>');
-    }else{
-        var ex_name =  document.getElementsByName('exist_name[]');
-        var z;
-        for(z=0;z<ex_name.length;z++){
-          if(ex_name[z].value==s_name){
-            continue;
-          }
-          if(ex_name[z].value==o_name){
-            o_error = true; 
-            alert(o_name+'<?php echo TRADE_NAME; ?>');
-          }
-        }
-    for(x=0;x<ocid.length;x++){
-      if(!ocid[x].checked){
-        test++;
-      }
-    }
-    if (test == x){
-       o_error = true; 
-       alert('<?php echo PLEASE_GAME_TITLE; ?>');
-    }
-    }
-  }
-  }
-          if(html.length>1){
-          var o_name = document.getElementsByName('set_oroshi[]');
-          var ex_name =  document.getElementsByName('exist_name[]');
-          var le;
-          var z;
-          var set_name_arr = new Array();
-          for(le=0;le<o_name.length;le++){
-            if(o_name[le].value != null&&o_name[le].value != ''){
-               for(z=0;z<ex_name.length;z++){
-                if(ex_name[z].value==o_name[le].value){
-                  o_error = true; 
-                  alert(o_name[le].value+'<?php echo ALREADY_EXISTS; ?>');
-                }
-               }
-            }
-            set_name_arr[le] = o_name[le].value;
-          }
-          var nary=set_name_arr.sort();
-          for(var ii=1;ii<nary.length;ii++){
-            if (nary[ii-1]!=null||nary[ii-1]!=''){
-              continue;
-            }
-            if (nary[ii-1]==nary[ii]){
-              o_error = true; 
-              alert("<?php echo CONTENT_NOT_SAME; ?>");
-            }
-          }
-        }
-  if(!document.getElementsByName('set_oroshi[]')[0]&&!document.getElementById("orrshi_id")){
-    o_error = true; 
-    alert('<?php echo CREATE_INPUT_BOX; ?>');
-  }
-  }
-  
-  if (o_error == false) {
-    if (c_permission == 31) {
-      document.forms.o_form.submit(); 
-    } else {
-      $.ajax({
-        url: 'ajax_orders.php?action=getallpwd',   
-        type: 'POST',
-        dataType: 'text',
-        data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-        async: false,
-        success: function(msg) {
-          var tmp_msg_arr = msg.split('|||'); 
-          var pwd_list_array = tmp_msg_arr[1].split(',');
-          if (tmp_msg_arr[0] == '0') {
-            document.forms.o_form.submit(); 
-          } else {
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              $.ajax({
-                url: 'ajax_orders.php?action=record_pwd_log',   
-                type: 'POST',
-                dataType: 'text',
-                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.o_form.action),
-                async: false,
-                success: function(msg_info) {
-                  document.forms.o_form.submit(); 
-                }
-              }); 
-            } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-            }
-          }
-        }
-      });
-    }
-  }
-}
-<?php //删除批发商名称 ?> 
-function del_oroshi(id, c_permission){
-  var flg=confirm('<?php echo DELETE;?>');
-  if(flg){
-    if (c_permission == 31) {
-      window.location.href='<?php echo HTTP_SERVER.DIR_WS_ADMIN;?>cleate_oroshi.php?action=delete&id='+id;
-    } else {
-      $.ajax({
-        url: 'ajax_orders.php?action=getallpwd',   
-        type: 'POST',
-        dataType: 'text',
-        data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-        async: false,
-        success: function(msg) {
-          var tmp_msg_arr = msg.split('|||'); 
-          var pwd_list_array = tmp_msg_arr[1].split(',');
-          if (tmp_msg_arr[0] == '0') {
-            window.location.href='<?php echo HTTP_SERVER.DIR_WS_ADMIN;?>cleate_oroshi.php?action=delete&id='+id;
-          } else {
-            var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-            if (in_array(input_pwd_str, pwd_list_array)) {
-              $.ajax({
-                url: 'ajax_orders.php?action=record_pwd_log',   
-                type: 'POST',
-                dataType: 'text',
-                data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo HTTP_SERVER.DIR_WS_ADMIN;?>cleate_oroshi.php?action=delete&id='+id),
-                async: false,
-                success: function(msg_info) {
-                  window.location.href='<?php echo HTTP_SERVER.DIR_WS_ADMIN;?>cleate_oroshi.php?action=delete&id='+id;
-                }
-              }); 
-            } else {
-              alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-            }
-          }
-        }
-      });
-    }
-  }
-}
-<?php //编辑批发商名称 ?>
-function edit_oroshi(id){
-  var selectName = 'parent_id_'+id;
-  var oroName = 'name_'+id;
-  location.href= 'cleate_oroshi.php?action=edit_oroshi&id='+id; 
-
-}
-<?php //往上排一级 排序 ?>
-function ex(id){
-  for(exi=1;exi<6;exi++){
-    tmp = document.getElementById('tr_'+id+'_'+exi).innerHTML;
-    document.getElementById('tr_'+id+'_'+exi).innerHTML = document.getElementById('tr_'+(id-1)+'_'+exi).innerHTML;
-    document.getElementById('tr_'+(id-1)+'_'+exi).innerHTML = tmp;
-  }
-  $('#tr_'+id+'_1>.sort_order_input').val(id);
-  $('#tr_'+(id-1)+'_1>.sort_order_input').val(id-1);
-}
+  	var html = new Array();
+  	var i=0;
+	var js_oroshi_add_text = '<?php echo BUTTON_ADD_TEXT;?>';
+	var js_oroshi_update_sort = '<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT;?>'
+	var js_oroshi_trade_name = '<?php echo TRADE_NAME; ?>';
+	var js_oroshi_already_exists = '<?php echo ALREADY_EXISTS; ?>';
+	var js_oroshi_game_title = '<?php echo PLEASE_GAME_TITLE; ?>';
+	var js_oroshi_not_same = '<?php echo CONTENT_NOT_SAME; ?>';
+	var js_oroshi_input_box = '<?php echo CREATE_INPUT_BOX; ?>';
+	var js_oroshi_self = '<?php echo $_SERVER['PHP_SELF']?>';
+	var js_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
+	var js_onetime_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
+	var js_oroshi_delete = '<?php echo DELETE;?>';
+	var js_oroshi_ws_admin = '<?php echo HTTP_SERVER.DIR_WS_ADMIN;?>';
 </script>
+<script type="text/javascript" src="includes/javascript/admin_cleate_oroshi.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");

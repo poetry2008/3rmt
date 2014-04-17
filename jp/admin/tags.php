@@ -183,10 +183,10 @@ if (isset($_GET['action']) and $_GET['action']) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo (isset($_GET['action']) && $_GET['action'] == 'setting_products_tags') ? PRODUCTS_TO_TAGS_TITLE : HEADING_TITLE; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
 	var js_filename_tags = '<?php echo FILENAME_TAGS;?>';
 	var js_text_tags_must_select = '<?php echo TEXT_TAGS_MUST_SELECT;?>'; 
@@ -208,7 +208,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	var js_products_tags_check = '<?php echo TEXT_PRODUCTS_TAGS_CHECK;?>';
 
 </script>
-<script language="javascript" src="includes/javascript/admin_tags.js"></script>
+<script language="javascript" src="includes/javascript/admin_tags.js?v=<?php echo $back_rand_info?>"></script>
 <style>
 .categories_box{
   display:block;

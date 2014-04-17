@@ -80,7 +80,7 @@ if(isset($action) && $action != ''){
     if(isset($_GET['id']) && $_GET['id']){
       $products_id = $_GET['id'];
       $products_sql = "update ". TABLE_PRODUCTS_SHIPPING_TIME .
-                   " set status='1' where id=".$products_id;
+                   " set status='1', date_update='".date('Y-m-d H:i:s',time())."' where id=".$products_id;
       $products_del_query = tep_db_query($products_sql);
 
       if($products_del_query == true){
@@ -108,7 +108,7 @@ if(isset($action) && $action != ''){
 
     $products_id = $_GET['id'];
     $products_sql = "update ". TABLE_PRODUCTS_SHIPPING_TIME .
-                   " set status='0' where id=".$products_id;
+                   " set status='0', date_update='".date('Y-m-d H:i:s',time())."' where id=".$products_id;
     $products_del_query = tep_db_query($products_sql);
 
     if($products_del_query == true){
@@ -126,17 +126,18 @@ if(isset($action) && $action != ''){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
 <style type="text/css">
 div#show {
   width:70%;
   position:absolute;
 }
 </style>
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script language="javascript" src="includes/jquery.form.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/admin_products_shipping_time.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
