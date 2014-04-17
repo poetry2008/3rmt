@@ -92,6 +92,10 @@ if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
         tep_db_query("delete from " . TABLE_IDPW_LOG . " where id = '" .tep_db_input($pwlid) . "'");
         }
         }
+        if(isset($_GET['pw_id'])){
+          $pwid = $_GET['pw_id'];
+          tep_db_query("UPDATE ".TABLE_IDPW." SET `updated_at` =now(),`update_user` = '".$user_info['name']."' WHERE `id` =".$pwid);
+        }
         tep_redirect(tep_href_link(FILENAME_PW_MANAGER, 'log='.$_GET['log'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='. $_GET['page'].'&pw_id='.$pwid.'&site_id='.$site_id));
         break;
     }
@@ -673,6 +677,8 @@ $manager_table_row[] = array('params' => $manager_params ,'text' => $manager_inf
              echo '<option value="1">'.TEXT_PW_MANAGER_DELETE_ACTION.'</option>';
              echo '</select>';
        }
+      }else{
+             echo TEXT_DATA_EMPTY;
       }
        ?>
        </td>
@@ -1973,6 +1979,8 @@ require("includes/note_js.php");
              echo '<option value="1">'.TEXT_PW_MANAGER_DELETE_ACTION.'</option>';
              echo '</select>';
        }
+      }else{
+             echo TEXT_DATA_EMPTY;
       }
        ?>
       </td>

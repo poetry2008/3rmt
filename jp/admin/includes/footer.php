@@ -129,6 +129,7 @@ if($_SESSION['last_page']!= $page_name){
 
 
 // 显示SQL执行记录
+$i=0;
 if (STORE_DB_TRANSACTIONS == 'true') {?>
 <?php
 //for sql_log
@@ -142,9 +143,11 @@ $testArray = array();
     <pre>
     <?php if(isset($logger)){
       foreach ($logger->queries as $qk => $qv) {
+        $i+=$logger->times[$qk];
         echo '[' . $logger->times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
       }
     }
+  echo $i;
   print_r($_SESSION);
   ?>
     </pre>
