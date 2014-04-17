@@ -240,21 +240,21 @@ if(empty($HTTP_GET_VARS['id'])){
     <tr><td class="infoBoxContent"
     align="left">'.$oroshi['oroshi_name'].'</td></tr>';
     if(tep_not_null($oroshi['user_added'])){  
-    echo '<tr><td>'.str_replace(':','',TEXT_USER_ADDED).'&nbsp;'.$oroshi['user_added'].'</td></tr>';
+    echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.$oroshi['user_added'].'</td></tr>';
     }else{
-    echo '<tr><td>'.str_replace(':','',TEXT_USER_ADDED).'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    echo '<tr><td>'.TEXT_USER_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
     }if(tep_not_null(tep_datetime_short($oroshi['date_added']))){
-    echo '<tr><td>'.str_replace(':','',TEXT_DATE_ADDED).'&nbsp;'.$oroshi['date_added'].'</td></tr>';
+    echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.$oroshi['date_added'].'</td></tr>';
     }else{
-    echo '<tr><td>'.str_replace(':','',TEXT_DATE_ADDED).'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    echo '<tr><td>'.TEXT_DATE_ADDED.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
     }if(tep_not_null($oroshi['user_update'])){
-    echo '<tr><td>'.str_replace(':','',TEXT_USER_UPDATE).'&nbsp;'.$oroshi['user_update'].'</td></tr>';
+    echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.$oroshi['user_update'].'</td></tr>';
     }else{
-    echo '<tr><td>'.str_replace(':','',TEXT_USER_UPDATE).'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    echo '<tr><td>'.TEXT_USER_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
     }if(tep_not_null(tep_datetime_short($oroshi['date_update']))){
-    echo '<tr><td>'.str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;'.$oroshi['date_update'].'</td></tr>';
+    echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.$oroshi['date_update'].'</td></tr>';
     }else{
-    echo '<tr><td>'.str_replace(':','',TEXT_DATE_UPDATE).'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
+    echo '<tr><td>'.TEXT_DATE_UPDATE.'&nbsp;'.TEXT_UNSET_DATA.'</td></tr>';
     }
     echo '</table>';
     ?></td>
