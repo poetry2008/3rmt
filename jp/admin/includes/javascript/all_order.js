@@ -760,6 +760,88 @@ if (c_permission == 31) {
 }
 });
 }
+// new order email
+function new_mail_text_orders(ele,st,tt,ot){
+  var _end = $("#mail_title_status").val();
+  var oid = $("#tmp_orders_id").val();
+  // select index
+  var idx = document.edit_order.elements[st].selectedIndex;
+  // select value
+  var CI  = document.edit_order.elements[st].options[idx].value;
+  // select checkbox value
+  window.last_status = idx;
+  if(send_mail){
+
+  if (document.getElementById('status_title_'+CI+'_0') != null) {
+    document.edit_order.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
+    str_chk = document.getElementById('hidd_order_str').value;
+    v_text = document.getElementById('status_text_'+CI+'_0').value;
+    document.edit_order.elements[tt].value = v_text.replace('${MAIL_COMMENT}', str_chk);
+  }
+
+  if(document.edit_order.elements[tt].value.indexOf('${PAY_DATE}') != -1){
+    $.ajax({
+dataType: 'text',
+url: 'ajax_orders.php?action=paydate',
+success: function(text) {
+document.edit_order.elements[tt].value = document.edit_order.elements[tt].value.replace('${PAY_DATE}',text);
+}
+});
+}
+
+if (document.getElementById('nomail_'+CI) == '1') {
+  $('#notify_comments').attr('checked','');
+  $('#notify').attr('checked','');
+} else {
+  $('#notify_comments').attr('checked',true);
+  $('#notify').attr('checked',true);
+}
+
+if ($(ele).val() == 20) {
+  $('#notify').attr('checked', false);  
+}
+}else{
+    $.ajax({
+      dataType: 'text',
+      async:false,
+      url: 'ajax_orders.php?action=edit_order_send_mail&oid='+oid+'&o_status='+_end,
+      success: function(msg) {
+        document.getElementById('edit_order_send_mail').innerHTML=msg;
+        send_mail = true;
+  if (document.getElementById('status_title_'+CI+'_0') != null) {
+    document.edit_order.elements[ot].value = document.getElementById('status_title_'+CI+'_0').value;
+    str_chk = document.getElementById('hidd_order_str').value;
+    v_text = document.getElementById('status_text_'+CI+'_0').value;
+    document.edit_order.elements[tt].value = v_text.replace('${MAIL_COMMENT}', str_chk);
+    }
+
+  if(document.edit_order.elements[tt].value.indexOf('${PAY_DATE}') != -1){
+    $.ajax({
+dataType: 'text',
+url: 'ajax_orders.php?action=paydate',
+success: function(text) {
+document.edit_order.elements[tt].value = document.edit_order.elements[tt].value.replace('${PAY_DATE}',text);
+}
+});
+}
+
+if (document.getElementById('nomail_'+CI) == '1') {
+  $('#notify_comments').attr('checked','');
+  $('#notify').attr('checked','');
+} else {
+  $('#notify_comments').attr('checked',true);
+  $('#notify').attr('checked',true);
+}
+
+if ($(ele).val() == 20) {
+  $('#notify').attr('checked', false);  
+}
+
+        }
+      });
+
+}
+}
 //new mail text
 function new_mail_text(ele,st,tt,ot,notice_no_choose,notice_no_order){
 
@@ -959,6 +1041,16 @@ success: function(msg) {
 }
 });
 }
+function fmoney(s)
+{
+   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
+    var l = s.split(".")[0].split("").reverse();
+     var t = '';
+      for(i = 0; i < l.length; i ++ ){
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+              }
+       return t.split("").reverse().join("");
+}
 //calculate order price
 function recalc_order_price(oid, opd, o_str, op_str)
 {
@@ -990,6 +1082,110 @@ function recalc_order_price(oid, opd, o_str, op_str)
   });
 }
 //calculate all product price
+function price_total(str)
+{
+      var ot_total = '';
+      var ot_total_flag = false;
+      var ot_subtotal_id = document.getElementById('ot_subtotal_id').innerHTML; 
+      if(ot_subtotal_id.indexOf('color') > 0){
+        ot_total_flag = true; 
+      }
+      ot_subtotal_id = ot_subtotal_id.replace(/<.*?>/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace(/,/g,'');
+      ot_subtotal_id = ot_subtotal_id.replace(str,'');
+      ot_subtotal_id= parseInt(ot_subtotal_id);
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace(str,'');
+      handle_fee_id = parseInt(handle_fee_id); 
+      var shipping_fee_id = document.getElementById('shipping_fee_id').innerHTML;
+      shipping_fee_id= shipping_fee_id.replace(/<.*?>/g,'');
+      shipping_fee_id = shipping_fee_id.replace(/,/g,'');
+      shipping_fee_id = shipping_fee_id.replace(str,'');
+      shipping_fee_id = parseInt(shipping_fee_id); 
+      if(document.getElementById('point_id')){
+        if(document.getElementById('point_value_temp')){
+          var point_id = 0; 
+        }else{
+          var point_id = document.getElementById('point_id').value;
+        }
+      }else{
+        var point_id = 0;
+      }
+      var update_total_temp;
+      var update_total_num = 0;
+      var sum_num = document.getElementById('button_add_id').value;
+      var total_value = '';
+      var total_key = '';
+      var total_title_temp = '';
+      var total_title = '';
+      var temp_flag = false;
+      var sign = '';
+      for(var i = 1;i <= sum_num;i++){
+     
+        if(document.getElementById('update_total_'+i)){
+          update_total_temp = document.getElementById('update_total_'+i).value; 
+          sign = document.getElementById('sign_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;temp_flag = true;}
+          if(update_total_temp == '-'){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_temp = sign == '0' ? 0-update_total_temp : update_total_temp;
+          update_total_num += update_total_temp;
+          if(temp_flag == true){update_total_temp = '';temp_flag == false}
+          total_value += update_total_temp+'|||';
+          total_key += i+'|||';
+          total_title_temp = document.getElementsByName('update_totals['+i+'][title]')[0].value;
+          total_title += total_title_temp+'|||';
+        }
+      }
+      var ot_subtotal_id_temp;
+      if(ot_total_flag == false){
+        ot_total = ot_subtotal_id+handle_fee_id+shipping_fee_id+update_total_num;
+        ot_subtotal_id_temp = ot_subtotal_id;
+      }else{
+        ot_total = handle_fee_id+shipping_fee_id+update_total_num-ot_subtotal_id; 
+        ot_subtotal_id_temp = 0-ot_subtotal_id;
+      }
+      if(ot_subtotal_id_temp > 0){
+        ot_total -= point_id;
+      }
+      var ot_total_temp;
+      ot_total_temp = ot_total;
+       
+  var payment_value = document.getElementsByName('payment_method')[0].value; 
+  $.ajax({
+    type: "POST",
+    data: 'total_title='+total_title+'&total_value='+total_value+'&point_value='+point_id+'&total_key='+total_key+'&ot_total='+ot_total_temp+'&ot_subtotal='+ot_subtotal_id_temp+'&payment_value='+payment_value+'&orders_id='+session_orders_id+'&session_site_id='+session_site_id+'&handle_fee='+handle_fee_id+'&fee_total='+update_total_num+'&shipping_fee_id='+shipping_fee_id,
+    async:false,
+    url: 'ajax_orders.php?action=price_total',
+    success: function(msg) {
+     var msg_array = new Array();
+     msg_array = msg.split('|||');
+     var handle_fee = parseInt(msg_array[0]);
+     var campaign_fee =  Math.abs(parseInt(msg_array[1]));
+     var campaign_flag = msg_array[2];
+     var shipping_fee = parseInt(msg_array[3]);
+     if(campaign_flag == 1){
+       document.getElementById('point_id').value = campaign_fee;
+     }
+     document.getElementById('handle_fee_id').innerHTML = handle_fee+str;
+     document.getElementsByName('payment_code_fee')[0].value = handle_fee; 
+     document.getElementById('shipping_fee_id').innerHTML = shipping_fee+str;
+     if(document.getElementsByName('shipping_fee_num')[0]){
+       document.getElementsByName('shipping_fee_num')[0].value = shipping_fee;
+     }
+     ot_total = ot_total-handle_fee_id+handle_fee-campaign_fee;
+     ot_total = ot_total-shipping_fee_id+shipping_fee;
+     if(ot_total < 0){ 
+        ot_total = Math.abs(ot_total);
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+str;
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+str; 
+      }
+    }
+  });
+}
 function recalc_all_product_price(oid, or_str)
 {
   p_info = or_str.split('|||');
@@ -1044,6 +1240,52 @@ function recalc_all_product_price(oid, or_str)
     }
   }); 
 }
+
+function delete_products(opid,o_str,delete_flag){
+
+       document.getElementById('update_products_new_qty_'+opid).value = 0;
+       var ot_total_flag = false;
+       var ot_subtotal_id = document.getElementById('ot_subtotal_id').innerHTML; 
+       if(ot_subtotal_id.indexOf('color') > 0){
+         ot_total_flag = true; 
+       }
+       ot_subtotal_id = ot_subtotal_id.replace(/<.*?>/g,'');
+       ot_subtotal_id = ot_subtotal_id.replace(/,/g,'');
+       ot_subtotal_id = ot_subtotal_id.replace(o_str,'');
+       ot_subtotal_id= parseInt(ot_subtotal_id);
+       var ot_products_flag = false;
+       var ot_products_id = document.getElementById('update_products['+opid+'][c_price]').innerHTML;
+       if(ot_products_id.indexOf('color') > 0){
+         ot_products_flag = true; 
+       }
+       ot_products_id = ot_products_id.replace(/<.*?>/g,'');
+       ot_products_id = ot_products_id.replace(/,/g,'');
+       ot_products_id = ot_products_id.replace(o_str,'');
+       ot_products_id= parseInt(ot_products_id); 
+       if(ot_total_flag == true && ot_products_flag == true){
+         opd_str_total = ot_subtotal_id-ot_products_id; 
+         opd_str_total = 0-opd_str_total;
+       }
+       if(ot_total_flag == true && ot_products_flag == false){
+         opd_str_total = ot_subtotal_id+ot_products_id; 
+         opd_str_total = 0-opd_str_total;
+       }
+       if(ot_total_flag == false && ot_products_flag == true){
+         opd_str_total = ot_subtotal_id+ot_products_id; 
+       }
+       if(ot_total_flag == false && ot_products_flag == false){
+         opd_str_total = ot_subtotal_id-ot_products_id; 
+       } 
+       if(opd_str_total < 0){
+        opd_str_total = Math.abs(opd_str_total);
+        document.getElementById('ot_subtotal_id').innerHTML = '<font color="#FF0000">'+fmoney(opd_str_total)+'</font>'+o_str;
+      }else{
+        document.getElementById('ot_subtotal_id').innerHTML = fmoney(opd_str_total)+o_str; 
+      }
+      document.getElementById('update_products['+opid+'][b_price]').innerHTML = '0'+o_str; 
+      document.getElementById('update_products['+opid+'][c_price]').innerHTML = '0'+o_str; 
+      price_total(o_str);
+}
 //mark work flag
 function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
 {
@@ -1067,6 +1309,18 @@ function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
   });
 }
 //check new order
+function orders_session(type,value){
+  
+  $.ajax({
+    type: "POST",
+    data: 'orders_session_type='+type+'&orders_session_value='+value+'&orders_id='+session_orders_id,
+    async:false,
+    url: 'ajax_orders.php?action=orders_session',
+    success: function(msg) {
+      
+    }
+  });
+}
 function checkNewOrders(t)
 {
   $.ajax({
@@ -1098,4 +1352,3 @@ function show_edit_fax(){
   document.getElementById('customer_fax_text').style.display ="none";  
   document.getElementById('customer_fax_text_input').style.display ="none";  
 }
-

@@ -792,6 +792,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   }
   
   // 统计 REFERER
+  if($_SESSION['referer'] != '' || $_SESSION['referer'] != null){
+   $referer_url = $_SESSION['referer'];
+  }
   if ($_SERVER["HTTP_REFERER"]&&$_SERVER['HTTP_REFERER']!='') {
 if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("#".HTTPS_SERVER."#", $_SERVER["HTTP_REFERER"])){
 if(!isset($_SESSION['referer'])){
@@ -808,15 +811,11 @@ if(!isset($_SESSION['referer'])){
       " where customers_id ='".$_SESSION['customer_id']."'";
     $c_ref_query = tep_db_query($c_ref_sql);
     if($c_ref_row = tep_db_fetch_array($c_ref_query)){
-      if($c_ref_row['referer'] != tep_db_prepare_input($_SESSION['referer'])&&tep_db_prepare_input($_SESSION['referer'])!=''){
-	tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$_SESSION['customer_id']."'");
-      }else{
-        if($_SESSION['referer'] != '' || $_SESSION['referer'] != null){
-	  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".$_SESSION['referer']."'   where customers_id='".$_SESSION['customer_id']."'");
+        if($referer_url){
+	  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".$referer_url."'   where customers_id='".$_SESSION['customer_id']."'");
         }else{
 	  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".$c_ref_row['referer']."'   where customers_id='".$_SESSION['customer_id']."'");
-       }
-      }
+        }
     }
   }
 

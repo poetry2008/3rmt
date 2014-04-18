@@ -47,48 +47,17 @@ while($row=tep_db_fetch_array($query)){
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
-<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
-<script language="javascript" src="js2php.php?path=includes&name=global&type=js"></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js'></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js'></script>
-<link rel="stylesheet" type="text/css" href="includes/note_style.css" />
-<link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css" />
-<link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css" />
-<script type="text/javascript">
-<?php //最小化窗口?>
-function note_min_window(n_id)
-{
-  $.ajax({
-    type: 'POST',
-    data:'note_id='+n_id,
-    async:false,
-    url: 'ajax_orders.php?action=hide_note',
-    success: function(msg) {
-      msg_note_info = msg.split('|||');  
-      $('#note_'+n_id).css('display', 'none'); 
-      note_add_str = '<li><a href="javascript:void(0);" onclick="note_revert_window(this, \''+n_id+'\');"><img src="images/icons/note_'+msg_note_info[0]+'_window.gif" title="'+msg_note_info[1]+'" alt="'+msg_note_info[1]+'"></a></li>'; 
-      $('.note_hide_list').append(note_add_str); 
-    }
-  });
-}
-<?php //还原窗口?>
-function note_revert_window(n_obj, n_id)
-{
-  $.ajax({
-    type: 'POST',
-    data:'note_id='+n_id,
-    async:false,
-    url: 'ajax_orders.php?action=show_note',
-    success: function(msg) {
-      $(n_obj).remove();
-      $('#note_'+n_id).css('display', 'block');
-    } 
-  });
-}
-</script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
+<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes&name=global&type=js&v=<?php echo $back_rand_info?>"></script>
+<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js?v=<?php echo $back_rand_info?>'></script>
+<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js?v=<?php echo $back_rand_info?>'></script>
+<link rel="stylesheet" type="text/css" href="includes/note_style.css?v=<?php echo $back_rand_info?>" />
+<link rel="stylesheet" type="text/css" href="includes/fancybox.css?v=<?php echo $back_rand_info?>" />
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>" />
+<link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css?v=<?php echo $back_rand_info?>" />
+<script type="text/javascript" src='includes/javascript/admin_index.js?v=<?php echo $back_rand_info?>'></script>
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 $(document).ready(function() { 
@@ -119,18 +88,6 @@ foreach($note_arr as $note_row){
 }
 ?>
 });
-<?php //改变图层?>
-function changeLayer(obj) {
-  arr = new Array(); 
-  var i = 0 
-  $('.note').each(function(i) {
-    arr[i] = $(this).css("z-index");  
-    i++; 
-  });
-  arr.sort();
-  max = arr[arr.length-1]+1;
-  $(obj).css('z-index', max);
-}
 </script>
 <?php }?>
 <title><?php echo TITLE; ?></title>

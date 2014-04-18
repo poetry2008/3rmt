@@ -1476,7 +1476,11 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   $from_payment = '';
   $sort_table = '';
   $sort_where = '';
-  $order_str = 'torihiki_date_error desc,date_purchased_error desc,'; 
+  if(isset($_GET['keyword'])||isset($_GET['search_type'])){
+    $order_str = ''; 
+  }else{
+    $order_str = 'torihiki_date_error desc,date_purchased_error desc,'; 
+  }
   $user_info = tep_get_user_info($ocertify->auth_user);
   $sort_setting_flag = false;
   $is_show_transaction = false; 
@@ -1786,19 +1790,20 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                " . $where_payment . $where_type . " order by ".$order_str;
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
     //商品名查询 
-    $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o 
+    $orders_query_raw = " select distinct op.orders_id from " .
+      TABLE_ORDERS_PRODUCTS . " op use index(products_name), ".TABLE_ORDERS." o 
       ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name ";
     if(isset($_GET['real_name'])&&$_GET['real_name']){
       $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
     }else{
       $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
     }
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
     //商品id查询 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
 
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ". $order_str;
   } elseif (isset($_GET['scategories_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'categories_id') {
     //分类id查询 
     if (isset($_GET['site_id'])) {
@@ -1952,6 +1957,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      }
                      } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
                      //订单id查询 
+                     $tmp_order_id = date("Ymd") . '-' . date("His") .  tep_get_order_end_num();
+                     if(strlen(trim($_GET['keywords']))==strlen($tmp_order_id)){
+                       $orders_id_search = " o.orders_id ='".trim($_GET['keywords'])."' ";
+                     }else{
+                       $orders_id_search = " o.orders_id like '%".trim($_GET['keywords'])."%' ";
+                     }
                      $orders_query_raw = "
                      select o.orders_id, 
                      o.torihiki_date, 
@@ -1981,10 +1992,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.site_id,
                      o.is_gray,
                      o.read_flag
-                       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
-                       where " . $sort_where.
-                       " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_id like '%".$_GET['keywords']."%'" .
-                       $where_payment . $where_type."  order by ".$order_str;
+                       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ." where " . $sort_where.  " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') .  $orders_id_search .  $where_payment . $where_type."  order by ".$order_str;
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
                        //顾客名/邮件查询 
@@ -4107,7 +4115,7 @@ if (isset($_GET['keyword'])) {
 <table border="0" width="100%" cellspacing="0" cellpadding="2" >
 
 <tr class="dataTableHeadingRow">
-<td class="dataTableHeadingContent">qqqq<?php echo SEARCH_CAT_PRO_TITLE;?> </td>
+<td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
 <td class="dataTableHeadingContent" align="right" nowrap><?php echo SEARCH_MANUAL_LOOK;?> </td>
 </tr>
@@ -5454,7 +5462,7 @@ if($c_parent_array['parent_id'] == 0){
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
             tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php
             echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a></div>
-            <div class="">
+            <div>
             <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
               <font color="#999">
                 <?php } else { ?>

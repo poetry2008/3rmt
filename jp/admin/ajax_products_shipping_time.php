@@ -93,15 +93,15 @@ if($id == 0 || $maxid == $minid){
   $next_str = '';
   if($sort == $maxsort && $id == $maxid){
 
-    $prev_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
+    $prev_str = '<a id="option_prev" href="javascript:void(0);" onclick="show_text_products('. $id .',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
 
   }elseif($sort == $minsort && $id == $minid){
 
-    $next_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
+    $next_str = '<a id="option_next" href="javascript:void(0);" onclick="show_text_products('. $id .',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
 
   }else{
-    $prev_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
-    $next_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
+    $prev_str = '<a id="option_prev" href="javascript:void(0);" onclick="show_text_products('. $id .',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
+    $next_str = '<a id="option_next" href="javascript:void(0);" onclick="show_text_products('. $id .',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
   }
 ?>
   <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><?php echo $name.TABLE_TITLE_1;?></td><td align="right" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
@@ -208,7 +208,7 @@ if($id != 0){
 <?php
 }
 ?>
-&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form_products() && work_check()){check_products('save', '<?php echo $ocertify->npermission; ?>');}else{return check_form_products();}">&nbsp;
+&nbsp;<input id="button_save" type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form_products() && work_check()){check_products('save', '<?php echo $ocertify->npermission; ?>');}else{return check_form_products();}">&nbsp;
 
 <?php
 if($id != 0){

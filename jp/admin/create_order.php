@@ -313,12 +313,13 @@ $city           = isset($address['entry_city'])             ? $address['entry_ci
 $state          = isset($address['entry_zone_id'])          ? tep_get_zone_name($address['entry_zone_id']):'';
 $country        = isset($address['entry_country_id'])       ? tep_get_country_name($address['entry_country_id']):'';
 $customers_guest_chk = isset($account['customers_guest_chk']) ? $account['customers_guest_chk'] : '';
-
+/*
 $cpayment = payment::getInstance((int)$_GET['site_id']);
 $payment_array = payment::getPaymentList();
 if(!isset($selections)){
 $selections = $cpayment->admin_selection();
 }
+*/
 $payment_list[] = array('id' => 'payment_null', 'text' => TEXT_PAYMENT_NULL_TXT);
 //}}
 require_once(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);

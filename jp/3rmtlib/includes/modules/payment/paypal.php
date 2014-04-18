@@ -963,19 +963,6 @@ EOT;
     return $comment_str;
   }
 }
-/*---------------------------
- 功能：通过关键字分割字符串
- 参数：$str(string)  字符串
- 参数：$keywords(string) 关键字
- 返回值：分割之后的字符串(string) 
- --------------------------*/
-function tep_high_light_by_keywords_flag($str, $keywords){ 
-      $k = $rk= explode('|',$keywords);
-      foreach($k as $key => $value){
-           $rk[$key] = '<font style="background:red;">'.$value.'</font>';
-      }
-      return str_replace($k, $rk, $str);
-  }
 /*--------------------------
  功能：从payapl获取相应信息
  参数：$methodName_(string) 方法名称
@@ -996,7 +983,7 @@ function PPHttpPost($methodName_, $nvpStr_) {
   // Set the curl parameters.
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $API_Endpoint);
-  curl_setopt($ch, CURLOPT_VERBOSE, 1);
+  curl_setopt($ch, CURLOPT_VERBOSE, 0);
   // Turn off the server and peer verification (TrustManager Concept).
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -1012,8 +999,28 @@ function PPHttpPost($methodName_, $nvpStr_) {
 
   // Get response from the server.
   $httpResponse = curl_exec($ch);
+  $error = curl_error($ch);
+  if (curl_errno($ch) != 0) {
+    $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+    $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+    $message = new email(array('X-Mailer: iimy Mailer'));
+    $orders_mail_text = "$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')';
+    $text = $orders_mail_text;
+    $message->add_html(nl2br($orders_mail_text), $text);
+    $message->build_message();
+    $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+    exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
+  }
 
   if(!$httpResponse) {
+    $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+    $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+    $message = new email(array('X-Mailer: iimy Mailer'));
+    $orders_mail_text = "$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')';
+    $text = $orders_mail_text;
+    $message->add_html(nl2br($orders_mail_text), $text);
+    $message->build_message();
+    $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
     exit("$methodName_ failed: ".curl_error($ch).'('.curl_errno($ch).')');
   }
 
@@ -1029,61 +1036,15 @@ function PPHttpPost($methodName_, $nvpStr_) {
   }
 
   if((0 == sizeof($httpParsedResponseAr)) || !array_key_exists('ACK', $httpParsedResponseAr)) {
+    $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
+    $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
+    $message = new email(array('X-Mailer: iimy Mailer'));
+    $orders_mail_text = "Invalid HTTP Response for POST request(".$nvpreq.") to ".$API_Endpoint;
+    $text = $orders_mail_text;
+    $message->add_html(nl2br($orders_mail_text), $text);
+    $message->build_message();
     exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
   }
-
-  require_once(DIR_WS_FUNCTIONS . 'visites.php'); 
-  //错误通知邮件
-  $error_mail_array = tep_get_mail_templates('ORDERS_EMPTY_EMAIL_TEXT',SITE_ID);
-  $orders_mail_title = $error_mail_array['title'].'　'.date('Y-m-d H:i:s');
-  $orders_mail_text = $error_mail_array['contents'];
-  $orders_mail_text = str_replace('${ERROR_NUMBER}','002',$orders_mail_text);
-  $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
-
-  $orders_error_contents = "\n\n";
-  $orders_error_contents .= ORDERS_SITE." ".STORE_NAME."\n";
-  $orders_shipping_time = isset($_SESSION['insert_torihiki_date']) ? $_SESSION['insert_torihiki_date'] : $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'];
-  $orders_error_contents .= ORDERS_TIME." ".$orders_shipping_time."\n";
-  $orders_torihikihouhou = isset($_SESSION['torihikihouhou']) ? $_SESSION['torihikihouhou'] : $_SESSION['preorder_info_tori'];
-  $orders_error_contents .= ORDERS_OPTION." ".$orders_torihikihouhou."\n";
-  $orders_error_contents .= CREATE_ORDERS_DATE." ".date('Y-m-d H:i:s')."\n";
-  $customer_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $_SESSION['customer_id'] . "'");
-  $customer_array = tep_db_fetch_array($customer_query);
-  tep_db_free_result($customer_query);
-  $customer_type = $customer_array['customers_guest_chk'] == 1 ? TABLE_HEADING_MEMBER_TYPE_GUEST : TEXT_MEMBER;
-  $orders_error_contents .= CUSTOMER_TYPE." ".$customer_type."\n";
-  $customer_name = tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']);
-  $orders_error_contents .= CUSTOMER_NAME." ".$customer_name."\n";
-  $orders_error_contents .= ORDERS_EMAIL." ".$_SESSION['customer_emailaddress']."\n";
-  $orders_payment = isset($_SESSION['payment']) ? $_SESSION['payment'] : $_SESSION['payment_value']['payment'];
-  $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
-
-  foreach($httpParsedResponseAr as $p_key=>$p_value){
-    $orders_error_contents .= $p_key .':'.urldecode($p_value)."\n";
-  }
-
-  $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
-  $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
-  $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
-  $orders_error_contents .= CUSTOMER_OS." ".tep_high_light_by_keywords_flag(getOS($_SERVER["HTTP_USER_AGENT"]),OS_LIGHT_KEYWORDS)."\n";
-  $browser_info = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
-  $browser_type = tep_high_light_by_keywords_flag($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS);
-  $orders_error_contents .= BROWSER_TYPE." ".$browser_type."\n";
-  $browser_language = tep_high_light_by_keywords_flag($_SERVER['HTTP_ACCEPT_LANGUAGE'] ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);
-  $orders_error_contents .= BROWSER_LANGUAGE." ".$browser_language."\n";
-  $browser_pc = tep_high_light_by_keywords_flag($_SESSION['systemLanguage'] ? $_SESSION['systemLanguage'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);
-  $orders_error_contents .= BROWSER_PC_LANGUAGE." ".$browser_pc."\n";
-  $browser_user = tep_high_light_by_keywords_flag($_SESSION['userLanguage'] ? $_SESSION['userLanguage'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);
-  $orders_error_contents .= BROWSER_USER_LANGUAGE." ".$browser_user."\n";
-
-  $orders_mail_text = str_replace('${ERROR_CONTENTS}',$orders_error_contents,$orders_mail_text);
-  $orders_mail_text = tep_replace_mail_templates($orders_mail_text,$_SESSION['customer_emailaddress'],tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']));
- 
-  $message = new email(array('X-Mailer: iimy Mailer'));
-  $text = $orders_mail_text;
-  $message->add_html(nl2br($orders_mail_text), $text);
-  $message->build_message();
-  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
   return $httpParsedResponseAr;
 }
 ?>

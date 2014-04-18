@@ -826,3 +826,5 @@ define('ERROR_AVG_MESSAGE_CHECKBOX_STR',' 危険を理解した上で保存す�
 define('DIV_TEXT_CLEAR','キャンセル');
 define('DIV_TEXT_OK','OK');
 define('DELETE_ALL_NOTICE','全ての内容をクリアしてもよろしいでしょうか？');
+define('SMALL_IMAGE_WIDTH_TEST','60');
+define('SMALL_IMAGE_HEIGHT_TEST','60');

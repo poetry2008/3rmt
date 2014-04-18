@@ -160,6 +160,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_ALERT_LOG','alert_log.php');
   define('FILENAME_BUSINESS_MEMO','business_memo.php');
   define('FILENAME_MAIL_TEMPLATES','mail_templates.php');
+  define('FILENAME_ALL_ORDERS','all_orders.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -560,6 +561,13 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
     }
   }
  
+  $back_rand_query = tep_db_query("select value from other_config where keyword = 'admin_random_string'"); 
+  $back_rand_res = tep_db_fetch_array($back_rand_query);
+  if ($back_rand_res['value']) {
+    $back_rand_info = substr($back_rand_res['value'], 0, 4); 
+  } else {
+    $back_rand_info = date('YmdHi', time()); 
+  }
   
 $_SESSION['onetime_pwd'] = true;
   if(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&&

@@ -5,6 +5,13 @@
   require('includes/application_top.php');
   require('includes/languages/japanese/news.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+  while($userslist= tep_db_fetch_array($sites_id)){
+       $site_permission = $userslist['site_permission'];
+  }
+  if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+  else $site_arr="";
+  $site_array = explode(',',$site_arr);
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
                         $sql_site_where = 'c.site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
                         $show_list_array = explode('-',$_GET['site_id']);
@@ -33,7 +40,7 @@
    case 'deleteconfirm' 删除优惠券    
 ------------------------------------------------------*/
       case 'setflag';
-        tep_db_query("update `".TABLE_CAMPAIGN."` set `status` = '".(int)$_GET['flag']."' where id = '".$_GET['campaign_id']."'");
+        tep_db_query("update `".TABLE_CAMPAIGN."` set `status` = '".(int)$_GET['flag']."',`date_update` = now() where id = '".$_GET['campaign_id']."'");
         tep_redirect(tep_href_link(FILENAME_CAMPAIGN, isset($_GET['site_id'])?('site_id='.$_GET['site_id'].'&sort='.$_GET['sort'].'&page='.$_GET['page'].'&type='.$_GET['type']):$show_list_str2.'&sort='.$_GET['sort'].'&page='.$_GET['page'].'&type='.$_GET['type'])); 
         break;
       case 'update':
@@ -127,7 +134,7 @@
           $insert_sql_data = array(
               'created_at' => 'now()',
               'status' => '1',
-              'site_id' => tep_db_prepare_input($_GET['site_id']),
+              'site_id' => $_POST['site_id'],
               'user_added' => $_SESSION['user_name'], 
               'user_update'=> $_SESSION['user_name'],
               'date_update'=> 'now()'
@@ -167,6 +174,43 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script style="text/javascript">
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if ($('#show_campaign_info').css('display') != 'none') {
+        hidden_info_box(); 
+      }
+    }
+     if (event.which == 13) {
+           <?php //回车?>
+        if ($('#show_campaign_info').css('display') != 'none') {
+                $("#button_save").trigger("click");
+            }
+        }
+
+     if (event.ctrlKey && event.which == 37) {
+      <?php //Ctrl+方向左?> 
+      if ($('#show_campaign_info').css('display') != 'none') {
+        if ($("#option_prev")) {
+          $("#option_prev").trigger("click");
+        }
+      } 
+    }
+    if (event.ctrlKey && event.which == 39) {
+      <?php //Ctrl+方向右?> 
+      if ($('#show_campaign_info').css('display') != 'none') {
+        if ($("#option_next")) {
+          $("#option_next").trigger("click");
+        }
+      } 
+    }
+  });    
+});
+function hidden_info_box(){
+   $('#show_campaign_info').css('display','none');
+}
 var bw_height;
 var client_height;
 var scrollHeight;
@@ -633,10 +677,19 @@ echo $campaign['start_date'].'～'.$campaign['end_date'];
                 </td>
                 <td class="dataTableContent" align="center">
                 <?php
+                if(!in_array($campaign['site_id'],$site_array)){
+                if ($campaign['status'] == '1') {
+                  echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
+                } else {
+                  echo '<a href="javascript:void(0);">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+                }
+
+                }else{
                 if ($campaign['status'] == '1') {
                   echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN) . '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggle_campaign_action(\''.$ocertify->npermission.'\', \'' .  tep_href_link(FILENAME_CAMPAIGN, 'action=setflag&flag=0&campaign_id=' . $campaign['id'].  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT) . '</a>';
                 } else {
                   echo '<a href="javascript:void(0);" onclick="toggle_campaign_action(\''.$ocertify->npermission.'\', \'' . tep_href_link(FILENAME_CAMPAIGN, 'action=setflag&flag=1&campaign_id=' .  $campaign['id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED);
+                }
                 }
                 ?>
                 </td>

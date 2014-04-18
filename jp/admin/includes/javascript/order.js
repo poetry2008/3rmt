@@ -208,31 +208,31 @@ function confrim_mail_title(oid_info, notice_mail_str){
   var _end = $("#mail_title_status").val();
   var direct_single = false;
   if(send_mail){
-  if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-  }else{
-    if(confirm(notice_mail_str)){
-    } else {
-      direct_single = true;
-    }
-  }
-  
-  $.ajax({
-    type:"POST",
-    data:"c_comments="+$('#c_comments').val()+'&o_id='+oid_info+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
-    async:false,
-    url:'ajax_orders.php?action=check_order_variable_data',
-    success: function(msg) {
-      if (msg != '') {
-        if (direct_single == false) {
-          alert(msg); 
-        } 
+    if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
+    }else{
+      if(confirm(notice_mail_str)){
       } else {
-        if (direct_single == false) {
-          document.forms.sele_act.submit(); 
-        }
-      } 
+        direct_single = true;
+      }
     }
-  }); 
+  
+    $.ajax({
+      type:"POST",
+      data:"c_comments="+$('#c_comments').val()+'&o_id='+oid_info+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
+      async:false,
+      url:'ajax_orders.php?action=check_order_variable_data',
+      success: function(msg) {
+        if (msg != '') {
+          if (direct_single == false) {
+            alert(msg); 
+          } 
+        } else {
+           if (direct_single == false) {
+            document.forms.sele_act.submit(); 
+          }
+        } 
+      }
+    }); 
   }else{
     $.ajax({
       dataType: 'text',

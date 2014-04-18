@@ -1456,10 +1456,9 @@ function tep_cfg_pull_down_zone_list($zone_id,$empty_params = '',$params = '') {
     功能: 生成税率的下拉列表  
     参数: $tax_class_id(int) 税率id 
     参数: $key(string) 下拉列表的名字
-    参数: $params(string) 参数设置
     返回值: 税率的下拉列表(string)
  ------------------------------------ */
-function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
+function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '') {
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
 
   $tax_class_array = array(array('id' => '0', 'text' => TEXT_NONE));
@@ -1469,7 +1468,7 @@ function tep_cfg_pull_down_tax_classes($tax_class_id, $key = '', $params = '') {
         'text' => $tax_class['tax_class_title']);
   }
 
-  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id, $params);
+  return tep_draw_pull_down_menu($name, $tax_class_array, $tax_class_id);
 }
 
 /* -------------------------------------
@@ -1754,13 +1753,11 @@ function tep_output_generated_category_path($id, $from = 'category') {
     返回值: 无 
  ------------------------------------ */
 function tep_remove_category($category_id) {
-  /*
   $category_image_query = tep_db_query("select categories_image from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
   $category_image = tep_db_fetch_array($category_image_query);
 
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_CATEGORIES . " where categories_image = '" . tep_db_input($category_image['categories_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
-  */
 
 
   tep_db_query("delete from " . TABLE_CATEGORIES . " where categories_id = '" . tep_db_input($category_id) . "'");
@@ -1779,13 +1776,11 @@ function tep_remove_category($category_id) {
     返回值: 无
  ------------------------------------ */
 function tep_remove_product($product_id) {
-  /*
   $product_image_query = tep_db_query("select products_image from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   $product_image = tep_db_fetch_array($product_image_query);
 
   $duplicate_image_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " where products_image = '" . tep_db_input($product_image['products_image']) . "'");
   $duplicate_image = tep_db_fetch_array($duplicate_image_query);
-  */
 
   tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
@@ -2245,10 +2240,9 @@ function tep_cfg_pull_down_zone_classes($zone_class_id, $key = '') {
     功能: 获取订单状态的下拉列表 
     参数: $order_status_id(int) 订单状态id 
     参数: $key(string) 列表名 
-    参数: $params(string) 参数设置
     返回值: 订单状态的下拉列表(string) 
  ------------------------------------ */
-function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params = '') {
+function tep_cfg_pull_down_order_statuses($order_status_id, $key = '') {
   global $languages_id;
 
   $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
@@ -2260,7 +2254,7 @@ function tep_cfg_pull_down_order_statuses($order_status_id, $key = '', $params =
         'text' => $statuses['orders_status_name']);
   }
 
-  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id, $params);
+  return tep_draw_pull_down_menu($name, $statuses_array, $order_status_id);
 }
 
 /* -------------------------------------
@@ -8490,11 +8484,6 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
           }
        }
      }
-     //if($tmp_row['products_real_quantity'] > tep_get_relate_products_sum($tmp_row['products_id']
-           //,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
-       //$result['error'] = true;
-     //}else{
-     //}
      $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
@@ -8531,12 +8520,6 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
   $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
-  //if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
-        //$start,$end)&&$row['products_real_quantity']!=0){
-    //$result['error'] = true;
-  //}else{
-    //$result['error'] = false;
-  //}
   $tmp_relate_products_id = (int)$row['relate_products_id']; 
   if (empty($tmp_relate_products_id)) {
     $result['error'] = true;
@@ -8604,22 +8587,6 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
       }
     }
     return 0;
-    /*
-    $sum = 0;
-    $cnt = 0;
-    while($h = tep_db_fetch_array($order_history_query)){
-      $product['products_real_quantity'] = tep_get_quantity($pid);
-      if ($cnt + $h['products_quantity'] > $product['products_real_quantity']) {
-        $sum += ($product['products_real_quantity'] - $cnt) * abs($h['final_price']);
-        $cnt = $product['products_real_quantity'];
-        break;
-      } else {
-        $sum += $h['products_quantity'] * abs($h['final_price']);
-        $cnt += $h['products_quantity'];
-      }
-    }
-    return $sum/$cnt;
-    */
   }
 
 /* -------------------------------------
@@ -9081,7 +9048,7 @@ function get_campaign_link_page($cid, $site_id, $st_id)
     }
     $pre_campaign_res = tep_db_fetch_array($pre_campaign_query); 
     if ($pre_campaign_res) {
-      $return_str .= '<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$pre_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_PREV.'</a>'; 
+      $return_str .= '<a href="javascript:void(0)" id="option_prev" onclick="show_link_campaign_info(\''.$pre_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_PREV.'</a>'; 
     }
     
     if (empty($st_id)) {
@@ -9091,7 +9058,7 @@ function get_campaign_link_page($cid, $site_id, $st_id)
     }
     $next_campaign_res = tep_db_fetch_array($next_campaign_query); 
     if ($next_campaign_res) {
-      $return_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$next_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_NEXT.'</a>'; 
+      $return_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" id="option_next" onclick="show_link_campaign_info(\''.$next_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_NEXT.'</a>'; 
     }
   }
   
@@ -9328,9 +9295,11 @@ function tep_get_notice_info($return_type = 0)
     }
   } 
 
-  $alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
-  
-  $notice_total_sql = "select * from (".$notice_order_sql." union ".$alarm_order_sql.") taf"; 
+
+  $notice_total_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted 
+    from ".TABLE_NOTICE." n,".TABLE_ALARM." a 
+    where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' 
+    and (a.alarm_flag='1' or (a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'))";
   $notice_list_raw = tep_db_query($notice_total_sql);  
 
   //获取下拉列表数据的ID
@@ -9362,8 +9331,11 @@ function tep_get_notice_info($return_type = 0)
   $order_notice_array = array();
   $micro_notice_array = array();
 
-  $order_notice_raw = tep_db_query("select id, type, title, set_time, from_notice, user,created_at,deleted from (".$notice_order_sql." union ".$alarm_order_sql.") taf where type = '0' and is_show='1' order by created_at desc,set_time asc");
-
+  $order_notice_raw = tep_db_query("select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted 
+    from ".TABLE_NOTICE." n,".TABLE_ALARM." a 
+    where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' 
+    and (a.alarm_flag='1' or (a.alarm_flag='0' and n.user = '".$ocertify->auth_user."')) 
+    order by n.created_at desc,n.set_time asc");
   $notice_tmp_num = 0; 
   while($order_notice = tep_db_fetch_array($order_notice_raw)){
 
@@ -9396,7 +9368,12 @@ function tep_get_notice_info($return_type = 0)
     }
   }
 
-  $order_notice_query = tep_db_query("select id, type, title, set_time, from_notice, user,created_at,deleted from (".$notice_order_sql." union ".$alarm_order_sql.") taf where type = '0' and is_show='1' order by created_at desc,set_time asc");
+  $order_notice_query = tep_db_query("select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted 
+    from ".TABLE_NOTICE." n,".TABLE_ALARM." a 
+    where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' 
+    and (a.alarm_flag='1' or (a.alarm_flag='0' and n.user = '".$ocertify->auth_user."')) 
+    order by n.created_at desc,n.set_time asc");
+
 
   $notice_tmp_num = 0; 
   while($order_notice = tep_db_fetch_array($order_notice_query)){
@@ -13170,4 +13147,43 @@ function tep_is_has_order($oid){
     return date("Ymd") . '-' . date("His") . tep_get_order_end_num();
   }
   return $oid;
+}
+/* -------------------------------------
+    功能: 获得所有产品分类信息 
+    返回值: 所有产品信息列表 
+ ------------------------------------ */
+function tep_get_all_category() {
+  global $languages_id;
+  $all_sql = "SELECT c.categories_id, cd.categories_name, c.parent_id
+    FROM ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd
+    WHERE c.categories_id = cd.categories_id
+    AND cd.language_id = '4'
+    AND site_id = '0' order by c.sort_order,cd.categories_name";
+  $all_query = mysql_query($all_sql);
+  $category_tree_array = array();
+  $k_p = array();
+  $k_t = array();
+  while($all_raw = mysql_fetch_array($all_query)){
+    $category_tree_array[$all_raw['categories_id']] = $all_raw;
+    $k_p[$all_raw['categories_id']] = $all_raw['parent_id'];
+  }
+  return array('kv'=>$category_tree_array,'ks'=>$k_p);
+}
+/* -------------------------------------
+    功能: 获得所有产品分类数组 类似 tep_get_category_tree() 
+    与tep_get_category_tree 区别是 只调用一次数据库
+ ------------------------------------ */
+function tep_get_category_tree_new($arr,$pid=0,$c_arr='',$spacing=''){
+  if($pid==0){
+    $c_arr[] = array('id' => '0','text'=>TEXT_TOP);
+  }
+  while(array_search($pid,$arr['ks'])){
+    $key = array_search($pid,$arr['ks']);
+    $c_arr[] = array('id'=>$arr['kv'][$key]['categories_id'],'text'=>$spacing.$arr['kv'][$key]['categories_name']);
+    unset($arr['ks'][$key]);
+    if(in_array($arr['kv'][$key]['categories_id'],$arr['ks'])){
+      $c_arr = tep_get_category_tree_new($arr,$arr['kv'][$key]['categories_id'],$c_arr,$spacing.'&nbsp;&nbsp;&nbsp;');
+    }
+  }
+  return $c_arr;
 }

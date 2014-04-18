@@ -366,8 +366,9 @@ if (isset($_POST['orders_id']) && (isset($_POST['orders_comment'])||$_POST['orde
                                                                                                                       strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
                                                                                                                     <?php }?>
                                                                                                                     </td>
+<td class="dataTableContent" align="center" style="border-bottom:1px solid #000000;background-color: darkred;"></td>
                                                                                                                         <td style="border-bottom:1px solid
-#000000;background-color: darkred;" class="dataTableContent" align="right"
+#000000;background-color: darkred;" class="dataTableContent" align="center"
                                                                                                                         onClick="chg_td_color(<?php echo $orders['orders_id'];?>);
 				window.location.href='<?php echo
 					tep_href_link(FILENAME_ORDERS,
@@ -1121,6 +1122,16 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
   $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_POST['cid']."'"); 
   $campaign_res = tep_db_fetch_array($campaign_query);
+  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+  while($userslist= tep_db_fetch_array($sites_id)){
+       $site_permission = $userslist['site_permission'];
+  }
+  if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+  else $site_arr="";
+  $site_array = explode(',',$site_arr);
+  if(!in_array($campaign_res['site_id'],$site_array)){
+      $disabled = 'disabled="disabled"';
+  }
   $html_str = '';
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
   $html_str .= '<tr>'; 
@@ -1144,7 +1155,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_INFO_TITLE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('title', $campaign_res['title'], 'id="title" class="campaign_input" '); 
+  $html_str .= tep_draw_input_field('title', $campaign_res['title'], 'id="title" class="campaign_input"'.$disabled); 
   $html_str .= '<div id="title_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1153,7 +1164,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_INFO_NAME; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('name', $campaign_res['name'], 'id="name" class="campaign_input"'); 
+  $html_str .= tep_draw_input_field('name', $campaign_res['name'], 'id="name" class="campaign_input"'.$disabled); 
   $html_str .= '<div id="name_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1162,7 +1173,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_INFO_KEYWORD; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('keyword', $campaign_res['keyword'], 'id="keyword" class="campaign_input" ');
+  $html_str .= tep_draw_input_field('keyword', $campaign_res['keyword'], 'id="keyword" class="campaign_input"'.$disabled);
   $html_str .= '<br>'.'<font size="1">'.TEXT_CAMPAIGN_KEYWORD_READ.'</font>';
   $html_str .= '<div id="keyword_error"></div>'; 
   $html_str .= '</td>';
@@ -1174,26 +1185,26 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '<td>'; 
   if ($campaign_res['type'] == 1) {
     $html_str .= TEXT_CAMPAIGN_TYPE_SELL;
-    $html_str .= '<select name="type" id="type" onclick="toggle_type_info(this);">';
+    $html_str .= '<select name="type" id="type" onclick="toggle_type_info(this);" '.$disabled.'>';
     $html_str .= '<option value="1" selected="selected">+</option>';
     $html_str .= '<option value="2">-</option>';
     $html_str .= '</select>';
   } else {
     $html_str .= TEXT_CAMPAIGN_TYPE_SELL;
-    $html_str .= '<select name="type" id="type" onclick="toggle_type_info(this);">';
+    $html_str .= '<select name="type" id="type" onclick="toggle_type_info(this);" '.$disabled.'>';
     $html_str .= '<option value="1">+</option>';
     $html_str .= '<option value="2" selected="selected">-</option>';
     $html_str .= '</select>';
   }
-  $html_str .= tep_draw_input_field('limit_value', abs($campaign_res['limit_value']), 'id="limit_value" class="campaign_input_num"').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= tep_draw_input_field('limit_value', abs($campaign_res['limit_value']), 'id="limit_value" class="campaign_input_num"'.$disabled).'&nbsp;'.TEXT_MONEY_SYMBOL; 
   $html_str .= '<span id="limit_value_text">';
   if ($campaign_res['range_type'] == 1 || $campaign_res['range_type'] == 0) {
-  $html_str .= '<select name="range_type">';
+  $html_str .= '<select name="range_type"'.$disabled.'>';
   $html_str .= '<option value="1" selected="selected">'.TEXT_CAMPAIGN_UP.'</option>';
   $html_str .= '<option value="2">'.TEXT_CAMPAIGN_DOWN.'</option>';
   $html_str .= '</select>';
   }else if($campaign_res['range_type'] == 2) {
-  $html_str .= '<select name="range_type">';
+  $html_str .= '<select name="range_type"'.$disabled.'>';
   $html_str .= '<option value="1">'.TEXT_CAMPAIGN_UP.'</option>';
   $html_str .= '<option value="2" selected="selected">'.TEXT_CAMPAIGN_DOWN.'</option>';
   $html_str .= '</select>';
@@ -1202,7 +1213,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</span>';
   $html_str .= '<div id="limit_value_error"></div>'; 
   if(strstr($campaign_res['point_value'],'-')){
-  $html_str .= '<select name="up_or_down">';
+  $html_str .= '<select name="up_or_down"'.$disabled.'>';
   $html_str .= '<option value="-" selected="selected">-</option>';
   $html_str .= '<option value="+">+</option>';
   $html_str .= '</select>';
@@ -1215,7 +1226,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   if($_SESSION['language'] != 'chinese'){
      $campaign_add = TEXT_CAMPAIGN_ADD;
   }
-  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num" ').'&nbsp;'.$campaign_add; 
+  $html_str .= tep_draw_input_field('point_value', str_replace('-','',$campaign_res['point_value']), 'id="point_value" class="campaign_input_num"'.$disabled).'&nbsp;'.$campaign_add; 
   $html_str .= '<div id="point_value_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1232,9 +1243,9 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>';
   $html_str .= '<td>';
   if ($campaign_res['is_preorder'] == 0) {
-    $html_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder"').TEXT_TRUE.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').TEXT_FALSE; 
+    $html_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder"'.$disabled).TEXT_TRUE.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"'.$disabled).TEXT_FALSE; 
   } else {
-    $html_str .= tep_draw_radio_field('is_preorder',1,true,'','id="is_preorder"').TEXT_TRUE.'&nbsp;'.tep_draw_radio_field('is_preorder',0,false,'','id="is_preorder"').TEXT_FALSE; 
+    $html_str .= tep_draw_radio_field('is_preorder',1,true,'','id="is_preorder"'.$disabled).TEXT_TRUE.'&nbsp;'.tep_draw_radio_field('is_preorder',0,false,'','id="is_preorder"'.$disabled).TEXT_FALSE; 
   }
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1244,19 +1255,19 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>';
   $html_str .= '<td>';
   $start_date_info = explode('-', $campaign_res['start_date']); 
-  $html_str .= '<select name="syear" id="syear">'; 
+  $html_str .= '<select name="syear" id="syear"'.$disabled.'>'; 
   for ($i=2012; $i<=2030; $i++) {
     $select_str = ($start_date_info[0]==$i)?' selected':''; 
     $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
   }
   $html_str .= '</select>'.YEAR_TEXT.'&nbsp;'; 
-  $html_str .= '<select name="smonth" id="smonth">'; 
+  $html_str .= '<select name="smonth" id="smonth"'.$disabled.'>'; 
   for ($i=1; $i<=12; $i++) {
     $select_str = ($start_date_info[1]==$i)?' selected':''; 
     $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
   }
   $html_str .= '</select>'.MONTH_TEXT.'&nbsp;'; 
-  $html_str .= '<select name="sday" id="sday">'; 
+  $html_str .= '<select name="sday" id="sday"'.$disabled.'>'; 
   for ($i=1; $i<=31; $i++) {
     $select_str = ($start_date_info[2]==$i)?' selected':''; 
     $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
@@ -1272,19 +1283,19 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</td>';
   $html_str .= '<td>';
   $end_date_info = explode('-', $campaign_res['end_date']); 
-  $html_str .= '<select name="eyear" id="eyear">'; 
+  $html_str .= '<select name="eyear" id="eyear"'.$disabled.'>'; 
   for ($i=2012; $i<=2030; $i++) {
     $select_str = ($end_date_info[0]==$i)?' selected':''; 
     $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
   }
   $html_str .= '</select>'.YEAR_TEXT.'&nbsp;'; 
-  $html_str .= '<select name="emonth" id="emonth">'; 
+  $html_str .= '<select name="emonth" id="emonth"'.$disabled.'>'; 
   for ($i=1; $i<=12; $i++) {
     $select_str = ($end_date_info[1]==$i)?' selected':''; 
     $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
   }
   $html_str .= '</select>'.MONTH_TEXT.'&nbsp;'; 
-  $html_str .= '<select name="eday" id="eday">'; 
+  $html_str .= '<select name="eday" id="eday"'.$disabled.'>'; 
   for ($i=1; $i<=31; $i++) {
     $select_str = ($end_date_info[2]==$i)?' selected':''; 
     $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
@@ -1298,8 +1309,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= TEXT_INFO_MAX_USE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('max_use', $campaign_res['max_use'],
-      'id="max_use" class="campaign_input_num" ').TEXT_CAMPAIGN_NUM_UNIT; 
+  $html_str .= tep_draw_input_field('max_use', $campaign_res['max_use'], 'id="max_use" class="campaign_input_num"'.$disabled).TEXT_CAMPAIGN_NUM_UNIT; 
   $html_str .= '<div id="max_use_error"></div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1310,43 +1320,34 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '<td>';
   $camp_num_query = tep_db_query("select count(*) as total from ".TABLE_CUSTOMER_TO_CAMPAIGN." where campaign_id = '".$campaign_res['id']."'"); 
   $camp_num = tep_db_fetch_array($camp_num_query); 
-  $html_str .= tep_draw_input_field('use_num', strval((int)$camp_num['total']),
-      'disabled="true" class="campaign_input_num" style="background:#ccc;" ').TEXT_CAMPAIGN_NUM_UNIT; 
+  $html_str .= tep_draw_input_field('use_num', strval((int)$camp_num['total']), 'disabled="true" class="campaign_input_num" style="background:#ccc;"'.$disabled).TEXT_CAMPAIGN_NUM_UNIT; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   if(tep_not_null($campaign_res['user_added'])){ 
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_USER_ADDED;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= $campaign_res['user_added'];
   $html_str .= '</td>';
-  $html_str .= '</tr>';
   }else{
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_USER_ADDED;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
-  $html_str .= '</tr>';
   }if(tep_not_null(tep_datetime_short($campaign_res['created_at']))){
-  $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_ADDED;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= $campaign_res['created_at'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
   }else{
-  $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_ADDED;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1354,45 +1355,42 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_USER_UPDATE;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= $campaign_res['user_update'];
   $html_str .= '</td>';
-  $html_str .= '</tr>';
   }else{
   $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_USER_UPDATE;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
-  $html_str .= '</tr>';
   }if(tep_not_null(tep_datetime_short($campaign_res['date_update']))){ 
-  $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_UPDATE;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= $campaign_res['date_update'];
   $html_str .= '</td>';
   $html_str .= '</tr>';
   }else{
-  $html_str .= '<tr>';
   $html_str .= '<td>';
   $html_str .= TEXT_DATE_UPDATE;
-  $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '&nbsp;&nbsp;';
   $html_str .= TEXT_UNSET_DATA;
   $html_str .= '</td>';
   $html_str .= '</tr>';
   }
   $html_str .= '<tr>';
   $html_str .= '<td colspan="2" align="center">';
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="show_new_campaign(\''.$_POST['st_id'].'\')"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_campaign_info('.$campaign_res['id'].', 1, '.$campaign_res['site_id'].');"').'</a>&nbsp;'; 
+  $html_str .= '<a
+    href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="show_new_campaign(\''.$_POST['st_id'].'\')"'.$disabled).'</a>&nbsp;'; 
+  if($disabled){
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_campaign_info('.$campaign_res['id'].', 1, '.$campaign_res['site_id'].');"'.$disabled).'</a>&nbsp;'; 
+  }else{
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="check_campaign_info('.$campaign_res['id'].', 1, '.$campaign_res['site_id'].');"'.$disabled).'</a>&nbsp;'; 
+  }
   if ($ocertify->npermission >= 15) {
-    $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_CAMPAIGN.'\')) toggle_campaign_action(\''.$ocertify->npermission.'\', \''.tep_href_link(FILENAME_CAMPAIGN, 'action=deleteconfirm&campaign_id='.$campaign_res['id']).'&site_id='.$_POST['st_id'].'\');"').'</a>'; 
+    $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_CAMPAIGN.'\')) toggle_campaign_action(\''.$ocertify->npermission.'\', \''.tep_href_link(FILENAME_CAMPAIGN, 'action=deleteconfirm&campaign_id='.$campaign_res['id']).'&site_id='.$_POST['st_id'].'\');"'.$disabled).'</a>'; 
   }
   $html_str .= tep_draw_hidden_field('campaign_id', $campaign_res['id']); 
   $html_str .= '</td>';
@@ -1422,6 +1420,40 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   $html_str .= '</table>'; 
   $html_str .= tep_draw_form('campaign', FILENAME_CAMPAIGN, 'action=insert&site_id='.$_POST['site_id'].'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&page='.$_GET['page']); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $sites_sql = tep_db_query("SELECT * FROM `sites`");
+  $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+  while($userslist= tep_db_fetch_array($sites_id)){
+     $site_permission = $userslist['site_permission'];
+  }
+  if(isset($site_permission)) $site_arr=$site_permission;//权限判断
+  else $site_arr="";
+  $site_array = explode(',',$site_arr);
+  $show_site_arr = array();
+  while($sites_row = tep_db_fetch_array($sites_sql)){
+    $show_site_arr[] = $sites_row['id']; 
+  }
+  $present_site_arr = array_intersect($show_site_arr,$site_array);
+  $site_id_name = "<select id='present_site_id' name='site_id' $disabled>";
+  if(in_array('0',$site_array)){
+     $site_id_name .= "<option value='0'>all</option>";
+  }
+  foreach($present_site_arr as $value){
+    if($value!=0){
+      $site_name = tep_db_fetch_array(tep_db_query("select * from `sites` where id=".$value));
+      $site_id_name .= "<option value='".$site_name['id'] ."'>".$site_name['name']."</option>";
+    }
+  }
+  $site_id_name .= "</select>";
+  $site_id_name .= '&nbsp;<font color="#ff0000;">*'.TEXT_REQUIRED.'</font>'; 
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= ENTRY_SITE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= $site_id_name; 
+  $html_str .= '<div id="title_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
   $html_str .= TEXT_INFO_TITLE; 
@@ -1566,7 +1598,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   
   $html_str .= '<tr>';
   $html_str .= '<td colspan="2" align="center">';
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_campaign_info(0, 0, '.$_POST['site_id'].');"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="check_campaign_info(0, 0, '.$_POST['site_id'].');"').'</a>&nbsp;'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   $html_str .= '</table>';
