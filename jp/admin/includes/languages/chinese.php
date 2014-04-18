@@ -86,6 +86,7 @@ define('BOX_CATALOG_PRODUCTS_EXPECTED', '预定到货商品管理');
 // customers box text in includes/boxes/customers.php
 define('BOX_HEADING_CUSTOMERS', '顾客管理');
 define('BOX_CUSTOMERS_CUSTOMERS', '顾客管理');
+define('BOX_CUSTOMERS_CUSTOMERS_INFO', '检索顾客信息');
 define('BOX_CUSTOMERS_ORDERS', '订单管理');
 
 // taxes box text in includes/boxes/taxes.php
@@ -289,6 +290,7 @@ define('TEXT_DISPLAY_NUMBER_OF_CATEGORIES', '当前显示<b>%d</b> &sim; <b>%d</
 define('TEXT_DISPLAY_NUMBER_OF_BANNERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 define('TEXT_DISPLAY_NUMBER_OF_COUNTRIES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
+define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS_INFO', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 define('TEXT_DISPLAY_NUMBER_OF_FAQ', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项)');
 define('TEXT_DISPLAY_NUMBER_OF_CURRENCIES', '当前显示<b>%d</b> &sim; <b>%d</b>  (共<b>%d</b> 项 )');
 define('TEXT_DISPLAY_NUMBER_OF_LANGUAGES', '当前显示<b>%d</b> &sim; <b>%d</b>  ( 共<b>%d</b>  项)');

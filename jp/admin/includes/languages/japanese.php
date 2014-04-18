@@ -86,6 +86,7 @@ define('BOX_CATALOG_PRODUCTS_EXPECTED', '入荷予定商品管理');
 // customers box text in includes/boxes/customers.php
 define('BOX_HEADING_CUSTOMERS', '顧客管理');
 define('BOX_CUSTOMERS_CUSTOMERS', '顧客管理');
+define('BOX_CUSTOMERS_CUSTOMERS_INFO', '顧客情報検索');
 define('BOX_CUSTOMERS_ORDERS', '注文管理');
 
 // taxes box text in includes/boxes/taxes.php
@@ -289,6 +290,7 @@ define('TEXT_DISPLAY_NUMBER_OF_CATEGORIES', '<b>%d</b> &sim; <b>%d</b> 番目を
 define('TEXT_DISPLAY_NUMBER_OF_BANNERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のバナーのうち)');
 define('TEXT_DISPLAY_NUMBER_OF_COUNTRIES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の国のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の顧客のうち)');
+define('TEXT_DISPLAY_NUMBER_OF_CUSTOMERS_INFO', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の顧客情報のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_FAQ', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> のカテゴリ/FAQのうち)');
 define('TEXT_DISPLAY_NUMBER_OF_CURRENCIES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の通貨のうち)');
 define('TEXT_DISPLAY_NUMBER_OF_LANGUAGES', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の言語のうち)');
