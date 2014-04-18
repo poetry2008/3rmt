@@ -316,7 +316,15 @@ function tep_get_all_get_params($exclude_array = '') {
 
   reset($_GET);
   while (list($key, $value) = each($_GET)) {
-    if (($key !='eof') && ($key != tep_session_name()) && ($key != 'error') && (!tep_in_array($key, $exclude_array))) $get_url .= $key . '=' . rawurlencode($value) . '&';
+    if (($key !='eof') && ($key != tep_session_name()) && ($key != 'error') && (!tep_in_array($key, $exclude_array))){
+      if(is_array($value)){
+        foreach($value as $url_key=>$url_value){
+          $get_url .= $key . '[]=' . rawurlencode($url_value) . '&';
+        }
+      }else{
+        $get_url .= $key . '=' . rawurlencode($value) . '&';
+      }
+    }
   }
 
   return $get_url;

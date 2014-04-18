@@ -2477,7 +2477,7 @@ else { ?>
         <script language="javascript" src="includes/javascript/all_order.js?v=<?php echo $back_rand_info?>"></script>
         <script language="javascript" src="includes/javascript/order.js?v=<?php echo $back_rand_info?>"></script>
         <script language="javascript">
-        <?php // 用作跳转?>
+<?php // 用作跳转?>
         var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
         <?php // 非完成状态的订单不显示最终确认?>
         var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
@@ -2485,42 +2485,40 @@ else { ?>
 <?php
 if(isset($_GET['keywords'])&&$_GET['keywords']){
   ?>
-    $("#keywords").val("<?php echo $_GET['keywords'];?>");
+        var js_orders_status_keywords = true;
+        var js_orders_keywords = '<?php echo $_GET['keywords'];?>';
   <?php
+}else{
+?>
+        var js_orders_status_keywords = false;
+<?php
 }
 if(isset($_GET['search_type'])&&$_GET['search_type']){
   ?>
-    $(document).ready(function(){ 
-        $("select[name=search_type]").find("option[value='<?php echo
-          urldecode($_GET['search_type']);?>']").attr("selected", "selected");
-        });
+        var js_orders_search_type = true;
+        var js_orders_option_value = '<?php echo urldecode($_GET['search_type']);?>';
   <?php
+}else{
+?>
+        var js_orders_search_type = false;
+<?php
 }
 
 ?>
 <?php
 if (!isset($_GET['action'])) {
   ?>
-    $(function() {
-        left_show_height = $('#orders_list_table').height();
-        right_show_height = $('#rightinfo').height();
-
-        if (right_show_height <= left_show_height) {
-        $('#rightinfo').css('height', left_show_height);  
-        }
-        });
-  function showRightInfo() {
-    left_show_height = $('#orders_list_table').height();
-    $('#rightinfo').css('height', left_show_height);  
-  }
-  $(window).resize(function() {
-      showRightInfo();
-      });
+        var js_orders_action_isset = true;
   <?php
+}else{
+?>
+        var js_orders_action_isset = false;
+<?php
 }
 ?>
 var popup_num = 1;
 </script>
+<script language="javascript" src="includes/javascript/admin_orders.js?v=<?php echo $back_rand_info?>"></script>	
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);

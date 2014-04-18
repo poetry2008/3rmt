@@ -35,6 +35,13 @@
         echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_customer.gif').'</span><span>' . BOX_CUSTOMERS_CUSTOMERS . '</span></div>';
       }
     }
+    if (!check_whether_is_limited(FILENAME_CUSTOMERS_INFO)) {
+      if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_CUSTOMERS_INFO){
+        echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_CUSTOMERS_INFO, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_customer.gif').'</span><span>' . BOX_CUSTOMERS_CUSTOMERS_INFO . '</span></div>';
+      }else{
+        echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_CUSTOMERS_INFO, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_customer.gif').'</span><span>' . BOX_CUSTOMERS_CUSTOMERS_INFO . '</span></div>';
+      }
+    }
     if (!check_whether_is_limited(FILENAME_ORDERS)) {
       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_ORDERS){
         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'\';"><span>'.  tep_image(DIR_WS_MENU_ICON .  'icon_orders.gif').'</span><span>' . BOX_CUSTOMERS_ORDERS . '</span></div>';
