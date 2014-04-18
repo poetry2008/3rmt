@@ -251,6 +251,9 @@ require("includes/note_js.php");
     if (isset($_GET['search_type']) && tep_not_null($_GET['search_type'])) {
       if (isset($_GET['keywords']) && tep_not_null($_GET['keywords'])) {
         switch ($_GET['search_type']) {
+          case 'tid':
+            $where_str .="and id=".$_GET['keywords'];
+          break;
           case 'username':
             if (tep_parse_search_string(stripslashes($_GET['keywords']), $search_keywords)) {
               $where_str .= " and (";
