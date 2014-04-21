@@ -122,7 +122,7 @@
         }
       }
       if($range_key < $range_lenght){
-        $keyword_query_str .= ' union ';
+        $keyword_query_str .= ' union all ';
       }
     } 
 
