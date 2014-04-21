@@ -940,7 +940,7 @@ $(document).ready(function(){
   $("select[name='status']").change(function(){
     var s_status = document.getElementsByName("status")[0].value;
     orders_session('s_status',s_status);
-    var title = document.getElementsByName("title")[0].value;
+    var title = document.getElementsByName("etitle")[0].value;
     orders_session('title',title);
     var comments = document.getElementsByName("comments")[0].value;
     orders_session('comments',comments);

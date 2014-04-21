@@ -3,33 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo SR_HEADING_TITLE;?> </title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <?php require('includes/javascript/show_site.js.php');?>
+<script language="javascript" src="includes/javascript/admin_template_default.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
-<?php //显示相应分类下的商品列表?>
-function change_products(id,products_id){
-  
-  $.ajax({
-         type: "POST",
-         data: 'id='+id+'&products_id='+products_id,
-         async:false,
-         url: 'ajax.php?action=products_list',
-         success: function(data) {
-
-           $("#products_list").html(data); 
-           $("#c_id").val(id);
-         }
-  });
-}
-
-<?php //保存商品ID?>
-function save_products_id(value){
-
-  $("#p_id").val(value);
-}
-
 $(document).ready(function() {
 <?php
 if(isset($_GET['add_product_categories_id']) && $_GET['add_product_categories_id'] != '' && isset($_GET['products_id']) && $_GET['products_id'] != ''){

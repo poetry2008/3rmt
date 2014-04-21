@@ -172,6 +172,83 @@ function orders_csv_exe(c_permission){
             });
            }
 }
+function customers_csv_exe(c_permission){
+           if (c_permission == 31) {
+             change_action("<?php echo tep_href_link('customers_csv_exe.php','csv_exe=true', 'SSL');?>");
+           } else {
+             $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+              async: false,
+              success: function(msg) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
+                   change_action("<?php echo tep_href_link('customers_csv_exe.php','csv_exe=true', 'SSL');?>");
+                } else {
+                  $("#button_save").attr('id', 'tmp_button_save');
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str,pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str,
+                      async: false,
+                      success: function(msg_info) {
+                         change_action("<?php echo tep_href_link('customers_csv_exe.php','csv_exe=true', 'SSL');?>");
+                      }
+                    }); 
+                  } else {
+                    document.getElementsByName('customers_action')[0].value = 0;
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              }
+            });
+           }
+}
+function customers_csv_import(c_permission){
+           if (c_permission == 31) {
+             change_action("<?php echo tep_href_link('customers_csv_import.php','csv_exe=true', 'SSL');?>");
+           } else {
+             $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+              async: false,
+              success: function(msg) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
+                   change_action("<?php echo tep_href_link('customers_csv_import.php','csv_exe=true', 'SSL');?>");
+                } else {
+                  $("#button_save").attr('id', 'tmp_button_save');
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str,pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str,
+                      async: false,
+                      success: function(msg_info) {
+                         change_action("<?php echo
+                           tep_href_link('customers_csv_import.php','csv_exe=true', 'SSL');?>");
+                      }
+                    }); 
+                  } else {
+                    document.getElementsByName('customers_action')[0].value = 0;
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              }
+            });
+           }
+}
 function preorders_csv_exe(c_permission){
            if (c_permission == 31) {
              change_action("<?php echo tep_href_link('preorders_csv_exe.php','csv_exe=true', 'SSL');?>");
@@ -352,18 +429,18 @@ require("includes/note_js.php");
           <tr>
             <td>
             <?php
-             if(!isset($_GET['type']) || $_GET['type'] == ''){
-                  $_GET['type'] = 'asc';
+             if((!isset($_GET['type']) || $_GET['type'] == '') && (!isset($_GET['sort'])||$_GET['sort']=='')){
+                  $data_str = ' last_modified asc';
              }
              if($data_type == ''){
                   $data_type = 'asc';
              }
              if($_GET['sort'] == 'contents'){
                if($_GET['type'] == 'desc'){   
-               $data_str = 'desc';
+               $data_str = ' last_modified desc';
                $data_type= 'asc';
                }else{
-               $data_str = 'asc';
+               $data_str = ' last_modified asc';
                $data_type= 'desc';
                }
              }else if($_GET['sort'] == 'update_at'){
@@ -390,7 +467,6 @@ require("includes/note_js.php");
                  $update_at = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
                }
              }
- 
              $data_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
              $notice_box = new notice_box('','',$data_table_params);
              $data_table_row = array();
@@ -408,58 +484,51 @@ require("includes/note_js.php");
              }
              $data_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $data_title_row);
 
-
-             if($_GET['sort'] == 'update_at'){
              $sql_num = tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT'"));
              if($sql_num > 0){
              $data_management = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' order by ".$data_str);   
              while($data_row = tep_db_fetch_array($data_management)){
-             if($data_row['configuration_value'] == 'mag_orders'){ 
-             if($_GET['pitch'] == 'mag_orders'){
+             $even = 'dataTableSecondRow';
+             $odd  = 'dataTableRow';
+             if (isset($nowColor) && $nowColor == $odd) {
+                 $nowColor = $even; 
+             } else {
+                 $nowColor = $odd; 
+             }
+             if($_GET['pitch'] == $data_row['configuration_value']){
              $data_orders_params = ' class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
              }else{
-             $data_orders_params = ' onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow" style=""';
+             $data_orders_params = 'class="'.$nowColor.'" onmouseout="this.className=\''.$nowColor.'\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow" style=""';
              }
              $data_orders_info = array();
              $data_orders_info[] = array(
                 'params' => 'class="main"',
                 'text'   => '<input type="checkbox" disabled="disabled">'
              );
+             if($data_row['configuration_value']=='mag_customers'){
+              $data_orders_info[] = array(
+                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'pitch=mag_customers').'\';"',
+                'text'   => TEXT_MAG_CUSTOMERS
+             );
+             }else if($data_row['configuration_value']=='mag_customers_import'){
+               $data_orders_info[] = array(
+                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'pitch=mag_customers_import').'\';"',
+                'text'   => TEXT_MAG_CUSTOMERS_IMPORT
+             );
+             }else{
              $data_orders_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_orders').'\';"',
+                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'pitch=mag_orders').'\';"',
                 'text'   => TEXT_MAG_ORDERS
              );
+             }
              $data_orders_info[] = array(
                 'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_orders\',\''.$data_str.'\','.$data_row['configuration_id'].')">'.  tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
+                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\''.$data_row['configuration_value'].'\',\''.$data_str.'\','.$data_row['configuration_id'].')">'.  tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
              );
              $data_table_row[] = array('params' => $data_orders_params, 'text' => $data_orders_info);
              }
              }
-             }
-             }else{
              //sql else start
-             if($_GET['pitch'] == 'mag_orders'){
-             $data_orders_params = ' class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
-             }else{
-             $data_orders_params = ' onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow" style=""';
-             }
-             $data_orders_info = array();
-             $data_orders_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<input type="checkbox" disabled="disabled">'
-             );
-             $data_orders_info[] = array(
-                'params' => 'class="main" onclick="document.location.href=\''.tep_href_link(FILENAME_DATA_MANAGEMENT,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pitch=mag_orders').'\';"',
-                'text'   => TEXT_MAG_ORDERS
-             );
-             $data_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_orders'"));   
-             $data_orders_info[] = array(
-                'params' => 'class="main"',
-                'text'   => '<a href="javascript:void(0)" onclick="show_data(this,\'mag_orders\',\''.$data_str.'\',0)">'.tep_get_signal_pic_info(isset($data_row['last_modified']) && $data_row['last_modified'] !=null?$data_row['last_modified']:$data_row['date_added']).'</a>'
-             );
-             $data_table_row[] = array('params' => $data_orders_params, 'text' => $data_orders_info);
-             }
              $notice_box->get_contents($data_table_row);
              $notice_box->get_eof(tep_eof_hidden());
              echo $notice_box->show_notice();

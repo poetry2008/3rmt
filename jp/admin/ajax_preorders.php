@@ -1311,3 +1311,237 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     echo $show_error_str."\n".ERROR_WARNING_TEXT;
   }
 }
+
+
+
+
+/*send mail*/
+
+
+if ($_GET['action'] == 'show_status_mail_send'){
+	include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PREORDERS);
+	
+$orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
+while ($orders_status = tep_db_fetch_array($orders_status_query)) {
+    $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
+}
+$suu = 0;
+$text_suu = 0;  
+$__orders_status_query = tep_db_query("
+    select orders_status_id 
+    from " . TABLE_PREORDERS_STATUS . " 
+    where language_id = " . $languages_id . " 
+    order by orders_status_id");
+$__orders_status_ids   = array();
+while($__orders_status = tep_db_fetch_array($__orders_status_query)){
+  $__orders_status_ids[] = $__orders_status['orders_status_id'];
+}
+if(join(',', $__orders_status_ids)!=''){
+$select_query = tep_db_query("
+    select 
+    orders_status_id,
+    nomail
+    from ".TABLE_PREORDERS_STATUS."
+    where language_id = " . $languages_id . " 
+    and orders_status_id IN (".join(',', $__orders_status_ids).")");
+
+while($select_result = tep_db_fetch_array($select_query)){
+  if($suu == 0){
+    $select_select = $select_result['orders_status_id'];
+    $suu = 1;
+  }
+  $osid = $select_result['orders_status_id'];
+  //获取对应的邮件模板
+  $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='PREORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'");
+  $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+  tep_db_free_result($mail_templates_query);
+  if($text_suu == 0){
+    $select_text = $mail_templates_array['contents'];
+    $select_title = $mail_templates_array['title'];
+    $text_suu = 1;
+    $select_nomail = $select_result['nomail'];
+  }
+
+  $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+  $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
+  $nomail[$osid] = $select_result['nomail'];
+}
+}
+  ?>
+<?php 
+// 输出订单邮件
+// title
+foreach ($mo as $oskey => $value){
+	foreach ($value as $sitekey => $svalue) {
+    echo '<input type="hidden" id="status_title_'.$oskey.'_'.$sitekey.'" value="'.str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue).'">';
+  }
+}
+
+//content
+foreach ($mt as $oskey => $value){
+  foreach ($value as $sitekey => $svalue) {
+    echo tep_draw_textarea_field('temp_comment', 'hard', '74', '30', $svalue, 'style="display:none" id="status_text_'.$oskey.'_'.$sitekey.'"'); 
+  }
+}
+
+//no mail
+foreach ($nomail as $oskey => $value){
+  echo '<input type="hidden" id="nomail_'.$oskey.'" value="'.$value.'">';
+}
+?>
+<?php
+foreach($orders_statuses as $o_status){
+  echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
+    '" value="'.$mo[$o_status['id']][0].'">';
+}
+?>
+<?php
+$allorders = $_SESSION['order_id_list'];
+foreach($allorders as $key=>$orders){
+  echo tep_draw_textarea_field('temp_orderstr', 'hard', '74', '30', orders_a($orders['orders_id'], $allorders), 'style="display:none" id="orderstr_'.$orders['orders_id'].'"'); 
+  echo '<input type="hidden" id="ordersite_'.$orders['orders_id'].  '" value="'.$orders['site_id'].'">';
+  echo '<input type="hidden" id="ordertype_'.$orders['orders_id'].  '" value="'.tep_check_order_type($orders['orders_id']).'">';
+
+}
+?>
+              <table width="100%" id="select_send" style="display:none">
+              <tr>
+              <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
+              <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select, 'onChange="mail_text(\'status\',\'comments\',\'os_title\',\''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_tilte_status"'); ?> <?php
+              if($ocertify->npermission > 7 ) { ?>&nbsp;<a href="<?php echo
+                tep_href_link(FILENAME_PREORDERS_STATUS,'',SSL);?>"><?php echo
+                  TEXT_EDIT_MAIL_TEXT;?></a><?php } ?></td>
+                  </tr>
+                  <tr>
+                  <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                  </tr>
+                  <tr>
+                  <td class="main" nowrap="nowrap"><?php echo ENTRY_EMAIL_TITLE; ?></td>
+                  <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,'style=" width:400px;" id="mail_title"'); ?></td>
+                  </tr>
+                  <tr>
+                  <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                  </tr>
+                  <tr>
+                  <td class="main" valign="top" nowrap="nowrap"><?php echo TABLE_HEADING_COMMENTS . ':'; ?></td>
+                  <td class="main">
+                  <?php echo TEXT_MAIL_CONTENT_INFO;?>
+                  <table><tr class="smalltext"><td><font
+                  color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
+                  <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
+                  <br>
+                  <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:12px; width:400px;" id="c_comments"'); ?>
+                  </td>
+                  </tr>
+                  <tr>
+                  <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                  </tr>
+                  <tr>
+                  <td>&nbsp;</td>
+                  <td>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                  <tr>
+                  <td class="main"><?php echo tep_draw_checkbox_field('notify', '',
+                      !$select_nomail, '', 'id="notify"'); ?><?php echo
+                  TEXT_ORDER_SEND_MAIL;?></td>
+                  <td class="main" align="right"><?php echo
+                  tep_draw_checkbox_field('notify_comments', '', !$select_nomail, '',
+                      'id="notify_comments"'); ?><?php echo TEXT_ORDER_STATUS;?></td>
+                  </tr>
+                  <tr>
+                  <td class="main" colspan="2"><br><font color="#FF0000;"><?php
+                  foreach($orders_statuses as $o_status){
+                    echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
+                      '" value="'.$mo[$o_status['id']][0].'">';
+                  }
+                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_list_order_submit(\''.TEXT_STATUS_MAIL_TITLE_CHANGED.'\')"'); ?></a></td>
+                  </tr>
+                  </table>
+                  </td>
+                  </tr>
+                  </table>
+  <?php
+}else if ($_GET['action'] == 'edit_order_send_mail'){
+
+include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PREORDERS);
+$orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
+while ($orders_status = tep_db_fetch_array($orders_status_query)) {
+    $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
+}
+$suu = 0;
+$text_suu = 0;  
+$__orders_status_query = tep_db_query("
+    select orders_status_id 
+    from " . TABLE_PREORDERS_STATUS . " 
+    where language_id = " . $languages_id . " 
+    order by orders_status_id");
+$__orders_status_ids   = array();
+while($__orders_status = tep_db_fetch_array($__orders_status_query)){
+  $__orders_status_ids[] = $__orders_status['orders_status_id'];
+}
+if(join(',', $__orders_status_ids)!=''){
+$select_query = tep_db_query("
+    select 
+    orders_status_id,
+    nomail
+    from ".TABLE_PREORDERS_STATUS."
+    where language_id = " . $languages_id . " 
+    and orders_status_id IN (".join(',', $__orders_status_ids).")");
+
+while($select_result = tep_db_fetch_array($select_query)){
+  if($suu == 0){
+    $select_select = $select_result['orders_status_id'];
+    $suu = 1;
+  }
+
+  $osid = $select_result['orders_status_id'];
+
+  //获取对应的邮件模板
+  $mail_templates_query = tep_db_query("select site_id,title,contents from ". TABLE_MAIL_TEMPLATES ." where flag='PREORDERS_STATUS_MAIL_TEMPLATES_".$osid."' and site_id='0'");
+  $mail_templates_array = tep_db_fetch_array($mail_templates_query);
+  tep_db_free_result($mail_templates_query);
+  if($text_suu == 0){
+	  $select_text = $mail_templates_array['contents'];
+	  $select_title = $mail_templates_array['title'];
+    $text_suu = 1;
+    $select_nomail = $select_result['nomail'];
+  }
+
+  $mt[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['contents'];
+  $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
+  $nomail[$osid] = $select_result['nomail'];
+}
+}
+$orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
+while ($orders_status = tep_db_fetch_array($orders_status_query)) {
+    $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
+}
+
+  ?>
+<?php 
+// 输出订单邮件
+// title
+foreach ($mo as $oskey => $value){
+  foreach ($value as $sitekey => $svalue) {
+    echo '<input type="hidden" id="status_title_'.$oskey.'_'.$sitekey.'" value="'.str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue).'">';
+  }
+}
+
+//content
+foreach ($mt as $oskey => $value){
+  foreach ($value as $sitekey => $svalue) {
+    echo tep_draw_textarea_field('temp_comment', 'hard', '74', '30', $svalue, 'style="display:none" id="status_text_'.$oskey.'_'.$sitekey.'"'); 
+  }
+}
+
+//no mail
+foreach ($nomail as $oskey => $value){
+  echo '<input type="hidden" id="nomail_'.$oskey.'" value="'.$value.'">';
+}
+foreach($orders_statuses as $o_status){
+  echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].'"
+    value="'.$mo[$o_status['id']][0].'">';
+}
+echo '<input type="hidden" id="hidd_order_status_id" value="'.$_GET['o_status'].'">';
+echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'], array(array('orders_id' => $_GET['oid']))).'">';
+}	

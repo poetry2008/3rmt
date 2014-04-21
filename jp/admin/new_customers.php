@@ -62,9 +62,9 @@ break;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -356,8 +356,7 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".R
              ci.customers_info_date_account_created as date_account_created
       FROM customers c , ".TABLE_CUSTOMERS_INFO." ci
       WHERE c.customers_id = ci.customers_info_id and 
-     ci.`customers_info_date_account_created` < '" . $endTime . "' AND
-     ci.`customers_info_date_account_created` > '" . $startTime . "' ".' AND '.$sql_site_where."
+     ci.`customers_info_date_account_created` < '" . $endTime . "' AND ci.`customers_info_date_account_created` > '" . $startTime . "' ".' AND '.$sql_site_where."
       group by  c.customers_id  
       ORDER BY ".$new_str;
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);

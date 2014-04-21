@@ -1996,6 +1996,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
                        //顾客名/邮件查询 
+                       $use_index = '';
+                       if($_GET['search_type'] == 'customers_name'){
+                         $use_index = ' use index(customers_name_2) ';
+                       }else if ($_GET['search_type'] == 'email'){
+                         $use_index = ' use index(customers_email_address) ';
+                       }
                        $orders_query_raw = "
                          select o.orders_id, 
                                 o.torihiki_date, 
@@ -2025,7 +2031,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.site_id,
                                 o.is_gray,
                                 o.read_flag
-                                  from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+                                  from " . TABLE_ORDERS . " o  " .$use_index. $from_payment . $sort_table."
                                   where   
                                   " .$sort_where . " 1=1 ".
                                   " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') ."
@@ -2107,7 +2113,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.site_id,
              o.is_gray,
              o.read_flag
-	       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
+	       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ."
 	       where " . $sort_where.
 	       " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_id" .$orders_str.
 	       $where_payment . $where_type.' order by '.$order_str;

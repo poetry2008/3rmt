@@ -29,5 +29,12 @@ define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');
 define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
 define('TEXT_MAILBOX','メールアドレス');
 define('TEXT_NAME','姓名');
+define('TEXT_MAG_CUSTOMERS','顧客情報エクスポート');
+define('TEXT_MAG_CUSTOMERS_IMPORT','顧客情報インポート');
+define('TEXT_CUSTOMERS_CSV_OUTPUT','顧客CSVエクスポート');
+define('HEADING_TITLE_CUSTOMERS_IMPORT_STATUS','インポート');
+define('HEADING_TITLE_CUSTOMERS_STATUS','エクスポート');
+define('TEXT_CUSTOMERS_IMPORT_FILE_TYPE_ERROR','ファイル形式が正しくないですので、再びアップしてください。');
+define('TEXT_CUSTOMERS_IMPORT_DATA','インポートデータがすでに%s行に存在しています。');
 ?>
 

@@ -77,10 +77,10 @@ if ($endDateG) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; 
 charset=<?php echo CHARSET; ?>">
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<link media="print" rel="stylesheet" type="text/css" href="includes/print_assets.css">
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<link media="print" rel="stylesheet" type="text/css" href="includes/print_assets.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <title><?php echo ASSETS_TITLE;?></title>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);

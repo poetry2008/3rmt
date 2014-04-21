@@ -28,4 +28,11 @@ define('TEXT_CONTENTS_SELECT_ACTION','请选择');
 define('TEXT_CONTENTS_DELETE_ACTION', '删除勾选项目');
 define('TEXT_MAILBOX','邮箱');
 define('TEXT_NAME','姓名');
+define('TEXT_MAG_CUSTOMERS','导出顾客信息');
+define('TEXT_MAG_CUSTOMERS_IMPORT','导入顾客信息');
+define('TEXT_CUSTOMERS_CSV_OUTPUT','顾客CSV数据导出');
+define('HEADING_TITLE_CUSTOMERS_IMPORT_STATUS','导入');
+define('HEADING_TITLE_CUSTOMERS_STATUS','导出');
+define('TEXT_CUSTOMERS_IMPORT_FILE_TYPE_ERROR','文件格式不对,请重新上传!');
+define('TEXT_CUSTOMERS_IMPORT_DATA','导入数据在第%s行重复。');
 ?>
