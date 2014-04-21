@@ -692,7 +692,12 @@ $(document).ready(function() {
       c.customers_id = a.customers_id and c.customers_default_address_id =
       a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where. " " . $search . " 
       order by ".$customers_order_sql;
-    $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
+    $count_customers_query_raw = "select count(c.customers_id) as count 
+      from ".  TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
+      c.customers_id = a.customers_id and c.customers_default_address_id =
+      a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where. " " . $search;
+
+    $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows,$count_customers_query_raw);
     $customers_query = tep_db_query($customers_query_raw);
     $customers_numrows = tep_db_num_rows($customers_query);
     while ($customers = tep_db_fetch_array($customers_query)) {

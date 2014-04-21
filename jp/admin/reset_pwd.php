@@ -70,146 +70,20 @@ if (isset($_GET['action']) and $_GET['action']) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TEXT_RESET_PWD_TITLE; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/javascript/jquery.js"></script>
-<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <script>
-<?php //打开日历 ?>
-function open_new_calendar(c_type)
-{
-  var is_open = $('#toggle_open_'+c_type).val(); 
-  if (is_open == 0) {
-    browser_str = navigator.userAgent.toLowerCase(); 
-    if (browser_str.indexOf("msie 9.0") > 0) {
-      $('#new_yui3').css('margin-left', '-170px'); 
-    }
-    $('#toggle_open_'+c_type).val('1'); 
-    YUI().use('calendar', 'datatype-date',  function(Y) {
-        var calendar = new Y.Calendar({
-            contentBox: "#mycalendar_"+c_type,
-            width:'170px',
+	var js_reset_pwd_self = '<?php echo $_SERVER['PHP_SELF']?>'; 
+	var js_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
+	var js_onetime_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
+	var js_reset_pwd_href = '<?php echo tep_href_link('reset_pwd.php');?>';
 
-        }).render();
-      var dtdate = Y.DataType.Date;
-      calendar.on("selectionChange", function (ev) {
-        var newDate = ev.newSelection[0];
-        if (c_type == 'start') {
-          $("#start").val(dtdate.format(newDate)); 
-        } else {
-          $("#end").val(dtdate.format(newDate)); 
-        }
-        $('#toggle_open_'+c_type).val('0');
-        $('#toggle_open_'+c_type).next().html('<div id="mycalendar_'+c_type+'"></div>');
-      });
-    });
-  }
-}
-<?php //选择完日历 确认查询 ?>
-function check_search_form()
-{
-  start_str = document.getElementById('start').value; 
-  end_str = document.getElementById('end').value; 
-  
-  $.ajax({
-    url: 'reset_pwd.php?action=check_search', 
-    type:'POST',  
-    data:'start='+start_str+'&end='+end_str,
-    async:false,
-    success: function(msg) {
-      if (msg != '') {
-        alert(msg); 
-      } else {
-        document.forms.search.submit(); 
-      }
-    }
-  });
-}
-<?php //重置日历  ?>
-function reset_customers_pwd(c_permission) {
-  $.ajax({
-    url: 'reset_pwd.php?action=reset_all',
-    type: 'POST',
-    async:false,
-    success: function(msg) {
-      if (c_permission == 31) {
-        window.location.href = window.location.href; 
-      } else {
-        $.ajax({
-          url: 'ajax_orders.php?action=getallpwd',   
-          type: 'POST',
-          dataType: 'text',
-          data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-          async: false,
-          success: function(msg) {
-            var tmp_msg_arr = msg.split('|||'); 
-            var pwd_list_array = tmp_msg_arr[1].split(',');
-            if (tmp_msg_arr[0] == '0') {
-              window.location.href = window.location.href; 
-            } else {
-              var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-              if (in_array(input_pwd_str, pwd_list_array)) {
-                $.ajax({
-                  url: 'ajax_orders.php?action=record_pwd_log',   
-                  type: 'POST',
-                  dataType: 'text',
-                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link('reset_pwd.php');?>'),
-                  async: false,
-                  success: function(msg_info) {
-                    window.location.href = window.location.href; 
-                  }
-                }); 
-              } else {
-                alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-              }
-            }
-          }
-        });
-      }
-    }
-  });
-}
-<?php //提交表单?>
-function check_reset_pwd_form(c_permission)
-{
-  if (c_permission == 31) {
-    document.forms.rp_form.submit(); 
-  } else {
-    $.ajax({
-      url: 'ajax_orders.php?action=getallpwd',   
-      type: 'POST',
-      dataType: 'text',
-      data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-      async: false,
-      success: function(msg) {
-        var tmp_msg_arr = msg.split('|||'); 
-        var pwd_list_array = tmp_msg_arr[1].split(',');
-        if (tmp_msg_arr[0] == '0') {
-          document.forms.rp_form.submit(); 
-        } else {
-          var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
-          if (in_array(input_pwd_str, pwd_list_array)) {
-            $.ajax({
-              url: 'ajax_orders.php?action=record_pwd_log',   
-              type: 'POST',
-              dataType: 'text',
-              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.rp_form.action),
-              async: false,
-              success: function(msg_info) {
-                document.forms.rp_form.submit(); 
-              }
-            }); 
-          } else {
-            alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
-          }
-        }
-      }
-    });
-  }
-}
 </script>
+<script language="javascript" src="includes/javascript/admin_reset_pwd.js?v=<?php echo $back_rand_info?>"></script>
 <style type="text/css">
 .yui3-y{
 	position:absolute;
