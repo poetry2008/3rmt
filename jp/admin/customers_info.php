@@ -21,9 +21,9 @@
   if (isset($_GET['action']) && $_GET['action'] == 'search') {
 
     //获取各条件的值
-    $keyword_1 = tep_db_prepare_input($_GET['keywords_1']);    
+    $keyword_1 = tep_db_input(tep_db_prepare_input($_GET['keywords_1']));    
     $condition = tep_db_prepare_input($_GET['condition']); 
-    $keyword_2 = tep_db_prepare_input($_GET['keywords_2']);    
+    $keyword_2 = tep_db_input(tep_db_prepare_input($_GET['keywords_2']));    
     $search_object = tep_db_prepare_input($_GET['search_object']);    
     $search_condition = tep_db_prepare_input($_GET['search_condition']);    
     $search_range = tep_db_prepare_input($_GET['search_range']);    
@@ -60,15 +60,15 @@
      */
     $keyword_array = array('customers_customers'=>array('customers_name'=>"#CASE#BLANK_Fc.customers_firstname#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_lastname#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_firstname_f#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_lastname_f#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fconcat(c.customers_lastname,' ',c.customers_firstname)#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                         'customers_email'=>"#CASE#BLANK_Fc.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'",
-                                                        'customers_other'=>"#CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.referer#BLANK_E #CHAR_Clike '%#KEYWORD%'",  
+                                                        'customers_other'=>"#CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",  
                                                   ),
-                         'customers_orders'=>array('customers_name'=>"#CASE#BLANK_Fcustomers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fcustomers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
-                                                    'customers_email'=>"#CASE#BLANK_Fcustomers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
-                                                    'customers_other'=>"#CASE#BLANK_Forders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fcustomers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fbilling_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fpayment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                         'customers_orders'=>array('customers_name'=>"#CASE#BLANK_Fo.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.customers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                                                    'customers_email'=>"#CASE#BLANK_Fo.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
+                                                    'customers_other'=>"#CASE#BLANK_Fo.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fo.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.billing_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ref#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ref_keywords#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                   ), 
-                         'customers_preorders'=>array('customers_name'=>"#CASE#BLANK_Fcustomers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fcustomers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
-                                                    'customers_email'=>"#CASE#BLANK_Fcustomers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
-                                                    'customers_other'=>"#CASE#BLANK_Forders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fcustomers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fbilling_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fpayment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Forders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Ftelecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                         'customers_preorders'=>array('customers_name'=>"#CASE#BLANK_Fp.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.customers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                                                    'customers_email'=>"#CASE#BLANK_Fp.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
+                                                    'customers_other'=>"#CASE#BLANK_Fp.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fp.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.billing_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ref#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ref_keywords#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                   ),
                          'customers_telecom_unknow'=>array('customers_name'=>"#CASE#BLANK_Fo.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.customers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                     'customers_email'=>"#CASE#BLANK_Fo.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
@@ -78,8 +78,8 @@
 
     //查询表
     $table_array = array('customers_customers'=>"select c.site_id site_id,1 info_type,c.customers_id info_id,concat(c.customers_lastname,' ',c.customers_firstname) info_name,c.customers_email_address info_email,ci.customers_info_date_account_created info_time from ".TABLE_CUSTOMERS." c left join ".TABLE_CUSTOMERS_INFO." ci on c.customers_id=ci.customers_info_id where c.site_id".$sql_site_where,
-                         'customers_orders'=>"select site_id,2 info_type,orders_id info_id,customers_name info_name,customers_email_address info_email,date_purchased info_time from ".TABLE_ORDERS." where site_id".$sql_site_where, 
-                         'customers_preorders'=>"select site_id,3 info_type,orders_id info_id,customers_name info_name,customers_email_address info_email,date_purchased info_time from ".TABLE_PREORDERS." where site_id".$sql_site_where,
+                         'customers_orders'=>"select o.site_id,2 info_type,concat(o.orders_id,'') info_id,o.customers_name info_name,o.customers_email_address info_email,o.date_purchased info_time from ".TABLE_ORDERS." o left join ".TABLE_CUSTOMERS." c on o.customers_id=c.customers_id where o.site_id".$sql_site_where, 
+                         'customers_preorders'=>"select p.site_id,3 info_type,concat(p.orders_id,'') info_id,p.customers_name info_name,p.customers_email_address info_email,p.date_purchased info_time from ".TABLE_PREORDERS." p left join ".TABLE_CUSTOMERS." c on p.customers_id=c.customers_id where p.site_id".$sql_site_where,
                          'customers_telecom_unknow'=>"select o.site_id site_id,4 info_type,t.id info_id,o.customers_name info_name,o.customers_email_address info_email,o.date_purchased info_time from telecom_unknow t left join ".TABLE_ORDERS." o on t.option=o.telecom_option where o.telecom_option!='' and t.option!='' and o.site_id".$sql_site_where,
                        );
     //生成查询SQL条件
@@ -158,6 +158,8 @@
       $keyword_query_str = str_replace('#BLANK_F','',$keyword_query_str);
       $keyword_query_str = str_replace('#BLANK_E','',$keyword_query_str);
     }
+    //echo $keyword_query_str;
+    //exit;
   }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -191,7 +193,9 @@ function submit_check(){
 <?php //选中不区别全角半角的同时选中不区别大小写?>
 function select_case(){
 
-  $("#info_case").attr("checked","checked");
+  if($("#info_character").attr("checked")){
+    $("#info_case").attr("checked","checked");
+  }
 }
 </script>
 <?php 
