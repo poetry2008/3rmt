@@ -256,44 +256,44 @@ require("includes/note_js.php");
             <td class="pageHeading" height="35" colspan="2"><?php echo HEADING_TITLE; ?><input type="hidden" name="action" value="search"></td>
           </tr>
           <tr>
-          <td class="smallText" height="25"><?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?></td><td><input type="text" value="<?php echo $_GET['keywords_1'];?>" size="40" style="width:310px;" id="search_keyword" name="keywords_1"><span id="search_error"><?php echo TEXT_FIELD_REQUIRED;?></span><div style="float:right;margin:0 auto; padding:0;"><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></div></td> 
+          <td class="smallText" height="25" valign="top"><?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?></td><td valign="top"><input type="text" value="<?php echo $_GET['keywords_1'];?>" size="40" style="width:310px;" id="search_keyword" name="keywords_1"><span id="search_error"><?php echo TEXT_FIELD_REQUIRED;?></span><div style="float:right;margin:0 auto; padding:0;"><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></div></td> 
           </tr>
           <tr>
-          <td class="smallText" height="25"><?php echo CUSTOMERS_SEARCH_CONDITION_TEXT;?></td><td><input type="radio" value="0" id="condition_or" name="condition" style="padding-left:0;margin-left:0;"<?php echo !isset($_GET['condition']) || $_GET['condition'] == '0' ? ' checked="checked"' : '';?>><label for="condition_or"><?php echo CUSTOMERS_SEARCH_OR_TEXT;?></label><input type="radio" value="1" id="condition_and" name="condition"<?php echo $_GET['condition'] == '1' ? ' checked="checked"' : '';?>><label for="condition_and"><?php echo CUSTOMERS_SEARCH_AND_TEXT;?></label></td> 
+          <td class="smallText" height="25" valign="top"><?php echo CUSTOMERS_SEARCH_CONDITION_TEXT;?></td><td valign="top"><input type="radio" value="0" id="condition_or" name="condition" style="padding-left:0;margin-left:0;"<?php echo !isset($_GET['condition']) || $_GET['condition'] == '0' ? ' checked="checked"' : '';?>><label for="condition_or"><?php echo CUSTOMERS_SEARCH_OR_TEXT;?></label><input type="radio" value="1" id="condition_and" name="condition"<?php echo $_GET['condition'] == '1' ? ' checked="checked"' : '';?>><label for="condition_and"><?php echo CUSTOMERS_SEARCH_AND_TEXT;?></label></td> 
           </tr>
           <tr>
-          <td class="smallText" height="25"><?php echo CUSTOMERS_SEARCH_END_TEXT;?></td><td><input type="text" value="<?php echo $_GET['keywords_2'];?>" size="40" style="width:310px;" name="keywords_2"></td> 
+          <td class="smallText" height="25" valign="top"><?php echo CUSTOMERS_SEARCH_END_TEXT;?></td><td valign="top"><input type="text" value="<?php echo $_GET['keywords_2'];?>" size="40" style="width:310px;" name="keywords_2"></td> 
           </tr>
           <tr>
-          <td class="smallText" height="60"><?php echo CUSTOMERS_SEARCH_OPTION_TEXT;?></td><td>
+          <td class="smallText" height="60" valign="top"><?php echo CUSTOMERS_SEARCH_OPTION_TEXT;?></td><td valign="top">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr><td width="25%" height="20">
-          <input type="checkbox" value="customers_name" id="info_name" name="search_object[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_name',$_GET['search_object']) ? ' checked="checked"' : '';?>><label for="info_name"><?php echo CUSTOMERS_SEARCH_OPTION_NAME;?></label>
+          <input type="checkbox" value="customers_name" id="info_name" name="search_object[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_name',$_GET['search_object']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_name"><?php echo CUSTOMERS_SEARCH_OPTION_NAME;?></label>
           </td><td width="22%">
-          <input type="checkbox" value="customers_email" id="info_email" name="search_object[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_email',$_GET['search_object']) ? ' checked="checked"' : '';?>><label for="info_email"><?php echo CUSTOMERS_SEARCH_OPTION_MAIL;?></label>
+          <input type="checkbox" value="customers_email" id="info_email" name="search_object[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_email',$_GET['search_object']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_email"><?php echo CUSTOMERS_SEARCH_OPTION_MAIL;?></label>
           </td><td width="20%">
-          <input type="checkbox" value="customers_other" id="info_other" name="search_object[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_other',$_GET['search_object']) ? ' checked="checked"' : '';?>><label for="info_other"><?php echo CUSTOMERS_SEARCH_OTHER_TEXT;?></label>
+          <input type="checkbox" value="customers_other" id="info_other" name="search_object[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_other',$_GET['search_object']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_other"><?php echo CUSTOMERS_SEARCH_OTHER_TEXT;?></label>
           </td>
           <td>&nbsp;</td>
           </tr><tr>
           <td height="20">
-          <input type="checkbox" value="customers_case" id="info_case" name="search_condition[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_case',$_GET['search_condition']) ? ' checked="checked"' : '';?>><label for="info_case"><?php echo CUSTOMERS_SEARCH_TYPE_TEXT;?></label>
+          <input type="checkbox" value="customers_case" id="info_case" name="search_condition[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_case',$_GET['search_condition']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_case"><?php echo CUSTOMERS_SEARCH_TYPE_TEXT;?></label>
           </td><td>
-          <input type="checkbox" value="customers_character" id="info_character" name="search_condition[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_character',$_GET['search_condition']) ? ' checked="checked"' : '';?> onclick="select_case();"><label for="info_character"><?php echo CUSTOMERS_SEARCH_CHARACTER_TEXT;?></label>
+          <input type="checkbox" value="customers_character" id="info_character" name="search_condition[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_character',$_GET['search_condition']) || !isset($_GET['action']) ? ' checked="checked"' : '';?> onclick="select_case();"><label for="info_character"><?php echo CUSTOMERS_SEARCH_CHARACTER_TEXT;?></label>
           </td><td>
-          <input type="checkbox" value="customers_blank" id="info_blank" name="search_condition[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_blank',$_GET['search_condition']) ? ' checked="checked"' : '';?>><label for="info_blank"><?php echo CUSTOMERS_SEARCH_BLANK_TEXT;?></label>
+          <input type="checkbox" value="customers_blank" id="info_blank" name="search_condition[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_blank',$_GET['search_condition']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_blank"><?php echo CUSTOMERS_SEARCH_BLANK_TEXT;?></label>
           </td>
           <td>&nbsp;</td>
           </tr><tr>
           <td height="20">
-          <input type="checkbox" value="customers_customers" id="info_customers" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_customers',$_GET['search_range']) ? ' checked="checked"' : '';?>><label for="info_customers"><?php echo CUSTOMERS_HEADING_CUSTOMERS_TITLE;?></label>
+          <input type="checkbox" value="customers_customers" id="info_customers" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_customers',$_GET['search_range']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_customers"><?php echo CUSTOMERS_HEADING_CUSTOMERS_TITLE;?></label>
           </td>   
           <td>
-          <input type="checkbox" value="customers_orders" id="info_orders" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_orders',$_GET['search_range']) ? ' checked="checked"' : '';?>><label for="info_orders"><?php echo CUSTOMERS_HEADING_ORDER_TITLE;?></label>
+          <input type="checkbox" value="customers_orders" id="info_orders" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_orders',$_GET['search_range']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_orders"><?php echo CUSTOMERS_HEADING_ORDER_TITLE;?></label>
           </td><td>
-          <input type="checkbox" value="customers_preorders" id="info_preorders" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_preorders',$_GET['search_range']) ? ' checked="checked"' : '';?>><label for="info_preorders"><?php echo CUSTOMERS_HEADING_PREORDER_TITLE;?></label>
+          <input type="checkbox" value="customers_preorders" id="info_preorders" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_preorders',$_GET['search_range']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_preorders"><?php echo CUSTOMERS_HEADING_PREORDER_TITLE;?></label>
           </td><td>
-          <input type="checkbox" value="customers_telecom_unknow" id="info_telecom_unknow" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_telecom_unknow',$_GET['search_range']) ? ' checked="checked"' : '';?>><label for="info_telecom_unknow"><?php echo CUSTOMERS_HEADING_TELECOM_UNKNOW_TITLE;?></label>
+          <input type="checkbox" value="customers_telecom_unknow" id="info_telecom_unknow" name="search_range[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_telecom_unknow',$_GET['search_range']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_telecom_unknow"><?php echo CUSTOMERS_HEADING_TELECOM_UNKNOW_TITLE;?></label>
           </td>
           </tr>
           </table>
