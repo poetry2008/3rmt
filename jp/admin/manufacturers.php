@@ -163,10 +163,10 @@ if(isset($_SESSION['error_image'])&&$_SESSION['error_image']){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script type="text/javascript">
 	var js_del_manufacturers = '<?php echo TEXT_DEL_MANUFACTURERS;?>'; 
@@ -242,7 +242,7 @@ function toggle_manufacturers_form(c_permission){
   }
 }
 </script>
-<script language="javascript" src="includes/javascript/admin_manufacturers.js"></script>
+<script language="javascript" src="includes/javascript/admin_manufacturers.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");

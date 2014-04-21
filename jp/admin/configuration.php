@@ -152,17 +152,17 @@ if(isset($_GET['cID'])){
 <title>
 <?php echo constant('HEADING_TITLE_'.intval($_GET['gID'])); ?>
 </title>
-    <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-    <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-    <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-    <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+    <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+    <script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+    <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+    <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" >
 	var self_configuration = '<?php echo $_SERVER['PHP_SELF']?>';
 	var onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
 	var onetime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
 	var invalid_herf = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_CONFIGURATION;?>';
 </script>
-<script language="javascript" src="includes/javascript/admin_configuration.js"></script>
+<script language="javascript" src="includes/javascript/admin_configuration.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);

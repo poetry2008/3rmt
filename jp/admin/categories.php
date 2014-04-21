@@ -1783,20 +1783,27 @@ if($belong_array[0][0] != ''){
 $belong = str_replace('0_','',$belong);
 ?>
 </title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css?v=<?php echo $back_rand_info?>">
 <script language="javascript" >
 <?php tep_get_javascript('general','includes');?>
 </script>
-<script language="javascript" src="includes/javascript/jquery.js"></script>
-<script language="javascript" src="includes/javascript/udlr.js"></script>
+<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/udlr.js?v=<?php echo $back_rand_info?>"></script>
 <script type="text/javascript" >
-<?php tep_get_javascript('c_admin','includes|set');?>
+	var c_admin_is_update = '<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>';
+	var c_admin_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
+	var c_admin_onetime_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
+	var c_admin_update_clear = '<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>';
+	var c_admin_input_info = '<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>';
+	var c_admin_reset_difference = '<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>';
+	var c_admin_error_price = '<?php echo JS_TEXT_C_ADMIN_ERROR_PRICE;?>';
 </script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
-<script language="javascript" src="includes/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/set/c_admin.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
 	var div_text = '<?php echo DIV_TEXT_OK;?>';
 	var div_text_clear = '<?php echo DIV_TEXT_CLEAR;?>';
@@ -1857,11 +1864,11 @@ $belong = str_replace('0_','',$belong);
 	var delete_category_info_url = '<?php echo tep_get_all_get_params(array('action', 'current_cid', 'del_type'));?>';
 	var js_cale_date = '<?php echo date('Y-m-d', time())?>'; 
 </script>
-<script language="javascript" src="includes/javascript/admin_categories.js"></script>
+<script language="javascript" src="includes/javascript/admin_categories.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 require("includes/note_js.php");
 ?>
-<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js?v=<?php echo $back_rand_info?>"></script>
 <style type="text/css">
 a.dpicker {
 width: 16px;
