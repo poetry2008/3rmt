@@ -256,16 +256,16 @@ require("includes/note_js.php");
             <td class="pageHeading" height="35" colspan="2"><?php echo HEADING_TITLE; ?><input type="hidden" name="action" value="search"></td>
           </tr>
           <tr>
-          <td class="smallText" height="25" valign="top"><?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?></td><td valign="top"><input type="text" value="<?php echo $_GET['keywords_1'];?>" size="40" style="width:310px;" id="search_keyword" name="keywords_1"><span id="search_error"><?php echo TEXT_FIELD_REQUIRED;?></span><div style="float:right;margin:0 auto; padding:0;"><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></div></td> 
+          <td class="smallText" height="25" valign="top" style="width:100px;"><?php echo CUSTOMERS_SEARCH_FRONT_TEXT;?></td><td valign="top"><input type="text" value="<?php echo $_GET['keywords_1'];?>" size="40" style="width:310px;" id="search_keyword" name="keywords_1"><span id="search_error"><?php echo TEXT_FIELD_REQUIRED;?></span><div style="float:right;margin:0 auto; padding:0;"><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></div></td> 
           </tr>
           <tr>
-          <td class="smallText" height="25" valign="top"><?php echo CUSTOMERS_SEARCH_CONDITION_TEXT;?></td><td valign="top"><input type="radio" value="0" id="condition_or" name="condition" style="padding-left:0;margin-left:0;"<?php echo !isset($_GET['condition']) || $_GET['condition'] == '0' ? ' checked="checked"' : '';?>><label for="condition_or"><?php echo CUSTOMERS_SEARCH_OR_TEXT;?></label><input type="radio" value="1" id="condition_and" name="condition"<?php echo $_GET['condition'] == '1' ? ' checked="checked"' : '';?>><label for="condition_and"><?php echo CUSTOMERS_SEARCH_AND_TEXT;?></label></td> 
+          <td class="smallText" height="25" valign="top" style="width:100px;"><?php echo CUSTOMERS_SEARCH_CONDITION_TEXT;?></td><td valign="top"><input type="radio" value="0" id="condition_or" name="condition" style="padding-left:0;margin-left:0;"<?php echo !isset($_GET['condition']) || $_GET['condition'] == '0' ? ' checked="checked"' : '';?>><label for="condition_or"><?php echo CUSTOMERS_SEARCH_OR_TEXT;?></label><input type="radio" value="1" id="condition_and" name="condition"<?php echo $_GET['condition'] == '1' ? ' checked="checked"' : '';?>><label for="condition_and"><?php echo CUSTOMERS_SEARCH_AND_TEXT;?></label></td> 
           </tr>
           <tr>
-          <td class="smallText" height="25" valign="top"><?php echo CUSTOMERS_SEARCH_END_TEXT;?></td><td valign="top"><input type="text" value="<?php echo $_GET['keywords_2'];?>" size="40" style="width:310px;" name="keywords_2"></td> 
+          <td class="smallText" height="25" valign="top" style="width:100px;"><?php echo CUSTOMERS_SEARCH_END_TEXT;?></td><td valign="top"><input type="text" value="<?php echo $_GET['keywords_2'];?>" size="40" style="width:310px;" name="keywords_2"></td> 
           </tr>
           <tr>
-          <td class="smallText" height="60" valign="top"><?php echo CUSTOMERS_SEARCH_OPTION_TEXT;?></td><td valign="top">
+          <td class="smallText" height="60" valign="top" style="width:100px;"><?php echo CUSTOMERS_SEARCH_OPTION_TEXT;?></td><td valign="top">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr><td width="25%" height="20">
           <input type="checkbox" value="customers_name" id="info_name" name="search_object[]" style="padding-left:0;margin-left:0;"<?php echo in_array('customers_name',$_GET['search_object']) || !isset($_GET['action']) ? ' checked="checked"' : '';?>><label for="info_name"><?php echo CUSTOMERS_SEARCH_OPTION_NAME;?></label>
