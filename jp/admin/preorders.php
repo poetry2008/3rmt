@@ -646,7 +646,7 @@
     $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
     $nomail[$osid] = $select_result['nomail'];
   }
- 
+
   if(isset($_GET['reload'])) {
     switch($_GET['reload']) {
     case 'Yes':
@@ -717,8 +717,7 @@ if(isset($_SESSION['error_preorders_status'])&&$_SESSION['error_preorders_status
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/all_preorder.js"></script>
-
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript">
 $(document).ready(function(){ 
   if($(".dataTableContent").find('input|[type=checkbox][checked]').length!=0){
@@ -847,7 +846,6 @@ if ($ocertify->npermission == 31) {
 <?php 
   // 输出订单邮件
   // title
-
   foreach ($mo as $oskey => $value){
     echo 'window.status_title['.$oskey.'] = new Array();'."\n";
     foreach ($value as $sitekey => $svalue) {
@@ -868,7 +866,6 @@ if ($ocertify->npermission == 31) {
   foreach ($nomail as $oskey => $value){
     echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
   }
- 
 ?>
 
 function del_confirm_payment_time(oid, status_id)
@@ -1079,7 +1076,7 @@ require("includes/note_js.php");
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
+    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>', '<?php echo JS_TEXT_INPUT_ONETIME_PWD?>', '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>');
   </script>
 <?php }?>
 <!-- header -->
@@ -1267,6 +1264,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   <td class="main"><?php echo $order->info['cc_type']; ?></td>
                 </tr>
                 <tr>
+                  <td class="main"><?php echo ENTRY_CREDIT_CARD_OWNER; ?></td>
                   <td class="main"><?php echo $order->info['cc_owner']; ?></td>
                 </tr>
                 <tr>
@@ -1554,8 +1552,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <h3>Order Comment</h3>
                 <form action="ajax_preorders.php" id='form_orders_comment' method="post">
 
-                <textarea name="orders_comment" cols="100" rows="10"
-                class="pageHeading_box_textarea"><?php echo stripslashes($order->info['orders_comment']);?></textarea><br>
+                <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box_textarea"><?php echo stripslashes($order->info['orders_comment']);?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
                 <div align="right" style="clear:both;"><input type="Submit" value="<?php echo TEXT_ORDER_SAVE;?>"></div>
@@ -1905,19 +1902,17 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       <!-- orders status history -->
       <!-- mail -->
 <table border="0" width="100%">
-<tr>
-<td width="50%">
-<!--select contents from ajax_preorders.php begin  @20140415-->
-<?php if(isset($_GET['action']) && $_GET['action']=='edit'){
-	  echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post'); ?>
-	 <table width="100%" border="0">
-	 <tr>
-       <td class="main"><?php echo ENTRY_STATUS; ?>
-	<?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')" id="s_status"'); ?>
-	
-     <input type="hidden" name="tmp_orders_id" id="tmp_orders_id" value="<?php echo $order->info['orders_id'];?>">
-	 <div style="display:none" id='edit_order_send_mail'></div>
-      </td>
+  <tr>
+    <td width="50%">
+      <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post'); ?>
+      <table width="100%" border="0">
+      <tr>
+        <td class="main"><?php echo ENTRY_STATUS; ?>
+        
+          <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')" id="s_status"'); ?>
+        <input type="hidden" name="tmp_orders_id" id="tmp_orders_id" value="<?php echo $order->info['orders_id'];?>">
+        <div style="display:none" id='edit_order_send_mail'></div>
+        </td>
       </tr>
       <?php
         
@@ -1953,7 +1948,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-		<textarea id="c_comments" style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${MAIL_COMMENT}',orders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
+          <textarea id="c_comments" style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_COMMENT}',preorders_a($order->info['orders_id']),$mail_sql['contents']); ?></textarea>
         </td>
       </tr>
       <tr>
@@ -1974,16 +1969,14 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-
-             echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_mail_product_status(\''.$_GET['oID'].'\');"'); ?></a></td>
-  </tr>
- </table>
- </td>
+              echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_mail_product_status(\''.$_GET['oID'].'\');"'); ?></a></td>
+            </tr>
+          </table>
+        </td>
       </tr>
       </form>
       </table>
-</td>
-<?php }?>
+    </td>
     <td width="50%" align="left" valign="top">
 <table width="100%">
   <tr><td width="30%">&nbsp; 
@@ -3236,7 +3229,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
         <?php
         } else {
         ?>
-			<input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this, '<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>', '<?php echo JS_TEXT_ALL_ORDER_SAVE;?>');">
+        <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this, '<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>', '<?php echo JS_TEXT_ALL_ORDER_SAVE;?>');">
         <?php
         }
         ?>
@@ -3270,7 +3263,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
           ?>
           <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' .  tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
           </div>
-          <div class="">
+          <div>
            
           <?php 
   if ($orders['is_active'] == '0') {
@@ -3486,8 +3479,8 @@ function submit_confirm()
   }else{
   if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
   }else{
-    return false;
-   }
+     return false;
+    }
   }
   var idx = document.sele_act.elements['status'].selectedIndex;
   var CI  = document.sele_act.elements['status'].options[idx].value;
@@ -3504,9 +3497,6 @@ function submit_confirm()
 }
 </script>
 <table width="100%"><tr><td width="70%" id="send_mail_td">
-<?php  //@20140409 start to change  
-	if($_GET['action']="edit" && !isset($_GET['action'])){
-?>
       <table width="100%" id="select_send" style="display:none">
         <tr>
           <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
@@ -3566,10 +3556,7 @@ function submit_confirm()
             </table>
           </td>
         </tr>
-	  </table>
-	<?php  //end change
-		}
-	?>
+      </table>
 </td><td valign="top" align="right">
 <div id='select_question' style="display:none" >
       <table width="100%">
