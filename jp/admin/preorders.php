@@ -3236,7 +3236,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
         <?php
         } else {
         ?>
-        <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this);">
+			<input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this, '<?php echo JS_TEXT_ALL_ORDER_COMPLETION_TRANSACTION;?>', '<?php echo JS_TEXT_ALL_ORDER_SAVE;?>');">
         <?php
         }
         ?>
