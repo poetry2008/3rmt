@@ -1407,7 +1407,7 @@ foreach($allorders as $key=>$orders){
               <table width="100%" id="select_send" style="display:none">
               <tr>
               <td class="main" width="100" nowrap="nowrap"><?php echo ENTRY_STATUS; ?></td>
-              <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select, 'onChange="mail_text(\'status\',\'comments\',\'os_title\',\''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_tilte_status"'); ?> <?php
+              <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, $select_select, 'onChange="mail_text(\'status\',\'comments\',\'os_title\',\''.JS_TEXT_ALL_ORDER_NOT_CHOOSE.'\', \''.JS_TEXT_ALL_ORDER_NO_OPTION_ORDER.'\')" id="mail_title_status"'); ?> <?php
               if($ocertify->npermission > 7 ) { ?>&nbsp;<a href="<?php echo
                 tep_href_link(FILENAME_PREORDERS_STATUS,'',SSL);?>"><?php echo
                   TEXT_EDIT_MAIL_TEXT;?></a><?php } ?></td>
@@ -1454,7 +1454,7 @@ foreach($allorders as $key=>$orders){
                     echo '<input type="hidden" id="confrim_mail_title_'.$o_status['id'].
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
-                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_list_order_submit(\''.TEXT_STATUS_MAIL_TITLE_CHANGED.'\')"'); ?></a></td>
+                  echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_list_preorder_submit()"'); ?></a></td>
                   </tr>
                   </table>
                   </td>

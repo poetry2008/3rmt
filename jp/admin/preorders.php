@@ -603,7 +603,7 @@
   }
 
   include(DIR_WS_CLASSES . 'preorder.php');
- /* 
+  
   $suu = 0;
   $text_suu = 0;  
   $__orders_status_query = tep_db_query("
@@ -646,7 +646,7 @@
     $mo[$osid][$mail_templates_array['site_id']?$mail_templates_array['site_id']:0] = $mail_templates_array['title'];
     $nomail[$osid] = $select_result['nomail'];
   }
-  */
+ 
   if(isset($_GET['reload'])) {
     switch($_GET['reload']) {
     case 'Yes':
@@ -847,7 +847,7 @@ if ($ocertify->npermission == 31) {
 <?php 
   // 输出订单邮件
   // title
-/*
+
   foreach ($mo as $oskey => $value){
     echo 'window.status_title['.$oskey.'] = new Array();'."\n";
     foreach ($value as $sitekey => $svalue) {
@@ -868,7 +868,7 @@ if ($ocertify->npermission == 31) {
   foreach ($nomail as $oskey => $value){
     echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
   }
- */
+ 
 ?>
 
 function del_confirm_payment_time(oid, status_id)
@@ -1908,11 +1908,12 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <tr>
 <td width="50%">
 <!--select contents from ajax_preorders.php begin  @20140415-->
-	 <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post'); ?>
+<?php if(isset($_GET['action']) && $_GET['action']=='edit'){
+	  echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post'); ?>
 	 <table width="100%" border="0">
 	 <tr>
        <td class="main"><?php echo ENTRY_STATUS; ?>
-	<?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')" id="mail_title_status"'); ?>
+	<?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')" id="s_status"'); ?>
 	
      <input type="hidden" name="tmp_orders_id" id="tmp_orders_id" value="<?php echo $order->info['orders_id'];?>">
 	 <div style="display:none" id='edit_order_send_mail'></div>
@@ -1974,7 +1975,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                       '" value="'.$mo[$o_status['id']][0].'">';
                   }
 
-             echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="confrim_mail_title(\''.$_GET['oID'].'\', \''.TEXT_STATUS_MAIL_TITLE_CHANGED.'\');"'); ?></a></td>
+             echo TEXT_ORDER_HAS_ERROR;?></font><br><br><a href="javascript:void(0);"><?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_mail_product_status(\''.$_GET['oID'].'\');"'); ?></a></td>
   </tr>
  </table>
  </td>
@@ -1982,6 +1983,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </form>
       </table>
 </td>
+<?php }?>
     <td width="50%" align="left" valign="top">
 <table width="100%">
   <tr><td width="30%">&nbsp; 
@@ -3484,8 +3486,8 @@ function submit_confirm()
   }else{
   if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
   }else{
-     return false;
-    }
+    return false;
+   }
   }
   var idx = document.sele_act.elements['status'].selectedIndex;
   var CI  = document.sele_act.elements['status'].options[idx].value;
