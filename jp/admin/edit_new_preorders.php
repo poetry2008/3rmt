@@ -632,7 +632,7 @@
         $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
         $email = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $email); 
         tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$order->info['orders_id']."'"); 
-        $email_title = $_POST['etitle']; 
+        $email_title = $_POST['title']; 
         $email_title = str_replace(array(
               '${USER_NAME}',
               '${USER_MAIL}',
@@ -940,14 +940,14 @@ $(document).ready(function(){
   $("select[name='status']").change(function(){
     var s_status = document.getElementsByName("status")[0].value;
     orders_session('s_status',s_status);
-    var title = document.getElementsByName("etitle")[0].value;
+    var title = document.getElementsByName("title")[0].value;
     orders_session('title',title);
     var comments = document.getElementsByName("comments")[0].value;
     orders_session('comments',comments);
   }); 
-  $("input[name='etitle']").blur(function(){
-    var title = document.getElementsByName("etitle")[0].value;
-    orders_session('etitle',title);
+  $("input[name='title']").blur(function(){
+    var title = document.getElementsByName("title")[0].value;
+    orders_session('title',title);
   });
   $("textarea[name='comments']").blur(function(){
     var comments = document.getElementsByName("comments")[0].value;
@@ -1331,7 +1331,7 @@ function check_prestatus() {
     type:'POST',
     async: false,
     success: function(t_msg) {
-      document.edit_order.etitle.value = t_msg;
+      document.edit_order.title.value = t_msg;
     }
   });
 }  
@@ -2370,10 +2370,10 @@ if (($action == 'edit') && ($order_exists == true)) {
     $ma_se = "select * from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$sel_status_id."'"; 
     $mail_sele = tep_db_query($ma_se);
     $mail_sql = tep_db_fetch_array($mail_sele);
-    $mail_sql['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['title'];  
+    $mail_sql['title'] = isset($_SESSION['orders_update_products'][$_GET['oID']]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']]['title'] : $mail_sql['title'];  
     ?>
     <?php   
-    echo TEXT_EMAIL_TITLE.tep_draw_input_field('etitle', $mail_sql['title'],'style="width:230px;" id="mail_title"'); 
+    echo TEXT_EMAIL_TITLE.tep_draw_input_field('title', $mail_sql['title'],'style="width:230px;" id="mail_title"'); 
     ?> 
     <br>
     <br>

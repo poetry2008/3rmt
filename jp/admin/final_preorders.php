@@ -742,7 +742,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         
         tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         
-        $preorder_email_title = $_POST['etitle']; 
+        $preorder_email_title = $_POST['title']; 
         $select_status_raw = tep_db_query("select * from ".TABLE_MAIL_TEMPLATES." where flag = 'PREORDERS_STATUS_MAIL_TEMPLATES_".$status."'"); 
         $select_status_res = tep_db_fetch_array($select_status_raw);
         if ($select_status_res) {
@@ -1346,14 +1346,14 @@ $(document).ready(function(){
   $("select[name='status']").change(function(){
     var s_status = document.getElementsByName("status")[0].value;
     orders_session('status',s_status);
-    var title = document.getElementsByName("etitle")[0].value;
-    orders_session('etitle',title);
+    var title = document.getElementsByName("title")[0].value;
+    orders_session('title',title);
     var comments = document.getElementsByName("comments")[0].value;
     orders_session('comments',comments);
   }); 
-  $("input[name='etitle']").blur(function(){
-    var title = document.getElementsByName("etitle")[0].value;
-    orders_session('etitle',title);
+  $("input[name='title']").blur(function(){
+    var title = document.getElementsByName("title")[0].value;
+    orders_session('title',title);
   });
   $("textarea[name='comments']").blur(function(){
     var comments = document.getElementsByName("comments")[0].value;
@@ -1538,7 +1538,7 @@ function check_prestatus() {
     type:'POST',
     async: false,
     success: function(t_msg) {
-      document.edit_order.etitle.value = t_msg;
+      document.edit_order.title.value = t_msg;
     }
   });
 }  
@@ -3043,7 +3043,7 @@ if (tep_db_num_rows($orders_history_query)) {
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo ENTRY_EMAIL_TITLE.tep_draw_input_field('etitle', isset($_SESSION['orders_update_products'][$_GET['oID']]['etitle']) ? $_SESSION['orders_update_products'][$_GET['oID']]['etitle'] : $mail_sql['title'],' style="width:230px;" id="mail_title"');?> 
+    <?php echo ENTRY_EMAIL_TITLE.tep_draw_input_field('title', isset($_SESSION['orders_update_products'][$_GET['oID']]['title']) ? $_SESSION['orders_update_products'][$_GET['oID']]['title'] : $mail_sql['title'],' style="width:230px;" id="mail_title"');?> 
     <br> 
     <br> 
     <textarea id="c_comments" style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo isset($_SESSION['orders_update_products'][$_GET['oID']]['comments']) ? $_SESSION['orders_update_products'][$_GET['oID']]['comments'] : str_replace('${ORDER_COMMENT}', preorders_a($order->info['orders_id']), $mail_sql['contents']);?></textarea> 

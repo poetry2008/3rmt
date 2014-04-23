@@ -204,7 +204,10 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       onclick="toggle_header_menu(\'managermenu\')">'.HEADER_TEXT_MANAGERMENU.'</a>&nbsp;|<br>
       <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
       ';
-         echo '
+        echo '
+      <tr><td class="menu01"><a class="t_link01" 
+      href="'.tep_href_link(FILENAME_SEARCH, '', 'NONSSL').'"
+      >'.BOX_TOOLS_SEARCH.'</a></td></tr>
       <tr><td class="menu01"><a class="t_link01" 
       href="add_note.php?author='.$ocertify->auth_user.'&belong='.$belong.'"
       id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>
