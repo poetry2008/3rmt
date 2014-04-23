@@ -779,12 +779,17 @@
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
-<script language="javascript" src="js2php.php?path=js&name=popup_window&type=js"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="js/popup_window.js"></script>
 <script>
+var text_unset_data = '<?php echo TEXT_UNSET_DATA;?>';
+var image_icon_info = '<?php echo IMAGE_ICON_INFO;?>';
+var text_popup_window_show = '<?php echo TEXT_POPUP_WINDOW_SHOW;?>';
+var text_popup_window_edit = '<?php echo TEXT_POPUP_WINDOW_EDIT;?>';
+var image_save = '<?php echo IMAGE_SAVE;?>';
 var avg_div_flag = 1;
 $(document).ready(function() {
   <?php //监听按键?> 
@@ -1563,7 +1568,7 @@ require("includes/note_js.php");
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
+    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>', '<?php echo JS_TEXT_INPUT_ONETIME_PWD?>', '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>');
   </script>
 <?php }?>
 <!-- header -->

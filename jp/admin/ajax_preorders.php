@@ -1311,6 +1311,9 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     echo $show_error_str."\n".ERROR_WARNING_TEXT;
   }
 } else if ($_GET['action'] == 'show_status_mail_send'){
+/*-----------------------------------------
+ 功能: 获得预约订单状态邮件内容
+ ----------------------------------------*/
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PREORDERS);
 
 $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
@@ -1362,21 +1365,18 @@ while($select_result = tep_db_fetch_array($select_query)){
   ?>
 <?php 
 // 输出订单邮件
-// title
 foreach ($mo as $oskey => $value){
   foreach ($value as $sitekey => $svalue) {
     echo '<input type="hidden" id="status_title_'.$oskey.'_'.$sitekey.'" value="'.str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue).'">';
   }
 }
 
-//content
 foreach ($mt as $oskey => $value){
   foreach ($value as $sitekey => $svalue) {
     echo tep_draw_textarea_field('temp_comment', 'hard', '74', '30', $svalue, 'style="display:none" id="status_text_'.$oskey.'_'.$sitekey.'"'); 
   }
 }
 
-//no mail
 foreach ($nomail as $oskey => $value){
   echo '<input type="hidden" id="nomail_'.$oskey.'" value="'.$value.'">';
 }
@@ -1454,6 +1454,9 @@ foreach($allorders as $key=>$orders){
                   </table>
   <?php
 }else if ($_GET['action'] == 'edit_order_send_mail'){
+/*-----------------------------------------
+ 功能: 订单编辑页面获得预约订单状态邮件内容
+ ----------------------------------------*/
 
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PREORDERS);
 $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
@@ -1512,21 +1515,18 @@ while ($orders_status = tep_db_fetch_array($orders_status_query)) {
   ?>
 <?php 
 // 输出订单邮件
-// title
 foreach ($mo as $oskey => $value){
   foreach ($value as $sitekey => $svalue) {
     echo '<input type="hidden" id="status_title_'.$oskey.'_'.$sitekey.'" value="'.str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue).'">';
   }
 }
 
-//content
 foreach ($mt as $oskey => $value){
   foreach ($value as $sitekey => $svalue) {
     echo tep_draw_textarea_field('temp_comment', 'hard', '74', '30', $svalue, 'style="display:none" id="status_text_'.$oskey.'_'.$sitekey.'"'); 
   }
 }
 
-//no mail
 foreach ($nomail as $oskey => $value){
   echo '<input type="hidden" id="nomail_'.$oskey.'" value="'.$value.'">';
 }

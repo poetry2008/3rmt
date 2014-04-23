@@ -2138,3 +2138,23 @@ google hack
 .divDataTableSecondRow {
 	background-color: #FFFF00;                      
 }
+#new_yui3 {
+        position: absolute;
+        z-index:200px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#new_yui3{
+        position: absolute;
+        z-index:200px;
+}
+}
+#end_yui3 {
+        position: absolute;
+        z-index:200px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#end_yui3{
+        position: absolute;
+        z-index:200px;
+}
+}

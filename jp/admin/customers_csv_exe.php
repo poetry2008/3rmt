@@ -49,21 +49,23 @@ if ($ocertify->npermission != 31) {
 // 创建CSV文件名
   $filename = ((isset($_POST['site_id'])&&$_POST['site_id']) ?  (tep_get_site_romaji_by_id(intval($_POST['site_id'])).'_') :'')."customers_".date("Ymd_His", time()).".csv";
 //获取下载范围
-  $s_y = $_POST['s_y'] ; //起始日　年
-  $s_m = $_POST['s_m'] ; //起始日　月
-  $s_d = $_POST['s_d'] ; //起始日　日
-  $start = $s_y.$s_m.$s_d ;
-  
-  $e_y = $_POST['e_y'] ; //结束日　年
-  $e_m = $_POST['e_m'] ; //结束日　月
-  $e_d = $_POST['e_d'] ; //结束日　日
-  $end = $e_y.$e_m.$e_d ;
-      $csv_query = tep_db_query(" select c.* from ".TABLE_CUSTOMERS." c, ".TABLE_CUSTOMERS_INFO." i where c.customers_id = i.customers_info_id and i.customers_info_date_account_created >= '" . $start . "' and i.customers_info_date_account_last_modified  <= '" . $end . "' ".(isset($_POST['site_id']) && $_POST['site_id'] ? ("and c.site_id = '".(int)$_POST['site_id'] . "'") : '')." order by c.customers_id ");
+   if($_POST['site_id'] == ''){
+      $show_site_list_array = array();
+      $site_list_info_query = tep_db_query("select * from ".TABLE_SITES);
+      while ($site_list_info = tep_db_fetch_array($site_list_info_query)) {
+            $show_site_list_array[] = $site_list_info['id'];
+      }
+     $all_site_id = implode(',',$show_site_list_array);
+     $site_id = "site_id in (".$all_site_id.")";
+    }else{
+     $site_id = " site_id =".$_POST['site_id'];
+    }
+  $csv_query = tep_db_query(" select * from ".TABLE_CUSTOMERS."  where ".$site_id." order by customers_id ");
   header("Content-Type: application/force-download");
   header('Pragma: public');
   header('Content-Disposition: attachment; filename='.$filename);
 
-  $csv_header = (isset($_POST['site_id']) && $_POST['site_id']?'"'.ENTRY_SITE.'",':'').TEXT_CUSTOMERS_CSV;
+  $csv_header = TEXT_CUSTOMERS_CSV;
   $c_sql = tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_customers'"));
   if($c_sql > 0){
      tep_db_query("update ".TABLE_CONFIGURATION." set last_modified = now(),user_update = '".$_SESSION['user_name']."' where configuration_key ='DATA_MANAGEMENT' and configuration_value = 'mag_customers'");
