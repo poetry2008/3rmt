@@ -393,7 +393,6 @@ if($belong_temp_array[0][0] != ''){
 }
 require("includes/note_js.php");
 ?>
-<link rel="stylesheet" type="text/css" href="includes/admin_banner_manager.css?v=<?php echo $back_rand_info?>">
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
