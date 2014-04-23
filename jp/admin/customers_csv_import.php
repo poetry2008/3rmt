@@ -8,6 +8,10 @@
  echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
  if (isset($_POST['import'])){
       $file = $_FILES['csv_goods'];
+      if(isset($file['error'])&&$file['error']){
+       echo '<script>window.location.href="'.tep_href_link(FILENAME_DATA_MANAGEMENT,'error='.$file['error']).'"; </script> ';
+       exit;
+      }
       $file_type = substr(strstr($file['name'],'.'),1);
       // 检查文件格式
       if ($file_type != 'csv'){

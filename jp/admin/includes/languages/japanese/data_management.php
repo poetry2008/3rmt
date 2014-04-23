@@ -36,5 +36,13 @@ define('HEADING_TITLE_CUSTOMERS_IMPORT_STATUS','インポート');
 define('HEADING_TITLE_CUSTOMERS_STATUS','エクスポート');
 define('TEXT_CUSTOMERS_IMPORT_FILE_TYPE_ERROR','ファイル形式が正しくないですので、再びアップしてください。');
 define('TEXT_CUSTOMERS_IMPORT_DATA','インポートデータがすでに%s行に存在しています。');
+define('TEXT_ERROR_SIZE','ファイルのサイズがサーバの空間サイズを超えました!');
+define('TEXT_ERROR_BROWSER','ファイルのサイズがブラウザの制限を越えました!');
+define('TEXT_ERROR_UPLOAD','ファイルの一部分がインポートしました!');
+define('TEXT_ERROR_NO_UPLOAD','インポートファイルは見つからないです!');
+define('TEXT_ERROR_FOLDER','サーバの臨時フォルダがなくなりました!');
+define('TEXT_ERROR_WRITE','臨時フォルダにファイルを書き込むときエラーが発生しました!');
+define('TEXT_WARNING','<font color="red">POST最大データ量は%sを超えていけません!</font>');
+define('TEXT_DATA_ERROR','<font color="red">データ量は%sを超えていけません!</font>');
 ?>
 
