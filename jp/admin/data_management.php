@@ -14,6 +14,38 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+ var  Sys = {};
+ if(navigator.userAgent.indexOf("MSIE")>0) { 
+     Sys.ie=true;
+ }
+ if(navigator.userAgent.indexOf("MSIE 8.0")>0){
+     Sys.ie8=true;
+ } 
+ if(isFirefox=navigator.userAgent.indexOf("Firefox")>0){  
+    Sys.firefox=true;
+ }
+ function checkFileChange(obj) {
+    var filesize = 0;
+    var post_max_size = '<?php echo str_replace("M","",ini_get("post_max_size"));?>'*1024*1024;
+    if(Sys.firefox){
+        filesize = obj.files[0].size;
+    }else if(Sys.ie8){
+       var myFSO = new ActiveXObject("Scripting.FileSystemObject");
+       var filepath = obj;
+       filepath = filepath.value;
+      var thefile = myFSO.getFile(filepath);
+      var filesize = thefile.size;
+    }else{
+         var filePath = obj;
+         filesize = filePath.files[0].size;
+    }
+    if(filesize >= post_max_size){
+      document.getElementById('data_filesize').value = '';
+      $("#data_error").html('<?php echo sprintf(TEXT_DATA_ERROR,ini_get("post_max_size"));?>');
+    }else{
+      $("#data_error").html('');
+    }
+ }
 $(document).ready(function() { 
   <?php //监听按键?> 
   $(document).keyup(function(event) {
@@ -383,7 +415,29 @@ require("includes/note_js.php");
 ?>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
-<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+<?php 
+      switch($_GET['error']){
+       case 1:
+         echo "<div style='background-color:red;color: #FFF;font-weight:bold'>".TEXT_ERROR_SIZE."</div>";
+         break;
+       case 2:
+         echo "<div style='background-color:red;color: #FFF;font-weight:bold'>".TEXT_ERROR_BROWSER."</div>";
+         break;
+       case 3:
+         echo "<div style='background-color:red;color: #FFF;font-weight:bold'>".TEXT_ERROR_UPLOAD."</div>";
+         break;
+       case 4:
+         echo "<div style='background-color:red;color: #FFF;font-weight:bold'>".TEXT_ERROR_NO_UPLOAD."</div>";
+         break;
+       case 5:
+         echo "<div style='background-color:red;color: #FFF;font-weight:bold'>".TEXT_ERROR_FOLDER."</div>";
+         break;
+       case 6:
+         echo "<div style='background-color:red;color: #FFF;font-weight:bold'>".TEXT_ERROR_WRITE."</div>";
+         break;
+      }
+
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>

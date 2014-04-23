@@ -35,4 +35,12 @@ define('HEADING_TITLE_CUSTOMERS_IMPORT_STATUS','导入');
 define('HEADING_TITLE_CUSTOMERS_STATUS','导出');
 define('TEXT_CUSTOMERS_IMPORT_FILE_TYPE_ERROR','文件格式不对,请重新上传!');
 define('TEXT_CUSTOMERS_IMPORT_DATA','导入数据在第%s行重复。');
+define('TEXT_ERROR_SIZE','文件大小超出了服务器的空间大小!');
+define('TEXT_ERROR_BROWSER','要上传的文件大小超出浏览器限制!');
+define('TEXT_ERROR_UPLOAD','文件仅部分被上传!');
+define('TEXT_ERROR_NO_UPLOAD','没有找到要上传的文件!');
+define('TEXT_ERROR_FOLDER','服务器临时文件夹丢失!');
+define('TEXT_ERROR_WRITE','文件写入到临时文件夹出错!');
+define('TEXT_WARNING','<font color="red">POST最大数据量不能超过%s！</font>');
+define('TEXT_DATA_ERROR','<font color="red">最大数据量不能超过%s！</font>');
 ?>

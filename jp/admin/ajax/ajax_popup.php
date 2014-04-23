@@ -7937,69 +7937,6 @@ if($_GET['type'] == 'mag_orders'){
         array('params' => 'width="30%"','text' => TEXT_ORDER_SITE_TEXT),
         array('text' => tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ?  $_GET['site_id'] :'', false,'all',(($is_disabled_single)?' disabled="disabled"':'')))
         );
-    $select_y = '<select name="s_y" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
-    for($i=2002; $i<=date('Y'); $i++) { 
-      if($i == date('Y')){ 
-        $select_y .= '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; 
-      }else{ 
-        $select_y .='<option value="'.$i.'">'.$i.'</option>'."\n" ;
-      }
-    }
-    $select_y .='</select>';
-    $select_m = '<select name="s_m" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
-    $select_d = '<select name="s_d" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
-    for($i=1; $i<32; $i++) {
-      if($i == date('d')){
-        $select_d .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-      }else{
-        $select_d .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-      } 
-    }
-    $select_d .='</select>';
-    for($i=1; $i<13; $i++) { 
-      if($i == date('m')-1){ 
-        $select_m .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; 
-      }else{ 
-        $select_m .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; 
-      }  
-    }    
-    $select_m .='</select>';
-    $select_e_y ='<select name="e_y" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
-    for($i=2002; $i<=date('Y'); $i++) {
-      if($i == date('Y')){
-        $select_e_y .='<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
-      }else{
-        $select_e_y .='<option value="'.$i.'">'.$i.'</option>'."\n" ;
-      } 
-    }
-    $select_e_y .='</select>';
-    $select_e_m ='<select name="e_m" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
-    for($i=1; $i<13; $i++) {
-      if($i == date('m')){
-        $select_e_m .= '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-      }else{
-        $select_e_m .='<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-      } 
-    }
-    $select_e_m .='</select>';
-    $select_e_d ='<select name="e_d" '.(($is_disabled_single)?' disabled="disabled"':'').'>';
-    for($i=1; $i<32; $i++) {
-      if($i == date('d')){
-        $select_e_d .= '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-      }else{
-        $select_e_d .= '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-      } 
-    }
-    $select_e_d .='</select>';
-    $contents[]['text'] = array(
-        array('params' => 'width="30%"','text' => TEXT_ORDER_START_DATE),
-        array('text' => $select_y.TEXT_ORDER_YEAR.$select_m.TEXT_ORDER_MONTH.$select_d.TEXT_ORDER_DAY)
-        );
-    $contents[]['text'] = array(
-        array('params' => 'width="30%"','text' => TEXT_ORDER_END_DATE),
-        array('text' => $select_e_y.TEXT_ORDER_YEAR.$select_e_m.TEXT_ORDER_MONTH.$select_e_d.TEXT_ORDER_DAY)
-        );
- 
     $contents[]['text'] = array(
         array('text' => HEADING_TITLE_CUSTOMERS_STATUS),
         array('text' => tep_html_element_button(TEXT_CUSTOMERS_CSV_OUTPUT,(($is_disabled_single)?' disabled="disabled"':'')."onclick=' customers_csv_exe(".$ocertify->npermission.") '"))
@@ -8044,7 +7981,7 @@ if($_GET['type'] == 'mag_orders'){
     $form_str = '<form id="orders_download"enctype="multipart/form-data" action="'.tep_href_link('customers_csv_import.php','csv_exe=true','SSL').'" method="post">';
     $contents[]['text'] = array(
         array('text' => HEADING_TITLE_CUSTOMERS_IMPORT_STATUS),
-        array('text' => '<input name="csv_goods" type="file" /> <input type="submit" value="'.HEADING_TITLE_CUSTOMERS_IMPORT_STATUS.'" name="import" />')
+        array('text' => '<input name="csv_goods" type="file" id="data_filesize" onchange="checkFileChange(document.getElementById(\'data_filesize\'))" /> <input type="submit" value="'.HEADING_TITLE_CUSTOMERS_IMPORT_STATUS.'" name="import" />&nbsp;&nbsp;'.sprintf(TEXT_WARNING,ini_get("post_max_size")).'<br><span id="data_error"></span>')
         );
     $update_data  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_customers'"));
     $contents[]['text'] = array(
