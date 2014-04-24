@@ -106,7 +106,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_COUNTRIES', 'countries.php');
   define('FILENAME_CURRENCIES', 'currencies.php');
   define('FILENAME_CUSTOMERS', 'customers.php');
-  define('FILENAME_CUSTOMERS_INFO', 'customers_info.php');
+  define('FILENAME_SEARCH', 'search.php');
   define('FILENAME_DEFAULT', 'index.php');
   define('FILENAME_USERS', 'users.php');
   define('FILENAME_LOGIN', 'users_login.php');

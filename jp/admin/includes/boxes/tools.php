@@ -28,6 +28,13 @@
               <tr>
                 <td class="menuBoxContent">
      <?php 
+     if (!check_whether_is_limited(FILENAME_SEARCH)) {
+       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_SEARCH){
+         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_SEARCH).'\';"><span>'.  tep_image(DIR_WS_MENU_ICON .  'icon_customer.gif').'</span><span>' . BOX_TOOLS_SEARCH .  '</span></div>';
+       }else{
+         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_SEARCH).'\';"><span>'.  tep_image(DIR_WS_MENU_ICON .  'icon_customer.gif').'</span><span>' . BOX_TOOLS_SEARCH .  '</span></div>';
+       }
+     }
      if (!check_whether_is_limited(FILENAME_BANNER_MANAGER)) {
        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_BANNER_MANAGER){
          echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_BANNER_MANAGER).'\';"><span>'.  tep_image(DIR_WS_MENU_ICON .  'icon_banner.gif').'</span><span>' . BOX_TOOLS_BANNER_MANAGER .  '</span></div>';
