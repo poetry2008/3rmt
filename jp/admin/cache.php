@@ -34,28 +34,7 @@ $sql = "update other_config set value='".$value."' where keyword='css_random_str
 tep_db_query($sql);
 }
 }
-   if(isset($_GET['action']) && $_GET['action']=="update_back_rand"){
-     //更新admin_random_string的值 
-     $back_rand_query = tep_db_query("select value from other_config where keyword = 'admin_random_string'");
-     $back_rand_array = tep_db_fetch_array($back_rand_query);
-     $rand_num = substr($back_rand_array['value'],0,4);
-
-     $rand_num = (int)$rand_num+1;
-     $rand_num = (string)$rand_num;
-     while(strlen($rand_num)<4){
-       $rand_num ="0".$rand_num;
-     }
-     $value = $rand_num.time();
-     if($rand_num == "9999"){
-       $restart = "0000".time();
-       $sql = "update other_config set value='".$restart."' where keyword = 'admin_random_string'";
-       tep_db_query($sql);
-     }else{
-       $sql = "update other_config set value='".$value."' where keyword = 'admin_random_string'";
-       tep_db_query($sql);
-     }   
-   }
-   tep_redirect(tep_href_link(FILENAME_CACHE,tep_get_all_get_params(array('action'))));
+    tep_redirect(tep_href_link(FILENAME_CACHE,tep_get_all_get_params(array('action'))));
   }
 
 // check if the cache directory exists
@@ -80,9 +59,9 @@ tep_db_query($sql);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
-<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
@@ -213,29 +192,9 @@ $css_rand_array = tep_db_fetch_array($css_rand_query)
 
                           </table></td>
           </tr>
-        </table>
-        </td>
+        </table></td>
       </tr>
-      <tr>
-        <td style="padding-top:200px;">
-          <?php
-          $back_rand_raw = tep_db_query("select id, value from other_config where keyword = 'admin_random_string'"); 
-          $back_rand = tep_db_fetch_array($back_rand_raw); 
-          ?>
-          <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr class="dataTableHeadingRow">
-              <td class="dataTableHeadingContent"><?php echo TABLE_CSS_TITLE; ?></td>
-              <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_DATE_CREATED; ?></td>
-              <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
-            </tr>
-            <tr class="dataTableSecondRow">
-              <td class="dataTableContent"><?php echo substr($back_rand['value'], 0, 4);?></td> 
-              <td class="dataTableContent" align="right"><?php echo date('Y/m/d', substr($back_rand['value'], 4, 14));?></td>
-              <td class="dataTableContent" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_CACHE, 'action=update_back_rand') . '">' . tep_image(DIR_WS_IMAGES . 'icon_reset.gif', 'Reset', 13, 13) . '</a>'; ?>&nbsp;</td>
-            </tr>
-          </table> 
-        </td>
-      </tr>
+
     </table>
     </div> 
     </div>

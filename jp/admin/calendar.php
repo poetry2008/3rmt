@@ -141,12 +141,30 @@ switch($_GET['action']){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title><?php echo BANK_CL_TITLE_TEXT; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
-<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=calendar&type=js&v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/admin_calendar.js?v=<?php echo $back_rand_info?>"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=calendar&type=js"></script>
+<script language="javascript">
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if ($('#show_date_edit').css('display') != 'none') {
+        hidden_info_box(); 
+      }
+    }
+    if (event.which == 13) {
+      <?php //回车?> 
+      if ($('#show_date_edit').css('display') != 'none') {
+        $("#button_save").trigger("click");  
+      } 
+    } 
+  });    
+});
+</script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
