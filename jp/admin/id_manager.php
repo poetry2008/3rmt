@@ -120,7 +120,7 @@ if (isset($_GET['log']) && $_GET['log'] == 'id_manager_log') {
 <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" >
-	var js_id_manager_self = <?php echo $_SERVER['PHP_SELF']?>;
+	var js_id_manager_self = '<?php echo $_SERVER['PHP_SELF']?>';
 	var js_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
 	var js_onetime_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
 	var js_id_manager_del_pw = '<?php echo TEXT_DEL_PW_MANAGER;?>';
