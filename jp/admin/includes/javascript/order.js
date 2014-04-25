@@ -227,7 +227,7 @@ function confrim_mail_title(oid_info, notice_mail_str){
             alert(msg); 
           } 
         } else {
-           if (direct_single == false) {
+          if (direct_single == false) {
             document.forms.sele_act.submit(); 
           }
         } 
