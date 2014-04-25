@@ -33,7 +33,9 @@
         $query_num_rows = $count_result['count'];
       } else {
 
-        $query_num_rows = tep_db_num_rows(tep_db_query($this->cutOrderString($sql_query)));
+        if($sql_query != ''){
+          $query_num_rows = tep_db_num_rows(tep_db_query($this->cutOrderString($sql_query)));
+        }
       }
       
       $total_page = intval($query_num_rows / $max_rows_per_page);

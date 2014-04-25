@@ -852,8 +852,227 @@ if(isset($_GET['action']) &&
 	var js_id_manager_pw_manager = '<?php echo TEXT_DEL_PW_MANAGER;?>';
 	var js_id_manager_npermission = '<?php echo $ocertify->npermission;?>';
 </script>
-<script language="javascript" src="includes/javascript/admin_id_manager_2.js?v=<?php echo $back_rand_info?>"></script>
-<link rel="stylesheet" type="text/css" href="includes/admin_id_manager.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="includes/javascript/admin_id_manager_log.js?v=<?php echo $back_rand_info?>"></script>
+<style>
+.yui3-skin-sam {
+  width:150px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.yui3-skin-sam {
+  width:150px;
+}
+}
+.yui3-skin-sam input {
+  float:left;
+}
+a.dpicker {
+	width: 16px;
+	height: 18px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin:1px 0 0 1px;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+} 
+.popup-calendar {
+top:20px;
+left:-95px;
+left:-163px;
+}
+.number{
+font-size:24px;
+font-weight:bold;
+width:20px;
+text-align:center;
+}
+form{
+margin:0;
+padding:0;
+}
+.alarm_input{
+width:75px;
+}
+.log{
+  border:#999 solid 1px;
+  background:#eee;
+  clear: both;
+}
+.log .content{
+  padding:3px 0;
+  font-size:12px;
+}
+.log .alarm{
+  display:none;
+  background:url(images/icons/alarm.gif) no-repeat left center;
+}
+.log .level{
+  font-size:10px;
+  font-weight:bold;
+  display:none;
+  width:99px;
+}
+.log .level input{
+margin:0;
+padding:0;
+}
+.log .info{
+  font-size:10px;
+  background:#fff;
+  text-align:right;
+}
+.info02{
+width:50px;
+padding:0 5px;
+}
+.log .action{
+text-align:center;
+  font-size:10px;
+}
+.edit_action{
+  display:none;
+  font-size:10px;
+line-height:24px;
+padding-right:5px;
+}
+.action a{
+padding:0 3px;
+}
+textarea,input{
+  font-size:14px;
+}
+textarea{
+  width:100%;
+  padding:0;
+  margin:0;
+}
+.alarm_on{
+  border:2px solid #ff8e90;
+  background:#ffe6e6;
+}
+.clr{
+clear:both;
+width:100%;
+height:5px;
+overflow:hidden;
+}
+.popup-calendar-wrapper{
+float:left;
+}
+
+#new_yui3 {
+	margin-left:-168px;
+	*margin-left:-28px;
+	margin-left:-28px\9;
+	position: absolute;
+	z-index:200px;
+        margin-top:15px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#new_yui3{
+	position: absolute;
+	z-index:200px;
+        margin-top:17px;
+}
+}
+#input_nextdate{ width:120px; float:left;}
+a.date-picker {
+    display: block;
+    float: none;
+}
+.number{
+font-size:24px;
+font-weight:bold;
+width:20px;
+text-align:center;
+}
+form{
+margin:0;
+padding:0;
+}
+.alarm_input{
+width:80px;
+}
+.log{
+  border:#999 solid 1px;
+  background:#eee;
+  clear: both;
+}
+.log .content{
+  padding:3px;
+  font-size:12px;
+}
+.log .alarm{
+  display:none;
+  font-size:10px;
+  background:url(images/icons/alarm.gif) no-repeat left center;
+}
+.log .level{
+  font-size:10px;
+  font-weight:bold;
+  display:none;
+  width:100px;
+  *width:120px;
+}
+.log .level input{
+margin:0;
+padding:0;
+}
+.log .info{
+  font-size:10px;
+  background:#fff;
+  text-align:right;
+}
+.info02{
+width:50px;
+}
+.log .action{
+text-align:center;
+  font-size:10px;
+}
+.edit_action{
+  display:none;
+  font-size:10px;
+line-height:24px;
+padding-right:5px;
+}
+.action a{
+padding:0 3px;
+}
+textarea,input{
+  font-size:14px;
+}
+textarea{
+  width:100%;
+}
+.alarm_on{
+  border:2px solid #ff8e90;
+  background:#ffe6e6;
+}
+.clr{
+clear:both;
+width:100%;
+height:5px;
+overflow:hidden;
+}
+.popup-calendar {
+	top:850px;
+	*top:755px!important;
+	top:735px\9;
+	right:163px;
+	position: absolute;
+}
+.popup-calendar-wrapper{
+float:left;
+}
+.popup-calendar-wrapper table{ width:100%;}
+.weekend ,.weekday,.inactive  { text-align:center; background-color:#eee;}
+.link-next{ text-align:right;}
+.link-close{ color:#000; text-align:right; position:absolute; top:5px; font-weight:bold; left:134px;}
+</style>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
