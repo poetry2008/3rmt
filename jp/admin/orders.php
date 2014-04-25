@@ -1992,7 +1992,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.site_id,
                      o.is_gray,
                      o.read_flag
-                       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ." where " . $sort_where.  " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') .  $orders_id_search .  $where_payment . $where_type."  order by ".$order_str;
+                       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ." where " . $sort_where.  " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') .  $orders_id_search .  $where_payment . $where_type."  order by ".$order_str;
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
                        //顾客名/邮件查询 
