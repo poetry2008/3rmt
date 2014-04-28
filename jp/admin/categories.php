@@ -7,6 +7,10 @@
 require('includes/application_top.php');
 require(DIR_WS_CLASSES . 'currencies.php');  
 require(DIR_FS_ADMIN . '/classes/notice_box.php');
+if(file_exists(DIR_WS_LANGUAGES.$language .'/javascript/c_admin.php')){
+	require_once(DIR_WS_LANGUAGES.$language .'/javascript/c_admin.php');
+}
+
 $cPath_yobi = cpathPart($_GET['cPath'], 1);  
 $currencies = new currencies();
 $order_status_info = tep_get_orders_status_array();

@@ -1,12 +1,23 @@
 <?php
 /*
   $Id$
-*/
-
+ */
+  
+  if(isset($_GET['customers_sort']) && isset($_GET['customers_sort_type'])){
+    ini_set('memory_limit','256M');
+  }
   //顾客信息检索页面
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   require('includes/step-by-step/new_application_top.php');
+  //获取网站信息
+  $site_list_array = array();
+  $site_query = tep_db_query("select id,romaji from ".TABLE_SITES);
+  while($site_array = tep_db_fetch_array($site_query)){
+
+    $site_list_array[$site_array['id']] = $site_array['romaji'];
+  }
+  tep_db_free_result($site_query);
   //获取显示哪些网站的数据
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
      $sql_site_where = ' in ('.str_replace('-', ',', $_GET['site_id']).') and ';
@@ -58,21 +69,21 @@
      * 参数 #CHAR_F 用于转换编码的前缀 
      * 参数 #CHAR_E 用于转换编码的后缀 
      */
-    $keyword_array = array('customers_customers'=>array('customers_name'=>"#CASE#BLANK_Fc.customers_firstname#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_lastname#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_firstname_f#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_lastname_f#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fconcat(c.customers_lastname,' ',c.customers_firstname)#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+    $keyword_array = array('customers_customers'=>array('customers_name'=>"#CASE#BLANK_Fc.customers_firstname#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_lastname#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fconcat(c.customers_lastname,' ',c.customers_firstname)#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                         'customers_email'=>"#CASE#BLANK_Fc.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                         'customers_other'=>"#CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",  
                                                   ),
-                         'customers_orders'=>array('customers_name'=>"#CASE#BLANK_Fo.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.customers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                         'customers_orders'=>array('customers_name'=>"#CASE#BLANK_Fo.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                     'customers_email'=>"#CASE#BLANK_Fo.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
-                                                    'customers_other'=>"#CASE#BLANK_Fo.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fo.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.billing_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ref#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ref_keywords#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                                                    'customers_other'=>"#CASE#BLANK_Fo.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fo.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ref#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ref_keywords#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                   ), 
-                         'customers_preorders'=>array('customers_name'=>"#CASE#BLANK_Fp.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.customers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                         'customers_preorders'=>array('customers_name'=>"#CASE#BLANK_Fp.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                     'customers_email'=>"#CASE#BLANK_Fp.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
-                                                    'customers_other'=>"#CASE#BLANK_Fp.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fp.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.billing_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ref#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ref_keywords#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                                                    'customers_other'=>"#CASE#BLANK_Fp.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fp.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ref#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fp.orders_ref_keywords#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fc.customers_fax#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                   ),
-                         'customers_telecom_unknow'=>array('customers_name'=>"#CASE#BLANK_Fo.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.customers_name_f#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                         'customers_telecom_unknow'=>array('customers_name'=>"#CASE#BLANK_Fo.customers_name#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                     'customers_email'=>"#CASE#BLANK_Fo.customers_email_address#BLANK_E #CHAR_Clike '%#KEYWORD%'", 
-                                                    'customers_other'=>"#CASE#BLANK_Fo.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fo.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.billing_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%'",
+                                                    'customers_other'=>"#CASE#BLANK_Fo.orders_id#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_F#CHAR_Fo.customers_id#CHAR_E#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.payment_method#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_status_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_ip#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_host_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_user_agent#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_comment#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_screen_resolution#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_color_depth#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_flash_version#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.orders_http_accept_language#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_name#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_tel#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_money#BLANK_E #CHAR_Clike '%#KEYWORD%' or #CASE#BLANK_Fo.telecom_email#BLANK_E #CHAR_Clike '%#KEYWORD%'",
                                                   ),
                                                 );
 
@@ -80,13 +91,18 @@
     $table_array = array('customers_customers'=>"select c.site_id site_id,1 info_type,c.customers_id info_id,concat(c.customers_lastname,' ',c.customers_firstname) info_name,c.customers_email_address info_email,ci.customers_info_date_account_created info_time from ".TABLE_CUSTOMERS." c left join ".TABLE_CUSTOMERS_INFO." ci on c.customers_id=ci.customers_info_id where c.site_id".$sql_site_where,
                          'customers_orders'=>"select o.site_id,2 info_type,concat(o.orders_id,'') info_id,o.customers_name info_name,o.customers_email_address info_email,o.date_purchased info_time from ".TABLE_ORDERS." o left join ".TABLE_CUSTOMERS." c on o.customers_id=c.customers_id where o.site_id".$sql_site_where, 
                          'customers_preorders'=>"select p.site_id,3 info_type,concat(p.orders_id,'') info_id,p.customers_name info_name,p.customers_email_address info_email,p.date_purchased info_time from ".TABLE_PREORDERS." p left join ".TABLE_CUSTOMERS." c on p.customers_id=c.customers_id where p.site_id".$sql_site_where,
-                         'customers_telecom_unknow'=>"select o.site_id site_id,4 info_type,t.id info_id,o.customers_name info_name,o.customers_email_address info_email,o.date_purchased info_time from telecom_unknow t left join ".TABLE_ORDERS." o on t.option=o.telecom_option where o.telecom_option!='' and t.option!='' and o.site_id".$sql_site_where,
+                         'customers_telecom_unknow'=>"select o.site_id site_id,4 info_type,t.id info_id,o.customers_name info_name,o.customers_email_address info_email,o.date_purchased info_time from ".TABLE_ORDERS." o left join telecom_unknow t on t.option=o.telecom_option where o.telecom_option!='' and t.option!='' and o.site_id".$sql_site_where,
                        );
     //生成查询SQL条件
     $obj_lenght = count($search_object)-1;
     $range_lenght = count($search_range )-1;
+    $result_list_array = array();
+    $i = 0;
+    $customers_array = array();
+    $count_num = 0;
+    $_GET['page'] = !isset($_GET['page']) ? 1 : $_GET['page'];
     foreach($search_range as $range_key=>$range_value){
-      $keyword_query_str .= $table_array[$range_value];
+      $keyword_query_str = $table_array[$range_value];
       $keyword_str = '';
       foreach($search_object as $obj_key=>$obj_value){
 
@@ -121,45 +137,108 @@
           $keyword_query_str .= '('.$keyword_str_1.')'; 
         }
       }
-      if($range_key < $range_lenght){
-        $keyword_query_str .= ' union all ';
+      
+      //是否区别大小写
+      if(in_array('customers_case',$search_condition)){
+
+        $keyword_query_str = str_replace('#CASE','',$keyword_query_str);
+      }else{
+
+        $keyword_query_str = str_replace('#CASE','binary ',$keyword_query_str);
+      } 
+
+      //是否区别全角、半角
+      if(in_array('customers_character',$search_condition)){
+
+        $keyword_query_str = str_replace('#CHAR_F','convert(',$keyword_query_str);
+        $keyword_query_str = str_replace('#CHAR_E',' using utf8)',$keyword_query_str);
+        $keyword_query_str = str_replace('#CHAR_C','collate utf8_unicode_ci ',$keyword_query_str);
+      }else{
+
+        $keyword_query_str = str_replace('#CHAR_F','',$keyword_query_str);
+        $keyword_query_str = str_replace('#CHAR_E','',$keyword_query_str);
+        $keyword_query_str = str_replace('#CHAR_C','',$keyword_query_str);
       }
-    } 
 
-    //是否区别大小写
-    if(in_array('customers_case',$search_condition)){
+      //是否忽略空格、换行
+      if(in_array('customers_blank',$search_condition)){
 
-      $keyword_query_str = str_replace('#CASE','',$keyword_query_str);
+        $keyword_query_str = str_replace('#BLANK_F','replace(replace(replace(',$keyword_query_str);
+        $keyword_query_str = str_replace('#BLANK_E',", '\\r\\n', '' ),' ',''),'　','')",$keyword_query_str);
+      }else{
+
+        $keyword_query_str = str_replace('#BLANK_F','',$keyword_query_str);
+        $keyword_query_str = str_replace('#BLANK_E','',$keyword_query_str);
+      } 
+
+      
+      $result_query = tep_db_query($keyword_query_str);
+      $count_num += tep_db_num_rows($result_query);
+      //用数组处理数据的分页、排序
+      while($result_array = tep_db_fetch_array($result_query)){
+ 
+        if(!(isset($_GET['customers_sort']) && isset($_GET['customers_sort_type']))){
+          if($i > ($_GET['page']-1)*MAX_DISPLAY_SEARCH_RESULTS+MAX_DISPLAY_SEARCH_RESULTS-1){break;}
+          if($i >= ($_GET['page']-1)*MAX_DISPLAY_SEARCH_RESULTS && $i <= ($_GET['page']-1)*MAX_DISPLAY_SEARCH_RESULTS+MAX_DISPLAY_SEARCH_RESULTS-1){
+
+            $result_list_array[] = array('site_id'=>$result_array['site_id'], 
+                                     'info_type'=>$result_array['info_type'],
+                                     'info_id'=>$result_array['info_id'],
+                                     'info_name'=>$result_array['info_name'],
+                                     'info_email'=>$result_array['info_email'],
+                                     'info_time'=>$result_array['info_time'],
+                                   );
+          }
+        }else{
+          $result_list_array[] = array('site_id'=>$result_array['site_id'], 
+                                     'info_type'=>$result_array['info_type'],
+                                     'info_id'=>$result_array['info_id'],
+                                     'info_name'=>$result_array['info_name'],
+                                     'info_email'=>$result_array['info_email'],
+                                     'info_time'=>$result_array['info_time'],
+                                   ); 
+        }
+        $i++;
+      }
+      tep_db_free_result($result_query);   
+    }  
+    
+    if(isset($_GET['customers_sort']) && isset($_GET['customers_sort_type'])){
+        $customers_sort = $_GET['customers_sort'];
+        $customers_sort_type = $_GET['customers_sort_type'];
+        $customers_sort_array = array();
+        if($customers_sort == 'site_id'){
+          foreach($result_list_array as $result_key=>$result_value){
+
+            $customers_sort_array[$result_key] = $site_list_array[$result_value[$customers_sort]];
+          }
+        }else{
+          foreach($result_list_array as $result_key=>$result_value){
+
+            $customers_sort_array[$result_key] = $result_value[$customers_sort];
+          }  
+        }
+        if($customers_sort_type == 'asc'){
+
+          asort($customers_sort_array);
+        }else{
+
+          arsort($customers_sort_array);
+        }
+
+        $customers_sort_array = array_keys($customers_sort_array);
+
+        $customers_sort_array = array_slice($customers_sort_array,($_GET['page']-1)*MAX_DISPLAY_SEARCH_RESULTS,MAX_DISPLAY_SEARCH_RESULTS);
+
+        foreach($customers_sort_array as $sort_key=>$sort_value){
+
+          $customers_array[] = $result_list_array[$sort_value];
+        }
     }else{
-
-      $keyword_query_str = str_replace('#CASE','binary ',$keyword_query_str);
-    } 
-
-    //是否区别全角、半角
-    if(in_array('customers_character',$search_condition)){
-
-      $keyword_query_str = str_replace('#CHAR_F','convert(',$keyword_query_str);
-      $keyword_query_str = str_replace('#CHAR_E',' using utf8)',$keyword_query_str);
-      $keyword_query_str = str_replace('#CHAR_C','collate utf8_unicode_ci ',$keyword_query_str);
-    }else{
-
-      $keyword_query_str = str_replace('#CHAR_F','',$keyword_query_str);
-      $keyword_query_str = str_replace('#CHAR_E','',$keyword_query_str);
-      $keyword_query_str = str_replace('#CHAR_C','',$keyword_query_str);
+        $customers_array = $result_list_array;
     }
-
-    //是否忽略空格、换行
-    if(in_array('customers_blank',$search_condition)){
-
-      $keyword_query_str = str_replace('#BLANK_F','replace(replace(replace(',$keyword_query_str);
-      $keyword_query_str = str_replace('#BLANK_E',", '\\r\\n', '' ),' ',''),'　','')",$keyword_query_str);
-    }else{
-
-      $keyword_query_str = str_replace('#BLANK_F','',$keyword_query_str);
-      $keyword_query_str = str_replace('#BLANK_E','',$keyword_query_str);
-    }
-    //echo $keyword_query_str;
-    //exit;
+    //注销数据
+    unset($result_list_array);
   }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -310,9 +389,6 @@ require("includes/note_js.php");
              <input type="hidden" id="search" value="<?php echo $_GET['search'];?>">
              <?php
               //排序处理
-              $customers_order_sort_name = ''; 
-              $customers_order_sort = ''; 
-              
               if (isset($_GET['customers_sort'])) {
                 if ($_GET['customers_sort_type'] == 'asc') {
                   $type_str = '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>'; 
@@ -327,83 +403,65 @@ require("includes/note_js.php");
                     $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_SITE.$type_str.'</a>'; 
                     $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_type&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_TYPE.'</a>'; 
                     $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_id&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_ORDERS_ID.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_order_sort_name = ' s.romaji'; 
+                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
+                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
+                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_time&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
                     break;
                   //数据来源排序
                   case 'info_type':
                     $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
                     $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_type&customers_sort_type='.$tmp_type_str).'">'.HEADING_TITLE_SEARCH_TYPE.$type_str.'</a>'; 
                     $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_id&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_ORDERS_ID.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_order_sort_name = ' info_type'; 
+                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
+                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
+                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_time&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
                     break;
                   //数据ID排序
                   case 'info_id':
                     $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
                     $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_type&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_TYPE.'</a>'; 
                     $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_id&customers_sort_type='.$tmp_type_str).'">'.HEADING_TITLE_SEARCH_ORDERS_ID.$type_str.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_order_sort_name = ' info_id'; 
+                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
+                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
+                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_time&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
                     break;
                   //顾客名排序
-                  case 'customers_name':
+                  case 'info_name':
                     $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
                     $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_type&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_TYPE.'</a>'; 
                     $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_id&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_ORDERS_ID.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_name&customers_sort_type='.$tmp_type_str).'">'.CUSTOMERS_SEARCH_OPTION_NAME.$type_str.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_order_sort_name = ' info_name'; 
+                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_name&customers_sort_type='.$tmp_type_str).'">'.CUSTOMERS_SEARCH_OPTION_NAME.$type_str.'</a>'; 
+                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
+                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_time&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
                     break;
                   //顾客EMAIL排序
-                  case 'customers_email':
+                  case 'info_email':
                     $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
                     $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_type&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_TYPE.'</a>'; 
                     $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_id&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_ORDERS_ID.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_email&customers_sort_type='.$tmp_type_str).'">'.CUSTOMERS_SEARCH_OPTION_MAIL.$type_str.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
-                    $customers_order_sort_name = ' info_email'; 
+                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
+                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_email&customers_sort_type='.$tmp_type_str).'">'.CUSTOMERS_SEARCH_OPTION_MAIL.$type_str.'</a>'; 
+                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_time&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
                     break; 
                   //作成时间排序
-                  case 'update_at':
+                  case 'info_time':
                     $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
                     $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_type&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_TYPE.'</a>'; 
                     $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_id&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_ORDERS_ID.'</a>'; 
-                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
-                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
-                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_ACTION.$type_str.'</a>'; 
-                    $customers_order_sort_name = ' info_time'; 
+                    $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
+                    $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
+                    $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_time&customers_sort_type='.$tmp_type_str).'">'.TABLE_HEADING_ACTION.$type_str.'</a>'; 
                     break;
                 }
               }
-              if (isset($_GET['customers_sort_type'])) {
-                if ($_GET['customers_sort_type'] == 'asc') {
-                  $customers_order_sort = 'asc'; 
-                } else {
-                  $customers_order_sort = 'desc'; 
-                }
-              }
-
-              if($customers_order_sort_name != '' && $customers_order_sort!=''){ 
-                $customers_order_sql = 'order by '.$customers_order_sort_name.' '.$customers_order_sort; 
-              }else{
-                $customers_order_sql = ''; 
-              }
+              
               if (!isset($_GET['customers_sort_type'])) {
                 $customers_table_id_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=site_id&customers_sort_type=desc').'">'.TABLE_HEADING_SITE.'</a>'; 
                 $customers_table_type_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_type&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_TYPE.'</a>'; 
                 $customers_table_exit_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_id&customers_sort_type=desc').'">'.HEADING_TITLE_SEARCH_ORDERS_ID.'</a>'; 
-                $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
-                $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=customers_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
-                $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=update_at&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
+                $customers_table_lastname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_name&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_NAME.'</a>'; 
+                $customers_table_firstname_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_email&customers_sort_type=desc').'">'.CUSTOMERS_SEARCH_OPTION_MAIL.'</a>'; 
+                $customers_table_update_str = '<a href="'.tep_href_link(FILENAME_SEARCH, tep_get_all_get_params(array('current_cuid', 'customers_sort', 'customers_sort_type')).'customers_sort=info_time&customers_sort_type=desc').'">'.TABLE_HEADING_ACTION.'</a>'; 
               }
               //生成查询结果列表
               $customers_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
@@ -418,15 +476,9 @@ require("includes/note_js.php");
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $customers_table_firstname_str);
               $customers_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="53"','text' => $customers_table_update_str);
               $customers_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $customers_title_row);               
-  if($keyword_query_str != ''){           
-    if($customers_order_sql !=''){
-      $customers_query_raw = 'select * from ('.$keyword_query_str.') info left join '.TABLE_SITES.' s on info.site_id=s.id '.$customers_order_sql;
-    }else{
-      $customers_query_raw = $keyword_query_str; 
-    }
-    $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows);
-    $customers_query = tep_db_query($customers_query_raw);
-    $customers_numrows = tep_db_num_rows($customers_query);
+  if($count_num > 0){           
+    $temp = '';
+    $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $temp, $count_num);
     //搜索的类别
     $info_type_array = array('1'=>CUSTOMERS_HEADING_CUSTOMERS_TITLE.HEADING_TITLE_SEARCH_INFO,
                              '2'=>CUSTOMERS_HEADING_ORDER_TITLE.HEADING_TITLE_SEARCH_INFO,  
@@ -438,8 +490,8 @@ require("includes/note_js.php");
                             '2'=>FILENAME_ORDERS.'?keywords=#ID&search_type=orders_id',
                             '3'=>FILENAME_PREORDERS.'?keywords=#ID&search_type=orders_id',
                             '4'=>'telecom_unknow.php?keywords=#ID&search_type=tid',
-                           );
-    while ($customers = tep_db_fetch_array($customers_query)) {
+                          ); 
+    foreach($customers_array as $key=>$customers){  
       if (
           ((!isset($_GET['cID']) || !$_GET['cID']) || (@$_GET['cID'] == $customers['info_id'])) 
           && (!isset($cInfo) || !$cInfo)
@@ -495,6 +547,7 @@ require("includes/note_js.php");
           );
        $customers_table_row[] = array('params' => $customers_params, 'text' => $customers_info);
     }
+    unset($customers_array);
   }
     $news_form = '';
     $notice_box->get_form($news_form);
@@ -502,14 +555,14 @@ require("includes/note_js.php");
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
     //生成分页列表
-    if($keyword_query_str != ''){
+    if($_GET['action'] == 'search'){
 ?>
               <tr>
                 <td colspan="6"><table border="0" width="100%" cellspacing="3" cellpadding="0" class="table_list_box">
                   <tr>
                     <td>
                      <?php 
-                      if($customers_numrows > 0){
+                      if($count_num > 0){
                            echo ''; 
                       }else{
                            echo TEXT_DATA_EMPTY;
@@ -517,10 +570,12 @@ require("includes/note_js.php");
                    ?> 
                     </td>
                   </tr>
+                  <?php if($count_num > 0){?>
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $customers_split->display_count($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SEARCH); ?></td>
-                    <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($customers_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID', 'current_cuid'))); ?></div></td>
+                    <td class="smallText" valign="top"><?php echo $customers_split->display_count($count_num, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SEARCH); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $customers_split->display_links($count_num, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'cID', 'current_cuid'))); ?></div></td>
                   </tr>
+                  <?php }?>
                 </table></td>
               </tr>
 <?php

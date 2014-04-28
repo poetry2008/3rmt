@@ -712,129 +712,20 @@ if(isset($_SESSION['error_preorders_status'])&&$_SESSION['error_preorders_status
 <?php } else { ?>
 <title><?php echo HEADING_TITLE; ?></title>
 <?php }?>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<script language="javascript" src="includes/javascript/jquery.js"></script>
-<script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/all_preorder.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/all_preorder.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
-$(document).ready(function(){ 
-  if($(".dataTableContent").find('input|[type=checkbox][checked]').length!=0){
-    if(document.sele_act.elements["chk[]"]){
-      document.getElementsByName("all_chk")[0].checked = false;
-      for(i = 0; i < document.sele_act.elements["chk[]"].length; i++){
-        document.sele_act.elements["chk[]"][i].checked = false;
-        var tr_id = 'tr_' + document.sele_act.elements["chk[]"][i].value;
-        if(document.getElementById(tr_id).className != 'dataTableRowSelected'){
-          document.getElementById(tr_id).style.backgroundColor = "";
-        }
-      }
-    }
-  }
-});
-<?php //删除预约订单?>
-function confirm_del_preorder_info()
-{
-<?php
-if ($ocertify->npermission == 31) {
-?>
-  document.forms.preorders.submit();
-<?php
-} else {
-?>
-  $.ajax({
-     url: 'ajax_orders.php?action=getallpwd',
-     type: 'POST',
-     dataType: 'text',
-     data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-     async : false,
-     success: function(data) {
-       var tmp_msg_arr = data.split('|||'); 
-       var pwd_list_array = tmp_msg_arr[1].split(',');
-       if (tmp_msg_arr[0] == '0') {
-         document.forms.preorders.submit();
-       } else {
-         var input_pwd_str = window.prompt('<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>', ''); 
-         if (in_array(input_pwd_str, pwd_list_array)) {
-           $.ajax({
-             url: 'ajax_orders.php?action=record_pwd_log',   
-             type: 'POST',
-             dataType: 'text',
-             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.preorders.action),
-             async: false,
-             success: function(msg_info) {
-               document.forms.preorders.submit();
-             }
-           }); 
-         } else {
-           alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
-         }
-       }
-     }
-   });
-<?php
-}
-?>
-}
-  <?php //选中/非选中网站?>
-  function change_site(site_id,flag,site_list,param_url){  
-          var ele = document.getElementById("site_"+site_id);
-          $.ajax({
-                  dataType: 'text',
-                  type:"POST",
-                  data:'param_url='+param_url+'&flag='+flag+'&site_list='+site_list+'&site_id='+site_id,
-                  async:false, 
-                  url: 'ajax_preorders.php?action=select_site',
-                  success: function(data) {
-                    if (data != '') {
-                      if (ele.className == 'site_filter_selected') {
-                        ele.className='';
-                      } else {
-                        ele.className='site_filter_selected';
-                      }
-                      window.location.href = data; 
-                   }
-                 }
-          });
-  }
-  <?php //等待元素隐藏?> 
-  function read_time(){
-    
-    $("#wait").hide();
-  }
-  <?php //给预约订单加标识?> 
-  function change_read(oid,user){
-          var orders_id = document.getElementById("oid_"+oid); 
-          var orders_id_src = orders_id.src;
-          var orders_id_src_array = new Array();
-          var flag = 0;
-          orders_id_src_array = orders_id_src.split("/"); 
-          if(orders_id_src_array[orders_id_src_array.length-1] == 'green_right.gif'){
+	var js_preorders_self = '<?php echo $_SERVER['PHP_SELF']?>';
+	var js_preorders_pwd = '<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>';
+	var js_preorders_error = "<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>";
+	var js_preorders_npermission = '<?php echo $ocertify->npermission;?>';
+	var js_preorders_flag_checked =  " <?php echo TEXT_FLAG_CHECKED;?> ";
+	var js_preorders_flag_uncheck = " <?php echo TEXT_FLAG_UNCHECK;?> ";
 
-            flag = 1;
-          }
-          $.ajax({
-                  type: "POST",
-                  data: 'oid='+oid+'&user='+user+'&flag='+flag,
-                  beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
-                  async:false,
-                  url: 'ajax_preorders.php?action=read_flag',
-                  success: function(msg) {
-                    if(flag == 0){
-                      orders_id.src="images/icons/green_right.gif";
-                      orders_id.title=" <?php echo TEXT_FLAG_CHECKED;?> ";
-                      orders_id.alt="<?php echo TEXT_FLAG_CHECKED;?>";
-                    }else{
-                      orders_id.src="images/icons/gray_right.gif";
-                      orders_id.title=" <?php echo TEXT_FLAG_UNCHECK;?> ";
-                      orders_id.alt="<?php echo TEXT_FLAG_UNCHECK;?>";
-                    }
-                    $('body').css('cursor','');
-                    setTimeout('read_time()',500);
-                  }
-               }); 
-  }
   <?php // 用作跳转?>
   var base_url = '<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('questions_type')));?>';
   
@@ -867,190 +758,25 @@ if ($ocertify->npermission == 31) {
     echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
   }
 ?>
+	var js_preorders_payment_time = '<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>';
+	var js_preorders_payment_time_href = "<?php echo tep_href_link('pre_handle_payment_time.php')?>";
+	var js_preorders_payment_time_success = '<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>';
+	var js_preorders_title_changed =  "<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>";
 
-function del_confirm_payment_time(oid, status_id)
-{
-  $.ajax({
-    url: 'ajax_preorders.php?action=getallpwd',
-    type: 'POST',
-    dataType: 'text',
-    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
-    async : false,
-    success: function(data) {
-      var tmp_msg_arr = data.split('|||'); 
-      var pwd_list_array = tmp_msg_arr[1].split(',');
-      <?php
-      if ($ocertify->npermission == 31) {
-      ?>
-      if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-        $.ajax({
-          type:"POST", 
-          url:"<?php echo tep_href_link('pre_handle_payment_time.php')?>",
-          data:"oID="+oid+"&stid="+status_id, 
-          async : false,
-          success:function(msg) {
-            alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-            window.location.href = window.location.href; 
-            window.location.reload; 
-          }
-        }); 
-      }
-      <?php
-      } else {
-      ?>
-       if (tmp_msg_arr[0] == '0') {
-         if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-          $.ajax({
-            type:"POST", 
-            url:"<?php echo tep_href_link('pre_handle_payment_time.php')?>",
-            data:"oID="+oid+"&stid="+status_id, 
-            async : false,
-            success:function(msg) {
-              alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-              window.location.href = window.location.href; 
-              window.location.reload; 
-            }
-          }); 
-         }
-       } else {
-         var input_pwd_str = window.prompt('<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>', ''); 
-         if (in_array(input_pwd_str, pwd_list_array)) {
-           $.ajax({
-             url: 'ajax_orders.php?action=record_pwd_log',   
-             type: 'POST',
-             dataType: 'text',
-             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(window.location.href),
-             async: false,
-             success: function(msg_info) {
-             if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-              $.ajax({
-                type:"POST", 
-                url:"<?php echo tep_href_link('pre_handle_payment_time.php')?>",
-                data:"oID="+oid+"&stid="+status_id+"&once_pwd="+input_pwd_str, 
-                success:function(msg) {
-                  alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
-                  window.location.href = window.location.href; 
-                  window.location.reload; 
-                }
-              }); 
-             }
-             }
-           }); 
-         } else {
-           alert("<?php echo NOTICE_ORDER_INPUT_WRONG_PASSWORD;?>"); 
-         }
-       }
-      <?php
-      }
-      ?>
-    }
-  });
-}
-<?php //检查发送邮件状态?>
-function check_mail_product_status(pid)
-{
-   var _end = $("#s_status").val();
-   var direct_single = false; 
-   if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-   }else{
-     if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-     }else{
-       direct_single = true; 
-     }
-   }
-
-   $.ajax({
-    type:"POST",
-    data:"c_comments="+$('#c_comments').val()+'&o_id='+pid+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
-    async:false,
-    url:'ajax_preorders.php?action=check_preorder_variable_data',
-    success: function(msg) {
-      if (msg != '') {
-        if (direct_single == false) {
-          alert(msg); 
-        } 
-      } else {
-        if (direct_single == false) {
-          document.forms.sele_act.submit(); 
-        }
-      } 
-    }
-  });
-}
-<?php //检查是否为空?>
-function check_mail_list_product_status() {
-  var _end = $("#mail_title_status").val();
-  var o_id_list = ''; 
-  var direct_single = false;
-  if (document.sele_act.elements['chk[]']) {
-    if (document.sele_act.elements['chk[]'].length == null) {
-      if (document.sele_act.elements['chk[]'].checked == true) {
-        o_id_list += document.sele_act.elements['chk[]'].value+','; 
-      }
-    } else {
-      for (var i = 0; i < document.sele_act.elements['chk[]'].length; i++) {
-        if (document.sele_act.elements['chk[]'][i].checked == true) {
-          o_id_list += document.sele_act.elements['chk[]'][i].value+','; 
-        }
-      }
-    }
-  }
-  
-  $.ajax({
-    type:"POST",
-    data:"c_comments="+$('#c_comments').val()+'&o_id_list='+o_id_list+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end,
-    async:false,
-    url:'ajax_preorders.php?action=check_preorder_list_variable_data',
-    success: function(msg) {
-      if (msg != '') {
-        if (direct_single == false) {
-          alert(msg); 
-        } 
-      } else {
-        if (direct_single == false) {
-          document.forms.sele_act.submit(); 
-        }
-      } 
-    }
-  });
-}
-<?php //提交表单?>
-function check_list_preorder_submit() {
-  if (submit_confirm()) {
-    check_mail_list_product_status();
-  }
-}
 <?php
 if (!isset($_GET['action'])) {
 ?>
-$(function() {
-   left_show_height = $('#orders_list_table').height();
-   right_show_height = $('#rightinfo').height();
-   
-   if (right_show_height < left_show_height) {
-     $('#rightinfo').css('height', left_show_height);  
-   }
-});
-function resizeRightInfo() {
-   left_show_height = $('#orders_list_table').height();
-   right_show_height = $('#rightinfo').height();
-   
-   if (right_show_height <= left_show_height) {
-     $('#rightinfo').css('height', left_show_height);  
-   }
-}
-function showRightInfo() {
-   left_show_height = $('#orders_list_table').height();
-   $('#rightinfo').css('height', left_show_height);  
-}
-$(window).resize(function() {
-  showRightInfo();
-});
+	var js_preorders_action = true;
+<?php
+}else{
+?>
+	var js_preorders_action = false;
 <?php
 }
 ?>
-var popup_num = 1;
+	var popup_num = 1;
 </script>
+<script language="javascript" src="includes/javascript/admin_preorders.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
