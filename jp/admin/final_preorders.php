@@ -1044,7 +1044,6 @@ var image_icon_info = '<?php echo IMAGE_ICON_INFO;?>';
 var text_popup_window_show = '<?php echo TEXT_POPUP_WINDOW_SHOW;?>';
 var text_popup_window_edit = '<?php echo TEXT_POPUP_WINDOW_EDIT;?>';
 var image_save = '<?php echo IMAGE_SAVE;?>';
-var avg_div_flag = 1;
 	var js_final_text_ok = '<?php echo DIV_TEXT_OK;?>';
 	var js_final_text_clear = '<?php echo DIV_TEXT_CLEAR;?>';
 	var js_final_oid = '<?php echo $_GET['oID'];?>';
