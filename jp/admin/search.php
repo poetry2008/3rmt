@@ -4,7 +4,7 @@
  */
   
   if(isset($_GET['customers_sort']) && isset($_GET['customers_sort_type'])){
-    ini_set('memory_limit','512M');
+    ini_set('memory_limit','256M');
   }
   //顾客信息检索页面
   require('includes/application_top.php');
