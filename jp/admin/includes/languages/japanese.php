@@ -25,7 +25,7 @@ define('DATE_FORMAT_LONG', '%Y年%B%e日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('PHP_DATE_TIME_FORMAT', 'Y/m/d H:i:s'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
-define('DATE_TIME_FORMAT_TORIHIKI', '%Y/%m/%d %H:%M');
+define('DATE_TIME_FORMAT_MESSAGE', '%Y/%m/%d %H:%M');
 
 ////
 // Return date in raw format
@@ -387,7 +387,7 @@ define('HEADING_TITLE_GOTO', 'ジャンプ');
 define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', 'カテゴリー / 商品');
-define('OROSHI_DATA_MANAGE','データ');
+define('WHOLESALE_DATA_MANAGE','データ');
 define('BOX_ONCE_PWD_LOG','操作ログ');
 define('BANK_CL_TITLE_TEXT', 'カレンダー設定');
 define('BANK_CL_COMMON_WORK_TIME', '通常営業');
@@ -403,8 +403,8 @@ define('KEYWORDS_TABLE_COLUMN_ONE_TEXT', 'キーワード');
 define('KEYWORDS_TABLE_COLUMN_TWO_TEXT', '件数');
 define('KEYWORDS_TABLE_COLUMN_THREE_TEXT', '順位');
 define('LIST_DISPLAY_PRODUCT_SELECT', '商品選択');
-define('LIST_DISPLAY_JIAKONGZAIKU', '架空在庫');
-define('LIST_DISPLAY_YEZHE_PRICE', '業者単価');
+define('TEXT_PRODUCTS_VIRTUAL_QUANTITY', '架空在庫');
+define('LIST_DISPLAY_PEERS_PRICE', '業者単価');
 define('MAG_DL_TITLE_TEXT', 'メールマガジン購読者データダウンロード');
 define('MAG_UP_TITLE_TEXT', 'メールマガジン購読者一括アップロード');
 define('PRODUCTS_TO_TAGS_TITLE', 'タグ関連設定');
@@ -425,14 +425,14 @@ define('TELECOM_UNKNOW_TABLE_EMAIL', 'メールアドレス');
 define('TELECOM_UNKNOW_TABLE_PRICE', '金額');
 define('TELECOM_UNKNOW_SELECT_NOTICE', '選択した行を非表示にしますか？');
 define('TELECOM_UNKNOW_TABLE_DISPLAY','一括非表示');
-define('CLEATE_DOUGYOUSYA_TITLE', '同業者の名前設定');
-define('CLEATE_DOUGYOUSYA_ADD_BUTTON', '入力フォーム追加');
-define('CLEATE_DOUGYOUSYA_TONGYE', '同業者：');
-define('CLEATE_DOUGYOUSYA_EDIT', '編集');
-define('CLEATE_DOUGYOUSYA_DEL', '削除');
-define('CLEATE_DOUGYOUSYA_HISTORY', '履歴');
-define('CLEATE_DOUGYOUSYA_LOGIN', '同業者登録');
-define('CLEATE_DOUGYOUSYA_UPDATE_SORT', '順序を更新する');
+define('CLEATE_PEERS_TITLE', '同業者の名前設定');
+define('CLEATE_PEERS_ADD_BUTTON', '入力フォーム追加');
+define('CLEATE_PEERS_PEERS', '同業者：');
+define('CLEATE_PEERS_EDIT', '編集');
+define('CLEATE_PEERS_DEL', '削除');
+define('CLEATE_PEERS_HISTORY', '履歴');
+define('CLEATE_PEERS_LOGIN', '同業者登録');
+define('CLEATE_PEERS_UPDATE_SORT', '順序を更新する');
 define('CLEATE_LIST_TITLE', '卸業者のデータ登録');
 define('CLEATE_LIST_SETNAME_BUTTON', '卸業者の名前設定');
 define('CLEATE_LIST_LOGIN_BUTTON', '卸業者登録');
@@ -449,8 +449,8 @@ define('BOX_TOOLS_POINT_EMAIL_MANAGER','ポイントお知らせ');
 define('BOX_CAL_SITES_INFO_TEXT', '統計');
 
 //catalog language
-define('FILENAME_CLEATE_OROSHI_TEXT','卸業者の名前設定');
-define('FILENAME_CLEATE_DOUGYOUSYA_TEXT','同業者の名前設定');
+define('FILENAME_CLEATE_WHOLESALE_TEXT','卸業者の名前設定');
+define('FILENAME_CLEATE_PEERS_TEXT','同業者の名前設定');
 define('FILENAME_CATEGORIES_ADMIN_TEXT','商品卸価格管理');
 
 //coustomers language
@@ -566,9 +566,9 @@ define('TEXT_ATTRIBUTE_PUBLIC','パブリック');
 define('TEXT_ATTRIBUTE_PRIVATE','プライベート');
 define('HEADER_TEXT_CREATE_PREORDER', '予約作成');
 
-define('TEXT_TORIHIKI_REPLACE_STR','～');
-define('TEXT_TORIHIKI_HOUR_STR','時');
-define('TEXT_TORIHIKI_MIN_STR','分');
+define('TEXT_MESSAGE_REPLACE_STR','～');
+define('TEXT_MESSAGE_HOUR_STR','時');
+define('TEXT_MESSAGE_MIN_STR','分');
 define('TEXT_PREORDER_PAYMENT_METHOD', '支払方法');
 define('TEXT_PREORDER_NOT_COST', '入金まだ');
 define('TEXT_PREORDER_COST_DATE', '入金日');
@@ -582,7 +582,7 @@ define('TEXT_PREORDER_PRODUCTS_UNIT', '個');
 
 
 define('TEXT_PAYMENT_NULL_TXT','支払方法を選択してください');
-define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','選択してください');
+define('TEXT_MESSAGE_LIST_DEFAULT_TXT','選択してください');
 define('BOX_TOOLS_CAMPAIGN', 'キャンペーンコード設置');
 define('TEXT_CURRENT_CHARACTER_NAME', 'メールに記載する注意書き：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','未使用オプション削除');
@@ -698,7 +698,7 @@ define('TEXT_NO_DATA','該当の情報は見つかりませんでした');
 define('TEXT_LAST_SEARCH_DATA','最後から&nbsp;%s&nbsp;つの検索結果');
 define('TEXT_FIND_DATA_STOP','%sをさがしましたが、表示を停止します。');
 define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不重複な結果は&nbsp;%s&nbsp;件があります');
-define('CLEATE_DOUGYOUSYA_ALERT', 'まず、入力フォーム追加してください');
+define('CLEATE_PEERS_ALERT', 'まず、入力フォーム追加してください');
 define('BUTTON_MANUAL','マニュアル');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
 define('HEADER_TEXT_PERSONAL_SETTING','個人設定');

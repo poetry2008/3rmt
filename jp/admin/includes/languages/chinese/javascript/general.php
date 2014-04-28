@@ -3,7 +3,7 @@ define('JS_TEXT_GENERAL_EXPECT_TRADE_TIME','可能送达时间');
 define('JS_TEXT_GENERAL_SHOW_REVIEW','是否不显示此商品的评论？');
 define('JS_TEXT_GENERAL_ERROR_PREORDER_IS_SET','错误: 预约不存在。');
 define('JS_TEXT_GENERAL_NOT_COPY','同一URL正在登录，无法复制该内容');
-define('JS_TEXT_GENERAL_ROMAJI_ERROR','罗马字里包含禁止符号。');
+define('JS_TEXT_GENERAL_ROMAN_ERROR','罗马字里包含禁止符号。');
 define('JS_TEXT_GENERAL_QUANTITY_INFO','是否把个数保存到实际个数？是否保存到虚拟库存？\n\n如果「OK」实际库存、如果「取消」则被添加到虚拟库存中');
 define('JS_TEXT_GENERAL_INPUT_FORM_ERROR','输入形式出错!\n请修改下面的项目:\n\n');
 define('JS_TEXT_GENERAL_DELETE','删除');

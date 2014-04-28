@@ -120,7 +120,7 @@ define('TEXT_SELECT_MORE','複数の選択はできません。');
 define('TEXT_ORDER_SELECT','注文書はまだ選択していません。');
 define('TEXT_ORDER_WAIT','取引待ち');
 define('TEXT_ORDER_CARE','取り扱い注意');
-define('TEXT_ORDER_OROSHI','卸業者');
+define('TEXT_ORDER_WHOLESALE','卸業者');
 define('TEXT_ORDER_CUSTOMER_INFO','顧客情報');
 define('TEXT_ORDER_HISTORY_ORDER','過去の注文');
 define('TEXT_ORDER_NEXT_ORDER','次の注文');
