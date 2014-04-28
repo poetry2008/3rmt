@@ -1044,10 +1044,9 @@ var image_icon_info = '<?php echo IMAGE_ICON_INFO;?>';
 var text_popup_window_show = '<?php echo TEXT_POPUP_WINDOW_SHOW;?>';
 var text_popup_window_edit = '<?php echo TEXT_POPUP_WINDOW_EDIT;?>';
 var image_save = '<?php echo IMAGE_SAVE;?>';
-var avg_div_flag = 1;
 $(document).ready(function() {
   <?php //监听按键?> 
-  $(document).keyup(function(event) {
+  $(document).keydown(function(event) {
     if (event.which == 27) {
       <?php //esc?> 
       if (typeof($('#alert_div_submit').val()) != 'undefined'){
@@ -1056,13 +1055,8 @@ $(document).ready(function() {
     }
     if (event.which == 13) {
       <?php //回车?> 
-      if (avg_div_flag == 0 ){
-        avg_div_flag = 1;
-      }else{
-        if (typeof($('#alert_div_submit').val()) != 'undefined'){
-          $('#alert_div_submit').trigger('click');
-          avg_div_flag = 1;
-        }
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+        $('#alert_div_submit').trigger('click');
       }
     }
   });
@@ -1253,7 +1247,6 @@ function submit_order_check(products_id,op_id){
                   success: function (msg_info) {
                     if (msg_info != '') {
                       if (confirm(msg_info)) {
-                        avg_div_flag = 0;
                         confirm_div_init(hidden_list_str,price_list_str,num_list_str);
                       }
                     } else {
