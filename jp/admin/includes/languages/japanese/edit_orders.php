@@ -158,7 +158,7 @@ define('EDIT_ORDERS_NUM_UNIT', '個');
 
 define('TEXT_CREATE_ADDRESS_BOOK','お届け先を指定する');
 define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
-define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
+define('TEXT_DELIVERY_TIME_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
 define('CREATE_ORDER_FETCH_DATE_TEXT', 'お届け希望日:');
 define('CREATE_ORDER_FETCH_TIME_TEXT', 'お届け希望時間:');
 

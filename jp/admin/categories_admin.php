@@ -244,10 +244,10 @@ alt="close" /></div>
   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PREORDER_PRODUCTS_NUM; ?></td>
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_ZHUWEN_NUM;?></td>
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_JIAKONG;?></td>
-  <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_SHIZAIKU;?></td>
+  <td class="dataTableHeadingContent" align="center" ><?php echo TEXT_PRODUCTS_REAL_QUANTITY_TEXT;?></td>
   <td class="dataTableHeadingContent" align="center" ></td>
   <td class="dataTableHeadingContent" align="center" >
-      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>"><?php echo TABLE_HEADING_CATEGORIES_YEZHE?></a><br>
+      <a style="font-weight:bold;" href="cleate_list.php?cid=<?php echo $cPath_yobi;?>&action=prelist&cPath=<?php echo $_GET['cPath'];?>"><?php echo TABLE_HEADING_CATEGORIES_ENTERPRISE?></a><br>
       <small style="font-weight:bold;font-size:12px;"><?php echo str_replace(' ','<br>',$kakaku_updated);?></small>
   </td>
   <?php  
@@ -683,7 +683,7 @@ if(empty($cPath_back)&&empty($cID)&&isset($cPath)){
     <input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_CAL_SETTING;?>' name='b[]' onClick="cleat_set('set_bairitu.php')">
   <?php }?>
   &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_LOGIN;?>' name='e[]' onClick="location.href='set_comment.php?cID=<?php echo $current_category_id;?>&cPath=<?php echo $_GET['cPath'];?>'">
-  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_XIEYE_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')"><?php echo tep_eof_hidden();?>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
+  &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='<?php echo CATEGORY_ADMIN_BUTTON_WHOLESALER_PRICE;?>' name='d[]' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'];?>')"><?php echo tep_eof_hidden();?>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="x" value="<?php echo CATEGORY_ADMIN_BUTTON_ALL_UPDATE;?>" onClick="all_update()"></td>
 </tr>
 </table>
 </td>

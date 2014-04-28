@@ -125,7 +125,7 @@ define('TEXT_SELECT_MORE','不能多选。');
 define('TEXT_ORDER_SELECT','没选择送货单。');
 define('TEXT_ORDER_WAIT','等待交易');
 define('TEXT_ORDER_CARE','注意处理');
-define('TEXT_ORDER_OROSHI','经销商');
+define('TEXT_ORDER_WHOLESALE','经销商');
 define('TEXT_ORDER_CUSTOMER_INFO','客户信息');
 define('TEXT_ORDER_HISTORY_ORDER','历史订单');
 define('TEXT_ORDER_NEXT_ORDER','下个订单');

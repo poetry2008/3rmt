@@ -44,7 +44,7 @@ define('CREATE_ORDER_FETCH_TIME_SELECT_TEXT', '选项:');
 define('CREATE_ORDER_COMMUNITY_TITLE_TEXT', '公司使用栏');
 define('CREATE_ORDER_COMMUNITY_SEARCH_TEXT', ' 信用度调查:');
 define('CREATE_ORDER_SEARCH_TWO_TEXT','请选择企业名后点击「搜索」按钮。');
-define('CREATE_ORDER_YEZHE_NAME_TEXT', '企业名：');
+define('CREATE_ORDER_ENTERPRISE_NAME_TEXT', '企业名：');
 define('CREATE_ORDER_SHIRU_TEXT', '进货预约');
 define('CREATE_ORDER_TEL_TEXT', '电话号码:');
 define('CREATE_PREORDER_PREDATE', '有效期限');

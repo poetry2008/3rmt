@@ -168,7 +168,7 @@
                                      'site_id' => $site_id);
            }
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from  
@@ -179,7 +179,7 @@
               fqd.romaji='".$sql_data_array['romaji']."' and
               fqd.site_id='".$site_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -188,7 +188,7 @@
             tep_db_perform('faq_sort', $sql_sort_data_array);
           }else{
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from  
@@ -200,7 +200,7 @@
               fqd.site_id='".$site_id."' and 
               fqd.faq_question_id != '".$faq_question_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
            tep_db_perform(TABLE_FAQ_QUESTION_DESCRIPTION, $sql_data_array, 'update','faq_question_id =\''.$faq_question_id.'\' and site_id = \''.$site_id.'\'');
@@ -269,7 +269,7 @@
                                      'site_id' => $site_id);
             }
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from ".TABLE_FAQ_CATEGORIES." fc,
@@ -279,7 +279,7 @@
               fcd.romaji='".$sql_data_array['romaji']."' and
               fcd.site_id='".$site_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -288,7 +288,7 @@
             tep_db_perform('faq_sort', $sql_sort_data_array);
           }else{
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from ".TABLE_FAQ_CATEGORIES." fc,
@@ -299,7 +299,7 @@
               fcd.site_id='".$site_id."' and 
               fc.id != '".$faq_category_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             tep_db_perform(TABLE_FAQ_CATEGORIES_DESCRIPTION, $sql_data_array, 'update','faq_category_id =\''.$faq_category_id.'\' and site_id = \''.$site_id.'\'');

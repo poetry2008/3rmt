@@ -34,7 +34,7 @@ define('CREATE_ORDER_FETCH_TIME_SELECT_TEXT', 'オプション:');
 define('CREATE_ORDER_COMMUNITY_TITLE_TEXT', '当社使用欄');
 define('CREATE_ORDER_COMMUNITY_SEARCH_TEXT', ' 信用調査:');
 define('CREATE_ORDER_SEARCH_TWO_TEXT','業者名を選択し「検索」ボタンをクリックしてください。');
-define('CREATE_ORDER_YEZHE_NAME_TEXT', '業者名：');
+define('CREATE_ORDER_ENTERPRISE_NAME_TEXT', '業者名：');
 define('CREATE_ORDER_SHIRU_TEXT', '仕入れ予約');
 define('CREATE_ORDER_TEL_TEXT', '電話番号:');
 define('CREATE_PREORDER_PREDATE', '有効期限');

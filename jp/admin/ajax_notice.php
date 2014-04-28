@@ -158,7 +158,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
       }
       echo '<div style="float:left; width:136px;">'; 
-      echo '<span>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($notice_list['created_at'])).'</span>';
+      echo '<span>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_MESSAGE_HOUR_STR.'i'.TEXT_MESSAGE_MIN_STR,strtotime($notice_list['created_at'])).'</span>';
       echo '</div>'; 
 
       if(in_array($notice_list['id'],$notice_id_array)){
