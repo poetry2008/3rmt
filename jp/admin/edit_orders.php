@@ -1973,10 +1973,9 @@ var js_text_all_orders_no_option_order = '<?php echo JS_TEXT_ALL_ORDERS_NO_OPTIO
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript" src="js/popup_window.js"></script>
 <script language="javascript">
-var avg_div_flag = 1;
 $(document).ready(function() {
   <?php //监听按键?> 
-  $(document).keyup(function(event) {
+  $(document).keydown(function(event) {
     if (event.which == 27) {
       <?php //esc?> 
       if (typeof($('#alert_div_submit').val()) != 'undefined'){
@@ -1985,13 +1984,8 @@ $(document).ready(function() {
     }
     if (event.which == 13) {
       <?php //回车?> 
-      if (avg_div_flag == 0 ){
-        avg_div_flag = 1;
-      }else{
-        if (typeof($('#alert_div_submit').val()) != 'undefined'){
-          $('#alert_div_submit').trigger('click');
-          avg_div_flag = 1;
-        }
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+        $('#alert_div_submit').trigger('click');
       }
     }
   });
@@ -2177,7 +2171,6 @@ function submit_check_con(){
       success: function (msg_info) {
         if (msg_info != '') {
           if (confirm(msg_info)) {
-            avg_div_flag = 0;
             confirm_div_init(hidden_list_str,price_list_str,num_list_str);
           } 
         } else {
