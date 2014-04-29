@@ -92,3 +92,8 @@ define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英字（abcdef...z）が
 define('ENTRY_PASSWORD_IS_ALPHA', '<font color="#FF0000">数字（0123456789）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM_ALPHA', '<font color="#FF0000">英字と数字を組み合わせて設定してください。</font>');
 define('ERROR_FIRST_ITEM_TEXT_NUM_MAX','&nbsp;&nbsp;<font color=\'red\'>文字数は%sを超えてはいけません。</font>');
+define('TEXT_CUSTOMERS_CSV_OUTPUT','エクスポート');
+define('TEXT_DOWNLOAD_INFO','顧客情報エクスポートしようとしていました。');
+define('TEXT_DOWNLOAD','顧客情報エクスポートしました。');
+define('TEXT_HANDLE','この操作は記録されました。 操作を続ける場合は[ OK ]をクリックしてください。');
+define('TEXT_ONE_PASSWORD','権限のワンタイムパスワード:%s。顧客情報エクスポートしました。');
