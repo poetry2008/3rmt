@@ -23,11 +23,11 @@ define('TEXT_DETAIL_HEADING_TITLE', 'タイトル名');
 define('TEXT_DETAIL_CONTENTS', 'コンテンツ内容（HTML可能）');
 define('TEXT_DETAIL_INPUT','改行は無視されます。<br>改行する場合は「&lt;BR&gt;」と入力してください。');
 
-define('TEXT_DETAIL_ROMAJI', 'ローマ字');
-define('ROMAJI_NOT_NULL', '<font color=\'red\'>ローマ字をご入力ください。</font>');
+define('TEXT_DETAIL_ROMAN', 'ローマ字');
+define('ROMAN_NOT_NULL', '<font color=\'red\'>ローマ字をご入力ください。</font>');
 
-define('ROMAJI_EXISTS', '<font color=\'red\'>ローマ字はもう存在しています。</font>');
-define('ROMAJI_WRONG_FORMAT', '英数文字及び「_」で記入してください');
+define('ROMAN_EXISTS', '<font color=\'red\'>ローマ字はもう存在しています。</font>');
+define('ROMAN_WRONG_FORMAT', '英数文字及び「_」で記入してください');
 define('TEXT_USER_ADDED','作成者');
 define('TEXT_USER_UPDATE','更新者');
 define('TEXT_DATE_ADDED','作成日');

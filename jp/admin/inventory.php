@@ -11,11 +11,11 @@
 ------------------------------------------------------*/
        case 'refresh':
          //更新
-         $all_products_sql = "select products_id,products_real_quantity + products_virtual_quantity as products_quantity from ".
+         $all_products_sql = "select products_id,products_real_quantity as products_quantity from ".
            TABLE_PRODUCTS;
          $all_products_res = tep_db_query($all_products_sql);
          while($all_products_row = tep_db_fetch_array($all_products_res)){
-           $all_products_row['products_quantity'] = tep_get_quantity($all_products_row['products_id'],true);
+           $all_products_row['products_quantity'] = tep_get_quantity($all_products_row['products_id']);
            $products_id = $all_products_row['products_id'];
            $products_quantity = $all_products_row['products_quantity'];
            $inventory_arr = tep_get_inventory($products_id);
@@ -129,7 +129,7 @@ require("includes/note_js.php");
         <?php
          $products_query_rows = "select
            pd.products_name,
-           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
+           p.products_real_quantity as products_quantity,
            p.products_virtual_quantity,
            p.products_price,
            p.products_bflag,
@@ -147,7 +147,7 @@ require("includes/note_js.php");
          $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS,$products_query_rows,$products_query_numrows);
          $products_query = tep_db_query($products_query_rows);
          while($products = tep_db_fetch_array($products_query)){
-           $products['products_quantity'] = tep_get_quantity($products['products_id'],true);
+           $products['products_quantity'] = tep_get_quantity($products['products_id']);
            if($products['products_bflag']){
              echo "<tr class='dataTableSecondRow inv_second'
                onmouseover='this.className=\"dataTableRowOver\";this.style.cursor=\"hand\"'

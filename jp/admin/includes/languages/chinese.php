@@ -25,7 +25,7 @@ define('DATE_FORMAT_LONG', '%Y年%B%e日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('PHP_DATE_TIME_FORMAT', 'Y/m/d H:i:s'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
-define('DATE_TIME_FORMAT_TORIHIKI', '%Y/%m/%d %H:%M');
+define('DATE_TIME_FORMAT_MESSAGE', '%Y/%m/%d %H:%M');
 
 ////
 // Return date in raw format
@@ -388,7 +388,7 @@ define('HEADING_TITLE_GOTO', '跳到');
 define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_STATUS', '状态');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', '分类 / 商品');
-define('OROSHI_DATA_MANAGE','数据');
+define('WHOLESALE_DATA_MANAGE','数据');
 define('BOX_ONCE_PWD_LOG','操作日志');
 define('BANK_CL_TITLE_TEXT', '日历设置');
 define('BANK_CL_COMMON_WORK_TIME', '正常营业');
@@ -404,8 +404,8 @@ define('KEYWORDS_TABLE_COLUMN_ONE_TEXT', '关键字');
 define('KEYWORDS_TABLE_COLUMN_TWO_TEXT', '次数');
 define('KEYWORDS_TABLE_COLUMN_THREE_TEXT', '名次');
 define('LIST_DISPLAY_PRODUCT_SELECT', '选择商品');
-define('LIST_DISPLAY_JIAKONGZAIKU', '虚拟库存');
-define('LIST_DISPLAY_YEZHE_PRICE', '同业单价');
+define('TEXT_PRODUCTS_VIRTUAL_QUANTITY', '虚拟库存');
+define('LIST_DISPLAY_PEERS_PRICE', '同业单价');
 define('MAG_DL_TITLE_TEXT', '电子杂志订阅者数据下载');
 define('MAG_UP_TITLE_TEXT', '电子杂志订阅者统一上传');
 define('PRODUCTS_TO_TAGS_TITLE', '设置关联标签');
@@ -427,15 +427,15 @@ define('TELECOM_UNKNOW_TABLE_TEL', '电话');
 define('TELECOM_UNKNOW_TABLE_EMAIL', '邮箱地址');
 define('TELECOM_UNKNOW_TABLE_PRICE', '金额');
 define('TELECOM_UNKNOW_SELECT_NOTICE', '是否隐藏选择的行？');
-define('CLEATE_DOUGYOUSYA_TITLE', '同行名称设置');
-define('CLEATE_DOUGYOUSYA_ALERT', '首先,请创建输入框');
-define('CLEATE_DOUGYOUSYA_ADD_BUTTON', '添加输入形式');
-define('CLEATE_DOUGYOUSYA_TONGYE', '同行：');
-define('CLEATE_DOUGYOUSYA_EDIT', '编辑');
-define('CLEATE_DOUGYOUSYA_DEL', '删除');
-define('CLEATE_DOUGYOUSYA_HISTORY', '历史记录');
-define('CLEATE_DOUGYOUSYA_LOGIN', '同行注册');
-define('CLEATE_DOUGYOUSYA_UPDATE_SORT', '更新顺序');
+define('CLEATE_PEERS_TITLE', '同行名称设置');
+define('CLEATE_PEERS_ALERT', '首先,请创建输入框');
+define('CLEATE_PEERS_ADD_BUTTON', '添加输入形式');
+define('CLEATE_PEERS_PEERS', '同行：');
+define('CLEATE_PEERS_EDIT', '编辑');
+define('CLEATE_PEERS_DEL', '删除');
+define('CLEATE_PEERS_HISTORY', '历史记录');
+define('CLEATE_PEERS_LOGIN', '同行注册');
+define('CLEATE_PEERS_UPDATE_SORT', '更新顺序');
 define('CLEATE_LIST_TITLE', '批发商的数据登记');
 define('CLEATE_LIST_SETNAME_BUTTON', '批发商名称设置');
 define('CLEATE_LIST_LOGIN_BUTTON', '批发商注册');
@@ -457,8 +457,8 @@ define('BOX_TOOLS_POINT_EMAIL_MANAGER','点数通知邮件');
 define('BOX_CAL_SITES_INFO_TEXT', '统计');
 
 //catalog language
-define('FILENAME_CLEATE_OROSHI_TEXT','批发商名称设置');
-define('FILENAME_CLEATE_DOUGYOUSYA_TEXT','同行名称设置');
+define('FILENAME_CLEATE_WHOLESALE_TEXT','批发商名称设置');
+define('FILENAME_CLEATE_PEERS_TEXT','同行名称设置');
 define('FILENAME_CATEGORIES_ADMIN_TEXT','商品批发价格管理');
 
 //coustomers language
@@ -574,9 +574,9 @@ define('TEXT_COLOR','备忘的颜色');
 define('TEXT_TITLE_NOTE','标题');
 define('HEADER_TEXT_CREATE_PREORDER', '创建预约订单');
 
-define('TEXT_TORIHIKI_REPLACE_STR','～');
-define('TEXT_TORIHIKI_HOUR_STR','时');
-define('TEXT_TORIHIKI_MIN_STR','分');
+define('TEXT_MESSAGE_REPLACE_STR','～');
+define('TEXT_MESSAGE_HOUR_STR','时');
+define('TEXT_MESSAGE_MIN_STR','分');
 define('TEXT_PREORDER_PAYMENT_METHOD', '支付方式');
 define('TEXT_PREORDER_NOT_COST', '未进款');
 define('TEXT_PREORDER_COST_DATE', '进款日期');
@@ -590,7 +590,7 @@ define('TEXT_PREORDER_PRODUCTS_UNIT', '个');
 
 
 define('TEXT_PAYMENT_NULL_TXT','请选择支付方式');
-define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','请选择');
+define('TEXT_MESSAGE_LIST_DEFAULT_TXT','请选择');
 define('BOX_TOOLS_CAMPAIGN', '优惠券设置');
 define('TEXT_CURRENT_CHARACTER_NAME', '邮件内容的注意事项：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','删除未使用选项');
