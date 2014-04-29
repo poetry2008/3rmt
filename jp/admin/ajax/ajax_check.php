@@ -182,5 +182,18 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }else{
     echo ''; 
   }
-}
+}else if(isset($_GET['action']) && $_GET['action'] == 'check_once_pwd_log'){
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CUSTOMERS);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  if($_POST['type'] == 2){
+   $sql = "insert into ".TABLE_ONCE_PWD_LOG." VALUES  (NULL , '".$user_info['name']."','','".sprintf(TEXT_ONE_PASSWORD,$_POST['input_pwd_str'])."', CURRENT_TIMESTAMP)"; 
+   tep_db_query($sql);
+  }
+  if($_POST['c_permission']&&$_POST['type'] == 0){
+  $sql = "insert into ".TABLE_ONCE_PWD_LOG." VALUES  (NULL , '".$user_info['name']."','','".TEXT_DOWNLOAD_INFO."', CURRENT_TIMESTAMP)";
+  tep_db_query($sql);
+  }else if($_POST['c_permission']&&$_POST['type'] == 1){
+  $sql = "insert into ".TABLE_ONCE_PWD_LOG." VALUES  (NULL , '".$user_info['name']."','','".TEXT_DOWNLOAD."', CURRENT_TIMESTAMP)"; 
+  tep_db_query($sql);
+  }}
 ?>

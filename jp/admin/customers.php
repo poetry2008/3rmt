@@ -26,6 +26,18 @@
       $site_array = explode(',',$site_arr);
    $customers_array = array('customers_firstname','customers_lastname');
    $customers_strlen = tep_get_column_len(TABLE_CUSTOMERS,$customers_array);
+   if ($ocertify->npermission != 31) {
+       $c_site_query = tep_db_query("select * from ".TABLE_PERMISSIONS." where userid = '".$ocertify->auth_user."'");
+       $c_site_res = tep_db_fetch_array($c_site_query);
+       $tmp_c_site_array = explode(',',$c_site_res['site_permission']);
+          if (!empty($tmp_c_site_array)) {
+               if (!in_array('0', $tmp_c_site_array)) {
+                    $is_disabled_single = true;
+               }
+          } else {
+               $is_disabled_single = true;
+          }
+   }
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
 /*----------------------------
@@ -310,6 +322,90 @@
 	var js_customers_npermission = '<?php echo $ocertify->npermission;?>';
 	var js_customers_site_id = '<?php echo (isset($_GET['site_id'])&&$_GET['site_id']!=''?($_GET['site_id']):'-1');?>';
 	var js_customers_type = '<?php echo $_GET['type']?>';
+function customers_csv_exe(c_permission){
+        if(c_permission){
+            var type = 0;
+          $.ajax({
+            url: 'ajax.php?action=check_once_pwd_log',      
+            data: 'c_permission='+c_permission+'&type='+type,
+            type: 'POST',
+            dataType: 'text',
+            async:false,
+            success: function (data) { }
+        });
+        }
+        var input_value = '';
+        if(confirm('<?php echo TEXT_HANDLE;?>')){
+           if (c_permission == 31) {
+             window.location.href="<?php echo tep_href_link('customers_csv_exe.php','csv_exe=true', 'SSL');?>";
+        if(c_permission){
+            var type = 1;
+          $.ajax({
+            url: 'ajax.php?action=check_once_pwd_log',      
+            data: 'c_permission='+c_permission+'&type='+type,
+            type: 'POST',
+            dataType: 'text',
+            async:false,
+            success: function (data) { }
+        });
+        }
+           } else {
+             $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+              async: false,
+              success: function(msg) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
+                   window.location.href="<?php echo tep_href_link('customers_csv_exe.php','csv_exe=true', 'SSL');?>";
+                   if(c_permission){
+                      var type = 1;
+                      $.ajax({
+                      url: 'ajax.php?action=check_once_pwd_log',      
+                      data: 'c_permission='+c_permission+'&type='+type,
+                      type: 'POST',
+                      dataType: 'text',
+                      async:false,
+                      success: function (data) { }
+                      });
+                   }
+                } else {
+                  $("#button_save").attr('id', 'tmp_button_save');
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  input_value = input_pwd_str;
+                  if (in_array(input_pwd_str,pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str,
+                      async: false,
+                      success: function(msg_info) {
+                         window.location.href="<?php echo tep_href_link('customers_csv_exe.php','csv_exe=true', 'SSL');?>";
+                      var type = 2;
+                      $.ajax({
+                       url: 'ajax.php?action=check_once_pwd_log',      
+                       data: 'c_permission='+c_permission+'&type='+type+'&input_pwd_str='+input_pwd_str,
+                       type: 'POST',
+                       dataType: 'text',
+                       async:false,
+                       success: function (data) { }
+                      });
+                      }
+                    }); 
+                  } else {
+                    document.getElementsByName('customers_action')[0].value = 0;
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                  }
+                }
+              }
+            });
+           }
+        }
+}
 </script>
 <script language="javascript" src="includes/javascript/admin_customers.js?v=<?php echo $back_rand_info?>"></script>
 <?php
@@ -823,8 +919,10 @@ $(document).ready(function() {
                        <?php  
                        //通过site_id判断是否允许新建
                        if(array_intersect($show_list_array,$site_array)){
+                       echo tep_html_element_button(TEXT_CUSTOMERS_CSV_OUTPUT,"onclick=' customers_csv_exe(".$ocertify->npermission.") '");
                        echo '&nbsp;<a href="javascript:void(0)" onclick="show_customers(this,-1,'.$_GET['page'].','.(isset($customers['site_id'])?$customers['site_id']:'-1').', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\');check_guest(1)">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers"') . '</a>';
                        }else{
+                       echo tep_html_element_button(TEXT_CUSTOMERS_CSV_OUTPUT,"disabled='disabled' onclick=' customers_csv_exe(".$ocertify->npermission.") '");
                        echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_customers" disabled="disabled"');
                        }
                        ?>

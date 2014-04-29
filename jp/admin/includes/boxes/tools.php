@@ -162,13 +162,6 @@
          echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_FAQ).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_faq.gif').'</span><span>' .  BOX_TOOLS_FAQ . '</span></div>';
        }
      }
-     if (!check_whether_is_limited('data_management.php')) {
-       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'data_management.php'){
-         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link('data_management.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_register.gif').'</span><span>'.TEXT_DATA_MANAGEMENT.'</span></div>';
-       }else{
-         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('data_management.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_magazine_register.gif').'</span><span>'.TEXT_DATA_MANAGEMENT.'</span></div>';
-       }
-     }
     ?> 
                 </td>
               </tr>
