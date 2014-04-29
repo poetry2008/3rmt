@@ -2026,7 +2026,7 @@ function clear_confirm_div(){
       var b_pay_name_value = b_pay_name.value;
       if(b_pay_name_value.replace(/[ ]/g,"") == ''){
         payment_error = true;
-        error_str += '<?php echo TS_TEXT_BANK_ERROR_SHITEN;?>'+"\n\n";
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_ENTITY;?>'+"\n\n";
       }
     }
     }
