@@ -410,7 +410,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => TABLE_HEADING_DANJIA);
+  $heading[] = array('align' => 'left', 'text' => TABLE_HEADING_CATEGORIES_PRODUCT_NOW_PRICE);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
   $buttons = array();
@@ -582,7 +582,7 @@ if ($_GET['action'] == 'show_category_info') {
   $arr_td_relate = array();
   $arr_td_title[] = TEXT_PRODUCTS_NAME_TEXT;
   
-  $arr_td_title[] = TABLE_HEADING_JIAGE_TEXT;
+  $arr_td_title[] = TEXT_PRODUCTS_PRICE_INFO;
   
   $arr_td_title[] = TEXT_PRODUCT_ADDORSUB_VALUE;
   
@@ -628,20 +628,20 @@ if ($_GET['action'] == 'show_category_info') {
   $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
   $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,number_format($product_row_count));
   if($radices!=''&&$radices!=1&&$radices!=0){
-    $product_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $product_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
     $product_td_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $product_td_real_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $product_td_real_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
     $product_td_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
-  $arr_td_product[] = (empty($_GET['site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+  $arr_td_product[] = (empty($_GET['site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_PIECE_UNIT_TEXT;
 
   
   if(empty($site_id)) {
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
   }
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -702,20 +702,20 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,number_format($relate_row_count));
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
     $relate_td_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" id="relate_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
+    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
     $relate_td_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
-    $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_PIECE_UNIT_TEXT;
     
 
     if(empty($site_id)){
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
     }
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -749,8 +749,8 @@ if ($_GET['action'] == 'show_category_info') {
   $product_history_array[] = array('text' => array(
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>'),
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_UNIVALENT_TEXT.'</b>'),
         ),'mouse' => true 
       );      
 
@@ -831,8 +831,8 @@ if ($_GET['action'] == 'show_category_info') {
     $relate_product_history_array[] = array('text' => array(
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>')
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_UNIVALENT_TEXT.'</b>')
         ),'mouse' => true
       );      
     if (tep_db_num_rows($relate_order_history_query)) {
@@ -2196,7 +2196,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_START_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="start_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="start_time_error"></span>')
       );
 
   //结束时间下拉框
@@ -2233,7 +2233,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_END_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="end_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="end_time_error"></span>')
       );
 
   $category_info_row[]['text'] = array(
@@ -2385,7 +2385,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_START_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="start_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="start_time_error"></span>')
       );
 
   //结束时间下拉框
@@ -2416,7 +2416,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_END_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="end_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="end_time_error"></span>')
       );
 
   $category_info_row[]['text'] = array(
@@ -4447,271 +4447,11 @@ if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
       $notice_box->get_eof(tep_eof_hidden());
       echo $notice_box->show_notice();
  
-}else if ($_GET['action'] == 'edit_module_total'){
-/* -----------------------------------------------------
-    功能: 更新合计模块设置
-    参数: $_POST['site_id'] 网站id 
-    参数: $_POST['current_module'] 当前模块名 
-    参数: $_POST['list_info'] 列表名 
- -----------------------------------------------------*/
-  $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_MODULE_TOTAL);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  
-  $sites_permission_info = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
-  while($userslist= tep_db_fetch_array($sites_permission_info)){
-    $site_arr = $userslist['site_permission']; 
-  }
-  $disabled_single = false; 
-  if (!editPermission($site_arr, $site_id, true)) {
-    $disabled_single = true; 
-  }
-  
-  $param_str = '';
-  $param_form_str = ''; 
-  foreach ($_POST as $p_key => $p_value) {
-    if (($p_key != 'current_module') && ($p_key != 'action')) {
-      $param_str .= $p_key.'='.$p_value.'&'; 
-    }
-    
-    if (($p_key != 'current_module') && ($p_key != 'action') && ($p_key != 'module') && ($p_key != 'site_id') && ($p_key != 'list_info')) {
-      $param_form_str .= $p_key.'='.$p_value.'&'; 
-    }
-  }
-  $param_str = substr($param_str, 0, -1); 
-  $param_form_str = substr($param_form_str, 0, -1); 
-  
-  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-  
-  $page_str = '';
-  
-  $module_total_directory = DIR_FS_CATALOG_MODULES .'order_total/';
-  
-  include(DIR_WS_LANGUAGES . $language . '/modules/order_total/' .  $_POST['current_module'].'.php');
-  include($module_total_directory . $_POST['current_module'].'.php');
-    
-  if (tep_class_exists($_POST['current_module'])) {
-    $total_module = new $_POST['current_module'];
-    $module_info = array(
-          'code' => $total_module->code,
-          'title' => $total_module->title,
-          'description' => $total_module->description,
-          'status' => $total_module->check()
-          );
-    $module_keys = $total_module->keys();
-    $keys_extra = array();
-    $get_site_id = tep_module_installed($_POST['current_module'], $site_id) ? $site_id : 0;
-    for ($j = 0, $k = sizeof($module_keys); $j < $k; $j++) {
-      $key_value_query = tep_db_query("select configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $module_keys[$j] . "' and site_id = '".$get_site_id."'");
-      $key_value = tep_db_fetch_array($key_value_query);
-
-      $keys_extra[$module_keys[$j]]['title'] = $key_value['configuration_title'];
-      $keys_extra[$module_keys[$j]]['value'] = $key_value['configuration_value'];
-      $keys_extra[$module_keys[$j]]['description'] = $key_value['configuration_description'];
-      $keys_extra[$module_keys[$j]]['use_function'] = $key_value['use_function'];
-      $keys_extra[$module_keys[$j]]['set_function'] = $key_value['set_function'];
-    }
-
-    $module_info['keys'] = $keys_extra;
-    $total_info_obj = new objectInfo($module_info);
-  }   
- 
-  $list_info_array = explode('|||', $_POST['list_info']);
-  foreach ($list_info_array as $l_key => $l_value) {
-    if ($l_value == $_POST['current_module'].'.php') {
-      break; 
-    }
-  }
-  
-  if ($l_key > 0) {
-    $page_str .= '<a onclick="show_module_total_info(\''.substr($list_info_array[$l_key - 1], 0, -4).'\', \''.urlencode($param_str).'\')" href="javascript:void(0);" id="total_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
-  }
- 
-  if ($l_key < (count($list_info_array) - 1)) {
-    $page_str .= '<a onclick="show_module_total_info(\''.substr($list_info_array[$l_key + 1], 0, -4).'\', \''.urlencode($param_str).'\')" href="javascript:void(0);" id="total_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
-  }
-  
-  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
-  
-  $heading = array();
-  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => $total_info_obj->title);
-  $heading[] = array('align' => 'right', 'text' => $page_str);
-  
-  $buttons = array();
-  
-  if ($site_id == '0') {
-    if (isset($total_info_obj->status) && $total_info_obj->status == '1') {
-      if ($disabled_single) {
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'disabled="disabled"').'</a>'; 
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
-      } else {
-        $button[] = '<a href="javascript:void(0);" onclick="document.forms.total_form.submit();">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save"').'</a>'; 
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
-      }
-      $hidden_info_str = '';
-      reset($total_info_obj->keys);
-      
-      while (list($t_key, $t_value) = each($total_info_obj->keys)) {
-        $total_value_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = '".$t_key."' and site_id = '0'"); 
-        $total_value = tep_db_fetch_array($total_value_query);
-        
-        if (!preg_match('/.*SORT_ORDER$/', $t_key)) {
-          $hidden_info_str .= tep_draw_hidden_field('configuration['.$t_key.']', $total_value['configuration_value']); 
-        } else {
-          if ($total_value['set_function']) {
-            $tmp_html_str = ''; 
-            eval('$tmp_html_str = '.$total_value['set_function']."'".$total_value['configuration_value']."', '".$t_key."', '".($disabled_single?'disabled="disabled"':'')."');"); 
-            $module_total_row[]['text'] = array(
-                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
-                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => str_replace('<br>', '', $tmp_html_str)) 
-                );
-          } else {
-            $module_total_row[]['text'] = array(
-                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
-                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => tep_draw_input_field('configuration['.$t_key.']', $total_value['configuration_value'], ($disabled_single?'disabled="disabled"':''))) 
-                );
-          }
-          if (!empty($total_value['configuration_description'])) {
-            $module_total_row[]['text'] = array(
-                  array('align' => 'left', 'text' => '&nbsp;'), 
-                  array('align' => 'left', 'text' => $total_value['configuration_description']) 
-                );
-          }
-        }
-      }
-      
-      $total_date_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($_POST['current_module']))."_STATUS' and site_id = '0'");
-      $total_date = tep_db_fetch_array($total_date_query); 
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
-       );
-      
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
-       );
-    } else {
-      if ($disabled_single) {
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
-      } else {
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
-      }
-      if (!empty($total_info_obj->description)) {
-        $module_total_row[]['text'] = array(
-              array('align' => 'left', 'params' => 'width="50%" colspan="2"', 'text' => $total_info_obj->description)
-         );
-      }
-      
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
-            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
-       );
-      
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
-            array('align' => 'left', 'params' => 'width="70%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
-       );
-    }
-  } else {
-    if (isset($total_info_obj->status) && $total_info_obj->status == '1') {
-      $buttons = array();
-      if ($disabled_single) {
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'disabled="disabled"').'</a>'; 
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
-      } else {
-        $button[] = '<a href="javascript:void(0);" onclick="document.forms.total_form.submit();">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save"').'</a>'; 
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
-      }
-      $buttons = array('align' => 'center', 'button' => $button); 
-
-      $hidden_info_str = ''; 
-      reset($total_info_obj->keys);
-      while (list($t_key, $t_value) = each($total_info_obj->keys)) {
-        $total_value_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = '".$t_key."' and site_id = '".$site_id."'"); 
-        $total_value = tep_db_fetch_array($total_value_query);
-        if (!$total_value) {
-          $total_default_value_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = '".$t_key."' and site_id = '0'"); 
-          $total_value = tep_db_fetch_array($total_default_value_query);
-        }
-        if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $t_key)) {
-          $hidden_info_str .= tep_draw_hidden_field('configuration['.$t_key.']', $total_value['configuration_value']); 
-        } else {
-          if ($total_value['set_function']) {
-            $tmp_html_str = '';
-            eval('$tmp_html_str = '.$total_value['set_function']."'".$total_value['configuration_value']."', '".$t_key."', '".($disabled_single?'disabled="disabled"':'')."');"); 
-            $module_total_row[]['text'] = array(
-                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
-                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => str_replace('<br>', '', $tmp_html_str)) 
-                );
-          } else {
-            $module_total_row[]['text'] = array(
-                  array('align' => 'left', 'params' => 'width="25%"', 'text' => $total_value['configuration_title']), 
-                  array('align' => 'left', 'params' => 'class="td_input"', 'text' => tep_draw_input_field('configuration['.$t_key.']', $total_value['configuration_value'], ($disabled_single?'disabled="disabled"':''))) 
-                );
-          }
-          if (!empty($total_value['configuration_description'])) {
-            $module_total_row[]['text'] = array(
-                  array('align' => 'left', 'text' => '&nbsp;'), 
-                  array('align' => 'left', 'text' => $total_value['configuration_description']) 
-                );
-          }
-        }
-      }
-      
-      $total_date_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_ORDER_TOTAL_".str_replace('OT_', '', strtoupper($_POST['current_module']))."_STATUS' and site_id = '".$site_id."'");
-      $total_date = tep_db_fetch_array($total_date_query); 
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.(tep_not_null($total_date['user_added'])?$total_date['user_added']:TEXT_UNSET_DATA)), 
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.(tep_not_null($total_date['date_added'])?$total_date['date_added']:TEXT_UNSET_DATA))
-       );
-      
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.(tep_not_null($total_date['user_update'])?$total_date['user_update']:TEXT_UNSET_DATA)),
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.(tep_not_null($total_date['last_modified'])?$total_date['last_modified']:TEXT_UNSET_DATA).$hidden_info_str)
-       );
-    } else {
-      if ($disabled_single) {
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'disabled="disabled"').'</a>';
-      } else {
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
-      }
-      if (!empty($total_info_obj->description)) {
-        $module_total_row[]['text'] = array(
-              array('align' => 'left', 'params' => 'width="50%" colspan="2"', 'text' => $total_info_obj->description)
-         );
-      }
-      
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_ADDED.TEXT_UNSET_DATA), 
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_ADDED.TEXT_UNSET_DATA)
-       );
-      
-      $module_total_row[]['text'] = array(
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_USER_UPDATE.TEXT_UNSET_DATA),
-            array('align' => 'left', 'params' => 'width="50%"', 'text' => TEXT_DATE_UPDATE.TEXT_UNSET_DATA)
-       );
-    }
-  }
-  
-  if (!empty($button)) {
-    $buttons = array('align' => 'center', 'button' => $button); 
-  }
-  
-  $form_str = tep_draw_form('total_form', FILENAME_MODULE_TOTAL, (isset($_POST['module'])?'current_module='.$_POST['module'].'&':'').'action=save_total&module='.$_POST['current_module'].'&'.$param_form_str); 
-  
-  $notice_box->get_heading($heading);
-  $notice_box->get_form($form_str);
-  $notice_box->get_contents($module_total_row, $buttons);
-  $notice_box->get_eof(tep_eof_hidden().tep_draw_hidden_field('site_id', $site_id));
-  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_MODULE_TOTAL);
 }else if ($_GET['action'] == 'edit_customers'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_CUSTOMERS);
 include(DIR_FS_ADMIN.'classes/notice_box.php');
 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
 $search = '';
-$tmp_search_str = '';
 $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
 $action_sid = $_GET['action_sid'];
 while($userslist= tep_db_fetch_array($sites_id)){
@@ -4723,64 +4463,48 @@ $site_array = explode(',',$site_arr);
 if(!in_array($action_sid,$site_array) && $action_sid != -1){
    $disabled = 'disabled="disabled"'; 
 }
-if (isset($_POST['search_front'])) {
-  $_GET['search_front'] = $_POST['search_front'];
-}
-if (isset($_POST['search_end'])) {
-  $_GET['search_end'] = $_POST['search_end'];
-}
-if (isset($_POST['search_con'])) {
-  $_GET['search_con'] = $_POST['search_con'];
-}
-if (isset($_POST['search_name'])) {
-  $_GET['search_name'] = $_POST['search_name'];
-}
-if (isset($_POST['search_mail'])) {
-  $_GET['search_mail'] = $_POST['search_mail'];
-}
-if (isset($_POST['search_type'])) {
-  $_GET['search_type'] = $_POST['search_type'];
-}
-if (isset($_POST['search_char'])) {
-  $_GET['search_char'] = $_POST['search_char'];
-}
-if (isset($_POST['search_blank'])) {
-  $_GET['search_blank'] = $_POST['search_blank'];
-}
-if (isset($_POST['search_other'])) {
-  $_GET['search_other'] = $_POST['search_other'];
-}
 if($_GET['site_id'] == -1){
   $_GET['site_id'] = '';
 }
+if ( isset($_GET['search']) && ($_GET['search']) && (tep_not_null($_GET['search'])) ) {
+    $keywords = tep_db_input(tep_db_prepare_input($_GET['search']));
+    $keywords = explode(" ",$keywords);
+    $key_search = '';
+    $i = 0;
+    foreach($keywords as $key => $key_value){
+     $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
+     $i ++;
+  }
+    $search = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search']) . "%' or c.customers_id = '".trim($_GET['search'])."')";
+}
     if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
-      $sql_site_where = 'c.site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
+      $sql_site_where = 'site_id in ('.str_replace('-', ',', $_GET['site_id']).')';
     } else {
       $show_site_str = tep_get_setting_site_info(FILENAME_CUSTOMERS);
-      $sql_site_where = 'c.site_id in ('.$show_site_str.')';
+      $sql_site_where = 'site_id in ('.$show_site_str.')';
     }
     $sites_sql = tep_db_query("SELECT * FROM `sites`");
     while($sites_row = tep_db_fetch_array($sites_sql)){
       $show_site_arr[] = $sites_row['id']; 
     }
-    $customers_order_sort_name = ' customers_id'; 
+    $customers_order_sort_name = ' c.customers_id'; 
     $customers_order_sort = 'desc'; 
     if (!empty($_GET['customers_sort'])) {
       switch ($_GET['customers_sort']) {
         case 'site_id':
-          $customers_order_sort_name = ' romaji'; 
+          $customers_order_sort_name = ' s.romaji'; 
           break;
         case 'm_type':
-          $customers_order_sort_name = ' customers_guest_chk'; 
+          $customers_order_sort_name = ' c.customers_guest_chk'; 
           break;
         case 'has_exit':
-          $customers_order_sort_name = ' is_exit_history'; 
+          $customers_order_sort_name = ' c.is_exit_history'; 
           break;
         case 'lastname':
-          $customers_order_sort_name = ' customers_lastname'; 
+          $customers_order_sort_name = ' c.customers_lastname'; 
           break;
         case 'firstname':
-          $customers_order_sort_name = ' customers_firstname'; 
+          $customers_order_sort_name = ' c.customers_firstname'; 
           break;
         case 'create_at':
           $customers_order_sort_name = ' date_account_created'; 
@@ -4795,456 +4519,29 @@ if($_GET['site_id'] == -1){
         $customers_order_sort = 'asc'; 
       } else {
         $customers_order_sort = 'desc'; 
-      } 
+      }
     }
     $customers_order_sql = $customers_order_sort_name.' '.$customers_order_sort; 
-    
-    if ($customers_order_sort_name != ' customers_id') {
-      $customers_order_sql .= ' , customers_id desc'; 
-    }
-    $search_single = 0;    
-    $strip_blank_front_str = '';
-    $strip_blank_end_str = '';
-    
-    $tmp_search_front_str = str_replace(array('　', ''), '', $_GET['search_front']); 
-    $tmp_search_end_str = str_replace(array('　', ''), '', $_GET['search_end']);
-    $_GET['search_front'] = str_replace(array('　', ' '), '', $_GET['search_front']); 
-    $_GET['search_end'] = str_replace(array('　', ' '), '', $_GET['search_end']);
-    
-    $search_front_str = $_GET['search_front']; 
-    $search_end_str = $_GET['search_end'];
-     
-    $number_origin_array = array('０', '１', '２', '３', '４', '５', '６', '７', '８', '９');
-    $number_new_array = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-    
-    if ($_GET['search'] == '1') {
-      if (($tmp_search_front_str != '') || ($tmp_search_end_str != '')) {
-        if (isset($_GET['search_name']) || isset($_GET['search_mail']) || isset($_GET['search_other'])) {
-          $search_single = 1;
-        }
-      }
-    }
-    
-    if (isset($_GET['search_blank'])) {
-      $strip_blank_front_str = 'replace(replace(replace(replace(replace(';
-      $strip_blank_end_str = ', " ", ""), "　", ""), "\r\n", ""), "\r", ""), "\n", "")';
-    }
-
-    if(isset($_GET['c_list'])&&$_GET['c_list']!=null&&$_GET['c_list']!=''){
-      $t_arr = explode('-',$_GET['c_list']);
-      $customers_query_raw = "
-        select c.customers_id, 
-               c.site_id,
-               c.is_active,
-               c.customers_lastname, 
-               c.customers_firstname, 
-               c.customers_email_address, 
-               c.customers_guest_chk,
-               ci.user_update,
-               ci.customers_info_date_account_created as date_account_created, 
-               ci.customers_info_date_account_last_modified as date_account_last_modified, 
-               ci.customers_info_date_of_last_logon as date_last_logon, 
-               ci.customers_info_number_of_logons as number_of_logons,
-               c.is_exit_history,
-               s.romaji
-        from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
-        c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where;
-      if(!empty($t_arr)){
-        $customers_query_raw .= " and c.customers_id in (".  str_replace('-',',',$_GET['c_list']).") ";
-      }else{
-        $customers_query_raw .= " and c.customers_id = '".$_GET['c_list']."' ";
-      }
-    }else{
-   
-    if ($_GET['search'] == '2') {
-      $search_single = 2;
-      if (tep_not_null($_GET['search_front'])) {
-        $keywords = tep_db_input(tep_db_prepare_input($_GET['search_front']));
-        $keywords = str_replace(array('　', ' '), '',$keywords);
-        $key_search = 'concat(c.customers_firstname,c.customers_lastname) like \'%'.$keywords .'%\'or ';
-        /*
-        $keywords = tep_db_input(tep_db_prepare_input($_GET['search_front']));
-        $keywords = explode(" ",$keywords);
-        $key_search = '';
-        foreach($keywords as $key => $key_value){
-          $key_search .= 'c.customers_lastname like \'%'.$key_value.'%\' or c.customers_firstname like \'%'.$key_value.'%\' or c.customers_firstname_f like \'%'.$key_value.'%\'or c.customers_lastname_f like \'%'.$key_value.'%\'or ';
-        }
-        */
-        $tmp_search_str = "and (".$key_search." c.customers_email_address like '%" .  trim($_GET['search_front']) . "%' or c.customers_id = '".trim($_GET['search_front'])."'";
-      }
-    }
-    
-    if ($search_single == '1') {
-        $front_condition_str = '';   
-        $end_condition_str = '';   
-        $front_condition_name_str = '';   
-        $end_condition_name_str = '';   
-        $front_condition_mail_str = '';   
-        $end_condition_mail_str = '';   
-        if (isset($_GET['search_name'])) {
-          if (isset($_GET['search_type'])) {
-            if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
-                $front_condition_name_str .= '(concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              } else {
-                $front_condition_name_str .= '(concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') like "%'.$search_front_str.'%")';   
-              }
-            }
-           
-            if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
-                $end_condition_name_str .= '(concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              } else {
-                $end_condition_name_str .= '(concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') like "%'.$search_end_str.'%")';   
-              }
-            }
-          } else {
-            if ($search_front_str != '') {
-              $front_condition_name_str .= '(binary concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_condition_name_str .= '(binary concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') like "%'.$search_end_str.'%")';   
-            }
-            if (isset($_GET['search_char'])) {
-              if ($search_front_str != '') {
-                $front_condition_name_str .= ' or (concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              }
-              if ($search_end_str != '') {
-                $end_condition_name_str .= ' or (concat('.$strip_blank_front_str.'c.customers_lastname'.$strip_blank_end_str.','.$strip_blank_front_str.'c.customers_firstname'.$strip_blank_end_str.') COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              }
-            } 
-          }
-        } 
-        
-        if (isset($_GET['search_mail'])) {
-          if (isset($_GET['search_type'])) {
-            if ($search_front_str != '') {
-              if (isset($_GET['search_char'])) {
-                $front_condition_mail_str .= '('.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              } else {
-                $front_condition_mail_str .= '('.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-              }
-            }
-           
-            if ($search_end_str != '') {
-              if (isset($_GET['search_char'])) {
-                $end_condition_mail_str .= '('.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              } else {
-                $end_condition_mail_str .= '('.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-              }
-            }
-          } else {
-            if ($search_front_str != '') {
-              $front_condition_mail_str .= '(binary '.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_condition_mail_str .= '(binary '.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-            }
-            if (isset($_GET['search_char'])) {
-              if ($search_front_str != '') {
-                $front_condition_mail_str .= ' or ('.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              }
-              if ($search_end_str != '') {
-                $end_condition_mail_str .= ' or ('.$strip_blank_front_str.'c.customers_email_address'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              }
-            } 
-          }
-        } 
-        
-        $tmp_find_name_str = substr($front_condition_name_str, 0, 4);
-        $tmp_tmp_find_name_str = substr($end_condition_name_str, 0, 4);
-        
-        $tmp_find_mail_str = substr($front_condition_mail_str, 0, 4);
-        $tmp_tmp_find_mail_str = substr($end_condition_mail_str, 0, 4);
-      
-        if ($tmp_find_name_str == ' and') {
-          $front_condition_name_str = substr($front_condition_name_str, 4);
-        }
-        if ($tmp_tmp_find_name_str == ' and') {
-          $end_condition_name_str = substr($end_condition_name_str, 4);
-        }
-        if ($tmp_find_mail_str == ' and') {
-          $front_condition_mail_str = substr($front_condition_mail_str, 4);
-        }
-        if ($tmp_tmp_find_mail_str == ' and') {
-          $end_condition_mail_str = substr($end_condition_mail_str, 4);
-        }
-     
-        if ($front_condition_name_str != '') {
-          if ($front_condition_mail_str != '') {
-            $front_condition_str = '('.$front_condition_name_str.') or ('.$front_condition_mail_str.')'; 
-          } else {
-            $front_condition_str = $front_condition_name_str; 
-          }
-        } else {
-          if ($front_condition_mail_str != '') {
-            $front_condition_str = $front_condition_mail_str; 
-          }
-        }
-        
-        if ($end_condition_name_str != '') {
-          if ($end_condition_mail_str != '') {
-            $end_condition_str = '('.$end_condition_name_str.') or ('.$end_condition_mail_str.')'; 
-          } else {
-            $end_condition_str = $end_condition_name_str; 
-          }
-        } else {
-          if ($end_condition_mail_str != '') {
-            $end_condition_str = $end_condition_mail_str; 
-          }
-        }
-       
-        $sql_where_str = '';
-        $tmp_find_str = substr($front_condition_str, 0, 4);
-        $tmp_tmp_find_str = substr($end_condition_str, 0, 4);
-       
-        if ($tmp_find_str == ' and') {
-          $front_condition_str = substr($front_condition_str, 4);
-        }
-        if ($tmp_tmp_find_str == ' and') {
-          $end_condition_str = substr($end_condition_str, 4);
-        }
-        if ($_GET['search_con'] == '1') {
-          if ($front_condition_str != '') {
-            $sql_where_str = ' (('.$front_condition_str.')'; 
-            if ($end_condition_str != '') {
-              $sql_where_str .= ' or ('.$end_condition_str.')'; 
-            }
-            $sql_where_str .= ')'; 
-          } else {
-            if ($end_condition_str != '') {
-              $sql_where_str .= ' ('.$end_condition_str.')'; 
-            }
-          }
-        } else {
-          if ($front_condition_str != '') {
-            $sql_where_str = ' ('.$front_condition_str.')'; 
-            if ($end_condition_str != '') {
-              $sql_where_str .= ' and ('.$end_condition_str.')'; 
-            }
-          } else {
-            if ($end_condition_str != '') {
-              $sql_where_str .= ' ('.$end_condition_str.')'; 
-            }
-          }
-        }
-        $sql_where_str_and = '';
-        if($sql_where_str!=''){
-          $sql_where_str_and = ' and '.$sql_where_str;
-        }
-        
-        $customers_query_raw = "
-          select c.customers_id, 
-                 c.site_id,
-                 c.is_active,
-                 c.customers_lastname, 
-                 c.customers_firstname, 
-                 c.customers_email_address, 
-                 c.customers_guest_chk,
-                 ci.user_update,
-                 ci.customers_info_date_account_created as date_account_created, 
-                 ci.customers_info_date_account_last_modified as date_account_last_modified, 
-                 ci.customers_info_date_of_last_logon as date_last_logon, 
-                 ci.customers_info_number_of_logons as number_of_logons,
-                 c.is_exit_history,
-                 s.romaji
-          from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
-          c.customers_id = ci.customers_info_id and c.site_id = s.id
-          ".$sql_where_str_and." and " .$sql_site_where;
-      if (isset($_GET['search_other'])) {
-        //搜索其他 
-        // table order info customer info and ref
-        // order 要搜索的字段合集
-        $front_order_customer_ref_info_str ='';
-        $end_order_customer_ref_info_str ='';
-        $front_order_customer_ref_info_arr =array();
-        $end_order_customer_ref_info_arr =array();
-        $sc_array = array('s.name',
-            'o.torihiki_date',
-            'o.torihiki_date_end',
-            'o.orders_id',
-            'o.payment_method',
-            'o.date_purchased',
-            'o.orders_ip',
-            'o.orders_host_name',
-            'o.orders_http_accept_language',
-            'o.orders_system_language',
-            'o.orders_user_language',
-            'o.orders_screen_resolution',
-            'o.orders_color_depth',
-            'o.orders_flash_version',
-            'o.orders_ref',
-            'o.orders_comment',
-            'o.orders_user_agent',
-            'o.shipping_fee',
-            'o.code_fee');
-        $no_collate_array = array(
-            'o.date_purchased',
-            'o.torihiki_date',
-            'o.torihiki_date_end',
-            'o.shipping_fee',
-            'o.code_fee');
-        
-        foreach($sc_array as $sc_v){
-          if (isset($_GET['search_type'])) {
-            if ($search_front_str != '') {
-              if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
-                $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              } else {
-                $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-              }
-            }
-           
-            if ($search_end_str != '') {
-              if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
-                $end_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              } else {
-                $end_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-              }
-            }
-          } else {
-            if ($search_front_str != '') {
-              $front_order_customer_ref_info_arr[] = '(binary '.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_order_customer_ref_info_arr[] = '(binary '.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-            }
-            if (isset($_GET['search_char'])&&!in_array($sc_v,$no_collate_array)) {
-              if ($search_front_str != '') {
-                $front_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-              }
-              if ($search_end_str != '') {
-                $end_order_customer_ref_info_arr[] = '('.$strip_blank_front_str.$sc_v.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-              }
-            } 
-          }
-
-        }
-        $front_order_customer_ref_info_str = implode(' or ',$front_order_customer_ref_info_arr);
-        $end_order_customer_ref_info_str = implode(' or ',$end_order_customer_ref_info_arr);
-        $order_where_sql = '';
-        if ($_GET['search_con'] == '1') {
-          $order_where_sql = ' (('.$front_order_customer_ref_info_str.') or ('.$end_order_customer_ref_info_str.'))';
-        }else{
-          $order_where_sql = ' (('.$front_order_customer_ref_info_str.') and ('.$end_order_customer_ref_info_str.'))';
-        }
-        if($front_order_customer_ref_info_str == ''){
-          $order_where_sql = ' ('.$end_order_customer_ref_info_str.')';
-        }
-        if($end_order_customer_ref_info_str ==''){
-          $order_where_sql = ' ('.$front_order_customer_ref_info_str.')';
-        }
-        //信用调查
-        $front_customer_fax_str ='';
-        $end_customer_fax_str ='';
-        if (isset($_GET['search_type'])) {
-          if ($search_front_str != '') {
-            if (isset($_GET['search_char'])) {
-              $front_customer_fax_str .= '('.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-            } else {
-              $front_customer_fax_str .= '('.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-            }
-          }
-         
-          if ($search_end_str != '') {
-            if (isset($_GET['search_char'])) {
-              $end_customer_fax_str .= '('.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-            } else {
-              $end_customer_fax_str .= '('.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-            }
-          }
-        } else {
-          if ($search_front_str != '') {
-            $front_customer_fax_str .= '(binary '.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' like "%'.$search_front_str.'%")';   
-          }
-          if ($search_end_str != '') {
-            $end_customer_fax_str .= '(binary '.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' like "%'.$search_end_str.'%")';   
-          }
-          if (isset($_GET['search_char'])) {
-            if ($search_front_str != '') {
-              $front_customer_fax_str .= ' or ('.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_front_str.'%")';   
-            }
-            if ($search_end_str != '') {
-              $end_customer_fax_str .= ' or ('.$strip_blank_front_str.'c.customers_fax'.$strip_blank_end_str.' COLLATE utf8_unicode_ci like "%'.$search_end_str.'%")';   
-            }
-          } 
-        }
-        if ($_GET['search_con'] == '1') {
-          $customer_where_sql = ' (('.$front_customer_fax_str.') or ('.$end_customer_fax_str.'))';
-        }else{
-          $customer_where_sql = ' (('.$front_customer_fax_str.') and ('.$end_customer_fax_str.'))';
-        }
-        if($front_customer_fax_str == ''){
-          $customer_where_sql = ' ('.$end_customer_fax_str.') ';
-        }
-        if($end_customer_fax_str==''){
-          $customer_where_sql = ' ('.$front_customer_fax_str.') ';
-        }
-        $customers_query_raw_search_culom = "select distinct
-                 c.customers_id, 
-                 c.site_id,
-                 c.is_active,
-                 c.customers_lastname, 
-                 c.customers_firstname, 
-                 c.customers_email_address, 
-                 c.customers_guest_chk,
-                 ci.user_update,
-                 ci.customers_info_date_account_created as date_account_created, 
-                 ci.customers_info_date_account_last_modified as date_account_last_modified, 
-                 ci.customers_info_date_of_last_logon as date_last_logon, 
-                 ci.customers_info_number_of_logons as number_of_logons,
-                 c.is_exit_history,
-                 s.romaji
-        from ";
-        $customers_query_raw_table = TABLE_CUSTOMERS . " c left join 
-          ".TABLE_ORDERS." o on c.customers_id = o.customers_id ";
-        $order_oh_where_flag = false;
-        $order_pa_where_flag = false;
-        $customers_query_raw_table .= ", ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s ";
-        $customers_query_raw_where = " where c.customers_id = ci.customers_info_id and c.site_id = s.id  and " .$sql_site_where;
-        $where_column_arr = array();
-        if($sql_where_str!=''){
-          $where_column_arr[] = $sql_where_str;
-        }
-        if($order_where_sql!=''){
-          $where_column_arr[] = $order_where_sql;
-        }
-        if($customer_where_sql!=''){
-          $where_column_arr[] = $customer_where_sql;
-        }
-        if(!empty($where_column_arr)){
-          $where_column_str = implode(' or ',$where_column_arr);
-          $customers_query_raw_where .= " and (".$where_column_str.") ";
-        }
-        //所有的 检索判断 ".$sql_where_str."
-        $customers_query_raw = $customers_query_raw_search_culom.$customers_query_raw_table.$customers_query_raw_where;
-      }
-    }
-    
-    if (($search_single == '0') || ($search_single == '2')) {
-      $customers_query_raw = "
-        select c.customers_id, 
-               c.site_id,
-               c.is_active,
-               c.customers_lastname, 
-               c.customers_firstname, 
-               c.customers_email_address, 
-               c.customers_guest_chk,
-               ci.user_update,
-               ci.customers_info_date_account_created as date_account_created, 
-               ci.customers_info_date_account_last_modified as date_account_last_modified, 
-               ci.customers_info_date_of_last_logon as date_last_logon, 
-               ci.customers_info_number_of_logons as number_of_logons,
-               c.is_exit_history,
-               s.romaji
-        from " . TABLE_CUSTOMERS . " c , ".TABLE_CUSTOMERS_INFO." ci , ".TABLE_SITES." s where
-        c.customers_id = ci.customers_info_id and c.site_id = s.id and "
-        .$sql_site_where. " " .$tmp_search_str;
-    }
-    
-    }
-    $customers_query_raw .= ' order by '.$customers_order_sql; 
-    //$customers_query_raw = "select t3.*,count(t3.customers_id) as preorder_count from (select t1.*,count(t1.customers_id) as order_count from (".$customers_query_raw.") t1 left join ".TABLE_ORDERS." t2 on t1.customers_id = t2.customers_id and t1.site_id = t2.site_id group by t1.customers_id) t3 left join ".TABLE_PREORDERS." t4 on t4.customers_id=t3.customers_id and t3.site_id = t4.site_id group by t3.customers_id order by ".$customers_order_sql;
+    $customers_query_raw = "
+      select c.customers_id, 
+             c.site_id,
+             c.customers_lastname, 
+             c.customers_firstname, 
+             c.customers_email_address, 
+             a.entry_country_id, 
+             c.customers_guest_chk,
+	     c.is_quited,
+	     ci.user_update,
+             ci.customers_info_date_account_created as date_account_created, 
+             ci.customers_info_date_account_last_modified as date_account_last_modified, 
+             ci.customers_info_date_of_last_logon as date_last_logon, 
+             ci.customers_info_number_of_logons as number_of_logons,
+             c.is_exit_history,
+             s.romaji
+      from " . TABLE_CUSTOMERS . " c left join " . TABLE_ADDRESS_BOOK . " a on
+      c.customers_id = a.customers_id and c.customers_default_address_id =
+      a.address_book_id, ".TABLE_CUSTOMERS_INFO." ci, ".TABLE_SITES." s where c.customers_id = ci.customers_info_id and c.site_id = s.id and " .$sql_site_where. " " . $search . " 
+      order by ".$customers_order_sql;
     $customers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $customers_query_raw, $customers_query_numrows); 
   
     $customers_query_cid = tep_db_query($customers_query_raw);
@@ -5385,22 +4682,12 @@ if($_GET['site_id'] == -1){
     }else{
       $action = 'update';
       if (empty($_GET['customers_sort']) || empty($_GET['customers_sort_type'])) {
-        $last_single = true; 
         $page = tep_get_all_get_params(array('action', 'customers_sort', 'customers_sort_type'));
       } else {
-        $last_single = true; 
         $page = tep_get_all_get_params(array('action'));
       }
     }
-    $tmp_page = ''; 
-    if ($page != '') {
-      if (isset($last_single)) {
-        $tmp_page = substr($page, 0, -1); 
-      } else {
-        $tmp_page = $page; 
-      }
-    } 
-    $form_str = tep_draw_form('customers', FILENAME_CUSTOMERS, $tmp_page. '&action='.$action, 'post', 'onSubmit="return check_form();"') .  tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) .  tep_draw_hidden_field('entry_country_id', $cInfo->entry_country_id)."\n"; 
+    $form_str = tep_draw_form('customers', FILENAME_CUSTOMERS, $page. '&action='.$action, 'post', 'onSubmit="return check_form();"') .  tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) .  tep_draw_hidden_field('entry_country_id', $cInfo->entry_country_id)."\n"; 
     $page_str = '';
   foreach ($cid_array as $c_key => $c_value) {
     if ($_GET['cID'] == $c_value) {
@@ -5435,14 +4722,14 @@ if($_GET['cID'] != -1){
   if ($c_key > 0) {
     $prev_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key-1]."'"); 
     $prev_customer_res = tep_db_fetch_array($prev_customer_query); 
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].', '.$prev_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\' , \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\', \''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\', \''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\', \''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\', \''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\', \''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\', \''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\', \''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\', \''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\', \''.(isset($_GET['search'])?$_GET['search']:'').'\')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key-1].','.$_GET['page'].', '.$prev_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000"><'.IMAGE_PREV.'</font>'; 
   }
   if ($c_key < (count($cid_array) - 1)) {
     $next_customer_query = tep_db_query("select customers_id, site_id from ".TABLE_CUSTOMERS." where customers_id = '".$cid_array[$c_key+1]."'"); 
     $next_customer_res = tep_db_fetch_array($next_customer_query); 
-    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].', '.$next_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\' , \''.(isset($_GET['search_front'])?$_GET['search_front']:'').'\', \''.(isset($_GET['search_end'])?$_GET['search_end']:'').'\', \''.(isset($_GET['search_con'])?$_GET['search_con']:'').'\', \''.(isset($_GET['search_name'])?$_GET['search_name']:'').'\', \''.(isset($_GET['search_mail'])?$_GET['search_mail']:'').'\', \''.(isset($_GET['search_type'])?$_GET['search_type']:'').'\', \''.(isset($_GET['search_char'])?$_GET['search_char']:'').'\', \''.(isset($_GET['search_blank'])?$_GET['search_blank']:'').'\', \''.(isset($_GET['search_other'])?$_GET['search_other']:'').'\', \''.(isset($_GET['search'])?$_GET['search']:'').'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_customers(\'\','.$cid_array[$c_key+1].','.$_GET['page'].', '.$next_customer_res['site_id'].', \''.(isset($_GET['customers_sort'])?$_GET['customers_sort']:'0').'\', \''.(isset($_GET['customers_sort_type'])?$_GET['customers_sort_type']:'0').'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   } else {
     $page_str .= '<font color="#000000">'.IMAGE_NEXT.'></font>'; 
   }
@@ -5628,41 +4915,25 @@ if($_GET['cID'] != -1){
          array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_LOGONS),
          array('text' => $nInfo->number_of_logons)
        );
-        $order_num_str = '';
-        $order_num = tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id);
-        if($order_num > 0){
-          $order_num_str = "<a href='javascript:void(0)' onclick='show_customers_order_preorder_id(\"".$nInfo->customers_id."\",\"1\")'>".
-            $order_num."</a>";
-        }else{
-          $order_num_str = $order_num;
-        }
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_ORDER_COUNT),
-         array('text' => $order_num_str)
+         array('text' => tep_get_orders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
        );
         //预约次数
-        $preorder_num_str = '';
-        $preorder_num = tep_get_preorders_by_customers_id($nInfo->customers_id,$nInfo->site_id);
-        if($preorder_num > 0){
-          $preorder_num_str = "<a href='javascript:void(0)' onclick='show_customers_order_preorder_id(\"".$nInfo->customers_id."\",\"2\")'>".
-            $preorder_num."</a>";
-        }else{
-          $preorder_num_str = $preorder_num;
-        }
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_CUSTOMERS_PREORDERS_SUM),
-         array('text' => $preorder_num_str)
+         array('text' => tep_get_preorders_by_customers_id($nInfo->customers_id,$nInfo->site_id))
        );
         $customers_fax_row[]['text'] = array(
          array('params' => 'nowrap="nowrap"','text' => TEXT_INFO_NUMBER_OF_REVIEWS),
          array('text' => $nInfo->number_of_reviews)
        );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_added']))?htmlspecialchars($customers_info_row['user_added']):TEXT_UNSET_DATA)), 
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_added']))?$customers_info_row['user_added']:TEXT_UNSET_DATA)), 
            array('align' => 'left','text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_created']))?$customers_info_row['customers_info_date_account_created']:TEXT_UNSET_DATA))
          );
        $customers_fax_row[]['text'] = array(
-           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_update']))?htmlspecialchars($customers_info_row['user_update']):TEXT_UNSET_DATA)),
+           array('align' => 'left', 'params' => 'width="30%"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['user_update']))?$customers_info_row['user_update']:TEXT_UNSET_DATA)),
            array('align' => 'left','text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($customers_info_row['customers_info_date_account_last_modified']))?$customers_info_row['customers_info_date_account_last_modified']:TEXT_UNSET_DATA))
         );
      $customers_fax_str = $notice_box->get_table($customers_fax_row, '', $customers_fax_params);  
@@ -6782,7 +6053,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     }
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
-         array('text' => TEXT_DETAIL_ROMAJI),
+         array('text' => TEXT_DETAIL_ROMAN),
          array('params' => 'nowrap','text' => '<input type="hidden" id="romaji_hidden_value" value="update">'.  $show_status_input.$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
@@ -6890,7 +6161,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     );
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
-         array('text' => TEXT_DETAIL_ROMAJI),
+         array('text' => TEXT_DETAIL_ROMAN),
          array('params' => 'nowrap','text' => '<input type="hidden" id="romaji_hidden_value" value="insert">'.tep_draw_input_field('romaji', '',$disabled.'id="romaji"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
@@ -7477,13 +6748,13 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     if($qInfo->info_type == 'q'){
      $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_q_raw['romaji'],'id="qromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji',$faq_q_raw['romaji'],'id="qromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
         );
         
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
         );
     }
     if($qInfo->info_type == 'q'){
@@ -7646,7 +6917,7 @@ if($_GET['cID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="cromaji" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji','','id="cromaji" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
@@ -7716,7 +6987,7 @@ if($_GET['qID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="qromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji','','id="qromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_QUESTION_KEYWORDS),
@@ -7774,27 +7045,6 @@ if($_GET['sort'] == 'update_at'){
      $c_id[] = $data_row['configuration_id'];
   }
 }
-$data_sql = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' order by ".$_GET['sql_type']);
-while($data_row = tep_db_fetch_array($data_sql)){
-     $cid_array[] = $data_row['configuration_id'];
-}
- foreach ($cid_array as $c_key => $c_value) {
-    if ($_GET['c_id'] == $c_value) {
-      break; 
-    }
-  }
-    if ($c_key > 0) {
-      $data_value = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_id=".$cid_array[$c_key-1]);
-      $data_value_row = tep_db_fetch_array($data_value);
-      $page_str .= '<a onclick=\'show_data("","'.$data_value_row['configuration_value'].'","'.$_GET['sql_type'].'",'.$cid_array[$c_key-1].')\' href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
-    }
-    if ($c_key < (count($cid_array) - 1)) {
-      $data_value = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_id=".$cid_array[$c_key+1]);
-      $data_value_row = tep_db_fetch_array($data_value);
-      $page_str .= '<a onclick=\'show_data("","'.$data_value_row['configuration_value'].'","'.$_GET['sql_type'].'",'.$cid_array[$c_key+1].')\' href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
-    }else{
-      $page_str .= '<font color="#000000">&nbsp;&nbsp;'.IMAGE_NEXT.'></font>'; 
-    }
 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
 if($_GET['type'] == 'mag_orders'){
     $all_orders_statuses =  array();
@@ -7807,6 +7057,7 @@ if($_GET['type'] == 'mag_orders'){
     while ($preorders_status = tep_db_fetch_array($preorders_status_query)) {
       $all_preorders_statuses[] = array('id' => $preorders_status['orders_status_id'], 'text' => $preorders_status['orders_status_name']);
     }
+    $page_str  = '';
     if($_GET['sort'] == 'update_at'){
     foreach ($c_id as $q_key => $q_value) {
       if ($_GET['c_id'] == $q_value) {
@@ -7909,96 +7160,7 @@ if($_GET['type'] == 'mag_orders'){
     $notice_box->get_contents($contents, $buttons);
     $notice_box->get_eof(tep_eof_hidden());
     echo $notice_box->show_notice();
-  }else if($_GET['type'] == 'mag_customers'){
-    $all_orders_statuses =  array();
-    $all_preorders_statuses =  array();
-    $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
-    while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-      $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
-     }
-    $preorders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" .  $languages_id . "'");
-    while ($preorders_status = tep_db_fetch_array($preorders_status_query)) {
-      $all_preorders_statuses[] = array('id' => $preorders_status['orders_status_id'], 'text' => $preorders_status['orders_status_name']);
-    }
-    if($_GET['sort'] == 'update_at'){
-    foreach ($c_id as $q_key => $q_value) {
-      if ($_GET['c_id'] == $q_value) {
-        break;
-      }
-    }
-    }
-    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
-    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-    $heading[] = array('align' => 'left', 'text' => TEXT_MAG_CUSTOMERS);
-    $heading[] = array('align' => 'right', 'text' => $page_str);
-    $contents = array();
-    $form_str = '<form id="orders_download" action="'.tep_href_link('customers_csv_exe.php','csv_exe=true','SSL').'" method="post">';
-    $contents[]['text'] = array(
-        array('params' => 'width="30%"','text' => TEXT_ORDER_SITE_TEXT),
-        array('text' => tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ?  $_GET['site_id'] :'', false,'all',(($is_disabled_single)?' disabled="disabled"':'')))
-        );
-    $contents[]['text'] = array(
-        array('text' => HEADING_TITLE_CUSTOMERS_STATUS),
-        array('text' => tep_html_element_button(TEXT_CUSTOMERS_CSV_OUTPUT,(($is_disabled_single)?' disabled="disabled"':'')."onclick=' customers_csv_exe(".$ocertify->npermission.") '"))
-        );
-    $update_data  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_customers'"));
-    $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_added'])?$update_data['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['date_added'])))?tep_datetime_short($update_data['date_added']):TEXT_UNSET_DATA))
-      );
-    $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_update'])?$update_data['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['last_modified'])))?tep_datetime_short($update_data['last_modified']):TEXT_UNSET_DATA))
-      );
-    $notice_box->get_form($form_str);
-    $notice_box->get_heading($heading);
-    $notice_box->get_contents($contents, $buttons);
-    $notice_box->get_eof(tep_eof_hidden());
-    echo $notice_box->show_notice();
-  }else if($_GET['type'] == 'mag_customers_import'){
-    $all_orders_statuses =  array();
-    $all_preorders_statuses =  array();
-    $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
-    while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-      $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
-     }
-    $preorders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" .  $languages_id . "'");
-    while ($preorders_status = tep_db_fetch_array($preorders_status_query)) {
-      $all_preorders_statuses[] = array('id' => $preorders_status['orders_status_id'], 'text' => $preorders_status['orders_status_name']);
-    }
-    if($_GET['sort'] == 'update_at'){
-    foreach ($c_id as $q_key => $q_value) {
-      if ($_GET['c_id'] == $q_value) {
-        break;
-      }
-    }
-    }
-    $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
-    $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-    $heading[] = array('align' => 'left', 'text' => TEXT_MAG_CUSTOMERS_IMPORT);
-    $heading[] = array('align' => 'right', 'text' => $page_str);
-    $contents = array();
-    $form_str = '<form id="orders_download"enctype="multipart/form-data" action="'.tep_href_link('customers_csv_import.php','csv_exe=true','SSL').'" method="post">';
-    $contents[]['text'] = array(
-        array('text' => HEADING_TITLE_CUSTOMERS_IMPORT_STATUS),
-        array('text' => '<input name="csv_goods" type="file" id="data_filesize" onchange="checkFileChange(document.getElementById(\'data_filesize\'))" /> <input type="submit" value="'.HEADING_TITLE_CUSTOMERS_IMPORT_STATUS.'" name="import" />&nbsp;&nbsp;'.sprintf(TEXT_WARNING,ini_get("post_max_size")).'<br><span id="data_error"></span>')
-        );
-    $update_data  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_customers'"));
-    $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_added'])?$update_data['user_added']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['date_added'])))?tep_datetime_short($update_data['date_added']):TEXT_UNSET_DATA))
-      );
-    $contents[]['text'] = array(
-       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null($update_data['user_update'])?$update_data['user_update']:TEXT_UNSET_DATA))),
-       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.((tep_not_null(tep_datetime_short($update_data['last_modified'])))?tep_datetime_short($update_data['last_modified']):TEXT_UNSET_DATA))
-      );
-    $notice_box->get_form($form_str);
-    $notice_box->get_heading($heading);
-    $notice_box->get_contents($contents, $buttons);
-    $notice_box->get_eof(tep_eof_hidden());
-    echo $notice_box->show_notice();
   }
-
 }else if($_GET['action'] == 'edit_present'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PRESENT);
 include(DIR_FS_ADMIN.'classes/notice_box.php');
@@ -8847,371 +8009,4 @@ $banner_query = tep_db_query("
   $notice_box->get_contents($contents, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
-}else if($_GET['action'] == 'edit_meta_info'){
-/* -----------------------------------------------------
-    功能: meta的弹出框
-    参数: $_GET['meta_e_id'] meta id 
- -----------------------------------------------------*/
-
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CONFIGURATION_META);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  
-  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
- 
-  $meta_info_raw = tep_db_query("select cm.*, s.romaji from ".TABLE_CONFIGURATION_META." cm, ".TABLE_SITES." s  where s.id = cm.site_id and cm.id = '".$_POST['meta_e_id']."'");
-  $meta_info_res = tep_db_fetch_array($meta_info_raw);
-  
-  $site_list_raw = tep_db_query("select `site_permission`, `permission` from `permissions` where `userid` = '".$ocertify->auth_user."'");
-  while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-    $site_permission_list = $site_list_res['site_permission']; 
-  }
-  if (isset($site_permission_list)) {
-    $site_list_str = $site_permission_list;  
-  } else {
-    $site_list_str = '';  
-  }
-  $site_list_array = explode(',', $site_list_str); 
-  if (!in_array($meta_info_res['site_id'], $site_list_array)) {
-    $disabled_str = 'disabled="disabled"'; 
-  }
-  
-  $param_str = '';
-  $meta_array = array();
-
-  foreach ($_POST as $p_key => $p_value) {
-    if (($p_key != 'meta_e_id') && ($p_key != 'action')) {
-      $param_str .= $p_key.'='.urlencode($p_value).'&'; 
-    }
-  }
-  $param_str = substr($param_str, 0, -1); 
-  
-  $meta_order_sort_name = ' cm.site_id';
-  $meta_order_sort = 'asc';
-  if (isset($_POST['meta_sort'])) {
-    switch ($_POST['meta_sort']) {
-       case 'meta_site':
-         $meta_order_sort_name = ' s.romaji';
-         break;
-       case 'meta_title':
-         $meta_order_sort_name = ' cm.title';
-         break;
-       case 'meta_url':
-         $meta_order_sort_name = ' cm.link_url';
-         break;
-       case 'meta_update':
-          $meta_order_sort_name = ' cm.last_modified';
-         break;
-    }
-  }
-  if (isset($_POST['meta_sort_type'])) {
-    if ($_POST['meta_sort_type'] == 'asc') {
-      $meta_order_sort = 'asc';
-    } else {
-      $meta_order_sort = 'desc';
-    }
-  }
-  $meta_order_sql = $meta_order_sort_name.' '.$meta_order_sort;
-
-  if (isset($_POST['search'])) {
-    $meta_query_raw = 'select cm.* from '.TABLE_CONFIGURATION_META.' cm, '.TABLE_SITES.' s where (title like \'%'.trim($_POST['search']).'%\' or meta_title like \'%'.$_POST['search'].'%\' or meta_keywords like \'%'.trim($_POST['search']).'%\' or meta_description like \'%'.trim($_POST['search']).'%\' or meta_copyright like \'%'.trim($_POST['search']).'%\') and cm.site_id = s.id and cm.site_id in ('.tep_get_setting_site_info(FILENAME_CONFIGURATION_META).') order by '.$meta_order_sql;
-  } else {
-    $meta_query_raw = 'select cm.* from '.TABLE_CONFIGURATION_META.' cm, '.TABLE_SITES.' s where cm.site_id = s.id and cm.site_id in ('.tep_get_setting_site_info(FILENAME_CONFIGURATION_META).') order by '.$meta_order_sql;
-  }
-  $meta_split = new splitPageResults($_POST['page'], MAX_DISPLAY_SEARCH_RESULTS, $meta_query_raw, $meta_query_numrows);
-  $meta_list_query = tep_db_query($meta_query_raw);
-  $meta_array = array(); 
-  while ($meta_row = tep_db_fetch_array($meta_list_query)) {
-    $meta_array[] = $meta_row['id'];
-  }
-  foreach ($meta_array as $m_key => $m_value) {
-    if ($_POST['meta_e_id'] == $m_value) {
-      break;
-    }
-  }
-
-  if($m_key > 0){ 
-    $page_str .= '<a onclick="show_link_meta_info(\''.$meta_array[$m_key - 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="meta_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;';
-  } else {
-    $page_str .= '<font color="#000000">'.IMAGE_PREV.'</font>&nbsp;&nbsp;'; 
-  }
-  
-  if($m_key < count($meta_array)-1){
-    $page_str .= '<a onclick="show_link_meta_info(\''.$meta_array[$m_key + 1].'\', \''.urlencode($param_str).'\');" href="javascript:void(0);" id="meta_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;';
-  } else {
-    $page_str .= '<font color="#000000">'.IMAGE_NEXT.'</font>&nbsp;&nbsp;'; 
-  }
-  
-  $page_str .= '<a onclick="close_meta_info();" href="javascript:void(0);">X</a>';
-  
-  $heading = array();
-  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => $meta_info_res['title']); 
-  $heading[] = array('align' => 'right', 'text' => $page_str); 
- 
-  $button = array();
-  if (isset($disabled_str)) {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(META_INFO_COPY_TEXT, $disabled_str.' id="button_save"').'</a>'; 
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' id="button_save"').'</a>'; 
-  } else {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(META_INFO_COPY_TEXT, $disabled_str.' onclick="copy_meta(\''.$_POST['meta_e_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' onclick="submit_meta_form()" id="button_save"').'</a>'; 
-  }
-  $buttons = array('align' => 'center', 'button' => $button); 
-
-  $meta_info_row = array();
-  $meta_info_params = array('width' => '60%', 'cellpadding' => '0', 'cellspacing' => '0', 'border' => '0'); 
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => TABLE_META_SITE_TEXT),
-        array('align' => 'left', 'text' => $meta_info_res['romaji'])
-      );
-  
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_TITLE_TEXT),
-        array('align' => 'left', 'text' => tep_draw_input_field('meta_title', $meta_info_res['meta_title'], 'style="width:60%;" '.$disabled_str))
-      );
-  $meta_title_info_str = '';
-  $meta_title_info_array = explode('<br>', $meta_info_res['meta_title_info']);
-  if (!preg_match('#[A-Z_]+#', $meta_title_info_array[0])) {
-    unset($meta_title_info_array[0]); 
-  }
-  if (!empty($meta_title_info_array)) {
-    $mt_num = 1; 
-    $meta_title_table_info_array = array();
-    $calc_mt_num = 0; 
-    foreach ($meta_title_info_array as $mt_key => $mt_value) {
-      $meta_title_table_info_array[$calc_mt_num]['text'][] =  array('align' => 'left', 'text' => $mt_value); 
-      if ($mt_num % 2 == 0) {
-        $calc_mt_num++; 
-      }
-      $mt_num++; 
-    }
-    if (!empty($meta_title_table_info_array)) {
-      if (count($meta_title_info_array) % 2 != 0) {
-        $meta_title_table_info_array[$calc_mt_num]['text'][] =  array('align' => 'left', 'text' => ''); 
-      }
-    }
-    $meta_title_info_str = $notice_box->get_table($meta_title_table_info_array, '', $meta_info_params);
- 
-    $meta_info_row[]['text'] = array(
-          array('align' => 'left', 'params' => 'width="25%"', 'text' => '&nbsp;'),
-          array('align' => 'left', 'text' => $meta_title_info_str)
-        );
-  }
-  
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_KEYWORD_TEXT),
-        array('align' => 'left', 'text' => tep_draw_textarea_field('meta_keywords', 'soft', '30', '10', $meta_info_res['meta_keywords'], 'style="width:60%; resize:vertical;"; onfocus="o_submit_single = false;" onblur="o_submit_single = true;" '.$disabled_str))
-      );
-  
-  $meta_keywords_info_str = '';
-  $meta_keywords_info_array = explode('<br>', $meta_info_res['meta_keywords_info']);
-  if (!preg_match('#[A-Z_]+#', $meta_keywords_info_array[0])) {
-    unset($meta_keywords_info_array[0]); 
-  }
-  if (!empty($meta_keywords_info_array)) {
-    $mk_num = 1; 
-    $meta_keywords_table_info_array = array();
-    $calc_mk_num = 0; 
-    foreach ($meta_keywords_info_array as $mk_key => $mk_value) {
-      $meta_keywords_table_info_array[$calc_mk_num]['text'][] =  array('align' => 'left', 'text' => $mk_value); 
-      if ($mk_num % 2 == 0) {
-        $calc_mk_num++; 
-      }
-      $mk_num++; 
-    }
-    if (!empty($meta_keywords_table_info_array)) {
-      if (count($meta_keywords_info_array) % 2 != 0) {
-        $meta_keywords_table_info_array[$calc_mk_num]['text'][] =  array('align' => 'left', 'text' => ''); 
-      }
-    }
-    $meta_keywords_info_str = $notice_box->get_table($meta_keywords_table_info_array, '', $meta_info_params);
-    $meta_info_row[]['text'] = array(
-          array('align' => 'left', 'params' => 'width="25%"', 'text' => '&nbsp;'),
-          array('align' => 'left', 'text' => $meta_keywords_info_str)
-        );
-  }
-  
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_DESCRIPTION_TEXT),
-        array('align' => 'left', 'text' => tep_draw_textarea_field('meta_description', 'soft', '30', '10', $meta_info_res['meta_description'], 'style="width:60%; resize:vertical;"; onfocus="o_submit_single = false;" onblur="o_submit_single = true;" '.$disabled_str))
-      );
-  
-  $meta_description_info_str = '';
-  $meta_description_info_array = explode('<br>', $meta_info_res['meta_description_info']);
-  if (!preg_match('#[A-Z_]+#', $meta_description_info_array[0])) {
-    unset($meta_description_info_array[0]); 
-  }
-  if (!empty($meta_description_info_array)) {
-    $md_num = 1; 
-    $meta_description_table_info_array = array();
-    $calc_md_num = 0; 
-    foreach ($meta_description_info_array as $md_key => $md_value) {
-      $meta_description_table_info_array[$calc_md_num]['text'][] =  array('align' => 'left', 'text' => $md_value); 
-      if ($md_num % 2 == 0) {
-        $calc_md_num++; 
-      }
-      $md_num++; 
-    }
-    if (!empty($meta_description_table_info_array)) {
-      if (count($meta_description_info_array) % 2 != 0) {
-        $meta_description_table_info_array[$calc_md_num]['text'][] =  array('align' => 'left', 'text' => ''); 
-      }
-    }
-    $meta_description_info_str = $notice_box->get_table($meta_description_table_info_array, '', $meta_info_params);
-
-    $meta_info_row[]['text'] = array(
-          array('align' => 'left', 'params' => 'width="25%"', 'text' => '&nbsp;'),
-          array('align' => 'left', 'text' => $meta_description_info_str)
-        );
-  }
-  
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_ROBOT_TEXT),
-        array('align' => 'left', 'text' => tep_draw_radio_field('meta_robots', 'index,follow',(($meta_info_res['meta_robots'] == 'index,follow')?true:false), '', 'style="padding-left:0;margin-left:0;"').'index,follow&nbsp;'.tep_draw_radio_field('meta_robots', 'noindex',(($meta_info_res['meta_robots'] == 'noindex')?true:false)).'noindex')
-      );
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_COPYRIGHT_TEXT),
-        array('align' => 'left', 'text' => tep_draw_input_field('meta_copyright', $meta_info_res['meta_copyright'], 'style="width:60%;" '.$disabled_str))
-      );
-  
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_added'])?$meta_info_res['user_added']:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['date_added'])?$meta_info_res['date_added']:TEXT_UNSET_DATA))
-      );
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['user_update'])?$meta_info_res['user_update']:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($meta_info_res['last_modified'])?$meta_info_res['last_modified']:TEXT_UNSET_DATA))
-      );
-  
-  $form_str = tep_draw_form('meta_form', FILENAME_CONFIGURATION_META, 'meta_e_id='.$_POST['meta_e_id'].'&action=update_meta_info&'.$param_str);
-  $notice_box->get_form($form_str); 
-  $notice_box->get_heading($heading); 
-  $notice_box->get_contents($meta_info_row, $buttons); 
-  $notice_box->get_eof(tep_eof_hidden()); 
- 
-  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_CONFIGURAION_META);
-}else if($_GET['action'] == 'copy_meta_info'){
-/* -----------------------------------------------------
-    功能: meta的复制弹出框
-    参数: $_GET['meta_e_id'] meta id 
- -----------------------------------------------------*/
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CONFIGURATION_META);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  
-  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-
-  $meta_info_raw = tep_db_query("select cm.*, s.romaji from ".TABLE_CONFIGURATION_META." cm, ".TABLE_SITES." s  where s.id = cm.site_id and cm.id = '".$_POST['meta_e_id']."'");
-  $meta_info_res = tep_db_fetch_array($meta_info_raw);
-  
-  $site_list_raw = tep_db_query("select `site_permission`, `permission` from `permissions` where `userid` = '".$ocertify->auth_user."'");
-  while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-    $site_permission_list = $site_list_res['site_permission']; 
-  }
-  if (isset($site_permission_list)) {
-    $site_list_str = $site_permission_list;  
-  } else {
-    $site_list_str = '';  
-  }
-  $site_list_array = explode(',', $site_list_str); 
-  if (!in_array($meta_info_res['site_id'], $site_list_array)) {
-    $disabled_str = 'disabled="disabled"'; 
-  }
-  
-  $page_str = '<a onclick="close_meta_info();" href="javascript:void(0);">X</a>';
-  $meta_array = array();
-
-  foreach ($_POST as $p_key => $p_value) {
-    if (($p_key != 'meta_e_id') && ($p_key != 'action')) {
-      $param_str .= $p_key.'='.urlencode($p_value).'&'; 
-    }
-  }
-  $param_str = substr($param_str, 0, -1); 
-  
-  
-  $heading = array();
-  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => sprintf(META_INFO_COPY_TITLE, $meta_info_res['title'])); 
-  $heading[] = array('align' => 'right', 'text' => $page_str); 
-
-  $button = array();
-  if (isset($disabled_str)) {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' id="button_save"').'</a>'; 
-  } else {
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled_str.' onclick="check_copy_meta()" id="button_save"').'</a>'; 
-  }
-  $buttons = array('align' => 'center', 'button' => $button); 
-
-  $meta_info_row = array();
-  $site_info_str = ''; 
-  $site_list_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc"); 
-  while ($site_list_res = tep_db_fetch_array($site_list_raw)) {
-    if ($site_list_res['id'] == $meta_info_res['site_id']) {
-      $site_info_str .= tep_draw_checkbox_field('select_site[]', $site_list_res['id'], false, '', 'disabled=disabled').$site_list_res['romaji'].'&nbsp;';   
-    } else {
-      if (isset($disabled_str)) {
-        $site_info_str .= tep_draw_checkbox_field('select_site[]', $site_list_res['id'], false, '', 'disabled=disabled').$site_list_res['romaji'].'&nbsp;';   
-      } else {
-        $site_info_str .= tep_draw_checkbox_field('select_site[]', $site_list_res['id']).$site_list_res['romaji'].'&nbsp;';   
-      }
-    }
-  }
-  $meta_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="25%"', 'text' => META_INFO_COPY_SITE),
-        array('align' => 'left', 'text' => $site_info_str.'<br><span id="site_error" style="color:#ff0000;"></span>')
-      );
-
-  $form_str = tep_draw_form('copy_meta', FILENAME_CONFIGURATION_META, 'meta_e_id='.$_POST['meta_e_id'].'&action=copy_meta_info&'.$param_str);
-  $notice_box->get_form($form_str); 
-  $notice_box->get_heading($heading); 
-  $notice_box->get_contents($meta_info_row, $buttons); 
-  $notice_box->get_eof(tep_eof_hidden()); 
- 
-  echo $notice_box->show_notice().'||||||'.tep_get_note_top_layer(FILENAME_CONFIGURAION_META);
-}else if($_GET['action'] == 'show_customer_other_info'){
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CUSTOMERS);
-  include(DIR_FS_ADMIN.'classes/notice_box.php');
-  
-  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-  
-  $customers_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$_GET['customers_id']."'"); 
-  $customers_info = tep_db_fetch_array($customers_info_raw); 
-  
-  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
-  
-  $heading = array();
-  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  if ($_GET['show_type'] == '1') {
-    $heading[] = array('align' => 'left', 'text' => sprintf(CUSTOMERS_ORDER_TITLE, $customers_info['customers_lastname'].' '.$customers_info['customers_firstname']));
-  } else {
-    $heading[] = array('align' => 'left', 'text' => sprintf(CUSTOMERS_PREORDER_TITLE, $customers_info['customers_lastname'].' '.$customers_info['customers_firstname']));
-  }
-  $heading[] = array('align' => 'right', 'text' => $page_str);
- 
-  $customer_info_row = array();
-  $buttons = array();
-  $show_text_str = ''; 
-  $show_list_str = ''; 
-  if ($_GET['show_type'] == '1') {
-    $show_text_str = CUSTOMERS_ORDER_ID_TEXT; 
-    $order_list_raw = tep_db_query("select orders_id, customers_id from ".TABLE_ORDERS." where customers_id = '".$_GET['customers_id']."'");  
-    while ($order_list = tep_db_fetch_array($order_list_raw)) {
-      $show_list_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'keywords='.$order_list['orders_id'].'&search_type=orders_id&oID='.$order_list['orders_id'].'&action=edit').'" target="_blank">'.$order_list['orders_id'].'</a><br>'; 
-    }
-  } else {
-    $show_text_str = CUSTOMERS_PREORDER_ID_TEXT; 
-    $preorder_list_raw = tep_db_query("select orders_id, customers_id from ".TABLE_PREORDERS." where customers_id = '".$_GET['customers_id']."'");  
-    while ($preorder_list = tep_db_fetch_array($preorder_list_raw)) {
-      $show_list_str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, 'keywords='.$preorder_list['orders_id'].'&search_type=orders_id&oID='.$preorder_list['orders_id'].'&action=edit').'" target="_blank">'.$preorder_list['orders_id'].'</a><br>'; 
-    }
-  }
-  $customer_info_row[]['text'] = array(
-        array('align' => 'left','params' => 'width="30%"', 'text' => $show_text_str), 
-        array('align' => 'left','params' => 'width="70%"','text' => $show_list_str), 
-      );
-  
-  $notice_box->get_heading($heading);
-   
-  $notice_box->get_contents($customer_info_row, $buttons);
-  echo $notice_box->show_notice();
- 
 }

@@ -75,7 +75,7 @@
   echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
   echo '<p class=main>'.CREATE_ORDER_SEARCH_TWO_TEXT.'<br>';
   //echo 'メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
-  echo CREATE_ORDER_YEZHE_NAME_TEXT.tep_customer_list_pull_down_menu().'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
+  echo CREATE_ORDER_ENTERPRISE_NAME_TEXT.tep_customer_list_pull_down_menu().'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>

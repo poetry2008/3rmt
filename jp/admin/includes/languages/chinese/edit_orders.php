@@ -159,7 +159,7 @@ define('EDIT_ORDERS_NUM_UNIT', '个');
 
 define('TEXT_CREATE_ADDRESS_BOOK','指定投递地址');
 define('TEXT_USE_ADDRESS_BOOK','到达投递地址');
-define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','指定期望的投递时间');
+define('TEXT_DELIVERY_TIME_DEFAULT_SELECT','指定期望的投递时间');
 define('CREATE_ORDER_FETCH_DATE_TEXT', '期望投递日期:');
 define('CREATE_ORDER_FETCH_TIME_TEXT', '期望投递时间:');
 

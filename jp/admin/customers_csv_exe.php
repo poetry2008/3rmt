@@ -17,35 +17,6 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
   $request_one_time_arr[] = $request_one_time_row['check_value'];
   $request_one_time_flag = true; 
 }
-
-if ($ocertify->npermission != 31) {
-  if (count($request_one_time_arr) == 1 && $request_one_time_arr[0] == 'admin' && $ocertify->npermission != 15) {
-    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      forward401();
-    }
-  }
-  if (!$request_one_time_flag && $ocertify->npermission != 15) {
-    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      forward401();
-    }
-  }
-  if (!in_array('onetime', $request_one_time_arr) && $ocertify->npermission != 15) {
-    if (!(in_array('chief', $request_one_time_arr) && in_array('staff', $request_one_time_arr))) {
-      if ($ocertify->npermission == 7 && in_array('chief', $request_one_time_arr)) {
-        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-          forward401();
-        }
-      }
-      if ($ocertify->npermission == 10 && in_array('staff', $request_one_time_arr)) {
-        if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-          forward401();
-        }
-      }
-    }
-  }
-}
-//end one time pwd
-
 // 创建CSV文件名
   $filename = ((isset($_POST['site_id'])&&$_POST['site_id']) ?  (tep_get_site_romaji_by_id(intval($_POST['site_id'])).'_') :'')."customers_".date("Ymd_His", time()).".csv";
 //获取下载范围
@@ -60,7 +31,7 @@ if ($ocertify->npermission != 31) {
     }else{
      $site_id = " site_id =".$_POST['site_id'];
     }
-  $csv_query = tep_db_query(" select * from ".TABLE_CUSTOMERS."  where ".$site_id." order by customers_id ");
+  $csv_query = tep_db_query(" select * from ".TABLE_CUSTOMERS);
   header("Content-Type: application/force-download");
   header('Pragma: public');
   header('Content-Disposition: attachment; filename='.$filename);

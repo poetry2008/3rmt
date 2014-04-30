@@ -26,11 +26,11 @@ define('TEXT_DETAIL_INPUT','换行被无视');
 define('TEXT_DETAIL_MAKE','换行时输入「&lt;BR&gt;」<br>要显示这个页面的链接请把下面的代码来源复制到要显示的位置。');
 
 
-define('TEXT_DETAIL_ROMAJI', '罗马字');
-define('ROMAJI_NOT_NULL', '<font color=\'red\'>请输入罗马字。</font>');
+define('TEXT_DETAIL_ROMAN', '罗马字');
+define('ROMAN_NOT_NULL', '<font color=\'red\'>请输入罗马字。</font>');
 
-define('ROMAJI_EXISTS', '<font color=\'red\'>罗马字已经存在。</font>');
-define('ROMAJI_WRONG_FORMAT', '请用英数文字及「_」填写');
+define('ROMAN_EXISTS', '<font color=\'red\'>罗马字已经存在。</font>');
+define('ROMAN_WRONG_FORMAT', '请用英数文字及「_」填写');
 define('TEXT_USER_ADDED','创建者');
 define('TEXT_USER_UPDATE','更新者');
 define('TEXT_DATE_ADDED','创建日');

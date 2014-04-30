@@ -1921,10 +1921,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     <script language="javascript" src="includes/jquery.form.js"></script>
     <script language="javascript" src="js/popup_window.js"></script>
     <script type="text/javascript"> 
-var avg_div_flag = 1;
 $(document).ready(function() {
   <?php //监听按键?> 
-  $(document).keyup(function(event) {
+  $(document).keydown(function(event) {
     if (event.which == 27) {
       <?php //esc?> 
       if (typeof($('#alert_div_submit').val()) != 'undefined'){
@@ -1933,13 +1932,8 @@ $(document).ready(function() {
     }
     if (event.which == 13) {
       <?php //回车?> 
-      if (avg_div_flag == 0 ){
-        avg_div_flag = 1;
-      }else{
-        if (typeof($('#alert_div_submit').val()) != 'undefined'){
-          $('#alert_div_submit').trigger('click');
-          avg_div_flag = 1;
-        }
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+        $('#alert_div_submit').trigger('click');
       }
     }
   });
@@ -2032,7 +2026,7 @@ function clear_confirm_div(){
       var b_pay_name_value = b_pay_name.value;
       if(b_pay_name_value.replace(/[ ]/g,"") == ''){
         payment_error = true;
-        error_str += '<?php echo TS_TEXT_BANK_ERROR_SHITEN;?>'+"\n\n";
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_ENTITY;?>'+"\n\n";
       }
     }
     }
@@ -2122,9 +2116,7 @@ function clear_confirm_div(){
     }
     $.ajax({
       type: "POST",
-      data:"o_id_info=<?php echo
-      $_GET['oID'];?>&c_comments="+$('#c_comments').val()+'&fetch_date='+fetch_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#s_status').val()+'&c_payment='+payment_str+'&c_name_info=<?php
-      echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.addslashes($_SESSION['firstname'])); ?>'+'&c_mail_info=<?php echo $orders_exit_flag == true ?  $order->customer['email_address'] : $_SESSION['email_address'];?>'+'&site_id_info=<?php echo (isset($_SESSION['sites_id_flag'])?$_SESSION['sites_id_flag']:'');?>'+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
+      data:"o_id_info=<?php echo $_GET['oID'];?>&c_comments="+$('#c_comments').val()+'&fetch_date='+fetch_date+'&c_title='+$('#mail_title').val()+'&c_status_id='+$('#s_status').val()+'&c_payment='+payment_str+'&c_name_info=<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.addslashes($_SESSION['firstname'])); ?>'+'&c_mail_info=<?php echo $orders_exit_flag == true ?  $order->customer['email_address'] : $_SESSION['email_address'];?>'+'&site_id_info=<?php echo (isset($_SESSION['sites_id_flag'])?$_SESSION['sites_id_flag']:'');?>'+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
       async: false,
       url:'ajax_orders.php?action=check_new_order_variable_data',
       success: function(msg_info) {
@@ -2186,7 +2178,6 @@ function clear_confirm_div(){
       success: function (msg_info) {
         if (msg_info != '') {
           if (confirm(msg_info)) {
-            avg_div_flag = 0;
             confirm_div_init(hidden_list_str,price_list_str,num_list_str);
           }
         } else {
@@ -2762,22 +2753,6 @@ while($select_result = tep_db_fetch_array($select_query)){
 
         // 输出订单邮件
         // title
-/*
-        foreach ($mo as $oskey => $value){
-          echo 'window.status_title['.$oskey.'] = new Array();'."\n";
-          foreach ($value as $sitekey => $svalue) {
-            echo 'window.status_title['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
-          }
-        }
-
-//content
-foreach ($mt as $oskey => $value){
-  echo 'window.status_text['.$oskey.'] = new Array();'."\n";
-  foreach ($value as $sitekey => $svalue) {
-    echo 'window.status_text['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
-  }
-}
-*/
 
 //no mail
 echo 'var nomail = new Array();'."\n";

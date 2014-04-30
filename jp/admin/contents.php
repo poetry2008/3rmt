@@ -103,7 +103,7 @@
         $romaji           = tep_db_prepare_input($_POST['romaji']);
         if (empty($romaji)) {
          $error = true;
-         $error_message = ROMAJI_NOT_NULL;
+         $error_message = ROMAN_NOT_NULL;
          $_GET['action'] = 'edit';
         }
         $exists_romaji_query = tep_db_query("
@@ -150,7 +150,7 @@
         }
         if (empty($romaji)) {
          $error = true;
-         $error_message = ROMAJI_NOT_NULL;
+         $error_message = ROMAN_NOT_NULL;
          $_GET['action'] = 'insert';
         }
         $exists_romaji_query = tep_db_query("
@@ -159,7 +159,7 @@
             where romaji = '".$romaji."' and site_id='".$site_id."'"); 
         $exists_romaji_num = tep_db_num_rows($exists_romaji_query); 
         if ($exists_romaji_num > 0) {
-          $error_message = ROMAJI_EXISTS; 
+          $error_message = ROMAN_EXISTS; 
           $error = true;
           $_GET['action'] = 'insert';
         }
@@ -517,13 +517,13 @@ function check_contents(c_permission){
    $("#heading_title_error").html("");
  }
  if(post_romaji == ''){
-   $("#error_romaji_info").html("<?php echo ROMAJI_NOT_NULL;?>"); 
+   $("#error_romaji_info").html("<?php echo ROMAN_NOT_NULL;?>"); 
    error = 'true';
  }else{
    $("#error_romaji_info").html(""); 
  }
  if(check_romaji == 'true'){
-   $("#error_romaji").html("<?php echo ROMAJI_EXISTS;?>");
+   $("#error_romaji").html("<?php echo ROMAN_EXISTS;?>");
    error = 'true';
  }else{
    $("#error_romaji").html("");

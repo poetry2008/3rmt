@@ -1963,16 +1963,6 @@ var tmp_other_str = '<?php echo $_SERVER['PHP_SELF'];?>';
 var notice_relogin_str = '<?php echo TEXT_TIMEOUT_RELOGIN;?>'; 
 var js_text_all_orders_not_choose = '<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>';
 var js_text_all_orders_no_option_order = '<?php echo JS_TEXT_ALL_ORDERS_NO_OPTION_ORDER;?>';
-</script>
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/all_order.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/3.4.1/build/yui/yui.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="js/popup_window.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript">
 var avg_div_flag = 1;
 var js_ed_orders_text_ok = '<?php echo DIV_TEXT_OK;?>';
 var js_ed_orders_text_clear = '<?php echo DIV_TEXT_CLEAR;?>';
@@ -1986,6 +1976,16 @@ var js_ed_orders_languages_id = '<?php echo $languages_id;?>';
 var js_ed_orders_site_id = '<?php echo $order->Info['site_id'];?>';
 var js_ed_orders_npermission = '<?php echo $ocertify->npermission;?>';
 var js_ed_orders_money_symbol = '<?php echo TEXT_MONEY_SYMBOL;?>';
+</script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/all_order.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js/popup_window.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript">
 <?php
 //获取是否开启了帐单邮寄地址功能
 $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',$orders_update_time_array['site_id']);

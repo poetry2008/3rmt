@@ -1052,35 +1052,128 @@ function fmoney(s)
        return t.split("").reverse().join("");
 }
 //calculate order price
-function recalc_order_price(oid, opd, o_str, op_str)
+function recalc_order_price(oid, opd, o_str, op_str,opd_str)
 {
   var op_array = op_str.split('|||');
   var p_op_info = 0; 
+  var op_string = '';
+  var op_string_title = '';
+  var op_string_val = '';
   for (var i=0; i<op_array.length; i++) {
     if (op_array[i] != '') {
       p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
-    }
+      p_op_info_value = parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value);
+      op_string += p_op_info_value+'|||';
+      p_op_info_title = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][option]')[0].value;
+      op_string_title += p_op_info_title+'|||';
+      p_op_info_val = document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][value]')[0].value;
+      op_string_val += p_op_info_val+'|||';
+    } 
   }
   pro_num = document.getElementById('update_products_new_qty_'+opd).value;
+  pro_num = pro_num.replace(/\s/g,"");
+  if(pro_num == ''){
+
+    pro_num = 0;
+  }
   p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
+  p_final_price = document.getElementsByName('update_products['+opd+'][final_price]')[0].value;
   
   $.ajax({
     type: "POST",
-    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price,
+    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price+'&p_final_price='+p_final_price+'&op_str='+op_str+'&op_string='+op_string+'&op_string_title='+op_string_title+'&op_string_val='+op_string_val+'&orders_id='+session_orders_id,
     async:false,
     url: 'ajax_orders.php?action=recalc_price',
-    success: function(msg) {
+    success: function(msg) { 
       msg_info = msg.split('|||');
-      document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
-      document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
-      document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
-      document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+      if(o_str != 3){
+        document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
+        document.getElementById('update_products['+opd+'][final_price]').innerHTML = msg_info[11];
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
+      }else{
+        document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[7]; 
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
+      }else{
+        document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[8]; 
+      }
+      if(o_str != 3){
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = msg_info[3];
+      }else{
+        document.getElementById('update_products['+opd+'][c_price]').innerHTML = msg_info[9]; 
+      }
+      var opd_str_array = opd_str.split('|||');
+      var opd_str_value = '';
+      var opd_str_total = 0;
+      var opd_str_temp = '';
+      for(x in opd_str_array){
+        opd_str_temp = ''; 
+        opd_str_value = document.getElementById('update_products['+opd_str_array[x]+'][c_price]').innerHTML;
+        opd_str_temp = opd_str_value;
+        opd_str_value = opd_str_value.replace(/<.*?>/g,'');
+        opd_str_value = opd_str_value.replace(/,/g,'');
+        opd_str_value = opd_str_value.replace(msg_info[10],'');
+        opd_str_value = parseFloat(opd_str_value);
+        if(opd_str_temp.indexOf('color') > 0){
+          opd_str_total -= opd_str_value;
+        }else{
+          opd_str_total += opd_str_value; 
+        }
+      }
+      var ot_total = '';
+      var handle_fee_id = document.getElementById('handle_fee_id').innerHTML; 
+      handle_fee_id = handle_fee_id.replace(/<.*?>/g,'');
+      handle_fee_id = handle_fee_id.replace(/,/g,'');
+      handle_fee_id = handle_fee_id.replace(msg_info[10],'');
+      handle_fee_id = parseInt(handle_fee_id); 
+      var shipping_fee_id = document.getElementById('shipping_fee_id').innerHTML;
+      shipping_fee_id= shipping_fee_id.replace(/<.*?>/g,'');
+      shipping_fee_id = shipping_fee_id.replace(/,/g,'');
+      shipping_fee_id = shipping_fee_id.replace(msg_info[10],'');
+      shipping_fee_id = parseInt(shipping_fee_id); 
+      if(document.getElementById('point_id')){
+        var point_id = document.getElementById('point_id').value; 
+      }else{
+        var point_id = 0; 
+      }
+      var update_total_temp;
+      var update_total_num = 0;
+      var sum_num = document.getElementById('button_add_id').value;
+      for(var i = 1;i <= sum_num;i++){
+     
+        if(document.getElementById('update_total_'+i)){
+          update_total_temp = document.getElementById('update_total_'+i).value; 
+          if(update_total_temp == ''){update_total_temp = 0;}
+          update_total_temp = parseInt(update_total_temp);
+          update_total_num += update_total_temp;
+        }
+      }
+ 
+      ot_total = opd_str_total+handle_fee_id+shipping_fee_id-point_id+update_total_num;
+      
+      if(opd_str_total < 0){
+        opd_str_total = Math.abs(opd_str_total);
+        document.getElementById('ot_subtotal_id').innerHTML = '<font color="#FF0000">'+fmoney(opd_str_total)+'</font>'+msg_info[10];
+      }else{
+        document.getElementById('ot_subtotal_id').innerHTML = fmoney(opd_str_total)+msg_info[10]; 
+      }
+      if(ot_total < 0){
+        ot_total = Math.abs(ot_total);
+        ot_total -= point_id;
+        document.getElementById('ot_total_id').innerHTML = '<font color="#FF0000">'+fmoney(ot_total)+'</font>'+msg_info[10];
+      }else{
+        document.getElementById('ot_total_id').innerHTML = fmoney(ot_total)+msg_info[10]; 
+      }
       document.getElementById('update_products['+opd+'][ah_price]').value = msg_info[4];
       document.getElementById('update_products['+opd+'][bh_price]').value = msg_info[5];
       document.getElementById('update_products['+opd+'][ch_price]').value = msg_info[6];
     }
   });
 }
+
 //calculate all product price
 function price_total(str)
 {
