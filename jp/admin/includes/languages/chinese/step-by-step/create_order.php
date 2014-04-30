@@ -63,7 +63,7 @@ define('PRODUCTS_WEIGHT_ERROR_THREE','请删除商品、或更改商品数量使
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内。');
 define('CREATE_ORDER_PC_TEXT', 'PC邮箱地址:');
 define('CREATE_ORDER_BANK_NAME_TEXT', '金融机构名称:');
-define('CREATE_ORDER_BANK_SHITEN_TEXT', '分店名:');
+define('CREATE_ORDER_BANK_ENTITY_TEXT', '分店名:');
 define('CREATE_ORDER_BANK_KAMOKU_TEXT', '账户类型:');
 define('CREATE_ORDER_BANK_KOUZA_NUM_TEXT', '账户号:');
 define('CREATE_ORDER_BANK_KOUZA_NAME_TEXT', '账户持有人:');

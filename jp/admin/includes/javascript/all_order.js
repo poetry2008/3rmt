@@ -1052,7 +1052,7 @@ function fmoney(s)
        return t.split("").reverse().join("");
 }
 //calculate order price
-function recalc_order_price(oid, opd, o_str, op_str)
+function recalc_order_price(oid, opd, o_str, op_str,opd_str)
 {
   var op_array = op_str.split('|||');
   var p_op_info = 0; 
