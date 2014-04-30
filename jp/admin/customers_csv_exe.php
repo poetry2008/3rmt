@@ -4,6 +4,7 @@
 
 */
  require('includes/application_top.php');
+ include(DIR_FS_3RMTLIB.DIR_WS_FUNCTIONS.'password_funcs.php');
 //one time pwd 
 $http_referer = $_SERVER['HTTP_REFERER'];
 $http_referer_arr = explode('?',$_SERVER['HTTP_REFERER']);
@@ -35,7 +36,7 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
   header("Content-Type: application/force-download");
   header('Pragma: public');
   header('Content-Disposition: attachment; filename='.$filename);
-
+ 
   $csv_header = TEXT_CUSTOMERS_CSV;
   $c_sql = tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'DATA_MANAGEMENT' and configuration_value = 'mag_customers'"));
   if($c_sql > 0){
@@ -65,7 +66,12 @@ while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
     $csv .= ',"'.precsv($csv_customers['customers_guest_chk']).'"';
     $csv .= ',"'.precsv($csv_customers['customers_firstorderat']).'"';
     $csv .= ',"'.precsv($csv_customers['is_active']).'"';
-    $csv .= ',"'.precsv($csv_customers['origin_password']).'"';
+    $stack = explode(':',$csv_customers['origin_password']);
+    if(sizeof($stack) != 2 && $csv_customers['origin_password'] != ''){
+      $csv .= ',"'.precsv(tep_encrypt_password($csv_customers['origin_password'])).'"';
+    }else{
+      $csv .= ',"'.precsv($csv_customers['origin_password']).'"';
+    }
     $csv .= ',"'.precsv($csv_customers['send_mail_time']).'"';
     $csv .= ',"'.precsv($csv_customers['check_login_str']).'"';
     $csv .= ',"'.precsv($csv_customers['new_email_address']).'"';
