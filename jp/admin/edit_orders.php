@@ -1963,7 +1963,6 @@ var tmp_other_str = '<?php echo $_SERVER['PHP_SELF'];?>';
 var notice_relogin_str = '<?php echo TEXT_TIMEOUT_RELOGIN;?>'; 
 var js_text_all_orders_not_choose = '<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>';
 var js_text_all_orders_no_option_order = '<?php echo JS_TEXT_ALL_ORDERS_NO_OPTION_ORDER;?>';
-var avg_div_flag = 1;
 var js_ed_orders_text_ok = '<?php echo DIV_TEXT_OK;?>';
 var js_ed_orders_text_clear = '<?php echo DIV_TEXT_CLEAR;?>';
 var js_ed_orders_date_time = '<?php echo date('Ymd');?>';

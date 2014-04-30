@@ -1,6 +1,6 @@
 $(document).ready(function() {
   //listen keyup
-  $(document).keyup(function(event) {
+  $(document).keydown(function(event) {
     if (event.which == 27) {
       //esc 
       if (typeof($('#alert_div_submit').val()) != 'undefined'){
@@ -9,13 +9,8 @@ $(document).ready(function() {
     }
     if (event.which == 13) {
       //ENTER
-      if (avg_div_flag == 0 ){
-        avg_div_flag = 1;
-      }else{
-        if (typeof($('#alert_div_submit').val()) != 'undefined'){
-          $('#alert_div_submit').trigger('click');
-          avg_div_flag = 1;
-        }
+      if (typeof($('#alert_div_submit').val()) != 'undefined'){
+        $('#alert_div_submit').trigger('click');
       }
     }
   });
@@ -201,7 +196,6 @@ function submit_check_con(){
       success: function (msg_info) {
         if (msg_info != '') {
           if (confirm(msg_info)) {
-            avg_div_flag = 0;
             confirm_div_init(hidden_list_str,price_list_str,num_list_str);
           } 
         } else {
