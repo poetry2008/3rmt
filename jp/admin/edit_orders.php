@@ -1948,9 +1948,9 @@ if(isset($_SESSION['error_edit_orders_status'])&&$_SESSION['error_edit_orders_st
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo HEADING_TITLE; ?></title>
-<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<link rel="stylesheet" type="text/css" href="includes/styles.css">
-<link rel="stylesheet" type="text/css" href="css/popup_window.css">
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
+<link rel="stylesheet" type="text/css" href="includes/styles.css?v=<?php echo $back_rand_info?>">
+<link rel="stylesheet" type="text/css" href="css/popup_window.css?v=<?php echo $back_rand_info?>">
 <script language="javascript">
 var session_orders_id = '<?php echo $_GET['oID'];?>';
 var session_site_id = '<?php echo $order->info['site_id'];?>';
@@ -1963,282 +1963,28 @@ var tmp_other_str = '<?php echo $_SERVER['PHP_SELF'];?>';
 var notice_relogin_str = '<?php echo TEXT_TIMEOUT_RELOGIN;?>'; 
 var js_text_all_orders_not_choose = '<?php echo JS_TEXT_ALL_ORDERS_NOT_CHOOSE;?>';
 var js_text_all_orders_no_option_order = '<?php echo JS_TEXT_ALL_ORDERS_NO_OPTION_ORDER;?>';
+var js_ed_orders_text_ok = '<?php echo DIV_TEXT_OK;?>';
+var js_ed_orders_text_clear = '<?php echo DIV_TEXT_CLEAR;?>';
+var js_ed_orders_date_time = '<?php echo date('Ymd');?>';
+var js_ed_orders_date_hour = '<?php echo date('Hi');?>';
+var js_ed_orders_date_error = '<?php echo TEXT_DATE_TIME_ERROR;?>';
+var js_ed_orders_title_changed = "<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>";
+var js_ed_orders_oid = '<?php echo $_GET['oID']?>';
+var js_ed_orders_product_num = '<?php echo TEXT_PRODUCTS_NUM;?>';
+var js_ed_orders_languages_id = '<?php echo $languages_id;?>';
+var js_ed_orders_site_id = '<?php echo $order->Info['site_id'];?>';
+var js_ed_orders_npermission = '<?php echo $ocertify->npermission;?>';
+var js_ed_orders_money_symbol = '<?php echo TEXT_MONEY_SYMBOL;?>';
 </script>
-<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="includes/javascript/jquery.js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<script language="javascript" src="includes/javascript/all_order.js"></script>
-<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
-<script language="javascript" src="includes/jquery.form.js"></script>
-<script language="javascript" src="js/popup_window.js"></script>
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js&v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/javascript/all_order.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="js/popup_window.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
-$(document).ready(function() {
-  <?php //监听按键?> 
-  $(document).keydown(function(event) {
-    if (event.which == 27) {
-      <?php //esc?> 
-      if (typeof($('#alert_div_submit').val()) != 'undefined'){
-          clear_confirm_div();
-      }
-    }
-    if (event.which == 13) {
-      <?php //回车?> 
-      if (typeof($('#alert_div_submit').val()) != 'undefined'){
-        $('#alert_div_submit').trigger('click');
-      }
-    }
-  });
-});
-function avg_div_checkbox(){
-  document.getElementById('alert_div_id').checked=!document.getElementById('alert_div_id').checked
-}
-function confirm_div(str){
-  var ClassName = "thumbviewbox";
-  var allheight = document.body.scrollHeight;
-  //ground div 
-  var element_ground = document.createElement('div');
-  element_ground.setAttribute('class',ClassName);
-  element_ground.setAttribute('id','element_ground_close');
-  element_ground.style.cssText = 'position: absolute; top: 0px; left: 0; z-index: 150;background-color: rgb(0, 0, 0); opacity: 0.01; width:100%; height: '+allheight+'px;';
-  element_ground.style.filter="alpha(opacity=1)";
-  // text str 
-  var element_boder = document.createElement('div');
-  element_boder.setAttribute('class',ClassName);
-  element_boder.setAttribute('id','element_boder_close');
-  element_boder.style.cssText = 'margin: 0 auto; line-height: 1.4em;width:500px;background-color: rgb(255,255,255)';
-  ok_input_html =  '<input type="button" id="alert_div_submit" onclick=\'save_div_action()\' value="'+'<?php echo DIV_TEXT_OK;?>'+'">';
-  clear_input_html = '<input type="button" onclick="clear_confirm_div()" value="'+'<?php echo DIV_TEXT_CLEAR;?>'+'">';
-  alert_div_html = '<div style="padding:10px;text-align:left">'+str+'</div>';
-  alert_div_html = alert_div_html+'<div style="text-align:center">'+ok_input_html+'&nbsp;&nbsp;'+clear_input_html+'</div>'
-  element_boder.innerHTML = '<div style="padding:10px;text-align:left">'+alert_div_html+'</div>';
-
-  //center div 
-  var element = document.createElement('div');
-  element.appendChild(element_boder);
-  element.setAttribute('class',ClassName);
-  element.setAttribute('id','element_close');
-  element.style.cssText = 'width:100%;position:fixed;z-index:151;text-align:center;line-height:0;top:25%';
-
-
-// add div 
-  document.body.appendChild(element_ground);
-  document.body.appendChild(element);
-  var Apdiv=document.getElementById("alert_div_id");
-  Apdiv.focus();
-}
-function save_div_action(){
-  if(document.getElementById("alert_div_id").checked){
-    clear_confirm_div();
-    edit_order_weight();
-  }else{
-    clear_confirm_div();
-  }
-}
-
-function clear_confirm_div(){
-  var em_close=document.getElementById("element_ground_close");
-  em_close.parentNode.removeChild(em_close);
-  var em_close=document.getElementById("element_close");
-  em_close.parentNode.removeChild(em_close);
-}
-<?php //检查配送时间是否正确?>
-function date_time(){
-    var fetch_year = document.getElementById('fetch_year').value; 
-    var fetch_month = document.getElementById('fetch_month').value;
-    var fetch_day = document.getElementById('fetch_day').value;
-    var date_time = parseInt('<?php echo date('Ymd');?>');
-    var date_hour = parseInt('<?php echo date('Hi');?>');
-    var date_time_value = parseInt(fetch_year+fetch_month+fetch_day);
-    var start_hour = document.getElementById('hour').value;
-    var start_min = document.getElementById('min').value;
-    var end_min = document.getElementById('min_1').value;
-    var start_hour_str = parseInt(start_hour+start_min+end_min);
-    if(date_time_value < date_time || (date_time_value == date_time && start_hour_str < date_hour)){
-      if(confirm('<?php echo TEXT_DATE_TIME_ERROR;?>')){
-        return true;
-      }else{
-        return false; 
-      }
-    }
-    return true;
-}
-<?php //检查订单商品的数量是否正确?>
-function products_num_check(orders_products_list_id,products_name,products_list_id){
-
-    var _end = $("#mail_title_status").val();
-    if($("#confrim_mail_title_"+_end).val()==$("#mail_title").val()){
-    }else{
-      if(confirm("<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>")){
-      }else{
-        return false;
-      }
-    }
-    var products_error = true;
-    var products_array = new Array();
-    products_array = orders_products_list_id.split('|||');
-    var products_list_str = '';
-    var products_temp;
-    for(var x in products_array){
-      products_temp = $("#update_products_new_qty_"+products_array[x]).val(); 
-      products_list_str += products_temp+'|||';
-    }
-    var payment_str = '';    
-    if (document.getElementsByName('payment_method')[0]) {
-      payment_str = document.getElementsByName('payment_method')[0].value; 
-    }
-    var is_cu_single = 1;
-    var start_num = $('#button_add_id').val(); 
-    var is_cu_str = ''; 
-    for (var s_num = start_num; s_num > 0; s_num--) {
-      if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
-        if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
-          is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
-        }
-      }
-    }
-    is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
-    if (is_cu_str == '') {
-      is_cu_single = 0;
-    }
-    $.ajax({
-      type:'POST',
-      data:"c_comments="+$('#c_comments').val()+"&o_id=<?php echo $_GET['oID']?>"+'&c_title='+$('#mail_title').val()+'&c_status_id='+_end+'&c_payment='+payment_str+'&c_name_info='+document.getElementsByName("update_customer_name")[0].value+'&c_mail_info='+document.getElementsByName("update_customer_email_address")[0].value+'&c_comment_info='+document.getElementsByName("comments_text")[0].value+'&is_customized_fee='+is_cu_single,
-      async: false,
-      url:'ajax_orders.php?action=check_edit_order_variable_data',
-      success: function(msg_info) {
-        if (msg_info != '') {
-          products_error = false;
-          alert(msg_info); 
-        } else {
-          $.ajax({
-            type: "POST",
-            data: 'products_list_id='+products_list_id+'&products_list_str='+products_list_str+'&products_name='+products_name+'&orders_products_list_id='+orders_products_list_id+'&products_diff=1',
-            async:false,
-            url: 'ajax_orders.php?action=products_num',
-            success: function(msg) {
-              if(msg != ''){
-                if(confirm(msg+"\n\n<?php echo TEXT_PRODUCTS_NUM;?>")){
-                  products_error = true;
-                }else{
-                  products_error = false;
-                }
-              }else{  
-                products_error = true;
-              }         
-            }
-          });   
-        }
-      }
-    });  
-    return products_error;
-}
-<?php //检查订单商品的重量是否超重?>
-function submit_check_con(){
-  var find_input_name = ''; 
-  var reg_info = new RegExp("update_products\\[[0-9]+\\]\\[p_price\\]"); 
-  var reg_new_info = new RegExp("update_products\\[o_[0-9]+\\]\\[p_price\\]"); 
-  var reg_num_info = new RegExp("update_products\\[[0-9]+\\]\\[qty\\]"); 
-  var next_find_input_name = ''; 
-  var price_list_str = '';
-  var hidden_list_str = '';
-  var num_list_str = ''; 
-  $('#ctable').find('input').each(function() {
-    if ($(this).attr('type') == 'text') {
-      find_input_name = $(this).attr('name'); 
-      if (reg_info.test(find_input_name)) {
-        price_list_str += $(this).val()+'|||'; 
-        hidden_list_str += $(this).next().val()+'|||'; 
-        num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
-      }
-      if (reg_new_info.test(find_input_name)) {
-        price_list_str += $(this).val()+'|||'; 
-        hidden_list_str += 'o_'+$(this).next().val()+'|||'; 
-        num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
-      }
-    }
-  });
-  if (price_list_str != '') {
-    price_list_str = price_list_str.substr(0, price_list_str.length-3);
-    hidden_list_str = hidden_list_str.substr(0, hidden_list_str.length-3);
-    num_list_str = num_list_str.substr(0, num_list_str.length-3);
-    $.ajax({
-      url: 'ajax_orders.php?action=check_order_products_profit',
-      type: 'POST',
-      dataType: 'text',
-      data: 'products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
-      async: false,
-      success: function (msg_info) {
-        if (msg_info != '') {
-          if (confirm(msg_info)) {
-            confirm_div_init(hidden_list_str,price_list_str,num_list_str);
-          } 
-        } else {
-          confirm_div_init(hidden_list_str,price_list_str,num_list_str);
-        } 
-      }
-    }); 
-  } else {
-    edit_order_weight();
-  }
-}
-function confirm_div_init(hidden_list_str,price_list_str,num_list_str){
-  $.ajax({
-    url: 'ajax_orders.php?action=check_order_products_avg',
-    type: 'POST',
-    dataType: 'text',
-    data: 'language_id=<?php echo $languages_id;?>'+'&site_id=<?php echo $order->Info['site_id'];?>'+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
-    async: false,
-    success: function (msg_info) {
-      if (msg_info != '') {
-        confirm_div(msg_info);
-      } else {
-        edit_order_weight();
-      } 
-    }
-  }); 
-}
-function edit_order_weight(){
-   var options = {
-     url: 'ajax_orders_weight.php?action=edit_orders&oID=<?php echo $_GET['oID'];?>',
-     type:  'POST',
-     success: function(data) {
-       if(data != ''){
-         if(confirm(data)){
-           submitChk('<?php echo $ocertify->npermission;?>'); 
-         }
-       }else{
-         submitChk('<?php echo $ocertify->npermission;?>'); 
-       } 
-     }
-   };
-   $('#edit_order_id').ajaxSubmit(options);
-}
-<?php //加减符号?>
-function sign(num){
-
-  var sign = '<select id="sign_'+num+'" name="sign_value_'+num+'" onchange="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');orders_session(\'sign_'+num+'\',this.value);">';
-  sign += '<option value="1">+</option>';
-  sign += '<option value="0">-</option>';
-  sign += '</select>';
-  return sign;
-}
-<?php //添加输入框?>
-function add_option(ele){
-    var add_num = $("#button_add_id").val();
-    add_num = parseInt(add_num);
-    orders_session('orders_totals',add_num+1);
-    $("#button_add_id").val(add_num+1);
-    add_num++; 
-    var add_str = '';
-
-    add_str += '<tr><td class="smallText" align="left">&nbsp;</td>'
-      +'<td class="smallText" align="right" style="min-width:188px;"><input style="text-align:right;" value="" size="'+$("#text_len").val()+'" name="update_totals['+add_num+'][title]" onkeyup="price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');">:'
-            +'</td><td class="smallText" align="right">'+sign(add_num)+'<input style="text-align:right;" id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\'<?php echo TEXT_MONEY_SYMBOL;?>\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"><?php echo TEXT_MONEY_SYMBOL;?></td>'
-            +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>';
-
-    $("#point_id").parent().parent().before(add_str);
-  }
 <?php
 //获取是否开启了帐单邮寄地址功能
 $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',$orders_update_time_array['site_id']);
@@ -2277,181 +2023,79 @@ $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE
     }
   }
 ?>
-<?php //生成帐单地址的国家列表?>
-function billing_check(select_value){
-
-  $("#billing_td_"+billing_country_fee_id_one).hide();
-  $("#billing_td_"+billing_country_area_id_one).hide();
-  $("#billing_td_"+billing_country_city_id_one).hide();
-  var billing_arr = new Array();
-  <?php  
+var billing_arr_check = new Array();
+<?php
     $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
     while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
-      echo 'billing_arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
+      echo 'billing_arr_check["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
     }
     tep_db_free_result($country_fee_query);
    ?>
-  if(document.getElementById(billing_country_fee_id)){
-    var billing_country_fee = document.getElementById(billing_country_fee_id);
-    billing_country_fee.options.length = 0;
-    var i = 0;
-    for(x in billing_arr){
-
-      billing_country_fee.options[billing_country_fee.options.length]=new Option(billing_arr[x], x,x==select_value,x==select_value);
-      i++;
-    }
-
-    if(i ==  0){
-
-      $("#billing_td_"+billing_country_fee_id_one).hide();
-    }else{
-
-      $("#billing_td_"+billing_country_fee_id_one).show();
-    } 
-  }
-}
-<?php //生成帐单地址的区域列表?>
-function billing_country_check(value,select_value){
-   
-   var billing_arr = new Array();
-  <?php 
+var billing_arr_country_check = new Array();
+<?php
     $country_array = array();
     $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
     while($country_area_array = tep_db_fetch_array($country_area_query)){
-      
-      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
+
+      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'");
       $country_fee_fid_array = tep_db_fetch_array($country_fee_fid_query);
       tep_db_free_result($country_fee_fid_query);
       $country_array[$country_fee_fid_array['name']][$country_area_array['name']] = $country_area_array['name'];
-      
+
     }
     tep_db_free_result($country_area_query);
     foreach($country_array as $country_key=>$country_value){
-      
-      echo 'billing_arr["'.$country_key.'"] = new Array();'."\n";
+
+      echo 'billing_arr_country_check["'.$country_key.'"] = new Array();'."\n";
       foreach($country_value as $c_key=>$c_value){
-      
-        echo 'billing_arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+        echo 'billing_arr_country_check["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
 
       }
 
     }
   ?>
-  if(document.getElementById(billing_country_area_id)){ 
-    var billing_country_area = document.getElementById(billing_country_area_id);
-    billing_country_area.options.length = 0;
-    var i = 0;
-    for(x in billing_arr[value]){
-
-      billing_country_area.options[billing_country_area.options.length]=new Option(billing_arr[value][x], x,x==select_value,x==select_value);
-      i++;
-    }
-
-    if(i ==  0){
-
-      $("#billing_td_"+billing_country_area_id_one).hide();
-    }else{
-
-      $("#billing_td_"+billing_country_area_id_one).show();
-    }
-  }
-
-}
-<?php //生成帐单地址的城市列表?>
-function billing_country_area_check(value,select_value){
-   
-   var billing_arr = new Array();
-  <?php
+var billing_arr_city = new Array();
+<?php
     $country_array = array();
     $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
     while($country_city_array = tep_db_fetch_array($country_city_query)){
-      
-      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
+
+      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'");
       $country_area_fid_array = tep_db_fetch_array($country_area_fid_query);
-      tep_db_free_result($country_area_fid_query); 
+      tep_db_free_result($country_area_fid_query);
       $country_array[$country_area_fid_array['name']][$country_city_array['name']] = $country_city_array['name'];
-      
+
     }
     tep_db_free_result($country_city_query);
     foreach($country_array as $country_key=>$country_value){
-      
-      echo 'billing_arr["'.$country_key.'"] = new Array();'."\n";
+
+      echo 'billing_arr_city["'.$country_key.'"] = new Array();'."\n";
       foreach($country_value as $c_key=>$c_value){
-      
-        echo 'billing_arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+        echo 'billing_arr_city["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
 
       }
 
     }
   ?>
-  if(document.getElementById(billing_country_city_id)){
-    var billing_country_city = document.getElementById(billing_country_city_id);
-    billing_country_city.options.length = 0;
-    var i = 0;
-    for(x in billing_arr[value]){
-
-      billing_country_city.options[billing_country_city.options.length]=new Option(billing_arr[value][x], x,x==select_value,x==select_value);
-      i++;
-    }
-
-    if(i ==  0){
-
-      $("#billing_td_"+billing_country_city_id_one).hide();
-    }else{
-      
-      $("#billing_td_"+billing_country_city_id_one).show();
-    }
-  }
-
-}
-<?php //清除帐单邮寄地址错误?>
-function billing_address_clear_error(){
-  
-  var billing_list_error = new Array();
-  <?php 
-    $error_i = 0; 
+var billing_list_error = new Array();
+ <?php
+    $error_i = 0;
     $address_error_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0'");
     while($address_error_array = tep_db_fetch_array($address_error_query)){
-     
+
       echo 'billing_list_error['. $error_i .'] = "'. $address_error_array['name_flag'] .'";';
       $error_i++;
     }
     tep_db_free_result($address_error_query);
    ?>
-   
-    for(x in billing_list_error){
-      
-      $("#billing_error_"+billing_list_error[x]).html("");
-    }
-
-}
-<?php //判断该值是否在数组里?>
-function billing_in_array(value,arr){
-
-  for(vx in arr){
-    if(value == arr[vx]){
-
-      return true;
-    } 
-  }
-  return false;
-}
 // end in_array
 var billing_first_num = 0;
-//帐单邮寄地址属性显示
-function billing_address_option_show(action){
-  switch(action){
-
-  case 'new' :
-    billing_arr_new = new Array();
-    billing_arr_color = new Array();
-    $("#billing_address_list_id").hide();
-    billing_check();
-    billing_country_check($('#'+billing_country_fee_id).val());
-    billing_country_area_check($('#'+billing_country_area_id).val());
-    
-<?php 
+var billing_arr_new = new Array();
+var billing_arr_color = new Array();
+<?php
   $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
   while($address_new_array = tep_db_fetch_array($address_new_query)){
     $address_new_arr = unserialize($address_new_array['type_comment']);
@@ -2476,41 +2120,32 @@ function billing_address_option_show(action){
   }
   tep_db_free_result($address_new_query);
 ?>
-  for(x in billing_arr_new){
-    if(document.getElementById("billing_"+x)){ 
-      var billing_list_options = document.getElementById("billing_"+x);
-      billing_list_options.value = billing_arr_new[x];
-      billing_list_options.style.color = billing_arr_color[x];
-      $("#billing_error_"+x).html('');
-      <?php
+var js_ed_orders_require = '<?php echo TEXT_REQUIRE;?>';
+<?php
       if(!isset($_POST['orders_billing_address_option']) || $_POST['orders_billing_address_option'] == 'old'){
-      ?>
-        if(document.getElementById("billing_l_"+x)){
-          if($("#billing_l_"+x).val() == 'true'){
-            $("#billing_r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
-          }
-        }
-      <?php
-      }
-      ?>
-    }
-    }
-    break;
-  case 'old' :
-    <?php
-      if($customer_guest['customers_guest_chk'] == 0 && $orders_update_time_array['is_guest'] == 0){
-    ?>  
-        $("#billing_address_list_id").show();
-    <?php
+?>
+      var js_ed_orders_post_address = true;
+<?php
       }else{
-    ?>
-       $("#billing_address_list_id").hide(); 
-    <?php
+?>
+      var js_ed_orders_post_address = false;	
+<?php
+
       }
-    ?>
+?>
+<?php
+      if($customer_guest['customers_guest_chk'] == 0 && $orders_update_time_array['is_guest'] == 0){
+?>
+	var js_ed_orders_guest_chk = true;
+<?php
+	}else{
+?>
+	var js_ed_orders_guest_chk = false;
+<?php
+	}
+?>
     var billing_arr_old  = new Array();
     var billing_arr_name = new Array();
-    var billing_address_num = 'true';
 <?php
 
   //根据后台的设置来显示相应的地址列表
@@ -2580,62 +2215,20 @@ function billing_address_option_show(action){
   }
   tep_db_free_result($address_orders_query);
 ?>
-  var billing_address_show_list = document.getElementById("billing_address_show_list");
-
-  if(document.getElementById("billing_address_show_list")){
-    billing_address_show_list.options.length = 0;
-  }
-
-  len = billing_arr_old.length;
-  j_num = 0;
-  for(i = 0;i < len;i++){
-    billing_arr_str = '';
-    for(x in billing_arr_old[i]){
-        if(billing_in_array(x,billing_arr_name)){
-          billing_arr_str += billing_arr_old[i][x];
-        }
-        <?php
-        if(!isset($_POST['orders_billing_address_option']) || $_POST['orders_billing_address_option'] == 'new'){ 
-        ?>
-        if(document.getElementById("billing_l_"+x)){
-          if($("#billing_l_"+x).val() == 'true'){
-            $("#billing_r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
-          }
-        }
-        <?php
-        }
-        ?>
-    }
-  if(document.getElementById("billing_address_show_list")){
-    if(billing_arr_str != ''){
-      ++j_num;
-      if(j_num == 1){billing_first_num = i;}
-
-      if(billing_address_num != 'true' && billing_address_num == i){
-
-        var billing_address_string = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
-      }else{
-        var billing_address_string = ''; 
-      }
-      if('<?php echo $_POST['orders_billing_address_show_list'];?>' != ''){
-        billing_address_show_list.options[billing_address_show_list.options.length]=new Option(billing_arr_str+billing_address_string,i,i=='<?php echo $_POST['orders_billing_address_show_list'];?>',i=='<?php echo $_POST['orders_billing_address_show_list'];?>');
-      }else{
-        if(billing_arr_str == billing_address_str){
-          billing_address_show_list.options[billing_address_show_list.options.length]=new Option(billing_arr_str+billing_address_string,i,true,true);
-        }else{
-          billing_address_show_list.options[billing_address_show_list.options.length]=new Option(billing_arr_str+billing_address_string,i);
-        }
-      }
-    }
-  }
-
-  }
-    break;
-  }
-}
-<?php //帐单邮寄地址属性列表?>
-function billing_address_option_list(value){
-  var billing_arr_list = new Array();
+<?php
+        if(!isset($_POST['orders_billing_address_option']) || $_POST['orders_billing_address_option'] == 'new'){
+?>
+	var js_ed_orders_address_option_new = true;
+<?php
+	}else{
+?>
+	var js_ed_orders_address_option_new = false;
+<?php
+	}
+?>
+	var js_ed_orders_billing_address = '<?php echo TEXT_BILLING_ADDRESS;?>';
+	var js_ed_orders_post_show_list = '<?php echo $_POST['orders_billing_address_show_list'];?>';
+	var billing_arr_list = new Array();
 <?php
   //根据后台的设置来显示相应的地址列表
   $address_list_arr = array();
@@ -2685,29 +2278,9 @@ function billing_address_option_list(value){
   tep_db_free_result($address_orders_query); 
   }
 ?>
-  ii = 0;
-  for(x in billing_arr_list[value]){
-   if(document.getElementById("billing_"+x)){
-     var billing_list_option = document.getElementById("billing_"+x);
-     if('<?php echo $billing_country_fee_id;?>' == 'billing_'+x){
-      billing_check(billing_arr_list[value][x]);
-    }else if('<?php echo $billing_country_area_id;?>' == 'billing_'+x){
-      billing_country_check(document.getElementById(billing_country_fee_id).value,billing_arr_list[value][x]);
-     
-    }else if('<?php echo $billing_country_city_id;?>' == 'billing_'+x){
-      billing_country_area_check(document.getElementById(billing_country_area_id).value,billing_arr_list[value][x]);
-    }else{
-      billing_list_option.style.color = '#000';
-      billing_list_option.value = billing_arr_list[value][x];   
-    }
-     
-    $("#billing_error_"+x).html('');
-    $("#billing_r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
-    ii++; 
-   }
-  }
-
-}
+	var js_ed_orders_billing_fee_id = '<?php echo $billing_country_fee_id;?>';
+	var js_ed_orders_billing_area_id = '<?php echo $billing_country_area_id;?>';
+	var js_ed_orders_billing_city_id = '<?php echo $billing_country_city_id;?>';
 <?php
 }
 if($weight > 0){
@@ -2738,386 +2311,80 @@ if($weight > 0){
     }
   }
 ?>
-<?php //生成所配送的国家列表?>
-function check(select_value){
-
-  $("#td_"+country_fee_id_one).hide();
-  $("#td_"+country_area_id_one).hide();
-  $("#td_"+country_city_id_one).hide();
-  var arr = new Array();
-  <?php  
+	var weight_arr_check = new Array();
+<?php
     $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
     while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
-      echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
+      echo 'weight_arr_check["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
     }
     tep_db_free_result($country_fee_query);
-   ?>
-  if(document.getElementById(country_fee_id)){
-    var country_fee = document.getElementById(country_fee_id);
-    country_fee.options.length = 0;
-    var i = 0;
-    for(x in arr){
-
-      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
-      i++;
-    }
-
-    if(i ==  0){
-
-      $("#td_"+country_fee_id_one).hide();
-    }else{
-
-      $("#td_"+country_fee_id_one).show();
-    } 
-  }
-}
-<?php //生成所配送的区域列表?>
-function country_check(value,select_value){
-   
-   var arr = new Array();
-  <?php 
+?>
+	var weight_country_arr = new Array();
+<?php
     $country_array = array();
     $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
     while($country_area_array = tep_db_fetch_array($country_area_query)){
-      
-      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
+
+      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'");
       $country_fee_fid_array = tep_db_fetch_array($country_fee_fid_query);
       tep_db_free_result($country_fee_fid_query);
       $country_array[$country_fee_fid_array['name']][$country_area_array['name']] = $country_area_array['name'];
-      
+
     }
     tep_db_free_result($country_area_query);
     foreach($country_array as $country_key=>$country_value){
-      
-      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+
+      echo 'weight_country_arr["'.$country_key.'"] = new Array();'."\n";
       foreach($country_value as $c_key=>$c_value){
-      
-        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+        echo 'weight_country_arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
 
       }
 
     }
-  ?>
-  if(document.getElementById(country_area_id)){ 
-    var country_area = document.getElementById(country_area_id);
-    country_area.options.length = 0;
-    var i = 0;
-    for(x in arr[value]){
-
-      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
-      i++;
-    }
-
-    if(i ==  0){
-
-      $("#td_"+country_area_id_one).hide();
-    }else{
-
-      $("#td_"+country_area_id_one).show();
-    }
-  }
-
-}
-<?php //生成所配送的城市列表?>
-function country_area_check(value,select_value){
-   
-   var arr = new Array();
-  <?php
+ ?>
+	var weight_city_arr = new Array();
+<?php
     $country_array = array();
     $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
     while($country_city_array = tep_db_fetch_array($country_city_query)){
-      
-      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
+
+      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'");
       $country_area_fid_array = tep_db_fetch_array($country_area_fid_query);
-      tep_db_free_result($country_area_fid_query); 
+      tep_db_free_result($country_area_fid_query);
       $country_array[$country_area_fid_array['name']][$country_city_array['name']] = $country_city_array['name'];
-      
+
     }
     tep_db_free_result($country_city_query);
     foreach($country_array as $country_key=>$country_value){
-      
-      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+
+      echo 'weight_city_arr["'.$country_key.'"] = new Array();'."\n";
       foreach($country_value as $c_key=>$c_value){
-      
-        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+        echo 'weight_city_arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
 
       }
 
     }
-  ?>
-  if(document.getElementById(country_city_id)){
-    var country_city = document.getElementById(country_city_id);
-    country_city.options.length = 0;
-    var i = 0;
-    for(x in arr[value]){
-
-      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
-      i++;
-    }
-
-    if(i ==  0){
-
-      $("#td_"+country_city_id_one).hide();
-    }else{
-      
-      $("#td_"+country_city_id_one).show();
-    }
-  }
-
-}
-<?php
-}
 ?>
-<?php //生成配送开始时间的小时列表?>
-function check_hour(value){
-  var hour_1 = document.getElementById('hour_1');
-  var hour_1_value = hour_1.value;
-  var min_1 = document.getElementById('min_1');
-  var min_1_value = min_1.value;
-  var min = document.getElementById('min');
-  var min_value = min.value;
-  var min_end_1 = document.getElementById('min_end_1');
-  var min_end_1_value = min_end_1.value;
-  var min_end = document.getElementById('min_end');
-  var min_end_value = min_end.value;
-
-
-  if(parseInt(value) >= parseInt(hour_1.value)){ 
-    hour_1.options.length = 0;
-    value = parseInt(value);
-    for(h_i = value;h_i <= 23;h_i++){
-      h_i_str = h_i < 10 ? '0'+h_i : h_i;
-      hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==value); 
-    }
-
-    if(parseInt(min_end_value) < parseInt(min_value)){
-      min_end.options.length = 0;
-      min_value = parseInt(min_value);
-      for(m_i = min_value;m_i <= 5;m_i++){
-        min_end.options[min_end.options.length]=new Option(m_i,m_i,m_i==min_value); 
-      }
-    }
-
-    if(parseInt(min_end_1_value) < parseInt(min_1_value)){
-      min_end_1.options.length = 0;
-      min_1_value = parseInt(min_1_value);
-      for(m_i_1 = min_1_value;m_i_1 <= 9;m_i_1++){
-        min_end_1.options[min_end_1.options.length]=new Option(m_i_1,m_i_1,m_i_1==min_1_value); 
-      }
-    }
-  }else{
-
-    hour_1.options.length = 0;
-    value = parseInt(value);
-    for(h_i = value;h_i <= 23;h_i++){
-      h_i_str = h_i < 10 ? '0'+h_i : h_i;
-      hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_1_value); 
-    }
-    min_end.options.length = 0;
-    min_value = parseInt(min_value);
-    for(m_i = 0;m_i <= 5;m_i++){
-      min_end.options[min_end.options.length]=new Option(m_i,m_i,m_i==min_end_value); 
-    }
-
-    min_end_1.options.length = 0;
-    min_1_value = parseInt(min_1_value);
-    for(m_i_1 = 0;m_i_1 <= 9;m_i_1++){
-      min_end_1.options[min_end_1.options.length]=new Option(m_i_1,m_i_1,m_i_1==min_end_1_value); 
-    } 
-  }
-}
-<?php //生成配送开始时间的分钟十位列表?>
-function check_min(value){
-  var min_1 = document.getElementById('min_1');
-  var min_1_value = min_1.value;
-  var min_end = document.getElementById('min_end');
-  var min_end_value = min_end.value;
-  var min_end_1 = document.getElementById('min_end_1');
-  var min_end_1_value = min_end_1.value;
-  var hour_1 = document.getElementById('hour_1');
-  var hour_1_value = hour_1.value;
-  var hour = document.getElementById('hour');
-  var hour_value = hour.value;
-   
-  if(parseInt(value) >= parseInt(min_end_value) && parseInt(hour.value) >= parseInt(hour_1.value)){ 
-    min_end.options.length = 0;
-    value = parseInt(value);
-    for(mi_i = value;mi_i <= 5;mi_i++){
-      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==value); 
-    }
-    min_end_1.options.length = 0;
-    for(mi_i_end = min_1_value;mi_i_end <= 9;mi_i_end++){
-      min_end_1.options[min_end_1.options.length]=new Option(mi_i_end,mi_i_end,mi_i_end==min_end_1_value); 
-    }
-  }else if(parseInt(value) <  parseInt(min_end_value) && parseInt(hour.value) >= parseInt(hour_1.value)){
-   min_end.options.length = 0;
-    value = parseInt(value);
-    for(mi_i = value;mi_i <= 5;mi_i++){
-      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==min_end_value); 
-    }
-    min_end_1.options.length = 0;
-    for(mi_i_end = 0;mi_i_end <= 9;mi_i_end++){
-      min_end_1.options[min_end_1.options.length]=new Option(mi_i_end,mi_i_end,mi_i_end==min_end_1_value); 
-    }
-  }
-}
-<?php //生成配送开始时间的分钟个位列表?>
-function check_min_1(value){
-  var min = document.getElementById('min');
-  var min_value = min.value;
-  var min_1 = document.getElementById('min_1');
-  var min_1_value = min_1.value;
-  var min_end = document.getElementById('min_end');
-  var min_end_value = min_end.value;
-  var min_end_1 = document.getElementById('min_end_1');
-  var min_end_1_value = min_end_1.value;
-  var hour_1 = document.getElementById('hour_1');
-  var hour_1_value = hour_1.value;
-  var hour = document.getElementById('hour');
-  var hour_value = hour.value;
-   
-  if(parseInt(value) >= parseInt(min_end_1_value) && parseInt(hour.value) >= parseInt(hour_1.value) && parseInt(min.value) >= parseInt(min_end.value)){ 
-    min_end_1.options.length = 0;
-    value = parseInt(value);
-    for(mi_i = value;mi_i <= 9;mi_i++){
-      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==value); 
-    }
-  }else if(parseInt(value) < parseInt(min_end_1_value) && parseInt(hour.value) >= parseInt(hour_1.value) && parseInt(min.value) >= parseInt(min_end.value)){
-   min_end_1.options.length = 0;
-    value = parseInt(value);
-    for(mi_i = value;mi_i <= 9;mi_i++){
-      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
-    }
-
-  }
-}
-<?php //生成配送结束时间的小时列表?>
-function check_hour_1(value){
-  var min = document.getElementById('min');
-  var min_value = min.value;
-  var min_1 = document.getElementById('min_1');
-  var min_1_value = min_1.value;
-  var min_end = document.getElementById('min_end');
-  var min_end_value = min_end.value;
-  var min_end_1 = document.getElementById('min_end_1');
-  var min_end_1_value = min_end_1.value;
-  var hour = document.getElementById('hour');
-  var hour_value = hour.value;
-
-  
-  if(hour_value == value){ 
-    min_end.options.length = 0;
-    min_value = parseInt(min_value);
-    for(mi_i = min_value;mi_i <= 5;mi_i++){
-      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
-    }
-    if(min_end_value <= min_value ){
-      min_end_1.options.length = 0;
-      min_1_value = parseInt(min_1_value);
-      for(mi_i = min_1_value;mi_i <= 9;mi_i++){
-        min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
-      }
-    }else{
-      min_end_1.options.length = 0;
-      min_1_value = parseInt(min_1_value);
-      for(mi_i = 0;mi_i <= 9;mi_i++){
-        min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
-      } 
-    }
-  }else{
-
-    min_end.options.length = 0;
-    min_value = parseInt(min_value);
-    for(mi_i = 0;mi_i <= 5;mi_i++){
-      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
-    }
-    min_end_1.options.length = 0;
-    min_1_value = parseInt(min_1_value);
-    for(mi_i = 0;mi_i <= 9;mi_i++){
-      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
-    }
-    
-  }
-}
-<?php //生成配送结束时间的小时十位列表?>
-function check_end_min(value){
-  var min = document.getElementById('min');
-  var min_value = min.value;
-  var min_1 = document.getElementById('min_1');
-  var min_1_value = min_1.value; 
-  var min_end_1 = document.getElementById('min_end_1');
-  var min_end_1_value = min_end_1.value;
-  var hour = document.getElementById('hour');
-  var hour_value = hour.value;
-  var hour_1 = document.getElementById('hour_1');
-  var hour_1_value = hour_1.value;
-  
-  if(parseInt(value) == parseInt(min_value) && parseInt(hour.value) == parseInt(hour_1.value)){ 
-    min_end_1.options.length = 0;
-    min_1_value = parseInt(min_1_value);
-    for(mi_i = min_1_value;mi_i <= 9;mi_i++){
-      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
-    }
-  }else{
-    min_end_1.options.length = 0;
-    for(mi_i = 0;mi_i <= 9;mi_i++){
-      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
-    }    
-  }
-}
-
-
+	var weight_list_error = new Array();
 <?php
-if($weight > 0){
-?>
-<?php //清除地址错误?>
-function address_clear_error(){
-  
-  var list_error = new Array();
-  <?php 
-    $error_i = 0; 
+    $error_i = 0;
     $address_error_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0'");
     while($address_error_array = tep_db_fetch_array($address_error_query)){
-     
-      echo 'list_error['. $error_i .'] = "'. $address_error_array['name_flag'] .'";';
+
+      echo 'weight_list_error['. $error_i .'] = "'. $address_error_array['name_flag'] .'";';
       $error_i++;
     }
     tep_db_free_result($address_error_query);
-   ?>
-   
-    for(x in list_error){
-      
-      $("#error_"+list_error[x]).html("");
-    }
+?>
 
-}
-<?php //判断该值是否在数组里?>
-function in_array(value,arr){
-
-  for(vx in arr){
-    if(value == arr[vx]){
-
-      return true;
-    } 
-  }
-  return false;
-}
 // end in_array
-var first_num = 0;
-//地址属性显示
-function address_option_show(action){
-  switch(action){
-
-  case 'new' :
-    arr_new = new Array();
-    arr_color = new Array();
-    $("#address_list_id").hide();
-    check();
-    country_check($('#'+country_fee_id).val());
-    country_area_check($('#'+country_area_id).val());
-    
-<?php 
+	var first_num = 0;
+	arr_new = new Array();
+	arr_color = new Array();
+<?php
   $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
   while($address_new_array = tep_db_fetch_array($address_new_query)){
     $address_new_arr = unserialize($address_new_array['type_comment']);
@@ -3142,41 +2409,31 @@ function address_option_show(action){
   }
   tep_db_free_result($address_new_query);
 ?>
-  for(x in arr_new){
-    if(document.getElementById("ad_"+x)){ 
-      var list_options = document.getElementById("ad_"+x);
-      list_options.value = arr_new[x];
-      list_options.style.color = arr_color[x];
-      $("#error_"+x).html('');
-      <?php
+<?php
       if(!isset($_POST['address_option']) || $_POST['address_option'] == 'old'){
-      ?>
-        if(document.getElementById("l_"+x)){
-          if($("#l_"+x).val() == 'true'){
-            $("#r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
-          }
-        }
-      <?php
-      }
-      ?>
-    }
-    }
-    break;
-  case 'old' :
-    <?php
+?>
+	var weight_address_option = true;
+<?php
+	}else{
+?>
+	var weight_address_option = false;
+<?php
+	}
+?>	
+	var weight_text_require = '<?php echo TEXT_REQUIRE;?>';
+<?php
       if($customer_guest['customers_guest_chk'] == 0 && $orders_update_time_array['is_guest'] == 0){
-    ?>  
-        $("#address_list_id").show();
-    <?php
-      }else{
-    ?>
-       $("#address_list_id").hide(); 
-    <?php
-      }
-    ?>
-    var arr_old  = new Array();
-    var arr_name = new Array();
-    var orders_billing_address_num = 'true';
+?>
+        var weight_guest_chk = true;
+<?php
+        }else{
+?>
+        var weight_guest_chk = false;
+<?php
+        }
+?>
+	var arr_old  = new Array();
+	var arr_name = new Array();
 <?php
 
   //根据后台的设置来显示相应的地址列表
@@ -3246,62 +2503,20 @@ function address_option_show(action){
   }
   tep_db_free_result($address_orders_query);
 ?>
-  var address_show_list = document.getElementById("address_show_list");
-
-  if(document.getElementById("address_show_list")){
-    address_show_list.options.length = 0;
-  }
-
-  len = arr_old.length;
-  j_num = 0;
-  for(i = 0;i < len;i++){
-    arr_str = '';
-    for(x in arr_old[i]){
-        if(in_array(x,arr_name)){
-          arr_str += arr_old[i][x];
-        }
-        <?php
-        if(!isset($_POST['address_option']) || $_POST['address_option'] == 'new'){ 
-        ?>
-        if(document.getElementById("l_"+x)){
-          if($("#l_"+x).val() == 'true'){
-            $("#r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
-          }
-        }
-        <?php
-        }
-        ?>
-    }
-  if(document.getElementById("address_show_list")){
-    if(arr_str != ''){
-      ++j_num;
-      if(j_num == 1){first_num = i;}
-
-      if(orders_billing_address_num != 'true' && orders_billing_address_num == i){
-
-        var orders_billing_address_str = '（<?php echo TEXT_BILLING_ADDRESS;?>）';
-      }else{
-        var orders_billing_address_str = ''; 
-      }
-      if('<?php echo $_POST['address_show_list'];?>' != ''){
-        address_show_list.options[address_show_list.options.length]=new Option(arr_str+orders_billing_address_str,i,i=='<?php echo $_POST['address_show_list'];?>',i=='<?php echo $_POST['address_show_list'];?>');
-      }else{
-        if(arr_str == address_str){
-          address_show_list.options[address_show_list.options.length]=new Option(arr_str+orders_billing_address_str,i,true,true);
-        }else{
-          address_show_list.options[address_show_list.options.length]=new Option(arr_str+orders_billing_address_str,i);
-        }
-      }
-    }
-  }
-
-  }
-    break;
-  }
-}
-<?php //地址属性列表?>
-function address_option_list(value){
-  var arr_list = new Array();
+<?php
+        if(!isset($_POST['address_option']) || $_POST['address_option'] == 'new'){
+?>
+	var weight_address_option_new = true;
+<?php
+	}else{
+?>
+	var weight_address_option_new = false;
+<?php
+	}
+?>
+	var weight_billing_address = '<?php echo TEXT_BILLING_ADDRESS;?>';	
+	var weight_show_list = '<?php echo $_POST['address_show_list'];?>';
+	var weight_option_arr_list = new Array();
 <?php
   //根据后台的设置来显示相应的地址列表
   $address_list_arr = array();
@@ -3337,12 +2552,12 @@ function address_option_list(value){
   if(!in_array($json_str_list,$json_str_array)){
       
       $json_str_array[] = $json_str_list; 
-      echo 'arr_list['. $address_num .'] = new Array();';
+      echo 'weight_option_arr_list['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
         
         $value = str_replace("\n","",$value); 
         $value = str_replace("\r","",$value); 
-        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
+        echo 'weight_option_arr_list['. $address_num .']["'. $key .'"] = "'. addslashes($value) .'";';
       }
       $address_num++;
     }
@@ -3351,29 +2566,9 @@ function address_option_list(value){
   tep_db_free_result($address_orders_query); 
   }
 ?>
-  ii = 0;
-  for(x in arr_list[value]){
-   if(document.getElementById("ad_"+x)){
-     var list_option = document.getElementById("ad_"+x);
-     if('<?php echo $country_fee_id;?>' == 'ad_'+x){
-      check(arr_list[value][x]);
-    }else if('<?php echo $country_area_id;?>' == 'ad_'+x){
-      country_check(document.getElementById(country_fee_id).value,arr_list[value][x]);
-     
-    }else if('<?php echo $country_city_id;?>' == 'ad_'+x){
-      country_area_check(document.getElementById(country_area_id).value,arr_list[value][x]);
-    }else{
-      list_option.style.color = '#000';
-      list_option.value = arr_list[value][x];   
-    }
-     
-    $("#error_"+x).html('');
-    $("#r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
-    ii++; 
-   }
-  }
-
-}
+	var weight_country_fee_id = '<?php echo $country_fee_id;?>';
+	var weight_country_area_id = '<?php echo $country_area_id;?>';
+	var weight_country_city_id = '<?php echo $country_city_id;?>';
 
 <?php 
 }
@@ -3424,118 +2619,60 @@ while($select_result = tep_db_fetch_array($select_query)){
         // 输出订单邮件
         // title
 ?>
-<?php //切换帐单邮寄地址显示?>
-function billing_address_show(){
-  
-  var style = $("#billing_address_show_id").css("display");
-  if(style == 'none'){
-    $("#billing_address_show_id").show(); 
-    $("#billing_address_font").html("<?php echo TEXT_BILLING_ADDRESS_INFO_HIDE;?>");
- 
-  }else{
-
-    $("#billing_address_show_id").hide();
-    $("#billing_address_font").html("<?php echo TEXT_BILLING_ADDRESS_INFO_SHOW;?>");
-  }
-}
-<?php //帐单邮寄地址列表?>
-function  billing_address_list(){
-
-  var arr_list = new Array();
+	var js_ed_orders_add_info_hide = "<?php echo TEXT_BILLING_ADDRESS_INFO_HIDE;?>";
+	var js_ed_orders_add_info_show = "<?php echo TEXT_BILLING_ADDRESS_INFO_SHOW;?>";
+	var edit_orders_arr_list = new Array();
 <?php
   $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='1' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
- 
-    echo 'arr_list["'. $address_list_array['name'] .'"] = "'.  addslashes($address_list_array['value']) .'";';
+
+    echo 'edit_orders_arr_list["'. $address_list_array['name'] .'"] = "'.  addslashes($address_list_array['value']) .'";';
 
   }
   tep_db_free_result($address_list_query);
 ?>
-  for(x in arr_list){
-   if(document.getElementById("billing_"+x)){ 
-     var op_list = document.getElementById("billing_"+x);
-     if('<?php echo $billing_country_fee_id;?>' == 'billing_'+x){
-      billing_check(arr_list[x]);
-    }else if('<?php echo $billing_country_area_id;?>' == 'billing_'+x){
-      billing_country_check(document.getElementById(billing_country_fee_id).value,arr_list[x]);
-     
-    }else if('<?php echo $billing_country_city_id;?>' == 'billing_'+x){
-      billing_country_area_check(document.getElementById(billing_country_area_id).value,arr_list[x]);
-    }else{
-      op_list.style.color = '#000';
-      $("#billing_"+x).val(arr_list[x]);
-    }
-    
-   }
-  }
-}
+	var edit_orders_country_fee_id = '<?php echo $billing_country_fee_id;?>';
+	var edit_orders_country_area_id = '<?php echo $billing_country_area_id;?>';
+	var edit_orders_country_city_id = '<?php echo $billing_country_city_id;?>';
+
 <?php
 if($weight > 0){
 ?>
-<?php //切换地址显示?>
-function address_show(){
-  
-  var style = $("#address_show_id").css("display");
-  if(style == 'none'){
-    $("#address_show_id").show(); 
-    $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_HIDE;?>");
- 
-  }else{
-
-    $("#address_show_id").hide();
-    $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_SHOW;?>");
-  }
-}
-<?php //地址列表?>
-function address_list(){
-
-  var arr_list = new Array();
+	var js_weight_address_info_hide = "<?php echo TEXT_ADDRESS_INFO_HIDE;?>";
+	var js_weight_address_info_show = "<?php echo TEXT_ADDRESS_INFO_SHOW;?>";
+	var js_weight_arr_list = new Array();
 <?php
   $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and billing_address='0' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
- 
-    echo 'arr_list["'. $address_list_array['name'] .'"] = "'.  addslashes($address_list_array['value']) .'";';
+
+    echo 'js_weight_arr_list["'. $address_list_array['name'] .'"] = "'.  addslashes($address_list_array['value']) .'";';
 
   }
   tep_db_free_result($address_list_query);
 ?>
-  for(x in arr_list){
-   if(document.getElementById("ad_"+x)){ 
-     var op_list = document.getElementById("ad_"+x);
-     if('<?php echo $country_fee_id;?>' == 'ad_'+x){
-      check(arr_list[x]);
-    }else if('<?php echo $country_area_id;?>' == 'ad_'+x){
-      country_check(document.getElementById(country_fee_id).value,arr_list[x]);
-     
-    }else if('<?php echo $country_city_id;?>' == 'ad_'+x){
-      country_area_check(document.getElementById(country_area_id).value,arr_list[x]);
-    }else{
-      op_list.style.color = '#000';
-      $("#ad_"+x).val(arr_list[x]);
-    }
-    
-   }
-  }
-}
-
+	var js_weight_country_fee_id = '<?php echo $country_fee_id;?>';
+	var js_weight_country_area_id = '<?php echo $country_area_id;?>';
+	var js_weight_country_city_id = '<?php echo $country_city_id;?>';
+	var js_weight_shipping_total = '<?php echo $shipping_weight_total;?>';
 <?php
-  if($shipping_weight_total > 0){
-?>
-$(document).ready(function(){            
-  <?php
   if(!($_POST['address_option'] == 'new')){
   ?>
-  address_option_show('old');
-  <?php
+  	var js_weight_address_option_new = true;
+<?php
+  }else{
+?>
+	var js_weight_address_option_new = false;
+<?php
   }
+?>
+<?php
   if(!isset($_POST['address_option'])){
-  ?> 
-  address_list();
-  address_clear_error();
-  <?php
-  }
   ?>
-});
+        var js_weight_address_option = true;
+<?php
+  }else{
+?>
+        var js_weight_address_option = false;
 <?php
   }
 ?>
@@ -3543,21 +2680,28 @@ $(document).ready(function(){
 <?php
   if(isset($_POST['address_option']) && $_POST['address_option'] == 'new'){
 ?>
-$(document).ready(function(){            
-  $("#address_list_id").hide();
-});
+	var js_doc_weight_add_option_new = true;
 <?php
-  }
+  }else{
+?>
+	var js_doc_weight_add_option_new = false;
+<?php
+}
 ?>
 
 <?php
   if(isset($_POST['address_option']) && $_POST['address_option'] == 'old'){
 ?>
-$(document).ready(function(){            
-  address_option_show('old');
-});
+        var js_doc_weight_add_option_old = true;
 <?php
-  }
+  }else{
+?>
+        var js_doc_weight_add_option_old = false;
+<?php
+}
+?>
+
+<?php
 }
 ?>
 //todo:修改通性用
@@ -3587,25 +2731,10 @@ $(document).ready(function(){
       }
       $handle_fee_code = $handle_fee_code == '' ? 0 : $handle_fee_code;
 ?>
-  <?php //隐藏支付方法的附加信息?> 
-  function hidden_payment(num){
-   if(document.edit_order){
-     var idx = document.edit_order.elements["payment_method"].selectedIndex;
-     var CI = document.edit_order.elements["payment_method"].options[idx].value;
-     $(".rowHide").hide();
-     $(".rowHide").find("input").attr("disabled","true");
-     $(".rowHide_"+CI).show();
-     $(".rowHide_"+CI).find("input").removeAttr("disabled");
-     if(CI == '<?php echo $pay_type_str;?>'){
-       $("#handle_fee_id").html('<?php echo $handle_fee_code.TEXT_MONEY_SYMBOL;?>');
-     }else{
-       $("#handle_fee_id").html(0+'<?php echo TEXT_MONEY_SYMBOL;?>'); 
-     }
-     if(num == 0){
-       price_total('<?php echo TEXT_MONEY_SYMBOL;?>');
-     }
-   }
-  }
+	var js_ed_orders_pay_type_str = '<?php echo $pay_type_str;?>';
+	var js_ed_orders_handle_money_symbol = '<?php echo $handle_fee_code.TEXT_MONEY_SYMBOL;?>';
+	var js_ed_orders_money_symbol = '<?php echo TEXT_MONEY_SYMBOL;?>';
+  
 $(document).ready(function(){
 <?php //加载帐单邮寄地址的列表
 if($billing_address_num > 0){
@@ -3866,129 +2995,25 @@ if($weight > 0){
   });
 
 });
-<?php //开启日历?>
+	var js_ed_orders_calendar_time = '<?php echo date('Y-m-d', time())?>';
+	var js_ed_orders_input_right_date = '<?php echo ERROR_INPUT_RIGHT_DATE;?>';
 
-function open_calendar()
-{
-  var is_open = $('#toggle_open').val(); 
-  if (is_open == 0) {
-    //mm-dd-yyyy || mm/dd/yyyy
-    $('#toggle_open').val('1'); 
-    
-    var rules = {
-           "all": {
-                  "all": {
-                           "all": {
-                                      "all": "current_s_day",
-                                }
-                     }
-            }};
-    if ($("#date_orders").val() != '') {
-      if ($("#date_orders").val() == '0000-00-00') {
-        date_info_str = '<?php echo date('Y-m-d', time())?>';  
-        date_info = date_info_str.split('-');  
-      } else {
-        date_info = $("#date_orders").val().split('-'); 
-      }
-    } else {
-                      //mm-dd-yyyy || mm/dd/yyyy
-      date_info_str = '<?php echo date('Y-m-d', time())?>';  
-      date_info = date_info_str.split('-');  
-    }
-    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
-    YUI().use('calendar', 'datatype-date',  function(Y) {
-        var calendar = new Y.Calendar({
-            contentBox: "#mycalendar",
-            width:'170px',
-            date: new_date
-
-        }).render();
-      if (rules != '') {
-       month_tmp = date_info[1].substr(0, 1);
-       if (month_tmp == '0') {
-         month_tmp = date_info[1].substr(1);
-         month_tmp = month_tmp-1;
-       } else {
-         month_tmp = date_info[1]-1; 
-       }
-       day_tmp = date_info[2].substr(0, 1);
-       
-       if (day_tmp == '0') {
-         day_tmp = date_info[2].substr(1);
-       } else {
-         day_tmp = date_info[2];   
-       }
-       data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
-       
-       calendar.set("customRenderer", {
-            rules: rules,
-               filterFunction: function (date, node, rules) {
-                 cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
-                 if (cmp_tmp_str == data_tmp_str) {
-                   node.addClass("redtext"); 
-                 }
-               }
-       });
-     }
-      var dtdate = Y.DataType.Date;
-      calendar.on("selectionChange", function (ev) {
-        var newDate = ev.newSelection[0];
-        tmp_show_date = dtdate.format(newDate); 
-        tmp_show_date_array = tmp_show_date.split('-');
-        $("#fetch_year").val(tmp_show_date_array[0]); 
-        $("#fetch_month").val(tmp_show_date_array[1]); 
-        $("#fetch_day").val(tmp_show_date_array[2]); 
-        $("#date_orders").val(tmp_show_date); 
-        $('#toggle_open').val('0');
-        $('#toggle_open').next().html('<div id="mycalendar"></div>');
-      });
-    });
-  }
-}
-<?php //判断日期是否正确?>
-function is_date(dateval)
-{
-  var arr = new Array();
-  if(dateval.indexOf("-") != -1){
-    arr = dateval.toString().split("-");
-  }else if(dateval.indexOf("/") != -1){
-    arr = dateval.toString().split("/");
-  }else{
-    return false;
-  }
-  if(arr[0].length==4){
-    var date = new Date(arr[0],arr[1]-1,arr[2]);
-    if(date.getFullYear()==arr[0] && date.getMonth()==arr[1]-1 && date.getDate()==arr[2]) {
-      return true;
-    }
-  }
-  
-  if(arr[2].length==4){
-    var date = new Date(arr[2],arr[1]-1,arr[0]);
-    if(date.getFullYear()==arr[2] && date.getMonth()==arr[1]-1 && date.getDate()==arr[0]) {
-      return true;
-    }
-  }
-  
-  if(arr[2].length==4){
-    var date = new Date(arr[2],arr[0]-1,arr[1]);
-    if(date.getFullYear()==arr[2] && date.getMonth()==arr[0]-1 && date.getDate()==arr[1]) {
-      return true;
-    }
-  }
- 
-  return false;
-}
-<?php //把配送时间的日期复制到隐藏域中?>
-function change_fetch_date() {
-  fetch_date_str = $("#fetch_year").val()+"-"+$("#fetch_month").val()+"-"+$("#fetch_day").val(); 
-  if (!is_date(fetch_date_str)) {
-    alert('<?php echo ERROR_INPUT_RIGHT_DATE;?>'); 
-  } else {
-    $("#date_orders").val(fetch_date_str); 
-  }
-}
 </script>
+<?php
+	if($billing_address_num > 0){
+?>
+<script language="javascript" src="includes/javascript/admin_edit_billing.js?v=<?php echo $back_rand_info?>"></script>
+<?php
+	}
+?>
+<?php
+        if($weight > 0){
+?>
+<script language="javascript" src="includes/javascript/admin_edit_weight.js?v=<?php echo $back_rand_info?>"></script>
+<?php
+        }
+?>
+<script language="javascript" src="includes/javascript/admin_edit_orders.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -4169,6 +3194,12 @@ if (($action == 'edit') && ($order_exists == true)) {
       $pay_comment = $orders_status_history_array['comments']; 
       tep_db_free_result($orders_status_history_query);
       $payment_array = payment::getPaymentList();
+      //检测此订单的支付方法，当前是否存在
+      $payment_exists_flag = true;
+      if(!in_array($order->info['payment_method'],$payment_array[1])){
+
+        $payment_exists_flag = false;
+      }
       $pay_info_array = array();
       $pay_orders_id_array = array();
       $pay_type_array = array();
@@ -4228,7 +3259,11 @@ if (($action == 'edit') && ($order_exists == true)) {
           $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];  
     $c_chk = tep_get_payment_customer_chk($order->info['orders_id']);
     ?>
-    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE),$order->info['site_id'],$c_chk);?> 
+    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE),$order->info['site_id'],$c_chk);
+          if($payment_exists_flag == false){
+            echo '<br><font color="#FF0000">'.str_replace('#PAYMENT_METHOD',$order->info['payment_method'],TEXT_PAYMENT_NAME_ERROR).'</font>';
+          }
+    ?> 
     <?php 
           if(isset($_SESSION['payment_empty_error_edit'])
               &&$_SESSION['payment_empty_error_edit']!=''){
@@ -4236,7 +3271,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             unset($_SESSION['payment_empty_error_edit']);
           }
           $tmp_is_show = true; 
-          if (($order->info['is_gray'] == '1') || ($c_chk == '2')) {
+          if ((($order->info['is_gray'] == '1') || ($c_chk == '2')) && $payment_exists_flag == true) {
             if (!$cpayment->admin_is_show_info(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE))) {
               $tmp_is_show = false; 
             } 
@@ -4246,7 +3281,9 @@ if (($action == 'edit') && ($order_exists == true)) {
           }
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
-          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk,'order',$order->customer['email_address'],$tmp_is_show); 
+          if($payment_exists_flag == true){
+            $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk,'order',$order->customer['email_address'],$tmp_is_show); 
+          }
           echo '});'."\n";
           echo '</script>'."\n";
       
@@ -4273,8 +3310,10 @@ if (($action == 'edit') && ($order_exists == true)) {
                   $field['message'] = ''; 
                 }
               }else{
-                if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
-                  $field['message'] = '';
+                if($payment_exists_flag == true){
+                  if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
+                    $field['message'] = '';
+                  }
                 }
               }
               echo "<font color='red'>&nbsp;".$field['message']."</font>";
@@ -5237,7 +4276,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }else{
         $orders_history_comment = $orders_history['comments'];
       }
-      if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
+      if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str && $payment_exists_flag == true) {
         echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
           '    <td class="smallText" align="left">' . tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)) . '&nbsp;</td>' . "\n";
       } else {

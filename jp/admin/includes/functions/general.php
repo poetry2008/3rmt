@@ -4345,7 +4345,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   }
   
-    $str .= '<tr><td class="main" width="120">支払方法</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
+    $str .= '<tr><td class="main" width="120">支払方法</td><td class="main" style="color:darkred;">'.$orders['payment_method'].'</td></tr>';
     
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 

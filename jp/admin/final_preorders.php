@@ -1311,8 +1311,19 @@ require("includes/note_js.php");
                   $payment_code = isset($_SESSION['preorder_products'][$_GET['oID']]['payment_method']) ? $_SESSION['preorder_products'][$_GET['oID']]['payment_method'] : $payment_code_use;
                   $payment_code = isset($_POST['payment_method']) ?  $_POST['payment_method'] : $payment_code_use; 
                   if(tep_get_payment_flag($payment_code,'',$order->info['site_id'],$order->info['orders_id'],false,'preorder')){
-                 }
+                  }
+                  //orders status
+                  $payment_array = payment::getPaymentList();
+                  //检测此订单的支付方法，当前是否存在
+                  $payment_exists_flag = true;
+                  if(!in_array($order->info['payment_method'],$payment_array[1])){
+
+                    $payment_exists_flag = false;
+                  }
                   echo payment::makePaymentListPullDownMenu($payment_code,$order->info['site_id'],$c_chk,'preorder'); 
+                  if($payment_exists_flag == false){
+                    echo '<br><font color="#FF0000">'.str_replace('#PAYMENT_METHOD',$order->info['payment_method'],TEXT_PAYMENT_NAME_ERROR).'</font>';
+                  }
                   $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
                   if(isset($_SESSION['pre_payment_empty_error_edit'])
                      &&$_SESSION['pre_payment_empty_error_edit']!=''){
@@ -1321,9 +1332,7 @@ require("includes/note_js.php");
                    }
                   $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
                   $pay_comment = $orders_status_history_array['comments']; 
-                  tep_db_free_result($orders_status_history_query);
-      //orders status
-      $payment_array = payment::getPaymentList();
+                  tep_db_free_result($orders_status_history_query); 
       $pay_info_array = array();
       $pay_orders_id_array = array();
       $pay_type_array = array();
@@ -1382,7 +1391,7 @@ require("includes/note_js.php");
           $pay_info_array[1] = $pay_info_array[1] == '' && $payment_code == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
           $pay_info_array[2] = $pay_info_array[2] == '' && $payment_code == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];
                   $tmp_is_show = true;
-                  if (($order->info['is_gray'] == '1') || ($c_chk == '2')) {
+                  if (($order->info['is_gray'] == '1') || ($c_chk == '2') && $payment_exists_flag == true) {
                     if (!$cpayment->admin_is_show_info(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE))) {
                       $tmp_is_show = false;
                     }
@@ -2132,7 +2141,7 @@ if (tep_db_num_rows($orders_history_query)) {
       }else{
         $orders_history_comment = $orders_history['comments'];
       }
-    if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
+    if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str && $payment_exists_flag == true) {
       echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
            '    <td class="smallText" align="left">' .  tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),stripslashes($orders_history_comment))) . '&nbsp;</td>' . "\n";
     }else{

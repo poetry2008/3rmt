@@ -3069,8 +3069,44 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     </div>
 
                     <?php 
+                       //检测此订单的支付方法，当前是否存在
+                       $payment_array = payment::getPaymentList(); 
+                       $payment_exists_flag = true;
+                       if(!in_array($order->info['payment_method'],$payment_array[1])){
+
+                         $payment_exists_flag = false;
+                       }
+                       $payment_show_flag = true;
+                       $payment_paypal_show_flag = true; 
                        $payment_show = payment::getInstance($order->info['site_id']);
-                       if ($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 1) { ?>
+                       if($payment_exists_flag == true){
+                         if($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 1){
+                           $payment_show_flag = true; 
+                         }else{
+                           $payment_show_flag = false; 
+                         }
+                       }else{
+
+                         if($order->info['telecom_name']!='' || $order->info['telecom_tel']!= '' || $order->info['telecom_email']!='' || $order->info['telecom_money']!= ''){
+                           if($order->info['paypal_business']!='' || $order->info['paypal_countrycode']!='' || $order->info['paypal_payerstatus']!='' || $order->info['paypal_paymenttype']!= ''){
+
+                             $payment_show_flag = false; 
+                             $payment_paypal_show_flag = true;
+                           }
+                         }else{
+
+                           $payment_show_flag = false;
+                           $payment_paypal_show_flag = false;
+                         }
+                       }
+                       if($payment_exists_flag == true){
+                         if($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 2){
+                           $payment_paypal_show_flag = true; 
+                         }else{
+                           $payment_paypal_show_flag = false; 
+                         }
+                       } 
+                       if ($payment_show_flag) { ?>
                        <?php // 信用卡信息 ?>
 
                         <div id="orders_telecom">
@@ -3091,7 +3127,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                         </table>
                         </div>
 
-                        <?php }else if ($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 2) {?>
+                        <?php }else if ($payment_paypal_show_flag) {?>
                         <?php // PAYPAL信息 ?>
 
                             <div id="orders_paypal">
@@ -3652,7 +3688,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
            }else{
                $orders_history_comment = $orders_history['comments'];
            }
-           if($orders_history['comments'] != $orders_status_history_str){
+           if($orders_history['comments'] != $orders_status_history_str && $payment_exists_flag == true){
              echo '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' .  tep_replace_to_red($comment_warning_arr,nl2br(tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),stripslashes($orders_history_comment))))) . '&nbsp;</p></td>' . "\n";
            }else{
 
