@@ -3087,10 +3087,16 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                          }
                        }else{
 
-                         if($order->info['paypal_business']!='' || $order->info['paypal_countrycode']!='' || $order->info['paypal_payerstatus']!='' || $order->info['paypal_paymenttype']!= ''){
+                         if($order->info['telecom_name']!='' || $order->info['telecom_tel']!= '' || $order->info['telecom_email']!='' || $order->info['telecom_money']!= ''){
+                           if($order->info['paypal_business']!='' || $order->info['paypal_countrycode']!='' || $order->info['paypal_payerstatus']!='' || $order->info['paypal_paymenttype']!= ''){
 
-                           $payment_show_flag = false; 
-                           $payment_paypal_show_flag = true;
+                             $payment_show_flag = false; 
+                             $payment_paypal_show_flag = true;
+                           }
+                         }else{
+
+                           $payment_show_flag = false;
+                           $payment_paypal_show_flag = false;
                          }
                        }
                        if($payment_exists_flag == true){
