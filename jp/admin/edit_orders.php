@@ -3194,6 +3194,12 @@ if (($action == 'edit') && ($order_exists == true)) {
       $pay_comment = $orders_status_history_array['comments']; 
       tep_db_free_result($orders_status_history_query);
       $payment_array = payment::getPaymentList();
+      //检测此订单的支付方法，当前是否存在
+      $payment_exists_flag = true;
+      if(!in_array($order->info['payment_method'],$payment_array[1])){
+
+        $payment_exists_flag = false;
+      }
       $pay_info_array = array();
       $pay_orders_id_array = array();
       $pay_type_array = array();
@@ -3253,7 +3259,11 @@ if (($action == 'edit') && ($order_exists == true)) {
           $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];  
     $c_chk = tep_get_payment_customer_chk($order->info['orders_id']);
     ?>
-    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE),$order->info['site_id'],$c_chk);?> 
+    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE),$order->info['site_id'],$c_chk);
+          if($payment_exists_flag == false){
+            echo '<br><font color="#FF0000">'.str_replace('#PAYMENT_METHOD',$order->info['payment_method'],TEXT_PAYMENT_NAME_ERROR).'</font>';
+          }
+    ?> 
     <?php 
           if(isset($_SESSION['payment_empty_error_edit'])
               &&$_SESSION['payment_empty_error_edit']!=''){
@@ -3261,7 +3271,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             unset($_SESSION['payment_empty_error_edit']);
           }
           $tmp_is_show = true; 
-          if (($order->info['is_gray'] == '1') || ($c_chk == '2')) {
+          if ((($order->info['is_gray'] == '1') || ($c_chk == '2')) && $payment_exists_flag == true) {
             if (!$cpayment->admin_is_show_info(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE))) {
               $tmp_is_show = false; 
             } 
@@ -3271,7 +3281,9 @@ if (($action == 'edit') && ($order_exists == true)) {
           }
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
-          $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk,'order',$order->customer['email_address'],$tmp_is_show); 
+          if($payment_exists_flag == true){
+            $cpayment->admin_show_payment_list($pay_method,$pay_info_array,$order->info['site_id'],$c_chk,'order',$order->customer['email_address'],$tmp_is_show); 
+          }
           echo '});'."\n";
           echo '</script>'."\n";
       
@@ -3298,8 +3310,10 @@ if (($action == 'edit') && ($order_exists == true)) {
                   $field['message'] = ''; 
                 }
               }else{
-                if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
-                  $field['message'] = '';
+                if($payment_exists_flag == true){
+                  if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
+                    $field['message'] = '';
+                  }
                 }
               }
               echo "<font color='red'>&nbsp;".$field['message']."</font>";
@@ -4262,7 +4276,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }else{
         $orders_history_comment = $orders_history['comments'];
       }
-      if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str) {
+      if ($CommentsWithStatus && $orders_history['comments'] != $orders_status_history_str && $payment_exists_flag == true) {
         echo '    <td class="dataTableHeadingContent" align="left" width="10">&nbsp;</td>' . "\n" .
           '    <td class="smallText" align="left">' . tep_db_output($cpayment->admin_get_comment(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$orders_history_comment)) . '&nbsp;</td>' . "\n";
       } else {
