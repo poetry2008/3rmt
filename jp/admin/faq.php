@@ -168,7 +168,7 @@
                                      'site_id' => $site_id);
            }
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from  
@@ -179,7 +179,7 @@
               fqd.romaji='".$sql_data_array['romaji']."' and
               fqd.site_id='".$site_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -188,7 +188,7 @@
             tep_db_perform('faq_sort', $sql_sort_data_array);
           }else{
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from  
@@ -200,7 +200,7 @@
               fqd.site_id='".$site_id."' and 
               fqd.faq_question_id != '".$faq_question_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
            tep_db_perform(TABLE_FAQ_QUESTION_DESCRIPTION, $sql_data_array, 'update','faq_question_id =\''.$faq_question_id.'\' and site_id = \''.$site_id.'\'');
@@ -269,7 +269,7 @@
                                      'site_id' => $site_id);
             }
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from ".TABLE_FAQ_CATEGORIES." fc,
@@ -279,7 +279,7 @@
               fcd.romaji='".$sql_data_array['romaji']."' and
               fcd.site_id='".$site_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -288,7 +288,7 @@
             tep_db_perform('faq_sort', $sql_sort_data_array);
           }else{
             if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from ".TABLE_FAQ_CATEGORIES." fc,
@@ -299,7 +299,7 @@
               fcd.site_id='".$site_id."' and 
               fc.id != '".$faq_category_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             tep_db_perform(TABLE_FAQ_CATEGORIES_DESCRIPTION, $sql_data_array, 'update','faq_category_id =\''.$faq_category_id.'\' and site_id = \''.$site_id.'\'');
@@ -764,9 +764,9 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
 <div id="categories_tree">
                 <?php
@@ -777,17 +777,17 @@ require("includes/note_js.php");
                   */
                 ?>
                 </div>
-<!-- body //-->
+<!-- body -->
 <input id="show_info_id" type="hidden" name="show_info_id" value="show_faq">
 <div id="show_faq" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div
     class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2" >
       <tr>
@@ -1268,14 +1268,14 @@ if(isset($_GET['action'])&& $_GET['action']&&(!isset($site_id)||$site_id==0)){
         </table></td>
       </tr>
     </table></div></div></td>
-<!-- body_text_eof //-->
+<!-- body_text_eof -->
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 <br>
 </body>
 </html>

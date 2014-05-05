@@ -42,7 +42,7 @@ if (
         echo '<tr><td width="60" align="center" style="padding-right:8px; padding-top:5px" rowspan="2" valign="top">';
         echo tep_image(DIR_WS_IMAGES . 'products/' .  $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"');
         echo '</td><td class="main" style="padding-left:5px;">';
-        echo '<p class="main"> <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) .  '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) .  '&nbsp;&nbsp;[' .  sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) .  ']<br>' . nl2br($reviews_des_res['reviews_text']) . "\n" . '</p></td></tr>';
+        echo '<p class="main"> <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) .  '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating'])) .  '&nbsp;&nbsp;[' .  sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating']) .  ']<br>' . nl2br($reviews_des_res['reviews_text']) . "\n" . '</p></td></tr>';
         echo '</table>';
       } 
     echo '</div>';
@@ -126,7 +126,7 @@ if (
     echo $review;
     echo '<br>'; 
     echo '<br>'; 
-    echo '<i>'.sprintf(TEXT_REVIEW_RATING, tep_image(DIR_WS_IMAGES . 'stars_' .  $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating'])), sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating'])).'</i>';
+    echo '<i>'.sprintf(TEXT_REVIEW_RATING, tep_image(DIR_WS_IMAGES . 'stars_' .  $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating'])), sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating'])).'</i>';
     echo '</td>'; 
     echo '</tr>'; 
     echo '</table>'; 

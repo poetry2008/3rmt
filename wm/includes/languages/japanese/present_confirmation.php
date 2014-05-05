@@ -5,8 +5,8 @@ define('TEXT_PRESENT_BAR_SUCCESS', '応募完了');
 
 define('TEXT_PRESENT_CON_MUST','* 必須');
 define('TEXT_PRESENT_CON_PHO_NUM','電話番号');
-define('TEXT_PRESENT_CON_ADDRESS2','住所2');
-define('TEXT_PRESENT_CON_ADDRESS1','住所1');
+define('TEXT_PRESENT_CON_ADDRESS_TWO','住所2');
+define('TEXT_PRESENT_CON_ADDRESS_ONE','住所1');
 define('TEXT_PRESENT_CON_CITY','市区町村');
 define('TEXT_PRESENT_CON_STR','都道府県');
 define('TEXT_PRESENT_CON_MAIL','郵便番号');

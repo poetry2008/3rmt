@@ -458,7 +458,7 @@ if($index > 0){
         print '<table>'; 
         print '<tr>';
         print '<td width="150">'; 
-        print ADDPRODUCT_TEXT_STEP1_TITLE; 
+        print ADDPRODUCT_TEXT_CATEGORY_SELECTION_TITLE; 
         print '</td>'; 
         print '<td>'; 
         print tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree_new(tep_get_all_category()), $current_category_id, 'onChange="this.form.submit();"');
@@ -479,7 +479,7 @@ if($index > 0){
           print "<form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           print "<table>"; 
           print "<tr><td width='150'>"; 
-          print ADDPRODUCT_TEXT_STEP2_TITLE."</td>";
+          print ADDPRODUCT_TEXT_PRODUCT_SELECTION_TITLE."</td>";
           print "<td>";
           print "<select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
           $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";

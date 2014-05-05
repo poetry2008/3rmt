@@ -62,7 +62,7 @@ define('FORDERS_MAIL_CONFIRM_CUSTOMERS_NAME', '▼お名前　　　　　：');
 define('FORDERS_MAIL_CONFIRM_EMAIL', '▼メールアドレス　：');
 define('FORDERS_MAIL_CONFIRM_PAYMENT_METHOD', '▼支払方法　　　　：');
 define('FORDERS_MAIL_CONFIRM_FETCH_TIME', '▼お届け日時　　　　：');
-define('FORDERS_MAIL_CONFIRM_HOUHOU', '▼オプション　　　：');
+define('FORDERS_MAIL_CONFIRM_OPTION', '▼オプション　　　：');
 define('FORDERS_MAIL_CONFIRM_PRODUCTS', '▼予約商品');
 define('FORDERS_MAIL_CONFIRM_ALL_DAY', '（24時間表記）');
 define('FORDERS_MAIL_CONFIRM_OID_TEXT', 'ご不明な点がございましたら、予約番号をご確認の上、');

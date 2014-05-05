@@ -63,8 +63,8 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PRODUCT_NOTIFICATIONS);
 
-  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_SECOND, tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL'));
 
   $global_status_query = tep_db_query("
       SELECT global_product_notifications 

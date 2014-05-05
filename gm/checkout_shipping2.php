@@ -158,8 +158,8 @@
   if ( !tep_session_is_registered('shipping') || ( tep_session_is_registered('shipping') && ($shipping == false) && (tep_count_shipping_modules() > 1) ) ) $shipping = $shipping_modules->cheapest();
 
 
-  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_SECOND, tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
   
   $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
   $torihiki_list[] = array('id' => '', 'text' => TEXT_PRESE_SELECT);
@@ -358,7 +358,7 @@ if (!isset($date_error)) $date_error=NULL;
     <option value="">--</option>
   </select>
   &nbsp;分&nbsp;
-  <?php echo TEXT_CHECK_24JI; ?>
+  <?php echo INTRODUCE_TWENTY_FOUR_SYSTEM; ?>
   </td>
   </tr>
 <?php

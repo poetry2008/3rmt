@@ -338,11 +338,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_reset_cache_block('categories');
         tep_reset_cache_block('also_purchased');
       }
-      if (!isset($_GET['search'])){
-      	tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
-      }else{
-	tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).'&search='.$_GET['search'].$p_page));
-      }
+      tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
     }
 
     if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') || ($_GET['flag'] == '2') || ($_GET['flag'] == '3')) {
@@ -355,11 +351,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_reset_cache_block('also_purchased');
       }
     }
-    if (!isset($_GET['search'])){
-    	tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&pID='.$_GET['pID'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
-    }else{
-	tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).'&search='.$_GET['search'].$p_page));
-    }
+    tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&pID='.$_GET['pID'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
     break;
     case 'simple_update': // 价格和数量的简单更新
     tep_isset_eof();
@@ -525,11 +517,11 @@ if (isset($_GET['action']) && $_GET['action']) {
          
 
         if(!tep_check_romaji($sql_data_array['romaji'])){
-          $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+          $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
         if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."'"))) {
-          $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+          $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
 
@@ -562,11 +554,11 @@ if (isset($_GET['action']) && $_GET['action']) {
         }
       } elseif ($_GET['action'] == 'update_category') {
         if(!tep_check_romaji($sql_data_array['romaji'])){
-          $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+          $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
         if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." cd,".TABLE_CATEGORIES." c where cd.categories_id=c.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$site_id."' and c.categories_id!='".$categories_id."'"))) {
-          $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+          $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
         tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\' and language_id = \'' . $languages[$i]['id'] . '\' and site_id = \''.$site_id.'\'');
@@ -755,11 +747,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       $product_categories = tep_generate_category_path($product_id, 'product');
 
       //删除当前页面的产品连接
-      if(!empty($current_category_id)){
-      	tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" .  tep_db_input($current_category_id). "'");
-      }else{
-	tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
-      }
+      tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" .  tep_db_input($current_category_id). "'");
 
       $product_categories_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
       $product_categories = tep_db_fetch_array($product_categories_query);
@@ -1575,17 +1563,17 @@ if (isset($_GET['action']) && $_GET['action']) {
       if (empty($productsId)) {
         if (trim($_POST['romaji']) == '') {
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_NOT_NULL;
+          $romaji_error_str = TEXT_ROMANIZATION_NOT_NULL;
         }
 
         if(!tep_check_symbol($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = CATEGORY_ROMAN_ERROR_NOTICE;
+          $romaji_error_str = CATEGORY_ROMAN_CHARACTER_ERROR;
         }
 
         if(!tep_check_romaji($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_ERROR;
+          $romaji_error_str = TEXT_ROMAN_CHARACTERS_ERROR;
         }
         if (isset($_GET['cPath'])) {
           $ca_arr = explode('_', $_GET['cPath']); 
@@ -1593,27 +1581,27 @@ if (isset($_GET['action']) && $_GET['action']) {
           $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."'"); 
           if (tep_db_num_rows($exist_ro_query)) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAN_CHARACTERS_EXISTS;
           }
         } else {
           if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$site_id."'"))) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAN_CHARACTERS_EXISTS;
           }
         }
       } else {
         tep_isset_eof();
         if (trim($_POST['romaji']) == '') {
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_NOT_NULL;
+          $romaji_error_str = TEXT_ROMANIZATION_NOT_NULL;
         }
         if(!tep_check_symbol($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = CATEGORY_ROMAN_ERROR_NOTICE;
+          $romaji_error_str = CATEGORY_ROMAN_CHARACTER_ERROR;
         }
         if(!tep_check_romaji($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_ERROR;
+          $romaji_error_str = TEXT_ROMAN_CHARACTERS_ERROR;
         }
         if (isset($_GET['cPath'])) {
           $ca_arr = explode('_', $_GET['cPath']); 
@@ -1621,12 +1609,12 @@ if (isset($_GET['action']) && $_GET['action']) {
           $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."' and pd.products_id != '".$_GET['pID']."'"); 
           if (tep_db_num_rows($exist_ro_query)) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAN_CHARACTERS_EXISTS;
           }
         } else {
           if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$site_id."' and products_id != '".$_GET['pID']."'"))) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAN_CHARACTERS_EXISTS;
           }
         }
       }
@@ -1852,7 +1840,7 @@ $belong = str_replace('0_','',$belong);
 	var timeout_relogin = '<?php echo TEXT_TIMEOUT_RELOGIN;?>';
 	var ale_text = '<?php echo PIC_MAE_ALT_TEXT;?>';
 	var name_is_not_null = '<?php echo ERROR_CATEGORY_NAME_IS_NOT_NULL;?>';	
-	var romaji_not_null = '<?php echo TEXT_ROMAN_NOT_NULL;?>';
+	var romaji_not_null = '<?php echo TEXT_ROMANIZATION_NOT_NULL;?>';
 	var product_name_is_not_null = '<?php echo ERROR_PRODUCT_NAME_IS_NOT_NULL;?>';
 	var js_chae_error = '<?php echo CATEGORY_JS_CHAE_ERROR_TEXT;?>';
 	var js_update_notice = '<?php echo CATEGORY_JS_UPDATE_NOTICE;?>';
@@ -2268,7 +2256,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr>
-                <td class="main"><?php echo TEXT_PRODUCTS_ROMAN;?></td> 
+                <td class="main"><?php echo TEXT_PRODUCTS_URL_WORD;?></td> 
                 <td class="main">
                 <?php
                 echo  '<span
@@ -2276,7 +2264,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     '24', '15') . '&nbsp;'.tep_draw_input_field('romaji',
                       $pInfo->romaji, 'id="promaji"').'</span><br>'; 
               echo '<input type="button" onclick = "p_is_set_romaji(\''.$current_category_id.'\',\''.$pInfo->products_id.'\',\''.$site_id.'\')"
-                value="'.TEXT_ROMAN_IS_SET.'">'.
+                value="'.URL_WORD_DOUBLE_CHECK.'">'.
                 '<input type="button" onclick = "p_is_set_error_char()"
                 value="'.IS_SET_ERROR_CHAR.'">';
               ?>
@@ -3067,11 +3055,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo '  </td>';
                     echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
                     echo '  <td height="30">';
-                    echo CATEGORY_ACTUALLY_IN_LIBRARY_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_PIECE_UNIT_TEXT. "\n";
-					echo '</td>';
+                    echo CATEGORY_ACTUALLY_IN_LIBRARY_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_real_quantity .CATEGORY_UNIT_TEXT. "\n";
+                    echo '  </td>';
                     echo '  </tr><tr><td><hr size="2" noshade style="border:0;"></td></tr><tr>';
                     echo '  <td height="42" style="background-color:#ccc; padding-top:5px;">';
-                    echo TEXT_PRODUCTS_VIRTUAL_QUANTITY.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_PIECE_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_PIECE_UNIT_TEXT . "\n";
+                    echo TEXT_PRODUCTS_VIRTUAL_QUANTITY_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_UNIT_TEXT. '&nbsp;&nbsp;&larr;&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_UNIT_TEXT . "\n";
                     echo '  </td>';
                     echo '  </tr>';
                     echo '</table>';
@@ -3134,7 +3122,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                           ?>
                             <tr>
                             <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
-                            <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?><?php echo CATEGORY_PIECE_UNIT_TEXT;?></td>
+                            <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?><?php echo CATEGORY_UNIT_TEXT;?></td>
                             <td class="main" align="right"><?php echo display_price($order_history['final_price']);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td>
                             <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
                             </tr>
@@ -3148,7 +3136,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         ?>
                           <tr>
                           <td></td>
-                          <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_PIECE_UNIT_TEXT;?></td></tr></table></td>
+                          <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_UNIT_TEXT;?></td></tr></table></td>
                           <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
                           <td class="main"> </td>
                           </tr>
@@ -3192,7 +3180,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                               ?>
                                 <tr>
                                 <td class="main" width="120"><?php echo $order_history['torihiki_date'];?></td>
-                                <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?><?php echo CATEGORY_PIECE_UNIT_TEXT;?></td>
+                                <td class="main" width="100" align="right"><?php echo $order_history['products_quantity'];?><?php echo CATEGORY_UNIT_TEXT;?></td>
                                 <td class="main" align="right"><?php echo display_price( $order_history['final_price'] );?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td>
                                 <td class="main" width="100"><?php echo $order_history['orders_status_name'];?></td>
                                 </tr>
@@ -3206,7 +3194,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             ?>
                               <tr>
                               <td></td>
-                              <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_PIECE_UNIT_TEXT;?></td></tr></table></td>
+                              <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_UNIT_TEXT;?></td></tr></table></td>
                               <td class="main" align="right"><table border='0' cellspacing="0" cellpadding="0" width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo @display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
                               <td class="main"> </td>
                               </tr>
@@ -3231,7 +3219,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo CATEGORY_BOTTOM_READ; 
                     echo '</td>';
                   } else {
-                    echo TEXT_PRODUCTS_PRICE_INFO.'&nbsp;' . $products_price_preview .  '<br>'.TEXT_PRODUCTS_QUANTITY_INFO.'&nbsp;' . $pInfo->products_real_quantity .  CATEGORY_PIECE_UNIT_TEXT. "\n";
+                    echo TEXT_PRODUCTS_PRICE_INFO.'&nbsp;' . $products_price_preview .  '<br>'.TEXT_PRODUCTS_QUANTITY_INFO.'&nbsp;' . $pInfo->products_real_quantity .  CATEGORY_UNIT_TEXT. "\n";
                   }
                 ?>
                   </td>
@@ -3487,9 +3475,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <?php
                   echo tep_draw_input_field('romaji['.$c_languages[$ci]['id'].']', (($_GET['action'] == 'edit_category')?tep_get_category_romaji($cInfo->categories_id, $c_languages[$ci]['id'], $site_id, true):''), 'id="cromaji" class="tdul"'); 
                 if ($_GET['action'] == 'edit_category') {
-                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'; 
+                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'; 
                 } else {
-                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \'\', \''.$site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'; 
+                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \'\', \''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'; 
                 }
                 echo '&nbsp;<input type="button" onclick="c_is_set_error_char(false)" value="'.IS_SET_ERROR_CHAR.'">'; 
                 ?>
@@ -3504,7 +3492,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         <td class="main" colspan="2"><?php echo HEAD_SEARCH_TITLE;?></td>
                         </tr>
                         <tr>
-                        <td class="main"><?php echo CATEGORY_CHARACTER_ROMAN;?></td> 
+                        <td class="main"><?php echo CATEGORY_PHONETIC_CHARATERS;?></td> 
                         <td class="main">
                         <?php 
                         echo tep_draw_input_field('character_romaji['.$c_languages[$ci]['id'].']', (($_GET['action'] == 'edit_category')?$cInfo->character_romaji:''), 'class="tdul"').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT; 
@@ -3527,7 +3515,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <td class="main" colspan="2"><?php echo HEAD_SEARCH_TITLE;?></td>
                       </tr>
                       <tr>
-                      <td class="main"><?php echo CATEGORY_CHARACTER_ROMAN;?></td> 
+                      <td class="main"><?php echo CATEGORY_PHONETIC_CHARACTERS;?></td> 
                       <td class="main">
                       <?php 
                       echo tep_draw_input_field('character_romaji['.$c_languages[$ci]['id'].']', (($_GET['action'] == 'edit_category')?$cInfo->character_romaji:''), 'class="tdul"').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT; 

@@ -14,7 +14,7 @@ define('CHANGE_ORDER_FETCH_TIME_TITLE', 'ご希望のお届け日時を指定し
 define('CHANGE_ORDER_FETCH_TIME_READ', 'オプション:');
 define('CHANGE_ORDER_FETCH_DAY', 'お届け希望日:');
 define('CHANGE_ORDER_FETCH_DATE', 'お届け希望時間:');
-define('TEXT_CHECK_24JI', '(24時間表記)');
+define('INTRODUCE_TWENTY_FOUR_SYSTEM', '(24時間表記)');
 define('TEXT_PREORDER_ERROR_OPTION', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_PREORDER_ERROR_DATE', '<span class="errorText">【お届け希望日】を選択してください。</span>');
 define('TEXT_PREORDER_ERROR_TIME', '<span class="errorText">【お届け希望時間】を選択してください。</span>');

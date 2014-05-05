@@ -3,7 +3,7 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_1', 'ショッピングカート');
+define('NAVBAR_TITLE_SECOND', 'ショッピングカート');
 
 define('HEADING_TITLE', '配送方法');
 
@@ -27,7 +27,7 @@ define('TEXT_EXPECT_TRADE_DATE', 'お届け希望日:');
 define('TEXT_EXPECT_TRADE_TIME', 'お届け希望時間:');
 
 define('TEXT_CHECK_EIJI', '(英字)');
-define('TEXT_CHECK_24JI', '<b>(24時間表記)</b>');
+define('INTRODUCE_TWENTY_FOUR_SYSTEM', '<b>(24時間表記)</b>');
 define('TEXT_PRESE_SELECT', '選択してください');
 
 define('TEXT_ERROR_OPTION', '<span class="errorText">【オプション】を選択してください。</span>');
