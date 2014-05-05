@@ -26,9 +26,9 @@
 
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL'));
 if(isset($_GET['action']) && $_GET['action']=="quit_success"){
-$breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL'));
+$breadcrumb->add(NAVBAR_TITLE_SECOND, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL'));
   }else{
-$breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL'));
+$breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL'));
   }
 if(isset($_GET['action']) && $_GET['action']=="quit_success" && isset($_GET['check_flag']) && $_GET['check_flag']!=""){
 $cart->remove_all();

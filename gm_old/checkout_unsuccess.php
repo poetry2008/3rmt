@@ -26,8 +26,8 @@
 // 以下是页面
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_UNSUCCESS);
 
-  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_2);
+  $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_SECOND);
 //ccdd
 ?>
 <?php page_head();?>

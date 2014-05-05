@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'レジ');
-define('NAVBAR_TITLE_2', '配送先の変更');
+define('NAVBAR_TITLE_FIRST', 'レジ');
+define('NAVBAR_TITLE_SECOND', '配送先の変更');
 
 define('HEADING_TITLE', 'お届け先を選んでください');
 

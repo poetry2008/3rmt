@@ -142,7 +142,7 @@ define('TEXT_ORDER_END_DATE','结束日期:');
 define('TEXT_ORDER_START_DATE','开始日:');
 define('TEXT_ORDER_SITE_TEXT','订单网站');
 define('TEXT_ORDER_SERVER_BUSY','下载过程中服务器高负荷。请执行存取较少的时间。');
-define('TEXT_ORDER_DOWNLOPAD','订单数据导出');
+define('TEXT_ORDER_DOWNLOAD','订单数据导出');
 
 define('DEL_CONFIRM_PAYMENT_TIME', '删除');
 define('NOTICE_DEL_CONFIRM_PAYEMENT_TIME', '删除时间吗？');

@@ -242,7 +242,7 @@ echo '</form>';
                 echo '<font color="#ff0000">'.$jikan_error.'</font>'; 
               }
  ?> 
-  <?php echo TEXT_CHECK_24JI; ?>
+  <?php echo INTRODUCE_TWENTY_FOUR_SYSTEM; ?>
               </td> 
             </tr>
           </table> 

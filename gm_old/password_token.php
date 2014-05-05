@@ -38,7 +38,7 @@
 				<td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
 			  </tr>
 			  <tr>
-				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_AGAINTEXT;?></td>
+				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_AGAIN;?></td>
 				<td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
 			  </tr>
           <tr>

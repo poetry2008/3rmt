@@ -628,20 +628,20 @@ if ($_GET['action'] == 'show_category_info') {
   $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
   $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,number_format($product_row_count));
   if($radices!=''&&$radices!=1&&$radices!=0){
-    $product_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
+    $product_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
     $product_td_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $product_td_real_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
+    $product_td_real_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
     $product_td_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
-  $arr_td_product[] = (empty($_GET['site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_PIECE_UNIT_TEXT;
+  $arr_td_product[] = (empty($_GET['site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
 
   
   if(empty($site_id)) {
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
   }
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -702,20 +702,20 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,number_format($relate_row_count));
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
+    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
     $relate_td_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" id="relate_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_PIECE_UNIT_TEXT;
+    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
     $relate_td_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
-    $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_PIECE_UNIT_TEXT;
+    $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
     
 
     if(empty($site_id)){
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_PIECE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
     }
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -6748,13 +6748,13 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     if($qInfo->info_type == 'q'){
      $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_q_raw['romaji'],'id="qromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji',$faq_q_raw['romaji'],'id="qromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
         );
         
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
         );
     }
     if($qInfo->info_type == 'q'){
@@ -6917,7 +6917,7 @@ if($_GET['cID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="cromaji" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji','','id="cromaji" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
@@ -6987,7 +6987,7 @@ if($_GET['qID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="qromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
+        array('text' => tep_draw_input_field('romaji','','id="qromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_QUESTION_KEYWORDS),

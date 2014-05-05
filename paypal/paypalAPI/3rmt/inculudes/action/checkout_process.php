@@ -292,10 +292,10 @@ exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedRespons
   # 追加分（買取情報）
   if(tep_session_is_registered('bank_name')) {
     $bbbank = TEXT_BANK_NAME . '：' . $bank_name . "\n";
-    $bbbank .= TEXT_BANK_SHITEN . '：' . $bank_shiten . "\n";
-    $bbbank .= TEXT_BANK_KAMOKU . '：' . $bank_kamoku . "\n";
-    $bbbank .= TEXT_BANK_KOUZA_NUM . '：' . $bank_kouza_num . "\n";
-    $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $bank_kouza_name;
+    $bbbank .= TEXT_BANK_BRANCH . '：' . $bank_shiten . "\n";
+    $bbbank .= TEXT_BANK_TYPE . '：' . $bank_kamoku . "\n";
+    $bbbank .= TEXT_BANK_ACCOUNT_NUM . '：' . $bank_kouza_num . "\n";
+    $bbbank .= TEXT_BANK_ACCOUNT_NAME . '：' . $bank_kouza_name;
 
     $sql_data_array = array('orders_id' => $insert_id, 
                             'orders_status_id' => $order->info['order_status'], 
@@ -671,7 +671,7 @@ exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedRespons
   tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
   if (SENTMAIL_ADDRESS != '') {
-    tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
+    tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT_R, $email_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
   }
   
   last_customer_action();

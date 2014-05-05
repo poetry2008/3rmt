@@ -39,7 +39,7 @@ define('TEXT_INFO_COPY_TO_INTRO','コピー先');
 define('TEXT_INFO_HEADING_MOVE_FAQ_QUESTION','FAQを移動');
 define('TEXT_MOVE_FAQ_QUESTION_INTRO','移動する先のFAQを選んでください');
 define('TEXT_SAVE','保存');
-define('TEXT_ROMAN_IS_SET','重複チェック');
+define('URL_WORD_DOUBLE_CHECK','重複チェック');
 define('IS_SET_ERROR_CHAR','文字列チェック');
 define('HEADING_TITLE','FAQ');
 define('TEXT_INFO_HEADING_NEW_FAQ_QUESTION','新しいFAQ');

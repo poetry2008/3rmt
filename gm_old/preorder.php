@@ -341,7 +341,7 @@ if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"
         </tr>
         <?php }?> 
         <tr>
-          <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
+          <td class="main"><?php echo FORM_FIELD_PREORDER_VALID; ?></td>
           <td class="main">
 <?php
     $today = getdate();

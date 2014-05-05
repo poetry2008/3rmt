@@ -3,9 +3,9 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_1', 'お客様情報');
-define('NAVBAR_TITLE_2', '注文履歴');
-define('NAVBAR_TITLE_3', '注文情報');
+define('NAVBAR_TITLE_FIRST', 'お客様情報');
+define('NAVBAR_TITLE_SECOND', '注文履歴');
+define('NAVBAR_TITLE_THIRD', '注文情報');
 
 define('HEADING_TITLE', '注文情報');
 

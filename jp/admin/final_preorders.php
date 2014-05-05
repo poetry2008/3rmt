@@ -631,7 +631,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= FORDERS_MAIL_CONFIRM_EMAIL . $order->customer['email_address'] . "\n";
       $email .= FORDERS_MAIL_CONFIRM_PAYMENT_METHOD. $order->info['payment_method'] . "\n";
       $email .= FORDERS_MAIL_CONFIRM_FETCH_TIME . $order->tori['date'] .  FORDERS_MAIL_CONFIRM_ALL_DAY . "\n";
-      $email .= FORDERS_MAIL_CONFIRM_HOUHOU . $order->tori['houhou'] . "\n";
+      $email .= FORDERS_MAIL_CONFIRM_OPTION . $order->tori['houhou'] . "\n";
       $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
       $email .= FORDERS_MAIL_CONFIRM_PRODUCTS. "\n";
       $email .= "\t" . '------------------------------------------' . "\n";
@@ -2334,7 +2334,7 @@ if($action == "add_product")
       echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
       print "<input type='hidden' name='step' value='2'>";
       print "</td>\n";
-      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
+      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_CATEGORY_SELECTION . "</td>\n";
       print "</form></tr>\n";
       print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 
@@ -2355,7 +2355,7 @@ if($action == "add_product")
       print "</select></td>\n";
       print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
       print "<input type='hidden' name='step' value='3'>\n";
-      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
+      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_PRODUCT_SELECTION . "</td>\n";
       print "</form></tr>\n";
       print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
     }

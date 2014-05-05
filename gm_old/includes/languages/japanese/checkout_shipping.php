@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'ショッピングカート');
-define('NAVBAR_TITLE_2', '取引日時の指定');
+define('NAVBAR_TITLE_FIRST', 'ショッピングカート');
+define('NAVBAR_TITLE_SECOND', '取引日時の指定');
 
 define('HEADING_TITLE', '取引日時の指定');
 
@@ -36,7 +36,7 @@ define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
 define('TEXT_TORIHIKIKIBOUJIKAN', '取引希望時間:');
 
 define('TEXT_CHECK_EIJI', '(英字)');
-define('TEXT_CHECK_24JI', '<b>(24時間表記)</b>');
+define('INTRODUCE_TWENTY_FOUR_SYSTEM', '<b>(24時間表記)</b>');
 define('TEXT_PRESE_SELECT', '選択してください');
 
 define('TEXT_ERROR_BAHAMUTO', '<span class="errorText">【お届け先キャラクター名】が入力されていません</span>');

@@ -18,7 +18,7 @@ define('TEXT_ORDER_END_DATE','終了日');
 define('TEXT_ORDER_START_DATE','開始日');
 define('TEXT_ORDER_SITE_TEXT','サイト名');
 define('TEXT_ORDER_SERVER_BUSY','エクスポート中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。');
-define('TEXT_ORDER_DOWNLOPAD','注文データエクスポート');
+define('TEXT_ORDER_DOWNLOAD','注文データエクスポート');
 define('TEXT_MAG_CONTENTS','内容');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');

@@ -288,7 +288,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       echo "<table>";
       echo "<tr>";
       print '<td width="150">';
-      print ADDPRODUCT_TEXT_STEP1;
+      print ADDPRODUCT_TEXT_CATEGORY_SELECTION;
       print '</td>';
       print '<td>';
       echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
@@ -313,7 +313,7 @@ if(!isset($_SESSION['create_preorder']['orders_products']) || empty($_SESSION['c
       echo "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>";
       print "<table>";
       print "<tr><td width='150'>";
-      print ADDPRODUCT_TEXT_STEP2."</td>";
+      print ADDPRODUCT_TEXT_PRODUCT_SELECTION."</td>";
       print "<td>";
       print "<select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
       $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";

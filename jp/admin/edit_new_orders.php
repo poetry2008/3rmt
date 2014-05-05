@@ -2036,13 +2036,13 @@ function clear_confirm_div(){
       var b_num_value = b_num.value;
       if(b_num_value.replace(/[ ]/g,"") == ''){
         payment_error = true;
-        error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NUM;?>'+"\n\n";
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_ACCOUNT_NUM;?>'+"\n\n";
       }else{
         var reg = /^[\x00-\xff]+$/; 
         var reg_num = /^[0-9-]+$/;
         if(!reg.test(b_num_value) || !reg_num.test(b_num_value)){
           payment_error = true;
-          error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NUM2;?>'+"\n\n";
+          error_str += '<?php echo TS_TEXT_BANK_ERROR_ACCOUNT_NUM2;?>'+"\n\n";
         }
       }
     }
@@ -2053,7 +2053,7 @@ function clear_confirm_div(){
       var b_account_value = b_account.value;
       if(b_account_value.replace(/[ ]/g,"") == ''){
         payment_error = true;
-        error_str += '<?php echo TS_TEXT_BANK_ERROR_KOUZA_NAME;?>'+"\n\n";
+        error_str += '<?php echo TS_TEXT_BANK_ERROR_ACCOUNT_NAME;?>'+"\n\n";
       }
     } 
     }
@@ -2753,6 +2753,7 @@ while($select_result = tep_db_fetch_array($select_query)){
 
         // 输出订单邮件
         // title
+
 
 //no mail
 echo 'var nomail = new Array();'."\n";

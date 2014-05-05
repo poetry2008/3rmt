@@ -438,10 +438,10 @@ EOT;
   function admin_get_comment($comment){
 
     $payment_comment_array = array(TS_TEXT_BANK_NAME,
-                                   TS_TEXT_BANK_SHITEN,
-                                   TS_TEXT_BANK_KAMOKU,
-                                   TS_TEXT_BANK_KOUZA_NUM,
-                                   TS_TEXT_BANK_KOUZA_NAME, 
+                                   TS_TEXT_BANK_BRANCH,
+                                   TS_TEXT_BANK_TYPE,
+                                   TS_TEXT_BANK_ACCOUNT_NUM,
+                                   TS_TEXT_BANK_ACCOUNT_NAME, 
                                    TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
                                    TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL
                                  );

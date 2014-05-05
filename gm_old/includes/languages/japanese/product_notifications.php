@@ -10,8 +10,8 @@
   Released under the GNU General Public License
 */
 
-define('NAVBAR_TITLE_1', 'お客様情報');
-define('NAVBAR_TITLE_2', 'ショップからのお知らせ');
+define('NAVBAR_TITLE_FIRST', 'お客様情報');
+define('NAVBAR_TITLE_SECOND', 'ショップからのお知らせ');
 define('HEADING_TITLE', 'ショップからのお知らせ');
 
 define('TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION',

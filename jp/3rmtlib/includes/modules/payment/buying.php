@@ -43,28 +43,28 @@ class buying extends basePayment  implements paymentInterface  {
                        ),
                  array(
                        "code"=>'bank_shiten',
-                       "title"=>TS_TEXT_BANK_SHITEN,
+                       "title"=>TS_TEXT_BANK_BRANCH,
                        "field"=>tep_draw_input_field('bank_shiten', $theData['bank_shiten'], 'size="45"'),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  array(
                        "code"=>'bank_kamoku',
-                       "title"=>TS_TEXT_BANK_KAMOKU,
-                       "field"=> tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_F ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F)))) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_F.
-                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_T ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_T) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_T,
+                       "title"=>TS_TEXT_BANK_TYPE,
+                       "field"=> tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_TYPE_F ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_TYPE_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_TYPE_F)))) . '&nbsp;' . TS_TEXT_BANK_SELECT_TYPE_F.
+                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_TYPE_T ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_TYPE_T) . '&nbsp;' . TS_TEXT_BANK_SELECT_TYPE_T,
                        "rule"=>basePayment::RULE_NOT_NULL,
 
                        ),
                  array(
                        "code"=>'bank_kouza_num',
-                       "title"=>TS_TEXT_BANK_KOUZA_NUM,
+                       "title"=>TS_TEXT_BANK_ACCOUNT_NUM,
                        "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'], 'size="45"'),
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER)
                        ),
                  array(
                        "code"=>'bank_kouza_name',
-                       "title"=>TS_TEXT_BANK_KOUZA_NAME,
-                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'], 'size="45"').((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
+                       "title"=>TS_TEXT_BANK_ACCOUNT_NAME,
+                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'], 'size="45"').((!$back)?'<br>'.TS_TEXT_BANK_ACCOUNT_NAME_READ:''),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  );
@@ -85,37 +85,37 @@ class buying extends basePayment  implements paymentInterface  {
                        ),
                  array(
                        "code"=>'bank_shiten',
-                       "title"=>TS_TEXT_BANK_SHITEN,
+                       "title"=>TS_TEXT_BANK_BRANCH,
                        "field"=>tep_draw_input_field('bank_shiten',
                          $theData['bank_shiten'],''.$style_width.$input_text_id),
                        "rule"=>basePayment::RULE_NOT_NULL,
-                       "error_msg" => TS_TEXT_BANK_ERROR_SHITEN 
+                       "error_msg" => TS_TEXT_BANK_ERROR_BRANCH 
                        ),
                  array(
                        "code"=>'bank_kamoku',
-                       "title"=>TS_TEXT_BANK_KAMOKU,
+                       "title"=>TS_TEXT_BANK_TYPE,
                        "field"=>
-                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_F
-                         ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F)))
-                       ) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_F.'&nbsp;&nbsp;'.  tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_T
-                         ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_T) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_T,
+                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_TYPE_F
+                         ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_TYPE_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_TYPE_F)))
+                       ) . '&nbsp;' . TS_TEXT_BANK_SELECT_TYPE_F.'&nbsp;&nbsp;'.  tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_TYPE_T
+                         ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_TYPE_T) . '&nbsp;' . TS_TEXT_BANK_SELECT_TYPE_T,
                        "rule"=>basePayment::RULE_NOT_NULL,
-                       "error_msg" => TS_TEXT_BANK_ERROR_KAMOKU 
+                       "error_msg" => TS_TEXT_BANK_ERROR_TYPE 
 
                        ),
                  array(
                        "code"=>'bank_kouza_num',
-                       "title"=>TS_TEXT_BANK_KOUZA_NUM,
+                       "title"=>TS_TEXT_BANK_ACCOUNT_NUM,
                        "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'],'onchange="check_payment_input(this);"'.$style_width.$input_text_id.''),
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER),
-                       "error_msg" => array(TS_TEXT_BANK_ERROR_KOUZA_NUM, TS_TEXT_BANK_ERROR_KOUZA_NUM2) 
+                       "error_msg" => array(TS_TEXT_BANK_ERROR_ACCOUNT_NUM, TS_TEXT_BANK_ERROR_ACCOUNT_NUM2) 
                        ),
                  array(
                        "code"=>'bank_kouza_name',
-                       "title"=>TS_TEXT_BANK_KOUZA_NAME,
-                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'],''.$style_width.$input_text_id.'').((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
+                       "title"=>TS_TEXT_BANK_ACCOUNT_NAME,
+                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'],''.$style_width.$input_text_id.'').((!$back)?'<br>'.TS_TEXT_BANK_ACCOUNT_NAME_READ:''),
                        "rule"=>basePayment::RULE_NOT_NULL,
-                       "error_msg" => TS_TEXT_BANK_ERROR_KOUZA_NAME 
+                       "error_msg" => TS_TEXT_BANK_ERROR_ACCOUNT_NAME 
                        ),
                  );
     }
@@ -262,19 +262,19 @@ class buying extends basePayment  implements paymentInterface  {
         $error_msg =TS_TEXT_BANK_ERROR_NAME;
         break;
       case '2':
-        $error_msg =TS_TEXT_BANK_ERROR_SHITEN;
+        $error_msg =TS_TEXT_BANK_ERROR_BRANCH;
         break;
       case '3':
-        $error_msg =TS_TEXT_BANK_ERROR_KAMOKU;
+        $error_msg =TS_TEXT_BANK_ERROR_TYPE;
         break;
       case '4':
-        $error_msg =TS_TEXT_BANK_ERROR_KOUZA_NUM;
+        $error_msg =TS_TEXT_BANK_ERROR_ACCOUNT_NUM;
         break;
       case '5':
-        $error_msg =TS_TEXT_BANK_ERROR_KOUZA_NUM2;
+        $error_msg =TS_TEXT_BANK_ERROR_ACCOUNT_NUM2;
         break;
       case '6':
-        $error_msg =TS_TEXT_BANK_ERROR_KOUZA_NAME;
+        $error_msg =TS_TEXT_BANK_ERROR_ACCOUNT_NAME;
         break;
       default:
         $error_msg = ''; 
@@ -367,10 +367,10 @@ class buying extends basePayment  implements paymentInterface  {
       $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
       $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] = preg_replace($mode_array,$replace_array,$_SESSION[$session_paymentinfo_name]['bank_kouza_num']);  
       $bbbank = TS_TEXT_BANK_NAME .   $_SESSION[$session_paymentinfo_name]['bank_name'] . "\n";
-      $bbbank .= TS_TEXT_BANK_SHITEN .  $_SESSION[$session_paymentinfo_name]['bank_shiten'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KAMOKU .  $_SESSION[$session_paymentinfo_name]['bank_kamoku'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NUM .  $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NAME .  $_SESSION[$session_paymentinfo_name]['bank_kouza_name'];
+      $bbbank .= TS_TEXT_BANK_BRANCH .  $_SESSION[$session_paymentinfo_name]['bank_shiten'] . "\n";
+      $bbbank .= TS_TEXT_BANK_TYPE .  $_SESSION[$session_paymentinfo_name]['bank_kamoku'] . "\n";
+      $bbbank .= TS_TEXT_BANK_ACCOUNT_NUM .  $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] . "\n";
+      $bbbank .= TS_TEXT_BANK_ACCOUNT_NAME .  $_SESSION[$session_paymentinfo_name]['bank_kouza_name'];
     }else{
       global $_POST;
       //把全角的数字、中线转换成半角的及删除空格
@@ -379,10 +379,10 @@ class buying extends basePayment  implements paymentInterface  {
       $replace_array = array('1','2','3','4','5','6','7','8','9','0','','-');
       $_POST['bank_kouza_num'] = preg_replace($mode_array,$replace_array,$_POST['bank_kouza_num']);
       $bbbank = TS_TEXT_BANK_NAME .  $_POST['bank_name'] . "\n";
-      $bbbank .= TS_TEXT_BANK_SHITEN .  $_POST['bank_shiten'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KAMOKU .  $_POST['bank_kamoku'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NUM .  $_POST['bank_kouza_num'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NAME .  $_POST['bank_kouza_name'];
+      $bbbank .= TS_TEXT_BANK_BRANCH .  $_POST['bank_shiten'] . "\n";
+      $bbbank .= TS_TEXT_BANK_TYPE .  $_POST['bank_kamoku'] . "\n";
+      $bbbank .= TS_TEXT_BANK_ACCOUNT_NUM .  $_POST['bank_kouza_num'] . "\n";
+      $bbbank .= TS_TEXT_BANK_ACCOUNT_NAME .  $_POST['bank_kouza_name'];
       $payment_bank_info['bank_name']        = $_POST['bank_name'];
       $payment_bank_info['bank_shiten']      = $_POST['bank_shiten'];
       $payment_bank_info['bank_kamoku']      = $_POST['bank_kamoku'];
@@ -419,10 +419,10 @@ class buying extends basePayment  implements paymentInterface  {
    
     $buying_info_array[] = TS_TABLE_HEADING_BANK;
     $buying_info_array[] = array(TS_TEXT_BANK_NAME, $bank_name);
-    $buying_info_array[] = array(TS_TEXT_BANK_SHITEN, $bank_shiten);
-    $buying_info_array[] = array(TS_TEXT_BANK_KAMOKU, $bank_kamoku);
-    $buying_info_array[] = array(TS_TEXT_BANK_KOUZA_NUM, $bank_kouza_num);
-    $buying_info_array[] = array(TS_TEXT_BANK_KOUZA_NAME, $bank_kouza_name);
+    $buying_info_array[] = array(TS_TEXT_BANK_BRANCH, $bank_shiten);
+    $buying_info_array[] = array(TS_TEXT_BANK_TYPE, $bank_kamoku);
+    $buying_info_array[] = array(TS_TEXT_BANK_ACCOUNT_NUM, $bank_kouza_num);
+    $buying_info_array[] = array(TS_TEXT_BANK_ACCOUNT_NAME, $bank_kouza_name);
     
     return $buying_info_array; 
   } 
@@ -444,7 +444,7 @@ class buying extends basePayment  implements paymentInterface  {
   function admin_deal_comment($order_info)
   {
      $bank_info_array = explode('<<<|||', $order_info['bank_info']); 
-     return TS_TEXT_BANK_NAME.$bank_info_array[0]."\n".TS_TEXT_BANK_SHITEN.$bank_info_array[1]."\n".TS_TEXT_BANK_KAMOKU.$bank_info_array[2]."\n".TS_TEXT_BANK_KOUZA_NUM.$bank_info_array[3]."\n".TS_TEXT_BANK_KOUZA_NAME.$bank_info_array[4]; 
+     return TS_TEXT_BANK_NAME.$bank_info_array[0]."\n".TS_TEXT_BANK_BRANCH.$bank_info_array[1]."\n".TS_TEXT_BANK_TYPE.$bank_info_array[2]."\n".TS_TEXT_BANK_ACCOUNT_NUM.$bank_info_array[3]."\n".TS_TEXT_BANK_ACCOUNT_NAME.$bank_info_array[4]; 
   }
 
 /*--------------------------------
@@ -456,10 +456,10 @@ class buying extends basePayment  implements paymentInterface  {
   function deal_preorder_additional($pInfo, &$sql_data_array)
   {
     $bbbank = TS_TEXT_BANK_NAME . $pInfo['bank_name'] . "\n";
-    $bbbank .= TS_TEXT_BANK_SHITEN . $pInfo['bank_shiten'] . "\n";
-    $bbbank .= TS_TEXT_BANK_KAMOKU . $pInfo['bank_kamoku'] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . $pInfo['bank_kouza_num'] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . $pInfo['bank_kouza_name'];
+    $bbbank .= TS_TEXT_BANK_BRANCH . $pInfo['bank_shiten'] . "\n";
+    $bbbank .= TS_TEXT_BANK_TYPE . $pInfo['bank_kamoku'] . "\n";
+    $bbbank .= TS_TEXT_BANK_ACCOUNT_NUM . $pInfo['bank_kouza_num'] . "\n";
+    $bbbank .= TS_TEXT_BANK_ACCOUNT_NAME . $pInfo['bank_kouza_name'];
     
     $comment = $bbbank ."\n".$pInfo['yourmessage'];
     return $comment;
@@ -528,10 +528,10 @@ class buying extends basePayment  implements paymentInterface  {
   {
     $buying_info = explode('<<<|||', $order_info['bank_info']); 
     $bbbank = TS_TEXT_BANK_NAME . $buying_info[0] . "\n";
-    $bbbank .= TS_TEXT_BANK_SHITEN . $buying_info[1] . "\n";
-    $bbbank .= TS_TEXT_BANK_KAMOKU . $buying_info[2] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . $buying_info[3] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . $buying_info[4];
+    $bbbank .= TS_TEXT_BANK_BRANCH . $buying_info[1] . "\n";
+    $bbbank .= TS_TEXT_BANK_TYPE . $buying_info[2] . "\n";
+    $bbbank .= TS_TEXT_BANK_ACCOUNT_NUM . $buying_info[3] . "\n";
+    $bbbank .= TS_TEXT_BANK_ACCOUNT_NAME . $buying_info[4];
     
     $_SESSION['preorder_payment_info'] = $bbbank; 
     $comment = $bbbank ."\n".$order_info['comment_msg'];
@@ -579,7 +579,7 @@ EOT;
    }
    $bank_kamoku[1] = isset($_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku']) ? $_SESSION['orders_update_products'][$_GET['oID']]['bank_kamoku'] : $bank_kamoku[1];
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TS_TEXT_BANK_SELECT_KAMOKU_F || $bank_kamoku[1] == ''){
+   if($bank_kamoku[1] == TS_TEXT_BANK_SELECT_TYPE_F || $bank_kamoku[1] == ''){
    echo <<<EOT
    if (document.getElementsByName("bank_kamoku")[0]) {
      document.getElementsByName("bank_kamoku")[0].checked = true; 
@@ -712,7 +712,7 @@ EOT;
  ------------------------------*/
   function admin_get_payment_buying_type($buying_type){
 
-    if($buying_type == TS_TEXT_BANK_KAMOKU){
+    if($buying_type == TS_TEXT_BANK_TYPE){
 
       return true;
     } 
@@ -876,10 +876,10 @@ EOT;
   function admin_get_comment($comment){
 
     $payment_comment_array = array(TS_TEXT_BANK_NAME,
-                                   TS_TEXT_BANK_SHITEN,
-                                   TS_TEXT_BANK_KAMOKU,
-                                   TS_TEXT_BANK_KOUZA_NUM,
-                                   TS_TEXT_BANK_KOUZA_NAME,
+                                   TS_TEXT_BANK_BRANCH,
+                                   TS_TEXT_BANK_TYPE,
+                                   TS_TEXT_BANK_ACCOUNT_NUM,
+                                   TS_TEXT_BANK_ACCOUNT_NAME,
                                    TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
                                    TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TEL
                                  );
