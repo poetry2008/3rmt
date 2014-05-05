@@ -92,6 +92,10 @@ class payment {
     $class = '';
 
     foreach($paymentStringArray as $value){
+      $existsFile = DIR_FS_3RMTLIB.DIR_WS_MODULES . 'payment/' .$value;
+      if(!file_exists($existsFile)){
+        continue;
+      }
       $class = strtoupper(substr($value,0,strpos($value,'.')));
       //判断是否为开启状态 经过此步以后  得到的payment_installed是所有可用的
       if(self::$use_type == 'preorder'){
