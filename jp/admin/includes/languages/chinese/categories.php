@@ -177,6 +177,7 @@ define('CATEGORY_MONEY_UNIT_TEXT', '日元');
 define('CATEGORY_AVERAGE_PRICE', '实际库存的平均采购价格');
 define('CATEGORY_ACTUALLY_IN_LIBRARY_TEXT', '实际&nbsp;在&nbsp;&nbsp;库：&nbsp;');
 define('CATEGORY_UNIT_TEXT', '个');
+define('CATEGORY_VIRTUAL_INVENTORY_TEXT', '虚拟库存：');
 define('CATEGORY_RULI_TEXT', '邮件内容的注意事项的输入栏：');
 define('CATEGORY_CAL_TITLE_TEXT', '计算');
 define('CATEGORY_NEXTLINE_TEXT', '下一位');
