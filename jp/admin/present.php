@@ -265,6 +265,7 @@ now(),
       if($mess == true){
       }
     header("location: present.php");
+	exit;
   }
 
   if(isset($_GET['action']) && $_GET['action'] == 'delete'){
