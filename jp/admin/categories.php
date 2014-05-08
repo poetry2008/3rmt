@@ -1936,9 +1936,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
             </div>
             <div id="categories_tree">
             <?php
+            /*
             require(DIR_WS_CLASSES . 'category_tree.php');
             $osC_CategoryTree = new osC_CategoryTree; 
             echo $osC_CategoryTree->buildTree();
+            */
             ?>
             </div>
             <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
@@ -3805,7 +3807,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
                 <div id="gotomenu" style="width:100%">
-                <a href="javascript:void(0)" onclick="display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
+                <a href="javascript:void(0)" onclick="ajax_display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 </div>
                 </form>
                 </td>

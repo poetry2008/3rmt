@@ -892,6 +892,25 @@ function tep_get_category_name($category_id, $language_id, $site_id = 0, $defaul
   return $category['categories_name'];
 }
 
+
+/* -------------------------------------
+    功能: 获取分类列表名字  
+    参数: $category_id(int) 分类id 
+    参数: $language_id(int) 语言id
+    参数: $site_id(int) 网站id
+    参数: $default(boolean) 是否默认网站
+    返回值: 分类的名字(string)
+ ------------------------------------ */
+function tep_get_category_name_list($category_id, $language_id, $site_id = 0, $default = false) {
+  if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+    $site_id = 0;
+  }
+  $category_query = tep_db_query("select categories_name_list from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id='".$site_id."'");
+  $category = tep_db_fetch_array($category_query);
+
+  return $category['categories_name_list'];
+}
+
 /* -------------------------------------
     功能: 获取分类的罗马字  
     参数: $category_id(int) 分类id 
@@ -1033,6 +1052,24 @@ function tep_get_text_information($category_id, $language_id, $site_id = 0, $def
   $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
   $category = tep_db_fetch_array($category_query);
   return $category['text_information'];
+}
+
+/* -------------------------------------
+    功能: 获取分类meta的标题  
+    参数: $category_id(int) 分类id 
+    参数: $language_id(int) 语言id
+    参数: $site_id(int) 网站id
+    参数: $default(boolean) 是否默认网站
+    返回值: 分类meta的关键字(string)
+ ------------------------------------ */
+function tep_get_meta_title($category_id, $language_id, $site_id = 0 , $default = false) {
+  if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+    $site_id = 0;
+  }
+  $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
+  $category = tep_db_fetch_array($category_query);
+
+  return $category['meta_title'];
 }
 
 /* -------------------------------------
@@ -1319,11 +1356,11 @@ function tep_class_exists($class_name) {
     功能: 获取指定分类下的商品总和  
     参数: $categories_id(int) 分类id 
     参数: $include_deactivated(boolean) 是否包含不显示的商品
+    参数: $categories_only(boolean) 是否包含子分类商品
     返回值: 商品总和(int)
  ------------------------------------ */
-function tep_products_in_category_count($categories_id, $include_deactivated = false) {
+function tep_products_in_category_count($categories_id, $include_deactivated = false,$categories_only = false) {
   $products_count = 0;
-
   if ($include_deactivated) {
     $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = '" . $categories_id . "'");
   } else {
@@ -1331,16 +1368,17 @@ function tep_products_in_category_count($categories_id, $include_deactivated = f
   }
 
   $products = tep_db_fetch_array($products_query);
-
+  if($categories_only){
+    return $products['total'];
+  }else{
   $products_count += $products['total'];
-
   $childs_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . $categories_id . "'");
   if (tep_db_num_rows($childs_query)) {
     while ($childs = tep_db_fetch_array($childs_query)) {
       $products_count += tep_products_in_category_count($childs['categories_id'], $include_deactivated);
     }
   }
-
+  }
   return $products_count;
 }
 
@@ -13190,7 +13228,6 @@ function tep_get_category_tree_new($arr,$pid=0,$c_arr='',$spacing=''){
 }
 
 function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
-  $filename="categories_new.php";
   global $_GET, $_POST, $ocertify;
   $site_list_array = array();
   $site_array = array();

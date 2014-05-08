@@ -43,6 +43,7 @@
              select c.categories_id, 
                     cd.categories_status, 
                     cd.categories_name, 
+                    cd.categories_name_list, 
                     c.parent_id,
                     cd.site_id,
                     c.sort_order
@@ -54,7 +55,7 @@
             ) c
             where site_id = '0' or site_id='".$site_id."'
             group by categories_id
-            order by parent_id, sort_order, categories_name");
+            order by parent_id, sort_order, categories_name_list");
     } else {
          $categories_query = tep_db_query("
            select *
@@ -62,6 +63,7 @@
              select c.categories_id, 
                     cd.categories_status, 
                     cd.categories_name, 
+                    cd.categories_name_list, 
                     c.parent_id,
                     cd.site_id,
                     c.sort_order
@@ -72,7 +74,7 @@
             ) c
             where site_id = '0' or site_id='".$site_id."'
             group by categories_id
-            order by parent_id, sort_order, categories_name");
+            order by parent_id, sort_order, categories_name_list");
     }
          $this->data = array();
          while ($categories = tep_db_fetch_array($categories_query)) {
@@ -94,8 +96,12 @@
             # Implode the array to get the full category path
             $id = (implode('_', $c) ? implode('_', $c) . '_' . $categories['categories_id'] :
             $categories['categories_id']);
+            $categories_count = 0;
+            $category_count = tep_childs_in_category_count($categories['categories_id']);
+            $category_products_count = tep_products_in_category_count($categories['categories_id'],false,true);
+            $categories_count = $category_count + $category_products_count;
 
-            $this->data[$cID][$id] = array('name' => $categories['categories_name'], 'count' => 0);
+            $this->data[$cID][$id] = array('name' => $categories['categories_name_list'], 'count' => $categories_count);
          } // eof While loop
     } //eof Function
 /*--------------------------------------------------
@@ -137,6 +143,7 @@
          $result .= '<a href="'.$filename.'?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && $_GET['cPath'] == $category_link ? ' class="current_link"' : '').'>';
          }
          $result .= $category['name'];
+         $result .= '&nbsp;('.$category['count'].')';
          $result .= '</a>';
 
          if ($level == 0) $result .= $this->root_end_string;
