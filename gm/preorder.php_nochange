@@ -303,7 +303,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
         </tr>
         <?php }?> 
         <tr>
-          <td>&nbsp;<?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
+          <td>&nbsp;<?php echo FORM_FIELD_PREORDER_VALID; ?></td>
           <td>
 <?php
     $today = getdate();

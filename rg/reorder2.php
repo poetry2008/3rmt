@@ -125,7 +125,7 @@ if(!isset($email_error)||$email_error == true){?>
     echo $name;
   }?>' id='new_name' class="input_text" ><span id='name_error'><?php
   if(isset($name)&&$name==''){
-    echo TEXT_REORDER2_MUST_INPUT;
+    echo TEXT_PROJECT_MUST_INPUT;
   }?></span></td>
 </tr>
 <tr>
@@ -139,7 +139,7 @@ if(!isset($email_error)||$email_error == true){?>
     }
   }?> id='new_email' class="input_text" ><span id='email_error'><?php 
  if(isset($email)&&$email==''){
-   echo TEXT_REORDER2_MUST_INPUT;
+   echo TEXT_PROJECT_MUST_INPUT;
  }?></span><?php
  if(isset($email_error)&&$email_error&&$email!=''&&!tep_validate_email($email)){
    echo "<br>";
@@ -153,7 +153,7 @@ if(!isset($email_error)||$email_error == true){?>
     echo $product;
   }?>' id='new_product' class="input_text" ><span id='product_error'><?php
  if(isset($product)&&$product==''){
-   echo TEXT_REORDER2_MUST_INPUT;
+   echo TEXT_PROJECT_MUST_INPUT;
  }?></span></td>
  </tr>
  <tr>
@@ -173,7 +173,7 @@ if(!isset($email_error)||$email_error == true){?>
    </select>
    <span id='date_error'><?php
    if($hour==''||$date==''||$minute==''){
-     echo TEXT_REORDER2_TORIHIKI_ERROR;
+     echo TEXT_CHOOSE_DELIVERY_DATE_ERROR;
    }?></span>
    <br >
    <font color="red"><?php echo TEXT_REORDER_TRADE_TEXT;?></font>

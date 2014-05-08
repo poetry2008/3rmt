@@ -159,7 +159,7 @@
             where romaji = '".$romaji."' and site_id='".$site_id."'"); 
         $exists_romaji_num = tep_db_num_rows($exists_romaji_query); 
         if ($exists_romaji_num > 0) {
-          $error_message = ROMAN_EXISTS; 
+          $error_message = ROMAN_ALREADY_EXISTS; 
           $error = true;
           $_GET['action'] = 'insert';
         }
@@ -523,7 +523,7 @@ function check_contents(c_permission){
    $("#error_romaji_info").html(""); 
  }
  if(check_romaji == 'true'){
-   $("#error_romaji").html("<?php echo ROMAN_EXISTS;?>");
+   $("#error_romaji").html("<?php echo ROMAN_ALREADY_EXISTS;?>");
    error = 'true';
  }else{
    $("#error_romaji").html("");

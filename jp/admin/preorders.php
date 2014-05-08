@@ -1528,12 +1528,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   ?>
             <td align="right" class="smallText"><?php echo $warning_sell; ?></td>
           </tr>
-  <?php
-    if ( $warning_sell < 5000 ) {
-      echo '<tr><td align="right" colspan="2" class="smallText"><font color="blue">'
-        .TEXT_FEE_TEXT.'</font></td></tr>';
-    }
-  ?>
           </table>
         </td>
       </tr>

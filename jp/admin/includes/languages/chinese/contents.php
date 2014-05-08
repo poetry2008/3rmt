@@ -29,8 +29,8 @@ define('TEXT_DETAIL_MAKE','换行时输入「&lt;BR&gt;」<br>要显示这个页
 define('TEXT_DETAIL_ROMAN', '罗马字');
 define('ROMAN_NOT_NULL', '<font color=\'red\'>请输入罗马字。</font>');
 
-define('ROMAN_EXISTS', '<font color=\'red\'>罗马字已经存在。</font>');
-define('ROMAN_WRONG_FORMAT', '请用英数文字及「_」填写');
+define('ROMAN_ALREADY_EXISTS', '<font color=\'red\'>罗马字已经存在。</font>');
+define('WRONG_TEXT_FORMAT', '请用英数文字及「_」填写');
 define('TEXT_USER_ADDED','创建者');
 define('TEXT_USER_UPDATE','更新者');
 define('TEXT_DATE_ADDED','创建日');

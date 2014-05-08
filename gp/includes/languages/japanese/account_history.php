@@ -3,8 +3,8 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_1', 'お客様情報');
-define('NAVBAR_TITLE_2', '注文履歴');
+define('NAVBAR_TITLE_FIRST', 'お客様情報');
+define('NAVBAR_TITLE_SECOND', '注文履歴');
 
 define('HEADING_TITLE', '注文履歴');
 

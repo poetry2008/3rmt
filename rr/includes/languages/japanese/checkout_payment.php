@@ -3,8 +3,8 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_1', 'ショッピングカート');
-define('NAVBAR_TITLE_2', '支払方法');
+define('NAVBAR_TITLE_FIRST', 'ショッピングカート');
+define('NAVBAR_TITLE_SECOND', '支払方法');
 
 define('HEADING_TITLE', 'お支払い方法を選んでください');
 

@@ -111,9 +111,9 @@ define('ENTRY_CUSTOMER_EMAIL', 'Eメールアドレス');
 //define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', 'この商品の数量');
 //define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '追加する');
 define('ADDPRODUCT_TEXT_STEP', 'ステップ');
-define('ADDPRODUCT_TEXT_STEP1', 'カテゴリ選択:');
-define('ADDPRODUCT_TEXT_STEP2', '商品選択:');
-define('ADDPRODUCT_TEXT_STEP3', 'オプション選択:');
+define('ADDPRODUCT_TEXT_CATEGORY_SELECTION', 'カテゴリ選択:');
+define('ADDPRODUCT_TEXT_PRODUCT_SELECTION', '商品選択:');
+define('ADDPRODUCT_TEXT_OPTION_SELECTION', 'オプション選択:');
 
 define('MENUE_TITLE_CUSTOMER', '1. 顧客情報');
 define('MENUE_TITLE_PAYMENT', '2. 支払方法');

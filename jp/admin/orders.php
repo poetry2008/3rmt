@@ -265,7 +265,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '</tr>'; 
 
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGENT.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
@@ -3617,12 +3617,6 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
           ?>
             <td align="right" class="smallText"><?php echo $warning_sell; ?></td>
             </tr>
-            <?php
-            if ( $warning_sell < 5000 ) {
-              echo '<tr><td align="right" colspan="2" class="smallText"><font color="blue">'
-                .TEXT_FEE_TEXT.'</font></td></tr>';
-            }
-          ?>
             </table>
             </td>
             </tr>

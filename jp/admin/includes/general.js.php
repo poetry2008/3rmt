@@ -841,7 +841,7 @@ function c_is_set_error_char(replace_single){
           $("#cromaji").val(data); 
           alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
         } else {
-          alert("<?php echo JS_TEXT_GENERAL_ROMAJI_ERROR;?>");
+          alert("<?php echo JS_TEXT_GENERAL_ROMAN_ERROR;?>");
         }
       }
     }

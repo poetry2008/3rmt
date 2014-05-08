@@ -1721,7 +1721,7 @@ function check_add(){
       echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
       print "<input type='hidden' name='step' value='2'>";
       print "</td>\n";
-      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
+      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_CATEGORY_SELECTION . "</td>\n";
       print "</form></tr>\n";
       print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 
@@ -1742,7 +1742,7 @@ function check_add(){
       print "</select></td>\n";
       print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
       print "<input type='hidden' name='step' value='3'>\n";
-      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
+      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_PRODUCT_SELECTION . "</td>\n";
       print "</form></tr>\n";
       print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
     }

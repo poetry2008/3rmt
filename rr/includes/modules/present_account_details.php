@@ -69,7 +69,7 @@
           $a_value = tep_draw_input_field('dob','' , "class='input_text'") . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR;
       //未满18岁禁止处理
     } elseif($entry_date_of_birth_error2 == true) {
-          $a_value = tep_draw_input_field('dob','' , "class='input_text'") . '&nbsp;' . ENTRY_DATE_OF_BIRTH_ERROR2;
+          $a_value = tep_draw_input_field('dob','' , "class='input_text'") . '&nbsp;' . ENTRY_REGISTERED_AGE_ERROR;
     } else {
       $a_value = tep_draw_input_field('dob','' , "class='input_text'");
       }

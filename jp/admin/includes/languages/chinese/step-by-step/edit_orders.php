@@ -27,9 +27,9 @@ define('ENTRY_CUSTOMER_EMAIL', 'E邮箱地址');
 
 
 define('ADDPRODUCT_TEXT_STEP', '步骤');
-define('ADDPRODUCT_TEXT_STEP1', '分类选择:');
-define('ADDPRODUCT_TEXT_STEP2', '商品选择:');
-define('ADDPRODUCT_TEXT_STEP3', '选项选择:');
+define('ADDPRODUCT_TEXT_CATEGORY_SELECTION', '分类选择:');
+define('ADDPRODUCT_TEXT_PRODUCT_SELECTION', '商品选择:');
+define('ADDPRODUCT_TEXT_OPTION_SELECTION', '选项选择:');
 
 define('MENUE_TITLE_CUSTOMER', '1. 客户信息');
 define('MENUE_TITLE_PAYMENT', '2. 支付方式');

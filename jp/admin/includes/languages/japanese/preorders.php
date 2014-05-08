@@ -152,7 +152,7 @@ define('TEXT_ORDER_END_DATE','終了日:');
 define('TEXT_ORDER_START_DATE','開始日:');
 define('TEXT_ORDER_SITE_TEXT','注文書サイト');
 define('TEXT_ORDER_SERVER_BUSY','ダウンロード中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。');
-define('TEXT_ORDER_DOWNLOPAD','注文データエクスポート');
+define('TEXT_ORDER_DOWNLOAD','注文データエクスポート');
 
 define('DEL_CONFIRM_PAYMENT_TIME', '削除');
 define('NOTICE_DEL_CONFIRM_PAYEMENT_TIME', '時間を削除しますか？');
@@ -163,7 +163,7 @@ define('NOTICE_ORDER_INPUT_PASSWORD', 'ワンタイムパスワードを入力�
 define('NOTICE_ORDER_INPUT_WRONG_PASSWORD', 'パスワードが違います');
 define('TEXT_ORDER_INPUTED_FLAG', '入力済み');
 define('TEXT_ORDER_DATE_LONG', '有効期限:');
-define('TEXT_ORDER_HOUHOU', 'オプション:');
+define('TEXT_ORDER_OPTION', 'オプション:');
 define('TEXT_PREORDER_ID_TEXT', '予約番号:');
 define('TEXT_PREORDER_DAY', '予約日:');
 define('TEXT_ORDER_CUSTOMER_TYPE', '顧客種別:');
