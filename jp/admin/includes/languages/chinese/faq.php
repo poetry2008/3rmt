@@ -39,7 +39,7 @@ define('TEXT_INFO_COPY_TO_INTRO','复制地');
 define('TEXT_INFO_HEADING_MOVE_FAQ_QUESTION','移动FAQ');
 define('TEXT_MOVE_FAQ_QUESTION_INTRO','请选择移动前面的FAQ');
 define('TEXT_SAVE','保存');
-define('URL_WORD_DOUBLE_CHECK','重复检查');
+define('TEXT_LETTERS_IS_SET','重复检查');
 define('IS_SET_ERROR_CHAR','文字列检查');
 define('HEADING_TITLE','FAQ');
 define('TEXT_INFO_HEADING_NEW_FAQ_QUESTION','新FAQ');

@@ -1568,7 +1568,7 @@ if (isset($_GET['action']) && $_GET['action']) {
 
         if(!tep_check_symbol($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = CATEGORY_CHARACTER_ERROR;
+          $romaji_error_str = CATEGORY_LETTERS_ERROR_NOTICE;
         }
 
         if(!tep_check_romaji($_POST['romaji'])){
@@ -1597,7 +1597,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         }
         if(!tep_check_symbol($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = CATEGORY_CHARACTER_ERROR;
+          $romaji_error_str = CATEGORY_LETTERS_ERROR_NOTICE;
         }
         if(!tep_check_romaji($_POST['romaji'])){
           $romaji_error = 1; 
@@ -2256,7 +2256,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
                 <tr>
-                <td class="main"><?php echo TEXT_PRODUCTS_URL_WORD;?></td> 
+                <td class="main"><?php echo TEXT_PRODUCTS_LETTERS;?></td> 
                 <td class="main">
                 <?php
                 echo  '<span
@@ -2264,7 +2264,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     '24', '15') . '&nbsp;'.tep_draw_input_field('romaji',
                       $pInfo->romaji, 'id="promaji"').'</span><br>'; 
               echo '<input type="button" onclick = "p_is_set_romaji(\''.$current_category_id.'\',\''.$pInfo->products_id.'\',\''.$site_id.'\')"
-                value="'.URL_WORD_DOUBLE_CHECK.'">'.
+                value="'.TEXT_LETTERS_IS_SET.'">'.
                 '<input type="button" onclick = "p_is_set_error_char()"
                 value="'.IS_SET_ERROR_CHAR.'">';
               ?>
@@ -3475,9 +3475,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <?php
                   echo tep_draw_input_field('romaji['.$c_languages[$ci]['id'].']', (($_GET['action'] == 'edit_category')?tep_get_category_romaji($cInfo->categories_id, $c_languages[$ci]['id'], $site_id, true):''), 'id="cromaji" class="tdul"'); 
                 if ($_GET['action'] == 'edit_category') {
-                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'; 
+                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'; 
                 } else {
-                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \'\', \''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'; 
+                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \'\', \''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'; 
                 }
                 echo '&nbsp;<input type="button" onclick="c_is_set_error_char(false)" value="'.IS_SET_ERROR_CHAR.'">'; 
                 ?>
