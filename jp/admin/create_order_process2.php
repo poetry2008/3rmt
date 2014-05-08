@@ -227,7 +227,7 @@
     <td width="100%" valign="top">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
-        <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_ONE ?></b></font></td>
+        <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_1 ?></b></font></td>
       </tr>
     </table>
   <?php echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS2, '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>

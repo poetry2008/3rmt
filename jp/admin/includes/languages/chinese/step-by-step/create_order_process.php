@@ -20,7 +20,7 @@ define('TEXT_SELECT_CUST', '顾客选择:');
 if(!defined('TEXT_SELECT_CURRENCY'))define('TEXT_SELECT_CURRENCY', '货币选择:');
 define('BUTTON_TEXT_SELECT_CUST', '顾客选择:'); 
 define('TEXT_OR_BY', '或顾客ID:'); 
-define('TEXT_STEP_ONE', '步骤 1 - 请选择顾客确认信息');
+define('TEXT_STEP_1', '步骤 1 - 请选择顾客确认信息');
 define('BUTTON_SUBMIT', '确定');
 define('ENTRY_CURRENCY','结算货币');
 define('CATEGORY_ORDER_DETAILS','货币设置');

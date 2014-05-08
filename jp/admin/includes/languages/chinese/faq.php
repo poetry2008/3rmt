@@ -59,3 +59,5 @@ define('TEXT_SORT_DESC','▼');
 define('TEXT_PRODUCTS', 'FAQ数:');
 define('TEXT_CATEGORIES_FAQ','分类');
 define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
+define('TEXT_LETTERS_EXISTS', ' 拼音存在');
+define('TEXT_LETTERS_ERROR', '拼音的格式不正确!');

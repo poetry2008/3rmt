@@ -151,8 +151,8 @@ if (STOCK_CHECK == 'true') {
   }
 }
 
-$breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-$breadcrumb->add(NAVBAR_TITLE_SECOND);
+$breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+$breadcrumb->add(NAVBAR_TITLE_2);
 
 if (isset($payment_modules->modules[strtoupper($payment)]->form_action_url) && $payment_modules->modules[strtoupper($payment)]->form_action_url) {
   $form_action_url = $payment_modules->modules[strtoupper($payment)]->form_action_url;
@@ -185,7 +185,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <?php
   require(DIR_WS_ACTIONS.'visites.js');
 ?>
-//-->
+-->
 </script>
 <script type="text/javascript" src="./js/confirm_session_error.js"></script>
 </head>

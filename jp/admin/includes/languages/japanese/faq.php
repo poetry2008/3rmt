@@ -59,3 +59,5 @@ define('TEXT_SORT_DESC','▼');
 define('TEXT_PRODUCTS', 'FAQ数:');
 define('TEXT_CATEGORIES_FAQ','カテゴリー');
 define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
+define('TEXT_LETTERS_EXISTS', ' ローマ字が存在しています');
+define('TEXT_LETTERS_ERROR', 'ローマ字の格式が正しくないです!');
