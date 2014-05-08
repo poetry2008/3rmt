@@ -8378,6 +8378,9 @@ function tep_get_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
  ------------------------------------ */
 function tep_is_in_order_page($orders_query_raw,$oID){
   $show_orders_id_arr = array();
+  if(preg_match('/order by.*limit/',$orders_query_raw)){
+    $orders_query_raw = preg_replace('/order by.*limit/',' limit ',$orders_query_raw);
+  }
   $tmp_query = tep_db_query($orders_query_raw);
   while($tmp_row = tep_db_fetch_array($tmp_query)){
     $show_orders_id_arr[] = $tmp_row['orders_id'];
