@@ -1437,7 +1437,7 @@ function load_categoreis_tree(cpath){
     data: 'cpath='+cpath,
     type: 'POST',
     dataType: 'text',
-    async:false,
+    async:true,
     success: function (data) {
       $("#categories_tree").html(data);
       categories_tree_show = true;

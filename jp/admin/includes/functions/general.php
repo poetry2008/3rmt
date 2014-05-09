@@ -1390,7 +1390,7 @@ function tep_products_in_category_count($categories_id, $include_deactivated = f
 function tep_childs_in_category_count($categories_id) {
   $categories_count = 0;
 
-  $categories_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . $categories_id . "'");
+  $categories_query = tep_db_query("select c.categories_id from " . TABLE_CATEGORIES .  " c ,".TABLE_CATEGORIES_DESCRIPTION ." cd  where c.parent_id = '" .  $categories_id . "' and c.categories_id=cd.categories_id and cd.site_id='0'");
   while ($categories = tep_db_fetch_array($categories_query)) {
     $categories_count++;
     $categories_count += tep_childs_in_category_count($categories['categories_id']);

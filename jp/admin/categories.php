@@ -1923,16 +1923,16 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
     </div>
     <div id="popup_box"></div>
     <?php }else{
+      ?><body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
             if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
-      ?><body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
             } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
-      ?><body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
             } elseif (isset($_GET['action']) && ($_GET['action'] == 'new_category' || $_GET['action'] == 'edit_category')) {
-      ?><body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
-            }else{
-      ?><body onload="load_categoreis_tree('<?php echo $_GET['cPath'];?>')" marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
-            } ?>
-        <?php
+            }else{ ?>
+              <script  type='text/javascript'>
+                $(document).ready(function (){ load_categoreis_tree('<?php echo $_GET['cPath'];?>') }); 
+              </script>
+                <?php
+            } 
           }
         if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
           <script language='javascript'>
