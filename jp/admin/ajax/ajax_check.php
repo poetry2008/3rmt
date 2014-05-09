@@ -195,5 +195,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }else if($_POST['c_permission']&&$_POST['type'] == 1){
   $sql = "insert into ".TABLE_ONCE_PWD_LOG." VALUES  (NULL , '".$user_info['name']."','','".TEXT_DOWNLOAD."', CURRENT_TIMESTAMP)"; 
   tep_db_query($sql);
-  }}
+  }
+
+}else if(isset($_GET['action']) && $_GET['action'] == 'ajax_categrories'){
+  require_once(DIR_WS_CLASSES . 'category_tree.php');
+  $osC_CategoryTree = new osC_CategoryTree; 
+  echo $osC_CategoryTree->buildTree();
+}
+ 
 ?>
