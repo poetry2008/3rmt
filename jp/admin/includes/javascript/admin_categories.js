@@ -1,3 +1,4 @@
+var categories_tree_show = false;
 function inventory_operations(num){
 
   var inventory_contents_value;
@@ -149,7 +150,7 @@ function change_image_text(_this,change_name){
   });
 }
 // cancel all of corresponding information about picture 
-function clear_image(file_name,input_name){
+function clear_image(file_name,input_name,id){
   var image_name = $("input[name="+input_name+"]").val();
   var f_name = $("input[name="+file_name+"]").val();
   var pid = $("input[name=hidd_pid]").val();
@@ -157,7 +158,7 @@ function clear_image(file_name,input_name){
     url: 'ajax_orders.php?action=has_pimage',   
     type: 'POST',
     dataType: 'text',
-    data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id, 
+    data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id, 
     async: false,
     success: function(msg) {
       msg_arr = msg.split('|||'); 
@@ -167,7 +168,7 @@ function clear_image(file_name,input_name){
             url: 'ajax_orders.php?action=change_pimage',   
             type: 'POST',
             dataType: 'text',
-            data: 'col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id, 
+            data: 'col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id, 
             async: false,
             success: function(msg) {
             }
@@ -176,7 +177,7 @@ function clear_image(file_name,input_name){
           $("input[name="+file_name+"]").val('');
           $("input[name="+input_name+"]").val('');
         }else if(msg_arr[0]=='false'){
-          confirmg(image_name+' '+del_confirm,clear_image_href_link+'&file='+image_name+'&cl='+file_name);
+          confirmg(image_name+' '+del_confirm,clear_image_href_link+'&file='+image_name+'&id='+id);
         }
       } else {
         alert(read_text); 
@@ -1407,24 +1408,39 @@ function add_products_info_under(){
   var html_str = '<tr><td><input type="text" style="width:63%;" name="products_info_under_title[]"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_under_contents[]"></textarea></td></tr>';
   $("#products_info_under_id").append(html_str);
 }
-function ajax_display(){
+function ajax_display(cpath){
   offset = $(".pageHeading").offset();
   var categories_tree = document.getElementById('categories_tree'); 
   if(categories_tree.style.display == 'none' || categories_tree.style.display == ''){
+   if(!categories_tree_show){
   $.ajax({
     url: 'ajax.php?action=ajax_categrories',      
-    data: '',
+    data: 'cpath='+cpath,
     type: 'POST',
     dataType: 'text',
     async:false,
     success: function (data) {
       $("#categories_tree").html(data);
-      display();
+      categories_tree_show = true;
     }
   });
+   }
     categories_tree.style.top = offset.top + 'px';
     categories_tree.style.display = 'block';
   }else{
     categories_tree.style.display = 'none';
   }
+}
+function load_categoreis_tree(cpath){
+  $.ajax({
+    url: 'ajax.php?action=ajax_categrories',      
+    data: 'cpath='+cpath,
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $("#categories_tree").html(data);
+      categories_tree_show = true;
+    }
+  });
 }

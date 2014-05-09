@@ -199,7 +199,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 
 }else if(isset($_GET['action']) && $_GET['action'] == 'ajax_categrories'){
   require_once(DIR_WS_CLASSES . 'category_tree.php');
-  $osC_CategoryTree = new osC_CategoryTree; 
+  $osC_CategoryTree = new osC_CategoryTree(true,false,$_POST['cpath']); 
   echo $osC_CategoryTree->buildTree();
 }
  

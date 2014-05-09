@@ -1922,10 +1922,18 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
     <span><?php echo TEXT_EOF_ERROR_MSG;?></span>
     </div>
     <div id="popup_box"></div>
-    <?php }else{?>
-      <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
-        <?php } ?>
+    <?php }else{
+            if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
+      ?><body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
+            } elseif (isset($_GET['action']) && $_GET['action'] == 'new_product_preview') {
+      ?><body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
+            } elseif (isset($_GET['action']) && ($_GET['action'] == 'new_category' || $_GET['action'] == 'edit_category')) {
+      ?><body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
+            }else{
+      ?><body onload="load_categoreis_tree('<?php echo $_GET['cPath'];?>')" marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" ><?php
+            } ?>
         <?php
+          }
         if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
           <script language='javascript'>
             one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>', '<?php echo JS_TEXT_INPUT_ONETIME_PWD?>', '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>');
@@ -1940,13 +1948,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
             <div id="show_popup_info" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;">
             </div>
             <div id="categories_tree">
-            <?php
-            /*
-            require(DIR_WS_CLASSES . 'category_tree.php');
-            $osC_CategoryTree = new osC_CategoryTree; 
-            echo $osC_CategoryTree->buildTree();
-            */
-            ?>
             </div>
             <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
             <tr>
@@ -3812,7 +3813,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
                 <div id="gotomenu" style="width:100%">
-                <a href="javascript:void(0)" onclick="ajax_display()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
+                <a href="javascript:void(0)" onclick="ajax_display('<?php echo $_GET['cPath'];?>')"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 </div>
                 </form>
                 </td>
