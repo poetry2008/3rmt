@@ -892,6 +892,25 @@ function tep_get_category_name($category_id, $language_id, $site_id = 0, $defaul
   return $category['categories_name'];
 }
 
+
+/* -------------------------------------
+    功能: 获取分类列表名字  
+    参数: $category_id(int) 分类id 
+    参数: $language_id(int) 语言id
+    参数: $site_id(int) 网站id
+    参数: $default(boolean) 是否默认网站
+    返回值: 分类的名字(string)
+ ------------------------------------ */
+function tep_get_category_name_list($category_id, $language_id, $site_id = 0, $default = false) {
+  if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+    $site_id = 0;
+  }
+  $category_query = tep_db_query("select categories_name_list from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id='".$site_id."'");
+  $category = tep_db_fetch_array($category_query);
+
+  return $category['categories_name_list'];
+}
+
 /* -------------------------------------
     功能: 获取分类的罗马字  
     参数: $category_id(int) 分类id 
@@ -1033,6 +1052,24 @@ function tep_get_text_information($category_id, $language_id, $site_id = 0, $def
   $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
   $category = tep_db_fetch_array($category_query);
   return $category['text_information'];
+}
+
+/* -------------------------------------
+    功能: 获取分类meta的标题  
+    参数: $category_id(int) 分类id 
+    参数: $language_id(int) 语言id
+    参数: $site_id(int) 网站id
+    参数: $default(boolean) 是否默认网站
+    返回值: 分类meta的关键字(string)
+ ------------------------------------ */
+function tep_get_meta_title($category_id, $language_id, $site_id = 0 , $default = false) {
+  if ($default && $site_id != 0 && !tep_categories_description_exist($category_id, $language_id, $site_id)) {
+    $site_id = 0;
+  }
+  $category_query = tep_db_query("select * from " . TABLE_CATEGORIES_DESCRIPTION . " where categories_id = '" . $category_id . "' and language_id = '" . $language_id . "' and site_id = '".$site_id."'");
+  $category = tep_db_fetch_array($category_query);
+
+  return $category['meta_title'];
 }
 
 /* -------------------------------------
@@ -1319,11 +1356,11 @@ function tep_class_exists($class_name) {
     功能: 获取指定分类下的商品总和  
     参数: $categories_id(int) 分类id 
     参数: $include_deactivated(boolean) 是否包含不显示的商品
+    参数: $categories_only(boolean) 是否包含子分类商品
     返回值: 商品总和(int)
  ------------------------------------ */
-function tep_products_in_category_count($categories_id, $include_deactivated = false) {
+function tep_products_in_category_count($categories_id, $include_deactivated = false,$categories_only = false) {
   $products_count = 0;
-
   if ($include_deactivated) {
     $products_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c where p.products_id = p2c.products_id and p2c.categories_id = '" . $categories_id . "'");
   } else {
@@ -1331,16 +1368,17 @@ function tep_products_in_category_count($categories_id, $include_deactivated = f
   }
 
   $products = tep_db_fetch_array($products_query);
-
+  if($categories_only){
+    return $products['total'];
+  }else{
   $products_count += $products['total'];
-
   $childs_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . $categories_id . "'");
   if (tep_db_num_rows($childs_query)) {
     while ($childs = tep_db_fetch_array($childs_query)) {
       $products_count += tep_products_in_category_count($childs['categories_id'], $include_deactivated);
     }
   }
-
+  }
   return $products_count;
 }
 
@@ -1352,7 +1390,7 @@ function tep_products_in_category_count($categories_id, $include_deactivated = f
 function tep_childs_in_category_count($categories_id) {
   $categories_count = 0;
 
-  $categories_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . $categories_id . "'");
+  $categories_query = tep_db_query("select c.categories_id from " . TABLE_CATEGORIES .  " c ,".TABLE_CATEGORIES_DESCRIPTION ." cd  where c.parent_id = '" .  $categories_id . "' and c.categories_id=cd.categories_id and cd.site_id='0'");
   while ($categories = tep_db_fetch_array($categories_query)) {
     $categories_count++;
     $categories_count += tep_childs_in_category_count($categories['categories_id']);
@@ -5019,10 +5057,7 @@ function get_guest_chk($customers_id)
 function tep_high_light_by_keywords($str, $keywords)
 {
   $k = $rk= explode('|',$keywords);
-  foreach($k as $key => $value){
-    $rk[$key] = '<font style="background:red;">'.$value.'</font>';
-  }
-  return str_replace($k, $rk, $str);
+  return tep_replace_to_red($rk,$str);
 }
 
 /* -------------------------------------
@@ -5597,22 +5632,56 @@ function tep_display_google_results($from_url='', $c_type=false){
       $parent_id = tep_get_category_parent_id($categories_id);
     }
     $inventory_arr = tep_get_product_inventory($pid);
+
     $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
                              '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
                              '$unit_price',//商品单价(参数)
                              '$related_unit_price',//关联商品单价(参数)
                              '$stocks_average_cost'//实际库存的平均价格(参数)
                            );
-    if(strlen($inventory_arr['max']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['max']))){
-      $inventory_arr['max'] = tep_inventory_operations($inventory_arr['max'],$pid,0);
+    $inventory_max_array = explode('|||',$inventory_arr['max']);
+    if(strlen($inventory_max_array[0]) != strlen(str_replace($inventory_mode_array,'',$inventory_max_array[0]))){
+
+      $inventory_max_num_1 = tep_inventory_operations($inventory_max_array[0],$pid,0);
     }else{
-      $inventory_arr['max'] = tep_operations($inventory_arr['max']);
+       
+      $inventory_max_num_1 = tep_operations($inventory_max_array[0],$pid,0);
     }
-    if(strlen($inventory_arr['min']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['min']))){
-      $inventory_arr['min'] = tep_inventory_operations($inventory_arr['min'],$pid,0);
+    if(strlen($inventory_max_array[1]) != strlen(str_replace($inventory_mode_array,'',$inventory_max_array[1]))){
+
+      $inventory_max_num_2 = tep_inventory_operations($inventory_max_array[1],$pid,0);
     }else{
-      $inventory_arr['min'] = tep_operations($inventory_arr['min']);
+       
+      $inventory_max_num_2 = tep_operations($inventory_max_array[1],$pid,0);
+    } 
+
+    if($inventory_max_array[2] == 'min'){
+      $inventory_arr['max'] = $inventory_max_num_1 < $inventory_max_num_2 ? $inventory_max_num_1 : $inventory_max_num_2;
+    }else{
+      $inventory_arr['max'] = $inventory_max_num_1 > $inventory_max_num_2 ? $inventory_max_num_1 : $inventory_max_num_2;
     }
+    $inventory_min_array = explode('|||',$inventory_arr['min']);
+    if(strlen($inventory_min_array[0]) != strlen(str_replace($inventory_mode_array,'',$inventory_min_array[0]))){
+
+      $inventory_min_num_1 = tep_inventory_operations($inventory_min_array[0],$pid,0);
+    }else{
+       
+      $inventory_min_num_1 = tep_operations($inventory_min_array[0],$pid,0);
+    }
+    if(strlen($inventory_min_array[1]) != strlen(str_replace($inventory_mode_array,'',$inventory_min_array[1]))){
+
+      $inventory_min_num_2 = tep_inventory_operations($inventory_min_array[1],$pid,0);
+    }else{
+       
+      $inventory_min_num_2 = tep_operations($inventory_min_array[1],$pid,0);
+    }
+
+    if($inventory_min_array[2] == 'min'){
+      $inventory_arr['min'] = $inventory_min_num_1 < $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
+    }else{
+      $inventory_arr['min'] = $inventory_min_num_1 > $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
+    } 
+ 
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
   }
@@ -8340,6 +8409,9 @@ function tep_get_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
  ------------------------------------ */
 function tep_is_in_order_page($orders_query_raw,$oID){
   $show_orders_id_arr = array();
+  if(preg_match('/order by.*limit/',$orders_query_raw)){
+    $orders_query_raw = preg_replace('/order by.*limit/',' limit ',$orders_query_raw);
+  }
   $tmp_query = tep_db_query($orders_query_raw);
   while($tmp_row = tep_db_fetch_array($tmp_query)){
     $show_orders_id_arr[] = $tmp_row['orders_id'];
@@ -12684,12 +12756,12 @@ function tep_replace_to_red($arr,$str){
     $str_search_arr = str_split_utf8($nospacev);
     $preg_str = '';
     foreach($str_search_arr as $search_v){
-      $preg_str .= $search_v.'[\s]{0,}';
+      $preg_str .= $search_v.'[\s-_]{0,}';
     }
     if(preg_match_all('/('.$preg_str.')/',$out_str,$match_arr)){
       if(isset($match_arr)&&!empty($match_arr)){
         foreach($match_arr[0] as $m_v){
-          $out_str = str_replace($m_v,' <font style="background:red;">'.$m_v.'</font> ',$out_str);
+          $out_str = str_replace($m_v,'<font style="background:red;">'.$m_v.'</font> ',$out_str);
         }
       }
     }
@@ -13187,4 +13259,136 @@ function tep_get_category_tree_new($arr,$pid=0,$c_arr='',$spacing=''){
     }
   }
   return $c_arr;
+}
+
+function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
+  global $_GET, $_POST, $ocertify;
+  $site_list_array = array();
+  $site_array = array();
+  $site_list_query = tep_db_query("select id,romaji from ". TABLE_SITES);
+  $site_list_array[0] = '<img src="images/icons/all.png" alt="all_site">';
+  $site_array[] = '0';
+  while($site_list_rows = tep_db_fetch_array($site_list_query)){
+    $site_list_array[$site_list_rows['id']] = $site_list_rows['romaji'];
+    $site_array[] = $site_list_rows['id'];
+  }
+  if(!empty($show_all)){
+    $show_site_list = array_diff($site_array,$show_all);
+  }else{
+    $show_site_list = $site_array;
+  }
+  tep_db_free_result($orders_site_query);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  $site_list_info = tep_get_sites();
+  $user_info = tep_get_user_info($ocertify->auth_user);
+
+  if(count($site_array)){
+    $show_some_site_flag = true;
+  }
+  if($_GET['show_type']=='some'){
+    $show_some_site_flag = true;
+  }
+  if($_GET['show_type']=='one'){
+    $show_some_site_flag = false;
+  }
+  ?>
+    <div id="tep_new_site_filter">
+    <?php
+      if($show_some_site_flag){
+  //获得用户ID 和 当前页面 取得设置的显示网站列表
+  $userid = $user_info['userid'];
+  $page = $filename;
+  $show_site_sql = "select * from ".TABLE_SHOW_SITE." WHERE user='".$userid."' and page='".$page."' limit 1";
+  $show_id = '';
+  $show_site_query = tep_db_query($show_site_sql);
+  if($show_site_rows = tep_db_fetch_array($show_site_query)){
+    $site_array = explode('-',$show_site_rows['site']);
+    $site_id = $show_site_rows['show_id'];
+  }
+  $unshow_list = array();
+    ?>
+    <input type="hidden" id="show_site_id" value="<?php echo implode('-',$show_site_list);?>">
+    <span class="site_filter_selected"><a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site_array[0]);?>"><img src="images/icons/some.png"
+        alt="some_site"></a></span>
+  <?php
+              foreach ($site_list_array as $sid => $svalue) {
+               $site = array();
+               $site['id'] = $sid;
+               $site['romaji'] = $svalue;
+               if(!empty($show_all)){
+                 if(in_array($site['id'],$show_all)){
+                   $unshow_list[] = $site['id'];
+                 ?>
+              <span id="site_<?php echo $site['id'];?>" class="site_filter_unselected"><?php echo $site['romaji'];?></a></span>
+                 <?php
+                 continue;
+                 }
+               }
+               if(!isset($_GET['site_id']) || trim($_GET['site_id']) == ''){
+                if(in_array($site['id'],$site_array)){
+                 if($_GET['page']){
+           ?>
+                <span id="site_<?php echo $site['id'];?>" class="site_filter_selected"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+             <?php }else{  ?>
+                <span id="site_<?php echo $site['id'];?>" class="site_filter_selected"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+          <?php
+                 }
+               }else{
+                 if($_GET['page']){
+          ?>
+              <span id="site_<?php echo $site['id'];?>"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+              <?php }else{ ?>
+              <span id="site_<?php echo $site['id'];?>"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+          <?php
+            }
+               }
+               }else{
+                 $site_id_array = explode('-',$_GET['site_id']);
+                 if(in_array($site['id'],$site_id_array)){
+                   if($_GET['page']){
+          ?>
+              <span id="site_<?php echo $site['id'];?>" class="site_filter_selected"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+             <?php }else{ ?>
+              <span id="site_<?php echo $site['id'];?>" class="site_filter_selected"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+          <?php
+               }
+               }else{
+                 if($_GET['page']){
+          ?>
+              <span id="site_<?php echo $site['id'];?>"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+              <?php }else{ ?>
+              <span id="site_<?php echo $site['id'];?>"><a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><?php echo $site['romaji'];?></a></span>
+<?php          }
+               }
+               }
+              }
+    echo '<input type="hidden" id="unshow_site_list" value="">';
+      }else{
+    ?>
+    <span class="site_filter_selected"><a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=some');?>"><img src="images/icons/one.png"
+        alt="one_site"></a></span>
+    <?php
+
+        foreach($site_array as $sk => $site){
+          if($site==$_GET['site_id']){
+    ?>
+      <span class="site_filter_selected"><a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><?php
+        echo $site_list_array[$sk];?></a></span>
+    <?php
+          }else{
+    ?>
+      <span ><a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><?php
+        echo $site_list_array[$sk];?></a></span>
+    <?php
+          }
+        }
+    }
+    ?>
+  
+            </div>
+            <?php
 }

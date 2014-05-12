@@ -99,7 +99,6 @@ define('TEXT_CREDIT_FIND','信用调查');
 
 define('TEXT_ORDER_SAVE','保存');
 define('TEXT_ORDER_TEST_TEXT','试运行中<font color="red">（请确认是否与上述数值一致）</font>复制粘贴用:');
-define('TEXT_FEE_TEXT','订单不满5000日元。如果购买商品，需扣除168日元的手续费');
 define('TEXT_MAIL_CONTENT_INFO',' 自动换行显示，发送的邮件也另起一行。');
 define('TEXT_ORDER_COPY','复制粘贴用:');
 define('TEXT_ORDER_LOGIN','现在开始登录。');
@@ -142,7 +141,7 @@ define('TEXT_ORDER_END_DATE','结束日期:');
 define('TEXT_ORDER_START_DATE','开始日:');
 define('TEXT_ORDER_SITE_TEXT','订单网站');
 define('TEXT_ORDER_SERVER_BUSY','下载过程中服务器高负荷。请执行存取较少的时间。');
-define('TEXT_ORDER_DOWNLOPAD','订单数据导出');
+define('TEXT_ORDER_DOWNLOAD','订单数据导出');
 
 define('DEL_CONFIRM_PAYMENT_TIME', '删除');
 define('NOTICE_DEL_CONFIRM_PAYEMENT_TIME', '删除时间吗？');

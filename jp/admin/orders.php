@@ -265,7 +265,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '</tr>'; 
 
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGENT.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
@@ -3617,12 +3617,6 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
           ?>
             <td align="right" class="smallText"><?php echo $warning_sell; ?></td>
             </tr>
-            <?php
-            if ( $warning_sell < 5000 ) {
-              echo '<tr><td align="right" colspan="2" class="smallText"><font color="blue">'
-                .TEXT_FEE_TEXT.'</font></td></tr>';
-            }
-          ?>
             </table>
             </td>
             </tr>
@@ -5393,12 +5387,6 @@ if($c_parent_array['parent_id'] == 0){
           </tr>
           <?php
  $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows, $sql_count_query);
-        //echo $orders_query_raw;
-        if(isset($_GET['oID'])){
-          $oid_is_inpage = tep_is_in_order_page($orders_query_raw,$_GET['oID']);
-        }else{
-          $oid_is_inpage = false;
-        }
         $orders_query = tep_db_query($orders_query_raw);
         $orders_num = tep_db_num_rows($orders_query);
 
@@ -5419,7 +5407,18 @@ if($c_parent_array['parent_id'] == 0){
         }
         $customer_image = array();
         $tmp_order_id_list = array();
+        $orders_info_arr = array();
+        $orders_id_list = array();
         while ($orders = tep_db_fetch_array($orders_query)) {
+          $orders_info_arr[] = $orders;
+          $orders_id_list[] = $orders['orders_id'];
+        }
+        if(isset($_GET['oID'])){
+          $oid_is_inpage = in_array($_GET['oID'],$orders_id_list);
+        }else{
+          $oid_is_inpage = false;
+        }
+        foreach($orders_info_arr as $orders){
           $orders_i++;
           if (!isset($orders['site_id'])) {
             $orders = tep_db_fetch_array(tep_db_query("

@@ -19,7 +19,7 @@ define('TEXT_SELECT_CUST', '顧客選択:');
 if(!defined('TEXT_SELECT_CURRENCY'))define('TEXT_SELECT_CURRENCY', '通貨選択:');
 define('BUTTON_TEXT_SELECT_CUST', '顧客選択:'); 
 define('TEXT_OR_BY', 'または顧客ID:'); 
-define('TEXT_STEP_1', 'ステップ 1 - 顧客を選択し詳細を確認してください');
+define('TEXT_STEP_ONE', 'ステップ 1 - 顧客を選択し詳細を確認してください');
 define('BUTTON_SUBMIT', '確認する');
 define('ENTRY_CURRENCY','決済通貨');
 define('CATEGORY_ORDER_DETAILS','通貨設定');

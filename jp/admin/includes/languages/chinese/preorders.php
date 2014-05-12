@@ -101,7 +101,6 @@ define('TEXT_CREDIT_FIND','信用度调查');
 
 define('TEXT_ORDER_SAVE','保存');
 define('TEXT_ORDER_TEST_TEXT','试运行中<font color="red">（确认与上述的数值是否一致）</font>买入时复制粘贴用:');
-define('TEXT_FEE_TEXT','这个订单未满5,000日元,如果购买商品,需扣除168日元的手续费');
 define('TEXT_MAIL_CONTENT_INFO',' 自动换行显示,发送邮件也换行。');
 define('TEXT_ORDER_COPY','复制粘贴用:');
 define('TEXT_ORDER_LOGIN','现在开始登录。');
@@ -152,7 +151,7 @@ define('TEXT_ORDER_END_DATE','结束日期:');
 define('TEXT_ORDER_START_DATE','开始日期:');
 define('TEXT_ORDER_SITE_TEXT','订单网站');
 define('TEXT_ORDER_SERVER_BUSY','下载途中对服务器产生高负荷。请在访问时间内执行。');
-define('TEXT_ORDER_DOWNLOPAD','订单数据输出');
+define('TEXT_ORDER_DOWNLOAD','订单数据输出');
 
 define('DEL_CONFIRM_PAYMENT_TIME', '删除');
 define('NOTICE_DEL_CONFIRM_PAYEMENT_TIME', '删除时间吗？');
@@ -163,7 +162,7 @@ define('NOTICE_ORDER_INPUT_PASSWORD', '请输入一次性密码\r\n');
 define('NOTICE_ORDER_INPUT_WRONG_PASSWORD', '密码有误');
 define('TEXT_ORDER_INPUTED_FLAG', '输入完成');
 define('TEXT_ORDER_DATE_LONG', '有效期限:');
-define('TEXT_ORDER_HOUHOU', '选项:');
+define('TEXT_ORDER_OPTION', '选项:');
 define('TEXT_PREORDER_ID_TEXT', '预约号码:');
 define('TEXT_PREORDER_DAY', '预约日期:');
 define('TEXT_ORDER_CUSTOMER_TYPE', '客户类别:');

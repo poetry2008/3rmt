@@ -151,8 +151,8 @@ if (STOCK_CHECK == 'true') {
   }
 }
 
-$breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-$breadcrumb->add(NAVBAR_TITLE_2);
+$breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+$breadcrumb->add(NAVBAR_TITLE_SECOND);
 
 if (isset($payment_modules->modules[strtoupper($payment)]->form_action_url) && $payment_modules->modules[strtoupper($payment)]->form_action_url) {
   $form_action_url = $payment_modules->modules[strtoupper($payment)]->form_action_url;

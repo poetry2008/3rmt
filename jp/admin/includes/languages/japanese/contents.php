@@ -10,8 +10,8 @@ define('TABLE_HEADING_CONTENTS_STATUS', 'ステータス');
 define('TABLE_HEADING_CONTENTS_SORT', 'ソート順');
 define('TABLE_HEADING_ACTION', '操作');
 
-define('TEXT_DELETE_INTRO', '本当にこのコンテンツを削除しますか?');
-define('TEXT_INFO_HEADING_DELETE_CONTENTS', 'コンテンツをを削除');
+define('TEXT_DELETE_INTRO', '本当にこのコンテンツを削除しますか？');
+define('TEXT_INFO_HEADING_DELETE_CONTENTS', 'コンテンツを削除');
 
 //detail page
 define('TEXT_PRODUCT_AVAILABLE', '表示する');
@@ -26,8 +26,8 @@ define('TEXT_DETAIL_INPUT','改行は無視されます。<br>改行する場合
 define('TEXT_DETAIL_ROMAN', 'ローマ字');
 define('ROMAN_NOT_NULL', '<font color=\'red\'>ローマ字をご入力ください。</font>');
 
-define('ROMAN_EXISTS', '<font color=\'red\'>ローマ字はもう存在しています。</font>');
-define('ROMAN_WRONG_FORMAT', '英数文字及び「_」で記入してください');
+define('ROMAN_ALREADY_EXISTS', '<font color=\'red\'>そのローマ字はもう存在しています。</font>');
+define('WRONG_TEXT_FORMAT', '英数字及びアンダーバー（ _ ）で入力してください。');
 define('TEXT_USER_ADDED','作成者');
 define('TEXT_USER_UPDATE','更新者');
 define('TEXT_DATE_ADDED','作成日');
@@ -38,7 +38,7 @@ define('TEXT_CONTENTS_SELECT_ACTION','選択したものを');
 define('TEXT_CONTENTS_DELETE_ACTION', '削除する');
 define('TEXT_CONTENTS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。'); 
 define('TEXT_DEL_CONTENTS', '本当に削除しますか？');
-define('TEXT_ERROR_NULL','<font color=\'red\'>入力して下さい。</font>');
+define('TEXT_ERROR_NULL','<font color=\'red\'>入力してください。</font>');
 define('TEXT_LINK','リンク');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');

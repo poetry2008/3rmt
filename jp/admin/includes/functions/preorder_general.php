@@ -314,7 +314,7 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGENT.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
@@ -993,7 +993,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</td>';
+    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGENT.'</td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
     $str .= '</td>'; 

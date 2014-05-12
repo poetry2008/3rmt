@@ -4,7 +4,7 @@
 */
 
 define('EMAIL_TEXT_SUBJECT', 'ご注文ありがとうございます【RMT学園】　');
-define('EMAIL_TEXT_SUBJECT2','ご注文ありがとうございます【RMT学園】　');
+define('EMAIL_TEXT_SUBJECT_R','ご注文ありがとうございます【RMT学園】　');
 
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へご注文をいただきまして、誠にありがとうございます。' . "\n\n" . 
 '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n\n" . 
@@ -30,9 +30,9 @@ define('TEXT_EMAIL_VIA', '(配送方法)');
 define('TEXT_POINT_NOW', '今回の獲得ポイント:');
 
 //库存不足提醒
-define('ZAIKO_ALART_TITLE','在庫が切れました。');
-define('ZAIKO_ALART_TITLE2','オプション在庫が切れました。');
-define('ZAIKO_ARART_BODY',
+define('INVENTORY_EXPIRED_TEXT','在庫が切れました。');
+define('INVENTORY_EMPTY_TEXT','オプション在庫が切れました。');
+define('INVENTORY_INFO_NOTICE',
 '商品在庫が切れています。管理画面にログインしていただき
 在庫を増やしていただくか、商品を削除してください。現在
 商品はオンライン上からは非表示になっています。
@@ -42,10 +42,10 @@ define('ZAIKO_ARART_BODY',
 '.EMAIL_SEPARATOR."\n");
 
 define('TEXT_BANK_NAME', '金融機関名　　　　');
-define('TEXT_BANK_SHITEN', '支店名　　　　　　');
-define('TEXT_BANK_KAMOKU', '口座種別　　　　　');
-define('TEXT_BANK_KOUZA_NUM', '口座番号　　　　　');
-define('TEXT_BANK_KOUZA_NAME', '口座名義　　　　　');
+define('TEXT_BANK_BRANCH', '支店名　　　　　　');
+define('TEXT_BANK_TYPE', '口座種別　　　　　');
+define('TEXT_BANK_ACCOUNT_NUM', '口座番号　　　　　');
+define('TEXT_BANK_ACCOUNT_NAME', '口座名義　　　　　');
 
 
 ?>

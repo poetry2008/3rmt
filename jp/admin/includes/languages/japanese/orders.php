@@ -100,7 +100,6 @@ define('TEXT_CREDIT_FIND','信用調査');
 
 define('TEXT_ORDER_SAVE','保存');
 define('TEXT_ORDER_TEST_TEXT','試験運用中<font color="red">（上記の数値と一致しているか確認するように）</font>買取コピペ用:');
-define('TEXT_FEE_TEXT','この注文は5,000円未満です。買取なら手数料168円引く');
 define('TEXT_MAIL_CONTENT_INFO',' 自動的に改行して表示し、送信されるメールにも改行が入ります。');
 define('TEXT_ORDER_COPY','コピペ用:');
 define('TEXT_ORDER_LOGIN','ただ今よりログインいたします。');
@@ -143,7 +142,7 @@ define('TEXT_ORDER_END_DATE','終了日:');
 define('TEXT_ORDER_START_DATE','開始日:');
 define('TEXT_ORDER_SITE_TEXT','注文書サイト');
 define('TEXT_ORDER_SERVER_BUSY','ダウンロード中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。');
-define('TEXT_ORDER_DOWNLOPAD','注文データエクスポート');
+define('TEXT_ORDER_DOWNLOAD','注文データエクスポート');
 
 define('DEL_CONFIRM_PAYMENT_TIME', '削除');
 define('NOTICE_DEL_CONFIRM_PAYEMENT_TIME', '時間を削除しますか？');

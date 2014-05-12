@@ -214,8 +214,8 @@ if (!tep_session_is_registered('comments')) tep_session_register('comments');
 $total_weight = $cart->show_weight();
 $total_count = $cart->count_contents();
 
-$breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-$breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+$breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+$breadcrumb->add(NAVBAR_TITLE_SECOND, tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
 // load all enabled payment modules
 
 

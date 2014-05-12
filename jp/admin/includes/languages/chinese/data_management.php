@@ -17,7 +17,7 @@ define('TEXT_ORDER_END_DATE','结束日期');
 define('TEXT_ORDER_START_DATE','开始日期');
 define('TEXT_ORDER_SITE_TEXT','网站名');
 define('TEXT_ORDER_SERVER_BUSY','导出操作使服务器高负荷。请减少执行存取时间。');
-define('TEXT_ORDER_DOWNLOPAD','订单数据导出');
+define('TEXT_ORDER_DOWNLOAD','订单数据导出');
 define('TEXT_MAG_CONTENTS','内容');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');

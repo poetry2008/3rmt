@@ -343,12 +343,12 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                               <td class="main"><?php echo tep_get_zone_name(STORE_COUNTRY,$state, $zone); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS1;?></td> 
+                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS_ONE;?></td> 
                               <td class="main"><?php echo $address1; ?></td> 
                             </tr> 
                             <?php if(!empty($address2)) { ?> 
                             <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS2;?></td> 
+                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS_TWO;?></td> 
                               <td class="main"><?php echo $address2; ?></td> 
                             </tr> 
                             <?php } ?> 
@@ -412,11 +412,11 @@ if (!isset($_GET['action'])) $_GET['action'] = NULL;//delnotice
                               <td class="main"><?php echo tep_draw_input_field('city', $city, 'class="input_text"'); ?> <?php if(!$city) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS1?></td> 
+                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS_ONE?></td> 
                               <td class="main"><?php echo tep_draw_input_field('street_address', $street_address, 'class="input_text"'); ?> <?php if(!$street_address) {?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS2;?></td> 
+                              <td class="main"><?php echo TEXT_PRESENT_CON_ADDRESS_TWO;?></td> 
                               <td class="main"><?php echo tep_draw_input_field('suburb', $suburb, 'class="input_text"'); ?></td> 
                             </tr> 
                             <tr> 

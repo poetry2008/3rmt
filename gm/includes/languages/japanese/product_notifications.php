@@ -4,8 +4,8 @@
 
 */
 
-define('NAVBAR_TITLE_1', 'お客様情報');
-define('NAVBAR_TITLE_2', 'お知らせ設定');
+define('NAVBAR_TITLE_FIRST', 'お客様情報');
+define('NAVBAR_TITLE_SECOND', 'お知らせ設定');
 define('HEADING_TITLE', 'お知らせ設定');
 
 define('TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION',

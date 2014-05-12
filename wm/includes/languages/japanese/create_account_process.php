@@ -3,8 +3,8 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_1', '会員登録');
-define('NAVBAR_TITLE_2', '手続き');
+define('NAVBAR_TITLE_FIRST', '会員登録');
+define('NAVBAR_TITLE_SECOND', '手続き');
 define('HEADING_TITLE', 'お客様情報');
 
 define('EMAIL_SUBJECT', '会員登録が完了いたしました【'.STORE_NAME.'】');
