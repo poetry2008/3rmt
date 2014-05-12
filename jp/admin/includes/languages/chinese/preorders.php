@@ -101,7 +101,6 @@ define('TEXT_CREDIT_FIND','信用度调查');
 
 define('TEXT_ORDER_SAVE','保存');
 define('TEXT_ORDER_TEST_TEXT','试运行中<font color="red">（确认与上述的数值是否一致）</font>买入时复制粘贴用:');
-define('TEXT_FEE_TEXT','这个订单未满5,000日元,如果购买商品,需扣除168日元的手续费');
 define('TEXT_MAIL_CONTENT_INFO',' 自动换行显示,发送邮件也换行。');
 define('TEXT_ORDER_COPY','复制粘贴用:');
 define('TEXT_ORDER_LOGIN','现在开始登录。');

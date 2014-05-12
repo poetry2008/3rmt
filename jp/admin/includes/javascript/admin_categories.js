@@ -1,20 +1,28 @@
+var categories_tree_show = false;
 function inventory_operations(num){
 
-  var inventory_contents_value;
+  var inventory_contents_value_1;
+  var inventory_contents_value_2;
+  var select_inventory;
   if(num == 1){
 
-    inventory_contents_value = $("#max_inventory").val();
+    inventory_contents_value_1 = $("#max_inventory_1").val();
+    inventory_contents_value_2 = $("#max_inventory_2").val();
+    select_inventory = $("#select_inventory_1").val();
   }else{
 
-    inventory_contents_value = $("#min_inventory").val();
+    inventory_contents_value_1 = $("#min_inventory_1").val();
+    inventory_contents_value_2 = $("#min_inventory_2").val();
+    select_inventory = $("#select_inventory_2").val();
   }
-  inventory_contents_value = inventory_contents_value.replace(/\+/g,'<<<');
+  inventory_contents_value_1 = inventory_contents_value_1.replace(/\+/g,'<<<');
+  inventory_contents_value_2 = inventory_contents_value_2.replace(/\+/g,'<<<');
 
   $.ajax({
     url: 'ajax_orders.php?action=inventory_operations',   
     type: 'POST',
     dataType: 'text',
-    data: 'inventory_contents='+inventory_contents_value+'&pid='+get_pid+'&site_id='+get_site_id, 
+    data: 'inventory_contents_1='+inventory_contents_value_1+'&inventory_contents_2='+inventory_contents_value_2+'&select_inventory='+select_inventory+'&pid='+get_pid+'&site_id='+get_site_id, 
     async: false,
     success: function(msg) {
 
@@ -149,7 +157,7 @@ function change_image_text(_this,change_name){
   });
 }
 // cancel all of corresponding information about picture 
-function clear_image(file_name,input_name){
+function clear_image(file_name,input_name,id){
   var image_name = $("input[name="+input_name+"]").val();
   var f_name = $("input[name="+file_name+"]").val();
   var pid = $("input[name=hidd_pid]").val();
@@ -157,7 +165,7 @@ function clear_image(file_name,input_name){
     url: 'ajax_orders.php?action=has_pimage',   
     type: 'POST',
     dataType: 'text',
-    data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id, 
+    data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id, 
     async: false,
     success: function(msg) {
       msg_arr = msg.split('|||'); 
@@ -167,7 +175,7 @@ function clear_image(file_name,input_name){
             url: 'ajax_orders.php?action=change_pimage',   
             type: 'POST',
             dataType: 'text',
-            data: 'col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id, 
+            data: 'col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id, 
             async: false,
             success: function(msg) {
             }
@@ -176,7 +184,7 @@ function clear_image(file_name,input_name){
           $("input[name="+file_name+"]").val('');
           $("input[name="+input_name+"]").val('');
         }else if(msg_arr[0]=='false'){
-          confirmg(image_name+' '+del_confirm,clear_image_href_link+'&file='+image_name+'&cl='+file_name);
+          confirmg(image_name+' '+del_confirm,clear_image_href_link+'&file='+image_name+'&id='+id);
         }
       } else {
         alert(read_text); 
@@ -1374,4 +1382,72 @@ function check_edit_product_profit() {
   } else {
     document.forms.new_product.submit(); 
   }
+}
+//add categories info
+function add_categories_info(num){
+
+  var html_str = '<tr><td><textarea rows="3" cols="30" wrap="soft" name="categories_info_contents['+num+'][]"></textarea></td></tr>';
+  $("#categories_info_id").append(html_str);
+}
+//click file
+function file_click(id){
+
+  $("#"+id).click();
+}
+//add images  
+function add_images(select,clear){
+
+  var images_num = $("#images_num").val();
+  images_num = parseInt(images_num);
+  var html_str = '<tr><td class="main"><img width="24" height="15" border="0" alt="" src="images/pixel_trans.gif">&nbsp;<input type="text" value="" name="products_previous_image_'+(images_num+1)+'">&nbsp;<input type="file" style="display:none" id="image_'+(images_num+1)+'" onchange="change_image_text(this,\'products_previous_image_'+(images_num+1)+'\')" name="products_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_image(\'products_image_'+(images_num+1)+'\',\'products_previous_image_'+(images_num+1)+'\');" value="'+clear+'" class="element_button"></a></td></tr>';
+  $("#images_num").val(images_num+1);
+  $("#products_images_id").append(html_str);
+}
+//add products info top
+function add_products_info_top(){
+
+  var html_str = '<tr><td><input type="text" style="width:63%;" name="products_info_top_title[]"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_top_contents[]"></textarea></td></tr>';
+  $("#products_info_top_id").append(html_str);
+}
+//add products info under
+function add_products_info_under(){
+
+  var html_str = '<tr><td><input type="text" style="width:63%;" name="products_info_under_title[]"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_under_contents[]"></textarea></td></tr>';
+  $("#products_info_under_id").append(html_str);
+}
+function ajax_display(cpath){
+  offset = $(".pageHeading").offset();
+  var categories_tree = document.getElementById('categories_tree'); 
+  if(categories_tree.style.display == 'none' || categories_tree.style.display == ''){
+   if(!categories_tree_show){
+  $.ajax({
+    url: 'ajax.php?action=ajax_categrories',      
+    data: 'cpath='+cpath,
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $("#categories_tree").html(data);
+      categories_tree_show = true;
+    }
+  });
+   }
+    categories_tree.style.top = offset.top + 'px';
+    categories_tree.style.display = 'block';
+  }else{
+    categories_tree.style.display = 'none';
+  }
+}
+function load_categoreis_tree(cpath){
+  $.ajax({
+    url: 'ajax.php?action=ajax_categrories',      
+    data: 'cpath='+cpath,
+    type: 'POST',
+    dataType: 'text',
+    async:true,
+    success: function (data) {
+      $("#categories_tree").html(data);
+      categories_tree_show = true;
+    }
+  });
 }
