@@ -8045,7 +8045,6 @@ $banner_query = tep_db_query("
   $notice_box->get_contents($contents, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
-<<<<<<< HEAD
 }else if($_GET['action'] == 'new_messages'){
  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.'messages.php');
  include(DIR_FS_ADMIN.'classes/notice_box.php');
@@ -8155,7 +8154,6 @@ $banner_query = tep_db_query("
  $notice_box->get_contents($messages_content_table); 
  echo $notice_box->show_notice();
 
-=======
 }else if($_GET['action'] == 'edit_meta_info'){
 /* -----------------------------------------------------
     功能: meta的弹出框
@@ -8523,5 +8521,4 @@ $banner_query = tep_db_query("
   $notice_box->get_contents($customer_info_row, $buttons);
   echo $notice_box->show_notice();
  
->>>>>>> 0b0ebc0513ec6d39e292b90926fc517e7bcb3953
 }
