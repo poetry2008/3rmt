@@ -5057,13 +5057,7 @@ function get_guest_chk($customers_id)
 function tep_high_light_by_keywords($str, $keywords)
 {
   $k = $rk= explode('|',$keywords);
-  /*
-  foreach($k as $key => $value){
-    $rk[$key] = '<font style="background:red;">'.$value.'</font>';
-  }
-  */
   return tep_replace_to_red($rk,$str);
-  //return str_replace($k, $rk, $str);
 }
 
 /* -------------------------------------
@@ -12728,7 +12722,7 @@ function tep_replace_to_red($arr,$str){
     $str_search_arr = str_split_utf8($nospacev);
     $preg_str = '';
     foreach($str_search_arr as $search_v){
-      $preg_str .= $search_v.'[\s-]{0,}';
+      $preg_str .= $search_v.'[\s-_]{0,}';
     }
     if(preg_match_all('/('.$preg_str.')/',$out_str,$match_arr)){
       if(isset($match_arr)&&!empty($match_arr)){
