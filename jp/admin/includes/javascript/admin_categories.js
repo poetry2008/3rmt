@@ -1396,6 +1396,15 @@ function add_images(select,clear){
   $("#images_num").val(images_num+1);
   $("#products_images_id").append(html_str);
 }
+//add cart images  
+function add_cart_images(select,clear){
+
+  var images_num = $("#cart_images_num").val();
+  images_num = parseInt(images_num);
+  var html_str = '<tr><td class="main"><input type="text" value="" name="products_cart_previous_image_'+(images_num+1)+'">&nbsp;<input type="file" style="display:none" id="cart_image_'+(images_num+1)+'" onchange="change_cart_image_text(this,\'products_cart_previous_image_'+(images_num+1)+'\')" name="products_cart_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'cart_image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_cart_image(\'products_cart_image_'+(images_num+1)+'\',\'products_cart_previous_image_'+(images_num+1)+'\');" value="'+clear+'" class="element_button"></a></td></tr>';
+  $("#cart_images_num").val(images_num+1);
+  $("#products_cart_images_id").append(html_str);
+}
 //add products info top
 function add_products_info_top(){
 

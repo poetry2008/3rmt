@@ -3018,11 +3018,9 @@ echo json_encode($json_array);
   }
   if(isset($_POST['image_name'])&&$_POST['image_name']!=''){
     $image_name = $_POST['image_name'];
-    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
-      where (products_image ='".$image_name."' 
-      OR products_image2='".$image_name."'
-      OR products_image3='".$image_name."')
-      and site_id = '".$_POST['site_id']."' limit 1";
+    $sql = "select products_id from products_images 
+      where images_name ='".$image_name."' 
+      and site_id = '".$_POST['site_id']."' and images_type=0 limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       echo 'true|||'.$tmp_info;
@@ -3031,23 +3029,10 @@ echo json_encode($json_array);
     }
   }else{
     $image_name = $_POST['image_value'];
-    $sql = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
-      " where products_image ='".$image_name."' 
-      and site_id = '".$_POST['site_id']."'"; 
-    $sql2 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
-    " where products_image2='".$image_name."'
-    and site_id = '".$_POST['site_id']."'";
-    $sql3 = "select count(*) as con from ".TABLE_PRODUCTS_DESCRIPTION.
-      " where products_image3='".$image_name."'
-      and site_id = '".$_POST['site_id']."'";
+    $sql = "select count(*) as con from products_images where images_name ='".$image_name."' and site_id = '".$_POST['site_id']."' and images_type=0";  
     $res = tep_db_fetch_array(tep_db_query($sql));
-    $res2 = tep_db_fetch_array(tep_db_query($sql2));
-    $res3 = tep_db_fetch_array(tep_db_query($sql3));
-    $con = $res['con']+$res2['con']+$res3['con'];
-    $sql_self = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION.
-      " where ".$_POST['col_name']."='".$image_name."'
-      and products_id='".$_POST['pid']."' 
-      and site_id = '".$_POST['site_id']."' limit 1";
+    $con = $res['con'];
+    $sql_self = "select products_id from products_images where images_name='".$image_name."' and images_id='".$_POST['id']."' and images_type=0 limit 1";
     $query_self = tep_db_query($sql_self);
     if($res_self=tep_db_fetch_array($query_self)){
       $con--;
@@ -3059,7 +3044,7 @@ echo json_encode($json_array);
     }
   }
 }else if ($_GET['action'] == 'change_pimage'){
-  $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set ".$_POST['col_name']."='' where products_id='".$_POST['pid']."' and site_id='".$_POST['site_id']."'";
+  $update_sql = "delete from products_images where images_id='".$_POST['id']."'";
   tep_db_query($update_sql);
 }else if ($_GET['action'] == 'check_play_sound'){
 /*-----------------------------------------
