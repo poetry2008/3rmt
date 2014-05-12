@@ -3116,7 +3116,9 @@ echo json_encode($json_array);
   $select_inventory = $_POST['select_inventory'];
   $inventory_contents_1 = tep_inventory_operations($inventory_contents_1,$pid,$site_id); 
   $inventory_contents_2 = tep_inventory_operations($inventory_contents_2,$pid,$site_id); 
-  echo $select_inventory == 'max' ? max($inventory_contents_1,$inventory_contents_2) : min($inventory_contents_1,$inventory_contents_2);
+  $result = $select_inventory == 'max' ? max($inventory_contents_1,$inventory_contents_2) : min($inventory_contents_1,$inventory_contents_2);
+  $result = $result < 0 ? 0 : $result;
+  echo $result;
 }else if ($_GET['action'] == 'show_status_mail_send'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ORDERS);
 $orders_status_query = tep_db_query("select orders_status_id, orders_status_name, is_reorder from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
