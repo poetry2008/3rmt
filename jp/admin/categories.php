@@ -951,11 +951,17 @@ if (isset($_GET['action']) && $_GET['action']) {
     //如果实际库存为空时,默认为0
     $_POST['products_real_quantity'] = $_POST['products_real_quantity'] == '' ? 0 : $_POST['products_real_quantity'];
     //如果最大库存为空时,默认为0
-    $_POST['inventory_max'] = $_POST['inventory_max'] == '' ? 0 : $_POST['inventory_max'];
-    $inventory_max = $_POST['inventory_max'];
+    $_POST['inventory_max_1'] = trim($_POST['inventory_max_1']) == '' ? 0 : trim($_POST['inventory_max_1']);
+    $inventory_max_1 = tep_db_prepare_input($_POST['inventory_max_1']);
+    $_POST['inventory_max_2'] = trim($_POST['inventory_max_2']) == '' ? 0 : trim($_POST['inventory_max_2']);
+    $inventory_max_2 = tep_db_prepare_input($_POST['inventory_max_2']);
+    $inventory_select_1 = $_POST['inventory_select_1'];
     //如果最小库存为空时,默认为0
-    $_POST['inventory_min'] = $_POST['inventory_min'] == '' ? 0 : $_POST['inventory_min'];
-    $inventory_min = $_POST['inventory_min'];
+    $_POST['inventory_min_1'] = trim($_POST['inventory_min_1']) == '' ? 0 : trim($_POST['inventory_min_1']);
+    $inventory_min_1 = tep_db_prepare_input($_POST['inventory_min_1']);
+    $_POST['inventory_min_2'] = trim($_POST['inventory_min_2']) == '' ? 0 : trim($_POST['inventory_min_2']);
+    $inventory_min_2 = tep_db_prepare_input($_POST['inventory_min_2']);
+    $inventory_select_2 = $_POST['inventory_select_2'];
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
     else $site_arr="";
     forward401Unless(editPermission($site_arr, $site_id));
@@ -1025,6 +1031,8 @@ if (isset($_GET['action']) && $_GET['action']) {
 
 
       //把最大库存、最小库存放入数组，以备保存到数据库
+      $inventory_max = $inventory_max_1.'|||'.$inventory_max_2.'|||'.$inventory_select_1;
+      $inventory_min = $inventory_min_1.'|||'.$inventory_min_2.'|||'.$inventory_select_2;
       $sql_data_array['max_inventory'] = tep_db_prepare_input($inventory_max);
       $sql_data_array['min_inventory'] = tep_db_prepare_input($inventory_min);
       if ($_GET['action'] == 'insert_product') {
@@ -2367,11 +2375,52 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td class="main"><?php echo TEXT_PRODUCT_INVENTORY_STANDARD;?></td>
-                <td class="main" colspan="2"><?php echo str_replace(TEXT_PRODUCTS_QUANTITY_TEXT,'',TEXT_MAX) .'&nbsp;'. tep_draw_input_field('inventory_max', $pInfo->max_inventory, 'style="width:63%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="max_inventory" onblur="inventory_operations(1);"')); ?>&nbsp;<?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_max_contents', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? ''.tep_inventory_operations($pInfo->max_inventory,$pInfo->products_id,$site_id) : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="max_inventory_contents" style="text-align:right;width:15%"');?></td>
+                <?php
+                    //在库最大、最小
+                    $max_inventory_array = explode('|||',trim($pInfo->max_inventory));
+                    $min_inventory_array = explode('|||',trim($pInfo->min_inventory));
+                ?>
+                <td class="main" colspan="2"><?php echo DB_CONFIGURATION_TITLE_MAX .'&nbsp;'. tep_draw_input_field('inventory_max_1', $max_inventory_array[0], 'style="width:20%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="max_inventory_1" onblur="inventory_operations(1);"')).TEXT_INVENTORY_OR. tep_draw_input_field('inventory_max_2', $max_inventory_array[1], 'style="width:20%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="max_inventory_2" onblur="inventory_operations(1);"')).TEXT_INVENTORY_LINK; ?>
+                <select name="inventory_select_1" id="select_inventory_1" onchange="inventory_operations(1);">
+                  <option value="max"><?php echo TEXT_INVENTORY_SELECT_MAX;?></option>
+                  <option value="min"<?php echo $max_inventory_array[2] == 'min' ? ' selected="selected"' : ''?>><?php echo TEXT_INVENTORY_SELECT_MIN;?></option>
+                </select>
+                <?php
+                  if($max_inventory_array[0] != ''){
+                    $max_inventory_num_1 = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id);
+                  }else{
+                    $max_inventory_num_1 = 0; 
+                  }
+                  if($max_inventory_array[1] != ''){
+                    $max_inventory_num_2 = tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id);
+                  }else{
+                    $max_inventory_num_2 = 0;
+                  }
+                  $max_inventory_value = $max_inventory_array[2] == 'min' ? ($max_inventory_num_1 < $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2) : ($max_inventory_num_1 > $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2);
+                ?>
+                <?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_max_contents', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? ''.$max_inventory_value : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="max_inventory_contents" style="text-align:right;width:10%"');?></td>
                 </tr>
                 <tr>
                 <td class="main">&nbsp;</td>
-                <td class="main" colspan="2"><?php echo str_replace(TEXT_PRODUCTS_QUANTITY_TEXT,'',TEXT_MIN) .'&nbsp;'. tep_draw_input_field('inventory_min', $pInfo->min_inventory, 'style="width:63%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="min_inventory" onblur="inventory_operations(0);"')); ?>&nbsp;<?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_min_contents', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? ''.tep_inventory_operations($pInfo->min_inventory,$pInfo->products_id,$site_id) : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="min_inventory_contents" style="text-align:right;width:15%"');?></td>
+                <td class="main" colspan="2"><?php echo DB_CONFIGURATION_TITLE_MIN .'&nbsp;'. tep_draw_input_field('inventory_min_1', $min_inventory_array[0], 'style="width:20%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="min_inventory_1" onblur="inventory_operations(0);"')).TEXT_INVENTORY_OR.tep_draw_input_field('inventory_min_2', $min_inventory_array[1], 'style="width:20%;" '.($disabled_flag ? 'class="readonly" readonly' : 'id="min_inventory_2" onblur="inventory_operations(0);"')).TEXT_INVENTORY_LINK; ?>
+                <select name="inventory_select_2" id="select_inventory_2" onchange="inventory_operations(0);">
+                  <option value="max"><?php echo TEXT_INVENTORY_SELECT_MAX;?></option>
+                  <option value="min"<?php echo $min_inventory_array[2] == 'min' ? ' selected="selected"' : ''?>><?php echo TEXT_INVENTORY_SELECT_MIN;?></option>
+                </select>
+                <?php
+                  if($min_inventory_array[0] != ''){
+                    $min_inventory_num_1 = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id);
+                  }else{
+                    $min_inventory_num_1 = 0; 
+                  }
+                  if($min_inventory_array[1] != ''){
+                    $min_inventory_num_2 = tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id);
+                  }else{
+                    $min_inventory_num_2 = 0;
+                  }
+                  $min_inventory_value = $min_inventory_array[2] == 'min' ? ($min_inventory_num_1 < $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2) : ($min_inventory_num_1 > $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2);
+                ?>
+                <?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_min_contents', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? ''.$min_inventory_value : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="min_inventory_contents" style="text-align:right;width:10%"');?></td>
                 </tr>
                 <tr><td class="main">&nbsp;</td><td class="main" colspan="2"><?php echo TEXT_PRODUCT_INVENTORY_INFO;?></td></tr>
                 <tr>

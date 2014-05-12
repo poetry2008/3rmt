@@ -1,21 +1,28 @@
 var categories_tree_show = false;
 function inventory_operations(num){
 
-  var inventory_contents_value;
+  var inventory_contents_value_1;
+  var inventory_contents_value_2;
+  var select_inventory;
   if(num == 1){
 
-    inventory_contents_value = $("#max_inventory").val();
+    inventory_contents_value_1 = $("#max_inventory_1").val();
+    inventory_contents_value_2 = $("#max_inventory_2").val();
+    select_inventory = $("#select_inventory_1").val();
   }else{
 
-    inventory_contents_value = $("#min_inventory").val();
+    inventory_contents_value_1 = $("#min_inventory_1").val();
+    inventory_contents_value_2 = $("#min_inventory_2").val();
+    select_inventory = $("#select_inventory_2").val();
   }
-  inventory_contents_value = inventory_contents_value.replace(/\+/g,'<<<');
+  inventory_contents_value_1 = inventory_contents_value_1.replace(/\+/g,'<<<');
+  inventory_contents_value_2 = inventory_contents_value_2.replace(/\+/g,'<<<');
 
   $.ajax({
     url: 'ajax_orders.php?action=inventory_operations',   
     type: 'POST',
     dataType: 'text',
-    data: 'inventory_contents='+inventory_contents_value+'&pid='+get_pid+'&site_id='+get_site_id, 
+    data: 'inventory_contents_1='+inventory_contents_value_1+'&inventory_contents_2='+inventory_contents_value_2+'&select_inventory='+select_inventory+'&pid='+get_pid+'&site_id='+get_site_id, 
     async: false,
     success: function(msg) {
 

@@ -575,8 +575,26 @@ if ($_GET['action'] == 'show_category_info') {
   }
   
   $inventory = array();
-  $inventory['max']  = $pInfo->max_inventory; 
-  $inventory['min']  = $pInfo->min_inventory; 
+  $max_inventory_array = explode('|||',$pInfo->max_inventory);
+  $min_inventory_array = explode('|||',$pInfo->min_inventory);
+  if(empty($site_id)){
+
+    if($max_inventory_array[2] == 'min'){
+
+      $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
+    }else{
+      $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
+    
+    }
+    
+    if($min_inventory_array[2] == 'min'){
+
+      $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
+    }else{
+      $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
+    
+    }
+  }
   $arr_td_title = array();
   $arr_td_product = array();
   $arr_td_relate = array();
@@ -677,8 +695,26 @@ if ($_GET['action'] == 'show_category_info') {
     }
     
     $inventory = array();
-    $inventory['max']  = $relate_pInfo->max_inventory; 
-    $inventory['min']  = $relate_pInfo->min_inventory; 
+    $max_inventory_array = explode('|||',$relate_pInfo->max_inventory);
+    $min_inventory_array = explode('|||',$relate_pInfo->min_inventory);
+    if(empty($site_id)){
+
+      if($max_inventory_array[2] == 'min'){
+
+        $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
+      }else{
+        $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
+    
+      }
+    
+      if($min_inventory_array[2] == 'min'){
+
+        $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
+      }else{
+        $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
+    
+      }
+    } 
     
     $arr_td_relate[] = $relate_pInfo->products_name;
     
