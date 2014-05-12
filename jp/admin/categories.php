@@ -279,7 +279,6 @@ if (isset($_GET['action']) && $_GET['action']) {
     exit;
     break;
     case 'toggle':
-    $up_rs = (isset($_GET['up_rs']))?true:false; 
     if ($_GET['cID']) {
       $cID = intval($_GET['cID']);
       $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
@@ -295,7 +294,7 @@ if (isset($_GET['action']) && $_GET['action']) {
 
       if (isset($_GET['status']) && ($_GET['status'] == 0 || $_GET['status'] == 1 || $_GET['status'] == 2 || $_GET['status'] == 3)){
         //0-绿色 1-红色 2-蓝色 3-黑色 
-        tep_set_category_link_product_status($cID, $_GET['status'], $site_id, $up_rs); 
+        tep_set_category_link_product_status($cID, $_GET['status'], $site_id); 
         if($site_id == "" || $site_id == 0){
           $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(), user_last_modified='".$_SESSION['user_name']."' where categories_id='".$_GET['cID']."'";
           tep_db_query($update_sql);
@@ -306,7 +305,7 @@ if (isset($_GET['action']) && $_GET['action']) {
               $categories_description_row = tep_db_fetch_array(tep_db_query($insert_c_sql));
               $categories_description_row['site_id'] = $site_id;
               tep_db_perform(TABLE_CATEGORIES_DESCRIPTION,$categories_description_row);
-              tep_set_category_link_product_status($cID, $_GET['status'], $site_id, $up_rs); 
+              tep_set_category_link_product_status($cID, $_GET['status'], $site_id); 
           }else{
               $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now() where categories_id='".$_GET['cID']."' and site_id='".$site_id."'";
               tep_db_query($update_sql);
@@ -330,7 +329,6 @@ if (isset($_GET['action']) && $_GET['action']) {
     tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
 
     $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
-    $up_rs = (isset($_GET['up_rs']))?true:false; 
     
     if($site_id == "" || $site_id == 0){
       $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$_SESSION['user_name']."'  where products_id='".$_GET['pID']."'";
@@ -342,7 +340,7 @@ if (isset($_GET['action']) && $_GET['action']) {
          $products = tep_db_fetch_array(tep_db_query($insert_p_sql));
          $products['site_id'] = $site_id;
          tep_db_perform(TABLE_PRODUCTS_DESCRIPTION,$products);
-         tep_set_product_status_by_site_id($_GET['pID'], $_GET['flag'], $_GET['site_id'], $up_rs);
+         tep_set_product_status_by_site_id($_GET['pID'], $_GET['flag'], $_GET['site_id']);
       }else{
          $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(), products_user_update='".$_SESSION['user_name']."' where products_id='".$_GET['pID']."' and site_id='".$site_id."'";
          tep_db_query($update_sql);
@@ -350,7 +348,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
     
     if ($site_id == 0) {
-      tep_set_all_product_status($_GET['pID'], $_GET['flag'], $up_rs); 
+      tep_set_all_product_status($_GET['pID'], $_GET['flag']); 
       if (USE_CACHE == 'true') {
         tep_reset_cache_block('categories');
         tep_reset_cache_block('also_purchased');
@@ -361,7 +359,7 @@ if (isset($_GET['action']) && $_GET['action']) {
     if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') || ($_GET['flag'] == '2') || ($_GET['flag'] == '3')) {
       //0-红色 1-绿色 2-蓝色 3-黑色 
       if ($_GET['pID']) {
-        tep_set_product_status_by_site_id($_GET['pID'], $_GET['flag'], $_GET['site_id'], $up_rs);
+        tep_set_product_status_by_site_id($_GET['pID'], $_GET['flag'], $_GET['site_id']);
       }
       if (USE_CACHE == 'true') {
         tep_reset_cache_block('categories');
