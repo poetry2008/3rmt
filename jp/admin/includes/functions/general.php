@@ -5632,22 +5632,56 @@ function tep_display_google_results($from_url='', $c_type=false){
       $parent_id = tep_get_category_parent_id($categories_id);
     }
     $inventory_arr = tep_get_product_inventory($pid);
+
     $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
                              '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
                              '$unit_price',//商品单价(参数)
                              '$related_unit_price',//关联商品单价(参数)
                              '$stocks_average_cost'//实际库存的平均价格(参数)
                            );
-    if(strlen($inventory_arr['max']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['max']))){
-      $inventory_arr['max'] = tep_inventory_operations($inventory_arr['max'],$pid,0);
+    $inventory_max_array = explode('|||',$inventory_arr['max']);
+    if(strlen($inventory_max_array[0]) != strlen(str_replace($inventory_mode_array,'',$inventory_max_array[0]))){
+
+      $inventory_max_num_1 = tep_inventory_operations($inventory_max_array[0],$pid,0);
     }else{
-      $inventory_arr['max'] = tep_operations($inventory_arr['max']);
+       
+      $inventory_max_num_1 = tep_operations($inventory_max_array[0],$pid,0);
     }
-    if(strlen($inventory_arr['min']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['min']))){
-      $inventory_arr['min'] = tep_inventory_operations($inventory_arr['min'],$pid,0);
+    if(strlen($inventory_max_array[1]) != strlen(str_replace($inventory_mode_array,'',$inventory_max_array[1]))){
+
+      $inventory_max_num_2 = tep_inventory_operations($inventory_max_array[1],$pid,0);
     }else{
-      $inventory_arr['min'] = tep_operations($inventory_arr['min']);
+       
+      $inventory_max_num_2 = tep_operations($inventory_max_array[1],$pid,0);
+    } 
+
+    if($inventory_max_array[2] == 'min'){
+      $inventory_arr['max'] = $inventory_max_num_1 < $inventory_max_num_2 ? $inventory_max_num_1 : $inventory_max_num_2;
+    }else{
+      $inventory_arr['max'] = $inventory_max_num_1 > $inventory_max_num_2 ? $inventory_max_num_1 : $inventory_max_num_2;
     }
+    $inventory_min_array = explode('|||',$inventory_arr['min']);
+    if(strlen($inventory_min_array[0]) != strlen(str_replace($inventory_mode_array,'',$inventory_min_array[0]))){
+
+      $inventory_min_num_1 = tep_inventory_operations($inventory_min_array[0],$pid,0);
+    }else{
+       
+      $inventory_min_num_1 = tep_operations($inventory_min_array[0],$pid,0);
+    }
+    if(strlen($inventory_min_array[1]) != strlen(str_replace($inventory_mode_array,'',$inventory_min_array[1]))){
+
+      $inventory_min_num_2 = tep_inventory_operations($inventory_min_array[1],$pid,0);
+    }else{
+       
+      $inventory_min_num_2 = tep_operations($inventory_min_array[1],$pid,0);
+    }
+
+    if($inventory_min_array[2] == 'min'){
+      $inventory_arr['min'] = $inventory_min_num_1 < $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
+    }else{
+      $inventory_arr['min'] = $inventory_min_num_1 > $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
+    } 
+ 
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
   }

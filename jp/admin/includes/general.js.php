@@ -450,7 +450,7 @@ function clearNoNum_1(obj)
   }
 }
 
-function check_toggle_status(url_str, c_permission)
+function check_toggle_status(url_str, c_permission,status)
 {
   $.ajax({
     url: 'ajax_orders.php?action=getallpwd',
@@ -460,12 +460,32 @@ function check_toggle_status(url_str, c_permission)
     async : false,
     success: function(data) {
       if (c_permission == 31) {
-        window.location.href = url_str; 
+       if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
+        if(status == 0){
+        if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
+          window.location.href = url_str+'&up_rs=true'; 
+        }
+        }else{
+          window.location.href = url_str; 
+        }
+       }else{
+          window.location.href = url_str; 
+       }
       } else {
         var tmp_msg_arr = data.split('|||'); 
         var pwd_list_array = tmp_msg_arr[1].split(',');
         if (tmp_msg_arr[0] == '0') {
+        if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
+        if(status == 0){
+        if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
+          window.location.href = url_str+'&up_rs=true'; 
+        }
+        }else{
           window.location.href = url_str; 
+        }
+        }else{
+          window.location.href = url_str; 
+        }
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_list_array)) {
@@ -476,7 +496,13 @@ function check_toggle_status(url_str, c_permission)
              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
              async: false,
              success: function(msg_info) {
-               window.location.href = url_str+'&once_pwd='+input_pwd_str; 
+             if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
+              if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
+                window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
+              }
+             }else{
+                window.location.href = url_str+'&once_pwd='+input_pwd_str; 
+             }
              }
            }); 
           } else {
@@ -1226,7 +1252,7 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 
-function check_toggle_black_status(url_str, c_permission)
+function check_toggle_black_status(url_str, c_permission,status)
 {
   $.ajax({
     url: 'ajax_orders.php?action=getallpwd',
@@ -1238,18 +1264,30 @@ function check_toggle_black_status(url_str, c_permission)
       var tmp_msg_arr = data.split('|||');
       var pwd_arr = tmp_msg_arr[1].split(",");
       if (c_permission == 31) {
+       if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
+        if(status == 0){
         if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
           window.location.href = url_str+'&up_rs=true'; 
-        } else {
+        }
+        }else{
+          window.location.href = url_str; 
+        }
+        }else{
           window.location.href = url_str; 
         }
       } else {
         if (tmp_msg_arr[0] == '0') {
+        if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
+        if(status == 0){
           if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
             window.location.href = url_str+'&up_rs=true'; 
-          } else {
-            window.location.href = url_str; 
           }
+        }else{
+          window.location.href = url_str; 
+        }
+        }else{
+          window.location.href = url_str; 
+        }
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_arr)) {
@@ -1260,11 +1298,17 @@ function check_toggle_black_status(url_str, c_permission)
              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
              async: false,
              success: function(msg_info) {
-              if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
-                window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
-              } else {
-                window.location.href = url_str+'&once_pwd='+input_pwd_str; 
+             if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
+              if(status == 0){
+                if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
+                  window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
+                }
+              }else{
+                  window.location.href = url_str+'&once_pwd='+input_pwd_str; 
               }
+             }else{
+                  window.location.href = url_str+'&once_pwd='+input_pwd_str; 
+             }
              }
            }); 
           } else {
