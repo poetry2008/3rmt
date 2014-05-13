@@ -4392,20 +4392,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
               $products_query = tep_db_query($products_query_raw);
               $highlight_symbol = false; 
-              if (isset($_GET['pID'])) { 
-                while ($products_list = tep_db_fetch_array($products_query)) {
-                  if ($products_list['products_id'] == $_GET['pID']) {
-                    $highlight_symbol = true;
-                    break;
-                  }
-                } 
-              } 
               $res_kaku_list = array(); 
               $res_kaku=tep_db_query("select * from set_menu_list where categories_id='".$current_category_id."' ORDER BY set_list_id ASC");
               while($col_kaku=tep_db_fetch_array($res_kaku)){
                 $res_kaku_list[] = $col_kaku; 
               } 
-              $products_query = tep_db_query($products_query_raw);
+//              $products_query = tep_db_query($products_query_raw);
 
               //获取各网站对应的时间限制
               $site_id_query = tep_db_query("select id from ".TABLE_SITES);
@@ -4481,7 +4473,18 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $limit_orders_array[$limit_num_info['categories_id']] = $limit_num_info['limit_time']; 
               }
               tep_db_free_result($limit_num_query);
+              $products_info_array = array();
+              $products_list_array = array();
               while ($products = tep_db_fetch_array($products_query)) {
+                $products_info_array[] = $products;
+                $products_list_array[] = $products['products_id'];
+              }
+              if (isset($_GET['pID'])) { 
+                if (in_array($_GET['pID'],$products_list_array)) {
+                    $highlight_symbol = true;
+                } 
+              } 
+              foreach($products_info_array as $products) {
                 $products_count++;
                 $rows++;
                 //表格通用 用的临时变量 产品
