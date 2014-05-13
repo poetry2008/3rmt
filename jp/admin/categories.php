@@ -2395,6 +2395,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     $max_inventory_num_2 = 0;
                   }
                   $max_inventory_value = $max_inventory_array[2] == 'min' ? ($max_inventory_num_1 < $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2) : ($max_inventory_num_1 > $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2);
+                  $max_inventory_value = $max_inventory_value < 0 ? 0 : $max_inventory_value;
                 ?>
                 <?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_max_contents', isset($pInfo->max_inventory) && $pInfo->max_inventory != '' ? ''.$max_inventory_value : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="max_inventory_contents" style="text-align:right;width:10%"');?></td>
                 </tr>
@@ -2417,6 +2418,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     $min_inventory_num_2 = 0;
                   }
                   $min_inventory_value = $min_inventory_array[2] == 'min' ? ($min_inventory_num_1 < $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2) : ($min_inventory_num_1 > $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2);
+                  $min_inventory_value = $min_inventory_value < 0 ? 0 : $min_inventory_value;
                 ?>
                 <?php echo IMAGE_PREVIEW;?>&nbsp;<?php echo tep_draw_input_field('inventory_min_contents', isset($pInfo->min_inventory) && $pInfo->min_inventory != '' ? ''.$min_inventory_value : ($_GET['action'] == 'new_product' ? '' : '0'), 'class="readonly" readonly id="min_inventory_contents" style="text-align:right;width:10%"');?></td>
                 </tr>
