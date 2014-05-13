@@ -5681,6 +5681,8 @@ function tep_display_google_results($from_url='', $c_type=false){
     }else{
       $inventory_arr['min'] = $inventory_min_num_1 > $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
     } 
+    $inventory_arr['max'] = $inventory_arr['max'] < 0 ? 0 : $inventory_arr['max'];
+    $inventory_arr['min'] = $inventory_arr['min'] < 0 ? 0 : $inventory_arr['min'];
  
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
