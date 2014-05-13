@@ -1,6 +1,6 @@
 <?php
 define('JS_TEXT_GENERAL_EXPECT_TRADE_TIME','可能送达时间');
-define('JS_TEXT_GENERAL_SHOW_REVIEW','是否不显示此商品的评论？');
+define('JS_TEXT_GENERAL_SHOW_REVIEW','将要更改前台的显示，继续执行？');
 define('JS_TEXT_GENERAL_ERROR_PREORDER_IS_SET','错误: 预约不存在。');
 define('JS_TEXT_GENERAL_NOT_COPY','同一URL正在登录，无法复制该内容');
 define('JS_TEXT_GENERAL_ROMAN_ERROR','罗马字里包含禁止符号。');

@@ -26,9 +26,13 @@
  功能: 分类树
  参数: $load_from_database(boolean) 加载数据库
  参数: $green (boolean) 是否全部显示
+ 参数: $select_id (string) 是否有默认选中
  返回值: 无 
  -------------------------------------*/
-   function osC_CategoryTree($load_from_database = true,$green = false) {
+   function osC_CategoryTree($load_from_database = true,$green = false,$select_id=0) {
+     if($select_id!=0){
+       $_GET['cPath'] = $select_id;
+     }
      global $languages_id;
      $site_id = isset($_GET['site_id'])&&$_GET['site_id'] ? $_GET['site_id'] : 0;
     if ($green) {

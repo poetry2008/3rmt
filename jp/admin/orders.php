@@ -5387,12 +5387,6 @@ if($c_parent_array['parent_id'] == 0){
           </tr>
           <?php
  $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows, $sql_count_query);
-        //echo $orders_query_raw;
-        if(isset($_GET['oID'])){
-          $oid_is_inpage = tep_is_in_order_page($orders_query_raw,$_GET['oID']);
-        }else{
-          $oid_is_inpage = false;
-        }
         $orders_query = tep_db_query($orders_query_raw);
         $orders_num = tep_db_num_rows($orders_query);
 
@@ -5413,7 +5407,18 @@ if($c_parent_array['parent_id'] == 0){
         }
         $customer_image = array();
         $tmp_order_id_list = array();
+        $orders_info_arr = array();
+        $orders_id_list = array();
         while ($orders = tep_db_fetch_array($orders_query)) {
+          $orders_info_arr[] = $orders;
+          $orders_id_list[] = $orders['orders_id'];
+        }
+        if(isset($_GET['oID'])){
+          $oid_is_inpage = in_array($_GET['oID'],$orders_id_list);
+        }else{
+          $oid_is_inpage = false;
+        }
+        foreach($orders_info_arr as $orders){
           $orders_i++;
           if (!isset($orders['site_id'])) {
             $orders = tep_db_fetch_array(tep_db_query("

@@ -286,4 +286,8 @@ define('TEXT_PRODUCT_ORDER_HISTORY_INFO','每%s天%s 个');
 define('TEXT_PRODUCT_INVENTORY_STANDARD','库存标准');
 define('TEXT_PRODUCT_INVENTORY_INFO','<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td colspan="2">可以使用的计算符号：+　-　*　/　()</td></tr><tr><td colspan="2">可以使用的参数：</td></tr><tr><td width="48%">商品单价：$unit_price</td><td>关联商品单价：$related_unit_price</td></tr><tr><td>实际库存的平均价格：$stocks_average_cost</td><td>商品最近的订单数：$recent_ordered_number_of_unit</td></tr><tr><td colspan="2">关联商品最近的订单数：$recent_ordered_number_of_related_unit</td></tr></table>');
 define('JS_TEXT_C_ADMIN_RESET_DIFFERENCE','存在%的差额。请重新设置');
+define('TEXT_INVENTORY_OR','或');
+define('TEXT_INVENTORY_LINK','的');
+define('TEXT_INVENTORY_SELECT_MAX','取最大');
+define('TEXT_INVENTORY_SELECT_MIN','取最小');
 ?>

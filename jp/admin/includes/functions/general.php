@@ -1390,7 +1390,7 @@ function tep_products_in_category_count($categories_id, $include_deactivated = f
 function tep_childs_in_category_count($categories_id) {
   $categories_count = 0;
 
-  $categories_query = tep_db_query("select categories_id from " . TABLE_CATEGORIES . " where parent_id = '" . $categories_id . "'");
+  $categories_query = tep_db_query("select c.categories_id from " . TABLE_CATEGORIES .  " c ,".TABLE_CATEGORIES_DESCRIPTION ." cd  where c.parent_id = '" .  $categories_id . "' and c.categories_id=cd.categories_id and cd.site_id='0'");
   while ($categories = tep_db_fetch_array($categories_query)) {
     $categories_count++;
     $categories_count += tep_childs_in_category_count($categories['categories_id']);
@@ -5057,10 +5057,7 @@ function get_guest_chk($customers_id)
 function tep_high_light_by_keywords($str, $keywords)
 {
   $k = $rk= explode('|',$keywords);
-  foreach($k as $key => $value){
-    $rk[$key] = '<font style="background:red;">'.$value.'</font>';
-  }
-  return str_replace($k, $rk, $str);
+  return tep_replace_to_red($rk,$str);
 }
 
 /* -------------------------------------
@@ -5660,22 +5657,58 @@ function tep_display_google_results($from_url='', $c_type=false){
       $parent_id = tep_get_category_parent_id($categories_id);
     }
     $inventory_arr = tep_get_product_inventory($pid);
+
     $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
                              '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
                              '$unit_price',//商品单价(参数)
                              '$related_unit_price',//关联商品单价(参数)
                              '$stocks_average_cost'//实际库存的平均价格(参数)
                            );
-    if(strlen($inventory_arr['max']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['max']))){
-      $inventory_arr['max'] = tep_inventory_operations($inventory_arr['max'],$pid,0);
+    $inventory_max_array = explode('|||',$inventory_arr['max']);
+    if(strlen($inventory_max_array[0]) != strlen(str_replace($inventory_mode_array,'',$inventory_max_array[0]))){
+
+      $inventory_max_num_1 = tep_inventory_operations($inventory_max_array[0],$pid,0);
     }else{
-      $inventory_arr['max'] = tep_operations($inventory_arr['max']);
+       
+      $inventory_max_num_1 = tep_operations($inventory_max_array[0],$pid,0);
     }
-    if(strlen($inventory_arr['min']) != strlen(str_replace($inventory_mode_array,'',$inventory_arr['min']))){
-      $inventory_arr['min'] = tep_inventory_operations($inventory_arr['min'],$pid,0);
+    if(strlen($inventory_max_array[1]) != strlen(str_replace($inventory_mode_array,'',$inventory_max_array[1]))){
+
+      $inventory_max_num_2 = tep_inventory_operations($inventory_max_array[1],$pid,0);
     }else{
-      $inventory_arr['min'] = tep_operations($inventory_arr['min']);
+       
+      $inventory_max_num_2 = tep_operations($inventory_max_array[1],$pid,0);
+    } 
+
+    if($inventory_max_array[2] == 'min'){
+      $inventory_arr['max'] = $inventory_max_num_1 < $inventory_max_num_2 ? $inventory_max_num_1 : $inventory_max_num_2;
+    }else{
+      $inventory_arr['max'] = $inventory_max_num_1 > $inventory_max_num_2 ? $inventory_max_num_1 : $inventory_max_num_2;
     }
+    $inventory_min_array = explode('|||',$inventory_arr['min']);
+    if(strlen($inventory_min_array[0]) != strlen(str_replace($inventory_mode_array,'',$inventory_min_array[0]))){
+
+      $inventory_min_num_1 = tep_inventory_operations($inventory_min_array[0],$pid,0);
+    }else{
+       
+      $inventory_min_num_1 = tep_operations($inventory_min_array[0],$pid,0);
+    }
+    if(strlen($inventory_min_array[1]) != strlen(str_replace($inventory_mode_array,'',$inventory_min_array[1]))){
+
+      $inventory_min_num_2 = tep_inventory_operations($inventory_min_array[1],$pid,0);
+    }else{
+       
+      $inventory_min_num_2 = tep_operations($inventory_min_array[1],$pid,0);
+    }
+
+    if($inventory_min_array[2] == 'min'){
+      $inventory_arr['min'] = $inventory_min_num_1 < $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
+    }else{
+      $inventory_arr['min'] = $inventory_min_num_1 > $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
+    } 
+    $inventory_arr['max'] = $inventory_arr['max'] < 0 ? 0 : $inventory_arr['max'];
+    $inventory_arr['min'] = $inventory_arr['min'] < 0 ? 0 : $inventory_arr['min'];
+ 
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
   }
@@ -12766,12 +12799,12 @@ function tep_replace_to_red($arr,$str){
     $str_search_arr = str_split_utf8($nospacev);
     $preg_str = '';
     foreach($str_search_arr as $search_v){
-      $preg_str .= $search_v.'[\s]{0,}';
+      $preg_str .= $search_v.'[\s-_]{0,}';
     }
     if(preg_match_all('/('.$preg_str.')/',$out_str,$match_arr)){
       if(isset($match_arr)&&!empty($match_arr)){
         foreach($match_arr[0] as $m_v){
-          $out_str = str_replace($m_v,' <font style="background:red;">'.$m_v.'</font> ',$out_str);
+          $out_str = str_replace($m_v,'<font style="background:red;">'.$m_v.'</font> ',$out_str);
         }
       }
     }
