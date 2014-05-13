@@ -5574,6 +5574,31 @@ function tep_display_google_results($from_url='', $c_type=false){
     return true;
   }
 
+
+/* -------------------------------------
+    功能: 判断该罗马字是否存在指定字符 
+    参数: $romaji(string) 罗马字 
+    返回值: 是否存在(boolean) 
+	@date:20140509代替原有的tep_check_romaji();
+    最后将tep_check_romaji();删除
+ ------------------------------------ */
+  function tep_check_url_words($url_words){
+    $keywords = array(
+        'page',
+        'reviews',
+        'info',
+        'latest_news',
+        '=','?','&'
+        );
+    foreach($keywords as $k){
+      if (strpos($url_words,$k) !== false) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
 /* -------------------------------------
     功能: 获取商品最大/最小库存 
     参数: $pid(int) 商品id 
@@ -8008,7 +8033,7 @@ function   tep_order_status_change($oID,$status){
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8031,7 +8056,7 @@ function   tep_order_status_change($oID,$status){
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8059,7 +8084,7 @@ function   tep_order_status_change($oID,$status){
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8147,7 +8172,7 @@ function tep_get_rownum_faq_question($current_category_id,$qid,$site_id,$search=
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8170,7 +8195,7 @@ function tep_get_rownum_faq_question($current_category_id,$qid,$site_id,$search=
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8198,7 +8223,7 @@ function tep_get_rownum_faq_question($current_category_id,$qid,$site_id,$search=
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8238,6 +8263,22 @@ function get_romaji_by_site_id($site_id) {
   $site = tep_db_fetch_array(tep_db_query("select romaji from ".TABLE_SITES." where id='".$site_id."'"));
   if ($site) {
     return $site['romaji'];
+  } else {
+    return false;
+  }
+}
+
+
+/* -------------------------------------
+    功能: 获得指定网站的罗马字 
+    参数: $site_id(int) 网站id 
+    返回值: 网站的罗马字(string/false) 
+	@date20140509 测试完成后删除get_romaji_by_site_id()和此行文字
+ ------------------------------------ */
+function get_url_words_by_site_id($site_id) {
+  $site = tep_db_fetch_array(tep_db_query("select romaji as url_words from ".TABLE_SITES." where id='".$site_id."'"));
+  if ($site) {
+    return $site['url_words'];
   } else {
     return false;
   }
@@ -9825,12 +9866,12 @@ function check_order_latest_status($oid)
 /* -------------------------------------
     功能: 检查该同业者是否在指定列表里 
     参数: $d_id(int) 同业者id 
-    参数: $dougyousya(array) 同业者id 
+    参数: $peers(array) 同业者id 
     返回值: 是否在(boolean) 
  ------------------------------------ */
-function check_in_dougyousya($d_id, $dougyousya)
+function check_in_peers($d_id, $dougyousya)
 {
-  foreach ($dougyousya as $d) {
+  foreach ($peers as $d) {
     if ($d['dougyousya_id'] === $d_id) {
       return true;
     }

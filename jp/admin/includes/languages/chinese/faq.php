@@ -22,7 +22,6 @@ define('TEXT_INFO_HEADING_MOVE_FAQ_CATEGORY','移动种类');
 define('TEXT_MOVE_CATEGORIES_INTRO','请选择移动<b>%s</b> 路径的种类');
 define('TEXT_MOVE','<b>%s</b> 的移动位置');
 define('TEXT_INFO_HEADING_COPY_TO','复制位置');
-define('TEXT_INFO_HEADING_COPY_TO','请选择复制这个FAQ数据路径的种类');
 define('TEXT_INFO_CURRENT_CATEGORIES','现在的种类');
 define('TEXT_CATEGORIES','种类');
 define('TEXT_HOW_TO_COPY','复制方法');

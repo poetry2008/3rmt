@@ -85,13 +85,13 @@ RewriteRule ^game/m-([0-9]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
 
 RewriteRule ^reviews/pr-([0-9]+)/?$ product_reviews.php?products_id=$1&%{QUERY_STRING}
 
-RewriteRule ^faq/([^\/\.]+)\.html faq_info.php?question_romaji=$1 [QSA,L]
+RewriteRule ^faq/([^\/\.]+)\.html faq_info.php?question_url_words=$1 [QSA,L]
 RewriteCond %{REQUEST_URI} !page-\d+.html
-RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?question_romaji=$2&qPath=$1 [QSA,L]
+RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?question_url_words=$2&qPath=$1 [QSA,L]
 RewriteCond %{REQUEST_URI} !page-\d+.html
-RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?%{REQUEST_FILENAME}&question_romaji=$3&qPath=$1/$2 [QSA,L]
+RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?%{REQUEST_FILENAME}&question_url_words=$3&qPath=$1/$2 [QSA,L]
 RewriteCond %{REQUEST_URI} !page-\d+.html
-RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?question_romaji=$4&qPath=$1/$2/$3 [QSA,L]
+RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?question_url_words=$4&qPath=$1/$2/$3 [QSA,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^faq/(.*) faq.php?faq_name=$1 [QSA,PT,L]
 RewriteRule ^faq$ faq.php [QSA,PT,L]

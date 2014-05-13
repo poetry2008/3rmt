@@ -22,7 +22,6 @@ define('TEXT_INFO_HEADING_MOVE_FAQ_CATEGORY','カテゴリーを移動');
 define('TEXT_MOVE_CATEGORIES_INTRO','<b>%s</b> を移動する先のカテゴリーを選んでください');
 define('TEXT_MOVE','<b>%s</b> の移動先');
 define('TEXT_INFO_HEADING_COPY_TO','コピー先');
-define('TEXT_INFO_HEADING_COPY_TO','このFAQデータをコピーする先のカテゴリーを選んでください');
 define('TEXT_INFO_CURRENT_CATEGORIES','現在のカテゴリー');
 define('TEXT_CATEGORIES','カテゴリー');
 define('TEXT_HOW_TO_COPY','コピー方法');

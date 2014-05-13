@@ -4395,7 +4395,7 @@ function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
       from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
       where c.id = cd.faq_category_id
         and c.parent_id = '".$parent_id."'
-        and cd.romaji = '" . $cname .  "' 
+        and cd.url_words = '" . $cname .  "' 
         and cd.site_id = '".SITE_ID."'" ;
   $category_query = tep_db_query($queryString);
   if(tep_db_num_rows($category_query)){
@@ -4407,7 +4407,7 @@ function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
       from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
       where c.id = cd.faq_category_id
         and c.parent_id = '".$parent_id."'
-        and cd.romaji = '" . $cname .  "' 
+        and cd.url_words = '" . $cname .  "' 
         and cd.site_id = '0'" ;
     $category_query = tep_db_query($queryString);
     $category = tep_db_fetch_array($category_query);
@@ -4477,7 +4477,7 @@ function tep_get_faq_qid_by_qname($qname,$qpath){
         WHERE fq.id = fqd.faq_question_id  
         and fq2c.faq_question_id = fqd.faq_question_id 
         and fq2c.faq_category_id = '".$qpath."'
-        and fqd.romaji = '".$qname."' 
+        and fqd.url_words = '".$qname."' 
         and fqd.site_id = '".SITE_ID."'" ;
  $query = tep_db_query($sql);
  if(tep_db_num_rows($query)){
@@ -4490,7 +4490,7 @@ function tep_get_faq_qid_by_qname($qname,$qpath){
         WHERE fq.id = fqd.faq_question_id  
         and fq2c.faq_question_id = fqd.faq_question_id 
         and fq2c.faq_category_id = '".$qpath."'
-        and fqd.romaji = '".$qname."' 
+        and fqd.url_words = '".$qname."' 
         and fqd.site_id = '0'" ;
    $query = tep_db_query($sql);
    $question = tep_db_fetch_array($query);
