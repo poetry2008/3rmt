@@ -42,13 +42,13 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     <?php } ?>
     <div class="comment_faq">
     <div class="faq_question_row">
-    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['url_words'];?>">
       <?php echo $c_row['title'];?>
     </a></span>
     </div>
     <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
     <div class="faq_question_row">
-     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['url_words'];?>">
           <?php echo $c_row['title'];?>
         </a></span>
     </div>
@@ -63,7 +63,7 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     <h1 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h1>
     <div class="comment_faq">
     <div class="faq_question_row">
-    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['url_words'].'.html';?>">
       <?php echo $q_row['ask'];?>
     </a></span>
     </div>
@@ -71,7 +71,7 @@ require(DIR_WS_ACTIONS.'faq_category.php');
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
     <div class="faq_question_row">
-      <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+      <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['url_words'].'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
       </div>

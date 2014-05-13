@@ -10,8 +10,8 @@
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
 
-  $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_SECOND);
+  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_2);
  
 ?>
 <?php page_head();?>

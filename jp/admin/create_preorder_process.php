@@ -334,24 +334,24 @@ require("includes/note_js.php");
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
 <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?>
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
-        <td class="main"><font color="#ffffff"><?php echo TEXT_STEP_ONE ?></font></td>
+        <td class="main"><font color="#ffffff"><?php echo TEXT_STEP_1 ?></font></td>
       </tr>
     </table>
  <?php if (empty($preorder_customer_id)) {?> 
@@ -387,12 +387,12 @@ require("includes/note_js.php");
   </td>
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 
 <br>
 </body>

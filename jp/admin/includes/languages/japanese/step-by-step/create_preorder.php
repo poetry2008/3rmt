@@ -9,14 +9,14 @@ define('TEXT_SELECT_CUST', '顧客選択:');
 define('TEXT_SELECT_CURRENCY', '通貨選択:');
 define('BUTTON_TEXT_SELECT_CUST', '顧客選択:'); 
 define('TEXT_OR_BY', 'または顧客ID:'); 
-define('TEXT_STEP_ONE', 'ステップ 1 - 顧客を選択し詳細を確認してください');
+define('TEXT_STEP_1', 'ステップ 1 - 顧客を選択し詳細を確認してください');
 define('BUTTON_SUBMIT', '確認する');
 define('ENTRY_CURRENCY','決済通貨');
 define('CATEGORY_ORDER_DETAILS','通貨設定');
 
 define('CATEGORY_CORRECT', '顧客情報');
 
-define('CREATE_ORDER_STEP_ONE', 'ステップ 1 - 顧客を検索します');
+define('CREATE_ORDER_STEP_', 'ステップ 1 - 顧客を検索します');
 define('CREATE_ORDER_TITLE_TEXT', '登録データの有無を確認:');
 define('CREATE_ORDER_SEARCH_TEXT',
     '顧客のメールアドレスを入力し「検索」ボタンをクリックしてください。<br>
@@ -42,6 +42,6 @@ define('CREATE_PREORDER_PAYMENT_LIST_DEFAULT', '支払方法を選択してく�
 define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('ORDERS_PRODUCTS','注文商品');
 define('TEXT_CREATE_CUSTOMERS_CONFIRM','データがありません。顧客データを新規作成しますか？');
-define('TEXT_MUST_ENTER','入力して下さい。');
-define('TEXT_EMAIL_ADDRESS_ERROR','入力されたメールアドレスは不正です!');
+define('TEXT_MUST_ENTER','入力してください。');
+define('TEXT_EMAIL_ADDRESS_ERROR','入力されたメールアドレスは不正です。');
 ?>

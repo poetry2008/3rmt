@@ -10,9 +10,9 @@ if(isset($_GET['faq_name'])&&$_GET['faq_name']!=''){
       forward404();
   }
 $page=0;
-$romaji_arr = explode('/',$_GET['faq_name']);
+$character_arr = explode('/',$_GET['faq_name']);
   $temp_parent_id = 0;
-  foreach($romaji_arr as $value){
+  foreach($character_arr as $value){
     if($value == ''){
       continue;
     }
@@ -50,7 +50,7 @@ $faq_category_sql = "
                         fc.parent_id,
                         fc.sort_order,
                         fcd.site_id,
-                        fcd.romaji,
+                        fcd.url_words,
                         fcd.title,
                         fcd.keywords,
                         fcd.description 
@@ -76,7 +76,7 @@ if( $last_faq_category_id != $temp_parent_id){
                         fc.parent_id,
                         fc.sort_order,
                         fcd.site_id,
-                        fcd.romaji,
+                        fcd.url_words,
                         fcd.title,
                         fcd.keywords,
                         fcd.description 
@@ -100,7 +100,7 @@ $faq_question_sql = "select * from (
                       fqd.is_show,
                       fq2c.faq_category_id,
                       fqd.faq_question_id,
-                      fqd.romaji,
+                      fqd.url_words,
                       fqd.ask,
                       fqd.keywords,
                       fqd.answer,

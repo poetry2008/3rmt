@@ -33,7 +33,7 @@
   }
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_OPTION);
-  $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART,'','SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART,'','SSL'));
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_CHECKOUT_OPTION,'','SSL'));
   
   require('option/HM_Option.php');

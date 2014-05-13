@@ -47,7 +47,7 @@ if (isset($body_option)) {
     <table class="faq_question_row">
     <tr><td>
     <img src="images/design/ask.gif" alt="question"></td><td class="faq_question_row_div"><span><a href="<?php echo
-    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['url_words']).'/';?>">
     <?php echo $c_row['title'];?>
     </a></span></div></td></tr>
     </table>
@@ -55,7 +55,7 @@ if (isset($body_option)) {
     <table class="faq_question_row"><tr>
     	<td><img src="images/design/ask.gif" alt="question"></td>
    		<td class="faq_question_row_div"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['url_words']).'/';?>">
           <?php echo $c_row['title'];?>
         </a></span>
         </td>
@@ -87,7 +87,7 @@ if (isset($body_option)) {
     <img src="images/design/ask.gif" alt="question">
     </td>
         <td class="faq_question_row_div"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a></span></td>
 
@@ -100,7 +100,7 @@ if (isset($body_option)) {
     <tr>
         <td><img src="images/design/ask.gif" alt="question"> </td>
         <td class="faq_question_row_div"><span><a href="<?php echo
-      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
       </td>
@@ -140,7 +140,7 @@ color:#444; margin:0 2px;"></div>-->
     <table class="faq_question_row">
     <tr><td>
     <img src="images/design/ask.gif" alt="question"></td><td class="faq_question_row_div"><span><a href="<?php echo
-    HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['url_words']).'/';?>">
       <?php echo $last_row['title'];?>
     </a></span></td></tr>
     </table>
@@ -148,7 +148,7 @@ color:#444; margin:0 2px;"></div>-->
     <table class="faq_question_row"><tr>
         <td><img src="images/design/ask.gif" alt="question"></td>
         <td class="faq_question_row_div"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
+     HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['url_words']).'/';?>">
           <?php echo $last_row['title'];?>
         </a></span>
         </td></tr>
