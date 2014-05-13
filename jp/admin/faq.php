@@ -143,14 +143,14 @@
          }
          $sql_sort_data_array['info_id'] = $faq_question_id;
          $sql_data_array = array(
-            'romaji' => str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['romaji'])),
+            'url_words' => str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['url_words'])),
             'ask' => tep_db_prepare_input($_POST['ask']),
             'keywords' => tep_db_prepare_input($_POST['keywords']),
             'answer' => tep_db_prepare_input($_POST['answer']),
               );
          $sql_sort_data_array['title'] = tep_db_prepare_input($_POST['ask']);
          $sql_sort_data_array['site_id'] = $site_id;
-         $search_text = str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['romaji'])).'>>>'.
+         $search_text = str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['url_words'])).'>>>'.
            tep_db_prepare_input($_POST['ask']).'>>>'.
            tep_db_prepare_input($_POST['keywords']).'>>>'.
            tep_db_prepare_input($_POST['answer']);
@@ -167,8 +167,8 @@
             $insert_sql_data = array('faq_question_id' => $faq_question_id,
                                      'site_id' => $site_id);
            }
-            if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
+            if(!tep_check_url_words($sql_data_array['url_words'])){
+              $messageStack->add_session(TEXT_LETTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from  
@@ -176,10 +176,10 @@
               ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
               where fqd.faq_question_id=fq2c.faq_question_id and
               fq2c.faq_category_id='".$current_category_id."'      and
-              fqd.romaji='".$sql_data_array['romaji']."' and
+              fqd.url_words='".$sql_data_array['url_words']."' and
               fqd.site_id='".$site_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
+              $messageStack->add_session(TEXT_LETTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -187,8 +187,8 @@
             $faq_q_sql_id = tep_db_insert_id();
             tep_db_perform('faq_sort', $sql_sort_data_array);
           }else{
-            if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
+            if(!tep_check_url_words($sql_data_array['url_words'])){
+              $messageStack->add_session(TEXT_LETTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from  
@@ -196,11 +196,12 @@
               ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
               where fqd.faq_question_id=fq2c.faq_question_id and
               fq2c.faq_category_id='".$current_category_id."'      and
-              fqd.romaji='".$sql_data_array['romaji']."' and
+              fqd.url_words='".$sql_data_array['url_words']."' and
               fqd.site_id='".$site_id."' and 
               fqd.faq_question_id != '".$faq_question_id."'";
+
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
+              $messageStack->add_session(TEXT_LETTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
            tep_db_perform(TABLE_FAQ_QUESTION_DESCRIPTION, $sql_data_array, 'update','faq_question_id =\''.$faq_question_id.'\' and site_id = \''.$site_id.'\'');
@@ -246,14 +247,14 @@
          }
          $sql_sort_data_array['info_id'] = $faq_category_id;
          $sql_data_array = array(
-            'romaji' => str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['romaji'])),
+            'url_words' => str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['url_words'])),
             'title' => tep_db_prepare_input($_POST['title']),
             'keywords' => tep_db_prepare_input($_POST['keywords']),
             'description' => tep_db_prepare_input($_POST['description']),
               );
          $sql_sort_data_array['title'] = tep_db_prepare_input($_POST['title']);
          $sql_sort_data_array['site_id'] = $site_id;
-         $search_text = str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['romaji'])).'>>>'.
+         $search_text = str_replace(array('/','_'),'-',tep_db_prepare_input($_POST['url_words'])).'>>>'.
            tep_db_prepare_input($_POST['title']).'>>>'.
            tep_db_prepare_input($_POST['keywords']).'>>>'.
            tep_db_prepare_input($_POST['description']);
@@ -268,18 +269,18 @@
             $insert_sql_data = array('faq_category_id' => $faq_category_id,
                                      'site_id' => $site_id);
             }
-            if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
+            if(!tep_check_url_words($sql_data_array['url_words'])){
+              $messageStack->add_session(TEXT_LETTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from ".TABLE_FAQ_CATEGORIES." fc,
               ".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
               fcd where fc.id=fcd.faq_category_id and
               fc.parent_id='".$current_category_id."'      and
-              fcd.romaji='".$sql_data_array['romaji']."' and
+              fcd.url_words='".$sql_data_array['url_words']."' and
               fcd.site_id='".$site_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
+              $messageStack->add_session(TEXT_LETTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
@@ -287,19 +288,19 @@
             $faq_c_sql_id = tep_db_insert_id();
             tep_db_perform('faq_sort', $sql_sort_data_array);
           }else{
-            if(!tep_check_romaji($sql_data_array['romaji'])){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_ERROR, 'error');
+            if(!tep_check_url_words($sql_data_array['url_words'])){
+              $messageStack->add_session(TEXT_LETTERS_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             $row_faq_sql = "select * from ".TABLE_FAQ_CATEGORIES." fc,
               ".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
               fcd where fc.id=fcd.faq_category_id and
               fc.parent_id='".$current_category_id."'      and
-              fcd.romaji='".$sql_data_array['romaji']."' and
+              fcd.url_words='".$sql_data_array['url_words']."' and
               fcd.site_id='".$site_id."' and 
               fc.id != '".$faq_category_id."'";
             if(tep_db_num_rows(tep_db_query($row_faq_sql))){
-              $messageStack->add_session(TEXT_ROMAN_CHARACTERS_EXISTS, 'error');
+              $messageStack->add_session(TEXT_LETTERS_EXISTS, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
             }
             tep_db_perform(TABLE_FAQ_CATEGORIES_DESCRIPTION, $sql_data_array, 'update','faq_category_id =\''.$faq_category_id.'\' and site_id = \''.$site_id.'\'');
@@ -1023,7 +1024,7 @@ require("includes/note_js.php");
                     }
                     $faq_info[] = array(
                         'params' => 'class="dataTableContent"'.$onclick,
-                        'text'   => get_romaji_by_site_id($faq_category['site_id'])
+                        'text'   => get_url_words_by_site_id($faq_category['site_id'])
                         );
                     $faq_file = '<a href="'.tep_href_link(FILENAME_FAQ, tep_get_faq_path($faq_category['info_id']).'&site_id='.$_GET['site_id']). '">' .  tep_image(DIR_WS_ICONS.'folder.gif',ICON_FOLDER) .'</a>';
                     $faq_info[] = array(
@@ -1112,7 +1113,7 @@ require("includes/note_js.php");
                     }
                     $faq_qid_info[] = array(
                         'params' => 'class="dataTableContent"'.$onclick_qid.$onclick_qid_ask,
-                        'text'   => get_romaji_by_site_id($faq_category['site_id'])
+                        'text'   => get_url_words_by_site_id($faq_category['site_id'])
                         );
                     $faq_qid_info[] = array(
                         'params' => 'class="dataTableContent"'.$onclick_qid_ask,

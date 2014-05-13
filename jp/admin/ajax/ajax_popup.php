@@ -579,20 +579,23 @@ if ($_GET['action'] == 'show_category_info') {
   $min_inventory_array = explode('|||',$pInfo->min_inventory);
   if(empty($site_id)){
 
+    $max_inventory_num_1 = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id);
+    $max_inventory_num_2 = tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id);
+    $min_inventory_num_1 = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id);
+    $min_inventory_num_2 = tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id);
+
     if($max_inventory_array[2] == 'min'){
 
-      $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
+      $max_inventory_num = $max_inventory_num_1 < $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2;
     }else{
-      $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
-    
+      $max_inventory_num = $max_inventory_num_1 > $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2;
     }
     
     if($min_inventory_array[2] == 'min'){
-
-      $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
+ 
+      $min_inventory_num = $min_inventory_num_1 < $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2;
     }else{
-      $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
-    
+      $min_inventory_num = $min_inventory_num_1 > $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2;
     }
   }
   $arr_td_title = array();
@@ -658,9 +661,13 @@ if ($_GET['action'] == 'show_category_info') {
 
   
   if(empty($site_id)) {
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+    $max_inventory_num = $max_inventory_num < 0 ? 0 : $max_inventory_num;
+    $min_inventory_num = $min_inventory_num < 0 ? 0 : $min_inventory_num;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
   }
+  $inventory['max'] = $max_inventory_num;
+  $inventory['min'] = $min_inventory_num;
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
   if($radices!=''){
@@ -699,20 +706,22 @@ if ($_GET['action'] == 'show_category_info') {
     $min_inventory_array = explode('|||',$relate_pInfo->min_inventory);
     if(empty($site_id)){
 
+      $max_inventory_num_1 = tep_inventory_operations($max_inventory_array[0],$relate_pInfo->products_id,$site_id);
+      $max_inventory_num_2 = tep_inventory_operations($max_inventory_array[1],$relate_pInfo->products_id,$site_id);
+      $min_inventory_num_1 = tep_inventory_operations($min_inventory_array[0],$relate_pInfo->products_id,$site_id);
+      $min_inventory_num_2 = tep_inventory_operations($min_inventory_array[1],$relate_pInfo->products_id,$site_id);
       if($max_inventory_array[2] == 'min'){
 
-        $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
+        $max_inventory_num = $max_inventory_num_1 < $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2;
       }else{
-        $inventory['max'] = tep_inventory_operations($max_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($max_inventory_array[1],$pInfo->products_id,$site_id) ? $max_inventory_array[0] : $max_inventory_array[1];
-    
+        $max_inventory_num = $max_inventory_num_1 > $max_inventory_num_2 ? $max_inventory_num_1 : $max_inventory_num_2;
       }
     
       if($min_inventory_array[2] == 'min'){
 
-        $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) < tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
+        $min_inventory_num = $min_inventory_num_1 < $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2;
       }else{
-        $inventory['min'] = tep_inventory_operations($min_inventory_array[0],$pInfo->products_id,$site_id) > tep_inventory_operations($min_inventory_array[1],$pInfo->products_id,$site_id) ? $min_inventory_array[0] : $min_inventory_array[1];
-    
+        $min_inventory_num = $min_inventory_num_1 > $min_inventory_num_2 ? $min_inventory_num_1 : $min_inventory_num_2;
       }
     } 
     
@@ -749,10 +758,14 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
     
 
-    if(empty($site_id)){
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['max'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format(tep_inventory_operations($inventory['min'],$relate_pInfo->products_id,$site_id)):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+    if(empty($site_id)){  
+      $max_inventory_num = $max_inventory_num < 0 ? 0 : $max_inventory_num;
+      $min_inventory_num = $min_inventory_num < 0 ? 0 : $min_inventory_num;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
     }
+    $inventory['max'] = $max_inventory_num;
+    $inventory['min'] = $min_inventory_num;
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
     if($relate_radices!=''){
@@ -2232,7 +2245,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_START_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="start_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="start_time_error"></span>')
       );
 
   //结束时间下拉框
@@ -2269,7 +2282,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_END_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="end_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="end_time_error"></span>')
       );
 
   $category_info_row[]['text'] = array(
@@ -2421,7 +2434,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_START_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="start_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $start_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="start_time_error"></span>')
       );
 
   //结束时间下拉框
@@ -2452,7 +2465,7 @@ width:20%;"'))
   $right_min_select_list .= '</select>';
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_CALENDAR_END_TIME), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_MESSAGE_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_MESSAGE_MIN_STR.'<span id="end_time_error"></span>')
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $end_time_select_list.'&nbsp;'.TEXT_TORIHIKI_HOUR_STR.'&nbsp;'.$left_min_select_list.$right_min_select_list.'&nbsp;'.TEXT_TORIHIKI_MIN_STR.'<span id="end_time_error"></span>')
       );
 
   $category_info_row[]['text'] = array(
@@ -6089,7 +6102,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     }
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
-         array('text' => TEXT_DETAIL_ROMAN),
+         array('text' =>'TEXT_DETAIL_LETTERS'),
          array('params' => 'nowrap','text' => '<input type="hidden" id="romaji_hidden_value" value="update">'.  $show_status_input.$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
@@ -6197,7 +6210,7 @@ while ($contents = tep_db_fetch_array($contents_query)) {
     );
     if (isset($error_message)) { $error_message = $error_message; }
     $contents[]['text'] = array(
-         array('text' => TEXT_DETAIL_ROMAN),
+         array('text' => TEXT_DETAIL_LETTERS),
          array('params' => 'nowrap','text' => '<input type="hidden" id="romaji_hidden_value" value="insert">'.tep_draw_input_field('romaji', '',$disabled.'id="romaji"onfocus="o_submit_single = false;" onblur="o_submit_single = true;"style="width:60%"').$error_message.'&nbsp;&nbsp;<span id="error_romaji"></span><span id="error_romaji_info"></span>')
     );
     $contents[]['text'] = array(
@@ -6784,13 +6797,13 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     if($qInfo->info_type == 'q'){
      $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_q_raw['romaji'],'id="qromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
+        array('text' => tep_draw_input_field('url_words',$faq_q_raw['url_words'],'id="q_characters"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="q_characters_error"></span>')
         );
         
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji',$faq_c_raw['romaji'],'id="cromaji"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
+        array('text' => tep_draw_input_field('url_words',$faq_c_raw['url_words'],'id="c_characters"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="c_characters_error"></span>')
         );
     }
     if($qInfo->info_type == 'q'){
@@ -6953,7 +6966,7 @@ if($_GET['cID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="cromaji" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="cromaji_error"></span>')
+        array('text' => tep_draw_input_field('url_words','','id="c_characters" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="c_characters_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
@@ -7023,7 +7036,7 @@ if($_GET['qID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('romaji','','id="qromaji"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.URL_WORD_DOUBLE_CHECK.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="qromaji_error"></span>')
+        array('text' => tep_draw_input_field('url_words','','id="q_characters"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="q_characters_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_QUESTION_KEYWORDS),
@@ -8045,6 +8058,115 @@ $banner_query = tep_db_query("
   $notice_box->get_contents($contents, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}else if($_GET['action'] == 'new_messages'){
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.'messages.php');
+ include(DIR_FS_ADMIN.'classes/notice_box.php');
+ $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ if($_GET['latest_messages_id']<0){
+	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	$heading[] = array('text' => NEW_MESSAGES);
+ }else{
+ 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	$heading[] = array('text' => $ocertify->auth_user.MESSAGES_SENDER);
+ } 
+ $heading[] = array('align' => 'right', 'text' => $page_str);
+ $form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages', 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+ $messages_content_table = array();
+ $messages_content_row_from = array();
+ $messages_content_row_from[] = array('params'=>'width="20%"','text'=>'From');
+ $messages_content_row_from[] = array('text'=>$_SESSION['user_name']);
+ $messages_content_table[] = array('text'=> $messages_content_row_from);
+ $messages_content_row_to = array();
+ $messages_content_row_to [] = array('text'=>'To');
+ $messages_to_all = '<input id="message_to_all" type="radio" value="0" checked name="messages_to">ALL';
+ $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" name="messages_to">'.MESSAGES_APPOINT_SB;
+ $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_appoint);
+ $messages_content_table[] = array('text'=> $messages_content_row_to);
+ $messages_content_row_choose = array();
+ $messages_content_row_choose [] =  array('text'=> '');
+ $sql_for_all_users = 'select userid, name from users';
+ $sql_for_all_users_query = tep_db_query($sql_for_all_users);
+ $all_user_to_td = '';
+	while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+		if($_GET['latest_messages_id']>0&&$message_all_users['userid'] == $_GET['sender_id']){
+			$recipient = '<div value="'.$message_all_users['name'].'"><input value="'.$message_all_users['userid'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+			continue;
+		}
+		$all_user_to_td .= '<div value="'.$message_all_users['name'].'"><input value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+	} 
+ $messages_choose_table = '
+<table width="100%">
+	<tr>
+		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
+		<td align="center" width="10%"></td>
+		<td align="center" width="45%">'.MESSAGES_STAFF.'</td>
+	</tr>
+	<tr>
+		<td id="send_to" align="center" style="background:#FFF">'.$recipient.'</td>
+		<td align="center" style="vertical-align:middle;">
+			<button onclick="add_select_user()">'.ADD_STAFF.'</button><br>
+			<button onclick="delete_select_user()">'.DELETE_STAFF.'</button>
+		</td>
+		<td id="delete_to" align="center" style="background:#FFF">'.$all_user_to_td.'</td>
+	</tr>
+</table>';
+ $messages_content_row_choose [] = array('text'=> $messages_choose_table);
+ $messages_content_table[] = array('text'=> $messages_content_row_choose);
+ $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
+   $users_icon = '<ul class="table_img_list">'; 
+   while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
+     $users_icon .= '<li><input type="radio" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+   }
+ $users_icon .= '</ul>';
+ $messages_content_row_mark = array();
+ $messages_content_row_mark[] = array('text'=> MESSAGES_MARK);
+ $messages_content_row_mark[] = array('text'=> $users_icon);
+ $messages_content_table[] = array('text'=> $messages_content_row_mark);
+ $messages_content_row_text = array();
+ $messages_content_row_text[] = array('text'=> MESSAGES_TEXT);
+ if($_GET['latest_messages_id']>0){
+	$sql_message_content = tep_db_query('select * from messages where id = "'.$_GET['latest_messages_id'].'"');
+	$sql_message_content_res = tep_db_fetch_array($sql_message_content);
+	$messages_text_area = '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" disabled="disabled" ename="contents">'.$sql_message_content_res['content'].'</textarea>';
+ }else{
+ 	$messages_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="contents"></textarea>';
+ }
+ $messages_content_row_text[] = array('text'=> $messages_text_area);
+ $messages_content_table[] = array('text'=> $messages_content_row_text);
+ $messages_content_row_addfile = array();
+ if($_GET['latest_messages_id']>0){
+	$messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
+	if($sql_message_content_res['attach_file'] == 1){
+		$messages_file_name = $sql_message_content_res['file_name'];
+		if(file_exists('messages_upload/'.$messages_file_name)){
+			$messages_file_name = base64_decode($messages_file_name);
+			$messages_file_name = explode('|||',$messages_file_name);
+			$messages_content_row_addfile[] = array('text'=> '<a href="message_file_download.php?file_id='.$sql_message_content_res['file_name'].'">'.$messages_file_name[0].'</a>');
+		}	
+ 	}
+ }else{
+ 	$messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
+ 	$messages_content_row_addfile[] = array('text'=> '<input type="file" name="messages_file">');
+ }
+ $messages_content_table[] = array('text'=> $messages_content_row_addfile);
+ $messages_content_row_type = array();
+ $messages_content_row_type[] = array('text' => MESSAGES_TYPE);
+ $messages_content_row_type[] = array('text' => '<input type="radio" name="messages_type" value="0" checked>'.MESSAGES_RADIO.'<input type="radio" name="messages_type">Email');
+ $messages_content_table[] = array('text'=> $messages_content_row_type);
+ $messages_content_row_author = array();
+ $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$_SESSION['user_name']);
+ $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.date("Y/m/d H:i:s"));
+ $messages_content_table[] = array('text'=> $messages_content_row_author);
+ $messages_content_row_submit = array();
+ $messages_content_row_submit[] = array('text'=> '');
+ $messages_content_row_submit[] = array('text'=> '<input type="submit" onclick="messages_check()" value="'.MESSAGES_SUBMIT.'">');
+ $messages_content_table[] = array('text'=> $messages_content_row_submit);
+ $notice_box->get_heading($heading);
+ $notice_box->get_form($form_str);
+ $notice_box->get_contents($messages_content_table); 
+ echo $notice_box->show_notice();
+
 }else if($_GET['action'] == 'edit_meta_info'){
 /* -----------------------------------------------------
     功能: meta的弹出框

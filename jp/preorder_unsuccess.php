@@ -8,7 +8,7 @@
   
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER_UNSUCCESS);
 
-  $breadcrumb->add(NAVBAR_TITLE_FIRST);
+  $breadcrumb->add(NAVBAR_TITLE_1);
 ?>
 <?php page_head();?>
 </head>

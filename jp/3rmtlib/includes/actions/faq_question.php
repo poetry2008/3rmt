@@ -1,7 +1,7 @@
 <?php 
-if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
+if(isset($_GET['question_url_words'])&&$_GET['question_url_words']!=''){
   //判断faq问题的罗马字是否为空 
-  $qromaji = $_GET['question_romaji'];
+  $question_url_words = $_GET['question_url_words'];
   $link_url = 'faq';
   $link_url_arr = array();
   $link_url_arr[] = 'faq';
@@ -9,8 +9,8 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
   $temp_parent_id = 0;
   if(isset($_GET['qPath'])&&$_GET['qPath']!=''){
     //是否有分类路径 
-    $category_romaji_arr = explode('/',$_GET['qPath']);
-    foreach($category_romaji_arr as $value){
+    $category_url_words_arr = explode('/',$_GET['qPath']);
+    foreach($category_url_words_arr as $value){
       $temp_parent_id = tep_get_faq_cpath_by_cname($value,$temp_parent_id);
       if(!$temp_parent_id){
         forward404();
@@ -20,7 +20,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
       $link_url_arr[] = urlencode($value);
       $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url.'/');
     }
-    $faq_question_id = tep_get_faq_qid_by_qname($qromaji,$temp_parent_id);
+    $faq_question_id = tep_get_faq_qid_by_qname($question_url_words,$temp_parent_id);
     if(!$faq_question_id){
       forward404();
     }
@@ -29,7 +29,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
       forward404();
     }
   }else{
-    $faq_question_id = tep_get_faq_qid_by_qname($qromaji,$temp_parent_id);
+    $faq_question_id = tep_get_faq_qid_by_qname($question_url_words,$temp_parent_id);
     if(!$faq_question_id){
       forward404();
     }
@@ -37,7 +37,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
     if(!tep_question_in_category_by_id($faq_question_id,$temp_parent_id)){
       forward404();
     }
-    $link_url .= '/'.urlencode($temp_question_info['romaji']);
+    $link_url .= '/'.urlencode($temp_question_info['url_words']);
   }
   $breadcrumb->add($temp_question_info['ask'],HTTP_SERVER.'/'.$link_url.'/');
 
@@ -47,7 +47,7 @@ $last_faq_question_sql = "select * from (
                       fqd.is_show,
                       fq2c.faq_category_id,
                       fqd.faq_question_id,
-                      fqd.romaji,
+                      fqd.url_words,
                       fqd.ask,
                       fqd.keywords,
                       fqd.answer,

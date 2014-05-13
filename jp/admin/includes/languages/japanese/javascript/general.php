@@ -1,6 +1,6 @@
 <?php
 define('JS_TEXT_GENERAL_EXPECT_TRADE_TIME','お届け可能時間');
-define('JS_TEXT_GENERAL_SHOW_REVIEW','この商品を非表示にしますか？');
+define('JS_TEXT_GENERAL_SHOW_REVIEW','フロントエンドの表示が変更されようとしています。本当に実行しますか？');
 define('JS_TEXT_GENERAL_ERROR_PREORDER_IS_SET','エラー: 予約が存在しません。');
 define('JS_TEXT_GENERAL_NOT_COPY','コピー先に同じURLが登録されているためコピー出来ません');
 define('JS_TEXT_GENERAL_ROMAN_ERROR','ローマ字に禁止記号が含まれています。');

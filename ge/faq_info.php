@@ -84,7 +84,7 @@ if (isset($body_option)) {
     <img src="images/design/ask.gif" alt="question">
     </td>
     <td class="faq_question_row"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a></span>
     </td></tr>
@@ -96,7 +96,7 @@ if (isset($body_option)) {
     <img src="images/design/ask.gif" alt="question">
     </td>
     <td class="faq_question_row"><span><a href="<?php echo
-      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
       </td></tr></table>

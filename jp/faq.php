@@ -48,13 +48,13 @@ if($current_faq_category_id){
     <?php } ?>
     <ul class="faq_ul_category">
     <li><a href="<?php echo
-    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['url_words']).'/';?>">
       <?php echo $c_row['title'];?>
     </a></li>
     
     <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
     <li><a href="<?php echo
-    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['url_words']).'/';?>">
           <?php echo $c_row['title'];?>
         </a>
     </li>
@@ -72,7 +72,7 @@ if($current_faq_category_id){
     <?php } ?>
     <ul class="faq_ul_question">
     <li class="faq_li_question"><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a>
     </li>
@@ -80,7 +80,7 @@ if($current_faq_category_id){
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
     <li class="faq_li_question"><a href="<?php echo
-      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a>
     </li>
@@ -127,14 +127,14 @@ if($current_faq_category_id){
     <table class="faq_question_row">
     <tr><td><div>
     <div class="faq_question_row_div"><span><a href="<?php echo
-    HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['url_words']).'/';?>">
       <?php echo $last_row['title'];?>
     </a></span></div></td></tr>
     </table>
     <?php while($last_row = tep_db_fetch_array($last_faq_category_query)){ ?>
     <table class="faq_question_row"><tr><td>
       <div class="faq_question_row_div"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
+     HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['url_words']).'/';?>">
           <?php echo $last_row['title'];?>
         </a></span>
         </div>
@@ -168,7 +168,7 @@ if($current_faq_category_id){
                         fc.parent_id,
                         fc.sort_order,
                         fcd.site_id,
-                        fcd.romaji,
+                        fcd.url_words,
                         fcd.title,
                         fcd.keywords,
                         fcd.description 
@@ -187,7 +187,7 @@ if($current_faq_category_id){
   while($one_faq_category = tep_db_fetch_array($all_category_query)){
     ?>
     <div class="all_category_row_div"><a href="<?php echo
-    HTTP_SERVER.'/'.$link_url.'/'.urlencode($one_faq_category['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$link_url.'/'.urlencode($one_faq_category['url_words']).'/';?>">
       <?php echo $one_faq_category['title'];?>
     </a></div>
     <?php
@@ -197,7 +197,7 @@ if($current_faq_category_id){
                       fqd.is_show,
                       fq2c.faq_category_id,
                       fqd.faq_question_id,
-                      fqd.romaji,
+                      fqd.url_words,
                       fqd.ask,
                       fqd.keywords,
                       fqd.answer,
@@ -225,8 +225,8 @@ if($current_faq_category_id){
       echo "<li>";
       ?>
       <a href="<?php echo
-    HTTP_SERVER.'/'.$link_url.'/'.urlencode($one_faq_category['romaji']).'/'.
-    urlencode($one_category_question_row['romaji']).'.html';?>">
+    HTTP_SERVER.'/'.$link_url.'/'.urlencode($one_faq_category['url_words']).'/'.
+    urlencode($one_category_question_row['url_words']).'.html';?>">
       <?php echo $one_category_question_row['ask'];?>
       </a>
       <?php

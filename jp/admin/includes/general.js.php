@@ -460,31 +460,15 @@ function check_toggle_status(url_str, c_permission,status)
     async : false,
     success: function(data) {
       if (c_permission == 31) {
-       if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
-        if(status == 0){
         if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
           window.location.href = url_str+'&up_rs=true'; 
         }
-        }else{
-          window.location.href = url_str; 
-        }
-       }else{
-          window.location.href = url_str; 
-       }
       } else {
         var tmp_msg_arr = data.split('|||'); 
         var pwd_list_array = tmp_msg_arr[1].split(',');
         if (tmp_msg_arr[0] == '0') {
-        if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
-        if(status == 0){
         if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
           window.location.href = url_str+'&up_rs=true'; 
-        }
-        }else{
-          window.location.href = url_str; 
-        }
-        }else{
-          window.location.href = url_str; 
         }
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
@@ -496,13 +480,9 @@ function check_toggle_status(url_str, c_permission,status)
              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
              async: false,
              success: function(msg_info) {
-             if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
               if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
                 window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
               }
-             }else{
-                window.location.href = url_str+'&once_pwd='+input_pwd_str; 
-             }
              }
            }); 
           } else {
@@ -553,7 +533,7 @@ function change_status(url_str, c_permission){
 }
 function faq_c_is_set_romaji(pid,cid,site_id){
   var flag = true;
-  var cromaji = $("#cromaji").val();
+  var cromaji = $("#c_characters").val();
   cromaji = replace_romaji(cromaji);
   var new_site_id = $('#faq_site_id').val();
   if(new_site_id && site_id != new_site_id){
@@ -580,7 +560,7 @@ function faq_c_is_set_romaji(pid,cid,site_id){
 }
 function faq_c_is_set_error_char(romaji){
   var flag = true;
-  var cromaji = $("#cromaji").val();
+  var cromaji = $("#c_characters").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -591,7 +571,7 @@ function faq_c_is_set_error_char(romaji){
     success: function(data) {
       if(data!=''){
         flag = false;
-        $("#cromaji").val(data);
+        $("#c_characters").val(data);
         alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
       }
     }
@@ -600,7 +580,7 @@ function faq_c_is_set_error_char(romaji){
 }
 function faq_q_is_set_romaji(cid,qid,site_id){
   var flag = true;
-  var qromaji = $("#qromaji").val();
+  var qromaji = $("#q_characters").val();
   qromaji = replace_romaji(qromaji);
   var new_site_id = $('#faq_site_id').val();
   if(new_site_id && site_id != new_site_id){
@@ -627,7 +607,7 @@ function faq_q_is_set_romaji(cid,qid,site_id){
 }
 function faq_q_is_set_error_char(romaji){
   var flag = true;
-  var qromaji = $("#qromaji").val();
+  var qromaji = $("#q_characters").val();
   qromaji = replace_romaji(qromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -638,7 +618,7 @@ function faq_q_is_set_error_char(romaji){
     success: function(data) {
       if(data!=''){
         flag = false;
-        $("#qromaji").val(data);
+        $("#q_characters").val(data);
         alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
       }
     }
@@ -647,7 +627,7 @@ function faq_q_is_set_error_char(romaji){
 }
 function faq_category_form_validator(pid,cid,site_id,c_permission){
  var title = $("#title").val();
- var cromaji = $("#cromaji").val();
+ var cromaji = $("#c_characters").val();
  var error = 'false';
  if(title == ''){
     $("#title_error").html("<?php echo TEXT_ERROR_NULL;?>");
@@ -656,10 +636,10 @@ function faq_category_form_validator(pid,cid,site_id,c_permission){
     $("#title_error").html("");
  }
  if(cromaji == ''){
-    $("#cromaji_error").html("<?php echo TEXT_ERROR_NULL;?>");
+    $("#c_characters_error").html("<?php echo TEXT_ERROR_NULL;?>");
     error = 'ture'; 
  }else{
-    $("#cromaji_error").html("");
+    $("#c_characters_error").html("");
  }
   if(error != 'ture'){
   flag1 = faq_c_is_set_romaji(pid,cid,site_id);
@@ -708,7 +688,7 @@ function faq_category_form_validator(pid,cid,site_id,c_permission){
 function faq_question_form_validator(cid,qid,site_id,c_permission){
   var error = 'false';
   var title = $("#title").val();
-  var qromaji = $("#qromaji").val();
+  var qromaji = $("#q_characters").val();
   if(title == ''){
      $("#title_error").html("<?php echo TEXT_ERROR_NULL;?>");
      error = 'ture';
@@ -716,10 +696,10 @@ function faq_question_form_validator(cid,qid,site_id,c_permission){
      $("#title_error").html("");
   }
   if(qromaji == ''){
-     $("#qromaji_error").html("<?php echo TEXT_ERROR_NULL;?>");
+     $("#q_characters_error").html("<?php echo TEXT_ERROR_NULL;?>");
      error = 'ture';
   }else{
-     $("#qromaji_error").html("");
+     $("#q_characters_error").html("");
   }
   if(error != 'ture'){
   flag1 = faq_q_is_set_romaji(cid,qid,site_id);
@@ -852,7 +832,7 @@ romaji = romaji.replace(/\'/g,'qqqqqqqq');
 }
 function c_is_set_error_char(replace_single){
   var flag = true;
-  var cromaji = $("#cromaji").val();
+  var cromaji = $("#c_characters").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -864,10 +844,10 @@ function c_is_set_error_char(replace_single){
       if(data!=''){
         flag = false;
         if (replace_single == false) {
-          $("#cromaji").val(data); 
+          $("#c_characters").val(data); 
           alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
         } else {
-          alert("<?php echo JS_TEXT_GENERAL_ROMAN_ERROR;?>");
+          alert("<?php echo JS_TEXT_GENERAL_LETTERS_ERROR;?>");
         }
       }
     }
@@ -897,7 +877,7 @@ function p_is_set_error_char(){
 
 function c_is_set_romaji(pid,cid,site_id){
   var flag = true;
-  var cromaji = $("#cromaji").val();
+  var cromaji = $("#c_characters").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=c_is_set_romaji',
@@ -1264,30 +1244,14 @@ function check_toggle_black_status(url_str, c_permission,status)
       var tmp_msg_arr = data.split('|||');
       var pwd_arr = tmp_msg_arr[1].split(",");
       if (c_permission == 31) {
-       if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
-        if(status == 0){
         if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
           window.location.href = url_str+'&up_rs=true'; 
         }
-        }else{
-          window.location.href = url_str; 
-        }
-        }else{
-          window.location.href = url_str; 
-        }
       } else {
         if (tmp_msg_arr[0] == '0') {
-        if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
-        if(status == 0){
           if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
             window.location.href = url_str+'&up_rs=true'; 
           }
-        }else{
-          window.location.href = url_str; 
-        }
-        }else{
-          window.location.href = url_str; 
-        }
         } else {
           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
           if (in_array(input_pwd_str, pwd_arr)) {
@@ -1298,17 +1262,9 @@ function check_toggle_black_status(url_str, c_permission,status)
              data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
              async: false,
              success: function(msg_info) {
-             if(url_str.match('status=0')==null && url_str.match('flag=1')==null){
-              if(status == 0){
                 if (window.confirm('<?php echo JS_TEXT_GENERAL_SHOW_REVIEW;?>')) {
                   window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
                 }
-              }else{
-                  window.location.href = url_str+'&once_pwd='+input_pwd_str; 
-              }
-             }else{
-                  window.location.href = url_str+'&once_pwd='+input_pwd_str; 
-             }
              }
            }); 
           } else {
