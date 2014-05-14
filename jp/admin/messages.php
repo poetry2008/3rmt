@@ -1,0 +1,855 @@
+<?php
+/*
+  $Id$
+*/
+  require('includes/application_top.php');
+  require(DIR_FS_ADMIN . 'classes/notice_box.php');
+  define('FILENAME_MESSAGES', 'messages.php');
+  $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
+  while($userslist= tep_db_fetch_array($sites_id_sql)){
+    $site_arr = $userslist['site_permission']; 
+  }
+ if($_GET['action']== 'delete_messages'){
+	if(!empty($_POST['messages_id'])){
+		foreach($_POST['messages_id'] as $value_messages_id){
+			tep_db_query('delete from messages where id = '.$value_messages_id);
+		}
+	}
+	if($_GET['messages_sort'] == ''){
+		tep_redirect(tep_href_link('messages.php'));
+	}else{
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+	}
+ }
+ if($_GET['action']== 'new_messages'){
+	//die(var_dump($_POST['selected_staff']));
+    if(!empty($_POST['selected_staff'])){	
+	$messages_file_name = '';
+	$messages_file_status = '0';
+	if ($_FILES['messages_file']['error'] > 0){
+	}else{
+		$messages_file_name = base64_encode($_FILES['messages_file']['name'].'|||'.$ocertify->auth_user.'|||'.time());
+		$messages_file_status = '1';
+		if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"])){
+      		}else{
+      			$file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"],"messages_upload/" . $messages_file_name);
+			//die(var_dump($file_success));
+      		}
+	}
+	foreach($_POST['selected_staff'] as $key => $value){
+		$sql_data_array = array(
+				     	'read_status' => '0',
+					'mark' => $_POST['pic_icon'],
+					'sender_id' => $ocertify->auth_user,
+					'recipient_id' => $value,
+					'reply_status' => '0',
+                                      	'content' => $_POST['contents'],
+					'attach_file' => $messages_file_status,
+					'file_name' => $messages_file_name,
+					'opt' => '0',
+					'sender_name' => $_SESSION['user_name'],
+					'time' => date("Y/m/d H:i:s"),
+                               );
+         	tep_db_perform('messages', $sql_data_array);
+		unset($sql_data_array);
+	//	var_dump($sql_data_array);
+	}
+	if($_GET['messages_sort'] == ''){
+		tep_redirect(tep_href_link('messages.php'));
+	}else{
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+	}
+     }
+  }  
+  if($_GET['action']== 'back_messages'){
+	//die(var_dump($_POST['selected_staff']));
+    if(!empty($_POST['selected_staff'])){	
+	$messages_file_name = '';
+	$messages_file_status = '0';
+	if ($_FILES['messages_file_back']['error'] > 0){
+	}else{
+		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'].'|||'.$ocertify->auth_user.'|||'.time());
+		$messages_file_status = '1';
+		if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"])){
+      		}else{
+      			$file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"],"messages_upload/" . $messages_file_name);
+			//die(var_dump($file_success));
+      		}
+	}
+	foreach($_POST['selected_staff'] as $key => $value){
+		$sql_data_array = array(
+				     	'read_status' => '0',
+					'mark' => $_POST['pic_icon'],
+					'sender_id' => $ocertify->auth_user,
+					'recipient_id' => $value,
+					'reply_status' => '1',
+                                      	'content' => $_POST['back_contents'],
+					'attach_file' => $messages_file_status,
+					'file_name' => $messages_file_name,
+					'opt' => '0',
+					'sender_name' => $_SESSION['user_name'],
+					'time' => date("Y/m/d H:i:s"),
+                               );
+         	tep_db_perform('messages', $sql_data_array);
+		unset($sql_data_array);
+	//	var_dump($sql_data_array);
+	}
+	tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
+     	if($_GET['messages_sort'] == ''){
+		tep_redirect(tep_href_link('messages.php'));
+	}else{
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+	}
+     }
+  }
+//	die(tep_href_link('messages.php'));
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html <?php echo HTML_PARAMS; ?>>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+<title><?php echo HEADING_TITLE; ?></title>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<?php require('includes/javascript/show_site.js.php');?>
+<script>
+var o_submit_single = true;
+$(document).ready(function() {
+  <?php //监听按键?> 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      <?php //esc?> 
+      if ($('#show_latest_news').css('display') != 'none') {
+        hidden_info_box(); 
+      }
+    }
+     if (event.which == 13) {
+           <?php //回车?>
+        if ($('#show_latest_news').css('display') != 'none') {
+          if (o_submit_single) {
+            $("#button_save").trigger("click");  
+          }
+        }
+     }
+
+     if (event.ctrlKey && event.which == 37) {
+      <?php //Ctrl+方向左?> 
+      if ($('#show_latest_news').css('display') != 'none') {
+        if ($("#option_prev")) {
+          $("#option_prev").trigger("click");
+        }
+      } 
+    }
+    if (event.ctrlKey && event.which == 39) {
+      <?php //Ctrl+方向右?> 
+      if ($('#show_latest_news').css('display') != 'none') {
+        if ($("#option_next")) {
+          $("#option_next").trigger("click");
+        }
+      } 
+    }
+  });    
+});
+
+ function check_news_info(){
+       var headline = document.getElementById('headline').value; 
+       var content  = document.getElementById('content').value;
+       var news_image_description = document.getElementById('news_image_description').value;
+       var s_single = false; 
+       
+       if (document.getElementById('site_type_hidden')) {
+         var site_type = document.getElementById('site_type_hidden').value; 
+         if (site_type == 0) {
+           if (document.new_latest_news.elements['site_id_info[]']) {
+             if (document.new_latest_news.elements['site_id_info[]'].length == null) {
+               if (document.new_latest_news.elements['site_id_info[]'].checked == true) {
+                 s_single = true; 
+               }
+             } else {
+               for (var u = 0; u < document.new_latest_news.elements['site_id_info[]'].length; u++) {
+                 if (document.new_latest_news.elements['site_id_info[]'][u].checked == true) {
+                   s_single = true; 
+                   break; 
+                 }
+               }
+             }
+           } else {
+             s_single = true; 
+           }
+         } else {
+           s_single = true; 
+         }
+       } else {
+         s_single = true; 
+       }
+       
+       $.ajax({
+         url: 'ajax.php?action=edit_latest_news',
+         type: 'POST',
+         dataType: 'text',
+         data:'headline='+headline+'&content='+content+'&news_image_description='+news_image_description, 
+         async:false,
+         success: function (data){
+          if (headline != '' && s_single == true) {
+            <?php
+            if ($ocertify->npermission == 31) {
+            ?>
+            document.forms.new_latest_news.submit(); 
+            <?php
+            } else {
+            ?>
+            $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+              async: false,
+              success: function(msg) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
+                  document.forms.new_latest_news.submit(); 
+                } else {
+                  $('#button_save').attr('id', 'tmp_button_save'); 
+                  var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+                  if (in_array(input_pwd_str, pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.forms.new_latest_news.action),
+                      async: false,
+                      success: function(msg_info) {
+                        document.forms.new_latest_news.submit(); 
+                      }
+                    }); 
+                  } else {
+                    alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+                    setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+                  }
+                }
+              }
+            });
+            <?php
+            }
+            ?>
+          }else{
+            if (headline != '') {
+              $("#title_error").html(''); 
+            } else {
+              $("#title_error").html('<?php echo TEXT_NEWS_ERROR_NULL;?>'); 
+            }
+            if (s_single == false) {
+              $("#site_error").html('<?php echo TEXT_ERROR_SITE;?>'); 
+            } else {
+              if ($("#site_error")) {
+                $("#site_error").html(''); 
+              }
+            }
+          }
+         }
+        });
+}
+function all_select_messages(messages_str){
+	if($(messages_str).attr('checked')){
+		$('input[name="messages_id[]"]').each(function() {
+			$(this).attr("checked",true);
+		});
+	}else{
+		$('input[name="messages_id[]"]').each(function() {
+			$(this).attr("checked",false);
+		});
+	}
+}
+
+function delete_select_messages(messages_str, c_permission){
+        sel_num = 0;
+	$('input[name="messages_id[]"]').each(function() {
+		if ($(this).attr("checked")) {
+			sel_num = 1;
+		}
+	});	
+        if (sel_num == 1) {
+           if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
+		document.forms.messages_checkbox.submit();	
+           }else{
+              document.getElementsByName('messages_action')[0].value = 0;
+           }
+         } else {
+            document.getElementsByName('messages_action')[0].value = 0;
+            alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
+         }
+}
+function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type){
+ var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
+ if(latest_messages_id >0){
+	$('#read_status_'+latest_messages_id).attr('src', 'images/icons/email_open.png');
+ }
+ $.ajax({
+ url: 'ajax.php?&action=new_messages',
+ data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type} ,
+ dataType: 'text',
+ async : false,
+ success: function(data){
+  $("div#show_latest_news").html(data);
+ele = ele.parentNode;
+head_top = $('.compatible_head').height();
+box_warp_height = 0;
+if(latest_messages_id != -1){
+if(document.documentElement.clientHeight < document.body.scrollHeight){
+if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+if(ele.offsetTop < $('#show_latest_news').height()){
+offset = ele.offsetTop+$("#show_text_list").position().top+ele.offsetHeight+head_top;
+box_warp_height = offset-head_top;
+}else{
+if (((head_top+ele.offsetTop+$('#show_latest_news').height()) > $('.box_warp').height())&&($('#show_latest_news').height()<ele.offsetTop+parseInt(head_top)-$("#show_text_list").position().top-1)) {
+offset = ele.offsetTop+$("#show_text_list").position().top-1-$('#show_latest_news').height()+head_top;
+} else {
+offset = ele.offsetTop+$("#show_text_list").position().top+$(ele).height()+head_top;
+offset = offset + parseInt($('#show_text_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+}
+box_warp_height = offset-head_top;
+}
+}else{
+  if (((head_top+ele.offsetTop+$('#show_latest_news').height()) > $('.box_warp').height())&&($('#show_latest_news').height()<ele.offsetTop+parseInt(head_top)-$("#show_text_list").position().top-1)) {
+    offset = ele.offsetTop+$("#show_text_list").position().top-1-$('#show_latest_news').height()+head_top;
+  } else {
+    offset = ele.offsetTop+$("#show_text_list").position().top+$(ele).height()+head_top;
+    offset = offset + parseInt($('#show_text_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+  }
+}
+$('#show_latest_news').css('top',offset);
+}else{
+  if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+    if (((head_top+ele.offsetTop+$('#show_latest_news').height()) > $('.box_warp').height())&&($('#show_latest_news').height()<ele.offsetTop+parseInt(head_top)-$("#show_text_list").position().top-1)) {
+      offset = ele.offsetTop+$("#show_text_list").position().top-1-$('#show_latest_news').height()+head_top;
+    } else {
+      offset = ele.offsetTop+$("#show_text_list").position().top+$(ele).height()+head_top;
+      offset = offset + parseInt($('#show_text_list').attr('cellpadding'))+parseInt($('.compatible table').attr('cellpadding'));
+    }
+    box_warp_height = offset-head_top;
+  }else{
+    offset = ele.offsetTop+$("#show_text_list").position().top+ele.offsetHeight+head_top;
+    box_warp_height = offset-head_top;
+  }
+  $('#show_latest_news').css('top',offset);
+}
+}
+box_warp_height = box_warp_height + $('#show_latest_news').height();
+if($('.show_left_menu').width()){
+  leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
+}else{
+  leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
+} 
+if(latest_messages_id == -1){
+  $('#show_latest_news').css('top', $('#show_text_list').offset().top);
+}
+$('#show_latest_news').css('z-index','1');
+$('#show_latest_news').css('left',leftset);
+$('#show_latest_news').css('display', 'block');
+o_submit_single = true;
+  }
+  }); 
+}
+function hidden_info_box(){
+   $('#show_latest_news').css('display','none');
+   o_submit_single = true;
+}
+<?php //选择动作?>
+function messages_change_action(r_value, r_str) {
+ if (r_value == '1') {
+     delete_select_messages(r_str, '<?php echo $ocertify->npermission;?>');
+   }
+}
+<?php //动作链接?>
+function toggle_news_action(news_url_str) 
+{
+  <?php
+    if ($ocertify->npermission == 31) {
+  ?>
+  window.location.href = news_url_str;  
+  <?php
+    } else {
+  ?>
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name=<?php echo $_SERVER['PHP_SELF']?>', 
+    async: false,
+    success: function(msg) {
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
+      if (tmp_msg_arr[0] == '0') {
+        window.location.href = news_url_str;  
+      } else {
+        if ($('#button_save')) {
+          $('#button_save').attr('id', 'tmp_button_save'); 
+        }
+        var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(news_url_str),
+            async: false,
+            success: function(msg_info) {
+              window.location.href = news_url_str;  
+            }
+          }); 
+        } else {
+          alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+          if ($('#tmp_button_save')) {
+            setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+          }
+        }
+      }
+    }
+  });
+  <?php
+    }
+  ?>
+}
+<?php //全选?>
+function select_all_news_site()
+{
+  var is_select_value = document.getElementById('is_select').value; 
+  if (document.new_latest_news.elements['site_id_info[]']) {
+    if (document.new_latest_news.elements['site_id_info[]'].length == null) {
+      if (is_select_value == '0') {
+        document.new_latest_news.elements['site_id_info[]'].checked = true;
+        document.getElementById('is_select').value = '1'; 
+      } else {
+        document.new_latest_news.elements['site_id_info[]'].checked = false;
+        document.getElementById('is_select').value = '0'; 
+      }
+    } else {
+      if (is_select_value == '0') {
+        for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
+          if (!document.new_latest_news.elements['site_id_info[]'][i].disabled) {
+            document.new_latest_news.elements['site_id_info[]'][i].checked = true;
+          }
+        }
+        document.getElementById('is_select').value = '1'; 
+      } else {
+        for (var i = 0; i < document.new_latest_news.elements['site_id_info[]'].length; i++) {
+          if (!document.new_latest_news.elements['site_id_info[]'][i].disabled) {
+            document.new_latest_news.elements['site_id_info[]'][i].checked = false;
+          } 
+        }
+        document.getElementById('is_select').value = '0'; 
+      }
+    }
+  }
+}
+<?php //选择网站?>
+function change_site_type(site_type, site_list)
+{
+  var site_list_array = site_list.split(','); 
+  if (site_type == 0) {
+    $('#site_type_hidden').val('0'); 
+    $('#select_site').find(':checkbox').each(function() {
+      for (var i = 0; i < site_list_array.length; i++) {
+        if ($(this).val() == site_list_array[i]) {
+          $(this).removeAttr('disabled'); 
+        }
+      }
+    }); 
+    $('#all_site_button').removeAttr('disabled'); 
+  } else {
+    $('#site_type_hidden').val('1'); 
+    $('#select_site').find(':checkbox').each(function() {
+      $(this).attr('disabled', 'disabled'); 
+    }); 
+    $('#all_site_button').attr('disabled', 'disabled'); 
+  }
+}
+
+function add_select_user(){
+	$('input[name=all_staff]').each(function() {	
+		if ($(this).attr("checked")) {
+		 	$('#send_to').append('<div value="'+$(this).parent().attr("value")+'"><input value="'+this.value+'" type="checkbox" name="selected_staff[]">'+$(this).parent().attr("value")+'</div>');
+			$(this).parent().remove();	
+		}
+	});
+}
+function delete_select_user(){
+	$('input[name="selected_staff[]"]').each(function() {	
+		if ($(this).attr("checked")) {
+		 	$('#delete_to').append('<div value="'+$(this).parent().attr("value")+'"><input value="'+this.value+'" type="checkbox" name="all_staff" >'+$(this).parent().attr("value")+'</div>');
+			$(this).parent().remove();	
+		}
+	});
+}
+function messages_check(is_back){
+	var error_status_select = 0;
+	var error_status_contents = 0;
+	var error_status_back_contents = 1;
+	var reg = /^\s*$/g;
+	$('input[name="selected_staff[]"]').each(function() {
+		$(this).attr("checked","");
+	});
+	$('input[name="selected_staff[]"]').each(function() {
+		if($(this).attr("checked")) {
+			error_status_select = 1;
+		}
+	});
+	if(is_back == 1){
+		error_status_back_contents = 0;
+		if(!reg.test($('[name=back_contents]').val())){
+			error_status_back_contents = 1;
+		}
+	}
+	if(!reg.test($('[name=contents]').val())){
+		error_status_contents = 1;
+	}
+	if(error_status_select == 0){
+		$('#messages_to_must_select').css('display','');
+	}
+	if(error_status_contents == 0){
+		$('#messages_must_write').css('display','');
+	}
+	if(error_status_back_contents == 0){
+		$('#messages_back_must_write').css('display','');
+	}
+	if(error_status_select == 1 && error_status_contents == 1 && error_status_back_contents == 1){
+		console.log('ok');
+		document.forms.new_latest_messages.submit();
+	}
+}
+</script>
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=new_latest_news/',$belong,$belong_temp_array);
+if($belong_temp_array[0][0] != ''){
+  preg_match_all('/latest_news_id=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != ''){
+
+    $belong = $href_url.'?'.$belong_array[0][0];
+  }else{
+
+    $belong = $href_url.'?'.$belong_temp_array[0][0];
+  }
+}else{
+
+  $belong = $href_url;
+}
+require("includes/note_js.php");
+?>
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
+<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+  <script language='javascript'>
+    one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
+  </script>
+<?php }?>
+<!-- header -->
+<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+<!-- header_eof -->
+
+<!-- body -->
+<input type="hidden" name="show_info_id" value="show_latest_news" id="show_info_id">
+<div style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;" id="show_latest_news"></div>
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
+  <tr>
+    <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+<!-- left_navigation -->
+<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+<!-- left_navigation_eof -->
+    </table></td>
+<!-- body_text -->
+    <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"><?php var_dump($_POST); ?>
+      <tr>
+        <td>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+              <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_text_list">
+          <tr>
+            <td valign="top">
+             <?php
+	       $messages_sort_default = 'time';
+               $messages_sort_type = 'desc';  
+                
+               if (isset($_GET['messages_sort_type'])) {
+                 if ($_GET['messages_sort_type'] == 'asc') {
+                   $messages_sort_type = 'asc'; 
+                 } else {
+                   $messages_sort_type = 'desc'; 
+                 }
+               }
+		$messages_sort = '';
+		if (isset($_GET['messages_sort'])) {
+			switch($_GET['messages_sort']){
+				case 'read_status': $messages_sort = 'read_status';break;
+				case 'mark': $messages_sort = 'mark';break;
+				case 'sender_id': $messages_sort = 'sender_id';break;
+				case 'recipient_id': $messages_sort = 'recipient_id';break;
+				case 'reply_status': $messages_sort = 'reply_status';break;
+				case 'content': $messages_sort = 'content';break;
+				case 'attach_file': $messages_sort = 'attach_file';break;
+				case 'time': $messages_sort = 'time';break;
+				case 'opt': $messages_sort = 'opt';break;
+			}
+		}
+		
+              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=delete_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
+                if($messages_sort == '' || $messages_sort != 'read_status'){ 
+			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc').'">'.READ_STATUS.'</a>'; 
+		}else{
+			if($messages_sort == 'read_status' && $messages_sort_type == 'desc'){
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc').'">'.READ_STATUS.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc').'">'.READ_STATUS.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'mark'){ 
+			$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=desc').'">'.MESSAGES_MARK.'</a>'; 
+		}else{
+			if($messages_sort == 'mark' && $messages_sort_type == 'desc'){
+				$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=asc').'">'.MESSAGES_MARK.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=desc').'">'.MESSAGES_MARK.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'sender_id'){ 
+			$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc').'">'.MESSAGES_FROM.'</a>'; 
+		}else{
+			if($messages_sort == 'sender_id' && $messages_sort_type == 'desc'){
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=asc').'">'.MESSAGES_FROM.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc').'">'.MESSAGES_FROM.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'recipient_id'){ 
+			$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc').'">'.MESSAGES_TO.'</a>'; 
+		}else{
+			if($messages_sort == 'recipient_id' && $messages_sort_type == 'desc'){
+				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=asc').'">'.MESSAGES_TO.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc').'">'.MESSAGES_TO.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'reply_status'){ 
+			$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc').'">'.MESSAGES_BACK.'</a>'; 
+		}else{
+			if($messages_sort == 'reply_status' && $messages_sort_type == 'desc'){
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc').'">'.MESSAGES_BACK.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc').'">'.MESSAGES_BACK.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'content'){ 
+			$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=desc').'">'.MESSAGES_CONTENT.'</a>'; 
+		}else{
+			if($messages_sort == 'content' && $messages_sort_type == 'desc'){
+				$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=asc').'">'.MESSAGES_CONTENT.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=desc').'">'.MESSAGES_CONTENT.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'attach_file'){ 
+			$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc').'">'.ADD_FILE.'</a>'; 
+		}else{
+			if($messages_sort == 'attach_file' && $messages_sort_type == 'desc'){
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc').'">'.ADD_FILE.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc').'">'.ADD_FILE.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'time'){ 
+			$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=desc').'">'.MESSAGES_DATE.'</a>'; 
+		}else{
+			if($messages_sort == 'time' && $messages_sort_type == 'desc'){
+				$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=asc').'">'.MESSAGES_DATE.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=desc').'">'.MESSAGES_DATE.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+		if($messages_sort == '' || $messages_sort != 'opt'){ 
+			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'</a>'; 
+		}else{
+			if($messages_sort == 'opt' && $messages_sort_type == 'desc'){
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'
+				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
+			}else{
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'
+				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
+			}
+		}
+               
+               $messages_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+               $notice_box = new notice_box('','',$messages_table_params);       
+               $messages_table_row = array();
+               $messages_title_row = array();
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_mark);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_from);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_to);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_back);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="40%"','text' => $messages_content);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_add_file);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_date);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_opt);
+               $messages_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $messages_title_row);
+    $rows = 0;
+    if($messages_sort == ''){
+	$messages_sort_sql = $messages_sort_default;
+    }else{
+	$messages_sort_sql = $messages_sort;
+    }
+    $latest_messages_query_raw = '
+        select * 
+        from messages where recipient_id = "'.$ocertify->auth_user.'" order by '.$messages_sort_sql.' '.$messages_sort_type;
+	//var_dump($latest_messages_query_raw);
+    $latest_messages_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw, $latest_messages_query_numrows);
+    $latest_messages_query = tep_db_query($latest_messages_query_raw);
+  //die(var_dump(tep_db_fetch_array($latest_messages_query)));
+
+    while ($latest_messages = tep_db_fetch_array($latest_messages_query)) {
+	$rows++;
+	$even = 'dataTableSecondRow';
+	$odd  = 'dataTableRow';
+	if (isset($nowColor) && $nowColor == $odd) {
+		$nowColor = $even;
+	} else {
+		$nowColor = $odd;
+	}
+	$messages_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+	$messages_info = array();
+	$messages_checkbox = '<input type="checkbox" name="messages_id[]" value="'.$latest_messages['id'].'">';
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $messages_checkbox		
+	);
+	$messages_read_status = $latest_messages['read_status']==0 ? '<img id="read_status_'.$latest_messages['id'].'" src="images/icons/email.png" border="0">' : '<img id="read_status_'.$latest_messages['id'].'" src="images/icons/email_open.png" border="0">';
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $messages_read_status
+	);
+	$mark_handle = strlen($latest_messages['mark']) > 1 ? $latest_messages['mark'] : '0'.$latest_messages['mark'];
+	$messages_mark = $latest_messages['mark'] != '' ? '<img src="images/icon_list/icon_'.$mark_handle.'.gif" border="0">' : '';
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $messages_mark
+	);
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $latest_messages['sender_name']
+	);
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $_SESSION['user_name']
+	);
+	$messages_reply_status = $latest_messages['reply_status']==0 ? '' : '<img src="images/icons/reply_icon.png" border="0">';
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $messages_reply_status
+	);
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $latest_messages['content']
+	);
+	$messages_attach_file = $latest_messages['attach_file']==0 ? '' : '<img src="images/icons/attach.png" border="0">';
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $messages_attach_file
+	);
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => $latest_messages['time']
+	);
+	$messages_opt = $latest_messages['opt']==0 ? '<img src="images/icons/info_blink.gif" border="0">' : '<img src="images/icons/info_green.gif" border="0">';
+	$messages_info[] = array(
+		'params' => 'class="dataTableContent"',
+		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,'.$_GET['page'].','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">'.$messages_opt.'</a>'
+	);
+	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
+    }
+  $notice_box->get_form($form_str);
+  $notice_box->get_contents($messages_table_row);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+?>&nbsp;</td>
+              </tr>
+
+            </table>
+			<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:-10px;">
+<tr>                 
+                    <td valign="top" class="smallText">
+                    <?php 
+                    echo '<select name="messages_action" onchange="messages_change_action(this.value, \'messages_id[]\');">';
+                    echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
+                    echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
+                    echo '</select>';
+                    ?> 
+                    </td>
+                    <td align="right" class="smallText">
+                   </td>
+                  </tr>
+
+                  <tr>
+                    <td class="smallText" valign="top"><?php echo $latest_messages_split->display_count($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $latest_messages_split->display_links($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
+                  </tr>
+                     <tr><td></td><td align="right">
+                      <div class="td_button"><?php
+                      //通过site_id判断是否允许新建
+                     // if (trim($site_array[0]) != '') {
+                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_messages(this,'.$_GET['page'].',-1,\'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
+                     // }else{
+                     // echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
+                     // } 
+                      ?>
+                    </div>
+                     </td></tr>
+                                  </table>
+			</td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+    </div> 
+    </div>
+    </td>
+<!-- body_text_eof -->
+  </tr>
+</table>
+<!-- body_eof -->
+
+<!-- footer -->
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+<!-- footer_eof -->
+<br>
+</body>
+</html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
