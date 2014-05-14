@@ -16,7 +16,7 @@ $c_query = mysql_query($c_sql);
 $row = 0;
 echo 'faq category<br>';
 while($c_row = mysql_fetch_array($c_query)){
-  $search_text = $c_row['romaji'].'>>>'.$c_row['title'].'>>>'.$c_row['keywords'].'>>>'.$c_row['description'];
+  $search_text = $c_row['url_words'].'>>>'.$c_row['title'].'>>>'.$c_row['keywords'].'>>>'.$c_row['description'];
   $insert_sql = "INSERT INTO `faq_sort` (
     `id` , `site_id` , `title` , `sort_order` , 
     `is_show` , `parent_id` , `info_id` , `info_type`,`updated_at`,`search_text`)
@@ -31,7 +31,7 @@ while($c_row = mysql_fetch_array($c_query)){
   echo '<br>';
 }
 echo '<br>faq question <br>';
-$q_sql = "SELECT qd.site_id,qd.faq_question_id,qd.romaji,qd.ask,
+$q_sql = "SELECT qd.site_id,qd.faq_question_id,qd.url_words,qd.ask,
   q.sort_order,qd.is_show,q2c.faq_category_id,q.updated_at,
   qd.keywords,qd.answer 
   FROM 
@@ -41,7 +41,7 @@ $q_sql = "SELECT qd.site_id,qd.faq_question_id,qd.romaji,qd.ask,
   AND qd.`faq_question_id` = q2c.`faq_question_id`";
 $q_query = mysql_query($q_sql);
 while($q_row = mysql_fetch_array($q_query)){
-  $search_text = $q_row['romaji'].'>>>'.$q_row['ask'].'>>>'.$q_row['keyworeds'].'>>>'.$q_row['answer'];
+  $search_text = $q_row['url_words'].'>>>'.$q_row['ask'].'>>>'.$q_row['keyworeds'].'>>>'.$q_row['answer'];
   $insert_sql = "INSERT INTO `faq_sort` (
     `id` , `site_id` , `title` , `sort_order` , 
     `is_show` , `parent_id` , `info_id` , `info_type`,`updated_at`,`search_text`)

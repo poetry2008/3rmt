@@ -5571,6 +5571,31 @@ function tep_display_google_results($from_url='', $c_type=false){
     return true;
   }
 
+
+/* -------------------------------------
+    功能: 判断该罗马字是否存在指定字符 
+    参数: $romaji(string) 罗马字 
+    返回值: 是否存在(boolean) 
+	@date:20140509代替原有的tep_check_romaji();
+    最后将tep_check_romaji();删除
+ ------------------------------------ */
+  function tep_check_url_words($url_words){
+    $keywords = array(
+        'page',
+        'reviews',
+        'info',
+        'latest_news',
+        '=','?','&'
+        );
+    foreach($keywords as $k){
+      if (strpos($url_words,$k) !== false) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
 /* -------------------------------------
     功能: 获取商品最大/最小库存 
     参数: $pid(int) 商品id 
@@ -5637,7 +5662,8 @@ function tep_display_google_results($from_url='', $c_type=false){
                              '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
                              '$unit_price',//商品单价(参数)
                              '$related_unit_price',//关联商品单价(参数)
-                             '$stocks_average_cost'//实际库存的平均价格(参数)
+                             '$stocks_average_cost',//实际库存的平均价格(参数)
+                             '$related_unit_quantity'//关联商品的库存
                            );
     $inventory_max_array = explode('|||',$inventory_arr['max']);
     if(strlen($inventory_max_array[0]) != strlen(str_replace($inventory_mode_array,'',$inventory_max_array[0]))){
@@ -5681,6 +5707,8 @@ function tep_display_google_results($from_url='', $c_type=false){
     }else{
       $inventory_arr['min'] = $inventory_min_num_1 > $inventory_min_num_2 ? $inventory_min_num_1 : $inventory_min_num_2;
     } 
+    $inventory_arr['max'] = $inventory_arr['max'] < 0 ? 0 : $inventory_arr['max'];
+    $inventory_arr['min'] = $inventory_arr['min'] < 0 ? 0 : $inventory_arr['min'];
  
     $inventory_arr['cpath'] = $cpath;
     return $inventory_arr;
@@ -8039,7 +8067,7 @@ function   tep_order_status_change($oID,$status){
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8062,7 +8090,7 @@ function   tep_order_status_change($oID,$status){
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8090,7 +8118,7 @@ function   tep_order_status_change($oID,$status){
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8178,7 +8206,7 @@ function tep_get_rownum_faq_question($current_category_id,$qid,$site_id,$search=
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8201,7 +8229,7 @@ function tep_get_rownum_faq_question($current_category_id,$qid,$site_id,$search=
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8229,7 +8257,7 @@ function tep_get_rownum_faq_question($current_category_id,$qid,$site_id,$search=
         fqd.is_show,
         fq2c.faq_category_id,
         fqd.faq_question_id,
-        fqd.romaji,
+        fqd.url_words,
         fqd.ask,
         fqd.keywords,
         fqd.answer,
@@ -8269,6 +8297,22 @@ function get_romaji_by_site_id($site_id) {
   $site = tep_db_fetch_array(tep_db_query("select romaji from ".TABLE_SITES." where id='".$site_id."'"));
   if ($site) {
     return $site['romaji'];
+  } else {
+    return false;
+  }
+}
+
+
+/* -------------------------------------
+    功能: 获得指定网站的罗马字 
+    参数: $site_id(int) 网站id 
+    返回值: 网站的罗马字(string/false) 
+	@date20140509 测试完成后删除get_romaji_by_site_id()和此行文字
+ ------------------------------------ */
+function get_url_words_by_site_id($site_id) {
+  $site = tep_db_fetch_array(tep_db_query("select romaji as url_words from ".TABLE_SITES." where id='".$site_id."'"));
+  if ($site) {
+    return $site['url_words'];
   } else {
     return false;
   }
@@ -8917,7 +8961,7 @@ function tep_datetime_short_torihiki($raw_datetime) {
   $minute = (int)substr($raw_datetime, 14, 2);
   $second = (int)substr($raw_datetime, 17, 2);
 
-  return strftime(DATE_TIME_FORMAT_MESSAGE, mktime($hour, $minute, $second, $month, $day, $year));
+  return strftime(DATE_TIME_FORMAT_TORIHIKI, mktime($hour, $minute, $second, $month, $day, $year));
 }
 
 /* -------------------------------------
@@ -9856,12 +9900,12 @@ function check_order_latest_status($oid)
 /* -------------------------------------
     功能: 检查该同业者是否在指定列表里 
     参数: $d_id(int) 同业者id 
-    参数: $dougyousya(array) 同业者id 
+    参数: $peers(array) 同业者id 
     返回值: 是否在(boolean) 
  ------------------------------------ */
-function check_in_dougyousya($d_id, $dougyousya)
+function check_in_peers($d_id, $dougyousya)
 {
-  foreach ($dougyousya as $d) {
+  foreach ($peers as $d) {
     if ($d['dougyousya_id'] === $d_id) {
       return true;
     }
@@ -13185,23 +13229,28 @@ function tep_inventory_operations($inventory_contents,$pid,$site_id){
     $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $product_sub_date, 0,$relate_radices);
     $relate_row_count = $relate_row_count == '' ? 0 : $relate_row_count;
     //关联商品单价
-    $relate_price_array = tep_db_fetch_array(tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id='".$pInfo->relate_products_id."'"));
+    $relate_pInfo = tep_get_pinfo_by_pid(tep_db_prepare_input($pInfo->relate_products_id), $site_id);
+    $relate_products_price = $relate_pInfo->products_price;
     //实际库存的平均价格
     $product_td_avg_price = '';
     if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
       $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo));
     } 
+    //关联商品的库存
+    $relate_products_inventory = tep_new_get_quantity($relate_pInfo);
     $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
                              '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
                              '$unit_price',//商品单价(参数)
                              '$related_unit_price',//关联商品单价(参数)
-                             '$stocks_average_cost'//实际库存的平均价格(参数)
+                             '$stocks_average_cost',//实际库存的平均价格(参数)
+                             '$related_unit_quantity'//关联商品的库存
                            );
     $inventory_replace_array = array($product_row_count,//近期订购商品数(值)
                              $relate_row_count,//近期订购关联商品数(值) 
                              abs(tep_db_prepare_input($pInfo->products_price)),//商品单价(值)
-                             abs($relate_price_array['products_price']),//关联商品单价(值)
-                             $product_td_avg_price//实际库存的平均价格(值)
+                             abs($relate_products_price),//关联商品单价(值)
+                             $product_td_avg_price,//实际库存的平均价格(值)
+                             $relate_products_inventory
                             );
     //如果库存为空时,默认为0
     $inventory_contents = $inventory_contents == '' ? 0 : $inventory_contents;

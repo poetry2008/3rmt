@@ -25,7 +25,7 @@ define('DATE_FORMAT_LONG', '%Y年%B%e日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('PHP_DATE_TIME_FORMAT', 'Y/m/d H:i:s'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
-define('DATE_TIME_FORMAT_MESSAGE', '%Y/%m/%d %H:%M');
+define('DATE_TIME_FORMAT_TORIHIKI', '%Y/%m/%d %H:%M');
 
 ////
 // Return date in raw format

@@ -566,7 +566,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 		".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
 			fcd where fc.id=fcd.faq_category_id and
 			fc.parent_id='".$_POST['pid']."'      and
-			fcd.romaji='".$romaji."' and
+			fcd.url_words='".$romaji."' and
 			(fcd.site_id='".$site_id."' or fcd.site_id = '0' )"; 
   if(isset($_POST['cid'])&&$_POST['cid']!=''){
     $sql .= " and fc.id != '".$_POST['cid']."'";
@@ -619,7 +619,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 		".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
 			where fqd.faq_question_id=fq2c.faq_question_id and
 			fq2c.faq_category_id='".$_POST['cid']."'      and
-			fqd.romaji='".$romaji."' and
+			fqd.url_words='".$romaji."' and
 			(fqd.site_id='".$site_id."' or fqd.site_id = '0' )";
   if(isset($_POST['qid'])&&$_POST['qid']!=''){
     $sql .= " and fqd.faq_question_id != '".$_POST['qid']."'"; 
@@ -718,7 +718,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 		".TABLE_CATEGORIES_DESCRIPTION." 
 			cd where c.categories_id=cd.categories_id and
 			c.parent_id='".$_POST['pid']."'      and
-			cd.romaji='".$romaji."' and
+			cd.url_words='".$romaji."' and
 			(cd.site_id='".$site_id."' or cd.site_id = '0' )"; 
   if(isset($_POST['cid'])&&$_POST['cid']!=''){
     $sql .= " and c.categories_id != '".$_POST['cid']."'";
@@ -3116,7 +3116,9 @@ echo json_encode($json_array);
   $select_inventory = $_POST['select_inventory'];
   $inventory_contents_1 = tep_inventory_operations($inventory_contents_1,$pid,$site_id); 
   $inventory_contents_2 = tep_inventory_operations($inventory_contents_2,$pid,$site_id); 
-  echo $select_inventory == 'max' ? max($inventory_contents_1,$inventory_contents_2) : min($inventory_contents_1,$inventory_contents_2);
+  $result = $select_inventory == 'max' ? max($inventory_contents_1,$inventory_contents_2) : min($inventory_contents_1,$inventory_contents_2);
+  $result = $result < 0 ? 0 : $result;
+  echo $result;
 }else if ($_GET['action'] == 'show_status_mail_send'){
 include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ORDERS);
 $orders_status_query = tep_db_query("select orders_status_id, orders_status_name, is_reorder from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");

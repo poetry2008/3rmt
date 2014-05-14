@@ -33,10 +33,11 @@ if (isset($body_option)) {
 <div id="l_menu">
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 </div>
-<div class="header_Navigation">
-   <?php echo $breadcrumb->trail(' &raquo; '); ?>
-</div>
+
 <div id="content">
+	<div class="header_Navigation">
+  	 <?php echo $breadcrumb->trail(' &raquo; '); ?>
+	</div>
     <div class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></div>
     <div class="comment_faq">
     <?php 
@@ -84,7 +85,7 @@ if (isset($body_option)) {
     <img src="images/design/ask.gif" alt="question">
     </td>
     <td class="faq_question_row"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a></span>
     </td></tr>
@@ -96,7 +97,7 @@ if (isset($body_option)) {
     <img src="images/design/ask.gif" alt="question">
     </td>
     <td class="faq_question_row"><span><a href="<?php echo
-      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
       </td></tr></table>
@@ -117,7 +118,7 @@ if (isset($body_option)) {
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 <!-- footer_eof --> 
 </div>
-<!--body_EOF// -->
+<!--body_EOF -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

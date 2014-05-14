@@ -1,11 +1,10 @@
 <?php
 /*
   $Id$
-
 */
 
-define('NAVBAR_TITLE_FIRST', 'レジ');
-define('NAVBAR_TITLE_SECOND', 'ご請求先の変更');
+define('NAVBAR_TITLE_1', 'レジ');
+define('NAVBAR_TITLE_2', 'ご請求先の変更');
 
 define('HEADING_TITLE', 'ご請求先を選んでください');
 

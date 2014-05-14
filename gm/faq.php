@@ -42,7 +42,7 @@ if (isset($body_option)) {
     <table class="faq_question_row">
     	<tr><td><div>
     <img src="images/design/ask.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
-    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['url_words']).'/';?>">
       <?php echo $c_row['title'];?>
     </a></span></div></td></tr>
     </table>
@@ -50,7 +50,7 @@ if (isset($body_option)) {
     <table class="faq_question_row"><tr><td>
     	<div><img src="images/design/ask.gif" alt="question"></div>
    		<div class="faq_question_row_div"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['url_words']).'/';?>">
           <?php echo $c_row['title'];?>
         </a></span>
         </div>
@@ -70,7 +70,7 @@ if (isset($body_option)) {
     <div>
     <img src="images/design/ask.gif" alt="question"></div>
     <div class="faq_question_row_div"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a></span></div>
     </td></tr>
@@ -80,7 +80,7 @@ if (isset($body_option)) {
     ?>
     <table class="faq_question_row"><tr><td>
     <div><img src="images/design/ask.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
-      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
       </div>
@@ -113,7 +113,7 @@ if (isset($body_option)) {
     <table class="faq_question_row">
     	<tr><td><div>
     <img src="images/design/ask.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
-    HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
+    HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['url_words']).'/';?>">
       <?php echo $last_row['title'];?>
     </a></span></div></td></tr>
     </table>
@@ -121,7 +121,7 @@ if (isset($body_option)) {
     <table class="faq_question_row"><tr><td>
     	<div><img src="images/design/ask.gif" alt="question"></div>
    		<div class="faq_question_row_div"><span><a href="<?php echo
-     HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
+     HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['url_wrods']).'/';?>">
           <?php echo $last_row['title'];?>
         </a></span>
         </div>

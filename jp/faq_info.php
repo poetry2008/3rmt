@@ -63,7 +63,7 @@ if (isset($body_option)) {
       TEXT_OTHER_QUESTION;?></h2>
     <ul class="faq_info_ul_question">
     <li class="faq_info_li_question"><a href="<?php echo
-     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a>
     </li>
@@ -71,7 +71,7 @@ if (isset($body_option)) {
     while($q_row = tep_db_fetch_array($last_faq_question_query)){ 
     ?>
     <li class="faq_info_li_question"><a href="<?php echo
-      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
+      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['url_words']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a>
     </li>
