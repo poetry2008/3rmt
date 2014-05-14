@@ -8961,7 +8961,7 @@ function tep_datetime_short_torihiki($raw_datetime) {
   $minute = (int)substr($raw_datetime, 14, 2);
   $second = (int)substr($raw_datetime, 17, 2);
 
-  return strftime(DATE_TIME_FORMAT_MESSAGE, mktime($hour, $minute, $second, $month, $day, $year));
+  return strftime(DATE_TIME_FORMAT_TORIHIKI, mktime($hour, $minute, $second, $month, $day, $year));
 }
 
 /* -------------------------------------
