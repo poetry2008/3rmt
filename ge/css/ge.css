@@ -519,6 +519,7 @@ form {
     list-style-image:url(../images/design/oc/q.gif);
 }
 .pageHeading {
+	clear:left;
     font-size:14px;
     font-weight:bold;
     margin:10px 0 10px 0;
