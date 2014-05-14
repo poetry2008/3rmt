@@ -563,7 +563,7 @@ require("includes/note_js.php");
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text -->
-    <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2"><?php var_dump($_POST); ?>
+    <td width="100%" valign="top" id="categories_right_td"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
