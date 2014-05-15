@@ -1800,12 +1800,23 @@ $belong = str_replace('0_','',$belong);
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
 <link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css?v=<?php echo $back_rand_info?>">
-<script language="javascript" >
-<?php tep_get_javascript('general','includes');?>
-</script>
 <script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" src="includes/javascript/udlr.js?v=<?php echo $back_rand_info?>"></script>
 <script type="text/javascript" >
+        var c_admin_input_form_error = '<?php echo JS_TEXT_C_ADMIN_INPUT_FORM_ERROR;?>';
+        var c_admin_sort_error = '<?php echo JS_TEXT_C_ADMIN_SORT_ERROR;?>';
+        var c_admin_weight_error = '<?php echo JS_TEXT_C_ADMIN_WEIGHT_ERROR;?>';
+        var c_admin_price_info_error = '<?php echo JS_TEXT_C_ADMIN_PRICE_INFO_ERROR;?>';
+        var c_admin_add_or_sub_error = '<?php echo JS_TEXT_C_ADMIN_ADDORSUB_ERROR;?>';
+        var c_admin_real_quantity_error = '<?php echo JS_TEXT_C_ADMIN_REAL_QUANTITY_ERROR;?>';
+        var c_admin_quantity_info_error = '<?php echo JS_TEXT_C_ADMIN_QUANTITY_INFO_ERROR;?>';
+        var c_admin_cart_flag_title_error = '<?php echo JS_TEXT_C_ADMIN_CARTFLAG_TITLE_ERROR;?>';
+        var c_admin_cart_order_error = '<?php echo JS_TEXT_C_ADMIN_CARTORDER_ERROR;?>';
+        var c_admin_is_has = '<?php echo JS_TEXT_C_ADMIN_IS_HAS;?>';
+        var c_admin_url_words_error = '<?php echo JS_TEXT_C_ADMIN_URL_WORDS_ERROR;?>';
+        var c_admin_char_set_info = '<?php echo JS_TEXT_C_ADMIN_CHAR_SET_INFO;?>';
+        var c_admin_show_review = '<?php echo JS_TEXT_C_ADMIN_SHOW_REVIEW;?>';
+        var c_admin_input_text_error = '<?php echo JS_TEXT_C_ADMIN_INPUT_TEXT_ERROR;?>';
 	var c_admin_is_update = '<?php echo JS_TEXT_C_ADMIN_IS_UPDATE;?>';
 	var c_admin_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
 	var c_admin_onetime_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';

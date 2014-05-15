@@ -1,4 +1,474 @@
 var categories_tree_show = false;
+function SetFocus() {
+  if (document.forms.length > 0) {
+    var field = document.forms[0];
+    for (i=0; i<field.length; i++) {
+      if ( (field.elements[i].type != "image") && 
+          (field.elements[i].type != "hidden") && 
+          (field.elements[i].type != "reset") && 
+          (field.elements[i].type != "submit")  && (field.elements[i].type != "button")) {
+
+        document.forms[0].elements[i].focus();
+
+        if ( (field.elements[i].type == "text") || 
+            (field.elements[i].type == "password") )
+          document.forms[0].elements[i].select();
+
+        break;
+      }
+    }
+  }
+}
+
+function show_monitor_error(e_id,flag,_this){
+  if(flag){
+    allt(_this,e_id);
+  }else{
+    document.getElementById(e_id).style.display="none";
+  }
+}
+function obj_obj(obj){
+  return typeof(obj)=="string"?document.getElementById(obj):obj;
+}
+function allt(id,div_id){ 
+  e=obj_obj(id) 
+    var et=e.offsetTop; 
+  var el=e.offsetLeft; 
+  while(e=e.offsetParent){ 
+    et+=e.offsetTop; 
+    el+=e.offsetLeft; 
+  } 
+  div_e = obj_obj(div_id);
+  div_e.style.width="300px";
+  div_e.style.left=(window.screen.availWidth-320) + "px"; 
+  div_e.style.top=(et+20) + "px"; 
+  div_e.style.display=''; 
+} 
+
+
+function clearNoNum(obj)
+{
+  var re = /^[0-9]+\.?[0-9]*$/;
+  var show_error_msg = false;  
+  if(!re.test(obj.value) && obj.value != ''){
+    show_error_msg = true; 
+    alert(c_admin_input_text_error); 
+  } 
+  if(show_error_msg){
+    //replace all un number and '.'
+    obj.value = obj.value.replace(/[^\d.]/g,"");
+    //first char must be number
+    obj.value = obj.value.replace(/^\./g,"");
+    //only one '.'
+    obj.value = obj.value.replace(/\.{2,}/g,".");
+    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    return true;
+  }
+  return false;
+}
+
+function check_toggle_status(url_str, c_permission,status)
+{
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
+    async : false,
+    success: function(data) {
+      if (c_permission == 31) {
+        if (window.confirm(c_admin_show_review)) {
+          window.location.href = url_str+'&up_rs=true'; 
+        }
+      } else {
+        var tmp_msg_arr = data.split('|||'); 
+        var pwd_list_array = tmp_msg_arr[1].split(',');
+        if (tmp_msg_arr[0] == '0') {
+        if (window.confirm(c_admin_show_review)) {
+          window.location.href = url_str+'&up_rs=true'; 
+        }
+        } else {
+          var input_pwd_str = window.prompt(c_admin_onetime_pwd, ''); 
+          if (in_array(input_pwd_str, pwd_list_array)) {
+           $.ajax({
+             url: 'ajax_orders.php?action=record_pwd_log',   
+             type: 'POST',
+             dataType: 'text',
+             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
+             async: false,
+             success: function(msg_info) {
+              if (window.confirm(c_admin_show_review)) {
+                window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
+              }
+             }
+           }); 
+          } else {
+            alert(c_admin_onetime_error); 
+          }
+        }
+      }
+    }
+  });
+}
+
+
+function replace_romaji(romaji){
+  //replace & + to a string
+romaji = romaji.replace(/\&/g,'11111111');
+romaji = romaji.replace(/\+/g,'22222222');
+romaji = romaji.replace(/\//g,'33333333');
+romaji = romaji.replace(/\%/g,'44444444');
+romaji = romaji.replace(/\#/g,'55555555');
+romaji = romaji.replace(/\?/g,'66666666');
+romaji = romaji.replace(/ /g,'77777777');
+romaji = romaji.replace(/\,/g,'88888888');
+romaji = romaji.replace(/\</g,'aaaaaaaa');
+romaji = romaji.replace(/\>/g,'bbbbbbbb');
+romaji = romaji.replace(/\{/g,'cccccccc');
+romaji = romaji.replace(/\}/g,'dddddddd');
+romaji = romaji.replace(/\(/g,'eeeeeeee');
+romaji = romaji.replace(/\)/g,'ffffffff');
+romaji = romaji.replace(/\|/g,'gggggggg');
+romaji = romaji.replace(/\^/g,'hhhhhhhh');
+romaji = romaji.replace(/\[/g,'iiiiiiii');
+romaji = romaji.replace(/\]/g,'jjjjjjjj');
+romaji = romaji.replace(/\`/g,'kkkkkkkk');
+romaji = romaji.replace(/\~/g,'llllllll');
+romaji = romaji.replace(/\\/g,'mmmmmmmm');
+romaji = romaji.replace(/\*/g,'nnnnnnnn');
+romaji = romaji.replace(/\"/g,'oooooooo');
+romaji = romaji.replace(/\=/g,'pppppppp');
+romaji = romaji.replace(/\'/g,'qqqqqqqq');
+  return romaji;
+}
+function c_is_set_error_char(replace_single){
+  var flag = true;
+  var cromaji = $("#cromaji").val();
+  cromaji = replace_romaji(cromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+cromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        flag = false;
+        if (replace_single == false) {
+          $("#cromaji").val(data); 
+          alert(c_admin_char_set_info);
+        } else {
+          alert(c_admin_url_words_error);
+        }
+      }
+    }
+  });
+  return flag;
+}
+function p_is_set_error_char(){
+  var flag = true;
+  var qromaji = $("#promaji").val();
+  qromaji = replace_romaji(qromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        flag = false;
+        $("#promaji").val(data);
+        alert(c_admin_char_set_info);
+      }
+    }
+  });
+  return flag;
+}
+
+function c_is_set_romaji(pid,cid,site_id){
+  var flag = true;
+  var cromaji = $("#cromaji").val();
+  cromaji = replace_romaji(cromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=c_is_set_romaji',
+    type: 'POST',
+    data: 'romaji='+cromaji+'&cid='+cid+'&pid='+pid+'&site_id='+site_id,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data=='true'){
+        flag = false;
+        alert(c_admin_is_has);
+      }
+    }
+  });
+  return flag;
+}
+
+function p_is_set_romaji(cid,qid,site_id){
+  var flag = true;
+  var qromaji = $("#promaji").val();
+  qromaji = replace_romaji(qromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=p_is_set_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji+'&cid='+cid+'&qid='+qid+'&site_id='+site_id,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data=='true'){
+        flag = false;
+        alert(c_admin_is_has);
+      }
+    }
+  });
+  return flag;
+}
+function products_form_validator(cid,qid,site_id){
+  flag1 = p_is_set_romaji(cid,qid,site_id);
+  flag2 = p_is_set_error_char(); 
+
+  var flag = false;
+  var op1 = false;
+  var op = $("#op").val();
+  var pw1 = false;
+  var pw = $("#products_weight").val();
+  var pp1 = false;
+  var pp = $("#pp").val();
+  var pad1 = false;
+  var pad = $("#products_add_del").val();
+  var prq1 = false;
+  var prq = $("#products_real_quantity").val();
+  var pa1 = false;
+  var pa = $("#products_attention_1_3").val();
+  var pcm1 = false;
+  var pcm = $("#products_cart_min").val();
+  var pc1 = false;
+  var pc = $("#products_cartorder").val();
+  
+  if(op.length > 15){
+ 
+    op1 = true;
+    flag = true;  
+  }
+
+  if(pw.length > 15){
+ 
+    pw1 = true;
+    flag = true;  
+  }
+
+  if(pp.length > 15){
+ 
+    pp1 = true;
+    flag = true;  
+  }
+
+  if(pad.length > 15){
+ 
+    pad1 = true;
+    flag = true;  
+  }
+
+  if(prq.length > 15){
+ 
+    prq1 = true;
+    flag = true;  
+  }
+
+  if(pa.length > 15){
+ 
+    pa1 = true;
+    flag = true;  
+  }
+
+  if(pcm.length > 15){
+ 
+    pcm1 = true;
+    flag = true;  
+  }
+
+  if(pc.length > 15){
+ 
+    pc1 = true;
+    flag = true;  
+  }
+
+  if(flag == true){
+
+    var error_str = c_admin_input_form_error+"\n\n";
+    if(op1 == true){error_str += c_admin_sort_error+"\n";}
+    if(pw1 == true){error_str += c_admin_weight_error+"\n";}
+    if(pp1 == true){error_str += c_admin_price_info_error+"\n";}
+    if(pad1 == true){error_str += c_admin_add_or_sub_error+"\n";}
+    if(prq1 == true){error_str += c_admin_real_quantity_error+"\n";}
+    if(pa1 == true){error_str += c_admin_quantity_info_error+"\n";}
+    if(pcm1 == true){error_str += c_admin_cart_flag_title_error+"\n";} 
+    if(pc1 == true){error_str += c_admin_cart_order_error+"\n";} 
+    alert(error_str);
+    return false;
+  }
+  if(flag1&&flag2){
+    return true;
+  }else{
+    return false;
+  }
+}
+function check_toggle_black_status(url_str, c_permission,status)
+{
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
+    async : false,
+    success: function(data) {
+      var tmp_msg_arr = data.split('|||');
+      var pwd_arr = tmp_msg_arr[1].split(",");
+      if (c_permission == 31) {
+        if (window.confirm(c_admin_show_review)) {
+          window.location.href = url_str+'&up_rs=true'; 
+        }
+      } else {
+        if (tmp_msg_arr[0] == '0') {
+          if (window.confirm(c_admin_show_review)) {
+            window.location.href = url_str+'&up_rs=true'; 
+          }
+        } else {
+          var input_pwd_str = window.prompt(c_admin_onetime_pwd, ''); 
+          if (in_array(input_pwd_str, pwd_arr)) {
+           $.ajax({
+             url: 'ajax_orders.php?action=record_pwd_log',   
+             type: 'POST',
+             dataType: 'text',
+             data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(url_str),
+             async: false,
+             success: function(msg_info) {
+                if (window.confirm(c_admin_show_review)) {
+                  window.location.href = url_str+'&once_pwd='+input_pwd_str+'&up_rs=true'; 
+                }
+             }
+           }); 
+          } else {
+            alert(c_admin_onetime_error); 
+          }
+        }
+      }
+    }
+  });
+}
+
+function clearLibNum(obj) 
+{
+  var re = /^[0-9]+$/;
+  var error_single = false; 
+  if(!re.test(obj.value) && obj.value != ''){
+    alert(c_admin_input_text_error); 
+    error_single = true; 
+  }
+  if (error_single) {
+    obj.value = obj.value.replace(/[^0-9]/g,"");
+  }
+}
+
+function rsync_num(obj){
+  var change_id = obj.id;
+  if(obj.id == 'product_qt'){
+    num1 = obj.value;
+    num2 = $('#product_qtr').val();
+    radices = $('#product_radices').val();
+    other_num = num2%radices;
+    new_num2 = num1*radices+other_num;
+    $('#product_qtr').val(new_num2);
+  }
+  if(obj.id == 'product_qtr'){
+    num2 = obj.value;
+    radices = $('#product_radices').val();
+    new_num1 = Math.floor(num2/radices);
+    $('#product_qt').val(new_num1);
+  }
+  if(obj.id == 'relate_qt'){
+    num1 = obj.value;
+    num2 = $('#relate_qtr').val();
+    radices = $('#relate_radices').val();
+    other_num = num2%radices;
+    new_num2 = num1*radices+other_num;
+    $('#relate_qtr').val(new_num2);
+  }
+  if(obj.id == 'relate_qtr'){
+    num2 = obj.value;
+    radices = $('#relate_radices').val();
+    new_num1 = Math.floor(num2/radices);
+    $('#relate_qt').val(new_num1);
+  }
+}
+
+
+
+ 
+
+
+var temp_id = '';
+function show_text(id,ele,type,sort,flag,title,name,comment){
+    temp_id = id; 
+    ele = ele.parentNode;
+    $.ajax({
+       url: 'ajax_address.php',
+       data: {id:id,type:type,sort:sort,flag:flag,title:title,name:name,comment:comment},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+      
+       if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	    if(ele.offsetTop < $('#show').height()){
+	       offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	    }else{
+	       offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+            }
+	}else{
+          offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	}
+        $('#show').css('top',offset).show();
+      }else{
+        if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	   offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+	}else{
+           offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+        }
+        $('#show').css('top',offset).show();
+     } 
+     
+       $("div#show").show();
+       }
+    }); 
+            
+}
+
+ window.onresize = address_offset; 
+ function address_offset(){
+   var show_value = '';
+   var box_warp = '';
+   var box_warp_top = 0;
+   var box_warp_left = 0;
+   if(temp_id != ''){
+       if($(".box_warp").offset()){
+          box_warp = $(".box_warp").offset();
+          box_warp_top = box_warp.top;
+          box_warp_left = box_warp.left;
+      }
+   show_value = $("#show_value_" + temp_id).offset();
+   $("#show").css('top',show_value.top+$("#show_value_" + temp_id).height()-box_warp_top)    ;
+   $("#show").css('left',show_value.left-box_warp_left);
+  }
+}
+function hide_text(){
+
+  $("div#show").hide(); 
+}
 function inventory_operations(num){
 
   var inventory_contents_value_1;
@@ -129,13 +599,13 @@ function getFileName(path){
   }
 }
 // assignment textbox before picture
-function change_image_text(_this,change_name){
+function change_image_text(_this,change_name,flag){
   var image_name = getFileName(_this.value);
   $.ajax({
     url: 'ajax_orders.php?action=has_pimage',   
     type: 'POST',
     dataType: 'text',
-    data: 'image_name='+image_name+'&site_id='+js_site_id, 
+    data: 'image_name='+image_name+'&site_id='+js_site_id+'&flag='+flag, 
     async: false,
     success: function(msg) {
       msg_arr = msg.split('|||'); 
@@ -157,7 +627,7 @@ function change_image_text(_this,change_name){
   });
 }
 // cancel all of corresponding information about picture 
-function clear_image(file_name,input_name,id){
+function clear_image(file_name,input_name,id,flag){
   var image_name = $("input[name="+input_name+"]").val();
   var f_name = $("input[name="+file_name+"]").val();
   var pid = $("input[name=hidd_pid]").val();
@@ -165,7 +635,7 @@ function clear_image(file_name,input_name,id){
     url: 'ajax_orders.php?action=has_pimage',   
     type: 'POST',
     dataType: 'text',
-    data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id, 
+    data: 'image_value='+image_name+'&col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id+'&flag='+flag, 
     async: false,
     success: function(msg) {
       msg_arr = msg.split('|||'); 
@@ -175,7 +645,7 @@ function clear_image(file_name,input_name,id){
             url: 'ajax_orders.php?action=change_pimage',   
             type: 'POST',
             dataType: 'text',
-            data: 'col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id, 
+            data: 'col_name='+file_name+'&pid='+pid+'&site_id='+js_site_id+'&id='+id+'&flag='+flag, 
             async: false,
             success: function(msg) {
             }
@@ -184,7 +654,7 @@ function clear_image(file_name,input_name,id){
           $("input[name="+file_name+"]").val('');
           $("input[name="+input_name+"]").val('');
         }else if(msg_arr[0]=='false'){
-          confirmg(image_name+' '+del_confirm,clear_image_href_link+'&file='+image_name+'&id='+id);
+          confirmg(image_name+' '+del_confirm,clear_image_href_link+'&file='+image_name+'&id='+id+'&flag='+flag);
         }
       } else {
         alert(read_text); 
@@ -937,10 +1407,10 @@ $('#show_popup_info').css('display','block');
 });
 }
 //popup categories info
-function show_category_info(cid,ele){
+function show_category_info(cid,ele,site_id){
   $.ajax({
 dataType: 'text',
-url: 'ajax.php?'+show_category_info_url+'action=show_category_info&current_cid='+cid,
+url: 'ajax.php?'+show_category_info_url+'action=show_category_info&current_cid='+cid+'&site_id='+site_id,
 success: function(text) {
 $('#show_popup_info').html(text);
 if(ele!=''){
@@ -1408,7 +1878,7 @@ function add_cart_images(select,clear){
 
   var images_num = $("#cart_images_num").val();
   images_num = parseInt(images_num);
-  var html_str = '<tr><td class="main"><input type="text" value="" name="products_cart_previous_image_'+(images_num+1)+'">&nbsp;<input type="file" style="display:none" id="cart_image_'+(images_num+1)+'" onchange="change_cart_image_text(this,\'products_cart_previous_image_'+(images_num+1)+'\')" name="products_cart_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'cart_image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_cart_image(\'products_cart_image_'+(images_num+1)+'\',\'products_cart_previous_image_'+(images_num+1)+'\');" value="'+clear+'" class="element_button"></a></td></tr>';
+  var html_str = '<tr><td class="main"><input type="text" value="" name="products_cart_previous_image_'+(images_num+1)+'">&nbsp;<input type="file" style="display:none" id="cart_image_'+(images_num+1)+'" onchange="change_image_text(this,\'products_cart_previous_image_'+(images_num+1)+'\',1)" name="products_cart_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'cart_image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_image(\'products_cart_image_'+(images_num+1)+'\',\'products_cart_previous_image_'+(images_num+1)+'\',\'\',1);" value="'+clear+'" class="element_button"></a></td></tr>';
   $("#cart_images_num").val(images_num+1);
   $("#products_cart_images_id").append(html_str);
 }
