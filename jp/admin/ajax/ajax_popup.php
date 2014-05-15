@@ -8065,13 +8065,16 @@ $banner_query = tep_db_query("
  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
  if($_GET['latest_messages_id']<0){
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-	$heading[] = array('text' => NEW_MESSAGES);
+ 	$heading[] = array('text' => NEW_MESSAGES);
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
+	tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => $ocertify->auth_user.MESSAGES_SENDER);
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  } 
  $heading[] = array('align' => 'right', 'text' => $page_str);
- $form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages', 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+ 
  $messages_content_table = array();
  $messages_content_row_from = array();
  $messages_content_row_from[] = array('params'=>'width="20%"','text'=>'From');
@@ -8113,6 +8116,10 @@ $banner_query = tep_db_query("
 </table>';
  $messages_content_row_choose [] = array('text'=> $messages_choose_table);
  $messages_content_table[] = array('text'=> $messages_content_row_choose);
+ $messages_content_row_must_selected = array();
+ $messages_content_row_must_selected[] = array('text'=> '');
+ $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
+ $messages_content_table[] = array('text'=> $messages_content_row_must_selected);
  $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
    $users_icon = '<ul class="table_img_list">'; 
    while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
@@ -8128,12 +8135,16 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']>0){
 	$sql_message_content = tep_db_query('select * from messages where id = "'.$_GET['latest_messages_id'].'"');
 	$sql_message_content_res = tep_db_fetch_array($sql_message_content);
-	$messages_text_area = '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" disabled="disabled" ename="contents">'.$sql_message_content_res['content'].'</textarea>';
+	$messages_text_area = '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" disabled="disabled" name="contents">'.$sql_message_content_res['content'].'</textarea>';
  }else{
  	$messages_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="contents"></textarea>';
  }
  $messages_content_row_text[] = array('text'=> $messages_text_area);
  $messages_content_table[] = array('text'=> $messages_content_row_text);
+ $messages_content_row_must_write = array();
+ $messages_content_row_must_write[] = array('text'=> '');
+ $messages_content_row_must_write[] = array('text'=> '<div id="messages_must_write" style="display: none;"><span style="color:#ff0000;">'.CONTENT_MUST_WRITE.'</span></div>');
+ $messages_content_table[] = array('text'=> $messages_content_row_must_write);
  $messages_content_row_addfile = array();
  if($_GET['latest_messages_id']>0){
 	$messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
@@ -8150,6 +8161,20 @@ $banner_query = tep_db_query("
  	$messages_content_row_addfile[] = array('text'=> '<input type="file" name="messages_file">');
  }
  $messages_content_table[] = array('text'=> $messages_content_row_addfile);
+ if($_GET['latest_messages_id']>0){
+	$messages_content_row_back = array();
+	$messages_content_row_back[] = array('text'=> MESSAGES_BACK_CONTENT);
+	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents"></textarea>');
+	$messages_content_table[] = array('text'=> $messages_content_row_back);
+	$messages_content_row_back_must_write = array();
+ 	$messages_content_row_back_must_write[] = array('text'=> '');
+ 	$messages_content_row_back_must_write[] = array('text'=> '<div id="messages_back_must_write" style="display: none;"><span style="color:#ff0000;">'.BACK_CONTENT_MUST_WRITE.'</span></div>');
+ 	$messages_content_table[] = array('text'=> $messages_content_row_back_must_write);
+	$messages_content_row_back_file = array();
+	$messages_content_row_back_file[] = array('text'=> MESSAGES_BACK_FILE);
+	$messages_content_row_back_file[] = array('text'=> '<input type="file" name="messages_file_back">');
+	$messages_content_table[] = array('text'=> $messages_content_row_back_file);
+ }
  $messages_content_row_type = array();
  $messages_content_row_type[] = array('text' => MESSAGES_TYPE);
  $messages_content_row_type[] = array('text' => '<input type="radio" name="messages_type" value="0" checked>'.MESSAGES_RADIO.'<input type="radio" name="messages_type">Email');
@@ -8160,7 +8185,12 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_author);
  $messages_content_row_submit = array();
  $messages_content_row_submit[] = array('text'=> '');
- $messages_content_row_submit[] = array('text'=> '<input type="submit" onclick="messages_check()" value="'.MESSAGES_SUBMIT.'">');
+ if($_GET['latest_messages_id']>0){
+ 	$is_back = '1';
+ }else{
+	$is_back = '0';
+ }
+ $messages_content_row_submit[] = array('text'=> '<input type="submit" onclick="messages_check('.$is_back.')" value="'.MESSAGES_SUBMIT.'">');
  $messages_content_table[] = array('text'=> $messages_content_row_submit);
  $notice_box->get_heading($heading);
  $notice_box->get_form($form_str);
