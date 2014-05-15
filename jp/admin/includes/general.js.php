@@ -533,7 +533,7 @@ function change_status(url_str, c_permission){
 }
 function faq_c_is_set_romaji(pid,cid,site_id){
   var flag = true;
-  var cromaji = $("#c_characters").val();
+  var cromaji = $("#c_letters").val();
   cromaji = replace_romaji(cromaji);
   var new_site_id = $('#faq_site_id').val();
   if(new_site_id && site_id != new_site_id){
@@ -560,7 +560,7 @@ function faq_c_is_set_romaji(pid,cid,site_id){
 }
 function faq_c_is_set_error_char(romaji){
   var flag = true;
-  var cromaji = $("#c_characters").val();
+  var cromaji = $("#c_letters").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -571,7 +571,7 @@ function faq_c_is_set_error_char(romaji){
     success: function(data) {
       if(data!=''){
         flag = false;
-        $("#c_characters").val(data);
+        $("#c_letters").val(data);
         alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
       }
     }
@@ -580,7 +580,7 @@ function faq_c_is_set_error_char(romaji){
 }
 function faq_q_is_set_romaji(cid,qid,site_id){
   var flag = true;
-  var qromaji = $("#q_characters").val();
+  var qromaji = $("#q_letters").val();
   qromaji = replace_romaji(qromaji);
   var new_site_id = $('#faq_site_id').val();
   if(new_site_id && site_id != new_site_id){
@@ -607,7 +607,7 @@ function faq_q_is_set_romaji(cid,qid,site_id){
 }
 function faq_q_is_set_error_char(romaji){
   var flag = true;
-  var qromaji = $("#q_characters").val();
+  var qromaji = $("#q_letters").val();
   qromaji = replace_romaji(qromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -618,7 +618,7 @@ function faq_q_is_set_error_char(romaji){
     success: function(data) {
       if(data!=''){
         flag = false;
-        $("#q_characters").val(data);
+        $("#q_letters").val(data);
         alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
       }
     }
@@ -627,7 +627,7 @@ function faq_q_is_set_error_char(romaji){
 }
 function faq_category_form_validator(pid,cid,site_id,c_permission){
  var title = $("#title").val();
- var cromaji = $("#c_characters").val();
+ var cromaji = $("#c_letters").val();
  var error = 'false';
  if(title == ''){
     $("#title_error").html("<?php echo TEXT_ERROR_NULL;?>");
@@ -636,10 +636,10 @@ function faq_category_form_validator(pid,cid,site_id,c_permission){
     $("#title_error").html("");
  }
  if(cromaji == ''){
-    $("#c_characters_error").html("<?php echo TEXT_ERROR_NULL;?>");
+    $("#c_letters_error").html("<?php echo TEXT_ERROR_NULL;?>");
     error = 'ture'; 
  }else{
-    $("#c_characters_error").html("");
+    $("#c_letters_error").html("");
  }
   if(error != 'ture'){
   flag1 = faq_c_is_set_romaji(pid,cid,site_id);
@@ -688,7 +688,7 @@ function faq_category_form_validator(pid,cid,site_id,c_permission){
 function faq_question_form_validator(cid,qid,site_id,c_permission){
   var error = 'false';
   var title = $("#title").val();
-  var qromaji = $("#q_characters").val();
+  var qromaji = $("#q_letters").val();
   if(title == ''){
      $("#title_error").html("<?php echo TEXT_ERROR_NULL;?>");
      error = 'ture';
@@ -696,10 +696,10 @@ function faq_question_form_validator(cid,qid,site_id,c_permission){
      $("#title_error").html("");
   }
   if(qromaji == ''){
-     $("#q_characters_error").html("<?php echo TEXT_ERROR_NULL;?>");
+     $("#q_letters_error").html("<?php echo TEXT_ERROR_NULL;?>");
      error = 'ture';
   }else{
-     $("#q_characters_error").html("");
+     $("#q_letters_error").html("");
   }
   if(error != 'ture'){
   flag1 = faq_q_is_set_romaji(cid,qid,site_id);
@@ -832,7 +832,7 @@ romaji = romaji.replace(/\'/g,'qqqqqqqq');
 }
 function c_is_set_error_char(replace_single){
   var flag = true;
-  var cromaji = $("#c_characters").val();
+  var cromaji = $("#c_letters").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -844,7 +844,7 @@ function c_is_set_error_char(replace_single){
       if(data!=''){
         flag = false;
         if (replace_single == false) {
-          $("#c_characters").val(data); 
+          $("#c_letters").val(data); 
           alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
         } else {
           alert("<?php echo JS_TEXT_GENERAL_LETTERS_ERROR;?>");
@@ -877,7 +877,7 @@ function p_is_set_error_char(){
 
 function c_is_set_romaji(pid,cid,site_id){
   var flag = true;
-  var cromaji = $("#c_characters").val();
+  var cromaji = $("#c_letters").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=c_is_set_romaji',
