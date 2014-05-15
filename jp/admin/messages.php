@@ -16,9 +16,17 @@
 		}
 	}
 	if($_GET['messages_sort'] == ''){
-		tep_redirect(tep_href_link('messages.php'));
+		if($_GET['page'] == ''){
+			tep_redirect(tep_href_link('messages.php'));
+		}else{
+			tep_redirect(tep_href_link('messages.php?page='.$_GET['page']));
+		}
 	}else{
-		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+		if($_GET['page'] == ''){
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+		}else{
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page']));
+		}
 	}
  }
  if($_GET['action']== 'new_messages'){
@@ -55,9 +63,17 @@
 	//	var_dump($sql_data_array);
 	}
 	if($_GET['messages_sort'] == ''){
-		tep_redirect(tep_href_link('messages.php'));
+		if($_GET['page'] == ''){
+			tep_redirect(tep_href_link('messages.php'));
+		}else{
+			tep_redirect(tep_href_link('messages.php?page='.$_GET['page']));
+		}
 	}else{
-		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+		if($_GET['page'] == ''){
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+		}else{
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page']));
+		}
 	}
      }
   }  
@@ -95,14 +111,21 @@
 	//	var_dump($sql_data_array);
 	}
 	tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
-     	if($_GET['messages_sort'] == ''){
-		tep_redirect(tep_href_link('messages.php'));
+	if($_GET['messages_sort'] == ''){
+		if($_GET['page'] == ''){
+			tep_redirect(tep_href_link('messages.php'));
+		}else{
+			tep_redirect(tep_href_link('messages.php?page='.$_GET['page']));
+		}
 	}else{
-		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+		if($_GET['page'] == ''){
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+		}else{
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page']));
+		}
 	}
      }
   }
-//	die(tep_href_link('messages.php'));
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -605,7 +628,7 @@ require("includes/note_js.php");
 			}
 		}
 		
-              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=delete_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
+              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=delete_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
                 if($messages_sort == '' || $messages_sort != 'read_status'){ 
 			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc').'">'.READ_STATUS.'</a>'; 
 		}else{
@@ -727,14 +750,12 @@ require("includes/note_js.php");
     }else{
 	$messages_sort_sql = $messages_sort;
     }
+    $messages_page = $_GET['page'];
     $latest_messages_query_raw = '
         select * 
         from messages where recipient_id = "'.$ocertify->auth_user.'" order by '.$messages_sort_sql.' '.$messages_sort_type;
-	//var_dump($latest_messages_query_raw);
-    $latest_messages_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw, $latest_messages_query_numrows);
+    $latest_messages_split = new splitPageResults($messages_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw, $latest_messages_query_numrows);
     $latest_messages_query = tep_db_query($latest_messages_query_raw);
-  //die(var_dump(tep_db_fetch_array($latest_messages_query)));
-
     while ($latest_messages = tep_db_fetch_array($latest_messages_query)) {
 	$rows++;
 	$even = 'dataTableSecondRow';
@@ -791,7 +812,7 @@ require("includes/note_js.php");
 	$messages_opt = $latest_messages['opt']==0 ? '<img src="images/icons/info_blink.gif" border="0">' : '<img src="images/icons/info_green.gif" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,'.$_GET['page'].','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">'.$messages_opt.'</a>'
+		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }
@@ -818,14 +839,14 @@ require("includes/note_js.php");
                   </tr>
 
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $latest_messages_split->display_count($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
-                    <td class="smallText" align="right"><div class="td_box"><?php echo $latest_messages_split->display_links($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
+                    <td class="smallText" valign="top"><?php echo $latest_messages_split->display_count($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $messages_page, TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
+                    <td class="smallText" align="right"><div class="td_box"><?php echo $latest_messages_split->display_links($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $messages_page, tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
                   </tr>
                      <tr><td></td><td align="right">
                       <div class="td_button"><?php
                       //通过site_id判断是否允许新建
                      // if (trim($site_array[0]) != '') {
-                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_messages(this,'.$_GET['page'].',-1,\'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
+                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\',-1,\'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
                      // }else{
                      // echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
                      // } 
