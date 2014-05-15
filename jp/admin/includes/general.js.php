@@ -832,7 +832,7 @@ romaji = romaji.replace(/\'/g,'qqqqqqqq');
 }
 function c_is_set_error_char(replace_single){
   var flag = true;
-  var cromaji = $("#c_letters").val();
+  var cromaji = $("#cromaji").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
@@ -844,10 +844,10 @@ function c_is_set_error_char(replace_single){
       if(data!=''){
         flag = false;
         if (replace_single == false) {
-          $("#c_letters").val(data); 
+          $("#cromaji").val(data); 
           alert("<?php echo JS_TEXT_GENERAL_CHAR_SET_INFO;?>");
         } else {
-          alert("<?php echo JS_TEXT_GENERAL_LETTERS_ERROR;?>");
+          alert("<?php echo JS_TEXT_GENERAL_ROMAJI_ERROR;?>");
         }
       }
     }
@@ -877,7 +877,7 @@ function p_is_set_error_char(){
 
 function c_is_set_romaji(pid,cid,site_id){
   var flag = true;
-  var cromaji = $("#c_letters").val();
+  var cromaji = $("#cromaji").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=c_is_set_romaji',
