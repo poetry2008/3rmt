@@ -718,7 +718,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
 		".TABLE_CATEGORIES_DESCRIPTION." 
 			cd where c.categories_id=cd.categories_id and
 			c.parent_id='".$_POST['pid']."'      and
-			cd.url_words='".$romaji."' and
+			cd.romaji='".$romaji."' and
 			(cd.site_id='".$site_id."' or cd.site_id = '0' )"; 
   if(isset($_POST['cid'])&&$_POST['cid']!=''){
     $sql .= " and c.categories_id != '".$_POST['cid']."'";
@@ -3020,7 +3020,7 @@ echo json_encode($json_array);
     $image_name = $_POST['image_name'];
     $sql = "select products_id from products_images 
       where images_name ='".$image_name."' 
-      and site_id = '".$_POST['site_id']."' and images_type=0 limit 1";
+      and site_id = '".$_POST['site_id']."' and images_type=".$_POST['flag']." limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       echo 'true|||'.$tmp_info;
@@ -3029,10 +3029,10 @@ echo json_encode($json_array);
     }
   }else{
     $image_name = $_POST['image_value'];
-    $sql = "select count(*) as con from products_images where images_name ='".$image_name."' and site_id = '".$_POST['site_id']."' and images_type=0";  
+    $sql = "select count(*) as con from products_images where images_name ='".$image_name."' and site_id = '".$_POST['site_id']."' and images_type=".$_POST['flag'];  
     $res = tep_db_fetch_array(tep_db_query($sql));
     $con = $res['con'];
-    $sql_self = "select products_id from products_images where images_name='".$image_name."' and images_id='".$_POST['id']."' and images_type=0 limit 1";
+    $sql_self = "select products_id from products_images where images_name='".$image_name."' and images_id='".$_POST['id']."' and images_type=".$_POST['flag']." limit 1";
     $query_self = tep_db_query($sql_self);
     if($res_self=tep_db_fetch_array($query_self)){
       $con--;
