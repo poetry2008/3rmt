@@ -425,7 +425,11 @@ if (isset($_GET['action']) && $_GET['action']) {
 
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
     else $site_arr="";
+    if($site_arr==""){
+    forward401Unless();
+    }else{
     forward401Unless(editPermission($site_arr, $site_id));
+    }
     $sort_order = tep_db_prepare_input($_POST['sort_order']);
     if(!isset($site_id)||$site_id==''||$site_id==0||isset($_GET['new_c_type'])){
       $sql_data_array = array('sort_order' => $sort_order);
