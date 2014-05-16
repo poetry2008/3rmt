@@ -425,7 +425,11 @@ if (isset($_GET['action']) && $_GET['action']) {
 
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
     else $site_arr="";
+    if($site_arr==""){
+    forward401Unless();
+    }else{
     forward401Unless(editPermission($site_arr, $site_id));
+    }
     $sort_order = tep_db_prepare_input($_POST['sort_order']);
     if(!isset($site_id)||$site_id==''||$site_id==0||isset($_GET['new_c_type'])){
       $sql_data_array = array('sort_order' => $sort_order);
@@ -4410,7 +4414,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               while($col_kaku=tep_db_fetch_array($res_kaku)){
                 $res_kaku_list[] = $col_kaku; 
               } 
-//              $products_query = tep_db_query($products_query_raw);
 
               //获取各网站对应的时间限制
               $site_id_query = tep_db_query("select id from ".TABLE_SITES);
