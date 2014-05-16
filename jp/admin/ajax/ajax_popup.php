@@ -6797,13 +6797,13 @@ if($_GET['qID'] != -1 && $_GET['cID'] != -1){
     if($qInfo->info_type == 'q'){
      $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('url_words',$faq_q_raw['url_words'],'id="q_characters"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="q_characters_error"></span>')
+        array('text' => tep_draw_input_field('url_words',$faq_q_raw['url_words'],'id="q_letters"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled).TEXT_MUST.'<input type="button" '.$disabled.'onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\''.$faq_q_raw['faq_question_id'].'\',\''.$faq_q_raw['site_id'].'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_q_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="q_letters_error"></span>')
         );
         
     }else if($qInfo->info_type == 'c'){
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('url_words',$faq_c_raw['url_words'],'id="c_characters"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="c_characters_error"></span>')
+        array('text' => tep_draw_input_field('url_words',$faq_c_raw['url_words'],'id="c_letters"size="40" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" '.$disabled). TEXT_MUST. '<input type="button" '.$disabled.'onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\''.$faq_c_raw['faq_question_id'].'\',\''.$faq_c_raw['site_id'].'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" '.$disabled.' onclick = "faq_c_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"><br><span id="c_letters_error"></span>')
         );
     }
     if($qInfo->info_type == 'q'){
@@ -6966,7 +6966,7 @@ if($_GET['cID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('url_words','','id="c_characters" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="c_characters_error"></span>')
+        array('text' => tep_draw_input_field('url_words','','id="c_letters" onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" onclick = "faq_c_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="c_letters_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_CATEGORY_TITLE),
@@ -7036,7 +7036,7 @@ if($_GET['qID'] == -1){
         ); 
     $contents[]['text'] = array(
         array('text' => '<input type="hidden" name="user_update" value="'.$_SESSION['user_name'].'"><input type="hidden" name="user_added" value="'.$_SESSION['user_name'].'">URL'),
-        array('text' => tep_draw_input_field('url_words','','id="q_characters"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="q_characters_error"></span>')
+        array('text' => tep_draw_input_field('url_words','','id="q_letters"onfocus="o_submit_single = false;"onblur="o_submit_single = true;" size="40"').TEXT_MUST.'<input type="button" onclick = "faq_q_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')" value="'.TEXT_LETTERS_IS_SET.'">'.  '<input type="button" onclick = "faq_q_is_set_error_char(\'\')" value="'.IS_SET_ERROR_CHAR.'"><br><span id="q_letters_error"></span>')
         );
     $contents[]['text'] = array(
         array('params' => 'width="30%"','text' => TEXT_NEW_FAQ_QUESTION_KEYWORDS),
@@ -8066,12 +8066,12 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']<0){
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  	$heading[] = array('text' => NEW_MESSAGES);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
 	tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => $ocertify->auth_user.MESSAGES_SENDER);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  } 
  $heading[] = array('align' => 'right', 'text' => $page_str);
  

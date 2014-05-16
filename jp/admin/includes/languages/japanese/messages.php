@@ -1,0 +1,39 @@
+<?php	
+
+define('HEADING_TITLE', 'メッセージ管理 / 受信');
+define('READ_STATUS','既読');
+define('MESSAGES_MARK', 'マーク');
+define('MESSAGES_FROM', 'From');
+define('MESSAGES_TO', 'To');
+define('MESSAGES_BACK', '返信');
+define('MESSAGES_CONTENT', '内容');
+define('ADD_FILE', '添付');
+define('MESSAGES_DATE', '受信日時');
+define('MESSAGES_OPT', '操作');
+define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
+define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
+define('MESSAGES_TO_BODY', '送信先');
+define('MESSAGES_STAFF','スタッフ一覧');
+define('MESSAGES_APPOINT_SB','指定したIDのみ');
+define('ADD_STAFF','追加');
+define('DELETE_STAFF','削除');
+define('MESSAGES_MARK','マーク');
+define('MESSAGES_TEXT','本文');
+define('MESSAGES_ADDFILE', '添付ファイル');
+define('MESSAGES_TYPE', '送信タイプ');
+define('MESSAGES_RADIO','メッセージ');
+define('MESSAGES_AUTHOR','作成者');
+define('MESSAGES_EDIT_DATE','作成日');
+define('MESSAGES_SUBMIT','送信');
+define('NEW_MESSAGES', '新規作成');
+define('MESSAGES_SENDER', 'からのメッセージ');
+define('MESSAGES_BACK_CONTENT', '返信文');
+define('MESSAGES_BACK_FILE','返信添付ファイル');
+define('TEXT_DEL_NEWS', '本当に削除しますか？');
+define('TEXT_NEWS_MUST_SELECT', '少なくとも1つの選択肢を選んでください。');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
+define('BACK_CONTENT_MUST_WRITE', '返信文は入力してください。');
+define('CONTENT_MUST_WRITE', '本文は入力してください。');
+define('MESSAGES_TO_MUST_SELECTED', '送信先は少なくとも一つを選択してください。');
+?>
