@@ -4414,7 +4414,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               while($col_kaku=tep_db_fetch_array($res_kaku)){
                 $res_kaku_list[] = $col_kaku; 
               } 
-//              $products_query = tep_db_query($products_query_raw);
 
               //获取各网站对应的时间限制
               $site_id_query = tep_db_query("select id from ".TABLE_SITES);

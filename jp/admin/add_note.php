@@ -42,9 +42,6 @@ foreach($notes_array_z as $key => $value){
     }
 }
 ?>
-<script language='javascript'>
-//   alert($('#fancybox-wrap').css('z-index'));
-</script>
 <div class="popwin" style="width:420px">
 <h3 class="popup_title"><?php echo TEXT_ADD_NOTE;?></h3>
 <div id="note_form">
