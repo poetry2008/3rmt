@@ -31,6 +31,93 @@ var header_text_alert_link = '<?php echo HEADER_TEXT_ALERT_LINK?>';
 </script>
 <script languages="javascript" src="includes/javascript/header.js?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
+function hide_messages(){
+	if($('#show_all_messages_notice').css('display') == 'none'){
+		$('#show_all_messages_notice').css('display', '');
+	}else{
+		$('#show_all_messages_notice').css('display', 'none');
+	}
+}
+function delete_header_messages(messages_id){
+	if(messages_id != '' && messages_id != null){
+		$.post(
+			"ajax.php?&action=delete_messages_header",
+			{
+				id:messages_id,
+			},
+			function(data){
+				if(data == '1'){
+					check_header_messages();
+				}	
+			}
+		);
+	}
+}
+function delete_header_messages_all(){
+	var delete_num = 1;
+	var messages_id_all = '';
+	$('[name="messages_notice"]').each(function(){
+		if($(this).attr('value') != '' && $(this).attr('value') != null){
+			if($('[name="messages_notice"]').length > delete_num){
+				messages_id_all += $(this).attr('value')+';';
+				delete_num++;
+			}else{
+				messages_id_all += $(this).attr('value');
+			}
+		}
+	});
+	if(messages_id_all != '' && messages_id_all != null){
+		$.post(
+			"ajax.php?&action=delete_messages_header_all",
+			{
+				id_all:messages_id_all,
+			},
+			function(data){
+				if(data == '1'){
+					check_header_messages();
+					
+				}	
+			}
+		);
+	}
+}
+function check_header_messages(){
+	var messages_num = 0;
+	$.post(
+		"ajax.php?&action=check_messages_header",
+		{
+    			sender_id:"<?php echo $ocertify->auth_user;?>",
+  		},
+  		function(data){
+			$('#show_messages_notice').children().remove();
+			$('#show_all_messages_notice').children().remove();
+			if(data != '0'){
+				$.each(eval(data), function(){
+					if(messages_num == 0){
+						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td id="messages_head" width="10%"><span>メッセージあり</span></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
+					}else{
+                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="10%">メッセージあり</td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
+					}
+					messages_num++;
+				});
+				var n_node = document.getElementById('head_notice');
+				if (n_node.controls) {
+					n_node.controls.play();
+				} else {
+					if (check_exists_function('play')) {
+						n_node.play();
+					}
+				}
+			}
+			if(eval(data).length > 1){
+				$('#messages_head').children().remove();
+				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);">メッセージあり<?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
+				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="right"><input class="element_button" type="button" value="クリア" onclick="delete_header_messages_all()"></td></tr></table>');
+			};
+  		}
+	);
+}
+check_header_messages();
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
@@ -62,6 +149,8 @@ $(function(){
 <?php echo tep_get_notice_info();?>
 </div>
 <div id="show_all_notice" style="display:none; z-index:30000;"></div>
+<div id="show_messages_notice"></div>
+<div id="show_all_messages_notice" style="display:none; z-index:30000;"></div>
   </td>
 </tr>
 <tr>
