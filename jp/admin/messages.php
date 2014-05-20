@@ -30,7 +30,7 @@
 	}
  }
  if($_GET['action']== 'new_messages'){
-	//die(var_dump($_POST['selected_staff']));
+//	die(var_dump($_POST['selected_staff']));
     if(!empty($_POST['selected_staff'])){	
 	$messages_file_name = '';
 	$messages_file_status = '0';
@@ -490,11 +490,165 @@ function change_site_type(site_type, site_list)
     $('#all_site_button').attr('disabled', 'disabled'); 
   }
 }
-
+var messages_checked_event_delete_to = '';
+var messages_checked_event_send_to = '';
+function checkbox_event(obj,event){
+   if(!$('#message_to_all').attr('checked')){
+	var is_checked = 0;
+	
+	if(event.ctrlKey && event.which == 1){
+		if($(obj).parent().attr('id') == 'delete_to'){
+			messages_checked_event_delete_to = $(obj);
+		}else{
+			messages_checked_event_send_to = $(obj);
+		}
+		if($(obj).children().attr('checked')){
+			$(obj).css('background','#FFF');
+			$(obj).css('color','black');
+			$(obj).children().attr('checked',false);
+		}else{
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+		}
+	}else if(event.shiftKey && event.which == 1){
+		var shift_key_status = 0;
+		$(obj).siblings().each(function(){
+			if($(this).children().attr('checked')){
+				shift_key_status = 1;
+			}
+		})
+		if(shift_key_status == 0){
+			$(obj).siblings().css('background','#FFF');
+			$(obj).siblings().css('color','black');
+			$(obj).siblings().children().attr('checked',false);
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+			$(obj).parent().children().each(function(){
+				if($(this).children().attr('value') == $(obj).children().attr('value')){
+					return false;
+				}else{
+					$(this).css('background','blue');
+					$(this).css('color','#FFF');
+					$(this).children().attr('checked',true);
+				}
+			});
+		}else{
+			$(obj).siblings().css('background','#FFF');
+			$(obj).siblings().css('color','black');
+			$(obj).siblings().children().attr('checked',false);
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+			var o = 0;
+			var m = 0;
+			$(obj).parent().children().each(function(){
+				o++
+				if($(this).children().attr('value') == $(obj).children().attr('value')){
+					return false;
+				}
+			});
+			if($(obj).parent().attr('id') == 'delete_to'){
+				$(obj).parent().children().each(function(){
+					m++
+					if($(this).children().attr('value') == messages_checked_event_delete_to.children().attr('value')){
+						return false;
+					}
+				});
+				messages_checked_event_delete_to.css('background','blue');
+				messages_checked_event_delete_to.css('color','#FFF');
+				messages_checked_event_delete_to.children().attr('checked',true);
+				if(m >= o){
+					messages_checked_event_delete_to.prevUntil($(obj)).css('background','blue');
+					messages_checked_event_delete_to.prevUntil($(obj)).css('color','#FFF');
+					messages_checked_event_delete_to.prevUntil($(obj)).children().attr('checked',true);
+				}else{
+					messages_checked_event_delete_to.nextUntil($(obj)).css('background','blue');
+					messages_checked_event_delete_to.nextUntil($(obj)).css('color','#FFF');
+					messages_checked_event_delete_to.nextUntil($(obj)).children().attr('checked',true);
+				}
+			}else{
+				$(obj).parent().children().each(function(){
+					m++
+					if($(this).children().attr('value') == messages_checked_event_send_to.children().attr('value')){
+						return false;
+					}
+				});
+				messages_checked_event_send_to.css('background','blue');
+				messages_checked_event_send_to.css('color','#FFF');
+				messages_checked_event_send_to.children().attr('checked',true);
+				if(m >= o){
+					messages_checked_event_send_to.prevUntil($(obj)).css('background','blue');
+					messages_checked_event_send_to.prevUntil($(obj)).css('color','#FFF');
+					messages_checked_event_send_to.prevUntil($(obj)).children().attr('checked',true);
+				}else{
+					messages_checked_event_send_to.nextUntil($(obj)).css('background','blue');
+					messages_checked_event_send_to.nextUntil($(obj)).css('color','#FFF');
+					messages_checked_event_send_to.nextUntil($(obj)).children().attr('checked',true);
+				}
+			}
+		}
+	}else{
+		if($(obj).parent().attr('id') == 'delete_to'){
+			messages_checked_event_delete_to = $(obj);
+		}else{
+			messages_checked_event_send_to = $(obj);
+		}
+		if($(obj).children().attr('checked')){
+			$(obj).siblings().each(function(){
+				if($(this).children().attr('checked')){
+					is_checked = 1;
+				}
+			});
+			if(is_checked == 1){
+				$(obj).siblings().css('background','#FFF');
+				$(obj).siblings().css('color','black');
+				$(obj).siblings().children().attr('checked',false);
+			}else{
+				$(obj).css('background','#FFF');
+				$(obj).css('color','black');
+				$(obj).children().attr('checked',false);
+				$(obj).siblings().css('background','#FFF');
+				$(obj).siblings().css('color','black');
+				$(obj).siblings().children().attr('checked',false);
+			}
+		}else{
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+			$(obj).siblings().css('background','#FFF');
+			$(obj).siblings().css('color','black');
+			$(obj).siblings().children().attr('checked',false);
+		}
+	}
+   }
+}
+function messages_to_all_radio(){
+	$('#send_to').children().css('background','#FFF');
+	$('#send_to').children().css('color','black');
+	$('#send_to').children().children().attr('checked',false);
+	$('#delete_to').children().css('background','#FFF');
+	$('#delete_to').children().css('color','black');
+	$('#delete_to').children().children().attr('checked',false);
+	$('#delete_to').children().children().attr('name','selected_staff[]');
+	$('#send_to').append($('#delete_to').children());
+	$('#send_to').children().css('background', '#E0E0E0');
+}
+function messages_to_appoint_radio(){
+	$('#send_to').children().css('background', '#FFF');
+	$('#send_to').children().css('color','black');
+	$('#send_to').children().children().attr('checked',false);
+	$('#send_to').children().children().attr('name','all_staff');
+	$('#delete_to').append($('#send_to').children());
+	$('#delete_to').children().css('background','#FFF');
+        $('#delete_to').children().css('color','black');
+        $('#delete_to').children().children().attr('checked',false);	
+}
 function add_select_user(){
 	$('input[name=all_staff]').each(function() {	
 		if ($(this).attr("checked")) {
-		 	$('#send_to').append('<div value="'+$(this).parent().attr("value")+'"><input value="'+this.value+'" type="checkbox" name="selected_staff[]">'+$(this).parent().attr("value")+'</div>');
+		 	$('#send_to').append('<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'+$(this).parent().attr("value")+'"><input hidden value="'+this.value+'" type="checkbox" name="selected_staff[]">'+$(this).parent().attr("value")+'</div>');
 			$(this).parent().remove();	
 		}
 	});
@@ -502,7 +656,7 @@ function add_select_user(){
 function delete_select_user(){
 	$('input[name="selected_staff[]"]').each(function() {	
 		if ($(this).attr("checked")) {
-		 	$('#delete_to').append('<div value="'+$(this).parent().attr("value")+'"><input value="'+this.value+'" type="checkbox" name="all_staff" >'+$(this).parent().attr("value")+'</div>');
+		 	$('#delete_to').append('<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'+$(this).parent().attr("value")+'"><input hidden value="'+this.value+'" type="checkbox" name="all_staff" >'+$(this).parent().attr("value")+'</div>');
 			$(this).parent().remove();	
 		}
 	});

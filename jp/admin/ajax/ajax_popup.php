@@ -8082,8 +8082,8 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_from);
  $messages_content_row_to = array();
  $messages_content_row_to [] = array('text'=>'To');
- $messages_to_all = '<input id="message_to_all" type="radio" value="0" checked name="messages_to">ALL';
- $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" name="messages_to">'.MESSAGES_APPOINT_SB;
+ $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
+ $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" checked name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
  $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_appoint);
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
@@ -8093,10 +8093,10 @@ $banner_query = tep_db_query("
  $all_user_to_td = '';
 	while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 		if($_GET['latest_messages_id']>0&&$message_all_users['userid'] == $_GET['sender_id']){
-			$recipient = '<div value="'.$message_all_users['name'].'"><input value="'.$message_all_users['userid'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
 			continue;
 		}
-		$all_user_to_td .= '<div value="'.$message_all_users['name'].'"><input value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onselectstart="return false" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
 	} 
  $messages_choose_table = '
 <table width="100%">
@@ -8106,12 +8106,12 @@ $banner_query = tep_db_query("
 		<td align="center" width="45%">'.MESSAGES_STAFF.'</td>
 	</tr>
 	<tr>
-		<td id="send_to" align="center" style="background:#FFF">'.$recipient.'</td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="send_to" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient.'</div></td>
 		<td align="center" style="vertical-align:middle;">
 			<button onclick="add_select_user()">'.ADD_STAFF.'</button><br>
 			<button onclick="delete_select_user()">'.DELETE_STAFF.'</button>
 		</td>
-		<td id="delete_to" align="center" style="background:#FFF">'.$all_user_to_td.'</td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="delete_to" style="overflow-y:scroll;height:105px;">'.$all_user_to_td.'</div></td>
 	</tr>
 </table>';
  $messages_content_row_choose [] = array('text'=> $messages_choose_table);
