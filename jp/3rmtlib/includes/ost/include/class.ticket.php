@@ -1092,9 +1092,6 @@ class Ticket{
 
     function getIdByMessageId($mid,$email) {
 
-        if(!$mid || !$email)
-            return 0;
-
         $sql='SELECT ticket.ticket_id FROM '.TICKET_TABLE. ' ticket '.
              ' LEFT JOIN '.TICKET_MESSAGE_TABLE.' msg USING(ticket_id) '.
              ' WHERE messageId='.db_input($mid).' AND email='.db_input($email);
@@ -1199,7 +1196,7 @@ class Ticket{
      *
      *  $autorespond and $alertstaff overwrites config info...
      */      
-    function create($var,&$errors,$origin,$autorespond=true,$alertstaff=true) {
+    function create($var,&$errors,$origin,$autorespond=true,$alertstaff=true,$email_flag=false) {
         global $cfg,$thisclient,$_FILES;
        /* Coders never code so fully and joyfully as when they do it for free  - Peter Rotich */
         $id=0;
@@ -1306,6 +1303,7 @@ class Ticket{
         }
 
         //Any error above is fatal.
+        if($email_flag == true){unset($errors['email']);}
         if($errors) { return 0; }
         
         // OK...just do it.

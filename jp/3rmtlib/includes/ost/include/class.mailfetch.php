@@ -145,7 +145,7 @@ class MailFetcher {
     for ($n=sizeOf($r); $n--; ) { $r[$n]=strtolower($r[$n]); } return $r;
   }
 
-  function mime_decode($mimeStr, $inputCharset='iso-2022-jp', $targetCharset='utf-8', $fallbackCharset='ISO-2022-JP') {
+  function mime_decode($mimeStr, $type='',$error_email_info=array(),$email_message,$inputCharset='iso-2022-jp', $targetCharset='utf-8', $fallbackCharset='ISO-2022-JP') {
     $encodings=$this->mb_list_lowerencodings();
     $inputCharset=strtolower($inputCharset);
     $targetCharset=strtolower($targetCharset);
@@ -164,7 +164,21 @@ class MailFetcher {
       }
     }
     if ($decodedStr == '') {
-      return imap_utf8($mimeStr);
+      if(is_object($mimeStr)){
+        $error_subject = 'OSTメール取得 エラー';
+        $error_msg ='エラーコード：800006';
+        $error_msg .= 'エラー発生時間： '.date('Y-m-d H:i:s',time())."\n";
+        $error_msg .= 'エラーメールタイプ： '.$type."\n";
+        $error_msg .= 'エラーメール番号： '.$error_email_info['row']."\n";
+        $error_msg .= 'エラーメール内容： '."\n";
+        $error_msg .= $email_message;
+        $error_headers = "From: ".$error_email_info['email'] ."<".$error_email_info['email'].">"; 
+        mail('yukio.iima@gmail.com',$error_subject,$error_msg,$error_headers);
+        mail($error_email_info['email'],$error_subject,$error_msg,$error_headers);
+        return 'error '.$type;
+      }else{
+        return imap_utf8((string)$mimeStr);
+      }
     }
     return $decodedStr;
   }
@@ -280,7 +294,7 @@ class MailFetcher {
   function getBody($mid) {
     $body ='';
 
-    if(!($body = $this->getpart($mid,'TEXT/PLAIN',$this->charset))) {
+    if(!($body = $this->getPart($mid,'TEXT/PLAIN',$this->charset))) {
       if(($body = $this->getPart($mid,'TEXT/HTML',$this->charset))) {
         //Convert tags of interest before we striptags
         $body=str_replace("</DIV><DIV>", "\n", $body);
@@ -291,24 +305,25 @@ class MailFetcher {
     return $body;
   }
 
-  function createTicket($mid,$emailid=0,$deletemsgs){
+  function createTicket($mid,$emailid=0,$deletemsgs,$cemail_info=array()){
     global $cfg;
 
     $mailinfo=$this->getHeaderInfo($mid);
 
     //Make sure the email is NOT one of the undeleted emails.
-    if($mailinfo['mid'] && ($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
+    if(($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
       //TODO: Move emails to a fetched folder when delete is false?? 
       if($deletemsgs)
         imap_delete($this->mbox,$mid);
       return false;
     }
-    $var['name']=$this->mime_decode($mailinfo['from']['name']);
-    $var['email']=$mailinfo['from']['email'];
-
-    $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject']):'[No Subject]';
     $var['message']=Format::stripEmptyLines($this->getBody($mid))?Format::stripEmptyLines($this->getBody($mid)):" ";
     $var['header']=$this->getHeader($mid);
+    $error_msg_tmp =$var['header']."\n\n--------------------------\n\n".$var['message'];
+    $var['name']=$this->mime_decode($mailinfo['from']['name'],'name',$cemail_info,$error_msg_tmp);
+    $var['email']=$mailinfo['from']['email'];
+
+    $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject'],'Subject',$cemail_info,$error_msg_tmp):'[No Subject]';
     $var['emailId']=$emailid?$emailid:$cfg->getDefaultEmailId(); //ok to default?
     $var['name']=$var['name']?$var['name']:$var['email']; //No name? use email
     $var['mid']=$mailinfo['mid'];
@@ -329,9 +344,35 @@ class MailFetcher {
     $errors=array();
     if(!$ticket) {
       if(!($ticket=Ticket::create($var,$errors,'Email')) || $errors){
-        var_dump( $errors);
+        $error_subject = 'OSTメール取得 エラー';
+        $error_msg ='エラーコード：800006';
+        $error_msg .= 'エラー発生時間： '.date('Y-m-d H:i:s',time())."\n";
+        $error_msg .= 'エラーメールタイプ： MESSAGE'."\n";
+        $error_msg .= 'エラーメール番号： '.$cemail_info['row']."\n";
+        $error_msg .= 'エラーメール内容： '."\n";
+        $error_msg .= $error_msg_tmp;
+        $error_headers = "From: ".$cemail_info['email'] ."<".$cemail_info['email'].">"; 
+
+foreach($errors as $e_key => $e_value){
+  if($e_key=='email'){
+    $var['email'] = $mailinfo['from']['email'];
+  }else if($e_key='name'){
+    $var['name'] = 'this is an error email name';
+  }else if($e_key='subject'){
+    $var['subject'] = 'this is an error email subject';
+  }else if($e_key='message'){
+    $var['message'] = 'this is an error email message';
+  }
+}
+      mail('yukio.iima@gmail.com',$error_subject,$error_msg,$error_headers);
+      mail($cemail_info['email'],$error_subject,$error_msg,$error_headers);
+        
+$errors = array();
+        //var_dump( $errors);
         //        die('something got wrong');
+if(!($ticket=Ticket::create($var,$errors,'Email',true,true,true))||$errors){
         return null;
+}
       }
       $msgid=$ticket->getLastMsgId();
     }else{
@@ -377,12 +418,13 @@ class MailFetcher {
 
   }
 
-  function fetchTickets($emailid,$max=20,$deletemsgs=false){
+  function fetchTickets($emailid,$max=20,$deletemsgs=false,$email_address=''){
     $nummsgs=imap_num_msg($this->mbox);
     //echo "New Emails:  $nummsgs\n";
     $msgs=$errors=0;
     for($i=$nummsgs; $i>0; $i--){ //process messages in reverse. Latest first. FILO.
-      if($this->createTicket($i,$emailid,$deletemsgs)){
+      $email_info = array('emailid'=>$emailid,'email'=>$email_address,'row'=>$i);
+      if($this->createTicket($i,$emailid,$deletemsgs,$email_info)){
         imap_setflag_full($this->mbox, imap_uid($this->mbox,$i), "\\Seen", ST_UID); //IMAP only??
         $msgs++;
         if($deletemsgs)
@@ -415,7 +457,7 @@ class MailFetcher {
     //$sql=' SELECT email_id,mail_host,mail_port,mail_protocol,mail_encryption,mail_delete,mail_errors,userid,userpass FROM '.EMAIL_TABLE.
     //    ' WHERE mail_active=1 AND (mail_errors<='.$MAX_ERRORS.' OR (TIME_TO_SEC(TIMEDIFF(NOW(),mail_lasterror))>5*60) )'.
     //   ' AND (mail_lastfetch IS NULL OR TIME_TO_SEC(TIMEDIFF(NOW(),mail_lastfetch))>mail_fetchfreq*60) ';
-    $sql=' SELECT email_id,mail_host,mail_port,mail_protocol,mail_encryption,mail_delete,mail_errors,userid,userpass FROM '.EMAIL_TABLE.
+    $sql=' SELECT email,email_id,mail_host,mail_port,mail_protocol,mail_encryption,mail_delete,mail_errors,userid,userpass FROM '.EMAIL_TABLE.
       ' WHERE mail_active=1'; 
     if(!($accounts=db_query($sql)) || !db_num_rows($accounts))
       //j          var_dump(db_num_rows($accounts));
@@ -426,7 +468,7 @@ class MailFetcher {
       $fetcher = new MailFetcher($row['userid'],Misc::decrypt($row['userpass'],SECRET_SALT),
                                  $row['mail_host'],$row['mail_port'],$row['mail_protocol'],$row['mail_encryption']);
       if($fetcher->connect()){   
-        $fetcher->fetchTickets($row['email_id'],$row['mail_fetchmax'],$row['mail_delete']?true:false);
+        $fetcher->fetchTickets($row['email_id'],$row['mail_fetchmax'],$row['mail_delete']?true:false,$row['email']);
         $fetcher->close();
         db_query('UPDATE '.EMAIL_TABLE.' SET mail_errors=0, mail_lastfetch=NOW() WHERE email_id='.db_input($row['email_id']));
       }else{
@@ -709,17 +751,17 @@ function tep_strstr($str1,$str2,$bool=false){
   }
 }
 function my_iconv($from, $to, $string) {  
-  echo $from;
-  echo $to;
-  echo '---';
+//  echo $from;
+//  echo $to;
+//  echo '---';
   @trigger_error('hi', E_USER_NOTICE);  
   $result = @iconv($from, $to, $string);  
-  $error = error_get_last();  
+  $error = @error_get_last();  
   if($error['message']!='hi') {  
     $result = $string;  
     return false;
   } else { 
-    echo $result;
+//    echo $result;
     return $result;  
   }
 }  
