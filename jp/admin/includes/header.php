@@ -94,9 +94,9 @@ function check_header_messages(){
 			if(data != '0'){
 				$.each(eval(data), function(){
 					if(messages_num == 0){
-						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td id="messages_head" width="10%"><span>メッセージあり</span></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
+						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td id="messages_head" width="10%"><span>メッセージあり</span></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
 					}else{
-                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="10%">メッセージあり</td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
+                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td width="10%">メッセージあり</td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
 					}
 					messages_num++;
 				});
@@ -112,7 +112,7 @@ function check_header_messages(){
 			if(eval(data).length > 1){
 				$('#messages_head').children().remove();
 				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);">メッセージあり<?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
-				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="right"><input class="element_button" type="button" value="クリア" onclick="delete_header_messages_all()"></td></tr></table>');
+				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td align="right"><input class="element_button" type="button" value="クリア" onclick="delete_header_messages_all()"></td></tr></table>');
 			};
   		}
 	);

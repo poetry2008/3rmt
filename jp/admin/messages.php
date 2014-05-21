@@ -44,10 +44,15 @@
 			//die(var_dump($file_success));
       		}
 	}
+	if(!empty($_POST['pic_icon'])){
+		$pic_icon_str = implode(',',$_POST['pic_icon']);
+	}else{
+		$pic_icon_str = '';
+	}
 	foreach($_POST['selected_staff'] as $key => $value){
 		$sql_data_array = array(
 				     	'read_status' => '0',
-					'mark' => $_POST['pic_icon'],
+					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $value,
 					'reply_status' => '0',
@@ -92,10 +97,15 @@
 			//die(var_dump($file_success));
       		}
 	}
+	if(!empty($_POST['pic_icon'])){
+		$pic_icon_str = implode(',',$_POST['pic_icon']);
+	}else{
+		$pic_icon_str = '';
+	}
 	foreach($_POST['selected_staff'] as $key => $value){
 		$sql_data_array = array(
 				     	'read_status' => '0',
-					'mark' => $_POST['pic_icon'],
+					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $value,
 					'reply_status' => '1',
@@ -624,16 +634,19 @@ function checkbox_event(obj,event){
 	}
    }
 }
+var messages_radio_all = '';
 function messages_to_all_radio(){
 	$('#send_to').children().css('background','#FFF');
 	$('#send_to').children().css('color','black');
 	$('#send_to').children().children().attr('checked',false);
+	messages_radio_all = $('#send_to').children();
 	$('#delete_to').children().css('background','#FFF');
 	$('#delete_to').children().css('color','black');
 	$('#delete_to').children().children().attr('checked',false);
 	$('#delete_to').children().children().attr('name','selected_staff[]');
 	$('#send_to').append($('#delete_to').children());
 	$('#send_to').children().css('background', '#E0E0E0');
+	$('#select_user').css('display', 'none');
 }
 function messages_to_appoint_radio(){
 	$('#send_to').children().css('background', '#FFF');
@@ -643,7 +656,13 @@ function messages_to_appoint_radio(){
 	$('#delete_to').append($('#send_to').children());
 	$('#delete_to').children().css('background','#FFF');
         $('#delete_to').children().css('color','black');
-        $('#delete_to').children().children().attr('checked',false);	
+        $('#delete_to').children().children().attr('checked',false);
+	messages_radio_all.css('background','#FFF');
+	messages_radio_all.css('color','black');
+	messages_radio_all.children().attr('checked',false);
+	messages_radio_all.children().attr('name','selected_staff[]');
+	$('#send_to').append(messages_radio_all);
+	$('#select_user').css('display', '');	
 }
 function add_select_user(){
 	$('input[name=all_staff]').each(function() {	
@@ -696,6 +715,9 @@ function messages_check(is_back){
 		console.log('ok');
 		document.forms.new_latest_messages.submit();
 	}
+}
+function file_cancel(obj){
+	$(obj).prev().attr('value','');
 }
 </script>
 <?php 
@@ -931,11 +953,17 @@ require("includes/note_js.php");
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
 	);
-	$mark_handle = strlen($latest_messages['mark']) > 1 ? $latest_messages['mark'] : '0'.$latest_messages['mark'];
-	$messages_mark = $latest_messages['mark'] != '' ? '<img src="images/icon_list/icon_'.$mark_handle.'.gif" border="0">' : '';
+	$mark_html = '';
+	if($latest_messages['mark'] != ''){
+		$mark_array = explode(',',$latest_messages['mark']);
+		foreach($mark_array as $value){
+			$mark_handle = strlen($value) > 1 ? $value : '0'.$value;
+			$mark_html .= '<img src="images/icon_list/icon_'.$mark_handle.'.gif" border="0">';
+		}
+	}
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $messages_mark
+		'text'   => $mark_html
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
@@ -952,7 +980,7 @@ require("includes/note_js.php");
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $latest_messages['content']
+		'text'   => '<p style="max-height:38px;overflow:hidden;margin:5px 0px 5px 0px ">'.$latest_messages['content'].'</p>'
 	);
 	$messages_attach_file = $latest_messages['attach_file']==0 ? '' : '<img src="images/icons/attach.png" border="0">';
 	$messages_info[] = array(

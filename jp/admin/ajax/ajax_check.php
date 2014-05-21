@@ -203,7 +203,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   echo $osC_CategoryTree->buildTree();
 }else if(isset($_GET['action']) && $_GET['action'] == 'check_messages_header'){
 	$messages_header = tep_db_query(
-        	'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and header_status = "0"'
+        	'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and header_status = "0" order by time desc'
         );
 	$messages_header_all = array();
 	while($new_messages = tep_db_fetch_array($messages_header)){

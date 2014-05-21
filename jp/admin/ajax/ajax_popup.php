@@ -8096,10 +8096,10 @@ $banner_query = tep_db_query("
 			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
 			continue;
 		}
-		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onselectstart="return false" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
 	} 
  $messages_choose_table = '
-<table width="100%">
+<div width="100%" id="select_user"><table width="100%">
 	<tr>
 		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -8113,7 +8113,7 @@ $banner_query = tep_db_query("
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="delete_to" style="overflow-y:scroll;height:105px;">'.$all_user_to_td.'</div></td>
 	</tr>
-</table>';
+</table></div>';
  $messages_content_row_choose [] = array('text'=> $messages_choose_table);
  $messages_content_table[] = array('text'=> $messages_content_row_choose);
  $messages_content_row_must_selected = array();
@@ -8123,7 +8123,7 @@ $banner_query = tep_db_query("
  $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
    $users_icon = '<ul class="table_img_list">'; 
    while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
-     $users_icon .= '<li><input type="radio" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+     $users_icon .= '<li><input type="checkbox" name="pic_icon[]" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
    }
  $users_icon .= '</ul>';
  $messages_content_row_mark = array();
@@ -8158,7 +8158,7 @@ $banner_query = tep_db_query("
  	}
  }else{
  	$messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
- 	$messages_content_row_addfile[] = array('text'=> '<input type="file" name="messages_file">');
+ 	$messages_content_row_addfile[] = array('text'=> '<div><input type="file" name="messages_file"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(this)">'.DELETE_STAFF.'</a></div>');
  }
  $messages_content_table[] = array('text'=> $messages_content_row_addfile);
  if($_GET['latest_messages_id']>0){
@@ -8172,7 +8172,7 @@ $banner_query = tep_db_query("
  	$messages_content_table[] = array('text'=> $messages_content_row_back_must_write);
 	$messages_content_row_back_file = array();
 	$messages_content_row_back_file[] = array('text'=> MESSAGES_BACK_FILE);
-	$messages_content_row_back_file[] = array('text'=> '<input type="file" name="messages_file_back">');
+	$messages_content_row_back_file[] = array('text'=> '<div><input type="file" name="messages_file_back"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(this)">'.DELETE_STAFF.'</a></div>');
 	$messages_content_table[] = array('text'=> $messages_content_row_back_file);
  }
  $messages_content_row_type = array();
