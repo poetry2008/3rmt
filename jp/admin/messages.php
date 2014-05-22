@@ -30,7 +30,7 @@
 	}
  }
  if($_GET['action']== 'new_messages'){
-	//die(var_dump($_POST['selected_staff']));
+//	die(var_dump($_POST['selected_staff']));
     if(!empty($_POST['selected_staff'])){	
 	$messages_file_name = '';
 	$messages_file_status = '0';
@@ -44,10 +44,15 @@
 			//die(var_dump($file_success));
       		}
 	}
+	if(!empty($_POST['pic_icon'])){
+		$pic_icon_str = implode(',',$_POST['pic_icon']);
+	}else{
+		$pic_icon_str = '';
+	}
 	foreach($_POST['selected_staff'] as $key => $value){
 		$sql_data_array = array(
 				     	'read_status' => '0',
-					'mark' => $_POST['pic_icon'],
+					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $value,
 					'reply_status' => '0',
@@ -92,10 +97,15 @@
 			//die(var_dump($file_success));
       		}
 	}
+	if(!empty($_POST['pic_icon'])){
+		$pic_icon_str = implode(',',$_POST['pic_icon']);
+	}else{
+		$pic_icon_str = '';
+	}
 	foreach($_POST['selected_staff'] as $key => $value){
 		$sql_data_array = array(
 				     	'read_status' => '0',
-					'mark' => $_POST['pic_icon'],
+					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $value,
 					'reply_status' => '1',
@@ -490,11 +500,174 @@ function change_site_type(site_type, site_list)
     $('#all_site_button').attr('disabled', 'disabled'); 
   }
 }
-
+var messages_checked_event_delete_to = '';
+var messages_checked_event_send_to = '';
+function checkbox_event(obj,event){
+   if(!$('#message_to_all').attr('checked')){
+	var is_checked = 0;
+	
+	if(event.ctrlKey && event.which == 1){
+		if($(obj).parent().attr('id') == 'delete_to'){
+			messages_checked_event_delete_to = $(obj);
+		}else{
+			messages_checked_event_send_to = $(obj);
+		}
+		if($(obj).children().attr('checked')){
+			$(obj).css('background','#FFF');
+			$(obj).css('color','black');
+			$(obj).children().attr('checked',false);
+		}else{
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+		}
+	}else if(event.shiftKey && event.which == 1){
+		var shift_key_status = 0;
+		$(obj).siblings().each(function(){
+			if($(this).children().attr('checked')){
+				shift_key_status = 1;
+			}
+		})
+		if(shift_key_status == 0){
+			$(obj).siblings().css('background','#FFF');
+			$(obj).siblings().css('color','black');
+			$(obj).siblings().children().attr('checked',false);
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+			$(obj).parent().children().each(function(){
+				if($(this).children().attr('value') == $(obj).children().attr('value')){
+					return false;
+				}else{
+					$(this).css('background','blue');
+					$(this).css('color','#FFF');
+					$(this).children().attr('checked',true);
+				}
+			});
+		}else{
+			$(obj).siblings().css('background','#FFF');
+			$(obj).siblings().css('color','black');
+			$(obj).siblings().children().attr('checked',false);
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+			var o = 0;
+			var m = 0;
+			$(obj).parent().children().each(function(){
+				o++
+				if($(this).children().attr('value') == $(obj).children().attr('value')){
+					return false;
+				}
+			});
+			if($(obj).parent().attr('id') == 'delete_to'){
+				$(obj).parent().children().each(function(){
+					m++
+					if($(this).children().attr('value') == messages_checked_event_delete_to.children().attr('value')){
+						return false;
+					}
+				});
+				messages_checked_event_delete_to.css('background','blue');
+				messages_checked_event_delete_to.css('color','#FFF');
+				messages_checked_event_delete_to.children().attr('checked',true);
+				if(m >= o){
+					messages_checked_event_delete_to.prevUntil($(obj)).css('background','blue');
+					messages_checked_event_delete_to.prevUntil($(obj)).css('color','#FFF');
+					messages_checked_event_delete_to.prevUntil($(obj)).children().attr('checked',true);
+				}else{
+					messages_checked_event_delete_to.nextUntil($(obj)).css('background','blue');
+					messages_checked_event_delete_to.nextUntil($(obj)).css('color','#FFF');
+					messages_checked_event_delete_to.nextUntil($(obj)).children().attr('checked',true);
+				}
+			}else{
+				$(obj).parent().children().each(function(){
+					m++
+					if($(this).children().attr('value') == messages_checked_event_send_to.children().attr('value')){
+						return false;
+					}
+				});
+				messages_checked_event_send_to.css('background','blue');
+				messages_checked_event_send_to.css('color','#FFF');
+				messages_checked_event_send_to.children().attr('checked',true);
+				if(m >= o){
+					messages_checked_event_send_to.prevUntil($(obj)).css('background','blue');
+					messages_checked_event_send_to.prevUntil($(obj)).css('color','#FFF');
+					messages_checked_event_send_to.prevUntil($(obj)).children().attr('checked',true);
+				}else{
+					messages_checked_event_send_to.nextUntil($(obj)).css('background','blue');
+					messages_checked_event_send_to.nextUntil($(obj)).css('color','#FFF');
+					messages_checked_event_send_to.nextUntil($(obj)).children().attr('checked',true);
+				}
+			}
+		}
+	}else{
+		if($(obj).parent().attr('id') == 'delete_to'){
+			messages_checked_event_delete_to = $(obj);
+		}else{
+			messages_checked_event_send_to = $(obj);
+		}
+		if($(obj).children().attr('checked')){
+			$(obj).siblings().each(function(){
+				if($(this).children().attr('checked')){
+					is_checked = 1;
+				}
+			});
+			if(is_checked == 1){
+				$(obj).siblings().css('background','#FFF');
+				$(obj).siblings().css('color','black');
+				$(obj).siblings().children().attr('checked',false);
+			}else{
+				$(obj).css('background','#FFF');
+				$(obj).css('color','black');
+				$(obj).children().attr('checked',false);
+				$(obj).siblings().css('background','#FFF');
+				$(obj).siblings().css('color','black');
+				$(obj).siblings().children().attr('checked',false);
+			}
+		}else{
+			$(obj).css('background','blue');
+			$(obj).css('color','#FFF');
+			$(obj).children().attr('checked',true);
+			$(obj).siblings().css('background','#FFF');
+			$(obj).siblings().css('color','black');
+			$(obj).siblings().children().attr('checked',false);
+		}
+	}
+   }
+}
+var messages_radio_all = '';
+function messages_to_all_radio(){
+	$('#send_to').children().css('background','#FFF');
+	$('#send_to').children().css('color','black');
+	$('#send_to').children().children().attr('checked',false);
+	messages_radio_all = $('#send_to').children();
+	$('#delete_to').children().css('background','#FFF');
+	$('#delete_to').children().css('color','black');
+	$('#delete_to').children().children().attr('checked',false);
+	$('#delete_to').children().children().attr('name','selected_staff[]');
+	$('#send_to').append($('#delete_to').children());
+	$('#send_to').children().css('background', '#E0E0E0');
+	$('#select_user').css('display', 'none');
+}
+function messages_to_appoint_radio(){
+	$('#send_to').children().css('background', '#FFF');
+	$('#send_to').children().css('color','black');
+	$('#send_to').children().children().attr('checked',false);
+	$('#send_to').children().children().attr('name','all_staff');
+	$('#delete_to').append($('#send_to').children());
+	$('#delete_to').children().css('background','#FFF');
+        $('#delete_to').children().css('color','black');
+        $('#delete_to').children().children().attr('checked',false);
+	messages_radio_all.css('background','#FFF');
+	messages_radio_all.css('color','black');
+	messages_radio_all.children().attr('checked',false);
+	messages_radio_all.children().attr('name','selected_staff[]');
+	$('#send_to').append(messages_radio_all);
+	$('#select_user').css('display', '');	
+}
 function add_select_user(){
 	$('input[name=all_staff]').each(function() {	
 		if ($(this).attr("checked")) {
-		 	$('#send_to').append('<div value="'+$(this).parent().attr("value")+'"><input value="'+this.value+'" type="checkbox" name="selected_staff[]">'+$(this).parent().attr("value")+'</div>');
+		 	$('#send_to').append('<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'+$(this).parent().attr("value")+'"><input hidden value="'+this.value+'" type="checkbox" name="selected_staff[]">'+$(this).parent().attr("value")+'</div>');
 			$(this).parent().remove();	
 		}
 	});
@@ -502,7 +675,7 @@ function add_select_user(){
 function delete_select_user(){
 	$('input[name="selected_staff[]"]').each(function() {	
 		if ($(this).attr("checked")) {
-		 	$('#delete_to').append('<div value="'+$(this).parent().attr("value")+'"><input value="'+this.value+'" type="checkbox" name="all_staff" >'+$(this).parent().attr("value")+'</div>');
+		 	$('#delete_to').append('<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'+$(this).parent().attr("value")+'"><input hidden value="'+this.value+'" type="checkbox" name="all_staff" >'+$(this).parent().attr("value")+'</div>');
 			$(this).parent().remove();	
 		}
 	});
@@ -542,6 +715,9 @@ function messages_check(is_back){
 		console.log('ok');
 		document.forms.new_latest_messages.submit();
 	}
+}
+function file_cancel(obj){
+	$(obj).prev().attr('value','');
 }
 </script>
 <?php 
@@ -777,11 +953,17 @@ require("includes/note_js.php");
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
 	);
-	$mark_handle = strlen($latest_messages['mark']) > 1 ? $latest_messages['mark'] : '0'.$latest_messages['mark'];
-	$messages_mark = $latest_messages['mark'] != '' ? '<img src="images/icon_list/icon_'.$mark_handle.'.gif" border="0">' : '';
+	$mark_html = '';
+	if($latest_messages['mark'] != ''){
+		$mark_array = explode(',',$latest_messages['mark']);
+		foreach($mark_array as $value){
+			$mark_handle = strlen($value) > 1 ? $value : '0'.$value;
+			$mark_html .= '<img src="images/icon_list/icon_'.$mark_handle.'.gif" border="0">';
+		}
+	}
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $messages_mark
+		'text'   => $mark_html
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
@@ -798,7 +980,7 @@ require("includes/note_js.php");
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $latest_messages['content']
+		'text'   => '<p style="max-height:38px;overflow:hidden;margin:5px 0px 5px 0px ">'.$latest_messages['content'].'</p>'
 	);
 	$messages_attach_file = $latest_messages['attach_file']==0 ? '' : '<img src="images/icons/attach.png" border="0">';
 	$messages_info[] = array(
