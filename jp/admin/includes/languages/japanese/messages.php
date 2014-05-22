@@ -36,4 +36,6 @@ define('TEXT_SORT_DESC','▼');
 define('BACK_CONTENT_MUST_WRITE', '返信文は入力してください。');
 define('CONTENT_MUST_WRITE', '本文は入力してください。');
 define('MESSAGES_TO_MUST_SELECTED', '送信先は少なくとも一つを選択してください。');
+define('MESSAGES_PREV', '前へ');
+define('MESSAGES_NEXT', '次へ');
 ?>

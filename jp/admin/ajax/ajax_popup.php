@@ -8070,10 +8070,10 @@ $banner_query = tep_db_query("
  }else{
 	tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-	$heading[] = array('text' => $ocertify->auth_user.MESSAGES_SENDER);
+	$heading[] = array('text' => $_GET['sender_name'].MESSAGES_SENDER);
 	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  } 
- $heading[] = array('align' => 'right', 'text' => $page_str);
+ $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
  $messages_content_table = array();
  $messages_content_row_from = array();
@@ -8108,8 +8108,8 @@ $banner_query = tep_db_query("
 	<tr>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="send_to" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient.'</div></td>
 		<td align="center" style="vertical-align:middle;">
-			<button onclick="add_select_user()">'.ADD_STAFF.'</button><br>
-			<button onclick="delete_select_user()">'.DELETE_STAFF.'</button>
+			<button onclick="add_select_user()">&lt&lt'.ADD_STAFF.'</button><br>
+			<button onclick="delete_select_user()">'.DELETE_STAFF.'&gt&gt</button>
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="delete_to" style="overflow-y:scroll;height:105px;">'.$all_user_to_td.'</div></td>
 	</tr>
