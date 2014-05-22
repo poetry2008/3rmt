@@ -37,8 +37,8 @@
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SUCCESS);
 
-  $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_SECOND);
+  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_2);
 
   $global_query = tep_db_query("
       SELECT global_product_notifications 

@@ -3,8 +3,8 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_FIRST', 'お客様情報');
-define('NAVBAR_TITLE_SECOND', 'アドレス帳');
+define('NAVBAR_TITLE_1', 'お客様情報');
+define('NAVBAR_TITLE_2', 'アドレス帳');
 define('HEADING_TITLE', 'アドレス帳');
 define('TABLE_HEADING_NUMBER', 'No.');
 define('TABLE_HEADING_NAME', '氏名');

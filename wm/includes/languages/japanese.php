@@ -106,7 +106,7 @@ define('BOX_HEADING_SPECIALS', '特価商品');
 define('BOX_HEADING_REVIEWS', 'レビュー');
 define('BOX_REVIEWS_WRITE_REVIEW', 'レビューを書く');
 define('BOX_REVIEWS_NO_REVIEWS', '現在レビューはありません');
-define('BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS', '5点中の %s点!');
+define('BOX_REVIEWS_TEXT_OF_5_STARS', '5点中の %s点!');
 
 // shopping_cart box text in includes/boxes/shopping_cart.php
 define('BOX_HEADING_SHOPPING_CART', 'ショッピングカート');
