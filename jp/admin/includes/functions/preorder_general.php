@@ -2020,13 +2020,15 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
             }
           }
 		}
-	   /*	else {
-          if ($is_list) {
+	  /*	else {
+        if ($is_list) {
             $error_array[$o_value][] = '${CUSTOMIZED_FEE}'; 
           } else {
             $error_array[] = '${CUSTOMIZED_FEE}'; 
           }
-        }*/
+	  }
+	   */
+		
       }
     } else {
       if ($is_list) {

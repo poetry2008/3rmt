@@ -828,12 +828,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           }
         }
        // $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
-	  //自定义费用
+		//自定义费用
         if($totals_email_str != ''){
-          $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
+          $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
         }else{
-          $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
-          $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
+          $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
+          $email = str_replace('${CUSTOMIZED_FEE}','', $email);
         }
  	$email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
         $email = html_entity_decode($email);
