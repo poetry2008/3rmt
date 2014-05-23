@@ -827,7 +827,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 		//echo $value['title'].str_repeat('&nbsp', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n".mb_strlen($value['title'])."<br>";
           }
         }
-        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
+		//自定义费用
+        if($totals_email_str != ''){
+          $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
+        }else{
+          $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
+          $email = str_replace('${CUSTOMIZED_FEE}','', $email);
+        }
  	$email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
         $email = html_entity_decode($email);
         if ($s_status_res['nomail'] != 1) {

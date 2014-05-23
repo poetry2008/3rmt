@@ -760,7 +760,7 @@ switch ($_GET['action']) {
           if($totals_email_str != ''){
             $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
           }else{
-            $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+            $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
           }
           //address
@@ -1224,7 +1224,7 @@ switch ($_GET['action']) {
           if($totals_email_str != ''){
             $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
           }else{
-            $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+            $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
           }
           //address

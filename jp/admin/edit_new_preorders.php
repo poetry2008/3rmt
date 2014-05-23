@@ -675,7 +675,12 @@
             $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
           }
         }
-        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email); 
+       if($totals_email_str != ''){
+         $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
+       }else{
+         $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
+         $email = str_replace('${CUSTOMIZED_FEE}','', $email);
+       }
 
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
