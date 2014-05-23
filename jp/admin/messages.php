@@ -5,6 +5,16 @@
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   define('FILENAME_MESSAGES', 'messages.php');
+  if($_GET['action']== 'change_read_status'){
+	if($_POST['img'] == 'images/icons/email.png'){
+		tep_db_query('update messages set read_status = "1" where id = "'.$_POST['id'].'"');
+		echo '1'; 
+	}else if($_POST['img'] == 'images/icons/email_open.png'){
+		tep_db_query('update messages set read_status = "0" where id = "'.$_POST['id'].'"');
+		echo '0';
+	}
+	exit;
+  }
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){
     $site_arr = $userslist['site_permission']; 
@@ -315,18 +325,24 @@ function delete_select_messages(messages_str, c_permission){
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
          }
 }
-function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type){
+function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  if(latest_messages_id >0){
 	$('#read_status_'+latest_messages_id).attr('src', 'images/icons/email_open.png');
  }
  $.ajax({
  url: 'ajax.php?&action=new_messages',
- data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type} ,
+ data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name} ,
  dataType: 'text',
  async : false,
  success: function(data){
   $("div#show_latest_news").html(data);
+	if($('#info_'+latest_messages_id).prev().attr('id') != '' && $('#info_'+latest_messages_id).prev().attr('id') != null){
+		$('#next_prev').append('<a id="messages_prev" onclick="'+$('#info_'+latest_messages_id).prev().children().find('a').attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt<?php echo MESSAGES_PREV ?></a>&nbsp&nbsp');
+	}
+	if($('#info_'+latest_messages_id).next().attr('id') != '' && $('#info_'+latest_messages_id).next().attr('id') != null){
+		$('#next_prev').append('<a id="messages_next" onclick="'+$('#info_'+latest_messages_id).next().children().find('a').attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);"><?php echo MESSAGES_NEXT ?>&gt</a>&nbsp&nbsp');
+	}
 ele = ele.parentNode;
 head_top = $('.compatible_head').height();
 box_warp_height = 0;
@@ -383,6 +399,7 @@ $('#show_latest_news').css('z-index','1');
 $('#show_latest_news').css('left',leftset);
 $('#show_latest_news').css('display', 'block');
 o_submit_single = true;
+	
   }
   }); 
 }
@@ -719,6 +736,39 @@ function messages_check(is_back){
 function file_cancel(obj){
 	$(obj).prev().attr('value','');
 }
+function change_read_status(obj,id){
+	$.post(
+		'messages.php?action=change_read_status',
+		{
+			id:id,
+			img:$(obj).attr('src'),
+		},
+		function(data){
+			if(data == '1'){
+				$(obj).attr('src', 'images/icons/email_open.png');
+			}else if(data == '0'){
+				$(obj).attr('src', 'images/icons/email.png');
+			}
+		}
+	)
+}
+function messages_selected(obj){
+	$(obj).attr('onmouseover_last',$(obj).attr('onmouseover'));
+	$(obj).attr('onmouseout_last',$(obj).attr('onmouseout'));
+	$(obj).css('cusor','hand');
+	$(obj).attr('onmouseover',false);
+	$(obj).attr('onmouseout',false);
+	$(obj).attr('class','dataTableRowSelected');
+	$(obj).siblings().each(function(){
+		if($(this).attr('class') == 'dataTableRowSelected'){
+			$(this).attr('onmouseover',$(obj).attr('onmouseover_last'));
+			$(this).attr('onmouseout',$(obj).attr('onmouseout_last'));
+			$(this).attr('onmouseover_last',false);
+			$(this).attr('onmouseout_last',false);
+			$(this).mouseout();
+		}
+	});
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -941,14 +991,14 @@ require("includes/note_js.php");
 	} else {
 		$nowColor = $odd;
 	}
-	$messages_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+	$messages_params = 'id="info_'.$latest_messages['id'].'" class="'.$nowColor.'" onclick="messages_selected(this)" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
 	$messages_info = array();
 	$messages_checkbox = '<input type="checkbox" name="messages_id[]" value="'.$latest_messages['id'].'">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_checkbox		
 	);
-	$messages_read_status = $latest_messages['read_status']==0 ? '<img id="read_status_'.$latest_messages['id'].'" src="images/icons/email.png" border="0">' : '<img id="read_status_'.$latest_messages['id'].'" src="images/icons/email_open.png" border="0">';
+	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/email.png" border="0">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/email_open.png" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
@@ -979,9 +1029,10 @@ require("includes/note_js.php");
 		'text'   => $messages_reply_status
 	);
 	$messages_info[] = array(
-		'params' => 'class="dataTableContent"',
-		'text'   => '<p style="max-height:38px;overflow:hidden;margin:5px 0px 5px 0px ">'.$latest_messages['content'].'</p>'
+		'params' => 'class="dataTableContent" width="300px"',
+		'text'   => '<p style="max-height:38px;overflow:hidden;margin:5px 0px 5px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$latest_messages['content'])).'</p>'
 	);
+//die('<div style="max-height:38px;overflow:hidden;margin:5px 0px 5px 0px "><xmp>'.$latest_messages['content'].'</xmp></div>');
 	$messages_attach_file = $latest_messages['attach_file']==0 ? '' : '<img src="images/icons/attach.png" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
@@ -994,7 +1045,7 @@ require("includes/note_js.php");
 	$messages_opt = $latest_messages['opt']==0 ? '<img src="images/icons/info_blink.gif" border="0">' : '<img src="images/icons/info_green.gif" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">'.$messages_opt.'</a>'
+		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }

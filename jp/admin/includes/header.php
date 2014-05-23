@@ -9,6 +9,7 @@ if (isset($messageStack) && $messageStack->size > 0) {
 ?>
 <script languages="javascript" src="includes/javascript/common.js?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
+
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
@@ -94,20 +95,14 @@ function check_header_messages(){
 			if(data != '0'){
 				$.each(eval(data), function(){
 					if(messages_num == 0){
-						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td id="messages_head" width="10%"><span>メッセージあり</span></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
+						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td id="messages_head" width="10%"><span>メッセージあり</span></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
 					}else{
-                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td width="10%">メッセージあり</td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
+                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td width="10%">メッセージあり</td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
 					}
 					messages_num++;
 				});
-				var n_node = document.getElementById('head_notice');
-				if (n_node.controls) {
-					n_node.controls.play();
-				} else {
-					if (check_exists_function('play')) {
-						n_node.play();
-					}
-				}
+				var notice_audio = document.getElementById('head_notice_audio');
+				notice_audio.play();
 			}
 			if(eval(data).length > 1){
 				$('#messages_head').children().remove();
@@ -118,6 +113,8 @@ function check_header_messages(){
 	);
 }
 check_header_messages();
+setInterval(function(){check_header_messages()}, 60000);
+
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
@@ -211,6 +208,7 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 }
 ?>
 <embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<audio id="head_notice_audio" src="images/notice.mp3"></audio>
 <br>
 </td>
 </tr>
