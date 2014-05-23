@@ -1343,9 +1343,9 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
           $email = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $email);
           //自定义费用
           if($totals_email_str != ''){
-            $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
+            $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
           }else{
-            $email = str_replace("\n".'${CUSTOMIZED_FEE}','', $email); 
+            $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
             $email = str_replace('${CUSTOMIZED_FEE}','', $email);
           }
           //address

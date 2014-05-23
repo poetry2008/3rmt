@@ -11698,13 +11698,15 @@ function tep_check_order_variable_data($o_id_array, $comment_info, $title_info, 
               $error_array[] = '${CUSTOMIZED_FEE}'; 
             }
           }
-        } else {
+		}
+
+	   /*	else {
           if ($is_list) {
             $error_array[$o_value][] = '${CUSTOMIZED_FEE}'; 
           } else {
             $error_array[] = '${CUSTOMIZED_FEE}'; 
           }
-        }
+		}*/
       }
     } else {
       if ($is_list) {

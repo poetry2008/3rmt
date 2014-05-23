@@ -675,7 +675,12 @@
             $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
           }
         }
-        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email); 
+        if($totals_email_str != ''){
+          $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+        }else{
+          $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
+          $email = str_replace('${CUSTOMIZED_FEE}','', $email);
+        }
 
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
@@ -1028,14 +1033,12 @@ function submit_order_check(products_id,op_id){
   for (var s_num = start_num; s_num > 0; s_num--) {
     if (document.getElementsByName('update_totals['+s_num+'][class]')[0]) {
       if (document.getElementsByName('update_totals['+s_num+'][class]')[0].value == 'ot_custom') {
-        if((document.getElementsByName('update_totals['+s_num+'][title]')[0].value == '' && document.getElementsByName('update_totals['+s_num+'][value]')[0].value != '') || (document.getElementsByName('update_totals['+s_num+'][title]')[0].value != '' && document.getElementsByName('update_totals['+s_num+'][value]')[0].value == '')){
         is_cu_str += document.getElementsByName('update_totals['+s_num+'][title]')[0].value + document.getElementsByName('update_totals['+s_num+'][value]')[0].value; 
-        }
       }
     }
   }
   is_cu_str = is_cu_str.replace(/^\s+|\s+$/g,"");  
-  if (is_cu_str != '') {
+  if (is_cu_str == '') {
     is_cu_single = 0;
   }
   $.ajax({

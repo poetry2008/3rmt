@@ -758,9 +758,12 @@ switch ($_GET['action']) {
           $comments = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $comments);
           //自定义费用
           if($totals_email_str != ''){
-            $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+			  echo '<pre>';
+			  var_dump($total_email_str);
+			  exit;
+            $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
           }else{
-            $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+            $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
           }
           //address
@@ -1222,9 +1225,9 @@ switch ($_GET['action']) {
         $comments = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $comments);
           //自定义费用
           if($totals_email_str != ''){
-            $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+            $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
           }else{
-            $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+            $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
           }
           //address
