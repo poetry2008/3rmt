@@ -207,7 +207,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
         );
 	$messages_header_all = array();
 	while($new_messages = tep_db_fetch_array($messages_header)){
-		$new_messages['time'] = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.'H'.TEXT_MESSAGE_HOUR_STR.'i'.TEXT_MESSAGE_MIN_STR, strtotime($new_messages['time']));
+		$new_messages['time'] = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_MESSAGE_HOUR_STR.'i'.TEXT_MESSAGE_MIN_STR, strtotime($new_messages['time']));
 		$new_messages['content'] = str_replace('>','&gt',str_replace('<','&lt',mb_substr($new_messages['content'], 0, 20)));
 		if($new_messages['mark'] != '' && $new_messages['mark'] != null){
 			$new_messages['mark'] = explode(',',$new_messages['mark']);
