@@ -830,4 +830,4 @@ define('SMALL_IMAGE_WIDTH_TEST','60');
 define('SMALL_IMAGE_HEIGHT_TEST','60');
 define('TEXT_PAYMENT_NAME_ERROR','支払い方法が変更されましたので、該当注文書に使用していた支払方法（#PAYMENT_METHOD）がなくなりました。');
 define('HAVE_MESSAGES','メッセージあり');
-define('MESSAGES_PAGE_LINK_NAME','メッセージ作成');
+define('MESSAGES_PAGE_LINK_NAME','メッセージ管理');

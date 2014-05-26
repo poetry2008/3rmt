@@ -1030,7 +1030,7 @@ require("includes/note_js.php");
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:5px 0px 5px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$latest_messages['content'])).'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$latest_messages['content'])).'</p>'
 	);
 	$messages_attach_file = $latest_messages['attach_file']==0 ? '' : '<img src="images/icons/attach.png" border="0">';
 	$messages_info[] = array(
