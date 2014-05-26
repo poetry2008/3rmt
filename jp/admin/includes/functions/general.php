@@ -9900,12 +9900,12 @@ function check_order_latest_status($oid)
 /* -------------------------------------
     功能: 检查该同业者是否在指定列表里 
     参数: $d_id(int) 同业者id 
-    参数: $peers(array) 同业者id 
+    参数: $dougyousya(array) 同业者id 
     返回值: 是否在(boolean) 
  ------------------------------------ */
-function check_in_peers($d_id, $dougyousya)
+function check_in_dougyousya($d_id, $dougyousya)
 {
-  foreach ($peers as $d) {
+  foreach ($dougyousya as $d) {
     if ($d['dougyousya_id'] === $d_id) {
       return true;
     }
@@ -13227,23 +13227,30 @@ function tep_inventory_operations($inventory_contents,$pid,$site_id){
     //用于计算最大库存、最小库存参数对应值的数组
     $product_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE', 0);
     //近期订购商品数
-    $radices = tep_get_radices(tep_db_prepare_input($pid)); 
-    $product_row_count = tep_get_relate_product_history_sum(tep_db_prepare_input($pid), $product_sub_date, 0,$radices); 
-    $product_row_count = $product_row_count == '' ? 0 : $product_row_count;
+    if(strpos($inventory_contents,'$recent_ordered_number_of_unit') !== false){
+      $radices = tep_get_radices(tep_db_prepare_input($pid)); 
+      $product_row_count = tep_get_relate_product_history_sum(tep_db_prepare_input($pid), $product_sub_date, 0,$radices);      $product_row_count = $product_row_count == '' ? 0 : $product_row_count;
+    }
     //近期订购关联商品数
-    $relate_radices = tep_get_radices($pInfo->relate_products_id); 
-    $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $product_sub_date, 0,$relate_radices);
-    $relate_row_count = $relate_row_count == '' ? 0 : $relate_row_count;
+    if(strpos($inventory_contents,'$recent_ordered_number_of_related_unit') !== false){
+      $relate_radices = tep_get_radices($pInfo->relate_products_id); 
+      $relate_row_count = tep_get_relate_product_history_sum($pInfo->relate_products_id, $product_sub_date, 0,$relate_radices);
+      $relate_row_count = $relate_row_count == '' ? 0 : $relate_row_count;
+    }
     //关联商品单价
     $relate_pInfo = tep_get_pinfo_by_pid(tep_db_prepare_input($pInfo->relate_products_id), $site_id);
     $relate_products_price = $relate_pInfo->products_price;
     //实际库存的平均价格
-    $product_td_avg_price = '';
-    if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
-      $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo));
-    } 
+    if(strpos($inventory_contents,'$stocks_average_cost') !== false){
+      $product_td_avg_price = '';
+      if (!$pInfo->products_bflag && $pInfo->relate_products_id) {
+        $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo));
+      } 
+    }
     //关联商品的库存
-    $relate_products_inventory = tep_new_get_quantity($relate_pInfo);
+    if(strpos($inventory_contents,'$related_unit_quantity') !== false){
+      $relate_products_inventory = tep_new_get_quantity($relate_pInfo);
+    }
     $inventory_mode_array = array('$recent_ordered_number_of_unit',//近期订购商品数(参数)
                              '$recent_ordered_number_of_related_unit',//近期订购关联商品数(参数) 
                              '$unit_price',//商品单价(参数)
