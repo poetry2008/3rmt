@@ -895,7 +895,7 @@ if ($_GET['action'] == 'show_category_info') {
       $sum_quantity = 0;
       $sum_i = 0;
       while($relate_order_history = tep_db_fetch_array($relate_order_history_query)){
-        $orders_query = tep_db_query("select orders_status from ".TABLE_ORDERS." where orders_id='".$relate_order_history['orders_id']."'");
+        $orders_query = tep_db_query("select torihiki_date,orders_status from ".TABLE_ORDERS." where orders_id='".$relate_order_history['orders_id']."'");
         $orders_array = tep_db_fetch_array($orders_query);
         tep_db_free_result($orders_query);
         $order_status_query = tep_db_query("select calc_price,orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status_id='".$orders_array['orders_status']."'");
