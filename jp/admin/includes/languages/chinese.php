@@ -826,3 +826,4 @@ define('SMALL_IMAGE_WIDTH_TEST','60');
 define('SMALL_IMAGE_HEIGHT_TEST','60');
 define('TEXT_PAYMENT_NAME_ERROR','支付方法发生了变更，此订单的支付方法（#PAYMENT_METHOD）不存在。');
 define('HAVE_MESSAGES','站内信');
+define('MESSAGES_PAGE_LINK_NAME','站内信作成');
