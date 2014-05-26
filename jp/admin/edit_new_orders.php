@@ -1186,7 +1186,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
             }
             if($totals_email_str == ''){
 
-              $email = str_replace("\n".'${CUSTOMIZED_FEE}','',$email);
+              $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','',$email);
               $email = str_replace('${CUSTOMIZED_FEE}','',$email);
             }
   // new send mail 
@@ -1343,7 +1343,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
         if($totals_email_str != ''){
           $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
         }else{
-          $comments = str_replace("\n".'${CUSTOMIZED_FEE}','', $comments); 
+          $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
           $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
         }
         //住所
@@ -1611,7 +1611,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   if($totals_email_str != ''){
     $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email_printing_order);
   }else{
-    $email_printing_order = str_replace("\n".'${CUSTOMIZED_FEE}','', $email_printing_order); 
+    $email_printing_order = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email_printing_order); 
     $email_printing_order = str_replace('${CUSTOMIZED_FEE}','', $email_printing_order);
   }
   //住所

@@ -55,6 +55,7 @@ function delete_header_messages(messages_id){
 	}
 }
 function delete_header_messages_all(){
+   if(confirm('<?php echo DELETE_ALL_NOTICE;?>')){	
 	var delete_num = 1;
 	var messages_id_all = '';
 	$('[name="messages_notice"]').each(function(){
@@ -81,6 +82,7 @@ function delete_header_messages_all(){
 			}
 		);
 	}
+   }
 }
 function check_header_messages(){
 	var messages_num = 0;
@@ -95,9 +97,9 @@ function check_header_messages(){
 			if(data != '0'){
 				$.each(eval(data), function(){
 					if(messages_num == 0){
-						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td id="messages_head" width="10%"><span>メッセージあり</span></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
+						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td id="messages_head" width="10%"><span><?php echo HAVE_MESSAGES;?></span></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
 					}else{
-                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td width="10%">メッセージあり</td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
+                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td width="10%"><?php echo HAVE_MESSAGES;?></td><td>'+this['time']+'</td><td width="70%"><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
 					}
 					messages_num++;
 				});
@@ -106,8 +108,8 @@ function check_header_messages(){
 			}
 			if(eval(data).length > 1){
 				$('#messages_head').children().remove();
-				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);">メッセージあり<?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
-				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td align="right"><input class="element_button" type="button" value="クリア" onclick="delete_header_messages_all()"></td></tr></table>');
+				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);"><?PHP echo HAVE_MESSAGES;?><?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
+				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td align="right"><input class="element_button" type="button" value="<?php echo TEXT_CLEAR;?>" onclick="delete_header_messages_all()"></td></tr></table>');
 			};
   		}
 	);
@@ -208,7 +210,7 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 }
 ?>
 <embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<audio id="head_notice_audio" src="images/notice.mp3"></audio>
+<audio id="head_notice_audio" src="images/messages_notice.mp3"></audio>
 <br>
 </td>
 </tr>
@@ -295,6 +297,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <tr><td class="menu01"><a class="t_link01" 
       href="'.tep_href_link(FILENAME_SEARCH, '', 'NONSSL').'"
       >'.BOX_TOOLS_SEARCH.'</a></td></tr>
+	<tr><td class="menu01"><a class="t_link01" href="'.tep_href_link('messages.php', '','NONSSL').'">'.MESSAGES_PAGE_LINK_NAME.'</a></td></tr>	
       <tr><td class="menu01"><a class="t_link01" 
       href="add_note.php?author='.$ocertify->auth_user.'&belong='.$belong.'"
       id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>

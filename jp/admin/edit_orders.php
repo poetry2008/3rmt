@@ -1343,9 +1343,9 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
           $email = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $email);
           //自定义费用
           if($totals_email_str != ''){
-            $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
+            $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
           }else{
-            $email = str_replace("\n".'${CUSTOMIZED_FEE}','', $email); 
+            $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
             $email = str_replace('${CUSTOMIZED_FEE}','', $email);
           }
           //address
@@ -4660,7 +4660,7 @@ if($index_num > 0){
   print "<table>";
   print '<tr>';
   print '<td width="150">';
-  print ADDPRODUCT_TEXT_CATEGORY_SELECTION;
+  print ADDPRODUCT_TEXT_CATEGORY_SELECTION; 
   print '</td>';
   print '<td>';
   echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
@@ -4685,7 +4685,7 @@ if($index_num > 0){
     print "<form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>";
     print "<table>";
     print "<tr><td width='150'>";
-    print ADDPRODUCT_TEXT_PRODUCT_SELECTION."</td>";
+    print ADDPRODUCT_TEXT_PRODUCT_SELECTION."</td>"; 
     print "<td>";
     print "<select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
     $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";

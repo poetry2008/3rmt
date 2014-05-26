@@ -6,10 +6,10 @@
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   define('FILENAME_MESSAGES', 'messages.php');
   if($_GET['action']== 'change_read_status'){
-	if($_POST['img'] == 'images/icons/email.png'){
+	if($_POST['img'] == 'images/icons/gray_right.gif'){
 		tep_db_query('update messages set read_status = "1" where id = "'.$_POST['id'].'"');
 		echo '1'; 
-	}else if($_POST['img'] == 'images/icons/email_open.png'){
+	}else if($_POST['img'] == 'images/icons/green_right.gif'){
 		tep_db_query('update messages set read_status = "0" where id = "'.$_POST['id'].'"');
 		echo '0';
 	}
@@ -328,7 +328,7 @@ function delete_select_messages(messages_str, c_permission){
 function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  if(latest_messages_id >0){
-	$('#read_status_'+latest_messages_id).attr('src', 'images/icons/email_open.png');
+	$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
  }
  $.ajax({
  url: 'ajax.php?&action=new_messages',
@@ -745,9 +745,9 @@ function change_read_status(obj,id){
 		},
 		function(data){
 			if(data == '1'){
-				$(obj).attr('src', 'images/icons/email_open.png');
+				$(obj).attr('src', 'images/icons/green_right.gif');
 			}else if(data == '0'){
-				$(obj).attr('src', 'images/icons/email.png');
+				$(obj).attr('src', 'images/icons/gray_right.gif');
 			}
 		}
 	)
@@ -761,8 +761,8 @@ function messages_selected(obj){
 	$(obj).attr('class','dataTableRowSelected');
 	$(obj).siblings().each(function(){
 		if($(this).attr('class') == 'dataTableRowSelected'){
-			$(this).attr('onmouseover',$(obj).attr('onmouseover_last'));
-			$(this).attr('onmouseout',$(obj).attr('onmouseout_last'));
+			$(this).attr('onmouseover',$(this).attr('onmouseover_last'));
+			$(this).attr('onmouseout',$(this).attr('onmouseout_last'));
 			$(this).attr('onmouseover_last',false);
 			$(this).attr('onmouseout_last',false);
 			$(this).mouseout();
@@ -944,13 +944,13 @@ require("includes/note_js.php");
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'opt'){ 
-			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'</a>'; 
+			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'</a>'; 
 		}else{
-			if($messages_sort == 'opt' && $messages_sort_type == 'desc'){
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'
+			if($messages_sort == 'opt' && $messages_sort_type == 'asc'){
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -998,7 +998,7 @@ require("includes/note_js.php");
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_checkbox		
 	);
-	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/email.png" border="0">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/email_open.png" border="0">';
+	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/gray_right.gif" border="0">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/green_right.gif" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
@@ -1030,9 +1030,8 @@ require("includes/note_js.php");
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:38px;overflow:hidden;margin:5px 0px 5px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$latest_messages['content'])).'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:5px 0px 5px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$latest_messages['content'])).'</p>'
 	);
-//die('<div style="max-height:38px;overflow:hidden;margin:5px 0px 5px 0px "><xmp>'.$latest_messages['content'].'</xmp></div>');
 	$messages_attach_file = $latest_messages['attach_file']==0 ? '' : '<img src="images/icons/attach.png" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
