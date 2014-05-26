@@ -830,7 +830,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
        // $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
 		//自定义费用
         if($totals_email_str != ''){
-          $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+			$tep_num=count(explode(' ',$totals_email_str));
+			if($tep_num >=2){
+              $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
+			}else{
+              $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+			}
         }else{
           $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
           $email = str_replace('${CUSTOMIZED_FEE}','', $email);

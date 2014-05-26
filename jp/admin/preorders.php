@@ -270,7 +270,12 @@
           tep_db_free_result($totals_email_query);
           //自定义费用
           if($totals_email_str != ''){
+			$tep_num = count(explode(' ',$totals_emal_str));
+			if($tep_num >=2){
             $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+			}else{
+            $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
+			}
           }else{
             $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
@@ -553,7 +558,12 @@
           }
 	tep_db_free_result($totals_email_query);
           if($totals_email_str != ''){
+			$tep_num = count(explode(' ',$totals_emal_str));
+			if($tep_num >=2){
             $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+			}else{
+            $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
+			}
           }else{
             $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);

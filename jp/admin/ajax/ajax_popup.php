@@ -786,11 +786,11 @@ if ($_GET['action'] == 'show_category_info') {
 
   //商品历史记录 
   $order_history_query = tep_db_query("
-    select o.orders_id, op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
+    select orders_id, products_rate, final_price, products_quantity 
+    from ".TABLE_ORDERS_PRODUCTS." 
     where 
-    op.products_id='".$pInfo->products_id."'
-    order by o.torihiki_date desc
+    products_id='".$pInfo->products_id."'
+    order by torihiki_date desc
     limit 5
   ");
   
@@ -809,6 +809,12 @@ if ($_GET['action'] == 'show_category_info') {
     $rel_sum_quantity = 0;
     $sum_i = 0;
     while($order_history = tep_db_fetch_array($order_history_query)){
+      $orders_query = tep_db_query("select torihiki_date,orders_status from ".TABLE_ORDERS." where orders_id='".$order_history['orders_id']."'");
+      $orders_array = tep_db_fetch_array($orders_query);
+      tep_db_free_result($orders_query);
+      $order_status_query = tep_db_query("select calc_price,orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status_id='".$orders_array['orders_status']."'");
+      $order_status_array = tep_db_fetch_array($order_status_query);
+      tep_db_free_result($order_status_query);
       $sum_i++;
       if(isset($order_history['products_rate']) &&$order_history['products_rate']!=0 &&$order_history['products_rate']!=''){
         if($radices!=''&&$radices!=1&&$radices!=0&&$order_history['products_rate']!=$radices){
@@ -828,7 +834,7 @@ if ($_GET['action'] == 'show_category_info') {
         $oh_fp = $order_history['final_price'];
         $oh_pq = $order_history['products_quantity'];
       }
-      if ($order_history['calc_price'] == '1') {
+      if ($order_status_array['calc_price'] == '1') {
         $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
         $sum_quantity += $oh_pq; 
       }
@@ -839,8 +845,8 @@ if ($_GET['action'] == 'show_category_info') {
       $tmp_oh_fp = display_quantity($oh_fp);
       $tmp_fp_pos = substr($tmp_oh_fp, -1); 
       $product_history_array[]['text'] = array(
-            array('params' => 'class="main" width="120"', 'text' => substr($order_history['torihiki_date'],0,strlen($order_history['torihiki_date'])-3)), 
-            array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_history['orders_status_name'].'</a>'),
+            array('params' => 'class="main" width="120"', 'text' => substr($orders_array['torihiki_date'],0,strlen($orders_array['torihiki_date'])-3)), 
+            array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_status_array['orders_status_name'].'</a>'),
             array('align' => 'right', 'params' => 'class="main" width="100"', 'text' => (($tmp_pq_pos == '.')?substr($tmp_oh_pq, 0, -1):$tmp_oh_pq)), 
             array('align' => 'right', 'params' => 'class="main"', 'text' => (($tmp_fp_pos == '.')?substr($tmp_oh_fp, 0, -1):$tmp_oh_fp))
            );   
@@ -867,11 +873,11 @@ if ($_GET['action'] == 'show_category_info') {
   if ($relate_exists_single) {
     $history_info_str .= '<br>'; 
     $relate_order_history_query = tep_db_query("
-      select o.orders_id, op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
-      from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
+      select orders_id, products_rate, final_price, products_quantity 
+      from ".TABLE_ORDERS_PRODUCTS." 
       where 
-      op.products_id='".$pInfo->relate_products_id."'
-      order by o.torihiki_date desc
+      products_id='".$pInfo->relate_products_id."'
+      order by torihiki_date desc
       limit 5
     ");
     $relate_products_name = $relate_pInfo->products_name;
@@ -889,6 +895,12 @@ if ($_GET['action'] == 'show_category_info') {
       $sum_quantity = 0;
       $sum_i = 0;
       while($relate_order_history = tep_db_fetch_array($relate_order_history_query)){
+        $orders_query = tep_db_query("select torihiki_date,orders_status from ".TABLE_ORDERS." where orders_id='".$relate_order_history['orders_id']."'");
+        $orders_array = tep_db_fetch_array($orders_query);
+        tep_db_free_result($orders_query);
+        $order_status_query = tep_db_query("select calc_price,orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status_id='".$orders_array['orders_status']."'");
+        $order_status_array = tep_db_fetch_array($order_status_query);
+        tep_db_free_result($order_status_query);
         $sum_i++;
         if(isset($relate_order_history['products_rate']) &&$relate_order_history['products_rate']!=0 &&$relate_order_history['products_rate']!=''){
           if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0&&$relate_order_history['products_rate']!=$relate_radices){
@@ -908,7 +920,7 @@ if ($_GET['action'] == 'show_category_info') {
           $relate_oh_fp = $relate_order_history['final_price'];
           $relate_oh_pq = $relate_order_history['products_quantity'];
         }
-        if ($relate_order_history['calc_price'] == '1') {
+        if ($order_status_array['calc_price'] == '1') {
           $sum_price += $relate_order_history['final_price'] * $relate_order_history['products_quantity'];
           $sum_quantity += $relate_oh_pq; 
         }
@@ -919,8 +931,8 @@ if ($_GET['action'] == 'show_category_info') {
         $tmp_relate_oh_fp = display_quantity($relate_oh_fp);
         $tmp_relate_fp_pos = substr($tmp_relate_oh_fp, -1); 
         $relate_product_history_array[]['text'] = array(
-              array('params' => 'class="main" width="120"', 'text' => substr($relate_order_history['torihiki_date'],0,strlen($relate_order_history['torihiki_date'])-3)), 
-              array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$relate_order_history['orders_id'].'&action=edit').'" target="_blank">'.$relate_order_history['orders_status_name'].'</a>') ,
+              array('params' => 'class="main" width="120"', 'text' => substr($orders_array['torihiki_date'],0,strlen($orders_array['torihiki_date'])-3)), 
+              array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$relate_order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_status_array['orders_status_name'].'</a>') ,
               array('align' => 'right', 'params' => 'class="main" width="100"', 'text' => (($tmp_relate_pq_pos == '.')?substr($tmp_relate_oh_pq, 0, -1):$tmp_relate_oh_pq)), 
               array('align' => 'right', 'params' => 'class="main"', 'text' => (($tmp_relate_fp_pos == '.')?substr($tmp_relate_oh_fp, 0, -1):$tmp_relate_oh_fp))
               
