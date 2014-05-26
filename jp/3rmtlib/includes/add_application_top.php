@@ -227,6 +227,7 @@ if ($pdo_con) {
   define('FILENAME_CHECKOUT_SUCCESS', 'checkout_success.php');
   define('FILENAME_CHECKOUT_UNSUCCESS', 'checkout_unsuccess.php');
   define('FILENAME_CHECKOUT_PRODUCTS', 'checkout_products.php');
+  define('FILENAME_RECOMMENED_CREDITCARD', 'recommend/creditcard.html');
   define('FILENAME_CONTACT_US', 'contact_us.php');
   define('FILENAME_CONDITIONS', 'conditions.php');
   define('FILENAME_CREATE_ACCOUNT', 'create_account.php');
