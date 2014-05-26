@@ -95,11 +95,15 @@ function check_header_messages(){
 			$('#show_messages_notice').children().remove();
 			$('#show_all_messages_notice').children().remove();
 			if(data != '0'){
+				var img_mark = '';
 				$.each(eval(data), function(){
+				$.each(this['mark'], function(){
+					img_mark += '<img border="0" src="images/icon_list/icon_'+this+'.gif">'
+				});
 					if(messages_num == 0){
-						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td id="messages_head" width="142px"><span><?php echo HAVE_MESSAGES;?></span></td><td width="170px">'+this['time']+'</td><td><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
+						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td id="messages_head" width="142px">&nbsp<span><?php echo HAVE_MESSAGES;?></span></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
 					}else{
-                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td width="142px"><?php echo HAVE_MESSAGES;?></td><td width="170px">'+this['time']+'</td><td><a style="color:#0000FF;text-decoration:underline;" href="messages.php"><xmp>'+this['content']+'</xmp></a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
+                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td width="142px">&nbsp<?php echo HAVE_MESSAGES;?></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
 					}
 					messages_num++;
 				});
