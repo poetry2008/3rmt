@@ -1341,7 +1341,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
 
         //自定义费用
         if($totals_email_str != ''){
-          $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
+          $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
         }else{
           $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
           $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
@@ -1609,7 +1609,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_printing_order_title = str_replace('${SITE_NAME}',$orders_site_name_array['name'],$payment_name_string_title);
   //自定义费用
   if($totals_email_str != ''){
-    $email_printing_order = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email_printing_order);
+    $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email_printing_order);
   }else{
     $email_printing_order = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email_printing_order); 
     $email_printing_order = str_replace('${CUSTOMIZED_FEE}','', $email_printing_order);
@@ -4142,7 +4142,14 @@ if($orders_exit_flag == true){
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.($TotalIndex == 1 ? EDIT_ORDERS_TOTALDETAIL_READ_ONE : '').'</td>' . 
                 '    <td style="min-width:188px;" align="right" class="' .  $TotalStyle . '">' . $button_add ."<input style='text-align:right;' name='update_totals[$TotalIndex][title]' onkeyup='price_total(\"".TEXT_MONEY_SYMBOL."\");' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>:" . '</td>' . "\n" .
-                '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . $sign_str ."<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_total_".$TotalIndex."' onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");' size='6' value='" . abs($TotalDetails["Price"]) . "'>" .TEXT_MONEY_SYMBOL.  "
+                '    <td align="right" class="' . $TotalStyle . '" style="min-width:
+                60px;">' . $sign_str ."<input style='text-align:right;'
+                name='update_totals[$TotalIndex][value]'
+                id='update_total_".$TotalIndex."'
+                onkeyup='clearNoNum(this);price_total(\"".TEXT_MONEY_SYMBOL."\");'
+                size='6' value='" . ($TotalDetails["Price"] != '' &&
+                $TotalDetails["Price"] != 0 ? 
+                abs($TotalDetails["Price"]) : '') . "'>" .TEXT_MONEY_SYMBOL.  "
                 <input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 

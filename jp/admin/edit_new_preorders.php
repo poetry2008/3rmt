@@ -676,12 +676,11 @@
           }
         }
         if($totals_email_str != ''){
-          $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+          $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
         }else{
           $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
           $email = str_replace('${CUSTOMIZED_FEE}','', $email);
         }
-
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
         $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
@@ -695,7 +694,6 @@
           
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
         }
-        
         //预约完成邮件认证
         $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',$order->info['site_id']);
         $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $preorders_mail_array['title']); 
