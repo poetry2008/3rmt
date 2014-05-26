@@ -297,6 +297,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <tr><td class="menu01"><a class="t_link01" 
       href="'.tep_href_link(FILENAME_SEARCH, '', 'NONSSL').'"
       >'.BOX_TOOLS_SEARCH.'</a></td></tr>
+	<tr><td class="menu01"><a class="t_link01" href="'.tep_href_link('messages.php', '','NONSSL').'">'.MESSAGES_PAGE_LINK_NAME.'</a></td></tr>	
       <tr><td class="menu01"><a class="t_link01" 
       href="add_note.php?author='.$ocertify->auth_user.'&belong='.$belong.'"
       id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>

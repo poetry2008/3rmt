@@ -761,8 +761,8 @@ function messages_selected(obj){
 	$(obj).attr('class','dataTableRowSelected');
 	$(obj).siblings().each(function(){
 		if($(this).attr('class') == 'dataTableRowSelected'){
-			$(this).attr('onmouseover',$(obj).attr('onmouseover_last'));
-			$(this).attr('onmouseout',$(obj).attr('onmouseout_last'));
+			$(this).attr('onmouseover',$(this).attr('onmouseover_last'));
+			$(this).attr('onmouseout',$(this).attr('onmouseout_last'));
 			$(this).attr('onmouseover_last',false);
 			$(this).attr('onmouseout_last',false);
 			$(this).mouseout();
@@ -944,13 +944,13 @@ require("includes/note_js.php");
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'opt'){ 
-			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'</a>'; 
+			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'</a>'; 
 		}else{
-			if($messages_sort == 'opt' && $messages_sort_type == 'desc'){
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'
+			if($messages_sort == 'opt' && $messages_sort_type == 'asc'){
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}

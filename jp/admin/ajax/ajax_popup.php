@@ -8177,7 +8177,7 @@ $banner_query = tep_db_query("
  }
  $messages_content_row_type = array();
  $messages_content_row_type[] = array('text' => MESSAGES_TYPE);
- $messages_content_row_type[] = array('text' => '<input type="radio" name="messages_type" value="0" checked>'.MESSAGES_RADIO.'<input type="radio" name="messages_type">Email');
+ $messages_content_row_type[] = array('text' => '<input type="radio" name="messages_type" value="0" checked>'.MESSAGES_RADIO);
  $messages_content_table[] = array('text'=> $messages_content_row_type);
 if($_GET['latest_messages_id']>0){
  $messages_content_row_author = array();
