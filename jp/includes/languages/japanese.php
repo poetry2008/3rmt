@@ -145,6 +145,7 @@ define('BOX_INFORMATION_SHIPPING', '配送と返品について');
 define('BOX_INFORMATION_PAYMENT', 'お支払いについて');
 define('BOX_INFORMATION_FAQ', 'よくある質問');
 define('BOX_INFORMATION_CONTACT', 'お問い合わせ');
+define('BOX_INFORMATION_CREDITCARD', 'クレジットカード決済');
 
 // tell a friend box text in includes/boxes/tell_a_friend.php
 define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');

@@ -3,12 +3,11 @@
   $Id$
 */
 ?>
-<!-- information //-->
+<!-- information -->
 <div id="information">
   <?php echo tep_image(DIR_WS_IMAGES.'design/box/information.gif',BOX_HEADING_INFORMATION,171,25) . "\n"; ?>
   <ul class="l_m_category_ul">
 <?php
-
   $contents_page = tep_db_query("
       select * 
       from ".TABLE_INFORMATION_PAGE." 
@@ -21,7 +20,7 @@
 		if($result['romaji'] == 'smartpit'){
     echo '    <li class="l_m_category_li">' . "\n";
     echo '      <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="3" alt="">' . "\n";
-	echo '      <a href="' .  info_tep_href_link('creditcard') . '">' . 'クレジットカード決済' . '</a>' . "\n";
+	echo '      <a href="' .  tep_href_link(FILENAME_RECOMMENED_CREDITCARD,'','SSL') . '">' . BOX_INFORMATION_CREDITCARD . '</a>' . "\n";
     echo '    </li>' . "\n";
 		}
     echo '    <li class="l_m_category_li">' . "\n";
@@ -47,4 +46,4 @@
     </li>
   </ul>
 </div>
-<!-- information_eof //-->
+<!-- information_eof -->
