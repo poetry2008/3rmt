@@ -38,4 +38,11 @@ define('CONTENT_MUST_WRITE', '本文は入力してください。');
 define('MESSAGES_TO_MUST_SELECTED', '送信先は少なくとも一つを選択してください。');
 define('MESSAGES_PREV', '前へ');
 define('MESSAGES_NEXT', '次へ');
+define('HEADING_TITLE_SENT','メッセージ管理 / 送信済み');
+define('HEADING_TITLE_DRAFT','メッセージ管理 / 下書き');
+define('HEADING_TITLE_TRASH','メッセージ管理 / ゴミ箱');
+define('MESSAGE_SELECT_RECEIVING','受信');
+define('MESSAGE_SELECT_SENT','送信済み');
+define('MESSAGE_SELECT_DRAFT','下書き');
+define('MESSAGE_SELECT_TRASH','ゴミ箱');
 ?>

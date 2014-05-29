@@ -34,4 +34,11 @@ define('CONTENT_MUST_WRITE','请添加信的内容');
 define('BACK_CONTENT_MUST_WRITE','请添加返信内容');
 define('MESSAGES_PREV','上一项');
 define('MESSAGES_NEXT','下一项');
+define('HEADING_TITLE_SENT','信息管理/已发送');
+define('HEADING_TITLE_DRAFT','信息管理/草稿');
+define('HEADING_TITLE_TRASH','信息管理/垃圾箱');
+define('MESSAGE_SELECT_RECEIVING','收信');
+define('MESSAGE_SELECT_SENT','已发送');
+define('MESSAGE_SELECT_DRAFT','草稿');
+define('MESSAGE_SELECT_TRASH','垃圾箱');
 ?>

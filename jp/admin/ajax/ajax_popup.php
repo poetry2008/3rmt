@@ -8078,12 +8078,14 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']<0){
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  	$heading[] = array('text' => NEW_MESSAGES);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
-	tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	if($_GET['messages_sta'] != 'sent'){
+		tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	}
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => $_GET['sender_name'].MESSAGES_SENDER);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  } 
  $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
@@ -8103,13 +8105,38 @@ $banner_query = tep_db_query("
  $sql_for_all_users = 'select userid, name from users';
  $sql_for_all_users_query = tep_db_query($sql_for_all_users);
  $all_user_to_td = '';
+   if($_GET['messages_sta'] == 'sent' && $_GET['latest_messages_id'] >= 0){
+	if($_GET['recipient_name'] == 'ALL'){
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+			$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+		}
+	}else{
+		$recipient_name_all = explode(';',$_GET['recipient_name']);
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+			$n_flag = 0;
+			foreach($recipient_name_all as $value){
+				if($message_all_users['name'] == $value){
+					$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+					$n_flag = 1;
+					break;
+				}
+			}
+			if($n_flag == 1){
+				continue;
+			}else{
+				$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+			}
+		}
+	}
+   }else{
 	while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 		if($_GET['latest_messages_id']>0&&$message_all_users['userid'] == $_GET['sender_id']){
-			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
 			continue;
 		}
-		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
-	} 
+		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+	}
+   } 
  $messages_choose_table = '
 <div width="100%" id="select_user"><table width="100%">
 	<tr>

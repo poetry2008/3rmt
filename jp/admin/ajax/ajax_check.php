@@ -218,8 +218,8 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 				}
 				$n++;
 			}
-        		$messages_header_all[] = $new_messages;
 		}
+		$messages_header_all[] = $new_messages;
 	}
 	if(empty($messages_header_all)){
         	$messages_header_all = '0';
