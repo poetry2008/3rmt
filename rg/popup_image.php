@@ -28,7 +28,7 @@
 <head>
 <title><?php echo $products_values['products_name']; ?></title>
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
-<script type="text/javascript"><!--
+<script language="javascript"><!--
 var i=0;
 function resize() {
   if (navigator.appName == 'Netscape') i=40;
@@ -66,14 +66,24 @@ A {
 </style>
 </head>
 
-<body oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onLoad="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
+<body Oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onload="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
 <h1 class="pageHeading"><?php echo $products_values['products_name'] ; ?></h1>
       <table border="0" cellspacing="6" cellpadding="0">
 <tr>
-        <?php echo (tep_not_null($products_values['products_image'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES .'products/'. $products_values['products_image'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
-        <?php echo (tep_not_null($products_values['products_image2'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image2'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES .'products/'. $products_values['products_image2'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
-        <?php echo (tep_not_null($products_values['products_image3'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image3'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES .'products/'. $products_values['products_image3'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
-
+        <?php
+        //获取商品图片 
+        $img_array =
+        tep_products_images($products_values['products_id'],$products_values['site_id']);
+        foreach($img_array as $img_value){
+       
+          if(tep_not_null($img_value)){
+         
+            echo '<td align="center" class="image_border"><a
+              href="popup_image.php?image='.$img_value .'&pIID='.$_GET['pIID'].'
+              ">'. tep_image2(DIR_WS_IMAGES .'products/'. $img_value, $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>';
+          }
+        }
+        ?>
 </tr>
 </table>
 
@@ -83,7 +93,7 @@ A {
    if($_GET['image'] && $_GET['image'] != '') {
      echo tep_image(DIR_WS_IMAGES . 'products/' . $_GET['image'], $products_values['products_name']);
   }else{   
-    echo tep_image(DIR_WS_IMAGES .'products/'. $products_values['products_image'], $products_values['products_name'],'','','name="featImage"');
+    echo tep_image(DIR_WS_IMAGES .'products/'. $img_array[0], $products_values['products_name'],'','','name="featImage"');
   }
   
   ?></div>

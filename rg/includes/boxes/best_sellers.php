@@ -7,7 +7,6 @@
       select *
       from (
         select distinct p.products_id,
-                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_name,
@@ -37,7 +36,6 @@
       select *
       from (
         select distinct p.products_id,
-                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_status, 
@@ -71,8 +69,6 @@
 <?php
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
-
-
   $rows = 0;
   while ($best_sellers = tep_db_fetch_array($best_sellers_query)) {
     $rows++;

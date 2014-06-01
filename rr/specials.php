@@ -101,12 +101,19 @@ if (empty($specials_caid_arr)) {
   $row = 0;
   while ($specials = tep_db_fetch_array($specials_query)) {
     $row++;
-    echo '<td align="center" width="33%" class="smallText" style="vertical-align:top;"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
+    $img_array =
+      tep_products_images($specials['products_id'],$specials['site_id']);
+    echo '<td align="center" width="33%" class="smallText"><a href="' .
+      tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
+          $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/'
+      .$img_array[0], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '<br>' . $specials['products_name'] . '<br>';
     
     echo '<img src="images/design/button/button_order.gif" width="69" height="17" alt="'.SPECIAL_CONFIRM_ORDER.'"></a><br>';
     
     echo '<s>' .
-      $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'], $specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
+      $currencies->display_price(tep_get_price($specials['products_price'],
+            $specials['products_price_offset'],
+            $specials['products_small_sum'],$specials['products_bflag'],$specials['price_type']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
     if ((($row / 3) == floor($row / 3))) {
 ?>
                 </tr>

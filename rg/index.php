@@ -62,7 +62,8 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
 <?php
 if ($category_depth == 'nested') {
   require(DIR_WS_ACTIONS.'index_nested.php');
-} elseif ($_GET['tags_id']) {
+} elseif (isset($_GET['tags_id'] )) {
+  // 根据标签tags_id取得产品列表
   require(DIR_WS_ACTIONS.'index_tags.php');
 ?>
   <td valign="top" id="contents_long">
@@ -81,7 +82,8 @@ if ($category_depth == 'nested') {
         <?php include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); ?></div>
         </td>
 <?php
-} elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
+} elseif ($category_depth == 'products' || isset($_GET['manufacturers_id'])) {
+  // 根据当前分类或者生产商manufacturers_id商品列表
   require(DIR_WS_ACTIONS.'index_products.php');
 ?> 
   <td valign="top" id="contents_long">
@@ -134,11 +136,11 @@ if ($category_depth == 'nested') {
       echo '<td>&nbsp;</td>'; 
     }
     while ($categories = tep_db_fetch_array($categories_query)) {
-      $has_ca_single = true; 
+      $has_ca_single = true;
       $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
-      echo '<td class="smallText"><h2 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES . 'categories/' . $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
+      echo '<td class="smallText"><h2 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES .'categories/'. $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
                              if(tep_not_null($categories['categories_image'])) { echo '<br>' ; } 
                    echo $categories['categories_name'] . '</a></h2></td>' . "\n";
       if ((($rows / MAX_DISPLAY_CATEGORIES_PER_ROW) == floor($rows / MAX_DISPLAY_CATEGORIES_PER_ROW)) && ($rows != tep_db_num_rows($categories_query))) {
@@ -153,16 +155,16 @@ if ($category_depth == 'nested') {
      } 
     ?>
     <h2 class="line"><?php
-  if($_GET['cPath']) {
+  if(isset($_GET['cPath']) && $_GET['cPath']) {
     $categories_path = explode('_', $_GET['cPath']);
+    //返回一级分类的图像
     $_categories = tep_get_category_by_id($categories_path[0], SITE_ID, $languages_id);
     echo $_categories['categories_name'];
   } else {
-    echo MANUFACTURERS_UPPER_TITTLE;
+    echo 'RMT：ゲーム通貨・アイテム・アカウント';
   }
- 
 ?></h2>
-      <?php 
+    <?php 
       if (isset($_GET['cPath'])) {
         $listing_tmp_sql = $listing_sql;
         $list_tmp_query = tep_db_query($listing_tmp_sql);
@@ -192,23 +194,28 @@ if ($category_depth == 'nested') {
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
-          echo '<div class="pageHeading_long"><img align="top" src="images/menu_ico_a.gif" alt=""><h2>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).TEXT_ABOUT.'</h2></div>'; 
+          echo '<div class="pageHeading_long"><img align="top" src="images/menu_ico_a.gif" alt=""><h2>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</h2></div>'; 
           echo '<div class="comment_long"><p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p></div>'; 
         }
         if (!empty($seo_category['text_information'])) {
           $old_info_arr = array('pageHeading', '#STORE_NAME#');
           $new_info_arr = array('pageHeading_long', STORE_NAME); 
-          echo str_replace($old_info_arr, $new_info_arr, $seo_category['text_information']); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value.'<br>';
         }
       }
       ?>
       </td> 
 <?php
-} elseif($_GET['colors'] && !empty($_GET['colors'])) {
+} elseif(isset($_GET['colors']) && !empty($_GET['colors'])) {
+  // 根绝颜色color_id取得商品列表
   require(DIR_WS_ACTIONS.'index_colors.php');
-} elseif($_GET['action'] && $_GET['action'] == 'select') { 
-  require(DIR_WS_ACTIONS.'index_select.php');
-} else { 
+
+} else {
+  // 默认显示首页
   require(DIR_WS_ACTIONS.'index_default.php');
 ?>
 <?php 
@@ -269,8 +276,8 @@ $update_url = tep_get_popup_url();
 ?>
 </div>
 <div align="center" class="popup_notice_button">
-<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="<?php echo TEXT_INDEX_PWD_NOCHANGE;?>" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
-<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="<?php echo TEXT_INDEX_PWD_CHANGED;?>" src="images/design/change.gif"></a>
+<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="変更しません" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="変更します" src="images/design/change.gif"></a>
 </div>
 </div>
 <?php
