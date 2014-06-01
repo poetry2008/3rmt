@@ -827,7 +827,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 		//echo $value['title'].str_repeat('&nbsp', intval((16 -mb_strlen($value['title'])-$t)/2)).'：'.$currencies->format($value['value'])."\n".mb_strlen($value['title'])."<br>";
           }
         }
-        $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
+       // $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
+		//自定义费用
+        if($totals_email_str != ''){
+          $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+        }else{
+          $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
+          $email = str_replace('${CUSTOMIZED_FEE}','', $email);
+        }
  	$email = tep_replace_mail_templates($email,$check_status['customers_email_address'],$check_status['customers_name'],$order->info['site_id']);
         $email = html_entity_decode($email);
         if ($s_status_res['nomail'] != 1) {
@@ -895,7 +902,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
                pd.products_name, 
                p.products_tax_class_id, 
                p.products_small_sum,
-               p.products_price_offset
+               p.products_price_offset,
+               p.price_type
         from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
         where p.products_id='$add_product_products_id' 
           and pd.site_id = '0'
@@ -905,7 +913,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $row = tep_db_fetch_array($result);
       extract($row, EXTR_PREFIX_ALL, "p");
       
-      $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
+      $p_products_price = tep_get_final_price($p_products_price,
+          $p_products_price_offset, $p_products_small_sum,
+          (int)$add_product_quantity,$p_price_type);
       
       // Following functions are defined at the bottom of this file
       $CountryID = tep_get_country_id($order->delivery["country"]);

@@ -360,14 +360,18 @@
         $qty = $this->contents[$products_id]['qty'];
 
 // products price
-        $product_query = tep_db_query("select products_id, products_price, products_price_offset, products_tax_class_id, products_weight, products_small_sum from " . TABLE_PRODUCTS . " where products_id='" . tep_get_prid($products_id) . "'");
+        $product_query = tep_db_query("select products_id, products_price,
+            products_price_offset, products_tax_class_id, products_weight,
+            products_small_sum,price_type from " . TABLE_PRODUCTS . " where products_id='" . tep_get_prid($products_id) . "'");
         if ($product = tep_db_fetch_array($product_query)) {
           $prid = $product['products_id'];
           $products_tax = tep_get_tax_rate($product['products_tax_class_id']);
           $products_price = $product['products_price'];
           $products_weight = $product['products_weight'];
 
-      $products_price = tep_get_final_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $qty);
+      $products_price = tep_get_final_price($product['products_price'],
+          $product['products_price_offset'], $product['products_small_sum'], $qty,
+          $product['price_type']);
       # 添加结束 -------------------------------------------
 
           $this->total += tep_add_tax($products_price, $products_tax) * $qty;
@@ -559,7 +563,9 @@
           $prid = $products['products_id'];
           $products_price = $products['products_price'];
 
-      $products_price = tep_get_final_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $this->contents[$products_id_info]['qty']);
+      $products_price = tep_get_final_price($products['products_price'],
+          $products['products_price_offset'], $products['products_small_sum'],
+          $this->contents[$products_id_info]['qty'],$products['price_type']);
       # 添加结束 -------------------------------------------
       if(!isset($this->contents[$products_id_info]['op_attributes'])) $this->contents[$products_id_info]['op_attributes']= NULL;
       if(!isset($this->contents[$products_id_info]['ck_attributes'])) $this->contents[$products_id_info]['ck_attributes']= NULL;

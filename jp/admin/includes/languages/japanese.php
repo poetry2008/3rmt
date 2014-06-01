@@ -829,3 +829,5 @@ define('DELETE_ALL_NOTICE','全ての内容をクリアしてもよろしいで�
 define('SMALL_IMAGE_WIDTH_TEST','60');
 define('SMALL_IMAGE_HEIGHT_TEST','60');
 define('TEXT_PAYMENT_NAME_ERROR','支払い方法が変更されましたので、該当注文書に使用していた支払方法（#PAYMENT_METHOD）がなくなりました。');
+define('TEXT_ALL_SITE_ALT','共用データ');
+define('TEXT_CHANGE_SITE_ALT','シングル・マルチモードの切り替え');

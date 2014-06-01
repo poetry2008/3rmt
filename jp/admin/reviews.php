@@ -467,14 +467,9 @@ require("includes/note_js.php");
               and r.reviews_id = rd.reviews_id");
         $reviews_text = tep_db_fetch_array($reviews_text_query);
 
-        $products_image_query = tep_db_query("
-            select products_image 
-            from " . TABLE_PRODUCTS_DESCRIPTION . " 
-            where products_id = '" . $reviews['products_id'] . "' order by site_id
-            desc limit 1
-        ");
-        $products_image = tep_db_fetch_array($products_image_query);
-
+        $img_array =
+          tep_products_images($reviews['products_id'],$reviews['site_id']);
+        
         $products_name_query = tep_db_query("
             select products_name 
             from " . TABLE_PRODUCTS_DESCRIPTION . " 

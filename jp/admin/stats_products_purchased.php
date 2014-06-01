@@ -149,8 +149,10 @@ require("includes/note_js.php");
   }
   $products_query_raw = "
     select * from(select (@mycnt := @mycnt+1) as rownum,pos.* from (select op.products_name,sum(op.products_quantity*
-              if(op.products_rate is null,if(products_attention_1_3 is null,1,if(products_attention_1_3='',1,products_attention_1_3)),
-              if(op.products_rate='',1,op.products_rate))/if(products_attention_1_3 is null,1,if(products_attention_1_3='',1,products_attention_1_3))) as one_price
+              if(op.products_rate is null,if(products_exchange_rate is
+                  null,1,if(products_exchange_rate='',1,products_exchange_rate)),
+              if(op.products_rate='',1,op.products_rate))/if(products_exchange_rate
+              is null,1,if(products_exchange_rate='',1,products_exchange_rate))) as one_price
               from orders o,orders_status os,products p,orders_products op where
               o.orders_status = os.orders_status_id and o.orders_id = op.orders_id
               and op.products_id = p.products_id and ".$sql_site_where."  and os.calc_price = '1'
