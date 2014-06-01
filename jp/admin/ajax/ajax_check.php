@@ -201,6 +201,54 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   require_once(DIR_WS_CLASSES . 'category_tree.php');
   $osC_CategoryTree = new osC_CategoryTree(true,false,$_POST['cpath']); 
   echo $osC_CategoryTree->buildTree();
+}else if(isset($_GET['action']) && $_GET['action'] == 'check_messages_header'){
+	$messages_header = tep_db_query(
+        	'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and header_status = "0" order by time desc'
+        );
+	$messages_header_all = array();
+	while($new_messages = tep_db_fetch_array($messages_header)){
+		$new_messages['time'] = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_MESSAGE_HOUR_STR.'i'.TEXT_MESSAGE_MIN_STR, strtotime($new_messages['time']));
+		$new_messages['content'] = str_replace('>','&gt',str_replace('<','&lt',mb_substr($new_messages['content'], 0, 20)));
+		if($new_messages['mark'] != '' && $new_messages['mark'] != null){
+			$new_messages['mark'] = explode(',',$new_messages['mark']);
+			$n = 0;
+			foreach($new_messages['mark'] as $value){
+				if(strlen($value)==1){
+					$new_messages['mark'][$n] = '0'.$value;
+				}
+				$n++;
+			}
+		}
+		$messages_header_all[] = $new_messages;
+	}
+	if(empty($messages_header_all)){
+        	$messages_header_all = '0';
+		echo $messages_header_all;
+	}else{
+		echo json_encode($messages_header_all);
+	}
+	//die(var_dump($messages_header_all));
+}else if(isset($_GET['action']) && $_GET['action'] == 'delete_messages_header'){
+	if($_POST['id'] != '' && $_POST['id'] != null){
+		$is_delete = tep_db_query('update messages set header_status = "1" where id = '.$_POST['id']);
+		if($is_delete){
+			echo '1';
+		}
+	}
+}else if(isset($_GET['action']) && $_GET['action'] == 'delete_messages_header_all'){
+	$messages_back_status = 1;
+	if($_POST['id_all'] != '' && $_POST['id_all'] != null){
+		$id_array = explode(';',$_POST['id_all']);
+		foreach($id_array as $value){
+			$is_delete = tep_db_query('update messages set header_status = "1" where id = '.$value);
+			if(!$is_delete){
+				$messages_back_status = 0;	
+			}
+		}
+		if($messages_back_status == 1){
+			echo '1';
+		}
+	}
 }
  
 ?>

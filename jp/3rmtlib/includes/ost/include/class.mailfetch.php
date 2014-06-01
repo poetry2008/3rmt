@@ -173,7 +173,7 @@ class MailFetcher {
         $error_msg .= 'エラーメール内容： '."\n";
         $error_msg .= $email_message;
         $error_headers = "From: ".$error_email_info['email'] ."<".$error_email_info['email'].">"; 
-        mail('alexjpoffice@gmail.com',$error_subject,$error_msg,$error_headers);
+        mail('yukio.iima@gmail.com',$error_subject,$error_msg,$error_headers);
         mail($error_email_info['email'],$error_subject,$error_msg,$error_headers);
         return 'error '.$type;
       }else{
@@ -311,7 +311,7 @@ class MailFetcher {
     $mailinfo=$this->getHeaderInfo($mid);
 
     //Make sure the email is NOT one of the undeleted emails.
-    if($mailinfo['mid'] && ($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
+    if(($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
       //TODO: Move emails to a fetched folder when delete is false?? 
       if($deletemsgs)
         imap_delete($this->mbox,$mid);
@@ -354,9 +354,35 @@ class MailFetcher {
 //      mail('alexjpoffice@gmail.com',$error_subject,$error_msg,$error_headers);
 //      mail($cemail_info['email'],$error_subject,$error_msg,$error_headers);
       if(!($ticket=Ticket::create($var,$errors,'Email')) || $errors){
-        var_dump( $errors);
+        $error_subject = 'OSTメール取得 エラー';
+        $error_msg ='エラーコード：800006';
+        $error_msg .= 'エラー発生時間： '.date('Y-m-d H:i:s',time())."\n";
+        $error_msg .= 'エラーメールタイプ： MESSAGE'."\n";
+        $error_msg .= 'エラーメール番号： '.$cemail_info['row']."\n";
+        $error_msg .= 'エラーメール内容： '."\n";
+        $error_msg .= $error_msg_tmp;
+        $error_headers = "From: ".$cemail_info['email'] ."<".$cemail_info['email'].">"; 
+
+foreach($errors as $e_key => $e_value){
+  if($e_key=='email'){
+    $var['email'] = $mailinfo['from']['email'];
+  }else if($e_key='name'){
+    $var['name'] = 'this is an error email name';
+  }else if($e_key='subject'){
+    $var['subject'] = 'this is an error email subject';
+  }else if($e_key='message'){
+    $var['message'] = 'this is an error email message';
+  }
+}
+      mail('yukio.iima@gmail.com',$error_subject,$error_msg,$error_headers);
+      mail($cemail_info['email'],$error_subject,$error_msg,$error_headers);
+        
+$errors = array();
+        //var_dump( $errors);
         //        die('something got wrong');
+if(!($ticket=Ticket::create($var,$errors,'Email',true,true,true))||$errors){
         return null;
+}
       }
       $msgid=$ticket->getLastMsgId();
     }else{
@@ -735,9 +761,9 @@ function tep_strstr($str1,$str2,$bool=false){
   }
 }
 function my_iconv($from, $to, $string) {  
-  echo $from;
-  echo $to;
-  echo '---';
+//  echo $from;
+//  echo $to;
+//  echo '---';
   @trigger_error('hi', E_USER_NOTICE);  
   $result = @iconv($from, $to, $string);  
   $error = @error_get_last();  
@@ -745,7 +771,7 @@ function my_iconv($from, $to, $string) {
     $result = $string;  
     return false;
   } else { 
-    echo $result;
+//    echo $result;
     return $result;  
   }
 }  

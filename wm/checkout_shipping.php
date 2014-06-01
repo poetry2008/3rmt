@@ -334,7 +334,7 @@ if($_POST['orders_billing_select'] == '1'){
   if ( !tep_session_is_registered('shipping') || ( tep_session_is_registered('shipping') && ($shipping == false) && (tep_count_shipping_modules() > 1) ) ) $shipping = $shipping_modules->cheapest();
 
 
-  $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(HEADING_TITLE, tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
   
   $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);

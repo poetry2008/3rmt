@@ -626,7 +626,7 @@ echo TEXT_TIME_LINK.$tmp_date_end[1];
   }
   $sql .= " order by fqd.site_id DESC";
   $query = tep_db_query($sql);
-  if($row = tep_db_fetch_array($sql)){
+  if($row = tep_db_fetch_array($query)){
     if(isset($_POST['row_id'])&&$_POST['row_id']==$row['row_id']){
       echo 'false';
     }else{

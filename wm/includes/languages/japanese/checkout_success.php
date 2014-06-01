@@ -3,8 +3,8 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_FIRST', 'ショッピングカート');
-define('NAVBAR_TITLE_SECOND', '手続完了');
+define('NAVBAR_TITLE_1', 'ショッピングカート');
+define('NAVBAR_TITLE_2', '手続完了');
 
 define('HEADING_TITLE', 'ご注文の手続きが完了しました!!');
 

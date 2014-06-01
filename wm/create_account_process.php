@@ -305,8 +305,8 @@
   if ($error == true) {
     $processed = true;
 
-    $breadcrumb->add(NAVBAR_TITLE_FIRST, tep_href_link(FILENAME_CREATE_ACCOUNT));
-    $breadcrumb->add(NAVBAR_TITLE_SECOND);
+    $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_CREATE_ACCOUNT));
+    $breadcrumb->add(NAVBAR_TITLE_2);
 ?>
 <?php page_head();?>
 <?php require('includes/form_check.js.php'); ?>

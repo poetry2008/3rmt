@@ -2,8 +2,8 @@
 define("HEADING_TITLE","退会を検討されている方へ");
 define("EXIT_SUCCESS_TITLE","退会手続き完了");
 define('NAVBAR_TITLE', 'お客様情報');
-define('NAVBAR_TITLE_FIRST', '退会を検討されている方へ');
-define('NAVBAR_TITLE_SECOND', '退会手続き完了');
+define('NAVBAR_TITLE_1', '退会を検討されている方へ');
+define('NAVBAR_TITLE_2', '退会手続き完了');
 define('IMAGE_BUTTON_ACCOUNT_EXIT', '退会する');
 define('TEXT_ACCOUNT_EXIT_COMMENT_SITE','退会手続きをされますと、${SITE_NAME}の会員サービス全てがご利用できなくなります。');
 define('TEXT_ACCOUNT_EXIT_COMMENT_LOGIN','再度ご利用いただくには、会員登録が必要となります。退会される前に、以下の注意事項をご確認ください。');

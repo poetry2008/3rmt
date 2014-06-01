@@ -9,6 +9,7 @@ if (isset($messageStack) && $messageStack->size > 0) {
 ?>
 <script languages="javascript" src="includes/javascript/common.js?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
+
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
@@ -31,6 +32,95 @@ var header_text_alert_link = '<?php echo HEADER_TEXT_ALERT_LINK?>';
 </script>
 <script languages="javascript" src="includes/javascript/header.js?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
+function hide_messages(){
+	if($('#show_all_messages_notice').css('display') == 'none'){
+		$('#show_all_messages_notice').css('display', '');
+	}else{
+		$('#show_all_messages_notice').css('display', 'none');
+	}
+}
+function delete_header_messages(messages_id){
+	if(messages_id != '' && messages_id != null){
+		$.post(
+			"ajax.php?&action=delete_messages_header",
+			{
+				id:messages_id,
+			},
+			function(data){
+				if(data == '1'){
+					check_header_messages();
+				}	
+			}
+		);
+	}
+}
+function delete_header_messages_all(){
+   if(confirm('<?php echo DELETE_ALL_NOTICE;?>')){	
+	var delete_num = 1;
+	var messages_id_all = '';
+	$('[name="messages_notice"]').each(function(){
+		if($(this).attr('value') != '' && $(this).attr('value') != null){
+			if($('[name="messages_notice"]').length > delete_num){
+				messages_id_all += $(this).attr('value')+';';
+				delete_num++;
+			}else{
+				messages_id_all += $(this).attr('value');
+			}
+		}
+	});
+	if(messages_id_all != '' && messages_id_all != null){
+		$.post(
+			"ajax.php?&action=delete_messages_header_all",
+			{
+				id_all:messages_id_all,
+			},
+			function(data){
+				if(data == '1'){
+					check_header_messages();
+					
+				}	
+			}
+		);
+	}
+   }
+}
+function check_header_messages(){
+	var messages_num = 0;
+	$.post(
+		"ajax.php?&action=check_messages_header",
+		{
+    			sender_id:"<?php echo $ocertify->auth_user;?>",
+  		},
+  		function(data){
+			$('#show_messages_notice').children().remove();
+			$('#show_all_messages_notice').children().remove();
+			if(data != '0'){
+				var img_mark = '';
+				$.each(eval(data), function(){
+				$.each(this['mark'], function(){
+					img_mark += '<img border="0" src="images/icon_list/icon_'+this+'.gif">'
+				});
+					if(messages_num == 0){
+						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td id="messages_head" width="142px">&nbsp<span><?php echo HAVE_MESSAGES;?></span></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
+					}else{
+                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td width="142px">&nbsp<?php echo HAVE_MESSAGES;?></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
+					}
+					messages_num++;
+				});
+				var notice_audio = document.getElementById('head_notice_audio');
+				notice_audio.play();
+			}
+			if(eval(data).length > 1){
+				$('#messages_head').children().remove();
+				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);"><?PHP echo HAVE_MESSAGES;?><?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
+				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td align="right"><input class="element_button" type="button" value="<?php echo TEXT_CLEAR;?>" onclick="delete_header_messages_all()"></td></tr></table>');
+			};
+  		}
+	);
+}
+check_header_messages();
+setInterval(function(){check_header_messages()}, 60000);
+
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
@@ -62,6 +152,8 @@ $(function(){
 <?php echo tep_get_notice_info();?>
 </div>
 <div id="show_all_notice" style="display:none; z-index:30000;"></div>
+<div id="show_messages_notice"></div>
+<div id="show_all_messages_notice" style="display:none; z-index:30000;"></div>
   </td>
 </tr>
 <tr>
@@ -122,6 +214,7 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 }
 ?>
 <embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<audio id="head_notice_audio" src="images/messages_notice.mp3"></audio>
 <br>
 </td>
 </tr>
@@ -208,6 +301,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <tr><td class="menu01"><a class="t_link01" 
       href="'.tep_href_link(FILENAME_SEARCH, '', 'NONSSL').'"
       >'.BOX_TOOLS_SEARCH.'</a></td></tr>
+	<tr><td class="menu01"><a class="t_link01" href="'.tep_href_link('messages.php', '','NONSSL').'">'.MESSAGES_PAGE_LINK_NAME.'</a></td></tr>	
       <tr><td class="menu01"><a class="t_link01" 
       href="add_note.php?author='.$ocertify->auth_user.'&belong='.$belong.'"
       id="fancy">'.TEXT_ADD_NOTE.'</a></td></tr>

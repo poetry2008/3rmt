@@ -1,0 +1,44 @@
+<?php	
+
+define('HEADING_TITLE', '信息管理/收信');
+define('READ_STATUS', '已读');
+define('MESSAGES_MARK', '标记');
+define('MESSAGES_FROM', 'From');
+define('MESSAGES_TO', 'To');
+define('MESSAGES_BACK', '回信');
+define('MESSAGES_CONTENT', '内容');
+define('ADD_FILE', '附件');
+define('MESSAGES_DATE', '收信日期');
+define('MESSAGES_OPT', '操作');
+define('MESSAGES_SENDER', '来的信息');
+define('MESSAGES_APPOINT_SB', '仅限于指定的ID');
+define('MESSAGES_TO_BODY', '收信人');
+define('MESSAGES_STAFF', '员工列表');
+define('ADD_STAFF', '添加');
+define('DELETE_STAF', '删除');
+define('MESSAGES_TEXT', '正文');
+define('MESSAGES_ADDFILE', '添加附件');
+define('MESSAGES_BACK_CONTENT', '回复');
+define('MESSAGES_BACK_FILE', '回信添加附件');
+define('MESSAGES_TYPE', '信息类型');
+define('MESSAGES_RADIO', '信息');
+define('MESSAGES_AUTHOR', '创建者');
+define('MESSAGES_EDIT_DATE', '创建日');
+define('MESSAGES_SUBMIT', '发送');
+define('TEXT_REVIEWS_SELECT_ACTION', '请选择');
+define('TEXT_REVIEWS_DELETE_ACTION','删除勾选项目');
+define('NEW_MESSAGES','创建新信件');
+define('DELETE_STAFF','删除');
+define('MESSAGES_TO_MUST_SELECTED','请添加收信人');
+define('CONTENT_MUST_WRITE','请添加信的内容');
+define('BACK_CONTENT_MUST_WRITE','请添加返信内容');
+define('MESSAGES_PREV','上一项');
+define('MESSAGES_NEXT','下一项');
+define('HEADING_TITLE_SENT','信息管理/已发送');
+define('HEADING_TITLE_DRAFT','信息管理/草稿');
+define('HEADING_TITLE_TRASH','信息管理/垃圾箱');
+define('MESSAGE_SELECT_RECEIVING','收信');
+define('MESSAGE_SELECT_SENT','已发送');
+define('MESSAGE_SELECT_DRAFT','草稿');
+define('MESSAGE_SELECT_TRASH','垃圾箱');
+?>

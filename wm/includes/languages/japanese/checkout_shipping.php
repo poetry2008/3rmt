@@ -3,7 +3,7 @@
   $Id$
 */
 
-define('NAVBAR_TITLE_FIRST', 'ショッピングカート');
+define('NAVBAR_TITLE_1', 'ショッピングカート');
 
 define('HEADING_TITLE', '配送方法');
 

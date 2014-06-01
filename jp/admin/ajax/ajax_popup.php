@@ -887,11 +887,11 @@ if ($_GET['action'] == 'show_category_info') {
 
   //商品历史记录 
   $order_history_query = tep_db_query("
-    select o.orders_id, op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
-    from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
+    select orders_id, products_rate, final_price, products_quantity 
+    from ".TABLE_ORDERS_PRODUCTS." 
     where 
-    op.products_id='".$pInfo->products_id."'
-    order by o.torihiki_date desc
+    products_id='".$pInfo->products_id."'
+    order by torihiki_date desc
     limit 5
   ");
   
@@ -910,6 +910,12 @@ if ($_GET['action'] == 'show_category_info') {
     $rel_sum_quantity = 0;
     $sum_i = 0;
     while($order_history = tep_db_fetch_array($order_history_query)){
+      $orders_query = tep_db_query("select torihiki_date,orders_status from ".TABLE_ORDERS." where orders_id='".$order_history['orders_id']."'");
+      $orders_array = tep_db_fetch_array($orders_query);
+      tep_db_free_result($orders_query);
+      $order_status_query = tep_db_query("select calc_price,orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status_id='".$orders_array['orders_status']."'");
+      $order_status_array = tep_db_fetch_array($order_status_query);
+      tep_db_free_result($order_status_query);
       $sum_i++;
       if(isset($order_history['products_rate']) &&$order_history['products_rate']!=0 &&$order_history['products_rate']!=''){
         if($radices!=''&&$radices!=1&&$radices!=0&&$order_history['products_rate']!=$radices){
@@ -929,7 +935,7 @@ if ($_GET['action'] == 'show_category_info') {
         $oh_fp = $order_history['final_price'];
         $oh_pq = $order_history['products_quantity'];
       }
-      if ($order_history['calc_price'] == '1') {
+      if ($order_status_array['calc_price'] == '1') {
         $sum_price += $order_history['final_price'] * $order_history['products_quantity'];
         $sum_quantity += $oh_pq; 
       }
@@ -940,8 +946,8 @@ if ($_GET['action'] == 'show_category_info') {
       $tmp_oh_fp = display_quantity($oh_fp);
       $tmp_fp_pos = substr($tmp_oh_fp, -1); 
       $product_history_array[]['text'] = array(
-            array('params' => 'class="main" width="120"', 'text' => substr($order_history['torihiki_date'],0,strlen($order_history['torihiki_date'])-3)), 
-            array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_history['orders_status_name'].'</a>'),
+            array('params' => 'class="main" width="120"', 'text' => substr($orders_array['torihiki_date'],0,strlen($orders_array['torihiki_date'])-3)), 
+            array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_status_array['orders_status_name'].'</a>'),
             array('align' => 'right', 'params' => 'class="main" width="100"', 'text' => (($tmp_pq_pos == '.')?substr($tmp_oh_pq, 0, -1):$tmp_oh_pq)), 
             array('align' => 'right', 'params' => 'class="main"', 'text' => (($tmp_fp_pos == '.')?substr($tmp_oh_fp, 0, -1):$tmp_oh_fp))
            );   
@@ -968,11 +974,11 @@ if ($_GET['action'] == 'show_category_info') {
   if ($relate_exists_single) {
     $history_info_str .= '<br>'; 
     $relate_order_history_query = tep_db_query("
-      select o.orders_id, op.products_rate, op.final_price, op.products_quantity, os.calc_price, o.torihiki_date, os.orders_status_name 
-      from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
+      select orders_id, products_rate, final_price, products_quantity 
+      from ".TABLE_ORDERS_PRODUCTS." 
       where 
-      op.products_id='".$pInfo->relate_products_id."'
-      order by o.torihiki_date desc
+      products_id='".$pInfo->relate_products_id."'
+      order by torihiki_date desc
       limit 5
     ");
     $relate_products_name = $relate_pInfo->products_name;
@@ -990,6 +996,12 @@ if ($_GET['action'] == 'show_category_info') {
       $sum_quantity = 0;
       $sum_i = 0;
       while($relate_order_history = tep_db_fetch_array($relate_order_history_query)){
+        $orders_query = tep_db_query("select torihiki_date,orders_status from ".TABLE_ORDERS." where orders_id='".$relate_order_history['orders_id']."'");
+        $orders_array = tep_db_fetch_array($orders_query);
+        tep_db_free_result($orders_query);
+        $order_status_query = tep_db_query("select calc_price,orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status_id='".$orders_array['orders_status']."'");
+        $order_status_array = tep_db_fetch_array($order_status_query);
+        tep_db_free_result($order_status_query);
         $sum_i++;
         if(isset($relate_order_history['products_rate']) &&$relate_order_history['products_rate']!=0 &&$relate_order_history['products_rate']!=''){
           if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0&&$relate_order_history['products_rate']!=$relate_radices){
@@ -1009,7 +1021,7 @@ if ($_GET['action'] == 'show_category_info') {
           $relate_oh_fp = $relate_order_history['final_price'];
           $relate_oh_pq = $relate_order_history['products_quantity'];
         }
-        if ($relate_order_history['calc_price'] == '1') {
+        if ($order_status_array['calc_price'] == '1') {
           $sum_price += $relate_order_history['final_price'] * $relate_order_history['products_quantity'];
           $sum_quantity += $relate_oh_pq; 
         }
@@ -1020,8 +1032,8 @@ if ($_GET['action'] == 'show_category_info') {
         $tmp_relate_oh_fp = display_quantity($relate_oh_fp);
         $tmp_relate_fp_pos = substr($tmp_relate_oh_fp, -1); 
         $relate_product_history_array[]['text'] = array(
-              array('params' => 'class="main" width="120"', 'text' => substr($relate_order_history['torihiki_date'],0,strlen($relate_order_history['torihiki_date'])-3)), 
-              array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$relate_order_history['orders_id'].'&action=edit').'" target="_blank">'.$relate_order_history['orders_status_name'].'</a>') ,
+              array('params' => 'class="main" width="120"', 'text' => substr($orders_array['torihiki_date'],0,strlen($orders_array['torihiki_date'])-3)), 
+              array('params' => 'class="main" width="80"', 'text' => '<a style="text-decoration:underline" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$relate_order_history['orders_id'].'&action=edit').'" target="_blank">'.$order_status_array['orders_status_name'].'</a>') ,
               array('align' => 'right', 'params' => 'class="main" width="100"', 'text' => (($tmp_relate_pq_pos == '.')?substr($tmp_relate_oh_pq, 0, -1):$tmp_relate_oh_pq)), 
               array('align' => 'right', 'params' => 'class="main"', 'text' => (($tmp_relate_fp_pos == '.')?substr($tmp_relate_oh_fp, 0, -1):$tmp_relate_oh_fp))
               
@@ -8173,14 +8185,16 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']<0){
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  	$heading[] = array('text' => NEW_MESSAGES);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
-	tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	if($_GET['messages_sta'] != 'sent'){
+		tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	}
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-	$heading[] = array('text' => $ocertify->auth_user.MESSAGES_SENDER);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$heading[] = array('text' => $_GET['sender_name'].MESSAGES_SENDER);
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  } 
- $heading[] = array('align' => 'right', 'text' => $page_str);
+ $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
  $messages_content_table = array();
  $messages_content_row_from = array();
@@ -8189,8 +8203,8 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_from);
  $messages_content_row_to = array();
  $messages_content_row_to [] = array('text'=>'To');
- $messages_to_all = '<input id="message_to_all" type="radio" value="0" checked name="messages_to">ALL';
- $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" name="messages_to">'.MESSAGES_APPOINT_SB;
+ $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
+ $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" checked name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
  $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_appoint);
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
@@ -8198,29 +8212,54 @@ $banner_query = tep_db_query("
  $sql_for_all_users = 'select userid, name from users';
  $sql_for_all_users_query = tep_db_query($sql_for_all_users);
  $all_user_to_td = '';
+   if($_GET['messages_sta'] == 'sent' && $_GET['latest_messages_id'] >= 0){
+	if($_GET['recipient_name'] == 'ALL'){
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+			$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+		}
+	}else{
+		$recipient_name_all = explode(';',$_GET['recipient_name']);
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+			$n_flag = 0;
+			foreach($recipient_name_all as $value){
+				if($message_all_users['name'] == $value){
+					$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+					$n_flag = 1;
+					break;
+				}
+			}
+			if($n_flag == 1){
+				continue;
+			}else{
+				$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+			}
+		}
+	}
+   }else{
 	while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 		if($_GET['latest_messages_id']>0&&$message_all_users['userid'] == $_GET['sender_id']){
-			$recipient = '<div value="'.$message_all_users['name'].'"><input value="'.$message_all_users['userid'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
 			continue;
 		}
-		$all_user_to_td .= '<div value="'.$message_all_users['name'].'"><input value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
-	} 
+		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+	}
+   } 
  $messages_choose_table = '
-<table width="100%">
+<div width="100%" id="select_user"><table width="100%">
 	<tr>
 		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
 		<td align="center" width="45%">'.MESSAGES_STAFF.'</td>
 	</tr>
 	<tr>
-		<td id="send_to" align="center" style="background:#FFF">'.$recipient.'</td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="send_to" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient.'</div></td>
 		<td align="center" style="vertical-align:middle;">
-			<button onclick="add_select_user()">'.ADD_STAFF.'</button><br>
-			<button onclick="delete_select_user()">'.DELETE_STAFF.'</button>
+			<button onclick="add_select_user()">&lt&lt'.ADD_STAFF.'</button><br>
+			<button onclick="delete_select_user()">'.DELETE_STAFF.'&gt&gt</button>
 		</td>
-		<td id="delete_to" align="center" style="background:#FFF">'.$all_user_to_td.'</td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="delete_to" style="overflow-y:scroll;height:105px;">'.$all_user_to_td.'</div></td>
 	</tr>
-</table>';
+</table></div>';
  $messages_content_row_choose [] = array('text'=> $messages_choose_table);
  $messages_content_table[] = array('text'=> $messages_content_row_choose);
  $messages_content_row_must_selected = array();
@@ -8228,9 +8267,9 @@ $banner_query = tep_db_query("
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
  $messages_content_table[] = array('text'=> $messages_content_row_must_selected);
  $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
-   $users_icon = '<ul class="table_img_list">'; 
+   $users_icon = '<ul class="table_img_list" style="width:100%">'; 
    while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
-     $users_icon .= '<li><input type="radio" name="pic_icon" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+     $users_icon .= '<li><input type="checkbox" name="pic_icon[]" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
    }
  $users_icon .= '</ul>';
  $messages_content_row_mark = array();
@@ -8265,7 +8304,7 @@ $banner_query = tep_db_query("
  	}
  }else{
  	$messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
- 	$messages_content_row_addfile[] = array('text'=> '<input type="file" name="messages_file">');
+ 	$messages_content_row_addfile[] = array('text'=> '<div><input type="file" name="messages_file"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(this)">'.DELETE_STAFF.'</a></div>');
  }
  $messages_content_table[] = array('text'=> $messages_content_row_addfile);
  if($_GET['latest_messages_id']>0){
@@ -8279,17 +8318,19 @@ $banner_query = tep_db_query("
  	$messages_content_table[] = array('text'=> $messages_content_row_back_must_write);
 	$messages_content_row_back_file = array();
 	$messages_content_row_back_file[] = array('text'=> MESSAGES_BACK_FILE);
-	$messages_content_row_back_file[] = array('text'=> '<input type="file" name="messages_file_back">');
+	$messages_content_row_back_file[] = array('text'=> '<div><input type="file" name="messages_file_back"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(this)">'.DELETE_STAFF.'</a></div>');
 	$messages_content_table[] = array('text'=> $messages_content_row_back_file);
  }
  $messages_content_row_type = array();
  $messages_content_row_type[] = array('text' => MESSAGES_TYPE);
- $messages_content_row_type[] = array('text' => '<input type="radio" name="messages_type" value="0" checked>'.MESSAGES_RADIO.'<input type="radio" name="messages_type">Email');
+ $messages_content_row_type[] = array('text' => '<input type="radio" name="messages_type" value="0" checked>'.MESSAGES_RADIO);
  $messages_content_table[] = array('text'=> $messages_content_row_type);
+if($_GET['latest_messages_id']>0){
  $messages_content_row_author = array();
  $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$_SESSION['user_name']);
- $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.date("Y/m/d H:i:s"));
+ $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.$sql_message_content_res['time']);
  $messages_content_table[] = array('text'=> $messages_content_row_author);
+}
  $messages_content_row_submit = array();
  $messages_content_row_submit[] = array('text'=> '');
  if($_GET['latest_messages_id']>0){

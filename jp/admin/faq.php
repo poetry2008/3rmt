@@ -121,7 +121,7 @@
          $sort_order = tep_db_prepare_input($_POST['sort_order']);
          $sql_data_array = array('sort_order' => $sort_order);
          $sql_sort_data_array = array('sort_order' => $sort_order);
-         $sql_sort_data_array['updated_at'] = 'new()';
+         $sql_sort_data_array['updated_at'] = 'now()';
 
          if($_GET['action'] == 'insert_faq_question') {
            $insert_sql_data = array('updated_at' => 'now()',
@@ -228,7 +228,7 @@
          $sort_order = tep_db_prepare_input($_POST['sort_order']);
          $sql_data_array = array('sort_order' => $sort_order);
          $sql_sort_data_array = array('sort_order' => $sort_order);
-         $sql_sort_data_array['updated_at'] = 'new()';
+         $sql_sort_data_array['updated_at'] = 'now()';
 
          if($_GET['action'] == 'insert_faq_category') {
            $insert_sql_data = array('parent_id' => $current_category_id,
