@@ -11062,11 +11062,13 @@ function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=tr
 ----------------------------------*/
 function tep_replace_mail_templates($mail_templates,$users_email='',$users_name='',$site_id='0'){ 
 
-  $ocertify = new user_certify(session_id()); 
-  $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
-  $admin_user_array = tep_db_fetch_array($admin_user_query);
-  tep_db_free_result($admin_user_query);
-  $admin_user_info = array($admin_user_array['email'],$admin_user_array['name']); 
+  if(isset($ocertify->auth_user)){
+    $ocertify = new user_certify(session_id()); 
+    $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
+    $admin_user_array = tep_db_fetch_array($admin_user_query);
+    tep_db_free_result($admin_user_query);
+    $admin_user_info = array($admin_user_array['email'],$admin_user_array['name']); 
+  }
             
   $mode_array = array(
                 '${SITE_NAME}', 
