@@ -90,6 +90,7 @@ if ($ca_num == 0) {
                 select c.categories_id, 
                        cd.categories_status, 
                        cd.categories_name, 
+                       categories_name_list,
                        c.parent_id,
                        cd.site_id,
                        c.sort_order
@@ -137,6 +138,7 @@ if ($ca_num == 0) {
                   select c.categories_id, 
                          cd.categories_status, 
                          cd.categories_name, 
+                         categories_name_list,
                          c.parent_id,
                          cd.site_id,
                          c.sort_order

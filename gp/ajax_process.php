@@ -7,7 +7,9 @@ if ($_GET['action'] == 'calc_price') {
   $products_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$_GET['p_id']."'");
   $products_info = tep_db_fetch_array($products_info_raw);
   
-  $products_price = tep_get_final_price($products_info['products_price'], $products_info['products_price_offset'], $products_info['products_small_sum'], $_GET['qty']);
+  $products_price = tep_get_final_price($products_info['products_price'],
+      $products_info['products_price_offset'], $products_info['products_small_sum'],
+      $_GET['qty'],$products_info['price_type']);
  
   $final_price = $products_price + $attributes_price;
   $price_array = array();

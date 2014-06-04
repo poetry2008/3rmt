@@ -36,7 +36,6 @@
            p.products_price_offset, 
            p.products_small_sum, 
            p.products_tax_class_id, 
-           pd.products_image, 
            p.products_date_added,
            p.products_bflag, 
            pd.products_status, 
@@ -84,32 +83,37 @@
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr>
 <?php
-    $row = 0;
-    while ($specials = tep_db_fetch_array($specials_query)) {
-        $row++;
-        echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' .$specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . $specials['products_name'] . '</a><br>';
-        
+  $row = 0;
+  while ($specials = tep_db_fetch_array($specials_query)) {
+    $row++;
+    $img_array =
+      tep_products_images($specials['products_id'],$specials['site_id']);
+    echo '<td align="center" width="33%" class="smallText"><a href="' .
+      tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
+          $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/'
+      .$img_array[0], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . $specials['products_name'] . '</a><br>';
+      
         echo '<span id="' . $specials['products_id'] . '"><a
           href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$specials['products_id']).'"
           return false;">'.TEXT_BUY_ORDERS_LINK.'</a></span><br>';
-        
+      
         echo '<s>' .
           $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'], $specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
-        if ((($row / 3) == floor($row / 3))) {
+    if ((($row / 3) == floor($row / 3))) {
 ?>
-                                </tr>
-                                <tr>
+                </tr>
+                <tr>
               <td>&nbsp;</td>
             </tr>
             <tr>
 <?php
-        }    
-    }
+    }    
+  }
 ?>
-                               </tr>
-                            </table>
-                        </td>
-                    </tr>
+                </tr>
+              </table>
+            </td>
+          </tr>
 <?php
     if (($specials_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
@@ -131,12 +135,12 @@
 <?php
     }
 ?>
-                </table>
-                </div>
-                               </div>
+        </table>
+      </div>
+      </div>
  <?php include('includes/float-box.php');?>
 
-                                </div>
+        </div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 
 <div id="dis_clist"></div>

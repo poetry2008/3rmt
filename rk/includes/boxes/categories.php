@@ -12,10 +12,10 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
+             cd.categories_name_list, 
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
-             cd.categories_image2,
              c.sort_order
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where c.parent_id = '0' 
@@ -45,14 +45,14 @@ $left_show_single = false;
 <div id='categories'>
   <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;MENU</div>
   <ul class='l_m_category_ul'>
-    <?php foreach($categories as $key => $category) {?>
+    <?php foreach($categories as $key => $category) { ?>
       <?php if(($cPath && in_array($category['categories_id'], $id)) || ($left_show_single && in_array($category['categories_id'], $id))) {?>
         <li class='l_m_category_li2'>
           <a class="l_m_category_li2_link"href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong>
             <?php }?>
-            <?php echo $category['categories_name'];?>
+            <?php echo $category['categories_name list'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong>
             <?php }?>
@@ -173,14 +173,14 @@ $left_show_single = false;
                 if (!isset($ca_arr)) {
                 ?>
                 <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
-                <?php echo $category['categories_name'];?> 
+                <?php echo $category['categories_name_list'];?> 
                 </a></li>
                 <?php
                 } else if (in_array($category['categories_id'], $ca_arr)) { 
                 ?>
                 <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
                 <?php 
-                echo $category['categories_name']; 
+                echo $category['categories_name_list']; 
                 ?>
         </a></li>
       <?php }?>

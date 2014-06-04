@@ -8,7 +8,7 @@
   if (isset($_GET['products_id'])) {
     
     $orders_sql = "
-        select * from (select o.date_purchased, pd.site_id, pd.products_status, p.products_id, pd.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
+        select * from (select o.date_purchased, pd.site_id, pd.products_status, p.products_id  from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
           and o.orders_id = opa.orders_id
           and opa.orders_id = opb.orders_id 
           and opb.products_id != '" . (int)$_GET['products_id'] . "' 
@@ -55,11 +55,12 @@
         }
     echo '<div class="yui3-u-1-8 hm-hot"> ';
 if ($orders['products_status'] == 0) {
-  echo tep_image(DIR_WS_IMAGES . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>'.$orders['products_name'];
+  $img_array = tep_products_images($orders['products_id'],$orders['site_id']);
+  echo tep_image(DIR_WS_IMAGES . $img_array[0], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>'.$orders['products_name'];
 } else {
   echo '<div id="hm-hot-category"> <a href="' . tep_href_link(FILENAME_PRODUCT_INFO,
        'products_id=' . $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES .
-         $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH,
+         $img_array[0], $orders['products_name'], SMALL_IMAGE_WIDTH,
        SMALL_IMAGE_HEIGHT,'class="image_border"').'</a></div> <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $orders['products_id']) . '">'.$orders['products_name'].'</a>';
 }
 echo '</div>';

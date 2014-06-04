@@ -24,7 +24,6 @@
     
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
-               pd.products_image, 
                p.products_tax_class_id, 
                p.products_price, 
                p.products_price_offset, 
@@ -43,7 +42,6 @@
     
     $new_products_query = tep_db_query("
         select * from (select distinct p.products_id, 
-                        pd.products_image, 
                         p.products_tax_class_id, 
                         p.products_price, 
                         p.products_price_offset, 
@@ -67,25 +65,14 @@
      echo '
    <table width="100%"  border="0" cellspacing="0" cellpadding="0" align="center"> 
           <tr>';
- //   new contentBoxHeading($info_box_contents);
 
     $row = 0;
     $col = 0;
   $info_box_contents = array();
     while ($new_products = tep_db_fetch_array($new_products_query)) {
+      $img_array = tep_products_images($new_products['products_id'],$new_products['site_id']);
       $row ++;
       
-      /*
-      $product_query = tep_db_query("
-          select products_name, 
-                 products_description 
-          from " . TABLE_PRODUCTS_DESCRIPTION . " 
-          where products_id = '" .  $new_products['products_id'] . "' 
-            and language_id = '" . $languages_id . "' 
-            and site_id = '".SITE_ID."'
-          ");
-      $product_details = tep_db_fetch_array($product_query);
-      */
   
     $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
   
@@ -104,7 +91,7 @@
 ?>
             <td width="250"><!-- products_id <?php echo $new_products['products_id'];?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
               <tr> 
-                <td width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
+                <td width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
                 <td valign="top" style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$products_name.$ten.'</a>';?><br> 
                   <span class="red"><?php echo $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])) ; ?></span><br> 
                   <span class="smallText"><?php echo $description_view; ?>...</span></p></td> 
@@ -120,7 +107,6 @@
      }  
     }
 
-    //new contentBox($info_box_contents);
   echo '</tr></table>' ;
   
   }

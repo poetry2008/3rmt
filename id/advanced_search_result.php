@@ -150,10 +150,7 @@
         break;
       case 'PRODUCT_LIST_QUANTITY':
         $select_column_list .= 'p.products_real_quantity + p.products_virtual_quantity as products_quantity';
-        break;
-      case 'PRODUCT_LIST_IMAGE':
-        $select_column_list .= 'pd.products_image';
-        break;
+        break; 
       case 'PRODUCT_LIST_WEIGHT':
         $select_column_list .= 'p.products_weight';
         break;
@@ -246,10 +243,8 @@
             $where_str .= "(pd.products_name like '%" . addslashes($search_keywords[$i]) . "%' or p.products_model like '%" . addslashes($search_keywords[$i]) . "%' or m.manufacturers_name like '%" . addslashes($search_keywords[$i]) . "%'";
             if (isset($_GET['search_in_description']) && ($_GET['search_in_description'] == '1')) $where_str .= " or pd.products_description like '%" . addslashes($search_keywords[$i]) . "%'";
 
-            $where_str .= " or p.products_attention_1 like '%" .  addslashes($search_keywords[$i]) . "%'";
-            $where_str .= " or p.products_attention_2 like '%" .  addslashes($search_keywords[$i]) . "%'";
-            $where_str .= " or p.products_attention_3 like '%" .  addslashes($search_keywords[$i]) . "%'";
-            $where_str .= " or p.products_attention_4 like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_info_top like '%" .  addslashes($search_keywords[$i]) . "%'";
+            $where_str .= " or p.products_info_under like '%" .  addslashes($search_keywords[$i]) . "%'";
               $where_str .= ')';
             break;
         }

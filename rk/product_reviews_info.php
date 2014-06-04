@@ -21,9 +21,8 @@
              r.last_modified, 
              r.reviews_read, 
              pd.products_name, 
-             pd.products_status, 
-             pd.products_image,
              r.site_id as rsid,
+             pd.products_status, 
              pd.site_id as psid
       FROM (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) 
               LEFT JOIN " .  TABLE_PRODUCTS . " p 
@@ -86,7 +85,13 @@ function showimage($1) {
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td class="smallText" align="right">
-          <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>',0)" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
+                    <?php
+                    //获取商品图片
+                    $img_array =
+                    tep_products_images($reviews['products_id'],$reviews['site_id']);
+                    ?>
+          <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES
+          . 'products/' . $img_array[0]; ?>',0)" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $img_array[0], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
                   </tr>
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
@@ -111,7 +116,9 @@ function showimage($1) {
               <td><br> 
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td class="main"><?php echo '<a href="' .
+                    tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' .
+                    tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 

@@ -114,6 +114,8 @@ if ($listing_numrows > 0) {
     
       $row++;
       $col++;
+      //获取商品的图片
+      $products_images_array = tep_products_images($listing['products_id'],$listing['site_id']);
       ?>
 
 
@@ -123,7 +125,7 @@ if ($listing_numrows > 0) {
       <!-- products_id <?php echo $listing['products_id'];?>-->
       <tr>  
           <td rowspan="1" width="8%" align="center" valign="top">
-            <?php  echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $listing['products_image'], $listing['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>' ; ?>
+            <?php  echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' .  $products_images_array[0], $listing['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>' ; ?>
           </td>
          <td valign="top"><?php echo '<a class="bold" href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.$products_name.$ten.'</a>';?>
           </td>

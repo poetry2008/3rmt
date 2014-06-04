@@ -35,14 +35,14 @@ from (
          pd.products_name, 
          pd.site_id,
          pd.products_status,
-         pd.products_image, 
          p.products_price, 
          p.products_price_offset, 
          p.products_small_sum, 
          p.products_tax_class_id, 
          p.products_date_added, 
          p.products_bflag, 
-         m.manufacturers_name 
+         m.manufacturers_name,
+         p.price_type
   from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'
   order by pd.site_id DESC
   ) p
@@ -58,15 +58,18 @@ order by products_date_added DESC, products_name
   
   $products_new_query = tep_db_query($products_new_query_raw);
   while ($products_new = tep_db_fetch_array($products_new_query)) {
+    $img_array =
+      tep_products_images($products_new['products_id'],$products_new['site_id']);
     $products_new_array[] = array('id' => $products_new['products_id'],
                                   'name' => $products_new['products_name'],
-                                  'image' => $products_new['products_image'],
+                                  'image' => $img_array[0],
                                   'price' => $products_new['products_price'],
                                   'price_offset' => $products_new['products_price_offset'],
                                   'small_sum' => $products_new['products_small_sum'],
                                   'tax_class_id' => $products_new['products_tax_class_id'],
                                   'date_added' => tep_date_long($products_new['products_date_added']),
                                   'products_bflag' => $products_new['products_bflag'],  
+                                  'price_type' => $products_new['price_type'],  
                                   'manufacturer' => $products_new['manufacturers_name']);
   }
   require(DIR_WS_MODULES  . 'products_new.php');

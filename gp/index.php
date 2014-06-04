@@ -180,6 +180,8 @@ if ($category_depth == 'nested') {
           }
           include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
         }
+        $c_tmp_path = explode('', $_GET['cPath']);
+        $new_c_name = '';
       } else {
         include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
       }
@@ -204,9 +206,15 @@ if ($category_depth == 'nested') {
         if (!empty($seo_category['text_information'])) {
           $old_info_arr = array('pageHeading', '#STORE_NAME#');
           $new_info_arr = array('pageHeading_long', STORE_NAME); 
-          echo str_replace($old_info_arr, $new_info_arr, $seo_category['text_information']); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value.'<br>';
         }
+        echo '<p class="pageBottom"></p>'; 
       }
+    }
       ?>
       </td> 
 <?php

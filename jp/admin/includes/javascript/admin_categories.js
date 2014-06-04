@@ -1872,7 +1872,7 @@ function add_images(select,clear){
 
   var images_num = $("#images_num").val();
   images_num = parseInt(images_num);
-  var html_str = '<tr><td class="main"><img width="24" height="15" border="0" alt="" src="images/pixel_trans.gif">&nbsp;<input type="text" value="" name="products_previous_image_'+(images_num+1)+'">&nbsp;<input type="file" style="display:none" id="image_'+(images_num+1)+'" onchange="change_image_text(this,\'products_previous_image_'+(images_num+1)+'\',0)" name="products_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_image(\'products_image_'+(images_num+1)+'\',\'products_previous_image_'+(images_num+1)+'\');" value="'+clear+'" class="element_button"></a></td></tr>';
+  var html_str = '<tr><td class="main"><input type="text" value="" name="products_previous_image_'+(images_num+1)+'" class="td_input">&nbsp;<input type="file" style="display:none" id="image_'+(images_num+1)+'" onchange="change_image_text(this,\'products_previous_image_'+(images_num+1)+'\',0)" name="products_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_image(\'products_image_'+(images_num+1)+'\',\'products_previous_image_'+(images_num+1)+'\');" value="'+clear+'" class="element_button"></a></td></tr>';
   $("#images_num").val(images_num+1);
   $("#products_images_id").append(html_str);
 }
@@ -1888,13 +1888,13 @@ function add_cart_images(select,clear){
 //add products info top
 function add_products_info_top(){
 
-  var html_str = '<tr><td><input type="text" style="width:63%;" name="products_info_top_title[]"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_top_contents[]"></textarea></td></tr>';
+  var html_str = '<tr><td><input type="text" name="products_info_top_title[]" class="td_input"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_top_contents[]"></textarea></td></tr>';
   $("#products_info_top_id").append(html_str);
 }
 //add products info under
 function add_products_info_under(){
 
-  var html_str = '<tr><td><input type="text" style="width:63%;" name="products_info_under_title[]"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_under_contents[]"></textarea></td></tr>';
+  var html_str = '<tr><td><input type="text" name="products_info_under_title[]" class="td_input"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_under_contents[]"></textarea></td></tr>';
   $("#products_info_under_id").append(html_str);
 }
 function ajax_display(cpath){
