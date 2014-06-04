@@ -12,6 +12,7 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
+             cd.categories_name_list, 
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
@@ -20,7 +21,7 @@ $categories_query = tep_db_query("
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where c.parent_id = '0' 
         and c.categories_id = cd.categories_id 
-        and c.categories_id in (".FF_CID.") 
+        and c.categories_id = '".FF_CID."' 
         and cd.language_id='" . $languages_id ."' 
       order by site_id DESC
     ) c 
@@ -98,13 +99,13 @@ if ($ca_num == 0) {
                   and cd.language_id='" . $languages_id ."' 
                 order by cd.site_id DESC
                 ) c
-              where site_id = ".SITE_ID."
-                 or site_id = 0
+              where site_id = 0
+                 or site_id = ".SITE_ID."
               group by categories_id
               having c.categories_status != '1' and c.categories_status != '3' 
               order by sort_order, categories_name
               ");
-          while ($subcategory = tep_db_fetch_array($subcategories_query))  {
+         while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
           }
           ?> <?php if (!empty($subcategories)) { ?>
@@ -113,15 +114,15 @@ if ($ca_num == 0) {
             <li class="l_m_category_li2">
               <a class="l_m_category_li2_link" href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$list_category['categories_id'].'_'.$subcategory['categories_id']);?>">
               <?php
-              if (in_array($subcategory['categories_id'], $id)) {
+              if (isset($id)&&$id!=''&&in_array($subcategory['categories_id'], $id)) {
               ?>
               <font color="#ff0000"> 
               <?php
               }
               ?>
-              <?php  echo $subcategory['categories_name'];?>
+              <?php  echo $subcategory['categories_name_list'];?>
               <?php
-              if (in_array($subcategory['categories_id'], $id)) {
+              if (isset($id)&&$id!=''&&in_array($subcategory['categories_id'], $id)) {
               ?>
               </font> 
               <?php
@@ -170,7 +171,7 @@ if ($ca_num == 0) {
               <?php
               }
               ?>
-              <?php  echo $_subcategory['categories_name'];?>
+              <?php  echo $_subcategory['categories_name_list'];?>
               <?php
               if (in_array($_subcategory['categories_id'], $id)) {
               ?>

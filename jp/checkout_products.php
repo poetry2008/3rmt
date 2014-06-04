@@ -160,9 +160,16 @@ foreach($cart as $key => $val){
             if($key == 'contents'){
             foreach($val as $key2 => $val2){
             $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
+            //获取商品图片
+            $img_array =
+              tep_products_images($cp_result['products_id'],$cp_result['site_id']);
         ?>
           <tr>
-            <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" class="main"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $cp_result['products_id']) . '">' . tep_image(DIR_WS_IMAGES .'products/'. $cp_result['products_image'], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
+            <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top"
+            class="main"><?php echo '<a href="' .
+            tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
+                $cp_result['products_id']) . '">' . tep_image(DIR_WS_IMAGES
+            .'products/'. $img_array[0], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
             <td class="main">
           <?php
             echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $cp_result['products_id']) . '"><b><u>' . $cp_result['products_name'] . '</u></b></a><br>';

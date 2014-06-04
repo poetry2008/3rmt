@@ -82,7 +82,8 @@ case 'add_product':
                    pd.products_name, 
                    p.products_tax_class_id, 
                    p.products_small_sum,
-                   p.products_price_offset
+                   p.products_price_offset,
+                   p.price_type
                      from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
                      where p.products_id='$add_product_products_id' 
                      and pd.site_id = '0'
@@ -95,7 +96,9 @@ case 'add_product':
           $add_product_price = (int)$_POST['add_product_price'];
           $p_products_price = $add_product_price;
           // 适用于特价
-          $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
+          $p_products_price = tep_get_final_price($p_products_price,
+              $p_products_price_offset, $p_products_small_sum,
+              (int)$add_product_quantity,$p_price_type);
 
           // Following functions are defined at the bottom of this file
           $CountryID = tep_get_country_id($order->delivery["country"]);
@@ -313,13 +316,12 @@ $city           = isset($address['entry_city'])             ? $address['entry_ci
 $state          = isset($address['entry_zone_id'])          ? tep_get_zone_name($address['entry_zone_id']):'';
 $country        = isset($address['entry_country_id'])       ? tep_get_country_name($address['entry_country_id']):'';
 $customers_guest_chk = isset($account['customers_guest_chk']) ? $account['customers_guest_chk'] : '';
-/*
+
 $cpayment = payment::getInstance((int)$_GET['site_id']);
 $payment_array = payment::getPaymentList();
 if(!isset($selections)){
 $selections = $cpayment->admin_selection();
 }
-*/
 $payment_list[] = array('id' => 'payment_null', 'text' => TEXT_PAYMENT_NULL_TXT);
 //}}
 require_once(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);

@@ -9,55 +9,91 @@ if ($_GET['action'] == 'show_category_info') {
  -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
-  $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
   
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //SITE ID
+  if (isset($_GET['show_type'])&&$_GET['show_type'] == 'one'){
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = "site_id = '".$_GET['site_id']."'"; 
+    }else{
+      $sql_site_where = "site_id=0";
+    }
+  }else{
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = "site_id in (".str_replace('-', ',', $_GET['site_id']).")"; 
+    } else {
+      $show_list_str = tep_get_setting_site_info('categories.php');
+      $sql_site_where = "site_id in (".$show_list_str.")"; 
+    }
+  }
+
+  //SORT
+  if(isset($_GET['order_sort']) && isset($_GET['order_type'])){
+    if($_GET['order_type'] == 'asc'){
+
+      $order_type = 'asc';
+    }else{
+
+      $order_type = 'desc';
+    }
+
+    $order_sort_str = '';
+    switch($_GET['order_sort']){
+
+      case 'site_romaji':
+        $order_sort_str .= ' s.romaji '.$order_type.',';
+      break;
+      case 'name':
+        $order_sort_str .= ' cd.categories_name_list '.$order_type.',';
+      break;
+      case 'status':
+        $order_sort_str .= ' cd.categories_status '.$order_type.',';
+      break;
+      case 'time':
+        $order_sort_str .= ' cd.last_modified '.$order_type.',';
+      break;
+    } 
+  }
   if (isset($_GET['search']) && $_GET['search']) {
     $categories_query_raw = "
       select c.categories_id, 
             cd.site_id,
-            cd.categories_name,
+            cd.categories_name_list,
             c.sort_order
-      from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-      where c.categories_id = cd.categories_id 
+      from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd, (select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
+      where c.categories_id = cd.categories_id and cd.site_id = s.id 
         and cd.language_id = '" . $languages_id . "' 
-        and cd.categories_name like '%" . $_GET['search'] . "%' ";
-    if(!empty($site_id)){
-      $categories_query_raw .= " and cd.site_id = '".(int)$site_id."' ";
-    }else{
-      $categories_query_raw .= " and cd.site_id = '0' ";
-    }
-    $categories_query_raw .= " order by c.sort_order, cd.categories_name";
+        and cd.search_info like '%" . $_GET['search'] . "%' ";
+    $categories_query_raw .= 'and '.$sql_site_where; 
+    $categories_query_raw .= " order by ".$order_sort_str."c.sort_order, cd.categories_name_list";
   } else {
     $categories_query_raw = "
-      select * 
-        from (
-            select c.categories_id,
+          select c.categories_id,
             cd.site_id,
-            cd.categories_name,
+            cd.categories_name_list,
             c.sort_order
-          from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+          from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd, (select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
           where
             c.parent_id = '".$current_category_id."' 
-            and c.categories_id = cd.categories_id 
+            and c.categories_id = cd.categories_id and cd.site_id = s.id 
             and cd.language_id='" . $languages_id ."' 
-          order by site_id DESC
-        ) c 
-      where site_id = ".(int)$site_id."
-         or site_id = 0
-      group by categories_id
-      order by sort_order, categories_name
+            and ".$sql_site_where." 
+            order by ".$order_sort_str."c.sort_order, cd.categories_name_list
       ";
   }
   
   $cid_array = array();
+  $site_array = array();
  
   $categories_tmp_raw = tep_db_query($categories_query_raw);
   while ($category_info = tep_db_fetch_array($categories_tmp_raw)) {
     $cid_array[] = $category_info['categories_id']; 
+    $site_array[] = $category_info['site_id']; 
   }
   foreach ($cid_array as $c_key => $c_value) {
-    if ($_GET['current_cid'] == $c_value) {
+    if ($_GET['current_cid'] == $c_value && $site_array[$c_key] == $_GET['s_site_id']) {
       break; 
     }
   }
@@ -65,21 +101,21 @@ if ($_GET['action'] == 'show_category_info') {
   $page_str = '';
   
   if ($c_key > 0) {
-    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key-1].'\')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key-1].'\',\'\','.$site_array[$c_key-1].')" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
   }
  
   if ($c_key < (count($cid_array) - 1)) {
-    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key+1].'\')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_category_info(\''.$cid_array[$c_key+1].'\',\'\','.$site_array[$c_key+1].')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   }
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
  
-  $category_info_raw = tep_db_query("select cd.categories_name, c.date_added, c.user_added, cd.last_modified, cd.user_last_modified from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = '".$_GET['current_cid']."' and c.categories_id = cd.categories_id and (cd.site_id = '0' or cd.site_id = '".$site_id."') order by cd.site_id desc limit 1");
+  $category_info_raw = tep_db_query("select cd.categories_name_list, c.date_added, c.user_added, cd.last_modified, cd.user_last_modified from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = '".$_GET['current_cid']."' and c.categories_id = cd.categories_id and (cd.site_id = '0' or cd.site_id = '".$site_id."') order by cd.site_id desc limit 1");
   $category_info_res = tep_db_fetch_array($category_info_raw); 
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => $category_info_res['categories_name']);
+  $heading[] = array('align' => 'left', 'text' => $category_info_res['categories_name_list']);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
@@ -92,21 +128,36 @@ if ($_GET['action'] == 'show_category_info') {
     if (!empty($site_id)) {
       if (tep_db_num_rows(tep_db_query("select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$_GET['current_cid']."' and site_id = '".$site_id."'"))) {
         if ($ocertify->npermission >= 15) {
-          $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_category_info(\''.$_GET['current_cid'].'\', \'1\');"').'</a>'; 
+          $button[] = '<a
+            href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,
+                'onclick="delete_category_info(\''.$_GET['current_cid'].'\',
+            \'1\','.$site_id.');"').'</a>'; 
         }
       }
     } else {
       if ($ocertify->npermission >= 15) {
-        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_category_info(\''.$_GET['current_cid'].'\', \'0\');"').'</a>'; 
+        $button[] = '<a
+          href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,
+              'onclick="delete_category_info(\''.$_GET['current_cid'].'\',
+          \'0\','.$site_id.');"').'</a>'; 
       }
     }
   }
+
+  $button[] = '<a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_GET['cPath'].'&cID='.$_GET['current_cid'].'&action=edit_category'.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).'&s_site_id='.$site_id.(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')).'">'.tep_html_element_button(IMAGE_DETAILS, '').'</a>'; 
   
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
   }
   
   $category_info_row = array();
+
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => TEXT_SUBCATEGORIES.'&nbsp;'.tep_childs_in_category_count($_GET['current_cid'])), 
+      );
+  $category_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'colspan="2"', 'text' => TEXT_PRODUCTS.'&nbsp;'.tep_products_in_category_count($_GET['current_cid'])), 
+      );
   
   $category_info_row[]['text'] = array(
         array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($category_info_res['user_added'])?$category_info_res['user_added']:TEXT_UNSET_DATA))), 
@@ -116,15 +167,8 @@ if ($_GET['action'] == 'show_category_info') {
   $category_info_row[]['text'] = array(
         array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;'.((tep_not_null($category_info_res['user_last_modified'])?$category_info_res['user_last_modified']:TEXT_UNSET_DATA))), 
         array('align' => 'left', 'text' => TEXT_LAST_MODIFIED.'&nbsp;'.((tep_not_null(tep_datetime_short($category_info_res['last_modified'])))?tep_datetime_short($category_info_res['last_modified']):TEXT_UNSET_DATA)), 
-      );
-  
-  $category_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'colspan="2"', 'text' => TEXT_SUBCATEGORIES.'&nbsp;'.tep_childs_in_category_count($_GET['current_cid'])), 
-      );
-  $category_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'colspan="2"', 'text' => TEXT_PRODUCTS.'&nbsp;'.tep_products_in_category_count($_GET['current_cid'])), 
-      );
-  
+      ); 
+
   $notice_box->get_heading($heading);
    
   $notice_box->get_contents($category_info_row, $buttons);
@@ -238,9 +282,13 @@ if ($_GET['action'] == 'show_category_info') {
     $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES, 'action=delete_category_confirm&cPath='.$_GET['cPath'].(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:''));
   } else {
     if (isset($_GET['rdirect'])) {
-      $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES, 'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.'&rdirect=all'.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:''));
+      $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES,
+          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.'&rdirect=all'.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : ''));
     } else {
-      $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES, 'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:''));
+      $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES,
+          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : ''));
     }
   }
   
@@ -450,7 +498,7 @@ if ($_GET['action'] == 'show_category_info') {
  -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
-  $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
   $isstaff = true;;
   if ($ocertify->npermission >= 10) {
     $isstaff = false;
@@ -458,57 +506,102 @@ if ($_GET['action'] == 'show_category_info') {
   $pInfo = tep_get_pinfo_by_pid($_GET['pID'], $site_id);
   $cPath = $_GET['cPath'];
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //SITE ID
+  if (isset($_GET['show_type'])&&$_GET['show_type'] == 'one'){
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = "site_id = '".$_GET['site_id']."'"; 
+    }else{
+      $sql_site_where = "site_id=0";
+    }
+  }else{
+    if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
+      $sql_site_where = "site_id in (".str_replace('-', ',', $_GET['site_id']).")"; 
+    } else {
+      $show_list_str = tep_get_setting_site_info('categories.php');
+      $sql_site_where = "site_id in (".$show_list_str.")"; 
+    }
+  }
+
+  //SORT
+  if(isset($_GET['order_sort']) && isset($_GET['order_type'])){
+    if($_GET['order_type'] == 'asc'){
+
+      $order_type = 'asc';
+    }else{
+
+      $order_type = 'desc';
+    }
+
+    $order_sort_str = '';
+    switch($_GET['order_sort']){
+
+      case 'site_romaji':
+         $order_sort_str .= ' s.romaji '.$order_type.',';
+      break;
+      case 'name':
+         $order_sort_str .= ' pd.products_name '.$order_type.',';
+      break;
+      case 'status':
+         $order_sort_str .= ' pd.products_status '.$order_type.',';
+      break;
+      case 'time':
+         $order_sort_str .= ' pd.products_last_modified '.$order_type.',';
+      break;
+      case 'price':
+         $order_sort_str .= ' p.products_price '.$order_type.',';
+      break;
+    } 
+  }
   
   if (isset($_GET['search']) && $_GET['search']) {
     $products_query_raw = "
-      select p.products_id 
-      from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
+      select p.products_id,pd.site_id 
+      from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c,(select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
       where p.products_id = pd.products_id 
         and pd.language_id = '" . $languages_id . "' 
         and p.products_id = p2c.products_id 
-        and pd.products_name like '%" . $_GET['search'] . "%' ";
-    if(isset($_GET['site_id'])&&$_GET['site_id']){
-      $products_query_raw .= " and pd.site_id = '".$_GET['site_id']."' ";
-    }else{
-      $products_query_raw .= " and pd.site_id = 0 "; 
-    }
-    $products_query_raw .= " order by p.sort_order,pd.products_name, p.products_id";
+        and pd.site_id = s.id 
+        and pd.search_info like '%" . $_GET['search'] . "%' ";
+    $products_query_raw .= 'and '.$sql_site_where; 
+    $products_query_raw .= " order by ".$order_sort_str."p.sort_order,pd.products_name, p.products_id";
   } else {
     $products_query_raw = "
-      select * from ( 
       select p.products_id, 
              pd.products_name, 
              pd.site_id, 
-             p.sort_order 
-      from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
+             p.sort_order, 
+             p.products_small_sum 
+      from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c,(select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
       where p.products_id = pd.products_id 
         and pd.language_id = '" . $languages_id . "' 
         and p.products_id = p2c.products_id 
-        and p2c.categories_id = '" . $current_category_id . "'
-        order by site_id DESC
-        ) c where  site_id = ".((isset($_GET['site_id']) && $_GET['site_id'])?$_GET['site_id']:0)." or site_id = 0 
-        group by products_id 
-        order by sort_order, products_name, products_id";
+        and pd.site_id = s.id 
+        and p2c.categories_id = '" . $current_category_id . "' 
+        and ".$sql_site_where." 
+        order by ".$order_sort_str."p.sort_order, pd.products_name, p.products_id";
   }
   $pid_arr = array();
+  $site_arr = array();
   $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
   $products_query = tep_db_query($products_query_raw);
   while($products_row = tep_db_fetch_array($products_query)){
     $pid_arr[] = $products_row['products_id'];
+    $site_arr[] = $products_row['site_id'];
   }
   foreach($pid_arr as $p_key => $p_value){
-    if($_GET['pID'] == $p_value){
+    if($_GET['pID'] == $p_value && $site_arr[$p_key] == $_GET['s_site_id']){
       break;
     }
   }
   $page_str = '';
 
   if($p_key > 0){ 
-    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key - 1].'\', \'\');" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key - 1].'\', \'\','.$site_arr[$p_key - 1].');" href="javascript:void(0);" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp';
   }
   
   if($p_key < count($pid_arr)-1){
-    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key + 1].'\', \'\');" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp';
+    $page_str .= '<a onclick="show_product_info(\''.$pid_arr[$p_key + 1].'\', \'\','.$site_arr[$p_key + 1].');" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp';
   } 
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
@@ -552,7 +645,7 @@ if ($_GET['action'] == 'show_category_info') {
   } else {
     $button[] = '<a href="' . tep_href_link(FILENAME_REVIEWS, 'product_name=' . $pInfo->products_name . '&site_id='.(int)$site_id) .  '">'.tep_html_element_button(IMAGE_REVIEWS).'</a>';
   }
-  if (empty($_GET['site_id'])) {
+  if (empty($_GET['s_site_id'])) {
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save_product" onclick="check_single_product_price(\''.$pInfo->products_id.'\', \''.$ocertify->npermission.'\', \'3\')"').'</a>'; 
   }
   
@@ -564,12 +657,16 @@ if ($_GET['action'] == 'show_category_info') {
   
   if ($pInfo->products_bflag == 1) {
     $product_tmp_price = array(
-        'price' => tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum, $pInfo->products_bflag),
+        'price' => tep_get_price($pInfo->products_price,
+          $pInfo->products_price_offset, $pInfo->products_small_sum,
+          $pInfo->products_bflag,$pInfo->price_type),
         'sprice' => tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)
         );
   } else {
     $product_tmp_price = array(
-        'price' => tep_get_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum),
+        'price' => tep_get_price($pInfo->products_price,
+          $pInfo->products_price_offset,
+          $pInfo->products_small_sum,$pInfo->price_type),
         'sprice' => tep_get_special_price($pInfo->products_price, $pInfo->products_price_offset, $pInfo->products_small_sum)
         );
   }
@@ -630,7 +727,7 @@ if ($_GET['action'] == 'show_category_info') {
   
   $arr_td_product[] = $pInfo->products_name;
   
-  $arr_td_product[] = (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['site_id'])?number_format((int)$pInfo->products_price, 0, '.', ',').  '&rarr;':'') .((!empty($_GET['site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',','):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT;
+  $arr_td_product[] = (($product_tmp_price['sprice'])?'<s>'.$currencies->format($product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['s_site_id'])?number_format((int)$pInfo->products_price, 0, '.', ',').  '&rarr;':'') .((!empty($_GET['s_site_id']))?number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',','):tep_draw_input_field('products_price', number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"')) . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT;
   
   $arr_td_product[] = number_format($pInfo->products_price_offset).'&nbsp;&nbsp;&nbsp;&nbsp;';
   
@@ -639,8 +736,8 @@ if ($_GET['action'] == 'show_category_info') {
     $product_td_avg_price = @display_price(tep_new_get_avg_by_pid($pInfo)).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT;
   }
   //判断汇率 是否是空 0 或者1 如果不是 显示两个商品数量
-  if (isset($pInfo->products_attention_1_3)) {
-    $radices = (int)$pInfo->products_attention_1_3;
+  if (isset($pInfo->products_exchange_rate)) {
+    $radices = (int)$pInfo->products_exchange_rate;
   } else {
     $radices = 1;
   }
@@ -649,31 +746,31 @@ if ($_GET['action'] == 'show_category_info') {
   $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
   $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,number_format($product_row_count));
   if($radices!=''&&$radices!=1&&$radices!=0){
-    $product_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
-    $product_td_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $product_td_real_quantity = (empty($_GET['s_site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $product_td_quantity = (empty($_GET['s_site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $product_td_real_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
-    $product_td_quantity = (empty($_GET['site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .((!empty($_GET['site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $product_td_real_quantity = (empty($_GET['s_site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $product_td_quantity = (empty($_GET['s_site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .((!empty($_GET['s_site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
-  $arr_td_product[] = (empty($_GET['site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
+  $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
 
   
   if(empty($site_id)) {
     $max_inventory_num = $max_inventory_num < 0 ? 0 : $max_inventory_num;
     $min_inventory_num = $min_inventory_num < 0 ? 0 : $min_inventory_num;
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
-    $arr_td_product[] = (empty($_GET['site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
   }
   $inventory['max'] = $max_inventory_num;
   $inventory['min'] = $min_inventory_num;
 
   $arr_td_product[] = number_format($pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('inventory_max',$inventory['max']).tep_draw_hidden_field('inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
   if($radices!=''){
-    $arr_td_product[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($pInfo->products_attention_1_3)).'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $arr_td_product[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($pInfo->products_exchange_rate)).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $arr_td_product[] = $pInfo->products_attention_1_3;
+    $arr_td_product[] = $pInfo->products_exchange_rate;
   }
   
   $relate_exists_single = false;
@@ -691,12 +788,16 @@ if ($_GET['action'] == 'show_category_info') {
     
     if ($relate_pInfo->products_bflag == 1) {
       $relate_product_tmp_price = array(
-        'price' => tep_get_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum, $relate_pInfo->products_bflag),
+        'price' => tep_get_price($relate_pInfo->products_price,
+          $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum,
+          $relate_pInfo->products_bflag,$relate_pInfo->price_type),
         'sprice' => tep_get_special_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum)
         );
     } else {
       $relate_product_tmp_price = array(
-          'price' => tep_get_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum),
+          'price' => tep_get_price($relate_pInfo->products_price,
+            $relate_pInfo->products_price_offset,
+            $relate_pInfo->products_small_sum,$relate_pInfo->price_type),
           'sprice' => tep_get_special_price($relate_pInfo->products_price, $relate_pInfo->products_price_offset, $relate_pInfo->products_small_sum)
           );
     }
@@ -727,7 +828,7 @@ if ($_GET['action'] == 'show_category_info') {
     
     $arr_td_relate[] = $relate_pInfo->products_name;
     
-    $arr_td_relate[] = tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['site_id'])?number_format((int)$relate_pInfo->products_price,0,'.',',').'&rarr;':'').((!empty($_GET['site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',','):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT;
+    $arr_td_relate[] = tep_draw_hidden_field('relate_products_id', $relate_pInfo->products_id).(($relate_product_tmp_price['sprice'])?'<s>'.$currencies->format($relate_product_tmp_price['price']).'</s>&nbsp;&nbsp;':'').(empty($_GET['s_site_id'])?number_format((int)$relate_pInfo->products_price,0,'.',',').'&rarr;':'').((!empty($_GET['s_site_id']))?number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',','):tep_draw_input_field('relate_products_price', number_format(abs($relate_pInfo->products_price)?abs($relate_pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" id="r_price"')) . '&nbsp;' .  CATEGORY_MONEY_UNIT_TEXT;
     
     $arr_td_relate[] =  number_format($relate_pInfo->products_price_offset).'&nbsp;&nbsp;&nbsp;&nbsp;';
     
@@ -736,8 +837,8 @@ if ($_GET['action'] == 'show_category_info') {
       $relate_td_avg_price = @display_price(tep_new_get_avg_by_pid($relate_pInfo)).'&nbsp;'.CATEGORY_MONEY_UNIT_TEXT;
     }
 
-  if (isset($relate_pInfo->products_attention_1_3)) {
-    $relate_radices = (int)$relate_pInfo->products_attention_1_3;
+  if (isset($relate_pInfo->products_exchange_rate)) {
+    $relate_radices = (int)$relate_pInfo->products_exchange_rate;
   } else {
     $relate_radices = 1;
   }
@@ -747,31 +848,31 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,number_format($relate_row_count));
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
-    $relate_td_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" id="relate_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $relate_td_real_quantity = (empty($_GET['s_site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $relate_td_quantity = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" id="relate_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $relate_td_real_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
-    $relate_td_quantity = (empty($_GET['site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
+    $relate_td_real_quantity = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $relate_td_quantity = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
-    $arr_td_relate[] = (empty($_GET['site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
+    $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
     
 
     if(empty($site_id)){  
       $max_inventory_num = $max_inventory_num < 0 ? 0 : $max_inventory_num;
       $min_inventory_num = $min_inventory_num < 0 ? 0 : $min_inventory_num;
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
-      $arr_td_relate[] = (empty($_GET['site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
     }
     $inventory['max'] = $max_inventory_num;
     $inventory['min'] = $min_inventory_num;
     
     $arr_td_relate[] =  number_format($relate_pInfo->average_rating,2).'%'.((!empty($site_id) || $isstaff)?tep_draw_hidden_field('relate_inventory_max',$inventory['max']).tep_draw_hidden_field('relate_inventory_min',$inventory['min']):'').'&nbsp;&nbsp;&nbsp;&nbsp;';
     if($relate_radices!=''){
-      $arr_td_relate[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($relate_pInfo->products_attention_1_3)).'&nbsp;&nbsp;&nbsp;&nbsp;';
+      $arr_td_relate[] = sprintf(TEXT_RADICES_PRODUCT_INFO, number_format($relate_pInfo->products_exchange_rate)).'&nbsp;&nbsp;&nbsp;&nbsp;';
     }else{
-      $arr_td_relate[] = $relate_pInfo->products_attention_1_3;
+      $arr_td_relate[] = $relate_pInfo->products_exchange_rate;
     }
 
   }
@@ -967,9 +1068,13 @@ if ($_GET['action'] == 'show_category_info') {
   $contents[]['text'] = array(
         array('params' => 'colspan="2"', 'text' => $data_info_str), 
       );
-  if (empty($_GET['site_id'])) {
+  if (empty($_GET['s_site_id'])) {
     $form_action = 'simple_update_product';
-    $form_str = tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'] .  '&pID=' .  $_GET['pID'] . '&page='.$_GET['page'].  '&action=' .  $form_action.($_GET['search']?'&search='.  $_GET['search']:'').(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'&site_id=0'), 'post', '');
+    $form_str = tep_draw_form($form_action, FILENAME_CATEGORIES, 'cPath=' .
+        $_GET['cPath'] .  '&pID=' .  $_GET['pID'] . '&page='.$_GET['page'].
+        '&action=' .  $form_action.($_GET['search']?'&search='.
+          $_GET['search']:'').(!empty($_GET['site_id'])?'&site_id='.$_GET['site_id']:'&site_id=0').(!empty($_GET['s_site_id'])?'&s_site_id='.$_GET['s_site_id']:'&s_site_id=0').(isset($_GET['show_type'])
+            ? '&show_type='.$_GET['show_type'] : ''), 'post', '');
     $notice_box->get_form($form_str);
   }
   
@@ -1091,9 +1196,17 @@ if ($_GET['action'] == 'show_category_info') {
         array('text' => '<br>' . $pInfo->products_name) 
       );
   if (isset($_GET['rdirect'])) {
-    $form_str = tep_draw_form('delete_product', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' .  $cPath.'&rdirect=all'.$d_page.($_GET['search']?'&search='.$_GET['search']:''), 'post');
+    $form_str = tep_draw_form('delete_product', FILENAME_CATEGORIES,
+        'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] .
+        '&pID=' . $_GET['pID'] . '&cPath=' .
+        $cPath.'&rdirect=all'.$d_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+          ? '&s_site_id='.$_GET['s_site_id'] : ''), 'post');
   } else {
-    $form_str = tep_draw_form('delete_product', FILENAME_CATEGORIES, 'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] . '&pID=' . $_GET['pID'] . '&cPath=' .  $cPath.$d_page.($_GET['search']?'&search='.$_GET['search']:''), 'post');
+    $form_str = tep_draw_form('delete_product', FILENAME_CATEGORIES,
+        'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] .
+        '&pID=' . $_GET['pID'] . '&cPath=' .
+        $cPath.$d_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+          ? '&s_site_id='.$_GET['s_site_id'] : ''), 'post');
   }
   
   $notice_box->get_form($form_str);
@@ -3230,14 +3343,8 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
     }else{
       $str_disabled = '';
     }
-    $products_query = tep_db_query("
-            select products_image 
-            from " . TABLE_PRODUCTS_DESCRIPTION . " 
-            where products_id = '" . $reviews['products_id'] . "' order by site_id
-            desc limit 1
-        ");
-    $products = tep_db_fetch_array($products_query);
-
+    $img_array = tep_products_images($reviews['products_id'],$reviews['site_id']);
+  
     $products_name_query = tep_db_query("
         select *
         from " . TABLE_PRODUCTS_DESCRIPTION . " 
@@ -8078,12 +8185,14 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']<0){
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  	$heading[] = array('text' => NEW_MESSAGES);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
-	tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	if($_GET['messages_sta'] != 'sent'){
+		tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	}
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => $_GET['sender_name'].MESSAGES_SENDER);
-	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  } 
  $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
@@ -8103,13 +8212,38 @@ $banner_query = tep_db_query("
  $sql_for_all_users = 'select userid, name from users';
  $sql_for_all_users_query = tep_db_query($sql_for_all_users);
  $all_user_to_td = '';
+   if($_GET['messages_sta'] == 'sent' && $_GET['latest_messages_id'] >= 0){
+	if($_GET['recipient_name'] == 'ALL'){
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+			$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+		}
+	}else{
+		$recipient_name_all = explode(';',$_GET['recipient_name']);
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+			$n_flag = 0;
+			foreach($recipient_name_all as $value){
+				if($message_all_users['name'] == $value){
+					$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+					$n_flag = 1;
+					break;
+				}
+			}
+			if($n_flag == 1){
+				continue;
+			}else{
+				$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+			}
+		}
+	}
+   }else{
 	while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 		if($_GET['latest_messages_id']>0&&$message_all_users['userid'] == $_GET['sender_id']){
-			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
 			continue;
 		}
-		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
-	} 
+		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
+	}
+   } 
  $messages_choose_table = '
 <div width="100%" id="select_user"><table width="100%">
 	<tr>

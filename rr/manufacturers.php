@@ -89,11 +89,24 @@ while ($manufacturer = tep_db_fetch_array($manufacturer_query)){
       $products['products_description'] = tep_get_products_description($products['products_id']);
        if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
          $products_price = '<s>' .
-           $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), tep_get_tax_rate($products['products_tax_class_id'])) . '</s> <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</span>';
+           $currencies->display_price(tep_get_price($products['products_price'],
+                 $products['products_price_offset'],
+                 $products['products_small_sum'], $products['products_bflag'],
+                 $products['price_type']), tep_get_tax_rate($products['products_tax_class_id'])) . '</s> <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), tep_get_tax_rate($products['products_tax_class_id'])) . '</span>';
        } else {
-         $products_price = $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), tep_get_tax_rate($products['products_tax_class_id']));
+         $products_price =
+           $currencies->display_price(tep_get_price($products['products_price'],
+                 $products['products_price_offset'],
+                 $products['products_small_sum'], $products['products_bflag'],
+                 $products['price_type']), tep_get_tax_rate($products['products_tax_class_id']));
        }
-      echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $products['products_id']) . '">'.tep_image(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'</td>'."\n";
+       //获取商品图片
+       $img_array =
+         tep_products_images($products['products_id'],$products['site_id']);
+      echo '<td align="center" valign="top" class="smallText" width="30%"><a href="'
+        . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
+            $products['products_id']) .
+        '">'.tep_image(DIR_WS_IMAGES.'products/'.$img_array[0],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'</td>'."\n";
     }
     echo '        </tr>' . "\n";
     echo '      </table>' . "\n";

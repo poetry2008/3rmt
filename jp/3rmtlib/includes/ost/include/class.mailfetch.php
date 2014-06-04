@@ -343,6 +343,16 @@ class MailFetcher {
 
     $errors=array();
     if(!$ticket) {
+      $error_subject = 'OSTメール取得 エラー';
+      $error_msg ='エラーコード：800006';
+      $error_msg .= 'エラー発生時間： '.date('Y-m-d H:i:s',time())."\n";
+      $error_msg .= 'エラーメールタイプ： MESSAGE'."\n";
+      $error_msg .= 'エラーメール番号： '.$cemail_info['row']."\n";
+      $error_msg .= 'エラーメール内容： '."\n";
+      $error_msg .= $error_msg_tmp;
+      $error_headers = "From: ".$cemail_info['email'] ."<".$cemail_info['email'].">"; 
+//      mail('alexjpoffice@gmail.com',$error_subject,$error_msg,$error_headers);
+//      mail($cemail_info['email'],$error_subject,$error_msg,$error_headers);
       if(!($ticket=Ticket::create($var,$errors,'Email')) || $errors){
         $error_subject = 'OSTメール取得 エラー';
         $error_msg ='エラーコード：800006';

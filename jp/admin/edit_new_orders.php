@@ -986,17 +986,10 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
             $_product_info_query = tep_db_query("
                 select p.products_id, 
                 pd.products_name, 
-                p.products_attention_1,
-                p.products_attention_2,
-                p.products_attention_3,
-                p.products_attention_4,
                 p.products_attention_5,
                 pd.products_description, 
                 p.products_model, 
                 p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                pd.products_image,
-                pd.products_image2,
-                pd.products_image3, 
                 pd.products_url, 
                 p.products_price, 
                 p.products_tax_class_id, 
@@ -1014,7 +1007,6 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
                   and pd.site_id = '0'
                   and pd.language_id = '" . $languages_id . "'");
             $product_info = tep_db_fetch_array($_product_info_query);
-            $data1 = explode("//", $product_info['products_attention_1']);
 
             $pcount_email = '';
             if(isset($order->products[$i]['rate'])
@@ -1722,7 +1714,8 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                    pd.products_name, 
                    p.products_tax_class_id, 
                    p.products_small_sum,
-                   p.products_price_offset
+                   p.products_price_offset,
+                   p.price_type
                      from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
                      where p.products_id='$add_product_products_id' 
                      and pd.site_id = '0'
@@ -1733,7 +1726,9 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
           extract($row, EXTR_PREFIX_ALL, "p");
 
           // 适用于特价
-          $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
+          $p_products_price = tep_get_final_price($p_products_price,
+              $p_products_price_offset, $p_products_small_sum,
+              (int)$add_product_quantity,$p_price_type);
           // Following functions are defined at the bottom of this file
           $CountryID = tep_get_country_id($order->delivery["country"]);
           $ZoneID = tep_get_zone_id($CountryID, $order->delivery["state"]);

@@ -58,10 +58,12 @@
       echo '<table><tr><td colspan="3"><table><tr><td>';
       
       echo tep_draw_hidden_field('unit_price_' . $products[$i]['id'], $product_info['products_price'], 'id="unit_price_'.$products[$i]['id'].'"');
+      $product_info['products_small_sum'] = $product_info['price_type'] == 1 ?
+        $product_info['products_small_sum'] : '';
       echo tep_draw_hidden_field('small_sum_' . $products[$i]['id'], $product_info['products_small_sum'], ' id="small_sum_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
       $origin_small = ''; 
-      if (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id'])) {
+      if (!empty($product_info['products_exchange_rate']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id'])) {
         $origin_small = tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']); 
       }
       if(in_array($products[$i]['id'],$check_products_option)){
@@ -86,20 +88,20 @@
       echo '</td>';
       echo '<td><div class="top_and_bottom">';
       if(!in_array($products[$i]['id'],$check_products_option)){
-        echo '<a onclick="change_num(\''.$p_id.'\',\'up\',1,'. $p_a_quan.',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
-        echo '<a onclick="change_num(\''.$p_id.'\',\'down\',1,'. $p_a_quan.',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
+        echo '<a onclick="change_num(\''.$p_id.'\',\'up\',1,'. $p_a_quan.',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" alt="up" style="vertical-align:bottom;"></a>';
+        echo '<a onclick="change_num(\''.$p_id.'\',\'down\',1,'. $p_a_quan.',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" alt="down" style="vertical-align:top;"></a>';
       }else{
 
-        echo '<div style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></div>';
-        echo '<div style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></div>';
+        echo '<div style="display:block"><img src="images/nup.gif" alt="up" style="vertical-align:bottom;"></div>';
+        echo '<div style="display:block"><img src="images/ndown.gif" alt="down" style="vertical-align:top;"></div>';
       }
       echo '</div></td><td>';
       echo ' <font style="font-size:10px">'.NUM_UNIT_TEXT.'</font>';
       echo '</td></tr></table></td></tr><tr><td colspan="3" width="90">';
-      echo (!empty($product_info['products_attention_1_3']) &&
+      echo (!empty($product_info['products_exchange_rate']) &&
           tep_get_full_count_in_order2($products[$i]['quantity'],
             $products[$i]['id']) ? '<span id="one_price_show_'.$products[$i]['id'].'" style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '')  . "\n";
-      echo (!empty($product_info['products_attention_1_3']) &&
+      echo (!empty($product_info['products_exchange_rate']) &&
           tep_get_full_count_in_order2($products[$i]['quantity'],
             $products[$i]['id']) ? '<span id= "one_price_'.$products[$i]['id'].'"
           style="display:none">'.
@@ -108,32 +110,26 @@
       echo '</td></tr></table>';
       echo  '</td>' . "\n";
     } else {
-      echo '    <td align="center" class ="main" style="
-        background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . NUM_UNIT_TEXT;
-      echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true),
-            $products[$i]['id']) ? '<span style="font-size:10px">'.  tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) .'</span>' : '');
+      echo '    <td align="center" class ="main" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . NUM_UNIT_TEXT;
+      echo (!empty($product_info['products_exchange_rate']) && tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) ? '<span style="font-size:10px">'.  tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
     }
 
     //image
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       echo '<td align="center" valign="middle">';
-      if (!empty($product_info['products_image']))
-      {
-        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'],
-            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
-      }
-      else if (!empty($product_info['products_image2']))
-      {
-        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image2'],
-            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
-      }
-      else if (!empty($product_info['products_image3']))
-      {
-        echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image3'],
-            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT);
-      }
+      //获取商品的图片
+      $img_array =
+        tep_products_images($product_info['products_id'],$product_info['site_id']);
+      foreach($img_array as $img_value){
 
+        if($img_value != ''){
+          echo tep_image(DIR_WS_IMAGES . 'products/' .
+            $img_value,
+            $product_info['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT); 
+          break;
+        }
+      }
       echo '</td>';
     }
 // Model

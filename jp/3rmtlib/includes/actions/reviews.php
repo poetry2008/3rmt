@@ -21,7 +21,6 @@
            p.products_id, 
            pd.products_name, 
            pd.products_status, 
-           pd.products_image, 
            r.customers_name,
            pd.site_id as psid
     from " . TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -49,7 +48,6 @@
                              'products_id'    => $reviews['products_id'],
                              'reviews_id'     => $reviews['reviews_id'],
                              'products_name'  => $reviews['products_name'],
-                             'products_image' => $reviews['products_image'],
                              'authors_name'   => tep_output_string_protected($reviews['customers_name']),
                              'review'         => tep_output_string_protected(mb_substr($reviews['reviews_text'], 0, 250)) . '..',
                              'rating'         => $reviews['reviews_rating'],

@@ -3,7 +3,7 @@
   $Id$
 */
 
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
   error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 // ddos start 
 require(DIR_WS_FUNCTIONS . 'dos.php');
@@ -60,17 +60,17 @@ $source_host = $_SERVER['HTTP_HOST'];
 // config time 
 $unit_time = 3;
 // confi total
-$unit_total = 1500000;
+$unit_total = 15;
 
 // config time 
 $unit_min_time = 1;
 // confi total
-$unit_min_total = 1200000;
+$unit_min_total = 120;
 
 // config time 
 $unit_hour_time = 1;
 // confi total
-$unit_hour_total = 600000;
+$unit_hour_total = 600;
 
 
 // connect db
@@ -282,7 +282,6 @@ if ($pdo_con) {
   define('FILENAME_NON_MEMBER_AUTH','non-member_auth.php');
   define('FILENAME_NON_PREORDER_AUTH','non-preorder_auth.php');
 // define the database table names used in the project
-  define('TABLE_CONFIGURATION_META', 'configuration_meta');
   define('TABLE_CUSTOMERS_EXIT_HISTORY', 'customers_exit_history');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
@@ -339,6 +338,7 @@ if ($pdo_con) {
   define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
   define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
+  define('TABLE_PRODUCTS_IMAGES', 'products_images');
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_COUNTRY_AREA','country_area');
   define('TABLE_COUNTRY_CITY','country_city');
@@ -393,15 +393,6 @@ if ($pdo_con) {
     define($configuration['cfgKey'], $configuration['cfgValue']);
       }
   } 
-
-  $configuration_meta_list_raw = tep_db_query("select * from ".TABLE_CONFIGURATION_META." where site_id = '".SITE_ID."'");
-  while ($configuration_meta_list_res = tep_db_fetch_array($configuration_meta_list_raw)) {
-     define($configuration_meta_list_res['key_info'].'_TITLE', $configuration_meta_list_res['meta_title']); 
-     define($configuration_meta_list_res['key_info'].'_KEYWORDS', $configuration_meta_list_res['meta_keywords']); 
-     define($configuration_meta_list_res['key_info'].'_DESCRIPTION', $configuration_meta_list_res['meta_description']); 
-     define($configuration_meta_list_res['key_info'].'_ROBOTS', $configuration_meta_list_res['meta_robots']); 
-     define($configuration_meta_list_res['key_info'].'_COPYRIGHT', $configuration_meta_list_res['meta_copyright']); 
-  }
 // if gzip_compression is enabled, start to buffer the output
   if ( (GZIP_COMPRESSION == 'true') && ($ext_zlib_loaded = extension_loaded('zlib')) && (PHP_VERSION >= '4') ) {
     if (($ini_zlib_output_compression = (int)ini_get('zlib.output_compression')) < 1) {
@@ -615,7 +606,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
 
   if(tep_session_is_registered('customer_id')){
     $flag_customer_info = tep_is_customer_by_id($customer_id);
-    if(!$flag_customer_info || strtolower($flag_customer_info['customers_email_address']) != strtolower($_SESSION['customer_emailaddress'])){
+    if(!$flag_customer_info || (isset($_SESSION['customer_emailaddress'])&& strtolower($flag_customer_info['customers_email_address']) != strtolower($_SESSION['customer_emailaddress']))){
       tep_logoff_user();
       $cart->reset();
       tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));

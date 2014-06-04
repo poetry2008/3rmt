@@ -245,6 +245,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
   define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
+  define('TABLE_PRODUCTS_IMAGES', 'products_images');
   define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
   define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
   define('TABLE_PRODUCTS_DESCRIPTION', 'products_description');

@@ -143,9 +143,6 @@ while ($tag = tep_db_fetch_array($tags_query))
         select p.products_id,
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                p.products_model,
-               pd.products_image,
-               pd.products_image2,
-               pd.products_image3,
                p.products_price,
                p.products_price_offset,
                p.products_date_added,
@@ -177,14 +174,17 @@ while ($tag = tep_db_fetch_array($tags_query))
       /*根据products_id 查找商品的详细 信息*/
       $_products_query = tep_db_query($_products_sql);
       $products = tep_db_fetch_array($_products_query);
+      //获取商品图片
+      $img_array = 
+        tep_products_images($products['products_id'],$products['site_id']);
       if($products['products_status'] != 3 && $products['products_status'] != 0){
       echo '<td align="center" valign="top" class="smallText" width="20%" style="padding-bottom:8px;">';
                         echo '<a href="' .
                           tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.  $products['products_id']) . '">';
             echo '<div>';
-                        if ($products['products_image'])
+                        if ($img_array[0])
                         {
-                          echo tep_image(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
+                          echo tep_image(DIR_WS_IMAGES.'products/'.$img_array[0],$products['products_name'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"');
                         }
                         else
                         {
@@ -193,9 +193,15 @@ while ($tag = tep_db_fetch_array($tags_query))
             echo '</div>';
                           echo '<br>' .$products['products_name'] . '</a><br>';
       if (tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'])) {
-        echo '<s>' .  $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'],$products['products_bflag']), 0) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</span>&nbsp;';
+        echo '<s>' .
+          $currencies->display_price(tep_get_price($products['products_price'],
+                $products['products_price_offset'],
+                $products['products_small_sum'],$products['products_bflag'],
+                $products['price_type']), 0) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum']), 0) . '</span>&nbsp;';
       } else {
-        echo $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), 0);
+        echo $currencies->display_price(tep_get_price($products['products_price'],
+              $products['products_price_offset'], $products['products_small_sum'],
+              $products['products_bflag'], $products['price_type']), 0);
       }
                           echo '</td>'."\n";
                           if($z==0){

@@ -182,7 +182,7 @@ if ($category_depth == 'nested') {
     $_categories = tep_get_category_by_id($categories_path[0], SITE_ID, $languages_id);
     echo $_categories['categories_name'];
   } else {
-    echo MANUFACTURERS_UPPER_TITTLE;
+    echo 'RMT：ゲーム通貨・アイテム・アカウント';
   }
 ?></h2>
     <?php 
@@ -207,7 +207,7 @@ if ($category_depth == 'nested') {
       if (isset($_GET['cPath'])) {
         $new_products_category_id = $current_category_id; 
         if (!$has_ca_single) {
-          include(DIR_WS_MODULES . 'new_products4.php'); 
+          include(DIR_WS_MODULES . 'new_products3.php'); 
         } else {
           include(DIR_WS_MODULES . 'new_products4.php'); 
         }
@@ -216,22 +216,25 @@ if ($category_depth == 'nested') {
   <?php
     if (isset($cPath_array)) {
       if ($seo_category['seo_description']) {
-        echo '<h2 class="pageHeading">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).TEXT_ABOUT.'</h2>'; 
+        echo '<h2 class="pageHeading">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</h2>'; 
         echo '<div class="comment"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</font></p></div></div></div>'; 
         }
         if (!empty($seo_category['text_information'])) {
-          echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value.'<br>';
         }
+        echo '<p class="pageBottom"></p>'; 
       }
+    }
      ?>
       </td> 
 <?php
 } elseif(isset($_GET['colors']) && !empty($_GET['colors'])) {
   // 根绝颜色color_id取得商品列表
   require(DIR_WS_ACTIONS.'index_colors.php');
-
-} elseif($_GET['action'] && $_GET['action'] == 'select') { 
-  require(DIR_WS_ACTIONS.'index_select.php');
 
 } else {
   // 默认显示首页
@@ -295,8 +298,8 @@ $update_url = tep_get_popup_url();
 ?>
 </div>
 <div align="center" class="popup_notice_button">
-<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="<?php echo TEXT_INDEX_PWD_NOCHANGE;?>" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
-<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="<?php echo TEXT_INDEX_PWD_CHANGED;?>" src="images/design/change.gif"></a>
+<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="変更しません" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="変更します" src="images/design/change.gif"></a>
 </div>
 </div>
 <?php
@@ -313,4 +316,4 @@ $update_url = tep_get_popup_url();
 </div>
 </body>
 </html>
-<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php');?> 

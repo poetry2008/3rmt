@@ -1628,7 +1628,8 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
                  pd.products_name, 
                  p.products_tax_class_id, 
                  p.products_small_sum,
-                 p.products_price_offset
+                 p.products_price_offset,
+                 p.price_type
                    from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
                    where p.products_id='$add_product_products_id' 
                    and pd.site_id = '0'
@@ -1638,7 +1639,9 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
         $row = tep_db_fetch_array($result);
         extract($row, EXTR_PREFIX_ALL, "p");
 
-        $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
+        $p_products_price = tep_get_final_price($p_products_price,
+            $p_products_price_offset, $p_products_small_sum,
+            (int)$add_product_quantity,$p_price_type);
 
         // Following functions are defined at the bottom of this file
         $CountryID = tep_get_country_id($order->delivery["country"]);
@@ -4659,7 +4662,7 @@ if($index_num > 0){
   print "<table>";
   print '<tr>';
   print '<td width="150">';
-  print ADDPRODUCT_TEXT_CATEGORY_SELECTION; 
+  print ADDPRODUCT_TEXT_STEP1;
   print '</td>';
   print '<td>';
   echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
@@ -4684,7 +4687,7 @@ if($index_num > 0){
     print "<form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>";
     print "<table>";
     print "<tr><td width='150'>";
-    print ADDPRODUCT_TEXT_PRODUCT_SELECTION."</td>"; 
+    print ADDPRODUCT_TEXT_STEP2."</td>";
     print "<td>";
     print "<select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
     $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";

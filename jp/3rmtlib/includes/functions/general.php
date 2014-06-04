@@ -1676,10 +1676,10 @@ function forward404Unless($condition)
   function tep_get_full_count_in_order2($cnt, $pid,$flag=false){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
     if($flag){
-      return number_format($p['products_attention_1_3']);
+      return number_format($p['products_exchange_rate']);
     }else{
     return 
-    number_format($p['products_attention_1_3'] * $cnt);
+    number_format($p['products_exchange_rate'] * $cnt);
     }
   }
   
@@ -1982,18 +1982,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
          if (isset($cPath_array)) {
             if (isset($cPath) && tep_not_null($cPath)) {
-              switch(SITE_ID) {
-                case '3':
-                  $title       = $seo_category['categories_name'] . 'と言えば'.STORE_NAME.'｜' . (tep_not_null($seo_category['categories_meta_text']) ? $seo_category['categories_meta_text'] : C_TITLE); 
-                  break;
-                case '2':
-                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' .  $seo_category['categories_meta_text'] . '｜激安の'.STORE_NAME : C_TITLE); 
-                  break;
-                case '1':
-                default:
-                  $title       = $seo_category['categories_name'] . (tep_not_null($seo_category['categories_meta_text']) ? '-' . $seo_category['categories_meta_text'] . '専門の' . TITLE : C_TITLE);
-                  break;
-              }
+              $title       = $seo_category['meta_title']; 
               $keywords    = $seo_category['meta_keywords'];
               $description = $seo_category['meta_description'];
             }
@@ -2883,7 +2872,8 @@ function tep_unlink_temp_dir($dir)
                cd.categories_footer_text,
                cd.text_information,
                cd.meta_keywords,
-               cd.meta_description
+               cd.meta_description,
+               cd.meta_title
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
         where c.categories_id = '" . $cid. "' 
           and cd.categories_id = '" . $cid. "' 
@@ -2917,9 +2907,6 @@ function tep_unlink_temp_dir($dir)
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_model, 
-               pd.products_image, 
-               pd.products_image2, 
-               pd.products_image3, 
                p.products_price, 
                p.products_price_offset,
                p.products_date_added, 
@@ -2933,16 +2920,8 @@ function tep_unlink_temp_dir($dir)
                p.products_cflag,
                p.products_small_sum,
                p.option_type,
-         p.products_attention_1,
-               p.products_attention_1_1,
-                p.products_attention_1_2,
-                p.products_attention_1_3,
-                p.products_attention_1_4, 
-               p.products_attention_2, 
-               p.products_attention_3, 
-               p.products_attention_4, 
+                p.products_exchange_rate,
                p.products_attention_5, 
-               p.products_cart_image,
                p.products_cartorder,
                p.products_cartflag,
                p.belong_to_option,
@@ -2954,7 +2933,10 @@ function tep_unlink_temp_dir($dir)
                pd.romaji, 
                pd.products_url,
                pd.products_viewed,
-               pd.preorder_status
+               pd.preorder_status,
+               p.products_info_top,
+               p.products_info_under,
+               p.price_type
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_id = '" .  $pid . "'" . " 
@@ -2980,9 +2962,6 @@ function tep_unlink_temp_dir($dir)
                p.products_real_quantity, 
                p.products_virtual_quantity, 
                p.products_model, 
-               pd.products_image, 
-               pd.products_image2, 
-               pd.products_image3, 
                p.products_price, 
                p.products_price_offset,
                p.products_date_added, 
@@ -2996,14 +2975,7 @@ function tep_unlink_temp_dir($dir)
                p.products_cflag,
                p.products_small_sum,
                p.option_type,
-               p.products_attention_1_1,
-               p.products_attention_1_2,
-               p.products_attention_1_3,
-               p.products_attention_1_4,
-         p.products_attention_1,
-               p.products_attention_2, 
-               p.products_attention_3, 
-               p.products_attention_4, 
+               p.products_exchange_rate,
                p.products_attention_5, 
                pd.language_id,
                pd.products_name, 
@@ -3013,7 +2985,9 @@ function tep_unlink_temp_dir($dir)
                pd.option_image_type, 
                pd.products_url,
                pd.products_viewed,
-               pd.preorder_status
+               pd.preorder_status,
+               p.products_info_top,
+               p.products_info_under
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_status != '0' 
@@ -3286,8 +3260,8 @@ function tep_get_special_price($price, $offset, $sum = '') {
     参数: $bflag(int) 是否为买取 
     返回值: 商品的价格(float) 
 ------------------------------------ */
-function tep_get_price ($price, $offset, $sum = '', $bflag = 0) {
-  if ($price && $sum) {
+function tep_get_price ($price, $offset, $sum = '', $bflag = 0, $price_type = 1) {
+  if ($price && $sum && $price_type == 1) {
     $hprice = $price;
     foreach (tep_get_wari_array_by_sum($sum) as $p) {
       if ($p + $price > $hprice) {
@@ -3295,7 +3269,7 @@ function tep_get_price ($price, $offset, $sum = '', $bflag = 0) {
       }
     }
     return $hprice;
-  } else if ($price && $offset && $offset != 0) {
+  } else if ($price && $offset && $offset != 0 && $price_type == 0) {
     return calculate_special_price($price, $offset, $bflag);
   } else {
     return $price;
@@ -3310,8 +3284,8 @@ function tep_get_price ($price, $offset, $sum = '', $bflag = 0) {
     参数: $quantity(int) 数量 
     返回值: 商品的最终价格(float) 
 ------------------------------------ */
-function tep_get_final_price($price, $offset, $sum, $quantity) {
-  if ($price && $sum) {
+function tep_get_final_price($price, $offset, $sum, $quantity, $price_type=1) {
+  if ($price && $sum && $price_type == 1) {
     $lprice = $price;
     $lq = null;
     $wari_array = tep_get_wari_array_by_sum($sum);
@@ -3339,12 +3313,12 @@ function tep_get_products_price ($products_id) {
   $product = tep_db_fetch_array($product_query);
   if ($product['products_bflag'] == 1) {
     return array(
-      'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $product['products_bflag']),
+      'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $product['products_bflag'], $product['price_type']),
       'sprice' => tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'])
     );
   } else {
     return array(
-      'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum']),
+      'price' => tep_get_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'], $product['price_type']),
       'sprice' => tep_get_special_price($product['products_price'], $product['products_price_offset'], $product['products_small_sum'])
     );
   }
@@ -4229,9 +4203,9 @@ function tep_get_cart_other_products($pid, $cid_arr){
       $ret .= intval(substr($str,-3));
     }
     if(intval($str) >= 1000){
-      return $ret.'（'.number_format($str2).'）';
+      return '&nbsp;&nbsp;'.$ret.'（'.number_format($str2).'）';
     }else{
-      return $ret;
+      return '&nbsp;&nbsp;'.$ret;
     }
   }
   
@@ -6711,26 +6685,26 @@ function tep_get_repeat_date($type,$cl_date){
 ----------------------------------*/
 function tep_get_quantity($pid,$v_quantity=false){
   if($v_quantity){
-    $sql = "SELECT products_attention_1_3,
+    $sql = "SELECT products_exchange_rate,
       `products_real_quantity` ,
       `products_virtual_quantity` FROM
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
   }else{
-    $sql = "SELECT products_attention_1_3,
+    $sql = "SELECT products_exchange_rate,
       `products_real_quantity`
       FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
   }
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
-    if($row['products_attention_1_3']!=''&&$row['products_attention_1_3']!=0){
+    if($row['products_exchange_rate']!=''&&$row['products_exchange_rate']!=0){
       if($v_quantity){
-        return floor($row['products_real_quantity']/$row['products_attention_1_3'])+$row['products_virtual_quantity'];
+        return floor($row['products_real_quantity']/$row['products_exchange_rate'])+$row['products_virtual_quantity'];
       }else{
-        return floor($row['products_real_quantity']/$row['products_attention_1_3']);
+        return floor($row['products_real_quantity']/$row['products_exchange_rate']);
       }
     }else{
-      $sql = "SELECT products_attention_1_3,
+      $sql = "SELECT products_exchange_rate,
       `products_real_quantity` as quantity FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
       $query = tep_db_query($sql);
@@ -6741,7 +6715,7 @@ function tep_get_quantity($pid,$v_quantity=false){
       }
     }
   }else{
-    $sql = "SELECT products_attention_1_3,
+    $sql = "SELECT products_exchange_rate,
       `products_real_quantity` as quantity FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
     $query = tep_db_query($sql);
@@ -6758,7 +6732,7 @@ function tep_get_quantity($pid,$v_quantity=false){
   返回：基数
 ----------------------------------*/
 function tep_get_radices($pid){
-    $sql = "SELECT products_attention_1_3 as radices FROM 
+    $sql = "SELECT products_exchange_rate as radices FROM 
       " .TABLE_PRODUCTS." WHERE products_id = '".$pid."' limit 1";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
@@ -6951,4 +6925,29 @@ function tep_is_has_order($oid){
     return date("Ymd") . '-' . date("His") . tep_get_order_end_num();
   }
   return $oid;
+}
+/* -------------------------------------
+    功能: 获取商品的图片 
+    参数: 商品ID 
+    参数: 网站ID
+    返回值: 图片数组 
+ ------------------------------------ */
+function tep_products_images($products_id,$site_id){
+
+  $images_array = array();
+  $site_id = $site_id == '' ? 0 : $site_id;
+  $products_images_query = tep_db_query("select images_name from ".TABLE_PRODUCTS_IMAGES." where products_id='".$products_id."' and site_id='".$site_id."' and images_type=0 order by images_id"); 
+  if(tep_db_num_rows($products_images_query) == 0){
+  
+    $products_images_query = tep_db_query("select images_name from
+        ".TABLE_PRODUCTS_IMAGES." where products_id='".$products_id."' and
+        site_id='0' and images_type=0 order by images_id"); 
+  }
+  while($products_images_array = tep_db_fetch_array($products_images_query)){
+
+    $images_array[] = $products_images_array['images_name'];
+  } 
+  tep_db_free_result($products_images_query);
+
+  return $images_array;
 }

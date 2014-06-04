@@ -42,7 +42,7 @@ case 'update':
         tep_db_perform('products', array('products_virtual_quantity' => SBC2DBC($_POST['kakuukosuu'][$i])), 'update', "products_id='".$_POST['product'][$i]."'");
     }
   }
-  tep_redirect('categories.php?cPath='.$_POST['fullpath']);
+  tep_redirect('categories.php?cPath='.str_replace('|||','&',$_POST['fullpath']));
   break;
 }
 

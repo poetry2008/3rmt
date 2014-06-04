@@ -20,27 +20,76 @@
     $site_arr = $userslist['site_permission']; 
   }
  if($_GET['action']== 'delete_messages'){
+    if($_GET['status'] == 'sent'){
 	if(!empty($_POST['messages_id'])){
 		foreach($_POST['messages_id'] as $value_messages_id){
-			tep_db_query('delete from messages where id = '.$value_messages_id);
+			$delete_status_sql = 'select sender_id, time, file_name from messages where id = "'.$value_messages_id.'"';
+			$delete_status = tep_db_query($delete_status_sql);
+			$delete_status = tep_db_fetch_array($delete_status);
+			$all_delete_status_sql = 'select id, delete_status, file_name, sender_id from messages where sender_id = "'.$delete_status['sender_id'].'" and time = "'.$delete_status['time'].'"';
+			$all_delete_status = tep_db_query($all_delete_status_sql);
+			$count_num = '0';
+			while($all_delete_status_res = tep_db_fetch_array($all_delete_status)){
+				if($all_delete_status_res['delete_status'] == '0'){
+					tep_db_query('update messages set delete_status = "2" where id = "'.$all_delete_status_res['id'].'"');
+				}else{
+					tep_db_query('delete from messages where id = "'.$all_delete_status_res['id'].'"');
+				}
+			}
+			if(!tep_db_fetch_array(tep_db_query($all_delete_status_sql))){
+				if($delete_status['file_name'] != '' && file_exists('messages_upload/'.$delete_status['file_name'])){
+					$delete_res = unlink('messages_upload/'.$delete_status['file_name']);
+				}
+			}
 		}
 	}
-	if($_GET['messages_sort'] == ''){
-		if($_GET['page'] == ''){
-			tep_redirect(tep_href_link('messages.php'));
-		}else{
-			tep_redirect(tep_href_link('messages.php?page='.$_GET['page']));
+    }else{
+	if(!empty($_POST['messages_id'])){
+		foreach($_POST['messages_id'] as $value_messages_id){
+			$delete_status_sql = 'select delete_status, file_name, sender_id from messages where id = "'.$value_messages_id.'"';
+			$delete_status = tep_db_query($delete_status_sql);
+			$delete_status = tep_db_fetch_array($delete_status);
+			if($delete_status['delete_status'] == '0'){
+				tep_db_query('update messages set delete_status = "1", header_status = "1" where id = "'.$value_messages_id.'"');
+			}else{
+				tep_db_query('delete from messages where id = '.$value_messages_id);
+				if($delete_status['file_name'] != '' && file_exists('messages_upload/'.$delete_status['file_name'])){
+					$count_sent_sql = 'select id from messages where file_name = "'.$delete_status['file_name'].'" and sender_id = "'.$delete_status['sender_id'].'"';
+					$count_sent = tep_db_query($count_sent_sql);
+					$count_num = '0';
+					while($count_sent_res = tep_db_fetch_array($count_sent)){
+						$count_num++;
+					}
+					if($count_num == '0'){
+						$delete_res = unlink('messages_upload/'.$delete_status['file_name']);
+					}
+				}
+			}
 		}
+	}
+	
+    }
+    if(isset($_GET['status']) && $_GET['status'] != ''){
+	$status_flag = true;
+    }else{
+	$status_flag = false;
+    }
+    if($_GET['messages_sort'] == ''){
+	if($_GET['page'] == ''){
+		tep_redirect(tep_href_link('messages.php'.($status_flag?'?status='.$_GET['status']:'')));
 	}else{
-		if($_GET['page'] == ''){
-			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
-		}else{
-			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page']));
-		}
+		tep_redirect(tep_href_link('messages.php?page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 	}
+    }else{
+	if($_GET['page'] == ''){
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].($status_flag?'&status='.$_GET['status']:'')));
+	}else{
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
+	}
+    }
  }
  if($_GET['action']== 'new_messages'){
-//	die(var_dump($_POST['selected_staff']));
+//	die(var_dump($_GET['status']));
     if(!empty($_POST['selected_staff'])){	
 	$messages_file_name = '';
 	$messages_file_status = '0';
@@ -59,12 +108,22 @@
 	}else{
 		$pic_icon_str = '';
 	}
+	if($_POST['messages_to'] == '0'){
+		$recipient_name = 'ALL';
+	}else{
+		foreach($_POST['selected_staff'] as $key => $value){
+			$value = explode('|||',$value);
+			$recipient_name[] =  $value[1];
+		}
+		$recipient_name = implode(';',$recipient_name);
+	}
 	foreach($_POST['selected_staff'] as $key => $value){
+		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
-					'recipient_id' => $value,
+					'recipient_id' => $user_name_id[0],
 					'reply_status' => '0',
                                       	'content' => $_POST['contents'],
 					'attach_file' => $messages_file_status,
@@ -72,22 +131,28 @@
 					'opt' => '0',
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
+					'recipient_name' => $recipient_name,
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
 	//	var_dump($sql_data_array);
 	}
+	if(isset($_GET['status']) && $_GET['status'] != ''){
+		$status_flag = true;
+    	}else{
+		$status_flag = false;
+    	}
 	if($_GET['messages_sort'] == ''){
 		if($_GET['page'] == ''){
-			tep_redirect(tep_href_link('messages.php'));
+			tep_redirect(tep_href_link('messages.php'.($status_flag?'?status='.$_GET['status']:'')));
 		}else{
-			tep_redirect(tep_href_link('messages.php?page='.$_GET['page']));
+			tep_redirect(tep_href_link('messages.php?page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 		}
 	}else{
 		if($_GET['page'] == ''){
-			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].($status_flag?'&status='.$_GET['status']:'')));
 		}else{
-			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page']));
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 		}
 	}
      }
@@ -112,36 +177,59 @@
 	}else{
 		$pic_icon_str = '';
 	}
+	if($_POST['messages_to'] == '0'){
+		$recipient_name = 'ALL';
+	}else{
+		foreach($_POST['selected_staff'] as $key => $value){
+			$value = explode('|||',$value);
+			$recipient_name[] =  $value[1];
+		}
+		$recipient_name = implode(';',$recipient_name);
+	}
+	if($_GET['status'] == 'sent'){
+		$reply_status = '0';
+	}else{
+		$reply_status = '1';
+	}
 	foreach($_POST['selected_staff'] as $key => $value){
+		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
-					'recipient_id' => $value,
-					'reply_status' => '1',
+					'recipient_id' => $user_name_id[0],
+					'reply_status' => $reply_status,
                                       	'content' => $_POST['back_contents'],
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
+					'recipient_name' => $recipient_name,
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
 	//	var_dump($sql_data_array);
 	}
-	tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
+	if($reply_status == '1'){
+		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
+	}
+	if(isset($_GET['status']) && $_GET['status'] != ''){
+		$status_flag = true;
+    	}else{
+		$status_flag = false;
+    	}
 	if($_GET['messages_sort'] == ''){
 		if($_GET['page'] == ''){
-			tep_redirect(tep_href_link('messages.php'));
+			tep_redirect(tep_href_link('messages.php'.($status_flag?'?status='.$_GET['status']:'')));
 		}else{
-			tep_redirect(tep_href_link('messages.php?page='.$_GET['page']));
+			tep_redirect(tep_href_link('messages.php?page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 		}
 	}else{
 		if($_GET['page'] == ''){
-			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type']));
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].($status_flag?'&status='.$_GET['status']:'')));
 		}else{
-			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page']));
+			tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 		}
 	}
      }
@@ -193,7 +281,24 @@ $(document).ready(function() {
         }
       } 
     }
-  });    
+  }); 
+  $('#messages_select_status').change(function(){
+	var messages_status_arg = $("#messages_select_status").find("option:selected").val();
+	switch(messages_status_arg){
+		case '0':
+			window.location.href="messages.php";
+			break;
+		case '1':
+			window.location.href="messages.php?status=sent";
+			break;
+		case '2':
+			window.location.href="messages.php?status=draft";
+			break;
+		case '3':
+			window.location.href="messages.php?status=trash";
+			break;
+	}
+  });   
 });
 
  function check_news_info(){
@@ -325,14 +430,14 @@ function delete_select_messages(messages_str, c_permission){
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
          }
 }
-function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name){
+function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  if(latest_messages_id >0){
 	$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
  }
  $.ajax({
  url: 'ajax.php?&action=new_messages',
- data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name} ,
+ data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -752,9 +857,10 @@ function change_read_status(obj,id){
 		}
 	)
 }
-function messages_selected(obj){
+function messages_selected(obj, begin_class){
 	$(obj).attr('onmouseover_last',$(obj).attr('onmouseover'));
 	$(obj).attr('onmouseout_last',$(obj).attr('onmouseout'));
+	$(obj).attr('begin_class', begin_class);
 	$(obj).css('cusor','hand');
 	$(obj).attr('onmouseover',false);
 	$(obj).attr('onmouseout',false);
@@ -763,12 +869,14 @@ function messages_selected(obj){
 		if($(this).attr('class') == 'dataTableRowSelected'){
 			$(this).attr('onmouseover',$(this).attr('onmouseover_last'));
 			$(this).attr('onmouseout',$(this).attr('onmouseout_last'));
+			$(this).attr('class',$(this).attr('begin_class'));
 			$(this).attr('onmouseover_last',false);
 			$(this).attr('onmouseout_last',false);
 			$(this).mouseout();
 		}
 	});
 }
+
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -817,7 +925,27 @@ require("includes/note_js.php");
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+	        <td class="pageHeading">
+			<?php
+				if($_GET['status'] == 'sent'){
+					echo HEADING_TITLE_SENT;
+				}else if($_GET['status'] == 'draft'){
+					echo HEADING_TITLE_DRAFT;
+				}else if($_GET['status'] == 'trash'){
+					echo HEADING_TITLE_TRASH;
+				}else{ 
+					echo HEADING_TITLE; 
+				}
+			?>
+		<div style="float:right">
+			<select id="messages_select_status">
+  				<option <?php if($_GET['status'] != 'sent' && $_GET['status'] != 'draft' && $_GET['status'] != 'trash'){echo 'selected';} ?>  value ="0"><?php echo MESSAGE_SELECT_RECEIVING; ?></option>
+  				<option <?php if($_GET['status'] == 'sent'){echo 'selected';}?>  value ="1"><?php echo MESSAGE_SELECT_SENT; ?></option>
+  				<option <?php if($_GET['status'] == 'draft'){echo 'selected';}?>  value ="2"><?php echo MESSAGE_SELECT_DRAFT; ?></option>
+  				<option <?php if($_GET['status'] == 'trash'){echo 'selected';}?>  value ="3"><?php echo MESSAGE_SELECT_TRASH; ?></option>
+			</select>
+		</div>
+		</td>
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
             </tr>
           </table>
@@ -854,103 +982,103 @@ require("includes/note_js.php");
 			}
 		}
 		
-              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=delete_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
+              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=delete_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['status'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
                 if($messages_sort == '' || $messages_sort != 'read_status'){ 
-			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc').'">'.READ_STATUS.'</a>'; 
+			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'</a>'; 
 		}else{
 			if($messages_sort == 'read_status' && $messages_sort_type == 'desc'){
-				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc').'">'.READ_STATUS.'
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc&status='.$_GET['status']).'">'.READ_STATUS.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc').'">'.READ_STATUS.'
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'mark'){ 
-			$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=desc').'">'.MESSAGES_MARK.'</a>'; 
+			$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_MARK.'</a>'; 
 		}else{
 			if($messages_sort == 'mark' && $messages_sort_type == 'desc'){
-				$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=asc').'">'.MESSAGES_MARK.'
+				$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_MARK.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=desc').'">'.MESSAGES_MARK.'
+				$messages_mark = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=mark&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_MARK.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'sender_id'){ 
-			$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc').'">'.MESSAGES_FROM.'</a>'; 
+			$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'</a>'; 
 		}else{
 			if($messages_sort == 'sender_id' && $messages_sort_type == 'desc'){
-				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=asc').'">'.MESSAGES_FROM.'
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc').'">'.MESSAGES_FROM.'
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'recipient_id'){ 
-			$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc').'">'.MESSAGES_TO.'</a>'; 
+			$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_TO.'</a>'; 
 		}else{
 			if($messages_sort == 'recipient_id' && $messages_sort_type == 'desc'){
-				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=asc').'">'.MESSAGES_TO.'
+				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_TO.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc').'">'.MESSAGES_TO.'
+				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_TO.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'reply_status'){ 
-			$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc').'">'.MESSAGES_BACK.'</a>'; 
+			$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'</a>'; 
 		}else{
 			if($messages_sort == 'reply_status' && $messages_sort_type == 'desc'){
-				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc').'">'.MESSAGES_BACK.'
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc').'">'.MESSAGES_BACK.'
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'content'){ 
-			$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=desc').'">'.MESSAGES_CONTENT.'</a>'; 
+			$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_CONTENT.'</a>'; 
 		}else{
 			if($messages_sort == 'content' && $messages_sort_type == 'desc'){
-				$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=asc').'">'.MESSAGES_CONTENT.'
+				$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_CONTENT.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=desc').'">'.MESSAGES_CONTENT.'
+				$messages_content = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=content&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_CONTENT.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'attach_file'){ 
-			$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc').'">'.ADD_FILE.'</a>'; 
+			$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'</a>'; 
 		}else{
 			if($messages_sort == 'attach_file' && $messages_sort_type == 'desc'){
-				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc').'">'.ADD_FILE.'
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc&status='.$_GET['status']).'">'.ADD_FILE.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc').'">'.ADD_FILE.'
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'time'){ 
-			$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=desc').'">'.MESSAGES_DATE.'</a>'; 
+			$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_DATE.'</a>'; 
 		}else{
 			if($messages_sort == 'time' && $messages_sort_type == 'desc'){
-				$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=asc').'">'.MESSAGES_DATE.'
+				$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_DATE.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=desc').'">'.MESSAGES_DATE.'
+				$messages_date = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=time&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_DATE.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'opt'){ 
-			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'</a>'; 
+			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_OPT.'</a>'; 
 		}else{
 			if($messages_sort == 'opt' && $messages_sort_type == 'asc'){
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc').'">'.MESSAGES_OPT.'
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_OPT.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc').'">'.MESSAGES_OPT.'
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_OPT.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -960,7 +1088,9 @@ require("includes/note_js.php");
                $messages_table_row = array();
                $messages_title_row = array();
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
+               if($_GET['status'] != 'sent'){
+	       	$messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
+	       }
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_mark);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_from);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_to);
@@ -977,9 +1107,21 @@ require("includes/note_js.php");
 	$messages_sort_sql = $messages_sort;
     }
     $messages_page = $_GET['page'];
-    $latest_messages_query_raw = '
-        select * 
-        from messages where recipient_id = "'.$ocertify->auth_user.'" order by '.$messages_sort_sql.' '.$messages_sort_type;
+    if($_GET['status'] == 'sent'){
+	$latest_messages_query_raw = '
+        	select * 
+        	from messages where sender_id = "'.$ocertify->auth_user.'" 
+		and messages_status = "0" 
+		and trash_status in ("0","1") 
+		and delete_status in ("0","1") group by time order by '.$messages_sort_sql.' '.$messages_sort_type;
+    }else{
+    	$latest_messages_query_raw = '
+        	select * 
+        	from messages where recipient_id = "'.$ocertify->auth_user.'" 
+		and messages_status = "0" 
+		and trash_status in ("0","2") 
+		and delete_status in ("0","2") order by '.$messages_sort_sql.' '.$messages_sort_type;
+    }
     $latest_messages_split = new splitPageResults($messages_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw, $latest_messages_query_numrows);
     $latest_messages_query = tep_db_query($latest_messages_query_raw);
     while ($latest_messages = tep_db_fetch_array($latest_messages_query)) {
@@ -991,18 +1133,20 @@ require("includes/note_js.php");
 	} else {
 		$nowColor = $odd;
 	}
-	$messages_params = 'id="info_'.$latest_messages['id'].'" class="'.$nowColor.'" onclick="messages_selected(this)" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+	$messages_params = 'id="info_'.$latest_messages['id'].'" class="'.$nowColor.'" onclick="messages_selected(this,\''.$nowColor.'\')" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
 	$messages_info = array();
 	$messages_checkbox = '<input type="checkbox" name="messages_id[]" value="'.$latest_messages['id'].'">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_checkbox		
 	);
+   if($_GET['status'] != 'sent'){
 	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/gray_right.gif" border="0">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/green_right.gif" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
 	);
+   }
 	$mark_html = '';
 	if($latest_messages['mark'] != ''){
 		$mark_array = explode(',',$latest_messages['mark']);
@@ -1021,7 +1165,7 @@ require("includes/note_js.php");
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $_SESSION['user_name']
+		'text'   => $latest_messages['recipient_name']
 	);
 	$messages_reply_status = $latest_messages['reply_status']==0 ? '' : '<img src="images/icons/reply_icon.png" border="0">';
 	$messages_info[] = array(
@@ -1044,7 +1188,7 @@ require("includes/note_js.php");
 	$messages_opt = $latest_messages['opt']==0 ? '<img src="images/icons/info_blink.gif" border="0">' : '<img src="images/icons/info_green.gif" border="0">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\')">'.$messages_opt.'</a>'
+		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }
@@ -1078,7 +1222,7 @@ require("includes/note_js.php");
                       <div class="td_button"><?php
                       //通过site_id判断是否允许新建
                      // if (trim($site_array[0]) != '') {
-                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\',-1,\'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
+                      echo '&nbsp;<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\',-1,\'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\'\',\''.$_GET['status'].'\')">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>';
                      // }else{
                      // echo '&nbsp;' .tep_html_element_button(IMAGE_NEW_PROJECT,'disabled="disabled"');
                      // } 

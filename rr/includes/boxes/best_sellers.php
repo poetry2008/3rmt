@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-
   if (isset($current_category_id) && ($current_category_id > 0)) {
     $best_c_category_id = $current_category_id; 
   } else {
@@ -12,8 +11,7 @@
     $best_sellers_raw = "
       select *
       from (
-        select p.products_id,
-                        pd.products_image,
+        select distinct p.products_id,
                         p.products_ordered,
                         pd.products_name,
                         pd.products_status, 

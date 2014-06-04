@@ -631,7 +631,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= FORDERS_MAIL_CONFIRM_EMAIL . $order->customer['email_address'] . "\n";
       $email .= FORDERS_MAIL_CONFIRM_PAYMENT_METHOD. $order->info['payment_method'] . "\n";
       $email .= FORDERS_MAIL_CONFIRM_FETCH_TIME . $order->tori['date'] .  FORDERS_MAIL_CONFIRM_ALL_DAY . "\n";
-      $email .= FORDERS_MAIL_CONFIRM_OPTION . $order->tori['houhou'] . "\n";
+      $email .= FORDERS_MAIL_CONFIRM_HOUHOU . $order->tori['houhou'] . "\n";
       $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
       $email .= FORDERS_MAIL_CONFIRM_PRODUCTS. "\n";
       $email .= "\t" . '------------------------------------------' . "\n";
@@ -907,7 +907,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
                pd.products_name, 
                p.products_tax_class_id, 
                p.products_small_sum,
-               p.products_price_offset
+               p.products_price_offset,
+               p.price_type
         from " . TABLE_PRODUCTS . " p left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id 
         where p.products_id='$add_product_products_id' 
           and pd.site_id = '0'
@@ -917,7 +918,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $row = tep_db_fetch_array($result);
       extract($row, EXTR_PREFIX_ALL, "p");
       
-      $p_products_price = tep_get_final_price($p_products_price, $p_products_price_offset, $p_products_small_sum, (int)$add_product_quantity);
+      $p_products_price = tep_get_final_price($p_products_price,
+          $p_products_price_offset, $p_products_small_sum,
+          (int)$add_product_quantity,$p_price_type);
       
       // Following functions are defined at the bottom of this file
       $CountryID = tep_get_country_id($order->delivery["country"]);
@@ -2355,7 +2358,7 @@ if($action == "add_product")
       echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
       print "<input type='hidden' name='step' value='2'>";
       print "</td>\n";
-      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_CATEGORY_SELECTION . "</td>\n";
+      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
       print "</form></tr>\n";
       print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 
@@ -2376,7 +2379,7 @@ if($action == "add_product")
       print "</select></td>\n";
       print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
       print "<input type='hidden' name='step' value='3'>\n";
-      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_PRODUCT_SELECTION . "</td>\n";
+      print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
       print "</form></tr>\n";
       print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
     }
