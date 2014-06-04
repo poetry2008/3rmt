@@ -6,7 +6,7 @@
   if (isset($_GET['products_id'])) {
     
     $orders_sql = "
-        select * from (select pd.products_status, pd.site_id, o.date_purchased,p.products_id, pd.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
+        select * from (select pd.products_status, pd.site_id, o.date_purchased,p.products_id from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
           and opa.orders_id = opb.orders_id 
           and opb.products_id != '" . (int)$_GET['products_id'] . "' 
@@ -51,10 +51,11 @@
     echo '
 
 <td width="25%" align="center" class="smallText">';
+$img_array = tep_products_images($orders['products_id'],$orders['site_id']);
 if ($orders['products_status'] == 0) {
-  echo tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>'.$orders['products_name'];
+  echo tep_image(DIR_WS_IMAGES . 'products/' . $img_array[0], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>'.$orders['products_name'];
 } else {
-  echo ' <a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a> <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $orders['products_id']) . '">'.$orders['products_name'].'</a>';
+  echo ' <a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' .  $img_array[0], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a> <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $orders['products_id']) . '">'.$orders['products_name'].'</a>';
 }
 echo '</td>';
 

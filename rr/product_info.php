@@ -308,8 +308,10 @@ function showimage($1) {
 
                          $top_array = explode('||||||',$top_value); 
                       ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#BC3436"><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[0]); ?></font></td>
+                      <tr class="main" width="100">
+                        <td class="main"><b><font color="#BC3436"><?php echo
+                        str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[0]);
+                      ?></font></b></td>
                         <td class="main"><?php echo str_replace("\r\n",'<br>',str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[1])); ?></td>
                       </tr>
                       <?
@@ -366,8 +368,10 @@ function showimage($1) {
 
                          $under_array = explode('||||||',$under_value); 
                       ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[0]); ?></font></td>
+                      <tr class="main" width="100">
+                        <td class="main"><b><font color="#0070AF"><?php echo
+                        str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[0]);
+                      ?></font></b></td>
                         <td class="main"><?php echo str_replace("\r\n",'<br>',str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[1])); ?></td>
                       </tr>
                       <?
@@ -397,9 +401,7 @@ tep_products_images($product_info['products_id'],$product_info['site_id']);
                 <td align="center" class="smallText">
                       <script language="javascript" type="text/javascript">
                       <!--
-document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES . 'products/' .
-      $products_img_array[0].'\",0) href="javascript:void(0)">' .
-    tep_image3(DIR_WS_IMAGES . 'products/'. $products_img_array[0], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
+document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES . 'products/' .  $products_img_array[0].'\",0) href="javascript:void(0)">' .  tep_image3(DIR_WS_IMAGES . 'products/'. $products_img_array[0], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
                         -->
                         </script>
                         <noscript>
@@ -532,7 +534,10 @@ document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES . 'products/' 
                       if($mcnt == 1) {
                       ?>
                 <noscript>
-                <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES .'products/'.  $product_info['products_image']) . '" rel="lightbox[products]">' .  tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
+                <?php echo '<td class="smallText" align="center" width="20%"><a
+                href="' . tep_href_link(DIR_WS_IMAGES .'products/'.
+                $products_img_array[0]) . '" rel="lightbox[products]">' .
+                tep_image2(DIR_WS_IMAGES .'products/'. $products_img_array[0], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
                 </noscript>
                 <?php
                       }

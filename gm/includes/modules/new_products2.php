@@ -36,7 +36,6 @@
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-               pd.products_image, 
                p.products_tax_class_id, 
                p.products_price, 
                p.products_price_offset, 
@@ -55,7 +54,6 @@
     $new_products_query = tep_db_query("
         select * from (select distinct p.products_id, 
                         p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                        pd.products_image, 
                         p.products_tax_class_id, 
                         p.products_price, 
                         p.products_price_offset, 
@@ -87,12 +85,14 @@
       $description_view = strip_tags(mb_substr(replace_store_name($product_details['products_description']),0,110));
   
       $row ++;
+      //获取商品图片 
+      $img_array = tep_products_images($new_products['products_id'],$new_products['site_id']);
 ?>
   <tr>
     <td>
       <table width="100%"  border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td>
+          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td>
             <td height="40" colspan="2" valign="top" style="padding-left:5px; "><p><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>';?><br>
                     <span class="smallText"><?php echo $description_view; ?>..</span></p></td>
               </tr>

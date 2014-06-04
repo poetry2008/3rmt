@@ -29,7 +29,7 @@
   <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" alt="RMT 評判" src="images/design/title_img12.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
   <div class="boxText_reviews_05">
     <?php
-  $random_select = "select * from (select pd.products_status, pd.site_id as pid, r.reviews_id, r.reviews_rating, p.products_id, pd.products_image, pd.products_name from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = r.products_id and r.reviews_id = rd.reviews_id and rd.languages_id = '" .  $languages_id . "' and p.products_id = pd.products_id and pd.language_id = '" .  $languages_id . "' and r.reviews_status = '1' and r.site_id = '".SITE_ID."' order by pd.site_id DESC) c where pid = '".SITE_ID."' or pid = '0' group by reviews_id having c.products_status != '0' and c.products_status != '3'";
+  $random_select = "select * from (select pd.products_status, pd.site_id as pid, r.reviews_id, r.reviews_rating, p.products_id, pd.products_name from " . TABLE_REVIEWS . " r, " .  TABLE_REVIEWS_DESCRIPTION . " rd, " .  TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = r.products_id and r.reviews_id = rd.reviews_id and rd.languages_id = '" .  $languages_id . "' and p.products_id = pd.products_id and pd.language_id = '" .  $languages_id . "' and r.reviews_status = '1' and r.site_id = '".SITE_ID."' order by pd.site_id DESC) c where pid = '".SITE_ID."' or pid = '0' group by reviews_id having c.products_status != '0' and c.products_status != '3'";
 if (isset($HTTP_GET_VARS['products_id'])) {
     $random_select .= " and products_id = '" . (int)$HTTP_GET_VARS['products_id'] . "'";
   }
@@ -45,9 +45,11 @@ if (isset($HTTP_GET_VARS['products_id'])) {
 
     $review = htmlspecialchars($review['reviews_text']);
     //$review = tep_break_string($review, 15, '-<br>');
+    //获取商品图片
+    $img_array =
+          tep_products_images($random_product['products_id'],$random_product['site_id']);
 
-    echo '<p class="reviews_top"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '" class="reviews_img">' . tep_image(DIR_WS_IMAGES . $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating']), 88, 16) . "\n".'</p>
-    <p class="reviews_bottom"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . $review . ' ...</a></p>'; 
+    echo '<p class="reviews_top"><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '" class="reviews_img">' .  tep_image(DIR_WS_IMAGES . $img_array[0], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating']), 88, 16) . "\n".'</p> <p class="reviews_bottom"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . $review . ' ...</a></p>'; 
   } elseif (isset($HTTP_GET_VARS['products_id'])) {
 // display 'write a review' box
     echo '<table border="0" cellspacing="2" cellpadding="2" width="100%"> <tr>';

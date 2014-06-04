@@ -85,7 +85,7 @@ if ($category_depth == 'nested') {
 } elseif ($category_depth == 'products' || $_GET['manufacturers_id']) {
 
   require(DIR_WS_ACTIONS.'index_products.php');
-?> 
+?>
   <td valign="top" id="contents_long">
 <?php
   if (tep_show_warning($current_category_id)) {
@@ -210,7 +210,14 @@ if ($category_depth == 'nested') {
         echo '<div class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</div>'; 
       }
       if (!empty($seo_category['text_information'])) {
-        echo '<div>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']).'</div>'; 
+        $old_info_arr = array('#STORE_NAME#'); 
+        $new_info_arr = array(STORE_NAME); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value.'<br>';
+        }
       }
     }
   ?>
@@ -247,8 +254,6 @@ if ($category_depth == 'nested') {
 <?php
 } elseif($_GET['colors'] && !empty($_GET['colors'])) {
   require(DIR_WS_ACTIONS.'index_colors.php');
-} elseif($_GET['action'] && $_GET['action'] == 'select') { 
-  require(DIR_WS_ACTIONS.'index_select.php');
 } else { 
   require(DIR_WS_ACTIONS.'index_default.php');
 ?>

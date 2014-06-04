@@ -85,9 +85,9 @@ while ($row = mysql_fetch_array($sql_result)) {
   $link = tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $id) ;
 
   $model = $row["products_model"];
-  $sql_image = "select products_image from products_description where products_id
-    ='".$row['products_id']."' order by site_id desc limit 1";
-  $image_row = mysql_fetch_array(mysql_query($sql_image));
+  //获取商品图片
+  $img_array = tep_products_images($row['products_id'],$row['site_id']);
+  $image = $img_array[0];
   $image = $image_row["products_image"];
   $price = $row["products_price"];
   $tax = $row["products_tax_class_id"];

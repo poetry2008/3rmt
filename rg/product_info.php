@@ -382,9 +382,7 @@ tep_products_images($product_info['products_id'],$product_info['site_id']);
                 <td align="center" class="smallText">
                       <script language="javascript" type="text/javascript">
                       <!--
-document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES . 'products/' .
-      $products_img_array[0].'\",0) href="javascript:void(0)">' .
-    tep_image3(DIR_WS_IMAGES . 'products/'. $products_img_array[0], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
+document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES . 'products/' .  $products_img_array[0].'\",0) href="javascript:void(0)">' .  tep_image3(DIR_WS_IMAGES . 'products/'. $products_img_array[0], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
                         -->
                         </script>
                         <noscript>

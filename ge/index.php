@@ -138,6 +138,8 @@ if ($category_depth == 'nested') {
         $isone_ca_query = tep_db_query("select * from categories where categories_id = '".$current_category_id."' and parent_id = '0'"); 
         if (tep_db_num_rows($isone_ca_query)) {
           $has_ca_single = true; 
+        $c_tmp_path = explode('', $_GET['cPath']);
+        $new_c_name = '';
         } else {
           $has_ca_single = false; 
         }
@@ -166,7 +168,15 @@ if (isset($cPath_array)) {
 	echo '</div>';
   }
   if (!empty($seo_category['text_information'])) {
-    echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']); 
+        $old_info_arr = array('class="pageHeading"', '#STORE_NAME#'); 
+        $new_info_arr = array('class="pageHeading_long"', STORE_NAME); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value.'<br>';
+        }
+        echo '<p class="pageBottom"></p>'; 
   }
 }
 ?>

@@ -12,6 +12,7 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
+             cd.categories_name_list, 
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
@@ -26,7 +27,7 @@ $categories_query = tep_db_query("
     where site_id = ".SITE_ID."
        or site_id = 0
     group by categories_id
-    having c.categories_status != '1' and c.categories_status != '3'  
+    having c.categories_status != '1' and c.categories_status != '3' 
     order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
@@ -51,7 +52,7 @@ if($cPath){
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong> 
             <?php }?>
-            <?php echo $category['categories_name'];?>
+            <?php echo $category['categories_name_list'];?>
             <?php 
             /* 
             if (!empty($category['categories_image2'])) {
@@ -140,7 +141,7 @@ if($cPath){
                 where site_id = 0
                    or site_id = ".SITE_ID."
                 group by categories_id
-                having c.categories_status != '1' and c.categories_status != '3'  
+                having c.categories_status != '1' and c.categories_status != '3' 
                 order by sort_order, categories_name
             ");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
@@ -187,7 +188,7 @@ if($cPath){
                 if (!isset($ca_arr)) {
                 ?>
                 <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
-                <?php echo $category['categories_name'];?> 
+                <?php echo $category['categories_name_list'];?> 
                 </a></li>
                 <?php
                 } else if (in_array($category['categories_id'], $ca_arr)) { 
@@ -205,7 +206,7 @@ if($cPath){
                   echo '<img src="images/desingn/category_no_img.gif" alt="'.$category['categories_name'].'" width="147" height="33">'; 
     }
                 */
-                echo $category['categories_name']; 
+                echo $category['categories_name_list']; 
                 ?>
         </a></li>
       <?php }?>

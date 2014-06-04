@@ -178,7 +178,14 @@ echo '<div class="footer_text01">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_
       echo '</div>'; 
     }
     if (!empty($seo_category['text_information'])) {
-      echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']); 
+        $old_info_arr = array('#STORE_NAME#'); 
+        $new_info_arr = array(STORE_NAME); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value.'<br>';
+        }
     }
   }
 ?>

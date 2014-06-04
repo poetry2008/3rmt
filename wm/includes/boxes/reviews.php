@@ -38,7 +38,11 @@ if (
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
         echo '<table width="100%" cellspacing="0" cellpadding="2" border="0" class="table_wrap">';
         echo '<tr><td width="60" align="center" style="padding-right:8px; padding-top:5px" rowspan="2" valign="top">';
-        echo tep_image(DIR_WS_IMAGES . 'products/' .  $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"');
+        //获取商品图片
+        $img_array =
+          tep_products_images($product_info['products_id'],$product_info['site_id']);
+        echo '</td><td class="main" style="padding-left:5px;">';
+        echo tep_image(DIR_WS_IMAGES . 'products/' .  $img_array[0], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"');
         echo '</td><td class="main" style="padding-left:5px;">';
         echo '<p class="main"><div class="text_main"> <span><b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) .  '</b></span>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) .  '&nbsp;&nbsp;<span>[' .  sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) .  ']</span></div>' . nl2br($reviews_des_res['reviews_text']) . "\n" . '</p></td></tr>';
         echo '</table>';
@@ -61,7 +65,6 @@ if (
     select r.reviews_id, 
            r.reviews_rating, 
            p.products_id, 
-           pd.products_image, 
            pd.products_name,
            r.site_id as rsid,
            pd.products_status, 

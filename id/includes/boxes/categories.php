@@ -10,6 +10,7 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
+             cd.categories_name_list, 
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
@@ -40,14 +41,15 @@ if($cPath){
 <div id='categories'>
   <img width="172" height="51" alt="RMT 価格" title="RMT 価格" src="images/design/box/menu.gif">
   <ul class='l_m_category_ul'>
-    <?php foreach($categories as $key => $category) {?>
+    <?php foreach($categories as $key => $category) { ?>
       <?php if($cPath && in_array($category['categories_id'], $id)) {?>
         <li class='l_m_category_li2'>
           <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong>
             <?php }?>
-            <?php echo str_replace(' RMT', '', $category['categories_name']);?>
+            <?php //echo $category['categories_name_list'];?>
+            <?php echo tep_add_rmt($category['categories_name_list']);?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong>
             <?php }?>
@@ -161,7 +163,7 @@ if($cPath){
           <?php }?>
           </ul>
       <?php } else {?>
-        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo str_replace(' RMT', '', $category['categories_name']);?></a></li>
+        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo tep_add_rmt($category['categories_name_list']);?></a></li>
       <?php }?>
     <?php }?>
         </ul>

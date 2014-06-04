@@ -22,7 +22,6 @@
              r.reviews_read, 
              pd.products_name, 
              pd.products_status, 
-             pd.products_image,
              r.site_id as rsid,
              pd.site_id as psid
       FROM (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) 
@@ -93,7 +92,7 @@ function showimage($1) {
                     tep_products_images($reviews['products_id'],$reviews['site_id']);
                     ?>
           <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES
-          . 'products/' . $img_array[0]; ?>',0)" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
+          . 'products/' . $img_array[0]; ?>',0)" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $img_array[0], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
                   </tr>
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 

@@ -45,14 +45,14 @@ $left_show_single = false;
 <div id='categories'>
   <div class="menu_top"><img src="images/menu_ico1.gif" alt="" align="top"><span>MENU</span></div>
   <ul class='l_m_category_ul'>
-    <?php foreach($categories as $key => $category) { ?>
+    <?php foreach($categories as $key => $category) {?>
       <?php if(($cPath && in_array($category['categories_id'], $id)) || ($left_show_single && in_array($category['categories_id'], $id))) {?>
         <li class='l_m_category_li2'>
           <a class="l_m_category_li2_link"href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong>
             <?php }?>
-            <?php echo tep_add_rmt($category['categories_name_list']);?>
+            <?php echo $category['categories_name_list'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong>
             <?php }?>
@@ -175,7 +175,7 @@ $left_show_single = false;
                 if (!isset($ca_arr)) {
                 ?>
                 <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">
-                <?php echo $category['categories_name'];?> 
+                <?php echo $category['categories_name_list'];?> 
                 </a></li>
                 <?php
                 } else if (in_array($category['categories_id'], $ca_arr)) { 

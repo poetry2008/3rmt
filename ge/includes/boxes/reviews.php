@@ -38,7 +38,10 @@ if (
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
         echo '<table width="100%" cellspacing="0" cellpadding="2" border="0" class="table_wrap">';
         echo '<tr><td width="60" align="center" style="padding-right:8px; padding-top:5px" rowspan="2" valign="top">';
-        echo tep_image(DIR_WS_IMAGES . 'products/' .  $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"');
+        //获取商品图片
+        $img_array =
+          tep_products_images($product_info['products_id'],$product_info['site_id']);
+        echo tep_image(DIR_WS_IMAGES . 'products/' .  $img_array[0], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"');
         echo '</td><td class="main" style="padding-left:5px;">';
         echo '<p class="main"><div class="text_main"> <span><b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) .  '</b></span>&nbsp;&nbsp;<span>' . tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating'])) .  '</span>&nbsp;&nbsp;<span>[' .  sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating']) .  ']</span></div>' . nl2br($reviews_des_res['reviews_text']) . "\n" . '</p></td></tr>';
         echo '</table>';
@@ -109,6 +112,12 @@ if (
     $review = tep_break_string($review, 15, '-<br>');
 
     echo '<div align="center" style="width:90%; padding-left:5px;" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . $review . ' ..</a><br>' . tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating'])) . '</div>';
+       //获取商品图片
+      $img_array =
+        tep_products_images($random_product['products_id'],$random_product['site_id']);
+      echo tep_image(DIR_WS_IMAGES .'products/'. $img_array[0], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>
+      <a style="display:block;width:169px;word-wrap:break-word;overflow:hidden;" href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '">' . $review . ' ...</a><br>
+      ' . tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating'])) . "\n";
   } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
     echo '<table border="0" cellspacing="2" cellpadding="2" width="95%" align="center"><tr><td><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'box_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a></td><td class="boxText"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a></td></tr></table>';

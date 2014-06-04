@@ -69,7 +69,6 @@ if (
     select r.reviews_id, 
            r.reviews_rating, 
            p.products_id, 
-           pd.products_image, 
            pd.products_name,
            pd.products_status, 
            r.site_id as rsid,
@@ -124,7 +123,14 @@ if (
 
     echo '<div class="reviews_warp" align="center">';
       
-    echo '<div class="product_info_box"><p class="reviews_top"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '" class="reviews_img">' . tep_image(DIR_WS_IMAGES . 'products/' . $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating']), 88, 16) . "\n".'</p>
+    //获取商品图片
+    $img_array =
+          tep_products_images($random_product['products_id'],$random_product['site_id']);
+    echo '<div class="product_info_box"><p class="reviews_top"><a href="' .
+      tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .
+          $random_product['products_id'] . '&reviews_id=' .
+          $random_product['reviews_id']) . '" class="reviews_img">' .
+      tep_image(DIR_WS_IMAGES . 'products/' . $img_array[0], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS, $random_product['reviews_rating']), 88, 16) . "\n".'</p>
     <table border="0" cellspacing="0" cellpadding="0" class="reviews_bottom"><tr><td><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '">' . tep_show_review_des($review) . ' ...</a></td></tr></table>'; 
      echo '</div></div>'; 
     } 

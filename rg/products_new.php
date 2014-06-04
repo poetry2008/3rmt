@@ -35,14 +35,13 @@ from (
          pd.products_name, 
          pd.site_id,
          pd.products_status,
-         pd.products_image, 
          p.products_price, 
          p.products_price_offset, 
          p.products_small_sum, 
          p.products_tax_class_id, 
          p.products_date_added, 
          p.products_bflag, 
-         m.manufacturers_name 
+         m.manufacturers_name,
          p.price_type
   from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id and pd.language_id = '" . $languages_id . "'
   order by pd.site_id DESC

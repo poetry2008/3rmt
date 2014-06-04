@@ -24,7 +24,6 @@
     
     $new_products_query = tep_db_query("
         select p.products_id, 
-               pd.products_image, 
                p.products_tax_class_id, 
                p.products_price, 
                p.products_price_offset, 
@@ -39,7 +38,6 @@
     
     $new_products_query = tep_db_query("
         select * from (select distinct p.products_id, 
-                        pd.products_image, 
                         p.products_tax_class_id, 
                         p.products_price, 
                         p.products_price_offset, 
@@ -72,17 +70,7 @@
     while ($new_products = tep_db_fetch_array($new_products_query)) {
       $row ++;
       
-      /*
-      $product_query = tep_db_query("
-          select products_name, 
-                 products_description 
-          from " . TABLE_PRODUCTS_DESCRIPTION . " 
-          where products_id = '" .  $new_products['products_id'] . "' 
-            and language_id = '" . $languages_id . "' 
-            and site_id = '".SITE_ID."'
-          ");
-      $product_details = tep_db_fetch_array($product_query);
-      */
+
   
     $product_details = tep_get_product_by_id($new_products['products_id'], SITE_ID, $languages_id);
   
@@ -97,7 +85,6 @@
     }
   $description_array = explode("|-#-|", replace_store_name($product_details['products_description']));
   $description_view = strip_tags(mb_substr($description_array[0],0,63));
-//  $description = strip_tags(mb_substr ($description_array[0],0,50));
 ?>
             <td width="250"><!-- products_id <?php echo $new_products['products_id'];?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
               <tr> 
@@ -117,7 +104,6 @@
      }  
     }
 
-    //new contentBox($info_box_contents);
   echo '</tr></table>' ;
   
   }
