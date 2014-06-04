@@ -161,12 +161,7 @@ if ($category_depth == 'nested') {
   }
 ?>
 <?php 
-if (isset($cPath_array)) {
-  if ($seo_category['seo_description']) {
-    echo '<div class="seo01"><div class="seo_title_04">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).TEXT_ABOUT.'</div>'; echo '<p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p>'; 
-	echo '<div class="seo_news_index02"></div>';
-	echo '</div>';
-  }
+if (isset($cPath_array)) { 
   if (!empty($seo_category['text_information'])) {
         $old_info_arr = array('class="pageHeading"', '#STORE_NAME#'); 
         $new_info_arr = array('class="pageHeading_long"', STORE_NAME); 
@@ -174,9 +169,8 @@ if (isset($cPath_array)) {
         $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
         foreach($seo_category_array as $seo_value){
 
-          echo $seo_value.'<br>';
+          echo $seo_value;
         }
-        echo '<p class="pageBottom"></p>'; 
   }
 }
 ?>

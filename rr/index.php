@@ -214,19 +214,14 @@ if ($category_depth == 'nested') {
       }
     ?>
   <?php
-    if (isset($cPath_array)) {
-      if ($seo_category['seo_description']) {
-        echo '<h2 class="pageHeading">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</h2>'; 
-        echo '<div class="comment"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</font></p></div></div></div>'; 
-        }
+    if (isset($cPath_array)) { 
         if (!empty($seo_category['text_information'])) {
         //分类描述内容
         $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
         foreach($seo_category_array as $seo_value){
 
-          echo $seo_value.'<br>';
+          echo $seo_value;
         }
-        echo '<p class="pageBottom"></p>'; 
       }
     }
      ?>

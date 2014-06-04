@@ -112,24 +112,16 @@
   } else {
     include(DIR_WS_MODULES .'new_products2.php'); 
   }
-  if (isset($cPath_array)) {
-    if ($seo_category['seo_description']) {
-      echo '<h3 class="pageHeading"><span> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</span></h3>' . "\n";
-      echo '<div class="comment"><div class="reviews_area"><p>' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) .  '</p></div></div>' . "\n"; //seo phrase
-?>
-        <p class="pageBottom"></p>
-<?php
-    }
-?>
-<?php  if (!empty($seo_category['text_information'])) {
-    echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']);
-    
-?>
-<?php 
+  if (isset($cPath_array)) { 
+        if (!empty($seo_category['text_information'])) {
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value;
         }
-?>
-<?php
-  }
+      }
+  } 
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">

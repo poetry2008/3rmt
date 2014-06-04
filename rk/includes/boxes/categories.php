@@ -52,7 +52,7 @@ $left_show_single = false;
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong>
             <?php }?>
-            <?php echo $category['categories_name list'];?>
+            <?php echo $category['categories_name_list'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong>
             <?php }?>

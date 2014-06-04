@@ -115,6 +115,7 @@ if (
     $review = tep_break_string($review, 15, '-<br>');
 
     echo '<div class="reviews_warp" align="center">';
+    $img_array = tep_products_images($random_product['products_id'],$random_product['site_id']);
       
     echo '<p class="reviews_top"><a href="' .
       tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .

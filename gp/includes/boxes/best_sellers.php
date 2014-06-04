@@ -77,7 +77,6 @@
 ?>    
 
 
-    <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>">
     <?php
     //获取商品图片 
     $img_array =
@@ -85,9 +84,7 @@
     ?>
 <div class="bestseller_text"><div class="bestseller_number"><?php echo $rows;?></div><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo $best_sellers['products_name']; ?></a>
 <div class="bestseller_des">
-<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
-$best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name'];
-?>"><?php echo tep_image(DIR_WS_IMAGES.'products/'.$img_array[0], $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);?></a>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo tep_image(DIR_WS_IMAGES.'products/'.$img_array[0], $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);?></a>
 <span>
 <?php echo mb_substr(strip_tags(replace_store_name($best_sellers['products_description'])),0, 30);?>...
 </span>

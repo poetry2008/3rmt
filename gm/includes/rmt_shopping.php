@@ -2,15 +2,17 @@
 <div id="main-product-img"><img src="images/shop.png" alt="detail"></div>
 <div class="hm-product-content no-title-class">
 <?php 
-if (isset($cPath_array)) {
-  if ($seo_category['seo_description']) {
-    echo '<div class="seo01"><div class="seo_title_04">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).ABOUT_TEXT_LINK.'</div>'; echo '<p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p>'; 
-    echo '<div class="seo_news_index02"></div>';
-    echo '</div>';
-  }
+if (isset($cPath_array)) { 
   if (!empty($seo_category['text_information'])) {
-    echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']); 
-  }
+        $old_info_arr = array('#STORE_NAME#'); 
+        $new_info_arr = array(STORE_NAME); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value;
+        }
+  } 
 }
 ?>
 </div>

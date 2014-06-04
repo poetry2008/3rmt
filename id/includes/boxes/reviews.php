@@ -114,10 +114,12 @@ if (
       //获取商品图片
       $img_array =
         tep_products_images($random_product['products_id'],$random_product['site_id']);
+      /*
       echo tep_image(DIR_WS_IMAGES .'products/'. $img_array[0],
           $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) .
         '<br>';
 
+        */
     echo '<p class="reviews_top"><a href="' .
       tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .
           $random_product['products_id'] . '&reviews_id=' .

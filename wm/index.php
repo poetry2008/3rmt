@@ -169,14 +169,7 @@ echo '<div class="footer_text01">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_
       include(DIR_WS_MODULES . 'new_products4.php'); 
     }
   }
-  if (isset($cPath_array)) {
-    if ($seo_category['seo_description']) {
-      echo '<div class="seo01">'; 
-      echo '<div class="seo_title_04">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).TEXT_ABOUT.'</div>'; 
-      echo '<p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p>'; 
-      echo '<div class="seo_bottom_01"></div>'; 
-      echo '</div>'; 
-    }
+  if (isset($cPath_array)) { 
     if (!empty($seo_category['text_information'])) {
         $old_info_arr = array('#STORE_NAME#'); 
         $new_info_arr = array(STORE_NAME); 
@@ -184,7 +177,7 @@ echo '<div class="footer_text01">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_
         $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
         foreach($seo_category_array as $seo_value){
 
-          echo $seo_value.'<br>';
+          echo $seo_value;
         }
     }
   }

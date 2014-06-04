@@ -297,7 +297,7 @@ function showimage($1) {
                          $top_array = explode('||||||',$top_value); 
                       ?>
                           <tr>
-                            <td class="main"><b><font color="#A85E5E"><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[0]); ?></font></b></td>
+                            <td class="main"><b><font color="#A85E5E"><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[0]); ?></font></b></td>
                             <td class="main"><?php echo str_replace("\r\n",'<br>',str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[1])); ?></td>
                           </tr>
                           <?php } ?>
