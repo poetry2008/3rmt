@@ -88,7 +88,6 @@ while ($row = mysql_fetch_array($sql_result)) {
   //获取商品图片
   $img_array = tep_products_images($row['products_id'],$row['site_id']);
   $image = $img_array[0];
-  $image = $image_row["products_image"];
   $price = $row["products_price"];
   $tax = $row["products_tax_class_id"];
 //  Add VAt if product subject to VAT (might not be perfect if you have different VAT zones)

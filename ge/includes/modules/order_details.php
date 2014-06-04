@@ -113,7 +113,7 @@
            $products[$i]['id'],true) .'</span>': '') .'</td>' ."\n";
     } else {
       echo '    <td align="center" class ="main" style=" padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' ;
-      echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) ? '<span style="font-size:10px">'.  tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) .'</span>' : '');
+      echo (!empty($product_info['products_exchange_rate']) && tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) ? '<span style="font-size:10px">'.  tep_get_full_count_in_order2(tep_get_quantity($products[$i]['id'],true), $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
     }
 

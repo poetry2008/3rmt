@@ -238,7 +238,8 @@ $preorder_products_array = array(
   //商品信息列表    
   echo '          <tr>' . "\n" .
     '            <td align="right" valign="top" class="confirmation_product_num_info">' .
-    $preorder_products_array['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) .'</span>': '') . '</td>' . "\n" .
+    $preorder_products_array['qty'] . '&nbsp;'. NUM_UNIT_TEXT.
+    (!empty($product_info['products_exchange_rate']) && tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $preorder_products_array['name'];
   if ($preorder_products_array['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($preorder_products_array['price'], $preorder_products_array['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';
