@@ -270,8 +270,7 @@
           tep_db_free_result($totals_email_query);
           //自定义费用
           if($totals_email_str != ''){
-			$tep_num = count(explode(' ',$totals_emal_str));
-			if($tep_num >=2){
+			if($num_array_totals_rows >=1){
             $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
 			}else{
             $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
@@ -279,7 +278,7 @@
           }else{
             $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
-          }
+		  }
           $comments = tep_replace_mail_templates($comments,$check_status['customers_email_address'],$check_status['customers_name'],$site_id);
           $comments = html_entity_decode(htmlspecialchars($comments));
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$comments), get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
@@ -556,10 +555,10 @@
              // $totals_email_str .= $totals_email_result['title'].str_repeat('　', intval((16 -strlen($totals_email_result['title']))/2)).'：'.$currencies->format($totals_email_result['value'])."\n";
             }
           }
-	tep_db_free_result($totals_email_query);
+        tep_db_free_result($totals_email_query);
           if($totals_email_str != ''){
 			$tep_num = count(explode(' ',$totals_emal_str));
-			if($tep_num >=2){
+			if($num_array_totals_rows >=1){
             $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
 			}else{
             $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
