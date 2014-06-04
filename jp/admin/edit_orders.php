@@ -1334,7 +1334,6 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
               $totals_email_str .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
-
           $email = '';
           $email .= $notify_comments_mail;
           $email_content = $products_ordered_mail;
@@ -1343,7 +1342,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
           $email = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $email);
           //自定义费用
           if($totals_email_str != ''){
-            $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+              $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
           }else{
             $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
             $email = str_replace('${CUSTOMIZED_FEE}','', $email);

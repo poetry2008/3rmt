@@ -1070,8 +1070,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
                 }
               }
             }
-
-
+		  $tep_num = count($update_totals);
           if ($customer_guest['is_send_mail'] != '1')
           {
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -1333,8 +1332,7 @@ if($address_error == false && $customer_guest['customers_guest_chk'] == '0'){
 
         //自定义费用
         if($totals_email_str != ''){
-	      $tep_num = count(explode(' ',$totals_email_str));
-		  if($tep_num >=2){
+		  if($tep_num >=1){
           $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
 		  }else{
           $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n".str_replace('▼','',$totals_email_str), $comments);
@@ -1606,9 +1604,8 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   $email_printing_order_title = str_replace('${SITE_NAME}',$orders_site_name_array['name'],$payment_name_string_title);
   //自定义费用
   if($totals_email_str != ''){
-	$tep_num = count(explode(' ',$totals_email_str));
-	 if($tep_num >=2){
-       $comments = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+	 if($tep_num >=1){
+       $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
 	 }else{
        $email_printing_order = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email_printing_order);
 	 }

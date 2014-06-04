@@ -799,9 +799,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         tep_db_free_result($search_products_name_query);
         //自定义费用列表 
         $totals_email_str = '';
-	$num_update_totals = 0;
+    	$num_update_totals = 0;
         foreach($update_totals as $value){
-	  $num_update_totals++;
+    	$num_update_totals++;
           if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
             //$totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
 		$t=0;
@@ -830,7 +830,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
        // $email = str_replace('${CUSTOMIZED_FEE}',$totals_email_str,$email);
 		//自定义费用
         if($totals_email_str != ''){
-          $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+			$tep_num = count($update_totals)-4;
+			if($tep_num >=1){
+              $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
+			}else{
+              $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+			}
         }else{
           $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
           $email = str_replace('${CUSTOMIZED_FEE}','', $email);

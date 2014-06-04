@@ -11675,7 +11675,7 @@ function tep_check_order_variable_data($o_id_array, $comment_info, $title_info, 
             }
           }
 		}
-
+/*
 	  	else {
           if ($is_list) {
             $error_array[$o_value][] = '${CUSTOMIZED_FEE}'; 
@@ -11683,6 +11683,7 @@ function tep_check_order_variable_data($o_id_array, $comment_info, $title_info, 
             $error_array[] = '${CUSTOMIZED_FEE}'; 
           }
 		}
+*/
       }
     } else {
       if ($is_list) {
@@ -12155,13 +12156,11 @@ function tep_check_edit_order_variable_data($o_id_info, $comment_info, $title_in
     
     $customized_fee_pos = strpos($comment_info, '${CUSTOMIZED_FEE}');   
     $t_customized_fee_pos = strpos($title_info, '${CUSTOMIZED_FEE}');   
-	/*
     if (($customized_fee_pos !== false) || ($t_customized_fee_pos !== false)) {
       if (!$is_customized_fee) {
         $error_array[] = '${CUSTOMIZED_FEE}'; 
       }
     }
-*/
   } else {
     $error_array[] = '${SHIPPING_TIME}'; 
     $error_array[] = '${PAY_DATE}'; 
@@ -12569,13 +12568,11 @@ function tep_check_new_order_variable_data($o_id_info, $fetch_date, $comment_inf
     
   $customized_fee_pos = strpos($comment_info, '${CUSTOMIZED_FEE}');   
   $t_customized_fee_pos = strpos($title_info, '${CUSTOMIZED_FEE}');   
-  /*
   if (($customized_fee_pos !== false) || ($t_customized_fee_pos !== false)) {
     if (!$is_customized_fee) {
       $error_array[] = '${CUSTOMIZED_FEE}'; 
     }
   }
-   */
   if (!empty($error_array)) {
     $error_tmp_array = array_unique($error_array);
     $error_str = '';

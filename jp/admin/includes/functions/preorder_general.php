@@ -2020,13 +2020,14 @@ function tep_check_preorder_variable_data($o_id_array, $comment_info, $title_inf
             }
           }
 		}
+		/*
 	  	else {
         if ($is_list) {
             $error_array[$o_value][] = '${CUSTOMIZED_FEE}'; 
           } else {
             $error_array[] = '${CUSTOMIZED_FEE}'; 
           }
-	  }
+		}*/
 		
       }
     } else {
@@ -2700,13 +2701,13 @@ function tep_check_new_preorder_variable_data($comment_info, $title_info, $c_sta
     
   $customized_fee_pos = strpos($comment_info, '${CUSTOMIZED_FEE}');   
   $t_customized_fee_pos = strpos($title_info, '${CUSTOMIZED_FEE}');
-  /*
+  
   if (($customized_fee_pos !== false) || ($t_customized_fee_pos !== false)) {
     if (!$is_customized_fee) {
       $error_array[] = '${CUSTOMIZED_FEE}'; 
     }
   }
-   */ 
+    
   if (!empty($error_array)) {
     $error_str = '';
     $error_tmp_array = array_unique($error_array);
