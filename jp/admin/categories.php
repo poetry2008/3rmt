@@ -2448,7 +2448,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </table>
                 </fieldset></td></tr>
 
-                <tr>
+                <tr  <?php if($disabled_flag ==1){?>style="display:none;"<?php }?>>
                 <td colspan="2"><fieldset>
                 <legend style="color:#FF0000 "><?php echo '共用基本情報';?></legend>
                 <table>
@@ -2491,18 +2491,24 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <?php
                     $products_info_under = explode('------',$pInfo->products_info_under); 
-                    foreach($products_info_under as $p_value){
+                    foreach($products_info_under as $k=>$p_value){
                       $products_info_under_array = explode('||||||',$p_value);
                 ?>
                 <tr><td><?php echo
                 tep_draw_input_field('products_info_under_title[]',
                     $products_info_under_array[0], ($disabled_flag ? '
                       class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;';?></td></tr>
-                <tr><td><?php echo
+                <tr>
+                <td><?php echo
                 tep_draw_textarea_field('products_info_under_contents[]', 'soft',
                     30, 3, $products_info_under_array[1],($disabled_flag ?
                       'class="readonly" readonly' : ''));
-                echo CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION?></td></tr>
+                if($k ==0){
+                echo CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION;
+                }
+                ?>
+                  </td>
+                  </tr>
                 <?php
                     }
                 ?>
@@ -2513,13 +2519,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_MANUFACTURER; ?></td>
-                <td><?php echo tep_draw_pull_down_menu('manufacturers_id',
-                    $manufacturers_array,
-                    isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'',
-                    ($disabled_flag ? 'class="readonly td_readonly"
-                     onfocus="this.lastIndex=this.selectedIndex"
-                     onchange="this.selectedIndex=this.lastIndex"' : 'style="width:
-                     296px;"')); ?></td>
+                <td><?php echo tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, isset($pInfo->manufacturers_id)?$pInfo->manufacturers_id:'', ($disabled_flag ? 'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
                 </tr>
                 <tr>
                 <tr>
@@ -2677,18 +2677,16 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 </table>
                 </fieldset></td></tr>
-
-                <tr>
+                <tr <?php if($disabled_flag ==1){?>style="display:none;"<?php }?>>
                 <td colspan="2"><fieldset>
                 <legend style="color:#FF0000 "><?php echo 'その他の共用情報';?></legend>
                 <table>
                 <tr>
               <?php
                 $products_shipping_time = '<select name="products_shipping_time"'.
-                ($disabled_flag ?  'class="readonly td_readonly"
+                ($disabled_flag ?  'class="readonly"
                  onfocus="this.lastIndex=this.selectedIndex"
-                 onchange="this.selectedIndex=this.lastIndex"' : 'style="width:
-                 296px;"').'>';
+                 onchange="this.selectedIndex=this.lastIndex"' : '').'>';
               $products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
               while($products_shipping_array = tep_db_fetch_array($products_shipping_query)){
 
@@ -2742,11 +2740,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT; ?></td>
                 <td> <?php echo tep_draw_pull_down_menu('relate_categories',
-                    tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($disabled_flag ? 'class="readonly td_readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : ' style="width: 300px;"').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
+                    tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($disabled_flag ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
                 <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
                 <span id="relate_products">
                 <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' =>TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($disabled_flag
- ? 'class="readonly td_readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : 'style="width: 300px;"').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)" id="relate_info"');?>
+ ? 'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)" id="relate_info"');?>
                 </span>
                 <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
                 <input type="hidden" name="products_price_def" value=""></td>
@@ -3285,6 +3283,19 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td><?php 
                     echo tep_draw_textarea_field('categories_footer_text['.$c_languages[$ci_tmp_num]['id'].']','soft',30, 3, (($_GET['action'] == 'edit_category')?tep_get_categories_footer_text($cInfo->categories_id,$c_languages[$ci_tmp_num]['id'], $s_site_id,true):'')).'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
                   ?></td>
+                </tr>
+                <tr>
+                <td align="left" valign="top"><?php echo CATEGORY_TEXT_TITLE;?></td>
+                <td>
+                <?php 
+                  echo
+                  tep_draw_input_field('seo_name['.$c_languages[$ci_tmp_num]['id'].']',
+                      (($_GET['action'] ==
+                        'edit_category')?tep_get_seo_name($cInfo->categories_id,
+                          $c_languages[$ci_tmp_num]['id'], $site_id, true):''),
+                      'class="td_input"');   
+                ?>
+                </td>
                 </tr>
 
                 <tr>

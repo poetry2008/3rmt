@@ -156,8 +156,8 @@ if ($category_depth == 'nested') {
   <?php
     if (isset($cPath_array)) { 
       if (!empty($seo_category['text_information'])) {
-        $old_info_arr = array('class="pageHeading"', '#STORE_NAME#'); 
-        $new_info_arr = array('class="pageHeading_long"', STORE_NAME); 
+        $old_info_arr = array('#STORE_NAME#'); 
+        $new_info_arr = array(STORE_NAME); 
         //分类描述内容
         $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
         foreach($seo_category_array as $seo_value){

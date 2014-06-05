@@ -121,19 +121,17 @@
   } else {
     include(DIR_WS_MODULES .'new_products.php'); 
   }
-  if (!empty($seo_category['seo_description'])) {
-    ?>
-    <div id="information02"> 
-    <div class="seo_small_top"></div>
-    <p> 
-    <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']); 
-    ?>
-    </p> 
-    <div class="seo_small_bottom"></div>
-    </div> 
-    <?php
-      }
-    ?>
+  if (!empty($seo_category['text_information'])) {
+        $old_info_arr = array('#STORE_NAME#'); 
+        $new_info_arr = array(STORE_NAME); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value;
+        }
+  } 
+?>
       <?php
       if (isset($cPath) && !ereg('_', $cPath)) { 
       $all_game_news = tep_get_categories_rss($current_category_id);
