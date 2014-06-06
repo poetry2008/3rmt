@@ -2353,6 +2353,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td valign="top">URL_WORDS</td>
                 <td><?php
                 echo tep_draw_input_field('romaji', $pInfo->romaji, 'id="promaji" class="td_input"'); 
+                echo TEXT_MUST;
                 echo '<input type="button" onclick = "p_is_set_romaji(\''.$current_category_id.'\',\''.$pInfo->products_id.'\',\''.$s_site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'. '<input type="button" onclick = "p_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"></font>';
               ?></td>
                 <td valign="top"><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
@@ -2403,14 +2404,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         <tr>
                         <td class="main"><?php echo tep_draw_input_field('products_previous_image_'.$p_i, $products_images_array['images_name']?$products_images_array['images_name']:'','class="td_input"') .'&nbsp;'. tep_draw_file_field('products_image_'.$p_i,false," onchange=\"change_image_text(this,'products_previous_image_".$p_i."',0)\" id='image_".$p_i."' style='display:none'" );
               echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.image_'.$p_i.'.click()"');
-                ?><a href="javascript:void(0);"><?php echo
-                  tep_html_element_button(OPTION_CLEAR,
-                      'onclick="clear_image(\'products_image_'.$p_i.'\',\'products_previous_image_'.$p_i.'\','.$products_images_array['images_id'].',0);"');?></a><input type="hidden" name="products_images_id[]" value="<?php echo $products_images_array['images_id'];?>"><?php 
-              if($p_i == 1){
-                echo tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_images(\''.TEXT_UPLOAD_FILE.'\',\''.OPTION_CLEAR.'\');"').'<input type="hidden" id="images_num" name="images_sum" value="'.$products_images_num.'">';
+                ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR,  'onclick="clear_image(\'products_image_'.$p_i.'\',\'products_previous_image_'.$p_i.'\','.$products_images_array['images_id'].',0);"');?></a><input type="hidden" name="products_images_id[]" value="<?php echo $products_images_array['images_id'];?>"><?php 
+              if($p_i == 1){ echo tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_images(\''.TEXT_UPLOAD_FILE.'\',\''.OPTION_CLEAR.'\');"').'<input type="hidden" id="images_num" name="images_sum" value="'.$products_images_num.'">';
               }
-             if(isset($products_images_array['images_name']) && tep_not_null($products_images_array['images_name'])){
-                          echo '<br>'.tep_info_image('products/'.$products_images_array['images_name'],$pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, $s_site_id).'<br>'."\n";
+             if(isset($products_images_array['images_name']) && tep_not_null($products_images_array['images_name'])){ echo '<br>'.tep_info_image('products/'.$products_images_array['images_name'],$pInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, $s_site_id).'<br>'."\n";
                           ?>
                           <?php } ?>
                             </td>
@@ -2422,8 +2419,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 ?>
                 <tr>
                    <td class="main"><?php echo tep_draw_input_field('products_previous_image_1', '') .'&nbsp;'. tep_draw_file_field('products_image_1',false," onchange=\"change_image_text(this,'products_previous_image_1',0)\" id='image_1' style='display:none'" );
-              echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.image_1.click()"');
-                ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image_1\',\'products_previous_image_1\',\'\',1);"');?></a><?php 
+              echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.image_1.click()"'); ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_image_1\',\'products_previous_image_1\',\'\',1);"');?></a><?php 
                 echo tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_images(\''.TEXT_UPLOAD_FILE.'\',\''.OPTION_CLEAR.'\');"').'<input type="hidden" id="images_num" name="images_sum" value="1">';
                 echo '</td></tr>';
                 }
@@ -2436,13 +2432,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 ?>
                   <tr>
                   <td width="135" class="main" valign="top"><?php if ($i == 0) echo TEXT_PRODUCTS_URL . '<br><small>' . TEXT_PRODUCTS_URL_WITHOUT_HTTP . '</small>'; ?></td>
-                  <td class="main"><?php echo tep_draw_input_field('products_url[' .
-                      $languages[$i]['id'] . ']',
-                      (isset($products_url[$languages[$i]['id']]) ?
-                       stripslashes($products_url[$languages[$i]['id']]) :
-                       (isset($pInfo->products_id)
-                        ?tep_get_products_url(isset($pInfo->products_id)?$pInfo->products_id:'',
-                          $languages[$i]['id'], $s_site_id):'')),'class="td_input"'); ?></td>
+                  <td class="main"><?php echo tep_draw_input_field('products_url[' . $languages[$i]['id'] . ']', (isset($products_url[$languages[$i]['id']]) ? stripslashes($products_url[$languages[$i]['id']]) : (isset($pInfo->products_id) ?tep_get_products_url(isset($pInfo->products_id)?$pInfo->products_id:'', $languages[$i]['id'], $s_site_id):'')),'class="td_input"'); ?></td>
                   </tr>
                   <?php }?>
                 </table>
@@ -2454,10 +2444,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <table>
                 <tr>
                 <td class="main" width="135"  valign="top"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
-                <td class="main" width="650"><?php echo tep_draw_input_field('products_model',
-                    isset($pInfo->products_model)?$pInfo->products_model:'',
-                    ($disabled_flag ? 'class="readonly td_readonly" readonly' :
-                     'class="td_input"')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
+                <td class="main" width="650"><?php echo tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($disabled_flag ? 'class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
                 </tr>
                 <tr>
                 <td  valign="top"><?php echo TEXT_PROJECT_DESCRIPTION_TOP;?></td>
@@ -2494,15 +2481,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     foreach($products_info_under as $k=>$p_value){
                       $products_info_under_array = explode('||||||',$p_value);
                 ?>
-                <tr><td><?php echo
-                tep_draw_input_field('products_info_under_title[]',
-                    $products_info_under_array[0], ($disabled_flag ? '
-                      class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;';?></td></tr>
+                <tr><td><?php echo tep_draw_input_field('products_info_under_title[]', $products_info_under_array[0], ($disabled_flag ? ' class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;';?></td></tr>
                 <tr>
-                <td><?php echo
-                tep_draw_textarea_field('products_info_under_contents[]', 'soft',
-                    30, 3, $products_info_under_array[1],($disabled_flag ?
-                      'class="readonly" readonly' : ''));
+                <td><?php echo tep_draw_textarea_field('products_info_under_contents[]', 'soft', 30, 3, $products_info_under_array[1],($disabled_flag ? 'class="readonly" readonly' : ''));
                 if($k ==0){
                 echo CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION;
                 }
@@ -2548,11 +2529,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     
                     }
                 ?>
-                <td><?php echo str_replace('#NAME','price_char',$price_select_str).
-                tep_draw_input_field('products_price',
-                    isset($pInfo->products_price)?(abs($pInfo->products_price)?abs($pInfo->products_price):'0'):'','
-                    onkeyup="clearNoNum(this)" id="pp"' . ($disabled_flag ?
-                      'class="readonly" readonly' : '')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
+                <td><?php echo str_replace('#NAME','price_char',$price_select_str). tep_draw_input_field('products_price', isset($pInfo->products_price)?(abs($pInfo->products_price)?abs($pInfo->products_price):'0'):'',' onkeyup="clearNoNum(this)" id="pp"' . ($disabled_flag ? 'class="readonly" readonly' : '')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_PRICE_LIST;?></td>
@@ -2645,9 +2622,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_RATE;?></td>
-                <td><?php echo str_replace('%s','',TEXT_RADICES_PRODUCT_INFO).tep_draw_input_field('products_rate',
-                    isset($pInfo->products_exchange_rate)?(abs($pInfo->products_exchange_rate)?abs($pInfo->products_exchange_rate):'0'):'','
-                    onkeyup="clearNoNum(this)" id="p_rate"' . ($disabled_flag ? 'class="readonly" readonly' : ''));?></td>
+                <td><?php echo str_replace('%s','',TEXT_RADICES_PRODUCT_INFO).tep_draw_input_field('products_rate', isset($pInfo->products_exchange_rate)?(abs($pInfo->products_exchange_rate)?abs($pInfo->products_exchange_rate):'0'):'',' onkeyup="clearNoNum(this)" id="p_rate"' . ($disabled_flag ? 'class="readonly" readonly' : ''));?></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_OPTION_TEXT;?></td>
@@ -2670,8 +2645,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 } else { 
                   $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."'"); 
                   $option_group = tep_db_fetch_array($option_group_raw);
-                  echo '<input type="text" name="hide_option_keyword"
-                    value="'.$option_group['name'].'" class="readonly td_readonly" readonly>'; 
+                  echo '<input type="text" name="hide_option_keyword" value="'.$option_group['name'].'" class="readonly td_readonly" readonly>'; 
                 } 
               ?></td>
                 </tr>
@@ -2683,10 +2657,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <table>
                 <tr>
               <?php
-                $products_shipping_time = '<select name="products_shipping_time"'.
-                ($disabled_flag ?  'class="readonly"
-                 onfocus="this.lastIndex=this.selectedIndex"
-                 onchange="this.selectedIndex=this.lastIndex"' : '').'>';
+                $products_shipping_time = '<select name="products_shipping_time"'. ($disabled_flag ?  'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'>';
               $products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
               while($products_shipping_array = tep_db_fetch_array($products_shipping_query)){
 
@@ -2996,11 +2967,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }else{
                 ?>
                 <tr>
-                   <td class="main"><?php echo
-                   tep_draw_input_field('products_cart_previous_image_1',
-                       '','class="td_input"') .'&nbsp;'. tep_draw_file_field('products_cart_image_1',false," onchange=\"change_image_text(this,'products_cart_previous_image_1',1)\" id='cart_image_1' style='display:none'" );
-              echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.cart_image_1.click()"');
-                ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_cart_image_1\',\'products_cart_previous_image_1\',\'\',1);"');?></a><?php 
+                   <td class="main"><?php echo tep_draw_input_field('products_cart_previous_image_1', '','class="td_input"') .'&nbsp;'. tep_draw_file_field('products_cart_image_1',false," onchange=\"change_image_text(this,'products_cart_previous_image_1',1)\" id='cart_image_1' style='display:none'" );
+              echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.cart_image_1.click()"'); ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_cart_image_1\',\'products_cart_previous_image_1\',\'\',1);"');?></a><?php 
                 echo tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_cart_images(\''.TEXT_UPLOAD_FILE.'\',\''.OPTION_CLEAR.'\');"').'<input type="hidden" id="cart_images_num" name="cart_images_sum" value="1">';
                 echo '</td></tr>';
                 }
@@ -3081,7 +3049,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       and c.categories_id = cd.categories_id 
                       and cd.language_id='" . $languages_id ."' 
                       and cd.site_id = ".((isset($_GET['s_site_id']) && $_GET['s_site_id'])?$_GET['s_site_id']:0)."
-                      order by sort_order, categories_name_list
+                      order by sort_order, categories_name
                       ";
                 $categories_res = tep_db_fetch_array(tep_db_query($categories_query_raw)); 
                 $category_childs = array('childs_count' => tep_childs_in_category_count($categories_res['categories_id'])); 
@@ -3150,12 +3118,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               for ($ci = 0, $cn = sizeof($c_languages); $ci < $cn; $ci++) {
                 ?> 
                   <tr>
-                  <td class="main" width="135" align="left" valign="top"><?php echo ($_GET['action'] == 'new_category')?TEXT_CATEGORIES_NAME:TEXT_EDIT_CATEGORIES_NAME;?></td>
+                  <td class="main" width="135" align="left" valign="top"><?php echo TEXT_EDIT_CATEGORIES_NAME;?></td>
                   <td class="main">
                   <?php echo
-                  tep_draw_input_field('categories_name['.$c_languages[$ci]['id'].']',
+                  tep_draw_input_field('categories_name_list['.$c_languages[$ci]['id'].']',
                       (($_GET['action'] ==
-                        'edit_category')?tep_get_category_name($cInfo->categories_id,
+                        'edit_category')?tep_get_category_name_list($cInfo->categories_id,
                           $c_languages[$ci]['id'], $s_site_id, true):''),'id="cname"
                       class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
                   ?>
@@ -3163,13 +3131,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   </tr>
 
                   <tr>
-                  <td class="main" width="135" align="left" valign="top"><?php echo ($_GET['action'] == 'new_category')?TEXT_CATEGORIES_NAME:TEXT_CATEGORIES_NAME_LIST;?></td>
+                  <td class="main" width="135" align="left" valign="top"><?php echo TEXT_CATEGORIES_NAME_LIST;?></td>
                   <td class="main">
                   <?php    
                   echo
-                  tep_draw_input_field('categories_name_list['.$c_languages[$ci]['id'].']',
+                  tep_draw_input_field('categories_name['.$c_languages[$ci]['id'].']',
                       (($_GET['action'] ==
-                        'edit_category')?tep_get_category_name_list($cInfo->categories_id,$c_languages[$ci]['id'],
+                        'edit_category')?tep_get_category_name($cInfo->categories_id,$c_languages[$ci]['id'],
                           $s_site_id, true):''),'id="cname" class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
                 ?>
                   </td>
@@ -3179,6 +3147,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <td class="main" align="left" valign="top"><?php echo TEXT_CATEGORY_ROMAN;;?></td>
                   <td class="main">
                   <?php echo tep_draw_input_field('romaji['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?tep_get_category_romaji($cInfo->categories_id, $c_languages[$ci]['id'], $s_site_id, true):''),'id="cromaji" class="td_input"');
+                echo TEXT_MUST;
                 echo '&nbsp';
                 if ($_GET['action'] == 'edit_category') {
                   echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$s_site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'; 
@@ -3288,12 +3257,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td align="left" valign="top"><?php echo CATEGORY_TEXT_TITLE;?></td>
                 <td>
                 <?php 
-                  echo
-                  tep_draw_input_field('seo_name['.$c_languages[$ci_tmp_num]['id'].']',
-                      (($_GET['action'] ==
-                        'edit_category')?tep_get_seo_name($cInfo->categories_id,
-                          $c_languages[$ci_tmp_num]['id'], $site_id, true):''),
-                      'class="td_input"');   
+                  echo tep_draw_input_field('seo_name['.$c_languages[$ci_tmp_num]['id'].']', (($_GET['action'] == 'edit_category')?tep_get_seo_name($cInfo->categories_id, $c_languages[$ci_tmp_num]['id'], $site_id, true):''), 'class="td_input"');   
                 ?>
                 </td>
                 </tr>
@@ -3328,7 +3292,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </fieldset>
 
 
-                <fieldset>
+                <fieldset <?php if($s_site_id!=0){?>style="display:none;"<?php }?>>
                 <legend style="color:#ff0000">共用カテゴリ情報</legend> 
                 <table border="0" cellspacing="0" cellpadding="2">
 <?php
@@ -3789,7 +3753,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $order_sort_str .= ' s.romaji '.$order_type.',';
                   break;
                 case 'name':
-                  $order_sort_str .= ' cd.categories_name_list '.$order_type.',';
+                  $order_sort_str .= ' cd.categories_name '.$order_type.',';
                   break;
                 case 'status':
                   $order_sort_str .= ' cd.categories_status '.$order_type.',';
@@ -3828,7 +3792,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                            and cd.language_id = '" . $languages_id . "' 
                            and cd.search_info like '%" . $_GET['search'] . "%' ";
                 $categories_query_raw .= 'and '.$sql_site_where;
-                $categories_query_raw .= " order by ".$order_sort_str."c.sort_order, cd.categories_name_list";
+                $categories_query_raw .= " order by ".$order_sort_str."c.sort_order, cd.categories_name";
               } else {
                 $categories_query_raw = "
                       select c.categories_id, 
@@ -3853,7 +3817,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       and c.categories_id = cd.categories_id and cd.site_id = s.id 
                       and cd.language_id='" . $languages_id ."' 
                       and ".$sql_site_where." 
-                      order by ".$order_sort_str."c.sort_order, cd.categories_name_list
+                      order by ".$order_sort_str."c.sort_order, cd.categories_name
                       ";
               }
               $categories_query = tep_db_query($categories_query_raw);
@@ -3941,7 +3905,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $categories_name_text .= '<div class="date_tdContent_right"><a href="'.tep_href_link(FILENAME_CATEGORIES, 'cPath='.$cPath.'&cID='.$categories['categories_id'].'&action=edit_category'.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).'&s_site_id='.$categories['site_id'].(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')).'">'.tep_image(DIR_WS_ICONS.'preview.gif', ICON_PREVIEW).'</a>&nbsp;'; 
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($s_site_id)?'&site_id='.$s_site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                 $categories_name_text .=  '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>&nbsp;'; 
-                $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '').'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . $categories['categories_name_list'].'&nbsp;' .  '</a></div>';
+                $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '').'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . $categories['categories_name'].'&nbsp;' .  '</a></div>';
                 $tmp_count_cnt = 9 + $count_dougyousya['cnt']; 
                 if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
                   $categories_colspan_params .= 'class="dataTableContent" align="right" colspan="'.$tmp_count_cnt.'" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).'&s_site_id='.$categories['site_id'].(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';

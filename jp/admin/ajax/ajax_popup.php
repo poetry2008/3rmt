@@ -46,7 +46,7 @@ if ($_GET['action'] == 'show_category_info') {
         $order_sort_str .= ' s.romaji '.$order_type.',';
       break;
       case 'name':
-        $order_sort_str .= ' cd.categories_name_list '.$order_type.',';
+        $order_sort_str .= ' cd.categories_name '.$order_type.',';
       break;
       case 'status':
         $order_sort_str .= ' cd.categories_status '.$order_type.',';
@@ -60,19 +60,19 @@ if ($_GET['action'] == 'show_category_info') {
     $categories_query_raw = "
       select c.categories_id, 
             cd.site_id,
-            cd.categories_name_list,
+            cd.categories_name,
             c.sort_order
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd, (select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
       where c.categories_id = cd.categories_id and cd.site_id = s.id 
         and cd.language_id = '" . $languages_id . "' 
         and cd.search_info like '%" . $_GET['search'] . "%' ";
     $categories_query_raw .= 'and '.$sql_site_where; 
-    $categories_query_raw .= " order by ".$order_sort_str."c.sort_order, cd.categories_name_list";
+    $categories_query_raw .= " order by ".$order_sort_str."c.sort_order, cd.categories_name";
   } else {
     $categories_query_raw = "
           select c.categories_id,
             cd.site_id,
-            cd.categories_name_list,
+            cd.categories_name,
             c.sort_order
           from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd, (select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
           where
@@ -80,7 +80,7 @@ if ($_GET['action'] == 'show_category_info') {
             and c.categories_id = cd.categories_id and cd.site_id = s.id 
             and cd.language_id='" . $languages_id ."' 
             and ".$sql_site_where." 
-            order by ".$order_sort_str."c.sort_order, cd.categories_name_list
+            order by ".$order_sort_str."c.sort_order, cd.categories_name
       ";
   }
   
@@ -110,12 +110,12 @@ if ($_GET['action'] == 'show_category_info') {
   
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
  
-  $category_info_raw = tep_db_query("select cd.categories_name_list, c.date_added, c.user_added, cd.last_modified, cd.user_last_modified from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = '".$_GET['current_cid']."' and c.categories_id = cd.categories_id and (cd.site_id = '0' or cd.site_id = '".$site_id."') order by cd.site_id desc limit 1");
+  $category_info_raw = tep_db_query("select cd.categories_name, c.date_added, c.user_added, cd.last_modified, cd.user_last_modified from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = '".$_GET['current_cid']."' and c.categories_id = cd.categories_id and (cd.site_id = '0' or cd.site_id = '".$site_id."') order by cd.site_id desc limit 1");
   $category_info_res = tep_db_fetch_array($category_info_raw); 
   
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => $category_info_res['categories_name_list']);
+  $heading[] = array('align' => 'left', 'text' => $category_info_res['categories_name']);
   $heading[] = array('align' => 'right', 'text' => $page_str);
   
   $buttons = array();
