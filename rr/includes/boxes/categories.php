@@ -12,7 +12,6 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
-             cd.categories_name_list, 
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
@@ -90,7 +89,6 @@ if ($ca_num == 0) {
                 select c.categories_id, 
                        cd.categories_status, 
                        cd.categories_name, 
-                       categories_name_list,
                        c.parent_id,
                        cd.site_id,
                        c.sort_order
@@ -121,7 +119,7 @@ if ($ca_num == 0) {
               <?php
               }
               ?>
-              <?php  echo $subcategory['categories_name_list'];?>
+              <?php  echo $subcategory['categories_name'];?>
               <?php
               if (isset($id)&&$id!=''&&in_array($subcategory['categories_id'], $id)) {
               ?>
@@ -138,7 +136,6 @@ if ($ca_num == 0) {
                   select c.categories_id, 
                          cd.categories_status, 
                          cd.categories_name, 
-                         categories_name_list,
                          c.parent_id,
                          cd.site_id,
                          c.sort_order
@@ -173,7 +170,7 @@ if ($ca_num == 0) {
               <?php
               }
               ?>
-              <?php  echo $_subcategory['categories_name_list'];?>
+              <?php  echo $_subcategory['categories_name'];?>
               <?php
               if (in_array($_subcategory['categories_id'], $id)) {
               ?>

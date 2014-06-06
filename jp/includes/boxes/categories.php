@@ -10,7 +10,6 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
-             cd.categories_name_list, 
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
@@ -50,7 +49,7 @@ $left_show_single = false;
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong>
             <?php }?>
-            <?php echo tep_add_rmt($category['categories_name_list']);?>
+            <?php echo tep_add_rmt($category['categories_name']);?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong>
             <?php }?>
@@ -166,7 +165,7 @@ $left_show_single = false;
           <?php }?>
           </ul>
       <?php } else {?>
-        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo tep_add_rmt($category['categories_name_list']);?></a></li>
+        <li class='l_m_category_li'><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo tep_add_rmt($category['categories_name']);?></a></li>
       <?php }?>
     <?php }?>
 

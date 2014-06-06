@@ -10,6 +10,7 @@ $categories_tab_query1 = tep_db_query("
            cd.categories_status, 
            cd.categories_image, 
            cd.categories_name, 
+           cd.categories_name_list, 
            cd.categories_meta_text, 
            cd.categories_image2 ,
            c.sort_order,
@@ -24,7 +25,7 @@ $categories_tab_query1 = tep_db_query("
        or site_id = '" . SITE_ID . "' 
     group by categories_id 
     having p.categories_status != '1' and p.categories_status != '3'  
-    order by sort_order,categories_name
+    order by sort_order,categories_name_list
     ");
 ?>
 <!-- categories_banner_text //-->
@@ -48,9 +49,10 @@ $categories_tab_query1 = tep_db_query("
   foreach($categories_arr as $cbt_arr){
     foreach($cbt_arr as $cbt_key => $cbt){
     echo '<div class="game_list"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['parent_id'].'_'.$cbt['categories_id']) . '">' . "\n";
-    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'], $cbt['categories_name'], 210, 48) . "\n";
+    echo tep_image(DIR_WS_IMAGES. 'categories/' .$cbt['categories_image'],
+        $cbt['categories_name_list'], 210, 48) . "\n";
     echo '<span>'; 
-    echo $cbt['categories_name']; 
+    echo $cbt['categories_name_list']; 
     echo  '</span></a></div>' . "\n";
     }
     echo '</tr>' . "\n" . '<tr align="center">' . "\n";

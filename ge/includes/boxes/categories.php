@@ -25,7 +25,7 @@ $categories_query = tep_db_query("
        or site_id = 0
     group by categories_id
     having c.categories_status != '1' and c.categories_status != '3' 
-    order by sort_order, categories_name
+    order by sort_order, categories_name_list
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
   $categories[] = $category;
@@ -49,7 +49,7 @@ $left_show_single = false;
             <?php if (in_array($category['categories_id'], $id)) {?>
               <strong> 
             <?php }?>
-            <?php echo $category['categories_name'];?>
+            <?php echo $category['categories_name_list'];?>
             <?php if (in_array($category['categories_id'], $id)) {?>
               </strong> 
             <?php }?>
@@ -63,6 +63,7 @@ $left_show_single = false;
                 select c.categories_id, 
                        cd.categories_status, 
                        cd.categories_name, 
+                       cd.categories_name_list, 
                        c.parent_id,
                        cd.site_id,
                        c.sort_order
@@ -76,7 +77,7 @@ $left_show_single = false;
                  or site_id = 0
               group by categories_id
               having c.categories_status != '1' and c.categories_status != '3' 
-              order by sort_order, categories_name
+              order by sort_order, categories_name_list
               ");
           while ($subcategory = tep_db_fetch_array($subcategories_query))  {
             $subcategories[] = $subcategory;
@@ -90,7 +91,7 @@ $left_show_single = false;
                   <?php if (in_array($subcategory['categories_id'], $id)) {?>
                   <strong> 
                   <?php }?>
-                  <?php echo $subcategory['categories_name'];?>
+                  <?php echo $subcategory['categories_name_list'];?>
                   <?php if (in_array($subcategory['categories_id'], $id)) {?>
                   </strong> 
                   <?php }?>
@@ -103,6 +104,7 @@ $left_show_single = false;
                   select c.categories_id, 
                          cd.categories_status, 
                          cd.categories_name, 
+                         cd.categories_name_list, 
                          c.parent_id,
                          cd.site_id,
                          c.sort_order
@@ -116,7 +118,7 @@ $left_show_single = false;
                    or site_id = ".SITE_ID."
                 group by categories_id
                 having c.categories_status != '1' and c.categories_status != '3' 
-                order by sort_order, categories_name
+                order by sort_order, categories_name_list
             ");
             while ($_subcategory = tep_db_fetch_array($_subcategories_query))  {
               $_subcategories[] = $_subcategory;
@@ -130,7 +132,7 @@ $left_show_single = false;
                     <?php if (in_array($_subcategory['categories_id'], $id)) {?>
                       <strong>
                     <?php }?>
-                      <?php echo $_subcategory['categories_name'];?>
+                      <?php echo $_subcategory['categories_name_list'];?>
                     <?php if (in_array($_subcategory['categories_id'], $id)) {?>
                       </strong>
                     <?php }?>
@@ -143,13 +145,18 @@ $left_show_single = false;
 
             <?php } else {?>
               <li class='l_m_categories_tree'>
-                <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>"><?php echo $subcategory['categories_name'];?></a>
+                <a href="<?php echo tep_href_link(FILENAME_DEFAULT,
+                'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>"><?php
+                  echo $subcategory['categories_name_list'];?></a>
               </li>
             <?php }?>
           <?php }?>
           </ul>
       <?php } else {?>
-        <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
+        <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo
+          tep_href_link(FILENAME_DEFAULT,
+              'cPath='.$category['categories_id']);?>"><?php echo
+          $category['categories_name_list'];?></a></li>
       <?php }?>
     <?php }?>
 

@@ -13356,9 +13356,9 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
   }
     ?>
     <input type="hidden" id="show_site_id" value="<?php echo implode('-',$show_site_list);?>">
-    <li class="site_filter_selected"><a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site_array[0]);?>"><img src="images/icons/common_stiles.gif"
-      alt="<?php echo TEXT_CHANGE_SITE_ALT;?>" title="<?php echo TEXT_CHANGE_SITE_ALT;?>"></a></li>
+    <a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site_array[0]);?>"><li class="site_filter_selected"><img src="images/icons/common_stiles.gif"
+      alt="<?php echo TEXT_CHANGE_SITE_ALT;?>" title="<?php echo TEXT_CHANGE_SITE_ALT;?>"></li></a>
   <?php
               foreach ($site_list_array as $sid => $svalue) {
                $site = array();
@@ -13414,24 +13414,24 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
     echo '<input type="hidden" id="unshow_site_list" value="">';
       }else{
     ?>
-    <li class="site_filter_selected"><a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=some');?>"><img src="images/icons/common_firststiles.gif"
+    <a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=some');?>"><li class="site_filter_selected"><img src="images/icons/common_firststiles.gif"
         alt="<?php echo TEXT_CHANGE_SITE_ALT;?>" title="<?php echo
-        TEXT_CHANGE_SITE_ALT;?>"></a></li>
+        TEXT_CHANGE_SITE_ALT;?>"></li></a>
     <?php
 
         foreach($site_array as $sk => $site){
           if($site==$_GET['site_id']){
     ?>
-      <li class="site_filter_selected"><a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><?php
-        echo $site_list_array[$sk];?></a></li>
+      <a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><li class="site_filter_selected"><?php
+        echo $site_list_array[$sk];?></li></a>
     <?php
           }else{
     ?>
-      <li ><a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><?php
-        echo $site_list_array[$sk];?></a></li>
+      <a href="<?php echo tep_href_link($filename,
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><li ><?php
+        echo $site_list_array[$sk];?></li></a>
     <?php
           }
         }
