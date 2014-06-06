@@ -263,7 +263,7 @@ function showimage($1) {
         $currencies->display_price(tep_get_price($product_info['products_price'],
               $product_info['products_price_offset'],
               tep_get_price($product_info['products_price'],$product_info['products_small_sum'],
-                '', $product_info['products_bflag']),
+                '', $product_info['products_bflag'],$product_info['price_type']),
               $product_info['products_bflag'], $product_info['price_type']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
      

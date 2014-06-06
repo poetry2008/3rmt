@@ -85,7 +85,7 @@
             and c.parent_id = '" . $new_products_category_id . "' 
             and p.products_id = pd.products_id 
         ".(BOX_NEW_PRODUCTS_DAY_LIMIT ? ( " and p.products_date_added > '" . date('Y-m-d H:i:s', time()-(BOX_NEW_PRODUCTS_DAY_LIMIT*86400)) . "'" ) : '')." 
-          order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = 0 group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc 
+          order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc 
           limit " . MAX_DISPLAY_NEW_PRODUCTS
       );
     }

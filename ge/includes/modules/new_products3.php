@@ -127,9 +127,16 @@ if (0 < $num_products) {
       $new_products['products_name'] = tep_get_products_name($new_products['products_id']);
       if (tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'])) {
         $p =  '<s>' .
-          $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
+          $currencies->display_price(tep_get_price($new_products['products_price'],
+                $new_products['products_price_offset'],
+                $new_products['products_small_sum'],
+                $new_products['products_bflag'],$new_products['price_type']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum']), tep_get_tax_rate($new_products['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
-        $p = $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id']));
+        $p =
+          $currencies->display_price(tep_get_price($new_products['products_price'],
+                $new_products['products_price_offset'],
+                $new_products['products_small_sum'],
+                $new_products['products_bflag'],$new_products['price_type']), tep_get_tax_rate($new_products['products_tax_class_id']));
       }
       //获取商品图片 
       $img_array =

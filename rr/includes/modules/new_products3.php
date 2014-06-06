@@ -27,7 +27,7 @@
                p.products_price_offset, 
                p.products_bflag, 
                p.products_small_sum,
-               p.price_type 
+               p.price_type
         from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
         where p.products_id = pd.products_id 
         order by pd.site_id DESC 
@@ -56,7 +56,7 @@
                           pd.products_status,
                           p.products_date_added, 
                           p.products_small_sum,
-                          p.price_type 
+                          p.price_type
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c, ".TABLE_PRODUCTS_DESCRIPTION." pd 
           where p.products_id = p2c.products_id 
             and p2c.categories_id = c.categories_id 
@@ -78,7 +78,7 @@
                           pd.products_status,
                           p.products_date_added, 
                           p.products_small_sum,
-                          p.price_type 
+                          p.price_type
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c, " .  TABLE_CATEGORIES . " c, ".TABLE_PRODUCTS_DESCRIPTION." pd 
           where p.products_id = p2c.products_id 
             and p2c.categories_id = c.categories_id 
