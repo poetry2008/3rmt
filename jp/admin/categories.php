@@ -4681,8 +4681,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $products_peer_params = '';
                         $products_peer_text = '';
                         if (empty($s_site_id)) {
-                          $products_peer_params .= "class='dataTableContent' align='center'";
-                          $products_peer_text .= "<table width='100%'><tr><td width='50%' align='right'><input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(check_in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':''))."></td><td align='left'> <span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span></td></tr></table> </td>";
+                          $products_peer_params .= "class='dataTableContent'
+                            align='right'";
+                          $products_peer_text .= "<input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(check_in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':''))."><span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span> </td>";
                         } else {
                           $products_peer_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';
                           $products_peer_text .= "<input type='radio' disabled='disabled' name='ro_".$target_cnt."_".$i."'".(check_in_dougyousya($dougyousya, $all_dougyousya) ?  ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">";
@@ -4730,9 +4731,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $products_price_text .= '<span style="display:none;" id="h_edit_p_'.$products['products_id'].'">'.$tmp_p_price.'</span>'; 
                 $products_table_content_row[] = array('params'=>$products_price_params, 'text'=>$products_price_text);
-                $products_set_price_params .= 'class="dataTableContent" align="center"';
+                $products_set_price_params .= 'class="dataTableContent" align="right"';
                 if (empty($s_site_id)) {
-                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><input type="hidden" name="hidden_products_id[]" value="'.$products['products_id'].'"><span id="price_error_'.  $products_count.'"></span>';
+                  $products_set_price_text .= '<input style="text-align:right" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><input type="hidden" name="hidden_products_id[]" value="'.$products['products_id'].'"><span id="price_error_'.  $products_count.'"></span>';
                 } else {
                   $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
                 }

@@ -1224,6 +1224,8 @@ $(function() {
     return group.name;
     }
     $("#option_keyword").autocomplete('ajax_orders.php?action=search_group', {
+minChars: 0,
+max: 500,
 multipleSeparator: '',
 dataType: "json",
 parse: function(data) {
@@ -1853,6 +1855,30 @@ function check_edit_product_profit() {
       }
     });
   } else {
+  //20140605 check categories product url_words
+    var sromaji = $('#promaji').val();
+    var p_flag;
+    if(sromaji==''){
+    alert(romaji_not_null);
+    p_flag =1;
+    }
+
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+sromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        alert(c_admin_char_set_info);
+        p_flag = 1;
+      }
+    }
+  });
+  if(p_flag == 1){
+    return false;
+  }
     document.forms.new_product.submit(); 
   }
 }
