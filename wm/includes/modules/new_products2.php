@@ -143,12 +143,9 @@ if (0 < $num_products) {
           <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
           <?php
           //获取商品图片 
-          $img_array =
-          tep_products_images($new_products['products_id'],$new_products['site_id']);
+          $img_array = tep_products_images($new_products['products_id'],$new_products['site_id']);
           ?>
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO,
-            'products_id=' . $new_products['products_id']) . '">' .
-              tep_image(DIR_WS_IMAGES . 'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
+            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' .  tep_image(DIR_WS_IMAGES . 'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
           </td>
           <td valign="top" style="padding-left:5px; ">
             <p class="main">

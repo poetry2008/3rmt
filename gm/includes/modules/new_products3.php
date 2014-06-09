@@ -127,7 +127,7 @@
     $col = 0;
   $info_box_contents = array();
 ?>
-<!-- new_products //-->
+<!-- new_products -->
 <?php 
 if (0 < $num_products) {
 ?>
@@ -163,4 +163,4 @@ if (0 < $num_products) {
   }
   }
 ?>
-<!-- new_products_eof //-->
+<!-- new_products_eof -->

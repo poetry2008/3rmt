@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- new_products //-->
+<!-- new_products -->
         <h2> 
           <table width="100%" border="0" align="center" cellpadding="0"
           cellspacing="0" summary="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"> 
@@ -90,11 +90,7 @@
 ?>
             <td width="250"><!-- products_id <?php echo $new_products['products_id'];?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
               <tr> 
-                <td width="<?php echo SMALL_IMAGE_WIDTH;?>"
-                style="padding-right:8px; " align="center"><?php echo '<a href="' .
-                tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
-                    $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES .
-                'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
+                <td width="<?php echo SMALL_IMAGE_WIDTH;?>" style="padding-right:8px; " align="center"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td> 
                 <td valign="top" style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$products_name.$ten.'</a>';?><br> 
                   <span class="red"><?php echo $currencies->display_price($new_products['products_price'], tep_get_tax_rate($new_products['products_tax_class_id'])) ; ?></span><br> 
                   <span class="smallText"><?php echo $description_view; ?>...</span></p></td> 
@@ -114,4 +110,4 @@
   
   }
 ?>
-<!-- new_products_eof //-->
+<!-- new_products_eof -->

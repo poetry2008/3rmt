@@ -10,6 +10,7 @@
       where categories_id = '".$categories_path[0]."' 
         and language_id = '".$languages_id."' 
         and (site_id = '".SITE_ID."' or site_id = '0')
+      order by site_id DESC
       ");
   $_categories = tep_db_fetch_array($_categories_query);
   $new_c_name = $_categories['categories_name'];
@@ -44,8 +45,9 @@
                pd.products_status,
                p.products_small_sum
         from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
-        where p.products_id = pd.products_id 
-        order by pd.site_id DESC) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc limit " . MAX_DISPLAY_NEW_PRODUCTS
+        where p.products_id = pd.products_id order by pd.site_id DESC
+        ) c where site_id = '".SITE_ID."' or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by products_date_added desc 
+        limit " . MAX_DISPLAY_NEW_PRODUCTS
     );
   } else {
     
@@ -91,15 +93,10 @@
       <table width="100%"  border="0" cellspacing="0" cellpadding="0">
         <?php
           //获取商品图片 
-          $img_array =
-          tep_products_images($new_products['products_id'],$new_products['site_id']);
+          $img_array = tep_products_images($new_products['products_id'],$new_products['site_id']);
           ?>
         <tr>
-          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2"
-          style="padding-right:8px; " align="center"><?php echo '<a href="' .
-          tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
-              $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES .
-          'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td>
+          <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>' ; ?></td>
             <td height="40" colspan="2" valign="top" style="padding-left:5px; "><p class="main"><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">'.$new_products['products_name'].'</a>';?><br>
                     <span class="smallText"><?php echo $description_view; ?>..</span></p></td>
               </tr>
@@ -115,7 +112,7 @@
       }
 ?>                </td>
                 <td align="right">
-        <?php echo '<span id="' . $new_products['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$new_products['products_id'].'&action=buy_now').'" onClick="sendData(\'' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $new_products['products_id']) . '\',\'' . displaychange . '\',\'' . $new_products['products_id'] . '\'); return false;"><img src="images/design/button/in_cart.jpg" border="0"></a></span>'; ?>        
+        <?php echo '<span id="' . $new_products['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$new_products['products_id'].'&action=buy_now').'"><img src="images/design/button/in_cart.jpg" border="0"></a></span>'; ?>        
         &nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/description.jpg',IMAGE_BUTTON_DEC);?></a></td>
               </tr>
             </table>

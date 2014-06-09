@@ -3,7 +3,7 @@
   $Id$
 */
 ?>
-<!-- new_products //-->
+<!-- new_products -->
         <h2> 
           <table width="100%" border="0" align="center" cellpadding="0"
           cellspacing="0" summary="<?php echo sprintf(TABLE_HEADING_NEW_PRODUCTS, strftime('%B'));?>"> 
@@ -86,8 +86,7 @@
       replace_store_name($product_details['products_description']));
   $description_view = strip_tags(mb_substr($description_array[0],0,63));
           //获取商品图片 
-          $img_array =
-          tep_products_images($new_products['products_id'],$new_products['site_id']);
+          $img_array = tep_products_images($new_products['products_id'],$new_products['site_id']);
 ?>
             <td width="250"><!-- products_id <?php echo $new_products['products_id'];?>--><table width="250"  border="0" cellspacing="0" cellpadding="0"> 
               <tr> 
@@ -111,4 +110,4 @@
   
   }
 ?>
-<!-- new_products_eof //-->
+<!-- new_products_eof -->
