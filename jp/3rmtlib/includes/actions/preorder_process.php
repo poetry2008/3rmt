@@ -136,7 +136,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           $replace_mail_array = array();
           foreach($preorder_mail_templates_array as $mail_key=>$mail_value){
 
-            if(strpos($mail_value,'${PRODUCTS_PRICE}') !== false || strpos($mail_value,'${SUB_TOTAL}') !== false || strpos($mail_value,'${ORDER_TOTAL}') !== false){
+            if(strpos($mail_value,'${PRODUCTS_PRICE}') !== false || strpos($mail_value,'${SUB_TOTAL}') !== false || strpos($mail_value,'${ORDER_TOTAL}') !== false || strpos($mail_value,'${CUSTOMIZED_FEE}') !== false){
 
               $replace_mail_array[] = "\r\n".$mail_value;
             }
@@ -188,7 +188,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             $replace_mail_array = array();
             foreach($preorder_mail_templates_array as $mail_key=>$mail_value){
 
-              if(strpos($mail_value,'${PRODUCTS_PRICE}') !== false || strpos($mail_value,'${SUB_TOTAL}') !== false || strpos($mail_value,'${ORDER_TOTAL}') !== false){
+              if(strpos($mail_value,'${PRODUCTS_PRICE}') !== false || strpos($mail_value,'${SUB_TOTAL}') !== false || strpos($mail_value,'${ORDER_TOTAL}') !== false || strpos($mail_value,'${CUSTOMIZED_FEE}') !== false){
 
                 $replace_mail_array[] = "\r\n".$mail_value;
               }
