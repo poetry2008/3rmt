@@ -132,6 +132,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           //预约完成邮件认证
           $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
           $preorder_email_text = $preorders_mail_array['contents']; 
+          $preorder_mail_templates_array = explode("\r\n",$preorder_email_text);
+          $replace_mail_array = array();
+          foreach($preorder_mail_templates_array as $mail_key=>$mail_value){
+
+            if(strpos($mail_value,'${PRODUCTS_PRICE}') !== false || strpos($mail_value,'${SUB_TOTAL}') !== false || strpos($mail_value,'${ORDER_TOTAL}') !== false){
+
+              $replace_mail_array[] = "\r\n".$mail_value;
+            }
+          }
+          $preorder_email_text = str_replace($replace_mail_array,'',$preorder_email_text);
           
           $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
         
@@ -174,6 +184,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             //预约完成邮件认证
             $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',SITE_ID);
             $preorder_email_text = $preorders_mail_array['contents']; 
+            $preorder_mail_templates_array = explode("\r\n",$preorder_email_text);
+            $replace_mail_array = array();
+            foreach($preorder_mail_templates_array as $mail_key=>$mail_value){
+
+              if(strpos($mail_value,'${PRODUCTS_PRICE}') !== false || strpos($mail_value,'${SUB_TOTAL}') !== false || strpos($mail_value,'${ORDER_TOTAL}') !== false){
+
+                $replace_mail_array[] = "\r\n".$mail_value;
+              }
+            }
+            $preorder_email_text = str_replace($replace_mail_array,'',$preorder_email_text);
             
             $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
             

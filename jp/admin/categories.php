@@ -2310,20 +2310,20 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <input type="hidden" name="back_site_id" value="<?php echo $site_id;?>">
                 <input type="hidden" name="products_user_added" value="<?php echo $user_info['name']?>"> 
                 <input type="hidden" name="products_user_update" value="<?php echo $user_info['name']?>">
+                <input type="hidden" name="product_categories[]" value="<?php echo $current_category_id;?>">
+                <input type="hidden" name="products_id" value="<?php echo $_GET['pID'];?>">
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
                 <td class="main" valign="top"><?php echo $_GET['s_site_id']?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></td>
                 <td class="main" align="right"><?php 
+                $delete_action = FILENAME_CATEGORIES.'?cPath=' .$cPath . '&page='.$_GET['page'].'&action=delete_product_confirm'.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '');
                 if(isset($_GET['show_type'])&&$_GET['show_type']=='one'){
-                  echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=one&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; 
-                  if($ocertify->npermission >= 15){
-                    echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=one&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'; 
-                  }
+                  echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=one&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>';  
                 }else{
-                  echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=some&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; 
-                  if($ocertify->npermission >= 15){
-                    echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=some&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'; 
-                  }
+                  echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=some&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>';  
+                }
+                if($ocertify->npermission >= 15 && isset($_GET['pID'])){
+                  echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_products_confirm(\''.TEXT_DELETE_PRODUCT_INTRO.'\',\''.$delete_action.'\');"') . '</a>'; 
                 }
                 if (empty($s_site_id)) {
                   echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
@@ -2562,8 +2562,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </td>
                 </tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_REAL_QUANTITY;?></td>
-                <td><input type="hidden" id="relate_radices" value="<?php echo
-                $pInfo->products_exchange_rate;?>"><?php echo tep_draw_input_field('products_rate_quantity',isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity/$pInfo->products_exchange_rate : ($_GET['action'] == 'new_product' ? '' : '0'),($disabled_flag ? 'class="readonly" readonly' : 'id="relate_qt" onkeyup="clearLibNum(this);rsync_num(this);"')).CATEGORY_UNIT_TEXT.tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="relate_qtr" onkeyup="clearLibNum(this);rsync_num(this);"')); ?></td>
+                <td><?php echo TEXT_PRODUCTS_QUANTITY_RATE.tep_draw_input_field('products_rate', isset($pInfo->products_exchange_rate)?(abs($pInfo->products_exchange_rate)?abs($pInfo->products_exchange_rate):'0'):'',' onkeyup="clearNoNum(this);rsync_num(this);" id="relate_radices"' . ($disabled_flag ? 'class="readonly" readonly' : '')).TEXT_PRODUCTS_REAL_QUANTITY_TEXT.tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity : ($_GET['action'] == 'new_product' ? '' : '0'), ($disabled_flag ? 'class="readonly" readonly' : 'id="relate_qtr" onkeyup="clearLibNum(this);rsync_num(this);"')).TEXT_PRODUCTS_QUANTITY_SUM.tep_draw_input_field('products_rate_quantity',isset($pInfo->products_real_quantity) && $pInfo->products_real_quantity != '' ? $pInfo->products_real_quantity/$pInfo->products_exchange_rate : ($_GET['action'] == 'new_product' ? '' : '0'),'class="readonly" readonly id="relate_qt"'); ?></td>
                 </tr>
                 <tr>
                 <td class="main" valign="top"><?php echo TEXT_PRODUCT_INVENTORY_STANDARD;?></td>
@@ -2622,7 +2621,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_RATE;?></td>
-                <td><?php echo str_replace('%s','',TEXT_RADICES_PRODUCT_INFO).tep_draw_input_field('products_rate', isset($pInfo->products_exchange_rate)?(abs($pInfo->products_exchange_rate)?abs($pInfo->products_exchange_rate):'0'):'',' onkeyup="clearNoNum(this)" id="p_rate"' . ($disabled_flag ? 'class="readonly" readonly' : ''));?></td>
+                <td><?php echo '11';?></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_OPTION_TEXT;?></td>
@@ -3001,9 +3000,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 echo tep_eof_hidden(); 
               if(isset($_GET['show_type'])&&$_GET['show_type']=='one'){
-                echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=one&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=one&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>';  
               }else{
-                echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=some&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.$site_id.'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=some&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.$site_id.'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>';  
+              }
+              if($ocertify->npermission >= 15 && isset($_GET['pID'])){
+                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_products_confirm(\''.TEXT_DELETE_PRODUCT_INTRO.'\',\''.$delete_action.'\');"') . '</a>';
               }
               if (empty($s_site_id)) {
                 echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';

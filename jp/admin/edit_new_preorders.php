@@ -698,7 +698,20 @@
         $preorders_mail_array = tep_get_mail_templates('PREORDER_MAIL_CONTENT',$order->info['site_id']);
         $preorder_email_subject = str_replace('${SITE_NAME}', get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $preorders_mail_array['title']); 
         $preorder_email_text = $preorders_mail_array['contents']; 
-        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}');
+        $preorder_mail_templates_array = explode("\r\n",$preorder_email_text);
+        $replace_mail_array = array();
+        $mail_products_price = (tep_get_bflag_by_product_id((int)$orders_products_id) ? 0 - $products_details["p_price"] : $products_details["p_price"]);
+        $mail_products_subtotal = $_SESSION['create_preorder']['orders_total']['ot_subtotal']['value'];
+        $mail_products_total = $_SESSION['create_preorder']['orders_total']['ot_total']['value'];
+        foreach($preorder_mail_templates_array as $mail_key=>$mail_value){
+
+          if((strpos($mail_value,'${PRODUCTS_PRICE}') !== false && $mail_products_price == 0) || (strpos($mail_value,'${SUB_TOTAL}') !== false && $mail_products_subtotal == 0) || (strpos($mail_value,'${ORDER_TOTAL}') !== false && $mail_products_total == 0)){
+
+            $replace_mail_array[] = "\r\n".$mail_value;
+          }
+        }
+        $preorder_email_text = str_replace($replace_mail_array,'',$preorder_email_text);
+        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${PAYMENT}', '${USER_NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_NUMBER}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}','${PRODUCTS_PRICE}','${SUB_TOTAL}','${ORDER_TOTAL}');
         
         $max_op_len = 0;
         $max_op_array = array();
@@ -716,7 +729,7 @@
             $mail_option_str .= $o_at_value['option_info']['title'].str_repeat('　', intval($max_op_len - mb_strlen($o_at_value['option_info']['title'], 'utf-8'))).':'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $o_at_value['option_info']['value'])."\n"; 
           }
         }
-        $pre_replace_info_arr = array($num_product_res['products_name'], $num_product, $order->info['payment_method'], $order->customer['name'], get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $site_url_res['url'], $order->info['orders_id'], '', $mail_option_str);
+        $pre_replace_info_arr = array($num_product_res['products_name'], $num_product, $order->info['payment_method'], $order->customer['name'], get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $site_url_res['url'], $order->info['orders_id'], '', $mail_option_str, $mail_products_price, $mail_products_subtotal, $mail_products_total);
         
         $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
         
