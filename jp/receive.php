@@ -50,6 +50,11 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
     orders_updated($orders['orders_id']);
     tep_order_status_change($orders['orders_id'], $orders_status_id);
     // success
+    $telecom = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$w_option."' and type='success'"));
+    $telecom_type = 'success';
+    if($telecom){
+      $telecom_type = 'null';
+    }
     tep_db_perform('telecom_unknow', array(
       '`option`'      => $w_option,
       'username'      => $w_username,
@@ -57,13 +62,18 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'telno'         => $w_telno,
       'money'         => $w_money,
       'rel'           => $w_rel,
-      'type'          => 'success',
+      'type'          => $telecom_type,
       'date_added'    => 'now()',
       'last_modified' => 'now()'
     ));
 
   } else {
     // 不清楚
+    $telecom = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$w_option."' and type='success'"));
+    $telecom_type = 'success';
+    if($telecom){
+      $telecom_type = 'null';
+    }
     tep_db_perform('telecom_unknow', array(
       '`option`' => $w_option,
       'username' => $w_username,
@@ -71,7 +81,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'telno' => $w_telno,
       'money' => $w_money,
       'rel' => $w_rel,
-      'type' => ($w_rel == 'yes' && $w_option =="")?'success':'null',//option是空白的时候手动做成
+      'type' => ($w_rel == 'yes' && $w_option =="")?$telecom_type:'null',//option是空白的时候手动做成
       'date_added' => 'now()',
       'last_modified' => 'now()'
 
