@@ -667,19 +667,33 @@
 
         //自定义费用列表 
         $totals_email_str = '';
+        $totals_email_num = 0;
+        foreach($update_totals as $value){
+
+          if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
+            $totals_email_num++;
+          }
+        }
+        $totals_email_i = 0;
         foreach($update_totals as $value){
 
           if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
 
-            $totals_email_str .= $value['title'].str_repeat('　', intval((16 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+            $totals_email_i++;
+            if($totals_email_i != $totals_email_num){ 
+              $totals_email_str .= $value['title'].str_repeat('　', intval((18 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+            }else{
+              $totals_email_str .= $value['title'].str_repeat('　', intval((18 -strlen($value['title']))/2)).'：'.$currencies->format($value['value']);
+            }
           }
         }
         if($totals_email_str != ''){
-              $email = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email);
+          $email = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email);
         }else{
           $email = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $email); 
           $email = str_replace('${CUSTOMIZED_FEE}','', $email);
         }
+
         $s_status_raw = tep_db_query("select nomail from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'");  
         $s_status_res = tep_db_fetch_array($s_status_raw);
         $email = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$email);
@@ -732,13 +746,40 @@
         $pre_replace_info_arr = array($num_product_res['products_name'], $num_product, $order->info['payment_method'], $order->customer['name'], get_configuration_by_site_id('STORE_NAME', $order->info['site_id']), $site_url_res['url'], $order->info['orders_id'], '', $mail_option_str, $mail_products_price, $mail_products_subtotal, $mail_products_total);
         
         $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
+
+        //自定义费用列表 
+        $totals_email_str = '';
+        $totals_email_num = 0;
+        foreach($update_totals as $value){
+
+          if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
+            $totals_email_num++;
+          }
+        }
+        $totals_email_i = 0;
+        foreach($update_totals as $value){
+
+          if($value['title'] != '' && $value['value'] != '' && $value['class']== 'ot_custom'){
+
+            $totals_email_i++;
+            if($totals_email_i != $totals_email_num){ 
+              $totals_email_str .= $value['title'].str_repeat('　', intval((18 -strlen($value['title']))/2)).'：'.$currencies->format($value['value'])."\n";
+            }else{
+              $totals_email_str .= $value['title'].str_repeat('　', intval((18 -strlen($value['title']))/2)).'：'.$currencies->format($value['value']);
+            }
+          }
+        }
+        if($totals_email_str != ''){
+          $preorder_email_text = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $preorder_email_text);
+        }else{
+          $preorder_email_text = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $preorder_email_text); 
+          $preorder_email_text = str_replace('${CUSTOMIZED_FEE}','', $preorder_email_text);
+        }  
         
         $preorder_email_text = str_replace(TEXT_MONEY_SYMBOL,SENDMAIL_TEXT_MONEY_SYMBOL,$preorder_email_text);
-        $email = tep_replace_mail_templates($email,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']);
-        $email = html_entity_decode(htmlspecialchars($email));
-        tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$email), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
-
         $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$order->customer['email_address'],$order->customer['name'],$order->info['site_id']); 
+        tep_mail($order->customer['name'], $order->customer['email_address'], $preorder_email_subject, str_replace($num_product_res['products_name'],$search_products_name_array['products_name'],$preorder_email_text), get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']), $order->info['site_id']);
+
         tep_mail('', get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_subject, $preorder_email_text, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']); 
       }
       $customer_notified = '1';
