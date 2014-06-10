@@ -103,7 +103,7 @@
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
       $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, $preorders_mail_array['title']);
-      
+
       $preorder_email_text = tep_replace_mail_templates($preorder_email_text,$preorder_res['customers_email_address'],$preorder_res['customers_name']); 
       if ($exists_customer['is_send_mail'] != '1') {
         tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'], $pre_email_text, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
