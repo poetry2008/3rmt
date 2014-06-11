@@ -304,3 +304,5 @@ define('TEXT_CATEGORIES_NAME_LIST','カテゴリー名リスト');
 define('CATEGORY_SEO_KEYWORDS_TEXT','メタのキーワード');
 define('CATEGORY_SITE_TYPE_INFO_TEXT','サイト別カテゴリの情報');
 define('CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION','#HTMLによる入力可<br/>パラメータ 　在庫レート  ${RATE}');
+define('TEXT_PRODUCTS_QUANTITY_RATE','レート');
+define('TEXT_PRODUCTS_QUANTITY_SUM','表示数');
