@@ -1605,7 +1605,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
   //自定义费用
   if($totals_email_str != ''){
 	 if($tep_num >=1){
-       $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $comments);
+       $email_printing_order = str_replace('${CUSTOMIZED_FEE}',str_replace('▼','',$totals_email_str), $email_printing_order);
 	 }else{
        $email_printing_order = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $email_printing_order);
 	 }
