@@ -1199,8 +1199,20 @@ function get_cart_products(){
       if(this.checked)
       tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start);
       });
+  //The results confirm products_cart_buyflag radio change to checkbox
   if (tagstr != '')
-    window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
+	  var inputs= document.getElementsByName("products_cart_buyflag[]");
+      var i=0;
+      var str="";
+  for(i=0;i<inputs.length;i++){
+	  if(inputs[i].checked){
+		str += inputs[i].value + ",";
+	  }
+  }
+  if (inputs.length > 0) {
+     str = str.substr(0, str.length - 1);
+  }
+    window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+str+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
 //open and close categories tree 
 function display(){

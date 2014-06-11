@@ -567,6 +567,8 @@ if (isset($_GET['action']) && $_GET['action']) {
           'price_type'=>tep_db_prepare_input($_POST['price_select']),
           );
       //处理 发售日 时间
+	  //处理买入售出
+      $_POST['products_cart_buyflag'] =  implode(',',$_POST['products_cart_buyflag']);
       if(!isset($s_site_id)||$s_site_id==''||$s_site_id==0||(isset($_POST['create_type'])&&$_POST['create_type']=='sub_site')){
         $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
         $sql_data_array = array_merge($sql_data_array,
@@ -577,8 +579,6 @@ if (isset($_GET['action']) && $_GET['action']) {
               'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
               'sort_order' => tep_db_prepare_input($_POST['sort_order'])));
       }
-
-
 
       //把最大库存、最小库存放入数组，以备保存到数据库
       $inventory_max = $inventory_max_1.'|||'.$inventory_max_2.'|||'.$inventory_select_1;
@@ -2878,12 +2878,16 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></td>
-                <td><input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(0);"><?php echo
-                                    TEXT_PRODUCT_CARTFLAG_NO;?><input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(1);"><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
+				<td>
+                    <input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(1);"><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
+                    <input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(0);"><?php echo TEXT_PRODUCT_CARTFLAG_NO;?>
                 </td></tr>
                 <tr id="cattags_list"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                 <td>&nbsp;</td>
-                <td nowrap="nowrap"><input type="radio" <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag" value='0'<?php if(!$pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?><input type="radio"  <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag" value='1'<?php if($pInfo->products_cart_buyflag){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td></tr>
+			  <?php  $flag_str = $pInfo->products_cart_buyflag;
+                  $cart_buyflag_arr = explode(',',$flag_str);
+              ?>
+				<td nowrap="nowrap"><input type="checkbox" <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='0'<?php if(in_array("0",$cart_buyflag_arr,true)|| !in_array("1",$cart_buyflag_arr,true)){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?><input type="checkbox"  <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='1'<?php if(in_array("1",$cart_buyflag_arr,true)){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td></tr>
                 <tr><td></td><td> 
                                   <?php 
                                   $carttag_array = array();
