@@ -5975,7 +5975,7 @@ function tep_display_google_results($from_url='', $c_type=false){
       where 
       p2c.tags_id in (".join(',',$tid).")
       and p2c.tags_id = p2t.tags_id
-      and p.products_bflag = ".$buyflag."
+      and p.products_bflag in(".$buyflag.")
       and p.products_id = p2t.products_id
       and p.products_id != ".$pid."
       "; 

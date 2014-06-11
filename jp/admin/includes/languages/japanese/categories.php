@@ -34,9 +34,9 @@ define('TEXT_PRODUCT_DATE_AVAILABLE', 'この商品は %s に入荷予定です�
 
 define('TEXT_EDIT_INTRO', '必要な変更を加えてください');
 define('TEXT_EDIT_CATEGORIES_ID', 'カテゴリーID:');
-define('TEXT_EDIT_CATEGORIES_NAME', 'カテゴリー名');
+define('TEXT_EDIT_CATEGORIES_NAME', 'カテゴリー名:');
 define('TEXT_EDIT_CATEGORIES_IMAGE', 'カテゴリー画像:');
-define('TEXT_EDIT_SORT_ORDER', '整列順');
+define('TEXT_EDIT_SORT_ORDER', '整列順:');
 
 define('TEXT_INFO_COPY_TO_INTRO', 'この商品をコピーする先のカテゴリーを選んでください');
 define('TEXT_INFO_CURRENT_CATEGORIES', '現在のカテゴリー');
@@ -54,6 +54,7 @@ define('TEXT_DELETE_PRODUCT_INTRO', '本当にこの商品を削除しますか�
 
 define('TEXT_DELETE_WARNING_CHILDS', '警告: このカテゴリーには %s 個のサブカテゴリーがリンクされています!');
 define('TEXT_DELETE_WARNING_PRODUCTS', '警告: このカテゴリーには %s 個の商品がリンクされています!');
+
 define('TEXT_MOVE_PRODUCTS_INTRO', '%s を移動する先のカテゴリーを選んでください');
 define('TEXT_MOVE_CATEGORIES_INTRO', '%s を移動する先のカテゴリーを選んでください');
 define('TEXT_MOVE', '%s の移動先:');
@@ -159,10 +160,10 @@ define('TEXT_PRODUCT_IMAGE_DEL_CONFIRM', 'この画像を削除しますか？')
 define('TEXT_PRODUCT_IMAGE_DEL_TEXT', 'この画像を削除する');
 define('TEXT_PRODUCT_COLOR_IMAGE_TITLE', 'カラー別画像');
 define('TEXT_PRODUCT_CARTFLAG_TITLE', '買い忘れ商品');
-define('TEXT_PRODUCT_CARTFLAG_NO', 'いいえ');
-define('TEXT_PRODUCT_CARTFLAG_YES', 'はい');
-define('TEXT_PRODUCT_BUYFLAG_SELL', '販売');
-define('TEXT_PRODUCT_BUYFLAG_BUY', '買取');
+define('TEXT_PRODUCT_CARTFLAG_NO', 'Off');
+define('TEXT_PRODUCT_CARTFLAG_YES', 'On');
+define('TEXT_PRODUCT_BUYFLAG_SELL', 'プラス');
+define('TEXT_PRODUCT_BUYFLAG_BUY', 'マイナス');
 define('TEXT_PRODUCT_BUYFLAG_OPSITE_SELECT', '逆選択');
 define('TEXT_PRODUCT_CART_MIN_TEXT', 'バナー最小在庫数');
 define('TEXT_PRODUCT_CARTORDER_TEXT', 'バナー表示順');
@@ -306,3 +307,4 @@ define('CATEGORY_SITE_TYPE_INFO_TEXT','サイト別カテゴリの情報');
 define('CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION','#HTMLによる入力可<br/>パラメータ 　在庫レート  ${RATE}');
 define('TEXT_PRODUCTS_QUANTITY_RATE','レート');
 define('TEXT_PRODUCTS_QUANTITY_SUM','表示数');
+define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
