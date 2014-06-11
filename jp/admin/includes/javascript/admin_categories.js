@@ -404,6 +404,13 @@ function rsync_num(obj){
     new_num1 = Math.floor(num2/radices);
     $('#relate_qt').val(new_num1);
   }
+  if(obj.id == 'relate_radices'){
+    num2 = $("#relate_qtr").val();
+    radices = obj.value;
+    radices = radices == '' ? 1 : radices;
+    new_num1 = Math.floor(num2/radices);
+    $('#relate_qt').val(new_num1);
+  }
 }
 
 
@@ -1835,7 +1842,7 @@ function check_edit_product_profit() {
   var flag_type = $('select[name=price_char]').val(); 
   flag_type = flag_type == 1 ? 0 : 1;
   var relate_value = $('#relate_info').val(); 
-  var num_value = $('#p_rate').val(); 
+  var num_value = $('#relate_radices').val(); 
   if (relate_value != '0') {
     $.ajax({
       type: 'POST',
@@ -1970,4 +1977,13 @@ function load_categoreis_tree(cpath){
       categories_tree_show = true;
     }
   });
+}
+//delete products
+function check_delete_products_confirm(str,action){
+
+  if(confirm(str)){
+ 
+    document.forms.new_product.action = action;
+    document.forms.new_product.submit();
+  }
 }
