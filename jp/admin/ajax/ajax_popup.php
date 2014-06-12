@@ -900,7 +900,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
         array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_UNIVALENT_TEXT.'</b>'),
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>'),
         ),'mouse' => true 
       );      
 
@@ -988,7 +988,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
         array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_UNIVALENT_TEXT.'</b>')
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>')
         ),'mouse' => true
       );      
     if (tep_db_num_rows($relate_order_history_query)) {
@@ -2934,7 +2934,7 @@ width:20%;"'))
     if(!empty($checked_temp_array)){
       $checked_str = in_array($tags_array['tags_id'],$checked_temp_array) ? ' checked="checked"' : '';
     }
-    $tags_list_str .= '<td width="20%"><input type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.$disabled.'>'.$tags_array['tags_name'].'</td>';
+    $tags_list_str .= '<td width="20%"><input class="carttags" type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.$disabled.'>'.$tags_array['tags_name'].'</td>';
     if($tags_i % 5 == 0){
 
       $tags_list_str .= '</tr><tr>';

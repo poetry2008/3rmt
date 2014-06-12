@@ -243,11 +243,11 @@ if (isset($_GET['action']) && $_GET['action']) {
          
 
         if(!tep_check_romaji($sql_data_array['romaji'])){
-          $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+          $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
         if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id=cd.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$s_site_id."'"))) {
-          $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+          $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
 
@@ -287,11 +287,11 @@ if (isset($_GET['action']) && $_GET['action']) {
         }
       } elseif ($_GET['action'] == 'update_category') {
         if(!tep_check_romaji($sql_data_array['romaji'])){
-          $messageStack->add_session(TEXT_ROMAN_ERROR, 'error');
+          $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
         if (tep_db_num_rows(tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." cd,".TABLE_CATEGORIES." c where cd.categories_id=c.categories_id and c.parent_id='".$current_category_id."' and cd.romaji='".$sql_data_array['romaji']."' and cd.site_id='".$s_site_id."' and c.categories_id!='".$categories_id."'"))) {
-          $messageStack->add_session(TEXT_ROMAN_EXISTS, 'error');
+          $messageStack->add_session(TEXT_ROMAJI_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_CATEGORIES));
         }
         tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\' and language_id = \'' . $languages[$i]['id'] . '\' and site_id = \''.$s_site_id.'\'');
@@ -415,17 +415,17 @@ if (isset($_GET['action']) && $_GET['action']) {
       if (empty($productsId)) {
         if (trim($_POST['romaji']) == '') {
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_NOT_NULL;
+          $romaji_error_str = TEXT_ROMAJI_NOT_NULL;
         }
 
         if(!tep_check_symbol($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = CATEGORY_ROMAN_ERROR_NOTICE;
+          $romaji_error_str = CATEGORY_ROMAJI_ERROR_NOTICE;
         }
 
         if(!tep_check_romaji($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_ERROR;
+          $romaji_error_str = TEXT_ROMAJI_ERROR;
         }
         if (isset($_GET['cPath'])) {
           $ca_arr = explode('_', $_GET['cPath']); 
@@ -433,27 +433,27 @@ if (isset($_GET['action']) && $_GET['action']) {
           $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$s_site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."'"); 
           if (tep_db_num_rows($exist_ro_query)) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAJI_EXISTS;
           }
         } else {
           if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$s_site_id."'"))) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAJI_EXISTS;
           }
         }
       } else {
         tep_isset_eof();
         if (trim($_POST['romaji']) == '') {
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_NOT_NULL;
+          $romaji_error_str = TEXT_ROMAJI_NOT_NULL;
         }
         if(!tep_check_symbol($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = CATEGORY_ROMAN_ERROR_NOTICE;
+          $romaji_error_str = CATEGORY_ROMAJI_ERROR_NOTICE;
         }
         if(!tep_check_romaji($_POST['romaji'])){
           $romaji_error = 1; 
-          $romaji_error_str = TEXT_ROMAN_ERROR;
+          $romaji_error_str = TEXT_ROMAJI_ERROR;
         }
         if (isset($_GET['cPath'])) {
           $ca_arr = explode('_', $_GET['cPath']); 
@@ -461,12 +461,12 @@ if (isset($_GET['action']) && $_GET['action']) {
           $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$s_site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."' and pd.products_id != '".$_GET['pID']."'"); 
           if (tep_db_num_rows($exist_ro_query)) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAJI_EXISTS;
           }
         } else {
           if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$s_site_id."' and products_id != '".$_GET['pID']."'"))) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAN_EXISTS;
+            $romaji_error_str = TEXT_ROMAJI_EXISTS;
           }
         }
       }
@@ -2042,7 +2042,7 @@ $belong = str_replace('0_','',$belong);
 	var timeout_relogin = '<?php echo TEXT_TIMEOUT_RELOGIN;?>';
 	var ale_text = '<?php echo PIC_MAE_ALT_TEXT;?>';
 	var name_is_not_null = '<?php echo ERROR_CATEGORY_NAME_IS_NOT_NULL;?>';	
-	var romaji_not_null = '<?php echo TEXT_ROMAN_NOT_NULL;?>';
+	var romaji_not_null = '<?php echo TEXT_ROMAJI_NOT_NULL;?>';
 	var product_name_is_not_null = '<?php echo ERROR_PRODUCT_NAME_IS_NOT_NULL;?>';
 	var js_chae_error = '<?php echo CATEGORY_JS_CHAE_ERROR_TEXT;?>';
 	var js_update_notice = '<?php echo CATEGORY_JS_UPDATE_NOTICE;?>';
@@ -4969,7 +4969,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               if ($ocertify->npermission > 7) { 
                  $categoties_list_end_text .= '<input type="hidden" name="b[]" value="'.CATEGORY_BUTTON_CAL_SETTING.'"> ';
               }
-              $categoties_list_end_text .= '<input type="hidden" value="'.CATEGORY_BUTTON_WHOLESALER_PRICE.'" name="d[]">';
+              $categoties_list_end_text .= '<input type="hidden" value="'.CATEGORY_BUTTON_XIEYE_PRICE.'" name="d[]">';
               $categoties_list_end_text .= '<input type="hidden" name="flg_up" value="">';
               $categoties_list_end_text .= tep_eof_hidden();
               $categories_table_row[] = array('text'=>array('params'=>$categories_list_end_params,'text'=>$categoties_list_end_text));
@@ -5045,7 +5045,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <?php if ($ocertify->npermission > 7) { ?>
                     <input type='button' value='<?php echo CATEGORY_BUTTON_CAL_SETTING;?>' onClick="cleat_set('set_bairitu.php')">
                       <?php }?>
-                      &nbsp;<input type='button' value='<?php echo CATEGORY_BUTTON_WHOLESALER_PRICE;?>' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'].'|||'.str_replace('&','|||',tep_get_all_get_params(array('action','cPath')));?>')">
+                      &nbsp;<input type='button' value='<?php echo CATEGORY_BUTTON_XIEYE_PRICE;?>' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'].'|||'.str_replace('&','|||',tep_get_all_get_params(array('action','cPath')));?>')">
                       &nbsp;<input type='button' name='x' value="<?php echo CATEGORY_BUTTON_ALL_UPDATE;?>" onClick="all_update('<?php echo $ocertify->npermission;?>')"> 
                       <?php }?> 
 					  </div>
