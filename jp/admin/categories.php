@@ -636,7 +636,9 @@ if (isset($_GET['action']) && $_GET['action']) {
           } 
         }
 
-        $_POST['carttags'] = $_SESSION['carttags_id_list_array'][$products_id_flag];
+		if(isset($_SESSION['carttags_id_list_array'][$products_id_flag])&& !empty($_SESSION['carttags_id_list_array'][$products_id_flag])){
+			$_POST['carttags'] = $_SESSION['carttags_id_list_array'][$products_id_flag];
+		}
         unset($_SESSION['carttags_id_list_array'][$products_id_flag]);
       } 
       if (isset($_POST['carttags']) && $s_site_id == '0') {
@@ -2350,11 +2352,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               ?>
                 </tr>
                 <tr>
-                <td valign="top">URL_WORDS</td>
+				<td valign="top"><?php echo TEXT_CATEGORY_ROMAJI ?></td>
                 <td><?php
                 echo tep_draw_input_field('romaji', $pInfo->romaji, 'id="promaji" class="td_input"'); 
                 echo TEXT_MUST;
-                echo '<input type="button" onclick = "p_is_set_romaji(\''.$current_category_id.'\',\''.$pInfo->products_id.'\',\''.$s_site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'. '<input type="button" onclick = "p_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"></font>';
+                echo '<input type="button" onclick = "p_is_set_romaji(\''.$current_category_id.'\',\''.$pInfo->products_id.'\',\''.$s_site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'. '<input type="button" onclick = "p_is_set_error_char()" value="'.IS_SET_ERROR_CHAR.'"></font>';
               ?></td>
                 <td valign="top"><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
                 </tr>
@@ -3150,15 +3152,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   </tr>
 
                   <tr>
-                  <td class="main" align="left" valign="top"><?php echo TEXT_CATEGORY_ROMAN;;?></td>
+                  <td class="main" align="left" valign="top"><?php echo TEXT_CATEGORY_ROMAJI;;?></td>
                   <td class="main">
                   <?php echo tep_draw_input_field('romaji['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?tep_get_category_romaji($cInfo->categories_id, $c_languages[$ci]['id'], $s_site_id, true):''),'id="cromaji" class="td_input"');
                 echo TEXT_MUST;
                 echo '&nbsp';
                 if ($_GET['action'] == 'edit_category') {
-                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$s_site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'; 
+                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$s_site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'; 
                 } else {
-                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \'\', \''.$s_site_id.'\')" value="'.TEXT_ROMAN_IS_SET.'">'; 
+                  echo '<input type="button" onclick="c_is_set_romaji(\''.$current_category_id.'\', \'\', \''.$s_site_id.'\')" value="'.TEXT_ROMAJI_IS_SET.'">'; 
                 }
                 echo '<input type="button" onclick="c_is_set_error_char(false)" value="'.IS_SET_ERROR_CHAR.'">'.'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
                 ?>
@@ -3310,14 +3312,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         <td class="main" colspan="2"><?php echo HEAD_SEARCH_TITLE;?></td>
                         </tr>
                         <tr>
-                        <td class="main" width="135" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAN;?></td> 
+                        <td class="main" width="135" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAJI;?></td> 
                         <td class="main">
                         <?php  echo tep_draw_input_field('character_romaji['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?$cInfo->character_romaji:''), 'class="td_input"').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT; 
                       ?> 
                         </td> 
                         </tr>
                         <tr>
-                        <td class="main" align="left" valign="top"><?php echo CATEGORY_ALPHA_ROMAN;?></td> 
+                        <td class="main" align="left" valign="top"><?php echo CATEGORY_ALPHA_ROMAJI;?></td> 
                         <td class="main">
                         <?php 
                         echo tep_draw_input_field('alpha_romaji['.$c_languages[$ci]['id'].']', (($_GET['action'] == 'edit_category')?$cInfo->alpha_romaji:''), 'class="td_input"').'<br>'.HEAD_SEARCH_ALPHA_COMMENT; 
@@ -3332,7 +3334,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <td class="main" colspan="2"><?php echo HEAD_SEARCH_TITLE;?></td>
                       </tr>
                       <tr>
-                      <td class="main" width="135" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAN;?></td> 
+                      <td class="main" width="135" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAJI;?></td> 
                       <td class="main" align="left" valign="top">
                       <?php 
                       echo tep_draw_input_field('character_romaji['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?$cInfo->character_romaji:''),'class="td_input"').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT; 
@@ -3340,7 +3342,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       </td> 
                       </tr>
                       <tr>
-                      <td class="main" align="left" valign="top"><?php echo CATEGORY_ALPHA_ROMAN;?></td> 
+                      <td class="main" align="left" valign="top"><?php echo CATEGORY_ALPHA_ROMAJI;?></td> 
                       <td class="main">
                       <?php 
                       echo tep_draw_input_field('alpha_romaji['.$c_languages[$ci]['id'].']', (($_GET['action'] == 'edit_category')?$cInfo->alpha_romaji:''),'class="td_input"').'<br>'.HEAD_SEARCH_ALPHA_COMMENT; 
@@ -4469,12 +4471,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   if(($rows == 1 && !isset($_GET['pID']))||
                      !isset($_GET['s_site_id']) ||  $_GET['s_site_id'] != $products['site_id']
                       ){           
-                    $products_table_row_params .='class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'"';
+                    $products_table_row_params .='class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"';
+
+
                   }else{
                     $products_table_row_params .= 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"'; 
                   }
                 } else {
-                  $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
+                  $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"';
+
                 }
                 $i_cnt=0;
                 if (!empty($res_kaku_list)) {
@@ -4566,7 +4571,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_preorder_text .=  '-'; 
               }
                 $target_cnt=$products_count-1;
-                $products_preorder_params .= 'class="dataTableContent" align="center"'; 
+                $products_preorder_params .= 'class="dataTableContent" align="center" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
                 $products_table_content_row[] = array('params'=>$products_preorder_params, 'text'=>$products_preorder_text);
                 $products_order_params .= 'eclass="dataTableContent" align="center"';
               if($products['products_status']==1){
@@ -4687,8 +4692,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $products_peer_params = '';
                         $products_peer_text = '';
                         if (empty($s_site_id)) {
-                          $products_peer_params .= "class='dataTableContent'
-                            align='right'";
+                          $products_peer_params .= "class='dataTableContent'  align='right'";
                           $products_peer_text .= "<input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(check_in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':''))."><span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span> </td>";
                         } else {
                           $products_peer_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';

@@ -73,9 +73,9 @@
        }
        if (!check_whether_is_limited('cleate_dougyousya.php')) {
          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'cleate_dougyousya.php'){
-           echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link('cleate_dougyousya.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_peer.gif').'</span><span>'.FILENAME_CLEATE_PEERS_TEXT.'</span></div>';
+           echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link('cleate_dougyousya.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_peer.gif').'</span><span>'.FILENAME_CLEATE_DOUGYOUSYA_TEXT.'</span></div>';
          }else{
-           echo ' <div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style="" onclick="window.location.href=\''.tep_href_link('cleate_dougyousya.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_peer.gif').'</span><span>'.FILENAME_CLEATE_PEERS_TEXT.'</span></div>';
+           echo ' <div class="sidebar" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" onmouseout="this.className=\'sidebar\'" style="" onclick="window.location.href=\''.tep_href_link('cleate_dougyousya.php', '', 'NONSSL').'\';"><span>' .  tep_image(DIR_WS_MENU_ICON . 'icon_peer.gif').'</span><span>'.FILENAME_CLEATE_DOUGYOUSYA_TEXT.'</span></div>';
          }
        }
        if (!check_whether_is_limited('address.php')) {

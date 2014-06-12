@@ -111,7 +111,7 @@ case 'delete':
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title>
-<?php echo CLEATE_PEERS_TITLE;?>
+<?php echo CLEATE_DOUGYOUSYA_TITLE;?>
 </title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
   <script type="text/javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
@@ -121,13 +121,13 @@ case 'delete':
   	var html = new Array();
 	var i=0;
 	var js_dougyousya_text_add = '<?php echo TEXT_ADD;?>';
-	var js_dougyousya_update_sort = '<?php echo CLEATE_PEERS_UPDATE_SORT?>';
+	var js_dougyousya_update_sort = '<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT?>';
 	var valmethod = true;
 	var js_dougyousya_peer_name = '<?php echo PLEASE_INPUT_PEER_NAME; ?>';
 	var js_dougyousya_already_exists = '<?php echo TEXT_ALREADY_EXISTS; ?>';
 	var js_dougyousya_game_title = '<?php echo TEXT_PLEASE_GAME_TITLE; ?>';
 	var js_dougyousya_must_same = '<?php echo TEXT_CONTENT_MUST_BE_THE_SAME; ?>';
-	var js_dougyousya_alert = '<?php echo CLEATE_PEERS_ALERT;?>';
+	var js_dougyousya_alert = '<?php echo CLEATE_DOUGYOUSYA_ALERT;?>';
 	var js_dougyousya_self = '<?php echo $_SERVER['PHP_SELF']?>';
 	var js_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
 	var js_onetime_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
@@ -163,7 +163,7 @@ require("includes/note_js.php");
         <div class="compatible">
            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                 <td class="pageHeading" height="40"><?php echo CLEATE_PEERS_TITLE;?></td>
+                 <td class="pageHeading" height="40"><?php echo CLEATE_DOUGYOUSYA_TITLE;?></td>
               </tr>
               <tr>
                  <td>
@@ -171,7 +171,7 @@ require("includes/note_js.php");
   <table width="100%" cellspacing="0" cellpadding="0">
      <tr>
         <td class="cleate_add" valign="top">
-  <input type="button" value="<?php echo CLEATE_PEERS_ADD_BUTTON;?>" name='b1' onClick="input_add()">
+  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>" name='b1' onClick="input_add()">
         </td>
      </tr>
      <tr>
@@ -200,14 +200,14 @@ if(empty($HTTP_GET_VARS['id'])){
     <td width="10"><?php if ($i) {?><a href="javascript:void(0);" onclick="ex(<?php echo $i;?>)">↑</a><?php }?></td>
     <td id="tr_<?php echo $i;?>_1">
       <input type="hidden" name="sort_order[<?php echo $col['dougyousya_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
-      <?php echo CLEATE_PEERS_PEERS;?><?php echo $col['dougyousya_name'];?>
+      <?php echo CLEATE_DOUGYOUSYA_TONGYE;?><?php echo $col['dougyousya_name'];?>
       <input type="hidden" name="exist_name[]" value='<?php echo $col['dougyousya_name'];?>'>
     </td>
-    <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_dougyousya.php?action=edit_oroshi&id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_PEERS_EDIT;?></a></td>
+    <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_dougyousya.php?action=edit_oroshi&id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_EDIT;?></a></td>
     <?php
     if ($ocertify->npermission >= 15) {
     ?>
-    <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick="del_oroshi(<?php echo $col['dougyousya_id'];?>, '<?php echo $ocertify->npermission;?>')"><?php echo CLEATE_PEERS_DEL;?></a></td>
+    <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick="del_oroshi(<?php echo $col['dougyousya_id'];?>, '<?php echo $ocertify->npermission;?>')"><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
     <?php
     } else {
     ?>
@@ -215,7 +215,7 @@ if(empty($HTTP_GET_VARS['id'])){
     <?php
     }
     ?>
-    <td id="tr_<?php echo $i;?>_4" width='50'><a href='history.php?action=dougyousya&dougyousya_id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_PEERS_HISTORY;?></a>
+    <td id="tr_<?php echo $i;?>_4" width='50'><a href='history.php?action=dougyousya&dougyousya_id=<?php echo $col['dougyousya_id'];?>'><?php echo CLEATE_DOUGYOUSYA_HISTORY;?></a>
   <td width='50' align="right"><a href='cleate_dougyousya.php?action=select_oroshi&id=<?php echo
   $col['dougyousya_id'];?>'><?php if($col['dougyousya_id'] == $HTTP_GET_VARS['id']){echo tep_image(DIR_WS_IMAGES.
       'icon_arrow_right.gif');}else{ echo tep_image(DIR_WS_IMAGES . 'icon_info.gif');}?></a></td>
@@ -284,8 +284,8 @@ if(empty($HTTP_GET_VARS['id'])){
     echo makeCheckbox($categories_subtree); 
 ?>
 </div>
-<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_PEERS_LOGIN, 'onclick="w_close(\''.$ocertify->npermission.'\', \'0\');"');?></a>
-<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_PEERS_UPDATE_SORT, 'onclick="w_close(\''.$ocertify->npermission.'\', \'1\');"');?></a>
+<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_DOUGYOUSYA_LOGIN, 'onclick="w_close(\''.$ocertify->npermission.'\', \'0\');"');?></a>
+<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_DOUGYOUSYA_UPDATE_SORT, 'onclick="w_close(\''.$ocertify->npermission.'\', \'1\');"');?></a>
 <div id="h_sort"></div>
 </form>
                           </td>
