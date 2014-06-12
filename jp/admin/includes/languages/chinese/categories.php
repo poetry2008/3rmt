@@ -224,7 +224,7 @@ define('TEXT_CATEGORY_HEAD_IMAGE_BACK','上一个分类');
 define('TEXT_CATEGORY_HEAD_IMAGE_NEXT','下一个分类');
 define('NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT', '因为这个网站的商品没有注册所以所有的状态都是连动的。想改变某个商品时，请按编辑按钮保存内容后变更状态。');
 define('NOTICE_HAS_NO_PREVILEGE_EDIT', '没有权限');
-define('TEXT_CATEGORY_ROMAJI', '罗马字:');
+define('TEXT_CATEGORY_ROMAJI', 'URL_WORDS');
 define('TEXT_RELATE_ROW_COUNT', '%s在过去%d日里有%d个商品被购买。');
 define('TEXT_PRODUCTS_PREORDER_TEXT', '预约:');
 define('TEXT_PRODUCTS_OPTION_TEXT', '选择组:');
@@ -291,4 +291,13 @@ define('TEXT_INVENTORY_OR','或');
 define('TEXT_INVENTORY_LINK','的');
 define('TEXT_INVENTORY_SELECT_MAX','取最大');
 define('TEXT_INVENTORY_SELECT_MIN','取最小');
+define('TEXT_PRODUCTS_DESCRIPTION_UNDER','商品说明（下部）');
+define('TEXT_PROJECT_DESCRIPTION_TOP','项目説明（上部）');
+define('TEXT_PROJECT_DESCRIPTION_UNDER','项目説明（下部）');
+define('TEXT_PRODUCTS_PRICE_LIST','价格标记');
+define('TEXT_CATEGORIES_NAME_LIST','分类名列表');
+define('TEXT_CATEGORIES_STATUS','商品状态');
+define('CATEGORY_SEO_KEYWORDS_TEXT','Meta的关键字');
+define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
+
 ?>
