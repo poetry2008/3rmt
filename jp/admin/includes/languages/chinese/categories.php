@@ -291,13 +291,13 @@ define('TEXT_INVENTORY_OR','或');
 define('TEXT_INVENTORY_LINK','的');
 define('TEXT_INVENTORY_SELECT_MAX','取最大');
 define('TEXT_INVENTORY_SELECT_MIN','取最小');
-define('TEXT_PRODUCTS_DESCRIPTION_UNDER','商品の説明（下部）');
-define('TEXT_PROJECT_DESCRIPTION_TOP','項目説明（上部）');
-define('TEXT_PROJECT_DESCRIPTION_UNDER','項目説明（下部）');
-define('TEXT_PRODUCTS_PRICE_LIST','価格表記');
-define('TEXT_CATEGORIES_NAME_LIST','カテゴリー名リスト');
-define('TEXT_CATEGORIES_STATUS','商品ステータス');
-define('CATEGORY_SEO_KEYWORDS_TEXT','メタのキーワード');
+define('TEXT_PRODUCTS_DESCRIPTION_UNDER','商品说明（下部）');
+define('TEXT_PROJECT_DESCRIPTION_TOP','项目説明（上部）');
+define('TEXT_PROJECT_DESCRIPTION_UNDER','项目説明（下部）');
+define('TEXT_PRODUCTS_PRICE_LIST','价格标记');
+define('TEXT_CATEGORIES_NAME_LIST','分类名列表');
+define('TEXT_CATEGORIES_STATUS','商品状态');
+define('CATEGORY_SEO_KEYWORDS_TEXT','Meta的关键字');
 define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
 
 ?>
