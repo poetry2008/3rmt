@@ -11,13 +11,14 @@ if(file_exists(DIR_WS_LANGUAGES.$language .'/javascript/c_admin.php')){
 	require_once(DIR_WS_LANGUAGES.$language .'/javascript/c_admin.php');
 }
 $site_list_array = array(0);
+$site_url_array = array();
 $site_list_query = tep_db_query("select * from ".TABLE_SITES);
 while ($site_list_info = tep_db_fetch_array($site_list_query)) {
   $site_list_array[] = $site_list_info['id'];
+  $site_url_array[$site_list_info['id']] = $site_list_info['url'];
 }
 tep_db_free_result($site_list_query);
 sort($site_list_array);
-$s_site_id = isset($_GET['s_site_id']) ? $_GET['s_site_id'] : 0;
 $cPath_yobi = cpathPart($_GET['cPath'], 1);  
 $currencies = new currencies();
 $order_status_info = tep_get_orders_status_array();
@@ -29,15 +30,32 @@ while($userslist= tep_db_fetch_array($sites_id)){
       $site_permission = $userslist['site_permission'];
 }
 //临时处理
-$site_flag = !isset($_GET['show_type']) ? 1 : 0;
+//$site_flag = !isset($_GET['show_type']) ? 1 : 0;
+if(isset($_GET['show_type'])){
+
+  $exists_page_raw = tep_db_query("select * from show_site where page = 'categories.php' and user = '".$ocertify->auth_user."'");
+  $exists_page_num = tep_db_num_rows($exists_page_raw);
+  if($exists_page_num > 0){
+    if(!isset($_GET['site_id'])){
+      $site_id_str = $_GET['show_type'] == 'one' ? 0 : implode('-',$site_list_array);
+    }else{
+      $site_id_str = $_GET['site_id'];  
+    }
+    tep_db_query("update `show_site` set `site` = '".$_GET['show_type'].'|||'.$site_id_str."' where `user` = '".$ocertify->auth_user."' and `page` ='categories.php'");
+  }else{
+    tep_db_query("insert into `show_site` values (null, '".$ocertify->auth_user."', 'categories.php', '".$_GET['show_type']."|||0')");  
+  }
+}
+$show_list_str_array = tep_get_setting_site_info('categories.php');
 $_GET['show_type'] = !isset($_GET['show_type']) ? 'one' : $_GET['show_type'];
+$_GET['show_type'] = $show_list_str_array[0] != '' ? $show_list_str_array[0] : $_GET['show_type'];
 
 $show_list_array = array();
 if (isset($_GET['show_type'])&&$_GET['show_type'] == 'one'){
   if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
     $sql_site_where = "site_id = '".$_GET['site_id']."'"; 
   }else{
-    $sql_site_where = "site_id=0";
+    $sql_site_where = "site_id=".$show_list_str_array[1];
   }
   $_GET['site_id'] = ((isset($_GET['site_id'])?$_GET['site_id']:0));
 }else{
@@ -45,17 +63,17 @@ if (isset($_GET['site_id'])&&$_GET['site_id']!='') {
   $sql_site_where = "site_id in (".str_replace('-', ',', $_GET['site_id']).")"; 
   $show_list_array = explode('-',$_GET['site_id']);
 } else {
-  $show_list_str = tep_get_setting_site_info('categories.php');
+  $show_list_str = $show_list_str_array[1];
   $sql_site_where = "site_id in (".$show_list_str.")"; 
   $show_list_array = explode(',',$show_list_str);
 }
   $_GET['site_id'] = implode('-',$show_list_array);
 }
 if(isset($_GET['site_id'])&&$_GET['site_id']==''){
-  $_GET['site_id'] = str_replace(',','-',tep_get_setting_site_info($_SERVER['PHP_SELF']));
+  $_GET['site_id'] = str_replace(',','-',$show_list_str_array[1]);
 }
 //临时处理
-$_GET['site_id'] = $site_flag == 1 ? '0' : $_GET['site_id'];
+//$_GET['site_id'] = $site_flag == 1 ? '0' : $_GET['site_id'];
 
 if(isset($site_permission)) $site_arr=$site_permission;//权限判断
 else $site_arr="";
@@ -1259,9 +1277,9 @@ if (isset($_GET['action']) && $_GET['action']) {
       tep_db_query("delete from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$_GET['cID']."' && site_id = '".(int)$_GET['s_site_id']."'");
     }
     if (isset($_GET['rdirect'])) {
-      tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID='.  (int)$_GET['cID'].'&site_id='.$_GET['site_id'].$dc_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id']) ? '&s_site_id='.$_GET['s_site_id'] : '')));
+      tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID='.  (int)$_GET['cID'].'&site_id='.$_GET['site_id'].$dc_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id']) ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')));
     } else {
-      tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID='.  (int)$_GET['cID'].'&site_id='.(int)$_GET['site_id'].$dc_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id']) ? '&s_site_id='.$_GET['s_site_id'] : '')));
+      tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&cID='.  (int)$_GET['cID'].'&site_id='.$_GET['site_id'].$dc_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id']) ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')));
     }
     break;
     case 'delete_select_categories_products':
@@ -1384,7 +1402,7 @@ if (isset($_GET['action']) && $_GET['action']) {
       tep_reset_cache_block('also_purchased');
     }
 
-    tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath.$dc_page.($_GET['search']?'&search='.$_GET['search']:'')));
+    tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath.$dc_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')));
     break;
     case 'delete_product_confirm':
     tep_isset_eof();
@@ -1989,7 +2007,8 @@ $belong = str_replace('0_','',$belong);
 	var c_admin_update_clear = '<?php echo JS_TEXT_C_ADMIN_UPDATE_CLEAR;?>';
 	var c_admin_input_info = '<?php echo JS_TEXT_C_ADMIN_INPUT_INFO;?>';
 	var c_admin_reset_difference = '<?php echo JS_TEXT_C_ADMIN_RESET_DIFFERENCE;?>';
-	var c_admin_error_price = '<?php echo JS_TEXT_C_ADMIN_ERROR_PRICE;?>';
+        var c_admin_error_price = '<?php echo JS_TEXT_C_ADMIN_ERROR_PRICE;?>';
+        var c_admin_sites_num = '<?php echo count($site_list_array);?>';
 </script>
 <script language="javascript" src="includes/set/c_admin.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
@@ -2330,6 +2349,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 } else {
                   echo tep_html_element_submit(IMAGE_SAVE) .  '&nbsp;&nbsp;';
                 } 
+                $sid = $s_site_id == 0 ? 1 : $s_site_id;
+                echo '<a href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'">'.tep_html_element_button(IMAGE_PREVIEW) .  '</a>&nbsp;&nbsp;';
               ?> 
                 </td>
                 </tr>
@@ -2619,10 +2640,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
                 </tr>
-                <tr>
-                <td valign="top"><?php echo TEXT_PRODUCT_RATE;?></td>
-                <td><?php echo '11';?></td>
-                </tr>
+
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_OPTION_TEXT;?></td>
                 <td><?php
@@ -3016,6 +3034,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               } else {
                 echo tep_html_element_submit(IMAGE_SAVE) .  '&nbsp;&nbsp;';
               } 
+              echo '<a href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'">'.tep_html_element_button(IMAGE_PREVIEW) .  '</a>&nbsp;&nbsp;';
 ?>
               <?php
               if ($romaji_error == 1) {
@@ -3092,6 +3111,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
                 <td class="main" align="right">
+                <div style="float:left;"><?php echo $_GET['s_site_id']?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></div>
                 <?php
                 if ($_GET['action'] == 'new_category') {
                   echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="cmess(\''.$current_category_id.'\', \'\', \''.$s_site_id.'\', \''.$ocertify->npermission.'\', \'0\');"').'</a>';
@@ -3468,6 +3488,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <td>
                 <?php 
                 echo tep_draw_hidden_field('site_id', !empty($_GET['site_id'])?$_GET['site_id']:'0'); 
+                echo tep_draw_hidden_field('show_type', !empty($_GET['show_type'])?$_GET['show_type']:'one'); 
                 echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'', 'onkeyup="remove_event_focus();" onblur="recover_event_focus();"') . "\n"; 
               ?>
                 <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
@@ -3921,7 +3942,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $categories_colspan_text .="&nbsp;";
                 }
                 $categories_status_params .= 'class="dataTableContent" align="center"';
-                if ($ocertify->npermission >= 10) {
+                if ($ocertify->npermission >= 7) {
                   $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
                   $re_site_id = $categories['site_id']; 
                   $unaccept_edit_single = false;
@@ -3933,7 +3954,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   if (!in_array($re_site_id, $accept_site_arr)) {
                     $unaccept_edit_single = true;
                   }
-                  if ($ocertify->npermission >= 15) {
+                  if ($ocertify->npermission >= 31) {
                     $unaccept_edit_single = false;
                   }
                   //$_GET['s_site_id'] = $_GET['show_type'] == 'one' ? $_GET['s_site_id'] : $categories['site_id'];
@@ -4723,7 +4744,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if (empty($s_site_id)) {
                   $products_price_text .= '<u id="edit_p_'.$products['products_id'].'">'; 
                 }else{
-                  $products_price_text .= '<span id="edit_p_'.$products['products_id'].'">'; 
+                  $products_price_text .= '<span id="edit_p_'.$products['products_id'].'_'.$s_site_id.'">'; 
                 }
                 if ($product_price['sprice']) {
                   $products_price_text .= '<span class="specialPrice">' .  $currencies->format($product_price['sprice']) . '</span>';
@@ -4735,13 +4756,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }else{
                   $products_price_text .= '</span>'; 
                 }
-                $products_price_text .= '<span style="display:none;" id="h_edit_p_'.$products['products_id'].'">'.$tmp_p_price.'</span>'; 
+                if(empty($s_site_id)){
+                  $products_price_text .= '<span style="display:none;" id="h_edit_p_'.$products['products_id'].'">'.$tmp_p_price.'</span>'; 
+                }
                 $products_table_content_row[] = array('params'=>$products_price_params, 'text'=>$products_price_text);
                 $products_set_price_params .= 'class="dataTableContent" align="right"';
                 if (empty($s_site_id)) {
                   $products_set_price_text .= '<input style="text-align:right" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><input type="hidden" name="hidden_products_id[]" value="'.$products['products_id'].'"><span id="price_error_'.  $products_count.'"></span>';
                 } else {
-                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
+                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'_'.$s_site_id.'">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
                 }
                 $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_2" class="_udlr" type="hidden" size="6" value="'.$products['products_price_offset'].'" name="offset[]" id="'."offset_input_".$products_count.'">';
                 $products_table_content_row[] = array('params'=>$products_set_price_params, 'text'=>$products_set_price_text);
@@ -4765,7 +4788,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if (!in_array($repro_site_id, $accept_pro_site_arr)) {
                   $unaccept_pro_edit_single = true;
                 }
-                if ($ocertify->npermission >= 15) {
+                if ($ocertify->npermission >= 31) {
                   $unaccept_pro_edit_single = false;
                 }
                 if ($products['site_id'] == 0) {
@@ -5024,20 +5047,20 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     ?>
                 <?php
                 if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //限制显示
-                  if (empty($_GET['cPath']) && empty($s_site_id)) {
+                  if (empty($_GET['cPath']) && empty($site_id)) {
                     echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action', 'info', 'x', 'y', 'site_id')).'&action=edit_top_manual').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
                   }
-                  if(isset($s_site_id)&&$s_site_id!=0&&$s_site_id!=''){
-                    $pram_str = '&type=sub_site&s_site_id='.$s_site_id;
-                    $c_pram_str = '&new_c_type=sub_site&s_site_id='.$s_site_id;
+                  if(isset($site_id)&&$site_id!=0&&$site_id!=''){
+                    $pram_str = '&type=sub_site&site_id='.$site_id;
+                    $c_pram_str = '&new_c_type=sub_site&site_id='.$site_id;
                   }else{
                     $pram_str = '';
                     $c_pram_str = '';
                   }
-                  echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&action=new_category'.$c_pram_str) . '">' .  tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'').$pram_str) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
+                  echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath .  '&action=new_category'.$c_pram_str.(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')) . '">' .  tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'').$pram_str.(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
                 }
               ?>
-                <?php if (empty($s_site_id)) {?> 
+                <?php if (in_array(0,explode('-',$_GET['site_id']))) {?> 
                   <?php if ($ocertify->npermission > 7) { ?>
                     <input type='button' value='<?php echo CATEGORY_BUTTON_CAL_SETTING;?>' onClick="cleat_set('set_bairitu.php')">
                       <?php }?>

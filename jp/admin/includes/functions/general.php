@@ -10567,14 +10567,32 @@ function tep_get_setting_site_info($current_page)
   $exists_site_query = tep_db_query("select * from show_site where user = '".$ocertify->auth_user."' and page = '".$current_page."'");
   $exists_site = tep_db_fetch_array($exists_site_query);
   if ($exists_site) {
-    $return_site = explode('-', $exists_site['site']);
-    if (!empty($return_site)) {
-      return implode(',', $return_site); 
-    } else {
-      return implode(',', $site_list_array); 
+    if($current_page == FILENAME_CATEGORIES){
+      $return_site_array = explode('|||', $exists_site['site']);
+      $return_site = explode('-', $return_site_array[1]);
+      if(count($return_site_array) == 2){
+        if (!empty($return_site)) {
+          return array($return_site_array[0],implode(',', $return_site)); 
+        } else {
+          return array($return_site_array[0],implode(',', $site_list_array)); 
+        }
+      }else{
+        return array('one',0);      
+      }
+    }else{
+      $return_site = explode('-', $exists_site['site']);
+      if (!empty($return_site)) {
+        return implode(',', $return_site); 
+      } else {
+        return implode(',', $site_list_array); 
+      }
     }
   } 
-  return implode(',', $site_list_array); 
+  if($current_page == FILENAME_CATEGORIES){
+    return array('one',0);
+  }else{
+    return implode(',', $site_list_array); 
+  }
 }
 /*----------------------------------
   功能: 通过产品ID获得产品的库存
@@ -13347,7 +13365,12 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
   $show_id = '';
   $show_site_query = tep_db_query($show_site_sql);
   if($show_site_rows = tep_db_fetch_array($show_site_query)){
-    $site_array = explode('-',$show_site_rows['site']);
+    if($page == FILENAME_CATEGORIES){
+      $site_temp_array = explode('|||',$show_site_rows['site']);
+      $site_array = explode('-',$site_temp_array[1]);
+    }else{
+      $site_array = explode('-',$show_site_rows['site']);
+    }
     $site_id = $show_site_rows['show_id'];
   }
   $unshow_list = array();
@@ -13357,7 +13380,7 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
     ?>
     <input type="hidden" id="show_site_id" value="<?php echo implode('-',$show_site_list);?>">
     <a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site_array[0]);?>"><li class="site_filter_selected"><img src="images/icons/common_stiles.gif"
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site_array[0]);?>" onclick="change_show_site('',0,'0','<?php echo urlencode(tep_get_all_get_params(array('site_id','show_type')).'&show_type=one');?>', '<?php echo $filename;?>');"><li class="site_filter_selected"><img src="images/icons/common_stiles.gif"
       alt="<?php echo TEXT_CHANGE_SITE_ALT;?>" title="<?php echo TEXT_CHANGE_SITE_ALT;?>"></li></a>
   <?php
               foreach ($site_list_array as $sid => $svalue) {
@@ -13415,7 +13438,7 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
       }else{
     ?>
     <a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=some');?>"><li class="site_filter_selected"><img src="images/icons/common_firststiles.gif"
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=some');?>" onclick="change_show_site('',0,'','<?php echo urlencode(tep_get_all_get_params(array('site_id','show_type')).'&show_type=some');?>', '<?php echo $filename;?>');"><li class="site_filter_selected"><img src="images/icons/common_firststiles.gif"
         alt="<?php echo TEXT_CHANGE_SITE_ALT;?>" title="<?php echo
         TEXT_CHANGE_SITE_ALT;?>"></li></a>
     <?php
@@ -13424,13 +13447,13 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
           if($site==$_GET['site_id']){
     ?>
       <a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><li class="site_filter_selected"><?php
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>" onclick="change_show_site('',0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li class="site_filter_selected"><?php
         echo $site_list_array[$sk];?></li></a>
     <?php
           }else{
     ?>
       <a href="<?php echo tep_href_link($filename,
-      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>"><li ><?php
+      tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>" onclick="change_show_site('',0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li ><?php
         echo $site_list_array[$sk];?></li></a>
     <?php
           }

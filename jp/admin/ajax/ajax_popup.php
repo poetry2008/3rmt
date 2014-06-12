@@ -232,7 +232,7 @@ if ($_GET['action'] == 'show_category_info') {
  -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
-  $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
   
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   
@@ -258,7 +258,7 @@ if ($_GET['action'] == 'show_category_info') {
       );
   
   $delete_category_info[]['text'] = array(
-        array('align' => 'left', 'text' => $category_info_res['categories_name'].(empty($site_id)?tep_draw_hidden_field('categories_id', $_GET['current_cid']):'')), 
+        array('align' => 'left', 'text' => $category_info_res['categories_name'].(empty($site_id) ? tep_draw_hidden_field('categories_id', $_GET['current_cid']) : '')), 
       );
   
   if (empty($site_id)) {
@@ -279,16 +279,17 @@ if ($_GET['action'] == 'show_category_info') {
   }
 
   if (empty($site_id)) {
-    $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES, 'action=delete_category_confirm&cPath='.$_GET['cPath'].(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:''));
+    $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES, 'action=delete_category_confirm&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'].(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''));
   } else {
     if (isset($_GET['rdirect'])) {
       $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES,
-          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.'&rdirect=all'.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
-            ? '&s_site_id='.$_GET['s_site_id'] : ''));
+          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'].'&rdirect=all'.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''));
     } else {
       $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES,
-          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
-            ? '&s_site_id='.$_GET['s_site_id'] : ''));
+          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'].(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''));
     }
   }
   
@@ -1200,7 +1201,7 @@ if ($_GET['action'] == 'show_category_info') {
         'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] .
         '&pID=' . $_GET['pID'] . '&cPath=' .
         $cPath.'&rdirect=all'.$d_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
-          ? '&s_site_id='.$_GET['s_site_id'] : ''), 'post');
+          ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''), 'post');
   } else {
     $form_str = tep_draw_form('delete_product', FILENAME_CATEGORIES,
         'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] .
