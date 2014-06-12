@@ -4471,14 +4471,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   if(($rows == 1 && !isset($_GET['pID']))||
                      !isset($_GET['s_site_id']) ||  $_GET['s_site_id'] != $products['site_id']
                       ){           
-                    $products_table_row_params .='class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"';
+                    $products_table_row_params .='class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'"';
 
 
                   }else{
                     $products_table_row_params .= 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"'; 
                   }
                 } else {
-                  $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"';
+                  $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
 
                 }
                 $i_cnt=0;
@@ -4573,7 +4573,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $target_cnt=$products_count-1;
                 $products_preorder_params .= 'class="dataTableContent" align="center" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
                 $products_table_content_row[] = array('params'=>$products_preorder_params, 'text'=>$products_preorder_text);
-                $products_order_params .= 'eclass="dataTableContent" align="center"';
+                $products_order_params .= 'class="dataTableContent" align="center" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
+
               if($products['products_status']==1){
                 $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $s_site_id,$orders_query_str,$orders_query_num,$order_status_info); 
                 if($tmp_order_product_num){
@@ -4586,11 +4587,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               }
                 $products_table_content_row[] = array('params'=>$products_order_params, 'text'=>$products_order_text);
                 if (empty($s_site_id)) {
-                  $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\'';
+                  $products_storage_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
+
                   $products_storage_text .= '<u id=\'virtual_quantity_'.$products['products_id'].'\' onclick="show_update_info(this, '. $products['products_id'].', \'1\', \'1\')">';
                   $products_storage_text .= $imaginary;
                   $products_storage_text .= '</u>';
-                  $products_inventory_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' style="font-weight:bold;" ';
+                  $products_inventory_params .= 'class="dataTableContent" align="right" onmouseover=\'this.style.cursor="pointer"\' style="font-weight:bold;"  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
+
                   if(isset($products['products_exchange_rate'])
                   &&$products['products_exchange_rate']!=0
                   &&$products['products_exchange_rate']!=1
@@ -4621,7 +4624,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 $products_table_content_row[] = array('params'=>$products_storage_params, 'text'=>$products_storage_text);
                 $products_table_content_row[] = array('params'=>$products_inventory_params, 'text'=>$products_inventory_text);
-                $products_mae_image_params .= 'class="dataTableContent"';
+                $products_mae_image_params .= 'class="dataTableContent" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
+
                 //读取分类下受欢迎商品的订单数限制
               if ($products['products_status'] == '1') {
                 $limit_orders_num = ''; 
@@ -4666,8 +4670,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_mae_image_text = '-';
               }
                 $products_table_content_row[] = array('params'=>$products_mae_image_params, 'text'=>$products_mae_image_text);
-                $products_stock_params .= 'class="dataTableContent" align="center" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';
-                $products_stock_text .= '<span style="display:none" class = "TRADER_INPUT"  name="TRADER_INPUT[]" id="TRADER_'.$products['products_id'].'">'.($kakaku_treder?round($kakaku_treder,2):0).'</span>';
+                $products_stock_params .= 'class="dataTableContent" align="center"  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
+
                 $products_stock_text .= '<span name="INCREASE_INPUT" class = "INCREASE_INPUT">';
                 if (strpos($col['bairitu'], '.') !== false) {
                   $float_number = strlen(substr($col['bairitu'], strpos($col['bairitu'], '.')));
@@ -4692,7 +4696,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $products_peer_params = '';
                         $products_peer_text = '';
                         if (empty($s_site_id)) {
-                          $products_peer_params .= "class='dataTableContent'  align='right'";
+                          $products_peer_params .= 'class="dataTableContent"  align="right" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
+
                           $products_peer_text .= "<input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(check_in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':''))."><span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span> </td>";
                         } else {
                           $products_peer_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';
