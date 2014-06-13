@@ -1796,7 +1796,7 @@ echo json_encode($json_array);
  ----------------------------------------*/
   $json_array = array(); 
   if($_GET['q']==''){
- $search_group_query = tep_db_query("select name from (select * from ".TABLE_OPTION_GROUP." order by 'name' asc) as g order by g.id asc");
+	  $search_group_query = tep_db_query("select * from `option_group` order by `option_group`.`name` asc");
   }else{
   $search_group_query = tep_db_query("select name from ".TABLE_OPTION_GROUP." where name like '%".tep_replace_full_character($_GET['q'])."%' order by created_at desc");
   }

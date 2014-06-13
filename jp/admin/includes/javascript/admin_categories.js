@@ -1204,7 +1204,7 @@ function get_cart_products(){
       start  = $(this).attr('name').indexOf('[') + 1;
       end    = $(this).attr('name').indexOf(']');
       if(this.checked)
-      tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start);
+      tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start)+$(this).val();
       });
   //The results confirm products_cart_buyflag radio change to checkbox
   if (tagstr != '')
