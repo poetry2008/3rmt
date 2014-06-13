@@ -2396,7 +2396,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if($ocertify->npermission >= 15 && isset($_GET['pID'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_products_confirm(\''.TEXT_DELETE_PRODUCT_INTRO.'\',\''.$delete_action.'\');"') . '</a>'; 
                   if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
-                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_products_confirm(\''.FILENAME_CATEGORIES.'?action=reset_products&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
+                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_products_confirm(\''.CATEGORY_RESET_CONFIRM.'\',\''.FILENAME_CATEGORIES.'?action=reset_products&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
                   }
                 }
                 if (empty($s_site_id)) {
@@ -3086,7 +3086,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               if($ocertify->npermission >= 15 && isset($_GET['pID'])){
                 echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_products_confirm(\''.TEXT_DELETE_PRODUCT_INTRO.'\',\''.$delete_action.'\');"') . '</a>';
                 if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
-                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_products_confirm(\''.FILENAME_CATEGORIES.'?action=reset_products&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
+                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_products_confirm(\''.CATEGORY_RESET_CONFIRM.'\',\''.FILENAME_CATEGORIES.'?action=reset_products&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
                 }
               }
               if (empty($s_site_id)) {
@@ -3193,7 +3193,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               if($ocertify->npermission >= 15 && isset($_GET['cID'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_categories_confirm(\''.TEXT_DELETE_CATEGORY_INTRO.'\',\''.$delete_categories_action.'\');"') . '</a>'; 
                   if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
-                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_categories_confirm(\''.FILENAME_CATEGORIES.'?action=reset_categories&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
+                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_categories_confirm(\''.CATEGORY_RESET_CONFIRM.'\',\''.FILENAME_CATEGORIES.'?action=reset_categories&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
                   }
               }
 
@@ -3515,7 +3515,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               if($ocertify->npermission >= 15 && isset($_GET['cID'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_categories_confirm(\''.TEXT_DELETE_CATEGORY_INTRO.'\',\''.$delete_categories_action.'\');"') . '</a>'; 
                   if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
-                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_categories_confirm(\''.FILENAME_CATEGORIES.'?action=reset_categories&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
+                    echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_categories_confirm(\''.CATEGORY_RESET_CONFIRM.'\',\''.FILENAME_CATEGORIES.'?action=reset_categories&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
                   }
               }
 

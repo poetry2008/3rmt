@@ -308,3 +308,5 @@ define('CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION','#HTMLによる入力可<br/>�
 define('TEXT_PRODUCTS_QUANTITY_RATE','レート');
 define('TEXT_PRODUCTS_QUANTITY_SUM','表示数');
 define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
+define('CATEGORY_TEXT_TITLE','サブタイトル');
+define('CATEGORY_RESET_CONFIRM','本当に無効しますか？');
