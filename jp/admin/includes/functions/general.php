@@ -6838,20 +6838,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     $cpath_arr = explode('_', $cPath);
     $tmp_ca_id = $current_category_id;
 
-    $children_ca_query = tep_db_query("select * from ".TABLE_CATEGORIES." where parent_id = '".$current_category_id."' limit 1"); 
-    $children_ca_res = tep_db_fetch_array($children_ca_query);
-    if ($children_ca_res) {
-      $current_category_id = $children_ca_res['categories_id']; 
-    } else {
-      $current_category_id = 0; 
-    }
-    $current_category_query = tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id = '".$current_category_id."'"); 
-    $current_category_res = tep_db_fetch_array($current_category_query); 
-
-    if ($current_category_res) {
-      $parent_category_query = tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id = '".$current_category_res['parent_id']."'"); 
-      $parent_category_res = tep_db_fetch_array($parent_category_query); 
-      if ($parent_category_res) {
+    $parent_category_query = tep_db_query("select * from ".TABLE_CATEGORIES." where categories_id = '".$current_category_id."'"); 
+    $parent_category_res = tep_db_fetch_array($parent_category_query); 
+    if ($parent_category_res) {
         if ($parent_category_res['parent_id'] == 0) {
           $level_category_id = 0; 
         } else {
@@ -6895,7 +6884,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
         }
       }
 
-    }
 
     return $return_str;
   }
