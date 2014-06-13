@@ -1987,3 +1987,24 @@ function check_delete_products_confirm(str,action){
     document.forms.new_product.submit();
   }
 }
+//reset products
+function check_reset_products_confirm(action){
+
+    document.forms.new_product.action = action;
+    document.forms.new_product.submit();
+}
+//delete categories 
+function check_delete_categories_confirm(str,action){
+
+  if(confirm(str)){
+ 
+    document.forms.editcategory.action = action;
+    document.forms.editcategory.submit();
+  }
+}
+//reset categories 
+function check_reset_categories_confirm(action){
+
+    document.forms.editcategory.action = action;
+    document.forms.editcategory.submit();
+}
