@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-
   if (isset($current_category_id) && ($current_category_id > 0)) {
     $best_c_category_id = $current_category_id; 
   } else {
@@ -12,8 +11,7 @@
     $best_sellers_raw = "
       select *
       from (
-        select p.products_id,
-                        pd.products_image,
+        select distinct p.products_id,
                         p.products_ordered,
                         pd.products_name,
                         pd.products_status, 
@@ -74,10 +72,19 @@
 
 
 </div> 
+<?php
+    //获取商品图片 
+    $img_array =
+    tep_products_images($best_sellers['products_id'],$best_sellers['site_id']);
+?>
             <div class="ranking_area_lint">
             <table width="100%" class="ranking_area" align="center" border="0" cellpadding="0" cellspacing="0" summary="ranking">
               <tr>
-                   <td width="50" align="center" valign="top"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" class="ranking_money_ico"><?php echo tep_image(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'],$best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); ?></a></td>
+                   <td width="50" align="center" valign="top"><a href="<?php echo
+                   tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
+                       $best_sellers['products_id']); ?>"
+                   class="ranking_money_ico"><?php echo
+                   tep_image(DIR_WS_IMAGES.'products/'.$img_array[0],$best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); ?></a></td>
           <td valign="top" class="bestseller_description">
             <p><?php echo mb_substr(strip_tags(replace_store_name($best_sellers['products_description'])),0,36); ?>...</p>
                     </td>

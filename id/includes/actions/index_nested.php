@@ -41,6 +41,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
+                   cd.categories_name_list, 
                    cd.categories_status, 
                    cd.categories_image, 
                    c.parent_id,
@@ -56,7 +57,7 @@
              or site_id = ".SITE_ID."
           group by categories_id
           having c.categories_status != '1' and c.categories_status != '3' 
-          order by sort_order, categories_name
+          order by sort_order, categories_name_list
         ");
         if (tep_db_num_rows($categories_query) < 1) {
           // do nothing, go through the loop
@@ -71,6 +72,7 @@
           from (
             select c.categories_id, 
                    cd.categories_name, 
+                   cd.categories_name_list, 
                    cd.categories_image, 
                    c.parent_id,
                    cd.site_id,
@@ -86,7 +88,7 @@
              or site_id = ".SITE_ID."
           group by categories_id
           having c.categories_status != '1' and c.categories_status != '3'  
-          order by sort_order, categories_name
+          order by sort_order, categories_name_list
         ");
     }
 
@@ -95,9 +97,12 @@
     $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
-      echo '<td class="smallText"><div class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES . 'categories/' . $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
+      echo '<td class="smallText"><div class="Tlist"><a href="' .
+        tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES
+        . 'categories/' . $categories['categories_image'],
+        $categories['categories_name_list'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
                              if(tep_not_null($categories['categories_image'])) { echo '<br>' ; } 
-                   echo $categories['categories_name'] . '</a></div></td>' . "\n";
+                   echo $categories['categories_name_list'] . '</a></div></td>' . "\n";
       if ((($rows / MAX_DISPLAY_CATEGORIES_PER_ROW) == floor($rows / MAX_DISPLAY_CATEGORIES_PER_ROW)) && ($rows != tep_db_num_rows($categories_query))) {
         echo '        </tr>' . "\n";
         echo '        <tr align="center">' . "\n";
@@ -130,16 +135,18 @@
   } else {
     include(DIR_WS_MODULES .'new_products2.php'); 
   }
-  if (isset($cPath_array)) {
-    if ($seo_category['seo_description']) {
-      echo '<h2 class="pageHeading"><span class="game_t">' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</span></h2>' . "\n";
-      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seo phrase
-    }
-?>
-<?php  if (!empty($seo_category['text_information'])) {
-    echo '<p class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']).'</p>';
-    }
-  }
+  if (isset($_GET['cPath'])) { 
+      if (!empty($seo_category['text_information'])) {
+        $old_info_arr = array('#STORE_NAME#'); 
+        $new_info_arr = array(STORE_NAME); 
+        //分类描述内容
+        $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+        foreach($seo_category_array as $seo_value){
+
+          echo $seo_value;
+        }
+      }
+  } 
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">

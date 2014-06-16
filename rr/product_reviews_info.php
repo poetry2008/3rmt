@@ -22,7 +22,6 @@
              r.reviews_read, 
              pd.products_name, 
              pd.products_status, 
-             pd.products_image,
              r.site_id as rsid,
              pd.site_id as psid
       FROM (( " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd ) 
@@ -41,6 +40,7 @@
     group by products_id, reviews_id 
     having p.products_status != '0' and p.products_status != '3'  
   ");
+  //forward if no reviews
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $reviews = tep_db_fetch_array($reviews_query);
 
@@ -86,7 +86,13 @@ function showimage($1) {
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td class="smallText" align="right">
-          <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES . 'products/' . $reviews['products_image']; ?>',0)" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $reviews['products_image'], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
+                    <?php
+                    //获取商品图片
+                    $img_array =
+                    tep_products_images($reviews['products_id'],$reviews['site_id']);
+                    ?>
+          <a href="javascript:void(0);" onclick="fnCreate('<?php echo DIR_WS_IMAGES
+          . 'products/' . $img_array[0]; ?>',0)" rel="lightbox[products]"><?php echo tep_image3(DIR_WS_IMAGES .'products/'. $img_array[0], $reviews['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, ' hspace="5" vspace="5"'); ?></a></td>
                   </tr>
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
@@ -105,7 +111,7 @@ function showimage($1) {
             </tr> 
             <tr> 
               <td class="main"><br> 
-                <div class="text_main"><span><b><?php echo SUB_TITLE_RATING; ?></b></span><?php echo tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating'])); ?><span>[<?php echo sprintf(TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating']); ?>]</span></div></td> 
+                <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?> <small>[<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</small></td> 
             </tr> 
             <tr> 
               <td><br> 

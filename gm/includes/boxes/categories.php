@@ -10,6 +10,7 @@ $categories_query = tep_db_query("
     from (
       select c.categories_id, 
              cd.categories_name, 
+             cd.categories_name_list, 
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
@@ -24,7 +25,7 @@ $categories_query = tep_db_query("
        or site_id = 0
     group by categories_id
     having c.categories_status != '1' and c.categories_status != '3' 
-    order by sort_order, categories_name
+    order by sort_order, categories_name_list
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
   $categories[] = $category;
@@ -33,7 +34,10 @@ while ($category = tep_db_fetch_array($categories_query))  {
 <div id='box'>
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
-        <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
+        <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo
+          tep_href_link(FILENAME_DEFAULT,
+              'cPath='.$category['categories_id']);?>"><?php echo
+          $category['categories_name_list'];?></a></li>
     <?php }?>
    </ul>
 </div>

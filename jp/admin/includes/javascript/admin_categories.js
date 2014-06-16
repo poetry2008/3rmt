@@ -392,6 +392,7 @@ function rsync_num(obj){
     num1 = obj.value;
     num2 = $('#relate_qtr').val();
     radices = $('#relate_radices').val();
+    radices = radices == '' ? 1 : radices;
     other_num = num2%radices;
     new_num2 = num1*radices+other_num;
     $('#relate_qtr').val(new_num2);
@@ -399,6 +400,14 @@ function rsync_num(obj){
   if(obj.id == 'relate_qtr'){
     num2 = obj.value;
     radices = $('#relate_radices').val();
+    radices = radices == '' ? 1 : radices;
+    new_num1 = Math.floor(num2/radices);
+    $('#relate_qt').val(new_num1);
+  }
+  if(obj.id == 'relate_radices'){
+    num2 = $("#relate_qtr").val();
+    radices = obj.value;
+    radices = radices == '' ? 1 : radices;
     new_num1 = Math.floor(num2/radices);
     $('#relate_qt').val(new_num1);
   }
@@ -1195,10 +1204,22 @@ function get_cart_products(){
       start  = $(this).attr('name').indexOf('[') + 1;
       end    = $(this).attr('name').indexOf(']');
       if(this.checked)
-      tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start);
+      tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start)+$(this).val();
       });
+  //The results confirm products_cart_buyflag radio change to checkbox
   if (tagstr != '')
-    window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
+	  var inputs= document.getElementsByName("products_cart_buyflag[]");
+      var i=0;
+      var str="";
+  for(i=0;i<inputs.length;i++){
+	  if(inputs[i].checked){
+		str += inputs[i].value + ",";
+	  }
+  }
+  if (inputs.length > 0) {
+     str = str.substr(0, str.length - 1);
+  }
+    window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+str+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
 //open and close categories tree 
 function display(){
@@ -1222,6 +1243,8 @@ $(function() {
     return group.name;
     }
     $("#option_keyword").autocomplete('ajax_orders.php?action=search_group', {
+minChars: 0,
+max: 500,
 multipleSeparator: '',
 dataType: "json",
 parse: function(data) {
@@ -1336,10 +1359,10 @@ function edit_products_tags(ele,tags_id_list,type,url,pid){
   });
 }
 //pupup item info
-function show_product_info(pid,ele){
+function show_product_info(pid,ele,s_site_id){
   $.ajax({
 dataType: 'text',
-url: 'ajax.php?action=product_info_box&pID='+pid+'&site_id='+show_product_info_url,
+url: 'ajax.php?action=product_info_box&pID='+pid+'&site_id='+show_product_info_url+'&s_site_id='+s_site_id,
 success: function(text) {
 //show_p_info 
 $('#show_popup_info').html(text);
@@ -1410,7 +1433,7 @@ $('#show_popup_info').css('display','block');
 function show_category_info(cid,ele,site_id){
   $.ajax({
 dataType: 'text',
-url: 'ajax.php?'+show_category_info_url+'action=show_category_info&current_cid='+cid+'&site_id='+site_id,
+url: 'ajax.php?'+show_category_info_url+'action=show_category_info&current_cid='+cid+'&s_site_id='+site_id,
 success: function(text) {
 $('#show_popup_info').html(text);
 if(ele!=''){
@@ -1432,10 +1455,10 @@ $('#show_popup_info').css('display','block');
 });
 }
 //popup delete categories page
-function delete_category_info(cid, del_type){
+function delete_category_info(cid, del_type, site_id){
   $.ajax({
 dataType: 'text',
-url: 'ajax.php?'+delete_category_info_url+'&action=delete_category&current_cid='+cid+'&del_type'+del_type,
+url: 'ajax.php?'+delete_category_info_url+'&action=delete_category&current_cid='+cid+'&del_type'+del_type+'&s_site_id='+site_id,
 success: function(text) {
 $('#show_popup_info').html(text);
 $('#show_popup_info').css('display','block');
@@ -1816,9 +1839,10 @@ function check_single_product_price(pid_info, c_permission, c_type) {
 //check out edit item price 
 function check_edit_product_profit() {
   var new_price_value = $('#pp').val(); 
-  var flag_type = $('input:radio:checked[name=products_bflag]').val(); 
+  var flag_type = $('select[name=price_char]').val(); 
+  flag_type = flag_type == 1 ? 0 : 1;
   var relate_value = $('#relate_info').val(); 
-  var num_value = $('#products_attention_1_3').val(); 
+  var num_value = $('#relate_radices').val(); 
   if (relate_value != '0') {
     $.ajax({
       type: 'POST',
@@ -1850,6 +1874,30 @@ function check_edit_product_profit() {
       }
     });
   } else {
+  //20140605 check categories product url_words
+    var sromaji = $('#promaji').val();
+    var p_flag;
+    if(sromaji==''){
+    alert(romaji_not_null);
+    p_flag =1;
+    }
+
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+sromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        alert(c_admin_char_set_info);
+        p_flag = 1;
+      }
+    }
+  });
+  if(p_flag == 1){
+    return false;
+  }
     document.forms.new_product.submit(); 
   }
 }
@@ -1869,7 +1917,7 @@ function add_images(select,clear){
 
   var images_num = $("#images_num").val();
   images_num = parseInt(images_num);
-  var html_str = '<tr><td class="main"><img width="24" height="15" border="0" alt="" src="images/pixel_trans.gif">&nbsp;<input type="text" value="" name="products_previous_image_'+(images_num+1)+'">&nbsp;<input type="file" style="display:none" id="image_'+(images_num+1)+'" onchange="change_image_text(this,\'products_previous_image_'+(images_num+1)+'\')" name="products_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_image(\'products_image_'+(images_num+1)+'\',\'products_previous_image_'+(images_num+1)+'\');" value="'+clear+'" class="element_button"></a></td></tr>';
+  var html_str = '<tr><td class="main"><input type="text" value="" name="products_previous_image_'+(images_num+1)+'" class="td_input">&nbsp;<input type="file" style="display:none" id="image_'+(images_num+1)+'" onchange="change_image_text(this,\'products_previous_image_'+(images_num+1)+'\',0)" name="products_image_'+(images_num+1)+'"><input type="button" onclick="file_click(\'image_'+(images_num+1)+'\');" value="'+select+'" class="element_button"><a href="javascript:void(0);"><input type="button" onclick="clear_image(\'products_image_'+(images_num+1)+'\',\'products_previous_image_'+(images_num+1)+'\');" value="'+clear+'" class="element_button"></a></td></tr>';
   $("#images_num").val(images_num+1);
   $("#products_images_id").append(html_str);
 }
@@ -1885,13 +1933,13 @@ function add_cart_images(select,clear){
 //add products info top
 function add_products_info_top(){
 
-  var html_str = '<tr><td><input type="text" style="width:63%;" name="products_info_top_title[]"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_top_contents[]"></textarea></td></tr>';
+  var html_str = '<tr><td><input type="text" name="products_info_top_title[]" class="td_input"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_top_contents[]"></textarea></td></tr>';
   $("#products_info_top_id").append(html_str);
 }
 //add products info under
 function add_products_info_under(){
 
-  var html_str = '<tr><td><input type="text" style="width:63%;" name="products_info_under_title[]"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_under_contents[]"></textarea></td></tr>';
+  var html_str = '<tr><td><input type="text" name="products_info_under_title[]" class="td_input"></td></tr><tr><td><textarea rows="3" cols="30" wrap="soft" name="products_info_under_contents[]"></textarea></td></tr>';
   $("#products_info_under_id").append(html_str);
 }
 function ajax_display(cpath){
@@ -1929,4 +1977,38 @@ function load_categoreis_tree(cpath){
       categories_tree_show = true;
     }
   });
+}
+//delete products
+function check_delete_products_confirm(str,action){
+
+  if(confirm(str)){
+ 
+    document.forms.new_product.action = action;
+    document.forms.new_product.submit();
+  }
+}
+//reset products
+function check_reset_products_confirm(str,action){
+
+  if(confirm(str)){
+    document.forms.new_product.action = action;
+    document.forms.new_product.submit();
+  }
+}
+//delete categories 
+function check_delete_categories_confirm(str,action){
+
+  if(confirm(str)){
+ 
+    document.forms.editcategory.action = action;
+    document.forms.editcategory.submit();
+  }
+}
+//reset categories 
+function check_reset_categories_confirm(str,action){
+
+  if(confirm(str)){
+    document.forms.editcategory.action = action;
+    document.forms.editcategory.submit();
+  }
 }

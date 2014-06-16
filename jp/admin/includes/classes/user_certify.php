@@ -163,7 +163,11 @@ class user_certify {
           }
            
         }
-        $users_num_query = tep_db_query("select is_locked from login where is_locked='1' and account='".$_POST['loginuid']."' and address='".$user_ip4."' and time_format(timediff(now(),logintime),'%H')<24");
+        if($per_flag == true){
+          $users_num_query = tep_db_query("select is_locked from login where is_locked='1' and account='".$_POST['loginuid']."' and address='".$user_ip4."' and time_format(timediff(now(),logintime),'%H')<24");
+        }else{
+          $users_num_query = tep_db_query("select is_locked from login where is_locked='1' and address='".$user_ip4."' and time_format(timediff(now(),logintime),'%H')<24");
+        }
         if(tep_db_num_rows($users_num_query) > 0){
 
           $this->isErr = TRUE;

@@ -124,12 +124,16 @@ if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
           echo '<input type="hidden" name="'.$p_key.'" value="'.htmlspecialchars(stripslashes($p_value)).'">'; 
         }
       }
-      $product_query = tep_db_query("select products_price, products_price_offset, products_tax_class_id, products_small_sum from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
+      $product_query = tep_db_query("select products_price, products_price_offset,
+          products_tax_class_id, products_small_sum,price_type from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
       $product_res = tep_db_fetch_array($product_query);
       $preorder_subtotal = 0; 
       if ($product_res) {
         $products_tax = tep_get_tax_rate($product_res['products_tax_class_id']); 
-        $products_price = tep_get_final_price($product_res['products_price'], $product_res['products_price_offset'], $product_res['products_small_sum'], $_POST['quantity']); 
+        $products_price = tep_get_final_price($product_res['products_price'],
+            $product_res['products_price_offset'],
+            $product_res['products_small_sum'],
+            $_POST['quantity'],$product_res['price_type']); 
         $preorder_subtotal = tep_add_tax($products_price, $products_tax) * $_POST['quantity']; 
       }
       echo tep_draw_hidden_field('preorder_subtotal', $preorder_subtotal);  
@@ -234,7 +238,8 @@ $preorder_products_array = array(
   //商品信息列表    
   echo '          <tr>' . "\n" .
     '            <td align="right" valign="top" id="confirmation_product_num_info">' .
-    $preorder_products_array['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) .'</span>': '') . '</td>' . "\n" .
+    $preorder_products_array['qty'] . '&nbsp;'. NUM_UNIT_TEXT.
+    (!empty($product_info['products_exchange_rate']) && tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($preorder_products_array['qty'], (int)$preorder_products_array['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $preorder_products_array['name'];
   if ($preorder_products_array['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($preorder_products_array['price'], $preorder_products_array['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';

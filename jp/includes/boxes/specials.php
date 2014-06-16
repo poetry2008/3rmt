@@ -13,8 +13,7 @@
                p.products_small_sum,
                p.products_tax_class_id, 
                p.products_bflag, 
-               pd.products_status, 
-               pd.products_image
+               pd.products_status 
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd
         where (p.products_price_offset != '' or p.products_small_sum != '')
           and pd.language_id = '" . $languages_id . "' 
@@ -38,19 +37,25 @@
     new infoBoxHeading($info_box_contents, false, false, tep_href_link(FILENAME_SPECIALS));
 
     $info_box_contents = array();
+    //获取商品图片
+    $img_array =
+      tep_products_images($random_product['products_id'],$random_product['site_id']);
     $info_box_contents[] = array('align' => 'center',
                                  'text' => '<a href="' .
                                  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='
                                    . $random_product["products_id"]) . '">' .
                                  tep_image(DIR_WS_IMAGES .'products/'.
-                                   $random_product['products_image'],
+                                   $img_array[0],
                                    $random_product['products_name'],
                                    SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) .
                                  '</a><br><a href="' .
                                  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='
                                    . $random_product['products_id']) . '">' .
                                  $random_product['products_name'] . '</a><br><s>' .
-                                 $currencies->display_price(tep_get_price($random_product['products_price'], $random_product['products_price_offset'], $random_product['products_small_sum'], $random_product['products_bflag']), tep_get_tax_rate($random_product['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($random_product['products_price'], $random_product['products_price_offset'], $random_product['products_small_sum']), tep_get_tax_rate($random_product['products_tax_class_id'])) . '</span>');
+                                 $currencies->display_price(tep_get_price($random_product['products_price'],
+                                     $random_product['products_price_offset'],
+                                     $random_product['products_small_sum'],
+                                     $random_product['products_bflag'],$random_product['price_type']), tep_get_tax_rate($random_product['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($random_product['products_price'], $random_product['products_price_offset'], $random_product['products_small_sum']), tep_get_tax_rate($random_product['products_tax_class_id'])) . '</span>');
 
     new infoBox($info_box_contents);
 ?>

@@ -4,7 +4,7 @@
 */
 
    
-  if ($random_product = tep_random_select("select p.products_id, p.products_image, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where pd.products_status != '0' and p.products_id = pd.products_id order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
+  if ($random_product = tep_random_select("select p.products_id, pd.site_id, p.products_tax_class_id, p.products_price, p.products_price_offset, p.products_small_sum from " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where pd.products_status != '0' and p.products_id = pd.products_id order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
 ?>
 <!-- whats_new -->
           <tr>
@@ -31,8 +31,9 @@
     }
 
     $info_box_contents = array();
+    $img_array = tep_products_images($random_product['products_id'],$random_product['site_id']);
     $info_box_contents[] = array('align' => 'center',
-                                 'text' => '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $random_product['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $random_product['products_id']) . '">' . $random_product['products_name'] . '</a><br>' . $whats_new_price);
+                                 'text' => '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $random_product['products_id']) . '">' .  tep_image(DIR_WS_IMAGES . 'products/' .  $img_array[0], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $random_product['products_id']) . '">' . $random_product['products_name'] . '</a><br>' . $whats_new_price);
 
     new infoBox($info_box_contents);
 ?>

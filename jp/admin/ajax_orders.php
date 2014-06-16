@@ -1795,7 +1795,11 @@ echo json_encode($json_array);
  参数: $_GET['q'] 要搜索的名字
  ----------------------------------------*/
   $json_array = array(); 
+  if($_GET['q']==''){
+	  $search_group_query = tep_db_query("select * from `option_group` order by `option_group`.`name` asc");
+  }else{
   $search_group_query = tep_db_query("select name from ".TABLE_OPTION_GROUP." where name like '%".tep_replace_full_character($_GET['q'])."%' order by created_at desc");
+  }
     while ($search_group = tep_db_fetch_array($search_group_query)) {
       $json_array[] = array('name' => $search_group['name']); 
     }
@@ -2553,7 +2557,12 @@ echo json_encode($json_array);
   }
   }
   if ($exists_page_info) {
-    $site_info_array = explode('-', $exists_page_info['site']); 
+    if($_POST['current_file'] == FILENAME_CATEGORIES){
+      $site_info_temp_array = explode('|||', $exists_page_info['site']);
+      $site_info_array = explode('-', $site_info_temp_array[1]); 
+    }else{
+      $site_info_array = explode('-', $exists_page_info['site']); 
+    }
     if (empty($site_info_array)) {
       $site_info_array = $site_list_array; 
     } else {
@@ -2568,14 +2577,42 @@ echo json_encode($json_array);
       }
     }
     sort($site_info_array);
-    tep_db_query("update `show_site` set `site` = '".implode('-',array_unique($site_info_array))."' where `user` = '".$ocertify->auth_user."' and `page` ='".$_POST['current_file']."'");
+    if($_POST['current_file'] == FILENAME_CATEGORIES){
+      $show_type= 'one';
+      $show_type_array = explode('&',$_POST['param_url']);
+      foreach($show_type_array as $show_value){
+
+        $show_type_temp = explode('=',$show_value);
+        if($show_type_temp[0] == 'show_type'){
+
+          $show_type = $show_type_temp[1];
+        }
+      }
+      tep_db_query("update `show_site` set `site` = '".$show_type.'|||'.implode('-',array_unique($site_info_array))."' where `user` = '".$ocertify->auth_user."' and `page` ='".$_POST['current_file']."'");
+    }else{
+      tep_db_query("update `show_site` set `site` = '".implode('-',array_unique($site_info_array))."' where `user` = '".$ocertify->auth_user."' and `page` ='".$_POST['current_file']."'");
+    }
   } else {
     $site_info_array = $site_list_array; 
     if ($_POST['flag'] == 0&&count($site_info_array)>1) {
       unset($site_info_array[array_search($_POST['site_id'], $site_info_array)]);
     } 
     sort($site_info_array);
-    tep_db_query("insert into `show_site` values (null, '".$ocertify->auth_user."', '".$_POST['current_file']."', '".implode('-', array_unique($site_info_array))."')");  
+    if($_POST['current_file'] == FILENAME_CATEGORIES){
+      $show_type= 'one';
+      $show_type_array = explode('&',$_POST['param_url']);
+      foreach($show_type_array as $show_value){
+
+        $show_type_temp = explode('=',$show_value);
+        if($show_type_temp[0] == 'show_type'){
+
+          $show_type = $show_type_temp[1];
+        }
+      }
+      tep_db_query("insert into `show_site` values (null, '".$ocertify->auth_user."', '".$_POST['current_file']."', '".$show_type.'|||'.implode('-', array_unique($site_info_array))."')");  
+    }else{
+      tep_db_query("insert into `show_site` values (null, '".$ocertify->auth_user."', '".$_POST['current_file']."', '".implode('-', array_unique($site_info_array))."')");  
+    }
   }
   if(isset($_POST['unshow_list'])&&$_POST['unshow_list']!=''){
     $unshow_list_array = explode('-',$_POST['unshow_list']);

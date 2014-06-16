@@ -1,7 +1,6 @@
 <?php
   $product_query = tep_db_query("
-      select pd.products_name, 
-             pd.products_image 
+      select pd.products_name,p.products_id,pd.site_id 
       from " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
       where p.products_id  = '" . (int)$_GET['products_id'] . "' 
         and pd.products_id = p.products_id 

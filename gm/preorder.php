@@ -289,12 +289,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($error == false)) {
       $_SESSION['submit_flag'] = time();
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
-      $product_query = tep_db_query("select products_price, products_price_offset, products_tax_class_id, products_small_sum from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
+      $product_query = tep_db_query("select products_price, products_price_offset,
+          products_tax_class_id, products_small_sum,price_type from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
       $product_res = tep_db_fetch_array($product_query);
       $preorder_subtotal = 0; 
       if ($product_res) {
         $products_tax = tep_get_tax_rate($product_res['products_tax_class_id']); 
-        $products_price = tep_get_final_price($product_res['products_price'], $product_res['products_price_offset'], $product_res['products_small_sum'], $_POST['quantity']); 
+        $products_price = tep_get_final_price($product_res['products_price'],
+            $product_res['products_price_offset'],
+            $product_res['products_small_sum'],
+            $_POST['quantity'],$product_res['price_type']); 
         $preorder_subtotal = tep_add_tax($products_price, $products_tax) * $_POST['quantity']; 
       }
       $_POST['preorder_subtotal'] = $preorder_subtotal;

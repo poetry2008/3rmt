@@ -47,7 +47,6 @@
              select c.categories_id, 
                     cd.categories_status, 
                     cd.categories_name, 
-                    cd.categories_name_list, 
                     c.parent_id,
                     cd.site_id,
                     c.sort_order
@@ -59,7 +58,7 @@
             ) c
             where site_id = '0' or site_id='".$site_id."'
             group by categories_id
-            order by parent_id, sort_order, categories_name_list");
+            order by parent_id, sort_order, categories_name");
     } else {
          $categories_query = tep_db_query("
            select *
@@ -67,7 +66,6 @@
              select c.categories_id, 
                     cd.categories_status, 
                     cd.categories_name, 
-                    cd.categories_name_list, 
                     c.parent_id,
                     cd.site_id,
                     c.sort_order
@@ -78,7 +76,7 @@
             ) c
             where site_id = '0' or site_id='".$site_id."'
             group by categories_id
-            order by parent_id, sort_order, categories_name_list");
+            order by parent_id, sort_order, categories_name");
     }
          $this->data = array();
          while ($categories = tep_db_fetch_array($categories_query)) {
@@ -105,7 +103,7 @@
             $category_products_count = tep_products_in_category_count($categories['categories_id'],false,true);
             $categories_count = $category_count + $category_products_count;
 
-            $this->data[$cID][$id] = array('name' => $categories['categories_name_list'], 'count' => $categories_count);
+            $this->data[$cID][$id] = array('name' => $categories['categories_name'], 'count' => $categories_count);
          } // eof While loop
     } //eof Function
 /*--------------------------------------------------

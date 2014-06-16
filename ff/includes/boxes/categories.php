@@ -66,7 +66,9 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
 ?>
 
 <div id='categories'>
-  <div class="menu_top"><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$categories[0]['categories_id']);?>"><?php echo $categories[0]['categories_name'];?></a></div>
+  <div class="menu_top"><a href="<?php echo tep_href_link(FILENAME_DEFAULT,
+  'cPath='.$categories[0]['categories_id']);?>"><?php echo
+  $categories[0]['categories_name'];?></a></div>
   <?php 
     foreach ($categories as $key => $category) { 
   ?>
@@ -108,7 +110,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
             <li class="l_m_category_li2">
               <a class="l_m_category_li2_link" href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>">
               <?php
-              if (in_array($subcategory['categories_id'], $id)) {
+              if (isset($id)&&$id!=''&&in_array($subcategory['categories_id'], $id)) {
               ?>
               <font color="#00C0FF"> 
               <?php
@@ -116,7 +118,7 @@ if (basename($_SERVER['PHP_SELF']) == FILENAME_PREORDER) {
               ?>
               <?php  echo $subcategory['categories_name'];?>
               <?php
-              if (in_array($subcategory['categories_id'], $id)) {
+              if (isset($id)&&$id!=''&&in_array($subcategory['categories_id'], $id)) {
               ?>
               </font> 
               <?php

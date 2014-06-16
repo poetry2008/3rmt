@@ -15,7 +15,6 @@ $categories_query = tep_db_query("
              cd.categories_status, 
              c.parent_id,
              cd.site_id,
-             cd.categories_image2,
              c.sort_order
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where c.parent_id = '0' 
@@ -45,7 +44,7 @@ $left_show_single = false;
 <div id='categories'>
   <div class="menu_top"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;MENU</div>
   <ul class='l_m_category_ul'>
-    <?php foreach($categories as $key => $category) {?>
+    <?php foreach($categories as $key => $category) { ?>
       <?php if(($cPath && in_array($category['categories_id'], $id)) || ($left_show_single && in_array($category['categories_id'], $id))) {?>
         <li class='l_m_category_li2'>
           <a class="l_m_category_li2_link"href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">

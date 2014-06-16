@@ -42,7 +42,7 @@ $left_show_single = false;
 <div id='categories'>
   <img width="171" height="25" alt="<?php echo BOX_HEADING_CATEGORIES;?>" src="images/design/box/menu.gif">
   <ul class='l_m_category_ul'>
-    <?php foreach($categories as $key => $category) { ?>
+    <?php foreach($categories as $key => $category) {?>
       <?php if(($cPath && in_array($category['categories_id'], $id)) || ($left_show_single && in_array($category['categories_id'], $id))) {?>
         <li class='l_m_category_li2'>
           <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>">

@@ -200,16 +200,16 @@ if(isset($_GET['sid'])&&$_GET['sid']){
         </div>
         <div class="pageBottom_long"></div>
         <?php
-        if (isset($cPath_array)) {
-          if ($seo_category['seo_description']) {
-            echo '<h2 class="pageHeading_long">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).TEXT_ABOUT.'</h2>'; 
-            echo '<div class="comment_long"><p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p></div>'; 
-            echo '<div class="pageBottom_long"></div>';
-          }
+        if (isset($cPath_array)) { 
           if (!empty($seo_category['text_information'])) {
-            $old_info_arr = array('pageHeading', '#STORE_NAME#');
-            $new_info_arr = array('pageHeading_long', STORE_NAME); 
-            echo str_replace($old_info_arr, $new_info_arr, $seo_category['text_information']); 
+            $old_info_arr = array('#STORE_NAME#');
+            $new_info_arr = array(STORE_NAME); 
+            //分类描述内容
+            $seo_category_array = explode('||||||',str_replace($old_info_arr, $new_info_arr, $seo_category['text_information'])); 
+            foreach($seo_category_array as $seo_value){
+  
+              echo $seo_value;
+            }
           }
         }
       ?>

@@ -85,7 +85,12 @@ function checkForm() {
   <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr>
               <td colspan="2" valign="top" align="right"> 
-                <?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td>
+                <?php
+                    //获取商品图片
+                    $img_array =
+                    tep_products_images($product_info['products_id'],$product_info['site_id']);
+                 ?> 
+                <?php echo tep_image3(DIR_WS_IMAGES . 'products/' . $img_array[0], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?></td> 
               </tr>
               <tr> 
                 <td width="20%"><b><?php echo SUB_TITLE_PRODUCT; ?></b></td>

@@ -231,7 +231,7 @@ function showimage($1) {
       
 <?php
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
-      $languages_id,true,'product_info');
+    $languages_id,true,'product_info');
   $product_info['products_quantity'] = tep_get_quantity($product_info['products_id'],true);
   if (!$product_info) { // product not found in database
 ?>
@@ -249,20 +249,27 @@ function showimage($1) {
     if (tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'])) {
       $pricedef = $product_info['products_price'];
       $products_price = '<s>' .
-        $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'], $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> 
+        $currencies->display_price(tep_get_price($product_info['products_price'],
+              $product_info['products_price_offset'],
+              $product_info['products_small_sum'], $product_info['products_bflag'],
+              $product_info['price_type']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> 
       
       <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</span>';
     } else {
       
       $pricedef = $product_info['products_price'];
-      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
+      $products_price =
+        $currencies->display_price(tep_get_price($product_info['products_price'],
+              $product_info['products_price_offset'],
+              tep_get_price($product_info['products_price'],$product_info['products_small_sum'],
+                '', $product_info['products_bflag'],$product_info['price_type']),
+              $product_info['products_bflag'], $product_info['price_type']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
   
     $description = replace_store_name($product_info['products_description']);
-    $data1 = explode("//", $product_info['products_attention_1']);
-    $data2 = explode("//", $product_info['products_attention_2']);
-    $data3 = explode("//", $product_info['products_attention_3']);
-    $data4 = explode("//", $product_info['products_attention_4']);
+    //获取商品上部分内容
+    $products_info_top = $product_info['products_info_top'];
+    $products_info_under = $product_info['products_info_under'];
 ?>
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
@@ -279,32 +286,19 @@ function showimage($1) {
                       <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCT_MODEL;?></font></td>
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
-                      <?php 
-                      if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
-                      ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $product_info['products_attention_1_1'] ; ?></font></td>
-                        <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
-                      </tr>
-                      <?php } ?>
-
                       <?php
-                      if(!empty($data1[0]) && !empty($data1[1])){
-                      ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $data1[0] ; ?></font></td>
-                        <td class="main"><?php print($data1[1]) ; ?></td>
-                      </tr>
-                      <?php } ?>
-                      <?php 
-                      if(!empty($data2[0]) && !empty($data2[1])){
-                      ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php print($data2[0]) ; ?></font></td>
-                        <td class="main"><?php print( $data2[1]) ; ?></td>
-                      </tr>
-                      <?php } ?>
+                       $products_info_top_array = explode('------',$products_info_top);
+                       foreach($products_info_top_array as $top_value){
 
+                         $top_array = explode('||||||',$top_value); 
+                      ?>
+                      <tr class="infoBoxContents">
+                        <td class="main"><font color="#0070AF"><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[0]); ?></font></td>
+                        <td class="main"><?php echo str_replace("\r\n",'<br>',str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[1])); ?></td>
+                      </tr>
+                      <?
+                       }
+                      ?>
                       <tr class="infoBoxContents">
                       <td class="main"><font color="#0070AF"><?php echo TEXT_PRODUCT_MANUFACTURER_NAME;?></font></td>
                         <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
@@ -315,7 +309,7 @@ function showimage($1) {
                         <?php
                           # 添加开始 ---------------------------------------
                           # -- 订单数量和单价列表 --------------------------
-                          if(tep_not_null($product_info['products_small_sum'])) {
+                          if(tep_not_null($product_info['products_small_sum']) && $product_info['price_type'] == 1) {
                           $wari_array = array();
                           echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
                           $parray = explode(",", $product_info['products_small_sum']);
@@ -333,7 +327,7 @@ function showimage($1) {
                             echo '</tr>'."\n";
                           }
                           echo '</table>'."\n";
-                          } else {
+                          } else if(tep_not_null($product_info['products_price_offset']) && $product_info['price_type'] == 0){
                             echo '<strong>'.$products_price.'</strong>';
                           }
                           
@@ -348,111 +342,62 @@ function showimage($1) {
                       <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
                       </tr>
                       <?php
-                      if(!empty($data3[0]) && !empty($data3[1])){
+                       $products_info_under_array = explode('------',$products_info_under);
+                       foreach($products_info_under_array as $under_value){
+
+                         $under_array = explode('||||||',$under_value); 
                       ?>
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $data3[0] ; ?></font></td>
-                        <td class="main"><?php echo $data3[1] ; ?></td>
+                        <td class="main"><font color="#0070AF"><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[0]); ?></font></td>
+                        <td class="main"><?php echo str_replace("\r\n",'<br>',str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[1])); ?></td>
                       </tr>
-                      <?php } ?>
-                      <?php 
-                      if(!empty($data4[0]) && !empty($data4[1])){
-                      ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $data4[0] ; ?></font></td>
-                        <td class="main"><?php echo $data4[1] ; ?></td>
-                      </tr>
-                      <?php } ?>
+                      <?
+                       }
+                      ?> 
                       <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo TEXT_POINT;?></font></td>
                         <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
                       </tr>
                       <?php } ?>
-<?php 
-if (false) {
-$tag_query = tep_db_query("
-    SELECT t.tags_id, 
-           t.tags_images, 
-           t.tags_name 
-    FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
-    WHERE t.tags_id = pt.tags_id 
-      AND pt.products_id='" . $product_info['products_id'] . "'
-");
-if(tep_db_num_rows($tag_query)){
-?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo TEXT_PRODUCT_TAGS;?></font></td>
-                      <td>
-                      <?php
-while($tag = tep_db_fetch_array($tag_query)) {
-  ?>
- <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
-<?php if (
-    (
-    (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
-    || 
-    (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
-    )
-    && $tag['tags_images']
-    )
- {
-   echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
- } else { 
-   echo $tag['tags_name'];
-  }
-  ?>
-</a>
- &nbsp;&nbsp;
- <?php
-}
-?>
-
-                      </td>
-                      </tr>
-                      <?php 
-}
-}
-?>
                     </table></td>
                 </tr>
                 
               </table></td>
           <td width="250" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
-                <?php
-    if (tep_not_null($product_info['products_image'])) {
+<?php
+//获取商品的图片
+$products_img_array =
+tep_products_images($product_info['products_id'],$product_info['site_id']);
+    if (tep_not_null($products_img_array[0])) {
 ?>
                 <tr>
-                  <td align="center" class="smallText"><script type="text/javascript"><!-- 
-                  document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES
-                  . 'products/'.  $product_info['products_image'].'\",0) href="javascript:void(0)" >' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
---> </script>
+                  <td align="center" class="smallText">
+                <script type="text/javascript"><!-- 
+                document.write('<?php echo '<a onclick=fnCreate(\"'.DIR_WS_IMAGES . 'products/'.  $products_img_array[0].'\",0) href="javascript:void(0)" >' . tep_image3(DIR_WS_IMAGES . 'products/'. $products_img_array[0], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>'); 
+                --> </script>
                     <noscript>
-                    <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' . urlencode($product_info['products_image'])) . '">' . tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
+                    <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' . urlencode($products_img_array[0])) . '">' . tep_image3(DIR_WS_IMAGES . 'products/' . $products_img_array[0], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
                     </noscript>
                   </td>
                 </tr>
                 <tr>
                   <td align="center"><table border="0" cellspacing="6" cellpadding="0">
                       <tr>
-                        <?php if (tep_not_null($product_info['products_image'])) { ?>
-                        <td width="60" height="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image'] ; ?>',0)" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'.  $product_info['products_image'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
-                          <input type="hidden" class="large_image_input" value="<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image'];?>">
+                      <?php
+                        foreach($products_img_array as $img_key=>$img_value){
+                          if (tep_not_null($img_value)){
+                      ?>
+                          <td width="60" height="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES .'products/'.  $img_value;?>',<?php echo $img_key;?>)" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'.  $img_value, $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
+                          <input type="hidden" class="large_image_input" value="<?php echo DIR_WS_IMAGES .'products/'.$img_value;?>">
                           </td>
-                        <?php } ?>
-                        <?php if (tep_not_null($product_info['products_image2'])) { ?>
-                        <td width="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES .  'products/'.$product_info['products_image2'] ; ?>',1)" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image2'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
-                          <input type="hidden" class="large_image_input" value="<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image2'];?>">
-                          </td>
-                        <?php } ?>
-                        <?php if (tep_not_null($product_info['products_image3'])) { ?>
-                        <td width="60" align="center" class="image_border"><a href="javascript:void(0)" onclick="fnCreate('<?php echo DIR_WS_IMAGES.'products/'.$product_info['products_image3'] ; ?>',2)" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image3'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT , 'name="prod_thum_1" class="image_alt_list"') ;?></a>
-                          <input type="hidden" class="large_image_input" value="<?php echo DIR_WS_IMAGES .'products/'.  $product_info['products_image3'];?>">
-                          </td>
-                        <?php } ?>
+                      <?php
+                          }
+                        }
+                      ?> 
                       </tr>
                     </table>
-                    <?php
+<?php
     }
 ?>
                   </td>
@@ -565,7 +510,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
           if($mcnt == 1) {
           ?>
             <noscript>
-            <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES .'products/'. $product_info['products_image']) . '" rel="lightbox[products]">' . tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
+            <?php echo '<td class="smallText" align="center" width="20%"><a href="' . tep_href_link(DIR_WS_IMAGES .'products/'. $products_img_array[0]) . '" rel="lightbox[products]">' . tep_image2(DIR_WS_IMAGES .'products/'. $products_img_array[0], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>-</td>'; ?>
             </noscript>
             <?php
           }

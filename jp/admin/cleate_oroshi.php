@@ -107,7 +107,7 @@ case 'delete':
   	var html = new Array();
   	var i=0;
 	var js_oroshi_add_text = '<?php echo BUTTON_ADD_TEXT;?>';
-	var js_oroshi_update_sort = '<?php echo CLEATE_PEERS_UPDATE_SORT;?>'
+	var js_oroshi_update_sort = '<?php echo CLEATE_DOUGYOUSYA_UPDATE_SORT;?>'
 	var js_oroshi_trade_name = '<?php echo TRADE_NAME; ?>';
 	var js_oroshi_already_exists = '<?php echo ALREADY_EXISTS; ?>';
 	var js_oroshi_game_title = '<?php echo PLEASE_GAME_TITLE; ?>';
@@ -154,7 +154,7 @@ require("includes/note_js.php");
                     <table width="100%" cellspacing="0" cellpadding="0">
                        <tr>
                           <td valign="top" class="cleate_add">
-  <input type="button" value="<?php echo CLEATE_PEERS_ADD_BUTTON;?>" name='b1' onClick="input_add()">
+  <input type="button" value="<?php echo CLEATE_DOUGYOUSYA_ADD_BUTTON;?>" name='b1' onClick="input_add()">
                           </td>
                        </tr>
                        <tr>
@@ -186,12 +186,12 @@ if(empty($HTTP_GET_VARS['id'])){
     <input type="hidden" name="sort_order[<?php echo $col['oroshi_id'];?>]" value="<?php echo $i;?>" class="sort_order_input">
    <?php echo WHOLESALERS.$col['oroshi_name'];?><input type="hidden" name="exist_name[]" value='<?php echo $col['oroshi_name'];?>'>
   </td>
-  <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_oroshi.php?action=edit_oroshi&id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_PEERS_EDIT;?></a></td>
+  <td id="tr_<?php echo $i;?>_2" width='50'><a href='cleate_oroshi.php?action=edit_oroshi&id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_DOUGYOUSYA_EDIT;?></a></td>
    
   <?php
   if ($ocertify->npermission >= 15) {
   ?>
-  <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick="del_oroshi(<?php echo $col['oroshi_id'];?>, '<?php echo $ocertify->npermission;?>')"><?php echo CLEATE_PEERS_DEL;?></a></td>
+  <td id="tr_<?php echo $i;?>_3" width='50'><a href='javascript:void(0);' onclick="del_oroshi(<?php echo $col['oroshi_id'];?>, '<?php echo $ocertify->npermission;?>')"><?php echo CLEATE_DOUGYOUSYA_DEL;?></a></td>
   <?php
   } else {
   ?>
@@ -200,7 +200,7 @@ if(empty($HTTP_GET_VARS['id'])){
   }
   ?> 
   <td id="tr_<?php echo $i;?>_4" width='50'><a href='cleate_list.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'><?php echo WHOLESALE_DATA_MANAGE?></a></td>
-  <td id="tr_<?php echo $i;?>_5" width='50'><a href='history.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_PEERS_HISTORY;?></a>
+  <td id="tr_<?php echo $i;?>_5" width='50'><a href='history.php?action=oroshi&o_id=<?php echo $col['oroshi_id'];?>'><?php echo CLEATE_DOUGYOUSYA_HISTORY;?></a>
   <td width='50' align="right"><a href='cleate_oroshi.php?action=select_oroshi&id=<?php echo
   $col['oroshi_id'];?>'><?php if($col['oroshi_id'] == $HTTP_GET_VARS['id']){echo tep_image(DIR_WS_IMAGES.
       'icon_arrow_right.gif');}else{ echo tep_image(DIR_WS_IMAGES . 'icon_info.gif');}?></a></td>
@@ -269,7 +269,7 @@ if(empty($HTTP_GET_VARS['id'])){
 ?>
 </div>
 <a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_LIST_LOGIN_BUTTON, 'onclick="w_close(\''.$ocertify->npermission.'\', \'0\');"');?></a>
-<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_PEERS_UPDATE_SORT, 'onclick="w_close(\''.$ocertify->npermission.'\', \'1\');"');?></a>
+<a href="javascript:void(0);"><?php echo tep_html_element_button(CLEATE_DOUGYOUSYA_UPDATE_SORT, 'onclick="w_close(\''.$ocertify->npermission.'\', \'1\');"');?></a>
 <div id="h_sort"></div>
 </form>
                           </td>

@@ -4,7 +4,7 @@
 */
 
    
-  if ($random_product = tep_random_select("select products_id, products_image, products_tax_class_id, products_price, products_price_offset, products_small_sum from " . TABLE_PRODUCTS . " where products_status != '0' order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
+  if ($random_product = tep_random_select("select products_id, products_tax_class_id, products_price, products_price_offset, products_small_sum from " . TABLE_PRODUCTS . " where products_status != '0' order by products_date_added desc limit " . MAX_RANDOM_SELECT_NEW)) {
 ?>
 <!-- whats_new -->
           <tr>

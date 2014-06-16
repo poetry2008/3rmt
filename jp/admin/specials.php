@@ -194,13 +194,8 @@
     while ($specials = tep_db_fetch_array($specials_query)) {
       if ( ((!isset($_GET['sID']) || !$_GET['sID']) || ($_GET['sID'] == $specials['specials_id'])) && (!isset($sInfo) || !$sInfo) ) {
 
-        $products_query = tep_db_query("
-            select products_image 
-            from " . TABLE_PRODUCTS_DESCRIPTION . " 
-            where products_id = '" . $specials['products_id'] . "' order by site_id
-            desc limit 1
-            ");
-        $products = tep_db_fetch_array($products_query);
+        $img_array =
+          tep_products_images($specials['products_id'],$specials['site_id']); 
         $sInfo_array = tep_array_merge($specials, $products);
         $sInfo = new objectInfo($sInfo_array);
       }
@@ -263,7 +258,8 @@
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_SPECIALS, 'page=' . $_GET['page'] . '&sID=' . $sInfo->specials_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_SPECIALS, 'page=' . $_GET['page'] . '&sID=' . $sInfo->specials_id . '&action=delete') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>');
         $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($sInfo->specials_date_added));
         $contents[] = array('text' => '' . TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($sInfo->specials_last_modified));
-        $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_info_image('products/'.$sInfo->products_image, $sInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, 0));
+        $contents[] = array('align' => 'center', 'text' => '<br>' .
+            tep_info_image('products/'.$img_array[0], $sInfo->products_name, SMALL_IMAGE_WIDTH_TEST, SMALL_IMAGE_HEIGHT_TEST, 0));
         $contents[] = array('text' => '<br>' . TEXT_INFO_ORIGINAL_PRICE . ' ' . $currencies->format($sInfo->products_price));
         $contents[] = array('text' => '' . TEXT_INFO_NEW_PRICE . ' ' . $currencies->format($sInfo->specials_new_products_price));
         $contents[] = array('text' => '' . TEXT_INFO_PERCENTAGE . ' ' . number_format(100 - (($sInfo->specials_new_products_price / $sInfo->products_price) * 100)) . '%');

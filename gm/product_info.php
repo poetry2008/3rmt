@@ -13,14 +13,10 @@ require(DIR_WS_ACTIONS . 'product_info.php');
 $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID, $languages_id,true,'product_info');
 $product_info['products_quantity'] = tep_get_quantity($product_info['products_id'],true);
 $p_image_list = array();
-if($product_info['products_image']){
-  $p_image_list[] = $product_info['products_image'];
-}
-if($product_info['products_image2']){
-  $p_image_list[] = $product_info['products_image2'];
-}
-if($product_info['products_image3']){
-  $p_image_list[] = $product_info['products_image3'];
+//获取商品的图片
+$products_img_array = tep_products_images($product_info['products_id'],$product_info['site_id']);
+foreach($products_img_array as $img_key=>$img_value){
+  $p_image_list[] = $img_value;
 }
 $p_image_count = 0;
 foreach($p_image_list as $p_list_row){
@@ -273,21 +269,27 @@ if (!$product_info) { // product not found in database
   if (tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'])) {
     $pricedef = $product_info['products_price'];
     $products_price = '<s>' .
-      $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'], $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> 
+      $currencies->display_price(tep_get_price($product_info['products_price'],
+            $product_info['products_price_offset'],
+            $product_info['products_small_sum'],
+            $product_info['products_bflag'],$product_info['price_type']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</s> 
 
       <span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum']), tep_get_tax_rate($product_info['products_tax_class_id'])) . '</span>';
   } else {
     $pricedef = $product_info['products_price'];
-    $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
+    $products_price =
+      $currencies->display_price(tep_get_price($product_info['products_price'],
+            $product_info['products_price_offset'],
+            tep_get_price($product_info['products_price'],$product_info['products_small_sum'],
+              '', $product_info['products_bflag'],$product_info['price_type']),
+            $product_info['products_bflag'],$product_info['price_type']), tep_get_tax_rate($product_info['products_tax_class_id']));
   }
 
   $description = replace_store_name($product_info['products_description']);
+    //获取商品上部分内容
+    $products_info_top = $product_info['products_info_top'];
+    $products_info_under = $product_info['products_info_under'];
 
-  $data1 = explode("//", $product_info['products_attention_1']);
-
-  $data2 = explode("//", $product_info['products_attention_2']);
-  $data3 = explode("//", $product_info['products_attention_3']);
-  $data4 = explode("//", $product_info['products_attention_4']);
   ?>
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
@@ -309,28 +311,15 @@ if (!$product_info) { // product not found in database
     <?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?>
     </td>
     </tr>
-    <?php 
-    if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
-      ?>
-        <tr>
-        <td><b><?php echo $product_info['products_attention_1_1'] ; ?></b></td>
-        <td><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
-        </tr>
-        <?php } ?>
-        <?php
-        if(!empty($data1[0]) && !empty($data1[1])){
-          ?>
-            <tr>
-            <td><b><?php echo $data1[0] ; ?></b></td>
-            <td><?php echo $data1[1] ; ?></td>
-            </tr>
-            <?php } ?>
             <?php 
-            if(!empty($data2[0]) && !empty($data2[1])){
+                       $products_info_top_array = explode('------',$products_info_top);
+                       foreach($products_info_top_array as $top_value){
+
+                         $top_array = explode('||||||',$top_value); 
               ?>
                 <tr>
-                <td><b><?php echo $data2[0] ; ?></b></td>
-                <td><?php echo $data2[1] ; ?></td>
+                <td><b><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[0]); ?></b></td>
+                <td><?php echo str_replace("\r\n",'<br>',str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$top_array[1])); ?></td>
                 </tr>
                 <?php } ?>
                 <tr>
@@ -377,19 +366,14 @@ if (!$product_info) { // product not found in database
     sprintf(TEXT_PRODUCT_INFO_QTY_TEXT,tep_show_quantity($product_info['products_quantity'])); ?></td>
     </tr>
     <?php 
-    if(!empty($data3[0]) && !empty($data3[1])){
-      ?>
-        <tr>
-        <td><b><?php echo $data3[0] ; ?></b></td>
-        <td><?php echo $data3[1] ; ?></td>
-        </tr>
-        <?php } ?>
-        <?php 
-        if(!empty($data4[0]) && !empty($data4[1])){
+    $products_info_under_array = explode('------',$products_info_under);
+    foreach($products_info_under_array as $under_value){
+
+    $under_array = explode('||||||',$under_value); 
           ?>
             <tr>
-            <td valign="top"><b><?php echo $data4[0] ; ?></b></td>
-            <td><?php echo $data4[1] ; ?></td>
+            <td valign="top"><b><?php echo str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[0]); ?></b></td>
+            <td><?php echo str_replace("\r\n",'<br>',str_replace('${RATE}',tep_display_attention_1_3($product_info['products_exchange_rate']),$under_array[1])); ?></td>
             </tr>
             <?php } ?>
             <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
@@ -507,10 +491,15 @@ if (!$product_info) { // product not found in database
         $mcnt++;
         if($mcnt == 1) {
           ?>
+<?php
+    if (tep_not_null($products_img_array[0])) {
+      ?>
             <noscript>
-            <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' .  $product_info['products_image']) . '" rel="lightbox[products]">' .  tep_image2(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'; ?>
+            <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' .  $products_img_array[0] ) . '" rel="lightbox[products]">' .
+            tep_image2(DIR_WS_IMAGES . 'products/' . $products_img_array[0], $product_info['products_name'], PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'; ?>
             </noscript>
             <?php
+    }
         }
         ?>
           <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'colors/' . $sub_colors['color_image']) . '" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . 'colors/' . $sub_colors['color_image'], $product_info['products_name'],PRODUCT_INFO_SMALL_IMAGE_WIDTH, PRODUCT_INFO_SMALL_IMAGE_HEIGHT, 'hspace="2" vspace="2" class="image_border"') . '</a><br>'.$sub_colors['color_to_products_name']; ?>

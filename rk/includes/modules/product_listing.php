@@ -67,9 +67,14 @@ if ($tmp_sort_str == '4') {
       $p_bflag = tep_get_bflag_by_product_id($listing['products_id']); 
       if (tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'])) {
         $price = '<s>' .
-          $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $p_bflag), tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
+          $currencies->display_price(tep_get_price($listing['products_price'],
+                $listing['products_price_offset'], $listing['products_small_sum'],
+                $p_bflag, $listing['price_type']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
-        $price = $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $p_bflag), tep_get_tax_rate($listing['products_tax_class_id']));
+        $price =
+          $currencies->display_price(tep_get_price($listing['products_price'],
+                $listing['products_price_offset'], $listing['products_small_sum'],
+                $p_bflag, $listing['price_type']), tep_get_tax_rate($listing['products_tax_class_id']));
       }
       //buynow
       if($listing['products_quantity'] > 0) {
@@ -89,12 +94,13 @@ if ($tmp_sort_str == '4') {
     
       $row++;
       $col++;
+      $products_images_array = tep_products_images($listing['products_id'],$listing['site_id']);
 ?>
 
       <table border="0" cellspacing="0" cellpadding="0" class="product_listing_content">
         <tr>
           <td rowspan="2" width="<?php echo SMALL_IMAGE_WIDTH?>" style="padding-right:8px; " align="center">
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $listing['products_image'], $listing['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>' ; ?>
+            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $products_images_array[0], $listing['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>' ; ?>
           </td>
           <td class="main" style="padding-left:5px; ">
             <h3>

@@ -42,7 +42,7 @@ case 'update':
         tep_db_perform('products', array('products_virtual_quantity' => SBC2DBC($_POST['kakuukosuu'][$i])), 'update', "products_id='".$_POST['product'][$i]."'");
     }
   }
-  tep_redirect('categories.php?cPath='.$_POST['fullpath']);
+  tep_redirect('categories.php?cPath='.str_replace('|||','&',$_POST['fullpath']));
   break;
 }
 
@@ -442,7 +442,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 <?php }} ?>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_PRODUCT_SELECT;?></th>
     <th class="dataTableHeadingContent" ><?php echo TEXT_PRODUCTS_VIRTUAL_QUANTITY;?></th>
-    <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_PEERS_PRICE;?></th>
+    <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_YEZHE_PRICE;?></th>
   </tr>
 <?php 
  if($count){

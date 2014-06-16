@@ -3,12 +3,10 @@
   $Id$
 */
   if (isset($current_category_id) && ($current_category_id > 0)) {
-    
     $best_sellers_query = tep_db_query("
       select *
       from (
         select distinct p.products_id,
-                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_name,
@@ -34,12 +32,10 @@
       order by products_ordered desc, products_name 
       limit " . MAX_DISPLAY_BESTSELLERS);
   } else {
-    
     $best_sellers_query = tep_db_query("
       select *
       from (
         select distinct p.products_id,
-                        pd.products_image,
                         p.products_ordered,
                         pd.products_viewed,
                         pd.products_status, 
@@ -70,7 +66,6 @@
 <!-- best_sellers -->
 <div class="yui3-g main-columns">
 <h3><span><?php echo BESTSELLERS_TITLE_TEXT;?></span></h3>
-
 <?php
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
@@ -85,9 +80,11 @@
 <div class="hm-hot-product">
 <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) ; ?>">
 <?php
-if (!empty($best_sellers['products_image'])) {
-  if (file_exists3(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'])) {
-    echo tep_image(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
+$img_array =
+tep_products_images($best_sellers['products_id'],$best_sellers['site_id']);
+if (!empty($img_array[0])) {
+  if (file_exists3(DIR_WS_IMAGES.'products/'.$img_array[0])) {
+    echo tep_image(DIR_WS_IMAGES.'products/'.$img_array[0], $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
   } else {
     echo tep_image(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
   }

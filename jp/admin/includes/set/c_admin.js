@@ -454,6 +454,11 @@ function set_new_price(pid, cnt) {
               $(c_ele).next().next().next().find('input[name="pprice[]"]').eq(0).val(msg_array[1]); 
               $(c_ele).next().find('input[name="price[]"]').eq(0).val(msg_array[1]);  
               $(c_ele).next().next().next().next().find('a').html(msg_array[3]);  
+              for(var i=1;i<=c_admin_sites_num;i++){
+              
+                $("#edit_p_"+pid+"_"+i).html(msg_array[0]);
+                $("#show_price_"+pid+"_"+i).html(msg_array[1]);
+              }
               set_money(cnt, false, '1'); 
               setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
             }

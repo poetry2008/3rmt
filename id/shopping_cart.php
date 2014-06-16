@@ -673,9 +673,15 @@ if (!empty($_SESSION['history_url'])) {
         $cp_status_res = tep_db_fetch_array($cp_status_raw);
         if ($cp_status_res['products_status'] == 0) {
         } else {
-          echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
-          echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
-          echo "</a>";
+          //获取推荐商品要显示的图片
+          $products_images_query = tep_db_query("select images_name from ".TABLE_PRODUCTS_IMAGES." where products_id='".$cp['products_id']."' and site_id=0 and images_type=1");
+          while($products_images_array = tep_db_fetch_array($products_images_query)){
+            echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
+            echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $products_images_array['images_name']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
+            echo "</a>";
+            echo '<br>';
+          }
+          tep_db_free_result($products_images_query);
         }
         echo "<br>";
       }

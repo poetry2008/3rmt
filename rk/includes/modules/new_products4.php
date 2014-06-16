@@ -19,7 +19,6 @@
     $new_products_query = tep_db_query("
         select * from (select p.products_id, 
                p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-               pd.products_image, 
                p.products_tax_class_id, 
                p.products_price, 
                p.products_price_offset, 
@@ -42,7 +41,6 @@
       $new_products_query = tep_db_query("
           select * from (select distinct p.products_id, 
                           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                          pd.products_image, 
                           p.products_tax_class_id, 
                           p.products_price, 
                           p.products_price_offset, 
@@ -62,7 +60,6 @@
       $new_products_query = tep_db_query("
           select * from (select distinct p.products_id, 
                           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                          pd.products_image, 
                           p.products_tax_class_id, 
                           p.products_price, 
                           p.products_price_offset, 
@@ -97,7 +94,6 @@
       $new_products_query = tep_db_query("
           select * from (select distinct p.products_id, 
                           p.products_real_quantity + p.products_virtual_quantity as products_quantity,
-                          pd.products_image, 
                           p.products_tax_class_id, 
                           p.products_price, 
                           p.products_price_offset, 
@@ -141,7 +137,11 @@ if (0 < $num_products) {
       <table border="0" cellspacing="0" cellpadding="0" class="product_listing_content">
         <tr>
           <td width="<?php echo SMALL_IMAGE_WIDTH;?>" rowspan="2" style="padding-right:8px; " align="center">
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
+          <?php
+          //获取商品图片
+          $img_array = tep_products_images($new_products['products_id'],$new_products['site_id']);
+          ?>
+            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' .  tep_image(DIR_WS_IMAGES . 'products/' . $img_array[0], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?>
           </td>
           <td valign="top">
             <p class="main">
