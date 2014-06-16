@@ -3220,18 +3220,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $c_languages = tep_get_languages(); 
               for ($ci = 0, $cn = sizeof($c_languages); $ci < $cn; $ci++) {
                 ?> 
-                  <tr>
-                  <td class="main" width="135" align="left" valign="top"><?php echo TEXT_EDIT_CATEGORIES_NAME;?></td>
-                  <td class="main">
-                  <?php echo
-                  tep_draw_input_field('categories_name_list['.$c_languages[$ci]['id'].']',
-                      (($_GET['action'] ==
-                        'edit_category')?tep_get_category_name_list($cInfo->categories_id,
-                          $c_languages[$ci]['id'], $s_site_id, true):''),'id="cname"
-                      class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
-                  ?>
-                  </td> 
-                  </tr>
 
                   <tr>
                   <td class="main" width="135" align="left" valign="top"><?php echo TEXT_CATEGORIES_NAME_LIST;?></td>
@@ -3325,6 +3313,18 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               ?>
                 </td>
                 </tr>
+                  <tr>
+                  <td class="main" width="135" align="left" valign="top"><?php echo TEXT_EDIT_CATEGORIES_NAME;?></td>
+                  <td class="main">
+                  <?php echo
+                  tep_draw_input_field('categories_name_list['.$c_languages[$ci]['id'].']',
+                      (($_GET['action'] ==
+                        'edit_category')?tep_get_category_name_list($cInfo->categories_id,
+                          $c_languages[$ci]['id'], $s_site_id, true):''),'id="cname"
+                      class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
+                  ?>
+                  </td> 
+                  </tr>
                 <?php for ($ci_tmp_num = 0, $cn_tmp_num = sizeof($c_languages); $ci_tmp_num < $cn_tmp_num; $ci_tmp_num++) { ?>
                 <tr>
                 <td align="left" valign="top"><?php echo CATEGORY_SEO_TITLE_TEXT;?></td>
@@ -4585,7 +4585,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
 
                   }else{
+                   if($_GET['s_side_id'] == $products['side_id'] && isset($_GET['pID'])){
                     $products_table_row_params .= 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"'; 
+				   }
                   }
                 } else {
                   $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
