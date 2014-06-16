@@ -8605,4 +8605,95 @@ if($_GET['latest_messages_id']>0){
   $notice_box->get_contents($customer_info_row, $buttons);
   echo $notice_box->show_notice();
  
+}else if($_GET['action'] == 'show_group_info'){
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.'group.php');
+ include(DIR_FS_ADMIN.'classes/notice_box.php');
+ $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+ if($_GET['group_id'] < 0){
+ 	$heading[] = array('text' => GROUP_CREATE);
+ 	$form_str = tep_draw_form('new_latest_group', 'group.php','action=new_group&id='.$_GET['group_id'].'&parent_id='.$_GET['parent_group_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+ }else{
+	$heading[] = array('text' => $_GET['group_name']);
+ 	$form_str = tep_draw_form('new_latest_group', 'group.php','action=opt_group&id='.$_GET['group_id'].'&parent_id='.$_GET['parent_group_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+ }
+ $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ $group_content_table = array();
+ $group_content_row_name = array();
+ $group_content_row_name[] = array('params'=>'width="20%"','text'=> GROUP_COMPANY_NAME );
+ if($_GET['group_id'] < 0){
+ 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" maxlength="20" value="">');
+ }else{
+	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" maxlength="20" value="'.$_GET['group_name'].'">');
+ }
+ $group_content_table[] = array('text'=>$group_content_row_name); 
+ $group_content_row_staff = array();
+ $group_content_row_staff[] = array('params'=>'width="20%"','text'=> GROUP_STAFF );
+ if($_GET['group_id'] < 0){
+ 	$users_list = tep_db_query("select * from users"); 
+   	$all_users = '<ul class="table_img_list" style="width:100%">'; 
+   	while ($users_list_res = tep_db_fetch_array($users_list)) {
+     		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;">'.$users_list_res['name'].'</li>'; 
+   	}
+ 	$all_users .= '</ul>';
+ }else{
+	$group_all_user = tep_db_fetch_array(tep_db_query('select all_users_id from groups where id = "'.$_GET['group_id'].'"'));
+	$group_all_user = explode('|||',$group_all_user['all_users_id']);
+	$group_all_user = implode('","',$group_all_user);
+	$users_list = tep_db_query('select * from users where userid in ("'.$group_all_user.'") ');
+	$all_users = '<ul class="table_img_list" style="width:100%">'; 
+   	while ($users_list_res = tep_db_fetch_array($users_list)) {
+     		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;">'.$users_list_res['name'].'</li>'; 
+   	}
+ 	$all_users .= '</ul>';
+ }
+ $group_content_row_staff[] = array('text' => $all_users);
+ $group_content_table[] = array('text'=>$group_content_row_staff);
+ if($_GET['group_id'] > 0){
+	$group_content_row_subgroup = array();
+	$group_content_row_subgroup[] = array('params'=>'width="20%"','text'=> GROUP_SUB);
+	$sub_group_list = array();
+	$sql_group_id = $_GET['group_id'];
+	function sub_group_method($sql_group_id,&$sub_group_list){
+		$sub_group_sql = tep_db_query('select * from groups where parent_id = "'.$sql_group_id.'"');
+		while($sub_group_res = tep_db_fetch_array($sub_group_sql)){
+			$sub_group_list[] = $sub_group_res;
+			sub_group_method($sub_group_res['id'],&$sub_group_list);
+		}
+	}
+	sub_group_method($sql_group_id,$sub_group_list);
+	//die(var_dump($sub_group_list));
+	$all_sub_group = '<ul class="table_img_list" style="width:100%">';
+	foreach($sub_group_list as $value){
+		$all_sub_group .= '<li><input type="checkbox" name="sub_group_list[]" value="'.$value['id'].'" style="padding-left:0;margin-left:0;">'.$value['name'].'</li>';
+	}
+	$all_sub_group .= '</ul>';
+	$group_content_row_subgroup[] = array('text'=> $all_sub_group);
+	$group_content_table[] = array('text'=>$group_content_row_subgroup);
+ }
+ $group_content_row_opt = array();
+ $group_content_row_opt[] = array('params'=>'width="20%"');
+ $group_content_row_opt[] = array('text'=>'<input type="submit" onclick="check_group()" value="'.GROUP_SAVE.'">');
+ $group_content_table[] = array('text'=>$group_content_row_opt);
+ $notice_box->get_heading($heading);
+ $notice_box->get_form($form_str);
+ $notice_box->get_contents($group_content_table);
+ echo $notice_box->show_notice();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
