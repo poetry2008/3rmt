@@ -1,6 +1,6 @@
 <?php
-define('TEXT_ORDERS_SETTING','注文管理の表示方法を設定します');
-define('TEXT_PREORDERS_SETTING','予約管理の表示方法を設定します');
+define('TEXT_ORDERS_SETTING','注文管理の表示方法');
+define('TEXT_PREORDERS_SETTING','予約管理の表示方法');
 define('TEXT_ORDERS_SELECT_SITE','サイト');
 define('TEXT_ORDERS_SELECT_PRICE','注文総額');
 define('TEXT_ORDERS_SELECT_TIME','お届け日時');
