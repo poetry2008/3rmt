@@ -1843,7 +1843,25 @@ if (isset($_GET['action']) && $_GET['action']) {
         $c_site_array = tep_db_fetch_array($c_site_query);
         tep_db_free_result($c_site_query);
 
-        tep_db_query("insert into ".TABLE_PRODUCTS_DESCRIPTION."(products_id,language_id,products_name,products_description,products_description_origin,site_id,products_url,products_viewed,romaji,products_status,products_last_modified,option_image_type,preorder_status,products_user_update,p_manual,search_info) values('".$c_site_array['products_id']."','".$c_site_array['language_id']."','".$c_site_array['products_name']."','".$c_site_array['products_description']."','".$c_site_array['products_description_origin,']."','".$s_site_id."','".$c_site_array['products_url']."','".$c_site_array['products_viewed']."','".$c_site_array['romaji']."','".$c_site_array['products_status']."',now(),'".$c_site_array['option_image_type']."','".$c_site_array['preorder_status']."','".$_SESSION['user_name']."','".$c_site_array['p_manual']."','".$c_site_array['search_info']."')");
+        $products_reset_array = array('products_id'=>$c_site_array['products_id'],
+                                     'language_id'=>$c_site_array['language_id'],
+                                     'products_name'=>tep_db_prepare_input($c_site_array['products_name']),
+                                     'products_description'=>tep_db_prepare_input($c_site_array['products_description']),
+                                     'products_description_origin'=>tep_db_prepare_input($c_site_array['products_description_origin']),
+                                     'site_id'=>$s_site_id,
+                                     'products_url'=>tep_db_prepare_input($c_site_array['products_url']), 
+                                     'products_viewed'=>tep_db_prepare_input($c_site_array['products_viewed']),
+                                     'romaji'=>tep_db_prepare_input($c_site_array['romaji']),
+                                     'products_status'=>tep_db_prepare_input($c_site_array['products_status']),
+                                     'products_last_modified'=>'now()',
+                                     'option_image_type'=>tep_db_prepare_input($c_site_array['option_image_type']),
+                                     'preorder_status'=>tep_db_prepare_input($c_site_array['preorder_status']),
+                                     'products_user_update'=>tep_db_prepare_input($_SESSION['user_name']),
+                                     'p_manual'=>tep_db_prepare_input($c_site_array['p_manual']),
+                                     'search_info'=>tep_db_prepare_input($c_site_array['search_info'])
+                                   );
+
+        tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $products_reset_array); 
 
         $products_images_query = tep_db_query("select * from ".TABLE_PRODUCTS_IMAGES." where products_id='".$pid."' and site_id=0");
         while($products_images_array = tep_db_fetch_array($products_images_query)){
@@ -1869,7 +1887,32 @@ if (isset($_GET['action']) && $_GET['action']) {
         $c_site_array = tep_db_fetch_array($c_site_query);
         tep_db_free_result($c_site_query);
 
-        tep_db_query("insert into categories_description(categories_id,site_id,language_id,categories_name,categories_name_list,seo_name,categories_image2,categories_meta_text,seo_description,categories_header_text,categories_footer_text,text_information,meta_title,meta_keywords,meta_description,romaji,categories_status,character_romaji,alpha_romaji,last_modified,user_last_modified,c_manual,categories_image,search_info) values('".$c_site_array['categories_id']."','".$s_site_id."','".$c_site_array['language_id']."','".$c_site_array['categories_name']."','".$c_site_array['categories_name_list']."','".$c_site_array['seo_name']."','".$c_site_array['categories_image2']."','".$c_site_array['categories_meta_text']."','".$c_site_array['seo_description']."','".$c_site_array['categories_header_text']."','".$c_site_array['categories_footer_text']."','".$c_site_array['text_information']."','".$c_site_array['meta_title']."','".$c_site_array['meta_keywords']."','".$c_site_array['meta_description']."','".$c_site_array['romaji']."','".$c_site_array['categories_status']."','".$c_site_array['character_romaji']."','".$c_site_array['alpha_romaji']."',now(),'".$_SESSION['user_name']."','".$c_site_array['c_manual']."','".$c_site_array['categories_image']."','".$c_site_array['search_info']."')");
+        $categories_reset_array = array('categories_id'=>$c_site_array['categories_id'],
+                                        'site_id'=>$s_site_id,
+                                        'language_id'=>$c_site_array['language_id'],
+                                        'categories_name'=>tep_db_prepare_input($c_site_array['categories_name']),
+                                        'categories_name_list'=>tep_db_prepare_input($c_site_array['categories_name_list']),
+                                        'seo_name'=>tep_db_prepare_input($c_site_array['seo_name']),
+                                        'categories_image2'=>tep_db_prepare_input($c_site_array['categories_image2']),
+                                        'categories_meta_text'=>tep_db_prepare_input($c_site_array['categories_meta_text']),
+                                        'seo_description'=>tep_db_prepare_input($c_site_array['seo_description']),
+                                        'categories_header_text'=>tep_db_prepare_input($c_site_array['categories_header_text']),
+                                        'categories_footer_text'=>tep_db_prepare_input($c_site_array['categories_footer_text']),
+                                        'text_information'=>tep_db_prepare_input($c_site_array['text_information']),
+                                        'meta_title'=>tep_db_prepare_input($c_site_array['meta_title']),
+                                        'meta_keywords'=>tep_db_prepare_input($c_site_array['meta_keywords']),
+                                        'meta_description'=>tep_db_prepare_input($c_site_array['meta_description']),
+                                        'romaji'=>tep_db_prepare_input($c_site_array['romaji']),
+                                        'categories_status'=>tep_db_prepare_input($c_site_array['categories_status']),
+                                        'character_romaji'=>tep_db_prepare_input($c_site_array['character_romaji']),
+                                        'alpha_romaji'=>tep_db_prepare_input($c_site_array['alpha_romaji']),
+                                        'last_modified'=>'now()',
+                                        'user_last_modified'=>tep_db_prepare_input($_SESSION['user_name']),
+                                        'c_manual'=>tep_db_prepare_input($c_site_array['c_manual']),
+                                        'categories_image'=>tep_db_prepare_input($c_site_array['categories_image']),
+                                        'search_info'=>tep_db_prepare_input($c_site_array['search_info'])
+                                      );
+        tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $categories_reset_array);
 
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $_GET['cPath'] .  '&cID=' . $_GET['cID'] .'&site_id='.$_POST['site_id'].($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'').'&s_site_id='.$_POST['s_site_id']));
     }
