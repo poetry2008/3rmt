@@ -3327,7 +3327,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo tep_draw_textarea_field('meta_title['.$c_languages[$ci_tmp_num]['id'].']','soft', 30, 3, (($_GET['action'] =='edit_category')?tep_get_meta_title($cInfo->categories_id,$c_languages[$ci_tmp_num]['id'], $s_site_id,true):'')).'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
                   ?></td>
                 </tr>
-                <?php }?>
                 <tr>
                 <td align="left" valign="top"><?php echo CATEGORY_SEO_KEYWORDS_TEXT;?></td>
                 <td><?php 
@@ -3442,7 +3441,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       </tr>
                       <?php
                   }
-              }
+			  
+			  }}
                 if ($_GET['action'] == 'edit_category'||
                     $_GET['action'] == 'new_category') { 
                   $categories_to_mission_sql = 'SELECT c2m.*,m.keyword from ' .TABLE_CATEGORIES_TO_MISSION.' c2m ,' .TABLE_MISSION.' m' .' where c2m.mission_id = m.id and c2m.categories_id  ="'.$_GET['cID'].'"';
