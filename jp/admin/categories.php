@@ -3258,7 +3258,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <input type="radio" name="categories_status" id="categories_status_3" value="3"<?php echo $cInfo->categories_status == 3 ? ' checked="checked"' : '';?>><label for="categories_status_3"><?php echo TEXT_PRODUCT_NOT_SHOW;?><label>
                   </td>
                   </tr>
-                <?php }?>
                 <tr>
                 <td align="left" valign="top"><?php echo TEXT_CATEGORIES_IMAGE;?></td>
                 <td>
@@ -3317,11 +3316,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   <td class="main" width="135" align="left" valign="top"><?php echo TEXT_EDIT_CATEGORIES_NAME;?></td>
                   <td class="main">
                   <?php echo
-                  tep_draw_input_field('categories_name_list['.$c_languages[$ci]['id'].']',
-                      (($_GET['action'] ==
-                        'edit_category')?tep_get_category_name_list($cInfo->categories_id,
-                          $c_languages[$ci]['id'], $s_site_id, true):''),'id="cname"
-                      class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
+                  tep_draw_input_field('categories_name_list['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?tep_get_category_name_list($cInfo->categories_id, $c_languages[$ci]['id'], $s_site_id, true):''),'id="cname" class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
                   ?>
                   </td> 
                   </tr>
@@ -3332,6 +3327,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     echo tep_draw_textarea_field('meta_title['.$c_languages[$ci_tmp_num]['id'].']','soft', 30, 3, (($_GET['action'] =='edit_category')?tep_get_meta_title($cInfo->categories_id,$c_languages[$ci_tmp_num]['id'], $s_site_id,true):'')).'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
                   ?></td>
                 </tr>
+                <?php }?>
                 <tr>
                 <td align="left" valign="top"><?php echo CATEGORY_SEO_KEYWORDS_TEXT;?></td>
                 <td><?php 
