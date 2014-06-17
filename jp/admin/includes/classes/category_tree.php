@@ -139,8 +139,19 @@
      
          $result .= str_repeat($this->spacer_string, $this->spacer_multiplier *
              $level) ;
+$cat_tep = explode('_',$category_link);
+	$num= count($cat_tep)-1;
+$product_move_link = $cat_tep[$num];
+
+//获取商品或分类的父分类路径
+  $get_tep = $_GET['cPath'];
+  $cat_path=array();
+  tep_get_parent_categories($cat_path,$get_tep); 
+  $cat_path=array_reverse($cat_path);
+  $product_path = implode('_', $cat_path).'_'.$get_tep;
+
          if($filename==''){
-         $result .= '<a href="?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && $_GET['cPath'] == $category_link ? ' class="current_link"' : '').'>';
+         $result .= '<a href="?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && ($_GET['cPath'] == $category_link || $_GET['cPath']==$product_move_link || $category_link == $product_path ) ? ' class="current_link"' : '').'>';
          }else{
          $result .= '<a href="'.$filename.'?'.(isset($_GET['site_id'])?('site_id=' . $_GET['site_id'] . '&'):'').'cPath=' . $category_link . '"'.(isset($_GET['cPath']) && $_GET['cPath'] == $category_link ? ' class="current_link"' : '').'>';
          }

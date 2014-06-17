@@ -34,7 +34,7 @@ define('TEXT_PRODUCT_DATE_AVAILABLE', 'この商品は %s に入荷予定です�
 
 define('TEXT_EDIT_INTRO', '必要な変更を加えてください');
 define('TEXT_EDIT_CATEGORIES_ID', 'カテゴリーID:');
-define('TEXT_EDIT_CATEGORIES_NAME', 'カテゴリー名:');
+define('TEXT_EDIT_CATEGORIES_NAME', 'バナータイトル');
 define('TEXT_EDIT_CATEGORIES_IMAGE', 'カテゴリー画像:');
 define('TEXT_EDIT_SORT_ORDER', '整列順:');
 
@@ -301,7 +301,7 @@ define('TEXT_PRODUCTS_DESCRIPTION_UNDER','商品の説明（下部）');
 define('TEXT_PROJECT_DESCRIPTION_TOP','項目説明（上部）');
 define('TEXT_PROJECT_DESCRIPTION_UNDER','項目説明（下部）');
 define('TEXT_PRODUCTS_PRICE_LIST','価格表記');
-define('TEXT_CATEGORIES_NAME_LIST','カテゴリー名リスト');
+define('TEXT_CATEGORIES_NAME_LIST','カテゴリー名');
 define('CATEGORY_SEO_KEYWORDS_TEXT','メタのキーワード');
 define('CATEGORY_SITE_TYPE_INFO_TEXT','サイト別カテゴリの情報');
 define('CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION','#HTMLによる入力可<br/>パラメータ 　在庫レート  ${RATE}');
