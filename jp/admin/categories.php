@@ -4587,6 +4587,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }else{
                    if($_GET['s_side_id'] == $products['side_id'] && isset($_GET['pID'])){
                     $products_table_row_params .= 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"'; 
+				   }else{
+                  $products_table_row_params .= 'class="' . $nowColor . '" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
 				   }
                   }
                 } else {
