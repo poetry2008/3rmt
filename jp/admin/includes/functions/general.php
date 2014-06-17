@@ -349,11 +349,11 @@ function tep_date_long($raw_date) {
 
   $returntime = strftime(DATE_FORMAT_LONG, mktime($hour,$minute,$second,$month,$day,$year));
   $oarr = array('January','February','March','April','May','June','July','August','September','October','November','December');
-  $newarr = array('1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月');
+  $newarr = array(TEXT_MONTH_JANUARY,TEXT_MONTH_FEBRUARY,TEXT_MONTH_MARCH,TEXT_MONTH_APRIL,TEXT_MONTH_MAY,TEXT_MONTH_JUNE,TEXT_MONTH_JULY,TEXT_MONTH_SEPTEMBER,TEXT_MONTH_OCTOBER,TEXT_MONTH_NOVEMBER,TEXT_MONTH_DECEMBER);
   $returntime = str_replace($oarr, $newarr, $returntime);
 
   $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-  $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+  $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNSDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
   return str_replace($oarr, $newarr, $returntime);
 }
 
@@ -1191,7 +1191,7 @@ $c_manual_array=tep_db_fetch_array($c_manual_query);
 
 $pro_manual_query=tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pID."' and site_id='0'");
 $pro_manual_array=tep_db_fetch_array($pro_manual_query);
-$manual_title=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].'のマニュアル';
+$manual_title=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].PRACTICAL_MANUAL;
 return $manual_title;
 }
 
@@ -1216,7 +1216,7 @@ $title_cp = $get_categories_array['categories_name'].'/';
 $c_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cID."' and site_id='0'");
 $c_manual_array=tep_db_fetch_array($c_manual_query);
 
-$manual_title=$title_cp.$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'のマニュアル';
+$manual_title=$title_cp.$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].PRACTICAL_MANUAL;
 return $manual_title;
 }
 
@@ -1237,7 +1237,7 @@ if($cp_manual_array['categories_name']!=""){
 $title_part1 = $cp_manual_array['categories_name'].'/';
 }
 $title_part2 = $c_manual_array['categories_name'];
-$manual_title=$title_part1.$title_part2.'のマニュアル';
+$manual_title=$title_part1.$title_part2.PRACTICAL_MANUAL;
 return $manual_title;
 }
 
@@ -2618,7 +2618,7 @@ function tep_torihiki($raw_datetime) {
   $minute = (int)substr($raw_datetime, 14, 2);
   $second = (int)substr($raw_datetime, 17, 2);
 
-  return date('Y年m月d日 H時i分', mktime($hour, $minute, $second, $month, $day, $year));
+  return date(DATE_FORMAT_TEXT, mktime($hour, $minute, $second, $month, $day, $year));
 }
 
 /* -------------------------------------
@@ -3005,7 +3005,7 @@ function orders_a($orders_id, $allorders = null, $site_id = 0)
   }
   if (isset($products[$orders_id]) && $products[$orders_id]) {
     foreach($products[$orders_id] as $p){
-      $str .= $p['products_name'] . " 当社のキャラクター名：\n";
+      $str .= $p['products_name']. TRADE_CHARACTER_NAME . " \n";
       $str .= $p['products_attention_5'] . "\n";
     }
   } else {
@@ -3015,7 +3015,7 @@ function orders_a($orders_id, $allorders = null, $site_id = 0)
       $sql = "select pd.products_name,p.products_attention_5,p.products_id from `".TABLE_PRODUCTS_DESCRIPTION."` pd,".TABLE_PRODUCTS." p WHERE p.products_id=pd.products_id and p.`products_id`='".$orders_products['products_id']."' and pd.site_id = '".$site_id."'";
       $products_description = tep_db_fetch_array(tep_db_query($sql));
       if ($products_description['products_attention_5']) {
-        $str .= $orders_products['products_name']." 当社のキャラクター名：\n";
+        $str .= $orders_products['products_name']. TRADE_CHARACTER_NAME . "\n";
         $str .= $products_description['products_attention_5'] . "\n";
       }
     }
@@ -3173,7 +3173,7 @@ function tep_site_filter($filename, $ca_single = false){
     返回值: 网站的下拉列表(string) 
  ------------------------------------ */
 function tep_siteurl_pull_down_menu($default = '',$require = false){
-  $sites_array = array(array('id' => '', 'text' => 'サイトへ移動'));
+  $sites_array = array(array('id' => '', 'text' => MOVE_TO_SITE));
   $sites = tep_get_sites();
   foreach($sites as $site){
     $sites_array[] = array('id' => $site['url'], 'text' => $site['name']);
@@ -3193,7 +3193,7 @@ function tep_site_pull_down_menu($default = '',$require = true,$all = false,$par
   $sites_array = array();
   $sites = tep_get_sites();
   if ($all) {
-    $sites_array[] = array('id' => '0', 'text' => '全部サイト');
+    $sites_array[] = array('id' => '0', 'text' => THE_WHOLE_SITE);
   }
   foreach($sites as $site){
     $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
@@ -3259,7 +3259,7 @@ function tep_get_site_romaji_by_id($id){
  ------------------------------------ */
 function tep_get_site_name_by_id($id){
   if ($id == '0') {
-    return '全部サイト';
+    return THE_WHOLE_SITE;
   }
   $site_query = tep_db_query("
       select * 
@@ -4292,7 +4292,7 @@ $c_manual_array=tep_db_fetch_array($c_manual_query);
 
 $pro_manual_query=tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$products_info_array['products_id']."' and site_id='".$products_info_array."'");
 $pro_manual_array=tep_db_fetch_array($pro_manual_query);
-$manual_title=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].'のマニュアル';
+$manual_title=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].PRACTICAL_MANUAL;
 return $manual_title;
 }
 
@@ -4360,18 +4360,18 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   }
   
-    $str .= '<tr><td class="main" width="120">支払方法</td><td class="main" style="color:darkred;">'.$orders['payment_method'].'</td></tr>';
+    $str .= '<tr><td class="main" width="120">'. TEXT_PREORDER_PAYMENT_METHOD .'</td><td class="main" style="color:darkred;">'.$orders['payment_method'].'</td></tr>';
     
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-      $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
+      $time_str = date(DATE_FORMAT_SHORT_TEXT, strtotime($orders['confirm_payment_time'])); 
     }else if(tep_check_order_type($orders['orders_id'])!=2){
-      $time_str = '入金まだ'; 
+      $time_str = TEXT_PREORDER_NOT_COST; 
     }
     if($time_str){
-    $str .= '<tr><td class="main">入金日</td><td class="main" style="color:red;">'.$time_str.'</td></tr>';
+    $str .= '<tr><td class="main">'. TEXT_PREORDER_COST_DATE .'</td><td class="main" style="color:red;">'.$time_str.'</td></tr>';
     }
     if(trim($orders['torihiki_houhou']) != ''){
-      $str .= '<tr><td class="main">オプション</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
+      $str .= '<tr><td class="main">'. CATEGORY_OPTIONS .'</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
     }
 
   $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
@@ -4402,11 +4402,11 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
     if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
-      $str .= '<tr><td class="main">商品<font color="red">「入」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
+      $str .= '<tr><td class="main">'. TEXT_PREORDER_PRODUCTS_NAME .'<font color="red">'. INPUT .'</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button(MANUAL).'</a></td></tr>';
     }else{
-      $str .= '<tr><td class="main">商品<font color="red">「未」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
+      $str .= '<tr><td class="main">'. TEXT_PREORDER_PRODUCTS_NAME .'<font color="red">'. NOT .'</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button(BUTTON_MANUAL).'</a></td></tr>';
     }
-    $str .= '<tr><td class="main">個数</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+    $str .= '<tr><td class="main">'. TEXT_PREORDER_PRODUCTS_NUM .'</td><td class="main">'.$p['products_quantity'].TEXT_PREORDER_PRODUCTS_UNIT.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
       $input_option = @unserialize(stripslashes($pa['option_info']));
       if ($input_option == false) {
@@ -6309,7 +6309,7 @@ function tep_display_google_results($from_url='', $c_type=false){
   function str_string($string='') {
     if(ereg("-", $string)) {
       $string_array = explode("-", $string);
-      return $string_array[0] . '年' . $string_array[1] . '月' . $string_array[2] . '日';
+      return $string_array[0] . YEAR_TEXT . $string_array[1] . MONTH_TEXT . $string_array[2] . DAY_TEXT;
     }
   }
 
@@ -7210,9 +7210,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
       if (in_array($check_array[$i], unserialize($key_value))) $string .= ' CHECKED';
       $string .= '> '; 
       if (($i+1) == 1) {
-        $string .= '会員'; 
+        $string .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER; 
       } else {
-        $string .= 'ゲスト'; 
+        $string .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER; 
       }
     }
     return $string;
@@ -8903,9 +8903,9 @@ function tep_cfg_shipping_checkbox_option($check_array, $key_value, $key = '') {
       if (in_array($check_array[$i], unserialize($key_value))) $string .= ' CHECKED';
       $string .= '> '; 
       if (($i+1) == 1) {
-        $string .= '会員'; 
+        $string .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER; 
       } else {
-        $string .= 'ゲスト'; 
+        $string .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER; 
       }
     }
     return $string;
@@ -8975,9 +8975,9 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$de
       }else{
         $return_str .= " >&nbsp;&nbsp;";
       }
-      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$s_start)."分";
+      $return_str .= sprintf('%02d',$hour). TEXT_TORIHIKI_HOUR_STR .sprintf('%02d',$s_start).TEXT_TORIHIKI_MIN_STR;
       $return_str .= " ～ ";
-      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$e_start)."分";
+      $return_str .= sprintf('%02d',$hour). TEXT_TORIHIKI_HOUR_STR .sprintf('%02d',$e_start).TEXT_TORIHIKI_MIN_STR;
       $show_row ++;
       $mim_start++;
       $arr[]=$return_str;
