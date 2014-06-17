@@ -853,3 +853,4 @@ define('MOVE_TO_SITE','サイトへ移動');
 define('THE_WHOLE_SITE','全部サイト');
 define('DATE_FORMAT_SHORT_TEXT','Y年n月j日');
 define('PRACTICAL_MANUAL', 'のマニュアル');
+define('HEADER_TEXT_GROUPS','組織グループ設定');

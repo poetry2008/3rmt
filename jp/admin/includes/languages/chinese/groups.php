@@ -14,4 +14,6 @@ define('GROUP_SAVE','保存');
 define('TEXT_GROUP_MUST_INPUT','必须项目');
 define('TEXT_GROUP_CREATE','创建组');
 define('TEXT_GROUP_DELETE','确认要删除此组吗？');
+define('TEXT_GROUP_EDIT_MUST_SELECT','至少得选择一项。');
+define('TEXT_GROUP_EDIT_CONFIRM','确定要删除吗？');
 ?>

@@ -849,3 +849,4 @@ define('MOVE_TO_SITE','迁移至网站');
 define('THE_WHOLE_SITE','全部网站');
 define('DATE_FORMAT_SHORT_TEXT','Y年n月j日');
 define('PRACTICAL_MANUAL', '的手册');
+define('HEADER_TEXT_GROUPS','设置组体系');
