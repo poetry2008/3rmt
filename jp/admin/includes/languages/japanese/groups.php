@@ -14,4 +14,6 @@ define('GROUP_SAVE','保存');
 define('TEXT_GROUP_MUST_INPUT','必須項目');
 define('TEXT_GROUP_CREATE','新規グループ');
 define('TEXT_GROUP_DELETE','本当にこのグルプを削除しますか?');
+define('TEXT_GROUP_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
+define('TEXT_GROUP_EDIT_CONFIRM','本当に削除しますか？');
 ?>

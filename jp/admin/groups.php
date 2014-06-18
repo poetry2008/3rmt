@@ -9,6 +9,17 @@
     $site_arr = $userslist['site_permission']; 
   }
   $site_array = explode(',',$site_arr);
+
+  function group_id_list($group_id,&$group_id_list){
+          $parent_query = tep_db_query("select * from ".TABLE_GROUPS." where parent_id='".$group_id."'");
+          if(tep_db_num_rows($parent_query) > 0){
+            while($parent_array = tep_db_fetch_array($parent_query)){
+
+              $group_id_list[] = $parent_array['id'];
+              group_id_list($parent_array['id'],$group_id_list);
+            }
+          }
+  }
   if(isset($_GET['action']) && $_GET['action'] != ''){
     switch($_GET['action']){
     /* -----------------------------------------------------
@@ -16,6 +27,7 @@
        case 'update_group' 更新group 
        case 'setflag' 切换组的状态 
        case 'delete_group' 删除组及其子组 
+       case 'delete_select_group' 删除选中的组及其子组 
     ------------------------------------------------------*/
       case 'new_group':
         if(trim($_POST['group_name']) != ''){
@@ -68,20 +80,22 @@
         $parent_id = $_GET['parent_id'];
 
         $group_id_list[] = $group_id;
-        function group_id_list($group_id,&$group_id_list){
-          $parent_query = tep_db_query("select * from ".TABLE_GROUPS." where parent_id='".$group_id."'");
-          if(tep_db_num_rows($parent_query) > 0){
-            while($parent_array = tep_db_fetch_array($parent_query)){
-
-              $group_id_list[] = $parent_array['id'];
-              group_id_list($parent_array['id'],$group_id_list);
-            }
-          }
-        }
-
+        
         group_id_list($group_id,$group_id_list);
 
         tep_db_query("delete from ".TABLE_GROUPS." where id in (".implode(',',$group_id_list).")");
+
+        tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$_GET['parent_id']));
+        break;
+      case 'delete_select_group':
+
+        $group_id_array = $_POST['group_id'];
+
+        foreach($group_id_array as $group_value){
+          $group_id_list = array($group_value);
+          group_id_list($group_value,$group_id_list);
+          tep_db_query("delete from ".TABLE_GROUPS." where id in (".implode(',',$group_id_list).")");
+        }
 
         tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$_GET['parent_id']));
         break;
@@ -102,6 +116,10 @@
   var group_name_must = '<?php echo TEXT_GROUP_MUST_INPUT;?>';
   var delete_group_confirm = '<?php echo TEXT_GROUP_DELETE;?>';
   var user_permission = '<?php echo $ocertify->npermission;?>';
+  var group_select_delete = '<?php echo TEXT_GROUP_EDIT_CONFIRM;?>';
+  var must_select_group = '<?php echo TEXT_GROUP_EDIT_MUST_SELECT;?>';
+  var ontime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'; 
+  var ontime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_groups.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -254,7 +272,7 @@ require("includes/note_js.php");
                     <tr>                 
                     <td valign="top" class="smallText">
                     <?php 
-                    echo '<select name="messages_action" onchange="messages_change_action(this.value, \'messages_id[]\');">';
+                    echo '<select name="group_action" onchange="group_change_action(this.value, \'group_id[]\','.$ocertify->npermission.',\''.$_GET['id'].'\');">';
                     echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';   
                     echo '<option value="1">'.TEXT_CONTENTS_DELETE_ACTION.'</option>';
                     echo '</select>';
@@ -269,7 +287,14 @@ require("includes/note_js.php");
                     <td class="smallText" align="right"><div class="td_box"><?php echo $latest_group_split->display_links($latest_group_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $group_page, tep_get_all_get_params(array('page', 'info', 'x', 'y', 'id'))); ?></div></td>
                   </tr>
                      <tr><td></td><td align="right">
-                      <div class="td_button"><?php
+                     <div class="td_button"><?php
+                     if(isset($_GET['id']) && $_GET['id'] != 0){
+                       //获取父组的ID
+                       $parent_query = tep_db_query("select parent_id from ".TABLE_GROUPS." where id='".$_GET['id']."'");
+                       $parent_array = tep_db_fetch_array($parent_query);
+                       tep_db_free_result($parent_query);
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="javascript:location.href=\''.FILENAME_GROUPS.'?id='.$parent_array['parent_id'].'\';">'.tep_html_element_button(IMAGE_BACK).'</a>';
+                     }
                       //通过site_id判断是否允许新建
                      if (in_array(0,$site_array)) {
                        echo '&nbsp;<a href="javascript:void(0)" onclick="group_ajax(this,\'-1\',\''.$group_id.'\',\'\')">' .tep_html_element_button(TEXT_GROUP_CREATE) . '</a>';

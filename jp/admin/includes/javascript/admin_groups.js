@@ -1,15 +1,15 @@
 var o_submit_single = true;
 $(document).ready(function() {
-  <?php //监听按键?> 
+  //监听按键 
   $(document).keyup(function(event) {
     if (event.which == 27) {
-      <?php //esc?> 
+      //esc 
       if ($('#show_latest_news').css('display') != 'none') {
         hidden_info_box(); 
       }
     }
      if (event.which == 13) {
-           <?php //回车?>
+        //回车
         if ($('#show_latest_news').css('display') != 'none') {
           if (o_submit_single) {
             $("#button_save").trigger("click");  
@@ -18,7 +18,7 @@ $(document).ready(function() {
      }
 
      if (event.ctrlKey && event.which == 37) {
-      <?php //Ctrl+方向左?> 
+      //Ctrl+方向左 
       if ($('#show_latest_news').css('display') != 'none') {
         if ($("#option_prev")) {
           $("#option_prev").trigger("click");
@@ -26,7 +26,7 @@ $(document).ready(function() {
       } 
     }
     if (event.ctrlKey && event.which == 39) {
-      <?php //Ctrl+方向右?> 
+      //Ctrl+方向右
       if ($('#show_latest_news').css('display') != 'none') {
         if ($("#option_next")) {
           $("#option_next").trigger("click");
@@ -146,7 +146,7 @@ function toggle_group_action(group_url_str)
     });
   }
 }
-<?php //全选动作?>
+//全选动作
 function all_select_group(group_list_id)
 {
   var check_flag = document.edit_group.all_check.checked;
@@ -168,5 +168,72 @@ function all_select_group(group_list_id)
         }
       }
     }
+  }
+}
+
+//删除动作
+function group_change_action(value,group_list_id,c_permission,parent_id)
+{
+  sel_num = 0;
+  if (document.edit_group.elements[group_list_id].length == null) {
+    if (document.edit_group.elements[group_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_group.elements[group_list_id].length; i++) {
+      if (document.edit_group.elements[group_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  } 
+
+  if(sel_num == 1){
+    if (confirm(group_select_delete)) {
+      if (c_permission == 31) {
+        document.edit_group.action = 'groups.php?action=delete_select_group&parent_id='+parent_id;
+        document.edit_group.submit(); 
+      } else {
+        $.ajax({
+          url: 'ajax_orders.php?action=getallpwd',   
+          type: 'POST',
+          dataType: 'text',
+          data: '', 
+          async: false,
+          success: function(msg) {
+            var tmp_msg_arr = msg.split('|||'); 
+            var pwd_list_array = tmp_msg_arr[1].split(',');
+            if (tmp_msg_arr[0] == '0') {
+              document.edit_group.action = 'groups.php?action=delete_select_group&parent_id='+parent_id;
+              document.edit_group.submit(); 
+            } else {
+              var input_pwd_str = window.prompt(ntime_pwd, ''); 
+              if (in_array(input_pwd_str, pwd_list_array)) {
+                $.ajax({
+                  url: 'ajax_orders.php?action=record_pwd_log',   
+                  type: 'POST',
+                  dataType: 'text',
+                  data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('groups.php?action=delete_select_group&parent_id='+parent_id),
+                  async: false,
+                  success: function(msg_info) {
+                    document.edit_group.action = 'groups.php?action=delete_select_group&parent_id='+parent_id;
+                    document.edit_group.submit(); 
+                  }
+                }); 
+              } else {
+                document.getElementsByName("group_action")[0].value = 0;
+                alert(ontime_pwd_error); 
+              }
+            }
+          }
+        });
+      }
+    }else{
+
+      document.getElementsByName("group_action")[0].value = 0;
+    } 
+  }else{
+    document.getElementsByName("group_action")[0].value = 0;
+    alert(must_select_group); 
   }
 }
