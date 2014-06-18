@@ -8975,9 +8975,9 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$de
       }else{
         $return_str .= " >&nbsp;&nbsp;";
       }
-      $return_str .= sprintf('%02d',$hour). TEXT_TORIHIKI_HOUR_STR .sprintf('%02d',$s_start).TEXT_TORIHIKI_MIN_STR;
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$s_start)."分";
       $return_str .= " ～ ";
-      $return_str .= sprintf('%02d',$hour). TEXT_TORIHIKI_HOUR_STR .sprintf('%02d',$e_start).TEXT_TORIHIKI_MIN_STR;
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$e_start)."分";
       $show_row ++;
       $mim_start++;
       $arr[]=$return_str;
@@ -9698,7 +9698,7 @@ function tep_get_notice_info($return_type = 0)
     $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$order_notice_array['from_notice']."'"); 
     $alarm = tep_db_fetch_array($alarm_raw); 
     $html_str .= '<div style="float:left; width:136px;">'; 
-    $html_str .= '<span'.($order_notice_array['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1' ? ' id="leave_time_'.$order_notice_array['id'].'"' : '').'>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_MESSAGE_HOUR_STR.'i'.TEXT_MESSAGE_MIN_STR,strtotime($order_notice_array['created_at'])).'</span>';
+    $html_str .= '<span'.($order_notice_array['type'] == '0' && $alarm_flag_array['alarm_flag'] == '1' ? ' id="leave_time_'.$order_notice_array['id'].'"' : '').'>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'</span>';
     $html_str .= '</div>'; 
 
     $html_str .= '<div style="float:left; width:16px;margin:3px 8px 0 8px;">';
@@ -9731,7 +9731,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '</td>'; 
     $html_str .= '<td align="right"  id="alert_close">'; 
     $html_str .= '<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$order_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
-    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0, '.$alarm_flag_array['alarm_flag'].', \''.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_MESSAGE_HOUR_STR.'i'.TEXT_MESSAGE_MIN_STR,strtotime($order_notice_array['created_at'])).'\', \''.DAY_TEXT.'\', \''.HOUR_TEXT.'\', \''.MINUTE_TEXT.'\');});</script>'; 
+    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0, '.$alarm_flag_array['alarm_flag'].', \''.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($order_notice_array['created_at'])).'\', \''.DAY_TEXT.'\', \''.HOUR_TEXT.'\', \''.MINUTE_TEXT.'\');});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
     $html_str .= '</table>'; 
@@ -9771,7 +9771,7 @@ function tep_get_notice_info($return_type = 0)
  
     $html_str .= '<td class="notice_info" id="alert_time">';  
     $html_str .= '<div style="float:left; width:136px;">'; 
-    $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_MESSAGE_HOUR_STR.'i'.TEXT_MESSAGE_MIN_STR,strtotime($micro_notice_array['created_at'])); 
+    $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
     $html_str .= '</div>'; 
 
     //获取图标信息
