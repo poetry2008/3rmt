@@ -2443,13 +2443,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 }
                 if (empty($s_site_id)) {
-                  echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
+                  echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_edit_product_profit();"') .  '</a>';
                 } else {
                   echo tep_html_element_submit(IMAGE_SAVE);
                 } 
                 $sid = $s_site_id == 0 ? 1 : $s_site_id;
                 if(isset($_GET['pID']) && $_GET['pID'] != ''){
-                  echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input type="button" name="preview" value="'.IMAGE_PREVIEW.'"></a>&nbsp;&nbsp;';
+                  echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input type="button" name="preview" value="'.IMAGE_PREVIEW.'" style="padding-top: 2px;"></a>&nbsp;&nbsp;';
                 }
               ?> 
                 </td>
