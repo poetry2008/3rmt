@@ -13477,3 +13477,85 @@ function tep_products_images($products_id,$site_id){
 
   return $images_array;
 }
+/* -------------------------------------
+    功能: 递归组的子组 
+    参数: $group_id 组的父ID 
+    参数: $group_id_list 组的列表 
+    返回值: 子组的ID数组 
+ ------------------------------------ */
+function group_id_list($group_id,&$group_id_list){
+          $parent_query = tep_db_query("select * from ".TABLE_GROUPS." where parent_id='".$group_id."'");
+          if(tep_db_num_rows($parent_query) > 0){
+            while($parent_array = tep_db_fetch_array($parent_query)){
+
+              $group_id_list[] = $parent_array['id'];
+              group_id_list($parent_array['id'],$group_id_list);
+            }
+          }
+}
+/* -------------------------------------
+    功能: 递归组的父组 
+    参数: $group_id 组的ID 
+    参数: $group_parent_id_list 组的列表 
+    返回值: 父组的ID数组 
+ ------------------------------------ */
+function group_parent_id_list($group_id,&$group_parent_id_list){
+          $parent_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$group_id."'");
+          $parent_array = tep_db_fetch_array($parent_query);
+          if($parent_array['parent_id'] != 0){
+            $group_parent_id_list[] = $parent_array['parent_id'];
+            group_parent_id_list($parent_array['parent_id'],$group_parent_id_list);
+          }
+}
+/* -------------------------------------
+    功能: 递归组的所有数据 
+    参数: $fid 组的父ID 
+    参数: $groups_list 组的列表 
+    返回值: 组的列表 
+ ------------------------------------ */
+function tep_groups_list($fid,&$groups_list,&$level_num,$group_show_array=array(),$flag='add'){
+
+  $groups_list_query = tep_db_query("select * from ".TABLE_GROUPS." where parent_id=".$fid);
+  if(tep_db_num_rows($groups_list_query) > 0){
+    $level_num++;
+    while($groups_list_array = tep_db_fetch_array($groups_list_query)){
+
+      if(!empty($group_show_array)){ 
+        if(in_array($groups_list_array['id'],$group_show_array)){
+          if($flag == 'add'){
+            $groups_list .= '<div id="send_groups_id_'.$groups_list_array['id'].'" style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$groups_list_array['name'].'"><input hidden value="'.$groups_list_array['id'].'" type="checkbox" name="select_groups[]">'.str_repeat('&nbsp;',($level_num-1)*6).$groups_list_array['name'].'</div>';
+          }else if($flag = 'delete'){
+            $groups_list .= '<div id="groups_id_'.$groups_list_array['id'].'" style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$groups_list_array['name'].'"><input hidden value="'.$groups_list_array['id'].'" type="checkbox" name="all_groups">'.str_repeat('&nbsp;',($level_num-1)*6).$groups_list_array['name'].'</div>';  
+          }
+        }
+      }else{
+        $groups_list .= '<div id="groups_id_'.$groups_list_array['id'].'" style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$groups_list_array['name'].'"><input hidden value="'.$groups_list_array['id'].'" type="checkbox" name="all_groups">'.str_repeat('&nbsp;',($level_num-1)*6).$groups_list_array['name'].'</div>';
+      }
+      tep_groups_list($groups_list_array['id'],$groups_list,$level_num,$group_show_array,$flag);
+    }
+    $level_num = $level_num-1;
+  }
+}
+/* -------------------------------------
+    功能: 递归组上一级组的用户
+    参数: $group_id 组的ID 
+    参数: $users_id_list 组用户的列表
+    返回值: 组用户的数组 
+ ------------------------------------ */
+function group_users_id_list($group_id,&$users_id_list){
+  $parent_query = tep_db_query("select parent_id from ".TABLE_GROUPS." where id='".$group_id."'"); 
+  $parent_array = tep_db_fetch_array($parent_query);
+  tep_db_free_result($parent_query);
+
+  $users_query = tep_db_query("select parent_id,all_users_id from ".TABLE_GROUPS." where id='".$parent_array['parent_id']."'");
+  $users_array = tep_db_fetch_array($users_query);
+  tep_db_free_result($users_query);
+
+  if(trim($users_array['all_users_id']) != ''){
+
+    $users_id_list = explode('|||',$users_array['all_users_id']);
+  }else{
+
+    group_users_id_list($users_array['parent_id'],$users_id_list);
+  }
+}

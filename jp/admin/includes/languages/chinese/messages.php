@@ -41,4 +41,5 @@ define('MESSAGE_SELECT_RECEIVING','收信');
 define('MESSAGE_SELECT_SENT','已发送');
 define('MESSAGE_SELECT_DRAFT','草稿');
 define('MESSAGE_SELECT_TRASH','垃圾箱');
+define('MESSAGE_SELECT_GROUPS','组选择');
 ?>
