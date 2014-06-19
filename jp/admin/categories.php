@@ -590,7 +590,9 @@ if (isset($_GET['action']) && $_GET['action']) {
           );
       //处理 发售日 时间
 	  //处理买入售出
-      $_POST['products_cart_buyflag'] =  implode(',',$_POST['products_cart_buyflag']);
+	  if(count($_POST['products_cart_buyflag'])>1){
+	  $_POST['products_cart_buyflag']=2;
+	  }
       if(!isset($s_site_id)||$s_site_id==''||$s_site_id==0||(isset($_POST['create_type'])&&$_POST['create_type']=='sub_site')){
         $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
         $sql_data_array = array_merge($sql_data_array,
@@ -2839,7 +2841,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_TAGS;?></td>
-<td><table><tr>
+<td><table width="100%"><tr>
                                     <?php
                                     //show tags 
                                     $checked_tags = array();
@@ -2954,7 +2956,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     $tag_array[] = $tag; 
                                     ?>
                                       <td width="20%" valign="top">
-                                      <?php if($tags_num <=15 ){?>
                                       <input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                                       <?php
                                       if ($_GET['pID'] || isset($pInfo->tags)) {
@@ -2967,9 +2968,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                         echo 'checked'; 
                                       }
                                     ?><?php if ($s_site_id) {echo ' onclick="return false;"';}?>
-                                      ><?php }echo $tag['tags_name'].($tags_i == 15
-                                          ? '&nbsp;&nbsp;...' :
-                                          '').'</span>&nbsp;</td>';?> 
+                                      ><?php echo $tag['tags_name'].
+                                          '&nbsp;&nbsp; 
+                                          </span>&nbsp;</td>';?> 
                                     <?php 
                                     //对标签显示，进行排版
                                     if($tags_i % 5 == 0){
@@ -2977,7 +2978,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                      echo '</tr><tr>'; 
                                     }
                                     $tags_i++;
-                                    if($tags_i > 15){break;}
                                   }
                                   $tags_list_str = implode(',',$tags_array);
                                   if($tags_num == 0){
@@ -2985,12 +2985,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     echo '<td>'.TEXT_UNSET_DATA.'</td>';
                                   }
                                   ?></tr>
-                                    <?php
-                                  if($tags_num > 15){
 
-                                    echo '<tr><td colspan="5"><input type="button" value="'.OPTION_EDIT.'" onclick="edit_products_tags(this,\''.$tags_list_str.'\',1,\''.$url_str.'\',\''.$_GET['pID'].'\');"></td></tr>';
-                                  }
-                                    ?></table></td>
+                                   </table></td>
                                       <td valign="top"><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ?></font></td>
                 </tr>
                 <tr>
@@ -3002,9 +2998,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr id="cattags_list"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                 <td>&nbsp;</td>
 			  <?php  $flag_str = $pInfo->products_cart_buyflag;
-                  $cart_buyflag_arr = explode(',',$flag_str);
               ?>
-				<td nowrap="nowrap"><input type="checkbox" <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='0'<?php if(in_array("0",$cart_buyflag_arr,true)|| !in_array("1",$cart_buyflag_arr,true)){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?><input type="checkbox"  <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='1'<?php if(in_array("1",$cart_buyflag_arr,true)){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td></tr>
+				<td nowrap="nowrap"><input type="checkbox" <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='0'<?php if($pInfo->products_cart_buyflag==0 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?><input type="checkbox"  <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='1'<?php if($pInfo->products_cart_buyflag ==1 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td></tr>
                 <tr><td></td><td> 
                                   <?php 
                                   $carttag_array = array();
@@ -3019,8 +3014,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                        foreach($tag_array as $tag){ 
                                        ?>
                                        <td width="20%" valign="top">
-                                      <?php if($tags_num <=15 ){?>
-                                        <input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>><?php }echo $tag['tags_name'].($tags_i == 15 ? '&nbsp;&nbsp;...' : '').'</span>&nbsp;</td>';?>
+										<input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
+                                        <?php echo $tag['tags_name'].'&nbsp;&nbsp;</span>&nbsp;</td>';?>
                                           <?php 
                                            if($tags_i % 5 == 0){echo '</tr><tr>';}  
                                            $tags_i++;
@@ -3031,15 +3026,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                            } 
                                           ?>
                                           </tr>
-                                          <?php
-                                          if($tags_num > 15){
-
-                                            echo '<tr><td colspan="5"><input type="button" value="'.OPTION_EDIT.'" onclick="edit_products_tags(this,\''.$tags_list_str.'\',2,\''.$url_str.'\',\''.$_GET['pID'].'\');"></td></tr>';
-                                          }
-                                          ?>
                                           </table>  
                             </td>
-                            <td valign="top" <?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
+                            <td valign="top" <?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : ''; echo  $tags_num > 0 ? 'id="search_style"':'';?>><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
                             </tr>
                             <tr><td colspan="2">
                                           <table id="cattags_contents" width="807"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
@@ -3133,7 +3122,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
               }
               if (empty($s_site_id)) {
-                echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_edit_product_profit();"') .  '</a>&nbsp;&nbsp;';
+                echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_edit_product_profit();"') .  '</a>';
               } else {
                 echo tep_html_element_submit(IMAGE_SAVE);
               } 

@@ -755,10 +755,12 @@ function cattags_show(num){
     $("#cattags_list").hide();
     $("#cattags_title").hide();
     $("#cattags_contents").hide();
+	$("#search_style").hide();
   }else{
     $("#cattags_list").show();
     $("#cattags_title").show();
     $("#cattags_contents").show();
+	$("#search_style").show();
   }
 }
 
