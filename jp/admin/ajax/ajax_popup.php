@@ -8246,13 +8246,13 @@ $banner_query = tep_db_query("
 			continue;
 		}
 		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
-        }
-        $recipient_groups = '';
-        //获取组列表
-        $groups_list = '';
-        tep_groups_list(0,$groups_list); 
-        $all_groups_to_td .= $groups_list;
+        } 
    } 
+   $recipient_groups = '';
+   //获取组列表
+   $groups_list = '';
+   tep_groups_list(0,$groups_list); 
+   $all_groups_to_td .= $groups_list;
  $messages_choose_table = '
 <div width="100%" id="select_user"><table width="100%">
 	<tr>

@@ -257,7 +257,42 @@
   }  
   if($_GET['action']== 'back_messages'){
 	//die(var_dump($_POST['selected_staff']));
-    if(!empty($_POST['selected_staff'])){	
+    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
+     //获取组的用户，原理是优先于级别最低组的用户
+     $users_id_array = array();
+     foreach($_POST['select_groups'] as $groups_value){
+     
+       $groups_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups_value."'");
+       if(tep_db_num_rows($groups_query) == 0){
+
+         $users_query = tep_db_query("select id,all_users_id from ".TABLE_GROUPS." where id='".$groups_value."'");
+         $users_array = tep_db_fetch_array($users_query);
+
+         if(trim($users_array['all_users_id']) != ''){
+           $users_id_temp = explode('|||',$users_array['all_users_id']);
+         }else{
+           //如果此组包含用户为空，取上一级组的用户，以此类推 
+           group_users_id_list($users_array['id'],$users_id_list);
+           $users_id_temp = $users_id_list;
+         }
+         foreach($users_id_temp as $temp_value){
+           $users_id_array[] = $temp_value;
+         }
+         tep_db_free_result($users_query);
+       }
+       tep_db_free_result($groups_query);
+     }
+     $users_id_array = array_unique($users_id_array);
+
+     $users_id_str = implode("','",$users_id_array);
+     $users_list_array = array();
+     $users_name_query = tep_db_query("select userid,name from ".TABLE_USERS." where userid in ('".$users_id_str."')");
+     while($users_name_array = tep_db_fetch_array($users_name_query)){
+
+       $users_list_array[$users_name_array['userid']] = $users_name_array['name'];
+     }
+     tep_db_free_result($users_name_query);
+
 	$messages_file_name = '';
 	$messages_file_status = '0';
 	if ($_FILES['messages_file_back']['error'] > 0){
@@ -277,19 +312,46 @@
 	}
 	if($_POST['messages_to'] == '0'){
 		$recipient_name = 'ALL';
-	}else{
+	}else if($_POST['messages_to'] == '1'){
 		foreach($_POST['selected_staff'] as $key => $value){
 			$value = explode('|||',$value);
 			$recipient_name[] =  $value[1];
 		}
 		$recipient_name = implode(';',$recipient_name);
-	}
+        }else if($_POST['messages_to'] == '2'){
+                foreach($users_list_array as $key => $value){
+			$recipient_name[] =  $value;
+		}
+		$recipient_name = implode(';',$recipient_name);
+        }	
 	if($_GET['status'] == 'sent'){
 		$reply_status = '0';
 	}else{
 		$reply_status = '1';
-	}
-	foreach($_POST['selected_staff'] as $key => $value){
+        }
+        if($_POST['messages_to'] == '2'){
+	  foreach($users_list_array as $key => $value){
+		$user_name_id = explode('|||',$value);
+		$sql_data_array = array(
+				     	'read_status' => '0',
+					'mark' => $pic_icon_str,
+					'sender_id' => $ocertify->auth_user,
+					'recipient_id' => $key,
+					'reply_status' => $reply_status,
+                                      	'content' => $_POST['back_contents'],
+					'attach_file' => $messages_file_status,
+					'file_name' => $messages_file_name,
+					'opt' => '0',
+					'sender_name' => $_SESSION['user_name'],
+					'time' => date("Y/m/d H:i:s"),
+					'recipient_name' => $recipient_name,
+                               );
+         	tep_db_perform('messages', $sql_data_array);
+		unset($sql_data_array);
+	  //	var_dump($sql_data_array);
+          }
+        }else{
+          foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -307,8 +369,9 @@
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
-	//	var_dump($sql_data_array);
-	}
+	  //	var_dump($sql_data_array);
+          } 
+        }
 	if($reply_status == '1'){
 		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
 	}
