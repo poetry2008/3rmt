@@ -4092,7 +4092,7 @@ function tep_get_cart_products($pid){
     from products_to_tags p2t,products_to_carttag p2c, products p, products p2
     where p2t.products_id in (".join(',',$pid).")
       and p2c.tags_id = p2t.tags_id
-      and p.products_bflag in(p2c.buyflag)
+      and (p.products_bflag = p2c.buyflag or p2c.buyflag =2)
       and p.products_id = p2t.products_id
       and p2.products_id = p2c.products_id
       and p2.products_cartflag = '1'
