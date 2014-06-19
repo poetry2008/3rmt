@@ -45,4 +45,5 @@ define('MESSAGE_SELECT_RECEIVING','受信');
 define('MESSAGE_SELECT_SENT','送信済み');
 define('MESSAGE_SELECT_DRAFT','下書き');
 define('MESSAGE_SELECT_TRASH','ゴミ箱');
+define('MESSAGE_SELECT_GROUPS','グループ選択');
 ?>

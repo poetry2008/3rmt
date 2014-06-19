@@ -8205,14 +8205,17 @@ $banner_query = tep_db_query("
  $messages_content_row_to = array();
  $messages_content_row_to [] = array('text'=>'To');
  $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
+ $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()">'.MESSAGE_SELECT_GROUPS;
  $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" checked name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
- $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_appoint);
+ $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_groups.$messages_to_appoint);
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
  $messages_content_row_choose [] =  array('text'=> '');
  $sql_for_all_users = 'select userid, name from users';
  $sql_for_all_users_query = tep_db_query($sql_for_all_users);
+ //组选择
  $all_user_to_td = '';
+ $all_groups_to_td = '';
    if($_GET['messages_sta'] == 'sent' && $_GET['latest_messages_id'] >= 0){
 	if($_GET['recipient_name'] == 'ALL'){
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
@@ -8243,8 +8246,13 @@ $banner_query = tep_db_query("
 			continue;
 		}
 		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
-	}
+        } 
    } 
+   $recipient_groups = '';
+   //获取组列表
+   $groups_list = '';
+   tep_groups_list(0,$groups_list); 
+   $all_groups_to_td .= $groups_list;
  $messages_choose_table = '
 <div width="100%" id="select_user"><table width="100%">
 	<tr>
@@ -8263,6 +8271,28 @@ $banner_query = tep_db_query("
 </table></div>';
  $messages_content_row_choose [] = array('text'=> $messages_choose_table);
  $messages_content_table[] = array('text'=> $messages_content_row_choose);
+ //组选择
+ $messages_content_row_group = array();
+ $messages_content_row_group[] =  array('text'=> '');
+ $messages_group_table = '
+<div width="100%" id="select_groups" style="display:none;"><table width="100%">
+	<tr>
+		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
+		<td align="center" width="10%"></td>
+		<td align="center" width="45%">'.MESSAGES_STAFF.'</td>
+	</tr>
+	<tr>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="send_groups_list" value=""><div id="send_to_groups" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient_groups.'</div></td>
+		<td align="center" style="vertical-align:middle;">
+			<button onclick="add_select_groups()">&lt&lt'.ADD_STAFF.'</button><br>
+			<button onclick="delete_select_groups()">'.DELETE_STAFF.'&gt&gt</button>
+		</td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="delete_groups_list" value=""><div width="100%" id="delete_to_groups" style="overflow-y:scroll;height:105px;">'.$all_groups_to_td.'</div></td>
+	</tr>
+</table></div>';
+ $messages_content_row_group [] = array('text'=> $messages_group_table);
+ $messages_content_table[] = array('text'=> $messages_content_row_group);
+
  $messages_content_row_must_selected = array();
  $messages_content_row_must_selected[] = array('text'=> '');
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');

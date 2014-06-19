@@ -9,17 +9,7 @@
     $site_arr = $userslist['site_permission']; 
   }
   $site_array = explode(',',$site_arr);
-
-  function group_id_list($group_id,&$group_id_list){
-          $parent_query = tep_db_query("select * from ".TABLE_GROUPS." where parent_id='".$group_id."'");
-          if(tep_db_num_rows($parent_query) > 0){
-            while($parent_array = tep_db_fetch_array($parent_query)){
-
-              $group_id_list[] = $parent_array['id'];
-              group_id_list($parent_array['id'],$group_id_list);
-            }
-          }
-  }
+ 
   if(isset($_GET['action']) && $_GET['action'] != ''){
     switch($_GET['action']){
     /* -----------------------------------------------------
@@ -229,7 +219,10 @@ require("includes/note_js.php");
                 	'text'   => '<a  href="'.FILENAME_GROUPS.'?id='.$latest_group['id'].'"><img src="images/icons/folder.gif" border="0">&nbsp'.$latest_group['name'].'</a>'
                 );
                 //统计员工数量
-                $all_users_array = explode('|||',$latest_group['all_users_id']);
+                $all_users_array = array();
+                if(trim($latest_group['all_users_id']) != ''){
+                  $all_users_array = explode('|||',$latest_group['all_users_id']);
+                }
                 $group_info[] = array(
                 	'params' => 'class="dataTableContent"',
                 	'text'   => count($all_users_array)

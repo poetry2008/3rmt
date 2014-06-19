@@ -5,6 +5,42 @@
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   define('FILENAME_MESSAGES', 'messages.php');
+
+  //组选择的处理
+  if($_GET['action'] == 'groups_list'){
+
+    $groups_list = $_POST['groups_list']; 
+    $flag = $_GET['flag'];
+    $groups_list_array = explode(',',$groups_list);
+    $groups_list_array = array_filter($groups_list_array);
+    $groups_child_id = array();
+    foreach($groups_list_array as $groups_key=>$groups_value){
+      $groups_child_id[] = $groups_value;
+      $group_id_list = array();
+      group_id_list($groups_value,$group_id_list);
+
+      foreach($group_id_list as $g_value){
+
+        $groups_list_array[] = $g_value;
+        $groups_child_id[] = $g_value;
+      }
+      $group_parent_id_list = array();
+      group_parent_id_list($groups_value,$group_parent_id_list);
+
+      foreach($group_parent_id_list as $gp_value){
+
+        $groups_list_array[] = $gp_value;
+      }
+    }
+
+
+    $groups_list_array = array_unique($groups_list_array);
+    sort($groups_list_array);
+    $groups_child_id = array_unique($groups_child_id);
+    tep_groups_list(0,$groups_list_str,$level_num,$groups_list_array,$flag); 
+    echo $groups_list_str.'||||||'.implode(',',$groups_child_id).'||||||'.$groups_list;
+    exit;
+  }
   if($_GET['action']== 'change_read_status'){
 	if($_POST['img'] == 'images/icons/gray_right.gif'){
 		tep_db_query('update messages set read_status = "1" where id = "'.$_POST['id'].'"');
@@ -90,7 +126,42 @@
  }
  if($_GET['action']== 'new_messages'){
 //	die(var_dump($_GET['status']));
-    if(!empty($_POST['selected_staff'])){	
+   if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
+     //获取组的用户，原理是优先于级别最低组的用户
+     $users_id_array = array();
+     foreach($_POST['select_groups'] as $groups_value){
+     
+       $groups_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups_value."'");
+       if(tep_db_num_rows($groups_query) == 0){
+
+         $users_query = tep_db_query("select id,all_users_id from ".TABLE_GROUPS." where id='".$groups_value."'");
+         $users_array = tep_db_fetch_array($users_query);
+
+         if(trim($users_array['all_users_id']) != ''){
+           $users_id_temp = explode('|||',$users_array['all_users_id']);
+         }else{
+           //如果此组包含用户为空，取上一级组的用户，以此类推 
+           group_users_id_list($users_array['id'],$users_id_list);
+           $users_id_temp = $users_id_list;
+         }
+         foreach($users_id_temp as $temp_value){
+           $users_id_array[] = $temp_value;
+         }
+         tep_db_free_result($users_query);
+       }
+       tep_db_free_result($groups_query);
+     }
+     $users_id_array = array_unique($users_id_array);
+
+     $users_id_str = implode("','",$users_id_array);
+     $users_list_array = array();
+     $users_name_query = tep_db_query("select userid,name from ".TABLE_USERS." where userid in ('".$users_id_str."')");
+     while($users_name_array = tep_db_fetch_array($users_name_query)){
+
+       $users_list_array[$users_name_array['userid']] = $users_name_array['name'];
+     }
+     tep_db_free_result($users_name_query);
+
 	$messages_file_name = '';
 	$messages_file_status = '0';
 	if ($_FILES['messages_file']['error'] > 0){
@@ -110,14 +181,40 @@
 	}
 	if($_POST['messages_to'] == '0'){
 		$recipient_name = 'ALL';
-	}else{
+	}else if($_POST['messages_to'] == '1'){
 		foreach($_POST['selected_staff'] as $key => $value){
 			$value = explode('|||',$value);
 			$recipient_name[] =  $value[1];
 		}
 		$recipient_name = implode(';',$recipient_name);
-	}
-	foreach($_POST['selected_staff'] as $key => $value){
+        }else if($_POST['messages_to'] == '2'){
+                foreach($users_list_array as $key => $value){
+			$recipient_name[] =  $value;
+		}
+		$recipient_name = implode(';',$recipient_name);
+        }
+        if($_POST['messages_to'] == '2'){
+	  foreach($users_list_array as $key => $value){
+		$sql_data_array = array(
+				     	'read_status' => '0',
+					'mark' => $pic_icon_str,
+					'sender_id' => $ocertify->auth_user,
+					'recipient_id' => $key,
+					'reply_status' => '0',
+                                      	'content' => $_POST['contents'],
+					'attach_file' => $messages_file_status,
+					'file_name' => $messages_file_name,
+					'opt' => '0',
+					'sender_name' => $_SESSION['user_name'],
+					'time' => date("Y/m/d H:i:s"),
+					'recipient_name' => $recipient_name,
+                               );
+         	tep_db_perform('messages', $sql_data_array);
+		unset($sql_data_array);
+	  //	var_dump($sql_data_array);
+          }
+        }else{
+          foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -135,8 +232,9 @@
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
-	//	var_dump($sql_data_array);
-	}
+	  //	var_dump($sql_data_array);
+          } 
+        }
 	if(isset($_GET['status']) && $_GET['status'] != ''){
 		$status_flag = true;
     	}else{
@@ -159,7 +257,42 @@
   }  
   if($_GET['action']== 'back_messages'){
 	//die(var_dump($_POST['selected_staff']));
-    if(!empty($_POST['selected_staff'])){	
+    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
+     //获取组的用户，原理是优先于级别最低组的用户
+     $users_id_array = array();
+     foreach($_POST['select_groups'] as $groups_value){
+     
+       $groups_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups_value."'");
+       if(tep_db_num_rows($groups_query) == 0){
+
+         $users_query = tep_db_query("select id,all_users_id from ".TABLE_GROUPS." where id='".$groups_value."'");
+         $users_array = tep_db_fetch_array($users_query);
+
+         if(trim($users_array['all_users_id']) != ''){
+           $users_id_temp = explode('|||',$users_array['all_users_id']);
+         }else{
+           //如果此组包含用户为空，取上一级组的用户，以此类推 
+           group_users_id_list($users_array['id'],$users_id_list);
+           $users_id_temp = $users_id_list;
+         }
+         foreach($users_id_temp as $temp_value){
+           $users_id_array[] = $temp_value;
+         }
+         tep_db_free_result($users_query);
+       }
+       tep_db_free_result($groups_query);
+     }
+     $users_id_array = array_unique($users_id_array);
+
+     $users_id_str = implode("','",$users_id_array);
+     $users_list_array = array();
+     $users_name_query = tep_db_query("select userid,name from ".TABLE_USERS." where userid in ('".$users_id_str."')");
+     while($users_name_array = tep_db_fetch_array($users_name_query)){
+
+       $users_list_array[$users_name_array['userid']] = $users_name_array['name'];
+     }
+     tep_db_free_result($users_name_query);
+
 	$messages_file_name = '';
 	$messages_file_status = '0';
 	if ($_FILES['messages_file_back']['error'] > 0){
@@ -179,19 +312,46 @@
 	}
 	if($_POST['messages_to'] == '0'){
 		$recipient_name = 'ALL';
-	}else{
+	}else if($_POST['messages_to'] == '1'){
 		foreach($_POST['selected_staff'] as $key => $value){
 			$value = explode('|||',$value);
 			$recipient_name[] =  $value[1];
 		}
 		$recipient_name = implode(';',$recipient_name);
-	}
+        }else if($_POST['messages_to'] == '2'){
+                foreach($users_list_array as $key => $value){
+			$recipient_name[] =  $value;
+		}
+		$recipient_name = implode(';',$recipient_name);
+        }	
 	if($_GET['status'] == 'sent'){
 		$reply_status = '0';
 	}else{
 		$reply_status = '1';
-	}
-	foreach($_POST['selected_staff'] as $key => $value){
+        }
+        if($_POST['messages_to'] == '2'){
+	  foreach($users_list_array as $key => $value){
+		$user_name_id = explode('|||',$value);
+		$sql_data_array = array(
+				     	'read_status' => '0',
+					'mark' => $pic_icon_str,
+					'sender_id' => $ocertify->auth_user,
+					'recipient_id' => $key,
+					'reply_status' => $reply_status,
+                                      	'content' => $_POST['back_contents'],
+					'attach_file' => $messages_file_status,
+					'file_name' => $messages_file_name,
+					'opt' => '0',
+					'sender_name' => $_SESSION['user_name'],
+					'time' => date("Y/m/d H:i:s"),
+					'recipient_name' => $recipient_name,
+                               );
+         	tep_db_perform('messages', $sql_data_array);
+		unset($sql_data_array);
+	  //	var_dump($sql_data_array);
+          }
+        }else{
+          foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -209,8 +369,9 @@
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
-	//	var_dump($sql_data_array);
-	}
+	  //	var_dump($sql_data_array);
+          } 
+        }
 	if($reply_status == '1'){
 		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
 	}
@@ -768,6 +929,7 @@ function messages_to_all_radio(){
 	$('#delete_to').children().children().attr('name','selected_staff[]');
 	$('#send_to').append($('#delete_to').children());
 	$('#send_to').children().css('background', '#E0E0E0');
+	$('#select_groups').css('display', 'none');	
 	$('#select_user').css('display', 'none');
 }
 function messages_to_appoint_radio(){
@@ -784,7 +946,12 @@ function messages_to_appoint_radio(){
 	messages_radio_all.children().attr('checked',false);
 	messages_radio_all.children().attr('name','selected_staff[]');
 	$('#send_to').append(messages_radio_all);
+	$('#select_groups').css('display', 'none');	
 	$('#select_user').css('display', '');	
+}
+function messages_to_groups_radio(){	
+	$('#select_user').css('display', 'none');	
+	$('#select_groups').css('display', '');	
 }
 function add_select_user(){
 	$('input[name=all_staff]').each(function() {	
@@ -793,6 +960,114 @@ function add_select_user(){
 			$(this).parent().remove();	
 		}
 	});
+}
+function add_select_groups(){
+        var groups_list = '';
+        var groups_error = true;
+        var delete_groups_list = $("#delete_groups_list").val();
+        var delete_groups_list_str = '';
+        delete_groups_list = delete_groups_list.split(',');
+	$('input[name=all_groups]').each(function() {	
+          var groups_id = $(this).val();
+          if ($(this).attr("checked")) {
+            groups_list += groups_id+','; 
+            groups_error = false;
+
+            for(x in delete_groups_list){
+
+              if(delete_groups_list[x] == groups_id){
+
+                delete_groups_list[x] = '';
+              }
+            }
+          }
+        });
+
+        for(x in delete_groups_list){
+
+          if(delete_groups_list[x] != ''){
+            delete_groups_list_str += delete_groups_list[x]+',';
+          }
+        }
+
+        $("#delete_groups_list").val(delete_groups_list_str);
+
+        if(groups_error == false){
+          var send_groups_list = $("#send_groups_list").val();
+          groups_list += send_groups_list;
+        
+          $.ajax({
+              url: 'messages.php?action=groups_list&flag=add',
+              type: 'POST',
+              dataType: 'text',
+              data: 'groups_list='+groups_list,
+              async: false,
+              success: function(msg) {
+                msg = msg.split('||||||');
+                child_array = msg[1].split(',');
+                $("#send_groups_list").val(msg[2]);
+                for(x in child_array){
+
+                  $("#groups_id_"+child_array[x]).remove();
+                }
+                $('#send_to_groups').html();
+                $('#send_to_groups').html(msg[0]);
+              }
+          });
+        }
+}
+function delete_select_groups(){
+        var groups_list = '';	
+        var groups_error = true;
+        var send_groups_list = $("#send_groups_list").val();
+        var send_groups_list_str = '';
+        send_groups_list = send_groups_list.split(',');
+        $('input[name="select_groups[]"]').each(function() {	
+          var groups_id = $(this).val();
+          if ($(this).attr("checked")) {
+            groups_list += groups_id+','; 
+            groups_error = false;
+
+            for(x in send_groups_list){
+
+              if(send_groups_list[x] == groups_id){
+
+                send_groups_list[x] = '';
+              }
+            }
+          } 
+        });
+
+        for(x in send_groups_list){
+
+          if(send_groups_list[x] != ''){
+            send_groups_list_str += send_groups_list[x]+',';
+          }
+        }
+
+        $("#send_groups_list").val(send_groups_list_str);
+        if(groups_error == false){
+          var delete_groups_list = $("#delete_groups_list").val(); 
+          groups_list += delete_groups_list;
+          $.ajax({
+              url: 'messages.php?action=groups_list&flag=delete',
+              type: 'POST',
+              dataType: 'text',
+              data: 'groups_list='+groups_list,
+              async: false,
+              success: function(msg) {
+                msg = msg.split('||||||');
+                child_array = msg[1].split(',');
+                $("#delete_groups_list").val(msg[2]);
+                for(x in child_array){
+
+                  $("#send_groups_id_"+child_array[x]).remove();
+                }
+                $('#delete_to_groups').html();
+                $('#delete_to_groups').html(msg[0]);
+              }
+          });
+        }
 }
 function delete_select_user(){
 	$('input[name="selected_staff[]"]').each(function() {	
@@ -806,15 +1081,29 @@ function messages_check(is_back){
 	var error_status_select = 0;
 	var error_status_contents = 0;
 	var error_status_back_contents = 1;
-	var reg = /^\s*$/g;
-	$('input[name="selected_staff[]"]').each(function() {
+        var reg = /^\s*$/g;
+        var messages_to = $('input:radio[name="messages_to"]:checked').val();
+	  
+        if(messages_to == 2){
+          $('input[name="select_groups[]"]').each(function() {
 		$(this).attr("checked","");
-	});
-	$('input[name="selected_staff[]"]').each(function() {
+	  });
+	  $('input[name="select_groups[]"]').each(function() {
 		if($(this).attr("checked")) {
 			error_status_select = 1;
 		}
-	});
+          }); 
+        }else{
+
+          $('input[name="selected_staff[]"]').each(function() {
+		$(this).attr("checked","");
+	  });
+	  $('input[name="selected_staff[]"]').each(function() {
+		if($(this).attr("checked")) {
+			error_status_select = 1;
+		}
+          });
+        }
 	if(is_back == 1){
 		error_status_back_contents = 0;
 		if(!reg.test($('[name=back_contents]').val())){
