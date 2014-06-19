@@ -8269,8 +8269,6 @@ $banner_query = tep_db_query("
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="delete_to" style="overflow-y:scroll;height:105px;">'.$all_user_to_td.'</div></td>
 	</tr>
 </table></div>';
- $messages_content_row_choose [] = array('text'=> $messages_choose_table);
- $messages_content_table[] = array('text'=> $messages_content_row_choose);
  //组选择
  $messages_content_row_group = array();
  $messages_content_row_group[] =  array('text'=> '');
@@ -8290,8 +8288,8 @@ $banner_query = tep_db_query("
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="delete_groups_list" value=""><div width="100%" id="delete_to_groups" style="overflow-y:scroll;height:105px;">'.$all_groups_to_td.'</div></td>
 	</tr>
 </table></div>';
- $messages_content_row_group [] = array('text'=> $messages_group_table);
- $messages_content_table[] = array('text'=> $messages_content_row_group);
+ $messages_content_row_choose [] = array('text'=> $messages_choose_table.$messages_group_table);
+ $messages_content_table[] = array('text'=> $messages_content_row_choose); 
 
  $messages_content_row_must_selected = array();
  $messages_content_row_must_selected[] = array('text'=> '');

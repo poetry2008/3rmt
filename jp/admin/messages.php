@@ -950,6 +950,15 @@ function messages_to_appoint_radio(){
 	$('#select_user').css('display', '');	
 }
 function messages_to_groups_radio(){	
+        $('#send_to').children().css('background','#FFF');
+	$('#send_to').children().css('color','black');
+        $('#send_to').children().children().attr('checked',false); 
+        if(!messages_radio_all){
+          messages_radio_all = $('#send_to').children();
+        }
+        $('#delete_to').children().css('background','#FFF');
+        $('#delete_to').children().css('color','black');
+        $('#delete_to').children().children().attr('checked',false);
 	$('#select_user').css('display', 'none');	
 	$('#select_groups').css('display', '');	
 }

@@ -13515,7 +13515,7 @@ function group_parent_id_list($group_id,&$group_parent_id_list){
  ------------------------------------ */
 function tep_groups_list($fid,&$groups_list,&$level_num,$group_show_array=array(),$flag='add'){
 
-  $groups_list_query = tep_db_query("select * from ".TABLE_GROUPS." where parent_id=".$fid);
+  $groups_list_query = tep_db_query("select * from ".TABLE_GROUPS." where group_status=1 and parent_id=".$fid);
   if(tep_db_num_rows($groups_list_query) > 0){
     $level_num++;
     while($groups_list_array = tep_db_fetch_array($groups_list_query)){
