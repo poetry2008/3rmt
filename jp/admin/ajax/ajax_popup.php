@@ -8200,7 +8200,11 @@ $banner_query = tep_db_query("
  $messages_content_table = array();
  $messages_content_row_from = array();
  $messages_content_row_from[] = array('params'=>'width="20%"','text'=>'From');
- $messages_content_row_from[] = array('text'=>$_SESSION['user_name']);
+ if($_GET['latest_messages_id']<0){
+   $messages_content_row_from[] = array('text'=>$_SESSION['user_name']);
+ }else{
+   $messages_content_row_from[] = array('text'=>$_GET['sender_name']);
+ }
  $messages_content_table[] = array('text'=> $messages_content_row_from);
  $messages_content_row_to = array();
  $messages_content_row_to [] = array('text'=>'To');
@@ -8253,6 +8257,14 @@ $banner_query = tep_db_query("
    $groups_list = '';
    tep_groups_list(0,$groups_list); 
    $all_groups_to_td .= $groups_list;
+   $all_groups_array = array();
+   $groups_id_query = tep_db_query("select id from ".TABLE_GROUPS);
+   while($groups_id_array = tep_db_fetch_array($groups_id_query)){
+
+     $all_groups_array[] = $groups_id_array['id']; 
+   }
+   tep_db_free_result($groups_id_query);
+   $all_groups_str = implode(',',$all_groups_array);
  $messages_choose_table = '
 <div width="100%" id="select_user"><table width="100%">
 	<tr>
@@ -8285,7 +8297,7 @@ $banner_query = tep_db_query("
 			<button onclick="add_select_groups()">&lt&lt'.ADD_STAFF.'</button><br>
 			<button onclick="delete_select_groups()">'.DELETE_STAFF.'&gt&gt</button>
 		</td>
-		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="delete_groups_list" value=""><div width="100%" id="delete_to_groups" style="overflow-y:scroll;height:105px;">'.$all_groups_to_td.'</div></td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="delete_groups_list" value="'.$all_groups_str.'"><div width="100%" id="delete_to_groups" style="overflow-y:scroll;height:105px;">'.$all_groups_to_td.'</div></td>
 	</tr>
 </table></div>';
  $messages_content_row_choose [] = array('text'=> $messages_choose_table.$messages_group_table);
@@ -8337,9 +8349,26 @@ $banner_query = tep_db_query("
  }
  $messages_content_table[] = array('text'=> $messages_content_row_addfile);
  if($_GET['latest_messages_id']>0){
+        $messages_email_array = array();
+        $messages_users_query = tep_db_query("select userid,name,email from ".TABLE_USERS." where userid='".$sql_message_content_res['sender_id']."' or userid='".$sql_message_content_res['recipient_id']."'");
+        while($messages_users_array = tep_db_fetch_array($messages_users_query)){
+
+          $messages_email_array[$messages_users_array['userid']] = array('name'=>$messages_users_array['name'],
+          
+                                                                         'email'=>$messages_users_array['email'] 
+                                                                         );
+        }
+        tep_db_free_result($messages_users_query);
+        $messages_contents_back = "\r\n\r\n\r\n".'---------- Forwarded message ----------'."\r\n";
+        $messages_contents_back .= 'From: '.$messages_email_array[$sql_message_content_res['sender_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['sender_id']]['email'].'>'."\r\n";
+        $messages_date_array = explode(' ',tep_date_long($sql_message_content_res['time']));
+        $messages_contents_back .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($sql_message_content_res['time'])).' '.$messages_date_array[1]."\r\n";
+        $messages_contents_back .= 'To: '.$messages_email_array[$sql_message_content_res['recipient_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['recipient_id']]['email'].'>'."\r\n";
+        $messages_contents_replace = str_replace("\r\n","\r\n>",$sql_message_content_res['content']);
+        $messages_contents_back .= '>'.$messages_contents_replace;
 	$messages_content_row_back = array();
 	$messages_content_row_back[] = array('text'=> MESSAGES_BACK_CONTENT);
-	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents"></textarea>');
+	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents">'.$messages_contents_back.'</textarea>');
 	$messages_content_table[] = array('text'=> $messages_content_row_back);
 	$messages_content_row_back_must_write = array();
  	$messages_content_row_back_must_write[] = array('text'=> '');
