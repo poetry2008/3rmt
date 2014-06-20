@@ -126,7 +126,7 @@ function forward404Unless($condition)
 function tep_minitor_info(){
   $show_div = false;
   $errorString = array();
-  $monitors  = tep_db_query("select id ,name,url from monitor m where m.enable='on'");
+  $monitors  = tep_db_query("select id ,name,name from monitor m where m.enable='on'");
   while($monitor= tep_db_fetch_array($monitors)){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
     $logIn15 = tep_db_query("select * from monitor_log where ng > 0 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
@@ -10445,7 +10445,7 @@ function tep_show_site_filter($filename,$ca_single=false,$show_all=array()){
   global $_GET, $_POST, $ocertify;
   $site_list_array = array();
   $site_array = array();
-  $site_list_query = tep_db_query("select id,romaji,url from ". TABLE_SITES);
+  $site_list_query = tep_db_query("select id,romaji,name from ". TABLE_SITES);
   $site_list_array[0] = 'all';
   $site_array[] = '0';
   while($site_list_rows = tep_db_fetch_array($site_list_query)){
@@ -13306,7 +13306,7 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
   global $_GET, $_POST, $ocertify;
   $site_list_array = array();
   $site_array = array();
-  $site_list_query = tep_db_query("select id,romaji,url from ". TABLE_SITES);
+  $site_list_query = tep_db_query("select id,romaji,name from ". TABLE_SITES);
   if($_GET['show_type'] == 'one' && $_GET['site_id'] != 0){
     $site_list_array[0] = '<img src="images/icons/common_blackpoint.gif" alt="'.TEXT_ALL_SITE_ALT.'" title="'.TEXT_ALL_SITE_ALT.'">';
   }else{
@@ -13378,7 +13378,7 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
                  if(in_array($site['id'],$show_all)){
                    $unshow_list[] = $site['id'];
                  ?>
-			  <li id="site_<?php echo $site['id'];?>" class="site_filter_unselected" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li>
+			  <li id="site_<?php echo $site['id'];?>" class="site_filter_unselected" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li>
                  <?php
                  continue;
                  }
@@ -13387,17 +13387,17 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
                 if(in_array($site['id'],$site_array)){
                  if($_GET['page']){
            ?>
-				<a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+				<a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
              <?php }else{  ?>
-				<a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+				<a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
           <?php
                  }
                }else{
                  if($_GET['page']){
           ?>
-			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
               <?php }else{ ?>
-			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
           <?php
             }
                }
@@ -13406,17 +13406,17 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
                  if(in_array($site['id'],$site_id_array)){
                    if($_GET['page']){
           ?>
-			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
              <?php }else{ ?>
-			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" class="site_filter_selected" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
           <?php
                }
                }else{
                  if($_GET['page']){
           ?>
-			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
               <?php }else{ ?>
-			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['url'];?>"><?php echo $site['romaji'];?></li></a>
+			  <a href="javascript:void(0);" onclick="change_show_site(<?php echo $site['id'];?>,1,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('page', 'site_id')));?>', '<?php echo $filename;?>');"><li id="site_<?php echo $site['id'];?>" title="<?php echo $site['name'];?>"><?php echo $site['romaji'];?></li></a>
 <?php          }
                }
                }
@@ -13434,13 +13434,13 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
           if($site==$_GET['site_id']){
     ?>
       <a href="<?php echo tep_href_link($filename,
-		  tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>" onclick="change_show_site('',0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');" title="<?php echo $site_list['url'];?>"><li class="site_filter_selected" title="<?php echo $site_list[$sk-1]['url'];?>"><?php
+		  tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>" onclick="change_show_site('',0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');" title="<?php echo $site_list['name'];?>"><li class="site_filter_selected" title="<?php echo $site_list[$sk-1]['name'];?>"><?php
         echo $site_list_array[$sk];?></li></a>
     <?php
           }else{
     ?>
       <a href="<?php echo tep_href_link($filename,
-		  tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>" onclick="change_show_site('',0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li title="<?php echo $site_list[$sk-1]['url'];?>"><?php
+		  tep_get_all_get_params(array('site_id','show_type')).'&show_type=one&site_id='.$site);?>" onclick="change_show_site('',0,'<?php echo $_GET['site_id'];?>','<?php echo urlencode(tep_get_all_get_params(array('site_id')));?>', '<?php echo $filename;?>');"><li title="<?php echo $site_list[$sk-1]['name'];?>"><?php
         echo $site_list_array[$sk];?></li></a>
     <?php
           }
