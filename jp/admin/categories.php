@@ -5008,7 +5008,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if (empty($s_site_id)) {
                   $products_set_price_text .= '<input style="text-align:right" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><input type="hidden" name="hidden_products_id[]" value="'.$products['products_id'].'"><span id="price_error_'.  $products_count.'"></span>';
                 } else {
-                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'_'.$s_site_id.'">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
+                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'_'.$s_site_id.'"  style="margin-right: 3px;">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
                 }
                 $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_2" class="_udlr" type="hidden" size="6" value="'.$products['products_price_offset'].'" name="offset[]" id="'."offset_input_".$products_count.'">';
                 $products_table_content_row[] = array('params'=>$products_set_price_params, 'text'=>$products_set_price_text);
@@ -5284,7 +5284,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $manual_category_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".(int)$tmp_c_path_info."' and site_id = '0'"); 
                         $manual_category_res = tep_db_fetch_array($manual_category_query); 
                         if ($manual_category_res) {
-                          echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('info', 'x', 'y', 'action', 'site_id')).'&action=show_categories_manual_link').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
+                          echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('info', 'x', 'y', 'action', 'site_id')).'&action=show_categories_manual_link'.(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '').(isset($_GET['site_id']) ? '&site_id='.$_GET['site_id'] : '')).'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
                         }
                       }
                     }
