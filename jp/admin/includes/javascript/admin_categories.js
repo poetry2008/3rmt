@@ -806,6 +806,33 @@ function all_select_tags(tags_list_id)
   }
 }
 
+function select_all(tags_id) {
+	if(tags_id == 1){
+if(document.getElementById("sel_all").checked){
+  $("input[type='checkbox'][name='tags[]']").each(function(){
+    	$(this).attr("checked",true);
+	})
+}else {
+$("input[type='checkbox'][name='tags[]']").each(function(){
+	$(this).removeAttr("checked");
+})
+}
+}
+if(tags_id == 2) {
+
+if(document.getElementById("all_check").checked){
+  $("input[type='checkbox'][class='carttags']").each(function(){
+    	$(this).attr("checked",true);
+	})
+}else {
+$("input[type='checkbox'][class='carttags']").each(function(){
+	$(this).removeAttr("checked");
+})
+}
+
+}
+ }
+
 //when commodity associated Dom tag, ajax data
 function edit_products_tags_check(tags_list_id)
 { 
@@ -2013,4 +2040,26 @@ function check_reset_categories_confirm(str,action){
     document.forms.editcategory.action = action;
     document.forms.editcategory.submit();
   }
+}
+
+function show_tags_change(num){
+
+  if(num == 1){
+    $("#show_tags_all").hide();
+    $("#hidden_more_tags").show();
+  }
+
+  if(num == 0){
+    $("#show_tags_all").show();
+    $("#hidden_more_tags").hide();
+  }
+  if(num == 3){
+    $("#show_tags_4").show();
+    $("#show_tags_3").hide();
+  }
+  if(num == 4){
+    $("#show_tags_3").show();
+    $("#show_tags_4").hide();
+  }
+
 }
