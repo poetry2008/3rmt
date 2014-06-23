@@ -2952,12 +2952,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                  ?> 
                                  <td><table width="100%" id="hidden_more_tags" ><tr>
 
-                                <input type="checkbox" id="sel_all" onclick="select_all(1)">全选择
+								 <input type="checkbox" id="sel_all" onclick="select_all(1)"><?php echo SELECT_ALL;?>
                                 </tr><tr>
                                  <?php
                                   $tags_i = 1;
                                   while ($tag = tep_db_fetch_array($t_query)) {
                                     $tag_array[] = $tag; 
+								  }
+								  foreach($tag_array as $tag) {
                                     ?>
                                       <td width="20%" valign="top">
                                       <input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
@@ -3008,8 +3010,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                  <tr>
                                  <?php
                                   $tags_i = 1;
-                                  while ($tag = tep_db_fetch_array($t_query)) {
-                                    $tag_array[] = $tag; 
+								  foreach($tag_array as $tag){
                                     ?>
                                       <td width="20%" valign="top">
 
@@ -3034,7 +3035,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                      echo '</tr><tr>'; 
                                     }
                                     $tags_i++;
-                                  }
+								  }
                                   $tags_list_str = implode(',',$tags_array);
                                   if($tags_num == 0){
 
@@ -3073,7 +3074,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   ?>
 									  <table id="cattags_title" border="0" cellspacing="0" cellpadding="2" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                              <tr><td>
-                                <input type="checkbox" id="all_check" onclick="select_all(2)">全选择
+							 <input type="checkbox" id="all_check" onclick="select_all(2)"><?php echo SELECT_ALL;?>
                              </td></tr>
                                        <tbody id="show_tags_4"><tr>
                                        <?php 

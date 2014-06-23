@@ -301,5 +301,5 @@ define('CATEGORY_SEO_KEYWORDS_TEXT','Meta的关键字');
 define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
 define('SHOW_MORE_TAGS','全显示▼');
 define('HIDE_SOME_TAGS','收起▲');
-
+define('SELECT_ALL','全选择');
 ?>
