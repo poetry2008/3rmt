@@ -441,7 +441,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     <th class="dataTableHeadingContent"><?php echo $value;?></th>
 <?php }} ?>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_PRODUCT_SELECT;?></th>
-    <th class="dataTableHeadingContent" ><?php echo TEXT_PRODUCTS_VIRTUAL_QUANTITY;?></th>
+    <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_JIAKONGZAIKU;?></th>
     <th class="dataTableHeadingContent" ><?php echo LIST_DISPLAY_YEZHE_PRICE;?></th>
   </tr>
 <?php 
