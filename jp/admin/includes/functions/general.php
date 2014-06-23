@@ -13309,16 +13309,31 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
   $site_list_query = tep_db_query("select id,romaji,name from ". TABLE_SITES);
   if($_GET['show_type'] == 'one' && $_GET['site_id'] != 0){
     $site_list_array[0] = '<img src="images/icons/common_blackpoint.gif" alt="'.TEXT_ALL_SITE_ALT.'" title="'.TEXT_ALL_SITE_ALT.'">';
+	  $site_list[0]= array(
+		  'id'=>0,
+	      'romaji'=>'<img src="images/icons/common_blackpoint.gif" alt="'.TEXT_ALL_SITE_ALT.'">',
+	      'name'=>TEXT_ALL_SITE_ALT
+	  );
   }else{
     $site_show = explode('-',$_GET['site_id']);
     if(!in_array(0,$site_show)){
       $site_list_array[0] = '<img src="images/icons/common_blackpoint.gif" alt="'.TEXT_ALL_SITE_ALT.'" title="'.TEXT_ALL_SITE_ALT.'">';
+	  $site_list[0]= array(
+		  'id'=>0,
+	      'romaji'=>'<img src="images/icons/common_blackpoint.gif" alt="'.TEXT_ALL_SITE_ALT.'">',
+	      'name'=>TEXT_ALL_SITE_ALT
+	  );
     }else{
       $site_list_array[0] = '<img src="images/icons/common_whitepoint.gif" alt="'.TEXT_ALL_SITE_ALT.'" title="'.TEXT_ALL_SITE_ALT.'">';
+	  $site_list[0]= array(
+		  'id'=>0,
+	      'romaji'=>'<img src="images/icons/common_whitepoint.gif" alt="'.TEXT_ALL_SITE_ALT.'">',
+	      'name'=>TEXT_ALL_SITE_ALT
+	  );
     }
   }
   $site_array[] = '0';
-  $i=0;
+  $i=1;
   while($site_list_rows = tep_db_fetch_array($site_list_query)){
     $site_list_array[$site_list_rows['id']] = $site_list_rows['romaji'];
 	$site_list[$i++]=$site_list_rows;
@@ -13366,6 +13381,11 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
   $unshow_list = array();
   if(!in_array('0',$site_array)){
     $site_list_array[0] = '<img src="images/icons/common_blackpoint.gif" alt="'.TEXT_ALL_SITE_ALT.'" title="'.TEXT_ALL_SITE_ALT.'">';
+	  $site_list[0]= array(
+		  'id'=>0,
+	      'romaji'=>'<img src="images/icons/common_blackpoint.gif" alt="'.TEXT_ALL_SITE_ALT.'">',
+	      'name'=>TEXT_ALL_SITE_ALT
+	  );
   }
     ?>
     <input type="hidden" id="show_site_id" value="<?php echo implode('-',$show_site_list);?>">
