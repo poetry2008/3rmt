@@ -2440,10 +2440,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
                 if($ocertify->npermission >= 15 && isset($_GET['pID'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_products_confirm(\''.TEXT_DELETE_PRODUCT_INTRO.'\',\''.$delete_action.'\');"') . '</a>'; 
+                }
                   if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
                     echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_products_confirm(\''.CATEGORY_RESET_CONFIRM.'\',\''.FILENAME_CATEGORIES.'?action=reset_products&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
                   }
-                }
                 if (empty($s_site_id)) {
                   echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_edit_product_profit();"') .  '</a>';
                 } else {
@@ -2841,7 +2841,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_TAGS;?></td>
-<td><table width="100%"><tr>
                                     <?php
                                     //show tags 
                                     $checked_tags = array();
@@ -2950,7 +2949,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     $tags_array[] = $tags_temp_array['tags_id'];
                                   }
                                   tep_db_free_result($tags_temp_query);
- 
+                                 ?> 
+                                 <td><table width="100%" id="hidden_more_tags" ><tr>
+
+                                <input type="checkbox" id="sel_all" onclick="select_all(1)">全选择
+                                </tr><tr>
+                                 <?php
                                   $tags_i = 1;
                                   while ($tag = tep_db_fetch_array($t_query)) {
                                     $tag_array[] = $tag; 
@@ -2968,10 +2972,62 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                         echo 'checked'; 
                                       }
                                     ?><?php if ($s_site_id) {echo ' onclick="return false;"';}?>
-                                      ><?php echo $tag['tags_name'].
-                                          '&nbsp;&nbsp; 
-                                          </span>&nbsp;</td>';?> 
-                                    <?php 
+                                      ><?php echo $tag['tags_name']
+									  .'&nbsp;</td>';
+									if($tags_num >15){
+									if($tags_i==13){
+								echo '<td with="20">&nbsp;&nbsp;'.'. . .'.'</td>';
+									}
+									}
+                                     
+                                    //对标签显示，进行排版
+                                    if($tags_i % 5 == 0){
+
+                                     echo '</tr><tr>'; 
+                                    }
+                                    $tags_i++;
+									if($tags_num >15){
+										if($tags_i > 13){break;}
+									}
+                                  }
+                                  $tags_list_str = implode(',',$tags_array);
+                                  if($tags_num == 0){
+
+                                    echo '<td>'.TEXT_UNSET_DATA.'</td>';
+                                  }
+                                  ?>
+                                    <?php
+                                  if($tags_num > 15){
+
+                                    echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(0)">'.SHOW_MORE_TAGS.'</a></td></tr>';
+                                  }
+                             ?></table>
+								 <table id="show_tags_all" width="100%"  style="display:none;">
+								<tr>
+                               </tr>
+                                 <tr>
+                                 <?php
+                                  $tags_i = 1;
+                                  while ($tag = tep_db_fetch_array($t_query)) {
+                                    $tag_array[] = $tag; 
+                                    ?>
+                                      <td width="20%" valign="top">
+
+                                      <input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
+                                      <?php
+                                      if ($_GET['pID'] || isset($pInfo->tags)) {
+                                        if (isset($checked_tags[$tag['tags_id']])) {
+                                          echo 'checked'; 
+                                        }
+                                      } else if ($tag['tags_checked']) {
+                                        echo 'checked'; 
+                                      } else if (isset($_POST['tags']) && in_array($tag['tags_id'], $_POST['tags'])) {
+                                        echo 'checked'; 
+                                      }
+                                    ?><?php if ($s_site_id) {echo ' onclick="return false;"';}?>
+                                      ><?php echo $tag['tags_name']
+									  .'&nbsp;</td>';
+                                     
                                     //对标签显示，进行排版
                                     if($tags_i % 5 == 0){
 
@@ -2984,10 +3040,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
                                     echo '<td>'.TEXT_UNSET_DATA.'</td>';
                                   }
-                                  ?></tr>
+                                  ?>
+                                    <?php
+                                  if($tags_num > 15){
 
-                                   </table></td>
-                                      <td valign="top"><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ?></font></td>
+                                    echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(1)">'.HIDE_SOME_TAGS.'</a></td></tr>';
+                                  }
+                             ?></table>
+                                    </td>
+									 <td valign="top"><?php echo '<br/>';?><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ?></font></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></td>
@@ -3000,7 +3061,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 			  <?php  $flag_str = $pInfo->products_cart_buyflag;
               ?>
 				<td nowrap="nowrap"><input type="checkbox" <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='0'<?php if($pInfo->products_cart_buyflag==0 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?><input type="checkbox"  <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='1'<?php if($pInfo->products_cart_buyflag ==1 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td></tr>
-                <tr><td></td><td> 
+				<tr><td></td>
+                          <td> 
+
                                   <?php 
                                   $carttag_array = array();
                                   $carttag_query = tep_db_query("select * from products_to_carttag where products_id='".$_GET['pID']."'");
@@ -3008,24 +3071,68 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     $carttag_array[$carttag['tags_id']] = $carttag;
                                   }
                                   ?>
-                                      <table id="cattags_title" border="0" cellspacing="0" cellpadding="2" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>><tr>
+									  <table id="cattags_title" border="0" cellspacing="0" cellpadding="2" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
+                             <tr><td>
+                                <input type="checkbox" id="all_check" onclick="select_all(2)">全选择
+                             </td></tr>
+                                       <tbody id="show_tags_4"><tr>
                                        <?php 
                                        $tags_i = 1;
                                        foreach($tag_array as $tag){ 
                                        ?>
                                        <td width="20%" valign="top">
 										<input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
-                                        <?php echo $tag['tags_name'].'&nbsp;&nbsp;</span>&nbsp;</td>';?>
-                                          <?php 
+									<?php echo $tag['tags_name'].'
+									</span>&nbsp;</td>';
+                                    if($tags_num > 15){
+									if($tags_i==13){
+								echo '<td with="20">&nbsp;&nbsp;'.'. . .'.'</td>';
+									}
+									}
+                                          
                                            if($tags_i % 5 == 0){echo '</tr><tr>';}  
                                            $tags_i++;
+									if($tags_num > 15){
+									   if($tags_i > 13){break;}
                                            }
+									   }
                                            if($tags_num == 0){
 
                                              echo '<td>'.TEXT_UNSET_DATA.'</td>';
                                            } 
                                           ?>
+                                          <?php
+                                         if($tags_num > 15){
+                                            echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(4)">'.SHOW_MORE_TAGS.'</a></td>';
+										 }
+                                          ?>
                                           </tr>
+                                          </tbody>
+                                       <tbody id="show_tags_3" style="display:none;"><tr>
+                                       <?php 
+                                       $tags_i = 1;
+                                       foreach($tag_array as $tag){ 
+                                       ?>
+                                       <td width="20%" valign="top">
+										<input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
+									<?php echo $tag['tags_name'].'
+									</span>&nbsp;</td>';?>
+                                          <?php 
+                                           if($tags_i % 5 == 0){echo '</tr><tr>';}  
+                                           $tags_i++;
+                                           }
+                                           if($tags_num == 0){
+                                             echo '<td>'.TEXT_UNSET_DATA.'</td>';
+                                           } 
+                                          ?>
+
+                                          <?php
+                                           if($tags_num > 15){
+                                            echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(3)");">'.HIDE_SOME_TAGS.'</a></td>';
+										   }
+                                          ?>
+                                          </tr>
+                                          </tbody>
                                           </table>  
                             </td>
                             <td valign="top" <?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : ''; echo  $tags_num > 0 ? 'id="search_style"':'';?>><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
@@ -3224,10 +3331,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $delete_categories_action = FILENAME_CATEGORIES.'?cPath=' .$cPath . '&page='.$_GET['page'].'&action=delete_category_confirm'.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '');
               if($ocertify->npermission >= 15 && isset($_GET['cID'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_categories_confirm(\''.TEXT_DELETE_CATEGORY_INTRO.'\',\''.$delete_categories_action.'\');"') . '</a>'; 
+              }
                   if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
                     echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_ICON_STATUS_RED, 'onclick="check_reset_categories_confirm(\''.CATEGORY_RESET_CONFIRM.'\',\''.FILENAME_CATEGORIES.'?action=reset_categories&'.tep_get_all_get_params(array('action')).'\');"') . '</a>'; 
                   }
-              }
 
               if ($_GET['action'] == 'new_category') {
                 echo '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="cmess(\''.$current_category_id.'\', \'\', \''.$s_site_id.'\', \''.$ocertify->npermission.'\', \'0\');"').'</a>';
@@ -4220,7 +4327,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                                 '&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page.'&s_site_id='.$categories['site_id'].(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')).'\', \''.$ocertify->npermission.'\')">'.
                                 tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '').'</a> ';
-                          $categories_status_text .= tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '');
                           $categories_status_text .= '<a href="javascript:void(0);" onclick="check_toggle_black_status(\''.
                             tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].
                                 '&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page).'\', \''.$ocertify->npermission.'\')">'.

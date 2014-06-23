@@ -310,3 +310,5 @@ define('TEXT_PRODUCTS_QUANTITY_SUM','表示数');
 define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
 define('CATEGORY_TEXT_TITLE','サブタイトル');
 define('CATEGORY_RESET_CONFIRM','本当に無効しますか？');
+define('SHOW_MORE_TAGS','全表示▼');
+define('HIDE_SOME_TAGS','たたむ▲');
