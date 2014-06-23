@@ -202,11 +202,36 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   $osC_CategoryTree = new osC_CategoryTree(true,false,$_POST['cpath']); 
   echo $osC_CategoryTree->buildTree();
 }else if(isset($_GET['action']) && $_GET['action'] == 'check_messages_header'){
+  //内容链接跳转处理
+  $latest_messages_query_raw = 'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and messages_status = "0" and trash_status in ("0","2") and delete_status in ("0","2") order by time desc';
+  $messages_id_count = tep_db_num_rows(tep_db_query($latest_messages_query_raw)); 
+  $messages_id_page = ceil($messages_id_count/MAX_DISPLAY_SEARCH_RESULTS);
+
+  $messages_id_list = array();
+  for($i = 1;$i <= $messages_id_page;$i++){
+       
+    $latest_messages_query_raw = 'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and messages_status = "0" and trash_status in ("0","2") and delete_status in ("0","2") order by time desc';
+    $latest_messages_split = new splitPageResults($i, MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw,$latest_messages_query_numrows);
+    $messages_id_query = tep_db_query($latest_messages_query_raw);
+    while($messages_id_array = tep_db_fetch_array($messages_id_query)){
+
+      $messages_id_list[$i][] = $messages_id_array['id'];
+    }
+    tep_db_free_result($messages_id_query);
+  }
 	$messages_header = tep_db_query(
         	'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and header_status = "0" order by time desc'
         );
 	$messages_header_all = array();
-	while($new_messages = tep_db_fetch_array($messages_header)){
+        while($new_messages = tep_db_fetch_array($messages_header)){
+          for($j = 1;$j <= $latest_messages_query_numrows;$j++){
+
+            if(in_array($new_messages['id'],$messages_id_list[$j])){
+
+              $new_messages['page'] = $j;
+              break;
+            }
+          }
 		$new_messages['time'] = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR, strtotime($new_messages['time']));
 		$new_messages['content'] = str_replace('>','&gt',str_replace('<','&lt',mb_substr($new_messages['content'], 0, 20)));
 		if($new_messages['mark'] != '' && $new_messages['mark'] != null){

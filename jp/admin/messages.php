@@ -1149,8 +1149,12 @@ function change_read_status(obj,id){
 		function(data){
 			if(data == '1'){
 				$(obj).attr('src', 'images/icons/green_right.gif');
+                                $(obj).attr('alt', '<?php echo READ_STATUS;?>');
+                                $(obj).attr('title', '<?php echo READ_STATUS;?>');
 			}else if(data == '0'){
 				$(obj).attr('src', 'images/icons/gray_right.gif');
+                                $(obj).attr('alt', '<?php echo UNREAD_STATUS;?>');
+                                $(obj).attr('title', '<?php echo UNREAD_STATUS;?>');
 			}
 		}
 	)
@@ -1420,6 +1424,14 @@ require("includes/note_js.php");
 		and trash_status in ("0","2") 
 		and delete_status in ("0","2") order by '.$messages_sort_sql.' '.$messages_sort_type;
     }
+    //获取mark 图标信息
+    $icon_list_array = array();
+    $icon_query = tep_db_query("select id,pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST);
+    while($icon_array = tep_db_fetch_array($icon_query)){
+
+      $icon_list_array[$icon_array['id']] = $icon_array['pic_alt'];
+    }
+    tep_db_free_result($icon_query);
     $latest_messages_split = new splitPageResults($messages_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw, $latest_messages_query_numrows);
     $latest_messages_query = tep_db_query($latest_messages_query_raw);
     while ($latest_messages = tep_db_fetch_array($latest_messages_query)) {
@@ -1430,8 +1442,14 @@ require("includes/note_js.php");
 		$nowColor = $even;
 	} else {
 		$nowColor = $odd;
-	}
-	$messages_params = 'id="info_'.$latest_messages['id'].'" class="'.$nowColor.'" onclick="messages_selected(this,\''.$nowColor.'\')" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+        }
+        if($_GET['id'] == $latest_messages['id']){
+
+          $nowColor_select = 'dataTableRowSelected';
+        }else{
+          $nowColor_select = $nowColor; 
+        }
+	$messages_params = 'id="info_'.$latest_messages['id'].'" class="'.$nowColor_select.'" onclick="messages_selected(this,\''.$nowColor.'\')" '.($_GET['id'] == $latest_messages['id'] ? 'onmouseout="false" onmouseover="false" onmouseover_last="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout_last="this.className=\'dataTableRow\'" begin_class="dataTableRow"' : 'onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"');
 	$messages_info = array();
 	$messages_checkbox = '<input type="checkbox" name="messages_id[]" value="'.$latest_messages['id'].'">';
 	$messages_info[] = array(
@@ -1439,7 +1457,7 @@ require("includes/note_js.php");
 		'text'   => $messages_checkbox		
 	);
    if($_GET['status'] != 'sent'){
-	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/gray_right.gif" border="0">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/green_right.gif" border="0">';
+	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/gray_right.gif" border="0" alt="'.UNREAD_STATUS.'" title="'.UNREAD_STATUS.'">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/green_right.gif" border="0" alt="'.READ_STATUS.'" title="'.READ_STATUS.'">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
@@ -1450,7 +1468,7 @@ require("includes/note_js.php");
 		$mark_array = explode(',',$latest_messages['mark']);
 		foreach($mark_array as $value){
 			$mark_handle = strlen($value) > 1 ? $value : '0'.$value;
-			$mark_html .= '<img src="images/icon_list/icon_'.$mark_handle.'.gif" border="0">';
+			$mark_html .= '<img src="images/icon_list/icon_'.$mark_handle.'.gif" border="0" alt="'.$icon_list_array[$value].'" title="'.$icon_list_array[$value].'">';
 		}
 	}
 	$messages_info[] = array(
@@ -1469,12 +1487,25 @@ require("includes/note_js.php");
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_reply_status
-	);
+        );
+        //返信内容处理
+        $contents_text = $latest_messages['content'];
+        $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text); 
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$latest_messages['content'])).'</p>'
-	);
-	$messages_attach_file = $latest_messages['attach_file']==0 ? '' : '<img src="images/icons/attach.png" border="0">';
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$contents_text)).'</p>'
+        );
+        //附件下载处理
+        if($latest_messages['attach_file'] == 1){
+		$messages_file_name = $latest_messages['file_name'];
+		if(file_exists('messages_upload/'.$messages_file_name)){
+			$messages_file_name = base64_decode($messages_file_name);
+			$messages_file_name = explode('|||',$messages_file_name);
+			$messages_attach_file = '<a href="message_file_download.php?file_id='.$latest_messages['file_name'].'"><img src="images/icons/attach.png" border="0" alt="'.$messages_file_name[0].'" title="'.$messages_file_name[0].'"></a>';
+		}	
+        }else{
+	  $messages_attach_file = '';
+        }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_attach_file
@@ -1482,8 +1513,8 @@ require("includes/note_js.php");
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $latest_messages['time']
-	);
-	$messages_opt = $latest_messages['opt']==0 ? '<img src="images/icons/info_blink.gif" border="0">' : '<img src="images/icons/info_green.gif" border="0">';
+        );
+        $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
