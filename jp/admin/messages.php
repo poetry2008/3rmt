@@ -194,6 +194,10 @@
 		$recipient_name = implode(';',$recipient_name);
         }
         if($_POST['messages_to'] == '2'){
+          $groups_id_list = explode(',',$_POST['groups_id_list']);
+          $groups_id_list = array_unique($groups_id_list);
+          $groups_id_list = array_filter($groups_id_list);
+          $groups_id_str = implode(',',$groups_id_list);
 	  foreach($users_list_array as $key => $value){
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -208,6 +212,7 @@
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
+					'groups' => $groups_id_str,
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
@@ -330,6 +335,10 @@
 		$reply_status = '1';
         }
         if($_POST['messages_to'] == '2'){
+          $groups_id_list = explode(',',$_POST['groups_id_list']);
+          $groups_id_list = array_unique($groups_id_list);
+          $groups_id_list = array_filter($groups_id_list);
+          $groups_id_str = implode(',',$groups_id_list);
 	  foreach($users_list_array as $key => $value){
 		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
@@ -345,6 +354,7 @@
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
+					'groups' => $groups_id_str,
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
@@ -1478,10 +1488,47 @@ require("includes/note_js.php");
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $latest_messages['sender_name']
-	);
+        );
+        //如果是以组的方法发的信，显示组的名称
+        if(trim($latest_messages['groups']) != ''){
+
+          $groups_string = '';
+          $groups_string_alt = '';
+          $groups_array = explode(',',$latest_messages['groups']);
+          foreach($groups_array as $groups_value){
+            $groups_parent_id = array();
+            $groups_parent_id[] = $groups_value;
+            group_parent_id_list($groups_value,$groups_parent_id);
+            sort($groups_parent_id);
+            foreach($groups_parent_id as $p_value){
+
+              $groups_name_query = tep_db_query("select name from ".TABLE_GROUPS." where id='".$p_value."'");
+              $groups_name_array = tep_db_fetch_array($groups_name_query);
+              tep_db_free_result($groups_name_query);
+              if($p_value != $groups_value){
+                $groups_string .= mb_substr($groups_name_array['name'],0,1).'...>'; 
+              }else{
+                $groups_string .= $groups_name_array['name']; 
+              }
+              if($p_value != $groups_value){
+                $groups_string_alt .= $groups_name_array['name'].'>';
+              }else{
+                $groups_string_alt .= $groups_name_array['name'];
+              }
+            }
+            $groups_string .= ';';
+          }
+          if(count($groups_array) > 1){
+            $to_messages = '<span alt="'.$groups_string_alt.'" title="'.$groups_string_alt.'">'.mb_substr($groups_string,0,-1).'</span>';
+          }else{
+            $to_messages = mb_substr($groups_string,0,-1); 
+          }
+        }else{
+          $to_messages = $latest_messages['recipient_name']; 
+        }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $latest_messages['recipient_name']
+		'text'   => $to_messages 
 	);
 	$messages_reply_status = $latest_messages['reply_status']==0 ? '' : '<img src="images/icons/reply_icon.png" border="0">';
 	$messages_info[] = array(
