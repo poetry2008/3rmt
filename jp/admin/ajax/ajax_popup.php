@@ -8292,7 +8292,7 @@ $banner_query = tep_db_query("
 		<td align="center" width="45%">'.MESSAGES_STAFF.'</td>
 	</tr>
 	<tr>
-		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="send_groups_list" value=""><div id="send_to_groups" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient_groups.'</div></td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="send_groups_list" name="groups_id_list" value=""><div id="send_to_groups" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient_groups.'</div></td>
 		<td align="center" style="vertical-align:middle;">
 			<button onclick="add_select_groups()">&lt&lt'.ADD_STAFF.'</button><br>
 			<button onclick="delete_select_groups()">'.DELETE_STAFF.'&gt&gt</button>

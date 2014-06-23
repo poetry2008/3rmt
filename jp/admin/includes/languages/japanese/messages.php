@@ -1,6 +1,7 @@
 <?php	
 
 define('HEADING_TITLE', 'メッセージ管理 / 受信');
+define('UNREAD_STATUS','未読');
 define('READ_STATUS','既読');
 define('MESSAGES_MARK', 'マーク');
 define('MESSAGES_FROM', 'From');

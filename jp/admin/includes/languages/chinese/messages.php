@@ -27,6 +27,7 @@ define('MESSAGES_EDIT_DATE', '创建日');
 define('MESSAGES_SUBMIT', '发送');
 define('TEXT_REVIEWS_SELECT_ACTION', '请选择');
 define('TEXT_REVIEWS_DELETE_ACTION','删除勾选项目');
+define('TEXT_NEWS_MUST_SELECT', '请至少选择一项。');
 define('NEW_MESSAGES','创建新信件');
 define('DELETE_STAFF','删除');
 define('MESSAGES_TO_MUST_SELECTED','请添加收信人');
