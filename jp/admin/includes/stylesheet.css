@@ -1862,14 +1862,13 @@ Public list
 }}
 .table_img_list li{
 	float:left;
-	width:10%;
+        width:auto;
 	min-width:60px;
     white-space:nowrap;
 }
 @media all and (-webkit-min-device-pixel-ratio:0){
 .table_img_list li{
 	float:left;
-	width:10%;
 	min-width:35px;
     white-space:nowrap;
 }}
