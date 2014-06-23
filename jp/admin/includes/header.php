@@ -95,8 +95,8 @@ function check_header_messages(){
 			$('#show_messages_notice').children().remove();
 			$('#show_all_messages_notice').children().remove();
 			if(data != '0'){
-				var img_mark = '';
 				$.each(eval(data), function(){
+				var img_mark = '';
 				$.each(this['mark'], function(){
 					img_mark += '<img border="0" src="images/icon_list/icon_'+this+'.gif">'
 				});
