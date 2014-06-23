@@ -8215,7 +8215,7 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
  $messages_content_row_choose [] =  array('text'=> '');
- $sql_for_all_users = 'select userid, name from users';
+ $sql_for_all_users = 'select userid, name from users where status=1 order by name asc';
  $sql_for_all_users_query = tep_db_query($sql_for_all_users);
  //组选择
  $all_user_to_td = '';

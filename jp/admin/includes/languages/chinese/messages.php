@@ -2,6 +2,7 @@
 
 define('HEADING_TITLE', '信息管理/收信');
 define('READ_STATUS', '已读');
+define('UNREAD_STATUS', '未读');
 define('MESSAGES_MARK', '标记');
 define('MESSAGES_FROM', 'From');
 define('MESSAGES_TO', 'To');
