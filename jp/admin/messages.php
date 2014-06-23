@@ -613,11 +613,15 @@ function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sor
  async : false,
  success: function(data){
   $("div#show_latest_news").html(data);
-	if($('#info_'+latest_messages_id).prev().attr('id') != '' && $('#info_'+latest_messages_id).prev().attr('id') != null){
-		$('#next_prev').append('<a id="messages_prev" onclick="'+$('#info_'+latest_messages_id).prev().children().find('a').attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt<?php echo MESSAGES_PREV ?></a>&nbsp&nbsp');
+  if($('#info_'+latest_messages_id).prev().attr('id') != '' && $('#info_'+latest_messages_id).prev().attr('id') != null){
+    var m_id = $('#info_'+latest_messages_id).prev().attr('id');
+    m_id = m_id.split('_');
+		$('#next_prev').append('<a id="messages_prev" onclick="'+$('#m_'+m_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt<?php echo MESSAGES_PREV ?></a>&nbsp&nbsp');
 	}
-	if($('#info_'+latest_messages_id).next().attr('id') != '' && $('#info_'+latest_messages_id).next().attr('id') != null){
-		$('#next_prev').append('<a id="messages_next" onclick="'+$('#info_'+latest_messages_id).next().children().find('a').attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);"><?php echo MESSAGES_NEXT ?>&gt</a>&nbsp&nbsp');
+  if($('#info_'+latest_messages_id).next().attr('id') != '' && $('#info_'+latest_messages_id).next().attr('id') != null){
+    var m_id = $('#info_'+latest_messages_id).next().attr('id');
+    m_id = m_id.split('_');
+		$('#next_prev').append('<a id="messages_next" onclick="'+$('#m_'+m_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);"><?php echo MESSAGES_NEXT ?>&gt</a>&nbsp&nbsp');
 	}
 ele = ele.parentNode;
 head_top = $('.compatible_head').height();
@@ -1564,7 +1568,7 @@ require("includes/note_js.php");
         $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
+		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }
