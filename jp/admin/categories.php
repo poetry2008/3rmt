@@ -3022,7 +3022,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     ?>
                                       <td width="20%" valign="top" style="margin:0px;padding:0px;">
 
-                                      <input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
+                                      <input type='checkbox' class="other_input" <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                                       <?php
                                       if ($_GET['pID'] || isset($pInfo->tags)) {
                                         if (isset($checked_tags[$tag['tags_id']])) {
@@ -3093,7 +3093,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                        foreach($tag_array as $tag){ 
                                        ?>
                                        <td width="20%" valign="top">
-										<input class="other_input" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
+										<input class="other_input carttags" id="tags_select_id" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?>  name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
 									<?php echo $tag['tags_name'].'
 									</span>&nbsp;</td>';
                                     if($tags_num > 15){
@@ -3126,7 +3126,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                        foreach($tag_array as $tag){ 
                                        ?>
                                        <td width="20%" valign="top">
-										<input class="other_input" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
+										<input class="other_input carttags" id="tags_select_id" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?>  name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
 									<?php echo $tag['tags_name'].'
 									</span>&nbsp;</td>';?>
                                           <?php 

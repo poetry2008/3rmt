@@ -821,11 +821,11 @@ $("input[type='checkbox'][name='tags[]']").each(function(){
 if(tags_id == 2) {
 
 if(document.getElementById("all_check").checked){
-  $("input[type='checkbox'][class='carttags']").each(function(){
+  $("input[type='checkbox'][id='tags_select_id']").each(function(){
     	$(this).attr("checked",true);
 	})
 }else {
-$("input[type='checkbox'][class='carttags']").each(function(){
+$("input[type='checkbox'][id='tags_select_id']").each(function(){
 	$(this).removeAttr("checked");
 })
 }
