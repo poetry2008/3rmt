@@ -1491,7 +1491,7 @@ require("includes/note_js.php");
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $latest_messages['sender_name']
+		'text'   => '<span alt="'.$latest_messages['sender_name'].'" title="'.$latest_messages['sender_name'].'">'.$latest_messages['sender_name'].'</span>'
         );
         //如果是以组的方法发的信，显示组的名称
         if(trim($latest_messages['groups']) != ''){
@@ -1510,7 +1510,7 @@ require("includes/note_js.php");
               $groups_name_array = tep_db_fetch_array($groups_name_query);
               tep_db_free_result($groups_name_query);
               if($p_value != $groups_value){
-                $groups_string .= $groups_name_array['name'].'>'; 
+                $groups_string .= mb_substr($groups_name_array['name'],0,1).'...>'; 
               }else{
                 $groups_string .= $groups_name_array['name']; 
               }
@@ -1525,7 +1525,7 @@ require("includes/note_js.php");
           }
           $to_messages = '<span alt="'.mb_substr($groups_string_alt,0,-1).'" title="'.mb_substr($groups_string_alt,0,-1).'">'.mb_substr($groups_string,0,-1).'</span>';
         }else{
-          $to_messages = $latest_messages['recipient_name']; 
+          $to_messages = '<span alt="'.$latest_messages['recipient_name'].'" title="'.$latest_messages['recipient_name'].'">'.$latest_messages['recipient_name'].'</span>'; 
         }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
@@ -1539,9 +1539,10 @@ require("includes/note_js.php");
         //返信内容处理
         $contents_text = $latest_messages['content'];
         $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text); 
+        $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$contents_text)).'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.$contents_text.'" title="'.$contents_text.'">'.$contents_text.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
@@ -1559,7 +1560,7 @@ require("includes/note_js.php");
 		'text'   => $messages_attach_file
 	);
 	$messages_info[] = array(
-		'params' => 'class="dataTableContent"',
+		'params' => 'class="dataTableContent_time"',
 		'text'   => $latest_messages['time']
         );
         $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
