@@ -2256,3 +2256,10 @@ google hack
     background: #ddd;
     color: #000;
 }
+.dataTableContent_time {
+  font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif;
+  font-size: 12px;
+  color: #000000;
+  word-break:break-all;
+  min-width:40px;
+} 

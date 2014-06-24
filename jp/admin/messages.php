@@ -603,9 +603,9 @@ function delete_select_messages(messages_str, c_permission){
 }
 function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
- if(latest_messages_id >0){
-	$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
- }
+ //if(latest_messages_id >0){
+	//$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
+ //}
  $.ajax({
  url: 'ajax.php?&action=new_messages',
  data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name} ,
@@ -613,11 +613,15 @@ function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sor
  async : false,
  success: function(data){
   $("div#show_latest_news").html(data);
-	if($('#info_'+latest_messages_id).prev().attr('id') != '' && $('#info_'+latest_messages_id).prev().attr('id') != null){
-		$('#next_prev').append('<a id="messages_prev" onclick="'+$('#info_'+latest_messages_id).prev().children().find('a').attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt<?php echo MESSAGES_PREV ?></a>&nbsp&nbsp');
+  if($('#info_'+latest_messages_id).prev().attr('id') != '' && $('#info_'+latest_messages_id).prev().attr('id') != null){
+    var m_id = $('#info_'+latest_messages_id).prev().attr('id');
+    m_id = m_id.split('_');
+		$('#next_prev').append('<a id="messages_prev" onclick="'+$('#m_'+m_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt<?php echo MESSAGES_PREV ?></a>&nbsp&nbsp');
 	}
-	if($('#info_'+latest_messages_id).next().attr('id') != '' && $('#info_'+latest_messages_id).next().attr('id') != null){
-		$('#next_prev').append('<a id="messages_next" onclick="'+$('#info_'+latest_messages_id).next().children().find('a').attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);"><?php echo MESSAGES_NEXT ?>&gt</a>&nbsp&nbsp');
+  if($('#info_'+latest_messages_id).next().attr('id') != '' && $('#info_'+latest_messages_id).next().attr('id') != null){
+    var m_id = $('#info_'+latest_messages_id).next().attr('id');
+    m_id = m_id.split('_');
+		$('#next_prev').append('<a id="messages_next" onclick="'+$('#m_'+m_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);"><?php echo MESSAGES_NEXT ?>&gt</a>&nbsp&nbsp');
 	}
 ele = ele.parentNode;
 head_top = $('.compatible_head').height();
@@ -1487,7 +1491,7 @@ require("includes/note_js.php");
 	);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $latest_messages['sender_name']
+		'text'   => '<span alt="'.$latest_messages['sender_name'].'" title="'.$latest_messages['sender_name'].'">'.$latest_messages['sender_name'].'</span>'
         );
         //如果是以组的方法发的信，显示组的名称
         if(trim($latest_messages['groups']) != ''){
@@ -1517,18 +1521,15 @@ require("includes/note_js.php");
               }
             }
             $groups_string .= ';';
+            $groups_string_alt .= ';';
           }
-          if(count($groups_array) > 1){
-            $to_messages = '<span alt="'.$groups_string_alt.'" title="'.$groups_string_alt.'">'.mb_substr($groups_string,0,-1).'</span>';
-          }else{
-            $to_messages = mb_substr($groups_string,0,-1); 
-          }
+          $to_messages = '<span alt="'.mb_substr($groups_string_alt,0,-1).'" title="'.mb_substr($groups_string_alt,0,-1).'">'.mb_substr($groups_string,0,-1).'</span>';
         }else{
-          $to_messages = $latest_messages['recipient_name']; 
+          $to_messages = '<span alt="'.$latest_messages['recipient_name'].'" title="'.$latest_messages['recipient_name'].'">'.$latest_messages['recipient_name'].'</span>'; 
         }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $to_messages 
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">' .$to_messages.'</p>' 
 	);
 	$messages_reply_status = $latest_messages['reply_status']==0 ? '' : '<img src="images/icons/reply_icon.png" border="0">';
 	$messages_info[] = array(
@@ -1538,9 +1539,10 @@ require("includes/note_js.php");
         //返信内容处理
         $contents_text = $latest_messages['content'];
         $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text); 
+        $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">'.str_replace('>','&gt',str_replace('<','&lt',$contents_text)).'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.$contents_text.'" title="'.$contents_text.'">'.$contents_text.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
@@ -1558,13 +1560,13 @@ require("includes/note_js.php");
 		'text'   => $messages_attach_file
 	);
 	$messages_info[] = array(
-		'params' => 'class="dataTableContent"',
+		'params' => 'class="dataTableContent_time"',
 		'text'   => $latest_messages['time']
         );
         $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
+		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }

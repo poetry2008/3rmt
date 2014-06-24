@@ -8188,9 +8188,9 @@ $banner_query = tep_db_query("
  	$heading[] = array('text' => NEW_MESSAGES);
 	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
-	if($_GET['messages_sta'] != 'sent'){
-		tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
-	}
+	//if($_GET['messages_sta'] != 'sent'){
+		//tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	//}
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => $_GET['sender_name'].MESSAGES_SENDER);
 	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
@@ -8385,7 +8385,7 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_type);
 if($_GET['latest_messages_id']>0){
  $messages_content_row_author = array();
- $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$_SESSION['user_name']);
+ $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$sql_message_content_res['sender_name']);
  $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.$sql_message_content_res['time']);
  $messages_content_table[] = array('text'=> $messages_content_row_author);
 }
@@ -8788,9 +8788,9 @@ if($_GET['latest_messages_id']>0){
  $group_content_row_name = array();
  $group_content_row_name[] = array('params'=>'width="20%"','text'=> GROUP_COMPANY_NAME );
  if($_POST['group_id'] < 0){
- 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" maxlength="20" value=""><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+ 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value=""><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
  }else{
-	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" maxlength="20" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
  }
  $group_content_table[] = array('text'=>$group_content_row_name); 
  $group_content_row_staff = array();

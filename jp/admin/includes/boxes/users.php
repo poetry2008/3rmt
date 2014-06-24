@@ -56,9 +56,9 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
         }
         if (!check_whether_is_limited(FILENAME_GROUPS)) {
           if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_GROUPS){
-            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_GROUPS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_GROUPS.'</span></div>'; 
+            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_GROUPS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_groups.png').  '</span><span>'.HEADER_TEXT_GROUPS.'</span></div>'; 
           }else{
-            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_GROUPS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_GROUPS.'</span></div>'; 
+            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_GROUPS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_groups.png').  '</span><span>'.HEADER_TEXT_GROUPS.'</span></div>'; 
           }
         }
         if (!check_whether_is_limited(FILENAME_ALERT_LOG)) {
