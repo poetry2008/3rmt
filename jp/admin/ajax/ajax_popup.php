@@ -8188,9 +8188,9 @@ $banner_query = tep_db_query("
  	$heading[] = array('text' => NEW_MESSAGES);
 	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
-	if($_GET['messages_sta'] != 'sent'){
-		tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
-	}
+	//if($_GET['messages_sta'] != 'sent'){
+		//tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	//}
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => $_GET['sender_name'].MESSAGES_SENDER);
 	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
@@ -8385,7 +8385,7 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_type);
 if($_GET['latest_messages_id']>0){
  $messages_content_row_author = array();
- $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$_SESSION['user_name']);
+ $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$sql_message_content_res['sender_name']);
  $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.$sql_message_content_res['time']);
  $messages_content_table[] = array('text'=> $messages_content_row_author);
 }

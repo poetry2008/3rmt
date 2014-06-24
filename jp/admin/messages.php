@@ -603,9 +603,9 @@ function delete_select_messages(messages_str, c_permission){
 }
 function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
- if(latest_messages_id >0){
-	$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
- }
+ //if(latest_messages_id >0){
+	//$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
+ //}
  $.ajax({
  url: 'ajax.php?&action=new_messages',
  data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name} ,
