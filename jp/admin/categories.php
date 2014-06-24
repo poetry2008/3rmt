@@ -1833,6 +1833,11 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
     break;
     case 'reset_products':
+
+    if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
+    else $site_arr="";
+    forward401Unless(editPermission($site_arr, $s_site_id));
+
       tep_isset_eof();
       if(isset($_GET['pID']) && $_GET['pID'] != '' && isset($_GET['s_site_id']) && $_GET['s_site_id'] != ''){
         $pid = $_GET['pID'];
@@ -2556,7 +2561,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
                 ?>
                   <tr>
-                  <td width="135" class="main" valign="top"><?php if ($i == 0) echo TEXT_PRODUCTS_URL . '<br><small>' . TEXT_PRODUCTS_URL_WITHOUT_HTTP . '</small>'; ?></td>
+                  <td width="155" class="main" valign="top"><?php if ($i == 0) echo TEXT_PRODUCTS_URL . '<br><small>' . TEXT_PRODUCTS_URL_WITHOUT_HTTP . '</small>'; ?></td>
                   <td class="main"><?php echo tep_draw_input_field('products_url[' . $languages[$i]['id'] . ']', (isset($products_url[$languages[$i]['id']]) ? stripslashes($products_url[$languages[$i]['id']]) : (isset($pInfo->products_id) ?tep_get_products_url(isset($pInfo->products_id)?$pInfo->products_id:'', $languages[$i]['id'], $s_site_id):'')),'class="td_input"'); ?></td>
                   </tr>
                   <?php }?>
@@ -2568,7 +2573,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <legend style="color:#FF0000 "><?php echo '共用基本情報';?></legend>
                 <table>
                 <tr>
-                <td class="main" width="135"  valign="top"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
+                <td class="main" width="155"  valign="top"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
                 <td class="main" width="650"><?php echo tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($disabled_flag ? 'class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
                 </tr>
                 <tr>
@@ -2778,7 +2783,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <table>
                 <tr>
               <?php
-                $products_shipping_time = '<select name="products_shipping_time"'. ($disabled_flag ?  'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'>';
+                $products_shipping_time = '<select class="other_input" name="products_shipping_time"'. ($disabled_flag ?  'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'>';
               $products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
               while($products_shipping_array = tep_db_fetch_array($products_shipping_query)){
 
@@ -2792,12 +2797,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               tep_db_free_result($products_shipping_query);
               $products_shipping_time .= '</select>';
               ?>
-                <td valign="top" width="135"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
+                <td valign="top" width="155"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
                 <td width="650"><?php echo $products_shipping_time; ?></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_PREORDER_TEXT;?></td>
-                <td><?php echo tep_draw_radio_field('preorder_status', '1', $pInfo->preorder_status == '1', '', ($disabled_flag?'disabled':'')).'&nbsp;On'.tep_draw_radio_field('preorder_status', '0', (isset($pInfo->preorder_status)?($pInfo->preorder_status == '0'):true), '', ($disabled_flag?'disabled':'')).'&nbsp;Off'?>
+                <td><?php echo tep_draw_radio_field('preorder_status', '1', $pInfo->preorder_status == '1', '', ($disabled_flag?'disabled':'class="other_input"')).'&nbsp;On'.tep_draw_radio_field('preorder_status', '0', (isset($pInfo->preorder_status)?($pInfo->preorder_status == '0'):true), '', ($disabled_flag?'disabled':'class="other_input"')).'&nbsp;Off'?>
                 <?php
                 if(isset($_GET['type'])){
                   echo tep_draw_hidden_field('create_type', $_GET['type']); 
@@ -2806,14 +2811,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_SHIPPING_WEIGHT; ?></td>
-                <td><?php echo '<input type="text" id="products_weight" name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td>
+                <td><?php echo '<input type="text" id="products_weight" class="other_input"  name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_DATE_AVAILABLE; ?><br>
                 <small>(YYYY-MM-DD)</small></td>
                 <td >
                 <div class="yui3-skin-sam yui3-g">
-                <?php echo  tep_draw_input_field('products_date_available','',(($disabled_flag)?'class="readonly" disabled value="'.$pInfo->products_date_available.'"':'class="cal-TextBox" value="'.$pInfo->products_date_available.'"'));?>
+                <?php echo  tep_draw_input_field('products_date_available','',(($disabled_flag)?'class="readonly" disabled value="'.$pInfo->products_date_available.'"':'class="cal-TextBox other_input" value="'.$pInfo->products_date_available.'"'));?>
                 <input id="date_orders" type="hidden" name='date_orders' size='15' value='<?php echo $pInfo->products_date_available;?>'>
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
@@ -2832,7 +2837,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT; ?></td>
                 <td> <?php echo tep_draw_pull_down_menu('relate_categories',
-                    tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($disabled_flag ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
+                    tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($disabled_flag ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : 'class="other_input"').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
                 <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
                 <span id="relate_products">
                 <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' =>TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($disabled_flag
@@ -2952,9 +2957,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   }
                                   tep_db_free_result($tags_temp_query);
                                  ?> 
-                                 <td><table width="100%" id="hidden_more_tags" ><tr>
+                                 <td><table width="100%" id="hidden_more_tags" style="margin-left: -2px;" ><tr>
                                  <?php if ($tags_num) {?>
-								 <input type="checkbox" id="sel_all" onclick="select_all(1)"><?php echo SELECT_ALL;?>
+								 <input type="checkbox" id="sel_all" class="other_input" onclick="select_all(1)" style="margin-left: 0px;"><?php echo SELECT_ALL;?>
 								  <?php }?>
                                 </tr><tr>
                                  <?php
@@ -2964,8 +2969,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 								  }
 								  foreach($tag_array as $tag) {
                                     ?>
-                                      <td width="20%" valign="top">
-                                      <input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
+                                      <td width="20%" valign="top" style="margin:0px;padding:0px;">
+                                      <input class="other_input" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                                       <?php
                                       if ($_GET['pID'] || isset($pInfo->tags)) {
                                         if (isset($checked_tags[$tag['tags_id']])) {
@@ -3004,10 +3009,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <?php
                                   if($tags_num > 15){
 
-                                    echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(0)">'.SHOW_MORE_TAGS.'</a></td></tr>';
+                                    echo '<td width="20%"><a style="text-decoration:underline; cursor:pointer;" onclick="show_tags_change(0)">'.SHOW_MORE_TAGS.'</a></td></tr>';
                                   }
                              ?></table>
-								 <table id="show_tags_all" width="100%"  style="display:none;">
+								 <table id="show_tags_all" width="100%"  style="display:none; margin-left: -2px;">
 								<tr>
                                </tr>
                                  <tr>
@@ -3015,7 +3020,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   $tags_i = 1;
 								  foreach($tag_array as $tag){
                                     ?>
-                                      <td width="20%" valign="top">
+                                      <td width="20%" valign="top" style="margin:0px;padding:0px;">
 
                                       <input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
                                       <?php
@@ -3048,7 +3053,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     <?php
                                   if($tags_num > 15){
 
-                                    echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(1)">'.HIDE_SOME_TAGS.'</a></td></tr>';
+                                    echo '<td width="20%"><a style="text-decoration:underline; cursor:pointer;" onclick="show_tags_change(1)">'.HIDE_SOME_TAGS.'</a></td></tr>';
                                   }
                              ?></table>
                                     </td>
@@ -3057,14 +3062,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></td>
 				<td>
-                    <input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(1);"><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
-                    <input type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(0);"><?php echo TEXT_PRODUCT_CARTFLAG_NO;?>
+                    <input class="other_input"  type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="1"<?php if($pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(1);"><?php echo TEXT_PRODUCT_CARTFLAG_YES;?>
+                    <input class="other_input" type="radio" <?php echo ($disabled_flag)?'disabled':'';?> name="products_cartflag" value="0"<?php if(!$pInfo->products_cartflag){?> checked<?php }?> onclick="cattags_show(0);"><?php echo TEXT_PRODUCT_CARTFLAG_NO;?>
                 </td></tr>
                 <tr id="cattags_list"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                 <td>&nbsp;</td>
 			  <?php  $flag_str = $pInfo->products_cart_buyflag;
               ?>
-				<td nowrap="nowrap"><input type="checkbox" <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='0'<?php if($pInfo->products_cart_buyflag==0 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?><input type="checkbox"  <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='1'<?php if($pInfo->products_cart_buyflag ==1 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td></tr>
+				<td nowrap="nowrap"><input class="other_input" type="checkbox" style="margin-left: 0px;" <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='0'<?php if($pInfo->products_cart_buyflag==0 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_SELL;?><input type="checkbox" class="other_input"  <?php echo ($s_site_id)?'disabled':'';?> name="products_cart_buyflag[]" value='1'<?php if($pInfo->products_cart_buyflag ==1 ||$pInfo->products_cart_buyflag==2){?> checked<?php }?>><?php echo TEXT_PRODUCT_BUYFLAG_BUY;?></td></tr>
 				<tr><td></td>
                           <td> 
 
@@ -3075,11 +3080,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                     $carttag_array[$carttag['tags_id']] = $carttag;
                                   }
                                   ?>
-									  <table id="cattags_title" border="0" cellspacing="0" cellpadding="2" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
+									  <table id="cattags_title" border="0" cellspacing="0" cellpadding="0" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
 									  <tr><td><?php
                             if($tags_num !=0){
 								?>
-							 <input type="checkbox" id="all_check" onclick="select_all(2)"><?php echo SELECT_ALL;?>
+							 <input class="other_input" type="checkbox" id="all_check" onclick="select_all(2)"><?php echo SELECT_ALL;?>
                             <?php }?>
                              </td></tr>
                                        <tbody id="show_tags_4"><tr>
@@ -3088,7 +3093,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                        foreach($tag_array as $tag){ 
                                        ?>
                                        <td width="20%" valign="top">
-										<input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
+										<input class="other_input" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
 									<?php echo $tag['tags_name'].'
 									</span>&nbsp;</td>';
                                     if($tags_num > 15){
@@ -3110,7 +3115,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                           ?>
                                           <?php
                                          if($tags_num > 15){
-                                            echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(4)">'.SHOW_MORE_TAGS.'</a></td>';
+                                            echo '<td width="20%"><a style="text-decoration:underline; cursor:pointer;" onclick="show_tags_change(4)">'.SHOW_MORE_TAGS.'</a></td>';
 										 }
                                           ?>
                                           </tr>
@@ -3121,7 +3126,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                        foreach($tag_array as $tag){ 
                                        ?>
                                        <td width="20%" valign="top">
-										<input type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
+										<input class="other_input" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?> class="carttags" name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
 									<?php echo $tag['tags_name'].'
 									</span>&nbsp;</td>';?>
                                           <?php 
@@ -3135,7 +3140,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
 
                                           <?php
                                            if($tags_num > 15){
-                                            echo '<td width="20%"><a style="text-decoration:underline;" onclick="show_tags_change(3)");">'.HIDE_SOME_TAGS.'</a></td>';
+                                            echo '<td width="20%"><a style="text-decoration:underline; cursor:pointer;" onclick="show_tags_change(3)");">'.HIDE_SOME_TAGS.'</a></td>';
 										   }
                                           ?>
                                           </tr>
@@ -3145,8 +3150,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             <td valign="top" <?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : ''; echo  $tags_num > 0 ? 'id="search_style"':'';?>><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
                             </tr>
                             <tr><td colspan="2">
-                                          <table id="cattags_contents" width="807"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
-                                          <tr><td width="135" valign="top"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
+                                          <table id="cattags_contents" width="820" style="margin-left: -2px;"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
+                                          <tr><td width="155" valign="top"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" class="other_input" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                                           </td></tr> 
                                           <?php if (false) {?>
                                             <tr>
@@ -3157,7 +3162,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                               </td></tr>
                                               <?php }?>
                                               <tr><td valign="top"><?php echo TEXT_PRODUCT_CARTIMAGE_TITLE;?></td>
-                                              <td><input type="file" <?php echo ($s_site_id)?'class="readonly" disabled':'';?> name="products_cart_image">
+                                              <td><input type="file" class="other_input" <?php echo ($s_site_id)?'class="readonly" disabled':'';?> name="products_cart_image">
                                               <br><?php echo TEXT_PRODUCT_CARTIMAGE_NOTICE;?>
                                               <table width="100%" border="0" cellspacing="0" cellpadding="0" id="products_cart_images_id">
                 <?php
@@ -3168,7 +3173,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   while($products_images_array = tep_db_fetch_array($products_images_query)){
                 ?>
                         <tr>
-                        <td class="main"><?php echo tep_draw_input_field('products_cart_previous_image_'.$p_i, $products_images_array['images_name']?$products_images_array['images_name']:'') .'&nbsp;'. tep_draw_file_field('products_cart_image_'.$p_i,false," onchange=\"change_image_text(this,'products_cart_previous_image_".$p_i."',1)\" id='cart_image_".$p_i."' style='display:none'" );
+                        <td class="main"><?php echo tep_draw_input_field('products_cart_previous_image_'.$p_i, $products_images_array['images_name']?$products_images_array['images_name']:'','class="other_input"') .'&nbsp;'. tep_draw_file_field('products_cart_image_'.$p_i,false," onchange=\"change_image_text(this,'products_cart_previous_image_".$p_i."',1)\" id='cart_image_".$p_i."' style='display:none'" );
               echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.cart_image_'.$p_i.'.click()"');
                 ?><a href="javascript:void(0);"><?php echo
                   tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_cart_image_'.$p_i.'\',\'products_cart_previous_image_'.$p_i.'\','.$products_images_array['images_id'].',1);"');?></a><input type="hidden" name="products_cart_images_id[]" value="<?php echo $products_images_array['images_id'];?>"><?php 
@@ -3191,7 +3196,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }else{
                 ?>
                 <tr>
-                   <td class="main"><?php echo tep_draw_input_field('products_cart_previous_image_1', '','class="td_input"') .'&nbsp;'. tep_draw_file_field('products_cart_image_1',false," onchange=\"change_image_text(this,'products_cart_previous_image_1',1)\" id='cart_image_1' style='display:none'" );
+                   <td class="main"><?php echo tep_draw_input_field('products_cart_previous_image_1', '','class="other_input"') .'&nbsp;'. tep_draw_file_field('products_cart_image_1',false," onchange=\"change_image_text(this,'products_cart_previous_image_1',1)\" id='cart_image_1' style='display:none'" );
               echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.cart_image_1.click()"'); ?><a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_cart_image_1\',\'products_cart_previous_image_1\',\'\',1);"');?></a><?php 
                 echo tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_cart_images(\''.TEXT_UPLOAD_FILE.'\',\''.OPTION_CLEAR.'\');"').'<input type="hidden" id="cart_images_num" name="cart_images_sum" value="1">';
                 echo '</td></tr>';
@@ -3204,13 +3209,13 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                               </td></tr>
                                               <tr>
                                               <td valign="top"><?php echo TEXT_PRODUCT_CARTORDER_TEXT;?></td>
-                                              <td><input id="products_cartorder" <?php echo ($s_site_id)?'class="readonly" disabled':'';?> name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
+                                              <td><input id="products_cartorder" class="other_input" <?php echo ($s_site_id)?'class="readonly" disabled':'';?> name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
                                               </td></tr>
                                               </table></td>
                 </tr> 
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_SORT_ORDER_TEXT; ?></td>
-                <td><?php echo tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' .  ($disabled_flag ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
+                <td><?php echo tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op" class="other_input"' .  ($disabled_flag ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
                 </tr>
                 </table>
                 </fieldset></td></tr>
@@ -3368,7 +3373,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 ?> 
 
                   <tr>
-                  <td class="main" width="135" align="left" valign="top"><?php echo TEXT_CATEGORIES_NAME_LIST;?></td>
+                  <td class="main" width="155" align="left" valign="top"><?php echo TEXT_CATEGORIES_NAME_LIST;?></td>
                   <td class="main">
                   <?php    
                   echo
@@ -3459,7 +3464,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </td>
                 </tr>
                   <tr>
-                  <td class="main" width="135" align="left" valign="top"><?php echo TEXT_EDIT_CATEGORIES_NAME;?></td>
+                  <td class="main" width="155" align="left" valign="top"><?php echo TEXT_EDIT_CATEGORIES_NAME;?></td>
                   <td class="main">
                   <?php echo
                   tep_draw_input_field('categories_name_list['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?tep_get_category_name_list($cInfo->categories_id, $c_languages[$ci]['id'], $s_site_id, true):''),'id="cname" class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; 
@@ -3548,7 +3553,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         <td class="main" colspan="2"><?php echo HEAD_SEARCH_TITLE;?></td>
                         </tr>
                         <tr>
-                        <td class="main" width="135" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAJI;?></td> 
+                        <td class="main" width="155" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAJI;?></td> 
                         <td class="main">
                         <?php  echo tep_draw_input_field('character_romaji['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?$cInfo->character_romaji:''), 'class="td_input"').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT; 
                       ?> 
@@ -3570,7 +3575,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       <td class="main" colspan="2"><?php echo HEAD_SEARCH_TITLE;?></td>
                       </tr>
                       <tr>
-                      <td class="main" width="135" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAJI;?></td> 
+                      <td class="main" width="155" align="left" valign="top"><?php echo CATEGORY_CHARACTER_ROMAJI;?></td> 
                       <td class="main" align="left" valign="top">
                       <?php 
                       echo tep_draw_input_field('character_romaji['.$c_languages[$ci]['id'].']',(($_GET['action'] == 'edit_category')?$cInfo->character_romaji:''),'class="td_input"').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT; 
@@ -3596,7 +3601,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $categories_to_mission_res = tep_db_fetch_array($categories_to_mission_query);
                   ?>
                     <tr>
-                    <td class="main" align="left" valign="top" width="135"><?php echo TEXT_CATEGORY_KEYWORD;?></td> 
+                    <td class="main" align="left" valign="top" width="155"><?php echo TEXT_CATEGORY_KEYWORD;?></td> 
                     <td class="main">
                     <?php 
                     if(empty($s_site_id) || isset($_GET['new_c_type'])){
@@ -5008,7 +5013,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 if (empty($s_site_id)) {
                   $products_set_price_text .= '<input style="text-align:right" pos="'.$products_count.'_1" class="udlr" type="text" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'. "price_input_".$products_count.'" onblur="recover_event_focus();" onkeyup="remove_event_focus();clearNoNum(this);" onchange="event_onchange('.$products_count.')"><input type="hidden" name="hidden_products_id[]" value="'.$products['products_id'].'"><span id="price_error_'.  $products_count.'"></span>';
                 } else {
-                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'_'.$s_site_id.'"  style="margin-right: 3px;">'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
+                  $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_1" class="udlr" type="hidden" size="6" value="'.(int)abs($products['products_price']).'" name="price[]" id="'."price_input_".$products_count.'" onblur="event_onblur('.$products_count.')" onkeyup="clearNoNum(this);" onchange="event_onchange('.$products_count.')"><span id="show_price_'.$products['products_id'].'_'.$s_site_id.'" >'.(int)abs($products['products_price']).'</span><input name="hide_price[]" type="hidden" value="'.$products['products_id'].'"><span id="price_error_'.$products_count.'" style="display:none"></span>';
                 }
                 $products_set_price_text .= '<input style="text-align:right;" pos="'.$products_count.'_2" class="_udlr" type="hidden" size="6" value="'.$products['products_price_offset'].'" name="offset[]" id="'."offset_input_".$products_count.'">';
                 $products_table_content_row[] = array('params'=>$products_set_price_params, 'text'=>$products_set_price_text);
