@@ -8788,9 +8788,9 @@ if($_GET['latest_messages_id']>0){
  $group_content_row_name = array();
  $group_content_row_name[] = array('params'=>'width="20%"','text'=> GROUP_COMPANY_NAME );
  if($_POST['group_id'] < 0){
- 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" maxlength="20" value=""><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+ 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value=""><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
  }else{
-	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" maxlength="20" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
  }
  $group_content_table[] = array('text'=>$group_content_row_name); 
  $group_content_row_staff = array();

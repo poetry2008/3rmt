@@ -1510,7 +1510,7 @@ require("includes/note_js.php");
               $groups_name_array = tep_db_fetch_array($groups_name_query);
               tep_db_free_result($groups_name_query);
               if($p_value != $groups_value){
-                $groups_string .= mb_substr($groups_name_array['name'],0,1).'...>'; 
+                $groups_string .= $groups_name_array['name'].'>'; 
               }else{
                 $groups_string .= $groups_name_array['name']; 
               }
@@ -1521,18 +1521,15 @@ require("includes/note_js.php");
               }
             }
             $groups_string .= ';';
+            $groups_string_alt .= ';';
           }
-          if(count($groups_array) > 1){
-            $to_messages = '<span alt="'.$groups_string_alt.'" title="'.$groups_string_alt.'">'.mb_substr($groups_string,0,-1).'</span>';
-          }else{
-            $to_messages = mb_substr($groups_string,0,-1); 
-          }
+          $to_messages = '<span alt="'.mb_substr($groups_string_alt,0,-1).'" title="'.mb_substr($groups_string_alt,0,-1).'">'.mb_substr($groups_string,0,-1).'</span>';
         }else{
           $to_messages = $latest_messages['recipient_name']; 
         }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => $to_messages 
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">' .$to_messages.'</p>' 
 	);
 	$messages_reply_status = $latest_messages['reply_status']==0 ? '' : '<img src="images/icons/reply_icon.png" border="0">';
 	$messages_info[] = array(
