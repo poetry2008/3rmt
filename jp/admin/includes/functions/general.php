@@ -6067,7 +6067,7 @@ function tep_display_google_results($from_url='', $c_type=false){
       $edit_p=true;//true 说明有管理权限 可以在点击新闻时进行修改 
     }else if($ocertify->npermission == 15){
       //判断 管理员 可以修改全部(all)
-      if($all_change){
+      if($all_change==false){
         $edit_p=false;
       }else{
         $edit_p=true;
