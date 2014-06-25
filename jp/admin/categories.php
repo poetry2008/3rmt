@@ -1884,6 +1884,12 @@ if (isset($_GET['action']) && $_GET['action']) {
     }
       break;
    case 'reset_categories':
+
+    $s_site_id = isset($_POST['s_site_id'])?$_POST['s_site_id']:0;
+    if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
+    else $site_arr="";
+    forward401Unless(editPermission($site_arr, $s_site_id));
+
       tep_isset_eof();
       if(isset($_GET['cID']) && $_GET['cID'] != '' && isset($_GET['s_site_id']) && $_GET['s_site_id'] != ''){
         $cid = $_GET['cID'];
@@ -5299,7 +5305,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php
                 if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //限制显示
                   if (empty($_GET['cPath'])) {
-                    echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action', 'info', 'x', 'y', 'site_id')).'&action=edit_top_manual').'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
+                    echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action', 'info', 'x', 'y', 'site_id')).'&action=edit_top_manual'.(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '').(isset($_GET['site_id']) ? '&site_id='.$_GET['site_id'] : '')).'">'.tep_html_element_button(MANUAL_LINK_TEXT).'</a>&nbsp;'; 
                   }
                   if(isset($_GET['site_id'])&&$_GET['site_id']!=0&&$_GET['site_id']!=''){
                     $pram_str = '&type=sub_site&site_id='.$_GET['site_id'];
