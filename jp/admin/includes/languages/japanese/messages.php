@@ -47,4 +47,7 @@ define('MESSAGE_SELECT_SENT','送信済み');
 define('MESSAGE_SELECT_DRAFT','下書き');
 define('MESSAGE_SELECT_TRASH','ゴミ箱');
 define('MESSAGE_SELECT_GROUPS','グループ選択');
+define('MESSAGE_DRAFTS_SAVE','下書き保存');
+define('MESSAGE_TRASH_SAVE','ゴミ箱に移動');
+define('MESSAGE_RECOVERY','元に戻す');
 ?>

@@ -8201,9 +8201,9 @@ $banner_query = tep_db_query("
  $messages_content_row_from = array();
  $messages_content_row_from[] = array('params'=>'width="20%"','text'=>'From');
  if($_GET['latest_messages_id']<0){
-   $messages_content_row_from[] = array('text'=>$_SESSION['user_name']);
+   $messages_content_row_from[] = array('text'=>$_SESSION['user_name'].'<input type="hidden" name="messages_flag" id="messages_flag_id" value="0">');
  }else{
-   $messages_content_row_from[] = array('text'=>$_GET['sender_name']);
+   $messages_content_row_from[] = array('text'=>$_GET['sender_name'].'<input type="hidden" name="messages_flag" id="messages_flag_id" value="0">');
  }
  $messages_content_table[] = array('text'=> $messages_content_row_from);
  $messages_content_row_to = array();
@@ -8220,7 +8220,7 @@ $banner_query = tep_db_query("
  //组选择
  $all_user_to_td = '';
  $all_groups_to_td = '';
-   if($_GET['messages_sta'] == 'sent' && $_GET['latest_messages_id'] >= 0){
+   if(($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0){
 	if($_GET['recipient_name'] == 'ALL'){
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 			$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
@@ -8389,14 +8389,32 @@ if($_GET['latest_messages_id']>0){
  $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.$sql_message_content_res['time']);
  $messages_content_table[] = array('text'=> $messages_content_row_author);
 }
- $messages_content_row_submit = array();
- $messages_content_row_submit[] = array('text'=> '');
  if($_GET['latest_messages_id']>0){
  	$is_back = '1';
  }else{
 	$is_back = '0';
  }
- $messages_content_row_submit[] = array('text'=> '<input type="submit" onclick="messages_check('.$is_back.')" value="'.MESSAGES_SUBMIT.'">');
+ if($_GET['latest_messages_id']>0){
+   $messages_status = $_GET['messages_sta'];
+   switch($messages_status){
+
+   case 'sent': 
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
+     break;
+   case 'drafts':
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'">';
+     break;
+   case 'trash':
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',3)" value="'.MESSAGE_RECOVERY.'">';
+     break;
+   default:
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
+     break;
+   }
+ }else{
+   $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
+ }
+ $messages_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit" onclick="messages_check('.$is_back.',0)" value="'.MESSAGES_SUBMIT.'">'.$messages_buttons);
  $messages_content_table[] = array('text'=> $messages_content_row_submit);
  $notice_box->get_heading($heading);
  $notice_box->get_form($form_str);

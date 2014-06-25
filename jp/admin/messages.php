@@ -193,6 +193,8 @@
 		}
 		$recipient_name = implode(';',$recipient_name);
         }
+      //判断是发信，还是存草稿箱
+      if($_POST['messages_flag'] == 0){
         if($_POST['messages_to'] == '2'){
           $groups_id_list = explode(',',$_POST['groups_id_list']);
           $groups_id_list = array_unique($groups_id_list);
@@ -218,6 +220,25 @@
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
           }
+          //保存到已发送邮箱中
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => '0',
+                               	'content' => $_POST['contents'],
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '1',
+                                );
+          tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
@@ -239,7 +260,50 @@
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
           } 
-        }
+          //保存到已发送邮箱中
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => '0',
+                               	'content' => $_POST['contents'],
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+				'recipient_name' => $recipient_name,
+				'trash_status' => '1',
+                                );
+          tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
+        } 
+      }else if($_POST['messages_flag'] == 1){
+        $groups_id_list = explode(',',$_POST['groups_id_list']);
+        $groups_id_list = array_unique($groups_id_list);
+        $groups_id_list = array_filter($groups_id_list);
+        $groups_id_str = implode(',',$groups_id_list);
+        //保存到草稿邮箱中
+        $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => '0',
+                               	'content' => $_POST['contents'],
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '2',
+                                );
+        tep_db_perform('messages', $sql_data_array);
+        unset($sql_data_array); 
+      }
 	if(isset($_GET['status']) && $_GET['status'] != ''){
 		$status_flag = true;
     	}else{
@@ -260,7 +324,36 @@
 	}
      }
   }  
-  if($_GET['action']== 'back_messages'){
+ if($_GET['action']== 'back_messages'){
+   if($_POST['messages_flag'] == 2 || $_POST['messages_flag'] == 3){
+
+     if($_POST['messages_flag'] == 2){
+       tep_db_query("update messages set original_state = trash_status where id='".$_GET['id']."'");
+       tep_db_query("update messages set trash_status = '3' where id='".$_GET['id']."'"); 
+     }else if($_POST['messages_flag'] == 3){
+        
+       tep_db_query("update messages set trash_status = original_state where id='".$_GET['id']."'"); 
+     }
+
+     if(isset($_GET['status']) && $_GET['status'] != ''){
+	$status_flag = true;
+     }else{
+	$status_flag = false;
+     }
+     if($_GET['messages_sort'] == ''){
+	if($_GET['page'] == ''){
+		tep_redirect(tep_href_link('messages.php'.($status_flag?'?status='.$_GET['status']:'')));
+	}else{
+		tep_redirect(tep_href_link('messages.php?page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
+	}
+     }else{
+	if($_GET['page'] == ''){
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].($status_flag?'&status='.$_GET['status']:'')));
+	}else{
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
+	}
+     } 
+   }
 	//die(var_dump($_POST['selected_staff']));
     if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      //获取组的用户，原理是优先于级别最低组的用户
@@ -334,6 +427,8 @@
 	}else{
 		$reply_status = '1';
         }
+      //判断是发信、还是存草稿箱
+      if($_POST['messages_flag'] == 0){
         if($_POST['messages_to'] == '2'){
           $groups_id_list = explode(',',$_POST['groups_id_list']);
           $groups_id_list = array_unique($groups_id_list);
@@ -360,6 +455,25 @@
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
           }
+          //保存到已发送邮箱中
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => $reply_status,
+                               	'content' => $_POST['back_contents'],
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '1',
+                               );
+       	  tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
@@ -381,7 +495,50 @@
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
           } 
-        }
+          //保存到已发送邮箱中
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => $reply_status,
+                               	'content' => $_POST['back_contents'],
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+				'recipient_name' => $recipient_name,
+				'trash_status' => '1',
+                               );
+       	  tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
+        } 
+      }else if($_POST['messages_flag'] == 1){
+        //保存到草稿箱
+        $groups_id_list = explode(',',$_POST['groups_id_list']);
+        $groups_id_list = array_unique($groups_id_list);
+        $groups_id_list = array_filter($groups_id_list);
+        $groups_id_str = implode(',',$groups_id_list); 
+        $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => $reply_status,
+                               	'content' => $_POST['back_contents'],
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '2',
+                               );
+       	tep_db_perform('messages', $sql_data_array);
+        unset($sql_data_array);
+      }
 	if($reply_status == '1'){
 		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
 	}
@@ -463,7 +620,7 @@ $(document).ready(function() {
 			window.location.href="messages.php?status=sent";
 			break;
 		case '2':
-			window.location.href="messages.php?status=draft";
+			window.location.href="messages.php?status=drafts";
 			break;
 		case '3':
 			window.location.href="messages.php?status=trash";
@@ -608,7 +765,7 @@ function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sor
  //}
  $.ajax({
  url: 'ajax.php?&action=new_messages',
- data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name} ,
+   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -1100,7 +1257,7 @@ function delete_select_user(){
 		}
 	});
 }
-function messages_check(is_back){
+function messages_check(is_back,flag){
 	var error_status_select = 0;
 	var error_status_contents = 0;
 	var error_status_back_contents = 1;
@@ -1146,8 +1303,15 @@ function messages_check(is_back){
 		$('#messages_back_must_write').css('display','');
 	}
 	if(error_status_select == 1 && error_status_contents == 1 && error_status_back_contents == 1){
-		console.log('ok');
-		document.forms.new_latest_messages.submit();
+                console.log('ok');
+                if(flag == 1){
+                  $("#messages_flag_id").val('1'); 
+                }else if(flag == 2){
+                  $("#messages_flag_id").val('2'); 
+                }else if(flag == 3){
+                  $("#messages_flag_id").val('3'); 
+                }
+                document.forms.new_latest_messages.submit();
 	}
 }
 function file_cancel(obj){
@@ -1245,7 +1409,7 @@ require("includes/note_js.php");
 			<?php
 				if($_GET['status'] == 'sent'){
 					echo HEADING_TITLE_SENT;
-				}else if($_GET['status'] == 'draft'){
+				}else if($_GET['status'] == 'drafts'){
 					echo HEADING_TITLE_DRAFT;
 				}else if($_GET['status'] == 'trash'){
 					echo HEADING_TITLE_TRASH;
@@ -1255,9 +1419,9 @@ require("includes/note_js.php");
 			?>
 		<div style="float:right">
 			<select id="messages_select_status">
-  				<option <?php if($_GET['status'] != 'sent' && $_GET['status'] != 'draft' && $_GET['status'] != 'trash'){echo 'selected';} ?>  value ="0"><?php echo MESSAGE_SELECT_RECEIVING; ?></option>
+  				<option <?php if($_GET['status'] != 'sent' && $_GET['status'] != 'drafts' && $_GET['status'] != 'trash'){echo 'selected';} ?>  value ="0"><?php echo MESSAGE_SELECT_RECEIVING; ?></option>
   				<option <?php if($_GET['status'] == 'sent'){echo 'selected';}?>  value ="1"><?php echo MESSAGE_SELECT_SENT; ?></option>
-  				<option <?php if($_GET['status'] == 'draft'){echo 'selected';}?>  value ="2"><?php echo MESSAGE_SELECT_DRAFT; ?></option>
+  				<option <?php if($_GET['status'] == 'drafts'){echo 'selected';}?>  value ="2"><?php echo MESSAGE_SELECT_DRAFT; ?></option>
   				<option <?php if($_GET['status'] == 'trash'){echo 'selected';}?>  value ="3"><?php echo MESSAGE_SELECT_TRASH; ?></option>
 			</select>
 		</div>
@@ -1428,14 +1592,28 @@ require("includes/note_js.php");
         	select * 
         	from messages where sender_id = "'.$ocertify->auth_user.'" 
 		and messages_status = "0" 
-		and trash_status in ("0","1") 
-		and delete_status in ("0","1") group by time order by '.$messages_sort_sql.' '.$messages_sort_type;
+		and trash_status="1" 
+                and delete_status in ("0","1") order by '.$messages_sort_sql.' '.$messages_sort_type;
+    }else if($_GET['status'] == 'drafts'){
+      $latest_messages_query_raw = '
+        	select * 
+        	from messages where sender_id = "'.$ocertify->auth_user.'" 
+		and messages_status = "0" 
+		and trash_status="2" 
+                and delete_status in ("0","1") order by '.$messages_sort_sql.' '.$messages_sort_type;
+    }else if($_GET['status'] == 'trash'){
+       $latest_messages_query_raw = '
+        	select * 
+        	from messages where sender_id = "'.$ocertify->auth_user.'" 
+		and messages_status = "0" 
+		and trash_status="3" 
+                and delete_status in ("0","1") order by '.$messages_sort_sql.' '.$messages_sort_type;
     }else{
     	$latest_messages_query_raw = '
         	select * 
         	from messages where recipient_id = "'.$ocertify->auth_user.'" 
 		and messages_status = "0" 
-		and trash_status in ("0","2") 
+		and trash_status="0" 
 		and delete_status in ("0","2") order by '.$messages_sort_sql.' '.$messages_sort_type;
     }
     //获取mark 图标信息
@@ -1448,6 +1626,11 @@ require("includes/note_js.php");
     tep_db_free_result($icon_query);
     $latest_messages_split = new splitPageResults($messages_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw, $latest_messages_query_numrows);
     $latest_messages_query = tep_db_query($latest_messages_query_raw);
+    if(tep_db_num_rows($latest_messages_query) == 0){
+          $messages_data_row[] = array('align' => 'left','params' => 'colspan="7" nowrap="nowrap"', 'text' => '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>');
+                    
+          $messages_table_row[] = array('params' => '', 'text' => $messages_data_row);  
+    }
     while ($latest_messages = tep_db_fetch_array($latest_messages_query)) {
 	$rows++;
 	$even = 'dataTableSecondRow';
