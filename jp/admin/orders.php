@@ -757,9 +757,8 @@ switch ($_GET['action']) {
           $comments = str_replace('${CONTENT}', $email_content, $comments);
           $comments = str_replace('${ORDER_PRODUCTS}', $products_ordered_mail, $comments);
           //自定义费用
-		  $tep_num = tep_db_num_rows($totals_query)-4;
           if($totals_email_str != ''){
-              $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
+            $comments = str_replace('${CUSTOMIZED_FEE}'."\r\n",str_replace('▼','',$totals_email_str), $comments);
           }else{
             $comments = str_replace("\r\n".'${CUSTOMIZED_FEE}','', $comments); 
             $comments = str_replace('${CUSTOMIZED_FEE}','', $comments);
@@ -5589,15 +5588,15 @@ if($c_parent_array['parent_id'] == 0){
 <?php
   $read_flag_str_array = explode('|||',$orders['read_flag']);
   if($orders['read_flag'] == ''){
-    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
+    echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$ocertify->auth_user.'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>'; 
   }else{
 
-    if(in_array($user_info['name'],$read_flag_str_array)){
+    if(in_array($ocertify->auth_user,$read_flag_str_array)){
 
-      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$ocertify->auth_user.'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_CHECKED.' " alt="'.TEXT_FLAG_CHECKED.'" src="images/icons/green_right.gif"></a>';
     }else{
 
-      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$user_info['name'].'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
+      echo '<a onclick="change_read(\''.$orders['orders_id'].'\',\''.$ocertify->auth_user.'\',\''.TEXT_FLAG_CHECKED.'\',\''.TEXT_FLAG_UNCHECK.'\');" href="javascript:void(0);"><img id="oid_'.$orders['orders_id'].'" border="0" title=" '.TEXT_FLAG_UNCHECK.' " alt="'.TEXT_FLAG_UNCHECK.'" src="images/icons/gray_right.gif"></a>';
     }
   }
 ?>

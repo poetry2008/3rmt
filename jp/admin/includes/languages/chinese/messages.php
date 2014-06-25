@@ -2,6 +2,7 @@
 
 define('HEADING_TITLE', '信息管理/收信');
 define('READ_STATUS', '已读');
+define('UNREAD_STATUS', '未读');
 define('MESSAGES_MARK', '标记');
 define('MESSAGES_FROM', 'From');
 define('MESSAGES_TO', 'To');
@@ -27,6 +28,7 @@ define('MESSAGES_EDIT_DATE', '创建日');
 define('MESSAGES_SUBMIT', '发送');
 define('TEXT_REVIEWS_SELECT_ACTION', '请选择');
 define('TEXT_REVIEWS_DELETE_ACTION','删除勾选项目');
+define('TEXT_NEWS_MUST_SELECT', '请至少选择一项。');
 define('NEW_MESSAGES','创建新信件');
 define('DELETE_STAFF','删除');
 define('MESSAGES_TO_MUST_SELECTED','请添加收信人');
@@ -41,4 +43,5 @@ define('MESSAGE_SELECT_RECEIVING','收信');
 define('MESSAGE_SELECT_SENT','已发送');
 define('MESSAGE_SELECT_DRAFT','草稿');
 define('MESSAGE_SELECT_TRASH','垃圾箱');
+define('MESSAGE_SELECT_GROUPS','组选择');
 ?>

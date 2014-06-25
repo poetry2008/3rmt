@@ -404,6 +404,13 @@ function rsync_num(obj){
     new_num1 = Math.floor(num2/radices);
     $('#relate_qt').val(new_num1);
   }
+  if(obj.id == 'relate_radices'){
+    num2 = $("#relate_qtr").val();
+    radices = obj.value;
+    radices = radices == '' ? 1 : radices;
+    new_num1 = Math.floor(num2/radices);
+    $('#relate_qt').val(new_num1);
+  }
 }
 
 
@@ -748,10 +755,12 @@ function cattags_show(num){
     $("#cattags_list").hide();
     $("#cattags_title").hide();
     $("#cattags_contents").hide();
+	$("#search_style").hide();
   }else{
     $("#cattags_list").show();
     $("#cattags_title").show();
     $("#cattags_contents").show();
+	$("#search_style").show();
   }
 }
 
@@ -796,6 +805,33 @@ function all_select_tags(tags_list_id)
     }
   }
 }
+
+function select_all(tags_id) {
+	if(tags_id == 1){
+if(document.getElementById("sel_all").checked){
+  $("input[type='checkbox'][name='tags[]']").each(function(){
+    	$(this).attr("checked",true);
+	})
+}else {
+$("input[type='checkbox'][name='tags[]']").each(function(){
+	$(this).removeAttr("checked");
+})
+}
+}
+if(tags_id == 2) {
+
+if(document.getElementById("all_check").checked){
+  $("input[type='checkbox'][id='tags_select_id']").each(function(){
+    	$(this).attr("checked",true);
+	})
+}else {
+$("input[type='checkbox'][id='tags_select_id']").each(function(){
+	$(this).removeAttr("checked");
+})
+}
+
+}
+ }
 
 //when commodity associated Dom tag, ajax data
 function edit_products_tags_check(tags_list_id)
@@ -1197,10 +1233,22 @@ function get_cart_products(){
       start  = $(this).attr('name').indexOf('[') + 1;
       end    = $(this).attr('name').indexOf(']');
       if(this.checked)
-      tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start);
+      tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start)+$(this).val();
       });
+  //The results confirm products_cart_buyflag radio change to checkbox
   if (tagstr != '')
-    window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
+	  var inputs= document.getElementsByName("products_cart_buyflag[]");
+      var i=0;
+      var str="";
+  for(i=0;i<inputs.length;i++){
+	  if(inputs[i].checked){
+		str += inputs[i].value + ",";
+	  }
+  }
+  if (inputs.length > 0) {
+     str = str.substr(0, str.length - 1);
+  }
+    window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+str+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
 //open and close categories tree 
 function display(){
@@ -1823,7 +1871,7 @@ function check_edit_product_profit() {
   var flag_type = $('select[name=price_char]').val(); 
   flag_type = flag_type == 1 ? 0 : 1;
   var relate_value = $('#relate_info').val(); 
-  var num_value = $('#p_rate').val(); 
+  var num_value = $('#relate_radices').val(); 
   if (relate_value != '0') {
     $.ajax({
       type: 'POST',
@@ -1958,4 +2006,60 @@ function load_categoreis_tree(cpath){
       categories_tree_show = true;
     }
   });
+}
+//delete products
+function check_delete_products_confirm(str,action){
+
+  if(confirm(str)){
+ 
+    document.forms.new_product.action = action;
+    document.forms.new_product.submit();
+  }
+}
+//reset products
+function check_reset_products_confirm(str,action){
+
+  if(confirm(str)){
+    document.forms.new_product.action = action;
+    document.forms.new_product.submit();
+  }
+}
+//delete categories 
+function check_delete_categories_confirm(str,action){
+
+  if(confirm(str)){
+ 
+    document.forms.editcategory.action = action;
+    document.forms.editcategory.submit();
+  }
+}
+//reset categories 
+function check_reset_categories_confirm(str,action){
+
+  if(confirm(str)){
+    document.forms.editcategory.action = action;
+    document.forms.editcategory.submit();
+  }
+}
+
+function show_tags_change(num){
+
+  if(num == 1){
+    $("#show_tags_all").hide();
+    $("#hidden_more_tags").show();
+  }
+
+  if(num == 0){
+    $("#show_tags_all").show();
+    $("#hidden_more_tags").hide();
+  }
+  if(num == 3){
+    $("#show_tags_4").show();
+    $("#show_tags_3").hide();
+  }
+  if(num == 4){
+    $("#show_tags_3").show();
+    $("#show_tags_4").hide();
+  }
+
 }

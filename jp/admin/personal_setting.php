@@ -3,7 +3,7 @@
  * 个人设定
  */
 require('includes/application_top.php');
-
+require('includes/languages/japanese/campaign.php');
 if($_GET['action'] == 'update'){
   //更新设定
   $orders_site = tep_db_prepare_input($_POST['orders_site']);
@@ -285,6 +285,181 @@ require("includes/note_js.php");
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
+		<div id="tep_site_filter">
+			<span class="site_filter_selected"><a href="javascript:void(0);">all</a></span>
+			<span><a href="javascript:void(0);">jp</a></span>
+			<span><a href="javascript:void(0);">gm</a></span>
+			<span><a href="javascript:void(0);">wm</a></span>
+			<span><a href="javascript:void(0);">id</a></span>
+			<span><a href="javascript:void(0);">rk</a></span>
+			<span><a href="javascript:void(0);">rg</a></span>
+			<span><a href="javascript:void(0);">rr</a></span>
+			<span><a href="javascript:void(0);">14</a></span>
+			<span><a href="javascript:void(0);">gp</a></span>
+			<span><a href="javascript:void(0);">ge</a></span>
+		</div>
+		<table width=50"%" border="0" cellspacing="0" cellpadding="2">
+			<tbody>
+				<tr class="dataTableHeadingRow">
+					<td class="dataTableHeadingContent" width="40%"><?php echo TABLE_HEADING_CAMPAIGN_TITLE;?></td>
+					<td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CAMPAIGN_VALUE;?></td>
+					<td class="dataTableHeadingContent" align="right" width="10%"><?php echo TABLE_HEADING_CAMPAIGN_ACTION;?></td>
+				</tr>
+				<tr class="dataTableSecondRow">
+					<td class="dataTableContent"><?php echo TEXT_PERSONAL_SETTING_LANGUAGE_OPTION;?></td>
+					<td class="dataTableContent">
+						<?php
+              						if(PERSONAL_SETTING_LANGUAGE == ''){
+                 						$language_flag = 'jp';
+               						}else{
+                 						$personal_language_array = unserialize(PERSONAL_SETTING_LANGUAGE);
+                 						if(array_key_exists($ocertify->auth_user,$personal_language_array)){
+                   							$language_flag = $personal_language_array[$ocertify->auth_user];
+                 						}else{
+                   							$language_flag = 'jp';
+                 						}
+               						}
+							echo $language_flag;
+              					?>
+					</td>
+					<td class="dataTableContent" align="right">
+						<a  href="javascript:void(0);"><img border="0" src="images/icons/info_blink.gif"></a>
+					</td>
+                                </tr>
+				<tr class="dataTableRow">
+					<td class="dataTableContent"><?php echo TEXT_ORDERS_SETTING;?></td>
+                                        <td class="dataTableContent">
+	<?php
+               $orders_site_array = array();
+               foreach(tep_get_sites() as $site_value){
+                  $orders_site_array[$site_value['id']] = $site_value['romaji'];
+               }
+               if(!isset($_POST['orders_site']) && !isset($_GET['action'])){
+                 $orders_site_default = implode('|',array_keys($orders_site_array));
+                 if(PERSONAL_SETTING_ORDERS_SITE != ''){
+                   $orders_site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+                   if(array_key_exists($user_info['name'],$orders_site_setting_array)){
+
+                     $orders_site_str = $orders_site_setting_array[$user_info['name']];
+                   }else{
+                     $orders_site_str = $orders_site_default;
+                   }
+                 }else{
+                   $orders_site_str = $orders_site_default;
+                 }
+               }else{
+                 $orders_site_str = implode('|',$_POST['orders_site']);
+               }
+               $site_array = explode('|',$orders_site_str);
+		$checked = '';
+		$num_checked = 0;
+		$num_checked_sta = 0;
+		foreach($orders_site_array as $key=>$value){
+			$checked = in_array($key,$site_array) ? ' checked="checked"' : '';
+			if($checked == ' checked="checked"'){
+				$num_checked_sta++;
+			}
+		}
+                 foreach($orders_site_array as $key=>$value){
+                   $checked = in_array($key,$site_array) ? ' checked="checked"' : '';
+                   if($checked == ' checked="checked"'){
+			$num_checked++;
+		   	if($num_checked < $num_checked_sta){	
+				echo $value.',&nbsp;';
+		   	}else{
+				echo $value;
+		   	}
+		   }
+                   $checked = '';
+                 }
+                 if(isset($orders_site_error) && $orders_site_error != ''){
+                   echo '&nbsp;<font color="#FF0000">'.$orders_site_error.'</font>';
+                 }
+        ?>
+					</td>
+                                        <td class="dataTableContent" align="right">
+                                                <a  href="javascript:void(0);"><img border="0" src="images/icons/info_blink.gif"></a>
+                                        </td>
+                                </tr>
+				<tr class="dataTableSecondRow">
+					<td class="dataTableContent"><?php echo TEXT_PREORDERS_SETTING;?></td>
+                                        <td class="dataTableContent">
+	<?php
+               if(!isset($_POST['preorders_site']) && !isset($_GET['action'])){
+                 $preorders_site_default = $orders_site_default;
+                 if(PERSONAL_SETTING_PREORDERS_SITE != ''){
+                   $preorders_site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+                   if(array_key_exists($user_info['name'],$preorders_site_setting_array)){
+
+                     $preorders_site_str = $preorders_site_setting_array[$user_info['name']];
+                   }else{
+                     $preorders_site_str = $preorders_site_default;
+                   }
+                 }else{
+                   $preorders_site_str = $preorders_site_default;
+                 }
+               }else{
+                 $preorders_site_str = implode('|',$_POST['preorders_site']);
+               }
+                 $preorders_site_array = explode('|',$preorders_site_str);
+        	
+		 $checked = '';
+		 $num_preorders_checked = 0;
+		 $num_preorders_checked_sta = 0;
+		 foreach($orders_site_array as $key=>$value){
+			$checked = in_array($key,$preorders_site_array) ? ' checked="checked"' : '';
+		 	if($checked == ' checked="checked"'){
+				$num_preorders_checked_sta++;
+			}
+		 }		
+                 foreach($orders_site_array as $key=>$value){
+                   $checked = in_array($key,$preorders_site_array) ? ' checked="checked"' : '';
+		   if($checked == ' checked="checked"'){
+			$num_preorders_checked++;
+		   	if($num_preorders_checked < $num_preorders_checked_sta){
+                        	echo $value.',&nbsp;';
+                   	}else{
+                        	echo $value;
+                   	}		   
+                   	$checked = '';
+		   }
+                 }
+                 if(isset($preorders_site_error) && $preorders_site_error != ''){
+                   echo '&nbsp;<font color="#FF0000">'.$preorders_site_error.'</font>';
+                 }
+	?>
+					</td>
+                                        <td class="dataTableContent" align="right">
+                                                <a  href="javascript:void(0);"><img border="0" src="images/icons/info_blink.gif"></a>
+                                        </td>
+                                </tr>
+				<tr class="dataTableRow">
+                                        <td class="dataTableContent"><?php echo TEXT_PERSONAL_SETTING_SOUND;?></td>
+                                        <td class="dataTableContent">
+	<?php
+                  if (PERSONAL_SETTING_NOTIFICATION_SOUND == '') {
+                    $sound_flag = '1';
+                  } else {
+                    $personal_sound_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
+                    if (array_key_exists($ocertify->auth_user, $personal_sound_array)) {
+                      $sound_flag = $personal_sound_array[$ocertify->auth_user];
+                    } else {
+                      $sound_flag = '1';
+                    }
+                  }
+		  if($sound_flag == '1'){
+		  	echo TEXT_PERSONAL_SETTING_ON_TEXT;	
+		  }else{
+			echo TEXT_PERSONAL_SETTING_OFF_TEXT;	
+		  }
+         ?>	
+					</td>
+                                        <td class="dataTableContent" align="right">
+                                                <a  href="javascript:void(0);"><img border="0" src="images/icons/info_blink.gif"></a>
+                                        </td>
+                                </tr>
+			</tbody>
+		</table>
             <form name="personal_setting" method="post" action="<?php echo FILENAME_PERSONAL_SETTING;?>?action=update">
             <table border="0" width="100%" cellspacing="0" cellpadding="5">
               <tr><td>

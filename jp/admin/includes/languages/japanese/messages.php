@@ -1,6 +1,7 @@
 <?php	
 
 define('HEADING_TITLE', 'メッセージ管理 / 受信');
+define('UNREAD_STATUS','未読');
 define('READ_STATUS','既読');
 define('MESSAGES_MARK', 'マーク');
 define('MESSAGES_FROM', 'From');
@@ -45,4 +46,5 @@ define('MESSAGE_SELECT_RECEIVING','受信');
 define('MESSAGE_SELECT_SENT','送信済み');
 define('MESSAGE_SELECT_DRAFT','下書き');
 define('MESSAGE_SELECT_TRASH','ゴミ箱');
+define('MESSAGE_SELECT_GROUPS','グループ選択');
 ?>

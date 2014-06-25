@@ -232,7 +232,7 @@ if ($_GET['action'] == 'show_category_info') {
  -----------------------------------------------------*/
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_CATEGORIES);
   include(DIR_FS_ADMIN.'classes/notice_box.php');
-  $site_id = isset($_GET['site_id'])?$_GET['site_id']:0; 
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
   
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   
@@ -258,7 +258,7 @@ if ($_GET['action'] == 'show_category_info') {
       );
   
   $delete_category_info[]['text'] = array(
-        array('align' => 'left', 'text' => $category_info_res['categories_name'].(empty($site_id)?tep_draw_hidden_field('categories_id', $_GET['current_cid']):'')), 
+        array('align' => 'left', 'text' => $category_info_res['categories_name'].(empty($site_id) ? tep_draw_hidden_field('categories_id', $_GET['current_cid']) : '')), 
       );
   
   if (empty($site_id)) {
@@ -279,16 +279,17 @@ if ($_GET['action'] == 'show_category_info') {
   }
 
   if (empty($site_id)) {
-    $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES, 'action=delete_category_confirm&cPath='.$_GET['cPath'].(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:''));
+    $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES, 'action=delete_category_confirm&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'].(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''));
   } else {
     if (isset($_GET['rdirect'])) {
       $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES,
-          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.'&rdirect=all'.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
-            ? '&s_site_id='.$_GET['s_site_id'] : ''));
+          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'].'&rdirect=all'.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''));
     } else {
       $form_str = tep_draw_form('delete_category', FILENAME_CATEGORIES,
-          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$site_id.(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
-            ? '&s_site_id='.$_GET['s_site_id'] : ''));
+          'action=delete_category_description_confirm&cID='.$_GET['current_cid'].'&cPath='.$_GET['cPath'].'&site_id='.$_GET['site_id'].(isset($_GET['page'])?'&page='.$_GET['page']:'').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
+            ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''));
     }
   }
   
@@ -900,7 +901,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
         array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_UNIVALENT_TEXT.'</b>'),
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>'),
         ),'mouse' => true 
       );      
 
@@ -988,7 +989,7 @@ if ($_GET['action'] == 'show_category_info') {
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
         array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
-        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_UNIVALENT_TEXT.'</b>')
+        array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>')
         ),'mouse' => true
       );      
     if (tep_db_num_rows($relate_order_history_query)) {
@@ -1200,7 +1201,7 @@ if ($_GET['action'] == 'show_category_info') {
         'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] .
         '&pID=' . $_GET['pID'] . '&cPath=' .
         $cPath.'&rdirect=all'.$d_page.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['s_site_id'])
-          ? '&s_site_id='.$_GET['s_site_id'] : ''), 'post');
+          ? '&s_site_id='.$_GET['s_site_id'] : '').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''), 'post');
   } else {
     $form_str = tep_draw_form('delete_product', FILENAME_CATEGORIES,
         'action=delete_product_description_confirm&site_id=' .  $_GET['site_id'] .
@@ -2934,7 +2935,7 @@ width:20%;"'))
     if(!empty($checked_temp_array)){
       $checked_str = in_array($tags_array['tags_id'],$checked_temp_array) ? ' checked="checked"' : '';
     }
-    $tags_list_str .= '<td width="20%"><input type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.$disabled.'>'.$tags_array['tags_name'].'</td>';
+    $tags_list_str .= '<td width="20%"><input class="carttags" type="checkbox" name="tags_id[]" value="'.$tags_array['tags_id'].'"'.$checked_str.$disabled.'>'.$tags_array['tags_name'].'</td>';
     if($tags_i % 5 == 0){
 
       $tags_list_str .= '</tr><tr>';
@@ -4931,7 +4932,7 @@ if($_GET['cID'] != -1){
     if($_GET['cID'] == -1){
     $customers_guest_row[]['text'] = array(
          array('params' => 'nowrap="nowrap" width="30%"','text' => '<input type="hidden" id="hidden_cid" value="'.$_GET['cID'].'"><input type="hidden" id="hidden_page" value="'.$_GET['page'].'">'.TEXT_GUEST_CHK),
-         array('text' => '<input type="radio" '.($disabled?$disabled:$is_active_single).' '.$guest_no_member.' name="guest_radio" class="td_input" value="1" onclick="check_guest(this.value)">'.TEXT_NO_MEMBER.'<input '.$guest_member.'type="radio" class="td_input" name="guest_radio" value="0" '.($disabled?$disabled:$is_active_single).' onclick="check_guest(this.value)">'.TEXT_MEMBER)
+         array('text' => '<input type="radio" '.($disabled?$disabled:$is_active_single).' '.$guest_no_member.' name="guest_radio"  value="1" onclick="check_guest(this.value)">'.TEXT_NO_MEMBER.'<input '.$guest_member.'type="radio"  name="guest_radio" value="0" '.($disabled?$disabled:$is_active_single).' onclick="check_guest(this.value)">'.TEXT_MEMBER)
        );
     }else{
       if(isset($cInfo->customers_guest_chk) && $cInfo->customers_guest_chk == 0){
@@ -8187,9 +8188,9 @@ $banner_query = tep_db_query("
  	$heading[] = array('text' => NEW_MESSAGES);
 	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=new_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }else{
-	if($_GET['messages_sta'] != 'sent'){
-		tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
-	}
+	//if($_GET['messages_sta'] != 'sent'){
+		//tep_db_query('update messages set read_status = "1" where id = '.$_GET['latest_messages_id']);
+	//}
  	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => $_GET['sender_name'].MESSAGES_SENDER);
 	$form_str = tep_draw_form('new_latest_messages', 'messages.php','action=back_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&id='.$_GET['latest_messages_id'].'&page='.$_GET['page'].'&status='.$_GET['messages_sta'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
@@ -8199,19 +8200,26 @@ $banner_query = tep_db_query("
  $messages_content_table = array();
  $messages_content_row_from = array();
  $messages_content_row_from[] = array('params'=>'width="20%"','text'=>'From');
- $messages_content_row_from[] = array('text'=>$_SESSION['user_name']);
+ if($_GET['latest_messages_id']<0){
+   $messages_content_row_from[] = array('text'=>$_SESSION['user_name']);
+ }else{
+   $messages_content_row_from[] = array('text'=>$_GET['sender_name']);
+ }
  $messages_content_table[] = array('text'=> $messages_content_row_from);
  $messages_content_row_to = array();
  $messages_content_row_to [] = array('text'=>'To');
  $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
+ $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()">'.MESSAGE_SELECT_GROUPS;
  $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" checked name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
- $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_appoint);
+ $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_groups.$messages_to_appoint);
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
  $messages_content_row_choose [] =  array('text'=> '');
- $sql_for_all_users = 'select userid, name from users';
+ $sql_for_all_users = 'select userid, name from users where status=1 order by name asc';
  $sql_for_all_users_query = tep_db_query($sql_for_all_users);
+ //组选择
  $all_user_to_td = '';
+ $all_groups_to_td = '';
    if($_GET['messages_sta'] == 'sent' && $_GET['latest_messages_id'] >= 0){
 	if($_GET['recipient_name'] == 'ALL'){
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
@@ -8242,8 +8250,21 @@ $banner_query = tep_db_query("
 			continue;
 		}
 		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
-	}
+        } 
    } 
+   $recipient_groups = '';
+   //获取组列表
+   $groups_list = '';
+   tep_groups_list(0,$groups_list); 
+   $all_groups_to_td .= $groups_list;
+   $all_groups_array = array();
+   $groups_id_query = tep_db_query("select id from ".TABLE_GROUPS);
+   while($groups_id_array = tep_db_fetch_array($groups_id_query)){
+
+     $all_groups_array[] = $groups_id_array['id']; 
+   }
+   tep_db_free_result($groups_id_query);
+   $all_groups_str = implode(',',$all_groups_array);
  $messages_choose_table = '
 <div width="100%" id="select_user"><table width="100%">
 	<tr>
@@ -8260,8 +8281,28 @@ $banner_query = tep_db_query("
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="delete_to" style="overflow-y:scroll;height:105px;">'.$all_user_to_td.'</div></td>
 	</tr>
 </table></div>';
- $messages_content_row_choose [] = array('text'=> $messages_choose_table);
- $messages_content_table[] = array('text'=> $messages_content_row_choose);
+ //组选择
+ $messages_content_row_group = array();
+ $messages_content_row_group[] =  array('text'=> '');
+ $messages_group_table = '
+<div width="100%" id="select_groups" style="display:none;"><table width="100%">
+	<tr>
+		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
+		<td align="center" width="10%"></td>
+		<td align="center" width="45%">'.MESSAGES_STAFF.'</td>
+	</tr>
+	<tr>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="send_groups_list" name="groups_id_list" value=""><div id="send_to_groups" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient_groups.'</div></td>
+		<td align="center" style="vertical-align:middle;">
+			<button onclick="add_select_groups()">&lt&lt'.ADD_STAFF.'</button><br>
+			<button onclick="delete_select_groups()">'.DELETE_STAFF.'&gt&gt</button>
+		</td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="delete_groups_list" value="'.$all_groups_str.'"><div width="100%" id="delete_to_groups" style="overflow-y:scroll;height:105px;">'.$all_groups_to_td.'</div></td>
+	</tr>
+</table></div>';
+ $messages_content_row_choose [] = array('text'=> $messages_choose_table.$messages_group_table);
+ $messages_content_table[] = array('text'=> $messages_content_row_choose); 
+
  $messages_content_row_must_selected = array();
  $messages_content_row_must_selected[] = array('text'=> '');
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
@@ -8308,9 +8349,26 @@ $banner_query = tep_db_query("
  }
  $messages_content_table[] = array('text'=> $messages_content_row_addfile);
  if($_GET['latest_messages_id']>0){
+        $messages_email_array = array();
+        $messages_users_query = tep_db_query("select userid,name,email from ".TABLE_USERS." where userid='".$sql_message_content_res['sender_id']."' or userid='".$sql_message_content_res['recipient_id']."'");
+        while($messages_users_array = tep_db_fetch_array($messages_users_query)){
+
+          $messages_email_array[$messages_users_array['userid']] = array('name'=>$messages_users_array['name'],
+          
+                                                                         'email'=>$messages_users_array['email'] 
+                                                                         );
+        }
+        tep_db_free_result($messages_users_query);
+        $messages_contents_back = "\r\n\r\n\r\n".'---------- Forwarded message ----------'."\r\n";
+        $messages_contents_back .= 'From: '.$messages_email_array[$sql_message_content_res['sender_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['sender_id']]['email'].'>'."\r\n";
+        $messages_date_array = explode(' ',tep_date_long($sql_message_content_res['time']));
+        $messages_contents_back .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($sql_message_content_res['time'])).' '.$messages_date_array[1]."\r\n";
+        $messages_contents_back .= 'To: '.$messages_email_array[$sql_message_content_res['recipient_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['recipient_id']]['email'].'>'."\r\n";
+        $messages_contents_replace = str_replace("\r\n","\r\n>",$sql_message_content_res['content']);
+        $messages_contents_back .= '>'.$messages_contents_replace;
 	$messages_content_row_back = array();
 	$messages_content_row_back[] = array('text'=> MESSAGES_BACK_CONTENT);
-	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents"></textarea>');
+	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents">'.$messages_contents_back.'</textarea>');
 	$messages_content_table[] = array('text'=> $messages_content_row_back);
 	$messages_content_row_back_must_write = array();
  	$messages_content_row_back_must_write[] = array('text'=> '');
@@ -8327,7 +8385,7 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_type);
 if($_GET['latest_messages_id']>0){
  $messages_content_row_author = array();
- $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$_SESSION['user_name']);
+ $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$sql_message_content_res['sender_name']);
  $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.$sql_message_content_res['time']);
  $messages_content_table[] = array('text'=> $messages_content_row_author);
 }
@@ -8712,4 +8770,78 @@ if($_GET['latest_messages_id']>0){
   $notice_box->get_contents($customer_info_row, $buttons);
   echo $notice_box->show_notice();
  
+}else if($_GET['action'] == 'show_group_info'){
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_GROUPS);
+ include(DIR_FS_ADMIN.'classes/notice_box.php');
+ $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+ if($_POST['group_id'] < 0){
+ 	$heading[] = array('text' => GROUP_CREATE);
+ 	$form_str = tep_draw_form('new_latest_group', FILENAME_GROUPS,'action=new_group&id='.$_POST['group_id'].'&parent_id='.$_POST['parent_group_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+ }else{
+	$heading[] = array('text' => $_POST['group_name']);
+ 	$form_str = tep_draw_form('new_latest_group', FILENAME_GROUPS,'action=update_group&id='.$_POST['group_id'].'&parent_id='.$_POST['parent_group_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+ }
+ $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ $group_content_table = array();
+ $group_content_row_name = array();
+ $group_content_row_name[] = array('params'=>'width="20%"','text'=> GROUP_COMPANY_NAME );
+ if($_POST['group_id'] < 0){
+ 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value=""><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+ }else{
+	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+ }
+ $group_content_table[] = array('text'=>$group_content_row_name); 
+ $group_content_row_staff = array();
+ $group_content_row_staff[] = array('params'=>'width="20%"','text'=> GROUP_STAFF );
+ if($_POST['group_id'] < 0){
+ 	$users_list = tep_db_query("select * from ".TABLE_USERS); 
+   	$all_users = '<ul class="table_img_list" style="width:100%">'; 
+   	while ($users_list_res = tep_db_fetch_array($users_list)) {
+     		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
+   	}
+ 	$all_users .= '</ul>';
+ }else{
+	$group_all_user = tep_db_fetch_array(tep_db_query('select all_users_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
+	$group_all_user = explode('|||',$group_all_user['all_users_id']);
+	$users_list = tep_db_query('select * from '.TABLE_USERS);
+	$all_users = '<ul class="table_img_list" style="width:100%">'; 
+   	while ($users_list_res = tep_db_fetch_array($users_list)) {
+     		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"'.(in_array($users_list_res['userid'],$group_all_user) ? ' checked="checked"' : '').'><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
+   	}
+ 	$all_users .= '</ul>';
+ }
+ $group_content_row_staff[] = array('text' => $all_users);
+ $group_content_table[] = array('text'=>$group_content_row_staff);
+ if($_POST['group_id'] > 0){
+	$group_content_row_subgroup = array();
+	$group_content_row_subgroup[] = array('params'=>'width="20%"','text'=> GROUP_SUB);
+	$sub_group_list = array();
+	$sql_group_id = $_POST['group_id'];
+	function sub_group_method($sql_group_id,&$sub_group_list){
+		$sub_group_sql = tep_db_query('select * from '.TABLE_GROUPS.' where parent_id = "'.$sql_group_id.'"');
+		while($sub_group_res = tep_db_fetch_array($sub_group_sql)){
+			$sub_group_list[] = $sub_group_res;
+			sub_group_method($sub_group_res['id'],&$sub_group_list);
+		}
+	}
+        sub_group_method($sql_group_id,$sub_group_list);
+        /*
+	$all_sub_group = '<ul class="table_img_list" style="width:100%">';
+	foreach($sub_group_list as $value){
+		$all_sub_group .= '<li><input type="checkbox" name="sub_group_list[]" value="'.$value['id'].'" style="padding-left:0;margin-left:0;">'.$value['name'].'</li>';
+	}
+        $all_sub_group .= '</ul>';
+         */
+	$group_content_row_subgroup[] = array('text'=> count($sub_group_list));
+	$group_content_table[] = array('text'=>$group_content_row_subgroup);
+ }
+ $group_content_row_opt = array();
+ $group_content_row_opt[] = array('params'=>'align="center" colspan="2"','text'=>'<input class="element_button" type="submit" onclick="check_group();" value="'.GROUP_SAVE.'">'.($_POST['group_id'] < 0 && $ocertify->npermission >= 15 ? '' : '&nbsp;&nbsp;<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="delete_group('.$_POST['group_id'].','.$_POST['parent_group_id'].');">'));
+ $group_content_table[] = array('text'=>$group_content_row_opt);
+ $notice_box->get_heading($heading);
+ $notice_box->get_form($form_str);
+ $notice_box->get_contents($group_content_table);
+ echo $notice_box->show_notice();
 }
