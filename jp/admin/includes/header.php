@@ -11,11 +11,19 @@ if (isset($messageStack) && $messageStack->size > 0) {
 <script type="text/javascript">
 
 <?php
-$play_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
-if($play_array[$ocertify->auth_user] == '1'){
+if(PERSONAL_SETTING_NOTIFICATION_SOUND == ''){
   echo 'var play_flag = true;'."\n";
 }else{
-  echo 'var play_flag = false;'."\n";
+  $play_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
+  if(isset($play_array[$ocertify->auth_user])){
+    if($play_array[$ocertify->auth_user] == '1'){
+      echo 'var play_flag = true;'."\n";
+    }else{
+      echo 'var play_flag = false;'."\n";
+    }
+  }else{
+    echo 'var play_flag = true;'."\n"; 
+  }
 }
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>

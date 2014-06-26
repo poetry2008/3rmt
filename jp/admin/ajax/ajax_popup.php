@@ -8210,7 +8210,6 @@ $banner_query = tep_db_query("
  $messages_content_row_to [] = array('text'=>'To');
  //groups 选中
  $groups_selected = ($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0 && trim($_GET['groups']) != '' ? ' checked="checked"' : '';
- $groups_selected = '';
  $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
  $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()"'.$groups_selected.'>'.MESSAGE_SELECT_GROUPS;
  $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1"'.($groups_selected == '' ? 'checked="checked"' : '').' name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
@@ -8255,11 +8254,21 @@ $banner_query = tep_db_query("
 		$all_user_to_td .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_staff">'.$message_all_users['name'].'</div>';
         } 
    } 
-   $recipient_groups = '';
-   //获取组列表
-   $groups_list = '';
-   tep_groups_list(0,$groups_list); 
-   $all_groups_to_td .= $groups_list;
+   if(trim($_GET['groups']) != ''){
+     $groups_list_array = explode(',',$_GET['groups']);
+     foreach($groups_list_array as $g_value){
+       $group_id_list_array[] = $g_value;
+       group_id_list($g_value,$group_id_list_array);
+     }
+     $groups_list = '';
+     tep_groups_list(0,$groups_list,$level_num,$group_id_list_array);
+     $recipient_groups .= $groups_list;
+     $send_groups_list_str = $_GET['groups'];
+   }else{
+     $recipient_groups = ''; 
+     $send_groups_list_str = '';
+   }
+   //获取组列表 
    $all_groups_array = array();
    $groups_id_query = tep_db_query("select id from ".TABLE_GROUPS);
    while($groups_id_array = tep_db_fetch_array($groups_id_query)){
@@ -8267,7 +8276,18 @@ $banner_query = tep_db_query("
      $all_groups_array[] = $groups_id_array['id']; 
    }
    tep_db_free_result($groups_id_query);
-   $all_groups_str = implode(',',$all_groups_array);
+   $groups_list = '';
+   if(trim($_GET['groups']) != ''){
+     $groups_diff = array_diff($all_groups_array,$group_id_list_array);
+     if(!empty($groups_diff)){
+       tep_groups_list(0,$groups_list,$level_num,$groups_diff); 
+     }
+     $all_groups_str = implode(',',$groups_diff);
+   }else{
+     tep_groups_list(0,$groups_list); 
+     $all_groups_str = implode(',',$all_groups_array);
+   }
+   $all_groups_to_td .= $groups_list;
  $messages_choose_table = '
 <div width="100%" id="select_user"'.($groups_selected != '' ? ' style="display:none;"' : '').'><table width="100%">
 	<tr>
@@ -8288,14 +8308,14 @@ $banner_query = tep_db_query("
  $messages_content_row_group = array();
  $messages_content_row_group[] =  array('text'=> '');
  $messages_group_table = '
-<div width="100%" id="select_groups" style="display:none;"><table width="100%">
+<div width="100%" id="select_groups"'.($groups_selected == '' ? ' style="display:none;"' : '').'><table width="100%">
 	<tr>
 		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
 		<td align="center" width="45%">'.MESSAGES_STAFF.'</td>
 	</tr>
 	<tr>
-		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="send_groups_list" name="groups_id_list" value=""><div id="send_to_groups" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient_groups.'</div></td>
+		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="send_groups_list" name="groups_id_list" value="'.$send_groups_list_str.'"><div id="send_to_groups" width="100%" style="overflow-y:scroll;height:105px;">'.$recipient_groups.'</div></td>
 		<td align="center" style="vertical-align:middle;">
 			<button onclick="add_select_groups()">&lt&lt'.ADD_STAFF.'</button><br>
 			<button onclick="delete_select_groups()">'.DELETE_STAFF.'&gt&gt</button>
@@ -8410,7 +8430,7 @@ if($_GET['latest_messages_id']>0){
      $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
      break;
    case 'drafts':
-     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'">';
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',4)" value="'.IMAGE_SAVE.'">';
      break;
    case 'trash':
      $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',3)" value="'.MESSAGE_RECOVERY.'">';
