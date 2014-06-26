@@ -2473,14 +2473,14 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr>
                 <td colspan="2"><fieldset>
                 <legend style="color:#FF0000 "><?php echo 'サイト別商品の基本情報';?></legend>
-                <table>
+                <table width="100%">
                 <tr>
                 <?php
                 for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
                   ?>
                     <tr>
-                    <td class="main" valign="top"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
-                    <td class="main" width="650"><?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] .']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]):(isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id,$languages[$i]['id'],$site_id, true):'')),'id="pname" class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
+                    <td class="main" valign="top" width="10%"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
+                    <td class="main" width="60%"><?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] .']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]):(isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id,$languages[$i]['id'],$site_id, true):'')),'id="pname" class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
                     </tr>
                     <?php
                 }
@@ -2578,10 +2578,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr  <?php if($disabled_flag ==1){?>style="display:none;"<?php }?>>
                 <td colspan="2"><fieldset>
                 <legend style="color:#FF0000 "><?php echo '共用基本情報';?></legend>
-                <table>
+                <table width="100%">
                 <tr>
-                <td class="main" width="155"  valign="top"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
-                <td class="main" width="650"><?php echo tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($disabled_flag ? 'class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
+                <td class="main" width="10%"  valign="top"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
+                <td class="main" width="60%"><?php echo tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($disabled_flag ? 'class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
                 </tr>
                 <tr>
                 <td  valign="top"><?php echo TEXT_PROJECT_DESCRIPTION_TOP;?></td>
@@ -2787,7 +2787,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <tr <?php if($disabled_flag ==1){?>style="display:none;"<?php }?>>
                 <td colspan="2"><fieldset>
                 <legend style="color:#FF0000 "><?php echo 'その他の共用情報';?></legend>
-                <table>
+                <table width="100%">
                 <tr>
               <?php
                 $products_shipping_time = '<select class="other_input" name="products_shipping_time"'. ($disabled_flag ?  'class="readonly" onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'>';
@@ -2804,8 +2804,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               tep_db_free_result($products_shipping_query);
               $products_shipping_time .= '</select>';
               ?>
-                <td valign="top" width="155"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
-                <td width="650"><?php echo $products_shipping_time; ?></td>
+                <td valign="top" width="10%"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
+                <td width="60%"><?php echo $products_shipping_time; ?></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_PREORDER_TEXT;?></td>
@@ -3161,8 +3161,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             <td valign="top" <?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : ''; echo  $tags_num > 0 ? 'id="search_style"':'';?>><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
                             </tr>
                             <tr><td colspan="2">
-                                          <table id="cattags_contents" width="820" style="margin-left: -2px;"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
-                                          <tr><td width="155" valign="top"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" class="other_input" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
+                                          <table id="cattags_contents" width="140%" style="margin-left: -2px;"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
+                                          <tr><td width="10%" valign="top"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" class="other_input" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                                           </td></tr> 
                                           <?php if (false) {?>
                                             <tr>
@@ -3184,7 +3184,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   while($products_images_array = tep_db_fetch_array($products_images_query)){
                 ?>
                         <tr>
-                        <td class="main"><?php echo tep_draw_input_field('products_cart_previous_image_'.$p_i, $products_images_array['images_name']?$products_images_array['images_name']:'','class="other_input"') .'&nbsp;'. tep_draw_file_field('products_cart_image_'.$p_i,false," onchange=\"change_image_text(this,'products_cart_previous_image_".$p_i."',1)\" id='cart_image_".$p_i."' style='display:none'" );
+                        <td class="main" width="10%"><?php echo tep_draw_input_field('products_cart_previous_image_'.$p_i, $products_images_array['images_name']?$products_images_array['images_name']:'','class="other_input"') .'&nbsp;'. tep_draw_file_field('products_cart_image_'.$p_i,false," onchange=\"change_image_text(this,'products_cart_previous_image_".$p_i."',1)\" id='cart_image_".$p_i."' style='display:none'" );
               echo tep_html_element_button(TEXT_UPLOAD_FILE,'onclick="document.new_product.cart_image_'.$p_i.'.click()"');
                 ?><a href="javascript:void(0);"><?php echo
                   tep_html_element_button(OPTION_CLEAR, 'onclick="clear_image(\'products_cart_image_'.$p_i.'\',\'products_cart_previous_image_'.$p_i.'\','.$products_images_array['images_id'].',1);"');?></a><input type="hidden" name="products_cart_images_id[]" value="<?php echo $products_images_array['images_id'];?>"><?php 
@@ -3226,7 +3226,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 </tr> 
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_SORT_ORDER_TEXT; ?></td>
-                <td><?php echo tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op" class="other_input"' .  ($disabled_flag ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
+                <td style="padding-left:0px;"><?php echo tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op" class="other_input"' .  ($disabled_flag ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
                 </tr>
                 </table>
                 </fieldset></td></tr>
