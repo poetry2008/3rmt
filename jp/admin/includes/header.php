@@ -11,6 +11,12 @@ if (isset($messageStack) && $messageStack->size > 0) {
 <script type="text/javascript">
 
 <?php
+$play_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
+if($play_array[$ocertify->auth_user] == '1'){
+  echo 'var play_flag = true;'."\n";
+}else{
+  echo 'var play_flag = false;'."\n";
+}
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 var cfg_head_last_customer_action = '<?php echo PREORDER_LAST_CUSTOMER_ACTION;?>';
@@ -106,9 +112,11 @@ function check_header_messages(){
                                                 $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td width="142px">&nbsp<?php echo HAVE_MESSAGES;?></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
 					}
 					messages_num++;
-				});
-				var notice_audio = document.getElementById('head_notice_audio');
-				notice_audio.play();
+                                });
+                                if(play_flag == true){
+				  var notice_audio = document.getElementById('head_notice_audio');
+                                  notice_audio.play();
+                                }
 			}
 			if(eval(data).length > 1){
 				$('#messages_head').children().remove();

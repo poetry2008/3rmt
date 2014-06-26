@@ -8201,16 +8201,19 @@ $banner_query = tep_db_query("
  $messages_content_row_from = array();
  $messages_content_row_from[] = array('params'=>'width="20%"','text'=>'From');
  if($_GET['latest_messages_id']<0){
-   $messages_content_row_from[] = array('text'=>$_SESSION['user_name']);
+   $messages_content_row_from[] = array('text'=>$_SESSION['user_name'].'<input type="hidden" name="messages_flag" id="messages_flag_id" value="0">');
  }else{
-   $messages_content_row_from[] = array('text'=>$_GET['sender_name']);
+   $messages_content_row_from[] = array('text'=>$_GET['sender_name'].'<input type="hidden" name="messages_flag" id="messages_flag_id" value="0">');
  }
  $messages_content_table[] = array('text'=> $messages_content_row_from);
  $messages_content_row_to = array();
  $messages_content_row_to [] = array('text'=>'To');
+ //groups 选中
+ $groups_selected = ($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0 && trim($_GET['groups']) != '' ? ' checked="checked"' : '';
+ $groups_selected = '';
  $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
- $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()">'.MESSAGE_SELECT_GROUPS;
- $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" checked name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
+ $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()"'.$groups_selected.'>'.MESSAGE_SELECT_GROUPS;
+ $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1"'.($groups_selected == '' ? 'checked="checked"' : '').' name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
  $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_groups.$messages_to_appoint);
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
@@ -8220,7 +8223,7 @@ $banner_query = tep_db_query("
  //组选择
  $all_user_to_td = '';
  $all_groups_to_td = '';
-   if($_GET['messages_sta'] == 'sent' && $_GET['latest_messages_id'] >= 0){
+   if(($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0){
 	if($_GET['recipient_name'] == 'ALL'){
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 			$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
@@ -8266,7 +8269,7 @@ $banner_query = tep_db_query("
    tep_db_free_result($groups_id_query);
    $all_groups_str = implode(',',$all_groups_array);
  $messages_choose_table = '
-<div width="100%" id="select_user"><table width="100%">
+<div width="100%" id="select_user"'.($groups_selected != '' ? ' style="display:none;"' : '').'><table width="100%">
 	<tr>
 		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -8366,6 +8369,11 @@ $banner_query = tep_db_query("
         $messages_contents_back .= 'To: '.$messages_email_array[$sql_message_content_res['recipient_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['recipient_id']]['email'].'>'."\r\n";
         $messages_contents_replace = str_replace("\r\n","\r\n>",$sql_message_content_res['content']);
         $messages_contents_back .= '>'.$messages_contents_replace;
+
+        if($_GET['messages_sta'] == 'drafts'){
+
+          $messages_contents_back = $sql_message_content_res['content'];
+        }
 	$messages_content_row_back = array();
 	$messages_content_row_back[] = array('text'=> MESSAGES_BACK_CONTENT);
 	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents">'.$messages_contents_back.'</textarea>');
@@ -8389,14 +8397,32 @@ if($_GET['latest_messages_id']>0){
  $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.$sql_message_content_res['time']);
  $messages_content_table[] = array('text'=> $messages_content_row_author);
 }
- $messages_content_row_submit = array();
- $messages_content_row_submit[] = array('text'=> '');
  if($_GET['latest_messages_id']>0){
  	$is_back = '1';
  }else{
 	$is_back = '0';
  }
- $messages_content_row_submit[] = array('text'=> '<input type="submit" onclick="messages_check('.$is_back.')" value="'.MESSAGES_SUBMIT.'">');
+ if($_GET['latest_messages_id']>0){
+   $messages_status = $_GET['messages_sta'];
+   switch($messages_status){
+
+   case 'sent': 
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
+     break;
+   case 'drafts':
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'">';
+     break;
+   case 'trash':
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',3)" value="'.MESSAGE_RECOVERY.'">';
+     break;
+   default:
+     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
+     break;
+   }
+ }else{
+   $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
+ }
+ $messages_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit" onclick="messages_check('.$is_back.',0)" value="'.MESSAGES_SUBMIT.'">'.$messages_buttons);
  $messages_content_table[] = array('text'=> $messages_content_row_submit);
  $notice_box->get_heading($heading);
  $notice_box->get_form($form_str);
