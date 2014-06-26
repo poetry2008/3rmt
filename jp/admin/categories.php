@@ -3025,7 +3025,11 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                  <tr>
                                  <?php
                                   $tags_i = 1;
-								  foreach($tag_array as $tag){
+                                  $tag_arr=array();
+                                  while ($tag_array_list = tep_db_fetch_array($t_query)) {
+                                    $tag_arr[] = $tag; 
+								  }
+								  foreach($tag_arr as $tag){
                                     ?>
                                       <td width="20%" valign="top" style="margin:0px;padding:0px;">
 
@@ -3064,7 +3068,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   }
                              ?></table>
                                     </td>
-									 <td valign="top"><?php echo '<br/>';?><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ?></font></td>
+									 <td valign="top" <?php echo ($tags_num > 0) ? '':'style="display:none;"'?>><?php echo '<br/>';?><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ?></font></td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCT_CARTFLAG_TITLE;?></td>
