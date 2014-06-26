@@ -47,4 +47,5 @@ define('MESSAGE_SELECT_GROUPS','组选择');
 define('MESSAGE_DRAFTS_SAVE','保存到草稿箱');
 define('MESSAGE_TRASH_SAVE','移动到垃圾箱');
 define('MESSAGE_RECOVERY','还原');
+define('EMAIL_RADIO','Email');
 ?>

@@ -50,4 +50,5 @@ define('MESSAGE_SELECT_GROUPS','グループ選択');
 define('MESSAGE_DRAFTS_SAVE','下書き保存');
 define('MESSAGE_TRASH_SAVE','ゴミ箱に移動');
 define('MESSAGE_RECOVERY','元に戻す');
+define('EMAIL_RADIO','Email');
 ?>
