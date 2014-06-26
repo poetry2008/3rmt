@@ -128,6 +128,9 @@
 //	die(var_dump($_GET['status']));
    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      //获取组的用户，原理是优先于级别最低组的用户
+     if($_POST['messages_type'] == 1){
+       $from_user = tep_get_user_info($ocertify->auth_user);
+     }
      $users_id_array = array();
      foreach($_POST['select_groups'] as $groups_value){
      
@@ -164,8 +167,16 @@
 
 	$messages_file_name = '';
 	$messages_file_status = '0';
+        $f_src = '';
+        $f_name = '';
+        $file_arr = array();
 	if ($_FILES['messages_file']['error'] > 0){
 	}else{
+          if($_POST['messages_type'] == 1){
+            $f_src = $_FILES["messages_file"]["tmp_name"];
+            $f_name = $_FILES['messages_file']['name'];
+            $file_arr[] = array('src'=>$f_src,'name'=>$f_name);
+          }else{
 		$messages_file_name = base64_encode($_FILES['messages_file']['name'].'|||'.$ocertify->auth_user.'|||'.time());
 		$messages_file_status = '1';
 		if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"])){
@@ -173,6 +184,7 @@
       			$file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
       		}
+          }
 	}
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
@@ -201,6 +213,10 @@
           $groups_id_list = array_filter($groups_id_list);
           $groups_id_str = implode(',',$groups_id_list);
 	  foreach($users_list_array as $key => $value){
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($key);
+              tep_mail_by_file($send_user['name'],$send_user['email'],'test_messages_subject',tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+            }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
@@ -218,9 +234,11 @@
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
+            }
 	  //	var_dump($sql_data_array);
           }
           //保存到已发送邮箱中
+          if($_POST['messages_type'] != 1){
           $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -239,9 +257,14 @@
                                 );
           tep_db_perform('messages', $sql_data_array);
           unset($sql_data_array);
+          }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
-		$user_name_id = explode('|||',$value);
+	    $user_name_id = explode('|||',$value);
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($user_name_id[0]);
+              tep_mail_by_file($send_user['name'],$send_user['email'],'test_messages_subject',tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+            }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
@@ -258,8 +281,10 @@
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
+            }
 	  //	var_dump($sql_data_array);
           } 
+          if($_POST['messages_type'] != 1){
           //保存到已发送邮箱中
           $sql_data_array = array(
 			     	'read_status' => '0',
@@ -278,6 +303,7 @@
                                 );
           tep_db_perform('messages', $sql_data_array);
           unset($sql_data_array);
+          }
         } 
       }else if($_POST['messages_flag'] == 1){
         $groups_id_list = explode(',',$_POST['groups_id_list']);
@@ -304,6 +330,11 @@
         tep_db_perform('messages', $sql_data_array);
         unset($sql_data_array); 
       }
+        if($_POST['messages_type'] == 1){
+          foreach($file_arr as $file_info){
+            unlink($file_info['src']);
+          }
+        }
 	if(isset($_GET['status']) && $_GET['status'] != ''){
 		$status_flag = true;
     	}else{
