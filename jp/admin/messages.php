@@ -207,7 +207,7 @@
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $key,
 					'reply_status' => '0',
-                                      	'content' => $_POST['contents'],
+                                      	'content' => tep_db_prepare_input($_POST['contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
@@ -227,7 +227,7 @@
 				'sender_id' => $ocertify->auth_user,
 				'recipient_id' => $ocertify->auth_user,
 				'reply_status' => '0',
-                               	'content' => $_POST['contents'],
+                               	'content' => tep_db_prepare_input($_POST['contents']),
 				'attach_file' => $messages_file_status,
 				'file_name' => $messages_file_name,
 				'opt' => '0',
@@ -248,7 +248,7 @@
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $user_name_id[0],
 					'reply_status' => '0',
-                                      	'content' => $_POST['contents'],
+                                      	'content' => tep_db_prepare_input($_POST['contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
@@ -267,7 +267,7 @@
 				'sender_id' => $ocertify->auth_user,
 				'recipient_id' => $ocertify->auth_user,
 				'reply_status' => '0',
-                               	'content' => $_POST['contents'],
+                               	'content' => tep_db_prepare_input($_POST['contents']),
 				'attach_file' => $messages_file_status,
 				'file_name' => $messages_file_name,
 				'opt' => '0',
@@ -291,7 +291,7 @@
 				'sender_id' => $ocertify->auth_user,
 				'recipient_id' => $ocertify->auth_user,
 				'reply_status' => '0',
-                               	'content' => $_POST['contents'],
+                               	'content' => tep_db_prepare_input($_POST['contents']),
 				'attach_file' => $messages_file_status,
 				'file_name' => $messages_file_name,
 				'opt' => '0',
@@ -442,7 +442,7 @@
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $key,
 					'reply_status' => $reply_status,
-                                      	'content' => $_POST['back_contents'],
+                                      	'content' => tep_db_prepare_input($_POST['back_contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
@@ -462,7 +462,7 @@
 				'sender_id' => $ocertify->auth_user,
 				'recipient_id' => $ocertify->auth_user,
 				'reply_status' => $reply_status,
-                               	'content' => $_POST['back_contents'],
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
 				'attach_file' => $messages_file_status,
 				'file_name' => $messages_file_name,
 				'opt' => '0',
@@ -483,7 +483,7 @@
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $user_name_id[0],
 					'reply_status' => $reply_status,
-                                      	'content' => $_POST['back_contents'],
+                                      	'content' => tep_db_prepare_input($_POST['back_contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
@@ -502,7 +502,7 @@
 				'sender_id' => $ocertify->auth_user,
 				'recipient_id' => $ocertify->auth_user,
 				'reply_status' => $reply_status,
-                               	'content' => $_POST['back_contents'],
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
 				'attach_file' => $messages_file_status,
 				'file_name' => $messages_file_name,
 				'opt' => '0',
@@ -526,7 +526,7 @@
 				'sender_id' => $ocertify->auth_user,
 				'recipient_id' => $ocertify->auth_user,
 				'reply_status' => $reply_status,
-                               	'content' => $_POST['back_contents'],
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
 				'attach_file' => $messages_file_status,
 				'file_name' => $messages_file_name,
 				'opt' => '0',
@@ -758,14 +758,14 @@ function delete_select_messages(messages_str, c_permission){
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
          }
 }
-function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name){
+function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name,groups){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  //if(latest_messages_id >0){
 	//$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
  //}
  $.ajax({
  url: 'ajax.php?&action=new_messages',
-   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name} ,
+   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name,groups:groups} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -1725,7 +1725,7 @@ require("includes/note_js.php");
         $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.$contents_text.'" title="'.$contents_text.'">'.$contents_text.'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.str_replace('"',"&quot;",$contents_text).'" title="'.str_replace('"',"&quot;",$contents_text).'">'.$contents_text.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
@@ -1749,7 +1749,7 @@ require("includes/note_js.php");
         $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
+		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\',\''.$latest_messages['groups'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }

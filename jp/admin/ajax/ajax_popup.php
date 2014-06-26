@@ -8208,9 +8208,12 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_from);
  $messages_content_row_to = array();
  $messages_content_row_to [] = array('text'=>'To');
+ //groups 选中
+ $groups_selected = ($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0 && trim($_GET['groups']) != '' ? ' checked="checked"' : '';
+ $groups_selected = '';
  $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
- $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()">'.MESSAGE_SELECT_GROUPS;
- $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1" checked name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
+ $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()"'.$groups_selected.'>'.MESSAGE_SELECT_GROUPS;
+ $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1"'.($groups_selected == '' ? 'checked="checked"' : '').' name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
  $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_groups.$messages_to_appoint);
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
@@ -8266,7 +8269,7 @@ $banner_query = tep_db_query("
    tep_db_free_result($groups_id_query);
    $all_groups_str = implode(',',$all_groups_array);
  $messages_choose_table = '
-<div width="100%" id="select_user"><table width="100%">
+<div width="100%" id="select_user"'.($groups_selected != '' ? ' style="display:none;"' : '').'><table width="100%">
 	<tr>
 		<td align="center" width="45%">'.MESSAGES_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -8366,6 +8369,11 @@ $banner_query = tep_db_query("
         $messages_contents_back .= 'To: '.$messages_email_array[$sql_message_content_res['recipient_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['recipient_id']]['email'].'>'."\r\n";
         $messages_contents_replace = str_replace("\r\n","\r\n>",$sql_message_content_res['content']);
         $messages_contents_back .= '>'.$messages_contents_replace;
+
+        if($_GET['messages_sta'] == 'drafts'){
+
+          $messages_contents_back = $sql_message_content_res['content'];
+        }
 	$messages_content_row_back = array();
 	$messages_content_row_back[] = array('text'=> MESSAGES_BACK_CONTENT);
 	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents">'.$messages_contents_back.'</textarea>');
