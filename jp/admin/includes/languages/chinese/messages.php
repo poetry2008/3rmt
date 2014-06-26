@@ -53,4 +53,5 @@ define('MESSAGE_READ_CONFIRM','确定要标记为已读吗？');
 define('MESSAGE_UNREAD_CONFIRM','确定要标记为未读吗？');
 define('MESSAGE_TRASH_CONFIRM','确定要移动到垃圾箱吗？');
 define('MESSAGE_RECOVERY_CONFIRM','确定要还原吗？');
+define('EMAIL_RADIO','Email');
 ?>

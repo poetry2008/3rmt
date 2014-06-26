@@ -13578,3 +13578,38 @@ function group_users_id_list($group_id,&$users_id_list){
     group_users_id_list($users_array['parent_id'],$users_id_list);
   }
 }
+
+/* -------------------------------------
+    功能: 发送邮件 
+    参数: $to_name(string) 收件人名字 
+    参数: $to_email_address(string) 收件人邮箱 
+    参数: $email_subject(string) 邮件标题 
+    参数: $email_text(string) 邮件内容 
+    参数: $from_email_name(string) 发件人名字 
+    参数: $from_email_address(string) 发件人邮箱 
+    参数: $site_id(int) 网站id 
+    参数: $file_arr(array) 附近组
+    返回值: 无 
+ ------------------------------------ */
+function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_text, $from_email_name, $from_email_address,$file_arr = array()) {
+  if (SEND_EMAILS != 'true') return false;
+  // Instantiate a new mail object
+  $message = new email(array('X-Mailer: iimy Mailer'));
+
+  // Build the text version
+  $text = $email_text;
+  if (EMAIL_USE_HTML == 'true') {
+    $message->add_html(nl2br($email_text), $text);
+  } else {
+    $message->add_text($text);
+  }
+  if(!empty($file_arr)){
+    foreach($file_arr as $file_info){
+      $message->add_attachment($file_info['src'],$file_info['name']);
+    }
+  }
+
+  // Send message
+  $message->build_message();
+  $message->send($to_name, $to_email_address, $from_email_name, $from_email_address, $email_subject);
+}
