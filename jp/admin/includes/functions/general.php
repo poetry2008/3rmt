@@ -13605,7 +13605,11 @@ function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_te
   }
   if(!empty($file_arr)){
     foreach($file_arr as $file_info){
-      $message->add_attachment($file_info['src'],$file_info['name']);
+      $fileatt = $file_info['src'];
+      $file = fopen($fileatt,'rb');
+      $data = fread($file,filesize($fileatt));
+      fclose($file);
+      $message->add_attachment($data,$file_info['name'],$file_info['type']);
     }
   }
 
