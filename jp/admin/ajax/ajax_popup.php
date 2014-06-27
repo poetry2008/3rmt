@@ -8870,4 +8870,54 @@ if($_GET['latest_messages_id']>0){
  $notice_box->get_form($form_str);
  $notice_box->get_contents($group_content_table);
  echo $notice_box->show_notice();
+}else if($_GET['action'] == 'valadate_user_email'){
+  $select_arr =  json_decode(stripslashes($_POST['select_json']));
+  $error_user = '';
+  if($_GET['type'] == 'user'){
+    foreach($select_arr as $value){
+      $user_arr = explode('|||',$value);
+      $user_info = tep_get_user_info($user_arr[0]);
+      if($user_info['email'] == ''){
+        $error_user .= $user_info['name'].",";
+      }
+    }
+  }else{
+      foreach($select_arr as $groups_value){
+       $groups_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups_value."'");
+       if(tep_db_num_rows($groups_query) == 0){
+
+         $users_query = tep_db_query("select id,all_users_id from ".TABLE_GROUPS." where id='".$groups_value."'");
+         $users_array = tep_db_fetch_array($users_query);
+
+         if(trim($users_array['all_users_id']) != ''){
+           $users_id_temp = explode('|||',$users_array['all_users_id']);
+         }else{
+           //如果此组包含用户为空，取上一级组的用户，以此类推 
+           group_users_id_list($users_array['id'],$users_id_list);
+           $users_id_temp = $users_id_list;
+         }
+         foreach($users_id_temp as $temp_value){
+           $users_id_array[] = $temp_value;
+         }
+         tep_db_free_result($users_query);
+       }
+       tep_db_free_result($groups_query);
+     }
+     $users_id_array = array_unique($users_id_array);
+
+     $users_id_str = implode("','",$users_id_array);
+     $users_list_array = array();
+     $users_name_query = tep_db_query("select userid,name,email from ".TABLE_USERS." where userid in ('".$users_id_str."')");
+     while($users_name_array = tep_db_fetch_array($users_name_query)){
+      if($users_name_array['email'] == ''){
+        $error_user .= $users_name_array['name'].",";
+      }
+     }
+  }
+  if($error_user!=''){
+    $error_user = substr($error_user,0,-1);
+    $error_user .= "\n".TEXT_USER_NO_EMAIL;
+    $error_user .= "\n".TEXT_SEND_MAIL;
+  }
+  echo $error_user;
 }

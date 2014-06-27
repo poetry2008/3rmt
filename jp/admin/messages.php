@@ -129,6 +129,7 @@
    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      //获取组的用户，原理是优先于级别最低组的用户
      if($_POST['messages_type'] == 1){
+       $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['contents'],0,20,'utf-8'));
        $from_user = tep_get_user_info($ocertify->auth_user);
      }
      $users_id_array = array();
@@ -215,7 +216,9 @@
 	  foreach($users_list_array as $key => $value){
             if($_POST['messages_type'] == 1){
               $send_user = tep_get_user_info($key);
-              tep_mail_by_file($send_user['name'],$send_user['email'],'test_messages_subject',tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
             }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -263,7 +266,9 @@
 	    $user_name_id = explode('|||',$value);
             if($_POST['messages_type'] == 1){
               $send_user = tep_get_user_info($user_name_id[0]);
-              tep_mail_by_file($send_user['name'],$send_user['email'],'test_messages_subject',tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
             }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -387,6 +392,10 @@
    }
 	//die(var_dump($_POST['selected_staff']));
     if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
+     if($_POST['messages_type'] == 1){
+       $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['back_contents'],0,20,'utf-8'));
+       $from_user = tep_get_user_info($ocertify->auth_user);
+     }
      //获取组的用户，原理是优先于级别最低组的用户
      $users_id_array = array();
      foreach($_POST['select_groups'] as $groups_value){
@@ -424,8 +433,16 @@
 
 	$messages_file_name = '';
 	$messages_file_status = '0';
+        $f_src = '';
+        $f_name = '';
+        $file_arr = array();
 	if ($_FILES['messages_file_back']['error'] > 0){
 	}else{
+          if($_POST['messages_type'] == 1){
+            $f_src = $_FILES["messages_file_back"]["tmp_name"];
+            $f_name = $_FILES['messages_file_back']['name'];
+            $file_arr[] = array('src'=>$f_src,'name'=>$f_name);
+          }else{
 		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'].'|||'.$ocertify->auth_user.'|||'.time());
 		$messages_file_status = '1';
 		if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"])){
@@ -433,6 +450,7 @@
       			$file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
       		}
+          }
 	}
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
@@ -466,6 +484,12 @@
           $groups_id_list = array_filter($groups_id_list);
           $groups_id_str = implode(',',$groups_id_list);
 	  foreach($users_list_array as $key => $value){
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($key);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['back_contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
+            }else{
 		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -485,8 +509,10 @@
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
+            }
           }
           //保存到已发送邮箱中
+          if($_POST['messages_type'] != 1){
           $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -505,9 +531,16 @@
                                );
        	  tep_db_perform('messages', $sql_data_array);
           unset($sql_data_array);
+          }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($user_name_id[0]);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['back_contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
+            }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
@@ -525,7 +558,9 @@
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
+            }
           } 
+          if($_POST['messages_type'] != 1){
           //保存到已发送邮箱中
           $sql_data_array = array(
 			     	'read_status' => '0',
@@ -544,6 +579,7 @@
                                );
        	  tep_db_perform('messages', $sql_data_array);
           unset($sql_data_array);
+          }
         } 
       }else if($_POST['messages_flag'] == 1){
         //保存到草稿箱
@@ -570,6 +606,11 @@
        	tep_db_perform('messages', $sql_data_array);
         unset($sql_data_array);
       }
+        if($_POST['messages_type'] == 1){
+          foreach($file_arr as $file_info){
+            unlink($file_info['src']);
+          }
+        }
 	if($reply_status == '1'){
 		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
 	}
@@ -605,6 +646,29 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+function arrayToJson(o) {
+  var r = [];
+  if (typeof o == "string") return "\"" + o.replace(/([\'\"\\])/g,
+      "\\$1").replace(/(\n)/g, "\\n").replace(/(\r)/g, "\\r").replace(/(\t)/g,
+        "\\t") + "\"";
+  if (typeof o == "object") {
+    if (!o.sort) {
+      for (var i in o)
+        r.push(i + ":" + arrayToJson(o[i]));
+      if (!!document.all && !/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/.test(o.toString)) {
+        r.push("toString:" + o.toString.toString());
+      }
+      r = "{" + r.join() + "}";
+    } else {
+      for (var i = 0; i < o.length; i++) {
+        r.push(arrayToJson(o[i]));
+      }
+      r = "[" + r.join() + "]";
+    }
+    return r;
+  }
+  return o.toString();
+}
 var o_submit_single = true;
 $(document).ready(function() {
   <?php //监听按键?> 
@@ -1292,6 +1356,7 @@ function messages_check(is_back,flag){
 	var error_status_select = 0;
 	var error_status_contents = 0;
 	var error_status_back_contents = 1;
+	var messages_type = $('input:radio[name="messages_type"]:checked').val();
         var reg = /^\s*$/g;
         var messages_to = $('input:radio[name="messages_to"]:checked').val();
 	  
@@ -1342,7 +1407,41 @@ function messages_check(is_back,flag){
                 }else if(flag == 3){
                   $("#messages_flag_id").val('3'); 
                 }
+                if(messages_type == 1){
+          var select_staff = new Array;
+	  $('input[name="selected_staff[]"]').each(function() {
+		if($(this).attr("checked")) {
+                  select_staff.push($(this).val());
+		}
+          });
+          var select_group = new Array;
+	  $('input[name="select_groups[]"]').each(function() {
+		if($(this).attr("checked")) {
+                  select_group.push($(this).val());
+		}
+          }); 
+          var valadate_type = 'user';
+          if(messages_to == 2){
+            valadate_type = 'group';
+            select_json = arrayToJson(select_group); 
+          }else{
+            select_json = arrayToJson(select_staff); 
+          }
+          var data='';
+       $.ajax({
+         async:false,
+         url: 'ajax.php?action=valadate_user_email&type='+valadate_type,
+         type: 'POST',
+         data:{"select_json":select_json},
+         success: function (data){
+             if(confirm(data)){
                 document.forms.new_latest_messages.submit();
+             }
+           }
+         });
+                }else{
+                document.forms.new_latest_messages.submit();
+                }
 	}
 }
 function file_cancel(obj){
