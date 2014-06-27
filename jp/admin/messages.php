@@ -55,8 +55,9 @@
   while($userslist= tep_db_fetch_array($sites_id_sql)){
     $site_arr = $userslist['site_permission']; 
   }
- if($_GET['action']== 'delete_messages'){
-    if($_GET['status'] == 'sent'){
+  if($_GET['action']== 'messages_action'){
+    if($_POST['messages_action_flag'] == 'delete'){
+      if($_GET['status'] == 'sent'){
 	if(!empty($_POST['messages_id'])){
 		foreach($_POST['messages_id'] as $value_messages_id){
 			$delete_status_sql = 'select sender_id, time, file_name from messages where id = "'.$value_messages_id.'"';
@@ -79,7 +80,7 @@
 			}
 		}
 	}
-    }else{
+      }else{
 	if(!empty($_POST['messages_id'])){
 		foreach($_POST['messages_id'] as $value_messages_id){
 			$delete_status_sql = 'select delete_status, file_name, sender_id from messages where id = "'.$value_messages_id.'"';
@@ -104,7 +105,7 @@
 		}
 	}
 	
-    }
+      }
     if(isset($_GET['status']) && $_GET['status'] != ''){
 	$status_flag = true;
     }else{
@@ -123,6 +124,7 @@
 		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 	}
     }
+  }
  }
  if($_GET['action']== 'new_messages'){
 //	die(var_dump($_GET['status']));
@@ -471,7 +473,7 @@
 		}
 		$recipient_name = implode(';',$recipient_name);
         }	
-	if($_GET['status'] == 'sent'){
+	if($_GET['status'] == 'sent' || $_GET['status'] == 'drafts'){
 		$reply_status = '0';
 	}else{
 		$reply_status = '1';
@@ -605,6 +607,29 @@
                                );
        	tep_db_perform('messages', $sql_data_array);
         unset($sql_data_array);
+      }else if($_POST['messages_flag'] == 4){
+        //更新数据到草稿箱
+        $groups_id_list = explode(',',$_POST['groups_id_list']);
+        $groups_id_list = array_unique($groups_id_list);
+        $groups_id_list = array_filter($groups_id_list);
+        $groups_id_str = implode(',',$groups_id_list); 
+        $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '2',
+                               );
+       	tep_db_perform('messages', $sql_data_array, 'update', 'id='.$_GET['id']);
+        unset($sql_data_array); 
       }
         if($_POST['messages_type'] == 1){
           foreach($file_arr as $file_info){
@@ -835,15 +860,26 @@ function all_select_messages(messages_str){
 	}
 }
 
-function delete_select_messages(messages_str, c_permission){
+function action_select_messages(action){
         sel_num = 0;
 	$('input[name="messages_id[]"]').each(function() {
 		if ($(this).attr("checked")) {
 			sel_num = 1;
 		}
-	});	
+        });	
+        if(action == 'delete'){
+          var messages_action_confirm = '<?php echo TEXT_DEL_NEWS;?>';
+        }else if(action == 'read'){
+          var messages_action_confirm = '<?php echo MESSAGE_READ_CONFIRM;?>';
+        }else if(action == 'unread'){
+          var messages_action_confirm = '<?php echo MESSAGE_UNREAD_CONFIRM;?>';
+        }else if(action == 'trash'){
+          var messages_action_confirm = '<?php echo MESSAGE_TRASH_CONFIRM;?>';
+        }else if(action == 'recovery'){
+          var messages_action_confirm = '<?php echo MESSAGE_RECOVERY_CONFIRM;?>';
+        }
         if (sel_num == 1) {
-           if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
+           if (confirm(messages_action_confirm)) {
 		document.forms.messages_checkbox.submit();	
            }else{
               document.getElementsByName('messages_action')[0].value = 0;
@@ -940,10 +976,23 @@ function hidden_info_box(){
    o_submit_single = true;
 }
 <?php //选择动作?>
-function messages_change_action(r_value, r_str) {
- if (r_value == '1') {
-     delete_select_messages(r_str, '<?php echo $ocertify->npermission;?>');
-   }
+function messages_change_action(r_value) {
+  if (r_value == '1') {
+     $("#messages_action_flag_id").val('delete');
+     action_select_messages('delete');
+  }else if(r_value == '2'){
+     $("#messages_action_flag_id").val('read');
+     action_select_messages('read');
+  }else if(r_value == '3'){
+     $("#messages_action_flag_id").val('unread');
+     action_select_messages('unread');
+  }else if(r_value == '4'){
+     $("#messages_action_flag_id").val('trash');
+     action_select_messages('trash');
+  }else if(r_value == '5'){
+     $("#messages_action_flag_id").val('recovery');
+     action_select_messages('recovery');
+  }
 }
 <?php //动作链接?>
 function toggle_news_action(news_url_str) 
@@ -1406,6 +1455,8 @@ function messages_check(is_back,flag){
                   $("#messages_flag_id").val('2'); 
                 }else if(flag == 3){
                   $("#messages_flag_id").val('3'); 
+                }else if(flag == 4){
+                  $("#messages_flag_id").val('4'); 
                 }
                 if(messages_type == 1){
           var select_staff = new Array;
@@ -1592,7 +1643,7 @@ require("includes/note_js.php");
 			}
 		}
 		
-              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=delete_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['status'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
+              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=messages_action&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['status'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"').'<input type="hidden" id="messages_action_flag_id" name="messages_action_flag" value="delete">'; 
                 if($messages_sort == '' || $messages_sort != 'read_status'){ 
 			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'</a>'; 
 		}else{
@@ -1895,8 +1946,17 @@ require("includes/note_js.php");
 <tr>                 
                     <td valign="top" class="smallText">
                     <?php 
-                    echo '<select name="messages_action" onchange="messages_change_action(this.value, \'messages_id[]\');">';
+                    echo '<select name="messages_action" onchange="messages_change_action(this.value);">';
                     echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
+                    echo '<option value="2">'.READ_STATUS_ACTION.'</option>';
+                    echo '<option value="3">'.UNREAD_STATUSS_ACTION.'</option>';
+                    if(!isset($_GET['status']) || $_GET['status'] == 'sent'){
+                      
+                      echo '<option value="4">'.MESSAGE_TRASH_SAVE.'</option>';
+                    }
+                    if($_GET['status'] == 'trash'){
+                      echo '<option value="5">'.MESSAGE_RECOVERY.'</option>';
+                    }
                     echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
                     echo '</select>';
                     ?> 

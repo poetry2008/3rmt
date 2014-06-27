@@ -50,6 +50,12 @@ define('MESSAGE_SELECT_GROUPS','グループ選択');
 define('MESSAGE_DRAFTS_SAVE','下書き保存');
 define('MESSAGE_TRASH_SAVE','ゴミ箱に移動');
 define('MESSAGE_RECOVERY','元に戻す');
+define('UNREAD_STATUSS_ACTION','未読する');
+define('READ_STATUS_ACTION','既読する');
+define('MESSAGE_READ_CONFIRM','本当に既読にしますか？');
+define('MESSAGE_UNREAD_CONFIRM','本当に未読にしますか？');
+define('MESSAGE_TRASH_CONFIRM','本当にゴミ箱に移動しますか？');
+define('MESSAGE_RECOVERY_CONFIRM','本当に元に戻しますか？');
 define('EMAIL_RADIO','Email');
 define('EMAIL_SUBJECT','メッセージ管理 [%s]');
 ?>

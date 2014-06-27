@@ -47,6 +47,12 @@ define('MESSAGE_SELECT_GROUPS','组选择');
 define('MESSAGE_DRAFTS_SAVE','保存到草稿箱');
 define('MESSAGE_TRASH_SAVE','移动到垃圾箱');
 define('MESSAGE_RECOVERY','还原');
+define('UNREAD_STATUSS_ACTION','标记未读');
+define('READ_STATUS_ACTION','标记已读');
+define('MESSAGE_READ_CONFIRM','确定要标记为已读吗？');
+define('MESSAGE_UNREAD_CONFIRM','确定要标记为未读吗？');
+define('MESSAGE_TRASH_CONFIRM','确定要移动到垃圾箱吗？');
+define('MESSAGE_RECOVERY_CONFIRM','确定要还原吗？');
 define('EMAIL_RADIO','Email');
 define('EMAIL_SUBJECT','站内信作成 [%s]');
 ?>
