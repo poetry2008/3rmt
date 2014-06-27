@@ -57,4 +57,5 @@ define('MESSAGE_UNREAD_CONFIRM','本当に未読にしますか？');
 define('MESSAGE_TRASH_CONFIRM','本当にゴミ箱に移動しますか？');
 define('MESSAGE_RECOVERY_CONFIRM','本当に元に戻しますか？');
 define('EMAIL_RADIO','Email');
+define('EMAIL_SUBJECT','メッセージ管理 [%s]');
 ?>
