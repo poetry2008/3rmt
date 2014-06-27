@@ -134,7 +134,11 @@
    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      //获取组的用户，原理是优先于级别最低组的用户
      if($_POST['messages_type'] == 1){
-       $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['contents'],0,20,'utf-8'));
+       if(mb_strlen($_POST['contents'])>20){
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['contents'],0,20,'utf-8').'...');
+       }else{
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['contents'],0,20,'utf-8'));
+       }
        $from_user = tep_get_user_info($ocertify->auth_user);
      }
      $users_id_array = array();
@@ -398,7 +402,11 @@
 	//die(var_dump($_POST['selected_staff']));
     if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      if($_POST['messages_type'] == 1){
-       $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['back_contents'],0,20,'utf-8'));
+       if(mb_strlen($_POST['back_contents'])>20){
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['back_contents'],0,20,'utf-8').'...');
+       }else{
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['back_contents'],0,20,'utf-8'));
+       }
        $from_user = tep_get_user_info($ocertify->auth_user);
      }
      //获取组的用户，原理是优先于级别最低组的用户
