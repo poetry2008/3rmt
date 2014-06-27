@@ -112,6 +112,7 @@ function select_logs_change(value,logs_list_id,c_permission){
     }
   } 
   logs_list_id = 'messages_list_id[]';
+  if(document.edit_logs.elements[logs_list_id]){
   if (document.edit_logs.elements[logs_list_id].length == null) {
     if (document.edit_logs.elements[logs_list_id].checked == true) {
       sel_num = 1;
@@ -123,6 +124,7 @@ function select_logs_change(value,logs_list_id,c_permission){
         break;
       }
     }
+  }
   }
 
   if(sel_num == 1){

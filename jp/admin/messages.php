@@ -586,6 +586,10 @@
           unset($sql_data_array);
           }
         } 
+        if($_GET['status'] == 'drafts'){
+
+          tep_db_query("delete from messages where id='".$_GET['id']."' and trash_status='2'");
+        }
       }else if($_POST['messages_flag'] == 1){
         //保存到草稿箱
         $groups_id_list = explode(',',$_POST['groups_id_list']);
@@ -1789,7 +1793,7 @@ require("includes/note_js.php");
     }else if($_GET['status'] == 'trash'){
        $latest_messages_query_raw = '
         	select * 
-        	from messages where sender_id = "'.$ocertify->auth_user.'" 
+        	from messages where (sender_id = "'.$ocertify->auth_user.'" or recipient_id = "'.$ocertify->auth_user.'") 
 		and trash_status="3" 
                 order by '.$messages_sort_sql.' '.$messages_sort_type;
     }else{
