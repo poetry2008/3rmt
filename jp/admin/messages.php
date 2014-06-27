@@ -896,14 +896,14 @@ function action_select_messages(action){
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
          }
 }
-function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name,groups){
+function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name,groups,mark){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  //if(latest_messages_id >0){
 	//$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
  //}
  $.ajax({
  url: 'ajax.php?&action=new_messages',
-   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name,groups:groups} ,
+   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name,groups:groups,mark:mark} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -1979,7 +1979,7 @@ require("includes/note_js.php");
         $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\',\''.$latest_messages['groups'].'\')">'.$messages_opt.'</a>'
+		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\',\''.$latest_messages['groups'].'\',\''.$latest_messages['mark'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }
