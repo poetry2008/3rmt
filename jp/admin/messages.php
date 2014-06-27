@@ -1465,7 +1465,7 @@ function messages_check(is_back,flag){
                 }else if(flag == 4){
                   $("#messages_flag_id").val('4'); 
                 }
-                if(messages_type == 1){
+                if(messages_type == 1&&flag==0){
           var select_staff = new Array;
 	  $('input[name="selected_staff[]"]').each(function() {
 		if($(this).attr("checked")) {
@@ -1492,9 +1492,13 @@ function messages_check(is_back,flag){
          type: 'POST',
          data:{"select_json":select_json},
          success: function (data){
+           if(data!=''){
              if(confirm(data)){
                 document.forms.new_latest_messages.submit();
              }
+             }else{
+                document.forms.new_latest_messages.submit();
+}
            }
          });
                 }else{

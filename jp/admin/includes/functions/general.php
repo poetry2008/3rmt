@@ -13594,7 +13594,7 @@ function group_users_id_list($group_id,&$users_id_list){
 function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_text, $from_email_name, $from_email_address,$file_arr = array()) {
   if (SEND_EMAILS != 'true') return false;
   // Instantiate a new mail object
-  $message = new email(array('X-Mailer: iimy Mailer'));
+  $message = new email(array('X-Mailer: iimy Mailer','real'));
 
   // Build the text version
   $text = $email_text;
@@ -13611,5 +13611,5 @@ function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_te
 
   // Send message
   $message->build_message();
-  $message->send($to_name, $to_email_address, $from_email_name, $from_email_address, $email_subject);
+  $message->send($to_name, $to_email_address, $from_email_name, $from_email_address, $email_subject,'','mail',$from_email_address);
 }

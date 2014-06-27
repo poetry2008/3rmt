@@ -512,7 +512,7 @@
  返回值：判断发送邮件是否成功(string)
  ------------------------*/
     function send($to_name, $to_addr, $from_name, $from_addr, $subject = '',
-        $headers = '',$from_page="") {
+        $headers = '',$from_page="",$real_from_email="") {
       // $from_name 是 "" ， $from_addr 是 "Name <someone@abc.com>" 格式的情况下
       // $from_addr 分解后，转换成纯粹的 E-mail 地址
 
@@ -572,7 +572,11 @@
         $xtra_headers = array();
       }
 
+      if($real_from_email==''){
       $bounce_mail_option = '-f' . (defined('BOUNCE_EMAIL_ADDRESS') ? BOUNCE_EMAIL_ADDRESS : ($this->site_id?get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $this->site_id):STORE_OWNER_EMAIL_ADDRESS));
+      }else{
+      $bounce_mail_option = '-f' . $real_from_email;
+      }
       if (EMAIL_TRANSPORT == 'smtp') {
         return mail($to_addr, $subject, $this->output,
           ('From: ' . $from . $this->lf . 'To: ' . $to . $this->lf . implode($this->lf, $this->headers) . $this->lf . implode($this->lf, $xtra_headers)),

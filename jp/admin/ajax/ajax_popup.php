@@ -8891,6 +8891,7 @@ if($_GET['latest_messages_id']>0){
  $notice_box->get_contents($group_content_table);
  echo $notice_box->show_notice();
 }else if($_GET['action'] == 'valadate_user_email'){
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.'messages.php');
   $select_arr =  json_decode(stripslashes($_POST['select_json']));
   $error_user = '';
   if($_GET['type'] == 'user'){
@@ -8936,7 +8937,7 @@ if($_GET['latest_messages_id']>0){
   }
   if($error_user!=''){
     $error_user = substr($error_user,0,-1);
-    $error_user .= "\n".TEXT_USER_NO_EMAIL;
+    $error_user .= " ".TEXT_USER_NO_EMAIL;
     $error_user .= "\n".TEXT_SEND_MAIL;
   }
   echo $error_user;
