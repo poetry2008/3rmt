@@ -9,17 +9,24 @@
   if (isset($_GET['action'])) {
   switch ($_GET['action']) {
   case 'deleteconfirm':
-  $logs_list_array = $_POST['logs_list_id'];
-  $logs_list_str = implode(',',$logs_list_array);
-  $alert_query = tep_db_query("select from_notice from ".TABLE_NOTICE." where type='0' and id in (".$logs_list_str.")");
-  while($alert_array = tep_db_fetch_array($alert_query)){
-    tep_db_query("delete from ".TABLE_ALARM." where alarm_id='".$alert_array['from_notice']."'");
+  if(!empty($_POST['messages_list_id'])){
+    $messages_list_array = $_POST['messages_list_id'];
+    $messages_list_str = implode(',',$messages_list_array);
+    tep_db_query("update messages set messages_status=1 where id in (".$messages_list_str.")");
   }
-  $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and id in (".$logs_list_str.")");
-  while($alert_array = tep_db_fetch_array($alert_query)){
-    tep_db_query("delete from ".TABLE_BUSINESS_MEMO." where id='".$alert_array['from_notice']."'");
+  if(!empty($_POST['logs_list_id'])){
+    $logs_list_array = $_POST['logs_list_id'];
+    $logs_list_str = implode(',',$logs_list_array); 
+    $alert_query = tep_db_query("select from_notice from ".TABLE_NOTICE." where type='0' and id in (".$logs_list_str.")");
+    while($alert_array = tep_db_fetch_array($alert_query)){
+      tep_db_query("delete from ".TABLE_ALARM." where alarm_id='".$alert_array['from_notice']."'");
+    }
+    $alert_query = tep_db_query("select id,from_notice from ".TABLE_NOTICE." where type='1' and id in (".$logs_list_str.")");
+    while($alert_array = tep_db_fetch_array($alert_query)){
+      tep_db_query("delete from ".TABLE_BUSINESS_MEMO." where id='".$alert_array['from_notice']."'");
+    }
+    $result = tep_db_query("delete from ".TABLE_NOTICE." where id in (".$logs_list_str.")");
   }
-  $result = tep_db_query("delete from ".TABLE_NOTICE." where id in (".$logs_list_str.")");
   tep_redirect(tep_href_link(FILENAME_ALERT_LOG,'page='.$_GET['page']));
   break;
   }
@@ -66,6 +73,28 @@ function all_select_logs(logs_list_id){
       }
     }
   }
+  logs_list_id = 'messages_list_id[]';
+  if (document.edit_logs.elements[logs_list_id]) {
+    if (document.edit_logs.elements[logs_list_id].length == null) {
+      if (!document.edit_logs.elements[logs_list_id].disabled) {
+        if (check_flag == true) {
+          document.edit_logs.elements[logs_list_id].checked = true;
+        } else {
+          document.edit_logs.elements[logs_list_id].checked = false;
+        }
+      }
+    } else {
+      for (i = 0; i < document.edit_logs.elements[logs_list_id].length; i++) {
+        if (!document.edit_logs.elements[logs_list_id][i].disabled) {
+          if (check_flag == true) {
+            document.edit_logs.elements[logs_list_id][i].checked = true;
+          } else {
+            document.edit_logs.elements[logs_list_id][i].checked = false;
+          }
+        }
+      }
+    }
+  }
 }
 
 function select_logs_change(value,logs_list_id,c_permission){
@@ -82,6 +111,19 @@ function select_logs_change(value,logs_list_id,c_permission){
       }
     }
   } 
+  logs_list_id = 'messages_list_id[]';
+  if (document.edit_logs.elements[logs_list_id].length == null) {
+    if (document.edit_logs.elements[logs_list_id].checked == true) {
+      sel_num = 1;
+    }
+  } else {
+    for (i = 0; i < document.edit_logs.elements[logs_list_id].length; i++) {
+      if (document.edit_logs.elements[logs_list_id][i].checked == true) {
+        sel_num = 1;
+        break;
+      }
+    }
+  }
 
   if(sel_num == 1){
     if (confirm("<?php echo TEXT_LOGS_EDIT_CONFIRM;?>")) {
@@ -248,7 +290,8 @@ require("includes/note_js.php");
   $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
   $s_select_temp = "select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from " . TABLE_NOTICE ." n left join ". TABLE_BUSINESS_MEMO ." bm on n.from_notice=bm.id where ".$memo_query_str."n.type='1' and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
   $s_select = "select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from " . TABLE_NOTICE ." n left join ". TABLE_ALARM ." a on n.from_notice=a.alarm_id where n.type='0' and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
-  $s_select = "select * from ((".$s_select.") union (".$s_select_temp.")) n_t";
+  $s_select_messages = "select id,3 type,content title,time set_time,id from_notice,sender_name user,replace(time,'/','-') created_at,1 s_show,0 deleted from messages where trash_status='1' and messages_status='0' and time_format(timediff(now(),time),'%H')<".$alarm_day*24;
+  $s_select = "select * from ((".$s_select.") union (".$s_select_temp.") union (".$s_select_messages.")) n_t";
   $s_select .= " order by ".$alert_log_str;    // 按照提醒日期时间的倒序获取数据
 
   // 自动删除过期数据 
@@ -393,6 +436,12 @@ if ($rec_c % 2) {
         $alert_button_comment = $arec['set_time'];
       }
       $alert_orders_id = $alarm_info_array['orders_id'];
+    }else if($arec['type'] == '3'){
+      $alert_user = $arec['user'];
+      $alert_button_name = MESSAGES_PAGE_LINK_NAME;
+      $arec['title'] = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$arec['title']);
+      $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
+      $alert_orders_id = '';
     }else{
       $micro_info_query = tep_db_query("select * from ".TABLE_BUSINESS_MEMO." where id='".$arec['from_notice']."'");
       $micro_info_array = tep_db_fetch_array($micro_info_query);
@@ -405,10 +454,17 @@ if ($rec_c % 2) {
       $alert_orders_id = ''; 
     }
     $alert_info = array(); 
-    $alert_info[] = array(
+    if($arec['type'] == '3'){
+      $alert_info[] = array(
+        'params' => ' class="main"',
+        'text'   => '<input type="checkbox" value="'.$arec['id'].'" name="messages_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'>'
+      ); 
+    }else{
+      $alert_info[] = array(
         'params' => ' class="main"',
         'text'   => '<input type="checkbox" value="'.$arec['id'].'" name="logs_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'>'
-        ); 
+      ); 
+    }
     $alert_info[] = array(
         'params' => 'onClick="document.location.href=\'' .  tep_href_link(FILENAME_ALERT_LOG,"log_id=".$arec['id'].'&page='.$_GET['page']) .'\'" class="main"',
         'text'   => $alert_user 
