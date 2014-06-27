@@ -55,4 +55,6 @@ define('MESSAGE_TRASH_CONFIRM','确定要移动到垃圾箱吗？');
 define('MESSAGE_RECOVERY_CONFIRM','确定要还原吗？');
 define('EMAIL_RADIO','Email');
 define('EMAIL_SUBJECT','站内信作成 [%s]');
+define('TEXT_SEND_MAIL','就这样发信吗？');
+define('TEXT_USER_NO_EMAIL','用户的邮箱地址没有设置，');
 ?>
