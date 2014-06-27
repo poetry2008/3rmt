@@ -2,6 +2,7 @@
 /*
   $Id$
 */
+  set_time_limit(0);
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   define('FILENAME_MESSAGES', 'messages.php');
