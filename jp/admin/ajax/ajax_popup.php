@@ -8330,10 +8330,11 @@ $banner_query = tep_db_query("
  $messages_content_row_must_selected[] = array('text'=> '');
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
  $messages_content_table[] = array('text'=> $messages_content_row_must_selected);
+ $mark_array = explode(',',$_GET['mark']);
  $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
    $users_icon = '<ul class="table_img_list" style="width:100%">'; 
    while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
-     $users_icon .= '<li><input type="checkbox" name="pic_icon[]" value="'.$pic_list_res['id'].'" style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+     $users_icon .= '<li><input type="checkbox" name="pic_icon[]" value="'.$pic_list_res['id'].'"'.(in_array($pic_list_res['id'],$mark_array) ? ' checked="checked"' : '').' style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
    }
  $users_icon .= '</ul>';
  $messages_content_row_mark = array();
