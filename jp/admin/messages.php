@@ -602,7 +602,7 @@
 				'sender_id' => $ocertify->auth_user,
 				'recipient_id' => $ocertify->auth_user,
 				'reply_status' => '0',
-                               	'content' => tep_db_prepare_input($_POST['drafts_contents']),
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
 				'attach_file' => $messages_file_status,
 				'file_name' => $messages_file_name,
 				'opt' => '0',
