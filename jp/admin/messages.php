@@ -1803,9 +1803,7 @@ require("includes/note_js.php");
                $messages_table_row = array();
                $messages_title_row = array();
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
-               if($_GET['status'] != 'sent'){
-	       	$messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
-	       }
+	       $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_mark);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_from);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_to);
@@ -1923,13 +1921,11 @@ require("includes/note_js.php");
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_checkbox		
 	);
-   if($_GET['status'] != 'sent'){
 	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/gray_right.gif" border="0" alt="'.UNREAD_STATUS.'" title="'.UNREAD_STATUS.'">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/green_right.gif" border="0" alt="'.READ_STATUS.'" title="'.READ_STATUS.'">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
 	);
-   }
 	$mark_html = '';
 	if($latest_messages['mark'] != ''){
 		$mark_array = explode(',',$latest_messages['mark']);
