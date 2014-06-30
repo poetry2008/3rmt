@@ -302,4 +302,6 @@ define('TEXT_MUST','<font color=\'red\'>&nbsp;*必須</font>');
 define('SHOW_MORE_TAGS','全显示▼');
 define('HIDE_SOME_TAGS','收起▲');
 define('SELECT_ALL','全选择');
+define('SELECT_ONE_TAG','请至少选择一个标签。');
+define('NO_RELATED_PRODUCTS','没有关联的商品');
 ?>

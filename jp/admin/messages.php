@@ -253,6 +253,7 @@
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
 					'groups' => $groups_id_str,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
                 $messages_id = tep_db_insert_id();
@@ -285,6 +286,7 @@
                                 'recipient_name' => $recipient_name,
                                 'groups' => $groups_id_str,
 				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                 );
           tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -319,6 +321,7 @@
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -350,6 +353,7 @@
 				'time' => date("Y/m/d H:i:s"),
 				'recipient_name' => $recipient_name,
 				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                 );
           tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -385,6 +389,7 @@
                                 'recipient_name' => $recipient_name,
                                 'groups' => $groups_id_str,
 				'trash_status' => '2',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                 );
         tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -578,6 +583,7 @@
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
 					'groups' => $groups_id_str,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -610,6 +616,7 @@
                                 'recipient_name' => $recipient_name,
                                 'groups' => $groups_id_str,
 				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	  tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -645,6 +652,7 @@
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -676,6 +684,7 @@
 				'time' => date("Y/m/d H:i:s"),
 				'recipient_name' => $recipient_name,
 				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	  tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -700,6 +709,14 @@
         $groups_id_list = array_unique($groups_id_list);
         $groups_id_list = array_filter($groups_id_list);
         $groups_id_str = implode(',',$groups_id_list); 
+        if($messages_file_status == '0' && $messages_file_name == ''){
+
+          $messages_file_query = tep_db_query("select attach_file,file_name from messages where id='".$_GET['id']."'");
+          $messages_file_array = tep_db_fetch_array($messages_file_query);
+          tep_db_free_result($messages_file_query);
+          $messages_file_status = $messages_file_array['attach_file'];   
+          $messages_file_name = $messages_file_array['file_name'];
+        }
         $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -715,6 +732,7 @@
                                 'recipient_name' => $recipient_name,
                                 'groups' => $groups_id_str,
 				'trash_status' => '2',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	tep_db_perform('messages', $sql_data_array);
           $messages_id = tep_db_insert_id();
@@ -733,6 +751,14 @@
         $groups_id_list = array_unique($groups_id_list);
         $groups_id_list = array_filter($groups_id_list);
         $groups_id_str = implode(',',$groups_id_list); 
+        if($messages_file_status == '0' && $messages_file_name == ''){
+
+          $messages_file_query = tep_db_query("select attach_file,file_name from messages where id='".$_GET['id']."'");
+          $messages_file_array = tep_db_fetch_array($messages_file_query);
+          tep_db_free_result($messages_file_query);
+          $messages_file_status = $messages_file_array['attach_file'];   
+          $messages_file_name = $messages_file_array['file_name'];
+        }
         $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -747,6 +773,7 @@
                                 'recipient_name' => $recipient_name,
                                 'groups' => $groups_id_str,
 				'trash_status' => '2',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	tep_db_perform('messages', $sql_data_array, 'update', 'id='.$_GET['id']);
         $messages_id = $_GET['id'];
@@ -1031,14 +1058,14 @@ function action_select_messages(action){
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
          }
 }
-function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name,groups,mark){
+function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name,groups,mark,messages_type){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  //if(latest_messages_id >0){
 	//$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
  //}
  $.ajax({
  url: 'ajax.php?&action=new_messages',
-   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name,groups:groups,mark:mark} ,
+   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name,groups:groups,mark:mark,messages_type:messages_type} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -1901,9 +1928,7 @@ require("includes/note_js.php");
                $messages_table_row = array();
                $messages_title_row = array();
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
-               if($_GET['status'] != 'sent'){
-	       	$messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
-	       }
+	       $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_mark);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_from);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_to);
@@ -2021,13 +2046,11 @@ require("includes/note_js.php");
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_checkbox		
 	);
-   if($_GET['status'] != 'sent'){
 	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/gray_right.gif" border="0" alt="'.UNREAD_STATUS.'" title="'.UNREAD_STATUS.'">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/green_right.gif" border="0" alt="'.READ_STATUS.'" title="'.READ_STATUS.'">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
 	);
-   }
 	$mark_html = '';
 	if($latest_messages['mark'] != ''){
 		$mark_array = explode(',',$latest_messages['mark']);
@@ -2121,7 +2144,7 @@ require("includes/note_js.php");
         $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\',\''.$latest_messages['groups'].'\',\''.$latest_messages['mark'].'\')">'.$messages_opt.'</a>'
+		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\',\''.$latest_messages['groups'].'\',\''.$latest_messages['mark'].'\',\''.$latest_messages['messages_type'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }
