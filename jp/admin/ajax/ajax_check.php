@@ -203,14 +203,14 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   echo $osC_CategoryTree->buildTree();
 }else if(isset($_GET['action']) && $_GET['action'] == 'check_messages_header'){
   //内容链接跳转处理
-  $latest_messages_query_raw = 'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and messages_status = "0" and trash_status in ("0","2") and delete_status in ("0","2") order by time desc';
+  $latest_messages_query_raw = 'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and trash_status="0" order by time desc';
   $messages_id_count = tep_db_num_rows(tep_db_query($latest_messages_query_raw)); 
   $messages_id_page = ceil($messages_id_count/MAX_DISPLAY_SEARCH_RESULTS);
 
   $messages_id_list = array();
   for($i = 1;$i <= $messages_id_page;$i++){
        
-    $latest_messages_query_raw = 'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and messages_status = "0" and trash_status in ("0","2") and delete_status in ("0","2") order by time desc';
+    $latest_messages_query_raw = 'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and trash_status="0" order by time desc';
     $latest_messages_split = new splitPageResults($i, MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw,$latest_messages_query_numrows);
     $messages_id_query = tep_db_query($latest_messages_query_raw);
     while($messages_id_array = tep_db_fetch_array($messages_id_query)){
@@ -220,7 +220,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
     tep_db_free_result($messages_id_query);
   }
 	$messages_header = tep_db_query(
-        	'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and header_status = "0" order by time desc'
+        	'select * from messages where recipient_id = "'.$_POST['sender_id'].'" and header_status = "0" and trash_status="0" order by time desc'
         );
 	$messages_header_all = array();
         while($new_messages = tep_db_fetch_array($messages_header)){

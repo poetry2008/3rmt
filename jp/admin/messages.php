@@ -2,6 +2,7 @@
 /*
   $Id$
 */
+  set_time_limit(0);
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   define('FILENAME_MESSAGES', 'messages.php');
@@ -54,80 +55,93 @@
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){
     $site_arr = $userslist['site_permission']; 
-  }
- if($_GET['action']== 'delete_messages'){
-    if($_GET['status'] == 'sent'){
-	if(!empty($_POST['messages_id'])){
-		foreach($_POST['messages_id'] as $value_messages_id){
-			$delete_status_sql = 'select sender_id, time, file_name from messages where id = "'.$value_messages_id.'"';
-			$delete_status = tep_db_query($delete_status_sql);
-			$delete_status = tep_db_fetch_array($delete_status);
-			$all_delete_status_sql = 'select id, delete_status, file_name, sender_id from messages where sender_id = "'.$delete_status['sender_id'].'" and time = "'.$delete_status['time'].'"';
-			$all_delete_status = tep_db_query($all_delete_status_sql);
-			$count_num = '0';
-			while($all_delete_status_res = tep_db_fetch_array($all_delete_status)){
-				if($all_delete_status_res['delete_status'] == '0'){
-					tep_db_query('update messages set delete_status = "2" where id = "'.$all_delete_status_res['id'].'"');
-				}else{
-					tep_db_query('delete from messages where id = "'.$all_delete_status_res['id'].'"');
-				}
-			}
-			if(!tep_db_fetch_array(tep_db_query($all_delete_status_sql))){
-				if($delete_status['file_name'] != '' && file_exists('messages_upload/'.$delete_status['file_name'])){
-					$delete_res = unlink('messages_upload/'.$delete_status['file_name']);
-				}
-			}
-		}
-	}
-    }else{
-	if(!empty($_POST['messages_id'])){
-		foreach($_POST['messages_id'] as $value_messages_id){
-			$delete_status_sql = 'select delete_status, file_name, sender_id from messages where id = "'.$value_messages_id.'"';
-			$delete_status = tep_db_query($delete_status_sql);
-			$delete_status = tep_db_fetch_array($delete_status);
-			if($delete_status['delete_status'] == '0'){
-				tep_db_query('update messages set delete_status = "1", header_status = "1" where id = "'.$value_messages_id.'"');
-			}else{
-				tep_db_query('delete from messages where id = '.$value_messages_id);
-				if($delete_status['file_name'] != '' && file_exists('messages_upload/'.$delete_status['file_name'])){
-					$count_sent_sql = 'select id from messages where file_name = "'.$delete_status['file_name'].'" and sender_id = "'.$delete_status['sender_id'].'"';
-					$count_sent = tep_db_query($count_sent_sql);
-					$count_num = '0';
-					while($count_sent_res = tep_db_fetch_array($count_sent)){
-						$count_num++;
-					}
-					if($count_num == '0'){
-						$delete_res = unlink('messages_upload/'.$delete_status['file_name']);
-					}
-				}
-			}
-		}
-	}
-	
-    }
-    if(isset($_GET['status']) && $_GET['status'] != ''){
+  } 
+  if($_GET['action']== 'messages_action'){
+    //删除messages
+    if($_POST['messages_action_flag'] == 'delete'){
+      if(!empty($_POST['messages_id'])){
+
+        foreach($_POST['messages_id'] as $value_messages_id){
+
+          $file_name_query = tep_db_query("select file_name from messages where id='".$value_messages_id."'");
+          $file_name_array = tep_db_fetch_array($file_name_query);
+          tep_db_free_result($file_name_query);
+
+          if($file_name_array['file_name'] != ''){
+            $file_num_query = tep_db_query("select id from messages where file_name='".$file_name_array['file_name']."'");
+
+            if(tep_db_num_rows($file_num_query) == 1){
+
+              if($file_name_array['file_name'] != '' && file_exists('messages_upload/'.$file_name_array['file_name'])){
+	        unlink('messages_upload/'.$file_name_array['file_name']);
+	      }
+            }
+          }
+
+          tep_db_query("delete from messages where id='".$value_messages_id."'");
+        }
+      } 
+   }else if($_POST['messages_action_flag'] == 'read'){
+    //标记已读 
+     if(!empty($_POST['messages_id'])){
+
+       $messages_id_str = implode(',',$_POST['messages_id']); 
+       tep_db_query("update messages set read_status=1 where id in (".$messages_id_str.")");
+     } 
+   }else if($_POST['messages_action_flag'] == 'unread'){
+    //标记未读 
+     if(!empty($_POST['messages_id'])){
+
+       $messages_id_str = implode(',',$_POST['messages_id']); 
+       tep_db_query("update messages set read_status=0 where id in (".$messages_id_str.")");
+     } 
+   }else if($_POST['messages_action_flag'] == 'trash'){
+    //移动到垃圾箱
+     if(!empty($_POST['messages_id'])){
+
+       $messages_id_str = implode(',',$_POST['messages_id']); 
+       tep_db_query("update messages set original_state = trash_status where id in (".$messages_id_str.")");
+       tep_db_query("update messages set trash_status = '3' where id in (".$messages_id_str.")");
+     } 
+   }else if($_POST['messages_action_flag'] == 'recovery'){
+    //把垃圾箱的信息还原
+     if(!empty($_POST['messages_id'])){
+
+       $messages_id_str = implode(',',$_POST['messages_id']); 
+       tep_db_query("update messages set trash_status = original_state where id in (".$messages_id_str.")");
+     } 
+   }
+   if(isset($_GET['status']) && $_GET['status'] != ''){
 	$status_flag = true;
-    }else{
+   }else{
 	$status_flag = false;
-    }
-    if($_GET['messages_sort'] == ''){
+   }
+   if($_GET['messages_sort'] == ''){
 	if($_GET['page'] == ''){
 		tep_redirect(tep_href_link('messages.php'.($status_flag?'?status='.$_GET['status']:'')));
 	}else{
 		tep_redirect(tep_href_link('messages.php?page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 	}
-    }else{
+   }else{
 	if($_GET['page'] == ''){
 		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].($status_flag?'&status='.$_GET['status']:'')));
 	}else{
 		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
 	}
-    }
+   }
  }
  if($_GET['action']== 'new_messages'){
 //	die(var_dump($_GET['status']));
    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      //获取组的用户，原理是优先于级别最低组的用户
+     if($_POST['messages_type'] == 1){
+       if(mb_strlen($_POST['contents'])>20){
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['contents'],0,20,'utf-8').'...');
+       }else{
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['contents'],0,20,'utf-8'));
+       }
+       $from_user = tep_get_user_info($ocertify->auth_user);
+     }
      $users_id_array = array();
      foreach($_POST['select_groups'] as $groups_value){
      
@@ -164,8 +178,18 @@
 
 	$messages_file_name = '';
 	$messages_file_status = '0';
+        $f_src = '';
+        $f_name = '';
+        $f_type = '';
+        $file_arr = array();
 	if ($_FILES['messages_file']['error'] > 0){
 	}else{
+          if($_POST['messages_type'] == 1){
+            $f_src = $_FILES["messages_file"]["tmp_name"];
+            $f_name = $_FILES['messages_file']['name'];
+            $f_type = $_FILES['messages_file']['type'];
+            $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
+          }else{
 		$messages_file_name = base64_encode($_FILES['messages_file']['name'].'|||'.$ocertify->auth_user.'|||'.time());
 		$messages_file_status = '1';
 		if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"])){
@@ -173,6 +197,7 @@
       			$file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
       		}
+          }
 	}
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
@@ -193,19 +218,27 @@
 		}
 		$recipient_name = implode(';',$recipient_name);
         }
+      //判断是发信，还是存草稿箱
+      if($_POST['messages_flag'] == 0){
         if($_POST['messages_to'] == '2'){
           $groups_id_list = explode(',',$_POST['groups_id_list']);
           $groups_id_list = array_unique($groups_id_list);
           $groups_id_list = array_filter($groups_id_list);
           $groups_id_str = implode(',',$groups_id_list);
 	  foreach($users_list_array as $key => $value){
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($key);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
+            }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $key,
 					'reply_status' => '0',
-                                      	'content' => $_POST['contents'],
+                                      	'content' => tep_db_prepare_input($_POST['contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
@@ -213,32 +246,116 @@
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
 					'groups' => $groups_id_str,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
+            }
 	  //	var_dump($sql_data_array);
+          }
+          //保存到已发送邮箱中
+          if($_POST['messages_type'] != 1){
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => '0',
+                               	'content' => tep_db_prepare_input($_POST['contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+                                );
+          tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
           }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
-		$user_name_id = explode('|||',$value);
+	    $user_name_id = explode('|||',$value);
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($user_name_id[0]);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
+            }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $user_name_id[0],
 					'reply_status' => '0',
-                                      	'content' => $_POST['contents'],
+                                      	'content' => tep_db_prepare_input($_POST['contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
+            }
 	  //	var_dump($sql_data_array);
           } 
+          if($_POST['messages_type'] != 1){
+          //保存到已发送邮箱中
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => '0',
+                               	'content' => tep_db_prepare_input($_POST['contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+				'recipient_name' => $recipient_name,
+				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+                                );
+          tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
+          }
+        } 
+      }else if($_POST['messages_flag'] == 1){
+        $groups_id_list = explode(',',$_POST['groups_id_list']);
+        $groups_id_list = array_unique($groups_id_list);
+        $groups_id_list = array_filter($groups_id_list);
+        $groups_id_str = implode(',',$groups_id_list);
+        //保存到草稿邮箱中
+        $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => '0',
+                               	'content' => tep_db_prepare_input($_POST['contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '2',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+                                );
+        tep_db_perform('messages', $sql_data_array);
+        unset($sql_data_array); 
+      }
+        if($_POST['messages_type'] == 1){
+          foreach($file_arr as $file_info){
+            unlink($file_info['src']);
+          }
         }
 	if(isset($_GET['status']) && $_GET['status'] != ''){
 		$status_flag = true;
@@ -260,9 +377,46 @@
 	}
      }
   }  
-  if($_GET['action']== 'back_messages'){
+ if($_GET['action']== 'back_messages'){
+   if($_POST['messages_flag'] == 2 || $_POST['messages_flag'] == 3){
+
+     if($_POST['messages_flag'] == 2){
+       tep_db_query("update messages set original_state = trash_status where id='".$_GET['id']."'");
+       tep_db_query("update messages set trash_status = '3' where id='".$_GET['id']."'"); 
+     }else if($_POST['messages_flag'] == 3){
+        
+       tep_db_query("update messages set trash_status = original_state where id='".$_GET['id']."'"); 
+     }
+
+     if(isset($_GET['status']) && $_GET['status'] != ''){
+	$status_flag = true;
+     }else{
+	$status_flag = false;
+     }
+     if($_GET['messages_sort'] == ''){
+	if($_GET['page'] == ''){
+		tep_redirect(tep_href_link('messages.php'.($status_flag?'?status='.$_GET['status']:'')));
+	}else{
+		tep_redirect(tep_href_link('messages.php?page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
+	}
+     }else{
+	if($_GET['page'] == ''){
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].($status_flag?'&status='.$_GET['status']:'')));
+	}else{
+		tep_redirect(tep_href_link('messages.php?messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].($status_flag?'&status='.$_GET['status']:'')));
+	}
+     } 
+   }
 	//die(var_dump($_POST['selected_staff']));
     if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
+     if($_POST['messages_type'] == 1){
+       if(mb_strlen($_POST['back_contents'])>20){
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['back_contents'],0,20,'utf-8').'...');
+       }else{
+         $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['back_contents'],0,20,'utf-8'));
+       }
+       $from_user = tep_get_user_info($ocertify->auth_user);
+     }
      //获取组的用户，原理是优先于级别最低组的用户
      $users_id_array = array();
      foreach($_POST['select_groups'] as $groups_value){
@@ -300,8 +454,18 @@
 
 	$messages_file_name = '';
 	$messages_file_status = '0';
+        $f_src = '';
+        $f_name = '';
+        $f_type = '';
+        $file_arr = array();
 	if ($_FILES['messages_file_back']['error'] > 0){
 	}else{
+          if($_POST['messages_type'] == 1){
+            $f_src = $_FILES["messages_file_back"]["tmp_name"];
+            $f_name = $_FILES['messages_file_back']['name'];
+            $f_type = $_FILES['messages_file_back']['type'];
+            $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
+          }else{
 		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'].'|||'.$ocertify->auth_user.'|||'.time());
 		$messages_file_status = '1';
 		if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"])){
@@ -309,6 +473,7 @@
       			$file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
       		}
+          }
 	}
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
@@ -329,17 +494,25 @@
 		}
 		$recipient_name = implode(';',$recipient_name);
         }	
-	if($_GET['status'] == 'sent'){
+	if($_GET['status'] == 'sent' || $_GET['status'] == 'drafts'){
 		$reply_status = '0';
 	}else{
 		$reply_status = '1';
         }
+      //判断是发信、还是存草稿箱
+      if($_POST['messages_flag'] == 0){
         if($_POST['messages_to'] == '2'){
           $groups_id_list = explode(',',$_POST['groups_id_list']);
           $groups_id_list = array_unique($groups_id_list);
           $groups_id_list = array_filter($groups_id_list);
           $groups_id_str = implode(',',$groups_id_list);
 	  foreach($users_list_array as $key => $value){
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($key);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['back_contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
+            }else{
 		$user_name_id = explode('|||',$value);
 		$sql_data_array = array(
 				     	'read_status' => '0',
@@ -347,7 +520,7 @@
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $key,
 					'reply_status' => $reply_status,
-                                      	'content' => $_POST['back_contents'],
+                                      	'content' => tep_db_prepare_input($_POST['back_contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
@@ -355,32 +528,160 @@
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
 					'groups' => $groups_id_str,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
+            }
+          }
+          //保存到已发送邮箱中
+          if($_POST['messages_type'] != 1){
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => $reply_status,
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+                               );
+       	  tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
           }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
+            if($_POST['messages_type'] == 1){
+              $send_user = tep_get_user_info($user_name_id[0]);
+              if($send_user['email']!=''){
+              tep_mail_by_file($send_user['name'],$send_user['email'],$send_subject,tep_db_prepare_input($_POST['back_contents']), $from_user['name'],$from_user['email'],$file_arr);
+              }
+            }else{
 		$sql_data_array = array(
 				     	'read_status' => '0',
 					'mark' => $pic_icon_str,
 					'sender_id' => $ocertify->auth_user,
 					'recipient_id' => $user_name_id[0],
 					'reply_status' => $reply_status,
-                                      	'content' => $_POST['back_contents'],
+                                      	'content' => tep_db_prepare_input($_POST['back_contents']),
 					'attach_file' => $messages_file_status,
 					'file_name' => $messages_file_name,
 					'opt' => '0',
 					'sender_name' => $_SESSION['user_name'],
 					'time' => date("Y/m/d H:i:s"),
 					'recipient_name' => $recipient_name,
+					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
+            }
           } 
+          if($_POST['messages_type'] != 1){
+          //保存到已发送邮箱中
+          $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => $reply_status,
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+				'recipient_name' => $recipient_name,
+				'trash_status' => '1',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+                               );
+       	  tep_db_perform('messages', $sql_data_array);
+          unset($sql_data_array);
+          }
+        } 
+        if($_GET['status'] == 'drafts'){
+
+          tep_db_query("delete from messages where id='".$_GET['id']."' and trash_status='2'");
+        }
+      }else if($_POST['messages_flag'] == 1){
+        //保存到草稿箱
+        $groups_id_list = explode(',',$_POST['groups_id_list']);
+        $groups_id_list = array_unique($groups_id_list);
+        $groups_id_list = array_filter($groups_id_list);
+        $groups_id_str = implode(',',$groups_id_list); 
+        if($messages_file_status == '0' && $messages_file_name == ''){
+
+          $messages_file_query = tep_db_query("select attach_file,file_name from messages where id='".$_GET['id']."'");
+          $messages_file_array = tep_db_fetch_array($messages_file_query);
+          tep_db_free_result($messages_file_query);
+          $messages_file_status = $messages_file_array['attach_file'];   
+          $messages_file_name = $messages_file_array['file_name'];
+        }
+        $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+				'reply_status' => '0',
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '2',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+                               );
+       	tep_db_perform('messages', $sql_data_array);
+        unset($sql_data_array);
+      }else if($_POST['messages_flag'] == 4){
+        //更新数据到草稿箱
+        $groups_id_list = explode(',',$_POST['groups_id_list']);
+        $groups_id_list = array_unique($groups_id_list);
+        $groups_id_list = array_filter($groups_id_list);
+        $groups_id_str = implode(',',$groups_id_list); 
+        if($messages_file_status == '0' && $messages_file_name == ''){
+
+          $messages_file_query = tep_db_query("select attach_file,file_name from messages where id='".$_GET['id']."'");
+          $messages_file_array = tep_db_fetch_array($messages_file_query);
+          tep_db_free_result($messages_file_query);
+          $messages_file_status = $messages_file_array['attach_file'];   
+          $messages_file_name = $messages_file_array['file_name'];
+        }
+        $sql_data_array = array(
+			     	'read_status' => '0',
+				'mark' => $pic_icon_str,
+				'sender_id' => $ocertify->auth_user,
+				'recipient_id' => $ocertify->auth_user,
+                               	'content' => tep_db_prepare_input($_POST['back_contents']),
+				'attach_file' => $messages_file_status,
+				'file_name' => $messages_file_name,
+				'opt' => '0',
+				'sender_name' => $_SESSION['user_name'],
+				'time' => date("Y/m/d H:i:s"),
+                                'recipient_name' => $recipient_name,
+                                'groups' => $groups_id_str,
+				'trash_status' => '2',
+				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+                               );
+       	tep_db_perform('messages', $sql_data_array, 'update', 'id='.$_GET['id']);
+        unset($sql_data_array); 
+      }
+        if($_POST['messages_type'] == 1){
+          foreach($file_arr as $file_info){
+            unlink($file_info['src']);
+          }
         }
 	if($reply_status == '1'){
 		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
@@ -417,6 +718,29 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+function arrayToJson(o) {
+  var r = [];
+  if (typeof o == "string") return "\"" + o.replace(/([\'\"\\])/g,
+      "\\$1").replace(/(\n)/g, "\\n").replace(/(\r)/g, "\\r").replace(/(\t)/g,
+        "\\t") + "\"";
+  if (typeof o == "object") {
+    if (!o.sort) {
+      for (var i in o)
+        r.push(i + ":" + arrayToJson(o[i]));
+      if (!!document.all && !/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/.test(o.toString)) {
+        r.push("toString:" + o.toString.toString());
+      }
+      r = "{" + r.join() + "}";
+    } else {
+      for (var i = 0; i < o.length; i++) {
+        r.push(arrayToJson(o[i]));
+      }
+      r = "[" + r.join() + "]";
+    }
+    return r;
+  }
+  return o.toString();
+}
 var o_submit_single = true;
 $(document).ready(function() {
   <?php //监听按键?> 
@@ -463,7 +787,7 @@ $(document).ready(function() {
 			window.location.href="messages.php?status=sent";
 			break;
 		case '2':
-			window.location.href="messages.php?status=draft";
+			window.location.href="messages.php?status=drafts";
 			break;
 		case '3':
 			window.location.href="messages.php?status=trash";
@@ -583,15 +907,26 @@ function all_select_messages(messages_str){
 	}
 }
 
-function delete_select_messages(messages_str, c_permission){
+function action_select_messages(action){
         sel_num = 0;
 	$('input[name="messages_id[]"]').each(function() {
 		if ($(this).attr("checked")) {
 			sel_num = 1;
 		}
-	});	
+        });	
+        if(action == 'delete'){
+          var messages_action_confirm = '<?php echo TEXT_DEL_NEWS;?>';
+        }else if(action == 'read'){
+          var messages_action_confirm = '<?php echo MESSAGE_READ_CONFIRM;?>';
+        }else if(action == 'unread'){
+          var messages_action_confirm = '<?php echo MESSAGE_UNREAD_CONFIRM;?>';
+        }else if(action == 'trash'){
+          var messages_action_confirm = '<?php echo MESSAGE_TRASH_CONFIRM;?>';
+        }else if(action == 'recovery'){
+          var messages_action_confirm = '<?php echo MESSAGE_RECOVERY_CONFIRM;?>';
+        }
         if (sel_num == 1) {
-           if (confirm('<?php echo TEXT_DEL_NEWS;?>')) {
+           if (confirm(messages_action_confirm)) {
 		document.forms.messages_checkbox.submit();	
            }else{
               document.getElementsByName('messages_action')[0].value = 0;
@@ -601,14 +936,14 @@ function delete_select_messages(messages_str, c_permission){
             alert('<?php echo TEXT_NEWS_MUST_SELECT;?>'); 
          }
 }
-function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name){
+function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sort,messages_sort_type,sender_name,messages_sta,recipient_name,groups,mark,messages_type){
  var self_page = "<?php echo $_SERVER['PHP_SELF'];?>"
  //if(latest_messages_id >0){
 	//$('#read_status_'+latest_messages_id).attr('src', 'images/icons/green_right.gif');
  //}
  $.ajax({
  url: 'ajax.php?&action=new_messages',
- data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name} ,
+   data: {page:page,latest_messages_id:latest_messages_id,sender_id:sender_id,messages_sort:messages_sort,messages_sort_type:messages_sort_type,sender_name:sender_name,messages_sta:messages_sta,recipient_name:recipient_name,groups:groups,mark:mark,messages_type:messages_type} ,
  dataType: 'text',
  async : false,
  success: function(data){
@@ -688,10 +1023,23 @@ function hidden_info_box(){
    o_submit_single = true;
 }
 <?php //选择动作?>
-function messages_change_action(r_value, r_str) {
- if (r_value == '1') {
-     delete_select_messages(r_str, '<?php echo $ocertify->npermission;?>');
-   }
+function messages_change_action(r_value) {
+  if (r_value == '1') {
+     $("#messages_action_flag_id").val('delete');
+     action_select_messages('delete');
+  }else if(r_value == '2'){
+     $("#messages_action_flag_id").val('read');
+     action_select_messages('read');
+  }else if(r_value == '3'){
+     $("#messages_action_flag_id").val('unread');
+     action_select_messages('unread');
+  }else if(r_value == '4'){
+     $("#messages_action_flag_id").val('trash');
+     action_select_messages('trash');
+  }else if(r_value == '5'){
+     $("#messages_action_flag_id").val('recovery');
+     action_select_messages('recovery');
+  }
 }
 <?php //动作链接?>
 function toggle_news_action(news_url_str) 
@@ -1100,10 +1448,11 @@ function delete_select_user(){
 		}
 	});
 }
-function messages_check(is_back){
+function messages_check(is_back,flag){
 	var error_status_select = 0;
 	var error_status_contents = 0;
 	var error_status_back_contents = 1;
+	var messages_type = $('input:radio[name="messages_type"]:checked').val();
         var reg = /^\s*$/g;
         var messages_to = $('input:radio[name="messages_to"]:checked').val();
 	  
@@ -1146,8 +1495,55 @@ function messages_check(is_back){
 		$('#messages_back_must_write').css('display','');
 	}
 	if(error_status_select == 1 && error_status_contents == 1 && error_status_back_contents == 1){
-		console.log('ok');
-		document.forms.new_latest_messages.submit();
+                console.log('ok');
+                if(flag == 1){
+                  $("#messages_flag_id").val('1'); 
+                }else if(flag == 2){
+                  $("#messages_flag_id").val('2'); 
+                }else if(flag == 3){
+                  $("#messages_flag_id").val('3'); 
+                }else if(flag == 4){
+                  $("#messages_flag_id").val('4'); 
+                }
+                if(messages_type == 1&&flag==0){
+          var select_staff = new Array;
+	  $('input[name="selected_staff[]"]').each(function() {
+		if($(this).attr("checked")) {
+                  select_staff.push($(this).val());
+		}
+          });
+          var select_group = new Array;
+	  $('input[name="select_groups[]"]').each(function() {
+		if($(this).attr("checked")) {
+                  select_group.push($(this).val());
+		}
+          }); 
+          var valadate_type = 'user';
+          if(messages_to == 2){
+            valadate_type = 'group';
+            select_json = arrayToJson(select_group); 
+          }else{
+            select_json = arrayToJson(select_staff); 
+          }
+          var data='';
+       $.ajax({
+         async:false,
+         url: 'ajax.php?action=valadate_user_email&type='+valadate_type,
+         type: 'POST',
+         data:{"select_json":select_json},
+         success: function (data){
+           if(data!=''){
+             if(confirm(data)){
+                document.forms.new_latest_messages.submit();
+             }
+             }else{
+                document.forms.new_latest_messages.submit();
+}
+           }
+         });
+                }else{
+                document.forms.new_latest_messages.submit();
+                }
 	}
 }
 function file_cancel(obj){
@@ -1245,7 +1641,7 @@ require("includes/note_js.php");
 			<?php
 				if($_GET['status'] == 'sent'){
 					echo HEADING_TITLE_SENT;
-				}else if($_GET['status'] == 'draft'){
+				}else if($_GET['status'] == 'drafts'){
 					echo HEADING_TITLE_DRAFT;
 				}else if($_GET['status'] == 'trash'){
 					echo HEADING_TITLE_TRASH;
@@ -1253,13 +1649,16 @@ require("includes/note_js.php");
 					echo HEADING_TITLE; 
 				}
 			?>
-		<div style="float:right">
-			<select id="messages_select_status">
-  				<option <?php if($_GET['status'] != 'sent' && $_GET['status'] != 'draft' && $_GET['status'] != 'trash'){echo 'selected';} ?>  value ="0"><?php echo MESSAGE_SELECT_RECEIVING; ?></option>
+                <div style="float:right">
+                <form name="search_messages" method="get" action="messages.php">
+                <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>"><input type="submit" value="<?php echo IMAGE_SEARCH;?>"><input type="hidden" name="status" value="<?php echo $_GET['status'];?>">
+			<select id="messages_select_status" name="messages_status_flag">
+  				<option <?php if($_GET['status'] != 'sent' && $_GET['status'] != 'drafts' && $_GET['status'] != 'trash'){echo 'selected';} ?>  value ="0"><?php echo MESSAGE_SELECT_RECEIVING; ?></option>
   				<option <?php if($_GET['status'] == 'sent'){echo 'selected';}?>  value ="1"><?php echo MESSAGE_SELECT_SENT; ?></option>
-  				<option <?php if($_GET['status'] == 'draft'){echo 'selected';}?>  value ="2"><?php echo MESSAGE_SELECT_DRAFT; ?></option>
+  				<option <?php if($_GET['status'] == 'drafts'){echo 'selected';}?>  value ="2"><?php echo MESSAGE_SELECT_DRAFT; ?></option>
   				<option <?php if($_GET['status'] == 'trash'){echo 'selected';}?>  value ="3"><?php echo MESSAGE_SELECT_TRASH; ?></option>
-			</select>
+                        </select>
+                </form>
 		</div>
 		</td>
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
@@ -1298,7 +1697,7 @@ require("includes/note_js.php");
 			}
 		}
 		
-              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=delete_messages&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['status'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"'); 
+              $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=messages_action&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['status'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"').'<input type="hidden" id="messages_action_flag_id" name="messages_action_flag" value="delete">'; 
                 if($messages_sort == '' || $messages_sort != 'read_status'){ 
 			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'</a>'; 
 		}else{
@@ -1404,9 +1803,7 @@ require("includes/note_js.php");
                $messages_table_row = array();
                $messages_title_row = array();
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
-               if($_GET['status'] != 'sent'){
-	       	$messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
-	       }
+	       $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_mark);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_from);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_to);
@@ -1427,16 +1824,65 @@ require("includes/note_js.php");
 	$latest_messages_query_raw = '
         	select * 
         	from messages where sender_id = "'.$ocertify->auth_user.'" 
-		and messages_status = "0" 
-		and trash_status in ("0","1") 
-		and delete_status in ("0","1") group by time order by '.$messages_sort_sql.' '.$messages_sort_type;
+		and trash_status="1" 
+                order by '.$messages_sort_sql.' '.$messages_sort_type;
+    }else if($_GET['status'] == 'drafts'){
+      $latest_messages_query_raw = '
+        	select * 
+        	from messages where sender_id = "'.$ocertify->auth_user.'" 
+		and trash_status="2" 
+                order by '.$messages_sort_sql.' '.$messages_sort_type;
+    }else if($_GET['status'] == 'trash'){
+       $latest_messages_query_raw = '
+        	select * 
+        	from messages where (sender_id = "'.$ocertify->auth_user.'" or recipient_id = "'.$ocertify->auth_user.'") 
+		and trash_status="3" 
+                order by '.$messages_sort_sql.' '.$messages_sort_type;
     }else{
     	$latest_messages_query_raw = '
         	select * 
         	from messages where recipient_id = "'.$ocertify->auth_user.'" 
-		and messages_status = "0" 
-		and trash_status in ("0","2") 
-		and delete_status in ("0","2") order by '.$messages_sort_sql.' '.$messages_sort_type;
+		and trash_status="0" 
+		order by '.$messages_sort_sql.' '.$messages_sort_type;
+    }
+    //检索内容
+    if(isset($_GET['keywords'])){
+
+      $keywords = tep_db_prepare_input($_GET['keywords']);
+      $keywords = explode(" ",$keywords);
+      $key_search = '';
+      $key_groups = '';
+      foreach($keywords as $key => $key_value){
+        $key_search .= 'content like \'%'.$key_value.'%\' or sender_name like \'%'.$key_value.'%\' or recipient_name like \'%'.$key_value.'%\' or ';
+        $key_groups .= 'name like \'%'.$key_value.'%\' or ';
+      }
+      $key_search = mb_substr($key_search,0,-4);
+      $key_groups = mb_substr($key_groups,0,-4);
+      //groups name 检索
+      $groups_id_array = array();
+      $groups_name_query = tep_db_query("select id from ".TABLE_GROUPS." where ".$key_groups);
+      while($groups_name_array = tep_db_fetch_array($groups_name_query)){
+
+        $groups_id_array[] = $groups_name_array['id'];
+      }
+      tep_db_free_result($groups_name_query);
+      rsort($groups_id_array);
+      $groups_id_string = '';
+      if(!empty($groups_id_array)){
+
+        $groups_id_string = ' or ';
+      }
+      foreach($groups_id_array as $gs_vlaue){
+        $groups_id_string .= 'groups like "'.$gs_vlaue.'" or groups like "'.$gs_vlaue.',%" or groups like "%,'.$gs_vlaue.'" or groups like "%,'.$gs_vlaue.',%" or ';
+      }
+      $groups_id_string = mb_substr($groups_id_string,0,-4);
+      $messages_status_flag = tep_db_prepare_input($_GET['messages_status_flag']); 
+      $latest_messages_query_raw = '
+        	select * 
+        	from messages where recipient_id = "'.$ocertify->auth_user.'" 
+                and trash_status="'.$messages_status_flag.'" 
+                and ('.$key_search.$groups_id_string.')
+                order by '.$messages_sort_sql.' '.$messages_sort_type;
     }
     //获取mark 图标信息
     $icon_list_array = array();
@@ -1448,6 +1894,11 @@ require("includes/note_js.php");
     tep_db_free_result($icon_query);
     $latest_messages_split = new splitPageResults($messages_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_messages_query_raw, $latest_messages_query_numrows);
     $latest_messages_query = tep_db_query($latest_messages_query_raw);
+    if(tep_db_num_rows($latest_messages_query) == 0){
+          $messages_data_row[] = array('align' => 'left','params' => 'colspan="7" nowrap="nowrap"', 'text' => '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>');
+                    
+          $messages_table_row[] = array('params' => '', 'text' => $messages_data_row);  
+    }
     while ($latest_messages = tep_db_fetch_array($latest_messages_query)) {
 	$rows++;
 	$even = 'dataTableSecondRow';
@@ -1470,13 +1921,11 @@ require("includes/note_js.php");
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_checkbox		
 	);
-   if($_GET['status'] != 'sent'){
 	$messages_read_status = $latest_messages['read_status']==0 ? '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/gray_right.gif" border="0" alt="'.UNREAD_STATUS.'" title="'.UNREAD_STATUS.'">' : '<img onclick="change_read_status(this,'.$latest_messages['id'].')" id="read_status_'.$latest_messages['id'].'" src="images/icons/green_right.gif" border="0" alt="'.READ_STATUS.'" title="'.READ_STATUS.'">';
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_read_status
 	);
-   }
 	$mark_html = '';
 	if($latest_messages['mark'] != ''){
 		$mark_array = explode(',',$latest_messages['mark']);
@@ -1542,7 +1991,7 @@ require("includes/note_js.php");
         $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.$contents_text.'" title="'.$contents_text.'">'.$contents_text.'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.str_replace('"',"&quot;",$contents_text).'" title="'.str_replace('"',"&quot;",$contents_text).'">'.$contents_text.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
@@ -1566,7 +2015,7 @@ require("includes/note_js.php");
         $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\')">'.$messages_opt.'</a>'
+		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\',\''.$latest_messages['groups'].'\',\''.$latest_messages['mark'].'\',\''.$latest_messages['messages_type'].'\')">'.$messages_opt.'</a>'
 	);
 	$messages_table_row[] = array('params' => $messages_params, 'text' => $messages_info);
     }
@@ -1582,8 +2031,17 @@ require("includes/note_js.php");
 <tr>                 
                     <td valign="top" class="smallText">
                     <?php 
-                    echo '<select name="messages_action" onchange="messages_change_action(this.value, \'messages_id[]\');">';
+                    echo '<select name="messages_action" onchange="messages_change_action(this.value);">';
                     echo '<option value="0">'.TEXT_REVIEWS_SELECT_ACTION.'</option>';   
+                    echo '<option value="2">'.READ_STATUS_ACTION.'</option>';
+                    echo '<option value="3">'.UNREAD_STATUSS_ACTION.'</option>';
+                    if(!isset($_GET['status']) || $_GET['status'] == 'sent'){
+                      
+                      echo '<option value="4">'.MESSAGE_TRASH_SAVE.'</option>';
+                    }
+                    if($_GET['status'] == 'trash'){
+                      echo '<option value="5">'.MESSAGE_RECOVERY.'</option>';
+                    }
                     echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
                     echo '</select>';
                     ?> 
