@@ -13617,3 +13617,12 @@ function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_te
   $message->build_message();
   $message->send($to_name, $to_email_address, $from_email_name, $from_email_address, $email_subject,'','mail',$from_email_address);
 }
+function tep_get_messages_file($mid){
+  $sql = "select * from message_file where message_id='".$mid."'";
+  $query = tep_db_query($sql);
+  $res = array();
+  while($row = tep_db_fetch_array($query)){
+    $res[] = $row;
+  }
+  return $res;
+}

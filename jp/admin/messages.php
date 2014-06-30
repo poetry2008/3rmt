@@ -63,21 +63,23 @@
 
         foreach($_POST['messages_id'] as $value_messages_id){
 
-          $file_name_query = tep_db_query("select file_name from messages where id='".$value_messages_id."'");
-          $file_name_array = tep_db_fetch_array($file_name_query);
+          $file_name_query = tep_db_query("select name from message_file where message_id='".$value_messages_id."'");
+          while($file_name_array = tep_db_fetch_array($file_name_query)){
           tep_db_free_result($file_name_query);
 
-          if($file_name_array['file_name'] != ''){
-            $file_num_query = tep_db_query("select id from messages where file_name='".$file_name_array['file_name']."'");
+          if($file_name_array['name'] != ''){
+            $file_num_query = tep_db_query("select id from message_file where name='".$file_name_array['name']."'");
 
             if(tep_db_num_rows($file_num_query) == 1){
 
-              if($file_name_array['file_name'] != '' && file_exists('messages_upload/'.$file_name_array['file_name'])){
-	        unlink('messages_upload/'.$file_name_array['file_name']);
+              if($file_name_array['name'] != '' && file_exists('messages_upload/'.$file_name_array['name'])){
+	        unlink('messages_upload/'.$file_name_array['name']);
 	      }
             }
           }
+          }
 
+          tep_db_query("delete from message_file where message_id='".$value_messages_id."'");
           tep_db_query("delete from messages where id='".$value_messages_id."'");
         }
       } 
@@ -178,27 +180,32 @@
 
 	$messages_file_name = '';
 	$messages_file_status = '0';
+        $file_arr = array();
+        $save_file_arr = array();
+        foreach($_FILES['messages_file']['name'] as $fk => $fv){
         $f_src = '';
         $f_name = '';
         $f_type = '';
-        $file_arr = array();
-	if ($_FILES['messages_file']['error'] > 0){
+	if ($_FILES['messages_file']['error'][$fk] > 0){
+          continue;
 	}else{
           if($_POST['messages_type'] == 1){
-            $f_src = $_FILES["messages_file"]["tmp_name"];
-            $f_name = $_FILES['messages_file']['name'];
-            $f_type = $_FILES['messages_file']['type'];
+            $f_src = $_FILES["messages_file"]["tmp_name"][$fk];
+            $f_name = $_FILES['messages_file']['name'][$fk];
+            $f_type = $_FILES['messages_file']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
           }else{
-		$messages_file_name = base64_encode($_FILES['messages_file']['name'].'|||'.$ocertify->auth_user.'|||'.time());
+		$messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
 		$messages_file_status = '1';
-		if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"])){
+		if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"][$fk])){
       		}else{
-      			$file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"],"messages_upload/" . $messages_file_name);
+      			$file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
       		}
+                $save_file_arr[] = $messages_file_name;
           }
 	}
+        }
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
 	}else{
@@ -249,6 +256,15 @@
 					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
+                $messages_id = tep_db_insert_id();
+                foreach($save_file_arr as $sk => $save_file){
+                  $save_data_array = array(
+                        'message_id' => $messages_id,
+                        'name' => $save_file,
+                        'file_index' => $sk
+                      );
+         	  tep_db_perform('message_file', $save_data_array);
+                }
 		unset($sql_data_array);
             }
 	  //	var_dump($sql_data_array);
@@ -273,7 +289,15 @@
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                 );
           tep_db_perform('messages', $sql_data_array);
-          unset($sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
           }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
@@ -300,6 +324,15 @@
 					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
 		unset($sql_data_array);
             }
 	  //	var_dump($sql_data_array);
@@ -323,6 +356,15 @@
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                 );
           tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
           unset($sql_data_array);
           }
         } 
@@ -350,6 +392,15 @@
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                 );
         tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
         unset($sql_data_array); 
       }
         if($_POST['messages_type'] == 1){
@@ -454,27 +505,31 @@
 
 	$messages_file_name = '';
 	$messages_file_status = '0';
+        $file_arr = array();
+        $save_file_arr = array();
+        foreach($_FILES['messages_file_back']['name'] as $fk => $fv){
         $f_src = '';
         $f_name = '';
         $f_type = '';
-        $file_arr = array();
-	if ($_FILES['messages_file_back']['error'] > 0){
+	if ($_FILES['messages_file_back']['error'][$fk] > 0){
 	}else{
           if($_POST['messages_type'] == 1){
-            $f_src = $_FILES["messages_file_back"]["tmp_name"];
-            $f_name = $_FILES['messages_file_back']['name'];
-            $f_type = $_FILES['messages_file_back']['type'];
+            $f_src = $_FILES["messages_file_back"]["tmp_name"][$fk];
+            $f_name = $_FILES['messages_file_back']['name'][$fk];
+            $f_type = $_FILES['messages_file_back']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
           }else{
-		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'].'|||'.$ocertify->auth_user.'|||'.time());
+		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
 		$messages_file_status = '1';
-		if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"])){
+		if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"][$fk])){
       		}else{
-      			$file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"],"messages_upload/" . $messages_file_name);
+      			$file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
       		}
+                $save_file_arr[] = $messages_file_name;
           }
 	}
+        }
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
 	}else{
@@ -531,6 +586,15 @@
 					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
             }
@@ -555,6 +619,15 @@
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	  tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
           unset($sql_data_array);
           }
         }else{
@@ -582,6 +655,15 @@
 					'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
          	tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
 		unset($sql_data_array);
 	  //	var_dump($sql_data_array);
             }
@@ -605,6 +687,15 @@
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	  tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
           unset($sql_data_array);
           }
         } 
@@ -644,6 +735,15 @@
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	tep_db_perform('messages', $sql_data_array);
+          $messages_id = tep_db_insert_id();
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
         unset($sql_data_array);
       }else if($_POST['messages_flag'] == 4){
         //更新数据到草稿箱
@@ -676,6 +776,15 @@
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
                                );
        	tep_db_perform('messages', $sql_data_array, 'update', 'id='.$_GET['id']);
+        $messages_id = $_GET['id'];
+          foreach($save_file_arr as $sk => $save_file){
+            $save_data_array = array(
+               'message_id' => $messages_id,
+               'name' => $save_file,
+               'file_index' => $sk
+             );
+          tep_db_perform('message_file', $save_data_array);
+          }
         unset($sql_data_array); 
       }
         if($_POST['messages_type'] == 1){
@@ -718,6 +827,19 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+function add_email_file(b_id){
+  var index = 0;
+  var last_id = b_id;
+  $("input[name='"+b_id+"[]']").each( 
+      function(){
+      index++;
+      last_id = $(this).attr('id');
+      }
+      );
+  var new_id = b_id+'_'+index;
+  var add_div_str = '<div id="'+new_id+'_boder"><input type="file" id="'+new_id+'" name="'+b_id+'[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\''+new_id+'\')">'+'<?php echo DELETE_STAFF;?>'+'</a>';
+  $('#'+last_id+'_boder').after(add_div_str);
+}
 function arrayToJson(o) {
   var r = [];
   if (typeof o == "string") return "\"" + o.replace(/([\'\"\\])/g,
@@ -1547,7 +1669,10 @@ function messages_check(is_back,flag){
 	}
 }
 function file_cancel(obj){
-	$(obj).prev().attr('value','');
+	$('#'+obj).attr('value','');
+        if(obj!='messages_file'&&obj!='messages_file_back'){
+	  $('#'+obj+'_boder').remove();
+        }
 }
 function change_read_status(obj,id){
 	$.post(
@@ -1995,12 +2120,16 @@ require("includes/note_js.php");
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
-		$messages_file_name = $latest_messages['file_name'];
+          $messages_attach_file = '';
+          $file_list_arr = tep_get_messages_file($latest_messages['id']);
+          foreach($file_list_arr as $file_info){
+		$messages_file_name = $file_info['name'];
 		if(file_exists('messages_upload/'.$messages_file_name)){
 			$messages_file_name = base64_decode($messages_file_name);
 			$messages_file_name = explode('|||',$messages_file_name);
-			$messages_attach_file = '<a href="message_file_download.php?file_id='.$latest_messages['file_name'].'"><img src="images/icons/attach.png" border="0" alt="'.$messages_file_name[0].'" title="'.$messages_file_name[0].'"></a>';
+			$messages_attach_file .= '<a href="message_file_download.php?file_id='.$file_info['name'].'"><img src="images/icons/attach.png" border="0" alt="'.$messages_file_name[0].'" title="'.$messages_file_name[0].'"></a>';
 		}	
+          }
         }else{
 	  $messages_attach_file = '';
         }
