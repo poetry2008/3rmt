@@ -645,29 +645,10 @@ if (isset($_GET['action']) && $_GET['action']) {
           tep_db_query($update_sql);
         }
       }
-      
-      //如果SESSION存在的话，就读取SESSION的数据，不存在，则读取POST的
-      if(isset($_SESSION['carttags_id_list_array']) && !empty($_SESSION['carttags_id_list_array'])){
-
-        if($_GET['pID']){
-
-          $products_id_flag = $_GET['pID'];
-        }else{
-
-          if($_GET['cPath']){
-
-            $products_id_flag = $_GET['cPath'];
-          }else{
-            $products_id_flag = 0;
-          } 
-        }
-
-		if(isset($_SESSION['carttags_id_list_array'][$products_id_flag])&& !empty($_SESSION['carttags_id_list_array'][$products_id_flag])){
-			$_POST['carttags'] = $_SESSION['carttags_id_list_array'][$products_id_flag];
-		}
-        unset($_SESSION['carttags_id_list_array'][$products_id_flag]);
-      } 
-      if ($s_site_id == '0') {
+	  if($_POST['tep_check_carrtags']==2){
+	  $_POST['carttags'] =  $_POST['carttags_t'];
+	  } 
+      if (isset($_POST['carttags']) && $s_site_id == '0') {
         tep_db_query("delete from products_to_carttag where products_id='".$products_id."'");
         foreach($_POST['carttags'] as $ck => $ct){
           tep_db_perform('products_to_carttag', array(
@@ -695,25 +676,10 @@ if (isset($_GET['action']) && $_GET['action']) {
       if ($s_site_id == 0)  {
         tep_db_query("delete from ".TABLE_PRODUCTS_TO_TAGS." where products_id='".$products_id."'"); 
       } 
-      //如果SESSION存在的话，就读取SESSION的数据，不存在，则读取POST的
-      if(isset($_SESSION['pid_tags_id_list_array']) && !empty($_SESSION['pid_tags_id_list_array'])){
-
-        if($_GET['pID']){
-
-          $products_id_flag = $_GET['pID'];
-        }else{
-
-          if($_GET['cPath']){
-
-            $products_id_flag = $_GET['cPath'];
-          }else{
-            $products_id_flag = 0;
-          } 
-        }
-
-        $_POST['tags'] = $_SESSION['pid_tags_id_list_array'][$products_id_flag];
-        unset($_SESSION['pid_tags_id_list_array'][$products_id_flag]);
-      }
+	  if($_POST['tep_check_tags'] == 2){
+	  $_POST['tags']=$_POST['tags_t'];
+	  }
+	  
       if ($_POST['tags']) {
         $sql = "insert into ".TABLE_PRODUCTS_TO_TAGS."(products_id, tags_id) values "; 
         foreach ($_POST['tags'] as $key => $t) {
@@ -1117,6 +1083,13 @@ if (isset($_GET['action']) && $_GET['action']) {
     echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\' id="relate_info"');
     exit;
     break;
+	case 'get_result_products':
+    foreach(tep_get_cart_products($_GET['products_id'],$_GET['tags_id'],$_GET['buyflag']) as $p){
+      $p = tep_get_product_by_id($p,0,4);
+      echo $p['products_name'] ;
+    }
+	exit;
+   break;	
     case 'get_cart_products':
     echo '<html><head>'; 
     echo '<meta http-equiv="Content-Type" content="text/html; charset='.CHARSET.'">';
@@ -2137,6 +2110,8 @@ $belong = str_replace('0_','',$belong);
 	var del_confirm = '<?php echo TEXT_PRODUCT_IMAGE_DEL_CONFIRM;?>';
 	var clear_image_href_link = '<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&pID='.$_GET['pID'].'&action='.$_GET['action'].'&mode=p_delete&s_site_id='.$s_site_id) ; ?>';
 	var clear_c_image_href_link = '<?php echo tep_href_link('categories.php?cPath='.$_GET['cPath'].'&cID='.$_GET['cID'].'&c_action='.$_GET['action'].'&mode=ca_delete&s_site_id='.$s_site_id) ; ?>';
+	var select_one_tag = '<?php echo SELECT_ONE_TAG;?>'
+	var no_related_products ='<?php echo NO_RELATED_PRODUCTS;?>'
 <?php
 //获得页面最大的z-index值 
   $z_index = '1';
@@ -2444,7 +2419,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <input type="hidden" name="products_id" value="<?php echo $_GET['pID'];?>">
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
-                <td class="main" valign="top"><?php echo $_GET['s_site_id']?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></td>
+                <td class="main" valign="top"><?php echo (isset($_GET['s_site_id']))?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></td>
                 <td class="main" align="right"><?php 
                 $delete_action = FILENAME_CATEGORIES.'?cPath=' .$cPath . '&page='.$_GET['page'].'&action=delete_product_confirm'.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '');
                 if(isset($_GET['show_type'])&&$_GET['show_type']=='one'){
@@ -2479,7 +2454,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
                   ?>
                     <tr>
-                    <td class="main" valign="top" width="10%"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
+                    <td class="main" valign="top" width="15%" style="min-width:155px;"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
                     <td class="main" width="60%"><?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] .']', (isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]):(isset($pInfo->products_id)?tep_get_products_name($pInfo->products_id,$languages[$i]['id'],$site_id, true):'')),'id="pname" class="td_input"').'&nbsp;</td><td valign="top"><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
                     </tr>
                     <?php
@@ -2580,7 +2555,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <legend style="color:#FF0000 "><?php echo '共用基本情報';?></legend>
                 <table width="100%">
                 <tr>
-                <td class="main" width="10%"  valign="top"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
+                <td class="main" width="15%" style="min-width:155px;"  valign="top"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
                 <td class="main" width="60%"><?php echo tep_draw_input_field('products_model', isset($pInfo->products_model)?$pInfo->products_model:'', ($disabled_flag ? 'class="readonly td_readonly" readonly' : 'class="td_input"')).'</span>&nbsp;</td><td><font color="#FF0000">'.TEXT_PRODUCT_SEARCH_READ.'</font>'; ?></td>
                 </tr>
                 <tr>
@@ -2804,7 +2779,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               tep_db_free_result($products_shipping_query);
               $products_shipping_time .= '</select>';
               ?>
-                <td valign="top" width="10%"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
+                <td valign="top" width="15%" style="min-width:155px;"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
                 <td width="60%"><?php echo $products_shipping_time; ?></td>
                 </tr>
                 <tr>
@@ -2965,6 +2940,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   tep_db_free_result($tags_temp_query);
                                  ?> 
                                  <td><table width="100%" id="hidden_more_tags" style="margin-left: -2px;" ><tr>
+                                 
+								 <input type="hidden" id="tep_check_tags" value="1" name="tep_check_tags">
                                  <?php if ($tags_num) {?>
 								 <input type="checkbox" id="sel_all" class="other_input" onclick="select_all(1)" style="margin-left: 0px;"><?php echo SELECT_ALL;?>
 								  <?php }?>
@@ -2984,8 +2961,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                           echo 'checked'; 
                                         }
                                       } else if ($tag['tags_checked']) {
-                                        echo 'checked'; 
-                                      } else if (isset($_POST['tags']) && in_array($tag['tags_id'], $_POST['tags'])) {
                                         echo 'checked'; 
                                       }
                                     ?><?php if ($s_site_id) {echo ' onclick="return false;"';}?>
@@ -3025,23 +3000,20 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                  <tr>
                                  <?php
                                   $tags_i = 1;
-                                  $tag_arr=array();
-                                  while ($tag_array_list = tep_db_fetch_array($t_query)) {
-                                    $tag_arr[] = $tag; 
+                                  while ($tag = tep_db_fetch_array($t_query)) {
+                                    $tag_array[] = $tag; 
 								  }
-								  foreach($tag_arr as $tag){
+								  foreach($tag_array as $tag){
                                     ?>
                                       <td width="20%" valign="top" style="margin:0px;padding:0px;">
 
-                                      <input type='checkbox' class="other_input" <?php echo ($s_site_id)?'disabled':'';?> name='tags[]' value='<?php echo $tag['tags_id'];?>' 
+                                      <input type='checkbox' class="other_input" <?php echo ($s_site_id)?'disabled':'';?> name='tags_t[]' value='<?php echo $tag['tags_id'];?>' 
                                       <?php
                                       if ($_GET['pID'] || isset($pInfo->tags)) {
                                         if (isset($checked_tags[$tag['tags_id']])) {
                                           echo 'checked'; 
                                         }
                                       } else if ($tag['tags_checked']) {
-                                        echo 'checked'; 
-                                      } else if (isset($_POST['tags']) && in_array($tag['tags_id'], $_POST['tags'])) {
                                         echo 'checked'; 
                                       }
                                     ?><?php if ($s_site_id) {echo ' onclick="return false;"';}?>
@@ -3092,6 +3064,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                   }
                                   ?>
 									  <table id="cattags_title" border="0" cellspacing="0" cellpadding="0" width="100%"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
+							 <input type="hidden" id="tep_check_carttags" name="tep_check_carttags" value="1">
 									  <tr><td><?php
                             if($tags_num !=0){
 								?>
@@ -3137,7 +3110,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                                        foreach($tag_array as $tag){ 
                                        ?>
                                        <td width="20%" valign="top">
-										<input class="other_input carttags" id="tags_select_id" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?>  name='carttags[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
+										<input class="other_input carttags" id="tags_select_id" type='checkbox' <?php echo ($s_site_id)?'disabled':'';?>  name='carttags_t[<?php echo $tag['tags_id'];?>]' value='1'<?php if(isset($carttag_array[$tag['tags_id']])){echo " checked";} else if (isset($pInfo->carttags[$tag['tags_id']])) {echo "checked";}?>>
 									<?php echo $tag['tags_name'].'
 									</span>&nbsp;</td>';?>
                                           <?php 
@@ -3161,8 +3134,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             <td valign="top" <?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : ''; echo  $tags_num > 0 ? 'id="search_style"':'';?>><font color="#FF0000"><?php echo TEXT_PRODUCT_SEARCH_READ ?></font></td>
                             </tr>
                             <tr><td colspan="2">
-                                          <table id="cattags_contents" width="140%" style="margin-left: -2px;"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
-                                          <tr><td width="10%" valign="top"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" class="other_input" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
+                                          <table id="cattags_contents" width="100%" style="margin-left: -3px;"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
+                                          <tr><td></td><td colspan="2" style="text-align:leflt;"> <a href="javascript:void(0);" onclick="get_cart_products()"><?php echo TEXT_PRODUCT_RESULT_CONFIRM;?></a></td></tr>
+                                          <tr><td width="15%" valign="top" style="min-width:154px;"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" class="other_input" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                                           </td></tr> 
                                           <?php if (false) {?>
                                             <tr>
@@ -3215,23 +3189,20 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 ?>
                 </table>
                 </td></tr>
-                                              <tr><td></td><td colspan="2"
-                                              style="text-align:leflt;"> <a href="javascript:void(0);" onclick="get_cart_products()"><?php echo TEXT_PRODUCT_RESULT_CONFIRM;?></a>
-                                              </td></tr>
-                                              <tr>
-                                              <td valign="top"><?php echo TEXT_PRODUCT_CARTORDER_TEXT;?></td>
-                                              <td><input id="products_cartorder" class="other_input" <?php echo ($s_site_id)?'class="readonly" disabled':'';?> name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
-                                              </td></tr>
-                                              </table></td>
+                 <tr>
+                 <td valign="top"><?php echo TEXT_PRODUCT_CARTORDER_TEXT;?></td>
+                 <td><input id="products_cartorder" class="other_input" <?php echo ($s_site_id)?'class="readonly" disabled':'';?> name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
+                 </td></tr>
+                 </table></td>
                 </tr> 
                 <tr>
-                <td valign="top"><?php echo TEXT_PRODUCT_SORT_ORDER_TEXT; ?></td>
+                <td valign="top" width="15%" style="min-width:155px;"><?php echo TEXT_PRODUCT_SORT_ORDER_TEXT; ?></td>
                 <td style="padding-left:0px;"><?php echo tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op" class="other_input"' .  ($disabled_flag ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
                 </tr>
                 </table>
                 </fieldset></td></tr>
                 </table></td>
-</tr>
+                </tr>
 
                 <tr>
                 <td class="main" align="right">

@@ -313,3 +313,5 @@ define('CATEGORY_RESET_CONFIRM','本当に無効しますか？');
 define('SHOW_MORE_TAGS','全表示▼');
 define('HIDE_SOME_TAGS','たたむ▲');
 define('SELECT_ALL','全て選択');
+define('SELECT_ONE_TAG','タグを選択してください。');
+define('NO_RELATED_PRODUCTS','データがありません。');

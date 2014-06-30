@@ -1236,7 +1236,7 @@ function get_cart_products(){
       tagstr += '&tags_id[]='+$(this).attr('name').substr(start, end-start)+$(this).val();
       });
   //The results confirm products_cart_buyflag radio change to checkbox
-  if (tagstr != '')
+  if (tagstr != ''){
 	  var inputs= document.getElementsByName("products_cart_buyflag[]");
       var i=0;
       var str="";
@@ -1248,7 +1248,21 @@ function get_cart_products(){
   if (inputs.length > 0) {
      str = str.substr(0, str.length - 1);
   }
-    window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+str+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
+
+  $.ajax({
+    dataType: 'text',
+    url:'categories.php?action=get_result_products&products_id='+js_get_pid+'&buyflag='+str+tagstr,
+    success: function(text) {
+	if(text==""){
+		alert(no_related_products);
+	}else { 
+        window.open("categories.php?action=get_cart_products&products_id="+js_get_pid+"&buyflag="+str+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
+	}
+  }
+  });
+  }else{
+      alert(select_one_tag);   
+  }
 }
 //open and close categories tree 
 function display(){
@@ -2047,19 +2061,24 @@ function show_tags_change(num){
   if(num == 1){
     $("#show_tags_all").hide();
     $("#hidden_more_tags").show();
+	$("#tep_check_tags").val("1");
   }
 
   if(num == 0){
     $("#show_tags_all").show();
     $("#hidden_more_tags").hide();
+	$("#tep_check_tags").val("2");
+
   }
   if(num == 3){
     $("#show_tags_4").show();
     $("#show_tags_3").hide();
+	$("#tep_check_carttags").val("1");
   }
   if(num == 4){
     $("#show_tags_3").show();
     $("#show_tags_4").hide();
+	$("#tep_check_carttags").val("2");
   }
 
 }
