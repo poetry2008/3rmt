@@ -180,13 +180,15 @@
 	$messages_file_status = '0';
         $f_src = '';
         $f_name = '';
+        $f_type = '';
         $file_arr = array();
 	if ($_FILES['messages_file']['error'] > 0){
 	}else{
           if($_POST['messages_type'] == 1){
             $f_src = $_FILES["messages_file"]["tmp_name"];
             $f_name = $_FILES['messages_file']['name'];
-            $file_arr[] = array('src'=>$f_src,'name'=>$f_name);
+            $f_type = $_FILES['messages_file']['type'];
+            $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
           }else{
 		$messages_file_name = base64_encode($_FILES['messages_file']['name'].'|||'.$ocertify->auth_user.'|||'.time());
 		$messages_file_status = '1';
@@ -449,13 +451,15 @@
 	$messages_file_status = '0';
         $f_src = '';
         $f_name = '';
+        $f_type = '';
         $file_arr = array();
 	if ($_FILES['messages_file_back']['error'] > 0){
 	}else{
           if($_POST['messages_type'] == 1){
             $f_src = $_FILES["messages_file_back"]["tmp_name"];
             $f_name = $_FILES['messages_file_back']['name'];
-            $file_arr[] = array('src'=>$f_src,'name'=>$f_name);
+            $f_type = $_FILES['messages_file_back']['type'];
+            $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
           }else{
 		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'].'|||'.$ocertify->auth_user.'|||'.time());
 		$messages_file_status = '1';
