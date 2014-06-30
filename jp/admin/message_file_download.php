@@ -4,7 +4,7 @@
 		$file_id_status = false;
 	}else{
 		$file_id_status = true;
-		$file_id = $_GET['file_id'];
+		$file_id = str_replace(' ','+',$_GET['file_id']);
 	}
 	if($file_id_status){
 		//die(var_dump($file_id_status));	
