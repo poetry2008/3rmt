@@ -13626,3 +13626,22 @@ function tep_get_messages_file($mid){
   }
   return $res;
 }
+function size_to_b($str){
+  $str = strtoupper($str);
+  $arr_size = array(
+      'B'=>1,
+      'K'=>1024,
+      'KB'=>1024,
+      'M'=>1024*1924,
+      'MB'=>1024*1924,
+      'G'=>1024*1024*1024,
+      'GB'=>1024*1024*1024,
+      'T'=>1024*1024*1024*1024,
+      'TB'=>1024*1024*1024*1024
+      );
+  $size = 0;
+  if(preg_match('/(\d+)([A-Z]+)/',$str,$arr)){
+    $size = $arr[1]*$arr_size[$arr[2]];
+  }
+  return $size;
+}

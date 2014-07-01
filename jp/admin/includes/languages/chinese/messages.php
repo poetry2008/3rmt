@@ -58,4 +58,5 @@ define('EMAIL_RADIO','Email');
 define('EMAIL_SUBJECT','站内信作成 [%s]');
 define('TEXT_SEND_MAIL','就这样发信吗？');
 define('TEXT_USER_NO_EMAIL','用户的邮箱地址没有设置，');
+define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','上传文件超过限制.');
 ?>
