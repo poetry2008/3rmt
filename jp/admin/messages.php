@@ -6,6 +6,16 @@
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   define('FILENAME_MESSAGES', 'messages.php');
+  $php_upload_max_filesize= size_to_b(ini_get('upload_max_filesize'));
+  $php_post_max_size = size_to_b(ini_get('post_max_size'));
+  $php_memmory_list = size_to_b(ini_get('memory_limit'));
+  $min_size = $php_memmory_list;
+  if($min_size > $php_post_max_size){
+    $min_size = $php_post_max_size;
+  }
+  if($min_size > $php_upload_max_filesize){
+    $min_size = $php_upload_max_filesize;
+  }
 
   //组选择的处理
   if($_GET['action'] == 'groups_list'){
@@ -1592,6 +1602,26 @@ function delete_select_user(){
 	});
 }
 function messages_check(is_back,flag){
+  var input_id = 'messages_file[]';
+  if(is_back == 1){
+    input_id = 'messages_file_back[]';  
+  }
+  var all_size = 0;
+  $("input[name='"+input_id+"']").each(
+    function(){
+      t= this.files;
+      all_size+= t[0].size;
+      if(t[0].size > <?php echo $min_size;?>){
+        alert('<?php echo TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT;?>');
+        return false;
+      }
+    }
+  );
+  if(all_size > <?php echo $php_memmory_list;?>){
+    alert('<?php echo TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT;?>');
+    return false;
+  }
+
 	var error_status_select = 0;
 	var error_status_contents = 0;
 	var error_status_back_contents = 1;

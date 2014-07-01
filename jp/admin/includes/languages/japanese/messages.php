@@ -60,4 +60,5 @@ define('EMAIL_RADIO','Email');
 define('EMAIL_SUBJECT','メッセージ管理 [%s]');
 define('TEXT_SEND_MAIL','このままで送信しますか？');
 define('TEXT_USER_NO_EMAIL','のユーザーはメールアドレスが設定されていません。');
+define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','アップファイルのサイズは規定を超えました。');
 ?>
