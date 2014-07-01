@@ -409,11 +409,7 @@
           }
         unset($sql_data_array); 
       }
-        if($_POST['messages_type'] == 1){
-          foreach($file_arr as $file_info){
-            unlink($file_info['src']);
-          }
-        }
+
 	if(isset($_GET['status']) && $_GET['status'] != ''){
 		$status_flag = true;
     	}else{
@@ -769,6 +765,9 @@
         unset($sql_data_array);
       }else if($_POST['messages_flag'] == 4){
         //更新数据到草稿箱
+        if(!empty($save_file_arr)){
+          $messages_file_status = '1';
+        }
         $groups_id_list = explode(',',$_POST['groups_id_list']);
         $groups_id_list = array_unique($groups_id_list);
         $groups_id_list = array_filter($groups_id_list);
@@ -809,11 +808,7 @@
           }
         unset($sql_data_array); 
       }
-        if($_POST['messages_type'] == 1){
-          foreach($file_arr as $file_info){
-            unlink($file_info['src']);
-          }
-        }
+
 	if($reply_status == '1'){
 		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
 	}
