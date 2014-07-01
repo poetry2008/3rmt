@@ -3193,7 +3193,7 @@ function tep_site_pull_down_menu($default = '',$require = true,$all = false,$par
   $sites_array = array();
   $sites = tep_get_sites();
   if ($all) {
-    $sites_array[] = array('id' => '0', 'text' => THE_WHOLE_SITE);
+    $sites_array[] = array('id' => '0', 'text' => COMMON_SITE_DATA);
   }
   foreach($sites as $site){
     $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
@@ -3259,7 +3259,7 @@ function tep_get_site_romaji_by_id($id){
  ------------------------------------ */
 function tep_get_site_name_by_id($id){
   if ($id == '0') {
-    return THE_WHOLE_SITE;
+    return COMMON_SITE_DATA;
   }
   $site_query = tep_db_query("
       select * 
@@ -13616,4 +13616,13 @@ function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_te
   // Send message
   $message->build_message();
   $message->send($to_name, $to_email_address, $from_email_name, $from_email_address, $email_subject,'','mail',$from_email_address);
+}
+function tep_get_messages_file($mid){
+  $sql = "select * from message_file where message_id='".$mid."'";
+  $query = tep_db_query($sql);
+  $res = array();
+  while($row = tep_db_fetch_array($query)){
+    $res[] = $row;
+  }
+  return $res;
 }

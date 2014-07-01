@@ -170,7 +170,7 @@ define('TEXT_PRODUCT_CARTORDER_TEXT', 'バナー表示順');
 define('TEXT_PRODUCT_PIC_PREVIEW_TEXT', '画像レビュー');
 define('TEXT_PRODUCT_CARTIMAGE_TITLE', 'バナー画像');
 define('TEXT_PRODUCT_CARTIMAGE_NOTICE', '注：バナー画像の横幅は最大450PXです');
-define('TEXT_PRODUCT_RESULT_CONFIRM', '結果確認');
+define('TEXT_PRODUCT_RESULT_CONFIRM', 'プレビュー');
 define('CATEGORY_TREE_SELECT_TEXT', 'ジャンプ▼');
 define('CATEGORY_BUTTON_UPDATE_TEXT', 'よく確認してから押しなさい');
 define('CATEGORY_MONEY_UNIT_TEXT', '円');
