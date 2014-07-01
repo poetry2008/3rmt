@@ -199,21 +199,18 @@
 	if ($_FILES['messages_file']['error'][$fk] > 0){
           continue;
 	}else{
-          if($_POST['messages_type'] == 1){
             $f_src = $_FILES["messages_file"]["tmp_name"][$fk];
             $f_name = $_FILES['messages_file']['name'][$fk];
             $f_type = $_FILES['messages_file']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
-          }else{
-		$messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
-		$messages_file_status = '1';
-		if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"][$fk])){
-      		}else{
-      			$file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
+	    $messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+	    $messages_file_status = '1';
+	    if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"][$fk])){
+      	    }else{
+      	      $file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
-      		}
-                $save_file_arr[] = $messages_file_name;
-          }
+      	    }
+            $save_file_arr[] = $messages_file_name;
 	}
         }
 	if(!empty($_POST['pic_icon'])){
@@ -280,7 +277,6 @@
 	  //	var_dump($sql_data_array);
           }
           //保存到已发送邮箱中
-          if($_POST['messages_type'] != 1){
           $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -307,7 +303,6 @@
                'file_index' => $sk
              );
           tep_db_perform('message_file', $save_data_array);
-          }
           }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
@@ -347,7 +342,6 @@
             }
 	  //	var_dump($sql_data_array);
           } 
-          if($_POST['messages_type'] != 1){
           //保存到已发送邮箱中
           $sql_data_array = array(
 			     	'read_status' => '0',
@@ -376,7 +370,6 @@
           tep_db_perform('message_file', $save_data_array);
           }
           unset($sql_data_array);
-          }
         } 
       }else if($_POST['messages_flag'] == 1){
         $groups_id_list = explode(',',$_POST['groups_id_list']);
@@ -542,21 +535,18 @@
         $f_type = '';
 	if ($_FILES['messages_file_back']['error'][$fk] > 0){
 	}else{
-          if($_POST['messages_type'] == 1){
             $f_src = $_FILES["messages_file_back"]["tmp_name"][$fk];
             $f_name = $_FILES['messages_file_back']['name'][$fk];
             $f_type = $_FILES['messages_file_back']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
-          }else{
-		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
-		$messages_file_status = '1';
-		if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"][$fk])){
-      		}else{
-      			$file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
+	    $messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+	    $messages_file_status = '1';
+	    if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"][$fk])){
+      	    }else{
+      	      $file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
-      		}
-                $save_file_arr[] = $messages_file_name;
-          }
+      	    }
+            $save_file_arr[] = $messages_file_name;
 	}
         }
 	if(!empty($_POST['pic_icon'])){
@@ -629,7 +619,6 @@
             }
           }
           //保存到已发送邮箱中
-          if($_POST['messages_type'] != 1){
           $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -658,7 +647,6 @@
           tep_db_perform('message_file', $save_data_array);
           }
           unset($sql_data_array);
-          }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
@@ -697,7 +685,6 @@
 	  //	var_dump($sql_data_array);
             }
           } 
-          if($_POST['messages_type'] != 1){
           //保存到已发送邮箱中
           $sql_data_array = array(
 			     	'read_status' => '0',
@@ -726,7 +713,6 @@
           tep_db_perform('message_file', $save_data_array);
           }
           unset($sql_data_array);
-          }
         } 
         if($_GET['status'] == 'drafts'){
 

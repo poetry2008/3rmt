@@ -8204,7 +8204,7 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
  $messages_content_row_choose [] =  array('text'=> '');
- $sql_for_all_users = 'select userid, name from users where status=1 order by name asc';
+ $sql_for_all_users = 'select userid, name,email from users where status=1 order by name asc';
  $sql_for_all_users_query = tep_db_query($sql_for_all_users);
  //组选择
  $all_user_to_td = '';
@@ -8212,7 +8212,7 @@ $banner_query = tep_db_query("
    if(($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0){
 	if($_GET['recipient_name'] == 'ALL'){
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
-			$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+                  $recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
 		}
 	}else{
 		$recipient_name_all = explode(';',$_GET['recipient_name']);
@@ -8220,7 +8220,7 @@ $banner_query = tep_db_query("
 			$n_flag = 0;
 			foreach($recipient_name_all as $value){
 				if($message_all_users['name'] == $value){
-					$recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+                                  $recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';     
 					$n_flag = 1;
 					break;
 				}
@@ -8364,8 +8364,25 @@ $banner_query = tep_db_query("
         $messages_contents_back = "\r\n\r\n\r\n".'---------- Forwarded message ----------'."\r\n";
         $messages_contents_back .= 'From: '.$messages_email_array[$sql_message_content_res['sender_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['sender_id']]['email'].'>'."\r\n";
         $messages_date_array = explode(' ',tep_date_long($sql_message_content_res['time']));
-        $messages_contents_back .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($sql_message_content_res['time'])).' '.$messages_date_array[1]."\r\n";
-        $messages_contents_back .= 'To: '.$messages_email_array[$sql_message_content_res['recipient_id']]['name'].' <'.$messages_email_array[$sql_message_content_res['recipient_id']]['email'].'>'."\r\n";
+        $messages_contents_back .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($sql_message_content_res['time'])).' '.end($messages_date_array)."\r\n";
+        //收件人信息列表
+        $to_name = '';
+        $sql_for_all_users_query = tep_db_query($sql_for_all_users); 
+        if($_GET['recipient_name'] == 'ALL'){
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+                  $to_name .= $message_all_users['name'].' <'.$message_all_users['email'].'>;';
+		}
+	}else{
+		$recipient_name_all = explode(';',$_GET['recipient_name']);
+		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
+			foreach($recipient_name_all as $value){
+				if($message_all_users['name'] == $value){
+                                  $to_name .= $message_all_users['name'].' <'.$message_all_users['email'].'>;';
+				}
+			}	
+		}
+	}
+        $messages_contents_back .= 'To: '.mb_substr($to_name,0,-1)."\r\n";
         $messages_contents_replace = str_replace("\r\n","\r\n>",$sql_message_content_res['content']);
         $messages_contents_back .= '>'.$messages_contents_replace;
 
