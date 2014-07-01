@@ -9,12 +9,15 @@
   $php_upload_max_filesize= size_to_b(ini_get('upload_max_filesize'));
   $php_post_max_size = size_to_b(ini_get('post_max_size'));
   $php_memmory_list = size_to_b(ini_get('memory_limit'));
+  $min_size_str = ini_get('memory_limit'); 
   $min_size = $php_memmory_list;
   if($min_size > $php_post_max_size){
     $min_size = $php_post_max_size;
+    $min_size_str = ini_get('post_max_size');
   }
   if($min_size > $php_upload_max_filesize){
     $min_size = $php_upload_max_filesize;
+    $min_size_str = ini_get('upload_max_filesize');
   }
 
   //组选择的处理
@@ -199,10 +202,12 @@
 	if ($_FILES['messages_file']['error'][$fk] > 0){
           continue;
 	}else{
+           if($_POST['messages_type'] == 1){
             $f_src = $_FILES["messages_file"]["tmp_name"][$fk];
             $f_name = $_FILES['messages_file']['name'][$fk];
             $f_type = $_FILES['messages_file']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
+           }else{
 	    $messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
 	    $messages_file_status = '1';
 	    if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"][$fk])){
@@ -211,7 +216,8 @@
 			//die(var_dump($file_success));
       	    }
             $save_file_arr[] = $messages_file_name;
-	}
+          }
+        }
         }
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
@@ -510,7 +516,11 @@
 	$messages_file_status = '0';
         $file_arr = array();
         $save_file_arr = array();
-        $has_file_list = $_POST['back_file_list'];
+        if($_POST['messages_flag'] != 4){
+          $has_file_list = $_POST['back_file_list'];
+        }else{
+          $has_file_list = array();
+        }
         $f_src = '';
         $f_name = '';
         $f_type = '';
@@ -535,10 +545,12 @@
         $f_type = '';
 	if ($_FILES['messages_file_back']['error'][$fk] > 0){
 	}else{
+           if($_POST['messages_type'] == 1){
             $f_src = $_FILES["messages_file_back"]["tmp_name"][$fk];
             $f_name = $_FILES['messages_file_back']['name'][$fk];
             $f_type = $_FILES['messages_file_back']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
+           }else{
 	    $messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
 	    $messages_file_status = '1';
 	    if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"][$fk])){
@@ -547,6 +559,7 @@
 			//die(var_dump($file_success));
       	    }
             $save_file_arr[] = $messages_file_name;
+           }
 	}
         }
 	if(!empty($_POST['pic_icon'])){
@@ -1609,16 +1622,18 @@ function messages_check(is_back,flag){
   var all_size = 0;
   $("input[name='"+input_id+"']").each(
     function(){
+      if($(this).val()){
       t= this.files;
       all_size+= t[0].size;
       if(t[0].size > <?php echo $min_size;?>){
-        alert('<?php echo TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT;?>');
+        alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
         return false;
+      }
       }
     }
   );
   if(all_size > <?php echo $php_memmory_list;?>){
-    alert('<?php echo TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT;?>');
+    alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
     return false;
   }
 

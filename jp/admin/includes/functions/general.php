@@ -13609,7 +13609,9 @@ function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_te
       $file = fopen($fileatt,'rb');
       $data = fread($file,filesize($fileatt));
       fclose($file);
-      $message->add_attachment($data,$file_info['name'],$file_info['type']);
+      $f_name = mb_convert_encoding($file_info['name'],'UTF-8');
+      $f_name = '=?UTF-8?B?'.base64_encode($f_name)."?=";
+      $message->add_attachment($data,$f_name,$file_info['type']);
     }
   }
 
