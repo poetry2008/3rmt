@@ -507,6 +507,25 @@
 	$messages_file_status = '0';
         $file_arr = array();
         $save_file_arr = array();
+        $has_file_list = $_POST['back_file_list'];
+        $f_src = '';
+        $f_name = '';
+        $f_type = '';
+        foreach($has_file_list as $has_file){
+          if($_POST['messages_type'] == 1){
+            if(file_exists('messages_upload/'.$has_file)){
+              $m_file_name = base64_decode($has_file);
+              $m_file_name = explode('|||',$m_file_name);
+              $f_src = "messages_upload/".$has_file;
+              $f_name = $m_file_name[0];
+              $f_type = mime_content_type("messages_upload/".$has_file);
+              $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
+            }
+          }else{
+            $messages_file_status = '1';
+            $save_file_arr[] = $has_file;
+          }
+        }
         foreach($_FILES['messages_file_back']['name'] as $fk => $fv){
         $f_src = '';
         $f_name = '';
@@ -827,6 +846,22 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+function remove_email_file(mid,f_index){
+       $.ajax({
+         url: 'ajax.php?action=del_messages_file',
+         type: 'POST',
+         dataType: 'text',
+         data:'latest_messages_id='+mid+'&f_index='+f_index, 
+         async:false,
+         success: function (data){
+           if(data==''){
+             $('#back_file_list').remove();
+           }else{
+             $('#back_file_list').html(data);
+           }
+         }
+        });
+}
 function add_email_file(b_id){
   var index = 0;
   var last_id = b_id;
