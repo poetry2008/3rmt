@@ -3193,7 +3193,7 @@ function tep_site_pull_down_menu($default = '',$require = true,$all = false,$par
   $sites_array = array();
   $sites = tep_get_sites();
   if ($all) {
-    $sites_array[] = array('id' => '0', 'text' => THE_WHOLE_SITE);
+    $sites_array[] = array('id' => '0', 'text' => COMMON_SITE_DATA);
   }
   foreach($sites as $site){
     $sites_array[] = array('id' => $site['id'], 'text' => $site['name']);
@@ -3259,7 +3259,7 @@ function tep_get_site_romaji_by_id($id){
  ------------------------------------ */
 function tep_get_site_name_by_id($id){
   if ($id == '0') {
-    return THE_WHOLE_SITE;
+    return COMMON_SITE_DATA;
   }
   $site_query = tep_db_query("
       select * 

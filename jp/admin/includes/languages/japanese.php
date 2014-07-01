@@ -850,7 +850,7 @@ define('TEXT_MONTH_DECEMBER','12月');
 define('TRADE_CHARACTER_NAME','当社のキャラクター名：');
 define('DATE_FORMAT_TEXT','Y年m月d日 H時i分');
 define('MOVE_TO_SITE','サイトへ移動'); 
-define('THE_WHOLE_SITE','全部サイト');
+define('COMMON_SITE_DATA','共用データー');
 define('DATE_FORMAT_SHORT_TEXT','Y年n月j日');
 define('PRACTICAL_MANUAL', 'のマニュアル');
 define('HEADER_TEXT_GROUPS','組織グループ設定');

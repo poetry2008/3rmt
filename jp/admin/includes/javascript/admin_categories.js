@@ -998,7 +998,9 @@ function all_products_check(products_list_id)
     } else {
       for (i = 0; i < document.myForm1.elements[products_list_id].length; i++) {
         if (check_flag == true) {
-          document.myForm1.elements[products_list_id][i].checked = true;
+          if(document.myForm1.elements[products_list_id][i].disabled == false){
+            document.myForm1.elements[products_list_id][i].checked = true;
+          }
         } else {
           document.myForm1.elements[products_list_id][i].checked = false;
         }

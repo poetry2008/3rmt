@@ -304,4 +304,9 @@ define('HIDE_SOME_TAGS','收起▲');
 define('SELECT_ALL','全选择');
 define('SELECT_ONE_TAG','请至少选择一个标签。');
 define('NO_RELATED_PRODUCTS','没有关联的商品');
+define('CATEGORY_PRODUCT_COMMON_INFO_DESCRIPTION','#HTML可以输入<br/>参数　库存比率  ${RATE}');
+define('TEXT_PRODUCTS_QUANTITY_RATE','比 率 ');
+define('TEXT_PRODUCTS_QUANTITY_SUM','表示数');
+define('CATEGORY_SITE_TYPE_INFO_TEXT','各个网站分类的基本情报');
+define('CATEGORY_TEXT_TITLE','副标题:');
 ?>
