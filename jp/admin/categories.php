@@ -2427,7 +2427,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }else{
                   echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=some&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.(isset($_GET['site_id'])?$_GET['site_id']:'0').'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>';  
                 }
-                if($ocertify->npermission >= 15 && isset($_GET['pID'])){
+                if($ocertify->npermission >= 15 && isset($_GET['pID']) && empty($_GET['s_site_id'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_products_confirm(\''.TEXT_DELETE_PRODUCT_INTRO.'\',\''.$delete_action.'\');"') . '</a>'; 
                 }
                   if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
@@ -3216,7 +3216,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               }else{
                 echo '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'show_type=some&cPath=' . $cPath .  '&page='.$_GET['page'].'&site_id='.$site_id.'&pID=' .  (isset($_GET['pID'])?$_GET['pID']:'').'&s_site_id='.(isset($_GET['s_site_id'])?$_GET['s_site_id']:'0')) . '">' .  tep_html_element_button(IMAGE_BACK) . '</a>';  
               }
-              if($ocertify->npermission >= 15 && isset($_GET['pID'])){
+              if($ocertify->npermission >= 15 && isset($_GET['pID']) && empty($_GET['s_site_id'])){
                 echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_products_confirm(\''.TEXT_DELETE_PRODUCT_INTRO.'\',\''.$delete_action.'\');"') . '</a>';
               }
                 if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
@@ -3323,7 +3323,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               }
 
               $delete_categories_action = FILENAME_CATEGORIES.'?cPath=' .$cPath . '&page='.$_GET['page'].'&action=delete_category_confirm'.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '');
-              if($ocertify->npermission >= 15 && isset($_GET['cID'])){
+              if($ocertify->npermission >= 15 && isset($_GET['cID']) && empty($_GET['s_site_id'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_categories_confirm(\''.TEXT_DELETE_CATEGORY_INTRO.'\',\''.$delete_categories_action.'\');"') . '</a>'; 
               }
                   if(isset($_GET['s_site_id']) && $_GET['s_site_id'] != 0){
@@ -3641,7 +3641,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 }
               }
 
-              if($ocertify->npermission >= 15 && isset($_GET['cID'])){
+              if($ocertify->npermission >= 15 && isset($_GET['cID']) && empty($_GET['s_site_id'])){
                   echo '<a href="javascript:void(0);">' .  tep_html_element_button(IMAGE_DELETE, 'onclick="check_delete_categories_confirm(\''.TEXT_DELETE_CATEGORY_INTRO.'\',\''.$delete_categories_action.'\');"') . '</a>'; 
               }
 
@@ -4456,7 +4456,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     }
                   }
                 }
-                $categories_table_content_row[] = array('params'=>'class="dataTableContent"','text'=>'<input type="checkbox" name="categories_id_list[]" value="'.$categories['categories_id'].'">');
+                $categories_table_content_row[] = array('params'=>'class="dataTableContent"','text'=>'<input type="checkbox" name="categories_id_list[]" value="'.$categories['categories_id'].'"'.($categories['site_id'] != 0 ? ' disabled' : '').'>');
                 $categories_table_content_row[] = array('params'=>$categories_name_params,'text'=>$categories_site_text);
                 $categories_table_content_row[] = array('params'=>$categories_name_params,'text'=>$categories_name_text);
                 $categories_table_content_row[] = array('params'=>$categories_colspan_params,'text'=>$categories_colspan_text);
@@ -4752,7 +4752,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 } else {
                   $products_name_text.= '<span id="products_name_'.$products['products_id'].'">'.$products['products_name'].'</span>'; 
                 }
-                $products_table_content_row[] = array('params'=>'class="dataTableContent"', 'text'=>'<input type="checkbox" name="products_id_list[]" value="'.$products['products_id'].'">');
+                $products_table_content_row[] = array('params'=>'class="dataTableContent"', 'text'=>'<input type="checkbox" name="products_id_list[]" value="'.$products['products_id'].'"'.($products['site_id'] != 0 ? ' disabled' : '').'>');
                 $products_table_content_row[] = array('params'=>$products_name_params, 'text'=>$products_site_text);
                 $products_table_content_row[] = array('params'=>$products_name_params, 'text'=>$products_name_text);
                 $imaginary=0;
@@ -4852,9 +4852,9 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   $products_inventory_text .= '</u>';
                   }
                 } else {
-                  $products_storage_params .= 'class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')).'\';"';
+                  $products_storage_params .= 'id="edit_virtual_quantity_'.$products['products_id'].'_'.$products['site_id'].'" class="dataTableContent" align="right" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')).'\';"';
                   $products_storage_text .= $imaginary;
-                  $products_inventory_params .= 'class="dataTableContent" align="right" style="font-weight:bold;" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')).'\';"';
+                  $products_inventory_params .= 'id="edit_quantity_real_'.$products['products_id'].'_'.$products['site_id'].'" class="dataTableContent" align="right" style="font-weight:bold;" onclick="document.location.href=\''.tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')).'\';"';
                   if(isset($products['products_exchange_rate'])
                   &&$products['products_exchange_rate']!=0
                   &&$products['products_exchange_rate']!=1

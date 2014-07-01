@@ -181,6 +181,9 @@ function update_quantity(pid){
           data_tmp_array = data.split('|||'); 
           var res_tmp_arr = data_tmp_array[0].split('<<<')
           $('#quantity_real_'+pid).html(res_tmp_arr[0]);
+          for(var i=1;i<=c_admin_sites_num;i++){
+            $('#edit_quantity_real_'+pid+'_'+i).html(res_tmp_arr[0]);
+          }
           $('#quantity_'+pid).html(res_tmp_arr[1]);
           $('#h_edit_p_'+pid).parent().next().next().next().next().find('a').html(data_tmp_array[1]); 
           setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
@@ -203,6 +206,9 @@ function update_virtual_quantity(pid){
         success: function(data) {
           data_tmp_array = data.split('|||'); 
           $('#virtual_quantity_'+pid).html(data_tmp_array[0]);
+          for(var i=1;i<=c_admin_sites_num;i++){
+            $('#edit_virtual_quantity_'+pid+'_'+i).html(data_tmp_array[0]);
+          }
           $('#h_edit_p_'+pid).parent().next().next().next().next().find('a').html(data_tmp_array[1]); 
           setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();$('#show_popup_info').css('display', 'none');}, 500);
         }

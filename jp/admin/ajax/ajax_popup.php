@@ -125,16 +125,7 @@ if ($_GET['action'] == 'show_category_info') {
       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_MOVE, 'onclick="move_category_id(\''.$_GET['current_cid'].'\')"').'</a>'; 
       $button[] = '<a href="'.tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath='.$_GET['cPath'].'&cID='.$_GET['current_cid'].'&action=show_categories_manual&site_id='.$site_id).($_GET['search'] != '' ? '&search='.$_GET['search'] : '').'">'.tep_html_element_button(IMAGE_MANUAL).'</a>'; 
     } 
-    if (!empty($site_id)) {
-      if (tep_db_num_rows(tep_db_query("select categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$_GET['current_cid']."' and site_id = '".$site_id."'"))) {
-        if ($ocertify->npermission >= 15) {
-          $button[] = '<a
-            href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,
-                'onclick="delete_category_info(\''.$_GET['current_cid'].'\',
-            \'1\','.$site_id.');"').'</a>'; 
-        }
-      }
-    } else {
+    if (empty($site_id)) { 
       if ($ocertify->npermission >= 15) {
         $button[] = '<a
           href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,
@@ -635,11 +626,7 @@ if ($_GET['action'] == 'show_category_info') {
       $button[] = '<input class="element_button" type="button" value="'.IMAGE_LINK.'" onclick="show_product_copy(\'link\',\''.$pInfo->products_id.'\')">';
     }
     if ($ocertify->npermission >= 15) {
-      if(isset($site_id) && $site_id != 0){
-        if (tep_db_num_rows(tep_db_query("select products_id from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$pInfo->products_id."' and site_id = '".(int)$site_id."'"))) {
-          $button[] = '<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="show_product_description_delete(\''.$pInfo->products_id.'\')">';
-        }
-      }else{
+      if(empty($site_id)){ 
         $button[] = '<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="show_product_delete(\''.$pInfo->products_id.'\')">';
       }
     }
