@@ -1632,10 +1632,6 @@ function messages_check(is_back,flag){
       }
     }
   );
-  if(all_size > <?php echo $php_memmory_list;?>){
-    alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
-    return false;
-  }
 
 	var error_status_select = 0;
 	var error_status_contents = 0;
