@@ -202,13 +202,11 @@
 	if ($_FILES['messages_file']['error'][$fk] > 0){
           continue;
 	}else{
-           if($_POST['messages_type'] == 1){
-            $f_src = $_FILES["messages_file"]["tmp_name"][$fk];
+	    $messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+            $f_src = "messages_upload/" .$messages_file_name;
             $f_name = $_FILES['messages_file']['name'][$fk];
             $f_type = $_FILES['messages_file']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
-           }else{
-	    $messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
 	    $messages_file_status = '1';
 	    if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"][$fk])){
       	    }else{
@@ -216,7 +214,6 @@
 			//die(var_dump($file_success));
       	    }
             $save_file_arr[] = $messages_file_name;
-          }
         }
         }
 	if(!empty($_POST['pic_icon'])){
@@ -545,13 +542,11 @@
         $f_type = '';
 	if ($_FILES['messages_file_back']['error'][$fk] > 0){
 	}else{
-           if($_POST['messages_type'] == 1){
-            $f_src = $_FILES["messages_file_back"]["tmp_name"][$fk];
+	    $messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+            $f_src = "messages_upload/" .$messages_file_name;
             $f_name = $_FILES['messages_file_back']['name'][$fk];
             $f_type = $_FILES['messages_file_back']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
-           }else{
-	    $messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
 	    $messages_file_status = '1';
 	    if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"][$fk])){
       	    }else{
@@ -560,7 +555,6 @@
       	    }
             $save_file_arr[] = $messages_file_name;
            }
-	}
         }
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
@@ -1632,10 +1626,6 @@ function messages_check(is_back,flag){
       }
     }
   );
-  if(all_size > <?php echo $php_memmory_list;?>){
-    alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
-    return false;
-  }
 
 	var error_status_select = 0;
 	var error_status_contents = 0;
