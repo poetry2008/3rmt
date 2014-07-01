@@ -8415,7 +8415,7 @@ $banner_query = tep_db_query("
 		}	
  	}
    }
-   $messages_attach_file = '<div id="back_file_list">'.$messages_attach_file.'</div>';
+   $messages_attach_file = '<div id="back_file_list" style="word-break:break-all">'.$messages_attach_file.'</div>';
 
 
 
