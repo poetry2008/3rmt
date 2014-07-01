@@ -8345,23 +8345,6 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_must_write);
  $messages_content_row_addfile = array();
  if($_GET['latest_messages_id']>0){
-   $messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
-   $messages_attach_file = '';
-   $file_list_arr = tep_get_messages_file($_GET['latest_messages_id']);
-   foreach($file_list_arr as $f_index => $file_info){
-	if($sql_message_content_res['attach_file'] == 1){
-		$messages_file_name = $file_info['name'];
-		if(file_exists('messages_upload/'.$messages_file_name)){
-			$messages_file_name = base64_decode($messages_file_name);
-			$messages_file_name = explode('|||',$messages_file_name);
-                        if($f_index > 0){
-                          $messages_attach_file .= '<br>';
-                        }
-                        $messages_attach_file .= '<a href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
-		}	
- 	}
-   }
-   $messages_content_row_addfile[] = array('text'=> $messages_attach_file);
  }else{
  	$messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
  	$messages_content_row_addfile[] = array('text'=> '<div id="messages_file_boder"><input type="file" id="messages_file" name="messages_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'messages_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'messages_file\')">'.MESSAGES_ADDFILE.'</a></div>');
@@ -8417,7 +8400,27 @@ $banner_query = tep_db_query("
  	$messages_content_table[] = array('text'=> $messages_content_row_back_must_write);
 	$messages_content_row_back_file = array();
 	$messages_content_row_back_file[] = array('text'=> MESSAGES_BACK_FILE);
-	$messages_content_row_back_file[] = array('text'=> '<div id="messages_file_back_boder"><input type="file" id="messages_file_back" name="messages_file_back[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'messages_file_back\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'messages_file_back\')">'.MESSAGES_ADDFILE.'</a></div>');
+   $messages_attach_file = '';
+   $file_list_arr = tep_get_messages_file($_GET['latest_messages_id']);
+   foreach($file_list_arr as $f_index => $file_info){
+	if($sql_message_content_res['attach_file'] == 1){
+		$messages_file_name = $file_info['name'];
+		if(file_exists('messages_upload/'.$messages_file_name)){
+			$messages_file_name = base64_decode($messages_file_name);
+			$messages_file_name = explode('|||',$messages_file_name);
+                        $messages_attach_file .= '<a style="text-decoration:underline" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
+                        $messages_attach_file .= '&nbsp;';
+                        $messages_attach_file .= '<a style="text-decoration:underline" href="javascript:void(0)" onclick="remove_email_file(\''.$_GET['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
+                        $messages_attach_file .= '<input type="hidden" name="back_file_list[]" value="'.$file_info['name'].'">';
+		}	
+ 	}
+   }
+   $messages_attach_file = '<div id="back_file_list">'.$messages_attach_file.'</div>';
+
+
+
+
+	$messages_content_row_back_file[] = array('text'=> $messages_attach_file.'<div id="messages_file_back_boder"><input type="file" id="messages_file_back" name="messages_file_back[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'messages_file_back\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'messages_file_back\')">'.MESSAGES_ADDFILE.'</a></div>');
 	$messages_content_table[] = array('text'=> $messages_content_row_back_file);
  }
  $messages_content_row_type = array();
@@ -8954,4 +8957,41 @@ if($_GET['latest_messages_id']>0){
     $error_user .= "\n".TEXT_SEND_MAIL;
   }
   echo $error_user;
+}else if($_GET['action'] == 'del_messages_file'){
+   $sql = 'select * from message_file where message_id = "'.$_POST['latest_messages_id'].'" and file_index="'.$_POST['f_index'].'"';
+   $query = tep_db_query($sql);
+   $res = tep_db_fetch_array($query);
+   $sql_del = 'select * from message_file where name="'.$res['name'].'"'; 
+   $query_del = tep_db_query($sql_del);
+   if(tep_db_num_rows($query_del) == 1){
+     if($res['name']!=''&&file_exists('messages_upload/'.$res['name'])){
+       unlink('messages_upload/'.$res['name']);
+     }
+   }
+   $del_sql = 'delete from message_file where message_id = "'.$_POST['latest_messages_id'].'" and file_index="'.$_POST['f_index'].'"';
+   tep_db_query($del_sql);
+
+   $sql_message_content = tep_db_query('select * from messages where id = "'.$_POST['latest_messages_id'].'"');
+   $sql_message_content_res = tep_db_fetch_array($sql_message_content);
+   $messages_attach_file = '';
+   $file_list_arr = tep_get_messages_file($_POST['latest_messages_id']);
+   foreach($file_list_arr as $f_index => $file_info){
+	if($sql_message_content_res['attach_file'] == 1){
+		$messages_file_name = $file_info['name'];
+		if(file_exists('messages_upload/'.$messages_file_name)){
+			$messages_file_name = base64_decode($messages_file_name);
+			$messages_file_name = explode('|||',$messages_file_name);
+                        $messages_attach_file .= '<a style="text-decoration:underline" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
+                        $messages_attach_file .= '&nbsp;';
+                        $messages_attach_file .= '<a style="text-decoration:underline" href="javascript:void(0)" onclick="remove_email_file(\''.$_POST['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
+                        $messages_attach_file .= '<input type="hidden" name="back_file_list[]" value="'.$file_info['name'].'">';
+		}	
+ 	}
+   }
+   if($messages_attach_file != ''){
+     echo $messages_attach_file; 
+   }else{
+     echo '';
+   }
 }
+
