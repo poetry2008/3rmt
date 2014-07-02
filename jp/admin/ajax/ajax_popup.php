@@ -9003,9 +9003,9 @@ if($_GET['latest_messages_id']>0){
 		if(file_exists('messages_upload/'.$messages_file_name)){
 			$messages_file_name = base64_decode($messages_file_name);
 			$messages_file_name = explode('|||',$messages_file_name);
-                        $messages_attach_file .= '<a style="text-decoration:underline" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
+                        $messages_attach_file .= '<a style="text-decoration:underline;color:#0000FF;" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
                         $messages_attach_file .= '&nbsp;';
-                        $messages_attach_file .= '<a style="text-decoration:underline" href="javascript:void(0)" onclick="remove_email_file(\''.$_POST['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
+                        $messages_attach_file .= '<a style="text-decoration:underline;color:#0000FF;" href="javascript:void(0)" onclick="remove_email_file(\''.$_POST['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
                         $messages_attach_file .= '<input type="hidden" name="back_file_list[]" value="'.$file_info['name'].'">';
 		}	
  	}
