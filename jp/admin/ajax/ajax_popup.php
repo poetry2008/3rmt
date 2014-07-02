@@ -8997,6 +8997,10 @@ if($_GET['latest_messages_id']>0){
    $sql_message_content_res = tep_db_fetch_array($sql_message_content);
    $messages_attach_file = '';
    $file_list_arr = tep_get_messages_file($_POST['latest_messages_id']);
+   if(count($file_list_arr) == 0){
+
+     tep_db_query("update messages set attach_file='0' where id='".$_POST['latest_messages_id']."'");
+   }
    foreach($file_list_arr as $f_index => $file_info){
 	if($sql_message_content_res['attach_file'] == 1){
 		$messages_file_name = $file_info['name'];

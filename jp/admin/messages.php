@@ -1918,13 +1918,13 @@ require("includes/note_js.php");
 		
               $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=messages_action&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['status'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"').'<input type="hidden" id="messages_action_flag_id" name="messages_action_flag" value="delete">'; 
                 if($messages_sort == '' || $messages_sort != 'read_status'){ 
-			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'</a>'; 
+			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc&status='.$_GET['status']).'">'.READ_STATUS.'</a>'; 
 		}else{
-			if($messages_sort == 'read_status' && $messages_sort_type == 'desc'){
-				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc&status='.$_GET['status']).'">'.READ_STATUS.'
+			if($messages_sort == 'read_status' && $messages_sort_type == 'asc'){
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc&status='.$_GET['status']).'">'.READ_STATUS.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -1962,13 +1962,13 @@ require("includes/note_js.php");
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'reply_status'){ 
-			$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'</a>'; 
+			$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_BACK.'</a>'; 
 		}else{
-			if($messages_sort == 'reply_status' && $messages_sort_type == 'desc'){
-				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
+			if($messages_sort == 'reply_status' && $messages_sort_type == 'asc'){
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -1984,13 +1984,13 @@ require("includes/note_js.php");
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'attach_file'){ 
-			$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'</a>'; 
+			$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc&status='.$_GET['status']).'">'.ADD_FILE.'</a>'; 
 		}else{
-			if($messages_sort == 'attach_file' && $messages_sort_type == 'desc'){
-				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc&status='.$_GET['status']).'">'.ADD_FILE.'
+			if($messages_sort == 'attach_file' && $messages_sort_type == 'asc'){
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc&status='.$_GET['status']).'">'.ADD_FILE.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
