@@ -322,8 +322,8 @@ function edit_order_weight(){
     var add_str = '';
 
     add_str += '<tr><td class="smallText" align="left">&nbsp;</td>'
-            +'<td class="smallText" align="right"><input style="text-align:right;" value="" onkeyup="price_total(\''+js_ne_orders_money_symbol+'\');" size="7" name="update_totals['+add_num+'][title]">:'
-            +'</td><td class="smallText" align="right">'+sign(add_num)+'<input style="text-align:right;" id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\''+js_ne_orders_money_symbol+'\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0">'+js_ne_orders_money_symbol+'</td>'
+            +'<td class="smallText" align="right"><input style="text-align:right;" value="" onkeyup="price_total(\''+js_ne_orders_money_symbol+'\');" onchange="price_total(\''+js_ne_orders_money_symbol+'\');" size="7" name="update_totals['+add_num+'][title]">:'
+            +'</td><td class="smallText" align="right">'+sign(add_num)+'<input style="text-align:right;" id="update_total_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\''+js_ne_orders_money_symbol+'\');" onchange="clearNewLibNum(this);price_total(\''+js_ne_orders_money_symbol+'\');" name="update_totals['+add_num+'][value]"><input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0">'+js_ne_orders_money_symbol+'</td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>';
 
     $("#point_id").parent().parent().before(add_str);
