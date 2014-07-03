@@ -174,12 +174,12 @@ function submit_check_con(){
     if ($(this).attr('type') == 'text') {
       find_input_name = $(this).attr('name'); 
       if (reg_info.test(find_input_name)) {
-        price_list_str += $(this).val()+'|||'; 
+        price_list_str += ($(this).val() == '' ? 0 : $(this).val())+'|||'; 
         hidden_list_str += $(this).next().val()+'|||'; 
         num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
       }
       if (reg_new_info.test(find_input_name)) {
-        price_list_str += $(this).val()+'|||'; 
+        price_list_str += ($(this).val() == '' ? 0 : $(this).val())+'|||'; 
         hidden_list_str += 'o_'+$(this).next().val()+'|||'; 
         num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||';
       }

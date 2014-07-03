@@ -850,3 +850,6 @@ define('COMMON_SITE_DATA','共用网站');
 define('DATE_FORMAT_SHORT_TEXT','Y年n月j日');
 define('PRACTICAL_MANUAL', '的手册');
 define('HEADER_TEXT_GROUPS','设置组体系');
+define('TEXT_PRODUCTS_PRICE_ERROR','单价为0。');
+define('TEXT_PRODUCTS_NUM_ERROR','个数为0。');
+define('TEXT_PRODUCTS_PAYMENT_ERROR','总额不在规定的%s的结算金额%s范围内。');

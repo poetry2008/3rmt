@@ -1940,7 +1940,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
 	var js_ne_orders_c_id_info = '<?php echo (isset($_SESSION['sites_id_flag'])?$_SESSION['sites_id_flag']:'');?>';
 	var js_ne_orders_products_num = '<?php echo TEXT_PRODUCTS_NUM;?>';
 	var js_ne_orders_languages_id = '<?php echo $languages_id;?>';
-	var js_ne_orders_site_id = '<?php echo $order->Info['site_id'];?>';
+	var js_ne_orders_site_id = '<?php echo $_SESSION['sites_id_flag'];?>';
 	var js_ne_orders_npermission = '<?php echo $ocertify->npermission;?>';
 	var js_ne_orders_money_symbol = '<?php echo TEXT_MONEY_SYMBOL;?>';
 
