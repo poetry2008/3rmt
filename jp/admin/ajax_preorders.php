@@ -1235,11 +1235,28 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
  参数: $_POST['num_list_str'] 商品数量列表 
  ----------------------------------------*/
   $show_error_str = ''; 
+  $show_products_str = '';
+  $show_payment_str = '';
   if ($_POST['price_list_str'] != '') {
     $price_info_array = explode('|||', $_POST['price_list_str']); 
     $product_info_array = explode('|||', $_POST['products_list_str']); 
     $num_info_array = explode('|||', $_POST['num_list_str']); 
+    //获取合计金额
+    preg_match_all('/[0-9]+/',$_POST['ot_total_value'],$ot_total_array);
+    if($ot_total_array[0][0] == '0000'){
+      $ot_total_value = 0-$ot_total_array[0][1];
+    }else{
+      $ot_total_value = $ot_total_array[0][0];
+    }
+    $price_flag = false;
+    $products_num_count = 0;
     foreach ($product_info_array as $pi_key => $pi_value) {
+      //计算商品单价、个数
+      if(($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == '') && $price_flag == false){
+
+        $price_flag = true;
+      }
+      $products_num_count += $num_info_array[$pi_key];
       if (isset($_POST['preorder_type'])&&$_POST['preorder_type']=='new'&&($price_info_array[$pi_key]==0||$price_info_array[$pi_key]='')){
         continue;
       }
@@ -1267,6 +1284,24 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
 
         }
       }
+    }
+    //生成商品单价、个数、支付方法设置的金额范围错误提示
+    if($price_flag == true){
+      $show_products_str .= TEXT_PRODUCTS_PRICE_ERROR.'<br>';
+    }
+    if($products_num_count == 0){
+      $show_products_str .= TEXT_PRODUCTS_NUM_ERROR.'<br>'; 
+    }
+    require(DIR_WS_CLASSES . 'payment.php');
+    $cpayment = payment::getInstance($_POST['site_id']);
+    $payment_array = payment::getPaymentList();
+    if($cpayment->moneyInRange($_POST['payment_method'],(int)$ot_total_value) == true){
+
+      $range = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($_POST['payment_method'])."_MONEY_LIMIT",$_POST['site_id']);
+      $show_payment_str .= sprintf(TEXT_PRODUCTS_PAYMENT_ERROR,$payment_array[1][array_search($_POST['payment_method'],$payment_array[0])],$range).'<br>'; 
+    }
+    if($_POST['preorder_type'] != 'new'){
+      $show_error_str = $show_products_str.$show_error_str.$show_payment_str;
     }
   }
   if ($show_error_str != '') {

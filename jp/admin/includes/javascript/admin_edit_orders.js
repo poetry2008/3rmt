@@ -170,6 +170,8 @@ function submit_check_con(){
   var price_list_str = '';
   var hidden_list_str = '';
   var num_list_str = ''; 
+  var ot_total_value = $("#ot_total_id").html(); 
+  var payment_method = $("select[name='payment_method']").val();
   $('#ctable').find('input').each(function() {
     if ($(this).attr('type') == 'text') {
       find_input_name = $(this).attr('name'); 
@@ -198,10 +200,10 @@ function submit_check_con(){
       success: function (msg_info) {
         if (msg_info != '') {
           if (confirm(msg_info)) {
-            confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+            confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
           } 
         } else {
-          confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+          confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
         } 
       }
     }); 
@@ -209,12 +211,12 @@ function submit_check_con(){
     edit_order_weight();
   }
 }
-function confirm_div_init(hidden_list_str,price_list_str,num_list_str){
+function confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method){
   $.ajax({
     url: 'ajax_orders.php?action=check_order_products_avg',
     type: 'POST',
     dataType: 'text',
-    data: 'language_id='+js_ed_orders_languages_id+'&site_id='+js_ed_orders_site_id+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
+    data: 'language_id='+js_ed_orders_languages_id+'&site_id='+js_ed_orders_site_id+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&ot_total_value='+ot_total_value+'&payment_method='+payment_method,
     async: false,
     success: function (msg_info) {
       if (msg_info != '') {

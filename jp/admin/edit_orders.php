@@ -1974,7 +1974,7 @@ var js_ed_orders_title_changed = "<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>";
 var js_ed_orders_oid = '<?php echo $_GET['oID']?>';
 var js_ed_orders_product_num = '<?php echo TEXT_PRODUCTS_NUM;?>';
 var js_ed_orders_languages_id = '<?php echo $languages_id;?>';
-var js_ed_orders_site_id = '<?php echo $order->Info['site_id'];?>';
+var js_ed_orders_site_id = '<?php echo $order->info['site_id'];?>';
 var js_ed_orders_npermission = '<?php echo $ocertify->npermission;?>';
 var js_ed_orders_money_symbol = '<?php echo TEXT_MONEY_SYMBOL;?>';
 </script>
