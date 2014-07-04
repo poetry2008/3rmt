@@ -1248,15 +1248,8 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     }else{
       $ot_total_value = $ot_total_array[0][0];
     }
-    $price_flag = false;
     $products_num_count = 0;
-    foreach ($product_info_array as $pi_key => $pi_value) {
-      //计算商品单价、个数
-      if(($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == '') && $price_flag == false){
-
-        $price_flag = true;
-      }
-      $products_num_count += $num_info_array[$pi_key];
+    foreach ($product_info_array as $pi_key => $pi_value) { 
       if (isset($_POST['preorder_type'])&&$_POST['preorder_type']=='new'&&($price_info_array[$pi_key]==0||$price_info_array[$pi_key]='')){
         continue;
       }
@@ -1267,6 +1260,12 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
         $preorder_products_res = tep_db_fetch_array($preorder_products_raw); 
         $tmp_products_id = $preorder_products_res['products_id']; 
       }
+      //计算商品单价、个数
+      if($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == ''){
+
+        $show_error_str .= tep_get_products_name($tmp_products_id,$_POST['languages_id'],$_POST['site_id']).TEXT_PRODUCTS_PRICE_ERROR.'<br>';
+      }
+      $products_num_count += $num_info_array[$pi_key];
       if (isset($num_info_array[$pi_key])) {
         if (!empty($num_info_array[$pi_key])) {
            $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$tmp_products_id."'"); 
@@ -1285,10 +1284,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
         }
       }
     }
-    //生成商品单价、个数、支付方法设置的金额范围错误提示
-    if($price_flag == true){
-      $show_products_str .= TEXT_PRODUCTS_PRICE_ERROR.'<br>';
-    }
+    //生成商品单价、个数、支付方法设置的金额范围错误提示 
     if($products_num_count == 0){
       $show_products_str .= TEXT_PRODUCTS_NUM_ERROR.'<br>'; 
     }
@@ -1301,7 +1297,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
       $show_payment_str .= sprintf(TEXT_PRODUCTS_PAYMENT_ERROR,$payment_array[1][array_search($_POST['payment_method'],$payment_array[0])],$range).'<br>'; 
     }
     if($_POST['preorder_type'] != 'new'){
-      $show_error_str = $show_products_str.$show_error_str.$show_payment_str;
+      $show_error_str = $show_error_str.$show_products_str.$show_payment_str;
     }
   }
   if ($show_error_str != '') {

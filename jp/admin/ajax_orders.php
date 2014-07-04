@@ -2904,15 +2904,8 @@ echo json_encode($json_array);
     }else{
       $ot_total_value = $ot_total_array[0][0];
     }
-    $price_flag = false;
     $products_num_count = 0;
-    foreach ($product_info_array as $pi_key => $pi_value) {
-      //计算商品单价、个数
-      if(($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == '') && $price_flag == false){
-
-        $price_flag = true;
-      }
-      $products_num_count += $num_info_array[$pi_key];
+    foreach ($product_info_array as $pi_key => $pi_value) { 
       $tmp_check_str = substr($pi_value, 0, 2); 
       if ($tmp_check_str != 'o_') {
         $order_products_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$pi_value."'"); 
@@ -2921,6 +2914,12 @@ echo json_encode($json_array);
       } else {
         $tmp_products_id = substr($pi_value, 2); 
       }
+      //计算商品单价、个数
+      if($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == ''){
+
+        $show_error_str .= tep_get_products_name($tmp_products_id,$_POST['languages_id'],$_POST['site_id']).TEXT_PRODUCTS_PRICE_ERROR.'<br>';
+      }
+      $products_num_count += $num_info_array[$pi_key]; 
       if (isset($num_info_array[$pi_key])) {
         if (!empty($num_info_array[$pi_key])) {
            $origin_product_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$tmp_products_id."'"); 
@@ -2939,13 +2938,10 @@ echo json_encode($json_array);
         }
       }
     }
-    //生成商品单价、个数、支付方法设置的金额范围错误提示
-    if($price_flag == true){
-      $show_products_str .= TEXT_PRODUCTS_PRICE_ERROR.'<br>';
-    }
+    //生成商品单价、个数、支付方法设置的金额范围错误提示 
     if($products_num_count == 0){
       $show_products_str .= TEXT_PRODUCTS_NUM_ERROR.'<br>'; 
-    }
+    } 
     require(DIR_WS_CLASSES . 'payment.php');
     $cpayment = payment::getInstance($_POST['site_id']);
     $payment_array = payment::getPaymentList();
@@ -2954,7 +2950,7 @@ echo json_encode($json_array);
       $range = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($_POST['payment_method'])."_MONEY_LIMIT",$_POST['site_id']);
       $show_payment_str .= sprintf(TEXT_PRODUCTS_PAYMENT_ERROR,$payment_array[1][array_search($_POST['payment_method'],$payment_array[0])],$range).'<br>'; 
     }
-    $show_error_str = $show_products_str.$show_error_str.$show_payment_str;
+    $show_error_str = $show_error_str.$show_products_str.$show_payment_str;
   }
   if ($show_error_str != '') {
     echo $show_error_str;

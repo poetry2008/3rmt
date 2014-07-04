@@ -854,6 +854,6 @@ define('COMMON_SITE_DATA','共用データー');
 define('DATE_FORMAT_SHORT_TEXT','Y年n月j日');
 define('PRACTICAL_MANUAL', 'のマニュアル');
 define('HEADER_TEXT_GROUPS','組織グループ設定');
-define('TEXT_PRODUCTS_PRICE_ERROR','単価は0円です。');
-define('TEXT_PRODUCTS_NUM_ERROR','個数は0個です。');
+define('TEXT_PRODUCTS_PRICE_ERROR','の単価は0円です。');
+define('TEXT_PRODUCTS_NUM_ERROR','合計数量は0個です。');
 define('TEXT_PRODUCTS_PAYMENT_ERROR','合計金額は%sの決済可能金額(%s)外になっています。');
