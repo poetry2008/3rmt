@@ -582,7 +582,7 @@
         $groups_messages_query = tep_db_query("select groups from messages where id='".$_GET['id']."'");
         $groups_messages_array = tep_db_fetch_array($groups_messages_query);
         tep_db_free_result($groups_messages_query);
-        if($_GET['status'] == '' && trim($groups_messages_array['groups']) != ''){
+        if($_GET['status'] == '' && trim($groups_messages_array['groups']) != '' && $_POST['messages_flag'] == 1){
 
           $_POST['messages_to'] = 2;
         }
