@@ -577,7 +577,15 @@
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
 	}else{
 		$pic_icon_str = '';
-	}
+        }
+        //如果从收件箱中保存的草稿邮件，并且发送人为组
+        $groups_messages_query = tep_db_query("select groups from messages where id='".$_GET['id']."'");
+        $groups_messages_array = tep_db_fetch_array($groups_messages_query);
+        tep_db_free_result($groups_messages_query);
+        if($_GET['status'] == '' && trim($groups_messages_array['groups']) != ''){
+
+          $_POST['messages_to'] = 2;
+        }
 	if($_POST['messages_to'] == '0'){
 		$recipient_name = 'ALL';
 	}else if($_POST['messages_to'] == '1'){
@@ -1501,6 +1509,7 @@ function messages_to_appoint_radio(){
 	$('#delete_to').children().css('background','#FFF');
         $('#delete_to').children().css('color','black');
         $('#delete_to').children().children().attr('checked',false);
+	messages_radio_all = $('#send_to').children();
 	messages_radio_all.css('background','#FFF');
 	messages_radio_all.css('color','black');
 	messages_radio_all.children().attr('checked',false);
@@ -1906,7 +1915,7 @@ require("includes/note_js.php");
 			switch($_GET['messages_sort']){
 				case 'read_status': $messages_sort = 'read_status';break;
 				case 'mark': $messages_sort = 'mark';break;
-				case 'sender_id': $messages_sort = 'sender_id';break;
+				case 'sender_name': $messages_sort = 'sender_name';break;
 				case 'recipient_name': $messages_sort = 'recipient_name';break;
 				case 'reply_status': $messages_sort = 'reply_status';break;
 				case 'content': $messages_sort = 'content';break;
@@ -1939,14 +1948,14 @@ require("includes/note_js.php");
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
-		if($messages_sort == '' || $messages_sort != 'sender_id'){ 
-			$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'</a>'; 
+		if($messages_sort == '' || $messages_sort != 'sender_name'){ 
+			$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_name&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'</a>'; 
 		}else{
-			if($messages_sort == 'sender_id' && $messages_sort_type == 'desc'){
-				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
+			if($messages_sort == 'sender_name' && $messages_sort_type == 'desc'){
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_name&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_name&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}

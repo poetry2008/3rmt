@@ -8280,7 +8280,7 @@ $banner_query = tep_db_query("
      $child_diff = array_diff($all_child_array,$group_parent_list_array);
      $groups_diff = array_diff($all_groups_array,$group_parent_list_array);
      if(!empty($groups_diff)){
-       tep_groups_list(0,$groups_list,$level_num,$child_diff); 
+       tep_groups_list(0,$groups_list,$level_num,$child_diff,'delete'); 
      }
      $all_groups_str = implode(',',$groups_diff);
    }else{
