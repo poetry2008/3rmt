@@ -13646,6 +13646,7 @@ function size_to_b($str){
   if(preg_match('/(\d+)([A-Z]+)/',$str,$arr)){
     $size = $arr[1]*$arr_size[$arr[2]];
   }
+  return $size;
 }
 function tep_change_attendance_login($uid) {
 
