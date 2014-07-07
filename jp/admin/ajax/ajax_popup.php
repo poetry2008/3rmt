@@ -8327,7 +8327,14 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_choose); 
 
  $messages_content_row_must_selected = array();
- $messages_content_row_must_selected[] = array('text'=> '');
+ //ALL 的数据
+ $recipient_all = '';
+ $all_users_list_query = tep_db_query($sql_for_all_users);
+ while($message_all_users = tep_db_fetch_array($all_users_list_query)){
+                  $recipient_all .= '<input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_users_list[]" checked="checked">';
+ }
+ tep_db_free_result($all_users_list_query);
+ $messages_content_row_must_selected[] = array('text'=> $recipient_all);
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
  $messages_content_table[] = array('text'=> $messages_content_row_must_selected);
  $mark_array = explode(',',$_GET['mark']);

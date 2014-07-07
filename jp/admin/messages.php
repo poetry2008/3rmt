@@ -146,7 +146,12 @@
    }
  }
  if($_GET['action']== 'new_messages'){
-//	die(var_dump($_GET['status']));
+   //	die(var_dump($_GET['status']));
+   //如果为ALL
+   if($_POST['messages_to'] == '0'){
+
+     $_POST['selected_staff'] = $_POST['all_users_list'];
+   }
    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      //获取组的用户，原理是优先于级别最低组的用户
      if($_POST['messages_type'] == 1){
@@ -481,7 +486,12 @@
 	}
      } 
    }
-	//die(var_dump($_POST['selected_staff']));
+   //die(var_dump($_POST['selected_staff']));
+     //如果为ALL
+    if($_POST['messages_to'] == '0'){
+
+      $_POST['selected_staff'] = $_POST['all_users_list'];
+    } 
     if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      if($_POST['messages_type'] == 1){
        if(mb_strlen($_POST['back_contents'])>20){
@@ -1486,48 +1496,15 @@ function checkbox_event(obj,event){
    }
 }
 var messages_radio_all = '';
-function messages_to_all_radio(){
-	$('#send_to').children().css('background','#FFF');
-	$('#send_to').children().css('color','black');
-	$('#send_to').children().children().attr('checked',false);
-	messages_radio_all = $('#send_to').children();
-	$('#delete_to').children().css('background','#FFF');
-	$('#delete_to').children().css('color','black');
-	$('#delete_to').children().children().attr('checked',false);
-	$('#delete_to').children().children().attr('name','selected_staff[]');
-	$('#send_to').append($('#delete_to').children());
-	$('#send_to').children().css('background', '#E0E0E0');
+function messages_to_all_radio(){	
 	$('#select_groups').css('display', 'none');	
 	$('#select_user').css('display', 'none');
 }
-function messages_to_appoint_radio(){
-	$('#send_to').children().css('background', '#FFF');
-	$('#send_to').children().css('color','black');
-	$('#send_to').children().children().attr('checked',false);
-	$('#send_to').children().children().attr('name','all_staff');
-	$('#delete_to').append($('#send_to').children());
-	$('#delete_to').children().css('background','#FFF');
-        $('#delete_to').children().css('color','black');
-        $('#delete_to').children().children().attr('checked',false);
-	messages_radio_all = $('#send_to').children();
-	messages_radio_all.css('background','#FFF');
-	messages_radio_all.css('color','black');
-	messages_radio_all.children().attr('checked',false);
-	messages_radio_all.children().attr('name','selected_staff[]');
-	$('#send_to').append(messages_radio_all);
+function messages_to_appoint_radio(){	
 	$('#select_groups').css('display', 'none');	
 	$('#select_user').css('display', '');	
 }
-function messages_to_groups_radio(){	
-        $('#send_to').children().css('background','#FFF');
-	$('#send_to').children().css('color','black');
-        $('#send_to').children().children().attr('checked',false); 
-        if(!messages_radio_all){
-          messages_radio_all = $('#send_to').children();
-        }
-        $('#delete_to').children().css('background','#FFF');
-        $('#delete_to').children().css('color','black');
-        $('#delete_to').children().children().attr('checked',false);
+function messages_to_groups_radio(){	 
 	$('#select_user').css('display', 'none');	
 	$('#select_groups').css('display', '');	
 }
@@ -1690,7 +1667,7 @@ function messages_check(is_back,flag){
 			error_status_select = 1;
 		}
           }); 
-        }else{
+        }else if(messages_to == 1){
 
           $('input[name="selected_staff[]"]').each(function() {
 		$(this).attr("checked","");
@@ -1700,6 +1677,9 @@ function messages_check(is_back,flag){
 			error_status_select = 1;
 		}
           });
+        }else{
+
+          error_status_select = 1;
         }
 	if(is_back == 1){
 		error_status_back_contents = 0;
