@@ -13626,3 +13626,39 @@ function tep_get_messages_file($mid){
   }
   return $res;
 }
+
+function tep_change_attendance_login($uid) {
+
+	$date = date('Y-m-d');
+	$sql = "select * from attendance where user_name='".$uid."' and date='".$date."'";
+	$query = tep_db_query($sql);
+    $num_rows = tep_db_num_rows($query);	
+	
+    $date = date('Y-m-d');
+    $now_time = date('Y-m-d H:i:s');
+
+	if($num_rows ==0) {
+        $sql = "insert into attendance (user_name,login_time,login_time_tep,date) values('". $uid ."','". $now_time ."','". $now_time ."','". $date ."')";
+	}elseif($num_rows !=0) {
+        $sql = "update attendance set login_time_tep = '". $now_time ."' where user_name ='" .$uid. "'and date= '". $date ."'";
+	}
+    return tep_db_query($sql);
+
+}
+
+function tep_change_attendance_logout($uid) {
+
+	$date = date('Y-m-d');
+	$sql = "select * from attendance where user_name='".$uid."' and date='".$date."' and logout_time=0";
+	$query = tep_db_query($sql);
+    $num_rows = tep_db_num_rows($query);	
+    $now_time = date('Y-m-d H:i:s');
+	
+	if($num_rows!=0) {
+        $sql = "update attendance set logout_time = '". $now_time ."',logout_time_tep = '". $now_time ."' where user_name ='" .$uid. "'and date= '". $date ."'";
+	}else {
+        $sql = "update attendance set logout_time_tep = '". $now_time ."' where user_name ='" .$uid. "'and date= '". $date ."'";
+	}
+    return tep_db_query($sql);
+}
+

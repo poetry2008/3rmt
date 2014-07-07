@@ -155,6 +155,35 @@ $(function(){
 <?php
 }
 ?>
+function change_attendance_login(uid) {
+
+		$.post(
+			"ajax.php?&action=change_attendance_login",
+			{
+				user_name:uid,
+			},
+			function(data){
+				if(data){
+			    	alert(data);
+				}
+			}
+		);
+}
+
+function change_attendance_logout(uid) {
+
+		$.post(
+			"ajax.php?&action=change_attendance_logout",
+			{
+				user_name:uid,
+			},
+			function(data){
+				if(data){
+			    	alert(data);
+				}
+			}
+		);
+}
 </script>
 <noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
@@ -215,6 +244,11 @@ if (isset($ocertify) && $ocertify->npermission >= 15) {
 echo "</a>";
 ?>
 </b>&nbsp;<?php echo HEADER_TEXT_LOGINED;?>&nbsp;
+<?php
+//打卡
+?>
+<a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" >daka</a>
+<a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" >tuika</a>
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
