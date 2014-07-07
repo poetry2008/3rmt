@@ -1063,7 +1063,7 @@ var image_save = '<?php echo IMAGE_SAVE;?>';
 	var js_final_text_clear = '<?php echo DIV_TEXT_CLEAR;?>';
 	var js_final_oid = '<?php echo $_GET['oID'];?>';
 	var js_final_npermission = '<?php echo $ocertify->npermission;?>';
-	var js_final_site_id = '<?php echo $order->Info['site_id'];?>';
+	var js_final_site_id = '<?php echo $order->info['site_id'];?>';
 	var js_final_title_changed = "<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>";
 	var js_final_money_symbol = '<?php echo TEXT_MONEY_SYMBOL;?>';
 	var js_final_self = '<?php echo $_SERVER['PHP_SELF']?>';
@@ -1629,7 +1629,7 @@ require("includes/note_js.php");
     if ($less_op_single) {
       echo "<input type='text' class='update_products_qty' style='background: none repeat scroll 0 0 #CCCCCC' readonly id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ?  $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order->products[$i]['qty']) . "'>";
     } else {
-      echo "<input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='2' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ?  $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order->products[$i]['qty']) . "'>";
+      echo "<input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' onkeyup='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' onchange='clearLibNum(this);recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='2' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['qty']) ?  $_SESSION['preorder_products'][$_GET['oID']]['qty'] : $order->products[$i]['qty']) . "'>";
     }
     echo "&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
@@ -1719,7 +1719,7 @@ require("includes/note_js.php");
         if ($less_op_single) {
           echo "<input type='text' size='9' style='background: none repeat scroll 0 0 #CCCCCC' readonly name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$all_show_option[$t_item_id]['price'])."'>"; 
         } else {
-          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? (int)$_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$all_show_option[$t_item_id]['price'])."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\" onchange=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
         }
         echo TEXT_MONEY_SYMBOL; 
         echo '</div>'; 
@@ -1739,7 +1739,7 @@ require("includes/note_js.php");
           if ($less_op_single) {
             echo "<input type='text' size='9' style='background: none repeat scroll 0 0 #CCCCCC' readonly name='update_products[$orders_products_id][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."'>"; 
           } else {
-            echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][price]' value='".$tmp_op_price."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
+            echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][".$ex_value['id']."][price]' value='".(int)$tmp_op_price."' onkeyup=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\" onchange=\"clearNewLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
           }
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
@@ -1813,7 +1813,7 @@ require("includes/note_js.php");
            "<a onclick='popup_window(this,\"".$item_type."\",\"".tep_parse_input_field_data($option_item_array['front_title'], array("'"=>"&#39;",'"'=>"&#34;"))."\",\"".$item_list."\");' href='javascript:void(0);'><u>".strtr($option_default_value, array("'"=>"&#39;",'"'=>"&#34;"))."</u></a><input type='hidden' class='option_input_width' name='new_update_products_op_value[$t_item_id]' value='"; 
         echo "'></div></div>";
         echo '<div class="order_option_price">';
-        echo "<input type='text' size='9' name='new_update_products_op_price[$t_item_id]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? $_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$option_item_array['price'])."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\">"; 
+        echo "<input type='text' size='9' name='new_update_products_op_price[$t_item_id]' value='".(isset($_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id]) ? (int)$_SESSION['preorder_products'][$_GET['oID']]['attr'][$orders_products_attributes_id] : (int)$option_item_array['price'])."' onkeyup=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\" onchange=\"clearLibNum(this);recalc_preorder_price('".$oID."', '".$orders_products_id."', 'true', '".$op_info_str."');\">"; 
         echo TEXT_MONEY_SYMBOL; 
         echo '</div>'; 
         echo '</i></div>';
@@ -1831,13 +1831,13 @@ require("includes/note_js.php");
     if ($less_op_single) {
       echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;background: none repeat scroll 0 0 #CCCCCC" readonly class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ?  tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'">'.TEXT_MONEY_SYMBOL;
     } else {
-      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ?  tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL;
+      echo '<td class="'.$RowStyle.'" align="right">'.$orders_products_type.'<input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.(isset($_SESSION['preorder_products'][$_GET['oID']]['price']) ?  tep_display_currency(number_format(abs($_SESSION['preorder_products'][$_GET['oID']]['price']),2)) : tep_display_currency(number_format(abs($order->products[$i]['price']), 2))).'" onkeyup="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" onchange="clearLibNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');">'.TEXT_MONEY_SYMBOL;
     }
     echo '<input type="hidden" name="hidden_pro_id[]" value="'.$orders_products_id.'">'; 
     echo '</td>'; 
     
     echo '<td class="' . $RowStyle . '" align="right">';
-      echo "<input type='hidden' style='text-align:right;' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\', \''.$op_info_str.'\');" >';
+      echo "<input type='hidden' style='text-align:right;' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\', \''.$op_info_str.'\');" onchange="clearNoNum(this);recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'3\', \''.$op_info_str.'\');">';
     echo '<input type="hidden" name="op_id_'.$orders_products_id.'" 
       value="'.tep_get_pre_product_by_op_id($orders_products_id).'"><div id="update_products['.$orders_products_id.'][final_price]">'; 
     if ($order->products[$i]['final_price'] < 0) {
@@ -2073,7 +2073,7 @@ require("includes/note_js.php");
       echo '  <tr>' . "\n" .
            '    <td align="left" class="' . $TotalStyle .  '">'.($TotalIndex == 1 ? EDIT_ORDERS_TOTALDETAIL_READ_ONE : '').'</td>' . 
            '    <td style="min-width:180px;" align="right" class="' . $TotalStyle .  '">' . $button_add ."<input style='text-align:right;' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "' onblur='orders_session(\"customers_total_".$TotalIndex."\",this.value);'>:" . '</td>' . "\n" .
-           '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . $sign_str ."<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='6' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"] != '' ? abs($TotalDetails["Price"]) : $TotalDetails["Price"]) . "'>" .TEXT_MONEY_SYMBOL . 
+           '    <td align="right" class="' . $TotalStyle . '" style="min-width: 60px;">' . $sign_str ."<input style='text-align:right;' name='update_totals[$TotalIndex][value]' id='update_totals_$TotalIndex' onkeyup='clearLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' onchange='clearLibNum(this);price_total();recalc_preorder_price(\"".$oID."\", \"".$orders_products_id."\", \"1\", \"".$op_info_str."\");' size='6' value='" . (isset($_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex]) ? $_SESSION['preorder_products'][$_GET['oID']]['customer'][$TotalIndex] : $TotalDetails["Price"] != '' ? abs($TotalDetails["Price"]) : $TotalDetails["Price"]) . "'>" .TEXT_MONEY_SYMBOL . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
            '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 

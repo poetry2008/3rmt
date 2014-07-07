@@ -6,6 +6,19 @@
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   define('FILENAME_MESSAGES', 'messages.php');
+  $php_upload_max_filesize= size_to_b(ini_get('upload_max_filesize'));
+  $php_post_max_size = size_to_b(ini_get('post_max_size'));
+  $php_memmory_list = size_to_b(ini_get('memory_limit'));
+  $min_size_str = ini_get('memory_limit'); 
+  $min_size = $php_memmory_list;
+  if($min_size > $php_post_max_size){
+    $min_size = $php_post_max_size;
+    $min_size_str = ini_get('post_max_size');
+  }
+  if($min_size > $php_upload_max_filesize){
+    $min_size = $php_upload_max_filesize;
+    $min_size_str = ini_get('upload_max_filesize');
+  }
 
   //组选择的处理
   if($_GET['action'] == 'groups_list'){
@@ -133,7 +146,12 @@
    }
  }
  if($_GET['action']== 'new_messages'){
-//	die(var_dump($_GET['status']));
+   //	die(var_dump($_GET['status']));
+   //如果为ALL
+   if($_POST['messages_to'] == '0'){
+
+     $_POST['selected_staff'] = $_POST['all_users_list'];
+   }
    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      //获取组的用户，原理是优先于级别最低组的用户
      if($_POST['messages_type'] == 1){
@@ -189,22 +207,19 @@
 	if ($_FILES['messages_file']['error'][$fk] > 0){
           continue;
 	}else{
-          if($_POST['messages_type'] == 1){
-            $f_src = $_FILES["messages_file"]["tmp_name"][$fk];
+	    $messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+            $f_src = "messages_upload/" .$messages_file_name;
             $f_name = $_FILES['messages_file']['name'][$fk];
             $f_type = $_FILES['messages_file']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
-          }else{
-		$messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
-		$messages_file_status = '1';
-		if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"][$fk])){
-      		}else{
-      			$file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
+	    $messages_file_status = '1';
+	    if (file_exists("messages_upload/" . $_FILES["messages_file"]["name"][$fk])){
+      	    }else{
+      	      $file_success = move_uploaded_file($_FILES["messages_file"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
-      		}
-                $save_file_arr[] = $messages_file_name;
-          }
-	}
+      	    }
+            $save_file_arr[] = $messages_file_name;
+        }
         }
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
@@ -220,10 +235,31 @@
 		}
 		$recipient_name = implode(';',$recipient_name);
         }else if($_POST['messages_to'] == '2'){
+                $groups_array = explode(',',$_POST['groups_id_list']);
+                $groups_array = array_filter($groups_array);
+                $groups_string = '';
+                foreach($groups_array as $groups_value){
+                  $groups_parent_id = array();
+                  $groups_parent_id[] = $groups_value;
+                  group_parent_id_list($groups_value,$groups_parent_id);
+                  sort($groups_parent_id);
+                  foreach($groups_parent_id as $p_value){
+
+                    $groups_name_query = tep_db_query("select name from ".TABLE_GROUPS." where id='".$p_value."'");
+                    $groups_name_array = tep_db_fetch_array($groups_name_query);
+                    tep_db_free_result($groups_name_query);
+                    if($p_value != $groups_value){
+                      $groups_string .= $groups_name_array['name'].'>'; 
+                    }else{
+                      $groups_string .= $groups_name_array['name'].';'; 
+                    }
+                  }
+                }
+                $recipient_str = $groups_string;
                 foreach($users_list_array as $key => $value){
 			$recipient_name[] =  $value;
 		}
-		$recipient_name = implode(';',$recipient_name);
+          $recipient_name = mb_substr($recipient_str,0,-1).'||||||'.implode(';',$recipient_name);
         }
       //判断是发信，还是存草稿箱
       if($_POST['messages_flag'] == 0){
@@ -270,7 +306,6 @@
 	  //	var_dump($sql_data_array);
           }
           //保存到已发送邮箱中
-          if($_POST['messages_type'] != 1){
           $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -297,7 +332,6 @@
                'file_index' => $sk
              );
           tep_db_perform('message_file', $save_data_array);
-          }
           }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
@@ -337,7 +371,6 @@
             }
 	  //	var_dump($sql_data_array);
           } 
-          if($_POST['messages_type'] != 1){
           //保存到已发送邮箱中
           $sql_data_array = array(
 			     	'read_status' => '0',
@@ -366,7 +399,6 @@
           tep_db_perform('message_file', $save_data_array);
           }
           unset($sql_data_array);
-          }
         } 
       }else if($_POST['messages_flag'] == 1){
         $groups_id_list = explode(',',$_POST['groups_id_list']);
@@ -403,11 +435,7 @@
           }
         unset($sql_data_array); 
       }
-        if($_POST['messages_type'] == 1){
-          foreach($file_arr as $file_info){
-            unlink($file_info['src']);
-          }
-        }
+
 	if(isset($_GET['status']) && $_GET['status'] != ''){
 		$status_flag = true;
     	}else{
@@ -458,7 +486,12 @@
 	}
      } 
    }
-	//die(var_dump($_POST['selected_staff']));
+   //die(var_dump($_POST['selected_staff']));
+     //如果为ALL
+    if($_POST['messages_to'] == '0'){
+
+      $_POST['selected_staff'] = $_POST['all_users_list'];
+    } 
     if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
      if($_POST['messages_type'] == 1){
        if(mb_strlen($_POST['back_contents'])>20){
@@ -507,34 +540,62 @@
 	$messages_file_status = '0';
         $file_arr = array();
         $save_file_arr = array();
+        if($_POST['messages_flag'] != 4){
+          $has_file_list = $_POST['back_file_list'];
+        }else{
+          $has_file_list = array();
+        }
+        $f_src = '';
+        $f_name = '';
+        $f_type = '';
+        foreach($has_file_list as $has_file){
+          if($_POST['messages_type'] == 1){
+            if(file_exists('messages_upload/'.$has_file)){
+              $m_file_name = base64_decode($has_file);
+              $m_file_name = explode('|||',$m_file_name);
+              $f_src = "messages_upload/".$has_file;
+              $f_name = $m_file_name[0];
+              $f_type = mime_content_type("messages_upload/".$has_file);
+              $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
+            }
+          }else{
+            $messages_file_status = '1';
+            $save_file_arr[] = $has_file;
+          }
+        }
         foreach($_FILES['messages_file_back']['name'] as $fk => $fv){
         $f_src = '';
         $f_name = '';
         $f_type = '';
 	if ($_FILES['messages_file_back']['error'][$fk] > 0){
 	}else{
-          if($_POST['messages_type'] == 1){
-            $f_src = $_FILES["messages_file_back"]["tmp_name"][$fk];
+	    $messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+            $f_src = "messages_upload/" .$messages_file_name;
             $f_name = $_FILES['messages_file_back']['name'][$fk];
             $f_type = $_FILES['messages_file_back']['type'][$fk];
             $file_arr[] = array('src'=>$f_src,'name'=>$f_name,'type'=>$f_type);
-          }else{
-		$messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
-		$messages_file_status = '1';
-		if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"][$fk])){
-      		}else{
-      			$file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
+	    $messages_file_status = '1';
+	    if (file_exists("messages_upload/" . $_FILES["messages_file_back"]["name"][$fk])){
+      	    }else{
+      	      $file_success = move_uploaded_file($_FILES["messages_file_back"]["tmp_name"][$fk],"messages_upload/" . $messages_file_name);
 			//die(var_dump($file_success));
-      		}
-                $save_file_arr[] = $messages_file_name;
-          }
-	}
+      	    }
+            $save_file_arr[] = $messages_file_name;
+           }
         }
 	if(!empty($_POST['pic_icon'])){
 		$pic_icon_str = implode(',',$_POST['pic_icon']);
 	}else{
 		$pic_icon_str = '';
-	}
+        }
+        //如果从收件箱中保存的草稿邮件，并且发送人为组
+        $groups_messages_query = tep_db_query("select groups from messages where id='".$_GET['id']."'");
+        $groups_messages_array = tep_db_fetch_array($groups_messages_query);
+        tep_db_free_result($groups_messages_query);
+        if($_GET['status'] == '' && trim($groups_messages_array['groups']) != '' && $_POST['messages_flag'] == 1){
+
+          $_POST['messages_to'] = 2;
+        }
 	if($_POST['messages_to'] == '0'){
 		$recipient_name = 'ALL';
 	}else if($_POST['messages_to'] == '1'){
@@ -544,10 +605,31 @@
 		}
 		$recipient_name = implode(';',$recipient_name);
         }else if($_POST['messages_to'] == '2'){
+                $groups_array = explode(',',$_POST['groups_id_list']);
+                $groups_array = array_filter($groups_array);
+                $groups_string = '';
+                foreach($groups_array as $groups_value){
+                  $groups_parent_id = array();
+                  $groups_parent_id[] = $groups_value;
+                  group_parent_id_list($groups_value,$groups_parent_id);
+                  sort($groups_parent_id);
+                  foreach($groups_parent_id as $p_value){
+
+                    $groups_name_query = tep_db_query("select name from ".TABLE_GROUPS." where id='".$p_value."'");
+                    $groups_name_array = tep_db_fetch_array($groups_name_query);
+                    tep_db_free_result($groups_name_query);
+                    if($p_value != $groups_value){
+                      $groups_string .= $groups_name_array['name'].'>'; 
+                    }else{
+                      $groups_string .= $groups_name_array['name'].';'; 
+                    }
+                  }
+                }
+                $recipient_str = $groups_string;
                 foreach($users_list_array as $key => $value){
 			$recipient_name[] =  $value;
-		}
-		$recipient_name = implode(';',$recipient_name);
+                }
+                $recipient_name = mb_substr($recipient_str,0,-1).'||||||'.implode(';',$recipient_name);
         }	
 	if($_GET['status'] == 'sent' || $_GET['status'] == 'drafts'){
 		$reply_status = '0';
@@ -600,7 +682,6 @@
             }
           }
           //保存到已发送邮箱中
-          if($_POST['messages_type'] != 1){
           $sql_data_array = array(
 			     	'read_status' => '0',
 				'mark' => $pic_icon_str,
@@ -629,7 +710,6 @@
           tep_db_perform('message_file', $save_data_array);
           }
           unset($sql_data_array);
-          }
         }else{
           foreach($_POST['selected_staff'] as $key => $value){
 		$user_name_id = explode('|||',$value);
@@ -668,7 +748,6 @@
 	  //	var_dump($sql_data_array);
             }
           } 
-          if($_POST['messages_type'] != 1){
           //保存到已发送邮箱中
           $sql_data_array = array(
 			     	'read_status' => '0',
@@ -697,7 +776,6 @@
           tep_db_perform('message_file', $save_data_array);
           }
           unset($sql_data_array);
-          }
         } 
         if($_GET['status'] == 'drafts'){
 
@@ -747,6 +825,9 @@
         unset($sql_data_array);
       }else if($_POST['messages_flag'] == 4){
         //更新数据到草稿箱
+        if(!empty($save_file_arr)){
+          $messages_file_status = '1';
+        }
         $groups_id_list = explode(',',$_POST['groups_id_list']);
         $groups_id_list = array_unique($groups_id_list);
         $groups_id_list = array_filter($groups_id_list);
@@ -769,11 +850,12 @@
 				'file_name' => $messages_file_name,
 				'opt' => '0',
 				'sender_name' => $_SESSION['user_name'],
-				'time' => date("Y/m/d H:i:s"),
                                 'recipient_name' => $recipient_name,
                                 'groups' => $groups_id_str,
 				'trash_status' => '2',
 				'messages_type' => tep_db_prepare_input($_POST['messages_type']),
+				'user_update' => $_SESSION['user_name'],
+				'date_update' => 'now()',
                                );
        	tep_db_perform('messages', $sql_data_array, 'update', 'id='.$_GET['id']);
         $messages_id = $_GET['id'];
@@ -787,11 +869,7 @@
           }
         unset($sql_data_array); 
       }
-        if($_POST['messages_type'] == 1){
-          foreach($file_arr as $file_info){
-            unlink($file_info['src']);
-          }
-        }
+
 	if($reply_status == '1'){
 		tep_db_query('update messages set opt = "1" where id = '.$_GET['id']);
 	}
@@ -827,6 +905,22 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+function remove_email_file(mid,f_index){
+       $.ajax({
+         url: 'ajax.php?action=del_messages_file',
+         type: 'POST',
+         dataType: 'text',
+         data:'latest_messages_id='+mid+'&f_index='+f_index, 
+         async:false,
+         success: function (data){
+           if(data==''){
+             $('#back_file_list').remove();
+           }else{
+             $('#back_file_list').html(data);
+           }
+         }
+        });
+}
 function add_email_file(b_id){
   var index = 0;
   var last_id = b_id;
@@ -1402,47 +1496,15 @@ function checkbox_event(obj,event){
    }
 }
 var messages_radio_all = '';
-function messages_to_all_radio(){
-	$('#send_to').children().css('background','#FFF');
-	$('#send_to').children().css('color','black');
-	$('#send_to').children().children().attr('checked',false);
-	messages_radio_all = $('#send_to').children();
-	$('#delete_to').children().css('background','#FFF');
-	$('#delete_to').children().css('color','black');
-	$('#delete_to').children().children().attr('checked',false);
-	$('#delete_to').children().children().attr('name','selected_staff[]');
-	$('#send_to').append($('#delete_to').children());
-	$('#send_to').children().css('background', '#E0E0E0');
+function messages_to_all_radio(){	
 	$('#select_groups').css('display', 'none');	
 	$('#select_user').css('display', 'none');
 }
-function messages_to_appoint_radio(){
-	$('#send_to').children().css('background', '#FFF');
-	$('#send_to').children().css('color','black');
-	$('#send_to').children().children().attr('checked',false);
-	$('#send_to').children().children().attr('name','all_staff');
-	$('#delete_to').append($('#send_to').children());
-	$('#delete_to').children().css('background','#FFF');
-        $('#delete_to').children().css('color','black');
-        $('#delete_to').children().children().attr('checked',false);
-	messages_radio_all.css('background','#FFF');
-	messages_radio_all.css('color','black');
-	messages_radio_all.children().attr('checked',false);
-	messages_radio_all.children().attr('name','selected_staff[]');
-	$('#send_to').append(messages_radio_all);
+function messages_to_appoint_radio(){	
 	$('#select_groups').css('display', 'none');	
 	$('#select_user').css('display', '');	
 }
-function messages_to_groups_radio(){	
-        $('#send_to').children().css('background','#FFF');
-	$('#send_to').children().css('color','black');
-        $('#send_to').children().children().attr('checked',false); 
-        if(!messages_radio_all){
-          messages_radio_all = $('#send_to').children();
-        }
-        $('#delete_to').children().css('background','#FFF');
-        $('#delete_to').children().css('color','black');
-        $('#delete_to').children().children().attr('checked',false);
+function messages_to_groups_radio(){	 
 	$('#select_user').css('display', 'none');	
 	$('#select_groups').css('display', '');	
 }
@@ -1571,6 +1633,24 @@ function delete_select_user(){
 	});
 }
 function messages_check(is_back,flag){
+  var input_id = 'messages_file[]';
+  if(is_back == 1){
+    input_id = 'messages_file_back[]';  
+  }
+  var all_size = 0;
+  $("input[name='"+input_id+"']").each(
+    function(){
+      if($(this).val()){
+      t= this.files;
+      all_size+= t[0].size;
+      if(t[0].size > <?php echo $min_size;?>){
+        alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
+        return false;
+      }
+      }
+    }
+  );
+
 	var error_status_select = 0;
 	var error_status_contents = 0;
 	var error_status_back_contents = 1;
@@ -1587,7 +1667,7 @@ function messages_check(is_back,flag){
 			error_status_select = 1;
 		}
           }); 
-        }else{
+        }else if(messages_to == 1){
 
           $('input[name="selected_staff[]"]').each(function() {
 		$(this).attr("checked","");
@@ -1597,6 +1677,9 @@ function messages_check(is_back,flag){
 			error_status_select = 1;
 		}
           });
+        }else{
+
+          error_status_select = 1;
         }
 	if(is_back == 1){
 		error_status_back_contents = 0;
@@ -1812,8 +1895,8 @@ require("includes/note_js.php");
 			switch($_GET['messages_sort']){
 				case 'read_status': $messages_sort = 'read_status';break;
 				case 'mark': $messages_sort = 'mark';break;
-				case 'sender_id': $messages_sort = 'sender_id';break;
-				case 'recipient_id': $messages_sort = 'recipient_id';break;
+				case 'sender_name': $messages_sort = 'sender_name';break;
+				case 'recipient_name': $messages_sort = 'recipient_name';break;
 				case 'reply_status': $messages_sort = 'reply_status';break;
 				case 'content': $messages_sort = 'content';break;
 				case 'attach_file': $messages_sort = 'attach_file';break;
@@ -1824,13 +1907,13 @@ require("includes/note_js.php");
 		
               $form_str = tep_draw_form('messages_checkbox', 'messages.php','action=messages_action&messages_sort='.$_GET['messages_sort'].'&messages_sort_type='.$_GET['messages_sort_type'].'&page='.$_GET['page'].'&status='.$_GET['status'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"').'<input type="hidden" id="messages_action_flag_id" name="messages_action_flag" value="delete">'; 
                 if($messages_sort == '' || $messages_sort != 'read_status'){ 
-			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'</a>'; 
+			$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc&status='.$_GET['status']).'">'.READ_STATUS.'</a>'; 
 		}else{
-			if($messages_sort == 'read_status' && $messages_sort_type == 'desc'){
-				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc&status='.$_GET['status']).'">'.READ_STATUS.'
+			if($messages_sort == 'read_status' && $messages_sort_type == 'asc'){
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=desc&status='.$_GET['status']).'">'.READ_STATUS.'
+				$messages_read_status = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=read_status&messages_sort_type=asc&status='.$_GET['status']).'">'.READ_STATUS.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -1845,36 +1928,36 @@ require("includes/note_js.php");
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
-		if($messages_sort == '' || $messages_sort != 'sender_id'){ 
-			$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'</a>'; 
+		if($messages_sort == '' || $messages_sort != 'sender_name'){ 
+			$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_name&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'</a>'; 
 		}else{
-			if($messages_sort == 'sender_id' && $messages_sort_type == 'desc'){
-				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
+			if($messages_sort == 'sender_name' && $messages_sort_type == 'desc'){
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_name&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
+				$messages_from = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=sender_name&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_FROM.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
-		if($messages_sort == '' || $messages_sort != 'recipient_id'){ 
-			$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_TO.'</a>'; 
+		if($messages_sort == '' || $messages_sort != 'recipient_name'){ 
+			$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_name&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_TO.'</a>'; 
 		}else{
-			if($messages_sort == 'recipient_id' && $messages_sort_type == 'desc'){
-				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_TO.'
+			if($messages_sort == 'recipient_name' && $messages_sort_type == 'desc'){
+				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_name&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_TO.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_id&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_TO.'
+				$messages_to = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=recipient_name&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_TO.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'reply_status'){ 
-			$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'</a>'; 
+			$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_BACK.'</a>'; 
 		}else{
-			if($messages_sort == 'reply_status' && $messages_sort_type == 'desc'){
-				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
+			if($messages_sort == 'reply_status' && $messages_sort_type == 'asc'){
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
+				$messages_back = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=reply_status&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_BACK.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -1890,13 +1973,13 @@ require("includes/note_js.php");
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'attach_file'){ 
-			$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'</a>'; 
+			$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc&status='.$_GET['status']).'">'.ADD_FILE.'</a>'; 
 		}else{
-			if($messages_sort == 'attach_file' && $messages_sort_type == 'desc'){
-				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc&status='.$_GET['status']).'">'.ADD_FILE.'
+			if($messages_sort == 'attach_file' && $messages_sort_type == 'asc'){
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=desc&status='.$_GET['status']).'">'.ADD_FILE.'
+				$messages_add_file = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=attach_file&messages_sort_type=asc&status='.$_GET['status']).'">'.ADD_FILE.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -1912,13 +1995,13 @@ require("includes/note_js.php");
 			}
 		}
 		if($messages_sort == '' || $messages_sort != 'opt'){ 
-			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_OPT.'</a>'; 
+			$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_OPT.'</a>'; 
 		}else{
-			if($messages_sort == 'opt' && $messages_sort_type == 'asc'){
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_OPT.'
+			if($messages_sort == 'opt' && $messages_sort_type == 'desc'){
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_OPT.'
 				<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font></a>';
 			}else{
-				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=asc&status='.$_GET['status']).'">'.MESSAGES_OPT.'
+				$messages_opt = '<a href="'.tep_href_link(FILENAME_MESSAGES,'messages_sort=opt&messages_sort_type=desc&status='.$_GET['status']).'">'.MESSAGES_OPT.'
 				<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font></a>';
 			}
 		}
@@ -1940,9 +2023,15 @@ require("includes/note_js.php");
                $messages_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $messages_title_row);
     $rows = 0;
     if($messages_sort == ''){
-	$messages_sort_sql = $messages_sort_default;
+      $messages_sort_sql = $messages_sort_default;
+    }else if($messages_sort == 'opt'){
+      if($_GET['status'] == 'drafts'){
+        $messages_sort_sql = 'date_update';
+      }else{
+        $messages_sort_sql = 'time';
+      }
     }else{
-	$messages_sort_sql = $messages_sort;
+      $messages_sort_sql = $messages_sort;
     }
     $messages_page = $_GET['page'];
     if($_GET['status'] == 'sent'){
@@ -2072,32 +2161,27 @@ require("includes/note_js.php");
 
           $groups_string = '';
           $groups_string_alt = '';
-          $groups_array = explode(',',$latest_messages['groups']);
-          foreach($groups_array as $groups_value){
-            $groups_parent_id = array();
-            $groups_parent_id[] = $groups_value;
-            group_parent_id_list($groups_value,$groups_parent_id);
-            sort($groups_parent_id);
-            foreach($groups_parent_id as $p_value){
+          $groups_array = explode('||||||',$latest_messages['recipient_name']);
+          $groups_string_alt = $groups_array[0];
+          $groups_name_list_array = explode(';',$groups_array[0]);
+          foreach($groups_name_list_array as $groups_value){
+            $groups_name_str_array = explode('>',$groups_value);
+            if(count($groups_name_str_array) > 1){
 
-              $groups_name_query = tep_db_query("select name from ".TABLE_GROUPS." where id='".$p_value."'");
-              $groups_name_array = tep_db_fetch_array($groups_name_query);
-              tep_db_free_result($groups_name_query);
-              if($p_value != $groups_value){
-                $groups_string .= mb_substr($groups_name_array['name'],0,1).'...>'; 
-              }else{
-                $groups_string .= $groups_name_array['name']; 
+              $groups_i = 0;
+              foreach($groups_name_str_array as $groups_str_value){
+                if(count($groups_name_str_array)-1 != $groups_i){
+                  $groups_string .= mb_substr($groups_str_value,0,1).'...>';
+                }else{
+                  $groups_string .= $groups_str_value.';';
+                }
+                $groups_i++;
               }
-              if($p_value != $groups_value){
-                $groups_string_alt .= $groups_name_array['name'].'>';
-              }else{
-                $groups_string_alt .= $groups_name_array['name'];
-              }
+            }else{
+              $groups_string .= $groups_value.';';
             }
-            $groups_string .= ';';
-            $groups_string_alt .= ';';
           }
-          $to_messages = '<span alt="'.mb_substr($groups_string_alt,0,-1).'" title="'.mb_substr($groups_string_alt,0,-1).'">'.mb_substr($groups_string,0,-1).'</span>';
+          $to_messages = '<span alt="'.$groups_string_alt.'" title="'.$groups_string_alt.'">'.mb_substr($groups_string,0,-1).'</span>';
         }else{
           $to_messages = '<span alt="'.$latest_messages['recipient_name'].'" title="'.$latest_messages['recipient_name'].'">'.$latest_messages['recipient_name'].'</span>'; 
         }
@@ -2141,7 +2225,8 @@ require("includes/note_js.php");
 		'params' => 'class="dataTableContent_time"',
 		'text'   => $latest_messages['time']
         );
-        $messages_opt = tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime($latest_messages['time'])));
+        $update_date = $latest_messages['date_update'] != '' && $latest_messages['date_update'] != '0000-00-00 00:00:00' ? $latest_messages['date_update'] : date('Y-m-d H:i:s',strtotime($latest_messages['time']));
+        $messages_opt = tep_get_signal_pic_info($update_date);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => '<a id="m_'.$latest_messages['id'].'" href="javascript:void(0)" onclick="show_latest_messages(this,\''.$_GET['page'].'\','.$latest_messages['id'].',\''.$latest_messages['sender_id'].'\',\''.$messages_sort.'\',\''.$messages_sort_type.'\',\''.$latest_messages['sender_name'].'\',\''.$_GET['status'].'\',\''.$latest_messages['recipient_name'].'\',\''.$latest_messages['groups'].'\',\''.$latest_messages['mark'].'\',\''.$latest_messages['messages_type'].'\')">'.$messages_opt.'</a>'

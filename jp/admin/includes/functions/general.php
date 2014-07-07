@@ -13609,7 +13609,9 @@ function tep_mail_by_file($to_name, $to_email_address, $email_subject, $email_te
       $file = fopen($fileatt,'rb');
       $data = fread($file,filesize($fileatt));
       fclose($file);
-      $message->add_attachment($data,$file_info['name'],$file_info['type']);
+      $f_name = mb_convert_encoding($file_info['name'],'UTF-8');
+      $f_name = '=?UTF-8?B?'.base64_encode($f_name)."?=";
+      $message->add_attachment($data,$f_name,$file_info['type']);
     }
   }
 
@@ -13627,6 +13629,24 @@ function tep_get_messages_file($mid){
   return $res;
 }
 
+function size_to_b($str){
+  $str = strtoupper($str);
+  $arr_size = array(
+      'B'=>1,
+      'K'=>1024,
+      'KB'=>1024,
+      'M'=>1024*1024,
+      'MB'=>1024*1024,
+      'G'=>1024*1024*1024,
+      'GB'=>1024*1024*1024,
+      'T'=>1024*1024*1024*1024,
+      'TB'=>1024*1024*1024*1024
+      );
+  $size = 0;
+  if(preg_match('/(\d+)([A-Z]+)/',$str,$arr)){
+    $size = $arr[1]*$arr_size[$arr[2]];
+  }
+}
 function tep_change_attendance_login($uid) {
 
 	$date = date('Y-m-d');

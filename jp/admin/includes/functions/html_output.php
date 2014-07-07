@@ -543,3 +543,38 @@ function tep_get_new_image($src, $alt = '', $maxwidth, $maxheight, $parameters =
   $image .= '>';
   return $image;
 }
+/* -------------------------------------
+    功能: 生成url 
+    参数: $page(string) 链接页面   
+    参数: $parameters(string) url参数   
+    参数: $connection(string) ssl/nossl链接   
+    参数: $add_session_id(boolean) 是否重新生成session_id   
+    参数: $search_engine_safe(boolean) 是否安全   
+    返回值: 生成的url(string) 
+------------------------------------ */
+function tep_admin_href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true, $search_engine_safe = true) {
+  require(DIR_WS_CLASSES . 'seo.class.php');
+  $seo_urls = new SEO_URL($languages_id);
+  return $seo_urls->href_link($page, $parameters, $connection, $add_session_id);
+}
+/* -------------------------------------
+    功能: 判断是否是数字 
+    参数: $var(string) 值   
+    返回值: 是否是数字(int/boolean) 
+------------------------------------ */
+function toNumber($var){
+  if( is_numeric( $var ) )
+    {
+      if( (float)$var != (int)$var )
+        {
+          return (float)$var;
+        }
+      else
+        {
+          return (int)$var;
+        }
+    }
+    if( $var == "true" )    return true;
+    if( $var == "false" )    return false;
+    return $var;
+}
