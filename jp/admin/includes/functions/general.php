@@ -6100,6 +6100,7 @@ function tep_display_google_results($from_url='', $c_type=false){
     返回值: 生成密码(string) 
  ------------------------------------ */
   function make_rand_pwd($rule){
+    $rule = str_replace('|||','+',$rule);
     //分割 规则字符串
     $rule = str_replace('M','m',$rule);
     $rule = str_replace('D','d',$rule);
@@ -6145,7 +6146,7 @@ function tep_display_google_results($from_url='', $c_type=false){
       if(preg_match('|[\+\-\=\/]|',$str)){
         //如果存在符号 计算
         $s = '$sr = $str';
-        eval('$sr = '.$str.';');
+        eval('$sr = tep_operations(\''.$str.'\');');
         $str = $sr;
         $str = intval($str);
       }
