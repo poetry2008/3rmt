@@ -8986,6 +8986,7 @@ if($_GET['latest_messages_id']>0){
     $error_user .= "\n".TEXT_SEND_MAIL;
   }
   echo $error_user;
+
 }else if($_GET['action'] == 'del_messages_file'){
    $sql = 'select * from message_file where message_id = "'.$_POST['latest_messages_id'].'" and file_index="'.$_POST['f_index'].'"';
    $query = tep_db_query($sql);
@@ -9026,5 +9027,23 @@ if($_GET['latest_messages_id']>0){
    }else{
      echo '';
    }
-}
+}else if($_GET['action'] == 'change_attendance_login' || $_GET['action'] == 'change_attendance_logout'){
+/**
+ * uid 用户的id
+ * 添加,更新出勤和退勤时间
+*/
 
+ $uid = $_POST['user_name'];
+ if($_GET['action']=='change_attendance_login') {
+    $tep_res = tep_change_attendance_login($uid); 
+    $tep_insert_id = tep_db_insert_id();
+    if($tep_res){
+        echo 'login ok'; 
+    } 
+ }else if($_GET['action']=='change_attendance_logout') {
+    $tep_res = tep_change_attendance_logout($uid);
+    if($tep_res==1){
+        echo 'logout ok';
+    }
+ }
+}
