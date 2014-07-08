@@ -1242,7 +1242,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     $product_info_array = explode('|||', $_POST['products_list_str']); 
     $num_info_array = explode('|||', $_POST['num_list_str']); 
     //获取合计金额
-    preg_match_all('/[0-9]+/',str_replace(',',''$_POST['ot_total_value']),$ot_total_array);
+    preg_match_all('/[0-9]+/',str_replace(',','',$_POST['ot_total_value']),$ot_total_array);
     if($ot_total_array[0][0] == '0000'){
       $ot_total_value = 0-$ot_total_array[0][1];
     }else{
