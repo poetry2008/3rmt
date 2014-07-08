@@ -1261,7 +1261,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
         $tmp_products_id = $preorder_products_res['products_id']; 
       }
       //计算商品单价、个数
-      if($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == ''){
+      if(($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == '') && $_POST['preorder_type'] != 'new'){
 
         $show_error_str .= tep_get_products_name($tmp_products_id,$_POST['languages_id'],$_POST['site_id']).TEXT_PRODUCTS_PRICE_ERROR.'<br>';
       }
