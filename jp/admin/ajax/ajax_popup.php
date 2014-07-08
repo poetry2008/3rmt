@@ -8484,6 +8484,7 @@ if($_GET['latest_messages_id']>0){
      $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
      break;
    }
+   $messages_buttons .= '<input type="button" onclick="messages_delete(\'delete\');" value="'.IMAGE_DELETE.'">';
  }else{
    $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
  }

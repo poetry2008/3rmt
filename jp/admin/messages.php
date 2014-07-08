@@ -1796,7 +1796,14 @@ function messages_selected(obj, begin_class){
 		}
 	});
 }
+function messages_delete(action){
 
+  if(confirm('<?php echo TEXT_DEL_NEWS;?>')){
+
+    $("#messages_flag_id").val(action);
+    document.forms.new_latest_messages.submit();
+  }
+}
 </script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
