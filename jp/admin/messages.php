@@ -19,6 +19,32 @@
     $min_size = $php_upload_max_filesize;
     $min_size_str = ini_get('upload_max_filesize');
   }
+  //自动删除超过设定时间的垃圾箱信件
+  $messages_day = get_configuration_by_site_id('MESSAGES_EXPIRED_DATE_SETTING',0);
+  $messages_delete_query = tep_db_query("select id from messages where trash_status='3' and time_format(timediff(now(),time),'%H')>".$messages_day*24);
+  while($messages_delete_array = tep_db_fetch_array($messages_delete_query)){
+
+          $value_messages_id = $messages_delete_array['id'];
+          $file_name_query = tep_db_query("select name from message_file where message_id='".$value_messages_id."'");
+          while($file_name_array = tep_db_fetch_array($file_name_query)){
+          tep_db_free_result($file_name_query);
+
+          if($file_name_array['name'] != ''){
+            $file_num_query = tep_db_query("select id from message_file where name='".$file_name_array['name']."'");
+
+            if(tep_db_num_rows($file_num_query) == 1){
+
+              if($file_name_array['name'] != '' && file_exists('messages_upload/'.$file_name_array['name'])){
+	        unlink('messages_upload/'.$file_name_array['name']);
+	      }
+            }
+          }
+          }
+
+          tep_db_query("delete from message_file where message_id='".$value_messages_id."'");
+          tep_db_query("delete from messages where id='".$value_messages_id."'");
+  }
+  tep_db_free_result($messages_delete_query);
 
   //组选择的处理
   if($_GET['action'] == 'groups_list'){
@@ -457,7 +483,7 @@
      }
   }  
  if($_GET['action']== 'back_messages'){
-   if($_POST['messages_flag'] == 2 || $_POST['messages_flag'] == 3){
+   if($_POST['messages_flag'] == 2 || $_POST['messages_flag'] == 3 || $_POST['messages_flag'] == 'delete'){
 
      if($_POST['messages_flag'] == 2){
        tep_db_query("update messages set original_state = trash_status where id='".$_GET['id']."'");
@@ -465,6 +491,31 @@
      }else if($_POST['messages_flag'] == 3){
         
        tep_db_query("update messages set trash_status = original_state where id='".$_GET['id']."'"); 
+     }else if($_POST['messages_flag'] == 'delete'){
+
+       //删除messages
+       if(!empty($_GET['id'])){
+
+
+          $file_name_query = tep_db_query("select name from message_file where message_id='".$_GET['id']."'");
+          while($file_name_array = tep_db_fetch_array($file_name_query)){
+          tep_db_free_result($file_name_query);
+
+          if($file_name_array['name'] != ''){
+            $file_num_query = tep_db_query("select id from message_file where name='".$file_name_array['name']."'");
+
+            if(tep_db_num_rows($file_num_query) == 1){
+
+              if($file_name_array['name'] != '' && file_exists('messages_upload/'.$file_name_array['name'])){
+	        unlink('messages_upload/'.$file_name_array['name']);
+	      }
+            }
+          }
+          }
+
+          tep_db_query("delete from message_file where message_id='".$_GET['id']."'");
+          tep_db_query("delete from messages where id='".$_GET['id']."'");
+       }
      }
 
      if(isset($_GET['status']) && $_GET['status'] != ''){

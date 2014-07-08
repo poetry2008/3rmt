@@ -250,3 +250,4 @@ define('TEXT_PRODUCTS_SMALL_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_front
 define('TEXT_BILLING_ADDRESS_SETTING',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;申请帐单邮寄地址功能');
 define('MIN_PROFIT_SETTING_TITLE',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;最低利润率');
 define('HEADING_TITLE_998','商品价格设定');
+define('TEXT_MESSAGES_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;垃圾箱信件保存天数');
