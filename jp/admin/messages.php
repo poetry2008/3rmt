@@ -2314,7 +2314,9 @@ require("includes/note_js.php");
                     if($_GET['status'] == 'trash'){
                       echo '<option value="5">'.MESSAGE_RECOVERY.'</option>';
                     }
-                    echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
+                    if($_GET['status'] == 'drafts' || $_GET['status'] == 'trash'){
+                      echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
+                    }
                     echo '</select>';
                     ?> 
                     </td>
