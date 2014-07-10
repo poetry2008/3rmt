@@ -8475,10 +8475,12 @@ if($_GET['latest_messages_id']>0){
      $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
      break;
    case 'drafts':
-     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',4)" value="'.IMAGE_SAVE.'">';
+     $messages_buttons .= '<input type="button" onclick="messages_delete(\'delete\');" value="'.IMAGE_DELETE.'">';
+     $messages_buttons .= '<input type="submit" onclick="messages_check('.$is_back.',4)" value="'.IMAGE_SAVE.'">';
      break;
    case 'trash':
-     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',3)" value="'.MESSAGE_RECOVERY.'">';
+     $messages_buttons .= '<input type="submit" onclick="messages_check('.$is_back.',3)" value="'.MESSAGE_RECOVERY.'">';
+     $messages_buttons .= '<input type="button" onclick="messages_delete(\'delete\');" value="'.IMAGE_DELETE.'">';
      break;
    default:
      $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';

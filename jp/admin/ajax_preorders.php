@@ -1242,7 +1242,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     $product_info_array = explode('|||', $_POST['products_list_str']); 
     $num_info_array = explode('|||', $_POST['num_list_str']); 
     //获取合计金额
-    preg_match_all('/[0-9]+/',$_POST['ot_total_value'],$ot_total_array);
+    preg_match_all('/[0-9]+/',str_replace(',','',$_POST['ot_total_value']),$ot_total_array);
     if($ot_total_array[0][0] == '0000'){
       $ot_total_value = 0-$ot_total_array[0][1];
     }else{
@@ -1261,7 +1261,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
         $tmp_products_id = $preorder_products_res['products_id']; 
       }
       //计算商品单价、个数
-      if($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == ''){
+      if(($price_info_array[$pi_key] == 0 || $price_info_array[$pi_key] == '') && $_POST['preorder_type'] != 'new'){
 
         $show_error_str .= tep_get_products_name($tmp_products_id,$_POST['languages_id'],$_POST['site_id']).TEXT_PRODUCTS_PRICE_ERROR.'<br>';
       }
