@@ -67,12 +67,12 @@ function clear_confirm_div(){
   var em_close=document.getElementById("element_close");
   em_close.parentNode.removeChild(em_close);
 }
-function confirm_div_init(hidden_list_str,price_list_str,num_list_str){
+function confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method){
   $.ajax({
     url: 'ajax_preorders.php?action=check_preorder_products_avg',
     type: 'POST',
     dataType: 'text',
-    data: 'language_id='+js_final_languages_id+'&site_id='+js_final_site_id+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str,
+    data: 'language_id='+js_final_languages_id+'&site_id='+js_final_site_id+'&products_list_str='+hidden_list_str+'&price_list_str='+price_list_str+'&num_list_str='+num_list_str+'&ot_total_value='+ot_total_value+'&payment_method='+payment_method,
     async: false,
     success: function (msg_info) {
       if (msg_info != '') {
@@ -153,11 +153,13 @@ function submit_order_check(products_id,op_id){
             var price_list_str = '';
             var hidden_list_str = '';
             var num_list_str = '';
+            var ot_total_value = $("#ot_total_id").html();
+            var payment_method = $("select[name='payment_method']").val();
             $('#preorder_list').find('input').each(function() {
               if ($(this).attr('type') == 'text') {
                 find_input_name = $(this).attr('name'); 
                 if (reg_info.test(find_input_name)) {
-                  price_list_str += $(this).val()+'|||'; 
+                  price_list_str += ($(this).val() == '' ? 0 : $(this).val())+'|||'; 
                   hidden_list_str += $(this).next().val()+'|||'; 
                   num_list_str += $(this).parent().prev().prev().prev().prev().find('input[type=text]').val()+'|||'; 
                 }
@@ -178,15 +180,15 @@ function submit_order_check(products_id,op_id){
                     success: function (msg_info) {
                       if (msg_info != '') {
                         if (confirm(msg_info)) {
-                          confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+                          confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
                         }
                       } else {
-                        confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+                        confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
                       }
                     }
                   }); 
                 } else {
-                  confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+                  confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
                 }
               }
             }else{
@@ -203,15 +205,15 @@ function submit_order_check(products_id,op_id){
                   success: function (msg_info) {
                     if (msg_info != '') {
                       if (confirm(msg_info)) {
-                        confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+                        confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
                       }
                     } else {
-                      confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+                      confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
                     }
                   }
                 });
               } else {
-                confirm_div_init(hidden_list_str,price_list_str,num_list_str);
+                confirm_div_init(hidden_list_str,price_list_str,num_list_str,ot_total_value,payment_method);
               }
             }
           }
@@ -252,7 +254,7 @@ function submit_order_check(products_id,op_id){
 
     add_str += '<tr><td class="smallText" align="left">&nbsp;</td>'
             +'<td class="smallText" align="right"><input style="text-align:right;" value="" size="'+$("#text_len").val()+'" name="update_totals['+add_num+'][title]" onblur="orders_session(\'customers_total_'+add_num+'\',this.value);">:'
-            +'</td><td class="smallText" align="right">'+sign(add_num)+'<input style="text-align:right;" id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\''+js_final_money_symbol+'\');recalc_preorder_price(\''+js_final_oid+'\', \''+js_final_id_str+'\', \'0\', \''+js_final_info_str+'\');" name="update_totals['+add_num+'][value]">'+js_final_money_symbol+'<input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
+            +'</td><td class="smallText" align="right">'+sign(add_num)+'<input style="text-align:right;" id="update_totals_'+add_num+'" value="" size="6" onkeyup="clearNewLibNum(this);price_total(\''+js_final_money_symbol+'\');recalc_preorder_price(\''+js_final_oid+'\', \''+js_final_id_str+'\', \'0\', \''+js_final_info_str+'\');" onchange="clearNewLibNum(this);price_total(\''+js_final_money_symbol+'\');recalc_preorder_price(\''+js_final_oid+'\', \''+js_final_id_str+'\', \'0\', \''+js_final_info_str+'\');" name="update_totals['+add_num+'][value]">'+js_final_money_symbol+'<input type="hidden" name="update_totals['+add_num+'][class]" value="ot_custom"><input type="hidden" name="update_totals['+add_num+'][total_id]" value="0"></td>'
             +'<td><b><img height="17" width="1" border="0" alt="" src="images/pixel_trans.gif"></b></td></tr>';
 
     $("#handle_fee_id").parent().parent().before(add_str);

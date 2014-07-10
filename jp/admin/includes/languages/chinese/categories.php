@@ -16,7 +16,7 @@ define('TEXT_NEW_PRODUCT', '商品注册至&quot;%s&quot; ');
 define('TEXT_CATEGORIES', '分类:');
 define('TEXT_SUBCATEGORIES', '子分类数');
 define('TEXT_PRODUCTS', '商品数');
-define('TEXT_PRODUCTS_PRICE_INFO', '价格:');
+define('TEXT_PRODUCTS_PRICE_INFO', '价格');
 define('TEXT_PRODUCTS_TAX_CLASS', '税种:');
 define('TEXT_PRODUCTS_AVERAGE_RATING', '顾客评价的平均点');
 define('TEXT_PRODUCTS_QUANTITY_INFO', '数量:');

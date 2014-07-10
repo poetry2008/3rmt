@@ -8197,9 +8197,9 @@ $banner_query = tep_db_query("
  $messages_content_row_to [] = array('text'=>'To');
  //groups 选中
  $groups_selected = ($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0 && trim($_GET['groups']) != '' ? ' checked="checked"' : '';
- $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()">ALL';
- $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()"'.$groups_selected.'>'.MESSAGE_SELECT_GROUPS;
- $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1"'.($groups_selected == '' ? 'checked="checked"' : '').' name="messages_to" onclick="messages_to_appoint_radio()">'.MESSAGES_APPOINT_SB;
+ $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()"><label for="message_to_all">ALL</label>';
+ $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()"'.$groups_selected.'><label for="message_to_groups">'.MESSAGE_SELECT_GROUPS.'</label>';
+ $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1"'.($groups_selected == '' ? 'checked="checked"' : '').' name="messages_to" onclick="messages_to_appoint_radio()"><label for="message_to_appoint">'.MESSAGES_APPOINT_SB.'</label>';
  $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_groups.$messages_to_appoint);
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
@@ -8244,6 +8244,7 @@ $banner_query = tep_db_query("
    if(trim($_GET['groups']) != ''){
      $groups_list_array = explode(',',$_GET['groups']);
      foreach($groups_list_array as $g_value){
+       group_parent_id_list($g_value,$group_id_list_array);
        $group_id_list_array[] = $g_value;
        group_id_list($g_value,$group_id_list_array);
      }
@@ -8257,17 +8258,29 @@ $banner_query = tep_db_query("
    }
    //获取组列表 
    $all_groups_array = array();
+   $all_child_array = array();
    $groups_id_query = tep_db_query("select id from ".TABLE_GROUPS);
    while($groups_id_array = tep_db_fetch_array($groups_id_query)){
 
-     $all_groups_array[] = $groups_id_array['id']; 
+     $all_child_array[] = $groups_id_array['id'];
+     $groups_child_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups_id_array['id']."'");
+     if(tep_db_num_rows($groups_child_query) <= 0){
+       $all_groups_array[] = $groups_id_array['id']; 
+     }
    }
    tep_db_free_result($groups_id_query);
    $groups_list = '';
    if(trim($_GET['groups']) != ''){
-     $groups_diff = array_diff($all_groups_array,$group_id_list_array);
+     $group_parent_list_array = array();
+     foreach($groups_list_array as $groups_v){
+
+       $group_parent_list_array[] = $groups_v;
+       group_id_list($groups_v,$group_parent_list_array);
+     }
+     $child_diff = array_diff($all_child_array,$group_parent_list_array);
+     $groups_diff = array_diff($all_groups_array,$group_parent_list_array);
      if(!empty($groups_diff)){
-       tep_groups_list(0,$groups_list,$level_num,$groups_diff); 
+       tep_groups_list(0,$groups_list,$level_num,$child_diff,'delete'); 
      }
      $all_groups_str = implode(',',$groups_diff);
    }else{
@@ -8314,7 +8327,14 @@ $banner_query = tep_db_query("
  $messages_content_table[] = array('text'=> $messages_content_row_choose); 
 
  $messages_content_row_must_selected = array();
- $messages_content_row_must_selected[] = array('text'=> '');
+ //ALL 的数据
+ $recipient_all = '';
+ $all_users_list_query = tep_db_query($sql_for_all_users);
+ while($message_all_users = tep_db_fetch_array($all_users_list_query)){
+                  $recipient_all .= '<input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_users_list[]" checked="checked">';
+ }
+ tep_db_free_result($all_users_list_query);
+ $messages_content_row_must_selected[] = array('text'=> $recipient_all);
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
  $messages_content_table[] = array('text'=> $messages_content_row_must_selected);
  $mark_array = explode(',',$_GET['mark']);
@@ -8347,7 +8367,7 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']>0){
  }else{
  	$messages_content_row_addfile[] = array('text'=> MESSAGES_ADDFILE);
- 	$messages_content_row_addfile[] = array('text'=> '<div id="messages_file_boder"><input type="file" id="messages_file" name="messages_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'messages_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'messages_file\')">'.MESSAGES_ADDFILE.'</a></div>');
+ 	$messages_content_row_addfile[] = array('text'=> '<div id="messages_file_boder"><input type="file" id="messages_file" name="messages_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'messages_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'messages_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
  }
  $messages_content_table[] = array('text'=> $messages_content_row_addfile);
  if($_GET['latest_messages_id']>0){
@@ -8372,8 +8392,13 @@ $banner_query = tep_db_query("
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
                   $to_name .= $message_all_users['name'].' <'.$message_all_users['email'].'>;';
 		}
-	}else{
-		$recipient_name_all = explode(';',$_GET['recipient_name']);
+        }else{
+                if(trim($_GET['groups']) != ''){
+                  $recipient_name_array = explode('||||||',$_GET['recipient_name']);
+                  $recipient_name_all = explode(';',$recipient_name_array[1]);
+                }else{
+                  $recipient_name_all = explode(';',$_GET['recipient_name']);
+                }
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 			foreach($recipient_name_all as $value){
 				if($message_all_users['name'] == $value){
@@ -8408,9 +8433,9 @@ $banner_query = tep_db_query("
 		if(file_exists('messages_upload/'.$messages_file_name)){
 			$messages_file_name = base64_decode($messages_file_name);
 			$messages_file_name = explode('|||',$messages_file_name);
-                        $messages_attach_file .= '<a style="text-decoration:underline" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
+                        $messages_attach_file .= '<a style="text-decoration:underline;color:#0000FF;" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
                         $messages_attach_file .= '&nbsp;';
-                        $messages_attach_file .= '<a style="text-decoration:underline" href="javascript:void(0)" onclick="remove_email_file(\''.$_GET['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
+                        $messages_attach_file .= '<a style="text-decoration:underline;color:#0000FF;" href="javascript:void(0)" onclick="remove_email_file(\''.$_GET['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
                         $messages_attach_file .= '<input type="hidden" name="back_file_list[]" value="'.$file_info['name'].'">';
 		}	
  	}
@@ -8420,7 +8445,7 @@ $banner_query = tep_db_query("
 
 
 
-	$messages_content_row_back_file[] = array('text'=> $messages_attach_file.'<div id="messages_file_back_boder"><input type="file" id="messages_file_back" name="messages_file_back[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'messages_file_back\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'messages_file_back\')">'.MESSAGES_ADDFILE.'</a></div>');
+	$messages_content_row_back_file[] = array('text'=> $messages_attach_file.'<div id="messages_file_back_boder"><input type="file" id="messages_file_back" name="messages_file_back[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'messages_file_back\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'messages_file_back\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	$messages_content_table[] = array('text'=> $messages_content_row_back_file);
  }
  $messages_content_row_type = array();
@@ -8431,6 +8456,10 @@ if($_GET['latest_messages_id']>0){
  $messages_content_row_author = array();
  $messages_content_row_author[] = array('text'=> MESSAGES_AUTHOR.'&nbsp&nbsp'.$sql_message_content_res['sender_name']);
  $messages_content_row_author[] = array('text'=> MESSAGES_EDIT_DATE.'&nbsp&nbsp'.$sql_message_content_res['time']);
+ $messages_content_table[] = array('text'=> $messages_content_row_author);
+ $messages_content_row_author = array();
+ $messages_content_row_author[] = array('text'=> TEXT_USER_UPDATE.'&nbsp&nbsp'.(tep_not_null($sql_message_content_res['user_update'])?$sql_message_content_res['user_update']:TEXT_UNSET_DATA));
+ $messages_content_row_author[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp&nbsp'.(tep_not_null($sql_message_content_res['date_update']) && $sql_message_content_res['date_update'] != '0000-00-00 00:00:00' && tep_not_null($sql_message_content_res['user_update'])?str_replace('-','/',$sql_message_content_res['date_update']):TEXT_UNSET_DATA));
  $messages_content_table[] = array('text'=> $messages_content_row_author);
 }
  if($_GET['latest_messages_id']>0){
@@ -8446,10 +8475,12 @@ if($_GET['latest_messages_id']>0){
      $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
      break;
    case 'drafts':
-     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',4)" value="'.IMAGE_SAVE.'">';
+     $messages_buttons .= '<input type="button" onclick="messages_delete(\'delete\');" value="'.IMAGE_DELETE.'">';
+     $messages_buttons .= '<input type="submit" onclick="messages_check('.$is_back.',4)" value="'.IMAGE_SAVE.'">';
      break;
    case 'trash':
-     $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',3)" value="'.MESSAGE_RECOVERY.'">';
+     $messages_buttons .= '<input type="submit" onclick="messages_check('.$is_back.',3)" value="'.MESSAGE_RECOVERY.'">';
+     $messages_buttons .= '<input type="button" onclick="messages_delete(\'delete\');" value="'.IMAGE_DELETE.'">';
      break;
    default:
      $messages_buttons = '<input type="submit" onclick="messages_check('.$is_back.',2)" value="'.MESSAGE_TRASH_SAVE.'"><input type="submit" onclick="messages_check('.$is_back.',1)" value="'.MESSAGE_DRAFTS_SAVE.'">';
@@ -8957,6 +8988,7 @@ if($_GET['latest_messages_id']>0){
     $error_user .= "\n".TEXT_SEND_MAIL;
   }
   echo $error_user;
+
 }else if($_GET['action'] == 'del_messages_file'){
    $sql = 'select * from message_file where message_id = "'.$_POST['latest_messages_id'].'" and file_index="'.$_POST['f_index'].'"';
    $query = tep_db_query($sql);
@@ -8975,15 +9007,19 @@ if($_GET['latest_messages_id']>0){
    $sql_message_content_res = tep_db_fetch_array($sql_message_content);
    $messages_attach_file = '';
    $file_list_arr = tep_get_messages_file($_POST['latest_messages_id']);
+   if(count($file_list_arr) == 0){
+
+     tep_db_query("update messages set attach_file='0' where id='".$_POST['latest_messages_id']."'");
+   }
    foreach($file_list_arr as $f_index => $file_info){
 	if($sql_message_content_res['attach_file'] == 1){
 		$messages_file_name = $file_info['name'];
 		if(file_exists('messages_upload/'.$messages_file_name)){
 			$messages_file_name = base64_decode($messages_file_name);
 			$messages_file_name = explode('|||',$messages_file_name);
-                        $messages_attach_file .= '<a style="text-decoration:underline" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
+                        $messages_attach_file .= '<a style="text-decoration:underline;color:#0000FF;" href="message_file_download.php?file_id='.$file_info['name'].'">'.$messages_file_name[0].'</a>';
                         $messages_attach_file .= '&nbsp;';
-                        $messages_attach_file .= '<a style="text-decoration:underline" href="javascript:void(0)" onclick="remove_email_file(\''.$_POST['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
+                        $messages_attach_file .= '<a style="text-decoration:underline;color:#0000FF;" href="javascript:void(0)" onclick="remove_email_file(\''.$_POST['latest_messages_id'].'\',\''.$file_info['file_index'].'\')">X</a>&nbsp;&nbsp;&nbsp;';
                         $messages_attach_file .= '<input type="hidden" name="back_file_list[]" value="'.$file_info['name'].'">';
 		}	
  	}
@@ -8993,5 +9029,286 @@ if($_GET['latest_messages_id']>0){
    }else{
      echo '';
    }
+}else if($_GET['action'] == 'change_attendance_login' || $_GET['action'] == 'change_attendance_logout'){
+/**
+ * uid 用户的id
+ * 添加,更新出勤和退勤时间
+*/
+
+ $uid = $_POST['user_name'];
+ if($_GET['action']=='change_attendance_login') {
+    $tep_res = tep_change_attendance_login($uid); 
+    $tep_insert_id = tep_db_insert_id();
+    if($tep_res){
+        echo 'login ok'; 
+    } 
+ }else if($_GET['action']=='change_attendance_logout') {
+    $tep_res = tep_change_attendance_logout($uid);
+    if($tep_res==1){
+        echo 'logout ok';
+    }
+ }
+ /**
+  *@date20140709 
+  *出勤管理列表弹框编辑
+ */
+}else if($_GET['action'] == 'edit_attendance_info') {
+
+
+  //include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ATTENDANCE);
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'japanese/attendance.php');
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  if($_POST['id']!=0){
+	  $id =$_POST['id'];
+  $action ='update';
+  }else{
+ 
+  $action ='insert';
+  }
+  $att_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id;
+  $att_info_tep = tep_db_query($att_select_sql); 
+  $att_info_res = tep_db_fetch_array($att_info_tep); 
+  $cid_array = array();
+  $site_array = array();
+  $buttons = array();
+  $page_str = '';
+  
+  $form_str = tep_draw_form('attendances', FILENAME_ATTENDANCE, $page. '&action='.$action, 'post', 'onSubmit="return check_form();"') ."\n"; 
+  $page_s = ATTENDANCE_HEAD_TITLE; 
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $page_s);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  
+  $attendance_info_row = array();
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_TITLE),
+           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" style="font-size:12px"'.$disable)),
+        array('text' => tep_draw_hidden_field('id', $id)) 
+     ); 
+
+    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id">';
+    $attendance_select_type .= '<option value="0"'.($att_info_res['scheduling_type']=='0'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</option>';
+    $attendance_select_type .= '<option value="1"'.($att_info_res['scheduling_type']=='1'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</option>';
+    $attendance_select_type .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_SCHEDULING_TYPE),
+           array('text' => $attendance_select_type)
+     ); 
+    $select_type_color = '<select name="scheduling_type_color" id="src_text_color" style="display:none;">';
+    $select_type_color .= '<option value="0"'.($att_info_res['src_text']=='0'?' selected="selected"' : '').'>red</option>';
+    $select_type_color .= '<option value="1"'.($att_info_res['src_text']=='1'?' selected="selected"' : '').'>green</option>';
+    $select_type_color .= '<option value="2"'.($att_info_res['src_text']=='2'?' selected="selected"' : '').'>blue</option>';
+    $select_type_color .= '</select>';
+
+	$select_type_image = tep_draw_input_field('src_text',$att_info_res['src_text'],'id="src_text_image"');
+     $select_type_image .= tep_draw_file_field('src_text','','id="upload_file_image"');
+	$div_image ='<div id="image_div">'.ATTENDANCE_SRC_TEXT.'</div>';
+	$div_color ='<div id="color_div" style="display:none;">'.ATTENDANCE_SRC_TEXT.'</div>';
+      $attendance_info_row[]['text'] = array(
+           array('text' => $div_image),
+		  array('text' =>$select_type_image), 
+     ); 
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => $div_color),
+		  array('text' =>$select_type_color) 
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_ALT_TEXT),
+           array('text' => tep_draw_input_field('alt_text',$att_info_res['alt_text'],'id="alt_text" style="font-size:12px"'.$disable))
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_PARAM_TEXT),
+           array('text' => tep_draw_input_field('param',$att_info_res['param'],'id="param" style="font-size:12px"'.$disable))
+     ); 
+	  $attendance_info_row[]['text'] =array(
+	     array('text' => ''), 
+           array('text' => tep_draw_input_field('know','','id="param" style="font-size:12px"'.$disable))
+     ); 
+
+      $attendance_select_approve_p = '<select name="approve_person" width="100px">';
+      $approve_list = explode(',',$att_info_res['approve_person']);
+
+	if($approve_list[0] ==''){
+	   $userid_tep = tep_db_query("select userid from `permissions` where `permission` =31");
+       $userid = tep_db_fetch_array($userid_tep);
+       $attendance_select_approve_p .= '<option value="'.$userid['userid'].'">'.$userid['userid'].'</option>';
+	 }else{
+	      foreach ($approve_list as $k=>$val){
+		     $attendance_select_approve_p .='<option value="'.$val.'">'.$val.'</option>';
+
+	  }
+	}
+      $attendance_select_approve_p .= '</select>';
+      $attendance_select_approve_p .= '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_attendance_approve_person(\''.$id.'\');"').'</a>'; 
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_APPROVE_PERSON),
+		   array('text' => $attendance_select_approve_p)
+	   );
+
+	  $attendance_info_row[]['text'] =array(
+	     array('text' => ''), 
+	     array('text' => '<div id="tep_add"></div>'), 
+     ); 
+
+      $attendance_info_row[]['text'] = array(
+	       array('text' => ATTENDANCE_SET_TIME),
+           array('text' => tep_draw_radio_field('set_time',0,false,'','id="is_preorder" style="padding-left:0;margin-left:0;"').ATTENDANCE_SET_TIME_FIELD.'&nbsp;'.tep_draw_radio_field('set_time',1,true,'','id="is_preorder"').ATTENDANCE_SET_FIELD_TIME)
+	  );
+//工作开始时间
+      $work_start = '<select name="work_start_hour">';
+	  for($i=0;$i<=24;$i++){
+          $work_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_start .= '</select>';
+
+      $work_start .= '<select name="work_start_minute">';
+	  for($i=0;$i<=60;$i++){
+          $work_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_start .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_WORK_START),
+		   array('text' => $work_start)
+	   );
+//工作结束时间
+      $work_end = '<select name="work_end_hour">';
+	  for($i=0;$i<=24;$i++){
+          $work_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_end .= '</select>';
+
+      $work_end .= '<select name="work_end_minute">';
+	  for($i=0;$i<=60;$i++){
+          $work_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_end .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_WORK_END),
+		   array('text' => $work_end)
+	   );
+
+//休息开始时间
+      $rest_start = '<select name="rest_start_hour">';
+	  for($i=0;$i<=24;$i++){
+          $rest_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_start .= '</select>';
+
+      $rest_start .= '<select name="rest_start_minute">';
+	  for($i=0;$i<=60;$i++){
+          $rest_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_start .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_REST_START),
+		   array('text' => $rest_start)
+	   );
+
+//休息结束时间
+      $rest_end = '<select name="rest_end_hour">';
+	  for($i=0;$i<=24;$i++){
+          $rest_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_end .= '</select>';
+
+      $rest_end .= '<select name="rest_end_minute">';
+	  for($i=0;$i<=60;$i++){
+          $rest_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_end .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_REST_END),
+		   array('text' => $rest_end)
+	   );
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_SORT),
+           array('text' => tep_draw_input_field('sort','','id="sort" style="font-size:12px"'.$disable))
+     ); 
+$add_user_text= ATTENDANCE_ADD_USER.$att_info_res['add_user'];
+$update_user_text= ATTENDANCE_ADD_TIME.$att_info_res['add_time'];
+$add_time_text= ATTENDANCE_UPDATE_USER.$att_info_res['update_user'];
+$update_time_text= ATTENDANCE_UPDATE_TIME.$att_info_res['update_time'];
+$user_info = tep_get_user_info($ocertify->auth_user);
+$user_add=$user_info['name'];
+$time_add=date('Y-m-d H:i:s',time());
+     $hidden_add_user = tep_draw_input_field('add_user',$user_add,'style="display:none"');
+     $hidden_add_time = tep_draw_input_field('add_time',$time_add,'style="display:none"');
+
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_user)
+      );
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_time)
+      );
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_user_text),
+           array('text' =>$update_user_text)
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_time_text),
+           array('text' =>$update_time_text)
+     ); 
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"').'</a>'; 
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($attendance_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+
+}else if($_GET['action']=='delete_attendance_info') {
+	$id = $_POST['attendance_id'];
+   $del_sql = "delete from ".TABLE_ATTENDANCE_DETAIL." where id=".$id;
+   tep_db_query($del_sql);
+ echo   mysql_affected_rows();
+}else if($_GET['action']=='add_attendance_approve') {
+    $id = $_POST['id'];
+    $select_sql = "select approve_person from ".TABLE_ATTENDANCE_DETAIL." where id=".$id;
+    $res_tep = tep_db_query($select_sql);
+    $row = tep_db_fetch_array($res_tep); 
+	$permission_list = $row['approve_person'];
+	$aa =explode(',',$permission_list);
+	if(count($aa)!=0){
+          for($i=0;$i<count($aa);$i++) {
+              if($i==count($aa)-1) {
+
+        $str_tep .= '\''.$aa[$i].'\'';
+            }else{
+
+          $str_tep .= '\''.$aa[$i].'\',';
+            }
+       }
+	}
+	$sql_permissions = "select userid from  `permissions` where `userid` not in ($str_tep)";
+
+    $res_approve = tep_db_query($sql_permissions);
+
+    while ($row = tep_db_fetch_array($res_approve)) {
+       $approve_list[] = $row; 
+    }
+
+	$html_str .= '<tr><td><select name="add_approve_person[]">';
+	foreach($approve_list as $val) {
+    $html_str .= '<option value="'.$val['userid'].'">'.$val['userid'].'</option>';	
+	}
+	$html_str .= '</tr></td></select>';
+	echo $html_str;
 }
 

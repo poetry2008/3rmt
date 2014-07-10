@@ -474,6 +474,7 @@ function user_preview_onetime_pwd()
 {
   var letter_value = $('#letter').val();
   var rule_value = $('#user_rule').val();
+  rule_value = rule_value.replace(/\+/g,'|||');
   $.ajax({
     url: 'ajax_orders.php?action=generate_onetime_pwd',     
     type: 'POST',

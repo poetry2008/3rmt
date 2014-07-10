@@ -4,6 +4,7 @@
   确认文件代码
 */
   $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
+  $category_status_value = $category['categories_status'];
 ?> 
 <div class="yui3-u" id="layout">
 <?php  
@@ -11,14 +12,14 @@
        echo '<div id="current">'.$breadcrumb->trail(' <img src="images/point.gif"> ').'</div>';
        include('includes/search_include.php');
        echo "<div id='main-content'>";
-      if ($category['categories_status'] != '0') {
+      if ($category_status_value != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
        echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
     } elseif ($_GET['manufacturers_id']) {
        echo '<div id="current">'.$breadcrumb->trail(' <img src="images/point.gif"> ').'</div>';
        include('includes/search_include.php');
-      if ($category['categories_status'] != '0') {
+      if ($category_status_value != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
       echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';

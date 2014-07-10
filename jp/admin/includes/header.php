@@ -155,6 +155,35 @@ $(function(){
 <?php
 }
 ?>
+function change_attendance_login(uid) {
+
+		$.post(
+			"ajax.php?&action=change_attendance_login",
+			{
+				user_name:uid,
+			},
+			function(data){
+				if(data){
+			    	alert(data);
+				}
+			}
+		);
+}
+
+function change_attendance_logout(uid) {
+
+		$.post(
+			"ajax.php?&action=change_attendance_logout",
+			{
+				user_name:uid,
+			},
+			function(data){
+				if(data){
+			    	alert(data);
+				}
+			}
+		);
+}
 </script>
 <noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
@@ -216,6 +245,22 @@ echo "</a>";
 ?>
 </b>&nbsp;<?php echo HEADER_TEXT_LOGINED;?>&nbsp;
 <?php
+//打卡
+	 $date = date('Y-m-d');
+$sql = "select login_time from attendance where user_name='".$uid."' and date='".$date."'";
+
+     $query = tep_db_query($sql);
+	 $num_rows = count(tep_db_fetch_array($query));
+if($num_rows ==0) { 
+?>
+   <a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" >IN</a>
+<?php
+}else {
+?>
+   <a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" >OUT</a>
+
+<?php
+}
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 <embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>

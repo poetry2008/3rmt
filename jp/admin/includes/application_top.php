@@ -141,6 +141,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_FAQ', 'faq.php');
   define('FILENAME_REFERER', 'referer.php');
   define('FILENAME_BUTTONS', 'buttons.php');
+  define('FILENAME_ATTENDANCE', 'attendance.php');
   
   //add files
   define('FILENAME_DATA_MANAGEMENT','data_management.php');
@@ -268,6 +269,8 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_ZONES', 'zones');
   define('TABLE_CALENDAR', 'calendar'); //add calendar
   define('TABLE_BANK_CALENDAR', 'bank_calendar'); //add calendar
+  define('TABLE_ATTENDANCE_DETAIL', 'attendance_detail'); //add calendar
+  
   //Add DB - ds-style
   define('TABLE_INFORMATION_PAGE', 'information_page');//information box
   define('TABLE_NEWS', 'news'); //latest_news

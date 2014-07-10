@@ -148,14 +148,10 @@ if (isset($_GET['action']) && $_GET['action']) {
       $update_sql_data = array('last_modified' => 'now()');
       $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
       tep_db_perform(TABLE_CATEGORIES, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\'');
-      if($s_site_id=="" || $s_site_id==0){
-        $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(),user_last_modified='".$_POST['user_last_modified']."' where categories_id='".$categories_id."'";
-
-        tep_db_query($update_sql);
-      }else{
-        $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(),user_last_modified='".$_POST['user_last_modified']."' where categories_id='".$categories_id."' and site_id='".$s_site_id."'";
-        tep_db_query($update_sql);
-      }
+      $s_site_id = $s_site_id == "" ? 0 : $s_site_id; 
+      //更新者、更新时间
+      $update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(),user_last_modified='".$_POST['user_last_modified']."' where categories_id='".$categories_id."' and site_id='".$s_site_id."'";
+      tep_db_query($update_sql);
     }
 
     $languages = tep_get_languages();
@@ -455,12 +451,12 @@ if (isset($_GET['action']) && $_GET['action']) {
           $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$s_site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."'"); 
           if (tep_db_num_rows($exist_ro_query)) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            $romaji_error_str = JS_TEXT_C_ADMIN_IS_HAS;
           }
         } else {
           if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$s_site_id."'"))) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            $romaji_error_str = JS_TEXT_C_ADMIN_IS_HAS;
           }
         }
       } else {
@@ -483,12 +479,12 @@ if (isset($_GET['action']) && $_GET['action']) {
           $exist_ro_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." pd, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where pd.products_id = p2c.products_id and pd.site_id = '".$s_site_id."' and pd.romaji = '".$_POST['romaji']."' and p2c.categories_id = '".$belong_ca."' and pd.products_id != '".$_GET['pID']."'"); 
           if (tep_db_num_rows($exist_ro_query)) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            $romaji_error_str = JS_TEXT_C_ADMIN_IS_HAS;
           }
         } else {
           if (tep_db_num_rows(tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where romaji = '".$_POST['romaji']."' and site_id = '".$s_site_id."' and products_id != '".$_GET['pID']."'"))) {
             $romaji_error = 1; 
-            $romaji_error_str = TEXT_ROMAJI_EXISTS;
+            $romaji_error_str = JS_TEXT_C_ADMIN_IS_HAS;
           }
         }
       }
@@ -637,13 +633,10 @@ if (isset($_GET['action']) && $_GET['action']) {
           }
         } 
         tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-        if($s_site_id=="" || $s_site_id==0){
-          $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."'";
-          tep_db_query($update_sql);
-        }else{
-          $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."' and site_id='".$s_site_id."'";
-          tep_db_query($update_sql);
-        }
+        //更新者、更新时间
+        $s_site_id = $s_site_id == "" ? 0 : $s_site_id; 
+        $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."' and site_id='".$s_site_id."'";
+        tep_db_query($update_sql);
       }
 	  if($_POST['tep_check_carrtags']==2){
 	  $_POST['carttags'] =  $_POST['carttags_t'];
@@ -2407,8 +2400,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               <tr> 
                 <td>
                 <?php echo tep_draw_form('new_product', FILENAME_CATEGORIES, 'cPath=' .
-                    $cPath . '&page='.$_GET['page'].'&pID=' .
-                    (isset($_GET['pID'])?$_GET['pID']:'') . '&action='.(isset($_GET['pID'])?'update_product':'insert_product').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''),
+                    $cPath . '&page='.$_GET['page'].
+                    (isset($_GET['pID'])?'&pID='.$_GET['pID']:'') . '&action='.(isset($_GET['pID'])?'update_product':'insert_product').($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : ''),
                     'post', 'enctype="multipart/form-data" onSubmit="return products_form_validator(\''.
                     $current_category_id.'\',\''.$pInfo->products_id.'\',\''.$s_site_id.'\');"'); ?>
                 <input type="hidden" name="s_site_id" value="<?php echo $s_site_id;?>">
@@ -2440,7 +2433,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 } 
                 $sid = $s_site_id == 0 ? 1 : $s_site_id;
                 if(isset($_GET['pID']) && $_GET['pID'] != ''){
-                  echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input type="button" name="preview" value="'.IMAGE_PREVIEW.'" style="padding-top: 2px;"></a>&nbsp;&nbsp;';
+                  echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input type="button" name="preview" value="'.MOVE_TO_SITE.'" style="padding-top: 2px;"></a>&nbsp;&nbsp;';
                 }
               ?> 
                 </td>
@@ -3228,7 +3221,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 echo tep_html_element_submit(IMAGE_SAVE);
               } 
               if(isset($_GET['pID']) && $_GET['pID'] != ''){
-                echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input type="button" name="preview" value="'.IMAGE_PREVIEW.'"></a>&nbsp;&nbsp;';
+                echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
               }
 ?>
               <?php
@@ -3339,7 +3332,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $sid = $s_site_id == 0 ? 1 : $s_site_id;
               if(isset($_GET['cID']) && $_GET['cID'] != ''){
                 $cpath = $_GET['cPath'] != '' ? $_GET['cPath'].'_' : '';
-                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input type="button" name="preview" value="'.IMAGE_PREVIEW.'"></a>&nbsp;&nbsp;';
+                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
               }
               ?>
                 </td> 
@@ -3491,20 +3484,16 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   echo tep_draw_input_field('seo_name['.$c_languages[$ci_tmp_num]['id'].']', (($_GET['action'] == 'edit_category')?tep_get_seo_name($cInfo->categories_id, $c_languages[$ci_tmp_num]['id'], $site_id, true):''), 'class="td_input"');   
                 ?>
                 </td>
-                </tr>
-
-                <tr>
-                <td>&nbsp;</td>
-                <td>
-                <input type="button" name="categories_info" value="<?php echo BUTTON_ADD_TEXT;?>" onclick="add_categories_info(<?php echo $c_languages[$ci_tmp_num]['id'];?>);"> 
-                </td>
-                <td>&nbsp;</td>
-                </tr>
-                
+                </tr> 
                 <tr>
                 <td align="left" valign="top"><?php echo CATEGORY_TEXT_INFO_TEXT;?></td>
                 <td>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="categories_info_id">
+                <tr>
+                <td>
+                <input type="button" name="categories_info" value="<?php echo BUTTON_ADD_TEXT;?>" onclick="add_categories_info(<?php echo $c_languages[$ci_tmp_num]['id'];?>);"> 
+                </td>
+                </tr>
                 <?php
                     $text_information = explode('||||||',tep_get_text_information($cInfo->categories_id, $c_languages[$ci_tmp_num]['id'], $s_site_id, true)); 
                     foreach($text_information as $t_value){
@@ -3658,7 +3647,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $sid = $s_site_id == 0 ? 1 : $s_site_id;
               if(isset($_GET['cID']) && $_GET['cID'] != ''){
                 $cpath = $_GET['cPath'] != '' ? $_GET['cPath'].'_' : '';
-                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input type="button" name="preview" value="'.IMAGE_PREVIEW.'"></a>&nbsp;&nbsp;';
+                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
               }
               ?> 
                 </td>
