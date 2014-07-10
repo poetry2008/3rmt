@@ -17,7 +17,7 @@ case 'insert':
 	 tep_isset_eof();
 	 $title = tep_db_prepare_input($_POST['title']);
 	 $alt_text = tep_db_prepare_input($_POST['alt_text']);
-	 $param = tep_db_prepare_input($_POST['title']);
+	// $param = tep_db_prepare_input($_POST['title']);
 	 $sort = tep_db_prepare_input($_POST['sort']);
 	 $approve_person = tep_db_prepare_input($_POST['approve_person']);
 	 $scheduling_type = tep_db_prepare_input($_POST['scheduling_type']);
@@ -54,7 +54,7 @@ case 'insert':
 	   'title' => $title,
 	   'alt_text'=> $alt_text,
 	   'src_text'=> $src_text,
-	   'param' => $param, 
+	   //'param' => $param, 
        'sort' => $sort,
 	   'approve_person' => $approve_person,
 	   'scheduling_type' => $scheduling_type,
@@ -80,7 +80,7 @@ case 'update':
 	 $title = tep_db_prepare_input($_POST['title']);
 	 $alt_text = tep_db_prepare_input($_POST['alt_text']);
 	 $src_text = tep_db_prepare_input($_POST['src_text']);
-	 $param = tep_db_prepare_input($_POST['title']);
+	 //$param = tep_db_prepare_input($_POST['title']);
 	 $sort = tep_db_prepare_input($_POST['sort']);
 	 $approve_person = tep_db_prepare_input($_POST['approve_person']);
 	 $scheduling_type = tep_db_prepare_input($_POST['scheduling_type']);
@@ -112,7 +112,7 @@ case 'update':
 	   'title' => $title,
 	   'alt_text'=> $alt_text,
 	   'src_text'=> $src_text,
-	   'param' => $param, 
+	   //'param' => $param, 
        'sort' => $sort,
 	   'approve_person' => $approve_person,
 	   'scheduling_type' => $scheduling_type,
