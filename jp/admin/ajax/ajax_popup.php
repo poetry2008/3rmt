@@ -9046,4 +9046,267 @@ if($_GET['latest_messages_id']>0){
         echo 'logout ok';
     }
  }
+ /**
+  *@date20140709 
+  *出勤管理列表弹框编辑
+ */
+}else if($_GET['action'] == 'edit_attendance_info') {
+
+
+  //include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ATTENDANCE);
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'japanese/attendance.php');
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  if($_POST['id']!=0){
+	  $id =$_POST['id'];
+  $action ='update';
+  }else{
+ 
+  $action ='insert';
+  }
+  $att_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id;
+  $att_info_tep = tep_db_query($att_select_sql); 
+  $att_info_res = tep_db_fetch_array($att_info_tep); 
+  $cid_array = array();
+  $site_array = array();
+  $buttons = array();
+  $page_str = '';
+  
+  $form_str = tep_draw_form('attendances', FILENAME_ATTENDANCE, $page. '&action='.$action, 'post', 'onSubmit="return check_form();"') ."\n"; 
+  $page_s = ATTENDANCE_HEAD_TITLE; 
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $page_s);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  
+  $attendance_info_row = array();
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_TITLE),
+           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" style="font-size:12px"'.$disable)),
+        array('text' => tep_draw_hidden_field('id', $id)) 
+     ); 
+
+    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id">';
+    $attendance_select_type .= '<option value="0"'.($att_info_res['scheduling_type']=='0'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</option>';
+    $attendance_select_type .= '<option value="1"'.($att_info_res['scheduling_type']=='1'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</option>';
+    $attendance_select_type .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_SCHEDULING_TYPE),
+           array('text' => $attendance_select_type)
+     ); 
+    $select_type_color = '<select name="scheduling_type_color" id="src_text_color" style="display:none;">';
+    $select_type_color .= '<option value="0"'.($att_info_res['src_text']=='0'?' selected="selected"' : '').'>red</option>';
+    $select_type_color .= '<option value="1"'.($att_info_res['src_text']=='1'?' selected="selected"' : '').'>green</option>';
+    $select_type_color .= '<option value="2"'.($att_info_res['src_text']=='2'?' selected="selected"' : '').'>blue</option>';
+    $select_type_color .= '</select>';
+
+	$select_type_image = tep_draw_input_field('src_text',$att_info_res['src_text'],'id="src_text_image"');
+     $select_type_image .= tep_draw_file_field('src_text','','id="upload_file_image"');
+	$div_image ='<div id="image_div">'.ATTENDANCE_SRC_TEXT.'</div>';
+	$div_color ='<div id="color_div" style="display:none;">'.ATTENDANCE_SRC_TEXT.'</div>';
+      $attendance_info_row[]['text'] = array(
+           array('text' => $div_image),
+		  array('text' =>$select_type_image), 
+     ); 
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => $div_color),
+		  array('text' =>$select_type_color) 
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_ALT_TEXT),
+           array('text' => tep_draw_input_field('alt_text',$att_info_res['alt_text'],'id="alt_text" style="font-size:12px"'.$disable))
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_PARAM_TEXT),
+           array('text' => tep_draw_input_field('param',$att_info_res['param'],'id="param" style="font-size:12px"'.$disable))
+     ); 
+	  $attendance_info_row[]['text'] =array(
+	     array('text' => ''), 
+           array('text' => tep_draw_input_field('know','','id="param" style="font-size:12px"'.$disable))
+     ); 
+
+      $attendance_select_approve_p = '<select name="approve_person" width="100px">';
+      $approve_list = explode(',',$att_info_res['approve_person']);
+
+	if($approve_list[0] ==''){
+	   $userid_tep = tep_db_query("select userid from `permissions` where `permission` =31");
+       $userid = tep_db_fetch_array($userid_tep);
+       $attendance_select_approve_p .= '<option value="'.$userid['userid'].'">'.$userid['userid'].'</option>';
+	 }else{
+	      foreach ($approve_list as $k=>$val){
+		     $attendance_select_approve_p .='<option value="'.$val.'">'.$val.'</option>';
+
+	  }
+	}
+      $attendance_select_approve_p .= '</select>';
+      $attendance_select_approve_p .= '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_attendance_approve_person(\''.$id.'\');"').'</a>'; 
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_APPROVE_PERSON),
+		   array('text' => $attendance_select_approve_p)
+	   );
+
+	  $attendance_info_row[]['text'] =array(
+	     array('text' => ''), 
+	     array('text' => '<div id="tep_add"></div>'), 
+     ); 
+
+      $attendance_info_row[]['text'] = array(
+	       array('text' => ATTENDANCE_SET_TIME),
+           array('text' => tep_draw_radio_field('set_time',0,false,'','id="is_preorder" style="padding-left:0;margin-left:0;"').ATTENDANCE_SET_TIME_FIELD.'&nbsp;'.tep_draw_radio_field('set_time',1,true,'','id="is_preorder"').ATTENDANCE_SET_FIELD_TIME)
+	  );
+//工作开始时间
+      $work_start = '<select name="work_start_hour">';
+	  for($i=0;$i<=24;$i++){
+          $work_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_start .= '</select>';
+
+      $work_start .= '<select name="work_start_minute">';
+	  for($i=0;$i<=60;$i++){
+          $work_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_start .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_WORK_START),
+		   array('text' => $work_start)
+	   );
+//工作结束时间
+      $work_end = '<select name="work_end_hour">';
+	  for($i=0;$i<=24;$i++){
+          $work_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_end .= '</select>';
+
+      $work_end .= '<select name="work_end_minute">';
+	  for($i=0;$i<=60;$i++){
+          $work_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $work_end .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_WORK_END),
+		   array('text' => $work_end)
+	   );
+
+//休息开始时间
+      $rest_start = '<select name="rest_start_hour">';
+	  for($i=0;$i<=24;$i++){
+          $rest_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_start .= '</select>';
+
+      $rest_start .= '<select name="rest_start_minute">';
+	  for($i=0;$i<=60;$i++){
+          $rest_start .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_start .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_REST_START),
+		   array('text' => $rest_start)
+	   );
+
+//休息结束时间
+      $rest_end = '<select name="rest_end_hour">';
+	  for($i=0;$i<=24;$i++){
+          $rest_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_end .= '</select>';
+
+      $rest_end .= '<select name="rest_end_minute">';
+	  for($i=0;$i<=60;$i++){
+          $rest_end .= '<option value="'.$i.'">'.$i.'</option>';
+	  }
+      $rest_end .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_REST_END),
+		   array('text' => $rest_end)
+	   );
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_SORT),
+           array('text' => tep_draw_input_field('sort','','id="sort" style="font-size:12px"'.$disable))
+     ); 
+$add_user_text= ATTENDANCE_ADD_USER.$att_info_res['add_user'];
+$update_user_text= ATTENDANCE_ADD_TIME.$att_info_res['add_time'];
+$add_time_text= ATTENDANCE_UPDATE_USER.$att_info_res['update_user'];
+$update_time_text= ATTENDANCE_UPDATE_TIME.$att_info_res['update_time'];
+$user_info = tep_get_user_info($ocertify->auth_user);
+$user_add=$user_info['name'];
+$time_add=date('Y-m-d H:i:s',time());
+     $hidden_add_user = tep_draw_input_field('add_user',$user_add,'style="display:none"');
+     $hidden_add_time = tep_draw_input_field('add_time',$time_add,'style="display:none"');
+
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_user)
+      );
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_time)
+      );
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_user_text),
+           array('text' =>$update_user_text)
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_time_text),
+           array('text' =>$update_time_text)
+     ); 
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"').'</a>'; 
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($attendance_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+
+}else if($_GET['action']=='delete_attendance_info') {
+	$id = $_POST['attendance_id'];
+   $del_sql = "delete from ".TABLE_ATTENDANCE_DETAIL." where id=".$id;
+   tep_db_query($del_sql);
+ echo   mysql_affected_rows();
+}else if($_GET['action']=='add_attendance_approve') {
+    $id = $_POST['id'];
+    $select_sql = "select approve_person from ".TABLE_ATTENDANCE_DETAIL." where id=".$id;
+    $res_tep = tep_db_query($select_sql);
+    $row = tep_db_fetch_array($res_tep); 
+	$permission_list = $row['approve_person'];
+	$aa =explode(',',$permission_list);
+	if(count($aa)!=0){
+          for($i=0;$i<count($aa);$i++) {
+              if($i==count($aa)-1) {
+
+        $str_tep .= '\''.$aa[$i].'\'';
+            }else{
+
+          $str_tep .= '\''.$aa[$i].'\',';
+            }
+       }
+	}
+	$sql_permissions = "select userid from  `permissions` where `userid` not in ($str_tep)";
+
+    $res_approve = tep_db_query($sql_permissions);
+
+    while ($row = tep_db_fetch_array($res_approve)) {
+       $approve_list[] = $row; 
+    }
+
+	$html_str .= '<tr><td><select name="add_approve_person[]">';
+	foreach($approve_list as $val) {
+    $html_str .= '<option value="'.$val['userid'].'">'.$val['userid'].'</option>';	
+	}
+	$html_str .= '</tr></td></select>';
+	echo $html_str;
 }
+
