@@ -22,7 +22,7 @@ $('div#show_attendance').css('top',250);
 }
 
 //hidden box
-function hidden_info_box(){
+function hidden_info_box_tep(){
    $('#show_attendance').css('display','none');
 }
 
