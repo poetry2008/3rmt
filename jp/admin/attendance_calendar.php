@@ -25,8 +25,72 @@ if($month==12){
 }
 $str_next_str = '?y='.$next_year.'&m='.$next_month;
 $str_prev_str = '?y='.$prev_year.'&m='.$prev_month;
+if(isset($_GET['action'])){
+  switch($_GET['action']){
+    case 'save_as_list':
+      $date_info = tep_date_info($_POST['get_date']);
+      $user = $_SESSION['user_name'];
+      if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
+          &&!empty($_POST['data_as'])){
+        $a_id_arr = $_POST['has_attendance_id'];
+        $group_arr = $_POST['has_group'];
+        $type_arr = $_POST['has_type'];
+        foreach($a_id_arr as $key => $value){
+          $sql_arr = array(
+              'date' => $_POST['get_date'],
+              'week' => $date_info['week'],
+              'week_index' => $date_info['week_index'],
+              'attendance_detail_id' => $value,
+              'group_id' => $group_arr[$key],
+              'type' => $type_arr[$key],
+              'update_user' => $user,
+              'update_time' => 'now()',
+              );
+          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+        }
+      }
+      if(isset($_POST['attendance_id'])
+          &&is_array($_POST['attendance_id'])
+          &&!empty($_POST['attendance_id'])){
+        $a_id_arr = $_POST['attendance_id'];
+        $group_arr = $_POST['group'];
+        $type_arr = $_POST['type'];
+        foreach($a_id_arr as $key => $value){
+          $sql_arr = array(
+              'date' => $_POST['get_date'],
+              'week' => $date_info['week'],
+              'week_index' => $date_info['week_index'],
+              'attendance_detail_id' => $value,
+              'group_id' => $group_arr[$key],
+              'type' => $type_arr[$key],
+              'add_user' => $user,
+              'add_time' => 'now()',
+              );
+          if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
+            &&!empty($_POST['data_as'])){
+            $sql_other_arr = array(
+                'update_user' => $user,
+                'update_time' => 'now()',
+              );
+            $sql_arr = tep_array_merge($sql_arr,$sql_other_arr);
+          }
+          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
+        }
+      }
+      tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR));
+      break;
+    case 'delete_as_list':
+      if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
+          &&!empty($_POST['data_as'])){
+        foreach($_POST['data_as'] as $add_id){
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
+        }
+      }
+      tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR));
+      break;
+  }
+}
 ?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
@@ -36,30 +100,27 @@ $str_prev_str = '?y='.$prev_year.'&m='.$prev_month;
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
-<script language="javascript" src="js2php.php?path=includes|javascript&name=calendar&type=js"></script>
+<script language="javascript" src="includes/javascript/admin_attendance.js"></script>
 <script language="javascript">
+var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ATTENDANCE_CALENDAR;?>'';
 $(document).ready(function() {
-  <?php //监听按键?> 
+  <?php //监听按键?>
   $(document).keyup(function(event) {
     if (event.which == 27) {
-      <?php //esc?> 
+      <?php //esc?>
       if ($('#show_date_edit').css('display') != 'none') {
-        hidden_info_box(); 
+        hidden_info_box();
       }
     }
     if (event.which == 13) {
-      <?php //回车?> 
+      <?php //回车?>
       if ($('#show_date_edit').css('display') != 'none') {
-        $("#button_save").trigger("click");  
-      } 
-    } 
-  });    
+        $("#button_save").trigger("click");
+      }
+    }
+  });
 });
 </script>
-<?php 
-$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-require("includes/note_js.php");
-?>
 </head>
 <body bgcolor="#FFFFFF" onLoad="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -114,9 +175,9 @@ require("includes/note_js.php");
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr bgcolor="#3C7FB1">
             <td class="date_title" align="center">
-            <a href="attendance_calendar.php<?php echo $str_prev_str;?>"><b><<</b></a>
+            <a href="<?php echo FILENAME_ATTENDANCE_CALENDAR.$str_prev_str;?>"><b><<</b></a>
             &nbsp;&nbsp;<?php echo $year.' / '.$month; ?>&nbsp;&nbsp;
-            <a href="attendance_calendar.php<?php echo $str_next_str;?>"><b>>></b></a></td>
+            <a href="<?php echo FILENAME_ATTENDANCE_CALENDAR.$str_next_str;?>"><b>>></b></a></td>
           </tr>
         </table></td>
       </tr>
@@ -155,8 +216,10 @@ $j=1;
 
 while($j<=$day_num)
 {
-  echo "<td>";
+  $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
+  echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)'>";
   echo $j;
+  echo "<br>";
   echo "</td>";
   $week = ($start_week+$j-2)%7;
 
@@ -186,7 +249,6 @@ if(!$end)
   </tr>
 </table>
 <!-- body_eof -->
-
 <!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <!-- footer_eof -->

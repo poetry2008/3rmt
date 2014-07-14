@@ -142,6 +142,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_REFERER', 'referer.php');
   define('FILENAME_BUTTONS', 'buttons.php');
   define('FILENAME_ATTENDANCE', 'attendance.php');
+  define('FILENAME_ATTENDANCE_CALENDAR', 'attendance_calendar.php');
   
   //add files
   define('FILENAME_DATA_MANAGEMENT','data_management.php');
@@ -303,6 +304,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_MAIL_TEMPLATES','mail_templates');
   define('TABLE_CONFIGURATION_META','configuration_meta');
   define('TABLE_GROUPS','groups');
+  define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 
@@ -426,8 +428,10 @@ define('TABLE_PERMISSIONS','permissions');
       if(array_key_exists($_POST['loginuid'],$personal_login_language_array)){
         if($personal_login_language_array[$_POST['loginuid']] == 'jp'){
           $personal_language_str = 'japanese';  
-        }else{
+        }else if($personal_login_language_array[$_POST['loginuid']] == 'ch'){
           $personal_language_str = 'chinese'; 
+        }else if($personal_login_language_array[$_POST['loginuid']] == 'vn'){
+          $personal_language_str = 'vietnamese'; 
         }
         $_SESSION['language'] = $personal_language_str;
         $_SESSION['text_language'] = $personal_language_str;

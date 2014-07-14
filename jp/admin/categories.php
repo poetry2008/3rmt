@@ -5171,15 +5171,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_table_content_row[] = array('params'=>$products_status_params, 'text'=>$products_status_text);
                 $products_operation_params .= 'class="dataTableContent" align="right"';
                 $products_operation_text .= '<a href="javascript:void(0)" onclick="show_product_info(\''.$products['products_id'].'\',this,'.$products['site_id'].')">';
-                if (empty($_GET['s_site_id'])) {
-                  $product_date_info = (tep_not_null($products['products_last_modified']) && ($products['products_last_modified'] != '0000-00-00 00:00:00'))?$products['products_last_modified']:$products['products_date_added'];
-                  $products_operation_text .= tep_get_signal_pic_info($product_date_info); 
-                } else {
-                  $pro_singal_raw = tep_db_query("select products_last_modified from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products['products_id']."' and site_id = '0'"); 
-                  $pro_signal_res = tep_db_fetch_array($pro_singal_raw); 
-                  $product_date_info = (tep_not_null($pro_signal_res['products_last_modified']) && ($pro_signal_res['products_last_modified'] != '0000-00-00 00:00:00'))?$pro_signal_res['products_last_modified']:$products['products_date_added'];
-                  $products_operation_text .= tep_get_signal_pic_info($product_date_info); 
-                }
+                $product_date_info = (tep_not_null($products['products_last_modified']) && ($products['products_last_modified'] != '0000-00-00 00:00:00'))?$products['products_last_modified']:$products['products_date_added'];
+                $products_operation_text .= tep_get_signal_pic_info($product_date_info);  
                 $products_operation_text .= '</a>&nbsp;'; 
                 $products_table_content_row[] = array('params'=>$products_operation_params, 'text'=>$products_operation_text);
                 $categories_table_row[] = array('params'=>$products_table_row_params, 'text'=>$products_table_content_row);

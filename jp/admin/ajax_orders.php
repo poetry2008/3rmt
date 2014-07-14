@@ -3417,4 +3417,9 @@ foreach($orders_statuses as $o_status){
 }
 echo '<input type="hidden" id="hidd_order_status_id" value="'.$_GET['o_status'].'">';
 echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'], array(array('orders_id' => $_GET['oid']))).'">';
+}else if($_GET['action'] == 'del_one_as'){
+  $del_sql = "delete from attendance_detail_date where id='".$_POST['asl_id']."'";
+  if(tep_db_query($del_sql)){
+    echo 'true';
+  }
 }

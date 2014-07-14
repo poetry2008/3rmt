@@ -13683,4 +13683,94 @@ function tep_change_attendance_logout($uid) {
 	}
     return tep_db_query($sql);
 }
+/**********************************
+  功能: 根据条件生成用户组目录     
+  参数: $parent_id(string) 组父分类  
+  参数: $spacing(string) 间隔字符
+  参数: $group_tree_array(array) 给定的组目录数组
+  返回值: 返回所有组信息的数组
+**********************************/
+function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
 
+  if (!is_array($group_tree_array)) $group_tree_array = array();
+  $group_sql = "select name,parent_id,id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."'";
+  $group_query = tep_db_query($group_sql);
+  while ($groups = tep_db_fetch_array($group_query)){
+    $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+    $group_tree_array = tep_get_group_tree($groups['id'],$spacing.  '&nbsp;&nbsp;&nbsp;',$group_tree_array);
+  }
+  return $group_tree_array;
+}
+function tep_add_front_zone($str,$len=2){
+  $str_len = strlen($str);
+  if($len-$str_len>0){
+    for($i=$len-$str_len;$i>0;$i--){
+      $str = '0'.$str;
+    }
+  }
+  return $str;
+}
+function tep_date_info($str){
+  if(strlen($str)=='8'){
+    $year = substr($str,0,4); 
+    $month = substr($str,4,2); 
+    $day = substr($str,6,2); 
+    $time_str = mktime(0,0,0,$month,$day,$year);
+    $arr = array();
+    $arr['year'] = $year;
+    $arr['month'] = $month;
+    $arr['day'] = $day;
+    $arr['week'] = date('w',$time_str);
+    $arr['week_index'] = ceil($day/7);
+    return $arr;
+  }else{
+    return null;
+  }
+}
+function tep_get_attendance($date){
+  $date_info = tep_date_info($date);
+  $attendance_dd_arr = array();
+  /*
+  //获得 只是用一次的
+  $sql_type_no = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='0' and date='".$date."'";
+  $query_type_no = tep_db_query($sql_type_no);
+  while($row_type_no = tep_db_fetch_array($query_type_no)){
+    $attendance_dd_arr[] = $row_type_no;
+  }
+  //获得 当前星期
+  $sql_type_week = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='1' and week='".$date_info['week']."'";
+  $query_type_week = tep_db_query($sql_type_week);
+  while($row_type_week = tep_db_fetch_array($query_type_week)){
+    $attendance_dd_arr[] = $row_type_week;
+  }
+  //获得 当前月日
+  $sql_type_month = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='2' and date like '______".$date_info['day']."'";
+  $query_type_month = tep_db_query($sql_type_month);
+  while($row_type_month = tep_db_fetch_array($query_type_month)){
+    $attendance_dd_arr[] = $row_type_month;
+  }
+  //获得 当前月第几个星期
+  $sql_type_month_week = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."'";
+  $query_type_month_week = tep_db_query($sql_type_month_week);
+  while($row_type_month_week = tep_db_fetch_array($query_type_month_week)){
+    $attendance_dd_arr[] = $row_type_month_week;
+  }
+  //获得 当前年月日
+  $sql_type_year = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='4' and date like '____".$date_info['month'].$date_info['day']."'";
+  $query_type_year = tep_db_query($sql_type_year);
+  while($row_type_year = tep_db_fetch_array($query_type_year)){
+    $attendance_dd_arr[] = $row_type_year;
+  }
+  */
+  $where_str = " where (type='0' and date='".$date."') 
+    or (type='1' and week='".$date_info['week']."') 
+    or (type='2' and date like '______".$date_info['day']."') 
+    or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
+    or (type='4' and date like '____".$date_info['month'].$date_info['day']."')";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." order by id ";
+  $query = tep_db_query($sql);
+  while($row = tep_db_fetch_array($query)){
+    $attendance_dd_arr[] = $row;
+  }
+  return $attendance_dd_arr;
+}
