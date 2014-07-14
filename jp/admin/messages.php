@@ -2256,9 +2256,10 @@ require("includes/note_js.php");
         $contents_text = $latest_messages['content'];
         $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text); 
         $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
+        $contents_text_str = nl2br($contents_text);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.str_replace('"',"&quot;",$contents_text).'" title="'.str_replace('"',"&quot;",$contents_text).'">'.$contents_text.'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.str_replace('"',"&quot;",$contents_text).'" title="'.str_replace('"',"&quot;",$contents_text).'">'.$contents_text_str.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
@@ -2278,10 +2279,21 @@ require("includes/note_js.php");
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
 		'text'   => $messages_attach_file
-	);
+        );
+        //收信时间格式化
+        $time_alt = strftime('%A,%b %d,%Y at %H:%M %p',strtotime($latest_messages['time']));
+        //如果是当天
+        if(date('Y-m-d') == date('Y-m-d',strtotime($latest_messages['time']))){
+          $time_str = strftime('%H:%M %p',strtotime($latest_messages['time']));
+        //如果不是当天，但是当年
+        }else if(date('Y') == date('Y',strtotime($latest_messages['time']))){
+          $time_str = date('m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($latest_messages['time']));
+        }else{
+          $time_str = date('Y/m/d',strtotime($latest_messages['time']));
+        }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent_time"',
-		'text'   => $latest_messages['time']
+		'text'   => '<span title="'.$time_alt.'" alt="'.$time_alt.'">'.$time_str.'</span>'
         );
         $update_date = $latest_messages['date_update'] != '' && $latest_messages['date_update'] != '0000-00-00 00:00:00' ? $latest_messages['date_update'] : date('Y-m-d H:i:s',strtotime($latest_messages['time']));
         $messages_opt = tep_get_signal_pic_info($update_date);
