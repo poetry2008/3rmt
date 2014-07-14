@@ -1,3 +1,4 @@
+var ele_value_obj = '';
 //show attendance info
 function show_attendance_info(id){
  $.ajax({
@@ -88,3 +89,241 @@ function change_type_text(){
 	
 	}
 }
+
+function attendance_setting(date,ele){
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $(ele).offset();   
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax.php?action=attendance_setting&date='+date,
+    dataType: 'text',
+    async: false,
+    success: function(text) {
+      //show content 
+      $('#show_date_edit').html(text);  
+      $("#show_date_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+
+        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+      }else{
+        $("#show_date_edit").css('left',ele_obj.left-box_warp_left);
+      }
+      ele_value_obj = ele;
+      $('#show_date_edit').css('display','block');
+    }
+  });
+}
+
+
+function hidden_info_box(){
+  $('#show_date_edit').css('display','none');
+}
+
+window.onresize = resizepage;
+
+function resizepage(){
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $("#show_date_edit").offset();
+  if(ele_value_obj != ''){
+    tmp_ele_obj = $(ele_value_obj).offset();
+    if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+
+      $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+    }else{
+      if(tmp_ele_obj.left-box_warp_left+$("#show_date_edit").width() < ele_width){
+        $("#show_date_edit").css('left',tmp_ele_obj.left-box_warp_left);
+      }else{
+        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width());
+      }
+    }   
+  }
+}
+
+function delete_submit(c_permission){
+  del_url = href_attendance_calendar+'?action=delete_as_list';
+  if (c_permission == 31) {
+    document.attendance_setting_form.action = del_url 
+    document.attendance_setting_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
+      async: false,
+      success: function(msg) {
+         var tmp_msg_arr = msg.split('|||'); 
+         var pwd_list_array = tmp_msg_arr[1].split(',');
+         if (tmp_msg_arr[0] == '0') {
+           document.attendance_setting_form.action = del_url 
+           document.attendance_setting_form.submit();
+         } else {
+           $('#button_delete').attr('id', 'tmp_button_delete'); 
+           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+           if (in_array(input_pwd_str, pwd_list_array)) {
+             document.attendance_setting_form.action = del_url 
+             $.ajax({
+               url: 'ajax_orders.php?action=record_pwd_log',   
+               type: 'POST',
+               dataType: 'text',
+               data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.attendance_setting_form.action),
+               async: false,
+               success: function(msg_info) {
+                 document.attendance_setting_form.submit();
+               }
+             }); 
+           } else {
+             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             setTimeOut($('#tmp_button_delete').attr('id', 'button_delete'), 1); 
+           }
+         }
+      }
+    });
+  }
+}
+function save_submit(c_permission){
+  if (c_permission == 31) {
+    document.attendance_setting_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
+      async: false,
+      success: function(msg) {
+         var tmp_msg_arr = msg.split('|||'); 
+         var pwd_list_array = tmp_msg_arr[1].split(',');
+         if (tmp_msg_arr[0] == '0') {
+           document.attendance_setting_form.submit();
+         } else {
+           $('#button_save').attr('id', 'tmp_button_save'); 
+           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+           if (in_array(input_pwd_str, pwd_list_array)) {
+             $.ajax({
+               url: 'ajax_orders.php?action=record_pwd_log',   
+               type: 'POST',
+               dataType: 'text',
+               data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.attendance_setting_form.action),
+               async: false,
+               success: function(msg_info) {
+                 document.attendance_setting_form.submit();
+               }
+             }); 
+           } else {
+             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+           }
+         }
+      }
+    });
+  }
+}
+
+function del_as(ele,asl_id,c_permission){
+  var tr_index = $(ele).parent().parent().index();
+  if(asl_id!=''){
+    if (c_permission == 31) {
+  $.ajax({
+    url: 'ajax_orders.php?action=del_one_as',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'asl_id='+asl_id, 
+    async: false,
+    success: function(msg) {
+      if(msg == 'true'){
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+      }else{
+        alert('TEXT_CANNOT_DELETE_ONE_AS');
+      }
+    }
+  });
+    } else {
+      $.ajax({
+        url: 'ajax_orders.php?action=getallpwd',   
+        type: 'POST',
+        dataType: 'text',
+        data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
+        async: false,
+        success: function(msg) {
+           var tmp_msg_arr = msg.split('|||'); 
+           var pwd_list_array = tmp_msg_arr[1].split(',');
+           if (tmp_msg_arr[0] == '0') {
+  $.ajax({
+    url: 'ajax_orders.php?action=del_one_as',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'asl_id='+asl_id, 
+    async: false,
+    success: function(msg) {
+      if(msg == 'true'){
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+      }else{
+        alert('TEXT_CANNOT_DELETE_ONE_AS');
+      }
+    }
+  });
+           } else {
+             var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+             if (in_array(input_pwd_str, pwd_list_array)) {
+               $.ajax({
+                 url: 'ajax_orders.php?action=record_pwd_log',   
+                 type: 'POST',
+                 dataType: 'text',
+                 data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.attendance_setting_form.action),
+                 async: false,
+                 success: function(msg_info) {
+  $.ajax({
+    url: 'ajax_orders.php?action=del_one_as',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'asl_id='+asl_id, 
+    async: false,
+    success: function(msg) {
+      if(msg == 'true'){
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+        $('.popup_order_info').find('tr').eq(tr_index).remove();
+      }else{
+        alert('TEXT_CANNOT_DELETE_ONE_AS');
+      }
+    }
+  });
+                 }
+               }); 
+             } else {
+               alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             }
+           }
+        }
+       });
+    }
+  }else{
+    $('.popup_order_info').find('tr').eq(tr_index).remove();
+    $('.popup_order_info').find('tr').eq(tr_index).remove();
+    $('.popup_order_info').find('tr').eq(tr_index).remove();
+  }
+}
+
