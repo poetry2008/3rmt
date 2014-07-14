@@ -2284,7 +2284,7 @@ require("includes/note_js.php");
         $time_alt = strftime('%A,%b %d,%Y at %H:%M %p',strtotime($latest_messages['time']));
         //如果是当天
         if(date('Y-m-d') == date('Y-m-d',strtotime($latest_messages['time']))){
-          $time_str = strftime('%H:%M %p',strtotime($latest_messages['time']));
+          $time_str = date('H:i',strtotime($latest_messages['time']));
         //如果不是当天，但是当年
         }else if(date('Y') == date('Y',strtotime($latest_messages['time']))){
           $time_str = date('m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($latest_messages['time']));
