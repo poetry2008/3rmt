@@ -9077,7 +9077,7 @@ if($_GET['latest_messages_id']>0){
   
   $form_str = tep_draw_form('attendances', FILENAME_ATTENDANCE, $page. '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
   $page_s = ATTENDANCE_HEAD_TITLE; 
-  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $page_str .= '<a onclick="hidden_info_box_tep();" href="javascript:void(0);">X</a>';
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
   $heading[] = array('align' => 'left', 'text' => $page_s);
@@ -9315,7 +9315,7 @@ if($_GET['latest_messages_id']>0){
       $work_hours=  tep_draw_input_field('work_hours',$att_info_res['work_hours'],'style="text-align:right;"');
       $rest_hours =  tep_draw_input_field('rest_hours',$att_info_res['rest_hours'],'style="text-align:right;"');
 	  
-	  if($att_info_res['set_time']==1 || empty($id)){
+	  if($att_info_res['set_time']==1 || !empty($id)){
 	      $time_numbers_style = 'style="display:block;"';
 	  }else{
 	      $time_numbers_style = 'style="display:none;"';
