@@ -8334,7 +8334,7 @@ $banner_query = tep_db_query("
                   $recipient_all .= '<input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="all_users_list[]" checked="checked">';
  }
  tep_db_free_result($all_users_list_query);
- $messages_content_row_must_selected[] = array('text'=> $recipient_all);
+ $messages_content_row_must_selected[] = array('params' => 'style="display:none"','text'=> $recipient_all);
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
  $messages_content_table[] = array('text'=> $messages_content_row_must_selected);
  $mark_array = explode(',',$_GET['mark']);
