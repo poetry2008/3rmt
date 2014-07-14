@@ -53,6 +53,7 @@ function delete_attendance_info(id){
 }
 
 
+//add approve
 function add_attendance_approve_person(id){
         $.ajax({
             url: 'ajax.php?action=add_attendance_approve',
@@ -106,6 +107,25 @@ function change_set_time(set_id) {
    
    }
 }
+
+
+function getFileName(path){
+    var pos1 = path.lastIndexOf('/');
+    var pos2 = path.lastIndexOf('\\');
+    var pos  = Math.max(pos1, pos2)
+    if( pos<0 ){
+        return path;
+    }else{
+        return path.substring(pos+1);
+    }
+}
+
+
+function change_image_text(_this) {
+	 var image_name = getFileName(_this.value);
+$("#src_text_image").val(image_name);
+}
+
 function attendance_setting(date,ele){
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';

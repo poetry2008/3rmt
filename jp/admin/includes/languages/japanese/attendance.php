@@ -1,7 +1,8 @@
 <?php
 define('ATTENDANCE_HEAD_TITLE', 'テンプレート設定');
 define('ATTENDANCE_TITLE', 'タイトル');
-define('ATTENDANCE_SCHEDULING_TYPE', '略語');
+define('ATTENDANCE_ABBREVIATION', '略語');
+define('ATTENDANCE_SCHEDULING_TYPE', 'シフトタイプ');
 define('ATTENDANCE_SCHEDULING_TYPE_IMAGE', 'アイコン');
 define('ATTENDANCE_SCHEDULING_TYPE_COLOR', 'カラーゾーン');
 
