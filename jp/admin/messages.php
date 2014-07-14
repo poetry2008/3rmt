@@ -2281,7 +2281,7 @@ require("includes/note_js.php");
 		'text'   => $messages_attach_file
         );
         //收信时间格式化
-        $time_alt = strftime('%A,%b %d,%Y at %H:%M %p',strtotime($latest_messages['time']));
+        $time_alt = date('Y/m/d H:i:s',strtotime($latest_messages['time']));
         //如果是当天
         if(date('Y-m-d') == date('Y-m-d',strtotime($latest_messages['time']))){
           $time_str = date('H:i',strtotime($latest_messages['time']));
