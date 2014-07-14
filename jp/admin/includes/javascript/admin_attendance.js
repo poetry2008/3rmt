@@ -67,24 +67,41 @@ function add_attendance_approve_person(id){
         }); 
 }
 
-
+//change scheduling_type
 function change_type_text(){
 	var select_val = $("#type_id").val();
 
 	if(select_val==1){
       $("#src_text_image").css("display","none");	
-      $("#upload_file_image").css("display","none");	
       $("#image_div").css("display","none");	
-
+      $("#upload_button").css("display","none");	
       $("#src_text_color").css("display","block");	
       $("#color_div").css("display","block");	
 	}
 	if(select_val==0){
       $("#image_div").css("display","block");	
       $("#src_text_image").css("display","block");	
-      $("#upload_file_image").css("display","block");	
+      $("#upload_button").css("display","block");	
       $("#src_text_color").css("display","none");	
       $("#color_div").css("display","none");	
 	
 	}
+}
+
+//change set_time
+function change_set_time(set_id) {
+   if(set_id==1){
+      $('.set_time_field_title').css("display","none"); 
+      $('.set_time_field_content').css("display","none"); 
+      $('.set_time_numbers_title').css("display","block"); 
+      $('.set_time_numbers_content').css("display","block"); 
+   }
+
+   if(set_id==0){
+      $('.set_time_field_title').css("display","block"); 
+      $('.set_time_field_content').css("display","block"); 
+      $('.set_time_numbers_title').css("display","none"); 
+      $('.set_time_numbers_content').css("display","none"); 
+   
+   }
 }

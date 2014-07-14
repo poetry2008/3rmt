@@ -165,6 +165,7 @@ function change_attendance_login(uid) {
 			function(data){
 				if(data){
 			    	alert(data);
+					location=location;
 				}
 			}
 		);
@@ -180,6 +181,7 @@ function change_attendance_logout(uid) {
 			function(data){
 				if(data){
 			    	alert(data);
+					location=location;
 				}
 			}
 		);
@@ -247,10 +249,11 @@ echo "</a>";
 <?php
 //打卡
 	 $date = date('Y-m-d');
-$sql = "select login_time from attendance where user_name='".$uid."' and date='".$date."'";
+$sql = "select login_time from attendance where user_name='".$user_info['userid']."' and date='".$date."'";
 
      $query = tep_db_query($sql);
-	 $num_rows = count(tep_db_fetch_array($query));
+     $num_rows = tep_db_num_rows($query);
+	 
 if($num_rows ==0) { 
 ?>
    <a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" >IN</a>
