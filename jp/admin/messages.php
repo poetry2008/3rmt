@@ -1751,7 +1751,7 @@ function messages_check(is_back,flag){
 		$('#messages_back_must_write').css('display','');
 	}
 	if(error_status_select == 1 && error_status_contents == 1 && error_status_back_contents == 1){
-                console.log('ok');
+                //console.log('ok');
                 if(flag == 1){
                   $("#messages_flag_id").val('1'); 
                 }else if(flag == 2){
