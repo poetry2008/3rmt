@@ -428,8 +428,10 @@ define('TABLE_PERMISSIONS','permissions');
       if(array_key_exists($_POST['loginuid'],$personal_login_language_array)){
         if($personal_login_language_array[$_POST['loginuid']] == 'jp'){
           $personal_language_str = 'japanese';  
-        }else{
+        }else if($personal_login_language_array[$_POST['loginuid']] == 'ch'){
           $personal_language_str = 'chinese'; 
+        }else if($personal_login_language_array[$_POST['loginuid']] == 'vn'){
+          $personal_language_str = 'vietnamese'; 
         }
         $_SESSION['language'] = $personal_language_str;
         $_SESSION['text_language'] = $personal_language_str;
