@@ -359,7 +359,6 @@ while($j<=$day_num)
       echo "<div>";
       foreach($show_select_group_user as $u_list){
         echo tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
-        echo '<br>';
       }
       echo "</div>";
     }
