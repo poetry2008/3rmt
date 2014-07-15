@@ -13774,3 +13774,32 @@ function tep_get_attendance($date){
   }
   return $attendance_dd_arr;
 }
+
+
+function valatete_two_time($first_start,$first_end,$second_start,$second_end){
+  $fs_arr = explode(':',$first_start);
+  $fe_arr = explode(':',$first_end);
+  $ss_arr = explode(':',$second_start);
+  $se_arr = explode(':',$second_end);
+  $fs_time = mktime($fs_arr[0],$fs_arr[1]);
+  $fe_time = mktime($fe_arr[0],$fe_arr[1]);
+  $ss_time = mktime($ss_arr[0],$ss_arr[1]);
+  $se_time = mktime($se_arr[0],$se_arr[1]);
+  //第二个时间的起始时间在第一个时间内
+  if($fs_time < $ss_time && $ss_time < $fe_time){
+    return true;
+  }
+  //第二个时间的结束时间在第一个时间内
+  if($fs_time < $se_time && $se_time < $fe_time){
+    return true;
+  }
+  //第二个时间包含了第一个时间
+  if($ss_time < $fs_time && $se_time > $fe_time){
+    return true;
+  }
+  //两个个时间段相等
+  if($ss_time == $fs_time && $se_time == $fe_time){
+    return true;
+  }
+  return false;
+}

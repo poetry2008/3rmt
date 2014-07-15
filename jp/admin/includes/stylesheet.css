@@ -2263,3 +2263,10 @@ google hack
   word-break:break-all;
   min-width:50px;
 } 
+
+
+.dataTable_hight_red{
+    background:url(../images/icon_today.png) no-repeat;
+    color:#FFFFFF;
+}
+
