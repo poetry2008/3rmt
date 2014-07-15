@@ -77,7 +77,12 @@ if(isset($_GET['action'])){
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
         }
       }
-      tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR));
+      if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
+        $date_info = tep_date_info($_POST['get_date']);
+        tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR,'y='.$date_info['year'].'&m='.$date_info['month']));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR));
+      }
       break;
     case 'delete_as_list':
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
@@ -86,7 +91,17 @@ if(isset($_GET['action'])){
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
-      tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR));
+      if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
+        $date_info = tep_date_info($_POST['get_date']);
+        tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR,'y='.$date_info['year'].'&m='.$date_info['month']));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR));
+      }
+      break;
+    case 'update_show_user':
+        tep_redirect(tep_href_link(FILENAME_ATTENDANCE_CALENDAR,
+            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
+            ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
       break;
   }
 }
@@ -102,7 +117,7 @@ if(isset($_GET['action'])){
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/admin_attendance.js"></script>
 <script language="javascript">
-var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ATTENDANCE_CALENDAR;?>'';
+var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ATTENDANCE_CALENDAR;?>';
 $(document).ready(function() {
   <?php //监听按键?>
   $(document).keyup(function(event) {
@@ -156,7 +171,40 @@ $(document).ready(function() {
         $status_str .= '</tr></table>';
         $attendance_str = '<table border="0" cellspacing="0" cellpadding="0"><tr>';
         $attendance_str .= '<td>attendance</td>';
-        $attendance_str .= '</tr></table>'
+        $attendance_str .= '</tr></table>';
+
+
+        $group_list = tep_get_group_tree();
+        $group_str = '<form action="'.
+        tep_href_link(FILENAME_ATTENDANCE_CALENDAR,'action=update_show_user'.
+            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
+            ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')).'" method="post">';
+        $group_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
+        $group_str .= '<tr >';
+        $group_str .= '<td width="150" align="left">';
+        $group_str .= TEXT_GROUP_SELECT;
+        $group_str .= '</td>';
+        $group_str .= '<td colspan="2" align="left">';
+        $group_str .= '<select name="show_group[]" onchange="change_user_list(this)">';
+        $group_str .= '<option value="0">'.TEXT_ALL_GROUP.'</option>';
+        foreach($group_list as $group){
+          $group_str .= '<option value="'.$group['id'].'">'.$group['text'].'</oprion>';
+        }
+        $group_str .= '</select>';
+        $group_str .= '</td>';
+        $group_str .= '</tr>';
+        $group_str .= '<tr>';
+        $group_str .= '<td align="left">';
+        $group_str .= TEXT_GROUP_USER_LIST;
+        $group_str .= '</td>';
+        $group_str .= '<td align="left">';
+        $group_str .= '2';
+        $group_str .= '</td>';
+        $group_str .= '<td align="right">';
+        $group_str .= '<input type="submit" value="'.TEXT_UPDATE.'">';
+        $group_str .= '</td>';
+        $group_str .= '</tr>';
+        $group_str .= '</table></form>';
       ?>
       <tr>
         <td><div id="toggle_width" style="min-width:726px;"></div><table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -165,8 +213,8 @@ $(document).ready(function() {
               <?php echo $status_str;?> 
             </td>
           </tr><tr>
-            <td class="main" align="right">
-              <?php echo $attendance_str;?> 
+            <td class="main" align="left">
+              <?php echo $group_str;?> 
             </td>
           </tr>
         </table></td>
@@ -195,13 +243,13 @@ $end = false;
 <tr>
 <?php 
 echo '
-        <td align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
-        <td align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
-        <td align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
-        <td align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
-        <td align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
-        <td align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
-        <td align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
         ';
         ?>
 </tr>
@@ -217,9 +265,44 @@ $j=1;
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
-  echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)'>";
-  echo $j;
-  echo "<br>";
+  echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)'
+    valign='top'>";
+  $att_arr = tep_get_attendance($date);
+  echo '<table width="100%" border="0" cellspacing="1" cellpadding="1">';
+  echo "<tr><td align='left' style='font-size:14px;'>";
+  if($date == date('Ymd',time())){
+    echo "<div class='dataTable_hight_red'>";
+    echo $j;
+    echo "</div>";
+  }else{
+    echo $j;
+  }
+  echo "</td></tr>";
+  foreach($att_arr as $att_row){
+    $att_info_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id='".$att_row['attendance_detail_id']."' limit 1";
+    $att_info_query = tep_db_query($att_info_sql);
+    if($att_info = tep_db_fetch_array($att_info_query)){
+    echo "<tr>";
+    if($att_info['scheduling_type'] == 1){
+      echo "<td bgcolor='".$att_info['src_text']."'>";
+      echo "<div>";
+      echo $att_info['title'];
+      echo "</div>";
+    }else{
+      echo "<td >";
+      echo "<div>";
+      echo "<img src='".$att_info['src_text']."' alt='".$att_info['alt_text']."'>";
+      echo "</div>";
+    }
+    if(false){
+      echo "<div>";
+      echo "</div>";
+    }
+    echo "</td>";
+    echo "</tr>";
+    }
+  }
+  echo "</table>";
   echo "</td>";
   $week = ($start_week+$j-2)%7;
 
