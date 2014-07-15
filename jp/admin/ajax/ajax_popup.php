@@ -9055,8 +9055,10 @@ if($_GET['latest_messages_id']>0){
 }else if($_GET['action'] == 'edit_attendance_info') {
 
 
-  //include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ATTENDANCE);
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'japanese/attendance.php');
+
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ATTENDANCE);
+
+  //include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'japanese/attendance.php');
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
@@ -9075,7 +9077,10 @@ if($_GET['latest_messages_id']>0){
   $buttons = array();
   $page_str = '';
   
-  $form_str = tep_draw_form('attendances', FILENAME_ATTENDANCE, $page. '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
+  $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
+  $action_url_month = substr($_GET['date'],4,2) == date('m') ? '' : '&m='.substr($_GET['date'],4,2);
+  $action = $action.$action_url_date.$action_url_month;
+  $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
   $page_s = ATTENDANCE_HEAD_TITLE; 
   $page_str .= '<a onclick="hidden_info_box_tep();" href="javascript:void(0);">X</a>';
   $heading = array();

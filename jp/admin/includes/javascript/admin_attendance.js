@@ -11,9 +11,9 @@ function show_attendance_info(id){
   $("div#show_attendance").html(data);
 
       $('div#show_attendance').css('z-index', 1);
-      $('div#show_attendance').css('height', 450);
-      $('div#show_attendance').css('left', 200);
-      $('div#show_attendance').css('top',250);
+      $('div#show_attendance').css('height', 500);
+      $('div#show_attendance').css('left', 300);
+      $('div#show_attendance').css('top',230);
 
       $('div#show_attendance').css('display','block');
  }
@@ -40,7 +40,7 @@ function delete_attendance_info(id){
             success: function(data){
 				if(data){
 					alert('delete sucess!');
-					 window.location.href = href_attendance;
+					 window.location.href = href_attendance_calendar;
 				
 				}
             }

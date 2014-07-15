@@ -4,7 +4,6 @@
 */
 include("includes/application_top.php");
 
-
 $month = $_GET['m']?$_GET['m']:date('n');
 $year = $_GET['y']?$_GET['y']:date('Y');
 if($month==12){
@@ -121,6 +120,119 @@ if(isset($_GET['action'])){
             ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
       break;
+	  /**
+	   *attendance_detail
+	   */
+case 'insert':
+case 'update':
+	 tep_isset_eof();
+	$id = $_POST['id'];
+	 $title = tep_db_prepare_input($_POST['title']);
+	 $short_language = tep_db_prepare_input($_POST['short_language']);
+     $param_a = tep_db_prepare_input($_POST['param_a']);
+     $param_b = tep_db_prepare_input($_POST['param_b']);
+	 $sort = tep_db_prepare_input($_POST['sort']);
+	 $approve_person = tep_db_prepare_input($_POST['approve_person']);
+	 $scheduling_type = $_POST['scheduling_type'];
+	 $set_time = tep_db_prepare_input($_POST['set_time']);
+	 $work_start=$_POST['work_start_hour'].':'.$_POST['work_start_minute_a'].$_POST['work_start_minute_b'];
+	 $work_end=$_POST['work_end_hour'].':'.$_POST['work_end_minute_a'].$_POST['work_end_minute_b'];
+	 $rest_start=$_POST['rest_start_hour'].':'.$_POST['rest_start_minute_a'].$_POST['rest_start_minute_b'];
+	 $rest_end=$_POST['rest_end_hour'].':'.$_POST['rest_end_minute_a'].$_POST['rest_end_minute_b'];
+	 $work_hours=tep_db_prepare_input($_POST['work_hours']);
+	 $rest_hours=tep_db_prepare_input($_POST['rest_hours']);
+	 $user_info = tep_get_user_info($ocertify->auth_user);
+	 $add_user=$user_info['name'];
+	 $add_time=date('Y-m-d H:i:s',time());
+	 $update_user=$user_info['name'];
+	 $update_time=date('Y-m-d H:i:s',time());
+
+	 if($scheduling_type ==0){
+	 
+	 //上传图片
+	 $src_image = tep_get_uploaded_file('src_image');
+     	  if (!empty($src_image['name'])) {
+             $pic_rpos = strrpos($src_image['name'], ".");
+             $pic_ext = substr($src_image['name'], $pic_rpos+1);
+             $tep_image_name = 'attendance'.time().".".$pic_ext;
+             $src_image['name'] = $tep_image_name;
+          } else {
+             $tep_image_name = '';
+          }
+
+
+	  $image_directory = tep_get_local_path(tep_get_upload_dir().'/');
+         $path = 'attendance/';
+
+         if (is_uploaded_file($src_image['tmp_name'])) {
+			 
+			   $src_text = $path.$tep_image_name;
+			   tep_copy_uploaded_file($src_image, $image_directory. 'attendance/');
+			 //删除之前的图片
+//			 $sql_image = "select src_text from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
+//			 $tep_res = tep_db_query($sql_image);
+//		     $row=  tep_db_fetch_array($tep_res);
+//			 if(count($row)){
+//			     unlink($image_directory.$row['src_text']);
+//			 }
+
+	     }	
+	 
+	 }elseif($scheduling_type==1) {
+	     $src_text = $_POST['scheduling_type_color'];
+	 }
+
+	 if(count($_POST['add_approve_person'])!=0){
+        $_POST['add_approve_person']= array_unique($_POST['add_approve_person']);
+		 for($i=0;$i<count($_POST['add_approve_person']);$i++) {
+			 if($i==count($_POST['add_approve_person'])-1) {
+			 
+		 $str_tep .= $_POST['add_approve_person'][$i];
+			 }else{
+			 
+		 $str_tep .= $_POST['add_approve_person'][$i].',';
+			 }
+		 }
+
+      $approve_person = $str_tep;
+	 }
+
+	 $sql_data_array =array(
+	   'title' => $title,
+	   'short_language' => $short_language,
+	   'src_text'=> $src_text,
+	   'param_a' => $param_a, 
+	   'param_b' => $param_b, 
+       'sort' => $sort,
+	   'approve_person' => $approve_person,
+	   'scheduling_type' => $scheduling_type,
+	   'set_time' => $set_time,
+       'work_start' => $work_start,
+	   'work_end' => $work_end,
+	   'rest_start' => $rest_start,
+	   'rest_end' => $rest_end,
+	   'work_hours' => $work_hours,
+	   'rest_hours' => $rest_hours,
+	   'add_user' => $add_user,
+	   'add_time' => $add_time,
+	   'update_user' => $update_user,
+	   'update_time' => $update_time
+	 );
+
+	 if($_GET['action']=='insert'){
+	 tep_db_perform(TABLE_ATTENDANCE_DETAIL, $sql_data_array);
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
+            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
+            ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
+	 }elseif ($_GET['action']=='update'){
+	 
+	 tep_db_perform(TABLE_ATTENDANCE_DETAIL, $sql_data_array, 'update',  "id = '" .$id  . "'");
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
+            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
+            ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
+	 }
+	 break;
+
   }
 }
 ?>
@@ -134,7 +246,11 @@ if(isset($_GET['action'])){
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/admin_roster_records.js"></script>
+<script language="javascript" src="includes/javascript/admin_attendance.js"></script>
+
 <script language="javascript">
+var attendance_del_confirm = '<?php echo ATTENDANCE_DELETE_REMIND;?>';
+var error_text = '<?php echo TEP_ERROR_NULL;?>';
 var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ROSTER_RECORDS;?>';
 $(document).ready(function() {
   <?php //监听按键?>
@@ -271,7 +387,45 @@ $(document).ready(function() {
         <td><div id="toggle_width" style="min-width:726px;"></div><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
             <td class="main" align="right">
-              <?php echo $status_str;?> 
+<div id="show_attendance" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
+<table style="margin-right: 69px; margin-top: -30px;">
+
+<?php 
+
+$att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
+$tep_result = tep_db_query($att_select_sql);
+
+ $attendance_list=array();
+ while($rows= tep_db_fetch_array($tep_result)) {
+   $attendance_list[] = $rows;
+ }
+ $num = count($attendance_list);
+ $i=0;
+ foreach($attendance_list as $k=>$val) {
+		 if($i%8==0){
+		 echo '</tr><tr>';
+		 }
+	 $i++;
+ ?>
+<td>
+<?php
+ if($val['scheduling_type']==0){
+    $image_directory = tep_get_local_path(tep_get_upload_dir());
+    $image_dir = $image_directory.'/'.$val['src_text'];
+	echo "<img src='".$image_dir."'>"; 
+}elseif($val['scheduling_type']==1){
+     echo '<div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
+ }
+?>	
+ <a onclick="show_attendance_info(<?php echo $val['id']; ?>)" href="javascript:void(0);" style="text-decoration: underline;"> >> <?php echo $val['title']?></a></td>
+<?php 
+   if($i==8){
+       echo  '<a onclick="show_attendance_info(0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_attendance" ').' </a>';
+   }
+ }
+
+?> 
+</table>
             </td>
           </tr><tr>
             <td class="main" align="left">
