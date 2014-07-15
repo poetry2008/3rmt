@@ -3465,4 +3465,42 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
     }
   }
   echo 'true';
+}else if($_GET['action'] == 'roster_records_user_list'){
+        $show_group_id = $_POST['gid'];
+        $show_group_user = array();
+        $show_select_group_user = array();
+        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE gid='".$show_group_id."'";
+        $show_group_query = tep_db_query($show_group_sql);
+        while($show_group_row = tep_db_fetch_array($show_group_query)){
+          $show_group_id = $show_group_row['gid'];
+          $show_select_group_user[] = $show_group_row['user_id'];
+        }
+        if($show_group_id==0){
+          $user_sql = 'select * from '.TABLE_USERS;
+          $user_query = tep_db_query($user_sql);
+          while($user_row = tep_db_fetch_array($user_query)){
+            $show_group_user[] = $user_row['userid'];
+          }
+        } else {
+          $user_sql = "select * from ".TABLE_GROUPS." 
+            where id='".$show_group_id."'";
+          $user_query = tep_db_query($user_sql);
+          if($user_row = tep_db_fetch_array($user_query)){
+            $show_group_user = explode('|||',$user_row['all_users_id']);
+          }
+
+        }
+        
+        $group_str = '';
+        foreach($show_group_user as $show_list_uid){
+          $group_str .= '<input type="checkbox" name="show_group_user_list[]" ';
+          if(in_array($show_list_uid,$show_select_group_user)){
+            $group_str .= ' checked="checked" ';
+          }
+          $group_str .= ' value="'.$show_list_uid.'" >';
+          $user_info = tep_get_user_info($show_list_uid);
+          $group_str .=  $user_info['name'];
+          $group_str .= '&nbsp;&nbsp;&nbsp;';
+        }
+        echo $group_str;
 }

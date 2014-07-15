@@ -9584,7 +9584,7 @@ if($_GET['latest_messages_id']>0){
   $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
   $action_url_month = substr($_GET['date'],4,2) == date('m') ? '' : '&m='.substr($_GET['date'],4,2);
   $action_url = 'action=save_as_list'.$action_url_date.$action_url_month;
-  $form_str = tep_draw_form('attendance_setting_form', FILENAME_ATTENDANCE_CALENDAR, $action_url);
+  $form_str = tep_draw_form('attendance_setting_form', FILENAME_ROSTER_RECORDS, $action_url);
 
   //生成表单 
   $notice_box->get_form($form_str);

@@ -143,6 +143,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_BUTTONS', 'buttons.php');
   define('FILENAME_ATTENDANCE', 'attendance.php');
   define('FILENAME_ATTENDANCE_CALENDAR', 'attendance_calendar.php');
+  define('FILENAME_ROSTER_RECORDS','roster_records.php');
   
   //add files
   define('FILENAME_DATA_MANAGEMENT','data_management.php');
@@ -271,6 +272,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_CALENDAR', 'calendar'); //add calendar
   define('TABLE_BANK_CALENDAR', 'bank_calendar'); //add calendar
   define('TABLE_ATTENDANCE_DETAIL', 'attendance_detail'); //add calendar
+  define('TABLE_ATTENDANCE', 'attendance'); //add calendar
   
   //Add DB - ds-style
   define('TABLE_INFORMATION_PAGE', 'information_page');//information box
@@ -305,6 +307,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CONFIGURATION_META','configuration_meta');
   define('TABLE_GROUPS','groups');
   define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
+  define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');
 // customization for the design layout
   define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
 

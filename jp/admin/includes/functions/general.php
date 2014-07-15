@@ -13727,7 +13727,7 @@ function tep_date_info($str){
     return null;
   }
 }
-function tep_get_attendance($date){
+function tep_get_attendance($date,$gid=0){
   $date_info = tep_date_info($date);
   $attendance_dd_arr = array();
   /*
@@ -13762,11 +13762,20 @@ function tep_get_attendance($date){
     $attendance_dd_arr[] = $row_type_year;
   }
   */
-  $where_str = " where (type='0' and date='".$date."') 
-    or (type='1' and week='".$date_info['week']."') 
-    or (type='2' and date like '______".$date_info['day']."') 
-    or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-    or (type='4' and date like '____".$date_info['month'].$date_info['day']."')";
+  if($gid==0){
+    $where_str = " where (type='0' and date='".$date."') 
+      or (type='1' and week='".$date_info['week']."') 
+      or (type='2' and date like '______".$date_info['day']."') 
+      or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
+      or (type='4' and date like '____".$date_info['month'].$date_info['day']."')";
+  }else{
+    $where_str = " where ((type='0' and date='".$date."') 
+      or (type='1' and week='".$date_info['week']."') 
+      or (type='2' and date like '______".$date_info['day']."') 
+      or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
+      or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))
+      and group_id='".$gid."'";
+  }
   $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." order by id ";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
@@ -13802,4 +13811,27 @@ function valatete_two_time($first_start,$first_end,$second_start,$second_end){
     return true;
   }
   return false;
+}
+
+function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
+  $user_info = tep_get_user_info($uid);
+  $sql = "select * from ".TABLE_ATTENDANCE." WHERE 
+    user_name='".$uid."' and date='".$date."'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+
+
+    $return_str = $user_info['name'].'&nbsp;';
+    if($bg_color == '#DD1F2C'){
+      $return_str .= '<font color ="#FFFFFF">';
+    }else{
+      $return_str .= '<font color ="#DD1F2C">';
+    }
+    $return_str .= substr($row['login_time'],11,5)
+      .  '&nbsp;~&nbsp;'.  substr($row['logout_time'],11,5);
+    $return_str .= '</font>';
+    return $return_str;
+  }else{
+    return $user_info['name'];
+  }
 }
