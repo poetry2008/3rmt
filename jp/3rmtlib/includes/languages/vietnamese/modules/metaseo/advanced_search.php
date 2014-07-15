@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_ADVANCED_SEARCH_TEXT_TITLE', 'Tìm kiếm sản phẩm');
+  define('MODULE_METASEO_ADVANCED_SEARCH_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_ADVANCED_SEARCH_TEXT_DESCRIPTION', 'SEO của trang tìm kiếm sản phẩm');
+?>

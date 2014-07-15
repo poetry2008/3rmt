@@ -1,0 +1,24 @@
+<?php
+define('HEADING_TITLE', 'Xác nhận thông tin rút lui ra khỏi hội viên');
+define('EXIT_HISTORY_RECORD', 'Ghi lại');
+define('EXIT_HISTORY_SITE_ID', 'Site');
+define('EXIT_HISTORY_FIRSTNAME', 'Tên');
+define('EXIT_HISTORY_LASTNAME', 'Họ');
+define('EXIT_HISTORY_EMAIL', 'Địa chỉ E-Mail');
+define('EXIT_HISTORY_MAGZINE', 'Mail magazine');
+define('ORDER_MAGZINE', 'Mua tạp chí');
+define('NO_ORDER_MAGZINE', 'Không mua tạp chí');
+define('EXIT_HISTORY_BAN_ORDER', 'Cấm đặt hàng');
+define('EXIT_HISTORY_YES_TEXT', 'Có');
+define('EXIT_HISTORY_NO_TEXT', 'Không');
+define('EXIT_HISTORY_NO_SEND_MAIL', 'Không gởi mail');
+define('EXIT_HISTORY_CALC_QUANTITY', 'Không tự động tính toán tăng hoặc giảm số lượng tồn kho');
+define('EXIT_HISTORY_POINT', 'Điểm hiện tại');
+define('EXIT_HISTORY_PIC_ICON_ALT', 'Kí tự ALT đánh dấu');
+define('EXIT_HISTORY_QUITEDATE', 'Thời gian rời hội');
+define('EXIT_HISTORY_SEARCH', 'Điều tra tính dụng');
+define('EXIT_HISTORY_LAST_LOGIN_DATE', 'Ngày login gần nhất');
+define('EXIT_HISTORY_LOGIN_NUM', 'Số lần login');
+define('EXIT_HISTORY_ORDER_NUM', 'Số lần đặt hàng');
+define('EXIT_HISTORY_REVIEW_NUM', 'Số bài đăng xem  trước');
+define('EXIT_HISTORY_RESET_FLAG', 'Yêu cầu thay đổi mật khẩu');

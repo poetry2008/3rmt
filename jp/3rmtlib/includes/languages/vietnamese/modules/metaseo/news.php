@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_TITLE', 'Thông báo');
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_LATEST_NEWS_TEXT_DESCRIPTION', 'SEO của trang thông báo');
+?>

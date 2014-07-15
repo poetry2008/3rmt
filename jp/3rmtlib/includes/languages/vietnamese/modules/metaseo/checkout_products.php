@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_CHECKOUT_PRODUCTS_TEXT_TITLE', 'Nhập tên nhân vật');
+  define('MODULE_METASEO_CHECKOUT_PRODUCTS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_CHECKOUT_PRODUCTS_TEXT_DESCRIPTION', 'SEO của trang nhập tên nhân vật');
+?>
