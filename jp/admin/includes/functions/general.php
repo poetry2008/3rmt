@@ -13793,6 +13793,7 @@ function del_zero($nums) {
 	}else{
 	    return $nums;
 	}
+}
 
 
 function valatete_two_time($first_start,$first_end,$second_start,$second_end){
