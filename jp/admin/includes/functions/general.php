@@ -13784,6 +13784,17 @@ function tep_get_attendance($date,$gid=0){
   return $attendance_dd_arr;
 }
 
+//删除无效的小数点和末尾0
+function del_zero($nums) {
+	$str_tep = substr($nums, -1);
+	if($str_tep == '0' || $str_tep =='.'){
+	    $nums= substr($nums,0,-1);
+	    return del_zero($nums);
+	}else{
+	    return $nums;
+	}
+}
+
 
 function valatete_two_time($first_start,$first_end,$second_start,$second_end){
   $fs_arr = explode(':',$first_start);

@@ -41,5 +41,6 @@ define('TEXT_CALENDAR_COLOR_BLUE_GRAY','グレー');
 define('TEXT_CALENDAR_COLOR_BLUE_PINK','ピンク');
 define('TEXT_CALENDAR_COLOR_BLUE_BROWN','ブラウン');
 
+define('TEP_ERROR_NULL','入力してください。');
 ?>
 

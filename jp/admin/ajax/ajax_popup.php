@@ -9086,12 +9086,12 @@ if($_GET['latest_messages_id']>0){
   $attendance_info_row = array();
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_TITLE),
-           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" style="font-size:12px"'.$disable)),
+           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" style="font-size:12px"').'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
         array('text' => tep_draw_hidden_field('id', $id)) 
      ); 
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_ABBREVIATION),
-           array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'style="font-size:12px"'.$disable)),
+           array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'id="short_language" style="font-size:12px"').'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
      ); 
 //排班类型
     $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id">';
@@ -9139,10 +9139,6 @@ if($_GET['latest_messages_id']>0){
       $attendance_info_row[]['text'] = array(
           array('text' => $div_color),
 		  array('text' =>$select_type_color) 
-     ); 
-      $attendance_info_row[]['text'] = array(
-           array('text' => ATTENDANCE_ALT_TEXT),
-           array('text' => tep_draw_input_field('alt_text',$att_info_res['alt_text'],'id="alt_text" style="font-size:12px"'.$disable))
      ); 
 	//param
       $attendance_info_row[]['text'] = array(
@@ -9215,7 +9211,7 @@ if($_GET['latest_messages_id']>0){
      }
       $attendance_info_row[]['text'] = array(
 	       array('text' => ATTENDANCE_SET_TIME),
-           array('text' => tep_draw_radio_field('set_time',0,$selected_1,'','onclick=change_set_time(0)').ATTENDANCE_SET_TIME_FIELD.'&nbsp;'.tep_draw_radio_field('set_time',1,$selected_2,'','onclick=change_set_time(1)').ATTENDANCE_SET_FIELD_TIME)
+           array('text' => tep_draw_radio_field('set_time',0,$selected_1,'','id="set_left" onclick=change_set_time(0)').ATTENDANCE_SET_TIME_FIELD.'&nbsp;'.tep_draw_radio_field('set_time',1,$selected_2,'','id="set_right" onclick=change_set_time(1)').ATTENDANCE_SET_FIELD_TIME)
 	  );
 
 //工作开始时间
@@ -9223,52 +9219,52 @@ if($_GET['latest_messages_id']>0){
 	  
 	  $work_start_min_left= substr($work_start_array[1],0,1);
 	  $work_start_min_right= substr($work_start_array[1],1,2);
-      $work_start = '<select name="work_start_hour">';
+      $work_start = '<select name="work_start_hour" id="work_start_hour">';
 	  for($i=0;$i<=23;$i++){
           $selected = $work_start_array['0']!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
 	  }
       $work_start .= '</select>';
 
-      $work_start .= '<select name="work_start_minute_a">';
+      $work_start .= '<select name="work_start_minute_a" id="work_start_min_l">';
 	  for($i=0;$i<=5;$i++){
           $selected = $work_start_min_left!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_start .= '</select>';
 
-      $work_start .= '<select name="work_start_minute_b">';
+      $work_start .= '<select name="work_start_minute_b" id="work_start_min_r">';
 	  for($i=0;$i<=9;$i++){
           $selected = $work_start_min_right!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $work_start .= '</select>';
+      $work_start .= '</select>&nbsp;&nbsp;<font color="red" id="work_start_error"></font>';
 
 //工作结束时间
 	  
 	  $work_end_array = explode(':',$att_info_res['work_end']);
 	  $work_end_min_left= substr($work_end_array[1],0,1);
 	  $work_end_min_right= substr($work_end_array[1],1,2);
-      $work_end = '<select name="work_end_hour">';
+      $work_end = '<select name="work_end_hour" id="work_end_hour">';
 	  for($i=0;$i<=23;$i++){
           $selected = $work_end_array['0']!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_end .= '</select>';
 
-      $work_end .= '<select name="work_end_minute_a">';
+      $work_end .= '<select name="work_end_minute_a" id="work_end_min_l">';
 	  for($i=0;$i<=5;$i++){
           $selected = $work_end_min_left!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_end .= '</select>';
 
-      $work_end .= '<select name="work_end_minute_b">';
+      $work_end .= '<select name="work_end_minute_b" id="work_end_min_r">';
 	  for($i=0;$i<=9;$i++){
           $selected = $work_end_min_right!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $work_end .= '</select>';
+      $work_end .= '</select>&nbsp;&nbsp;<font color="red" id="work_end_error"></font>';
 
 
 //休息开始时间
@@ -9341,9 +9337,12 @@ if($_GET['latest_messages_id']>0){
 
 
 	  //时间数
-
-      $work_hours=  tep_draw_input_field('work_hours',$att_info_res['work_hours'],'style="text-align:right;"');
-      $rest_hours =  tep_draw_input_field('rest_hours',$att_info_res['rest_hours'],'style="text-align:right;"');
+     if(!empty($id) && $att_info_res['set_time']==1){
+	    $att_work_hours= del_zero($att_info_res['work_hours']);
+	    $att_rest_hours= del_zero($att_info_res['rest_hours']);
+	 }
+      $work_hours=  tep_draw_input_field('work_hours',$att_work_hours,'id="work_hours" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
+      $rest_hours =  tep_draw_input_field('rest_hours',$att_rest_hours,'id="rest_hours" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
 	  
 	  if($att_info_res['set_time']==1 && !empty($id)){
 	      $time_numbers_style = 'style="display:block;"';
@@ -9357,7 +9356,7 @@ if($_GET['latest_messages_id']>0){
       $left_td .= '</tr></table>';
       $right_td = '';
       $right_td .= '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="set_time_numbers_content"'.$time_numbers_style.'><tr>';
-      $right_td .= '<td align="">'.$work_hours.' '.ATTENDANCE_TIME.'</td></tr><tr><td>'.$rest_hours.' '.ATTENDANCE_TIME.'</td>';
+      $right_td .= '<td align="">'.$work_hours.'</td></tr><tr><td>'.$rest_hours.'</td>';
       $right_td .= '</tr></table>';
         $attendance_info_row[]['text'] = array(
         array('text' => $left_td), 
