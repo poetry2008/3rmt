@@ -11,9 +11,9 @@ function show_attendance_info(id){
   $("div#show_attendance").html(data);
 
       $('div#show_attendance').css('z-index', 1);
-      $('div#show_attendance').css('height', 500);
+      $('div#show_attendance').css('height', 450);
       $('div#show_attendance').css('left', 200);
-$('div#show_attendance').css('top',250);
+      $('div#show_attendance').css('top',250);
 
       $('div#show_attendance').css('display','block');
  }

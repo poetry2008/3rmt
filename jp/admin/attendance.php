@@ -14,7 +14,9 @@ case:insert,update
 ----------------------------------*/
 
 case 'insert':
+case 'update':
 	 tep_isset_eof();
+	$id = $_POST['id'];
 	 $title = tep_db_prepare_input($_POST['title']);
 	 $short_language = tep_db_prepare_input($_POST['short_language']);
      $param_a = tep_db_prepare_input($_POST['param_a']);
@@ -54,8 +56,17 @@ case 'insert':
 
          if (is_uploaded_file($src_image['tmp_name'])) {
 			 $src_image=$path.'/'.$src_image['name'];
-		     tep_copy_uploaded_file($src_image, $image_directory);
-		 $src_text = $path.$tep_image_name;
+			 
+			 //删除之前的图片
+			 $sql_image = "select src_text from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
+			 $tep_res = tep_db_query($sql_image);
+		     $row=  tep_db_fetch_array($tep_res);
+			 if(count($row)){
+			     unlink($image_directory.$row['src_text']);
+			 }
+             //更新新的图片
+			 $src_text = $path.$tep_image_name;
+		     tep_copy_uploaded_file($src_image, $image_directory. 'attendance/');
 	     }	
 	 
 	 }elseif($scheduling_type==1) {
@@ -78,7 +89,6 @@ case 'insert':
 	 }
 
 	 $sql_data_array =array(
-	   'id' => null,
 	   'title' => $title,
 	   'short_language' => $short_language,
 	   'src_text'=> $src_text,
@@ -100,108 +110,17 @@ case 'insert':
 	   'update_time' => $update_time
 	 );
 
+	 if($_GET['action']=='insert'){
 	 tep_db_perform(TABLE_ATTENDANCE_DETAIL, $sql_data_array);
 	 tep_redirect(tep_href_link('attendance.php'));
-	  $attendance_id = tep_db_insert_id();
-	 break;
+	 $attendance_id = tep_db_insert_id();
+	 }elseif ($_GET['action']=='update'){
 	 
-
-case 'update':
-	 tep_isset_eof();
-	 $id = $_POST['id'];
-	 $title = tep_db_prepare_input($_POST['title']);
-	 $short_language = tep_db_prepare_input($_POST['short_language']);
-	 $src_text = tep_db_prepare_input($_POST['src_text']);
-	 $param_a = tep_db_prepare_input($_POST['param_a']);
-	 $param_b = tep_db_prepare_input($_POST['param_b']);
-	 $sort = tep_db_prepare_input($_POST['sort']);
-	 $scheduling_type = tep_db_prepare_input($_POST['scheduling_type']);
-	 $set_time = $_POST['set_time'];
-	 $work_start=$_POST['work_start_hour'].':'.$_POST['work_start_minute_a'].$_POST['work_start_minute_b'];
-	 $work_end=$_POST['work_end_hour'].':'.$_POST['work_end_minute_a'].$_POST['work_end_minute_b'];
-	 $rest_start=$_POST['rest_start_hour'].':'.$_POST['rest_start_minute_a'].$_POST['rest_start_minute_b'];
-	 $rest_end=$_POST['rest_end_hour'].':'.$_POST['rest_end_minute_a'].$_POST['rest_end_minute_b'];
-	 $work_hours=tep_db_prepare_input($_POST['work_hours']);
-	 $rest_hours=tep_db_prepare_input($_POST['rest_hours']);
-	 $add_user=$_POST['add_user'];
-	 $add_time=$_POST['add_time'];
-	 $user_info = tep_get_user_info($ocertify->auth_user);
-	 $update_user=$user_info['name'];
-	 $update_time=date('Y-m-d H:i:s',time());
-
-	 if($scheduling_type ==0){
-	 //上传图片
-
-	 $src_image = tep_get_uploaded_file('src_image');
-
-     	  if (!empty($src_image['name'])) {
-             $pic_rpos = strrpos($src_image['name'], ".");
-             $pic_ext = substr($src_image['name'], $pic_rpos+1);
-             $tep_image_name = 'attendance'.time().".".$pic_ext;
-             $src_image['name'] = $tep_image_name;
-          } else {
-             $src_text = $_POST['src_image_input'];
-          }
-
-
-	     $image_directory = tep_get_local_path(tep_get_upload_dir().'/');
-         $path = 'attendance/';
-
-         if (is_uploaded_file($src_image['tmp_name'])) {
-			 //删除之前的图片
-			 $sql_image = "select src_text from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
-			 $tep_res = tep_db_query($sql_image);
-		     $row=  tep_db_fetch_array($tep_res);
-			 unlink($image_directory.$row['src_text']);
-
-             //更新新的图片
-			 $src_text = $path.$tep_image_name;
-		     tep_copy_uploaded_file($src_image, $image_directory. 'attendance/');
-
-	     }	
-	 
-	 }elseif($scheduling_type==1){
-	 $src_text = $_POST['scheduling_type_color'];
-	 }
-	 if(count($_POST['add_approve_person'])!=0){
-        $_POST['add_approve_person']= array_unique($_POST['add_approve_person']);
-		 for($i=0;$i<count($_POST['add_approve_person']);$i++) {
-			 if($i==count($_POST['add_approve_person'])-1) {
-			 
-		 $str_tep .= $_POST['add_approve_person'][$i];
-			 }else{
-			 
-		 $str_tep .= $_POST['add_approve_person'][$i].',';
-			 }
-		 }
-
-      $approve_person = $str_tep;
-	 }
-
-	 $sql_data_update_array =array(
-	   'title' => $title,
-	   'short_language' => $short_language,
-	   'src_text'=> $src_text,
-	   'param_a' => $param_a, 
-	   'param_b' => $param_b, 
-       'sort' => $sort,
-	   'approve_person' => $approve_person,
-	   'scheduling_type' => $scheduling_type,
-	   'set_time' => $set_time,
-       'work_start' => $work_start,
-	   'work_end' => $work_end,
-	   'rest_start' => $rest_start,
-	   'rest_end' => $rest_end,
-	   'work_hours' => $work_hours,
-	   'rest_hours' => $rest_hours,
-	   'add_user' => $add_user,
-	   'add_time' => $add_time,
-	   'update_user' => $update_user,
-	   'update_time' => $update_time
-	 );
-	 tep_db_perform(TABLE_ATTENDANCE_DETAIL, $sql_data_update_array, 'update',  "id = '" .$id  . "'");
+	 tep_db_perform(TABLE_ATTENDANCE_DETAIL, $sql_data_array, 'update',  "id = '" .$id  . "'");
 	 tep_redirect(tep_href_link('attendance.php'));
+	 }
 	 break;
+	 
 
 	 }
 }
