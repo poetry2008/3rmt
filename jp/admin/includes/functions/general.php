@@ -13789,6 +13789,17 @@ function tep_get_attendance($date,$gid=0){
   return $attendance_dd_arr;
 }
 
+//删除无效的小数点和末尾0
+function del_zero($nums) {
+	$str_tep = substr($nums, -1);
+	if($str_tep == '0' || $str_tep =='.'){
+	    $nums= substr($nums,0,-1);
+	    return del_zero($nums);
+	}else{
+	    return $nums;
+	}
+}
+
 
 function valatete_two_time($first_start,$first_end,$second_start,$second_end){
   $fs_arr = explode(':',$first_start);
@@ -13835,8 +13846,14 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
     $return_str .= substr($row['login_time'],11,5)
       .  '&nbsp;~&nbsp;'.  substr($row['logout_time'],11,5);
     $return_str .= '</font>';
-    return $return_str;
+    $return_str .= '<br>';
+    return '&nbsp;&nbsp;'.$return_str;
   }else{
-    return $user_info['name'];
+    $has_att_date_sql = "select * from ".TABLE_ATTENDANCE." WHERE 
+    user_name='".$uid."'";
+    $has_att_date_query = tep_db_query($has_att_date_sql);
+    if($has_att_date_row = tep_db_fetch_array($has_att_date_query)){
+      return '&nbsp;&nbsp;'.$user_info['name'].'<br>';
+    }
   }
 }

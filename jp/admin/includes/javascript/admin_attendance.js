@@ -11,9 +11,9 @@ function show_attendance_info(id){
   $("div#show_attendance").html(data);
 
       $('div#show_attendance').css('z-index', 1);
-      $('div#show_attendance').css('height', 550);
+      $('div#show_attendance').css('height', 450);
       $('div#show_attendance').css('left', 200);
-$('div#show_attendance').css('top',250);
+      $('div#show_attendance').css('top',250);
 
       $('div#show_attendance').css('display','block');
  }
@@ -26,10 +26,6 @@ function hidden_info_box_tep(){
    $('#show_attendance').css('display','none');
 }
 
-//submit
-function check_attendance_info(){
- document.forms.attendances.submit();
-}
 
 //delect attendance by id
 function delete_attendance_info(id){
@@ -108,6 +104,59 @@ function change_set_time(set_id) {
    }
 }
 
+function check_attendance_info(){
+      var title_val = $("#attendance_title").val();
+      var short_lan_val = $("#short_language").val();
+      var work_start_hour = $("#work_start_hour").val();
+      var work_start_min_r = $("#work_start_min_r").val();
+      var work_start_min_l = $("#work_start_min_l").val();
+      var work_end_hour = $("#work_end_hour").val();
+      var work_end_min_r = $("#work_end_min_r").val();
+      var work_end_min_l = $("#work_end_min_l").val();
+      var work_hours = $("#work_hours").val();
+      var rest_hours = $("#rest_hours").val();
+      var sign = '';
+      if(title_val==''){
+        $("#title_text_error").html(error_text);
+		sign=1;
+      }
+
+	  if(short_lan_val==''){
+		  sign=1;
+        $("#short_lan_error").html(error_text);
+	  }
+
+	  if($("#set_left").attr('checked')){
+	      if(work_start_hour==0 && work_start_min_r==0 && work_start_min_l==0){
+	    	 sign=1;
+             $("#work_start_error").html(error_text);
+	      }
+
+	      if(work_end_hour==0 && work_end_min_r==0 && work_end_min_l==0){
+		     sign=1
+             $("#work_end_error").html(error_text);
+	      }
+     }
+
+	  if($("#set_right").attr('checked')) {
+	      if(work_hours ==''){
+		      sign=1;
+              $("#work_hours_error").html(error_text);
+	      }
+
+	      if(rest_hours ==''){
+		      sign=1;
+              $("#rest_hours_error").html(error_text);
+	      }
+	  }
+	  if(sign ==1){
+	      return false;
+	  }else{
+         document.forms.attendances.submit();
+	  }
+
+}
+
 
 function getFileName(path){
     var pos1 = path.lastIndexOf('/');
@@ -120,11 +169,11 @@ function getFileName(path){
     }
 }
 
-
 function change_image_text(_this) {
 	 var image_name = getFileName(_this.value);
 $("#src_text_image").val(image_name);
 }
+
 
 function attendance_setting(date,ele){
   var ele_width = $(".box_warp").width(); 
