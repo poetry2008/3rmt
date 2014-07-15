@@ -458,19 +458,19 @@ $end = false;
 <tr>
 <?php 
 echo '
+        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
         <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
         <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
         <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
         <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
         <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
         <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
         ';
         ?>
 </tr>
 <tr>
 <?php
-for($i = 1; $i<$start_week; $i++)
+for($i = 0; $i<$start_week; $i++)
 {
   echo "<td></td>";
 }
@@ -482,7 +482,7 @@ while($j<=$day_num)
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
   echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)'
     valign='top'>";
-  $att_arr = tep_get_attendance($date,$show_group_id);
+  $att_arr = tep_get_attendance($date,$show_group_id,false);
   echo '<table width="100%" border="0" cellspacing="1" cellpadding="1">';
   echo "<tr><td align='left' style='font-size:14px;'>";
   if($date == date('Ymd',time())){
@@ -522,9 +522,9 @@ while($j<=$day_num)
   }
   echo "</table>";
   echo "</td>";
-  $week = ($start_week+$j-2)%7;
+  $week = ($start_week+$j-1)%7;
 
-  if($week ==6){
+  if($week == 6){
     echo "</tr>";
     if($j != $day_num)
       echo "<tr>";

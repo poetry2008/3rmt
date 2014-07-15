@@ -2804,8 +2804,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <div class="highlight_color"> 
         <?php
         } 
+        $customers_name_arr = explode('|',CUSTOMER_NAME_KEYWORDS); 
+        $customers_name_str = str_replace("\n","<br>",tep_replace_to_red($customers_name_arr,htmlspecialchars($order->customer['name'])));
         ?>
-        <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo htmlspecialchars($order->customer['name']); ?></a>
+        <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, 'type=cid&search='.$order->customer['id']);?>"><?php echo $customers_name_str; ?></a>
         <?php
         if ($order->info['is_gray'] == '1') {
         ?>
@@ -2834,8 +2836,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         $parmStr.= '&'.$key.'='.$value;
       }
       $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
+      $customers_email_arr = explode('|',CUSTOMER_EMAIL_KEYWORDS); 
+      $customers_email_str = str_replace("\n","<br>",tep_replace_to_red($customers_email_arr,tep_output_string_protected($order->customer['email_address'])));
       ?>
-        <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' .  tep_output_string_protected($order->customer['email_address']) . '\', \''.JS_TEXT_ALL_ORDER_BROWER_REJECTED.'\', \''.JS_TEXT_ALL_ORDER_COPY_TO_CLIPBOARD.'\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="'.TEXT_CREATE_NEW_NUMBER_SEARCH.'" href="'.$remoteurl.'" target="_blank">'.TEXT_EMAIL_ADDRESS.'</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">'.TEXT_TEL_UNKNOW.'</a>'; 
+        <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' .  tep_output_string_protected($order->customer['email_address']) . '\', \''.JS_TEXT_ALL_ORDER_BROWER_REJECTED.'\', \''.JS_TEXT_ALL_ORDER_COPY_TO_CLIPBOARD.'\')">' . $customers_email_str . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="'.TEXT_CREATE_NEW_NUMBER_SEARCH.'" href="'.$remoteurl.'" target="_blank">'.TEXT_EMAIL_ADDRESS.'</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">'.TEXT_TEL_UNKNOW.'</a>'; 
       ?></td>
         </tr>
         <tr>

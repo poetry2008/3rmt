@@ -3422,49 +3422,6 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
   if(tep_db_query($del_sql)){
     echo 'true';
   }
-}else if($_GET['action'] == 'valadate_attendance'){
-  $select_arr = explode(',',$_POST['select_str']);
-  $group_arr = explode(',',$_POST['group_str']);
-  $valadate_arr = array();
-  $att_group_arr = array();
-  $unique_group = array();
-  $group_att_arr = array();
-  foreach($group_arr as $k => $group){
-    $tmp_str = $group.'_'.$select_arr[$k];
-    if(in_array($tmp_str,$valadate_arr)){
-      exit;
-    }
-    if(!in_array($group,$unique_group)){
-      $unique_group[] = $group;
-      $group_att_arr[$group] = array($select_arr[$k]);
-    }else{
-      array_push($group_att_arr[$group],$select_arr[$k]);
-    }
-    $valadate_arr[] = $tmp_str;
-  }
-  foreach($group_att_arr as $group_list){
-    if(count($group_list)>1){
-      $g_a_info = array();
-      foreach($group_list as $g_att){
-        $sql_att = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE id='".$g_att."' and set_time='0'";
-        $query_att = tep_db_query($sql_att);
-        if($row_att = tep_db_fetch_array($query_att)){
-          $g_a_info[] = $row_att;
-        }
-      }
-    }
-    $tmp_info = $g_a_info;
-    array_shift($tmp_info);
-    foreach($g_a_info as $ga_info){
-      foreach($tmp_info as $t_info){
-        if(valatete_two_time($ga_info['work_start'],$ga_info['work_end'],$t_info['work_start'],$t_info['work_end'])){
-          exit;
-        }
-      }
-      array_shift($tmp_info);
-    }
-  }
-  echo 'true';
 }else if($_GET['action'] == 'roster_records_user_list'){
         $show_group_id = $_POST['gid'];
         $show_group_user = array();
