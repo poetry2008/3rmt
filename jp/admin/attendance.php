@@ -17,7 +17,6 @@ case 'insert':
 	 tep_isset_eof();
 	 $title = tep_db_prepare_input($_POST['title']);
 	 $short_language = tep_db_prepare_input($_POST['short_language']);
-	 $alt_text = tep_db_prepare_input($_POST['alt_text']);
      $param_a = tep_db_prepare_input($_POST['param_a']);
      $param_b = tep_db_prepare_input($_POST['param_b']);
 	 $sort = tep_db_prepare_input($_POST['sort']);
@@ -82,7 +81,6 @@ case 'insert':
 	   'id' => null,
 	   'title' => $title,
 	   'short_language' => $short_language,
-	   'alt_text'=> $alt_text,
 	   'src_text'=> $src_text,
 	   'param_a' => $param_a, 
 	   'param_b' => $param_b, 
@@ -113,7 +111,6 @@ case 'update':
 	 $id = $_POST['id'];
 	 $title = tep_db_prepare_input($_POST['title']);
 	 $short_language = tep_db_prepare_input($_POST['short_language']);
-	 $alt_text = tep_db_prepare_input($_POST['alt_text']);
 	 $src_text = tep_db_prepare_input($_POST['src_text']);
 	 $param_a = tep_db_prepare_input($_POST['param_a']);
 	 $param_b = tep_db_prepare_input($_POST['param_b']);
@@ -184,7 +181,6 @@ case 'update':
 	 $sql_data_update_array =array(
 	   'title' => $title,
 	   'short_language' => $short_language,
-	   'alt_text'=> $alt_text,
 	   'src_text'=> $src_text,
 	   'param_a' => $param_a, 
 	   'param_b' => $param_b, 
@@ -221,7 +217,9 @@ case 'update':
 <script language="javascript">
 var href_attendance = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ATTENDANCE;?>';
  var attendance_del_confirm = '<?php echo ATTENDANCE_DELETE_REMIND;?>';
+var error_text = '<?php echo TEP_ERROR_NULL;?>';
 </script>
+
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
