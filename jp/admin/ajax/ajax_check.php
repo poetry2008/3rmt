@@ -236,6 +236,16 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
                 //针对返信内容处理
                 $contents_text = $new_messages['content'];
                 $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text);
+                if(trim($contents_text) != ''){
+                  $contents_text = explode("\r\n",$contents_text);
+                  $contents_text = $contents_text[0];
+                  if(trim($contents_text) == ''){
+
+                    $contents_text = '...';
+                  }
+                }else{
+                  $contents_text = '...'; 
+                }
 		$new_messages['content'] = str_replace('>','&gt',str_replace('<','&lt',(mb_strlen($contents_text) > 30 ? mb_substr($contents_text, 0, 30).'...' : $contents_text)));
 		if($new_messages['mark'] != '' && $new_messages['mark'] != null){
 			$new_messages['mark'] = explode(',',$new_messages['mark']);

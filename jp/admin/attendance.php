@@ -16,8 +16,10 @@ case:insert,update
 case 'insert':
 	 tep_isset_eof();
 	 $title = tep_db_prepare_input($_POST['title']);
+	 $short_language = tep_db_prepare_input($_POST['short_language']);
 	 $alt_text = tep_db_prepare_input($_POST['alt_text']);
-	// $param = tep_db_prepare_input($_POST['title']);
+     $param_a = tep_db_prepare_input($_POST['param_a']);
+     $param_b = tep_db_prepare_input($_POST['param_b']);
 	 $sort = tep_db_prepare_input($_POST['sort']);
 	 $approve_person = tep_db_prepare_input($_POST['approve_person']);
 	 $scheduling_type = $_POST['scheduling_type'];
@@ -28,11 +30,12 @@ case 'insert':
 	 $rest_end=$_POST['rest_end_hour'].':'.$_POST['rest_end_minute_a'].$_POST['rest_end_minute_b'];
 	 $work_hours=tep_db_prepare_input($_POST['work_hours']);
 	 $rest_hours=tep_db_prepare_input($_POST['rest_hours']);
-	 $add_user=$_POST['add_user'];
-	 $add_time=$_POST['add_time'];
 	 $user_info = tep_get_user_info($ocertify->auth_user);
+	 $add_user=$user_info['name'];
+	 $add_time=date('Y-m-d H:i:s',time());
 	 $update_user=$user_info['name'];
 	 $update_time=date('Y-m-d H:i:s',time());
+
 	 if($scheduling_type ==0){
 	 
 	 //上传图片
@@ -61,6 +64,7 @@ case 'insert':
 	 }
 
 	 if(count($_POST['add_approve_person'])!=0){
+        $_POST['add_approve_person']= array_unique($_POST['add_approve_person']);
 		 for($i=0;$i<count($_POST['add_approve_person']);$i++) {
 			 if($i==count($_POST['add_approve_person'])-1) {
 			 
@@ -71,15 +75,17 @@ case 'insert':
 			 }
 		 }
 
-      $approve_person = $approve_person.','.$str_tep;
+      $approve_person = $str_tep;
 	 }
 
 	 $sql_data_array =array(
 	   'id' => null,
 	   'title' => $title,
+	   'short_language' => $short_language,
 	   'alt_text'=> $alt_text,
 	   'src_text'=> $src_text,
-	   //'param' => $param, 
+	   'param_a' => $param_a, 
+	   'param_b' => $param_b, 
        'sort' => $sort,
 	   'approve_person' => $approve_person,
 	   'scheduling_type' => $scheduling_type,
@@ -106,11 +112,12 @@ case 'update':
 	 tep_isset_eof();
 	 $id = $_POST['id'];
 	 $title = tep_db_prepare_input($_POST['title']);
+	 $short_language = tep_db_prepare_input($_POST['short_language']);
 	 $alt_text = tep_db_prepare_input($_POST['alt_text']);
 	 $src_text = tep_db_prepare_input($_POST['src_text']);
-	 //$param = tep_db_prepare_input($_POST['title']);
+	 $param_a = tep_db_prepare_input($_POST['param_a']);
+	 $param_b = tep_db_prepare_input($_POST['param_b']);
 	 $sort = tep_db_prepare_input($_POST['sort']);
-	 $approve_person = tep_db_prepare_input($_POST['approve_person']);
 	 $scheduling_type = tep_db_prepare_input($_POST['scheduling_type']);
 	 $set_time = $_POST['set_time'];
 	 $work_start=$_POST['work_start_hour'].':'.$_POST['work_start_minute_a'].$_POST['work_start_minute_b'];
@@ -160,6 +167,7 @@ case 'update':
 	 $src_text = $_POST['scheduling_type_color'];
 	 }
 	 if(count($_POST['add_approve_person'])!=0){
+        $_POST['add_approve_person']= array_unique($_POST['add_approve_person']);
 		 for($i=0;$i<count($_POST['add_approve_person']);$i++) {
 			 if($i==count($_POST['add_approve_person'])-1) {
 			 
@@ -170,14 +178,16 @@ case 'update':
 			 }
 		 }
 
-      $approve_person = $approve_person.','.$str_tep;
+      $approve_person = $str_tep;
 	 }
 
 	 $sql_data_update_array =array(
 	   'title' => $title,
+	   'short_language' => $short_language,
 	   'alt_text'=> $alt_text,
 	   'src_text'=> $src_text,
-	   //'param' => $param, 
+	   'param_a' => $param_a, 
+	   'param_b' => $param_b, 
        'sort' => $sort,
 	   'approve_person' => $approve_person,
 	   'scheduling_type' => $scheduling_type,
