@@ -236,46 +236,6 @@ function delete_submit(c_permission){
   }
 }
 function save_submit(c_permission){
-var select_att_list = new Array;
-var group_att_list = new Array;
-if( $('select[name="has_attendance_id[]"]')){
-$('select[name="has_attendance_id[]"]').each(function() {
-   select_att_list.push($(this).val());
-});
-}
-var add_flag = true;
-if( $('select[name="attendance_id[]"]')){
-$('select[name="attendance_id[]"]').each(function() {
-   if(!add_flag){
-     select_att_list.push($(this).val());
-   }else{
-     add_flag = false;
-   }
-});
-}
-if( $('select[name="has_group[]"]')){
-$('select[name="has_group[]"]').each(function() {
-   group_att_list.push($(this).val());
-});
-}
-add_flag = true;
-if( $('select[name="group[]"]')){
-$('select[name="group[]"]').each(function() {
-   if(!add_flag){
-     group_att_list.push($(this).val());
-   }else{
-     add_flag = false;
-   }
-});
-}
-$.ajax({
-async:false,
-url: 'ajax_orders.php?action=valadate_attendance',
-type: 'POST',
-dataType: 'text',
-data:"select_str="+select_att_list+'&group_str='+group_att_list,
-success: function (error){
-  if (error == 'true'){
   if (c_permission == 31) {
     document.attendance_setting_form.submit();
   } else {
@@ -312,11 +272,6 @@ success: function (error){
       }
     });
   }
-  }else{
-    alert('TEXT_ATTENDANCE_ERROR_BOTH');
-  }
-}
-});
 }
 
 function del_as(ele,asl_id,c_permission){

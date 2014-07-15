@@ -13727,7 +13727,7 @@ function tep_date_info($str){
     return null;
   }
 }
-function tep_get_attendance($date,$gid=0){
+function tep_get_attendance($date,$gid=0,$show_all=true){
   $date_info = tep_date_info($date);
   $attendance_dd_arr = array();
   /*
@@ -13776,7 +13776,15 @@ function tep_get_attendance($date,$gid=0){
       or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))
       and group_id='".$gid."'";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." order by id ";
+  if($show_all){
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." order by id desc";
+  }else{
+  $sql = "select t.* from (SELECT *
+    FROM ".TABLE_ATTENDANCE_DETAIL_DATE."  
+    ".$where_str." 
+    order by `id` desc)  t 
+    group by t.group_id order by t.id desc";
+  }
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
@@ -13829,26 +13837,50 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
   $sql = "select * from ".TABLE_ATTENDANCE." WHERE 
     user_name='".$uid."' and date='".$date."'";
   $query = tep_db_query($sql);
+  $show_user = false;
   if($row = tep_db_fetch_array($query)){
-
-
-    $return_str = $user_info['name'].'&nbsp;';
-    if($bg_color == '#DD1F2C'){
-      $return_str .= '<font color ="#FFFFFF">';
+    if($att_info['set_time']==0){
+      $real_work_start = substr($row['login_time'],11,5);
+      $real_work_end = substr($row['logout_time'],11,5);
+      $work_start = $att_info['work_start'];
+      $work_end = $att_info['work_end'];
+      $real_work_start_str = str_replace(':','',$real_work_start);
+      $real_work_end_str = str_replace(':','',$real_work_end);
+      $work_start_str = str_replace(':','',$work_start);
+      $work_end_str = str_replace(':','',$work_end);
+      if($real_work_start < $work_start && $real_work_end > $work_end){
+      }else{
+        $show_user = true;
+      }
     }else{
-      $return_str .= '<font color ="#DD1F2C">';
+      $real_work_start = $row['login_time'];
+      $real_work_end = $row['logout_time'];
+      $work_hour = floor((strtotime($real_work_end)-strtotime($real_work_start))%86400/3600);
+      if($work_hour < $att_info['rest_hours']+$att_info['work_hours']){
+        $show_user = true;
+      }
     }
-    $return_str .= substr($row['login_time'],11,5)
-      .  '&nbsp;~&nbsp;'.  substr($row['logout_time'],11,5);
-    $return_str .= '</font>';
-    $return_str .= '<br>';
-    return '&nbsp;&nbsp;'.$return_str;
+    if($show_user){
+        $return_str = $user_info['name'].'&nbsp;';
+        if($bg_color == '#DD1F2C'){
+          $return_str .= '<font color ="#FFFFFF">';
+        }else{
+          $return_str .= '<font color ="#DD1F2C">';
+        }
+        $return_str .= substr($row['login_time'],11,5)
+          .  '&nbsp;~&nbsp;'.  substr($row['logout_time'],11,5);
+        $return_str .= '</font>';
+        $return_str .= '<br>';
+        return $return_str;
+    }
   }else{
     $has_att_date_sql = "select * from ".TABLE_ATTENDANCE." WHERE 
-    user_name='".$uid."'";
+    user_name='".$uid."' order by `date` desc";
     $has_att_date_query = tep_db_query($has_att_date_sql);
     if($has_att_date_row = tep_db_fetch_array($has_att_date_query)){
-      return '&nbsp;&nbsp;'.$user_info['name'].'<br>';
+      if($date>$has_att_date_row['date']){
+        return $user_info['name'].'&nbsp;';
+      }
     }
   }
 }
