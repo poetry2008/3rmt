@@ -251,5 +251,5 @@ define('TEXT_BILLING_ADDRESS_SETTING',tep_image(DIR_WS_IMAGES .  'icon_frontend.
 define('MIN_PROFIT_SETTING_TITLE',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;最低利润率');
 define('HEADING_TITLE_998','商品价格设定');
 define('TEXT_MESSAGES_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;垃圾箱信件保存天数');
-define('TEXT_CUSTOMER_NAME_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;顾客名警告文字');
-define('TEXT_CUSTOMER_EMAIL_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;顾客电子邮箱警告文字');
+define('TEXT_CUSTOMER_NAME_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;顾客名警告字符串');
+define('TEXT_CUSTOMER_EMAIL_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;顾客电子邮箱警告字符串');
