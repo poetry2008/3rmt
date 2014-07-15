@@ -253,3 +253,5 @@ define('TEXT_BILLING_ADDRESS_SETTING',tep_image(DIR_WS_IMAGES .  'icon_frontend.
 define('MIN_PROFIT_SETTING_TITLE',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;最低利益率');
 define('HEADING_TITLE_998','商品単価設定');
 define('TEXT_MESSAGES_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;ゴミ箱のメッセージの保存日数');
+define('TEXT_CUSTOMER_NAME_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;顧客名警告文字列');
+define('TEXT_CUSTOMER_EMAIL_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;メールアドレス警告文字列');

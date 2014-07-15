@@ -12780,14 +12780,19 @@ function tep_get_preorders_by_customers_id($customers_id,$site_id){
  ------------------------------------ */
 function tep_replace_to_red($arr,$str){
   $out_str = str_replace('　',' ',$str);
+  //正则元字符
+  $reg_array = array('\\','^','$','*','+','?','{','}','.','(',')',':','=','!','|','[',']','-','/');
+  $reg_replace_array = array('\\\\','\^','\$','\*','\+','\?','\{','\}','\.','\(','\)','\:','\=','\!','\|','\[','\]','\-','\/');
   foreach($arr as $value){
     $nospacev = str_replace(' ','',$value);
     $nospacev = str_replace('　','',$nospacev);
     $str_search_arr = str_split_utf8($nospacev);
     $preg_str = '';
     foreach($str_search_arr as $search_v){
+      //替换正则元字符
+      $search_v = str_replace($reg_array,$reg_replace_array,$search_v);
       $preg_str .= $search_v.'[\s-_]{0,}';
-    }
+    } 
     if(preg_match_all('/('.$preg_str.')/',$out_str,$match_arr)){
       if(isset($match_arr)&&!empty($match_arr)){
         foreach($match_arr[0] as $m_v){

@@ -2330,6 +2330,9 @@ require("includes/note_js.php");
                       echo '<option value="1">'.TEXT_REVIEWS_DELETE_ACTION.'</option>';
                     }
                     echo '</select>';
+                    if($_GET['status'] == 'trash'){
+                      echo '&nbsp;'.sprintf(TEXT_MESSAGES_DELETE_DATA,$messages_day); 
+                    }
                     ?> 
                     </td>
                     <td align="right" class="smallText">
