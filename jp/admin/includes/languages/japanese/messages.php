@@ -9,7 +9,7 @@ define('MESSAGES_TO', 'To');
 define('MESSAGES_BACK', '返信');
 define('MESSAGES_CONTENT', '内容');
 define('ADD_FILE', '添付');
-define('MESSAGES_DATE', '受信日時');
+define('MESSAGES_DATE', '日時');
 define('MESSAGES_OPT', '操作');
 define('TEXT_REVIEWS_SELECT_ACTION','選択したものを');
 define('TEXT_REVIEWS_DELETE_ACTION', '削除する');

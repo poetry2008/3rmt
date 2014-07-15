@@ -1,0 +1,41 @@
+<?php	
+
+define('HEADING_TITLE', 'Quản lý tin nhắn / Tiếp nhận');
+define('READ_STATUS','Đã đọc');
+define('MESSAGES_MARK', 'Đánh dấu');
+define('MESSAGES_FROM', 'From');
+define('MESSAGES_TO', 'To');
+define('MESSAGES_BACK', 'Trả lời');
+define('MESSAGES_CONTENT', 'Nội dung');
+define('ADD_FILE', 'Đính kèm');
+define('MESSAGES_DATE', 'Ngày giờ tiếp nhận');
+define('MESSAGES_OPT', 'Thao tác');
+define('TEXT_REVIEWS_SELECT_ACTION','Mục đã chọn');
+define('TEXT_REVIEWS_DELETE_ACTION', 'Xóa');
+define('MESSAGES_TO_BODY', 'Nơi gửi');
+define('MESSAGES_STAFF','Danh sách nhân viên');
+define('MESSAGES_APPOINT_SB','Chỉ ID đã quy định');
+define('ADD_STAFF','Thêm vào');
+define('DELETE_STAFF','Xóa');
+define('MESSAGES_MARK','Đánh dấu');
+define('MESSAGES_TEXT','Nguyên văn');
+define('MESSAGES_ADDFILE', 'File đính kèm');
+define('MESSAGES_TYPE', 'Kiểu gởi');
+define('MESSAGES_RADIO','Tin nhắn');
+define('MESSAGES_AUTHOR','Người tạo');
+define('MESSAGES_EDIT_DATE','Ngày tạo');
+define('MESSAGES_SUBMIT','Gửi');
+define('NEW_MESSAGES', 'Tạo mới');
+define('MESSAGES_SENDER', 'Tin nhắn từ');
+define('MESSAGES_BACK_CONTENT', 'Câu trả lời');
+define('MESSAGES_BACK_FILE','File đính kèm trả lời');
+define('TEXT_DEL_NEWS', 'Bạn có chắc muốn xóa không?');
+define('TEXT_NEWS_MUST_SELECT', 'Hãy chọn ít nhất 1 sự lựa chọn.');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
+define('BACK_CONTENT_MUST_WRITE', 'Xin vui lòng nhập câu trả lời.');
+define('CONTENT_MUST_WRITE', 'Hãy nhập nguyên văn.');
+define('MESSAGES_TO_MUST_SELECTED', 'Hãy chọn ít nhất 1 nơi gởi đến');
+define('MESSAGES_PREV', 'Về phía trước');
+define('MESSAGES_NEXT', 'Trang kế tiếp');
+?>

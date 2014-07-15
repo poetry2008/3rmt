@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_PRESENT_TEXT_TITLE', 'Quà tặng');
+  define('MODULE_METASEO_PRESENT_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PRESENT_TEXT_DESCRIPTION', 'SEO của trang quà tặng');
+?>

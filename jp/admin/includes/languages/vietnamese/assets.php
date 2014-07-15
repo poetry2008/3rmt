@@ -1,0 +1,42 @@
+<?php
+define('ASSETS_TITLE', 'Quản lý tài sản');
+define('TEXT_PRODUCTS_NAME','Sản phẩm/ danh mục');
+define('TEXT_PRODUCTS_QUANTITY','Số tồn kho thực tế');
+define('TEXT_PRODUCTS_PRICE','Đơn giá');
+define('TEXT_PRODUCTS_PRICE_SUM','Tổng tiền');
+
+define('TEXT_ORDER_PRODUCTS_DATE','Ngày đặt hàng');
+define('TEXT_ORDER_PRODUCTS_NAME','Tên sản phẩm');
+define('TEXT_ORDER_PRODUCTS_QUANTITY','Số lượng');
+define('TEXT_ORDER_PRODUCTS_PRICE','Đơn giá');
+define('TEXT_SHOW_ALL', 'Toàn bộ');
+define('TEXT_SELL', 'Bán');
+define('TEXT_BUY', 'Mua'); 
+define('TEXT_SEARCH', 'Tìm kiếm');
+define('TEXT_INFO', 'Chi tiết');
+define('TEXT_BACK', 'Quay lại');
+define('TEXT_ASSETS_PRINT', 'In ấn');
+define('ASSETS_YEAR_TEXT', 'Năm');
+define('ASSETS_MONTH_TEXT', 'Tháng');
+define('ASSETS_DAY_TEXT', 'Ngày');
+define('TEXT_ASSETS_NO_DATA','Không đủ dữ liệu có hiệu quả');
+define('TEXT_SORT_DATE','Gần đây nhất');
+define('TEXT_SORT_PRICE_ASC','Gía rẻ nhất');
+define('TEXT_SORT_PRICE_DESC','Gía cao nhất');
+define('TEXT_PRODUCTS_DATE','Ngày giao hàng');
+define('TEXT_STATUS_EASY','Đơn giản');
+define('TEXT_STATUS_INFO','Chi tiết');
+define('TEXT_SUM_PRODUCT','Tổng tồn kho');
+define('TEXT_AVG_PRICE','Đơn giá trung bình');
+define('TEXT_SUM_PRICE','Tổng số tiền');
+define('TEXT_NO_RESULT','Không đủ dữ liệu có hiệu quả');
+define('TEXT_SEARCH_ORDER','Phương pháp tính toán');
+define('TEXT_SEARCH_CATEGORY','Danh mục');
+define('TEXT_SEARCH_SITE','Site');
+define('TEXT_SEARCH_WHERE','Phương pháp hiển thị');
+define('TEXT_SEARCH_DATE','Thời hạn tính tổng hợp');
+define('TEXT_SEARCH_DATE_START','Ngày bắt đầu');
+define('TEXT_SEARCH_DATE_END','Ngày kết thúc');
+define('TEXT_ASSETS_INFO','Vui lòng thiết lập điều kiện tính toán tài sản và click nút tìm kiếm<br>Trường hợp không đủ dữ liệu cần thiết để tính toán tài sản, dòng sẽ được hiển thị màu đỏ');
+define('TEXT_ROW','ko');
+?>

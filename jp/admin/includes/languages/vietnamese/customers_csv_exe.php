@@ -1,0 +1,3 @@
+<?php
+define('TEXT_CUSTOMERS_CSV','"Tài khoản","Giới tính","Tên","Họ","Tên","Họ","Khách hàng mới hôm nay","Địa chỉ mail điện tử","Số địa chỉ mặc định","Số điện thoại","Số Fax","Mật khẩu","Nơi liên lạc","Điểm hiện tại","Site","Guest","Đơn hàng đầu tiên","Phân loại hội viên","Mật khẩu cũ","Ngày giờ gởi","Chuỗi kí tự xác minh mail","Địa chỉ Email mới","Họ mới","Tên mới","Mật khẩu mới","Nơi liên lạc mới","Yêu cầu thay đổi mật khẩu","Thay đổi mật khẩu thành công","Cấm đặt hàng","Referer Info","Đánh dấu","Không gởi mail","Không tự động tính toán tăng giảm số lượng tồn kho","Sau khi rời khỏi hội viên, có lưu lịch sử đặt hàng?","Thời gian rời hội","Xem xét có rời hội hay không"');
+?>

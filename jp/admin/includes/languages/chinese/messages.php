@@ -9,7 +9,7 @@ define('MESSAGES_TO', 'To');
 define('MESSAGES_BACK', '回信');
 define('MESSAGES_CONTENT', '内容');
 define('ADD_FILE', '附件');
-define('MESSAGES_DATE', '收信日期');
+define('MESSAGES_DATE', '日期');
 define('MESSAGES_OPT', '操作');
 define('MESSAGES_SENDER', '来的信息');
 define('MESSAGES_APPOINT_SB', '仅限于指定的ID');

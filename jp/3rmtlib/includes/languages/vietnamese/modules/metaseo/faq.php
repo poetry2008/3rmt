@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_FAQ_TEXT_TITLE', 'Trang chủ FAQ');
+  define('MODULE_METASEO_FAQ_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_FAQ_TEXT_DESCRIPTION', 'SEO của trang chủ FAQ');
+?>
