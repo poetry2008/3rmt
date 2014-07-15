@@ -13841,8 +13841,14 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
     $return_str .= substr($row['login_time'],11,5)
       .  '&nbsp;~&nbsp;'.  substr($row['logout_time'],11,5);
     $return_str .= '</font>';
-    return $return_str;
+    $return_str .= '<br>';
+    return '&nbsp;&nbsp;'.$return_str;
   }else{
-    return $user_info['name'];
+    $has_att_date_sql = "select * from ".TABLE_ATTENDANCE." WHERE 
+    user_name='".$uid."'";
+    $has_att_date_query = tep_db_query($has_att_date_sql);
+    if($has_att_date_row = tep_db_fetch_array($has_att_date_query)){
+      return '&nbsp;&nbsp;'.$user_info['name'].'<br>';
+    }
   }
 }
