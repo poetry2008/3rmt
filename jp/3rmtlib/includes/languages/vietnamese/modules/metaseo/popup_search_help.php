@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_TITLE', 'Trợ giúp tìm kiếm');
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_POPUP_SEARCH_HELP_TEXT_DESCRIPTION', 'SEO của trang trợ giúp tìm kiếm');
+?>

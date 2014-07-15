@@ -1,0 +1,26 @@
+<?php
+define('JS_TEXT_C_ADMIN_RESET_DIFFERENCE','Có số chênh lệch %.Hãy thiết lập lại');
+define('JS_TEXT_C_ADMIN_SPECIAL_PRICE','Gía đặt biệt đã thấp hơn giá thông thường.');
+define('JS_TEXT_C_ADMIN_SPECIAL_PRICE_MORE','Gía đặt biệt đã cao hơn giá thông thường.');
+define('JS_TEXT_C_ADMIN_ERROR_PRICE','Định giá xảy ra lỗi. Hãy thiết lập lại.');
+define('JS_TEXT_C_ADMIN_UPDATE_CLEAR','Đã hủy update');
+define('JS_TEXT_C_ADMIN_INPUT_INFO','Hãy nhập chữ số 1 byte');
+define('JS_TEXT_C_ADMIN_REAL_QUANTITY_INFO_START','Số tồn kho thực tế hiện tại:  ');
+define('JS_TEXT_C_ADMIN_REAL_QUANTITY_INFO_END','Số tồn kho thực tế mới');
+define('JS_TEXT_C_ADMIN_VIRTUAL_QUANTITY_INFO_START','Số tồn kho hư cấu hiện tại :  ');
+define('JS_TEXT_C_ADMIN_VIRTUAL_QUANTITY_INFO_END','Số tồn kho hư cấu mới');
+define('JS_TEXT_C_ADMIN_IS_UPDATE','Có update không?');
+define('JS_TEXT_C_ADMIN_INPUT_TEXT_ERROR','Đã nhập vào những kí tự không thể đăng kí.Sẽ xóa những kí tự đó.');
+define('JS_TEXT_C_ADMIN_SHOW_REVIEW','Hiển thị front end đang được thay đổi.Có thực hiện thật hay không?');
+define('JS_TEXT_C_ADMIN_CHAR_SET_INFO','Những kí hiệu cấm sẽ được thay thế toàn bộ thành "-".');
+define('JS_TEXT_C_ADMIN_URL_WORDS_ERROR','Kí hiệu cấm được bao gồm trong chữ cái La tinh.');
+define('JS_TEXT_C_ADMIN_IS_HAS','Vì đã được đăng kí trước nên không thể sử dụng.');
+define('JS_TEXT_C_ADMIN_CARTORDER_ERROR','Trình tự hiển thị đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .');
+define('JS_TEXT_C_ADMIN_CARTFLAG_TITLE_ERROR','Số lượng tồn kho tối thiểu của Banner quên mua đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .');
+define('JS_TEXT_C_ADMIN_QUANTITY_INFO_ERROR','Gía trị số đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .');
+define('JS_TEXT_C_ADMIN_REAL_QUANTITY_ERROR','Tồn kho thực tế đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .');
+define('JS_TEXT_C_ADMIN_ADDORSUB_ERROR','Gía trị tăng giảm đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .');
+define('JS_TEXT_C_ADMIN_PRICE_INFO_ERROR','Gía sản phẩm đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .');
+define('JS_TEXT_C_ADMIN_WEIGHT_ERROR','Trọng lượng đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .');
+define('JS_TEXT_C_ADMIN_SORT_ERROR','Trật tự sắp xếp những sản phẩm khuyên dùng đã vượt quá giá trị tối đa.Hãy làm như nhỏ hơn 999,999,999,999,999 .\n');
+define('JS_TEXT_C_ADMIN_INPUT_FORM_ERROR','Có lỗi trong form input. \n Hãy chỉnh sử mục tiếp theo:\n\n');

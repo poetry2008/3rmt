@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_CREATE_ACCOUNT_PROCESS_TEXT_TITLE', 'Thủ tục đăng ký thành viên');
+  define('MODULE_METASEO_CREATE_ACCOUNT_PROCESS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_CREATE_ACCOUNT_PROCESS_TEXT_DESCRIPTION', 'SEO của trang thủ tục đăng ký thành viên');
+?>

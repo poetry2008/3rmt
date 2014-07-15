@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_CONTACT_US_TEXT_TITLE', 'Liên lạc');
+  define('MODULE_METASEO_CONTACT_US_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_CONTACT_US_TEXT_DESCRIPTION', 'SEO của trang liên lạc');
+?>

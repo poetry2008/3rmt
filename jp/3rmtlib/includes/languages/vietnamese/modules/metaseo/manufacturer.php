@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_MANUFACTURER_TEXT_TITLE', 'Nhà sản xuất');
+  define('MODULE_METASEO_MANUFACTURER_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_MANUFACTURER_TEXT_DESCRIPTION', 'SEO của trang nhà sản xuất');
+?>

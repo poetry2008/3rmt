@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_TITLE', 'Mail magazine');
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_MAIL_MAGAZINE_TEXT_DESCRIPTION', 'SEO của trang mail magazine');
+?>

@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_PRODUCT_REVIEWS_TEXT_TITLE', 'Review sản phẩm');
+  define('MODULE_METASEO_PRODUCT_REVIEWS_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_PRODUCT_REVIEWS_TEXT_DESCRIPTION', 'SEO của trang review sản phẩm');
+?>

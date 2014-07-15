@@ -1,0 +1,5 @@
+<?php
+  define('MODULE_METASEO_ACCOUNT_HISTORY_TEXT_TITLE', 'Lịch sử đặt hàng');
+  define('MODULE_METASEO_ACCOUNT_HISTORY_TEXT_EXPLAIN', 'EXPLAIN');
+  define('MODULE_METASEO_ACCOUNT_HISTORY_TEXT_DESCRIPTION', 'SEO của trang lịch sử đặt hàng');
+?>
