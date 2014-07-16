@@ -8886,6 +8886,27 @@ if($_GET['latest_messages_id']>0){
 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
  }
  $group_content_table[] = array('text'=>$group_content_row_name); 
+ $group_manager[] = array('params'=>'width="20%"','text'=> GROUP_MANAGERS );
+ if($_POST['group_id'] < 0){
+ 	$manager_list = tep_db_query("select * from ".TABLE_USERS); 
+   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+   	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
+     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$manager_list_res['userid'].'"><label for="users_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
+   	}
+ 	$all_manager .= '</ul>';
+ }else{
+	$group_all_manager = tep_db_fetch_array(tep_db_query('select all_managers_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
+	$group_all_manager = explode('|||',$group_all_manager['all_managers_id']);
+	$manager_list = tep_db_query('select * from '.TABLE_USERS);
+	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+   	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
+     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="users_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
+   	}
+ 	$all_manager .= '</ul>';
+ }
+ $group_manager[] = array('text' => $all_manager);
+
+ $group_content_table[] = array('text'=>$group_manager);
  $group_content_row_staff = array();
  $group_content_row_staff[] = array('params'=>'width="20%"','text'=> GROUP_STAFF );
  if($_POST['group_id'] < 0){
@@ -8907,6 +8928,7 @@ if($_GET['latest_messages_id']>0){
  }
  $group_content_row_staff[] = array('text' => $all_users);
  $group_content_table[] = array('text'=>$group_content_row_staff);
+
  if($_POST['group_id'] > 0){
 	$group_content_row_subgroup = array();
 	$group_content_row_subgroup[] = array('params'=>'width="20%"','text'=> GROUP_SUB);
@@ -9040,12 +9062,12 @@ if($_GET['latest_messages_id']>0){
     $tep_res = tep_change_attendance_login($uid); 
     $tep_insert_id = tep_db_insert_id();
     if($tep_res){
-        echo 'login ok'; 
+        echo HEADER_LOGIN_OK; 
     } 
  }else if($_GET['action']=='change_attendance_logout') {
     $tep_res = tep_change_attendance_logout($uid);
     if($tep_res==1){
-        echo 'logout ok';
+        echo HEADER_LOGOUT_OK;
     }
  }
  /**

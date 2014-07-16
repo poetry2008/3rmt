@@ -27,9 +27,17 @@
 	    }else{
 	      $all_users_id = '';
 	    }
+
+	    if(!empty($_POST['managers_list'])){
+	      $all_managers_id = implode('|||',$_POST['managers_list'] );
+	    }else{
+	      $all_managers_id = '';
+	    }
+
 	    $group_sql_array = array('name' => $_POST['group_name'],
 				     'parent_id' => $_GET['parent_id'],
 				     'all_users_id' => $all_users_id,
+				     'all_managers_id' => $all_managers_id,
                                      'create_time' => 'now()',
                                      'create_user' => $_SESSION['user_name'] 
 			            );
@@ -47,8 +55,17 @@
 	  }else{
 	    $all_users_id = '';
 	  }
+
+
+	    if(!empty($_POST['managers_list'])){
+	      $all_managers_id = implode('|||',$_POST['managers_list'] );
+	    }else{
+	      $all_managers_id = '';
+	    }
+
 	  $group_sql_array = array('name' => $_POST['group_name'],
 				   'all_users_id' => $all_users_id,
+				   'all_managers_id' => $all_managers_id,
                                    'update_time' => 'now()',
                                    'update_user' => $_SESSION['user_name'] 
 			           );
