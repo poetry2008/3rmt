@@ -9577,6 +9577,7 @@ if($_GET['latest_messages_id']>0){
   $buttons = array();
   
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, 'onclick="hidden_info_box();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);" onclick="attendance_replace(\''.$_GET['date'].'\')">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="hidden_info_box();"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
@@ -9588,6 +9589,202 @@ if($_GET['latest_messages_id']>0){
   $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
   $action_url_month = substr($_GET['date'],4,2) == date('m') ? '' : '&m='.substr($_GET['date'],4,2);
   $action_url = 'action=save_as_list'.$action_url_date.$action_url_month;
+  $form_str = tep_draw_form('attendance_setting_form', FILENAME_ROSTER_RECORDS, $action_url);
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($as_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}else if($_GET['action'] == 'attendance_replace'){
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+
+  $change_flag = true;
+
+  $user_added = $replace_info_res['add_user'];
+  $date_added = $replace_info_res['add_time'];
+  $user_update = $replace_info_res['update_user'];
+  $last_modified = $replace_info_res['update_time'];
+
+  $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
+  $att_select = '<select name="attendance_detail_id">';
+  $replace_select = '<select name="replace_attendance_detail_id">';
+  $replace_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+  foreach($replace_att_list as $att_info){
+    $att_select .= '<option value="'.$att_info['id'].'"';
+    if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$att_info['id']){
+      $att_select .= ' selected ';
+    }
+    $att_select .= '>'.$att_info['title'].'</option>';
+
+
+    $replace_select .= '<option value="'.$att_info['id'].'"';
+    if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info['id']){
+      $att_select .= ' selected ';
+    }
+    $replace_select .= '>'.$att_info['title'].'</option>';
+  }
+  $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
+  $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
+
+  $user_list = tep_get_user_list_by_userid();
+
+  $status_str = '<select name="allow_status">';
+  if(isset($replace_info_res['allow_status'])&&$replace_info_res['allow_status']==1){
+    $status_str .= '<option value="0">'.TEXT_REPLACE_NOT_ALLOW.'</option>';
+    $status_str .= '<option value="1" selected >'.TEXT_REPLACE_IS_ALLOW.'</option>';
+    $change_flag = false;
+  }else{
+    $status_str .= '<option value="0" selected >'.TEXT_REPLACE_NOT_ALLOW.'</option>';
+    $status_str .= '<option value="1" >'.TEXT_REPLACE_IS_ALLOW.'</option>';
+  }
+  $status_str .= '</select>&nbsp;&nbsp;<font color="red" id="allow_status_error"></font>';
+
+
+  $leave_start_array = explode(':',$replace_info_res['leave_start']);
+  $leave_start_min_left= substr($leave_start_array[1],0,1);
+  $leave_start_min_right= substr($leave_start_array[1],1,2);
+  $leave_start = '<select name="leave_start_hour" id="leave_start_hour">';
+  for($i=0;$i<=23;$i++){
+    $selected = $leave_start_array['0']!=$i ?'':'selected==selected';
+    $leave_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+  }
+  $leave_start .= '</select>';
+
+  $leave_start .= '<select name="leave_start_minute_a" id="leave_start_min_l">';
+  for($i=0;$i<=5;$i++){
+    $selected = $leave_start_min_left!=$i ?'':'selected==selected';
+    $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $leave_start .= '</select>';
+
+  $leave_start .= '<select name="leave_start_minute_b" id="leave_start_min_r">';
+  for($i=0;$i<=9;$i++){
+    $selected = $leave_start_min_right!=$i ?'':'selected==selected';
+    $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $leave_start .= '</select>&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
+
+  $leave_end_array = explode(':',$replace_info_res['leave_end']);
+  $leave_end_min_left= substr($leave_end_array[1],0,1);
+  $leave_end_min_right= substr($leave_end_array[1],1,2);
+  $leave_end = '<select name="leave_end_hour" id="leave_end_hour">';
+  for($i=0;$i<=23;$i++){
+    $selected = $leave_end_array['0']!=$i ?'':'selected==selected';
+    $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $leave_end .= '</select>';
+
+  $leave_end .= '<select name="leave_end_minute_a" id="leave_end_min_l">';
+  for($i=0;$i<=5;$i++){
+    $selected = $leave_end_min_left!=$i ?'':'selected==selected';
+    $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $leave_end .= '</select>';
+
+  $leave_end .= '<select name="leave_end_minute_b" id="leave_end_min_r">';
+  for($i=0;$i<=9;$i++){
+    $selected = $leave_end_min_right!=$i ?'':'selected==selected';
+    $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $leave_end .= '</select>&nbsp;&nbsp;<font color="red" id="leave_end_error"></font>';
+
+  //头部内容
+  $heading = array();
+  $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $date_str);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+
+
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER), 
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $att_select)
+  );
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl"></div>')
+  );
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_REPLACE_ADL), 
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $replace_select)
+  );
+
+  $is_first = true;
+  $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
+  foreach($allow_user_list as $allow_user){
+    $allow_user_select = '<select name="allow_user[]">';
+    foreach($user_list as $user_info){
+      $allow_user_select .= '<option value="'.$user_info['userid'].'"';
+      if($allow_user == $user_info['userid']){
+        $allow_user_select .= ' selected ';
+      }
+      $allow_user_select .= '>'.$user_info['name'].'&nbsp;&nbsp;'.$user_info['userid'].'</option>';
+    }
+    $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
+    if($is_first){
+      $allow_user_text = TEXT_ALLOW_USER;
+      $allow_user_button = '<input type="button" value="'.IMAGE_ADD.'" onclick="add_allow_user(this,\''.IMAGE_DEL.'\')">';
+    }else{
+      $allow_user_text = TEXT_ALLOW_USER;
+      $allow_user_button = '<input type="button" value="'.IMAGE_DEL.'" onclick="del_allow_user(this)">';
+    }
+    $as_info_row[]['text'] = array(
+      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => $allow_user_text), 
+      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $allow_user_select),
+      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $allow_user_button)
+    );
+    $is_first = false;
+
+  }
+  $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ALLOW_STATUS), 
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $status_str)
+  ));
+
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ALLOW_START), 
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $leave_start)
+  );
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ALLOW_END), 
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $leave_end)
+  );
+
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_TEXT_INFO), 
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_draw_textarea_field('text_info', 'hard', '40', '5', $replace_info_res['text_info'], 'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'))
+  );
+
+  $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
+        array('align' => 'left', 'text' => $hidden_date.TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_added)?$user_added:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($date_added)?$date_added:TEXT_UNSET_DATA))
+      ));
+  $as_info_row[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_update)?$user_update:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($last_modified)?$last_modified:TEXT_UNSET_DATA))
+      );
+
+  //底部内容
+  $buttons = array();
+  
+  $button[] = '<a href="javascript:void(0);" onclick="attendance_setting(\''.$_GET['date'].'\',ele_value_obj)">'.tep_html_element_button(IMAGE_BACK, 'onclick="hidden_info_box();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+
+  $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
+  $action_url_month = substr($_GET['date'],4,2) == date('m') ? '' : '&m='.substr($_GET['date'],4,2);
+  $action_url = 'action=save_as_replace'.$action_url_date.$action_url_month;
   $form_str = tep_draw_form('attendance_setting_form', FILENAME_ROSTER_RECORDS, $action_url);
 
   //生成表单 

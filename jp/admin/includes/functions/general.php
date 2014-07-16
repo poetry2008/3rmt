@@ -13735,38 +13735,6 @@ function tep_date_info($str){
 function tep_get_attendance($date,$gid=0,$show_all=true){
   $date_info = tep_date_info($date);
   $attendance_dd_arr = array();
-  /*
-  //获得 只是用一次的
-  $sql_type_no = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='0' and date='".$date."'";
-  $query_type_no = tep_db_query($sql_type_no);
-  while($row_type_no = tep_db_fetch_array($query_type_no)){
-    $attendance_dd_arr[] = $row_type_no;
-  }
-  //获得 当前星期
-  $sql_type_week = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='1' and week='".$date_info['week']."'";
-  $query_type_week = tep_db_query($sql_type_week);
-  while($row_type_week = tep_db_fetch_array($query_type_week)){
-    $attendance_dd_arr[] = $row_type_week;
-  }
-  //获得 当前月日
-  $sql_type_month = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='2' and date like '______".$date_info['day']."'";
-  $query_type_month = tep_db_query($sql_type_month);
-  while($row_type_month = tep_db_fetch_array($query_type_month)){
-    $attendance_dd_arr[] = $row_type_month;
-  }
-  //获得 当前月第几个星期
-  $sql_type_month_week = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."'";
-  $query_type_month_week = tep_db_query($sql_type_month_week);
-  while($row_type_month_week = tep_db_fetch_array($query_type_month_week)){
-    $attendance_dd_arr[] = $row_type_month_week;
-  }
-  //获得 当前年月日
-  $sql_type_year = "select * from ."TABLE_ATTENDANCE_DETAIL_DATE". where type='4' and date like '____".$date_info['month'].$date_info['day']."'";
-  $query_type_year = tep_db_query($sql_type_year);
-  while($row_type_year = tep_db_fetch_array($query_type_year)){
-    $attendance_dd_arr[] = $row_type_year;
-  }
-  */
   if($gid==0){
     $where_str = " where (type='0' and date='".$date."') 
       or (type='1' and week='".$date_info['week']."') 
@@ -13888,4 +13856,46 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
       }
     }
   }
+}
+function tep_get_attendance_by_user_date($date,$user){
+  $groups =  tep_get_groups_by_user($user);
+  $res = array();
+  $att_list = array();
+  foreach($groups as $group){
+    $g_att = tep_get_attendance($date,$group['id'],false);
+    if(!empty($g_att)){
+      $att_list = array_merge($att_list,$g_att);
+    }
+  }
+  foreach($att_list as $att_date){
+    $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE 
+      id='".$att_date['attendance_detail_id']."'";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      $res[] = $row;
+    }
+  }
+  return $res;
+}
+function tep_get_groups_by_user($user){
+  $res = array();
+  $sql = "select id from ".TABLE_GROUPS." WHERE
+    all_users_id like '".$user."' or
+    all_users_id like '".$user."|||%' or
+    all_users_id like '%|||".$user."|||%' or
+    all_users_id like '%|||".$user."'";
+  $query = tep_db_query($sql);
+  while($row = tep_db_fetch_array($query)){
+    $res[] = $row['id'];
+  }
+  return $res;
+}
+function tep_get_user_list_by_userid(){
+  $user_list = array();
+  $sql = "select * from ".TABLE_USERS;
+  $query = tep_db_query($sql);
+  while($row = tep_db_fetch_array($query)){
+    $user_list[] = $row;
+  }
+  return $user_list;
 }
