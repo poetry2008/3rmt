@@ -9663,11 +9663,16 @@ if($_GET['latest_messages_id']>0){
     $att_select .= '>'.$att_info['title'].'</option>';
 
 
-    $replace_select .= '<option value="'.$att_info['id'].'"';
-    if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info['id']){
+  }
+  $replace_att_list_rep = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,true);
+
+  foreach($replace_att_list_rep as $att_info_rep){
+
+    $replace_select .= '<option value="'.$att_info_rep['id'].'"';
+    if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
       $att_select .= ' selected ';
     }
-    $replace_select .= '>'.$att_info['title'].'</option>';
+    $replace_select .= '>'.$att_info_rep['title'].'</option>';
   }
   $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
@@ -9771,7 +9776,7 @@ if($_GET['latest_messages_id']>0){
       if($allow_user == $user_info['userid']){
         $allow_user_select .= ' selected ';
       }
-      $allow_user_select .= '>'.$user_info['name'].'&nbsp;&nbsp;'.$user_info['userid'].'</option>';
+      $allow_user_select .= '>'.$user_info['name'].'</option>';
     }
     $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
     if($is_first){

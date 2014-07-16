@@ -13856,7 +13856,7 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
     }
   }
 }
-function tep_get_attendance_by_user_date($date,$user){
+function tep_get_attendance_by_user_date($date,$user,$show_other=false){
   $groups =  tep_get_groups_by_user($user);
   $res = array();
   $att_list = array();
@@ -13868,11 +13868,18 @@ function tep_get_attendance_by_user_date($date,$user){
   }
   foreach($att_list as $att_date){
     $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE 
-      id='".$att_date['attendance_detail_id']."' or `scheduling_type` = '1'";
+      id='".$att_date['attendance_detail_id']."' and scheduling_type = '1'";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       $res[] = $row;
     }
+  }
+  if($show_other){
+  $sql_type = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE scheduling_type ='0'";
+  $query_type = tep_db_query($sql_type);
+  while($row_type = tep_db_fetch_array($query_type)){
+    $res[] = $row_type;
+  }
   }
   return $res;
 }
