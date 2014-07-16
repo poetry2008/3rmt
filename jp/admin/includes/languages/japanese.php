@@ -471,7 +471,7 @@ define('FILENAME_MAG_DL_TEXT','メールマガジンデータDL');
 
 //header language
 define('HEADER_TEXT_SITE_NAME',COMPANY_NAME);
-define('HEADER_TEXT_LOGINED','でログインしています。');
+define('HEADER_TEXT_LOGINED','でログインしています。');//已经不用了，最后删除
 define('HEADER_TEXT_ORDERS','注文一覧');
 define('HEADER_TEXT_TELECOM_UNKNOW','決済履歴');
 define('HEADER_TEXT_TUTORIALS','▼商品調整');
@@ -489,6 +489,17 @@ define('HEADER_TEXT_CREATE_ORDER','注文作成');
 define('HEADER_TEXT_ORDERMENU','注文書▼');
 define('HEADER_TEXT_INVENTORY','在庫水準');
 define('HEADER_TEXT_CATEGORIES_ADMIN','価格調整');
+
+define('HEADER_ATTENDANCE_LOGOUT','で退勤しています。');
+define('HEADER_ATTENDANCE_LOGIN','で出勤しています。');
+define('HEADER_ATTENDANCE_LOGIN_TITLE','出勤します。');
+define('HEADER_ATTENDANCE_LOGOUT_TITLE','退勤します。');
+
+define('HEADER_LOGIN_REMIND','楽しい一日の仕事を始めましょうか？');
+define('HEADER_LOGIN_OK','OK　キャンセル');
+define('HEADER_LOGOUT_REMIND','お疲れ様でした。仕事がこれで終わりますか？');
+define('HEADER_LOGOUT_OK','OK　キャンセル');
+
 //footer start 
 define('TEXT_FOOTER_ONE_TIME','チェックされている権限のワンタイムを使えばアクセスできる');
 define('TEXT_FOOTER_CHECK_SAVE','保存');
@@ -857,3 +868,4 @@ define('HEADER_TEXT_GROUPS','組織グループ設定');
 define('TEXT_PRODUCTS_PRICE_ERROR','の単価は0円です。');
 define('TEXT_PRODUCTS_NUM_ERROR','合計数量は0個です。');
 define('TEXT_PRODUCTS_PAYMENT_ERROR','合計金額は%sの決済可能金額(%s)外になっています。');
+

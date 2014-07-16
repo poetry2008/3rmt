@@ -11,9 +11,9 @@ function show_attendance_info(id){
   $("div#show_attendance").html(data);
 
       $('div#show_attendance').css('z-index', 1);
-      $('div#show_attendance').css('height', 550);
-      $('div#show_attendance').css('left', 200);
-$('div#show_attendance').css('top',250);
+      $('div#show_attendance').css('height', 500);
+      $('div#show_attendance').css('left', 300);
+      $('div#show_attendance').css('top',230);
 
       $('div#show_attendance').css('display','block');
  }
@@ -26,10 +26,6 @@ function hidden_info_box_tep(){
    $('#show_attendance').css('display','none');
 }
 
-//submit
-function check_attendance_info(){
- document.forms.attendances.submit();
-}
 
 //delect attendance by id
 function delete_attendance_info(id){
@@ -44,7 +40,7 @@ function delete_attendance_info(id){
             success: function(data){
 				if(data){
 					alert('delete sucess!');
-					 window.location.href = href_attendance;
+					 window.location.href = href_attendance_calendar;
 				
 				}
             }
@@ -108,6 +104,58 @@ function change_set_time(set_id) {
    }
 }
 
+function check_attendance_info(){
+      var title_val = $("#attendance_title").val();
+      var short_lan_val = $("#short_language").val();
+      var work_start_hour = $("#work_start_hour").val();
+      var work_start_min_r = $("#work_start_min_r").val();
+      var work_start_min_l = $("#work_start_min_l").val();
+      var work_end_hour = $("#work_end_hour").val();
+      var work_end_min_r = $("#work_end_min_r").val();
+      var work_end_min_l = $("#work_end_min_l").val();
+      var work_hours = $("#work_hours").val();
+      var rest_hours = $("#rest_hours").val();
+      var sign = '';
+      if(title_val==''){
+        $("#title_text_error").html(error_text);
+		sign=1;
+      }
+
+	  if(short_lan_val==''){
+		  sign=1;
+        $("#short_lan_error").html(error_text);
+	  }
+
+	  if($("#set_left").attr('checked')){
+	      if(work_start_hour==0 && work_start_min_r==0 && work_start_min_l==0){
+	    	 sign=1;
+             $("#work_start_error").html(error_text);
+	      }
+
+	      if(work_end_hour==0 && work_end_min_r==0 && work_end_min_l==0){
+		     sign=1
+             $("#work_end_error").html(error_text);
+	      }
+     }
+
+	  if($("#set_right").attr('checked')) {
+	      if(work_hours ==''){
+		      sign=1;
+              $("#work_hours_error").html(error_text);
+	      }
+
+	      if(rest_hours ==''){
+		      sign=1;
+              $("#rest_hours_error").html(error_text);
+	      }
+	  }
+	  if(sign ==1){
+	      return false;
+	  }else{
+         document.forms.attendances.submit();
+	  }
+
+}
 
 function getFileName(path){
     var pos1 = path.lastIndexOf('/');
@@ -377,4 +425,47 @@ function change_user_list(ele){
       }
     }
   });
+}
+
+function attendance_replace(date){
+  ele = ele_value_obj;
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $(ele).offset();   
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax.php?action=attendance_replace&date='+date,
+    dataType: 'text',
+    async: false,
+    success: function(text) {
+      //show content 
+      $('#show_date_edit').html(text);  
+      $("#show_date_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+
+        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+      }else{
+        $("#show_date_edit").css('left',ele_obj.left-box_warp_left);
+      }
+      ele_value_obj = ele;
+      $('#show_date_edit').css('display','block');
+    }
+  });
+}
+
+function add_allow_user(ele,del_str){
+  var select_str = $(ele).parent().parent().find('td').eq(1).html();
+  $('#add_end').before('<tr><td></td><td>'+select_str+'</td><td><input type="button" value="'+del_str+'" onclick="del_allow_user(this)"></td></tr>');
+}
+
+function del_allow_user(ele){
+  $(ele).parent().parent().remove();
 }

@@ -157,6 +157,7 @@ $(function(){
 ?>
 function change_attendance_login(uid) {
 
+	if(confirm('<?php echo HEADER_LOGIN_REMIND?>')){
 		$.post(
 			"ajax.php?&action=change_attendance_login",
 			{
@@ -169,10 +170,11 @@ function change_attendance_login(uid) {
 				}
 			}
 		);
+	}
 }
 
 function change_attendance_logout(uid) {
-
+	if(confirm('<?php echo HEADER_LOGOUT_REMIND?>')){
 		$.post(
 			"ajax.php?&action=change_attendance_logout",
 			{
@@ -185,6 +187,9 @@ function change_attendance_logout(uid) {
 				}
 			}
 		);
+
+	}
+
 }
 </script>
 <noscript>
@@ -247,7 +252,7 @@ if (isset($ocertify) && $ocertify->npermission >= 15) {
 }
 echo "</a>";
 ?>
-</b>&nbsp;<?php echo HEADER_TEXT_LOGINED;?>&nbsp;
+</b>
 <?php
 //打卡
 	 $date = date('Ymd');
@@ -258,11 +263,11 @@ $sql = "select login_time from attendance where user_name='".$user_info['userid'
 	 
 if($num_rows ==0) { 
 ?>
-   <a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" >IN</a>
+	<a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" ><?php echo HEADER_ATTENDANCE_LOGIN; ?></a>
 <?php
 }else {
 ?>
-   <a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" >OUT</a>
+	<a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" ><?php echo HEADER_ATTENDANCE_LOGOUT; ?></a>
 
 <?php
 }

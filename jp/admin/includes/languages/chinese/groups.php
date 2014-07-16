@@ -8,6 +8,7 @@ define('GROUP_STAFF_NUM','员工人数');
 define('GROUP_STATUS','状态');
 define('GROUP_OPT',' 操作');
 define('GROUP_STAFF','员工');
+define('GROUP_MANAGERS','管理者');
 define('GROUP_COMPANY_NAME','公司名');
 define('GROUP_CREATE','创建组');
 define('GROUP_SAVE','保存');
