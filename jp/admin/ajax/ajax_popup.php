@@ -9670,7 +9670,7 @@ if($_GET['latest_messages_id']>0){
 
     $replace_select .= '<option value="'.$att_info_rep['id'].'"';
     if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
-      $att_select .= ' selected ';
+      $replace_select .= ' selected ';
     }
     $replace_select .= '>'.$att_info_rep['title'].'</option>';
   }
