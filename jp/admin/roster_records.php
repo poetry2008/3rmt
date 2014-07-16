@@ -461,14 +461,12 @@ $tep_result = tep_db_query($att_select_sql);
 }elseif($val['scheduling_type']==1){
      echo '<li style="float:left; list-style-type:none; margin: 5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
  }
-?>	
- <a onclick="show_attendance_info(<?php echo $val['id']; ?>)" href="javascript:void(0);" style="text-decoration: underline;"> >> <?php echo $val['title']?></a></li>
-<?php 
+echo  '<a onclick="show_attendance_info(this, '.$val['id'].')" href="javascript:void(0);" style="text-decoration: underline;"> >> '.$val['title'].'</a></li>';
  }
 
- echo '</ul>';
+echo '</ul>';
 echo ' </td><td valign="top">';
-       echo  '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
+echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
  
 ?> 
 </table>
@@ -481,11 +479,11 @@ echo ' </td><td valign="top">';
         </table></td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="date_title_color">
           <tr bgcolor="#3C7FB1">
             <td class="date_title" align="center">
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_prev_str;?>"><b><<</b></a>
-            &nbsp;&nbsp;<?php echo $year.' / '.$month; ?>&nbsp;&nbsp;
+            &nbsp;&nbsp;<font color="#FFF"><?php echo $year.' / '.$month; ?></font>&nbsp;&nbsp;
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_str;?>"><b>>></b></a></td>
           </tr>
         </table></td>
@@ -504,13 +502,13 @@ $end = false;
 <tr>
 <?php 
 echo '
-        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
         ';
         ?>
 </tr>

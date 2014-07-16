@@ -1,6 +1,18 @@
 var ele_value_obj = '';
 //show attendance info
-function show_attendance_info(id){
+function show_attendance_info(ele,id){
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $(ele).offset();   
+
  $.ajax({
  url: 'ajax.php?action=edit_attendance_info',
  data: 'id='+id,
@@ -10,10 +22,14 @@ function show_attendance_info(id){
  success: function(data){
   $('#show_date_edit').html(data);
 
-      $('#show_date_edit').css('z-index', 1);
-      $('#show_date_edit').css('height', 500);
-      $('#show_date_edit').css('left', 300);
-      $('#show_date_edit').css('top',230);
+      $("#show_date_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+
+        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+      }else{
+        $("#show_date_edit").css('left',ele_obj.left-box_warp_left);
+      }
+      ele_value_obj = ele;
 
       $('#show_date_edit').css('display','block');
  }
