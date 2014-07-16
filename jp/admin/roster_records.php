@@ -566,7 +566,7 @@ while($j<=$day_num)
     while($row_replace_att = tep_db_fetch_array($query_replace_att)){
       echo '<div>';
       $u_info = tep_get_user_info($row_replace_att['user']);
-      $att_date_info = tep_get_attendance_by_id($row_replace_att['attendance_detail_id']);
+      $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
       if(!empty($u_info)){
         echo $u_info['name'];
       }
