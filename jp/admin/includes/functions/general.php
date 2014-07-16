@@ -13656,12 +13656,11 @@ function size_to_b($str){
 }
 function tep_change_attendance_login($uid) {
 
-	$date = date('Y-m-d');
+	$date = date('Ymd');
 	$sql = "select * from attendance where user_name='".$uid."' and date='".$date."'";
 	$query = tep_db_query($sql);
     $num_rows = tep_db_num_rows($query);	
 	
-    $date = date('Y-m-d');
     $now_time = date('Y-m-d H:i:s');
 
 	if($num_rows ==0) {
@@ -13675,7 +13674,7 @@ function tep_change_attendance_login($uid) {
 
 function tep_change_attendance_logout($uid) {
 
-	$date = date('Y-m-d');
+	$date = date('Ymd');
 	$sql = "select * from attendance where user_name='".$uid."' and date='".$date."' and logout_time=0";
 	$query = tep_db_query($sql);
     $num_rows = tep_db_num_rows($query);	

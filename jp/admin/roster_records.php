@@ -156,28 +156,29 @@ case 'update':
              $pic_ext = substr($src_image['name'], $pic_rpos+1);
              $tep_image_name = 'attendance'.time().".".$pic_ext;
              $src_image['name'] = $tep_image_name;
-          } else {
-             $tep_image_name = '';
+
+	         $image_directory = tep_get_local_path(DIR_FS_CATALOG.'images/');
+             $path = 'attendance/';
+
+             if (is_uploaded_file($src_image['tmp_name'])) {
+			     //删除之前的图片
+			     $sql_image = "select src_text from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
+			     $tep_res = tep_db_query($sql_image);
+		         $row=  tep_db_fetch_array($tep_res);
+			     if(count($row)){
+			         unlink($image_directory.'/'.$row['src_text']);
+			     }
+			 
+			     $src_text = $path.$tep_image_name;
+			     tep_copy_uploaded_file($src_image, $image_directory. '/attendance/');
+
+	         }	
+	 
+         } else {
+             $src_text = $_POST['src_image_input'];
           }
 
 
-	  $image_directory = tep_get_local_path(tep_get_upload_dir().'/');
-         $path = 'attendance/';
-
-         if (is_uploaded_file($src_image['tmp_name'])) {
-			 
-			   $src_text = $path.$tep_image_name;
-			   tep_copy_uploaded_file($src_image, $image_directory. 'attendance/');
-			 //删除之前的图片
-//			 $sql_image = "select src_text from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
-//			 $tep_res = tep_db_query($sql_image);
-//		     $row=  tep_db_fetch_array($tep_res);
-//			 if(count($row)){
-//			     unlink($image_directory.$row['src_text']);
-//			 }
-
-	     }	
-	 
 	 }elseif($scheduling_type==1) {
 	     $src_text = $_POST['scheduling_type_color'];
 	 }
@@ -388,8 +389,10 @@ $(document).ready(function() {
           <tr> 
             <td class="main" align="right">
 <div id="show_attendance" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
-<table style="margin-right: 69px; margin-top: -30px;">
-
+<table  style=" margin-top: -30px; min-width: 600px;margin-left: 90px;">
+<tr>
+<td align="left">
+<ul>
 <?php 
 
 $att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
@@ -402,28 +405,22 @@ $tep_result = tep_db_query($att_select_sql);
  $num = count($attendance_list);
  $i=0;
  foreach($attendance_list as $k=>$val) {
-		 if($i%8==0){
-		 echo '</tr><tr>';
-		 }
-	 $i++;
- ?>
-<td>
-<?php
  if($val['scheduling_type']==0){
-    $image_directory = tep_get_local_path(tep_get_upload_dir());
+    $image_directory = 'images/';
     $image_dir = $image_directory.'/'.$val['src_text'];
-	echo "<img src='".$image_dir."'>"; 
+	echo "<li style='float:left; list-style-type:none; margin: 5px;'><img src='".$image_dir."' style='width: 16px;'>"; 
 }elseif($val['scheduling_type']==1){
-     echo '<div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
+     echo '<li style="float:left; list-style-type:none; margin: 5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
  }
 ?>	
- <a onclick="show_attendance_info(<?php echo $val['id']; ?>)" href="javascript:void(0);" style="text-decoration: underline;"> >> <?php echo $val['title']?></a></td>
+ <a onclick="show_attendance_info(<?php echo $val['id']; ?>)" href="javascript:void(0);" style="text-decoration: underline;"> >> <?php echo $val['title']?></a></li>
 <?php 
-   if($i==8){
-       echo  '<a onclick="show_attendance_info(0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_attendance" ').' </a>';
-   }
  }
 
+ echo '</ul>';
+echo ' </td><td valign="top">';
+       echo  '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
+ 
 ?> 
 </table>
             </td>
@@ -454,7 +451,7 @@ $start_week = date('w',mktime(0,0,0,$month,1,$year));
 $day_num = date('t',mktime(0,0,0,$month,1,$year));
 $end = false;
 ?>
-<table width="100%" border="0" cellspacing="1" cellpadding="1">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dataTable_border">
 <tr>
 <?php 
 echo '
@@ -484,7 +481,7 @@ while($j<=$day_num)
     valign='top'>";
   $att_arr = tep_get_attendance($date,$show_group_id,false);
   echo '<table width="100%" border="0" cellspacing="1" cellpadding="1">';
-  echo "<tr><td align='left' style='font-size:14px;'>";
+  echo "<tr><td align='left' style='font-size:14px; border-width:0px;'>";
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
     echo $j;
