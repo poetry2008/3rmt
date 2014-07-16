@@ -102,3 +102,6 @@ define('TEXT_POINT_NOTIFY_DESCRIPTION','
   ポイント最終日：${LAST_VILID_DATE}<br>
   期限：${VALID_DAY}<br>会社名称：${COMPANY_NAME}<br>会社の住所：${COMPANY_ADDRESS}<br>会社の電話番号：${COMPANY_TEL}<br>担当者メール：${STAFF_MAIL}<br>担当者名：${STAFF_NAME}<br>Eメール署名：${SIGNATURE}<br>ユーザ情報：${USER_INFO}<br>年：${YEAR}<br>月：${MONTH}<br>日：${DAY}<br>HTTPS：${HTTPS_SERVER} 
   ');
+define('TEXT_SELECT_LANGUAGES_JP','日本語');
+define('TEXT_SELECT_LANGUAGES_CH','简体中文');
+define('TEXT_SELECT_LANGUAGES_VN','Tiếng Việt');

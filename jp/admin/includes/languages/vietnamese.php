@@ -21,7 +21,7 @@ if (extension_loaded('mbstring')) {
 // this may not work under win32 environments..
 setlocale(LC_TIME, 'ja_JP.UTF-8');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
-define('DATE_FORMAT_LONG', '%YNăm%B%eNgày %A'); // this is used for strftime()
+define('DATE_FORMAT_LONG', '%Y/%m/%e %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('PHP_DATE_TIME_FORMAT', 'Y/m/d H:i:s'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
@@ -438,9 +438,9 @@ define('CLEATE_LIST_SETNAME_BUTTON', 'Thiết lập tên nhà phân phối');
 define('CLEATE_LIST_LOGIN_BUTTON', 'Đăng kí nhà phân phối');
 define('CUSTOMERS_CSVEXE_TITLE', 'Tải về dữ liệu khách hàng');
 define('CUSTOMERS_CSVEXE_READ_TEXT', 'Trong quá trình tải về, sẽ thành tải nặng đối với máy chủ.Hãy chạy trong thời gian truy cập ngắn.');
-define('YEAR_TEXT', 'Năm');
-define('MONTH_TEXT', 'Tháng');
-define('DAY_TEXT', 'Ngày');
+define('YEAR_TEXT', '/');
+define('MONTH_TEXT', '/');
+define('DAY_TEXT', '');
 define('CUSTOMERS_CSV_EXE_NOTICE_TITLE', 'Thông tin dưới đây trong số các thông tin khách hàng sẽ được tải về dưới dạng file CSV.');
 define('CUSTOMERS_CSV_EXE_READ_ONE', '<tr> <td width="20" align="center" class="infoBoxContent">&nbsp;</td> <td width="120" class="menuBoxHeading">Mục</td> <td class="menuBoxHeading">Mô tả</td> </tr> <tr> <td align="center" class="infoBoxContent">A</td> <td class="menuBoxHeading">Ngày tạo tài khoản</td> <td class="menuBoxHeading">Xuất ngày giờ đã tạo tài khoản.（Hình thức：2005/11/11 10:15:32）</td> </tr> <tr> <td align="center" class="infoBoxContent">B</td> <td class="menuBoxHeading">Giới tính</td> <td class="menuBoxHeading">Xuất giới tính khách hàng "Nam"/"Nữ"</td> </tr> <tr> <td align="center" class="infoBoxContent">C</td> <td class="menuBoxHeading">Họ</td> <td class="menuBoxHeading">Xuất họ khách hàng</td> </tr> <tr> <td align="center" class="infoBoxContent">D</td> <td class="menuBoxHeading">Tên</td> <td class="menuBoxHeading">Xuất tên khách hàng</td> </tr> <tr> <td align="center" class="infoBoxContent">E</td> <td class="menuBoxHeading">Ngày tháng năm sinh</td> <td class="menuBoxHeading">Xuất ngày tháng năm sinh khách hàng（Hình thức：1999/11/11）</td> </tr> <tr> <td align="center" class="infoBoxContent">F</td> <td class="menuBoxHeading">Địa chỉ mail</td> <td class="menuBoxHeading">Xuất địa chỉ mail</td> </tr> <tr> <td align="center" class="infoBoxContent">G</td> <td class="menuBoxHeading">Tên công ty</td> <td class="menuBoxHeading">Nếu tên công ty đã được nhập vào sẽ xuất ra</td> </tr> <tr> <td align="center" class="infoBoxContent">H</td> <td class="menuBoxHeading">Mã bưu điện</td> <td class="menuBoxHeading">Xuất mã bưu điện.</td> </tr> <tr> <td align="center" class="infoBoxContent">I</td> <td class="menuBoxHeading">Tỉnh thành</td> <td class="menuBoxHeading">Xuất tên tỉnh thành（Ví dụ：Thành phốTokyo）</td> </tr> <tr> <td align="center" class="infoBoxContent">J</td> <td class="menuBoxHeading">Quận huyện thành phố</td> <td class="menuBoxHeading">Xuất tên quận huyện thành phố(Ví dụ：quận Minato）</td> </tr> <tr> <td align="center" class="infoBoxContent">K</td> <td class="menuBoxHeading">Địa chỉ 1</td> <td class="menuBoxHeading">Xuất địa chỉ nhà (công ty)（Ví dụ： Công viên SHIBA〇〇 ）</td> </tr> <tr> <td align="center" class="infoBoxContent">L</td> <td class="menuBoxHeading">Địa chỉ 2</td> <td class="menuBoxHeading">Nếu đã nhập tên tòa nhà/chung cư hãy xuất ra（Ví dụ：〇〇Tòa nhà5F）</td> </tr> <tr> <td align="center" class="infoBoxContent">M</td> <td class="menuBoxHeading">Tên nước</td> <td class="menuBoxHeading">Xuất tên nước（Japan,..）を出力します</td> </tr> <tr> <td align="center" class="infoBoxContent">N</td> <td class="menuBoxHeading">Số điện thoại</td> <td class="menuBoxHeading">Xuất số điện thoại</td> </tr> <tr> <td align="center" class="infoBoxContent">O</td>'); 
 
@@ -568,8 +568,8 @@ define('TEXT_ATTRIBUTE_PRIVATE','Riêng tư');
 define('HEADER_TEXT_CREATE_PREORDER', 'Tạo đặt trước');
 
 define('TEXT_TORIHIKI_REPLACE_STR','～');
-define('TEXT_TORIHIKI_HOUR_STR','Giờ');
-define('TEXT_TORIHIKI_MIN_STR','Phút');
+define('TEXT_TORIHIKI_HOUR_STR',':');
+define('TEXT_TORIHIKI_MIN_STR','');
 define('TEXT_PREORDER_PAYMENT_METHOD', 'Phương thức thanh toán');
 define('TEXT_PREORDER_NOT_COST', 'Chưa nhận tiền');
 define('TEXT_PREORDER_COST_DATE', 'Ngày nhận tiền');
@@ -588,8 +588,8 @@ define('BOX_TOOLS_CAMPAIGN', 'Cài đặt mã chiến dịch');
 define('TEXT_CURRENT_CHARACTER_NAME', 'Ghi chú ý trong mail：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','Xóa tùy chọn chưa sử dụng');
 define('TEXT_ORDER_ALARM_LINK', '	Báo động');
-define('HOUR_TEXT', 'Giờ');
-define('MINUTE_TEXT', 'Phút');
+define('HOUR_TEXT', ':');
+define('MINUTE_TEXT', '');
 define('NOTICE_EXTEND_TITLE', 'Ghi chú tiếp theo');
 define('NOTICE_ALARM_TITLE', 'Báo động');
 define('NOTICE_DIFF_TIME_TEXT', 'Còn lại');
