@@ -247,7 +247,6 @@ case 'update':
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/admin_roster_records.js"></script>
-<script language="javascript" src="includes/javascript/admin_attendance.js"></script>
 
 <script language="javascript">
 var attendance_del_confirm = '<?php echo ATTENDANCE_DELETE_REMIND;?>';
@@ -388,7 +387,6 @@ $(document).ready(function() {
         <td><div id="toggle_width" style="min-width:726px;"></div><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
             <td class="main" align="right">
-<div id="show_attendance" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
 <table  style=" margin-top: -30px; min-width: 600px;margin-left: 90px;">
 <tr>
 <td align="left">
@@ -406,7 +404,7 @@ $tep_result = tep_db_query($att_select_sql);
  $i=0;
  foreach($attendance_list as $k=>$val) {
  if($val['scheduling_type']==0){
-    $image_directory = 'images/';
+    $image_directory = 'images';
     $image_dir = $image_directory.'/'.$val['src_text'];
 	echo "<li style='float:left; list-style-type:none; margin: 5px;'><img src='".$image_dir."' style='width: 16px;'>"; 
 }elseif($val['scheduling_type']==1){
@@ -480,7 +478,7 @@ while($j<=$day_num)
   echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)'
     valign='top'>";
   $att_arr = tep_get_attendance($date,$show_group_id,false);
-  echo '<table width="100%" border="0" cellspacing="1" cellpadding="1">';
+  echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;'>";
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
