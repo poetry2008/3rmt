@@ -8,14 +8,14 @@ function show_attendance_info(id){
  dataType: 'text',
  async : false,
  success: function(data){
-  $("div#show_attendance").html(data);
+  $('#show_date_edit').html(data);
 
-      $('div#show_attendance').css('z-index', 1);
-      $('div#show_attendance').css('height', 500);
-      $('div#show_attendance').css('left', 300);
-      $('div#show_attendance').css('top',230);
+      $('#show_date_edit').css('z-index', 1);
+      $('#show_date_edit').css('height', 500);
+      $('#show_date_edit').css('left', 300);
+      $('#show_date_edit').css('top',230);
 
-      $('div#show_attendance').css('display','block');
+      $('#show_date_edit').css('display','block');
  }
   }); 
 
@@ -23,7 +23,7 @@ function show_attendance_info(id){
 
 //hidden box
 function hidden_info_box_tep(){
-   $('#show_attendance').css('display','none');
+   $('#show_date_edit').css('display','none');
 }
 
 

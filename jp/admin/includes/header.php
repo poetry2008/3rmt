@@ -2,7 +2,7 @@
 /*
    $Id$
  */
-
+include_once(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 if (isset($messageStack) && $messageStack->size > 0) {
   echo $messageStack->output();
 }
@@ -223,12 +223,12 @@ if ($current_page_tp == FILENAME_CONFIGURATION) {
 if ($current_page_tp == FILENAME_MODULES) {
   $current_page_tp .= '?set='.$_GET['set'];
 }
-echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
-    "language=".'ja')."><font size=3px><b>JP</b></font></a>&nbsp;";
-echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
-    "language=".'ch')."><font size=3px><b>CH</b></font></a>&nbsp;";
-echo "<a href=".tep_href_link($cur_page,tep_get_all_get_params(array('language')).
-    "language=".'vn')."><font size=3px><b>VN</b></font></a>&nbsp;";
+//选择语言
+echo '<select name="select_languages" onchange="window.location.href=\''.tep_href_link($cur_page,tep_get_all_get_params(array('language'))."language=").'\'+this.value;">';
+echo '<option value="ja"'.($_SESSION['text_language'] == 'japanese' ? ' selected="selected"' : '').'>'.TEXT_SELECT_LANGUAGES_JP.'</option>';
+echo '<option value="ch"'.($_SESSION['text_language'] == 'chinese' ? ' selected="selected"' : '').'>'.TEXT_SELECT_LANGUAGES_CH.'</option>';
+echo '<option value="vn"'.($_SESSION['text_language'] == 'vietnamese' ? ' selected="selected"' : '').'>'.TEXT_SELECT_LANGUAGES_VN.'</option>';
+echo '</select>';
 echo '<a href="' . tep_href_link('help.php', 'help_page_name='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
