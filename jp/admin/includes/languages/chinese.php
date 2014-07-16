@@ -499,6 +499,19 @@ define('HEADER_TEXT_CREATE_ORDER','创建订单');
 define('HEADER_TEXT_ORDERMENU','订单▼');
 define('HEADER_TEXT_INVENTORY','库存标准');
 define('HEADER_TEXT_CATEGORIES_ADMIN','价格调整');
+
+define('HEADER_ATTENDANCE_LOGOUT','下班');
+define('HEADER_ATTENDANCE_LOGIN','上班');
+define('HEADER_ATTENDANCE_LOGIN_TITLE','出勤します。');
+define('HEADER_ATTENDANCE_LOGOUT_TITLE','退勤します。');
+
+define('HEADER_LOGIN_REMIND','楽しい一日の仕事を始めましょうか？');
+define('HEADER_LOGIN_OK','OK　キャンセル');
+define('HEADER_LOGOUT_REMIND','お疲れ様でした。仕事がこれで終わりますか？');
+define('HEADER_LOGOUT_OK','OK　キャンセル');
+
+
+
 //footer start 
 define('TEXT_FOOTER_ONE_TIME','使用已选中权限的一次性密码访问');
 define('TEXT_FOOTER_CHECK_SAVE','保存');
