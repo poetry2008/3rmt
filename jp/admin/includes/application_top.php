@@ -272,6 +272,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_CALENDAR', 'calendar'); //add calendar
   define('TABLE_BANK_CALENDAR', 'bank_calendar'); //add calendar
   define('TABLE_ATTENDANCE_DETAIL', 'attendance_detail'); //add calendar
+  define('TABLE_ATTENDANCE_DETAIL_REPLACE', 'attendance_detail_replace'); //add calendar
   define('TABLE_ATTENDANCE', 'attendance'); //add calendar
   
   //Add DB - ds-style

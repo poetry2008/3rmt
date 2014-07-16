@@ -9624,16 +9624,36 @@ if($_GET['latest_messages_id']>0){
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
 
 
+  $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
+    `date`='".$_GET['date']."' and ";
+  if(isset($_POST['userid'])&&$_POST['userid']!=''){
+    $replace_sql .= " user ='".$_POST['userid']."'";
+  }else{
+    $replace_sql .= " user ='".$ocertify->auth_user."'";
+  }
   $change_flag = true;
+  $replace_query = tep_db_query($replace_sql);
+  if($replace_info_res = tep_db_fetch_array($replace_query)){
+    $change_flag = false;
+    $user_added = $replace_info_res['add_user'];
+    $date_added = $replace_info_res['add_time'];
+    $user_update = $replace_info_res['update_user'];
+    $last_modified = $replace_info_res['update_time'];
+  }
 
-  $user_added = $replace_info_res['add_user'];
-  $date_added = $replace_info_res['add_time'];
-  $user_update = $replace_info_res['update_user'];
-  $last_modified = $replace_info_res['update_time'];
+  if($replace_info_res['allow_status']==1&&$ocertify->npermission!='31'){
+    $disabled = ' disabled="disabled" ';
+  }
+
+
 
   $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
-  $att_select = '<select name="attendance_detail_id">';
-  $replace_select = '<select name="replace_attendance_detail_id">';
+  if(count($replace_att_list)==1){
+    $att_select = '<select name="attendance_detail_id" disabled="disabled">';
+  }else{
+    $att_select = '<select name="attendance_detail_id">';
+  }
+  $replace_select = '<select name="replace_attendance_detail_id" '.$disabled.'>';
   $replace_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
   foreach($replace_att_list as $att_info){
     $att_select .= '<option value="'.$att_info['id'].'"';
@@ -9653,8 +9673,14 @@ if($_GET['latest_messages_id']>0){
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
   $user_list = tep_get_user_list_by_userid();
+  $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
+  if(in_array($ocertify->auth_user,$allow_user_list)||$ocertify->npermission=='31'||!$change_flag){
+    $allow_disabled = ''; 
+  }else{
+    $allow_disabled = ' disabled="disabled" '; 
+  }
 
-  $status_str = '<select name="allow_status">';
+  $status_str = '<select name="allow_status" '.$allow_disabled.'>';
   if(isset($replace_info_res['allow_status'])&&$replace_info_res['allow_status']==1){
     $status_str .= '<option value="0">'.TEXT_REPLACE_NOT_ALLOW.'</option>';
     $status_str .= '<option value="1" selected >'.TEXT_REPLACE_IS_ALLOW.'</option>';
@@ -9669,21 +9695,21 @@ if($_GET['latest_messages_id']>0){
   $leave_start_array = explode(':',$replace_info_res['leave_start']);
   $leave_start_min_left= substr($leave_start_array[1],0,1);
   $leave_start_min_right= substr($leave_start_array[1],1,2);
-  $leave_start = '<select name="leave_start_hour" id="leave_start_hour">';
+  $leave_start = '<select name="leave_start_hour" id="leave_start_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
     $selected = $leave_start_array['0']!=$i ?'':'selected==selected';
     $leave_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
   $leave_start .= '</select>';
 
-  $leave_start .= '<select name="leave_start_minute_a" id="leave_start_min_l">';
+  $leave_start .= '<select name="leave_start_minute_a" id="leave_start_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
     $selected = $leave_start_min_left!=$i ?'':'selected==selected';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_start .= '</select>';
 
-  $leave_start .= '<select name="leave_start_minute_b" id="leave_start_min_r">';
+  $leave_start .= '<select name="leave_start_minute_b" id="leave_start_min_r" '.$disabled.'>';
   for($i=0;$i<=9;$i++){
     $selected = $leave_start_min_right!=$i ?'':'selected==selected';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
@@ -9693,21 +9719,21 @@ if($_GET['latest_messages_id']>0){
   $leave_end_array = explode(':',$replace_info_res['leave_end']);
   $leave_end_min_left= substr($leave_end_array[1],0,1);
   $leave_end_min_right= substr($leave_end_array[1],1,2);
-  $leave_end = '<select name="leave_end_hour" id="leave_end_hour">';
+  $leave_end = '<select name="leave_end_hour" id="leave_end_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
     $selected = $leave_end_array['0']!=$i ?'':'selected==selected';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_end .= '</select>';
 
-  $leave_end .= '<select name="leave_end_minute_a" id="leave_end_min_l">';
+  $leave_end .= '<select name="leave_end_minute_a" id="leave_end_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
     $selected = $leave_end_min_left!=$i ?'':'selected==selected';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_end .= '</select>';
 
-  $leave_end .= '<select name="leave_end_minute_b" id="leave_end_min_r">';
+  $leave_end .= '<select name="leave_end_minute_b" id="leave_end_min_r" '.$disabled.'>';
   for($i=0;$i<=9;$i++){
     $selected = $leave_end_min_right!=$i ?'':'selected==selected';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
@@ -9721,7 +9747,7 @@ if($_GET['latest_messages_id']>0){
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
   $heading[] = array('align' => 'left', 'text' => $date_str);
   $heading[] = array('align' => 'right', 'text' => $page_str);
-  $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'"><input type="hidden" name="replace_id" value="'.$replace_info_res['id'].'">';
 
 
   $as_info_row[]['text'] = array(
@@ -9738,9 +9764,8 @@ if($_GET['latest_messages_id']>0){
   );
 
   $is_first = true;
-  $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
   foreach($allow_user_list as $allow_user){
-    $allow_user_select = '<select name="allow_user[]">';
+    $allow_user_select = '<select name="allow_user[]" '.$allow_disabled.'>';
     foreach($user_list as $user_info){
       $allow_user_select .= '<option value="'.$user_info['userid'].'"';
       if($allow_user == $user_info['userid']){
@@ -9751,10 +9776,10 @@ if($_GET['latest_messages_id']>0){
     $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
     if($is_first){
       $allow_user_text = TEXT_ALLOW_USER;
-      $allow_user_button = '<input type="button" value="'.IMAGE_ADD.'" onclick="add_allow_user(this,\''.IMAGE_DEL.'\')">';
+      $allow_user_button = '<input type="button" value="'.IMAGE_ADD.'" '.$allow_disabled.' onclick="add_allow_user(this,\''.IMAGE_DEL.'\')">';
     }else{
       $allow_user_text = TEXT_ALLOW_USER;
-      $allow_user_button = '<input type="button" value="'.IMAGE_DEL.'" onclick="del_allow_user(this)">';
+      $allow_user_button = '<input type="button" value="'.IMAGE_DEL.'" '.$allow_disabled.' onclick="del_allow_user(this)">';
     }
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => $allow_user_text), 
@@ -9780,7 +9805,7 @@ if($_GET['latest_messages_id']>0){
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_TEXT_INFO), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_draw_textarea_field('text_info', 'hard', '40', '5', $replace_info_res['text_info'], 'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'))
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_draw_textarea_field('text_info', 'hard', '40', '5', $replace_info_res['text_info'], 'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled))
   );
 
   $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
@@ -9795,9 +9820,9 @@ if($_GET['latest_messages_id']>0){
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);" onclick="attendance_setting(\''.$_GET['date'].'\',ele_value_obj)">'.tep_html_element_button(IMAGE_BACK, 'onclick="hidden_info_box();"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\',ele_value_obj)"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
