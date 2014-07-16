@@ -21,7 +21,7 @@
   }
   //自动删除超过设定时间的垃圾箱信件
   $messages_day = get_configuration_by_site_id('MESSAGES_EXPIRED_DATE_SETTING',0);
-  $messages_delete_query = tep_db_query("select id from messages where trash_status='3' and time_format(timediff(now(),time),'%H')>".$messages_day*24);
+  $messages_delete_query = tep_db_query("select id from messages where trash_status='3' and time_format(timediff(now(),date_update),'%H')>".$messages_day*24);
   while($messages_delete_array = tep_db_fetch_array($messages_delete_query)){
 
           $value_messages_id = $messages_delete_array['id'];
@@ -142,7 +142,7 @@
 
        $messages_id_str = implode(',',$_POST['messages_id']); 
        tep_db_query("update messages set original_state = trash_status where id in (".$messages_id_str.")");
-       tep_db_query("update messages set trash_status = '3' where id in (".$messages_id_str.")");
+       tep_db_query("update messages set trash_status = '3',date_update=now() where id in (".$messages_id_str.")");
      } 
    }else if($_POST['messages_action_flag'] == 'recovery'){
     //把垃圾箱的信息还原
@@ -487,7 +487,7 @@
 
      if($_POST['messages_flag'] == 2){
        tep_db_query("update messages set original_state = trash_status where id='".$_GET['id']."'");
-       tep_db_query("update messages set trash_status = '3' where id='".$_GET['id']."'"); 
+       tep_db_query("update messages set trash_status = '3',date_update=now() where id='".$_GET['id']."'"); 
      }else if($_POST['messages_flag'] == 3){
         
        tep_db_query("update messages set trash_status = original_state where id='".$_GET['id']."'"); 
@@ -1689,18 +1689,22 @@ function messages_check(is_back,flag){
     input_id = 'messages_file_back[]';  
   }
   var all_size = 0;
+  var file_size = 0;
   $("input[name='"+input_id+"']").each(
     function(){
       if($(this).val()){
-      t= this.files;
-      all_size+= t[0].size;
-      if(t[0].size > <?php echo $min_size;?>){
-        alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
-        return false;
-      }
+        t= this.files;
+        if(t){
+          file_size = t[0].size; 
+        }
+        all_size+= file_size; 
       }
     }
   );
+  if(all_size > <?php echo $min_size;?>){
+      alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
+      return false;
+  }
 
 	var error_status_select = 0;
 	var error_status_contents = 0;
