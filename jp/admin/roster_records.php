@@ -156,28 +156,29 @@ case 'update':
              $pic_ext = substr($src_image['name'], $pic_rpos+1);
              $tep_image_name = 'attendance'.time().".".$pic_ext;
              $src_image['name'] = $tep_image_name;
-          } else {
-             $tep_image_name = '';
+
+	         $image_directory = tep_get_local_path(DIR_FS_CATALOG.'images/');
+             $path = 'attendance/';
+
+             if (is_uploaded_file($src_image['tmp_name'])) {
+			     //删除之前的图片
+			     $sql_image = "select src_text from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
+			     $tep_res = tep_db_query($sql_image);
+		         $row=  tep_db_fetch_array($tep_res);
+			     if(count($row)){
+			         unlink($image_directory.'/'.$row['src_text']);
+			     }
+			 
+			     $src_text = $path.$tep_image_name;
+			     tep_copy_uploaded_file($src_image, $image_directory. '/attendance/');
+
+	         }	
+	 
+         } else {
+             $src_text = $_POST['src_image_input'];
           }
 
 
-	  $image_directory = tep_get_local_path(tep_get_upload_dir().'/');
-         $path = 'attendance/';
-
-         if (is_uploaded_file($src_image['tmp_name'])) {
-			 
-			   $src_text = $path.$tep_image_name;
-			   tep_copy_uploaded_file($src_image, $image_directory. 'attendance/');
-			 //删除之前的图片
-//			 $sql_image = "select src_text from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
-//			 $tep_res = tep_db_query($sql_image);
-//		     $row=  tep_db_fetch_array($tep_res);
-//			 if(count($row)){
-//			     unlink($image_directory.$row['src_text']);
-//			 }
-
-	     }	
-	 
 	 }elseif($scheduling_type==1) {
 	     $src_text = $_POST['scheduling_type_color'];
 	 }
@@ -402,7 +403,7 @@ $tep_result = tep_db_query($att_select_sql);
  $num = count($attendance_list);
  $i=0;
  foreach($attendance_list as $k=>$val) {
-		 if($i%8==0){
+		 if($i%6==0){
 		 echo '</tr><tr>';
 		 }
 	 $i++;
@@ -410,7 +411,7 @@ $tep_result = tep_db_query($att_select_sql);
 <td>
 <?php
  if($val['scheduling_type']==0){
-    $image_directory = tep_get_local_path(tep_get_upload_dir());
+    $image_directory = 'images/';
     $image_dir = $image_directory.'/'.$val['src_text'];
 	echo "<img src='".$image_dir."'>"; 
 }elseif($val['scheduling_type']==1){
@@ -419,11 +420,10 @@ $tep_result = tep_db_query($att_select_sql);
 ?>	
  <a onclick="show_attendance_info(<?php echo $val['id']; ?>)" href="javascript:void(0);" style="text-decoration: underline;"> >> <?php echo $val['title']?></a></td>
 <?php 
-   if($i==8){
-       echo  '<a onclick="show_attendance_info(0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_attendance" ').' </a>';
-   }
  }
 
+       echo  '<a onclick="show_attendance_info(0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_PROJECT,'id="create_attendance" ').' </a>';
+ 
 ?> 
 </table>
             </td>

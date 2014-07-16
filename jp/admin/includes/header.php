@@ -250,7 +250,7 @@ echo "</a>";
 </b>&nbsp;<?php echo HEADER_TEXT_LOGINED;?>&nbsp;
 <?php
 //打卡
-	 $date = date('Y-m-d');
+	 $date = date('Ymd');
 $sql = "select login_time from attendance where user_name='".$user_info['userid']."' and date='".$date."'";
 
      $query = tep_db_query($sql);
