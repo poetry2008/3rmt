@@ -13898,3 +13898,12 @@ function tep_get_user_list_by_userid(){
   }
   return $user_list;
 }
+function tep_get_attendance_by_id($aid){
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE
+     id='".$aid."'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row;
+  }
+  return null;
+}
