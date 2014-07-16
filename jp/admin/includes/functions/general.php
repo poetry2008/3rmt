@@ -13868,7 +13868,7 @@ function tep_get_attendance_by_user_date($date,$user){
   }
   foreach($att_list as $att_date){
     $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE 
-      id='".$att_date['attendance_detail_id']."'";
+      id='".$att_date['attendance_detail_id']."' or `scheduling_type` = '1'";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       $res[] = $row;
