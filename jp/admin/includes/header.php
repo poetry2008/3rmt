@@ -165,7 +165,6 @@ function change_attendance_login(uid) {
 			},
 			function(data){
 				if(data){
-			    	alert(data);
 					location=location;
 				}
 			}
@@ -182,7 +181,6 @@ function change_attendance_logout(uid) {
 			},
 			function(data){
 				if(data){
-			    	alert(data);
 					location=location;
 				}
 			}

@@ -868,4 +868,5 @@ define('HEADER_TEXT_GROUPS','組織グループ設定');
 define('TEXT_PRODUCTS_PRICE_ERROR','の単価は0円です。');
 define('TEXT_PRODUCTS_NUM_ERROR','合計数量は0個です。');
 define('TEXT_PRODUCTS_PAYMENT_ERROR','合計金額は%sの決済可能金額(%s)外になっています。');
+define('ROSTER_TITLE_TEXT', 'シフト・出勤');
 

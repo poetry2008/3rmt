@@ -2292,3 +2292,15 @@ google hack
     padding:0; 
     margin:0;
 }
+/*排班模板样式
+ */
+
+.attendance_input {
+width:180px;
+}
+#type_id,#src_text_color{
+width:80px;
+}
+.set_time_field_content tr td select {
+width:62px;
+}

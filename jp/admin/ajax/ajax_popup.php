@@ -9060,14 +9060,13 @@ if($_GET['latest_messages_id']>0){
  $uid = $_POST['user_name'];
  if($_GET['action']=='change_attendance_login') {
     $tep_res = tep_change_attendance_login($uid); 
-    $tep_insert_id = tep_db_insert_id();
     if($tep_res){
-        echo HEADER_LOGIN_OK; 
+        echo true; 
     } 
  }else if($_GET['action']=='change_attendance_logout') {
     $tep_res = tep_change_attendance_logout($uid);
     if($tep_res==1){
-        echo HEADER_LOGOUT_OK;
+        echo true;
     }
  }
  /**
@@ -9078,9 +9077,8 @@ if($_GET['latest_messages_id']>0){
 
 
 
-  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ATTENDANCE);
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
-  //include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'japanese/attendance.php');
   include(DIR_FS_ADMIN.'classes/notice_box.php');
   $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
@@ -9113,12 +9111,12 @@ if($_GET['latest_messages_id']>0){
   $attendance_info_row = array();
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_TITLE),
-           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" style="font-size:12px"').'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
+           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" class="attendance_input"').'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
         array('text' => tep_draw_hidden_field('id', $id)) 
      ); 
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_ABBREVIATION),
-           array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'id="short_language" style="font-size:12px"').'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
+           array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'id="short_language" class="attendance_input"').'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
      ); 
 //排班类型
     $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id">';
@@ -9152,12 +9150,12 @@ if($_GET['latest_messages_id']>0){
   }else{
    $style_image = 'style="display:none;"';
   }
-	$select_type_image = '<div>'.tep_draw_input_field('src_image_input',$src_text,'id="src_text_image"'.$style_image.'');
+	$select_type_image = '<div>'.tep_draw_input_field('src_image_input',$src_text,'id="src_text_image" class="attendance_input"'.$style_image.'');
     $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button"'.$style_image.'').'</div>'; 
     $select_type_image .= tep_draw_file_field('src_image','','id="upload_file_image" onchange=change_image_text(this) style="display:none"');
 	 
-	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SRC_TEXT.'</div>';
-	$div_color ='<div id="color_div" '.$style_color.'>'.ATTENDANCE_SRC_TEXT.'</div>';
+	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</div>';
+	$div_color ='<div id="color_div" '.$style_color.'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</div>';
       $attendance_info_row[]['text'] = array(
           array('text' => $div_image),
 		  array('text' =>$select_type_image), 
@@ -9170,11 +9168,11 @@ if($_GET['latest_messages_id']>0){
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'id="param" style="font-size:12px"').' }')
+           array('text' => '${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="attendance_input"').' }')
      ); 
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
-           array('text' => '${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'id="param" style="font-size:12px"'.$disable).' }')
+           array('text' => '${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$disable).' }')
      ); 
 
 	//许可
@@ -9207,6 +9205,8 @@ if($_GET['latest_messages_id']>0){
 		     	$selected = $approve_list[$i]==$val['userid']?'selected':'';
                 $attendance_select_approve .= '<option value="'.$val['userid'].'"'.$selected.'>'.$val['userid'].'</option>';	
 		    }
+			
+         $attendance_select_approve .= '<option value="0">--</option>';
             $attendance_select_approve .= '</select>';
 			if($i==0){
               $attendance_select_approve .= '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_attendance_approve_person(\''.$id.'\');"').'</a>'; 
@@ -9368,8 +9368,8 @@ if($_GET['latest_messages_id']>0){
 	    $att_work_hours= del_zero($att_info_res['work_hours']);
 	    $att_rest_hours= del_zero($att_info_res['rest_hours']);
 	 }
-      $work_hours=  tep_draw_input_field('work_hours',$att_work_hours,'id="work_hours" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
-      $rest_hours =  tep_draw_input_field('rest_hours',$att_rest_hours,'id="rest_hours" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
+      $work_hours=  tep_draw_input_field('work_hours',$att_work_hours,'id="work_hours" class="attendance_input" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
+      $rest_hours =  tep_draw_input_field('rest_hours',$att_rest_hours,'id="rest_hours" class="attendance_input" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
 	  
 	  if($att_info_res['set_time']==1 && !empty($id)){
 	      $time_numbers_style = 'style="display:block;"';
@@ -9393,7 +9393,7 @@ if($_GET['latest_messages_id']>0){
 	  //sort
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_SORT),
-           array('text' => tep_draw_input_field('sort',$att_info_res['sort'],'id="sort" style="text-align:right;"'))
+           array('text' => tep_draw_input_field('sort',$att_info_res['sort'],'class="attendance_input" style="text-align:right;"'))
      ); 
     $add_user_text= ATTENDANCE_ADD_USER.$att_info_res['add_user'];
     $update_user_text= ATTENDANCE_ADD_TIME.$att_info_res['add_time'];
@@ -9455,6 +9455,7 @@ if($_GET['latest_messages_id']>0){
     参数: $_GET['date'] 日期 
  -----------------------------------------------------*/
 
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
   //获得 所有排班表
   $attendance_detail_list = array();
   $attendance_detail_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
@@ -9502,7 +9503,7 @@ if($_GET['latest_messages_id']>0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_GROUP_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$group_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$group_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
 
@@ -9562,7 +9563,7 @@ if($_GET['latest_messages_id']>0){
       }
       $as_info_row[]['text'] = $as_info_row_tmp;
       $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_GROUP_SELECT), 
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => COMPANY_SYSTEM_SELECT), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_group_select)
       );
       $as_info_row[]['text'] = array(
@@ -9577,7 +9578,7 @@ if($_GET['latest_messages_id']>0){
         array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">')
       );
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_GROUP_SELECT), 
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => COMPANY_SYSTEM_SELECT), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $group_select)
       );
     $as_info_row[]['text'] = array(
@@ -9622,6 +9623,7 @@ if($_GET['latest_messages_id']>0){
 }else if($_GET['action'] == 'attendance_replace'){
   include(DIR_FS_ADMIN.'classes/notice_box.php'); 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
 
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
@@ -9781,10 +9783,10 @@ if($_GET['latest_messages_id']>0){
     $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
     if($is_first){
       $allow_user_text = TEXT_ALLOW_USER;
-      $allow_user_button = '<input type="button" value="'.IMAGE_ADD.'" '.$allow_disabled.' onclick="add_allow_user(this,\''.IMAGE_DEL.'\')">';
+      $allow_user_button = '<input type="button" value="'.TEXT_ADD_ADL.'" '.$allow_disabled.' onclick="add_allow_user(this,\''.TEXT_DEL_ADL.'\')">';
     }else{
       $allow_user_text = TEXT_ALLOW_USER;
-      $allow_user_button = '<input type="button" value="'.IMAGE_DEL.'" '.$allow_disabled.' onclick="del_allow_user(this)">';
+      $allow_user_button = '<input type="button" value="'.TEXT_DEL_ADL.'" '.$allow_disabled.' onclick="del_allow_user(this)">';
     }
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => $allow_user_text), 

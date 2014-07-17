@@ -292,7 +292,7 @@ case 'update':
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php echo BANK_CL_TITLE_TEXT; ?></title>
+<title><?php echo ROSTER_TITLE_TEXT; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
@@ -347,7 +347,7 @@ $(document).ready(function() {
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading"><?php echo BANK_CL_TITLE_TEXT; ?></td>
+            <td class="pageHeading"><?php echo ROSTER_TITLE_TEXT; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -440,10 +440,10 @@ $(document).ready(function() {
         <td><div id="toggle_width" style="min-width:726px;"></div><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
             <td class="main" align="right">
-<table  style=" margin-top: -30px; min-width: 600px;margin-left: 90px;">
+<table  style=" margin-top: -30px; min-width: 450px;" width="65%">
 <tr>
 <td align="left">
-<ul>
+<ul style="padding: 0px;">
 <?php 
 
 $att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
@@ -526,8 +526,7 @@ $today = date('Ymd',time());
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
-  echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)'
-    valign='top'>";
+  echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)' valign='top'>";
   $att_arr = tep_get_attendance($date,$show_group_id,false);
   echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;'>";
@@ -543,22 +542,30 @@ while($j<=$day_num)
     $att_info_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id='".$att_row['attendance_detail_id']."' limit 1";
     $att_info_query = tep_db_query($att_info_sql);
     if($att_info = tep_db_fetch_array($att_info_query)){
-    echo "<tr>";
     if($att_info['scheduling_type'] == 1){
+      echo "<tr>";
       echo "<td bgcolor='".$att_info['src_text']."'>";
       echo "<div>";
-      echo $att_info['title'];
+      echo $att_info['short_language'];
       echo "</div>";
-    }else{
-      echo "<td >";
-      echo "<div>";
-      echo "<img src='".$att_info['src_text']."' alt='".$att_info['alt_text']."'>";
-      echo "</div>";
-    }
-    if(!empty($show_select_group_user)&&$date<=$today){
+    if(!empty($show_select_group_user)&&$date){
       echo "<div>";
       foreach($show_select_group_user as $u_list){
-        echo tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
+        $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
+        if($v_att!=false){
+          echo $v_att;
+        }else{
+          $temp_user_sql = "select * from ".TABLE_GROUPS." 
+            where id='".$att_row['group_id']."'";
+          $temp_user_query = tep_db_query($temp_user_sql);
+          if($temp_user_row = tep_db_fetch_array($temp_user_query)){
+            $temp_show_group_user = explode('|||',$temp_user_row['all_users_id']);
+          }
+          if(in_array($u_list,$temp_show_group_user)){
+            $t_info = tep_get_user_info($u_list);
+            echo $t_info['name'].'&nbsp;';
+          }
+        }
       }
       echo "</div>";
     }
@@ -584,6 +591,12 @@ while($j<=$day_num)
     echo "</td>";
     echo "</tr>";
     }
+    }
+  }
+  //不在排班组的请假
+  if(false){
+    echo "<tr><td>";
+    echo "</td></tr>";
   }
   echo "</table>";
   echo "</td>";
