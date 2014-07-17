@@ -1,8 +1,9 @@
 <?php
-define('TEXT_MYNAME_MUST_COMMENT','*チェックを入れるとこのパーツは取引完了に必要なものになる');
-define('TEXT_MYNAME_STATUS_COMMENT','*設定されたステータスに変わると自動で日時が保存される');
-define('TEXT_MYNAME_P_NAME_COMMENT','* ○○○○：前方文字 SubmitName 後方文字');
-define('TEXT_MYNAME_FRONT_COMMENT','* 項目名：○○○○　SubmitName 後方文字');
-define('TEXT_MYNAME_SUBMIT_NAME_COMMENT','*項目名： 前方文字 ○○○○ 後方文字');
-define('TEXT_MYNAME_AFTER_COMMENT','*項目名： 前方文字 SubmitName ○○○○');
+define('TEXT_MYNAME_MUST_COMMENT','*Nếu chèn check vào, thì phần này sẽ trở nên cần thiết ở hoàn tất giao dịch');
+define('TEXT_MYNAME_STATUS_COMMENT','*Nếu thay đổi ở status đã được thiết lập,thì ngày giờ sẽ được lưu tự động');
+define('TEXT_MYNAME_P_NAME_COMMENT','* ○○○○：Kí tự đằng trước SubmitName Kí tự đằng sau');
+define('TEXT_MYNAME_FRONT_COMMENT','* Tên mục：○○○○　SubmitName Kí tự đằng sau');
+define('TEXT_MYNAME_SUBMIT_NAME_COMMENT','*Tên mục： Kí tự đằng trước ○○○○ Kí tự đằng sau');
+define('TEXT_MYNAME_AFTER_COMMENT','*Tên mục： Kí tự đằng trước SubmitName ○○○○');
 ?>
+

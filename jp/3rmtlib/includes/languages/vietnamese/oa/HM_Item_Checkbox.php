@@ -1,7 +1,8 @@
 <?php 
-define('TEXT_CHECKBOX_MUST_COMMENT','*チェックを入れるとこのパーツは取引完了に必要なものになる');
-define('TEXT_CHECKBOX_STATUS_COMMENT','*設定されたステータスに変わると自動でチェックが入る保存される');
-define('TEXT_CHECKBOX_FRONT_COMMENT','* ○○○○ チェックボックス 文字列');
-define('TEXT_CHECKBOX_FRONT_TEXT','*前方文字 チェックボックス ○○○○ ');
-define('TEXT_CHECKBOX_ADD','チェックボックス追加');
+define('TEXT_CHECKBOX_MUST_COMMENT','*Nếu chèn check vào, phần này sẽ trở nên cần thiết ở hoàn tất giao dịch');
+define('TEXT_CHECKBOX_STATUS_COMMENT','*Nếu thay đổi ở satatus đã được thiết lập, thì check sẽ được chèn vào và lưu tự động');
+define('TEXT_CHECKBOX_FRONT_COMMENT','* ○○○○ Checkbox Chuỗi kí tự');
+define('TEXT_CHECKBOX_FRONT_TEXT','*Kí tự đằng trước Checkbox ○○○○ ');
+define('TEXT_CHECKBOX_ADD','Thêm checkbox');
 ?>
+

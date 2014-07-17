@@ -34,8 +34,8 @@ define('TEXT_INFO_REVIEW_SIZE', 'Kích cỡ');
 define('TEXT_INFO_PRODUCTS_AVERAGE_RATING', 'Điểm trung bình');
 
 define('TEXT_OF_5_STARS', '%s sao trên 5 sao!');
-define('TEXT_GOOD', '<font color="#ff0000">Tốt /font>');
-define('TEXT_BAD', '<font color="#ff0000">Xấu /font>');
+define('TEXT_GOOD', '<font color="#ff0000">Tốt </font>');
+define('TEXT_BAD', '<font color="#ff0000">Xấu </font>');
 define('TEXT_INFO_HEADING_DELETE_REVIEW', 'Xóa các review');
 define('TEXT_USER_ADDED','Người đăng');
 define('TEXT_USER_UPDATE','Người cập nhật');
