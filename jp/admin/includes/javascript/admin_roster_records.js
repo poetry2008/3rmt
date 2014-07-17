@@ -1,4 +1,4 @@
-var ele_value_obj = '';
+var ele_value_obj_att = '';
 //show attendance info
 function show_attendance_info(ele,id){
   var ele_width = $(".box_warp").width(); 
@@ -20,18 +20,18 @@ function show_attendance_info(ele,id){
  dataType: 'text',
  async : false,
  success: function(data){
-  $('#show_date_edit').html(data);
+  $('#show_attendance_edit').html(data);
 
-      $("#show_date_edit").css('top',ele.top-box_warp_top+$(ele).height());
-      if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
-        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
       }else{
-        $("#show_date_edit").css('left',ele_obj.left-box_warp_left);
+        $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
       }
-      ele_value_obj = ele;
+      ele_value_obj_att = ele;
 
-      $('#show_date_edit').css('display','block');
+      $('#show_attendance_edit').css('display','block');
  }
   }); 
 
@@ -39,7 +39,7 @@ function show_attendance_info(ele,id){
 
 //hidden box
 function hidden_info_box_tep(){
-   $('#show_date_edit').css('display','none');
+   $('#show_attendance_edit').css('display','none');
 }
 
 
@@ -209,23 +209,24 @@ function attendance_setting(date,ele){
     async: false,
     success: function(text) {
       //show content 
-      $('#show_date_edit').html(text);  
-      $("#show_date_edit").css('top',ele.top-box_warp_top+$(ele).height());
-      if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+      $('#show_attendance_edit').html(text);  
+      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
-        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
       }else{
-        $("#show_date_edit").css('left',ele_obj.left-box_warp_left);
+        left_add = $(ele).index()*($(ele).width()+3);
+        $("#show_attendance_edit").css('left',box_warp_left+left_add);
       }
-      ele_value_obj = ele;
-      $('#show_date_edit').css('display','block');
+      ele_value_obj_att = ele;
+      $('#show_attendance_edit').css('display','block');
     }
   });
 }
 
 
 function hidden_info_box(){
-  $('#show_date_edit').css('display','none');
+  $('#show_attendance_edit').css('display','none');
 }
 
 window.onresize = resizepage;
@@ -241,17 +242,19 @@ function resizepage(){
     box_warp_left = box_warp.left;
   }
   var ele_obj = '';
-  ele_obj = $("#show_date_edit").offset();
-  if(ele_value_obj != ''){
-    tmp_ele_obj = $(ele_value_obj).offset();
-    if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+  ele_obj = $("#show_attendance_edit").offset();
+  if(ele_value_obj_att != ''){
+    $("#show_attendance_edit").css('top',$(ele_value_obj_att).offset().top+$(ele_value_obj_att).height());
+    tmp_ele_obj = $(ele_value_obj_att).offset();
+    if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
-      $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+      $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
     }else{
-      if(tmp_ele_obj.left-box_warp_left+$("#show_date_edit").width() < ele_width){
-        $("#show_date_edit").css('left',tmp_ele_obj.left-box_warp_left);
+      if(tmp_ele_obj.left-box_warp_left+$("#show_attendance_edit").width() < ele_width){
+        left_add = $(ele_value_obj_att).index()*($(ele_value_obj_att).width()+3);
+        $("#show_attendance_edit").css('left',box_warp_left+left_add);
       }else{
-        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width());
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left);
       }
     }   
   }
@@ -277,7 +280,7 @@ function delete_submit(c_permission){
            document.attendance_setting_form.submit();
          } else {
            $('#button_delete').attr('id', 'tmp_button_delete'); 
-           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+           var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
            if (in_array(input_pwd_str, pwd_list_array)) {
              document.attendance_setting_form.action = del_url 
              $.ajax({
@@ -291,7 +294,7 @@ function delete_submit(c_permission){
                }
              }); 
            } else {
-             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             alert(js_text_onetime_pwd_error); 
              setTimeOut($('#tmp_button_delete').attr('id', 'button_delete'), 1); 
            }
          }
@@ -316,7 +319,7 @@ function save_submit(c_permission){
            document.attendance_setting_form.submit();
          } else {
            $('#button_save').attr('id', 'tmp_button_save'); 
-           var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+           var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
            if (in_array(input_pwd_str, pwd_list_array)) {
              $.ajax({
                url: 'ajax_orders.php?action=record_pwd_log',   
@@ -329,7 +332,7 @@ function save_submit(c_permission){
                }
              }); 
            } else {
-             alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+             alert(js_text_onetime_pwd_error); 
              setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
            }
          }
@@ -386,7 +389,7 @@ function del_as(ele,asl_id,c_permission){
     }
   });
            } else {
-             var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
+             var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
              if (in_array(input_pwd_str, pwd_list_array)) {
                $.ajax({
                  url: 'ajax_orders.php?action=record_pwd_log',   
@@ -414,7 +417,7 @@ function del_as(ele,asl_id,c_permission){
                  }
                }); 
              } else {
-               alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
+               alert(js_text_onetime_pwd_error); 
              }
            }
         }
@@ -444,7 +447,7 @@ function change_user_list(ele){
 }
 
 function attendance_replace(date){
-  ele = ele_value_obj;
+  ele = ele_value_obj_att;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -463,16 +466,16 @@ function attendance_replace(date){
     async: false,
     success: function(text) {
       //show content 
-      $('#show_date_edit').html(text);  
-      $("#show_date_edit").css('top',ele.top-box_warp_top+$(ele).height());
-      if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
+      $('#show_attendance_edit').html(text);  
+      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
-        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
       }else{
-        $("#show_date_edit").css('left',ele_obj.left-box_warp_left);
+        $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
       }
-      ele_value_obj = ele;
-      $('#show_date_edit').css('display','block');
+      ele_value_obj_att = ele;
+      $('#show_attendance_edit').css('display','block');
     }
   });
 }
