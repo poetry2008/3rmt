@@ -2286,3 +2286,15 @@ google hack
 .date_title_color a:link,.date_title_color a:visited,.date_title_color a:active,.date_title_color a:hover {
     color: #fff;
 }
+/*排班模板样式
+ */
+
+.attendance_input {
+width:180px;
+}
+#type_id,#src_text_color{
+width:80px;
+}
+.set_time_field_content tr td select {
+width:62px;
+}

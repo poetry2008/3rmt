@@ -55,7 +55,6 @@ function delete_attendance_info(id){
             async : false,
             success: function(data){
 				if(data){
-					alert('delete sucess!');
 					 window.location.href = href_attendance_calendar;
 				
 				}
