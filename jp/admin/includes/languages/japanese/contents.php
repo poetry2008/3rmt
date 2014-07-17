@@ -48,4 +48,5 @@ define('TEXT_CONTENT_INFO','手続き：${PROCEDURE}');
 define('TEXT_CONTENT_NEXT','次へ進む：${NEXT}');
 define('TEXT_CONTENT_ORDER','商品の最新情報を購読：${PRODUCTS_SUBSCRIPTION}');
 define('TEXT_CONTENT_PRODUCTS_INFO','商品情報：${PRODUCTS_INFO}');
+define('TEXT_DETAIL_LETTERS','Url文字');
 ?>

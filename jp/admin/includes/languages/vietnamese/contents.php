@@ -48,4 +48,5 @@ define('TEXT_CONTENT_INFO','Thủ tục：${PROCEDURE}');
 define('TEXT_CONTENT_NEXT','Tiến đến tiếp theo：${NEXT}');
 define('TEXT_CONTENT_ORDER','Đặt mua thông tin mới nhất của sản phẩm：${PRODUCTS_SUBSCRIPTION}');
 define('TEXT_CONTENT_PRODUCTS_INFO','Thông tin sản phẩm：${PRODUCTS_INFO}');
+define('TEXT_DETAIL_LETTERS','Kí tự URL');
 ?>

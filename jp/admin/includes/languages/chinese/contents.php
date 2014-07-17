@@ -52,4 +52,5 @@ define('TEXT_CONTENT_INFO','进度：${PROCEDURE}');
 define('TEXT_CONTENT_NEXT','下一步：${NEXT}');
 define('TEXT_CONTENT_ORDER','产品订购：${PRODUCTS_SUBSCRIPTION}');
 define('TEXT_CONTENT_PRODUCTS_INFO','产品信息：${PRODUCTS_INFO}');
+define('TEXT_DETAIL_LETTERS','Url文字');
 ?>

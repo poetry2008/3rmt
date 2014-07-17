@@ -2286,3 +2286,9 @@ google hack
 .date_title_color a:link,.date_title_color a:visited,.date_title_color a:active,.date_title_color a:hover {
     color: #fff;
 }
+.td_input_radio{
+    margin-left:0;
+    height:14px;
+    padding:0; 
+    margin:0;
+}
