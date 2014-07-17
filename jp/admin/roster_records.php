@@ -555,7 +555,7 @@ while($j<=$day_num)
       echo "<img src='".$att_info['src_text']."' alt='".$att_info['alt_text']."'>";
       echo "</div>";
     }
-    if(!empty($show_select_group_user)&&$date<$today){
+    if(!empty($show_select_group_user)&&$date<=$today){
       echo "<div>";
       foreach($show_select_group_user as $u_list){
         echo tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);

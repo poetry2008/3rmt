@@ -13820,7 +13820,8 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
       $real_work_end_str = str_replace(':','',$real_work_end);
       $work_start_str = str_replace(':','',$work_start);
       $work_end_str = str_replace(':','',$work_end);
-      if($real_work_start < $work_start && $real_work_end > $work_end){
+      if($real_work_start_str < $work_start_str && $real_work_end_str > $work_end_str){
+      }else if($real_work_start_str < $work_start_str && $real_work_end_str == 0 && $date==date('Ymd',time())){
       }else{
         $show_user = true;
       }
