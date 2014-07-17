@@ -28,6 +28,6 @@ Tên tài khoản　　：　Tên chi nhánh ngân hàng SEVEN　　：　Loại
 ※Trong trường hợp chưa thể thanh toán cho đến ngày giao dịch, xin vui lòng liên hệ với chúng tôi.Trường hợp không liên lac, có thể hủy tiền dự phòng tồn kho.
 
 ※ Xin vui lòng chuyển tiền trong vòng 7 ngày kể từ khi order.。
-※ Số tiền nhận sẽ thành lập thành hợp đồng ở thời điểm đã xác nhận "COMPANY NAME"
+※ Số tiền nhận sẽ thành lập thành hợp đồng ở thời điểm đã xác nhận ".COMPANY_NAME."
 ");
 define('TS_MODULE_PAYMENT_MONEYORDER_NORMAL', 'thông thường');

@@ -1,23 +1,24 @@
 <?php
 define('TEXT_SPECIALBAN_INFO'
   , "</br>"
-  .   '() は radio'
+  .   '() là radio'
   . "</br>"
-  .   '[] は checkbox'
+  .   '[] là checkbox'
   . "</br>"
-  .   ' 例'    . "</br>"
-  .   '()  Y  ()N-> [ ] 済'  
+  .   ' ví dụ'    . "</br>"
+  .   '()  Y  ()N-> [ ] Xong'  
   . "</br>"
-  .   '() ２回目以降'    . "</br>"
-  .   '[] 常連（以下のチェック必要無）'    . "</br>"
-  .   '   []   1.過去に本人確認をしている'    . "</br>"
-  .    '  []   2.決算内容に変更がない'    . "</br>"
-  .     ' []   3.短期間に高額決算がない'    . "</br>"
-  .  '    ()初回'    . "</br>"
-  .    '  [] IP・ホストのチェック'    . "</br>"
-  .     ' []カード名義・商品名・その他の情報一致'    . "</br>"
-  .     ' []本人確認日：月日'    . "</br>"
-  .     ' []信用調査入力'    . "</br>"
-  . '必ず半角符号を使ってください'    . "</br>");
+  .   '() Sau lần thứ 2'    . "</br>"
+  .   '[] Thường xuyên（không cần kiểm tra những điểm sau）'    . "</br>"
+  .   '   []   1.Đang xác minh danh tính trong quá khứ'    . "</br>"
+  .    '  []   2.Không có sự thay đổi trong nội dung thanh toán'    . "</br>"
+  .     ' []   3.Không có thanh toán số tiền lớn trong thời hạn ngắn'    . "</br>"
+  .  '    ()Lần đầu'    . "</br>"
+  .    '  [] Check IP・host'    . "</br>"
+  .     ' []Tên thẻ・Tên sản phẩm・Thống nhất thông tin khác'    . "</br>"
+  .     ' []Ngày xác minh danh tính：Ngày tháng'    . "</br>"
+  .     ' []Nhập điều tra tín dụng'    . "</br>"
+  . 'Nhất định hãy sử dụng kí hiệu 1 byte'    . "</br>");
 
 ?>
+

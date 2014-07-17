@@ -587,7 +587,7 @@ define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','Vui lòng chọn');
 define('BOX_TOOLS_CAMPAIGN', 'Cài đặt mã chiến dịch');
 define('TEXT_CURRENT_CHARACTER_NAME', 'Ghi chú ý trong mail：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','Xóa tùy chọn chưa sử dụng');
-define('TEXT_ORDER_ALARM_LINK', '	Báo động');
+define('TEXT_ORDER_ALARM_LINK', 'Báo động');
 define('HOUR_TEXT', ':');
 define('MINUTE_TEXT', '');
 define('NOTICE_EXTEND_TITLE', 'Ghi chú tiếp theo');

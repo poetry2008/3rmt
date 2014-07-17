@@ -1,5 +1,6 @@
 <?php
-define('TEXT_AUTO_MUST_COMMENT','*チェックを入れるとこのパーツは取引完了に必要なものになる');
-define('TEXT_AUTO_NAME_COMMENT','*○○○○ チェックボックス');
-define('TEXT_AUTO_NO_OP','関連付け商品がないので手動入力してください');
+define('TEXT_AUTO_MUST_COMMENT','*Nếu chèn check vào , thì phần này sẽ trở nên cần thiết ở hoàn tất giao dịch');
+define('TEXT_AUTO_NAME_COMMENT','*○○○○ checkbox');
+define('TEXT_AUTO_NO_OP','Không có sản phẩm liên quan nên hãy vui lòng nhập bằng tay');
 ?>
+
