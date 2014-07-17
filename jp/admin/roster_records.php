@@ -97,6 +97,57 @@ if(isset($_GET['action'])){
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS));
       }
       break;
+    case 'save_as_replace':
+      $user = $_SESSION['user_name'];
+      $date = $_POST['get_date'];
+      $attendance_detail_id = $_POST['attendance_detail_id'];
+      $user_id = $ocertify->auth_user;
+      $replace_attendance_detail_id = $_POST['replace_attendance_detail_id'];
+      $allow_satus = $_POST['allow_satus'];
+      $leave_start = $_POST['leave_start_hour'].':'.$_POST['leave_start_minute_a'].$_POST['leave_start_minute_b'];
+      $leave_end = $_POST['leave_end_hour'].':'.$_POST['leave_end_minute_a'].$_POST['leave_end_minute_b'];
+      $allow_user = implode('|||',$_POST['allow_user']);
+      if(isset($_POST['replace_id'])&&$_POST['replace_id']!=''&&$_POST['replace_id']!=0) {
+        $sql_update_arr = array(
+            'replace_attendance_detail_id' => $replace_attendance_detail_id,
+            'leave_start' => $leave_start,
+            'leave_end' => $leave_end,
+            'allow_user' => $allow_user,
+            'update_user' => $user,
+            'update_time' => 'now()',
+            );
+        $sql_replace = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." WHERE 
+          id='".$_POST['replace_id']."'";
+        $query_replace = tep_db_query($sql_replace);
+        if($row_replace = tep_db_fetch_array($query_replace)){
+          $u_list = explode('|||',$row_replace['allow_user']);
+          if(in_array($user_id,$u_list)||$ocertify->npermission=='31'){
+            $sql_update_arr['allow_status'] = $allow_satus;
+          }
+        }
+        tep_db_perform(TABLE_ATTENDANCE_DETAIL_REPLACE,$sql_update_arr,'update','id=\''.$_POST['replace_id'].'\'');
+      }else{
+        $sql_insert_arr = array(
+            'date' => $date,
+            'user' => $user_id,
+            'attendance_detail_id' => $attendance_detail_id,
+            'replace_attendance_detail_id' => $replace_attendance_detail_id,
+            'allow_status' => $allow_satus,
+            'leave_start' => $leave_start,
+            'leave_end' => $leave_end,
+            'allow_user' => $allow_user,
+            'add_user' => $user,
+            'add_time' => 'now()',
+            );
+        tep_db_perform(TABLE_ATTENDANCE_DETAIL_REPLACE,$sql_insert_arr);
+      }
+      if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
+        $date_info = tep_date_info($_POST['get_date']);
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS));
+      }
+      break;
     case 'update_show_user':
       if(isset($_POST['show_group_user_list'])&&
           is_array($_POST['show_group_user_list'])&&
@@ -247,7 +298,6 @@ case 'update':
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/admin_roster_records.js"></script>
-<script language="javascript" src="includes/javascript/admin_attendance.js"></script>
 
 <script language="javascript">
 var attendance_del_confirm = '<?php echo ATTENDANCE_DELETE_REMIND;?>';
@@ -388,7 +438,6 @@ $(document).ready(function() {
         <td><div id="toggle_width" style="min-width:726px;"></div><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
             <td class="main" align="right">
-<div id="show_attendance" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;"></div>
 <table  style=" margin-top: -30px; min-width: 600px;margin-left: 90px;">
 <tr>
 <td align="left">
@@ -406,20 +455,18 @@ $tep_result = tep_db_query($att_select_sql);
  $i=0;
  foreach($attendance_list as $k=>$val) {
  if($val['scheduling_type']==0){
-    $image_directory = 'images/';
+    $image_directory = 'images';
     $image_dir = $image_directory.'/'.$val['src_text'];
 	echo "<li style='float:left; list-style-type:none; margin: 5px;'><img src='".$image_dir."' style='width: 16px;'>"; 
 }elseif($val['scheduling_type']==1){
      echo '<li style="float:left; list-style-type:none; margin: 5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
  }
-?>	
- <a onclick="show_attendance_info(<?php echo $val['id']; ?>)" href="javascript:void(0);" style="text-decoration: underline;"> >> <?php echo $val['title']?></a></li>
-<?php 
+echo  '<a onclick="show_attendance_info(this, '.$val['id'].')" href="javascript:void(0);" style="text-decoration: underline;"> >> '.$val['title'].'</a></li>';
  }
 
- echo '</ul>';
+echo '</ul>';
 echo ' </td><td valign="top">';
-       echo  '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
+echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
  
 ?> 
 </table>
@@ -432,11 +479,11 @@ echo ' </td><td valign="top">';
         </table></td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="date_title_color">
           <tr bgcolor="#3C7FB1">
             <td class="date_title" align="center">
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_prev_str;?>"><b><<</b></a>
-            &nbsp;&nbsp;<?php echo $year.' / '.$month; ?>&nbsp;&nbsp;
+            &nbsp;&nbsp;<font color="#FFF"><?php echo $year.' / '.$month; ?></font>&nbsp;&nbsp;
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_str;?>"><b>>></b></a></td>
           </tr>
         </table></td>
@@ -455,13 +502,13 @@ $end = false;
 <tr>
 <?php 
 echo '
-        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#ccffff" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#fc9acd" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
+        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
         ';
         ?>
 </tr>
@@ -480,7 +527,7 @@ while($j<=$day_num)
   echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)'
     valign='top'>";
   $att_arr = tep_get_attendance($date,$show_group_id,false);
-  echo '<table width="100%" border="0" cellspacing="1" cellpadding="1">';
+  echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;'>";
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
@@ -512,6 +559,25 @@ while($j<=$day_num)
         echo tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
       }
       echo "</div>";
+    }
+    $sql_replace_att = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." WHERE 
+      `date` = '".$date."'";
+    $query_replace_att = tep_db_query($sql_replace_att);
+    while($row_replace_att = tep_db_fetch_array($query_replace_att)){
+      echo '<div>';
+      $u_info = tep_get_user_info($row_replace_att['user']);
+      $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
+      if(!empty($u_info)){
+        echo $u_info['name'];
+      }
+      if(!empty($att_date_info)){
+        if($att_date_info['scheduling_type'] == 1){
+          echo $att_date_info['title'];
+        }else{
+          echo "<img src='".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
+        }
+      }
+      echo '</div>';
     }
     echo "</td>";
     echo "</tr>";

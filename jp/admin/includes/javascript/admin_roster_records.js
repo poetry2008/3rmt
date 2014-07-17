@@ -1,6 +1,18 @@
 var ele_value_obj = '';
 //show attendance info
-function show_attendance_info(id){
+function show_attendance_info(ele,id){
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $(ele).offset();   
+
  $.ajax({
  url: 'ajax.php?action=edit_attendance_info',
  data: 'id='+id,
@@ -8,14 +20,18 @@ function show_attendance_info(id){
  dataType: 'text',
  async : false,
  success: function(data){
-  $("div#show_attendance").html(data);
+  $('#show_date_edit').html(data);
 
-      $('div#show_attendance').css('z-index', 1);
-      $('div#show_attendance').css('height', 500);
-      $('div#show_attendance').css('left', 300);
-      $('div#show_attendance').css('top',230);
+      $("#show_date_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_date_edit").width() > ele_width){
 
-      $('div#show_attendance').css('display','block');
+        $("#show_date_edit").css('left',ele_width-$("#show_date_edit").width()); 
+      }else{
+        $("#show_date_edit").css('left',ele_obj.left-box_warp_left);
+      }
+      ele_value_obj = ele;
+
+      $('#show_date_edit').css('display','block');
  }
   }); 
 
@@ -23,7 +39,7 @@ function show_attendance_info(id){
 
 //hidden box
 function hidden_info_box_tep(){
-   $('#show_attendance').css('display','none');
+   $('#show_date_edit').css('display','none');
 }
 
 

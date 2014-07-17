@@ -2283,3 +2283,6 @@ google hack
 	border:solid #ddd;border-width:0 1px 1px 0;
 	min-height:15px;
 }
+.date_title_color a:link,.date_title_color a:visited,.date_title_color a:active,.date_title_color a:hover {
+    color: #fff;
+}
