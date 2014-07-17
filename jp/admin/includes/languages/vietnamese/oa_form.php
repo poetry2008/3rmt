@@ -4,7 +4,7 @@
 
 */
 define('HEADING_TITLE','Quản lý mẫu');
-define('FORM_OPTION', Tùy chọn');
+define('FORM_OPTION', 'Tùy chọn');
 define('ADD_GROUP', 'Tạo thành nhóm');
 define('GROUP_NAME', 'Tiêu đề');
 define('GROUP_OPERATE', 'Thao tác');
