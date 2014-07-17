@@ -12,7 +12,7 @@ define('TABLE_HEADING_PRODUCT_PRICE', '单价');
 define('TABLE_HEADING_PRODUCT_NUM', '个数');
 define('TABLE_HEADING_PRODUCT_COST', '合计');
 define('TABLE_HEADING_ORDERS_STATUS', '状态');
-define('PRODUCT_MONEY_UNIT', '日元');
+define('PRODUCT_MONEY_UNIT', '円');
 define('PRODUCT_NUM_TEXT', '个');
 define('APPLICATION_CREATE_TEXT', '新建账单');
 define('TEXT_PRINT', '打印');

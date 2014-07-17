@@ -13,7 +13,7 @@ define('TABLE_LIST_4','重量/运费');
 define('TABLE_BUTTON_SUBMIT','新建');
 define('TABLE_BUTTON_SAVE','保存');
 define('TABLE_BUTTON_DEL','删除');
-define('TABLE_UNIT','日元');
+define('TABLE_UNIT','円');
 define('TABLE_LIST_5','重量上限');
 define('TABLE_LIST_6','订单邮件');
 define('TABLE_LIST_7','打印邮件');

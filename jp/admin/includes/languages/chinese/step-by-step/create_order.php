@@ -44,7 +44,7 @@ define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', '数量');
 define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '添加');
 define('EDIT_ORDERS_NUM_UNIT', '个');
 define('TABLE_HEADING_UNIT_PRICE', '单价');
-define('EDIT_ORDERS_PRICE_UNIT', '日元');
+define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_PRO_LIST_TITLE', '订购商品');
 define('TABLE_HEADING_NUM_PRO_NAME', '数量 / 商品名');
 define('TABLE_HEADING_CURRENICY', '税率');

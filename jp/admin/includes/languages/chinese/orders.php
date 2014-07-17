@@ -193,7 +193,7 @@ define('MANUAL_SEARCH_EDIT', '编辑');
 define('MANUAL_SEARCH_NORES','现在手册未注册... ');
 define('TEXT_NO_RECEIVABLES','没到账');
 define('TEXT_PAYMENT_BUY_POINT','点数(买入)');
-define('TEXT_YEN','日元');
+define('TEXT_YEN','円');
 define('TEXT_HOUR','时');
 define('TEXT_MIN','分');
 define('TEXT_TWENTY_FOUR_HOUR','　（24小时制）');

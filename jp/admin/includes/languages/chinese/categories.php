@@ -173,7 +173,7 @@ define('TEXT_PRODUCT_CARTIMAGE_NOTICE', '注：banner图像的宽度最大是450
 define('TEXT_PRODUCT_RESULT_CONFIRM', '结果确认');
 define('CATEGORY_TREE_SELECT_TEXT', '分类跳转▼');
 define('CATEGORY_BUTTON_UPDATE_TEXT', '请仔细确认后再按');
-define('CATEGORY_MONEY_UNIT_TEXT', '日元');
+define('CATEGORY_MONEY_UNIT_TEXT', '円');
 define('CATEGORY_AVERAGE_PRICE', '实际库存的平均采购价格');
 define('CATEGORY_SHIKU_TEXT', '实际&nbsp;在&nbsp;&nbsp;库：&nbsp;');
 define('CATEGORY_GE_UNIT_TEXT', '个');

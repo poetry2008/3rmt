@@ -151,7 +151,7 @@ define('EDIT_NEW_ORDERS_CREATE_TITLE', '创建预约订单');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】并非编辑预约订单。是创建预约订单的系统。');
 define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（初始值）');
 define('ERROR_INPUT_PRICE_NOTICE', '请写单价');
-define('EDIT_ORDERS_PRICE_UNIT', '日元');
+define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_NUM_UNIT', '个');
 define('EDIT_ORDERS_NOTICE_UPDATE_FAIL_TEXT', '取消更新。');
 define('EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT', '日期时间格式有误。 "2008-01-01 10:30:00"');
