@@ -158,7 +158,7 @@ define('EDIT_NEW_ORDERS_CREATE_TITLE', 'Tạo đơn đặt hàng trước');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【Quan trọng】Không có chỉnh sửa đặt hàng trước.Hệ thống tạo đặt trước mới.');
 define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（Gía trị ban đầu）');
 define('ERROR_INPUT_PRICE_NOTICE', 'Hãy viết đơn giá');
-define('EDIT_ORDERS_PRICE_UNIT', 'Yên');
+define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_NUM_UNIT', 'Ko');
 define('EDIT_ORDERS_PREDATE_TEXT', 'Thờ hạn hiệu lực:');
 define('ERROR_VILADATE_NEW_PREORDERS', 'Đã hủy cập nhật.');

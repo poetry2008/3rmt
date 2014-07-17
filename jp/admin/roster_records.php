@@ -300,6 +300,8 @@ case 'update':
 <script language="javascript" src="includes/javascript/admin_roster_records.js"></script>
 
 <script language="javascript">
+var js_text_input_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
+var js_text_onetime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
 var attendance_del_confirm = '<?php echo ATTENDANCE_DELETE_REMIND;?>';
 var error_text = '<?php echo TEP_ERROR_NULL;?>';
 var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ROSTER_RECORDS;?>';
@@ -308,13 +310,13 @@ $(document).ready(function() {
   $(document).keyup(function(event) {
     if (event.which == 27) {
       <?php //esc?>
-      if ($('#show_date_edit').css('display') != 'none') {
+      if ($('#show_attendance_edit').css('display') != 'none') {
         hidden_info_box();
       }
     }
     if (event.which == 13) {
       <?php //回车?>
-      if ($('#show_date_edit').css('display') != 'none') {
+      if ($('#show_attendance_edit').css('display') != 'none') {
         $("#button_save").trigger("click");
       }
     }
@@ -341,7 +343,7 @@ $(document).ready(function() {
 <!-- left_navigation_eof -->
     </table></td>
 <!-- body_text -->
-    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><div id="show_date_edit" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 60%; display:none;"></div><table border="0" width="100%" cellspacing="0" cellpadding="1">
+    <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><div id="show_attendance_edit" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 60%; display:none;"></div><table border="0" width="100%" cellspacing="0" cellpadding="1">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -553,7 +555,7 @@ while($j<=$day_num)
       echo "<img src='".$att_info['src_text']."' alt='".$att_info['alt_text']."'>";
       echo "</div>";
     }
-    if(!empty($show_select_group_user)&&$date<$today){
+    if(!empty($show_select_group_user)&&$date<=$today){
       echo "<div>";
       foreach($show_select_group_user as $u_list){
         echo tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
@@ -566,7 +568,7 @@ while($j<=$day_num)
     while($row_replace_att = tep_db_fetch_array($query_replace_att)){
       echo '<div>';
       $u_info = tep_get_user_info($row_replace_att['user']);
-      $att_date_info = tep_get_attendance_by_id($row_replace_att['attendance_detail_id']);
+      $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
       if(!empty($u_info)){
         echo $u_info['name'];
       }
@@ -574,7 +576,7 @@ while($j<=$day_num)
         if($att_date_info['scheduling_type'] == 1){
           echo $att_date_info['title'];
         }else{
-          echo "<img src='".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
+          echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
         }
       }
       echo '</div>';

@@ -173,7 +173,7 @@ define('TEXT_PRODUCT_CARTIMAGE_NOTICE', 'Chú ý：Độ rộng hình ảnh Bann
 define('TEXT_PRODUCT_RESULT_CONFIRM', 'Kiểm tra kết quả');
 define('CATEGORY_TREE_SELECT_TEXT', 'Chuyển đến▼');
 define('CATEGORY_BUTTON_UPDATE_TEXT', 'Hãy nhấn sau khi đã kiểm tra kĩ');
-define('CATEGORY_MONEY_UNIT_TEXT', 'Yên');
+define('CATEGORY_MONEY_UNIT_TEXT', '円');
 define('CATEGORY_AVERAGE_PRICE', 'Nguyên giá trung bình của tồn kho hiện tại');
 define('CATEGORY_SHIKU_TEXT', 'Hiện&nbsp;Tại&nbsp;&nbsp;Kho：&nbsp;');
 define('CATEGORY_GE_UNIT_TEXT', 'Đơn vị  Ko');

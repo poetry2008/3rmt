@@ -13,7 +13,7 @@ define('TABLE_LIST_4','Trọng lượng/Gía cước');
 define('TABLE_BUTTON_SUBMIT','Tạo mới');
 define('TABLE_BUTTON_SAVE','Lưu');
 define('TABLE_BUTTON_DEL','Xóa');
-define('TABLE_UNIT','Yên');
+define('TABLE_UNIT','円');
 define('TABLE_LIST_5','Trọng lượng tối đa');
 define('TABLE_LIST_6','Mail đặt hàng');
 define('TABLE_LIST_7','Print mail');

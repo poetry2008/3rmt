@@ -159,7 +159,7 @@ define('EDIT_NEW_ORDERS_CREATE_TITLE', '创建预约订单');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】并非编辑预约订单。是创建订单的系统。');
 define('EDIT_ORDERS_ORIGIN_VALUE_TEXT', '（初始值）');
 define('ERROR_INPUT_PRICE_NOTICE', '请输入单价');
-define('EDIT_ORDERS_PRICE_UNIT', '日元');
+define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_NUM_UNIT', '个');
 define('EDIT_ORDERS_PREDATE_TEXT', '有效期限:');
 define('ERROR_VILADATE_NEW_PREORDERS', '已取消更新。');
