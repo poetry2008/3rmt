@@ -292,7 +292,7 @@ case 'update':
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php echo BANK_CL_TITLE_TEXT; ?></title>
+<title><?php echo ROSTER_TITLE_TEXT; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
@@ -347,7 +347,7 @@ $(document).ready(function() {
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading"><?php echo BANK_CL_TITLE_TEXT; ?></td>
+            <td class="pageHeading"><?php echo ROSTER_TITLE_TEXT; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
         </table></td>
@@ -440,10 +440,10 @@ $(document).ready(function() {
         <td><div id="toggle_width" style="min-width:726px;"></div><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
             <td class="main" align="right">
-<table  style=" margin-top: -30px; min-width: 600px;margin-left: 90px;">
+<table  style=" margin-top: -30px; min-width: 450px;" width="65%">
 <tr>
 <td align="left">
-<ul>
+<ul style="padding: 0px;">
 <?php 
 
 $att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
@@ -546,7 +546,7 @@ while($j<=$day_num)
       echo "<tr>";
       echo "<td bgcolor='".$att_info['src_text']."'>";
       echo "<div>";
-      echo $att_info['title'];
+      echo $att_info['short_language'];
       echo "</div>";
     if(!empty($show_select_group_user)&&$date){
       echo "<div>";
