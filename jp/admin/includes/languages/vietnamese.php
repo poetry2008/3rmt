@@ -546,7 +546,7 @@ define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER','Hội viên');
 define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER','Guest');
 
 
-define('TEXT_MONEY_SYMBOL','Yên');
+define('TEXT_MONEY_SYMBOL','円');
 
 define('FILENAME_ORDER_DOWNLOAD','Xuất dữ liệu đặt hàng');
 define('FRONT_CONFIGURATION_TITLE_TEXT', 'Front end：');

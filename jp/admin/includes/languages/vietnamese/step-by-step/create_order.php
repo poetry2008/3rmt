@@ -42,7 +42,7 @@ define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', 'Số lượng');
 define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', 'Thêm vào');
 define('EDIT_ORDERS_NUM_UNIT', 'Đơn vị ko');
 define('TABLE_HEADING_UNIT_PRICE', 'Đơn giá');
-define('EDIT_ORDERS_PRICE_UNIT', 'Yên');
+define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_PRO_LIST_TITLE', 'Sản phẩm đặt hàng');
 define('TABLE_HEADING_NUM_PRO_NAME', 'Số lượng / Tên sản phẩm');
 define('TABLE_HEADING_CURRENICY', 'Thuế suất');

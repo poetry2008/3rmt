@@ -193,7 +193,7 @@ define('MANUAL_SEARCH_HEAD', 'Kết quả tìm kiếm của');
 define('MANUAL_SEARCH_EDIT', 'Chỉnh sữa');
 define('MANUAL_SEARCH_NORES','Manual hiện tại đã không được đăng ký... ');
 define('TEXT_NO_RECEIVABLES','Chưa nhận tiền');
-define('TEXT_YEN','Yên');
+define('TEXT_YEN','円');
 define('TEXT_HOUR','Giờ');
 define('TEXT_MIN','Phút');
 define('TEXT_TWENTY_FOUR_HOUR','　（Hiển thị 24 giờ）');

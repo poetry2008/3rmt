@@ -11,7 +11,7 @@ define('TABLE_HEADING_PRODUCT_PRICE', 'Đơn giá');
 define('TABLE_HEADING_PRODUCT_NUM', 'Số lượng');
 define('TABLE_HEADING_PRODUCT_COST', 'Tổng cộng');
 define('TABLE_HEADING_ORDERS_STATUS', 'Status');
-define('PRODUCT_MONEY_UNIT', 'Yên');
+define('PRODUCT_MONEY_UNIT', '円');
 define('PRODUCT_NUM_TEXT', 'Ko');
 define('APPLICATION_CREATE_TEXT', 'Tạo hóa đơn');
 
