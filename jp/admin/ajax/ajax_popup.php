@@ -4227,11 +4227,11 @@ if($pw_id != -1){
   }
   $page_str = '';
   if ($c_key > 0) {
-    $page_str .= '<a onclick="show_pw_manager(\'\','.$cid_array[$c_key-1].','.$_GET['page'].','.$site_id.')" href="javascript:void(0)" id="option_prev">'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
+    $page_str .= '<a onclick="show_pw_manager(\'\','.$cid_array[$c_key-1].','.$_GET['page'].','.$site_id.')" href="javascript:void(0)" id="option_prev"><'.IMAGE_PREV.'</a>&nbsp;&nbsp;'; 
  }
  
   if ($c_key < (count($cid_array) - 1)) {
-   $page_str .= '<a onclick="show_pw_manager(\'\','.$cid_array[$c_key+1].','.$_GET['page'].','.$site_id.')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'</a>&nbsp;&nbsp;'; 
+   $page_str .= '<a onclick="show_pw_manager(\'\','.$cid_array[$c_key+1].','.$_GET['page'].','.$site_id.')" href="javascript:void(0);" id="option_next">'.IMAGE_NEXT.'></a>&nbsp;&nbsp;'; 
   }   
       $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
       $heading = array();
@@ -9167,11 +9167,11 @@ if($_GET['latest_messages_id']>0){
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="attendance_input"').' }')
+           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="attendance_input"').' }</div>')
      ); 
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
-           array('text' => '${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$disable).' }')
+           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$disable).' }</div>')
      ); 
 
 	//许可
