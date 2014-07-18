@@ -1,6 +1,6 @@
 var ele_value_obj_att = '';
 //show attendance info
-function show_attendance_info(ele,id){
+function show_attendance_info(ele,id,param_y,param_m){
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -13,33 +13,28 @@ function show_attendance_info(ele,id){
   var ele_obj = '';
   ele_obj = $(ele).offset();   
 
- $.ajax({
- url: 'ajax.php?action=edit_attendance_info',
- data: 'id='+id,
- type: 'POST',
- dataType: 'text',
- async : false,
- success: function(data){
-  $('#show_attendance_edit').html(data);
+  $.ajax({
+  url: 'ajax.php?action=edit_attendance_info',
+  data: 'id='+id+'&param_y='+param_y+'&param_m='+param_m,
+  type: 'POST',
+  dataType: 'text',
+  async : false,
+  success: function(data){
+     $('#show_attendance_edit').html(data);
 
-      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
-      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
+     $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+     if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
-      }else{
+     }else{
         $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
-      }
-      ele_value_obj_att = ele;
+     }
+     ele_value_obj_att = ele;
 
-      $('#show_attendance_edit').css('display','block');
+     $('#show_attendance_edit').css('display','block');
  }
   }); 
 
-}
-
-//hidden box
-function hidden_info_box_tep(){
-   $('#show_attendance_edit').css('display','none');
 }
 
 
@@ -186,7 +181,7 @@ function getFileName(path){
 
 function change_image_text(_this) {
 	 var image_name = getFileName(_this.value);
-$("#src_text_image").val(image_name);
+    $("#src_text_image").val(image_name);
 }
 
 function attendance_setting(date,ele){
@@ -221,6 +216,20 @@ function attendance_setting(date,ele){
       $('#show_attendance_edit').css('display','block');
     }
   });
+}
+
+function change_model_get_time(model_id){
+   $.ajax({
+       url: 'ajax.php?action=change_model_get_time',
+       data: 'id='+model_id,
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+          $('#show_user_adl').html(data);
+       }
+  }); 
+
 }
 
 
