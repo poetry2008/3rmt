@@ -9638,7 +9638,7 @@ else if($_GET['action']=='add_attendance_approve') {
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if(!isset($_GET['gid'])||$_GET['gid']==''){
-    $button[] = '<a href="javascript:void(0);" onclick="attendance_replace(\''.$_GET['date'].'\')">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="hidden_info_box();"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);" onclick="attendance_replace(\''.$_GET['date'].'\')">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
@@ -9668,9 +9668,9 @@ else if($_GET['action']=='add_attendance_approve') {
 
 
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
-    `date`='".$_GET['date']."' and ";
+    `date`='".$_GET['date']."' ";
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $replace_sql .= " user ='".$_GET['uid']."'";
+    $replace_sql .= " and user ='".$_GET['uid']."'";
   }
   $change_flag = true;
   $replace_query = tep_db_query($replace_sql);
@@ -9682,18 +9682,24 @@ else if($_GET['action']=='add_attendance_approve') {
     $last_modified = $replace_info_res['update_time'];
   }
 
-//  if($replace_info_res['date']<date('Ymd',time())&&$ocertify->npermission!='31'){
-  if($replace_info_res['date']<date('Ymd',time())){
+  $user_list = tep_get_user_list_by_userid($_GET['uid']);
+  if($_GET['date']<date('Ymd',time())){
     $disabled = ' disabled="disabled" ';
+    $change_flag = false;
   }
 
+  
 
 
   $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
+  if($disabled){
+    $att_select = '<select name="attendance_detail_id" disabled="disabled">';
+  }else{
   if(count($replace_att_list)==1){
     $att_select = '<select name="attendance_detail_id" disabled="disabled">';
   }else{
     $att_select = '<select name="attendance_detail_id" onchange="change_model_get_time(this.value)">';
+  }
   }
   $replace_select = '<select name="replace_attendance_detail_id" '.$disabled.'>';
   if(!empty($replace_att_list)){
@@ -9728,10 +9734,13 @@ else if($_GET['action']=='add_attendance_approve') {
   $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
-  $user_list = tep_get_user_list_by_userid();
   $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
   if(in_array($ocertify->auth_user,$allow_user_list)||$ocertify->npermission=='31'||!$change_flag){
-    $allow_disabled = ''; 
+    if($_GET['date']<date('Ymd',time())){
+      $allow_disabled = ' disabled="disabled" '; 
+    }else{
+      $allow_disabled = ''; 
+    }
   }else{
     $allow_disabled = ' disabled="disabled" '; 
   }
@@ -9809,6 +9818,21 @@ else if($_GET['action']=='add_attendance_approve') {
   $heading[] = array('align' => 'right', 'text' => $page_str);
   $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'"><input type="hidden" name="replace_id" value="'.$replace_info_res['id'].'">';
 
+  if((!isset($_GET['uid'])||$_GET['uid']=='')&&$ocertify->npermission=='31'){
+    $sql_all_user = "select * from ".TABLE_USERS." order by name asc";
+    $query_all_user = tep_db_query($sql_all_user);
+    $all_user_select = '<select name="user_id" '.$disabled.'>';
+    while($row_all_user = tep_db_fetch_array($query_all_user)){
+      $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+    }
+    $all_user_select .= '</select>';
+    $as_info_row[]['text'] = array(
+      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+      array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $all_user_select)
+    );
+  }else{
+    $att_select .= '<input type="hidden" value="'.$_GET['uid'].'" name="user_id">';
+  }
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER), 
@@ -9827,11 +9851,12 @@ else if($_GET['action']=='add_attendance_approve') {
   foreach($allow_user_list as $allow_user){
     $allow_user_select = '<select name="allow_user[]" '.$allow_disabled.'>';
     foreach($user_list as $user_info){
-      $allow_user_select .= '<option value="'.$user_info['userid'].'"';
+      $allow_user_select .= '<option value="'.$user_info.'"';
       if($allow_user == $user_info['userid']){
         $allow_user_select .= ' selected ';
       }
-      $allow_user_select .= '>'.$user_info['name'].'</option>';
+      $t_user_info = tep_get_user_info($user_info);
+      $allow_user_select .= '>'.$t_user_info['name'].'</option>';
     }
     $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
     if($is_first){
@@ -9880,7 +9905,13 @@ else if($_GET['action']=='add_attendance_approve') {
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\',ele_value_obj_att)"').'</a>'; 
+  if(!isset($_GET['uid'])||$_GET['uid']==''){
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.
+    $_GET['index'].'\',\'\')"').'</a>'; 
+  }
+  if($ocertify->npermission=='31'){
+    $disabled = '';
+  }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
