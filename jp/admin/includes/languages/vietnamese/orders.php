@@ -141,7 +141,7 @@ define('TEXT_ORDER_YEAR','年');
 define('TEXT_ORDER_END_DATE','Kết thúc ngày:');
 define('TEXT_ORDER_START_DATE','Ngày bắt đầu:');
 define('TEXT_ORDER_SITE_TEXT','Site đơn đặt hàng');
-define('TEXT_ORDER_SERVER_BUSY','ダウンロード中はサーバに対して高負荷となります。Hãy thực hiện trong thời gian truy cập ít hơn.');
+define('TEXT_ORDER_SERVER_BUSY','Trong quá trình tải xuống, sẽ trở nên quá tải đối với server.Hãy thực hiện trong thời gian truy cập ít hơn.');
 define('TEXT_ORDER_DOWNLOPAD','Dữ liệu đặt hàng xuất khẩu');
 
 define('DEL_CONFIRM_PAYMENT_TIME', 'Xóa');
