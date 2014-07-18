@@ -69,6 +69,8 @@ define('TEXT_ALLOW_START','开始时间');
 define('TEXT_ALLOW_END','结束时间');
 define('TEXT_ADL_TEXT_INFO','备注');
 define('TEXT_LEAVE_ONE_DAY','休息');
+define('HOUR_TEXT', '时');
+define('TIME_HOUR_TEXT', '小时');
 
 ?>
 

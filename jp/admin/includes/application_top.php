@@ -141,7 +141,6 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_FAQ', 'faq.php');
   define('FILENAME_REFERER', 'referer.php');
   define('FILENAME_BUTTONS', 'buttons.php');
-  define('FILENAME_ATTENDANCE', 'attendance.php');
   define('FILENAME_ATTENDANCE_CALENDAR', 'attendance_calendar.php');
   define('FILENAME_ROSTER_RECORDS','roster_records.php');
   

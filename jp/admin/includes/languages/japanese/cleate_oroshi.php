@@ -6,4 +6,5 @@ define('ALREADY_EXISTS','はもう存在しています');
 define('PLEASE_GAME_TITLE','ゲームタイトルを一つ選択してください');
 define('CONTENT_NOT_SAME','入力された内容は同じになってはいけません');
 define('DELETE','削除しますか？');
+define('WHOLESALE_DATA_MANAGE','データ');
 ?>

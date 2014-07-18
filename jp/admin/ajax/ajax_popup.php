@@ -8024,7 +8024,7 @@ $banner_query = tep_db_query("
     }
     $contents_banners[]['text'] = array(
         array('text' => TEXT_CONTENTS), 
-        array('text' => '<input class="td_input" type="radio" '.$checked_img.' onclick="check_radio(this.value)" value="0" class="td_input" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_IMAGE).'<input class="td_input" type="radio" '.$checked_html.' onclick="check_radio(this.value)" value="1" class="td_input" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_HTML_TEXT))
+        array('text' => '<input class="td_input_radio" type="radio" '.$checked_img.' onclick="check_radio(this.value)" value="0" class="td_input_radio" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_IMAGE).'<input class="td_input_radio" type="radio" '.$checked_html.' onclick="check_radio(this.value)" value="1" class="td_input_radio" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_HTML_TEXT))
         );
     $banners_start = $notice_box->get_table($contents_banners);  
     $contents[]['text'] = array(
@@ -9075,8 +9075,6 @@ if($_GET['latest_messages_id']>0){
  */
 }else if($_GET['action'] == 'edit_attendance_info') {
 
-
-
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
   include(DIR_FS_ADMIN.'classes/notice_box.php');
@@ -9089,6 +9087,10 @@ if($_GET['latest_messages_id']>0){
  
   $action ='insert';
   }
+  if($_POST['param_y']!='undefined'){
+      $action .='&y='.$_POST['param_y'];
+      $action .='&m='.$_POST['param_m'];
+  }
   $att_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id;
   $att_info_tep = tep_db_query($att_select_sql); 
   $att_info_res = tep_db_fetch_array($att_info_tep); 
@@ -9097,12 +9099,9 @@ if($_GET['latest_messages_id']>0){
   $buttons = array();
   $page_str = '';
   
-  $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
-  $action_url_month = substr($_GET['date'],4,2) == date('m') ? '' : '&m='.substr($_GET['date'],4,2);
-  $action = $action.$action_url_date.$action_url_month;
   $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
   $page_s = ATTENDANCE_HEAD_TITLE; 
-  $page_str .= '<a onclick="hidden_info_box_tep();" href="javascript:void(0);">X</a>';
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
   $heading[] = array('align' => 'left', 'text' => $page_s);
@@ -9436,7 +9435,21 @@ if($_GET['latest_messages_id']>0){
    $del_sql = "delete from ".TABLE_ATTENDANCE_DETAIL." where id=".$id;
    tep_db_query($del_sql);
  echo   mysql_affected_rows();
-}else if($_GET['action']=='add_attendance_approve') {
+}else if($_GET['action']=='change_model_get_time'){
+    $id=$_POST['id'];
+    $sql_get_time = "select * from `".TABLE_ATTENDANCE_DETAIL."` where id=".$id;
+    $res_tep = tep_db_query($sql_get_time);
+    $rows=tep_db_fetch_array($res_tep);
+    if($rows['set_time']==0){
+    $return_res = '<span>'.$rows['work_start'] .HOUR_TEXT.'--'.$rows['work_end'].HOUR_TEXT.'</span>';
+    }elseif($rows['set_time']==1){
+         $work_time = $rows['work_hours']+$rows['rest_hours'];
+         $return_res = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
+     }
+
+echo  $return_res;
+}
+else if($_GET['action']=='add_attendance_approve') {
 	$sql_permissions = "select userid from  `".TABLE_PERMISSIONS."`";
     $res_approve = tep_db_query($sql_permissions);
     while ($row = tep_db_fetch_array($res_approve)) {
@@ -9672,7 +9685,7 @@ if($_GET['latest_messages_id']>0){
   if(count($replace_att_list)==1){
     $att_select = '<select name="attendance_detail_id" disabled="disabled">';
   }else{
-    $att_select = '<select name="attendance_detail_id">';
+    $att_select = '<select name="attendance_detail_id" onchange="change_model_get_time(this.value)">';
   }
   $replace_select = '<select name="replace_attendance_detail_id" '.$disabled.'>';
   if(!empty($replace_att_list)){
@@ -9682,6 +9695,14 @@ if($_GET['latest_messages_id']>0){
       $att_select .= ' selected ';
     }
     $att_select .= '>'.$att_info['title'].'</option>';
+
+  }
+  //show work time detail
+  if($replace_att_list[0]['set_time']==0){
+          $user_adl = '<span>'.$replace_att_list[0]['work_start'] .HOUR_TEXT.'--'.$replace_att_list[0]['work_end'].HOUR_TEXT.'</span>';
+  }elseif($replace_att_list[0]['set_time']==1){
+         $work_time = $replace_att_list[0]['work_hours']+$replace_att_list[0]['rest_hours'];
+         $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
   }
   }else{
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
@@ -9783,7 +9804,7 @@ if($_GET['latest_messages_id']>0){
   );
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl"></div>')
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl">'.$user_adl.'</div>')
   );
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_REPLACE_ADL), 

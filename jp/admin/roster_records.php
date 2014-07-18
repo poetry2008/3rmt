@@ -283,13 +283,13 @@ case 'update':
 	 if($_GET['action']=='insert'){
 	 tep_db_perform(TABLE_ATTENDANCE_DETAIL, $sql_data_array);
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
-            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
+            ((isset($_GET['y'])&&$_GET['y']!='')?'y='.$_GET['y']:'').
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
 	 }elseif ($_GET['action']=='update'){
 	 
 	 tep_db_perform(TABLE_ATTENDANCE_DETAIL, $sql_data_array, 'update',  "id = '" .$id  . "'");
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
-            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
+            ((isset($_GET['y'])&&$_GET['y']!='')?'y='.$_GET['y']:'').
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
 	 }
 	 break;
@@ -455,6 +455,12 @@ $(document).ready(function() {
 <ul style="padding: 0px;">
 <?php 
 
+$param_attendance = $_SERVER['QUERY_STRING'];
+$param_tep = explode('&',$param_attendance);
+if($param_tep[0]!=''){
+    $param .=','.$param_tep[0].','.$param_tep[1];
+}
+
 $att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
 $tep_result = tep_db_query($att_select_sql);
 
@@ -472,12 +478,12 @@ $tep_result = tep_db_query($att_select_sql);
 }elseif($val['scheduling_type']==1){
      echo '<li style="float:left; list-style-type:none; margin: 5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
  }
-echo  '<a onclick="show_attendance_info(this, '.$val['id'].')" href="javascript:void(0);" style="text-decoration: underline;"> >> '.$val['title'].'</a></li>';
+echo  '<a onclick="show_attendance_info(this, '.$val['id'].$param.')" href="javascript:void(0);" style="text-decoration: underline;"> >> '.$val['title'].'</a></li>';
  }
 
 echo '</ul>';
 echo ' </td><td valign="top">';
-echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0)" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
+echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0'.$param.')" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
  
 ?> 
 </table>

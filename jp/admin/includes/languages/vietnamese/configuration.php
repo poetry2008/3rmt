@@ -253,3 +253,6 @@ define('TEXT_PRODUCTS_SMALL_IMAGE_HEIGHT',tep_image(DIR_WS_IMAGES .  'icon_front
 define('TEXT_BILLING_ADDRESS_SETTING',tep_image(DIR_WS_IMAGES .  'icon_frontend.gif',IMAGE_ICON_FRONTENT).'&nbsp;'.tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;Chức năng nơi thanh toán');
 define('MIN_PROFIT_SETTING_TITLE',tep_image(DIR_WS_IMAGES .  'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;Tỉ lệ lợi nhuận thấp nhất');
 define('HEADING_TITLE_998','Thiết lập đơn giá sản phẩm');
+define('TEXT_MESSAGES_DATE_SETTING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;Số ngày lưu tin nhắn ở giỏ rác');
+define('TEXT_CUSTOMER_NAME_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;Chuỗi tên khách hàng cảnh báo');
+define('TEXT_CUSTOMER_EMAIL_WARNING_STRING',tep_image(DIR_WS_IMAGES . 'icon_backend.gif',IMAGE_ICON_BACKEND).'F_&nbsp;Cảnh báo địa chỉ e-mail chuỗi');
