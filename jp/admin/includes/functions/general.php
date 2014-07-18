@@ -13755,7 +13755,7 @@ function tep_get_attendance($date,$gid=0,$show_all=true){
     FROM ".TABLE_ATTENDANCE_DETAIL_DATE."  
     ".$where_str." 
     order by `id` desc)  t 
-    group by t.group_id order by t.id desc";
+    group by t.group_id order by t.id asc";
   }
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
@@ -13848,22 +13848,25 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
           $return_str .= substr($row['logout_time'],11,5);
         }
         $return_str .= '</font>';
-        $return_str .= '<br>';
         return $return_str;
     }else{
       return false;
     }
   }
 }
-function tep_get_attendance_by_user_date($date,$user,$show_other=false){
-  $groups =  tep_get_groups_by_user($user);
+function tep_get_attendance_by_user_date($date,$user=0,$show_other=false){
   $res = array();
   $att_list = array();
+  if($user != 0){
+  $groups =  tep_get_groups_by_user($user);
   foreach($groups as $group){
-    $g_att = tep_get_attendance($date,$group['id'],false);
+    $g_att = tep_get_attendance($date,$group['id'],true);
     if(!empty($g_att)){
       $att_list = array_merge($att_list,$g_att);
     }
+  }
+  }else{
+    $att_list = tep_get_attendance($date,0,true);
   }
   foreach($att_list as $att_date){
     $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE 
@@ -13912,4 +13915,58 @@ function tep_get_attendance_by_id($aid){
     return $row;
   }
   return null;
+}
+
+function tep_is_manager_by_gid($uid,$gid){
+  $sql = "select * from ".TABLE_GROUPS." 
+    where id='".$gid."'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    $arr = explode('|||',$row['all_managers_id']);
+    return in_array($uid,$arr);
+  }
+  return false;
+}
+
+
+function tep_is_show_att_group($gid,$date){
+    $year = substr($date,0,4); 
+    $month = substr($date,4,2); 
+    $day = substr($date,6,2); 
+    $time_str = mktime(0,0,0,$month,$day,$year);
+    $sql = "select * from ".TABLE_GROUPS.  " WHERE 
+      id='".$gid."' and UNIX_TIMESTAMP(create_time) < ".$time_str."";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return $row;
+    }else{
+      return false;
+    }
+}
+
+
+function tep_is_show_att_user($uid,$date){
+    $year = substr($date,0,4); 
+    $month = substr($date,4,2); 
+    $day = substr($date,6,2); 
+    $time_str = mktime(0,0,0,$month,$day,$year);
+    $sql = "select * from ".TABLE_USERS.  " WHERE 
+      userid='".$uid."' and UNIX_TIMESTAMP(date_added) < ".$time_str."";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return $row;
+    }else{
+      return false;
+    }
+}
+
+function tep_get_replace_by_uid_date($uid,$date){
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
+    user='".$uid."' and `date` = '".$date."'";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row;
+  }else{
+    return false;
+  }
 }
