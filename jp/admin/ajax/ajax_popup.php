@@ -9454,6 +9454,16 @@ if($_GET['latest_messages_id']>0){
     功能: 获取出勤状态的信息
     参数: $_GET['date'] 日期 
  -----------------------------------------------------*/
+  $group_disabled = '';
+
+  $show_only = '';
+  if(!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])){
+    $show_only = ' disabled="disabled" ';
+    $group_disabled = ' disabled="disabled" ';
+  }
+  if(isset($_GET['gid'])&&$_GET['gid']!=''&&$show_only==''){
+    $group_disabled = ' disabled="disabled" ';
+  }
 
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
   //获得 所有排班表
@@ -9483,19 +9493,23 @@ if($_GET['latest_messages_id']>0){
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 
-  $adl_select = '<select name="attendance_id[]">';
+  $adl_select = '<select name="attendance_id[]" '.$show_only.' >';
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
   }
   $adl_select .= '</select>';
 
-  $group_select = '<select name="group[]">';
+  $group_select = '<select name="group[]" '.$group_disabled.'>';
   foreach($group_list as $group){
-    $group_select .= '<option value="'.$group['id'].'">'.$group['text'].'</oprion>';
+    $group_select .= '<option value="'.$group['id'].'"';
+    if($group_disabled!=''&&$group['id']==$_GET['gid']){
+      $group_select .= ' selected ';
+    }
+    $group_select .= '>'.$group['text'].'</oprion>';
   }
   $group_select .= '</select>';
 
-  $type_select = '<select name="type[]">';
+  $type_select = '<select name="type[]" '.$show_only.' >';
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
@@ -9506,6 +9520,9 @@ if($_GET['latest_messages_id']>0){
   $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$group_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  if($group_disabled!=''){
+    $hidden_date .= '<input type="hidden" name="default_gid" value="'.$_GET['gid'].'">';
+  }
 
 
   $heading[] = array('align' => 'left', 'text' => $date_str);
@@ -9514,12 +9531,12 @@ if($_GET['latest_messages_id']>0){
   //主体内容
   $as_info_row = array();
   //是否有出勤数据
-  $attendance_dd_arr = tep_get_attendance($_GET['date']);
+  $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid']);
   if(!empty($attendance_dd_arr)){
     $show_arr = true;
     foreach($attendance_dd_arr as $a_info){
 
-      $has_adl_select = '<select name="has_attendance_id[]">';
+      $has_adl_select = '<select name="has_attendance_id[]" '.$show_only.' >';
       foreach($attendance_detail_list as $a_value){
         $has_adl_select .= '<option value="'.$a_value['id'].'"';
         if($a_info['attendance_detail_id'] == $a_value['id']){
@@ -9529,7 +9546,7 @@ if($_GET['latest_messages_id']>0){
       }
       $has_adl_select .= '</select>';
 
-      $has_group_select = '<select name="has_group[]">';
+      $has_group_select = '<select name="has_group[]" '.$group_disabled.'>';
       foreach($group_list as $group){
         $has_group_select .= '<option value="'.$group['id'].'" ';
         if($a_info['group_id'] == $group['id']){
@@ -9539,7 +9556,7 @@ if($_GET['latest_messages_id']>0){
       }
       $has_group_select .= '</select>';
 
-      $has_type_select = '<select name="has_type[]">';
+      $has_type_select = '<select name="has_type[]" '.$show_only.' >';
       foreach($type_list as $t_key => $t_value){
         $has_type_select .= '<option value="'.$t_key.'" ';
         if($a_info['type'] == $t_key){
@@ -9556,10 +9573,10 @@ if($_GET['latest_messages_id']>0){
         $as_date_added = $a_info['add_time'];
         $as_user_update = $a_info['update_user'];
         $as_last_modified = $a_info['update_time'];
-        $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">');
+        $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$show_only.' type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">');
         $show_arr = false;
       }else{
-        $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
+        $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
       }
       $as_info_row[]['text'] = $as_info_row_tmp;
       $as_info_row[]['text'] = array(
@@ -9575,7 +9592,7 @@ if($_GET['latest_messages_id']>0){
     $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
         array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">')
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">')
       );
     $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => COMPANY_SYSTEM_SELECT), 
@@ -9599,10 +9616,10 @@ if($_GET['latest_messages_id']>0){
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, 'onclick="hidden_info_box();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   $button[] = '<a href="javascript:void(0);" onclick="attendance_replace(\''.$_GET['date'].'\')">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="hidden_info_box();"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -9621,6 +9638,8 @@ if($_GET['latest_messages_id']>0){
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 }else if($_GET['action'] == 'attendance_replace'){
+
+
   include(DIR_FS_ADMIN.'classes/notice_box.php'); 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
@@ -9656,17 +9675,18 @@ if($_GET['latest_messages_id']>0){
     $att_select = '<select name="attendance_detail_id">';
   }
   $replace_select = '<select name="replace_attendance_detail_id" '.$disabled.'>';
-  $replace_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+  if(!empty($replace_att_list)){
   foreach($replace_att_list as $att_info){
     $att_select .= '<option value="'.$att_info['id'].'"';
     if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$att_info['id']){
       $att_select .= ' selected ';
     }
     $att_select .= '>'.$att_info['title'].'</option>';
-
-
   }
-  $replace_att_list_rep = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,true);
+  }else{
+    $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+  }
+  $replace_att_list_rep = tep_get_attendance_by_user_date($_GET['date'],0,true);
 
   foreach($replace_att_list_rep as $att_info_rep){
 
