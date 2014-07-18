@@ -541,8 +541,9 @@ $today = date('Ymd',time());
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
-  echo "<td id='date_td_".$j."' style='cursor:pointer;' valign='top'>";
   $att_arr = tep_get_attendance($date,$show_group_id,false);
+  $style= (empty($att_arr)) ? '':"style='cursor:pointer;'";
+  echo "<td id='date_td_".$j."'  valign='top' $style>";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;' onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
