@@ -261,11 +261,11 @@ $sql = "select login_time from attendance where user_name='".$user_info['userid'
 	 
 if($num_rows ==0) { 
 ?>
-	<a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGOUT_TITLE;?>" style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGIN; ?></font></a>
+	<a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGIN_TITLE;?>" style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGOUT; ?></font></a>
 <?php
 }else {
 ?>
-	<a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGIN_TITLE;?>"  style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGOUT; ?></font></a>
+	<a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGOUT_TITLE;?>"  style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGIN; ?></font></a>
 
 <?php
 }

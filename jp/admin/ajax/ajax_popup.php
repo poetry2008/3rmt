@@ -9128,7 +9128,7 @@ if($_GET['latest_messages_id']>0){
            array('text' => $attendance_select_type)
      ); 
 //颜色
-  $color_array = array('#FFFFFF','#DD1F2C','#DD6E1F','#FFFFCC','#82C31C','#1F67DD','#982DAC','#F1A9EB','#B36520','#BEBEBE');
+  $color_array = array('#FFFFFF','#FE0000','#FFCD00','#FEFF00','#00ff00','#2F68FF','#CC99FE','#FF99CB','#993400','#DDDDDD');
   $color_font_array = array(TEXT_CALENDAR_COLOR_WHITE,TEXT_CALENDAR_COLOR_RED,TEXT_CALENDAR_COLOR_BLUE_ORANGE,TEXT_CALENDAR_COLOR_BLUE_YELLOW,TEXT_CALENDAR_COLOR_BLUE_GREEN,TEXT_CALENDAR_COLOR_BLUE,TEXT_CALENDAR_COLOR_BLUE_PURPLE,TEXT_CALENDAR_COLOR_BLUE_PINK,TEXT_CALENDAR_COLOR_BLUE_BROWN,TEXT_CALENDAR_COLOR_BLUE_GRAY); 
   if(!empty($id) && $att_info_res['scheduling_type']==1){
      $style_color = 'style="display:block;"'; 
