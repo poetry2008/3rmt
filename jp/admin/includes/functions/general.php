@@ -13847,7 +13847,7 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
         }else{
           $return_str .= substr($row['logout_time'],11,5);
         }
-        $return_str .= '</font>';
+        $return_str .= '</font><br>';
         return $return_str;
     }else{
       return false;

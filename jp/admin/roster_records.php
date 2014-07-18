@@ -570,9 +570,18 @@ while($j<=$day_num)
         $user_worke_list[] = $u_list;
         if(tep_is_show_att_user($u_list,$date)){
         $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
+        $replace_str ='';
+        if(!empty($user_replace)){
+          $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
+          if($att_date_info['scheduling_type'] == 1){
+            $replace_str =  '<div style="float: left; background-color:'.$att_date_info['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
+          }else{
+            $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
+          }
+        }
         echo "<a href='javascript:void(0)' onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\")' >";
         if($v_att!=false){
-          echo $v_att;
+          echo preg_replace("/<br>$/",$replace_str.'<br>',$v_att);
         }else{
           $temp_user_sql = "select * from ".TABLE_GROUPS." 
             where id='".$att_row['group_id']."'";
@@ -582,18 +591,10 @@ while($j<=$day_num)
           }
           if(in_array($u_list,$temp_show_group_user)){
             $t_info = tep_get_user_info($u_list);
-            echo $t_info['name'].'&nbsp;';
+            echo $t_info['name'].$replace_str.'&nbsp;';
           }
         }
         $user_replace = tep_get_replace_by_uid_date($u_list,$date);
-        if(!empty($user_replace)){
-          $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
-          if($att_date_info['scheduling_type'] == 1){
-            echo '<div style="float: left; background-color:'.$att_date_info['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
-          }else{
-            echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
-          }
-        }
         echo "</a>";
         }
       }

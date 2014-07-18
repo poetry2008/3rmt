@@ -9470,11 +9470,11 @@ else if($_GET['action']=='add_attendance_approve') {
   $group_disabled = '';
 
   $show_only = '';
-  if(!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])){
+  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])){
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
   }
-  if(isset($_GET['gid'])&&$_GET['gid']!=''&&$show_only==''){
+  if($ocertify->npermission!='31'){
     $group_disabled = ' disabled="disabled" ';
   }
 
@@ -9499,11 +9499,19 @@ else if($_GET['action']=='add_attendance_approve') {
       );
   include(DIR_FS_ADMIN.'classes/notice_box.php'); 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
  
   //头部内容
   $heading = array();
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  if(!empty($attendance_dd_arr)){
+    $group_info_sql = "select * from ".TABLE_GROUPS." WHERE id ='".$_GET['gid']."'";
+    $group_info_query = tep_db_query($group_info_sql);
+    if($group_info_row = tep_db_fetch_array($group_info_query)){
+      $date_str .= '&nbsp;&nbsp;'.$group_info_row['name'];
+    }
+  }
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 
   $adl_select = '<select name="attendance_id[]" '.$show_only.' >';
@@ -9544,7 +9552,6 @@ else if($_GET['action']=='add_attendance_approve') {
   //主体内容
   $as_info_row = array();
   //是否有出勤数据
-  $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid']);
   if(!empty($attendance_dd_arr)){
     $show_arr = true;
     foreach($attendance_dd_arr as $a_info){
@@ -9629,8 +9636,10 @@ else if($_GET['action']=='add_attendance_approve') {
   //底部内容
   $buttons = array();
   
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);" onclick="attendance_replace(\''.$_GET['date'].'\')">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="hidden_info_box();"').'</a>'; 
+  //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
+  if(!isset($_GET['gid'])||$_GET['gid']==''){
+    $button[] = '<a href="javascript:void(0);" onclick="attendance_replace(\''.$_GET['date'].'\')">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="hidden_info_box();"').'</a>'; 
+  }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
@@ -9660,10 +9669,8 @@ else if($_GET['action']=='add_attendance_approve') {
 
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
     `date`='".$_GET['date']."' and ";
-  if(isset($_POST['userid'])&&$_POST['userid']!=''){
-    $replace_sql .= " user ='".$_POST['userid']."'";
-  }else{
-    $replace_sql .= " user ='".$ocertify->auth_user."'";
+  if(isset($_GET['uid'])&&$_GET['uid']!=''){
+    $replace_sql .= " user ='".$_GET['uid']."'";
   }
   $change_flag = true;
   $replace_query = tep_db_query($replace_sql);
@@ -9675,7 +9682,8 @@ else if($_GET['action']=='add_attendance_approve') {
     $last_modified = $replace_info_res['update_time'];
   }
 
-  if($replace_info_res['allow_status']==1&&$ocertify->npermission!='31'){
+//  if($replace_info_res['date']<date('Ymd',time())&&$ocertify->npermission!='31'){
+  if($replace_info_res['date']<date('Ymd',time())){
     $disabled = ' disabled="disabled" ';
   }
 
@@ -9791,6 +9799,10 @@ else if($_GET['action']=='add_attendance_approve') {
   //头部内容
   $heading = array();
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
+    $user_info_self = tep_get_user_info($_GET['uid']);
+    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'];
+  }
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
   $heading[] = array('align' => 'left', 'text' => $date_str);
