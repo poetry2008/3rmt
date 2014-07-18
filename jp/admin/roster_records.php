@@ -401,7 +401,7 @@ $(document).ready(function() {
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')).'" method="post">';
         $group_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
         $group_str .= '<tr >';
-        $group_str .= '<td width="150" align="left">';
+        $group_str .= '<td width="15%" align="left">';
         $group_str .= TEXT_GROUP_SELECT;
         $group_str .= '</td>';
         $group_str .= '<td colspan="2" align="left">';
@@ -449,7 +449,7 @@ $(document).ready(function() {
         <td><div id="toggle_width" style="min-width:726px;"></div><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr> 
             <td class="main" align="right">
-<table  style=" margin-top: -30px; min-width: 450px;" width="65%">
+<table  style=" margin-top: -30px; min-width: 450px;" width="85%">
 <tr>
 <td align="left">
 <ul style="padding: 0px;">
@@ -474,9 +474,9 @@ $tep_result = tep_db_query($att_select_sql);
  if($val['scheduling_type']==0){
     $image_directory = 'images';
     $image_dir = $image_directory.'/'.$val['src_text'];
-	echo "<li style='float:left; list-style-type:none; margin: 5px;'><img src='".$image_dir."' style='width: 16px;'>"; 
+	echo "<li style='float:right; list-style-type:none; margin-right: 10px; margin-top:5px;'><img src='".$image_dir."' style='width: 16px;'>"; 
 }elseif($val['scheduling_type']==1){
-     echo '<li style="float:left; list-style-type:none; margin: 5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
+     echo '<li style="float:right; list-style-type:none; margin-right: 10px; margin-top:5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
  }
 echo  '<a onclick="show_attendance_info(this, '.$val['id'].$param.')" href="javascript:void(0);" style="text-decoration: underline;"> >> '.$val['title'].'</a></li>';
  }

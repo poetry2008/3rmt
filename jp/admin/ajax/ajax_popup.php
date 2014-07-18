@@ -9167,11 +9167,11 @@ if($_GET['latest_messages_id']>0){
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="attendance_input"').' }')
+           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="attendance_input"').' }</div>')
      ); 
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
-           array('text' => '${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$disable).' }')
+           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$disable).' }</div>')
      ); 
 
 	//许可
