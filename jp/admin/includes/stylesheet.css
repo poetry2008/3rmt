@@ -2305,5 +2305,8 @@ google hack
     width:62px;
 }
 #calendar_attendance {
-	min-width:40px; min-height:75px;
+	min-width:40px; 
+	min-height:75px;
+	word-break:break-all;
+
 }
