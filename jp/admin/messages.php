@@ -1933,6 +1933,17 @@ require("includes/note_js.php");
 		</td>
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
             </tr>
+            <tr>
+            <td class="smallText" valign="top" colspan="2">
+            <div style="float:right">
+            <?php 
+               if($_GET['status'] == 'trash'){
+                  echo '&nbsp;'.sprintf(TEXT_MESSAGES_DELETE_DATA,$messages_day); 
+               }
+            ?>
+            </div> 
+            </td>
+            </tr>
           </table>
         </td>
       </tr>
@@ -2343,16 +2354,7 @@ require("includes/note_js.php");
                   <tr>
                     <td class="smallText" valign="top"><?php echo $latest_messages_split->display_count($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $messages_page, TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $latest_messages_split->display_links($latest_messages_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $messages_page, tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></div></td>
-                  </tr>
-                  <tr>
-                  <td class="smallText" valign="top" colspan="2">
-                  <?php 
-                   if($_GET['status'] == 'trash'){
-                      echo '&nbsp;'.sprintf(TEXT_MESSAGES_DELETE_DATA,$messages_day); 
-                   }
-                  ?>
-                  </td>
-                  </tr>
+                  </tr> 
                      <tr><td></td><td align="right">
                       <div class="td_button"><?php
                       //通过site_id判断是否允许新建
