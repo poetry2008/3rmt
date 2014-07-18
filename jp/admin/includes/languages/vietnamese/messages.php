@@ -1,6 +1,7 @@
 <?php	
 
 define('HEADING_TITLE', 'Quản lý tin nhắn / Tiếp nhận');
+define('UNREAD_STATUS','Chưa đọc');
 define('READ_STATUS','Đã đọc');
 define('MESSAGES_MARK', 'Đánh dấu');
 define('MESSAGES_FROM', 'From');
@@ -38,4 +39,26 @@ define('CONTENT_MUST_WRITE', 'Hãy nhập nguyên văn.');
 define('MESSAGES_TO_MUST_SELECTED', 'Hãy chọn ít nhất 1 nơi gởi đến');
 define('MESSAGES_PREV', 'Về phía trước');
 define('MESSAGES_NEXT', 'Trang kế tiếp');
+define('HEADING_TITLE_SENT','Quản lý tin nhắn / Gửi');
+define('HEADING_TITLE_DRAFT','Quản lý tin nhắn / dự thảo');
+define('HEADING_TITLE_TRASH','Quản lý tin nhắn / Thùng rác');
+define('MESSAGE_SELECT_RECEIVING','Nhận');
+define('MESSAGE_SELECT_SENT','Gởi xong');
+define('MESSAGE_SELECT_DRAFT','Bản nháp');
+define('MESSAGE_SELECT_TRASH','Giỏ rác');
+define('MESSAGE_SELECT_GROUPS','Chọn nhóm');
+define('MESSAGE_DRAFTS_SAVE','Lưu vào nháp');
+define('MESSAGE_TRASH_SAVE','Dời đến giỏ rác');
+define('MESSAGE_RECOVERY','Tôi quay trở lại với bản gốc');
+define('UNREAD_STATUSS_ACTION','Chưa đọc');
+define('READ_STATUS_ACTION','Đã đọc');
+define('MESSAGE_READ_CONFIRM','Bạn có chắc chắn bạn muốn thực sự đọc?');
+define('MESSAGE_UNREAD_CONFIRM','Bạn có chắc chắn bạn muốn thực sự chưa đọc?');
+define('MESSAGE_TRASH_CONFIRM','Bạn có chắc bạn muốn di chuyển vào thùng rác thực sự?');
+define('MESSAGE_RECOVERY_CONFIRM','Bạn có thực sự trở lại với bản gốc?');
+define('EMAIL_RADIO','Email');
+define('EMAIL_SUBJECT','Quản lý tin nhắn [% s] ');
+define('TEXT_SEND_MAIL','Bạn có chắc bạn muốn gửi không?');
+define('TEXT_USER_NO_EMAIL','Địa chỉ E-mail chưa được thiết lập người dùng.');
+define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','Hãy%s trong kích thước của tập tin đính kèm.');
 ?>

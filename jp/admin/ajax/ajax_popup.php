@@ -8024,7 +8024,7 @@ $banner_query = tep_db_query("
     }
     $contents_banners[]['text'] = array(
         array('text' => TEXT_CONTENTS), 
-        array('text' => '<input class="td_input" type="radio" '.$checked_img.' onclick="check_radio(this.value)" value="0" class="td_input" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_IMAGE).'<input class="td_input" type="radio" '.$checked_html.' onclick="check_radio(this.value)" value="1" class="td_input" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_HTML_TEXT))
+        array('text' => '<input class="td_input_radio" type="radio" '.$checked_img.' onclick="check_radio(this.value)" value="0" class="td_input_radio" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_IMAGE).'<input class="td_input_radio" type="radio" '.$checked_html.' onclick="check_radio(this.value)" value="1" class="td_input_radio" name="banner_show_type">'.str_replace(':','',TEXT_BANNERS_HTML_TEXT))
         );
     $banners_start = $notice_box->get_table($contents_banners);  
     $contents[]['text'] = array(
