@@ -2296,11 +2296,14 @@ google hack
  */
 
 .attendance_input {
-width:180px;
+    width:180px;
 }
 #type_id,#src_text_color{
-width:80px;
+    width:80px;
 }
 .set_time_field_content tr td select {
-width:62px;
+    width:62px;
+}
+#calendar_attendance {
+	min-width:40px; min-height:75px;
 }

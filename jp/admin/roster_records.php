@@ -534,7 +534,7 @@ while($j<=$day_num)
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
   echo "<td style='cursor:pointer;' onclick='attendance_setting(\"".$date."\",this)' valign='top'>";
   $att_arr = tep_get_attendance($date,$show_group_id,false);
-  echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+  echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;'>";
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
@@ -627,6 +627,7 @@ if(!$end)
 
   </table>
 
+</div>
     </td>
       </tr> 
   </table></div></div></td>
