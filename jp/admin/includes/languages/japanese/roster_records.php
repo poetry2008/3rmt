@@ -71,6 +71,7 @@ define('TEXT_ALLOW_START','開始日時');
 define('TEXT_ALLOW_END','終了日時');
 define('TEXT_ADL_TEXT_INFO','コメント');
 define('TEXT_LEAVE_ONE_DAY','休み');
-
+define('HOUR_TEXT', '時');	
+define('TIME_HOUR_TEXT', '時間');
 ?>
 
