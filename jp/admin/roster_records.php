@@ -585,7 +585,7 @@ while($j<=$day_num)
     if($att_info['scheduling_type'] == 1&&tep_is_show_att_group($att_row['group_id'],$date)){
       echo "<tr>";
       echo "<td bgcolor='".$att_info['src_text']."'>";
-      echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' $style>";
+      echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
       echo $att_info['short_language'];
       echo "</div>";
       echo "<div>";
