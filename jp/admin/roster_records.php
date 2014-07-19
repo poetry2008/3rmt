@@ -391,7 +391,9 @@ $(document).ready(function() {
         $show_group_query = tep_db_query($show_group_sql);
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $show_group_id = $show_group_row['gid'];
-          $show_select_group_user[] = $show_group_row['user_id'];
+          if($show_group_row['user_id']!=''){
+            $show_select_group_user[] = $show_group_row['user_id'];
+          }
         }
         if($show_group_id==0){
           $user_sql = 'select * from '.TABLE_USERS;
@@ -578,14 +580,14 @@ while($j<=$day_num)
   foreach($att_arr as $att_row){
     $att_info_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id='".$att_row['attendance_detail_id']."' limit 1";
     $att_info_query = tep_db_query($att_info_sql);
-    if($att_info = tep_db_fetch_array($att_info_query)&&!empty($show_select_group_user)){
+    if($att_info = tep_db_fetch_array($att_info_query)){
+    if(!empty($show_select_group_user)&&$date){
     if($att_info['scheduling_type'] == 1&&tep_is_show_att_group($att_row['group_id'],$date)){
       echo "<tr>";
       echo "<td bgcolor='".$att_info['src_text']."'>";
       echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' $style>";
       echo $att_info['short_language'];
       echo "</div>";
-    if($date){
       echo "<div>";
       foreach($show_select_group_user as $u_list){
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
