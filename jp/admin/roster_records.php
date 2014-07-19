@@ -583,10 +583,10 @@ while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
   $att_arr = tep_get_attendance($date,$show_group_id,false);
-  $style= (empty($att_arr)) ? '':"style='cursor:pointer;'";
+  $style= (empty($att_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
-  echo "<tr><td align='left' $style  style='font-size:14px; border-width:0px;'";
+  echo "<tr><td align='left' style='font-size:14px; border-width:0px;' $style";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   }else{
@@ -609,7 +609,7 @@ while($j<=$day_num)
     if($att_info['scheduling_type'] == 1&&tep_is_show_att_group($att_row['group_id'],$date)){
       echo "<tr>";
       echo "<td bgcolor='".$att_info['src_text']."'>";
-      echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' $style>";
+      echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
       echo $att_info['short_language'];
       echo "</div>";
       echo "<div>";

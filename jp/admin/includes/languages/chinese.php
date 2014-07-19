@@ -500,15 +500,19 @@ define('HEADER_TEXT_ORDERMENU','订单▼');
 define('HEADER_TEXT_INVENTORY','库存标准');
 define('HEADER_TEXT_CATEGORIES_ADMIN','价格调整');
 
-define('HEADER_ATTENDANCE_LOGOUT','下班');
-define('HEADER_ATTENDANCE_LOGIN','上班');
-define('HEADER_ATTENDANCE_LOGIN_TITLE','出勤します。');
-define('HEADER_ATTENDANCE_LOGOUT_TITLE','退勤します。');
+define('HEADER_ATTENDANCE_LOGOUT_1','已');
+define('HEADER_ATTENDANCE_LOGOUT_2','下班');
+define('HEADER_ATTENDANCE_LOGOUT_3','');
+define('HEADER_ATTENDANCE_LOGIN_1','');
+define('HEADER_ATTENDANCE_LOGIN_2','工作');
+define('HEADER_ATTENDANCE_LOGIN_3','中');
+define('HEADER_ATTENDANCE_LOGIN_TITLE','开始工作');
+define('HEADER_ATTENDANCE_LOGOUT_TITLE','结束工作');
 
-define('HEADER_LOGIN_REMIND','楽しい一日の仕事を始めましょうか？');
-define('HEADER_LOGIN_OK','OK　キャンセル');
-define('HEADER_LOGOUT_REMIND','お疲れ様でした。仕事がこれで終わりますか？');
-define('HEADER_LOGOUT_OK','OK　キャンセル');
+define('HEADER_LOGIN_REMIND','是否开始一天愉快的工作 ?');
+define('HEADER_LOGIN_OK','OK　取消');
+define('HEADER_LOGOUT_REMIND','辛苦了, 是否结束工作 ?');
+define('HEADER_LOGOUT_OK','OK　取消');
 
 
 
