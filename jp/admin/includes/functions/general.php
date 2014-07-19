@@ -13853,7 +13853,21 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
       if($real_work_start_str < $work_start_str && $real_work_end_str > $work_end_str){
       }else if($real_work_start_str < $work_start_str && $real_work_end_str == 0 && $date==date('Ymd',time())){
       }else{
-        $show_user = true;
+        if($date==date('Ymd',time())){
+          $now_time = date('H:i',time());
+          $tow_sub_time = floor((strtotime($real_work_end)-strtotime($now_time))%86400/3600)+0.5;
+          if($tow_sub_time>0){
+            if($real_work_end_str > $work_start_str|| $real_work_end_str< $work_end_str){
+              $show_user = true;
+            }
+          }else{
+            if($real_work_start_str > $work_start_str){
+              $show_user = true;
+            }
+          }
+        }else{
+          $show_user = true;
+        }
       }
     }else{
       $real_work_start = $row['login_time'];
@@ -13872,7 +13886,7 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
         }
         $return_str .= substr($row['login_time'],11,5)
           .  '～';
-        if(substr($row['logout_time'],11,5)=='00:00'){
+        if(substr($row['logout_time'],11,5)=='00:00'||$row['logout_time']==null){
           $return_str .= '......';
         }else{
           $return_str .= substr($row['logout_time'],11,5);
@@ -14011,5 +14025,23 @@ function tep_get_replace_by_uid_date($uid,$date){
     return $row;
   }else{
     return false;
+  }
+}
+
+function tep_is_group_manager($uid,$show_gid=false){
+  $res = array();
+  $sql = "select id from ".TABLE_GROUPS." WHERE
+    all_managers_id like '".$user."' or
+    all_managers_id like '".$user."|||%' or
+    all_managers_id like '%|||".$user."|||%' or
+    all_managers_id like '%|||".$user."'";
+  $query = tep_db_query($sql);
+  while($row = tep_db_fetch_array()){
+    $res[] = $row['id'];
+  }
+  if($show_gid){
+    return array_unique($res);
+  }else{
+    return count(array_unique($res));
   }
 }

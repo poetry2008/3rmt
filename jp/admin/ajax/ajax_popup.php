@@ -8353,7 +8353,7 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']>0){
 	$sql_message_content = tep_db_query('select * from messages where id = "'.$_GET['latest_messages_id'].'"');
 	$sql_message_content_res = tep_db_fetch_array($sql_message_content);
-	$messages_text_area = '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" disabled="disabled" name="contents">'.$sql_message_content_res['content'].'</textarea><input type="hidden" name="drafts_contents" value="'.$sql_message_content_res['content'].'">';
+        $messages_text_area = '<textarea id="messages_text" style="overflow-y:hidden;width:100%;height:163px;" disabled="disabled" name="contents">'.$sql_message_content_res['content'].'</textarea><input type="hidden" name="drafts_contents" value="'.$sql_message_content_res['content'].'">';
  }else{
  	$messages_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="contents"></textarea>';
  }
@@ -9654,6 +9654,27 @@ echo  $return_res;
   }else{
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
   }
+
+  $att_select = '<select name="attendance_detail_id" disabled="disabled">';
+  if(isset($_GET['uid'])&&$_GET['uid']!=''){
+    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
+    if(!empty($replace_att_list)){
+      foreach($replace_att_list as $att_info){
+        $att_select .= '<option value="'.$att_info['id'].'"';
+        if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$att_info['id']){
+          $att_select .= ' selected ';
+        }
+        $att_select .= '>'.$att_info['title'].'</option>';
+ 
+      }
+    }else{
+      $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+    }
+  }else{
+    $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+  }
+
+
   $replace_att_list_rep = tep_get_attendance_by_user_date($_GET['date'],0,true);
 
   foreach($replace_att_list_rep as $att_info_rep){
@@ -9842,10 +9863,10 @@ echo  $return_res;
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.
     $_GET['index'].'\',\'\')"').'</a>'; 
   }
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if($ocertify->npermission=='31'){
     $disabled = '';
   }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
   if (!empty($button)) {

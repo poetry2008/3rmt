@@ -1214,7 +1214,10 @@ function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sor
  dataType: 'text',
  async : false,
  success: function(data){
-  $("div#show_latest_news").html(data);
+   $("div#show_latest_news").html(data);
+   if(document.getElementById("messages_text")){
+     document.getElementById("messages_text").style.height = document.getElementById("messages_text").scrollHeight < 163 ? 163+"px" : document.getElementById("messages_text").scrollHeight+"px";
+   }
   if($('#info_'+latest_messages_id).prev().attr('id') != '' && $('#info_'+latest_messages_id).prev().attr('id') != null){
     var m_id = $('#info_'+latest_messages_id).prev().attr('id');
     m_id = m_id.split('_');
@@ -1280,8 +1283,10 @@ if(latest_messages_id == -1){
 $('#show_latest_news').css('z-index','1');
 $('#show_latest_news').css('left',leftset);
 $('#show_latest_news').css('display', 'block');
+if(document.getElementById("messages_text")){
+  document.getElementById("messages_text").style.height = document.getElementById("messages_text").scrollHeight < 163 ? 163+"px" : document.getElementById("messages_text").scrollHeight+"px";
+}
 o_submit_single = true;
-	
   }
   }); 
 }
