@@ -564,7 +564,7 @@ while($j<=$day_num)
       echo "<div>";
       foreach($show_select_group_user as $u_list){
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
-        $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
+        $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
         $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date);
         if(!empty($user_replace)){

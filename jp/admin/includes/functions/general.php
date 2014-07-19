@@ -13834,7 +13834,16 @@ function valatete_two_time($first_start,$first_end,$second_start,$second_end){
   return false;
 }
 
-function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
+function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
+  global $ocertify;
+  $today = date('Ymd',time());
+  $manager_list = tep_get_user_list_by_userid($uid);
+  $param_str = '';
+  if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
+    if($date<$today){
+      $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\')">';
+    }
+  }
   $user_info = tep_get_user_info($uid);
   $sql = "select * from ".TABLE_ATTENDANCE." WHERE 
     user_name='".$uid."' and date='".$date."'";
@@ -13851,9 +13860,9 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
       $work_start_str = str_replace(':','',$work_start);
       $work_end_str = str_replace(':','',$work_end);
       if($real_work_start_str < $work_start_str && $real_work_end_str > $work_end_str){
-      }else if($real_work_start_str < $work_start_str && $real_work_end_str == 0 && $date==date('Ymd',time())){
+      }else if($real_work_start_str < $work_start_str && $real_work_end_str == 0 && $date==$today){
       }else{
-        if($date==date('Ymd',time())){
+        if($date==$today){
           $now_time = date('H:i',time());
           $tow_sub_time = floor((strtotime($real_work_end)-strtotime($now_time))%86400/3600)+0.5;
           if($tow_sub_time>0){
@@ -13879,6 +13888,9 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color){
     }
     if($show_user){
         $return_str = $user_info['name'].'&nbsp;';
+        if($param_str != ''){
+          $return_str .= $param_str;
+        }
         if($bg_color == '#DD1F2C'){
           $return_str .= '<font color ="#FFFFFF">';
         }else{
