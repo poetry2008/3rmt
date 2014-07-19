@@ -9735,7 +9735,7 @@ else if($_GET['action']=='add_attendance_approve') {
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
   $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
-  if(in_array($ocertify->auth_user,$allow_user_list)||$ocertify->npermission=='31'||!$change_flag){
+  if(in_array($ocertify->auth_user,$allow_user_list)||$ocertify->npermission=='31'){
     if($_GET['date']<date('Ymd',time())){
       $allow_disabled = ' disabled="disabled" '; 
     }else{
@@ -9849,10 +9849,10 @@ else if($_GET['action']=='add_attendance_approve') {
 
   $is_first = true;
   foreach($allow_user_list as $allow_user){
-    $allow_user_select = '<select name="allow_user[]" '.$allow_disabled.'>';
+    $allow_user_select = '<select name="allow_user[]" '.$disabled.'>';
     foreach($user_list as $user_info){
       $allow_user_select .= '<option value="'.$user_info.'"';
-      if($allow_user == $user_info['userid']){
+      if($allow_user == $user_info){
         $allow_user_select .= ' selected ';
       }
       $t_user_info = tep_get_user_info($user_info);
@@ -9861,10 +9861,10 @@ else if($_GET['action']=='add_attendance_approve') {
     $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
     if($is_first){
       $allow_user_text = TEXT_ALLOW_USER;
-      $allow_user_button = '<input type="button" value="'.TEXT_ADD_ADL.'" '.$allow_disabled.' onclick="add_allow_user(this,\''.TEXT_DEL_ADL.'\')">';
+      $allow_user_button = '<input type="button" value="'.TEXT_ADD_ADL.'" '.$disabled.' onclick="add_allow_user(this,\''.TEXT_DEL_ADL.'\')">';
     }else{
       $allow_user_text = TEXT_ALLOW_USER;
-      $allow_user_button = '<input type="button" value="'.TEXT_DEL_ADL.'" '.$allow_disabled.' onclick="del_allow_user(this)">';
+      $allow_user_button = '<input type="button" value="'.TEXT_DEL_ADL.'" '.$disabled.' onclick="del_allow_user(this)">';
     }
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => $allow_user_text), 

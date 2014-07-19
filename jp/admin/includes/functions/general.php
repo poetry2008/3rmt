@@ -13983,4 +13983,3 @@ function tep_get_replace_by_uid_date($uid,$date){
     return false;
   }
 }
-
