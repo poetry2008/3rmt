@@ -344,6 +344,28 @@ $(document).ready(function() {
   });
 });
 </script>
+
+<?php 
+$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
+$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
+$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
+preg_match_all('/action=new_group/',$belong,$belong_temp_array);
+if($belong_temp_array[0][0] != ''){
+  preg_match_all('/id=[^&]+/',$belong,$belong_array);
+  if($belong_array[0][0] != ''){
+
+    $belong = $href_url.'?'.$belong_array[0][0];
+  }else{
+
+    $belong = $href_url.'?'.$belong_temp_array[0][0];
+  }
+}else{
+
+  $belong = $href_url;
+}
+require("includes/note_js.php");
+?>
+
 </head>
 <body bgcolor="#FFFFFF" onLoad="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>

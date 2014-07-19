@@ -259,14 +259,16 @@ echo "</a>";
      $num_rows = tep_db_num_rows($query);
 	 
 if($num_rows ==0) { 
-?>
-	<a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGIN_TITLE;?>" style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGOUT; ?></font></a>
+	echo HEADER_ATTENDANCE_LOGOUT_1;
+?>	<a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGIN_TITLE;?>" style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGOUT_2; ?></font></a>
 <?php
+	echo HEADER_ATTENDANCE_LOGOUT_3;
 }else {
+	echo  HEADER_ATTENDANCE_LOGIN_1;
 ?>
-	<a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGOUT_TITLE;?>"  style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGIN; ?></font></a>
-
+	<a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGOUT_TITLE;?>"  style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGIN_2; ?></font></a>
 <?php
+	echo  HEADER_ATTENDANCE_LOGIN_3;
 }
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
