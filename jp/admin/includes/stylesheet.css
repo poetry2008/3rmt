@@ -2310,3 +2310,11 @@ google hack
 	word-break:break-all;
 
 }
+.rectangle{ 
+width:12px;
+height:12px; 
+border:1px solid #ccc; 
+display:-moz-inline-box;
+display:inline-block; 
+
+}

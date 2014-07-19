@@ -169,6 +169,10 @@ function change_image_text(_this) {
 }
 
 function attendance_setting(date,ele,gid){
+  if(!gid){
+    gid='';
+  }
+  var index = ele;
   var ele = document.getElementById('date_td_'+ele);
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
@@ -183,7 +187,7 @@ function attendance_setting(date,ele,gid){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting&date='+date+'&gid='+gid,
+    url: 'ajax.php?action=attendance_setting&date='+date+'&gid='+gid+'&index='+index,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -440,6 +444,10 @@ function change_user_list(ele){
 }
 
 function attendance_replace(date,ele,uid){
+  if(!uid){
+    uid='';
+  }
+  var index = ele;
   var ele = document.getElementById('date_td_'+ele);
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
@@ -454,7 +462,7 @@ function attendance_replace(date,ele,uid){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_replace&date='+date+'&uid='+uid,
+    url: 'ajax.php?action=attendance_replace&date='+date+'&uid='+uid+'&index='+index,
     dataType: 'text',
     async: false,
     success: function(text) {

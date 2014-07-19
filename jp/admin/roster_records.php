@@ -107,9 +107,9 @@ if(isset($_GET['action'])){
       $user = $_SESSION['user_name'];
       $date = $_POST['get_date'];
       $attendance_detail_id = $_POST['attendance_detail_id'];
-      $user_id = $ocertify->auth_user;
+      $user_id = $_POST['user_id'];
       $replace_attendance_detail_id = $_POST['replace_attendance_detail_id'];
-      $allow_satus = $_POST['allow_satus'];
+      $allow_status = $_POST['allow_status'];
       $leave_start = $_POST['leave_start_hour'].':'.$_POST['leave_start_minute_a'].$_POST['leave_start_minute_b'];
       $leave_end = $_POST['leave_end_hour'].':'.$_POST['leave_end_minute_a'].$_POST['leave_end_minute_b'];
       $allow_user = implode('|||',$_POST['allow_user']);
@@ -130,7 +130,7 @@ if(isset($_GET['action'])){
         if($row_replace = tep_db_fetch_array($query_replace)){
           $u_list = explode('|||',$row_replace['allow_user']);
           if(in_array($user_id,$u_list)||$ocertify->npermission=='31'){
-            $sql_update_arr['allow_status'] = $allow_satus;
+            $sql_update_arr['allow_status'] = $allow_status;
           }
         }
         tep_db_perform(TABLE_ATTENDANCE_DETAIL_REPLACE,$sql_update_arr,'update','id=\''.$_POST['replace_id'].'\'');
@@ -529,7 +529,6 @@ while($j<=$day_num)
   $style= (empty($att_arr)) ? '':"style='cursor:pointer;'";
   echo "<td id='date_td_".$j."'  valign='top' $style>";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
-  echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;' onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
@@ -557,15 +556,20 @@ while($j<=$day_num)
         if(tep_is_show_att_user($u_list,$date)){
         $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
         $replace_str ='';
+        $user_replace = tep_get_replace_by_uid_date($u_list,$date);
         if(!empty($user_replace)){
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
           if($att_date_info['scheduling_type'] == 1){
-            $replace_str =  '<div style="float: left; background-color:'.$att_date_info['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
+            $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
           }else{
             $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
           }
         }
-        echo "<a href='javascript:void(0)' onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\")' >";
+        echo "<a href='javascript:void(0)' ";
+        if(!empty($user_replace)||$date>=$today||$ocertify->auth_user==$u_list||$ocertify->npermission=='31'){
+          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\")' ";
+        }
+        echo ">";
         if($v_att!=false){
           echo preg_replace("/<br>$/",$replace_str.'<br>',$v_att);
         }else{
@@ -580,7 +584,6 @@ while($j<=$day_num)
             echo $t_info['name'].$replace_str.'&nbsp;';
           }
         }
-        $user_replace = tep_get_replace_by_uid_date($u_list,$date);
         echo "</a>";
         }
       }
@@ -593,31 +596,36 @@ while($j<=$day_num)
     }
   }
   //不在排班组的请假
-  if(false){
-    echo "<tr><td>";
+    echo "<tr><td style='font-size:14px; border-width:0px;'>";
     echo '<div>';
     $sql_replace_att = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." WHERE 
       `date` = '".$date."'";
     $query_replace_att = tep_db_query($sql_replace_att);
     while($row_replace_att = tep_db_fetch_array($query_replace_att)){
       if(!in_array($row_replace_att['user'],$user_worke_list)){
+      $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
       $u_info = tep_get_user_info($row_replace_att['user']);
       $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
+      echo "<a href='javascript:void(0)' ";
+      if(!empty($user_replace)||$date>=$today){
+        echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
+      }
+      echo " >";
       if(!empty($u_info)){
         echo $u_info['name'];
       }
       if(!empty($att_date_info)){
         if($att_date_info['scheduling_type'] == 1){
-          echo '<div style="float: left; background-color:'.$att_date_info['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
+          echo '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
         }else{
           echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
         }
       }
+      echo "</a>";
       }
     }
     echo '</div>';
     echo "</td></tr>";
-  }
   echo "</table>";
   echo "</td>";
   $week = ($start_week+$j-1)%7;
@@ -641,7 +649,6 @@ if(!$end)
 
   </table>
 
-</div>
     </td>
       </tr> 
   </table></div></div></td>
