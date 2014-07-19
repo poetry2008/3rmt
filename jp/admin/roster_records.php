@@ -140,7 +140,7 @@ if(isset($_GET['action'])){
             'user' => $user_id,
             'attendance_detail_id' => $attendance_detail_id,
             'replace_attendance_detail_id' => $replace_attendance_detail_id,
-            'allow_status' => $allow_satus,
+            'allow_status' => $allow_status,
             'leave_start' => $leave_start,
             'leave_end' => $leave_end,
             'allow_user' => $allow_user,
@@ -529,7 +529,12 @@ while($j<=$day_num)
   $style= (empty($att_arr)) ? '':"style='cursor:pointer;'";
   echo "<td id='date_td_".$j."'  valign='top' $style>";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
-  echo "<tr><td align='left' style='font-size:14px; border-width:0px;' onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
+  echo "<tr><td align='left' style='font-size:14px; border-width:0px;' ";
+  if($ocertify->npermission=='31'){
+    echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
+  }else{
+    echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
+  }
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
     echo $j;
@@ -553,7 +558,7 @@ while($j<=$day_num)
       echo "<div>";
       foreach($show_select_group_user as $u_list){
         $user_worke_list[] = $u_list;
-        if(tep_is_show_att_user($u_list,$date)){
+        if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
         $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
         $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date);
@@ -563,6 +568,9 @@ while($j<=$day_num)
             $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
           }else{
             $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
+          }
+          if($user_replace['allow_status']==0){
+            $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
         echo "<a href='javascript:void(0)' ";
@@ -620,6 +628,9 @@ while($j<=$day_num)
         }else{
           echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
         }
+      }
+      if($row_replace_att['allow_status']==0){
+        echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
       echo "</a>";
       }
