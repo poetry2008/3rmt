@@ -490,8 +490,12 @@ define('HEADER_TEXT_ORDERMENU','注文書▼');
 define('HEADER_TEXT_INVENTORY','在庫水準');
 define('HEADER_TEXT_CATEGORIES_ADMIN','価格調整');
 
-define('HEADER_ATTENDANCE_LOGOUT','で退勤しています。');
-define('HEADER_ATTENDANCE_LOGIN','で出勤しています。');
+define('HEADER_ATTENDANCE_LOGOUT_1','で');
+define('HEADER_ATTENDANCE_LOGOUT_2','退勤');
+define('HEADER_ATTENDANCE_LOGOUT_3','しています。');
+define('HEADER_ATTENDANCE_LOGIN_1','で');
+define('HEADER_ATTENDANCE_LOGIN_2','出勤');
+define('HEADER_ATTENDANCE_LOGIN_3','しています。');
 define('HEADER_ATTENDANCE_LOGIN_TITLE','出勤します。');
 define('HEADER_ATTENDANCE_LOGOUT_TITLE','退勤します。');
 
