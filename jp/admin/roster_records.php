@@ -539,7 +539,7 @@ while($j<=$day_num)
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   }else{
-    echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' ";
+    echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
   }
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
@@ -549,7 +549,7 @@ while($j<=$day_num)
     echo $j;
   }
   echo "</td></tr>";
-  $user_worke_list = array();
+  $user_worker_list = array();
   foreach($att_arr as $att_row){
     $att_info_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id='".$att_row['attendance_detail_id']."' limit 1";
     $att_info_query = tep_db_query($att_info_sql);
@@ -563,12 +563,12 @@ while($j<=$day_num)
     if(!empty($show_select_group_user)&&$date){
       echo "<div>";
       foreach($show_select_group_user as $u_list){
-        $user_worke_list[] = $u_list;
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
         $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
         $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date);
         if(!empty($user_replace)){
+          $user_worker_list[] = $u_list;
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
           if($att_date_info['scheduling_type'] == 1){
             $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
@@ -616,7 +616,7 @@ while($j<=$day_num)
       `date` = '".$date."'";
     $query_replace_att = tep_db_query($sql_replace_att);
     while($row_replace_att = tep_db_fetch_array($query_replace_att)){
-      if(!in_array($row_replace_att['user'],$user_worke_list)){
+      if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
       $u_info = tep_get_user_info($row_replace_att['user']);
       $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);

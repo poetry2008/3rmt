@@ -13727,7 +13727,7 @@ function tep_change_attendance_logout($uid) {
 function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
 
   if (!is_array($group_tree_array)) $group_tree_array = array();
-  $group_sql = "select name,parent_id,id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."'";
+  $group_sql = "select name,parent_id,id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1'";
   $group_query = tep_db_query($group_sql);
   while ($groups = tep_db_fetch_array($group_query)){
     $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
@@ -13935,10 +13935,10 @@ function tep_get_attendance_by_user_date($date,$user=0,$show_other=false){
 function tep_get_groups_by_user($user){
   $res = array();
   $sql = "select id from ".TABLE_GROUPS." WHERE
-    all_users_id like '".$user."' or
+    (all_users_id like '".$user."' or
     all_users_id like '".$user."|||%' or
     all_users_id like '%|||".$user."|||%' or
-    all_users_id like '%|||".$user."'";
+    all_users_id like '%|||".$user."') and group_status='1'";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $res[] = $row['id'];
@@ -13948,10 +13948,10 @@ function tep_get_groups_by_user($user){
 function tep_get_user_list_by_userid($user){
   $res = array();
   $sql = "select all_managers_id from ".TABLE_GROUPS." WHERE
-    all_users_id like '".$user."' or
+    (all_users_id like '".$user."' or
     all_users_id like '".$user."|||%' or
     all_users_id like '%|||".$user."|||%' or
-    all_users_id like '%|||".$user."'";
+    all_users_id like '%|||".$user."') and group_status='1'";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     if($row['all_managers_id']!=''){
@@ -13976,7 +13976,7 @@ function tep_get_attendance_by_id($aid){
 
 function tep_is_manager_by_gid($uid,$gid){
   $sql = "select * from ".TABLE_GROUPS." 
-    where id='".$gid."'";
+    where id='".$gid."' and group_status='1'";
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
     $arr = explode('|||',$row['all_managers_id']);
@@ -13992,7 +13992,7 @@ function tep_is_show_att_group($gid,$date){
     $day = substr($date,6,2); 
     $time_str = mktime(0,0,0,$month,$day,$year);
     $sql = "select * from ".TABLE_GROUPS.  " WHERE 
-      id='".$gid."' and UNIX_TIMESTAMP(create_time) < ".$time_str."";
+      id='".$gid."' and group_status ='1'  and UNIX_TIMESTAMP(create_time) < ".$time_str."";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       return $row;
@@ -14031,10 +14031,10 @@ function tep_get_replace_by_uid_date($uid,$date){
 function tep_is_group_manager($uid,$show_gid=false){
   $res = array();
   $sql = "select id from ".TABLE_GROUPS." WHERE
-    all_managers_id like '".$user."' or
+    (all_managers_id like '".$user."' or
     all_managers_id like '".$user."|||%' or
     all_managers_id like '%|||".$user."|||%' or
-    all_managers_id like '%|||".$user."'";
+    all_managers_id like '%|||".$user."') and group_status='1'";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array()){
     $res[] = $row['id'];
@@ -14044,4 +14044,14 @@ function tep_is_group_manager($uid,$show_gid=false){
   }else{
     return count(array_unique($res));
   }
+}
+
+function tep_get_userlist_by_group_uid($uid){
+  $uid_list = tep_is_group_manager($uid,true);
+  foreach($uid_list as $uid){
+    $user_info = tep_get_user_info($uid);
+    $res[$uid] = $user_info['name'];
+  }
+  asort($res);
+  return $res;
 }
