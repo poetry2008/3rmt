@@ -569,6 +569,9 @@ while($j<=$day_num)
           }else{
             $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
           }
+          if($user_replace['allow_status']==0){
+            $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
+          }
         }
         echo "<a href='javascript:void(0)' ";
         if(!empty($user_replace)||$date>=$today||$ocertify->auth_user==$u_list||$ocertify->npermission=='31'){
@@ -625,6 +628,9 @@ while($j<=$day_num)
         }else{
           echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
         }
+      }
+      if($row_replace_att['allow_status']==0){
+        echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
       echo "</a>";
       }
