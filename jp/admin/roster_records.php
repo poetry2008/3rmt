@@ -4,6 +4,10 @@
 */
 include("includes/application_top.php");
 
+//删除过期未允许数据
+$date = date('Ymd',time());
+tep_db_query("delete from  ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where allow_status =0 and date<".$date);
+
 $month = $_GET['m']?$_GET['m']:date('n');
 $year = $_GET['y']?$_GET['y']:date('Y');
 if($month==12){
@@ -442,7 +446,9 @@ $(document).ready(function() {
 $param_attendance = $_SERVER['QUERY_STRING'];
 $param_tep = explode('&',$param_attendance);
 if($param_tep[0]!=''){
+	if(count($param_tep)>1){
     $param .=','.$param_tep[0].','.$param_tep[1];
+	}
 }
 
 $att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
