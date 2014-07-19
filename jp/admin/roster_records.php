@@ -530,10 +530,10 @@ while($j<=$day_num)
   echo "<td id='date_td_".$j."'  valign='top' $style>";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;' ";
-  if($ocertify->npermission=='31'){
+  if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   }else{
-    echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
+    echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' ";
   }
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";
