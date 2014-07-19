@@ -59,22 +59,6 @@ function delete_attendance_info(id){
 }
 
 
-//add approve
-function add_attendance_approve_person(id){
-        $.ajax({
-            url: 'ajax.php?action=add_attendance_approve',
-            data: 'id='+id,
-            type: 'POST',
-            dataType: 'text',
-            async : false,
-            success: function(data){
-				if(data){
-                  $("#tep_add").append(data);
-				}
-            }
-        }); 
-}
-
 //change scheduling_type
 function change_type_text(){
 	var select_val = $("#type_id").val();

@@ -192,7 +192,6 @@ case 'update':
      $param_a = tep_db_prepare_input($_POST['param_a']);
      $param_b = tep_db_prepare_input($_POST['param_b']);
 	 $sort = tep_db_prepare_input($_POST['sort']);
-	 $approve_person = tep_db_prepare_input($_POST['approve_person']);
 	 $scheduling_type = $_POST['scheduling_type'];
 	 $set_time = tep_db_prepare_input($_POST['set_time']);
 	 $work_start=$_POST['work_start_hour'].':'.$_POST['work_start_minute_a'].$_POST['work_start_minute_b'];
@@ -243,20 +242,6 @@ case 'update':
 	     $src_text = $_POST['scheduling_type_color'];
 	 }
 
-	 if(count($_POST['add_approve_person'])!=0){
-        $_POST['add_approve_person']= array_unique($_POST['add_approve_person']);
-		 for($i=0;$i<count($_POST['add_approve_person']);$i++) {
-			 if($i==count($_POST['add_approve_person'])-1) {
-			 
-		 $str_tep .= $_POST['add_approve_person'][$i];
-			 }else{
-			 
-		 $str_tep .= $_POST['add_approve_person'][$i].',';
-			 }
-		 }
-
-      $approve_person = $str_tep;
-	 }
 
 	 $sql_data_array =array(
 	   'title' => $title,
@@ -265,7 +250,6 @@ case 'update':
 	   'param_a' => $param_a, 
 	   'param_b' => $param_b, 
        'sort' => $sort,
-	   'approve_person' => $approve_person,
 	   'scheduling_type' => $scheduling_type,
 	   'set_time' => $set_time,
        'work_start' => $work_start,
