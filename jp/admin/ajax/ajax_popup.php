@@ -9600,11 +9600,10 @@ echo  $return_res;
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
 
+  if(isset($_GET['uid'])&&$_GET['uid']!=''){
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
     `date`='".$_GET['date']."' ";
-  if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_sql .= " and user ='".$_GET['uid']."'";
-  }
   $change_flag = true;
   $replace_query = tep_db_query($replace_sql);
   if($replace_info_res = tep_db_fetch_array($replace_query)){
@@ -9613,6 +9612,7 @@ echo  $return_res;
     $date_added = $replace_info_res['add_time'];
     $user_update = $replace_info_res['update_user'];
     $last_modified = $replace_info_res['update_time'];
+  }
   }
 
   $user_list = tep_get_user_list_by_userid($_GET['uid']);
