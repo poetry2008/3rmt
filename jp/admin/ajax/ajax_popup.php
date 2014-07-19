@@ -9801,7 +9801,7 @@ echo  $return_res;
   $heading[] = array('align' => 'right', 'text' => $page_str);
   $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'"><input type="hidden" name="replace_id" value="'.$replace_info_res['id'].'">';
 
-  if((!isset($_GET['uid'])||$_GET['uid']=='')&&$ocertify->npermission=='31'){
+  if((!isset($_GET['uid'])||$_GET['uid']=='')&&$ocertify->npermission>'10'){
     $sql_all_user = "select * from ".TABLE_USERS." order by name asc";
     $query_all_user = tep_db_query($sql_all_user);
     $all_user_select = '<select name="user_id" '.$disabled.'>';
@@ -9919,7 +9919,6 @@ echo  $return_res;
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
-
   $heading = array();
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
@@ -9937,6 +9936,7 @@ echo  $return_res;
   if($att_row = tep_db_fetch_array($att_query)){
     $login_end = substr($att_row['login_time'],11,5);
     $logout_end = substr($att_row['logout_time'],11,5);
+    $aid = $att_row['id'];
   }
 
 
@@ -9987,6 +9987,8 @@ echo  $return_res;
     $att_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $att_end .= '</select>&nbsp;&nbsp;<font color="red" id="att_end_error"></font>';
+  $att_end .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  $att_end .= '<input type="hidden" name="aid" value="'.$aid.'">';
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 

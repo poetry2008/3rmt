@@ -30,6 +30,30 @@ $str_next_str = '?y='.$next_year.'&m='.$next_month;
 $str_prev_str = '?y='.$prev_year.'&m='.$prev_month;
 if(isset($_GET['action'])){
   switch($_GET['action']){
+    case 'save_att_date':
+      $att_start = $_POST['att_start_hour'].':'.$_POST['att_start_minute_a'].$_POST['att_start_minute_b'];
+      $att_end = $_POST['att_end_hour'].':'.$_POST['att_end_minute_a'].$_POST['att_end_minute_b'];
+      $sql_att_info = "select * from ".TABLE_ATTENDANCE." where id='".$_POST['aid']."'";
+      $query_att_info = tep_db_query($sql_att_info);
+      if($row_att_info = tep_db_fetch_array($query_att_info)){
+        $att_login_start = substr($row_att_info['login_time'],0,11);
+        $att_login_end = substr($row_att_info['login_time'],16,3);
+        $att_logout_start = substr($row_att_info['logout_time'],0,11);
+        $att_logout_end = substr($row_att_info['logout_time'],16,3);
+        $login = $att_login_start.$att_start.$att_login_end; 
+        $logout = $att_logout_start.$att_start.$att_logout_end; 
+      }
+      $sql_update = "update ".TABLE_ATTENDANCE." set
+        login_time='".$login."',logout_time='".$logout."' where
+        id='".$_POST['aid']."'";
+      tep_db_query($sql_update);
+      if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
+        $date_info = tep_date_info($_POST['get_date']);
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS));
+      }
+      break;
     case 'save_as_list':
       $date_info = tep_date_info($_POST['get_date']);
       $user = $_SESSION['user_name'];

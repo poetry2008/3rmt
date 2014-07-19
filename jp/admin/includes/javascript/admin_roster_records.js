@@ -489,3 +489,41 @@ function add_allow_user(ele,del_str){
 function del_allow_user(ele){
   $(ele).parent().parent().remove();
 }
+
+function change_att_date(date,ele,uid){
+    if(!uid){
+    uid='';
+  }
+  var index = ele;
+  var ele = document.getElementById('date_td_'+ele);
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $(ele).offset();   
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax.php?action=change_att_date&date='+date+'&uid='+uid+'&index='+index,
+    dataType: 'text',
+    async: false,
+    success: function(text) {
+      //show content 
+      $('#show_attendance_edit').html(text);  
+      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
+
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
+      }else{
+        $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
+      }
+      ele_value_obj_att = ele;
+      $('#show_attendance_edit').css('display','block');
+    }
+  });
+}
