@@ -382,13 +382,12 @@ $(document).ready(function() {
         $attendance_str .= '</tr></table>';
 
 
-		 $user_info = tep_get_user_info($ocertify->auth_user);
-         $operator_id = $user_info['userid'];
+		$user_info = tep_get_user_info($ocertify->auth_user);
         $group_list = tep_get_group_tree();
         $show_group_id=0;
         $show_group_user = array();
         $show_select_group_user = array();
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and  operator_id='".$operator_id."'";
+        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
         $show_group_query = tep_db_query($show_group_sql);
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $show_group_id = $show_group_row['gid'];
@@ -579,18 +578,18 @@ while($j<=$day_num)
   foreach($att_arr as $att_row){
     $att_info_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id='".$att_row['attendance_detail_id']."' limit 1";
     $att_info_query = tep_db_query($att_info_sql);
-    if($att_info = tep_db_fetch_array($att_info_query)){
+    if($att_info = tep_db_fetch_array($att_info_query)&&!empty($show_select_group_user)){
     if($att_info['scheduling_type'] == 1&&tep_is_show_att_group($att_row['group_id'],$date)){
       echo "<tr>";
       echo "<td bgcolor='".$att_info['src_text']."'>";
       echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' $style>";
       echo $att_info['short_language'];
       echo "</div>";
-    if(!empty($show_select_group_user)&&$date){
+    if($date){
       echo "<div>";
       foreach($show_select_group_user as $u_list){
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
-        $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text']);
+        $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
         $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date);
         if(!empty($user_replace)){
