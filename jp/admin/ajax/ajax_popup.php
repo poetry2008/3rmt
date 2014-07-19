@@ -9051,29 +9051,31 @@ if($_GET['latest_messages_id']>0){
    }else{
      echo '';
    }
-}else if($_GET['action'] == 'change_attendance_login' || $_GET['action'] == 'change_attendance_logout'){
+}else if($_GET['action'] == 'change_attendance_login'){
 /**
  * uid 用户的id
  * 添加,更新出勤和退勤时间
 */
 
- $uid = $_POST['user_name'];
- if($_GET['action']=='change_attendance_login') {
+    $uid = $_POST['user_name'];
     $tep_res = tep_change_attendance_login($uid); 
     if($tep_res){
-        echo true; 
+        echo $tep_res; 
     } 
- }else if($_GET['action']=='change_attendance_logout') {
+}else if($_GET['action'] == 'change_attendance_logout') {
+
+    $uid = $_POST['user_name'];
     $tep_res = tep_change_attendance_logout($uid);
-    if($tep_res==1){
-        echo true;
-    }
- }
+    echo $tep_res;
+
+
+}
+
  /**
   *@date20140709 
   *出勤管理列表弹框编辑
  */
-}else if($_GET['action'] == 'edit_attendance_info') {
+else if($_GET['action'] == 'edit_attendance_info') {
 
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
@@ -9172,61 +9174,6 @@ if($_GET['latest_messages_id']>0){
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
            array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$disable).' }</div>')
-     ); 
-
-	//许可
-      $approve_list = explode(',',$att_info_res['approve_person']);
-
-	     $sql_perm = "select userid from  `".TABLE_PERMISSIONS."`";
-         $res_app = tep_db_query($sql_perm);
-         while ($row = tep_db_fetch_array($res_app)) {
-            $app_list[] = $row; 
-         }
-	  if($approve_list[0] ==''){
-         $attendance_select_approve_p = '<select name="add_approve_person[]" width="100px">';
-         $attendance_select_approve_p .= '<option value="0">--</option>';
-         foreach($app_list as $val) {
-            $attendance_select_approve_p .= '<option value="'.$val['userid'].'">'.$val['userid'].'</option>';	
-	     }
-         $attendance_select_approve_p .= '</select>';
-	     //许可追加
-         $attendance_select_approve_p .= '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_attendance_approve_person(\''.$id.'\');"').'</a>'; 
-
-        $attendance_info_row[]['text'] = array(
-           array('text' => ATTENDANCE_APPROVE_PERSON),
-		   array('text' => $attendance_select_approve_p)
-   	    );
-	  }else{
-        for($i=0; $i < count($approve_list); $i++){
-			$attendance_select_approve = '';
-            $attendance_select_approve = '<select name="add_approve_person[]" width="100px">';
-            foreach($app_list as $val) {
-		     	$selected = $approve_list[$i]==$val['userid']?'selected':'';
-                $attendance_select_approve .= '<option value="'.$val['userid'].'"'.$selected.'>'.$val['userid'].'</option>';	
-		    }
-			
-         $attendance_select_approve .= '<option value="0">--</option>';
-            $attendance_select_approve .= '</select>';
-			if($i==0){
-              $attendance_select_approve .= '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="add_attendance_approve_person(\''.$id.'\');"').'</a>'; 
-              $attendance_info_row[]['text'] = array(
-                  array('text' => ATTENDANCE_APPROVE_PERSON),
-		          array('text' => $attendance_select_approve)
-	           );
-			}else{
-			
-              $attendance_info_row[]['text'] = array(
-                  array('text' => ''),
-		          array('text' => $attendance_select_approve)
-	           );
-			}
-		}
-	  }
-
-
-	  $attendance_info_row[]['text'] =array(
-	     array('text' => ''), 
-	     array('text' => '<div id="tep_add"></div>'), 
      ); 
 
 
@@ -9448,20 +9395,6 @@ if($_GET['latest_messages_id']>0){
      }
 
 echo  $return_res;
-}
-else if($_GET['action']=='add_attendance_approve') {
-	$sql_permissions = "select userid from  `".TABLE_PERMISSIONS."`";
-    $res_approve = tep_db_query($sql_permissions);
-    while ($row = tep_db_fetch_array($res_approve)) {
-       $approve_list[] = $row; 
-    }
-	$html_str .= '<tr><td><select name="add_approve_person[]">';
-	$html_str .= '<option value="0">--</option>';
-	foreach($approve_list as $val) {
-    $html_str .= '<option value="'.$val['userid'].'">'.$val['userid'].'</option>';	
-	}
-	$html_str .= '</tr></td></select>';
-	echo $html_str;
 }if($_GET['action']=='attendance_setting'){
 /* -----------------------------------------------------
     功能: 获取出勤状态的信息

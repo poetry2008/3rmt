@@ -254,8 +254,7 @@ echo "</a>";
 <?php
 //打卡
 	 $date = date('Ymd');
-$sql = "select login_time from attendance where user_name='".$user_info['userid']."' and date='".$date."'";
-
+     $sql = "select * from attendance_record where user_name='".$user_info['userid']."' and date='".$date."' and logout_time=0";
      $query = tep_db_query($sql);
      $num_rows = tep_db_num_rows($query);
 	 
