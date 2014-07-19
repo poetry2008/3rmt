@@ -9197,7 +9197,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $work_start_array['0']!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
 	  }
-      $work_start .= '</select>';
+      $work_start .= '</select>&nbsp;'.HOUR_TEXT;
 
       $work_start .= '<select name="work_start_minute_a" id="work_start_min_l">';
 	  for($i=0;$i<=5;$i++){
@@ -9211,7 +9211,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $work_start_min_right!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $work_start .= '</select>&nbsp;&nbsp;<font color="red" id="work_start_error"></font>';
+      $work_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="work_start_error"></font>';
 
 //工作结束时间
 	  
@@ -9223,7 +9223,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $work_end_array['0']!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $work_end .= '</select>';
+      $work_end .= '</select>&nbsp;'.HOUR_TEXT;
 
       $work_end .= '<select name="work_end_minute_a" id="work_end_min_l">';
 	  for($i=0;$i<=5;$i++){
@@ -9237,7 +9237,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $work_end_min_right!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $work_end .= '</select>&nbsp;&nbsp;<font color="red" id="work_end_error"></font>';
+      $work_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="work_end_error"></font>';
 
 
 //休息开始时间
@@ -9249,7 +9249,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $rest_start_array['0']!=$i ?'':'selected==selected';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $rest_start .= '</select>';
+      $rest_start .= '</select>&nbsp;'.HOUR_TEXT;
 
       $rest_start .= '<select name="rest_start_minute_a">';
 	  for($i=0;$i<=5;$i++){
@@ -9262,7 +9262,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $rest_start_min_right!=$i ?'':'selected==selected';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $rest_start .= '</select>';
+      $rest_start .= '</select>&nbsp;'.MINUTE_TEXT;
 
 
 //休息结束时间
@@ -9274,7 +9274,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $rest_end_array['0']!=$i ?'':'selected==selected';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $rest_end .= '</select>';
+      $rest_end .= '</select>&nbsp;'.HOUR_TEXT;
 
       $rest_end .= '<select name="rest_end_minute_a">';
 	  for($i=0;$i<=5;$i++){
@@ -9287,7 +9287,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
           $selected = $rest_end_min_right!=$i ?'':'selected==selected';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
-      $rest_end .= '</select>';
+      $rest_end .= '</select>&nbsp;'.MINUTE_TEXT;
       
 	  if($att_info_res['set_time']==0 || empty($id)){
 	      $time_field_style = 'style="display:block;"';
@@ -9621,11 +9621,10 @@ echo  $return_res;
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
 
+  if(isset($_GET['uid'])&&$_GET['uid']!=''){
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
     `date`='".$_GET['date']."' ";
-  if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_sql .= " and user ='".$_GET['uid']."'";
-  }
   $change_flag = true;
   $replace_query = tep_db_query($replace_sql);
   if($replace_info_res = tep_db_fetch_array($replace_query)){
@@ -9634,6 +9633,7 @@ echo  $return_res;
     $date_added = $replace_info_res['add_time'];
     $user_update = $replace_info_res['update_user'];
     $last_modified = $replace_info_res['update_time'];
+  }
   }
 
   $user_list = tep_get_user_list_by_userid($_GET['uid']);

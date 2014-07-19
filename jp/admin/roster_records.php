@@ -4,6 +4,10 @@
 */
 include("includes/application_top.php");
 
+//删除过期未允许数据
+$date = date('Ymd',time());
+tep_db_query("delete from  ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where allow_status =0 and date<".$date);
+
 $month = $_GET['m']?$_GET['m']:date('n');
 $year = $_GET['y']?$_GET['y']:date('Y');
 if($month==12){
@@ -442,7 +446,9 @@ $(document).ready(function() {
 $param_attendance = $_SERVER['QUERY_STRING'];
 $param_tep = explode('&',$param_attendance);
 if($param_tep[0]!=''){
+	if(count($param_tep)>1){
     $param .=','.$param_tep[0].','.$param_tep[1];
+	}
 }
 
 $att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
@@ -530,10 +536,10 @@ while($j<=$day_num)
   echo "<td id='date_td_".$j."'  valign='top' $style>";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px;' ";
-  if($ocertify->npermission=='31'){
+  if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   }else{
-    echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
+    echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' ";
   }
   if($date == date('Ymd',time())){
     echo "<div class='dataTable_hight_red'>";

@@ -70,6 +70,7 @@ define('TEXT_ALLOW_END','结束时间');
 define('TEXT_ADL_TEXT_INFO','备注');
 define('TEXT_LEAVE_ONE_DAY','休息');
 define('HOUR_TEXT', '时');
+define('MINUTE_TEXT', '分');
 define('TIME_HOUR_TEXT', '小时');
 define('TEXT_SELECT_USER','用户名');
 
