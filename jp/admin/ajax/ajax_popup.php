@@ -8891,7 +8891,7 @@ if($_GET['latest_messages_id']>0){
  	$manager_list = tep_db_query("select * from ".TABLE_USERS); 
    	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
-     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$manager_list_res['userid'].'"><label for="users_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
+     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	$all_manager .= '</ul>';
  }else{
@@ -8900,7 +8900,7 @@ if($_GET['latest_messages_id']>0){
 	$manager_list = tep_db_query('select * from '.TABLE_USERS);
 	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
-     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="users_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
+     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	$all_manager .= '</ul>';
  }
@@ -9407,7 +9407,7 @@ echo  $return_res;
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
   }
-  if($ocertify->npermission!='31'){
+  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission != '31')){
     $group_disabled = ' disabled="disabled" ';
   }
 
@@ -9439,7 +9439,7 @@ echo  $return_res;
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   if(!empty($attendance_dd_arr)){
-    $group_info_sql = "select * from ".TABLE_GROUPS." WHERE id ='".$_GET['gid']."'";
+    $group_info_sql = "select * from ".TABLE_GROUPS." WHERE id ='".$_GET['gid']."' and group_status=1";
     $group_info_query = tep_db_query($group_info_sql);
     if($group_info_row = tep_db_fetch_array($group_info_query)){
       $date_str .= '&nbsp;&nbsp;'.$group_info_row['name'];
@@ -9486,6 +9486,27 @@ echo  $return_res;
   $as_info_row = array();
   //是否有出勤数据
   if(!empty($attendance_dd_arr)){
+    //如果当前管理员权限为root，显示全部组 其他权限则显示当前管理员可控制的组
+    if($ocertify->npermission == 31){
+
+      $group_list_select = $group_list;
+    }else{
+
+      $group_show_query = tep_db_query("select id,name,all_managers_id from ".TABLE_GROUPS." where group_status=1");
+      while($group_show_array = tep_db_fetch_array($group_show_query)){
+
+        $group_list_select_array = explode('|||',$group_show_array['all_managers_id']); 
+        if(in_array($ocertify->auth_user,$group_list_select_array)){
+
+          $group_list_select[] = array('id'=>$group_show_array['id'],'text'=>$group_show_array['name']);
+        }
+      }
+        tep_db_free_result($group_show_query);
+    }
+    if(empty($group_list_select)){
+      $group_list_select = $group_list;
+      $group_disabled = ' disabled="disabled" ';
+    }
     $show_arr = true;
     foreach($attendance_dd_arr as $a_info){
 
@@ -9498,9 +9519,9 @@ echo  $return_res;
         $has_adl_select .=' >'.$a_value['title'].'</option>';
       }
       $has_adl_select .= '</select>';
-
+ 
       $has_group_select = '<select name="has_group[]" '.$group_disabled.'>';
-      foreach($group_list as $group){
+      foreach($group_list_select as $group){
         $has_group_select .= '<option value="'.$group['id'].'" ';
         if($a_info['group_id'] == $group['id']){
           $has_group_select .= 'selected ';
