@@ -162,14 +162,19 @@ if(isset($_GET['action'])){
       }
       break;
     case 'update_show_user':
+
+		$user_info = tep_get_user_info($ocertify->auth_user);
+		//当前用户 用于不同用户保存各自不同状态
+		$operator_id = $user_info['userid'];
+
       if(isset($_POST['show_group_user_list'])&&
           is_array($_POST['show_group_user_list'])&&
           !empty($_POST['show_group_user_list'])){
         //删除当组数据
         //修改其他组是否显示
-        $del_sql = "delete from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE gid='".$_POST['show_group']."'";
+        $del_sql = "delete from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE gid='".$_POST['show_group']."' and operator_id='".$operator_id."'";
         tep_db_query($del_sql);
-        $update_sql = "update ".TABLE_ATTENDANCE_GROUP_SHOW." set is_select=0";
+        $update_sql = "update ".TABLE_ATTENDANCE_GROUP_SHOW." set is_select=0 where operator_id='".$operator_id."'";
         tep_db_query($update_sql);
         //重新插入数据
         $insert_arr = array();
@@ -177,12 +182,31 @@ if(isset($_GET['action'])){
           $insert_arr['gid'] = $_POST['show_group'];
           $insert_arr['user_id'] = $user_id_tmp;
           $insert_arr['is_select'] = '1';
+          $insert_arr['operator_id'] = $operator_id;
           tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
         }
-      }
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
             ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
+      }elseif(empty($_POST['show_group_user_list'])) {
+        //当没有选择用户的时候
+		//操作原有数据
+        $del_sql = "delete from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE gid='".$_POST['show_group']."' and operator_id='".$operator_id."'";
+        tep_db_query($del_sql);
+        $update_sql = "update ".TABLE_ATTENDANCE_GROUP_SHOW." set is_select=0 where operator_id='".$operator_id."'";
+        tep_db_query($update_sql);
+       //添加新数据
+        $insert_arr = array();
+        $insert_arr['gid'] = $_POST['show_group'];
+        $insert_arr['user_id'] = '';
+        $insert_arr['is_select'] = '1';
+        $insert_arr['operator_id'] = $operator_id;
+        tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
+
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
+            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
+            ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
+	  }
       break;
 	  /**
 	   *attendance_detail
@@ -358,11 +382,13 @@ $(document).ready(function() {
         $attendance_str .= '</tr></table>';
 
 
+		 $user_info = tep_get_user_info($ocertify->auth_user);
+         $operator_id = $user_info['userid'];
         $group_list = tep_get_group_tree();
         $show_group_id=0;
         $show_group_user = array();
         $show_select_group_user = array();
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1'";
+        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and  operator_id='".$operator_id."'";
         $show_group_query = tep_db_query($show_group_sql);
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $show_group_id = $show_group_row['gid'];
@@ -410,7 +436,7 @@ $(document).ready(function() {
         $group_str .= '</td>';
         $group_str .= '</tr>';
         $group_str .= '<tr>';
-        $group_str .= '<td align="left">';
+        $group_str .= '<td valign="top">';
         $group_str .= TEXT_GROUP_USER_LIST;
         $group_str .= '</td>';
         $group_str .= '<td align="left">';
