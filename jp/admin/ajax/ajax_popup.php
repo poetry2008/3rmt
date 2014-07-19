@@ -8353,7 +8353,7 @@ $banner_query = tep_db_query("
  if($_GET['latest_messages_id']>0){
 	$sql_message_content = tep_db_query('select * from messages where id = "'.$_GET['latest_messages_id'].'"');
 	$sql_message_content_res = tep_db_fetch_array($sql_message_content);
-	$messages_text_area = '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" disabled="disabled" name="contents">'.$sql_message_content_res['content'].'</textarea><input type="hidden" name="drafts_contents" value="'.$sql_message_content_res['content'].'">';
+        $messages_text_area = '<textarea id="messages_text" style="overflow-y:hidden;width:100%;height:163px;" disabled="disabled" name="contents">'.$sql_message_content_res['content'].'</textarea><input type="hidden" name="drafts_contents" value="'.$sql_message_content_res['content'].'">';
  }else{
  	$messages_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="contents"></textarea>';
  }
