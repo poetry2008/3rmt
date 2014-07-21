@@ -489,13 +489,13 @@ require("includes/note_js.php");
         $group_str .= '<td align="left">';
         $group_str .= '<div id="show_user_list">';
         foreach($show_group_user as $show_list_uid){
-          $group_str .= '<input type="checkbox" name="show_group_user_list[]" ';
+          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$show_list_uid.'"';
           if(in_array($show_list_uid,$show_select_group_user)){
             $group_str .= ' checked="checked" ';
           }
           $group_str .= ' value="'.$show_list_uid.'" >';
           $user_info = tep_get_user_info($show_list_uid);
-          $group_str .=  $user_info['name'];
+          $group_str .=  '<label for="'.$show_list_uid.'">'.$user_info['name'].'</label>';
           $group_str .= '&nbsp;&nbsp;&nbsp;';
         }
         $group_str .= '</div>';
@@ -608,7 +608,7 @@ while($j<=$day_num)
   $style= (empty($att_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
-  echo "<tr><td align='left' style='font-size:14px; border-width:0px;' $style";
+  echo "<tr><td align='left' style='font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   }else{
