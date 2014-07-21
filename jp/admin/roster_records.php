@@ -350,6 +350,8 @@ var js_text_onetime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
 var attendance_del_confirm = '<?php echo ATTENDANCE_DELETE_REMIND;?>';
 var error_text = '<?php echo TEP_ERROR_NULL;?>';
 var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ROSTER_RECORDS;?>';
+var admin_id = '<?php echo $ocertify->auth_user;?>';
+var admin_npermission = '<?php echo $ocertify->npermission;?>';
 $(document).ready(function() {
   <?php //监听按键?>
   $(document).keyup(function(event) {
