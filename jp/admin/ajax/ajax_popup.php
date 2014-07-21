@@ -9504,22 +9504,8 @@ echo  $return_res;
   //是否有出勤数据
   if(!empty($attendance_dd_arr)){
     //如果当前管理员权限为root，显示全部组 其他权限则显示当前管理员可控制的组
-    if($ocertify->npermission > 10){
+    $group_list_select = $group_list;
 
-      $group_list_select = $group_list;
-    }else{
-
-      $group_show_query = tep_db_query("select id,name,all_managers_id from ".TABLE_GROUPS." where group_status=1");
-      while($group_show_array = tep_db_fetch_array($group_show_query)){
-
-        $group_list_select_array = explode('|||',$group_show_array['all_managers_id']); 
-        if(in_array($ocertify->auth_user,$group_list_select_array)){
-
-          $group_list_select[] = array('id'=>$group_show_array['id'],'text'=>$group_show_array['name']);
-        }
-      }
-        tep_db_free_result($group_show_query);
-    }
     if(empty($group_list_select)){
       $group_list_select = $group_list;
       $group_disabled = ' disabled="disabled" ';
@@ -9696,22 +9682,27 @@ echo  $return_res;
   $att_select = '<select name="attendance_detail_id" disabled="disabled">';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
+    $select_att = '';
     $replace_show_array = array();
+    $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
     if(!empty($replace_att_list)){
       foreach($replace_att_list as $att_info){
         $replace_show_array[] = $att_info['id'];
         $att_select .= '<option value="'.$att_info['id'].'"';
         if(isset($_GET['att_id'])&&$_GET['att_id']==$att_info['id']){
           $att_select .= ' selected ';
+          $select_att = $att_info['id'];
           $current_att_title = $att_info['title'];
         }
         $att_select .= '>'.$att_info['title'].'</option>';
  
       }
-    }else{
-      $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+      if($select_att == ''){
+        $select_att = 0;
+      }
     }
   }else{
+    $select_att = 0;
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
   }
 
@@ -9720,7 +9711,7 @@ echo  $return_res;
 
   foreach($replace_att_list_rep as $att_info_rep){
 
-    if(!in_array($att_info_rep['id'],$replace_show_array)){
+    if($select_att!=$att_info_rep['id']){
       $replace_select .= '<option value="'.$att_info_rep['id'].'"';
       if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
         $replace_select .= ' selected ';
