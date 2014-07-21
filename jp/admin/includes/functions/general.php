@@ -13910,9 +13910,16 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
     }
   }
 }
-function tep_get_attendance_by_user_date($date,$user=0,$show_other=false){
+function tep_get_attendance_by_user_date($date,$user=0,$show_all=false){
   $res = array();
   $att_list = array();
+  if($show_all){
+  $sql_type = "select * from ".TABLE_ATTENDANCE_DETAIL;
+  $query_type = tep_db_query($sql_type);
+  while($row_type = tep_db_fetch_array($query_type)){
+    $res[] = $row_type;
+  }
+  }else{
   if($user != 0){
   $groups =  tep_get_groups_by_user($user);
   foreach($groups as $group){
@@ -13934,12 +13941,6 @@ function tep_get_attendance_by_user_date($date,$user=0,$show_other=false){
     if($row = tep_db_fetch_array($query)){
       $res[] = $row;
     }
-  }
-  if($show_other){
-  $sql_type = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE scheduling_type ='0'";
-  $query_type = tep_db_query($sql_type);
-  while($row_type = tep_db_fetch_array($query_type)){
-    $res[] = $row_type;
   }
   }
   return $res;
@@ -14040,7 +14041,7 @@ function tep_get_replace_by_uid_date($uid,$date){
   }
 }
 
-function tep_is_group_manager($uid,$show_gid=false){
+function tep_is_group_manager($user,$show_gid=false){
   $res = array();
   $sql = "select id from ".TABLE_GROUPS." WHERE
     (all_managers_id like '".$user."' or
@@ -14048,7 +14049,7 @@ function tep_is_group_manager($uid,$show_gid=false){
     all_managers_id like '%|||".$user."|||%' or
     all_managers_id like '%|||".$user."') and group_status='1'";
   $query = tep_db_query($sql);
-  while($row = tep_db_fetch_array()){
+  while($row = tep_db_fetch_array($query)){
     $res[] = $row['id'];
   }
   if($show_gid){
