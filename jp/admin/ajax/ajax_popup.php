@@ -9420,7 +9420,7 @@ echo  $return_res;
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
   }
-  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission != '31')){
+  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10')){
     $group_disabled = ' disabled="disabled" ';
   }
 
@@ -9504,7 +9504,7 @@ echo  $return_res;
   //是否有出勤数据
   if(!empty($attendance_dd_arr)){
     //如果当前管理员权限为root，显示全部组 其他权限则显示当前管理员可控制的组
-    if($ocertify->npermission == 31){
+    if($ocertify->npermission > 10){
 
       $group_list_select = $group_list;
     }else{
@@ -9695,14 +9695,15 @@ echo  $return_res;
 
   $att_select = '<select name="attendance_detail_id" disabled="disabled">';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,true);
+    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
     $replace_show_array = array();
     if(!empty($replace_att_list)){
       foreach($replace_att_list as $att_info){
         $replace_show_array[] = $att_info['id'];
         $att_select .= '<option value="'.$att_info['id'].'"';
-        if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$att_info['id']){
+        if(isset($_GET['att_id'])&&$_GET['att_id']==$att_info['id']){
           $att_select .= ' selected ';
+          $current_att_title = $att_info['title'];
         }
         $att_select .= '>'.$att_info['title'].'</option>';
  
@@ -9807,7 +9808,7 @@ echo  $return_res;
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
     $user_info_self = tep_get_user_info($_GET['uid']);
-    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'];
+    $date_str .= '&nbsp;&nbsp;'.$current_att_title;
   }
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -9913,8 +9914,15 @@ echo  $return_res;
     $current_users = $_GET['uid']; 
   }
   $current_users_array = tep_get_user_list_by_userid($current_users);
+  //获取admin及ROOT
+  $permissions_query = tep_db_query("select userid from ".TABLE_PERMISSIONS." where permission>=15 order by permission");
+  while($permissions_array = tep_db_fetch_array($permissions_query)){
+
+    $current_users_array[] = $permissions_array['userid'];
+  }
+  tep_db_free_result($permissions_query);
   foreach($allow_user_list as $allow_user){
-    $allow_user_select .= '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
+    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
     foreach($current_users_array as $user_info){
       $allow_user_select .= '<option value="'.$user_info.'"';
       if($allow_user == $user_info){
@@ -9975,7 +9983,7 @@ echo  $return_res;
     $_GET['index'].'\',\'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
-  if($ocertify->npermission=='31'){
+  if($ocertify->npermission>'10'){
     $disabled = '';
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
