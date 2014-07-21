@@ -489,3 +489,39 @@ function add_allow_user(ele,del_str){
 function del_allow_user(ele){
   $(ele).parent().parent().remove();
 }
+
+//change groups
+function change_users_groups(value){
+
+  $.ajax({
+          url: 'ajax.php?action=change_users_groups',
+          data: 'users_id='+value,
+          type: 'POST',
+          dataType: 'text',
+          async : false,
+          success: function(data){
+
+            $("#users_groups").html('');
+            $("#users_groups").html(data);
+          }
+        });
+}
+//change users allow
+function change_users_allow(value){
+
+  var allow_status = document.getElementsByName("allow_status")[0];
+  var allow_flag = false;
+  $("select[name='allow_user[]']").each(function(){
+        if($(this).val() == admin_id){
+      
+          allow_flag = true;
+        }
+  });
+  if(value == admin_id  || allow_flag == true || admin_npermission >= 15){
+  
+    allow_status.disabled = false;
+  }else{
+
+    allow_status.disabled = true;
+  }
+}
