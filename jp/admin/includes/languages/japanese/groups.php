@@ -9,7 +9,7 @@ define('GROUP_STATUS','ステータス');
 define('GROUP_OPT',' 操作');
 define('GROUP_STAFF','スタッフ');
 define('GROUP_MANAGERS','管理者');
-define('GROUP_COMPANY_NAME','社名');
+define('GROUP_COMPANY_NAME','グループ名');
 define('GROUP_CREATE','グループ作成');
 define('GROUP_SAVE','保存');
 define('TEXT_GROUP_MUST_INPUT','必須項目');

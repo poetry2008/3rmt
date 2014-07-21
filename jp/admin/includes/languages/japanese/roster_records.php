@@ -49,7 +49,7 @@ define('TEXT_GROUP_USER_LIST', 'スタッフ');
 define('TEXT_ALL_GROUP', '全て');
 define('TEXT_UPDATE', '更新');
 define('TEXT_ADL_SELECT', 'シフトテンプレート');
-define('COMPANY_SYSTEM_SELECT', '会社・組織');
+define('COMPANY_SYSTEM_SELECT', 'グループ');
 define('TEXT_ADD_ADL', '追加');
 define('TEXT_DEL_ADL', '削除');
 define('TEXT_TYPE_SELECT', '繰り返す');
