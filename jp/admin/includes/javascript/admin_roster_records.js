@@ -23,7 +23,8 @@ function show_attendance_info(ele,id,param_y,param_m){
   success: function(data){
      $('#show_attendance_edit').html(data);
 
-     $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+     var top_div = $('.compatible_head').height();
+     $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height()-top_div);
      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
@@ -194,7 +195,8 @@ function attendance_setting(date,ele,gid){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+      var top_div = $('.compatible_head').height();
+      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height()-top_div);
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
@@ -245,7 +247,8 @@ function resizepage(){
   var ele_obj = '';
   ele_obj = $("#show_attendance_edit").offset();
   if(ele_value_obj_att != ''){
-    $("#show_attendance_edit").css('top',$(ele_value_obj_att).offset().top+$(ele_value_obj_att).height());
+    var top_div = $('.compatible_head').height();
+    $("#show_attendance_edit").css('top',$(ele_value_obj_att).offset().top+$(ele_value_obj_att).height()-top_div);
     tmp_ele_obj = $(ele_value_obj_att).offset();
     if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
@@ -389,7 +392,8 @@ function attendance_replace(date,ele,uid){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+      var top_div = $('.compatible_head').height();
+      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height()-top_div);
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
@@ -472,7 +476,8 @@ function change_att_date(date,ele,uid){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      var top_div = $('.compatible_head').height();
+      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height()-top_div);
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
