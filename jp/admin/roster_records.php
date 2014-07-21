@@ -634,7 +634,6 @@ while($j<=$day_num)
       echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
       echo $att_info['short_language'];
       echo "</div>";
-      echo "<li>";
       foreach($show_select_group_user as $u_list){
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
         $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
@@ -677,7 +676,6 @@ while($j<=$day_num)
         echo "</a>";
         }
       }
-      echo "</li>";
     }
 
     echo "</td>";
