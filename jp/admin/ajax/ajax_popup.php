@@ -9699,7 +9699,7 @@ echo  $return_res;
 
   $att_select = '<select name="attendance_detail_id" disabled="disabled">';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,true);
+    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
     $replace_show_array = array();
     if(!empty($replace_att_list)){
       foreach($replace_att_list as $att_info){
