@@ -636,7 +636,7 @@ while($j<=$day_num)
       echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
       echo $att_info['short_language'];
       echo "</div>";
-      echo "<div>";
+      echo "<li>";
       foreach($show_select_group_user as $u_list){
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
         $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
@@ -646,7 +646,7 @@ while($j<=$day_num)
           $user_worker_list[] = $u_list;
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
           if($att_date_info['scheduling_type'] == 1){
-            $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
+            $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';">&nbsp;</span>';
           }else{
             $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
           }
@@ -679,7 +679,7 @@ while($j<=$day_num)
         echo "</a>";
         }
       }
-      echo "</div>";
+      echo "</li>";
     }
 
     echo "</td>";
