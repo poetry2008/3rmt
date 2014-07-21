@@ -259,16 +259,9 @@ echo "</a>";
      $num_rows = tep_db_num_rows($query);
 	 
 if($num_rows ==0) { 
-	echo HEADER_ATTENDANCE_LOGOUT_1;
-?>	<a href="javascript:void(0);" onclick="change_attendance_login('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGIN_TITLE;?>" style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGOUT_2; ?></font></a>
-<?php
-	echo HEADER_ATTENDANCE_LOGOUT_3;
+	echo sprintf(HEADER_ATTENDANCE_LOGOUT,'href="javascript:void(0);" onclick=change_attendance_login("'.$user_info['userid'].'") title="'.HEADER_ATTENDANCE_LOGIN_TITLE.'" style="text-decoration:underline;"');
 }else {
-	echo  HEADER_ATTENDANCE_LOGIN_1;
-?>
-	<a href="javascript:void(0);" onclick="change_attendance_logout('<?php echo $user_info['userid'];?>')" title="<?php echo HEADER_ATTENDANCE_LOGOUT_TITLE;?>"  style="text-decoration:underline;"><font color="#0000CC"><?php echo HEADER_ATTENDANCE_LOGIN_2; ?></font></a>
-<?php
-	echo  HEADER_ATTENDANCE_LOGIN_3;
+	echo sprintf(HEADER_ATTENDANCE_LOGIN,'href="javascript:void(0);" onclick=change_attendance_logout("'.$user_info['userid'].'") title="'.HEADER_ATTENDANCE_LOGOUT_TITLE.'" style="text-decoration:underline;"');
 }
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
