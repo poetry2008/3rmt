@@ -372,23 +372,7 @@ $(document).ready(function() {
 </script>
 
 <?php 
-$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
-$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
-preg_match_all('/action=new_group/',$belong,$belong_temp_array);
-if($belong_temp_array[0][0] != ''){
-  preg_match_all('/id=[^&]+/',$belong,$belong_array);
-  if($belong_array[0][0] != ''){
-
-    $belong = $href_url.'?'.$belong_array[0][0];
-  }else{
-
-    $belong = $href_url.'?'.$belong_temp_array[0][0];
-  }
-}else{
-
-  $belong = $href_url;
-}
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
 ?>
 
@@ -491,6 +475,7 @@ require("includes/note_js.php");
         $group_str .= '<td align="left">';
         $group_str .= '<div id="show_user_list">';
         foreach($show_group_user as $show_list_uid){
+          if($show_list_uid!=''){
           $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$show_list_uid.'"';
           if(in_array($show_list_uid,$show_select_group_user)){
             $group_str .= ' checked="checked" ';
@@ -499,6 +484,7 @@ require("includes/note_js.php");
           $user_info = tep_get_user_info($show_list_uid);
           $group_str .=  '<label for="'.$show_list_uid.'">'.$user_info['name'].'</label>';
           $group_str .= '&nbsp;&nbsp;&nbsp;';
+          }
         }
         $group_str .= '</div>';
         $group_str .= '</td>';
@@ -614,9 +600,13 @@ while($j<=$day_num)
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   }else{
-    echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
+    if($today <= $date){
+      echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
+    }else{
+      echo " >";
+    }
   }
-  if($date == date('Ymd',time())){
+  if($date == $today){
     echo "<div class='dataTable_hight_red'>";
     echo $j;
     echo "</div>";
@@ -644,6 +634,7 @@ while($j<=$day_num)
         if(!empty($user_replace)){
           $user_worker_list[] = $u_list;
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
+          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$u_list||$ocertify->npermission>'10'){
           if($att_date_info['scheduling_type'] == 1){
             $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';">&nbsp;</span>';
           }else{
@@ -652,6 +643,7 @@ while($j<=$day_num)
           if($user_replace['allow_status']==0){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
+        }
         }
         echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($u_list);
@@ -701,6 +693,7 @@ while($j<=$day_num)
       echo "<a href='javascript:void(0)' ";
       echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
       echo " >";
+          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))){
       if(!empty($u_info)){
         echo $u_info['name'];
       }
@@ -716,6 +709,7 @@ while($j<=$day_num)
       }
       echo "</a>";
       }
+    }
     }
     }
     echo '</div>';
