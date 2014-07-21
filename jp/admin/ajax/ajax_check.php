@@ -287,6 +287,19 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 			echo '1';
 		}
 	}
+}else if(isset($_GET['action']) && $_GET['action'] == 'change_users_groups'){
+
+  $users_id = $_POST['users_id'];
+  $users_array = tep_get_user_list_by_userid($users_id);
+
+  $allow_user_select .= '<select name="allow_user[]">';
+  foreach($users_array as $users_value){
+
+    $users_info = tep_get_user_info($users_value);
+    $allow_user_select .= '<option value="'.$users_value.'">'.$users_info['name'].'</option>';
+  }
+  $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
+  echo $allow_user_select;
 }
  
 ?>

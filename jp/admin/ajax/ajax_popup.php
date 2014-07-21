@@ -9700,8 +9700,10 @@ echo  $return_res;
   $att_select = '<select name="attendance_detail_id" disabled="disabled">';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
+    $replace_show_array = array();
     if(!empty($replace_att_list)){
       foreach($replace_att_list as $att_info){
+        $replace_show_array[] = $att_info['id'];
         $att_select .= '<option value="'.$att_info['id'].'"';
         if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$att_info['id']){
           $att_select .= ' selected ';
@@ -9721,17 +9723,19 @@ echo  $return_res;
 
   foreach($replace_att_list_rep as $att_info_rep){
 
-    $replace_select .= '<option value="'.$att_info_rep['id'].'"';
-    if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
-      $replace_select .= ' selected ';
+    if(!in_array($att_info_rep['id'],$replace_show_array)){
+      $replace_select .= '<option value="'.$att_info_rep['id'].'"';
+      if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
+        $replace_select .= ' selected ';
+      }
+      $replace_select .= '>'.$att_info_rep['title'].'</option>';
     }
-    $replace_select .= '>'.$att_info_rep['title'].'</option>';
   }
   $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
   $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
-  if(in_array($ocertify->auth_user,$allow_user_list)||$ocertify->npermission=='31'){
+  if($ocertify->auth_user = current($allow_user_list) || $ocertify->npermission >= '15'){
     if($_GET['date']<date('Ymd',time())){
       $allow_disabled = ' disabled="disabled" '; 
     }else{
@@ -9814,14 +9818,73 @@ echo  $return_res;
   $heading[] = array('align' => 'right', 'text' => $page_str);
   $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'"><input type="hidden" name="replace_id" value="'.$replace_info_res['id'].'">';
 
-  if((!isset($_GET['uid'])||$_GET['uid']=='')&&$ocertify->npermission>'10'){
-    $sql_all_user = "select * from ".TABLE_USERS." order by name asc";
-    $query_all_user = tep_db_query($sql_all_user);
-    $all_user_select = '<select name="user_id" '.$disabled.'>';
-    while($row_all_user = tep_db_fetch_array($query_all_user)){
-      $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+  if((!isset($_GET['uid'])||$_GET['uid']=='')){
+    //当天已排班的员工
+    $already_add_group_array = array();
+    $already_add_user_array = array();
+    $already_add_group = tep_get_attendance($_GET['date']);
+    foreach($already_add_group as $already_group_user_value){
+
+      $already_add_group_array[] = $already_group_user_value['group_id']; 
     }
-    $all_user_select .= '</select>';
+    if(!empty($already_add_group_array)){
+      $already_group_query = tep_db_query("select all_users_id from ".TABLE_GROUPS." where id in (".implode(',',$already_add_group_array).")");
+      while($already_group_array = tep_db_fetch_array($already_group_query)){
+
+        $already_add_user_temp = explode('|||',$already_group_array['all_users_id']);
+        foreach($already_add_user_temp as $already_add_user_temp_value){
+          $already_add_user_array[] = $already_add_user_temp_value; 
+        }
+      }
+      tep_db_free_result($already_group_query);
+    }
+    //当天请假的员工
+    $leave_user_query = tep_db_query("select user from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where date='".$_GET['date']."'");
+    while($leave_user_array = tep_db_fetch_array($leave_user_query)){
+
+      $already_add_user_array[] = $leave_user_array['user'];
+    }
+    tep_db_free_result($leave_user_query);
+    $already_add_user_array = array_unique($already_add_user_array);
+    $current_users_list = array();
+    if($ocertify->npermission >= '15'){
+      $sql_all_user = "select * from ".TABLE_USERS." order by name asc";
+      $query_all_user = tep_db_query($sql_all_user);
+      $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
+      while($row_all_user = tep_db_fetch_array($query_all_user)){
+        if(!in_array($row_all_user['userid'],$already_add_user_array)){
+          $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+          $current_users_list[] = $row_all_user['userid'];
+        }
+      }
+      $all_user_select .= '</select>';
+    }else{
+ 
+      $group_show_query = tep_db_query("select all_users_id,all_managers_id from ".TABLE_GROUPS." where group_status=1");
+      while($group_show_array = tep_db_fetch_array($group_show_query)){
+
+        $group_list_select_array = explode('|||',$group_show_array['all_managers_id']); 
+        if(in_array($ocertify->auth_user,$group_list_select_array)){
+
+          $all_user_select_array = explode('|||',$group_show_array['all_users_id']);
+          foreach($all_user_select_array as $all_user_select_value){
+            $row_all_user[] = $all_user_select_value;
+          }
+        }
+      }
+      tep_db_free_result($group_show_query);
+      $row_all_user = array_unique($row_all_user);
+      echo '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
+      foreach($row_all_user as $row_all_user_value){
+
+        $row_all_user_value_name = tep_get_user_info($row_all_user_value);
+        if(!in_array($row_all_user_value,$already_add_user_array)){
+          echo "<option value='".$row_all_user_value."'>".$row_all_user_value_name['name']."</option>";
+          $current_users_list[] = $row_all_user_value;
+        }
+      }
+      echo '</select>';
+    } 
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $all_user_select)
@@ -9844,9 +9907,18 @@ echo  $return_res;
   );
 
   $is_first = true;
+  //获取许可者
+  //员工对应的管理者
+
+  if($_GET['uid'] == ''){ 
+    $current_users = current($current_users_list); 
+  }else{
+    $current_users = $_GET['uid']; 
+  }
+  $current_users_array = tep_get_user_list_by_userid($current_users);
   foreach($allow_user_list as $allow_user){
-    $allow_user_select = '<select name="allow_user[]" '.$disabled.'>';
-    foreach($user_list as $user_info){
+    $allow_user_select .= '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
+    foreach($current_users_array as $user_info){
       $allow_user_select .= '<option value="'.$user_info.'"';
       if($allow_user == $user_info){
         $allow_user_select .= ' selected ';
@@ -9864,7 +9936,7 @@ echo  $return_res;
     }
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => $allow_user_text), 
-      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $allow_user_select),
+      array('align' => 'left', 'params' => 'nowrap="nowrap" id="users_groups"', 'text' => $allow_user_select),
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $allow_user_button)
     );
     $is_first = false;
