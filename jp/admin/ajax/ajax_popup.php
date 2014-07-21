@@ -9874,16 +9874,16 @@ echo  $return_res;
       }
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
-      echo '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
+      $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
       foreach($row_all_user as $row_all_user_value){
 
         $row_all_user_value_name = tep_get_user_info($row_all_user_value);
         if(!in_array($row_all_user_value,$already_add_user_array)){
-          echo "<option value='".$row_all_user_value."'>".$row_all_user_value_name['name']."</option>";
+          $all_user_select .= "<option value='".$row_all_user_value."'>".$row_all_user_value_name['name']."</option>";
           $current_users_list[] = $row_all_user_value;
         }
       }
-      echo '</select>';
+      $all_user_select .= '</select>';
     } 
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
