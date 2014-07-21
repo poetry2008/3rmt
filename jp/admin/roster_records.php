@@ -646,7 +646,7 @@ while($j<=$day_num)
           if($att_date_info['scheduling_type'] == 1){
             $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
           }else{
-            $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
+            $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
           }
           if($user_replace['allow_status']==0){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
@@ -708,7 +708,7 @@ while($j<=$day_num)
         if($att_date_info['scheduling_type'] == 1){
           echo '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
         }else{
-          echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."'>";
+          echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
         }
       }
       if($row_replace_att['allow_status']==0){
