@@ -41,7 +41,7 @@ if(isset($_GET['action'])){
         $att_logout_start = substr($row_att_info['logout_time'],0,11);
         $att_logout_end = substr($row_att_info['logout_time'],16,3);
         $login = $att_login_start.$att_start.$att_login_end; 
-        $logout = $att_logout_start.$att_start.$att_logout_end; 
+        $logout = $att_logout_start.$att_end.$att_logout_end; 
       }
       $sql_update = "update ".TABLE_ATTENDANCE." set
         login_time='".$login."',logout_time='".$logout."' where
@@ -653,8 +653,11 @@ while($j<=$day_num)
           }
         }
         echo "<a href='javascript:void(0)' ";
-        if(!empty($user_replace)||$date>=$today||$ocertify->auth_user==$u_list||$ocertify->npermission=='31'){
+      $manager_list = tep_get_user_list_by_userid($u_list);
+        if($ocertify->auth_user==$u_list||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list)){
           echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\")' ";
+        }else{
+          $replace_str = '';
         }
         echo ">";
         if($v_att!=false){
@@ -691,12 +694,12 @@ while($j<=$day_num)
     while($row_replace_att = tep_db_fetch_array($query_replace_att)){
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
+      $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
+      if((!empty($user_replace))&&($ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
       $u_info = tep_get_user_info($row_replace_att['user']);
       $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
       echo "<a href='javascript:void(0)' ";
-      if(!empty($user_replace)||$date>=$today){
-        echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
-      }
+      echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
       echo " >";
       if(!empty($u_info)){
         echo $u_info['name'];
@@ -713,6 +716,7 @@ while($j<=$day_num)
       }
       echo "</a>";
       }
+    }
     }
     echo '</div>';
     echo "</td></tr>";
