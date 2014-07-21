@@ -500,12 +500,8 @@ define('HEADER_TEXT_ORDERMENU','订单▼');
 define('HEADER_TEXT_INVENTORY','库存标准');
 define('HEADER_TEXT_CATEGORIES_ADMIN','价格调整');
 
-define('HEADER_ATTENDANCE_LOGOUT_1','已');
-define('HEADER_ATTENDANCE_LOGOUT_2','下班');
-define('HEADER_ATTENDANCE_LOGOUT_3','');
-define('HEADER_ATTENDANCE_LOGIN_1','');
-define('HEADER_ATTENDANCE_LOGIN_2','工作');
-define('HEADER_ATTENDANCE_LOGIN_3','中');
+define('HEADER_ATTENDANCE_LOGOUT','已<a %s><font color="#0000CC">下班</font></a>');
+define('HEADER_ATTENDANCE_LOGIN','<a %s><font color="#0000CC">上班</font></a>中');
 define('HEADER_ATTENDANCE_LOGIN_TITLE','开始工作');
 define('HEADER_ATTENDANCE_LOGOUT_TITLE','结束工作');
 

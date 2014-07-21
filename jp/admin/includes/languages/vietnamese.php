@@ -488,6 +488,17 @@ define('HEADER_TEXT_CREATE_ORDER','Tạo đặt hàng');
 define('HEADER_TEXT_ORDERMENU','Đơn đặt hàng▼');
 define('HEADER_TEXT_INVENTORY','Cấp độ tồn kho');
 define('HEADER_TEXT_CATEGORIES_ADMIN','Điều chỉnh giá cả');
+define('HEADER_ATTENDANCE_LOGOUT','で<a %s><font color="#0000CC">退勤</font></a>しています。');
+define('HEADER_ATTENDANCE_LOGIN','で<a %s><font color="#0000CC">出勤</font></a>しています。');
+define('HEADER_ATTENDANCE_LOGIN_TITLE','出勤します。');
+define('HEADER_ATTENDANCE_LOGOUT_TITLE','退勤します。');
+
+define('HEADER_LOGIN_REMIND','楽しい一日の仕事を始めましょうか？');
+define('HEADER_LOGIN_OK','OK　キャンセル');
+define('HEADER_LOGOUT_REMIND','お疲れ様でした。仕事がこれで終わりますか？');
+define('HEADER_LOGOUT_OK','OK　キャンセル');
+
+
 //footer start 
 define('TEXT_FOOTER_ONE_TIME','Nếu sử dụng một lần quyền hạn đã được kiểm tra, sẽ truy cập được');
 define('TEXT_FOOTER_CHECK_SAVE','Lưu');
