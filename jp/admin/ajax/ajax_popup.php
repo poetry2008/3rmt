@@ -9401,7 +9401,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
     $res_tep = tep_db_query($sql_get_time);
     $rows=tep_db_fetch_array($res_tep);
     if($rows['set_time']==0){
-    $return_res = '<span>'.$rows['work_start'].'--'.$rows['work_end'].HOUR_TEXT.'</span>';
+    $return_res = '<span>'.$rows['work_start'].'--'.$rows['work_end'].'</span>';
     }elseif($rows['set_time']==1){
          $work_time = $rows['work_hours']+$rows['rest_hours'];
          $return_res = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
@@ -9684,7 +9684,7 @@ echo  $return_res;
   }
   //show work time detail
   if($replace_att_list[0]['set_time']==0){
-          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].HOUR_TEXT.'</span>';
+          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].'</span>';
   }elseif($replace_att_list[0]['set_time']==1){
          $work_time = $replace_att_list[0]['work_hours']+$replace_att_list[0]['rest_hours'];
          $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
@@ -9921,6 +9921,7 @@ echo  $return_res;
     $current_users_array[] = $permissions_array['userid'];
   }
   tep_db_free_result($permissions_query);
+ $current_users_array= array_unique($current_users_array);
   foreach($allow_user_list as $allow_user){
     $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
     foreach($current_users_array as $user_info){
