@@ -656,7 +656,7 @@ while($j<=$day_num)
         echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($u_list);
         if($ocertify->auth_user==$u_list||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list)){
-          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\")' ";
+          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$att_row['attendance_detail_id']."\")' ";
         }else{
           $replace_str = '';
         }

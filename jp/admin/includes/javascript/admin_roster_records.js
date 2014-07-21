@@ -364,7 +364,7 @@ function change_user_list(ele){
   });
 }
 
-function attendance_replace(date,ele,uid){
+function attendance_replace(date,ele,uid,att_id){
   if(!uid){
     uid='';
   }
@@ -383,7 +383,7 @@ function attendance_replace(date,ele,uid){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_replace&date='+date+'&uid='+uid+'&index='+index,
+    url: 'ajax.php?action=attendance_replace&date='+date+'&uid='+uid+'&index='+index+'&att_id='+att_id,
     dataType: 'text',
     async: false,
     success: function(text) {
