@@ -8895,9 +8895,7 @@ if($_GET['latest_messages_id']>0){
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	$res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
     $permission = tep_db_fetch_array($res_tep_row);
-    if($permission['permission']>10) {
-        $hidden = 'style="display:none"';
-    }
+	$hidden =  $permission['permission']>10 ? 'style="display:none"':'';
         $all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	 $all_manager .= '</ul>';
@@ -8909,9 +8907,7 @@ if($_GET['latest_messages_id']>0){
    	 while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	     $res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
          $permission = tep_db_fetch_array($res_tep_row);
-     if($permission['permission']>10) {
-        $hidden = 'style="display:none"';
-     }
+		 $hidden =  $permission['permission']>10 ? 'style="display:none"':'';
      		$all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	$all_manager .= '</ul>';
@@ -9424,7 +9420,7 @@ echo  $return_res;
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
   }
-  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission != '31')){
+  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10')){
     $group_disabled = ' disabled="disabled" ';
   }
 
@@ -9508,7 +9504,7 @@ echo  $return_res;
   //是否有出勤数据
   if(!empty($attendance_dd_arr)){
     //如果当前管理员权限为root，显示全部组 其他权限则显示当前管理员可控制的组
-    if($ocertify->npermission >= '15'){
+    if($ocertify->npermission > 10){
 
       $group_list_select = $group_list;
     }else{
@@ -9705,8 +9701,9 @@ echo  $return_res;
       foreach($replace_att_list as $att_info){
         $replace_show_array[] = $att_info['id'];
         $att_select .= '<option value="'.$att_info['id'].'"';
-        if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$att_info['id']){
+        if(isset($_GET['att_id'])&&$_GET['att_id']==$att_info['id']){
           $att_select .= ' selected ';
+          $current_att_title = $att_info['title'];
         }
         $att_select .= '>'.$att_info['title'].'</option>';
  
@@ -9765,7 +9762,7 @@ echo  $return_res;
     $selected = $leave_start_array['0']!=$i ?'':'selected==selected';
     $leave_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
-  $leave_start .= '</select>';
+  $leave_start .= '</select>&nbsp;'.HOUR_TEXT;
 
   $leave_start .= '<select name="leave_start_minute_a" id="leave_start_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
@@ -9779,17 +9776,18 @@ echo  $return_res;
     $selected = $leave_start_min_right!=$i ?'':'selected==selected';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_start .= '</select>&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
+  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
 
   $leave_end_array = explode(':',$replace_info_res['leave_end']);
   $leave_end_min_left= substr($leave_end_array[1],0,1);
   $leave_end_min_right= substr($leave_end_array[1],1,2);
+
   $leave_end = '<select name="leave_end_hour" id="leave_end_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
     $selected = $leave_end_array['0']!=$i ?'':'selected==selected';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_end .= '</select>';
+  $leave_end .= '</select>&nbsp;'.HOUR_TEXT;
 
   $leave_end .= '<select name="leave_end_minute_a" id="leave_end_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
@@ -9803,14 +9801,14 @@ echo  $return_res;
     $selected = $leave_end_min_right!=$i ?'':'selected==selected';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_end .= '</select>&nbsp;&nbsp;<font color="red" id="leave_end_error"></font>';
+  $leave_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_end_error"></font>';
 
   //头部内容
   $heading = array();
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
     $user_info_self = tep_get_user_info($_GET['uid']);
-    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'];
+    $date_str .= '&nbsp;&nbsp;'.$current_att_title;
   }
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -9916,8 +9914,15 @@ echo  $return_res;
     $current_users = $_GET['uid']; 
   }
   $current_users_array = tep_get_user_list_by_userid($current_users);
+  //获取admin及ROOT
+  $permissions_query = tep_db_query("select userid from ".TABLE_PERMISSIONS." where permission>=15 order by permission");
+  while($permissions_array = tep_db_fetch_array($permissions_query)){
+
+    $current_users_array[] = $permissions_array['userid'];
+  }
+  tep_db_free_result($permissions_query);
   foreach($allow_user_list as $allow_user){
-    $allow_user_select .= '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
+    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
     foreach($current_users_array as $user_info){
       $allow_user_select .= '<option value="'.$user_info.'"';
       if($allow_user == $user_info){
@@ -9978,7 +9983,7 @@ echo  $return_res;
     $_GET['index'].'\',\'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
-  if($ocertify->npermission=='31'){
+  if($ocertify->npermission>'10'){
     $disabled = '';
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
