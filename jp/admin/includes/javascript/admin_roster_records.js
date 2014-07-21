@@ -340,91 +340,9 @@ function save_submit(c_permission){
 
 function del_as(ele,asl_id,c_permission){
   var tr_index = $(ele).parent().parent().index();
-  if(asl_id!=''){
-    if (c_permission == 31) {
-  $.ajax({
-    url: 'ajax_orders.php?action=del_one_as',   
-    type: 'POST',
-    dataType: 'text',
-    data: 'asl_id='+asl_id, 
-    async: false,
-    success: function(msg) {
-      if(msg == 'true'){
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-      }else{
-        alert('TEXT_CANNOT_DELETE_ONE_AS');
-      }
-    }
-  });
-    } else {
-      $.ajax({
-        url: 'ajax_orders.php?action=getallpwd',   
-        type: 'POST',
-        dataType: 'text',
-        data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
-        async: false,
-        success: function(msg) {
-           var tmp_msg_arr = msg.split('|||'); 
-           var pwd_list_array = tmp_msg_arr[1].split(',');
-           if (tmp_msg_arr[0] == '0') {
-  $.ajax({
-    url: 'ajax_orders.php?action=del_one_as',   
-    type: 'POST',
-    dataType: 'text',
-    data: 'asl_id='+asl_id, 
-    async: false,
-    success: function(msg) {
-      if(msg == 'true'){
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-      }else{
-        alert('TEXT_CANNOT_DELETE_ONE_AS');
-      }
-    }
-  });
-           } else {
-             var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
-             if (in_array(input_pwd_str, pwd_list_array)) {
-               $.ajax({
-                 url: 'ajax_orders.php?action=record_pwd_log',   
-                 type: 'POST',
-                 dataType: 'text',
-                 data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.attendance_setting_form.action),
-                 async: false,
-                 success: function(msg_info) {
-  $.ajax({
-    url: 'ajax_orders.php?action=del_one_as',   
-    type: 'POST',
-    dataType: 'text',
-    data: 'asl_id='+asl_id, 
-    async: false,
-    success: function(msg) {
-      if(msg == 'true'){
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-        $('.popup_order_info').find('tr').eq(tr_index).remove();
-      }else{
-        alert('TEXT_CANNOT_DELETE_ONE_AS');
-      }
-    }
-  });
-                 }
-               }); 
-             } else {
-               alert(js_text_onetime_pwd_error); 
-             }
-           }
-        }
-       });
-    }
-  }else{
-    $('.popup_order_info').find('tr').eq(tr_index).remove();
-    $('.popup_order_info').find('tr').eq(tr_index).remove();
-    $('.popup_order_info').find('tr').eq(tr_index).remove();
-  }
+  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  $('.popup_order_info').find('tr').eq(tr_index).remove();
 }
 
 function change_user_list(ele){
