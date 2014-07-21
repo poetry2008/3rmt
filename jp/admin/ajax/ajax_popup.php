@@ -9508,7 +9508,7 @@ echo  $return_res;
   //是否有出勤数据
   if(!empty($attendance_dd_arr)){
     //如果当前管理员权限为root，显示全部组 其他权限则显示当前管理员可控制的组
-    if($ocertify->npermission == 31){
+    if($ocertify->npermission >= '15'){
 
       $group_list_select = $group_list;
     }else{
