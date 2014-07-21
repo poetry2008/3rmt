@@ -8886,27 +8886,40 @@ if($_GET['latest_messages_id']>0){
 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
  }
  $group_content_table[] = array('text'=>$group_content_row_name); 
+
+ //管理员
  $group_manager[] = array('params'=>'width="20%"','text'=> GROUP_MANAGERS );
  if($_POST['group_id'] < 0){
  	$manager_list = tep_db_query("select * from ".TABLE_USERS); 
    	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
-     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
+ 	$res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
+    $permission = tep_db_fetch_array($res_tep_row);
+    if($permission['permission']>10) {
+        $hidden = 'style="display:none"';
+    }
+        $all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
- 	$all_manager .= '</ul>';
+ 	 $all_manager .= '</ul>';
  }else{
-	$group_all_manager = tep_db_fetch_array(tep_db_query('select all_managers_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
-	$group_all_manager = explode('|||',$group_all_manager['all_managers_id']);
-	$manager_list = tep_db_query('select * from '.TABLE_USERS);
-	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
-   	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
-     		$all_manager .= '<li><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
+     $group_all_manager = tep_db_fetch_array(tep_db_query('select all_managers_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
+	 $group_all_manager = explode('|||',$group_all_manager['all_managers_id']);
+	 $manager_list = tep_db_query('select * from '.TABLE_USERS);
+	 $all_manager = '<ul class="table_img_list" style="width:100%">'; 
+   	 while ($manager_list_res = tep_db_fetch_array($manager_list)) {
+ 	     $res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
+         $permission = tep_db_fetch_array($res_tep_row);
+     if($permission['permission']>10) {
+        $hidden = 'style="display:none"';
+     }
+     		$all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	$all_manager .= '</ul>';
  }
  $group_manager[] = array('text' => $all_manager);
 
  $group_content_table[] = array('text'=>$group_manager);
+
  $group_content_row_staff = array();
  $group_content_row_staff[] = array('params'=>'width="20%"','text'=> GROUP_STAFF );
  if($_POST['group_id'] < 0){
@@ -9080,6 +9093,10 @@ else if($_GET['action'] == 'edit_attendance_info') {
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
   include(DIR_FS_ADMIN.'classes/notice_box.php');
+  if($ocertify->npermission <15 ){
+	  $show_style =' disabled="disabled" ';
+  }
+
   $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   if($_POST['id']!=0){
@@ -9112,15 +9129,15 @@ else if($_GET['action'] == 'edit_attendance_info') {
   $attendance_info_row = array();
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_TITLE),
-           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" class="attendance_input"').'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
+           array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" class="attendance_input"' .$show_style).'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
         array('text' => tep_draw_hidden_field('id', $id)) 
      ); 
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_ABBREVIATION),
-           array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'id="short_language" class="attendance_input"').'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
+           array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'id="short_language" class="attendance_input"' .$show_style).'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
      ); 
 //排班类型
-    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id">';
+    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id" '.$show_style.'>';
     $attendance_select_type .= '<option value="0" '.($att_info_res['scheduling_type']=='0'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</option>';
     $attendance_select_type .= '<option value="1" '.($att_info_res['scheduling_type']=='1'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</option>';
     $attendance_select_type .= '</select>';
@@ -9137,7 +9154,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
   }else{
      $style_color = 'style="display:none;"'; 
   }
-  $select_type_color = '<select name="scheduling_type_color" id="src_text_color"'.$style_color.'>';
+  $select_type_color = '<select name="scheduling_type_color" id="src_text_color"'.$style_color.' '.$show_style.'>';
   foreach($color_array as $color_key=>$color_value){
 	$selected = $att_info_res['src_text']==$color_value ? 'selected=selected':'';
     $select_type_color .= '<option value="'.$color_value.'"'.$selected.'>'.$color_font_array[$color_key].'</option>';
@@ -9151,8 +9168,8 @@ else if($_GET['action'] == 'edit_attendance_info') {
   }else{
    $style_image = 'style="display:none;"';
   }
-	$select_type_image = '<div>'.tep_draw_input_field('src_image_input',$src_text,'id="src_text_image" class="attendance_input"'.$style_image.'');
-    $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button"'.$style_image.'').'</div>'; 
+	$select_type_image = '<div>'.tep_draw_input_field('src_image_input',$src_text,'id="src_text_image" class="attendance_input"'.$style_image.' '.$show_style.'');
+    $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button"'.$style_image.' '.$show_style.'').'</div>'; 
     $select_type_image .= tep_draw_file_field('src_image','','id="upload_file_image" onchange=change_image_text(this) style="display:none"');
 	 
 	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</div>';
@@ -9169,11 +9186,11 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="attendance_input"').' }</div>')
+           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="attendance_input"'.$show_style).' }</div>')
      ); 
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
-           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$disable).' }</div>')
+           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="attendance_input"'.$show_style).' }</div>')
      ); 
 
 
@@ -9184,7 +9201,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
      }
       $attendance_info_row[]['text'] = array(
 	       array('text' => ATTENDANCE_SET_TIME),
-           array('text' => tep_draw_radio_field('set_time',0,$selected_1,'','id="set_left" onclick=change_set_time(0)').ATTENDANCE_SET_TIME_FIELD.'&nbsp;'.tep_draw_radio_field('set_time',1,$selected_2,'','id="set_right" onclick=change_set_time(1)').ATTENDANCE_SET_FIELD_TIME)
+           array('text' => tep_draw_radio_field('set_time',0,$selected_1,'','id="set_left" onclick=change_set_time(0)'.$show_style).ATTENDANCE_SET_TIME_FIELD.'&nbsp;'.tep_draw_radio_field('set_time',1,$selected_2,'','id="set_right" onclick=change_set_time(1)' .$show_style).ATTENDANCE_SET_FIELD_TIME)
 	  );
 
 //工作开始时间
@@ -9192,21 +9209,21 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  
 	  $work_start_min_left= substr($work_start_array[1],0,1);
 	  $work_start_min_right= substr($work_start_array[1],1,2);
-      $work_start = '<select name="work_start_hour" id="work_start_hour">';
+      $work_start = '<select name="work_start_hour" id="work_start_hour" '.$show_style.'>';
 	  for($i=0;$i<=23;$i++){
           $selected = $work_start_array['0']!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
 	  }
       $work_start .= '</select>&nbsp;'.HOUR_TEXT;
 
-      $work_start .= '<select name="work_start_minute_a" id="work_start_min_l">';
+      $work_start .= '<select name="work_start_minute_a" id="work_start_min_l" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
           $selected = $work_start_min_left!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_start .= '</select>';
 
-      $work_start .= '<select name="work_start_minute_b" id="work_start_min_r">';
+      $work_start .= '<select name="work_start_minute_b" id="work_start_min_r" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
           $selected = $work_start_min_right!=$i ?'':'selected==selected';
           $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
@@ -9218,21 +9235,21 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  $work_end_array = explode(':',$att_info_res['work_end']);
 	  $work_end_min_left= substr($work_end_array[1],0,1);
 	  $work_end_min_right= substr($work_end_array[1],1,2);
-      $work_end = '<select name="work_end_hour" id="work_end_hour">';
+      $work_end = '<select name="work_end_hour" id="work_end_hour" '.$show_style.'>';
 	  for($i=0;$i<=23;$i++){
           $selected = $work_end_array['0']!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_end .= '</select>&nbsp;'.HOUR_TEXT;
 
-      $work_end .= '<select name="work_end_minute_a" id="work_end_min_l">';
+      $work_end .= '<select name="work_end_minute_a" id="work_end_min_l" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
           $selected = $work_end_min_left!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_end .= '</select>';
 
-      $work_end .= '<select name="work_end_minute_b" id="work_end_min_r">';
+      $work_end .= '<select name="work_end_minute_b" id="work_end_min_r" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
           $selected = $work_end_min_right!=$i ?'':'selected==selected';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
@@ -9244,20 +9261,20 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  $rest_start_array = explode(':',$att_info_res['rest_start']);
 	  $rest_start_min_left= substr($rest_start_array[1],0,1);
 	  $rest_start_min_right= substr($rest_start_array[1],1,2);
-      $rest_start = '<select name="rest_start_hour">';
+      $rest_start = '<select name="rest_start_hour" '.$show_style.'>';
 	  for($i=0;$i<=23;$i++){
           $selected = $rest_start_array['0']!=$i ?'':'selected==selected';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_start .= '</select>&nbsp;'.HOUR_TEXT;
 
-      $rest_start .= '<select name="rest_start_minute_a">';
+      $rest_start .= '<select name="rest_start_minute_a" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
           $selected = $rest_start_min_left!=$i ?'':'selected==selected';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_start .= '</select>';
-      $rest_start .= '<select name="rest_start_minute_b">';
+      $rest_start .= '<select name="rest_start_minute_b" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
           $selected = $rest_start_min_right!=$i ?'':'selected==selected';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
@@ -9269,20 +9286,20 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  $rest_end_array = explode(':',$att_info_res['rest_end']);
 	  $rest_end_min_left= substr($rest_end_array[1],0,1);
 	  $rest_end_min_right= substr($rest_end_array[1],1,2);
-      $rest_end = '<select name="rest_end_hour">';
+      $rest_end = '<select name="rest_end_hour" '.$show_style.'>';
 	  for($i=0;$i<=24;$i++){
           $selected = $rest_end_array['0']!=$i ?'':'selected==selected';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_end .= '</select>&nbsp;'.HOUR_TEXT;
 
-      $rest_end .= '<select name="rest_end_minute_a">';
+      $rest_end .= '<select name="rest_end_minute_a" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
           $selected = $rest_end_min_left!=$i ?'':'selected==selected';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_end .= '</select>';
-      $rest_end .= '<select name="rest_end_minute_b">';
+      $rest_end .= '<select name="rest_end_minute_b" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
           $selected = $rest_end_min_right!=$i ?'':'selected==selected';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
@@ -9314,8 +9331,8 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	    $att_work_hours= del_zero($att_info_res['work_hours']);
 	    $att_rest_hours= del_zero($att_info_res['rest_hours']);
 	 }
-      $work_hours=  tep_draw_input_field('work_hours',$att_work_hours,'id="work_hours" class="attendance_input" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
-      $rest_hours =  tep_draw_input_field('rest_hours',$att_rest_hours,'id="rest_hours" class="attendance_input" style="text-align:right;"') . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
+      $work_hours=  tep_draw_input_field('work_hours',$att_work_hours,'id="work_hours" class="attendance_input" style="text-align:right;"' .$show_style) . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
+      $rest_hours =  tep_draw_input_field('rest_hours',$att_rest_hours,'id="rest_hours" class="attendance_input" style="text-align:right;"' .$show_style) . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
 	  
 	  if($att_info_res['set_time']==1 && !empty($id)){
 	      $time_numbers_style = 'style="display:block;"';
@@ -9339,7 +9356,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  //sort
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_SORT),
-           array('text' => tep_draw_input_field('sort',$att_info_res['sort'],'class="attendance_input" style="text-align:right;"'))
+           array('text' => tep_draw_input_field('sort',$att_info_res['sort'],'class="attendance_input" style="text-align:right;"'.$show_style))
      ); 
     $add_user_text= ATTENDANCE_ADD_USER.$att_info_res['add_user'];
     $update_user_text= ATTENDANCE_ADD_TIME.$att_info_res['add_time'];
@@ -9365,8 +9382,8 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	   ); 
 	 }
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"').'</a>'; 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info();"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"'.$show_style).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info();"'.$show_style).'</a>'; 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
   }
@@ -9432,7 +9449,11 @@ echo  $return_res;
       );
   include(DIR_FS_ADMIN.'classes/notice_box.php'); 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-  $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
+  if(isset($_GET['gid'])&&$_GET['gid']!=''){
+    $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
+  }else{
+    $attendance_dd_arr = tep_get_attendance($_GET['date'],0,true);
+  }
  
   //头部内容
   $heading = array();
@@ -9853,17 +9874,17 @@ echo  $return_res;
       }
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
+      echo '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
       foreach($row_all_user as $row_all_user_value){
 
-        echo '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
         $row_all_user_value_name = tep_get_user_info($row_all_user_value);
         if(!in_array($row_all_user_value,$already_add_user_array)){
           echo "<option value='".$row_all_user_value."'>".$row_all_user_value_name['name']."</option>";
           $current_users_list[] = $row_all_user_value;
         }
-        echo '</select>';
       }
-    }
+      echo '</select>';
+    } 
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $all_user_select)
@@ -9978,5 +9999,101 @@ echo  $return_res;
   $notice_box->get_contents($as_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
-}
+}else if($_GET['action']=='change_att_date'){
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
+  $heading = array();
+  $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
+    $user_info_self = tep_get_user_info($_GET['uid']);
+    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'];
+  }
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $date_str);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  $att_sql = "select * from ".TABLE_ATTENDANCE." WHERE 
+    `date` ='".$_GET['date']."' and user_name = '".$_GET['uid']."'";
+  $att_query = tep_db_query($att_sql);
+  if($att_row = tep_db_fetch_array($att_query)){
+    $login_end = substr($att_row['login_time'],11,5);
+    $logout_end = substr($att_row['logout_time'],11,5);
+    $aid = $att_row['id'];
+  }
+
+
+  $att_start_array = explode(':',$login_end);
+  $att_start_min_left= substr($att_start_array[1],0,1);
+  $att_start_min_right= substr($att_start_array[1],1,2);
+  $att_start = '<select name="att_start_hour" id="att_start_hour" '.$disabled.'>';
+  for($i=0;$i<=23;$i++){
+    $selected = $att_start_array['0']!=$i ?'':'selected==selected';
+    $att_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+  }
+  $att_start .= '</select>';
+
+  $att_start .= '<select name="att_start_minute_a" id="att_start_min_l" '.$disabled.'>';
+  for($i=0;$i<=5;$i++){
+    $selected = $att_start_min_left!=$i ?'':'selected==selected';
+    $att_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $att_start .= '</select>';
+
+  $att_start .= '<select name="att_start_minute_b" id="att_start_min_r" '.$disabled.'>';
+  for($i=0;$i<=9;$i++){
+    $selected = $att_start_min_right!=$i ?'':'selected==selected';
+    $att_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $att_start .= '</select>&nbsp;&nbsp;<font color="red" id="att_start_error"></font>';
+
+  $att_end_array = explode(':',$logout_end);
+  $att_end_min_left= substr($att_end_array[1],0,1);
+  $att_end_min_right= substr($att_end_array[1],1,2);
+  $att_end = '<select name="att_end_hour" id="att_end_hour" '.$disabled.'>';
+  for($i=0;$i<=23;$i++){
+    $selected = $att_end_array['0']!=$i ?'':'selected==selected';
+    $att_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $att_end .= '</select>';
+
+  $att_end .= '<select name="att_end_minute_a" id="att_end_min_l" '.$disabled.'>';
+  for($i=0;$i<=5;$i++){
+    $selected = $att_end_min_left!=$i ?'':'selected==selected';
+    $att_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $att_end .= '</select>';
+
+  $att_end .= '<select name="att_end_minute_b" id="att_end_min_r" '.$disabled.'>';
+  for($i=0;$i<=9;$i++){
+    $selected = $att_end_min_right!=$i ?'':'selected==selected';
+    $att_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+  }
+  $att_end .= '</select>&nbsp;&nbsp;<font color="red" id="att_end_error"></font>';
+  $att_end .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  $att_end .= '<input type="hidden" name="aid" value="'.$aid.'">';
+
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
+    array('align' => 'left', 'params' => ' nowrap="nowrap"', 'text' =>
+      $att_start.'&nbsp;～&nbsp'.$att_end)
+  );
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+  $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
+  $action_url_month = substr($_GET['date'],4,2) == date('m') ? '' : '&m='.substr($_GET['date'],4,2);
+  $action_url = 'action=save_att_date'.$action_url_date.$action_url_month;
+  $form_str = tep_draw_form('attendance_setting_form', FILENAME_ROSTER_RECORDS, $action_url);
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($as_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}
