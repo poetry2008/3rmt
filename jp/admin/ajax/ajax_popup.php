@@ -8895,9 +8895,7 @@ if($_GET['latest_messages_id']>0){
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	$res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
     $permission = tep_db_fetch_array($res_tep_row);
-    if($permission['permission']>10) {
-        $hidden = 'style="display:none"';
-    }
+	$hidden =  $permission['permission']>10 ? 'style="display:none"':'';
         $all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	 $all_manager .= '</ul>';
@@ -8909,9 +8907,7 @@ if($_GET['latest_messages_id']>0){
    	 while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	     $res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
          $permission = tep_db_fetch_array($res_tep_row);
-     if($permission['permission']>10) {
-        $hidden = 'style="display:none"';
-     }
+		 $hidden =  $permission['permission']>10 ? 'style="display:none"':'';
      		$all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	$all_manager .= '</ul>';
@@ -9765,7 +9761,7 @@ echo  $return_res;
     $selected = $leave_start_array['0']!=$i ?'':'selected==selected';
     $leave_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
-  $leave_start .= '</select>';
+  $leave_start .= '</select>&nbsp;'.HOUR_TEXT;
 
   $leave_start .= '<select name="leave_start_minute_a" id="leave_start_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
@@ -9779,17 +9775,18 @@ echo  $return_res;
     $selected = $leave_start_min_right!=$i ?'':'selected==selected';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_start .= '</select>&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
+  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
 
   $leave_end_array = explode(':',$replace_info_res['leave_end']);
   $leave_end_min_left= substr($leave_end_array[1],0,1);
   $leave_end_min_right= substr($leave_end_array[1],1,2);
+
   $leave_end = '<select name="leave_end_hour" id="leave_end_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
     $selected = $leave_end_array['0']!=$i ?'':'selected==selected';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_end .= '</select>';
+  $leave_end .= '</select>&nbsp;'.HOUR_TEXT;
 
   $leave_end .= '<select name="leave_end_minute_a" id="leave_end_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
@@ -9803,7 +9800,7 @@ echo  $return_res;
     $selected = $leave_end_min_right!=$i ?'':'selected==selected';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_end .= '</select>&nbsp;&nbsp;<font color="red" id="leave_end_error"></font>';
+  $leave_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_end_error"></font>';
 
   //头部内容
   $heading = array();
