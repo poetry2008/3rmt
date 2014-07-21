@@ -1,4 +1,5 @@
 var ele_value_obj_att = '';
+var ele_index = 0;
 //show attendance info
 function show_attendance_info(ele,id,param_y,param_m){
   var ele_width = $(".box_warp").width(); 
@@ -30,7 +31,7 @@ function show_attendance_info(ele,id,param_y,param_m){
         $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
      }
      ele_value_obj_att = ele;
-
+     ele_index = 0;
      $('#show_attendance_edit').css('display','block');
  }
   }); 
@@ -198,10 +199,10 @@ function attendance_setting(date,ele,gid){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
       }else{
-        left_add = $(ele).index()*($(ele).width()+3);
-        $("#show_attendance_edit").css('left',box_warp_left+left_add);
+        $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
       }
       ele_value_obj_att = ele;
+      ele_index = index;
       $('#show_attendance_edit').css('display','block');
     }
   });
@@ -229,6 +230,9 @@ function hidden_info_box(){
 window.onresize = resizepage;
 
 function resizepage(){
+  if(ele_index!=0){
+    ele_value_obj_att = document.getElementById('date_td_'+ele_index);
+  }
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -248,7 +252,6 @@ function resizepage(){
       $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
     }else{
       if(tmp_ele_obj.left-box_warp_left+$("#show_attendance_edit").width() < ele_width){
-        left_add = $(ele_value_obj_att).index()*($(ele_value_obj_att).width()+3);
         $("#show_attendance_edit").css('left',box_warp_left+left_add);
       }else{
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left);
@@ -386,7 +389,7 @@ function attendance_replace(date,ele,uid){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
@@ -394,6 +397,7 @@ function attendance_replace(date,ele,uid){
         $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
       }
       ele_value_obj_att = ele;
+      ele_index = index;
       $('#show_attendance_edit').css('display','block');
     }
   });
@@ -476,6 +480,7 @@ function change_att_date(date,ele,uid){
         $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
       }
       ele_value_obj_att = ele;
+      ele_index = index;
       $('#show_attendance_edit').css('display','block');
     }
   });
