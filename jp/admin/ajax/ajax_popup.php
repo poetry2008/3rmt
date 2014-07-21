@@ -8879,7 +8879,7 @@ if($_GET['latest_messages_id']>0){
  $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  $group_content_table = array();
  $group_content_row_name = array();
- $group_content_row_name[] = array('params'=>'width="20%"','text'=> GROUP_COMPANY_NAME );
+ $group_content_row_name[] = array('params'=>'width="20%"','text'=> GROUP_NAME );
  if($_POST['group_id'] < 0){
  	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value=""><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
  }else{
@@ -9405,7 +9405,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
     $res_tep = tep_db_query($sql_get_time);
     $rows=tep_db_fetch_array($res_tep);
     if($rows['set_time']==0){
-    $return_res = '<span>'.$rows['work_start'] .HOUR_TEXT.'--'.$rows['work_end'].HOUR_TEXT.'</span>';
+    $return_res = '<span>'.$rows['work_start'].'--'.$rows['work_end'].HOUR_TEXT.'</span>';
     }elseif($rows['set_time']==1){
          $work_time = $rows['work_hours']+$rows['rest_hours'];
          $return_res = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
@@ -9688,7 +9688,7 @@ echo  $return_res;
   }
   //show work time detail
   if($replace_att_list[0]['set_time']==0){
-          $user_adl = '<span>'.$replace_att_list[0]['work_start'] .HOUR_TEXT.'--'.$replace_att_list[0]['work_end'].HOUR_TEXT.'</span>';
+          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].HOUR_TEXT.'</span>';
   }elseif($replace_att_list[0]['set_time']==1){
          $work_time = $replace_att_list[0]['work_hours']+$replace_att_list[0]['rest_hours'];
          $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
