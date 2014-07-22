@@ -9434,6 +9434,7 @@ echo  $return_res;
   }
   //生成 所有组列表
   $group_list = tep_get_group_tree();
+  $show_manage_group = tep_is_group_manager($ocertify->auth_user,true);
 
   //获得所有循环方式
   $type_list = array(
@@ -9471,14 +9472,21 @@ echo  $return_res;
   $adl_select .= '</select>';
 
   $group_select = '<select name="group[]" '.$group_disabled.'>';
+  $hidden_group_select = '<select name="group[]" >';
   foreach($group_list as $group){
+    if(in_array($group['id'],$show_manage_group)||$ocertify->npermission>10){
     $group_select .= '<option value="'.$group['id'].'"';
+    $hidden_group_select .= '<option value="'.$group['id'].'"';
     if($group_disabled!=''&&$group['id']==$_GET['gid']){
       $group_select .= ' selected ';
+      $hidden_group_select .= ' selected ';
     }
     $group_select .= '>'.$group['text'].'</oprion>';
+    $hidden_group_select .= '>'.$group['text'].'</oprion>';
+    }
   }
   $group_select .= '</select>';
+  $hidden_group_select .= '</select>';
 
   $type_select = '<select name="type[]" '.$show_only.' >';
   foreach($type_list as $t_key => $t_value){
@@ -9488,9 +9496,9 @@ echo  $return_res;
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$group_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_group_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
-  $hidden_date .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   if($group_disabled!=''){
     $hidden_date .= '<input type="hidden" name="default_gid" value="'.$_GET['gid'].'">';
   }
@@ -9513,6 +9521,9 @@ echo  $return_res;
     $show_arr = true;
     foreach($attendance_dd_arr as $a_info){
 
+      if(!in_array($a_info['group_id'],$show_manage_group)&&$ocertify->npermission<15){
+        continue;
+      }
       $has_adl_select = '<select name="has_attendance_id[]" '.$show_only.' >';
       foreach($attendance_detail_list as $a_value){
         $has_adl_select .= '<option value="'.$a_value['id'].'"';
@@ -9544,7 +9555,7 @@ echo  $return_res;
       $has_type_select .= '</select>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"');
+      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'">');
       if($show_arr){
         $as_user_added = $a_info['add_user'];
         $as_date_added = $a_info['add_time'];
@@ -9799,7 +9810,7 @@ echo  $return_res;
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
     $user_info_self = tep_get_user_info($_GET['uid']);
-    $date_str .= '&nbsp;&nbsp;'.$current_att_title;
+    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'];
   }
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -9978,7 +9989,7 @@ echo  $return_res;
   if($ocertify->npermission>'10'){
     $disabled = '';
   }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_replace_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
