@@ -718,9 +718,6 @@ while($j<=$day_num)
       `date` = '".$date."'";
     $query_replace_att = tep_db_query($sql_replace_att);
     while($row_replace_att = tep_db_fetch_array($query_replace_att)){
-      if($row_replace_att['allow_status']==1&&$ocertify->npermission>10&&$row_replace_att['user']!=$ocertify->auth_user){
-        continue;
-      }
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
