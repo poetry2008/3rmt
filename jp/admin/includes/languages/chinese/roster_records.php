@@ -74,8 +74,6 @@ define('MINUTE_TEXT', '分');
 define('TIME_HOUR_TEXT', '小时');
 define('TEXT_SELECT_USER','用户名');
 define('TEXT_DELETE_REMIND','确定删除吗？');
-define('TEXT_SURE_DELETE','OK');
-define('TEXT_CANCEL_DELETE','取消');
 
 ?>
 

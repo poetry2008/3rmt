@@ -373,6 +373,7 @@ case 'update':
 <script language="javascript" src="includes/javascript/admin_roster_records.js"></script>
 
 <script language="javascript">
+var js_remind_delete = '<?php echo TEXT_DELETE_REMIND;?>';
 var js_text_input_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
 var js_text_onetime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
 var attendance_del_confirm = '<?php echo ATTENDANCE_DELETE_REMIND;?>';
@@ -425,6 +426,7 @@ require("includes/note_js.php");
     </table></td>
 <!-- body_text -->
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><div id="show_attendance_edit" style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 60%; display:none;"></div><table border="0" width="100%" cellspacing="0" cellpadding="1">
+    <div id="show_delete_box" style="min-width: 450px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 60%; display:none;"></div>
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
