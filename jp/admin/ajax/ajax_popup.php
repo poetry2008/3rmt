@@ -9486,9 +9486,12 @@ echo  $return_res;
   $group_select = '<select name="group[]" '.$group_disabled.'>';
   $hidden_group_select = '<select name="group[]" >';
   $group_select_hidden = '';
+  $default_hidden = '';
   foreach($group_list as $group){
     if(in_array($group['id'],$show_manage_group)||$ocertify->npermission>10){
-    $group_select_hidden = '<input type="hidden" name="group_hidden[]" value="'.$group['id'].'">';
+    if($default_hidden == ''){
+      $default_hidden = '<input type="hidden" name="group_hidden[]" value="'.$group['id'].'">';
+    }
     $group_select .= '<option value="'.$group['id'].'"';
     $hidden_group_select .= '<option value="'.$group['id'].'"';
     if($group_disabled!=''&&$group['id']==$_GET['gid']){
@@ -9502,7 +9505,11 @@ echo  $return_res;
   }
   $group_select .= '</select>';
   if($group_disabled){
-    $group_select .= $group_select_hidden;
+    if($group_select_hidden!=''){
+      $group_select .= $group_select_hidden;
+    }else{
+      $group_select .= $default_hidden;
+    }
   }
   $hidden_group_select .= '</select>';
 
@@ -9554,18 +9561,25 @@ echo  $return_res;
  
       $has_group_select = '<select name="has_group[]" '.$group_disabled.'>';
       $has_group_select_hidden = '';
+      $default_has_group = '';
       foreach($group_list_select as $group){
-        $has_group_select_hidden .= '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
+        if($default_has_group == ''){
+        $default_has_group = '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
+        }
         $has_group_select .= '<option value="'.$group['id'].'" ';
         if($a_info['group_id'] == $group['id']){
           $has_group_select .= 'selected ';
-          $has_group_select_hidden .= '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
+          $has_group_select_hidden = '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
         }
         $has_group_select .= ' >'.$group['text'].'</oprion>';
       }
       $has_group_select .= '</select>';
       if($group_disabled){
-        $has_group_select .= $has_group_select_hidden;
+        if($has_group_select_hidden!=''){
+          $has_group_select .= $has_group_select_hidden;
+        }else{
+          $has_group_select .= $default_has_group;
+        }
       }
 
       $has_type_select = '<select name="has_type[]" '.$show_only.' >';
