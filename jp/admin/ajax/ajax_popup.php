@@ -10167,7 +10167,7 @@ if($row_array['set_time']==0){
     $work_end_min_right= substr($work_start_array[1],1,2);
     var_dump ($work_start_array[0].','.$work_start_min_left.','.$work_start_min_right.','.$work_end_array[0].','.$work_end_min_left.','.$work_end_min_right);
 }elseif($row_array['set_time']!=0) {
-echo "0,0";
+    var_dump("0,0");
 }
 
 }
