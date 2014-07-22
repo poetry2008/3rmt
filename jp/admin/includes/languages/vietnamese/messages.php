@@ -61,4 +61,5 @@ define('EMAIL_SUBJECT','Quản lý tin nhắn [% s] ');
 define('TEXT_SEND_MAIL','Bạn có chắc bạn muốn gửi không?');
 define('TEXT_USER_NO_EMAIL','Địa chỉ E-mail chưa được thiết lập người dùng.');
 define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','Hãy%s trong kích thước của tập tin đính kèm.');
+define('TEXT_MESSAGES_DELETE_DATA','Mail trong [hộp thư rác]sẽ bị xóa tự động sau 30 ngày');
 ?>
