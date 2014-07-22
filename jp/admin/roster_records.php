@@ -60,7 +60,11 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         $a_id_arr = $_POST['has_attendance_id'];
-        $group_arr = $_POST['has_group'];
+        if(isset($_POST['has_group'])&&!empty($_POST['has_group'])){
+          $group_arr = $_POST['has_group'];
+        }else{
+          $group_arr = $_POST['has_group_hidden'];
+        }
         $type_arr = $_POST['has_type'];
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
@@ -83,7 +87,11 @@ if(isset($_GET['action'])){
           &&is_array($_POST['attendance_id'])
           &&!empty($_POST['attendance_id'])){
         $a_id_arr = $_POST['attendance_id'];
-        $group_arr = $_POST['group'];
+        if(isset($_POST['group'])&&!empty($_POST['group'])){
+          $group_arr = $_POST['group'];
+        }else{
+          $group_arr = $_POST['group_hidden'];
+        }
         $type_arr = $_POST['type'];
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
@@ -150,7 +158,11 @@ if(isset($_GET['action'])){
     case 'save_as_replace':
       $user = $_SESSION['user_name'];
       $date = $_POST['get_date'];
-      $attendance_detail_id = $_POST['attendance_detail_id'];
+      if(isset($_POST['attendance_detail_id'])&&$_POST['attendance_detail_id']!=''){
+        $attendance_detail_id = $_POST['attendance_detail_id'];
+      }else{
+        $attendance_detail_id = $_POST['attendance_detail_id_hidden'];
+      }
       $user_id = $_POST['user_id'];
       $replace_attendance_detail_id = $_POST['replace_attendance_detail_id'];
       $allow_status = $_POST['allow_status'];
@@ -173,7 +185,7 @@ if(isset($_GET['action'])){
         $query_replace = tep_db_query($sql_replace);
         if($row_replace = tep_db_fetch_array($query_replace)){
           $u_list = explode('|||',$row_replace['allow_user']);
-          if(in_array($user_id,$u_list)||$ocertify->npermission>10){
+          if(in_array($ocertify->auth_user,$u_list)||$ocertify->npermission>10){
             $sql_update_arr['allow_status'] = $allow_status;
           }
         }
@@ -570,6 +582,8 @@ if($ocertify->npermission>'10'){
           <tr bgcolor="#3C7FB1">
             <td class="date_title" align="center">
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_prev_str;?>"><b><<</b></a>
+			<?php $month= substr($month,0,1)==0?substr($month,1,2):$month;?>
+
             &nbsp;&nbsp;<font color="#FFF"><?php echo $year.' / '.$month; ?></font>&nbsp;&nbsp;
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_str;?>"><b>>></b></a></td>
           </tr>
@@ -653,7 +667,8 @@ while($j<=$day_num)
         if(!empty($user_replace)){
           $user_worker_list[] = $u_list;
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
-          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$u_list||$ocertify->npermission>'10'){
+          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$u_list
+              ||$ocertify->npermission>'10'||in_array($ocertify->auth_user,tep_get_user_list_by_userid($user_replace['user']))){
           if($att_date_info['scheduling_type'] == 1){
             $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';">&nbsp;</span>';
           }else{
@@ -703,6 +718,9 @@ while($j<=$day_num)
       `date` = '".$date."'";
     $query_replace_att = tep_db_query($sql_replace_att);
     while($row_replace_att = tep_db_fetch_array($query_replace_att)){
+      if($row_replace_att['allow_status']==1&&$ocertify->npermission>10&&$row_replace_att['user']!=$ocertify->auth_user){
+        continue;
+      }
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
@@ -712,7 +730,7 @@ while($j<=$day_num)
       echo "<a href='javascript:void(0)' ";
       echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
       echo " >";
-          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))){
+      if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']){
       if(!empty($u_info)){
         echo $u_info['name'];
       }

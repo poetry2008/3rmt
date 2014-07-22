@@ -9450,7 +9450,9 @@ echo  $return_res;
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   if(isset($_GET['gid'])&&$_GET['gid']!=''){
     $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
+    $gid_flag = false;
   }else{
+    $gid_flag = true;
     $attendance_dd_arr = tep_get_attendance($_GET['date'],0,true);
   }
  
@@ -9475,19 +9477,25 @@ echo  $return_res;
 
   $group_select = '<select name="group[]" '.$group_disabled.'>';
   $hidden_group_select = '<select name="group[]" >';
+  $group_select_hidden = '';
   foreach($group_list as $group){
     if(in_array($group['id'],$show_manage_group)||$ocertify->npermission>10){
+    $group_select_hidden = '<input type="hidden" name="group_hidden[]" value="'.$group['id'].'">';
     $group_select .= '<option value="'.$group['id'].'"';
     $hidden_group_select .= '<option value="'.$group['id'].'"';
     if($group_disabled!=''&&$group['id']==$_GET['gid']){
       $group_select .= ' selected ';
       $hidden_group_select .= ' selected ';
+      $group_select_hidden = '<input type="hidden" name="group_hidden[]" value="'.$group['id'].'">';
     }
     $group_select .= '>'.$group['text'].'</oprion>';
     $hidden_group_select .= '>'.$group['text'].'</oprion>';
     }
   }
   $group_select .= '</select>';
+  if($group_disabled){
+    $group_select .= $group_select_hidden;
+  }
   $hidden_group_select .= '</select>';
 
   $type_select = '<select name="type[]" '.$show_only.' >';
@@ -9523,7 +9531,7 @@ echo  $return_res;
     $show_arr = true;
     foreach($attendance_dd_arr as $a_info){
 
-      if(!in_array($a_info['group_id'],$show_manage_group)&&$ocertify->npermission<15){
+      if($gid_flag&&!in_array($a_info['group_id'],$show_manage_group)&&$ocertify->npermission<15){
         continue;
       }
       $has_adl_select = '<select name="has_attendance_id[]" '.$show_only.' >';
@@ -9537,14 +9545,20 @@ echo  $return_res;
       $has_adl_select .= '</select>';
  
       $has_group_select = '<select name="has_group[]" '.$group_disabled.'>';
+      $has_group_select_hidden = '';
       foreach($group_list_select as $group){
+        $has_group_select_hidden .= '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
         $has_group_select .= '<option value="'.$group['id'].'" ';
         if($a_info['group_id'] == $group['id']){
           $has_group_select .= 'selected ';
+          $has_group_select_hidden .= '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
         }
         $has_group_select .= ' >'.$group['text'].'</oprion>';
       }
       $has_group_select .= '</select>';
+      if($group_disabled){
+        $has_group_select .= $has_group_select_hidden;
+      }
 
       $has_type_select = '<select name="has_type[]" '.$show_only.' >';
       foreach($type_list as $t_key => $t_value){
@@ -9578,7 +9592,8 @@ echo  $return_res;
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_type_select)
       );
     }
-  }else{
+  }
+  if(empty($as_info_row)){
     $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
         array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
@@ -9671,7 +9686,7 @@ echo  $return_res;
     $att_select = '<select name="attendance_detail_id" onchange="change_model_get_time(this.value)">';
   }
   }
-  $replace_select = '<select name="replace_attendance_detail_id" '.$disabled.'>';
+  $replace_select = '<select id ="att_detail_id" name="replace_attendance_detail_id" '.$disabled.' onchange="change_scheduling_time(this.value);">';
   if(!empty($replace_att_list)){
   foreach($replace_att_list as $att_info){
     $att_select .= '<option value="'.$att_info['id'].'"';
@@ -9700,12 +9715,14 @@ echo  $return_res;
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
     if(!empty($replace_att_list)){
       foreach($replace_att_list as $att_info){
+        $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
         $replace_show_array[] = $att_info['id'];
         $att_select .= '<option value="'.$att_info['id'].'"';
         if(isset($_GET['att_id'])&&$_GET['att_id']==$att_info['id']){
           $att_select .= ' selected ';
           $select_att = $att_info['id'];
           $current_att_title = $att_info['title'];
+          $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
         }
         $att_select .= '>'.$att_info['title'].'</option>';
  
@@ -9717,6 +9734,7 @@ echo  $return_res;
   }else{
     $select_att = 0;
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+    $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="0">';
   }
 
 
@@ -9733,6 +9751,7 @@ echo  $return_res;
     }
   }
   $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
+  $att_select .= $att_select_hidden;
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
   $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
@@ -9761,6 +9780,7 @@ echo  $return_res;
   $leave_start_array = explode(':',$replace_info_res['leave_start']);
   $leave_start_min_left= substr($leave_start_array[1],0,1);
   $leave_start_min_right= substr($leave_start_array[1],1,2);
+
   $leave_start = '<select name="leave_start_hour" id="leave_start_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
     $selected = $leave_start_array['0']!=$i ?'':'selected==selected';
@@ -9866,7 +9886,7 @@ echo  $return_res;
       while($group_show_array = tep_db_fetch_array($group_show_query)){
 
         $group_list_select_array = explode('|||',$group_show_array['all_managers_id']); 
-        if(in_array($ocertify->auth_user,$group_list_select_array)){
+        if(in_array($ocertify->auth_user,$group_list_select_array)&&!empty($group_list_select_array)){
 
           $all_user_select_array = explode('|||',$group_show_array['all_users_id']);
           foreach($all_user_select_array as $all_user_select_value){
@@ -10134,4 +10154,22 @@ elseif($_GET['action']=='delete_scheduling_change'){
   $notice_box->get_contents($delete_product_info, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}elseif($_GET['action']=='get_scheduling_time') {
+	$id = $_POST['mould_id'];
+$res_tep = tep_db_query("select set_time,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL." where id=".$id."");	
+
+$row_array = tep_db_fetch_array($res_tep);
+//if($row_array)
+if($row_array['set_time']==0){
+	$work_start_array = explode(':',$row_array['work_start']);
+	$work_start_min_left= substr($work_start_array[1],0,1);
+	$work_start_min_right= substr($work_start_array[1],1,2);
+    $work_end_array = explode(':',$row_array['work_end']);
+    $work_end_min_left= substr($work_start_array[1],0,1);
+    $work_end_min_right= substr($work_start_array[1],1,2);
+    var_dump ($work_start_array[0].','.$work_start_min_left.','.$work_start_min_right.','.$work_end_array[0].','.$work_end_min_left.','.$work_end_min_right);
+}elseif($row_array['set_time']!=0) {
+    var_dump("0,0");
+}
+
 }
