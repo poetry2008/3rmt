@@ -9988,10 +9988,8 @@ echo  $return_res;
     $_GET['index'].'\',\'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
-  if($ocertify->npermission>'10'){
-    $disabled = '';
-  }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, $disabled.'id="button_delete" onclick="delete_replace_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $style_hide = $ocertify->npermission>'10'?'':'style="display:none;"';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$style_hide.'id="button_delete" onclick="delete_submit_confirm(\''.$ocertify->npermission.'\');"').'</a>'; 
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -10104,6 +10102,36 @@ echo  $return_res;
   $notice_box->get_form($form_str);
   $notice_box->get_heading($heading);   
   $notice_box->get_contents($as_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}
+/*
+ *删除排班弹框
+ *传参 userid 
+*/
+elseif($_GET['action']=='delete_scheduling_change'){
+
+  include(DIR_FS_ADMIN . DIR_WS_LANGUAGES .'/'. $language. '/'.FILENAME_ROSTER_RECORDS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  
+  $buttons = array();                                                               
+  $button[] = '<input type="button" value="'.TEXT_SURE_DELETE.'" onclick="delete_submit(\''.$_POST['c_permission'].'\')" class="element_button">';
+  $button[] = '<input type="button" value="'.TEXT_CANCEL_DELETE.'" onclick="hidden_info_box()" class="element_button">';
+  
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $delete_product_info = array();
+  
+  $delete_product_info[]['text'] = array(
+        array('text' => TEXT_DELETE_REMIND) 
+   );
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($delete_product_info, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
 }
