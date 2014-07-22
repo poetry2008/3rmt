@@ -12,16 +12,17 @@
 			header("Content-type: text/html; charset=utf-8");
 			echo "File not found!";
 			exit; 
-		} else {
-			$file_name = base64_decode($file_id);
+                } else {
+                        $file_id_str = str_replace('*','/',$file_id);
+			$file_name = base64_decode($file_id_str);
 			$file_name = explode('|||',$file_name);
 			$file_name = $file_name[0];
 			//die(var_dump($file_name));	
 			$file = fopen('messages_upload/'.$file_id,"r"); 
 			Header("Content-type: application/octet-stream");
 			Header("Accept-Ranges: bytes");
-			Header("Accept-Length: ".filesize('messages_upload/'.$file_name));
-			Header("Content-Disposition: attachment; filename=".$file_name);
+                        Header("Accept-Length: ".filesize('messages_upload/'.$file_name));
+			Header("Content-Disposition: attachment; filename=\"".$file_name."\"");
 			echo fread($file, filesize('messages_upload/'.$file_id));
 			fclose($file);
 		}

@@ -110,6 +110,12 @@ if(isset($_GET['action'])){
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
         }
       }
+      if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
+        foreach($_POST['del_as'] as $del_as){
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
+              id="'.$del_as.'"');
+        }
+      }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
         $date_info = tep_date_info($_POST['get_date']);
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
@@ -124,6 +130,16 @@ if(isset($_GET['action'])){
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
+      if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
+        $date_info = tep_date_info($_POST['get_date']);
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS));
+      }
+      break;
+    case 'delete_as_replace':
+      tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_REPLACE.' where
+          id="'.$_POST['replace_id'].'"');
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
         $date_info = tep_date_info($_POST['get_date']);
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
@@ -157,7 +173,7 @@ if(isset($_GET['action'])){
         $query_replace = tep_db_query($sql_replace);
         if($row_replace = tep_db_fetch_array($query_replace)){
           $u_list = explode('|||',$row_replace['allow_user']);
-          if(in_array($user_id,$u_list)||$ocertify->npermission=='31'){
+          if(in_array($user_id,$u_list)||$ocertify->npermission>10){
             $sql_update_arr['allow_status'] = $allow_status;
           }
         }

@@ -233,7 +233,8 @@
 	if ($_FILES['messages_file']['error'][$fk] > 0){
           continue;
 	}else{
-	    $messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+            $messages_file_name = base64_encode($_FILES['messages_file']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+            $messages_file_name = str_replace('/','*',$messages_file_name);
             $f_src = "messages_upload/" .$messages_file_name;
             $f_name = $_FILES['messages_file']['name'][$fk];
             $f_type = $_FILES['messages_file']['type'][$fk];
@@ -602,6 +603,7 @@
         foreach($has_file_list as $has_file){
           if($_POST['messages_type'] == 1){
             if(file_exists('messages_upload/'.$has_file)){
+              $has_file = str_replace('*','/',$has_file);
               $m_file_name = base64_decode($has_file);
               $m_file_name = explode('|||',$m_file_name);
               $f_src = "messages_upload/".$has_file;
@@ -621,6 +623,7 @@
 	if ($_FILES['messages_file_back']['error'][$fk] > 0){
 	}else{
 	    $messages_file_name = base64_encode($_FILES['messages_file_back']['name'][$fk].'|||'.$ocertify->auth_user.'|||'.time().'|||'.$fk);
+            $messages_file_name = str_replace('/','*',$messages_file_name);
             $f_src = "messages_upload/" .$messages_file_name;
             $f_name = $_FILES['messages_file_back']['name'][$fk];
             $f_type = $_FILES['messages_file_back']['type'][$fk];
@@ -2288,6 +2291,7 @@ require("includes/note_js.php");
           foreach($file_list_arr as $file_info){
 		$messages_file_name = $file_info['name'];
 		if(file_exists('messages_upload/'.$messages_file_name)){
+                        $messages_file_name = str_replace('*','/',$messages_file_name);
 			$messages_file_name = base64_decode($messages_file_name);
 			$messages_file_name = explode('|||',$messages_file_name);
 			$messages_attach_file .= '<a href="message_file_download.php?file_id='.$file_info['name'].'"><img src="images/icons/attach.png" border="0" alt="'.$messages_file_name[0].'" title="'.$messages_file_name[0].'"></a>';
