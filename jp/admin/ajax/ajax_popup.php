@@ -9418,7 +9418,7 @@ echo  $return_res;
   $group_disabled = '';
 
   $show_only = '';
-  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])){
+  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'){
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
   }
@@ -9450,7 +9450,9 @@ echo  $return_res;
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   if(isset($_GET['gid'])&&$_GET['gid']!=''){
     $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
+    $gid_flag = false;
   }else{
+    $gid_flag = true;
     $attendance_dd_arr = tep_get_attendance($_GET['date'],0,true);
   }
  
@@ -9529,7 +9531,7 @@ echo  $return_res;
     $show_arr = true;
     foreach($attendance_dd_arr as $a_info){
 
-      if(!in_array($a_info['group_id'],$show_manage_group)&&$ocertify->npermission<15){
+      if($gid_flag&&!in_array($a_info['group_id'],$show_manage_group)&&$ocertify->npermission<15){
         continue;
       }
       $has_adl_select = '<select name="has_attendance_id[]" '.$show_only.' >';
