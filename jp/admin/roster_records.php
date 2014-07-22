@@ -110,6 +110,12 @@ if(isset($_GET['action'])){
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
         }
       }
+      if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
+        foreach($_POST['del_as'] as $del_as){
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
+              id="'.$del_as.'"');
+        }
+      }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
         $date_info = tep_date_info($_POST['get_date']);
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
@@ -124,6 +130,16 @@ if(isset($_GET['action'])){
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
+      if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
+        $date_info = tep_date_info($_POST['get_date']);
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS));
+      }
+      break;
+    case 'delete_as_replace':
+      tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_REPLACE.' where
+          id="'.$_POST['replace_id'].'"');
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
         $date_info = tep_date_info($_POST['get_date']);
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
@@ -157,7 +173,7 @@ if(isset($_GET['action'])){
         $query_replace = tep_db_query($sql_replace);
         if($row_replace = tep_db_fetch_array($query_replace)){
           $u_list = explode('|||',$row_replace['allow_user']);
-          if(in_array($user_id,$u_list)||$ocertify->npermission=='31'){
+          if(in_array($user_id,$u_list)||$ocertify->npermission>10){
             $sql_update_arr['allow_status'] = $allow_status;
           }
         }
@@ -372,23 +388,7 @@ $(document).ready(function() {
 </script>
 
 <?php 
-$href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
-$belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
-$belong = preg_replace('/\?XSID=[^&]+/','',$belong);
-preg_match_all('/action=new_group/',$belong,$belong_temp_array);
-if($belong_temp_array[0][0] != ''){
-  preg_match_all('/id=[^&]+/',$belong,$belong_array);
-  if($belong_array[0][0] != ''){
-
-    $belong = $href_url.'?'.$belong_array[0][0];
-  }else{
-
-    $belong = $href_url.'?'.$belong_temp_array[0][0];
-  }
-}else{
-
-  $belong = $href_url;
-}
+$belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 require("includes/note_js.php");
 ?>
 
@@ -491,6 +491,7 @@ require("includes/note_js.php");
         $group_str .= '<td align="left">';
         $group_str .= '<div id="show_user_list">';
         foreach($show_group_user as $show_list_uid){
+          if($show_list_uid!=''){
           $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$show_list_uid.'"';
           if(in_array($show_list_uid,$show_select_group_user)){
             $group_str .= ' checked="checked" ';
@@ -499,6 +500,7 @@ require("includes/note_js.php");
           $user_info = tep_get_user_info($show_list_uid);
           $group_str .=  '<label for="'.$show_list_uid.'">'.$user_info['name'].'</label>';
           $group_str .= '&nbsp;&nbsp;&nbsp;';
+          }
         }
         $group_str .= '</div>';
         $group_str .= '</td>';
@@ -539,9 +541,9 @@ $tep_result = tep_db_query($att_select_sql);
  if($val['scheduling_type']==0){
     $image_directory = 'images';
     $image_dir = $image_directory.'/'.$val['src_text'];
-	echo "<li style='float:right; list-style-type:none; margin-right: 10px; margin-top:5px;'><img src='".$image_dir."' style='width: 16px;'>"; 
+	echo "<li style='float:right; height:16px; list-style-type:none; margin-right: 10px; margin-top:5px;'><img src='".$image_dir."' style='width: 16px;'>"; 
 }elseif($val['scheduling_type']==1){
-     echo '<li style="float:right; list-style-type:none; margin-right: 10px; margin-top:5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
+     echo '<li style="float:right; height:16px; list-style-type:none; margin-right: 10px; margin-top:5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
  }
 echo  '<a onclick="show_attendance_info(this, '.$val['id'].$param.')" href="javascript:void(0);" style="text-decoration: underline;"> >> '.$val['title'].'</a></li>';
  }
@@ -614,9 +616,13 @@ while($j<=$day_num)
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
   }else{
-    echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
+    if($today <= $date){
+      echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
+    }else{
+      echo " >";
+    }
   }
-  if($date == date('Ymd',time())){
+  if($date == $today){
     echo "<div class='dataTable_hight_red'>";
     echo $j;
     echo "</div>";
@@ -644,6 +650,7 @@ while($j<=$day_num)
         if(!empty($user_replace)){
           $user_worker_list[] = $u_list;
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
+          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$u_list||$ocertify->npermission>'10'){
           if($att_date_info['scheduling_type'] == 1){
             $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';">&nbsp;</span>';
           }else{
@@ -652,6 +659,7 @@ while($j<=$day_num)
           if($user_replace['allow_status']==0){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
+        }
         }
         echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($u_list);
@@ -701,6 +709,7 @@ while($j<=$day_num)
       echo "<a href='javascript:void(0)' ";
       echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
       echo " >";
+          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))){
       if(!empty($u_info)){
         echo $u_info['name'];
       }
@@ -716,6 +725,7 @@ while($j<=$day_num)
       }
       echo "</a>";
       }
+    }
     }
     }
     echo '</div>';

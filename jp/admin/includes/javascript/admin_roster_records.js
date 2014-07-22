@@ -23,7 +23,8 @@ function show_attendance_info(ele,id,param_y,param_m){
   success: function(data){
      $('#show_attendance_edit').html(data);
 
-     $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+     var top_div = $('.compatible_head').height();
+     $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height()-top_div);
      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
@@ -194,7 +195,8 @@ function attendance_setting(date,ele,gid){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+      var top_div = $('.compatible_head').height();
+      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height()-top_div);
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()+box_warp_left); 
@@ -245,7 +247,8 @@ function resizepage(){
   var ele_obj = '';
   ele_obj = $("#show_attendance_edit").offset();
   if(ele_value_obj_att != ''){
-    $("#show_attendance_edit").css('top',$(ele_value_obj_att).offset().top+$(ele_value_obj_att).height());
+    var top_div = $('.compatible_head').height();
+    $("#show_attendance_edit").css('top',$(ele_value_obj_att).offset().top+$(ele_value_obj_att).height()-top_div);
     tmp_ele_obj = $(ele_value_obj_att).offset();
     if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
@@ -346,6 +349,9 @@ function del_as(ele,asl_id,c_permission){
   $('.popup_order_info').find('tr').eq(tr_index).remove();
   $('.popup_order_info').find('tr').eq(tr_index).remove();
   $('.popup_order_info').find('tr').eq(tr_index).remove();
+  if(asl_id!=''){
+    $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
+  }
 }
 
 function change_user_list(ele){
@@ -389,7 +395,8 @@ function attendance_replace(date,ele,uid,att_id){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height());
+      var top_div = $('.compatible_head').height();
+      $("#show_attendance_edit").css('top',ele_obj.top+$(ele).height()-top_div);
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
@@ -472,7 +479,8 @@ function change_att_date(date,ele,uid){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height());
+      var top_div = $('.compatible_head').height();
+      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height()-top_div);
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
@@ -484,4 +492,46 @@ function change_att_date(date,ele,uid){
       $('#show_attendance_edit').css('display','block');
     }
   });
+}
+function delete_replace_submit(c_permission){
+  del_url = href_attendance_calendar+'?action=delete_as_replace';
+  if (c_permission == 31) {
+    document.attendance_setting_form.action = del_url 
+    document.attendance_setting_form.submit();
+  } else {
+    $.ajax({
+      url: 'ajax_orders.php?action=getallpwd',   
+      type: 'POST',
+      dataType: 'text',
+      data: 'current_page_name='+document.getElementById("hidden_page_info").value, 
+      async: false,
+      success: function(msg) {
+         var tmp_msg_arr = msg.split('|||'); 
+         var pwd_list_array = tmp_msg_arr[1].split(',');
+         if (tmp_msg_arr[0] == '0') {
+           document.attendance_setting_form.action = del_url 
+           document.attendance_setting_form.submit();
+         } else {
+           $('#button_delete').attr('id', 'tmp_button_delete'); 
+           var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
+           if (in_array(input_pwd_str, pwd_list_array)) {
+             document.attendance_setting_form.action = del_url 
+             $.ajax({
+               url: 'ajax_orders.php?action=record_pwd_log',   
+               type: 'POST',
+               dataType: 'text',
+               data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(document.attendance_setting_form.action),
+               async: false,
+               success: function(msg_info) {
+                 document.attendance_setting_form.submit();
+               }
+             }); 
+           } else {
+             alert(js_text_onetime_pwd_error); 
+             setTimeOut($('#tmp_button_delete').attr('id', 'button_delete'), 1); 
+           }
+         }
+      }
+    });
+  }
 }

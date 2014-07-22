@@ -131,7 +131,8 @@ if("undefined" != typeof ele_value_obj_att){
   var ele_obj = '';
   ele_obj = $("#show_attendance_edit").offset();
   tmp_ele_obj = $(ele_value_obj_att).offset();
-  $("#show_attendance_edit").css('top',tmp_ele_obj.top+$(ele_value_obj_att).height());
+  var top_div = $('.compatible_head').height();
+  $("#show_attendance_edit").css('top',tmp_ele_obj.top+$(ele_value_obj_att).height()-top_div);
   if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
     $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 

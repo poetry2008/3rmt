@@ -3440,7 +3440,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
           }
         } else {
           $user_sql = "select * from ".TABLE_GROUPS." 
-            where id='".$show_group_id."'";
+            where id='".$show_group_id."' and group_status='1'";
           $user_query = tep_db_query($user_sql);
           if($user_row = tep_db_fetch_array($user_query)){
             $show_group_user = explode('|||',$user_row['all_users_id']);
@@ -3450,6 +3450,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         
         $group_str = '';
         foreach($show_group_user as $show_list_uid){
+          if($show_list_uid!=''){
           $group_str .= '<input type="checkbox" name="show_group_user_list[]" ';
           if(in_array($show_list_uid,$show_select_group_user)){
             $group_str .= ' checked="checked" ';
@@ -3458,6 +3459,11 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
           $user_info = tep_get_user_info($show_list_uid);
           $group_str .=  $user_info['name'];
           $group_str .= '&nbsp;&nbsp;&nbsp;';
+          }
         }
-        echo $group_str;
+        if($group_str == ''){
+          echo '  ';
+        }else{
+          echo $group_str;
+        }
 }
