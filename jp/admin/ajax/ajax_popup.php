@@ -9418,12 +9418,26 @@ echo  $return_res;
   $group_disabled = '';
 
   $show_only = '';
-  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'){
+  if(isset($_GET['gid'])&&$_GET['gid']!=''){
+    $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
+    $gid_flag = false;
+  }else{
+    $gid_flag = true;
+    $g_list = tep_is_group_manager($ocertify->auth_user,true);
+    $attendance_dd_arr = array();
+    foreach($g_list as $g_value){
+      $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance($_GET['date'],$g_value,true));
+    }
+  }
+  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'&&!empty($attendance_dd_arr)){
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
   }
-  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10')){
+  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10'  )){
     $group_disabled = ' disabled="disabled" ';
+  }
+  if(empty($attendance_dd_arr)){
+    $group_disabled = '';
   }
 
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
@@ -9448,13 +9462,7 @@ echo  $return_res;
       );
   include(DIR_FS_ADMIN.'classes/notice_box.php'); 
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-  if(isset($_GET['gid'])&&$_GET['gid']!=''){
-    $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
-    $gid_flag = false;
-  }else{
-    $gid_flag = true;
-    $attendance_dd_arr = tep_get_attendance($_GET['date'],0,true);
-  }
+
  
   //头部内容
   $heading = array();
