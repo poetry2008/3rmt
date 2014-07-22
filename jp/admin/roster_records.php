@@ -185,7 +185,7 @@ if(isset($_GET['action'])){
         $query_replace = tep_db_query($sql_replace);
         if($row_replace = tep_db_fetch_array($query_replace)){
           $u_list = explode('|||',$row_replace['allow_user']);
-          if(in_array($user_id,$u_list)||$ocertify->npermission>10){
+          if(in_array($ocertify->auth_user,$u_list)||$ocertify->npermission>10){
             $sql_update_arr['allow_status'] = $allow_status;
           }
         }
