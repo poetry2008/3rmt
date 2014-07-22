@@ -9418,7 +9418,7 @@ echo  $return_res;
   $group_disabled = '';
 
   $show_only = '';
-  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])){
+  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'){
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
   }
