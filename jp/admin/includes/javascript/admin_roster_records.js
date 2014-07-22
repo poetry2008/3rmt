@@ -412,10 +412,24 @@ function attendance_replace(date,ele,uid,att_id){
 
 function add_allow_user(ele,del_str){
   var select_str = $(ele).parent().parent().find('td').eq(1).html();
-  $('#add_end').before('<tr><td></td><td>'+select_str+'</td><td><input type="button" value="'+del_str+'" onclick="del_allow_user(this)"></td></tr>');
+  $("select[name='allow_user[]']").each(function(){
+ 
+    var reg = new RegExp('<option value="'+$(this).val()+'">.*?<\/option>','g');
+    select_str = select_str.replace(reg,'');
+  });
+
+  if(select_str.indexOf('<option') > 0){
+
+    $('#add_end').before('<tr><td></td><td>'+select_str+'</td><td><input type="button" value="'+del_str+'" onclick="del_allow_user(this)"></td></tr>');
+  }else{
+  
+    ele.disabled = true;
+  }
 }
 
 function del_allow_user(ele){
+  var add_allow_user_button = document.getElementById('add_allow_user_button');
+  add_allow_user_button.disabled = false;
   $(ele).parent().parent().remove();
 }
 
