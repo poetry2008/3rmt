@@ -9939,7 +9939,7 @@ echo  $return_res;
     $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
     if($is_first){
       $allow_user_text = TEXT_ALLOW_USER;
-      $allow_user_button = '<input type="button" value="'.TEXT_ADD_ADL.'" '.$disabled.' onclick="add_allow_user(this,\''.TEXT_DEL_ADL.'\')">';
+      $allow_user_button = '<input type="button" id="add_allow_user_button" value="'.TEXT_ADD_ADL.'" '.$disabled.' onclick="add_allow_user(this,\''.TEXT_DEL_ADL.'\')">';
     }else{
       $allow_user_text = TEXT_ALLOW_USER;
       $allow_user_button = '<input type="button" value="'.TEXT_DEL_ADL.'" '.$disabled.' onclick="del_allow_user(this)">';
