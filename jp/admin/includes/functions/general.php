@@ -14042,12 +14042,17 @@ function tep_get_replace_by_uid_date($uid,$date){
 }
 
 function tep_is_group_manager($user,$show_gid=false){
+  global $ocertify;
   $res = array();
-  $sql = "select id from ".TABLE_GROUPS." WHERE
-    (all_managers_id like '".$user."' or
-    all_managers_id like '".$user."|||%' or
-    all_managers_id like '%|||".$user."|||%' or
-    all_managers_id like '%|||".$user."') and group_status='1'";
+  if($ocertify->npermission > 10){
+    $sql = "select id from ".TABLE_GROUPS;
+  }else{
+    $sql = "select id from ".TABLE_GROUPS." WHERE
+      (all_managers_id like '".$user."' or
+      all_managers_id like '".$user."|||%' or
+      all_managers_id like '%|||".$user."|||%' or
+      all_managers_id like '%|||".$user."') and group_status='1'";
+  }
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $res[] = $row['id'];

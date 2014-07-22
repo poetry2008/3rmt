@@ -10016,8 +10016,10 @@ echo  $return_res;
     $_GET['index'].'\',\'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  if(!isset($_GET['uid'])||$_GET['uid']==''){
   $style_hide = $ocertify->npermission>'10'?'':'style="display:none;"';
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$style_hide.'id="button_delete" onclick="delete_submit_confirm(\''.$ocertify->npermission.'\');"').'</a>'; 
+  }
 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
