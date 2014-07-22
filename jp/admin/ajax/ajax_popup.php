@@ -9686,7 +9686,7 @@ echo  $return_res;
     $att_select = '<select name="attendance_detail_id" onchange="change_model_get_time(this.value)">';
   }
   }
-  $replace_select = '<select name="replace_attendance_detail_id" '.$disabled.'>';
+  $replace_select = '<select id ="att_detail_id" name="replace_attendance_detail_id" '.$disabled.' onchange="change_scheduling_time(this.value);">';
   if(!empty($replace_att_list)){
   foreach($replace_att_list as $att_info){
     $att_select .= '<option value="'.$att_info['id'].'"';
@@ -9780,6 +9780,7 @@ echo  $return_res;
   $leave_start_array = explode(':',$replace_info_res['leave_start']);
   $leave_start_min_left= substr($leave_start_array[1],0,1);
   $leave_start_min_right= substr($leave_start_array[1],1,2);
+
   $leave_start = '<select name="leave_start_hour" id="leave_start_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
     $selected = $leave_start_array['0']!=$i ?'':'selected==selected';
@@ -10153,4 +10154,22 @@ elseif($_GET['action']=='delete_scheduling_change'){
   $notice_box->get_contents($delete_product_info, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}elseif($_GET['action']=='get_scheduling_time') {
+	$id = $_POST['mould_id'];
+$res_tep = tep_db_query("select set_time,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL." where id=".$id."");	
+
+$row_array = tep_db_fetch_array($res_tep);
+//if($row_array)
+if($row_array['set_time']==0){
+	$work_start_array = explode(':',$row_array['work_start']);
+	$work_start_min_left= substr($work_start_array[1],0,1);
+	$work_start_min_right= substr($work_start_array[1],1,2);
+    $work_end_array = explode(':',$row_array['work_end']);
+    $work_end_min_left= substr($work_start_array[1],0,1);
+    $work_end_min_right= substr($work_start_array[1],1,2);
+    var_dump ($work_start_array[0].','.$work_start_min_left.','.$work_start_min_right.','.$work_end_array[0].','.$work_end_min_left.','.$work_end_min_right);
+}elseif($row_array['set_time']!=0) {
+    var_dump("0,0");
+}
+
 }

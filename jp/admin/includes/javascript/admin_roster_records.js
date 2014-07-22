@@ -262,6 +262,28 @@ function resizepage(){
     }   
   }
 }
+//change mould time
+function change_scheduling_time(mould_id){
+   $.ajax({
+       url: 'ajax.php?action=get_scheduling_time',
+       type: 'POST',
+       dataType: 'text',
+       data: 'mould_id='+mould_id, 
+       async : false,
+       success: function(data){
+		   var tep = data.split('"');
+		   var info = tep[1].split(',');
+		   $("#leave_start_hour").val(info[0]);
+		   $("#leave_start_min_l").val(info[1]);
+		   $("#leave_start_minute_b").val(info[2]);
+		   $("#leave_end_hour").val(info[3]);
+		   $("#leave_end_min_l").val(info[4]);
+		   $("#leave_end_min_r").val(info[5]);
+
+       }
+  }); 
+
+}
 
 //删除确认
 function delete_submit_confirm(c_permission){
@@ -422,6 +444,8 @@ function attendance_replace(date,ele,uid,att_id){
       ele_value_obj_att = ele;
       ele_index = index;
       $('#show_attendance_edit').css('display','block');
+	  var tep_val = $("#att_detail_id").val();
+	  change_scheduling_time(tep_val);
     }
   });
 }

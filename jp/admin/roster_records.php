@@ -582,6 +582,8 @@ if($ocertify->npermission>'10'){
           <tr bgcolor="#3C7FB1">
             <td class="date_title" align="center">
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_prev_str;?>"><b><<</b></a>
+			<?php $month= substr($month,0,1)==0?substr($month,1,2):$month;?>
+
             &nbsp;&nbsp;<font color="#FFF"><?php echo $year.' / '.$month; ?></font>&nbsp;&nbsp;
             <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_str;?>"><b>>></b></a></td>
           </tr>
