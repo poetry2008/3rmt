@@ -534,7 +534,10 @@ echo  '<a onclick="show_attendance_info(this, '.$val['id'].$param.')" href="java
 
 echo '</ul>';
 echo ' </td><td valign="top">';
-echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0'.$param.')" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
+
+if($ocertify->npermission>'10'){
+    echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0'.$param.')" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
+}
  
 ?> 
 </table>

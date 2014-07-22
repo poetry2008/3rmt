@@ -374,10 +374,16 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <td class="menu01"><a class="t_link01"
        href="' . tep_href_link('business_memo.php', '', 'NONSSL') . '"
       >'.HEADER_TEXT_MICRO_LOG.'</a></td>
-      </tr><tr>
+	  </tr>
+	  <tr>
       <td class="menu01"><a class="t_link01"
       href="'.tep_href_link(FILENAME_PW_MANAGER, '',
     'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></td>
+      </tr>
+	  <tr>
+      <td class="menu01"><a class="t_link01"
+      href="'.tep_href_link(FILENAME_ROSTER_RECORDS, '',
+    'NONSSL').'">'.ROSTER_TITLE_TEXT.'</a></td>
       </tr>
       <tr>
       <td class="menu01"><a class="t_link01"

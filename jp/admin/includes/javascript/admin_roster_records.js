@@ -263,6 +263,22 @@ function resizepage(){
   }
 }
 
+//删除确认
+function delete_submit_confirm(c_permission){
+	
+   $.ajax({
+       url: 'ajax.php?action=delete_scheduling_change',
+       type: 'POST',
+       dataType: 'text',
+       data: 'c_permission='+c_permission, 
+       async : false,
+       success: function(data){
+          $('#show_attendance_edit').html(data);  
+          $('#show_attendance_edit').css('display','block');
+       }
+  }); 
+}
+
 function delete_submit(c_permission){
   del_url = href_attendance_calendar+'?action=delete_as_list';
   if (c_permission == 31) {
