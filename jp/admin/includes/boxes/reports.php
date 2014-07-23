@@ -6,7 +6,7 @@
 <!-- reports -->
           <tr>
             <td>
-            <table cellspacing="0" cellpadding="2" border="0" width="150"> 
+            <table cellspacing="0" cellpadding="2" border="0" class="leftTitle"> 
              <tr>
               <td onclick="toggle_lan('col6');" onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">&nbsp;<span><?php echo tep_image(DIR_WS_MENU_ICON . 'icon_report.gif');?></span><span><a class="menuBoxHeading_Link" href="javascript:void(0);"><?php echo BOX_HEADING_REPORTS;?></a></span>&nbsp; 
               </td>

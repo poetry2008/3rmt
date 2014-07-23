@@ -403,7 +403,7 @@ function add_allow_user(ele,del_str){
   var select_str = $(ele).parent().parent().find('td').eq(1).html();
   $("select[name='allow_user[]']").each(function(){
  
-    var reg = new RegExp('<option value="'+$(this).val()+'">.*?<\/option>','g');
+    var reg = new RegExp('<option value="'+$(this).val()+'".*?>.*?<\/option>','g');
     select_str = select_str.replace(reg,'');
   });
 

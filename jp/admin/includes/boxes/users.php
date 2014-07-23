@@ -15,7 +15,7 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
             <td>
 <?php
 ?>
-            <table cellspacing="0" cellpadding="2" border="0" width="150"> 
+            <table cellspacing="0" cellpadding="2" border="0" class="leftTitle"> 
               <tr>
               <td onclick="toggle_lan('col8');" onmouseout="this.className='menusidebar'" onmouseover="this.className='menusidebarover';this.style.cursor='hand'" class="menusidebar" style="">
               &nbsp;

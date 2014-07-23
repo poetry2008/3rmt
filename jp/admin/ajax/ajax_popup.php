@@ -9693,6 +9693,10 @@ echo  $return_res;
     $disabled = ' disabled="disabled" ';
     $change_flag = false;
   }
+  if($ocertify->auth_user<15&&$replace_info_res['allow_status']==1){
+    $disabled = ' disabled="disabled" ';
+    $change_flag = false;
+  }
 
   
 
@@ -9776,7 +9780,7 @@ echo  $return_res;
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
   $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
-  if($ocertify->auth_user = current($allow_user_list) || $ocertify->npermission >= '15'){
+  if($ocertify->auth_user == current($allow_user_list) || $ocertify->npermission >= '15'){
     if($_GET['date']<date('Ymd',time())){
       $allow_disabled = ' disabled="disabled" '; 
     }else{
@@ -10028,10 +10032,18 @@ echo  $return_res;
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.
     $_GET['index'].'\',\'\')"').'</a>'; 
   }
-  if(!isset($_GET['uid'])||$_GET['uid']==''){
-  $style_hide = $ocertify->npermission>'10'?'':'style="display:none;"';
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$style_hide.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  if($ocertify->npermission>10
+    ||($ocertify->auth_user==$replace_info_res['user']&&$replace_info_res['allow_status'] ==0)
+    ||(in_array($ocertify->auth_user,tep_is_group_manager($replace_info_res['user']))&&$replace_info_res['allow_status'] ==0)){
+    $style_hide = '';
+  }else{
+    if($ocertify->npermission>10){
+      $style_hide = '';
+    }else{
+      $style_hide = 'style="display:none;"';
+    }
   }
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$style_hide.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {
