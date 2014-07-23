@@ -443,7 +443,7 @@ require("includes/note_js.php");
         $attendance_str .= '</tr></table>';
 
 
-		$user_info = tep_get_user_info($ocertify->auth_user);
+        $user_info = tep_get_user_info($ocertify->auth_user);
         $group_list = tep_get_group_tree();
         $show_group_id=0;
         $show_group_user = array();
@@ -599,6 +599,15 @@ if($ocertify->npermission>'10'){
 $start_week = date('w',mktime(0,0,0,$month,1,$year));
 $day_num = date('t',mktime(0,0,0,$month,1,$year));
 $end = false;
+
+
+//初始化 获得所有排班
+$all_att_arr = array();
+$all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
+$all_att_auery = tep_db_query($all_att_sql);
+while($all_att_row = tep_db_fetch_array($all_att_auery)){
+  $all_att_arr[$all_att_row['id']] = $all_att_row;
+}
 ?>
 <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dataTable_border">
 <tr>
@@ -649,20 +658,20 @@ while($j<=$day_num)
   }
   echo "</td></tr>";
   $user_worker_list = array();
+  $user_att_info = array();
   foreach($att_arr as $att_row){
-    $att_info_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id='".$att_row['attendance_detail_id']."' limit 1";
-    $att_info_query = tep_db_query($att_info_sql);
-    if($att_info = tep_db_fetch_array($att_info_query)){
+    $att_info = $all_att_arr[$att_row['attendance_detail_id']];
+    if(!empty($att_info)){
     if(!empty($show_select_group_user)&&$date){
     if(tep_is_show_att_group($att_row['group_id'],$date)){
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
         echo "<td class='roster_image_td' >";
         echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
-        echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">'.$att_info['short_language'];
+        echo $att_info['short_language'].'<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
       }else{
         echo "<td bgcolor='".$att_info['src_text']."'>";
-        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
+        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'];
       }
       echo "</div>";
@@ -735,6 +744,7 @@ while($j<=$day_num)
       if((!empty($user_replace))&&($ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
       $u_info = tep_get_user_info($row_replace_att['user']);
       $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
+      echo "<span class='uroster_records_user' >";
       echo "<a href='javascript:void(0)' ";
       echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
       echo " >";
@@ -752,8 +762,9 @@ while($j<=$day_num)
       if($row_replace_att['allow_status']==0){
         echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
-      echo "</a>";
       }
+      echo "</a>";
+      echo "</span>";
     }
     }
     }

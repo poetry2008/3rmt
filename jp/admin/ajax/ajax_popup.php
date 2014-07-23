@@ -9419,7 +9419,7 @@ echo  $return_res;
 
   $show_only = '';
   if(isset($_GET['gid'])&&$_GET['gid']!=''){
-    $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false);
+    $attendance_dd_arr = tep_get_attendance($_GET['date'],$_GET['gid'],false,$_GET['add_id']);
     $gid_flag = false;
   }else{
     $gid_flag = true;
@@ -10029,8 +10029,7 @@ echo  $return_res;
   $buttons = array();
   
   if(!isset($_GET['uid'])||$_GET['uid']==''){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.
-    $_GET['index'].'\',\'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\')"').'</a>'; 
   }
   if($ocertify->npermission>10
     ||($ocertify->auth_user==$replace_info_res['user']&&$replace_info_res['allow_status'] ==0)
