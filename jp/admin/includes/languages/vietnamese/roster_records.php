@@ -22,7 +22,6 @@ define('ATTENDANCE_ADD_USER', 'Người tạo');
 define('ATTENDANCE_UPDATE_USER', 'Người cập nhật');
 define('ATTENDANCE_ADD_TIME', 'Ngày tạo');
 define('ATTENDANCE_UPDATE_TIME', 'Ngày cập nhật');
-define('ATTENDANCE_DELETE_REMIND', 'Bạn có muốn xóa không?');
 define('ATTENDANCE_TIME', 'Thời gian');
 //COLOR
 define('TEXT_CALENDAR_COLOR_WHITE','Trắng');

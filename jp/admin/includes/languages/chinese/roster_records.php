@@ -22,7 +22,6 @@ define('ATTENDANCE_ADD_USER', '作成者:');
 define('ATTENDANCE_UPDATE_USER', '更新者:');
 define('ATTENDANCE_ADD_TIME', '作成日:');
 define('ATTENDANCE_UPDATE_TIME', '更新日:');
-define('ATTENDANCE_DELETE_REMIND', '确定删除吗？');
 define('ATTENDANCE_TIME', '時間');
 //COLOR
 define('TEXT_CALENDAR_COLOR_WHITE','白色');
