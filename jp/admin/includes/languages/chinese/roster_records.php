@@ -8,7 +8,6 @@ define('ATTENDANCE_SCHEDULING_TYPE_COLOR', '颜色');
 
 define('ATTENDANCE_PARAM_TEXT', '参数');
 define('ATTENDANCE_IMAGE_SELECT', '选择');
-define('ATTENDANCE_APPROVE_PERSON', '许可者');
 define('ATTENDANCE_SET_TIME', '设置时间');
 define('ATTENDANCE_SET_TIME_FIELD', '时间带设定');
 define('ATTENDANCE_SET_FIELD_TIME', '时间数设定');
@@ -68,10 +67,7 @@ define('TEXT_REPLACE_IS_ALLOW','许可');
 define('TEXT_ALLOW_START','开始时间');
 define('TEXT_ALLOW_END','结束时间');
 define('TEXT_ADL_TEXT_INFO','备注');
-define('TEXT_LEAVE_ONE_DAY','休息');
-define('HOUR_TEXT', '时');
-define('MINUTE_TEXT', '分');
-define('TIME_HOUR_TEXT', '小时');
+define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','用户名');
 define('TEXT_DELETE_REMIND','确定删除吗？');
 

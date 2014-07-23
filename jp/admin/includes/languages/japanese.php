@@ -496,9 +496,7 @@ define('HEADER_ATTENDANCE_LOGIN_TITLE','出勤します。');
 define('HEADER_ATTENDANCE_LOGOUT_TITLE','退勤します。');
 
 define('HEADER_LOGIN_REMIND','楽しい一日の仕事を始めましょうか？');
-define('HEADER_LOGIN_OK','OK　キャンセル');
 define('HEADER_LOGOUT_REMIND','お疲れ様でした。仕事がこれで終わりますか？');
-define('HEADER_LOGOUT_OK','OK　キャンセル');
 
 //footer start 
 define('TEXT_FOOTER_ONE_TIME','チェックされている権限のワンタイムを使えばアクセスできる');

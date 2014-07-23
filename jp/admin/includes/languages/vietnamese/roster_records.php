@@ -6,10 +6,8 @@ define('ATTENDANCE_SCHEDULING_TYPE', 'Loại ca');
 define('ATTENDANCE_SCHEDULING_TYPE_IMAGE', 'Biểu tượng');
 define('ATTENDANCE_SCHEDULING_TYPE_COLOR', 'Vùng màu');
 
-define('ATTENDANCE_SRC_TEXT', 'Biểu tượng');
 define('ATTENDANCE_PARAM_TEXT', 'Tham số');
 define('ATTENDANCE_IMAGE_SELECT', 'Chọn lựa');
-define('ATTENDANCE_APPROVE_PERSON', '許可必須');
 define('ATTENDANCE_SET_TIME', 'Timecard');
 define('ATTENDANCE_SET_TIME_FIELD', 'Thiết lập khoảng thời gian');
 define('ATTENDANCE_SET_FIELD_TIME', 'Tính toán số thời gian');
@@ -25,7 +23,6 @@ define('ATTENDANCE_UPDATE_USER', 'Người cập nhật');
 define('ATTENDANCE_ADD_TIME', 'Ngày tạo');
 define('ATTENDANCE_UPDATE_TIME', 'Ngày cập nhật');
 define('ATTENDANCE_DELETE_REMIND', 'Bạn có muốn xóa không?');
-define('TEXT_REVIEWS_DELETE_ACTION', 'Xóa');
 define('ATTENDANCE_TIME', 'Thời gian');
 //COLOR
 define('TEXT_CALENDAR_COLOR_WHITE','Trắng');
@@ -65,14 +62,11 @@ define('TEXT_REPLACE_ADL','Status thay đổi');
 define('TEXT_ALLOW_USER','Người phê duyệt');
 define('TEXT_ALLOW_STATUS','Status phê duyệt');
 define('TEXT_REPLACE_NOT_ALLOW','--');
-define('TEXT_REPLACE_IS_ALLOW','許可');
+define('TEXT_REPLACE_IS_ALLOW','cho phép');
 define('TEXT_ALLOW_START','Thời gian bắt đầu');
 define('TEXT_ALLOW_END','Thời gian kết thúc');
 define('TEXT_ADL_TEXT_INFO','Nhận xét');
 define('TEXT_LEAVE_ONE_DAY','--');
-define('HOUR_TEXT', 'Giờ');	
-define('MINUTE_TEXT', 'Phú');	
-define('TIME_HOUR_TEXT', 'Thời gian');
 define('TEXT_SELECT_USER','Người dùng');
 define('TEXT_DELETE_REMIND','Bạn có muốn xóa không?');
 ?>

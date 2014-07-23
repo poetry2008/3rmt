@@ -506,9 +506,7 @@ define('HEADER_ATTENDANCE_LOGIN_TITLE','开始工作');
 define('HEADER_ATTENDANCE_LOGOUT_TITLE','结束工作');
 
 define('HEADER_LOGIN_REMIND','是否开始一天愉快的工作 ?');
-define('HEADER_LOGIN_OK','OK　取消');
 define('HEADER_LOGOUT_REMIND','辛苦了, 是否结束工作 ?');
-define('HEADER_LOGOUT_OK','OK　取消');
 
 
 

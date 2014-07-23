@@ -254,15 +254,16 @@ echo "</a>";
 <?php
 //打卡
 	 $date = date('Ymd');
-     $sql = "select * from attendance_record where user_name='".$user_info['userid']."' and date='".$date."' and logout_time=0";
-     $query = tep_db_query($sql);
-     $num_rows = tep_db_num_rows($query);
+     $sql = "select * from attendance where user_name='".$user_info['userid']."' and date='".$date."'";
+     $rows = tep_db_query($sql);
+     $res = tep_db_fetch_array($rows);
 	 
-if($num_rows ==0) { 
+if($res['att_status'] ==0) { 
 	echo sprintf(HEADER_ATTENDANCE_LOGOUT,'href="javascript:void(0);" onclick=change_attendance_login("'.$user_info['userid'].'") title="'.HEADER_ATTENDANCE_LOGIN_TITLE.'" style="text-decoration:underline;"');
 }else {
 	echo sprintf(HEADER_ATTENDANCE_LOGIN,'href="javascript:void(0);" onclick=change_attendance_logout("'.$user_info['userid'].'") title="'.HEADER_ATTENDANCE_LOGOUT_TITLE.'" style="text-decoration:underline;"');
 }
+
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 <embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
