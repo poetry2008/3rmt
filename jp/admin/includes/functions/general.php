@@ -13891,10 +13891,10 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
         if($param_str != ''){
           $return_str .= $param_str;
         }
-        if($bg_color == '#DD1F2C'){
+        if($bg_color == '#FE0000'){
           $return_str .= '<font color ="#FFFFFF">';
         }else{
-          $return_str .= '<font color ="#DD1F2C">';
+          $return_str .= '<font color ="#FE0000">';
         }
         $return_str .= substr($row['login_time'],11,5)
           .  '～';

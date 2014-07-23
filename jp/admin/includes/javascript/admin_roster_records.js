@@ -249,9 +249,13 @@ function change_scheduling_time(mould_id){
 
 }
 
-function delete_submit(c_permission){
+function delete_submit(c_permission,type){
+  if(type=='as'){
+    del_url = href_attendance_calendar+'?action=delete_as_list';
+  }else{
+    del_url = href_attendance_calendar+'?action=delete_as_replace';
+  }
   if(confirm(js_remind_delete)) {
-  del_url = href_attendance_calendar+'?action=delete_as_list';
   if (c_permission == 31) {
     document.attendance_setting_form.action = del_url 
     document.attendance_setting_form.submit();

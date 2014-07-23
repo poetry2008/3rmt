@@ -655,17 +655,24 @@ while($j<=$day_num)
     $att_info_query = tep_db_query($att_info_sql);
     if($att_info = tep_db_fetch_array($att_info_query)){
     if(!empty($show_select_group_user)&&$date){
-    if($att_info['scheduling_type'] == 1&&tep_is_show_att_group($att_row['group_id'],$date)){
+    if(tep_is_show_att_group($att_row['group_id'],$date)){
       echo "<tr>";
-      echo "<td bgcolor='".$att_info['src_text']."'>";
-      echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
-      echo $att_info['short_language'];
+      if($att_info['scheduling_type'] == 0){
+        echo "<td class='roster_image_td' >";
+        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
+        echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">'.$att_info['short_language'];
+      }else{
+        echo "<td bgcolor='".$att_info['src_text']."'>";
+        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
+        echo $att_info['short_language'];
+      }
       echo "</div>";
       foreach($show_select_group_user as $u_list){
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
         $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
         $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date);
+        echo "<span class='uroster_records_user' >";
         if(!empty($user_replace)){
           $user_worker_list[] = $u_list;
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
@@ -684,7 +691,9 @@ while($j<=$day_num)
         echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($u_list);
         if($ocertify->auth_user==$u_list||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list)){
-          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$att_row['attendance_detail_id']."\")' ";
+          if($date>=$today||!empty($user_replace)){
+            echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$att_row['attendance_detail_id']."\")' ";
+          }
         }else{
           $replace_str = '';
         }
@@ -705,6 +714,7 @@ while($j<=$day_num)
         }
         echo "</a>";
         }
+        echo "</span>";
       }
     }
 

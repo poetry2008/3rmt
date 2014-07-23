@@ -9647,7 +9647,7 @@ echo  $return_res;
   if(!isset($_GET['gid'])||$_GET['gid']==''){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
   }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'as\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
@@ -9693,7 +9693,7 @@ echo  $return_res;
     $disabled = ' disabled="disabled" ';
     $change_flag = false;
   }
-  if($ocertify->auth_user<15&&$replace_info_res['allow_status']==1){
+  if($ocertify->npermission<15&&$replace_info_res['allow_status']==1){
     $disabled = ' disabled="disabled" ';
     $change_flag = false;
   }
@@ -10043,7 +10043,7 @@ echo  $return_res;
       $style_hide = 'style="display:none;"';
     }
   }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$style_hide.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$style_hide.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {
