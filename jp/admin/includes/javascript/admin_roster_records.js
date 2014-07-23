@@ -40,7 +40,7 @@ function show_attendance_info(ele,id,param_y,param_m){
 
 //delect attendance by id
 function delete_attendance_info(id){
-	if(confirm(attendance_del_confirm)) {
+	if(confirm(js_remind_delete)) {
       	
         $.ajax({
             url: 'ajax.php?action=delete_attendance_info',

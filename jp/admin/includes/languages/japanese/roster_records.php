@@ -6,10 +6,8 @@ define('ATTENDANCE_SCHEDULING_TYPE', 'シフトタイプ');
 define('ATTENDANCE_SCHEDULING_TYPE_IMAGE', 'アイコン');
 define('ATTENDANCE_SCHEDULING_TYPE_COLOR', 'カラーゾーン');
 
-define('ATTENDANCE_SRC_TEXT', 'アイコン');
 define('ATTENDANCE_PARAM_TEXT', 'パラメータ');
 define('ATTENDANCE_IMAGE_SELECT', '選択');
-define('ATTENDANCE_APPROVE_PERSON', '許可必須');
 define('ATTENDANCE_SET_TIME', 'タイムカード');
 define('ATTENDANCE_SET_TIME_FIELD', '時間帯設定');
 define('ATTENDANCE_SET_FIELD_TIME', '時間数カウント');
@@ -24,8 +22,6 @@ define('ATTENDANCE_ADD_USER', '作成者:');
 define('ATTENDANCE_UPDATE_USER', '更新者:');
 define('ATTENDANCE_ADD_TIME', '作成日:');
 define('ATTENDANCE_UPDATE_TIME', '更新日:');
-define('ATTENDANCE_DELETE_REMIND', '确定删除吗？');
-define('TEXT_REVIEWS_DELETE_ACTION', '削除する');
 define('ATTENDANCE_TIME', '時間');
 //COLOR
 define('TEXT_CALENDAR_COLOR_WHITE','ホワイト');
@@ -70,10 +66,7 @@ define('TEXT_REPLACE_IS_ALLOW','許可');
 define('TEXT_ALLOW_START','開始日時');
 define('TEXT_ALLOW_END','終了日時');
 define('TEXT_ADL_TEXT_INFO','コメント');
-define('TEXT_LEAVE_ONE_DAY','休み');
-define('HOUR_TEXT', '時');	
-define('MINUTE_TEXT', '分');	
-define('TIME_HOUR_TEXT', '時間');
+define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','ユーザ');
 define('TEXT_DELETE_REMIND','削除しますか？');
 ?>

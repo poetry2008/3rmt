@@ -488,15 +488,13 @@ define('HEADER_TEXT_CREATE_ORDER','Tạo đặt hàng');
 define('HEADER_TEXT_ORDERMENU','Đơn đặt hàng▼');
 define('HEADER_TEXT_INVENTORY','Cấp độ tồn kho');
 define('HEADER_TEXT_CATEGORIES_ADMIN','Điều chỉnh giá cả');
-define('HEADER_ATTENDANCE_LOGOUT','で<a %s><font color="#0000CC">nghỉ làm</font></a>しています。');
-define('HEADER_ATTENDANCE_LOGIN','Đang<a %s><font color="#0000CC">làm trong</font></a>công ty iimy');
+define('HEADER_ATTENDANCE_LOGOUT','<a %s><font color="#0000CC">Đã nghỉ làm</font></a>');
+define('HEADER_ATTENDANCE_LOGIN','<a %s><font color="#0000CC">Đang làm ở</font></a>');
 define('HEADER_ATTENDANCE_LOGIN_TITLE','Đang làm ở ');
 define('HEADER_ATTENDANCE_LOGOUT_TITLE','Đã nghỉ làm');
 
 define('HEADER_LOGIN_REMIND','Bắt đầu công việc của một ngày thú vị chứ?');
-define('HEADER_LOGIN_OK','OK　キャンセル');
 define('HEADER_LOGOUT_REMIND','Cảm ơn bạn đã vất vả. Công việc sẽ kết thúc ở đây?');
-define('HEADER_LOGOUT_OK','OK　キャンセル');
 
 
 //footer start 
@@ -579,8 +577,8 @@ define('TEXT_ATTRIBUTE_PRIVATE','Riêng tư');
 define('HEADER_TEXT_CREATE_PREORDER', 'Tạo đặt trước');
 
 define('TEXT_TORIHIKI_REPLACE_STR','～');
-define('TEXT_TORIHIKI_HOUR_STR','時');
-define('TEXT_TORIHIKI_MIN_STR','分');
+define('TEXT_TORIHIKI_HOUR_STR','Giờ');
+define('TEXT_TORIHIKI_MIN_STR','Phú');
 define('TEXT_PREORDER_PAYMENT_METHOD', 'Phương thức thanh toán');
 define('TEXT_PREORDER_NOT_COST', 'Chưa nhận tiền');
 define('TEXT_PREORDER_COST_DATE', 'Ngày nhận tiền');
@@ -599,8 +597,8 @@ define('BOX_TOOLS_CAMPAIGN', 'Cài đặt mã chiến dịch');
 define('TEXT_CURRENT_CHARACTER_NAME', 'Ghi chú ý trong mail：');
 define('BOX_CATALOG_SHOW_USELESS_OPTION','Xóa tùy chọn chưa sử dụng');
 define('TEXT_ORDER_ALARM_LINK', 'Báo động');
-define('HOUR_TEXT', '時');
-define('MINUTE_TEXT', '分');
+define('HOUR_TEXT', 'Giờ');
+define('MINUTE_TEXT', 'Phú');
 define('NOTICE_EXTEND_TITLE', 'Ghi chú tiếp theo');
 define('NOTICE_ALARM_TITLE', 'Báo động');
 define('NOTICE_DIFF_TIME_TEXT', 'Còn lại');

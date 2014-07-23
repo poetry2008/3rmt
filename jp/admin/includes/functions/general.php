@@ -13665,34 +13665,16 @@ function tep_change_attendance_login($uid) {
     $now_time = date('Y-m-d H:i:s');
 
 	if($num_rows ==0) {
-        $sql_old = "insert into attendance (user_name,login_time,login_time_tep,date) values('". $uid ."','". $now_time ."','". $now_time ."','". $date ."')";
+        $sql_old = "insert into attendance (user_name,login_time,login_time_tep,date,att_status) values('". $uid ."','". $now_time ."','". $now_time ."','". $date ."',1)";
 	}elseif($num_rows !=0) {
-        $sql_old = "update attendance set login_time_tep = '". $now_time ."' where user_name ='" .$uid. "'and date= '". $date ."'";
+        $sql_old = "update attendance set login_time_tep = '". $now_time ."',att_status=1 where user_name ='" .$uid. "'and date= '". $date ."'";
 	}
 
-	tep_db_query($sql_old);
-
-	//新表 attendance_new
-	$date = date('Ymd');
-	$now = date('Y-m-d H:i:s');
-    $sql_max_nums = "select max(nums) as nums from attendance_record where user_name='".$uid."' and date=".$date;	
-	$query = tep_db_query($sql_max_nums);
-	$max_array=	tep_db_fetch_array($query);
-	
-	if(empty($max_array['nums'])){
-	    $max_nums=1;
-	}else{
-        $max_nums = $max_array['nums']+1;	
-	}
-	$sql_insert= "insert into attendance_record (user_name,login_time,nums,date) values('". $uid ."','". $now ."','". $max_nums ."','". $date ."')";
-	$query = tep_db_query($sql_insert);
-	return tep_db_insert_id();
-
+    return	tep_db_query($sql_old);
 }
 
 function tep_change_attendance_logout($uid) {
 
-	//原表 之后删掉
 	$date = date('Ymd');
 	$sql = "select * from attendance where user_name='".$uid."' and date='".$date."' and logout_time=0";
 	$query = tep_db_query($sql);
@@ -13700,21 +13682,12 @@ function tep_change_attendance_logout($uid) {
     $now_time = date('Y-m-d H:i:s');
 	
 	if($num_rows!=0) {
-        $sql_old = "update attendance set logout_time = '". $now_time ."',logout_time_tep = '". $now_time ."' where user_name ='" .$uid. "'and date= '". $date ."'";
+        $sql_old = "update attendance set logout_time = '". $now_time ."',logout_time_tep = '". $now_time ."',att_status=0 where user_name ='" .$uid. "'and date= '". $date ."'";
 	}else {
-        $sql_old = "update attendance set logout_time_tep = '". $now_time ."' where user_name ='" .$uid. "'and date= '". $date ."'";
+        $sql_old = "update attendance set logout_time_tep = '". $now_time ."', att_status = 0 where user_name ='" .$uid. "'and date= '". $date ."'";
 	}
 
-	tep_db_query($sql_old);
-	
-
-	//新表 以后保留
-	
-	$date = date('Ymd');
-    $now_time = date('Y-m-d H:i:s');
-
-    $sql_update = "update attendance_record set logout_time = '". $now_time ."' where user_name ='" .$uid. "' and date= '". $date ."' and logout_time=0";
-	return tep_db_query($sql_update);
+	return tep_db_query($sql_old);
 
 }
 /**********************************
