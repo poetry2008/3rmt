@@ -10,24 +10,12 @@ tep_db_query("delete from  ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where allow_sta
 
 $month = $_GET['m']?$_GET['m']:date('n');
 $year = $_GET['y']?$_GET['y']:date('Y');
-if($month==12){
-  $next_month = 1;
-  $next_year = $year+1;
-  $prev_month = $month-1;
-  $prev_year = $year;
-}else if($month==1){
-  $next_month = $month+1;
-  $next_year = $year;
-  $prev_month = 12;
-  $prev_year = $year-1;
-}else{
-  $next_month = $month+1;
-  $next_year = $year;
-  $prev_month = $month-1;
-  $prev_year = $year;
-}
-$str_next_str = '?y='.$next_year.'&m='.$next_month;
-$str_prev_str = '?y='.$prev_year.'&m='.$prev_month;
+$next_year_text = $year+1;
+$prev_year_text = $year-1;
+$str_next_year = '?y='.$next_year_text.'&m='.$month;
+$str_prev_year = '?y='.$prev_year_text.'&m='.$month;
+$str_str = '?y='.$year.'&m=';
+
 if(isset($_GET['action'])){
   switch($_GET['action']){
     case 'save_att_date':
@@ -579,17 +567,74 @@ if($ocertify->npermission>'10'){
         </table></td>
       </tr>
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="date_title_color">
+        <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="date_title_color">
           <tr bgcolor="#3C7FB1">
             <td class="date_title" align="center">
-            <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_prev_str;?>"><b><<</b></a>
+            <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_prev_str;?>"><b></b></a>
 			<?php $month= substr($month,0,1)==0?substr($month,1,2):$month;?>
 
             &nbsp;&nbsp;<font color="#FFF"><?php echo $year.' / '.$month; ?></font>&nbsp;&nbsp;
-            <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_str;?>"><b>>></b></a></td>
+            <a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_str;?>"><b></b></a></td>
           </tr>
-        </table></td>
+		</table>
+<table  border="0" width="100%" cellspacing="0" cellpadding="0">
+<tr class="date_month">
+		<td width="80%">
+			<ul>
+			<li id="date_month_frist"><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_prev_year?>">&lt;&lt;<?php echo TEXT_PRE_YEAR;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'1'; ?>"><?php echo TEXT_MONTH_JANUARY;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'2'; ?>"><?php echo TEXT_MONTH_FEBRUARY;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'3'; ?>"><?php echo TEXT_MONTH_MARCH;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'4'; ?>"><?php echo TEXT_MONTH_APRIL;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'5'; ?>"><?php echo TEXT_MONTH_MAY;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'6'; ?>"><?php echo TEXT_MONTH_JUNE;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'7'; ?>"><?php echo TEXT_MONTH_AUGUST;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'8'; ?>"><?php echo TEXT_MONTH_AUGUST;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'9'; ?>"><?php echo TEXT_MONTH_SEPTEMBER;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'10'; ?>"><?php echo TEXT_MONTH_OCTOBER;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'11'; ?>"><?php echo TEXT_MONTH_NOVEMBER;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'12'; ?>"><?php echo TEXT_MONTH_DECEMBER;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_year?>"><?php echo TEXT_NEXT_YEAR;?>&gt;&gt;</a></li>
+            </ul>
+        </td>
+        <td align="right">
+		<?php  
+			
+$today = date('Ymd',time());
+$today_date= tep_date_info($today);
+
+$year_tep=$today_date['year']; 
+$month_tep=$today_date['month']; 
+
+if($month_tep==12){
+   $next_month = 1;
+   $next_year = $year_tep+1;
+   $prev_month = $month_tep-1;
+  $prev_year = $year_tep;
+ }else if($month_tep==1){
+   $next_month = $month_tep+1;
+   $next_year = $year_tep;
+   $prev_month = 12;
+   $prev_year = $year_tep-1;
+}else{
+   $next_month = $month_tep+1;
+   $next_year = $year_tep;
+   $prev_month = $month_tep-1;
+   $prev_year = $year_tep;
+ }
+$str_next_month = '?y='.$next_year.'&m='.$next_month;
+$str_prev_month = '?y='.$prev_year.'&m='.$prev_month;
+
+?>
+		<input type="button" value="<<" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ROSTER_RECORDS. $str_prev_month)?>'">
+		<input type="button" value="<?php echo TEXT_NOW_MONTH;?>" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ROSTER_RECORDS.'?y='.$today_date['year'].'&m='.$today_date['month'])?>'">
+		<input type="button" value=">>" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ROSTER_RECORDS.$str_next_month)?>'">
+        
+        </td>
       </tr>
+</table>
+</td>
+	  </tr>
       <tr>
         <td>
 <?php
@@ -622,7 +667,6 @@ for($i = 0; $i<$start_week; $i++)
 }
 
 $j=1;
-$today = date('Ymd',time());
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
@@ -657,7 +701,7 @@ while($j<=$day_num)
     if(tep_is_show_att_group($att_row['group_id'],$date)){
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
-        echo "<td class='roster_image_td' >";
+		  echo '<td style="border-width:1px;">';
         echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
         echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">'.$att_info['short_language'];
       }else{

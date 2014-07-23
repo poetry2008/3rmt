@@ -2289,9 +2289,6 @@ google hack
 	border:solid #ddd;border-width:0 1px 1px 0;
 	min-height:15px;
 }
-.date_title_color a:link,.date_title_color a:visited,.date_title_color a:active,.date_title_color a:hover {
-    color: #fff;
-}
 .td_input_radio{
     margin-left:0;
     height:14px;
@@ -2327,3 +2324,30 @@ display:inline-block;
 .leftTitle{
 width:160px;
 }
+
+/*@date 20140723 排班页面年月样式
+ */
+
+.date_month ul{
+	margin:0; 
+	padding:0;
+	width:100%;
+}
+.date_month li{
+	margin-right:5px;
+	float:left;
+	line-height:16px;
+    height:16px;
+	width:5%;
+	white-space:nowrap;
+}
+#date_month_frist{
+	min-width:40px;
+	width:6%;
+}
+.date_month li a{
+	font-weight:bold;
+	color:#3C7FB1;
+}
+/*end*/
+

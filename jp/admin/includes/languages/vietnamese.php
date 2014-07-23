@@ -847,3 +847,21 @@ define('TEXT_PRODUCTS_PRICE_ERROR','Đơn giá là 0 Yên.');
 define('TEXT_PRODUCTS_NUM_ERROR','Tổng số 0.');
 define('TEXT_PRODUCTS_PAYMENT_ERROR','Số tiền tổng cộng đã ngoài số tiền có thể thanh toán(%s)của%s.');
 define('ROSTER_TITLE_TEXT', 'Làm theo ca');
+
+define('TEXT_MONTH_JANUARY','Jun.');
+define('TEXT_MONTH_FEBRUARY','Feb.');
+define('TEXT_MONTH_MARCH','Mar.');
+define('TEXT_MONTH_APRIL','Apr.');
+define('TEXT_MONTH_MAY','May');
+define('TEXT_MONTH_JUNE','Jun.');
+define('TEXT_MONTH_JULY','Jul.');
+define('TEXT_MONTH_AUGUST','Aug.');
+define('TEXT_MONTH_SEPTEMBER','Sep.');
+define('TEXT_MONTH_OCTOBER','Oct.');
+define('TEXT_MONTH_NOVEMBER','Nov.');
+define('TEXT_MONTH_DECEMBER','Dec.');
+
+define('TEXT_NOW_MONTH', 'Tháng này');
+define('TEXT_PRE_YEAR', 'Năm trước');
+define('TEXT_NEXT_YEAR', 'Năm sau');
+
