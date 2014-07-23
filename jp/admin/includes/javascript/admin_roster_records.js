@@ -168,7 +168,7 @@ function change_image_text(_this) {
     $("#src_text_image").val(image_name);
 }
 
-function attendance_setting(date,ele,gid){
+function attendance_setting(date,ele,gid,add_id){
   if(!gid){
     gid='';
   }
@@ -187,7 +187,7 @@ function attendance_setting(date,ele,gid){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting&date='+date+'&gid='+gid+'&index='+index,
+    url: 'ajax.php?action=attendance_setting&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id,
     dataType: 'text',
     async: false,
     success: function(text) {
