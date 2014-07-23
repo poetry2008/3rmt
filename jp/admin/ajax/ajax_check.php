@@ -292,6 +292,15 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   $users_id = $_POST['users_id'];
   $users_array = tep_get_user_list_by_userid($users_id);
 
+  //获取admin及ROOT
+  $permissions_query = tep_db_query("select userid from ".TABLE_PERMISSIONS." where permission>=15 order by permission");
+  while($permissions_array = tep_db_fetch_array($permissions_query)){
+
+    $users_array[] = $permissions_array['userid'];
+  }
+  tep_db_free_result($permissions_query);
+
+  $users_array = array_unique($users_array); 
   $allow_user_select .= '<select name="allow_user[]">';
   foreach($users_array as $users_value){
 
