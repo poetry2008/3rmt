@@ -141,7 +141,6 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_FAQ', 'faq.php');
   define('FILENAME_REFERER', 'referer.php');
   define('FILENAME_BUTTONS', 'buttons.php');
-  define('FILENAME_ATTENDANCE_CALENDAR', 'attendance_calendar.php');
   define('FILENAME_ROSTER_RECORDS','roster_records.php');
   
   //add files
@@ -309,7 +308,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
   define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');
 // customization for the design layout
-  define('BOX_WIDTH', 160); // how wide the boxes should be in pixels (default: 125)
+  define('BOX_WIDTH', 170); // how wide the boxes should be in pixels (default: 125)
 
 // Define how do we update currency exchange rates
 // Possible values are 'oanda' 'xe' or ''
