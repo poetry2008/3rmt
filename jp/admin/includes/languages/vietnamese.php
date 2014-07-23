@@ -846,3 +846,4 @@ define('HEADER_TEXT_GROUPS','Nhóm text tiêu đề');
 define('TEXT_PRODUCTS_PRICE_ERROR','Đơn giá là 0 Yên.');
 define('TEXT_PRODUCTS_NUM_ERROR','Tổng số 0.');
 define('TEXT_PRODUCTS_PAYMENT_ERROR','Số tiền tổng cộng đã ngoài số tiền có thể thanh toán(%s)của%s.');
+define('ROSTER_TITLE_TEXT', 'Làm theo ca');
