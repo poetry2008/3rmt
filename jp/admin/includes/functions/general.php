@@ -13787,7 +13787,7 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
                     $all_att_arr[$att_row['attendance_detail_id']]['work_end'],
                     $all_att_arr[$diff['attendance_detail_id']]['work_start'],
                     $all_att_arr[$diff['attendance_detail_id']]['work_end']
-                    )){
+                    )&&$att_row['group_id']==$diff['group_id']){
                 $add_flag = false;
                 break;
               }
