@@ -10,6 +10,7 @@ tep_db_query("delete from  ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where allow_sta
 
 $month = $_GET['m']?$_GET['m']:date('n');
 $year = $_GET['y']?$_GET['y']:date('Y');
+
 $next_year_text = $year+1;
 $prev_year_text = $year-1;
 $str_next_year = '?y='.$next_year_text.'&m='.$month;
@@ -588,7 +589,7 @@ if($ocertify->npermission>'10'){
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'4'; ?>"><?php echo TEXT_MONTH_APRIL;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'5'; ?>"><?php echo TEXT_MONTH_MAY;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'6'; ?>"><?php echo TEXT_MONTH_JUNE;?></a></li>
-			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'7'; ?>"><?php echo TEXT_MONTH_AUGUST;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'7'; ?>"><?php echo TEXT_MONTH_JULY;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'8'; ?>"><?php echo TEXT_MONTH_AUGUST;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'9'; ?>"><?php echo TEXT_MONTH_SEPTEMBER;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'10'; ?>"><?php echo TEXT_MONTH_OCTOBER;?></a></li>
@@ -606,21 +607,21 @@ $today_date= tep_date_info($today);
 $year_tep=$today_date['year']; 
 $month_tep=$today_date['month']; 
 
-if($month_tep==12){
+if($month==12){
    $next_month = 1;
-   $next_year = $year_tep+1;
-   $prev_month = $month_tep-1;
-  $prev_year = $year_tep;
+   $next_year = $year+1;
+   $prev_month = $month-1;
+  $prev_year = $year;
  }else if($month_tep==1){
-   $next_month = $month_tep+1;
-   $next_year = $year_tep;
+   $next_month = $month+1;
+   $next_year = $year;
    $prev_month = 12;
-   $prev_year = $year_tep-1;
+   $prev_year = $year-1;
 }else{
-   $next_month = $month_tep+1;
-   $next_year = $year_tep;
-   $prev_month = $month_tep-1;
-   $prev_year = $year_tep;
+   $next_month = $month+1;
+   $next_year = $year;
+   $prev_month = $month-1;
+   $prev_year = $year;
  }
 $str_next_month = '?y='.$next_year.'&m='.$next_month;
 $str_prev_month = '?y='.$prev_year.'&m='.$prev_month;

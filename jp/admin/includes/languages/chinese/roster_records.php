@@ -45,7 +45,7 @@ define('TEXT_GROUP_USER_LIST', '员工');
 define('TEXT_ALL_GROUP', '全选');
 define('TEXT_UPDATE', '更新');
 define('TEXT_ADL_SELECT', '排班模板');
-define('COMPANY_SYSTEM_SELECT', '公司/体系');
+define('COMPANY_SYSTEM_SELECT', '组');
 define('TEXT_ADD_ADL', '追加');
 define('TEXT_DEL_ADL', '删除');
 define('TEXT_TYPE_SELECT', '循环');

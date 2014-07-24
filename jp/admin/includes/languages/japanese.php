@@ -844,7 +844,7 @@ define('MESSAGES_PAGE_LINK_NAME','メッセージ管理');
 define('TEXT_ALL_SITE_ALT','共用データ');
 define('TEXT_CHANGE_SITE_ALT','シングル・マルチモードの切り替え');
 
-define('TEXT_MONTH_JANUARY','Jun.');
+define('TEXT_MONTH_JANUARY','Jan.');
 define('TEXT_MONTH_FEBRUARY','Feb.');
 define('TEXT_MONTH_MARCH','Mar.');
 define('TEXT_MONTH_APRIL','Apr.');
