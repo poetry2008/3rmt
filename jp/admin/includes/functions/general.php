@@ -13792,9 +13792,9 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
                 break;
               }
             }
-          }
-          if($add_flag){
-            $diff_arr[] = $att_row;
+            if($add_flag){
+              $diff_arr[] = $att_row;
+            }
           }
         }
       }
