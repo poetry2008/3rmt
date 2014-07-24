@@ -204,10 +204,7 @@ if(isset($_GET['action'])){
       break;
     case 'update_show_user':
 
-		$user_info = tep_get_user_info($ocertify->auth_user);
-		//当前用户 用于不同用户保存各自不同状态
-		$operator_id = $user_info['userid'];
-
+      $operator_id = $ocertify->auth_user;
       if(isset($_POST['show_group_user_list'])&&
           is_array($_POST['show_group_user_list'])&&
           !empty($_POST['show_group_user_list'])){
@@ -507,7 +504,7 @@ require("includes/note_js.php");
           if(in_array($key,$show_select_group_user)){
             $group_str .= ' checked="checked" ';
           }
-          $group_str .= ' value="'.$val.'" >';
+          $group_str .= ' value="'.$key.'" >';
           $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
           $group_str .= '&nbsp;&nbsp;&nbsp;';
 		}
@@ -688,7 +685,7 @@ $j=1;
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
-  $att_arr = tep_get_attendance($date,$show_group_id,true);
+  $att_arr = tep_get_attendance($date,$show_group_id,false);
   $style= (empty($att_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';

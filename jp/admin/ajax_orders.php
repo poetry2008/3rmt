@@ -3464,7 +3464,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
             if(in_array($key,$show_select_group_user)){
 	            $group_str .= ' checked="checked" ';
             }
-   	            $group_str .= ' value="'.$val.'" >';
+   	            $group_str .= ' value="'.$key.'" >';
 			    $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
 			    $group_str .= '&nbsp;&nbsp;&nbsp;';
 		}	

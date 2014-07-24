@@ -398,7 +398,9 @@ function attendance_replace(date,ele,uid,att_id){
       ele_index = index;
       $('#show_attendance_edit').css('display','block');
 	  var tep_val = $("#att_detail_id").val();
-	  change_scheduling_time(tep_val);
+          if(uid==''){
+	    change_scheduling_time(tep_val);
+          }
     }
   });
 }
