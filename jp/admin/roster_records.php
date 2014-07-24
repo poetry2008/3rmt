@@ -679,7 +679,7 @@ $j=1;
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
-  $att_arr = tep_get_attendance($date,$show_group_id,false);
+  $att_arr = tep_get_attendance($date,$show_group_id,true);
   $style= (empty($att_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
@@ -711,7 +711,7 @@ while($j<=$day_num)
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
 		  echo '<td style="border-width:1px;">';
-        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
+        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'].'<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
       }else{
         echo "<td bgcolor='".$att_info['src_text']."'>";
