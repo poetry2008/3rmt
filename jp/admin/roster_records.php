@@ -10,6 +10,7 @@ tep_db_query("delete from  ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where allow_sta
 
 $month = $_GET['m']?$_GET['m']:date('n');
 $year = $_GET['y']?$_GET['y']:date('Y');
+
 $next_year_text = $year+1;
 $prev_year_text = $year-1;
 $str_next_year = '?y='.$next_year_text.'&m='.$month;
@@ -493,16 +494,24 @@ require("includes/note_js.php");
         $group_str .= '<div id="show_user_list">';
         foreach($show_group_user as $show_list_uid){
           if($show_list_uid!=''){
-          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$show_list_uid.'"';
-          if(in_array($show_list_uid,$show_select_group_user)){
-            $group_str .= ' checked="checked" ';
-          }
-          $group_str .= ' value="'.$show_list_uid.'" >';
-          $user_info = tep_get_user_info($show_list_uid);
-          $group_str .=  '<label for="'.$show_list_uid.'">'.$user_info['name'].'</label>';
-          $group_str .= '&nbsp;&nbsp;&nbsp;';
+			$tep_array= tep_get_user_info($show_list_uid);
+			$uname_arr[] = $tep_array['name'];
+
           }
         }
+		$group_user_list = array_combine($show_group_user,$uname_arr);
+		asort($group_user_list);
+
+		foreach($group_user_list as $key=>$val) {
+          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
+          if(in_array($key,$show_select_group_user)){
+            $group_str .= ' checked="checked" ';
+          }
+          $group_str .= ' value="'.$val.'" >';
+          $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
+          $group_str .= '&nbsp;&nbsp;&nbsp;';
+		}
+
         $group_str .= '</div>';
         $group_str .= '</td>';
         $group_str .= '<td align="right">';
@@ -588,7 +597,7 @@ if($ocertify->npermission>'10'){
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'4'; ?>"><?php echo TEXT_MONTH_APRIL;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'5'; ?>"><?php echo TEXT_MONTH_MAY;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'6'; ?>"><?php echo TEXT_MONTH_JUNE;?></a></li>
-			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'7'; ?>"><?php echo TEXT_MONTH_AUGUST;?></a></li>
+			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'7'; ?>"><?php echo TEXT_MONTH_JULY;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'8'; ?>"><?php echo TEXT_MONTH_AUGUST;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'9'; ?>"><?php echo TEXT_MONTH_SEPTEMBER;?></a></li>
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_str.'10'; ?>"><?php echo TEXT_MONTH_OCTOBER;?></a></li>
@@ -606,21 +615,21 @@ $today_date= tep_date_info($today);
 $year_tep=$today_date['year']; 
 $month_tep=$today_date['month']; 
 
-if($month_tep==12){
+if($month==12){
    $next_month = 1;
-   $next_year = $year_tep+1;
-   $prev_month = $month_tep-1;
-  $prev_year = $year_tep;
+   $next_year = $year+1;
+   $prev_month = $month-1;
+  $prev_year = $year;
  }else if($month_tep==1){
-   $next_month = $month_tep+1;
-   $next_year = $year_tep;
+   $next_month = $month+1;
+   $next_year = $year;
    $prev_month = 12;
-   $prev_year = $year_tep-1;
+   $prev_year = $year-1;
 }else{
-   $next_month = $month_tep+1;
-   $next_year = $year_tep;
-   $prev_month = $month_tep-1;
-   $prev_year = $year_tep;
+   $next_month = $month+1;
+   $next_year = $year;
+   $prev_month = $month-1;
+   $prev_year = $year;
  }
 $str_next_month = '?y='.$next_year.'&m='.$next_month;
 $str_prev_month = '?y='.$prev_year.'&m='.$prev_month;
@@ -679,7 +688,7 @@ $j=1;
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
-  $att_arr = tep_get_attendance($date,$show_group_id,false);
+  $att_arr = tep_get_attendance($date,$show_group_id,true);
   $style= (empty($att_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="calendar_attendance"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
@@ -711,7 +720,7 @@ while($j<=$day_num)
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
 		  echo '<td style="border-width:1px;">';
-        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\")' style=".$style.">";
+        echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'].'<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
       }else{
         echo "<td bgcolor='".$att_info['src_text']."'>";

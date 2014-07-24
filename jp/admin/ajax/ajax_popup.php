@@ -8892,7 +8892,7 @@ if($_GET['latest_messages_id']>0){
  //管理员
  $group_manager[] = array('params'=>'width="20%"','text'=> GROUP_MANAGERS );
  if($_POST['group_id'] < 0){
- 	$manager_list = tep_db_query("select * from ".TABLE_USERS); 
+ 	$manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
    	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	$res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
@@ -8904,7 +8904,7 @@ if($_GET['latest_messages_id']>0){
  }else{
      $group_all_manager = tep_db_fetch_array(tep_db_query('select all_managers_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
 	 $group_all_manager = explode('|||',$group_all_manager['all_managers_id']);
-	 $manager_list = tep_db_query('select * from '.TABLE_USERS);
+	 $manager_list = tep_db_query('select * from '.TABLE_USERS.' where status=1');
 	 $all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	 while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	     $res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
@@ -8918,10 +8918,11 @@ if($_GET['latest_messages_id']>0){
 
  $group_content_table[] = array('text'=>$group_manager);
 
+ //用户
  $group_content_row_staff = array();
  $group_content_row_staff[] = array('params'=>'width="20%"','text'=> GROUP_STAFF );
  if($_POST['group_id'] < 0){
- 	$users_list = tep_db_query("select * from ".TABLE_USERS); 
+ 	$users_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
    	$all_users = '<ul class="table_img_list" style="width:100%">'; 
    	while ($users_list_res = tep_db_fetch_array($users_list)) {
      		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
@@ -8930,7 +8931,7 @@ if($_GET['latest_messages_id']>0){
  }else{
 	$group_all_user = tep_db_fetch_array(tep_db_query('select all_users_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
 	$group_all_user = explode('|||',$group_all_user['all_users_id']);
-	$users_list = tep_db_query('select * from '.TABLE_USERS);
+	$users_list = tep_db_query('select * from '.TABLE_USERS.' where status=1');
 	$all_users = '<ul class="table_img_list" style="width:100%">'; 
    	while ($users_list_res = tep_db_fetch_array($users_list)) {
      		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"'.(in_array($users_list_res['userid'],$group_all_user) ? ' checked="checked"' : '').'><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 

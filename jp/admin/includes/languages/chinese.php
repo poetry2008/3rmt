@@ -865,7 +865,7 @@ define('ROSTER_TITLE_TEXT','排班上班');
 define('TEXT_PRODUCTS_PRICE_ERROR','的单价为0。');
 define('TEXT_PRODUCTS_NUM_ERROR','合计个数为0。');
 define('TEXT_PRODUCTS_PAYMENT_ERROR','总额不在规定的%s的结算金额(%s)范围内。');
-define('TEXT_NOW_MONTH', '今月');
-define('TEXT_PRE_YEAR', '前年');
-define('TEXT_NEXT_YEAR', '后年');
+define('TEXT_NOW_MONTH', '本月');
+define('TEXT_PRE_YEAR', '去年');
+define('TEXT_NEXT_YEAR', '明年');
 

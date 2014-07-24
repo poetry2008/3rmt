@@ -849,7 +849,7 @@ define('TEXT_PRODUCTS_PAYMENT_ERROR','Số tiền tổng cộng đã ngoài số
 define('ROSTER_TITLE_TEXT', 'Làm theo ca');
 define('DATE_FORMAT_SHORT_TEXT','Y年n月j日');
 
-define('TEXT_MONTH_JANUARY','Jun.');
+define('TEXT_MONTH_JANUARY','Jan.');
 define('TEXT_MONTH_FEBRUARY','Feb.');
 define('TEXT_MONTH_MARCH','Mar.');
 define('TEXT_MONTH_APRIL','Apr.');
