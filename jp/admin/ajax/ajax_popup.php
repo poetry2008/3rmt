@@ -9211,21 +9211,21 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  $work_start_min_right= substr($work_start_array[1],1,2);
       $work_start = '<select name="work_start_hour" id="work_start_hour" '.$show_style.'>';
 	  for($i=0;$i<=23;$i++){
-          $selected = $work_start_array['0']!=$i ?'':'selected==selected';
+          $selected = $work_start_array['0']!=$i ?'':' selected ';
           $work_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
 	  }
       $work_start .= '</select>&nbsp;'.HOUR_TEXT;
 
       $work_start .= '<select name="work_start_minute_a" id="work_start_min_l" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
-          $selected = $work_start_min_left!=$i ?'':'selected==selected';
+          $selected = $work_start_min_left!=$i ?'':' selected ';
           $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_start .= '</select>';
 
       $work_start .= '<select name="work_start_minute_b" id="work_start_min_r" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
-          $selected = $work_start_min_right!=$i ?'':'selected==selected';
+          $selected = $work_start_min_right!=$i ?'':' selected ';
           $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="work_start_error"></font>';
@@ -9237,21 +9237,21 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  $work_end_min_right= substr($work_end_array[1],1,2);
       $work_end = '<select name="work_end_hour" id="work_end_hour" '.$show_style.'>';
 	  for($i=0;$i<=23;$i++){
-          $selected = $work_end_array['0']!=$i ?'':'selected==selected';
+          $selected = $work_end_array['0']!=$i ?'':' selected ';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_end .= '</select>&nbsp;'.HOUR_TEXT;
 
       $work_end .= '<select name="work_end_minute_a" id="work_end_min_l" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
-          $selected = $work_end_min_left!=$i ?'':'selected==selected';
+          $selected = $work_end_min_left!=$i ?'':' selected ';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_end .= '</select>';
 
       $work_end .= '<select name="work_end_minute_b" id="work_end_min_r" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
-          $selected = $work_end_min_right!=$i ?'':'selected==selected';
+          $selected = $work_end_min_right!=$i ?'':' selected ';
           $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $work_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="work_end_error"></font>';
@@ -9263,20 +9263,20 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  $rest_start_min_right= substr($rest_start_array[1],1,2);
       $rest_start = '<select name="rest_start_hour" '.$show_style.'>';
 	  for($i=0;$i<=23;$i++){
-          $selected = $rest_start_array['0']!=$i ?'':'selected==selected';
+          $selected = $rest_start_array['0']!=$i ?'':' selected ';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_start .= '</select>&nbsp;'.HOUR_TEXT;
 
       $rest_start .= '<select name="rest_start_minute_a" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
-          $selected = $rest_start_min_left!=$i ?'':'selected==selected';
+          $selected = $rest_start_min_left!=$i ?'':' selected ';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_start .= '</select>';
       $rest_start .= '<select name="rest_start_minute_b" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
-          $selected = $rest_start_min_right!=$i ?'':'selected==selected';
+          $selected = $rest_start_min_right!=$i ?'':' selected ';
           $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_start .= '</select>&nbsp;'.MINUTE_TEXT;
@@ -9288,20 +9288,20 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	  $rest_end_min_right= substr($rest_end_array[1],1,2);
       $rest_end = '<select name="rest_end_hour" '.$show_style.'>';
 	  for($i=0;$i<=24;$i++){
-          $selected = $rest_end_array['0']!=$i ?'':'selected==selected';
+          $selected = $rest_end_array['0']!=$i ?'':' selected ';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_end .= '</select>&nbsp;'.HOUR_TEXT;
 
       $rest_end .= '<select name="rest_end_minute_a" '.$show_style.'>';
 	  for($i=0;$i<=5;$i++){
-          $selected = $rest_end_min_left!=$i ?'':'selected==selected';
+          $selected = $rest_end_min_left!=$i ?'':' selected ';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_end .= '</select>';
       $rest_end .= '<select name="rest_end_minute_b" '.$show_style.'>';
 	  for($i=0;$i<=9;$i++){
-          $selected = $rest_end_min_right!=$i ?'':'selected==selected';
+          $selected = $rest_end_min_right!=$i ?'':' selected ';
           $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
 	  }
       $rest_end .= '</select>&nbsp;'.MINUTE_TEXT;
@@ -9810,21 +9810,21 @@ echo  $return_res;
 
   $leave_start = '<select name="leave_start_hour" id="leave_start_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
-    $selected = $leave_start_array['0']!=$i ?'':'selected==selected';
+    $selected = $leave_start_array['0']!=$i ?'':' selected ';
     $leave_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
   $leave_start .= '</select>&nbsp;'.HOUR_TEXT;
 
   $leave_start .= '<select name="leave_start_minute_a" id="leave_start_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
-    $selected = $leave_start_min_left!=$i ?'':'selected==selected';
+    $selected = $leave_start_min_left!=$i ?'':' selected ';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_start .= '</select>';
 
   $leave_start .= '<select name="leave_start_minute_b" id="leave_start_min_r" '.$disabled.'>';
   for($i=0;$i<=9;$i++){
-    $selected = $leave_start_min_right!=$i ?'':'selected==selected';
+    $selected = $leave_start_min_right!=$i ?'':' selected ';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
@@ -9835,21 +9835,21 @@ echo  $return_res;
 
   $leave_end = '<select name="leave_end_hour" id="leave_end_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
-    $selected = $leave_end_array['0']!=$i ?'':'selected==selected';
+    $selected = $leave_end_array['0']!=$i ?'':' selected ';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_end .= '</select>&nbsp;'.HOUR_TEXT;
 
   $leave_end .= '<select name="leave_end_minute_a" id="leave_end_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
-    $selected = $leave_end_min_left!=$i ?'':'selected==selected';
+    $selected = $leave_end_min_left!=$i ?'':' selected ';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_end .= '</select>';
 
   $leave_end .= '<select name="leave_end_minute_b" id="leave_end_min_r" '.$disabled.'>';
   for($i=0;$i<=9;$i++){
-    $selected = $leave_end_min_right!=$i ?'':'selected==selected';
+    $selected = $leave_end_min_right!=$i ?'':' selected ';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $leave_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_end_error"></font>';
@@ -10094,21 +10094,21 @@ echo  $return_res;
   $att_start_min_right= substr($att_start_array[1],1,2);
   $att_start = '<select name="att_start_hour" id="att_start_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
-    $selected = $att_start_array['0']!=$i ?'':'selected==selected';
+    $selected = $att_start_array['0']!=$i ?'':' selected ';
     $att_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
   $att_start .= '</select>';
 
   $att_start .= '<select name="att_start_minute_a" id="att_start_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
-    $selected = $att_start_min_left!=$i ?'':'selected==selected';
+    $selected = $att_start_min_left!=$i ?'':' selected ';
     $att_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $att_start .= '</select>';
 
   $att_start .= '<select name="att_start_minute_b" id="att_start_min_r" '.$disabled.'>';
   for($i=0;$i<=9;$i++){
-    $selected = $att_start_min_right!=$i ?'':'selected==selected';
+    $selected = $att_start_min_right!=$i ?'':' selected ';
     $att_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $att_start .= '</select>&nbsp;&nbsp;<font color="red" id="att_start_error"></font>';
@@ -10118,21 +10118,21 @@ echo  $return_res;
   $att_end_min_right= substr($att_end_array[1],1,2);
   $att_end = '<select name="att_end_hour" id="att_end_hour" '.$disabled.'>';
   for($i=0;$i<=23;$i++){
-    $selected = $att_end_array['0']!=$i ?'':'selected==selected';
+    $selected = $att_end_array['0']!=$i ?'':' selected ';
     $att_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $att_end .= '</select>';
 
   $att_end .= '<select name="att_end_minute_a" id="att_end_min_l" '.$disabled.'>';
   for($i=0;$i<=5;$i++){
-    $selected = $att_end_min_left!=$i ?'':'selected==selected';
+    $selected = $att_end_min_left!=$i ?'':' selected ';
     $att_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $att_end .= '</select>';
 
   $att_end .= '<select name="att_end_minute_b" id="att_end_min_r" '.$disabled.'>';
   for($i=0;$i<=9;$i++){
-    $selected = $att_end_min_right!=$i ?'':'selected==selected';
+    $selected = $att_end_min_right!=$i ?'':' selected ';
     $att_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
   $att_end .= '</select>&nbsp;&nbsp;<font color="red" id="att_end_error"></font>';
