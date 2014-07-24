@@ -3433,7 +3433,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
           $show_select_group_user[] = $show_group_row['user_id'];
         }
         if($show_group_id==0){
-          $user_sql = 'select * from '.TABLE_USERS;
+          $user_sql = "select * from ".TABLE_USERS." where status='1'";
           $user_query = tep_db_query($user_sql);
           while($user_row = tep_db_fetch_array($user_query)){
             $show_group_user[] = $user_row['userid'];

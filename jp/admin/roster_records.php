@@ -283,7 +283,7 @@ case 'update':
              $src_image['name'] = $tep_image_name;
 
 	         $image_directory = tep_get_local_path(DIR_FS_CATALOG.'images/');
-             $path = 'attendance/';
+             $path = 'roster_records/';
 
              if (is_uploaded_file($src_image['tmp_name'])) {
 			     //删除之前的图片
@@ -295,7 +295,7 @@ case 'update':
 			     }
 			 
 			     $src_text = $path.$tep_image_name;
-			     tep_copy_uploaded_file($src_image, $image_directory. '/attendance/');
+			     tep_copy_uploaded_file($src_image, $image_directory.  '/roster_records/');
 
 	         }	
 	 
