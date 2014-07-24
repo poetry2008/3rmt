@@ -577,8 +577,8 @@ define('TEXT_ATTRIBUTE_PRIVATE','Riêng tư');
 define('HEADER_TEXT_CREATE_PREORDER', 'Tạo đặt trước');
 
 define('TEXT_TORIHIKI_REPLACE_STR','～');
-define('TEXT_TORIHIKI_HOUR_STR','Giờ');
-define('TEXT_TORIHIKI_MIN_STR','Phú');
+define('TEXT_TORIHIKI_HOUR_STR','時');
+define('TEXT_TORIHIKI_MIN_STR','分');
 define('TEXT_PREORDER_PAYMENT_METHOD', 'Phương thức thanh toán');
 define('TEXT_PREORDER_NOT_COST', 'Chưa nhận tiền');
 define('TEXT_PREORDER_COST_DATE', 'Ngày nhận tiền');
@@ -847,6 +847,7 @@ define('TEXT_PRODUCTS_PRICE_ERROR','Đơn giá là 0 Yên.');
 define('TEXT_PRODUCTS_NUM_ERROR','Tổng số 0.');
 define('TEXT_PRODUCTS_PAYMENT_ERROR','Số tiền tổng cộng đã ngoài số tiền có thể thanh toán(%s)của%s.');
 define('ROSTER_TITLE_TEXT', 'Làm theo ca');
+define('DATE_FORMAT_SHORT_TEXT','Y年n月j日');
 
 define('TEXT_MONTH_JANUARY','Jun.');
 define('TEXT_MONTH_FEBRUARY','Feb.');
