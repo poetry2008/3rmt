@@ -8169,7 +8169,7 @@ $banner_query = tep_db_query("
  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.'messages.php');
  include(DIR_FS_ADMIN.'classes/notice_box.php');
  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
- $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ $page_str = '<a onclick="hidden_info_box('.($_GET['messages_sta'] == 'drafts' && $_GET['latest_messages_id'] > 0 ? '1' : ($_GET['latest_messages_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
  if($_GET['latest_messages_id']<0){
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  	$heading[] = array('text' => NEW_MESSAGES);
@@ -8335,6 +8335,7 @@ $banner_query = tep_db_query("
  }
  tep_db_free_result($all_users_list_query);
  $messages_content_row_must_selected[] = array('params' => 'style="display:none"','text'=> $recipient_all);
+ $messages_content_row_must_selected[] = array('text'=> '');
  $messages_content_row_must_selected[] = array('text'=> '<div id="messages_to_must_select" style="display: none;"><span style="color:#ff0000;">'.MESSAGES_TO_MUST_SELECTED.'</span></div>');
  $messages_content_table[] = array('text'=> $messages_content_row_must_selected);
  $mark_array = explode(',',$_GET['mark']);
@@ -8355,7 +8356,7 @@ $banner_query = tep_db_query("
 	$sql_message_content_res = tep_db_fetch_array($sql_message_content);
         $messages_text_area = '<textarea id="messages_text" style="overflow-y:hidden;width:100%;height:163px;" disabled="disabled" name="contents">'.$sql_message_content_res['content'].'</textarea><input type="hidden" name="drafts_contents" value="'.$sql_message_content_res['content'].'">';
  }else{
- 	$messages_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="contents"></textarea>';
+ 	$messages_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="contents"></textarea><input type="hidden" id="old_contents" value="">';
  }
  $messages_content_row_text[] = array('text'=> $messages_text_area);
  $messages_content_table[] = array('text'=> $messages_content_row_text);
@@ -8417,7 +8418,7 @@ $banner_query = tep_db_query("
         }
 	$messages_content_row_back = array();
 	$messages_content_row_back[] = array('text'=> MESSAGES_BACK_CONTENT);
-	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" name="back_contents">'.$messages_contents_back.'</textarea>');
+	$messages_content_row_back[] = array('text'=> '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="back_contents">'.$messages_contents_back.'</textarea><input type="hidden" id="old_contents" value="'.$messages_contents_back.'">');
 	$messages_content_table[] = array('text'=> $messages_content_row_back);
 	$messages_content_row_back_must_write = array();
  	$messages_content_row_back_must_write[] = array('text'=> '');

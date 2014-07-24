@@ -178,7 +178,7 @@
 
      $_POST['selected_staff'] = $_POST['all_users_list'];
    }
-   if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
+   if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups']) || $_POST['messages_flag'] == 1 || $_POST['messages_flag'] == 4){	
      //获取组的用户，原理是优先于级别最低组的用户
      if($_POST['messages_type'] == 1){
        if(mb_strlen($_POST['contents'])>20){
@@ -544,7 +544,7 @@
 
       $_POST['selected_staff'] = $_POST['all_users_list'];
     } 
-    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups'])){	
+    if(!empty($_POST['selected_staff']) || !empty($_POST['select_groups']) || $_POST['messages_flag'] == 1 || $_POST['messages_flag'] == 4){	
      if($_POST['messages_type'] == 1){
        if(mb_strlen($_POST['back_contents'])>20){
          $send_subject = sprintf(EMAIL_SUBJECT,mb_substr($_POST['back_contents'],0,20,'utf-8').'...');
@@ -959,6 +959,7 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script>
+var messages_close_status = 0;
 function remove_email_file(mid,f_index){
        $.ajax({
          url: 'ajax.php?action=del_messages_file',
@@ -1018,7 +1019,7 @@ $(document).ready(function() {
     if (event.which == 27) {
       <?php //esc?> 
       if ($('#show_latest_news').css('display') != 'none') {
-        hidden_info_box(); 
+        hidden_info_box(messages_close_status); 
       }
     }
      if (event.which == 13) {
@@ -1218,6 +1219,19 @@ function show_latest_messages(ele,page,latest_messages_id,sender_id,messages_sor
  async : false,
  success: function(data){
    $("div#show_latest_news").html(data);
+   if(messages_sta == 'drafts' && latest_messages_id > 0){
+
+     messages_close_status = 1;
+   }else{
+
+     if(latest_messages_id < 0){
+
+       messages_close_status = 2;
+     }else{
+
+       messages_close_status = 3;
+     }
+   }
    if(document.getElementById("messages_text")){
      document.getElementById("messages_text").style.height = document.getElementById("messages_text").scrollHeight < 163 ? 163+"px" : document.getElementById("messages_text").scrollHeight+"px";
    }
@@ -1293,9 +1307,19 @@ o_submit_single = true;
   }
   }); 
 }
-function hidden_info_box(){
+function hidden_info_box(flag){
    $('#show_latest_news').css('display','none');
    o_submit_single = true;
+   if(flag == 1){
+
+     drafts_auto_save(1,4);
+   }else if(flag == 2){
+
+    drafts_auto_save(0,1); 
+   }else if(flag == 3){
+
+     drafts_auto_save(1,1);
+   }
 }
 <?php //选择动作?>
 function messages_change_action(r_value) {
@@ -1753,9 +1777,13 @@ function messages_check(is_back,flag){
 	if(!reg.test($('[name=contents]').val())){
 		error_status_contents = 1;
 	}
-	if(error_status_select == 0){
+	if(error_status_select == 0 && flag != 1 && flag != 4){
 		$('#messages_to_must_select').css('display','');
-	}
+        }
+        if(flag == 1 || flag == 4){
+
+          error_status_select = 1;
+        }
 	if(error_status_contents == 0){
 		$('#messages_must_write').css('display','');
 	}
@@ -1865,6 +1893,19 @@ function messages_delete(action){
 
     $("#messages_flag_id").val(action);
     document.forms.new_latest_messages.submit();
+  }
+}
+//drafts auto save
+function drafts_auto_save(flag,num){
+
+  var old_contents = $("#old_contents").val();
+  old_contents = old_contents.replace(/(^\s*)|(\s*$)/g,'');
+  var current_contents = $("#current_contents").val();
+  current_contents = current_contents.replace(/(^\s*)|(\s*$)/g,'');
+
+  if(old_contents != current_contents){
+
+    messages_check(flag,num);
   }
 }
 </script>
