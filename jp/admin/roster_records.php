@@ -494,16 +494,24 @@ require("includes/note_js.php");
         $group_str .= '<div id="show_user_list">';
         foreach($show_group_user as $show_list_uid){
           if($show_list_uid!=''){
-          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$show_list_uid.'"';
-          if(in_array($show_list_uid,$show_select_group_user)){
-            $group_str .= ' checked="checked" ';
-          }
-          $group_str .= ' value="'.$show_list_uid.'" >';
-          $user_info = tep_get_user_info($show_list_uid);
-          $group_str .=  '<label for="'.$show_list_uid.'">'.$user_info['name'].'</label>';
-          $group_str .= '&nbsp;&nbsp;&nbsp;';
+			$tep_array= tep_get_user_info($show_list_uid);
+			$uname_arr[] = $tep_array['name'];
+
           }
         }
+		$group_user_list = array_combine($show_group_user,$uname_arr);
+		asort($group_user_list);
+
+		foreach($group_user_list as $key=>$val) {
+          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
+          if(in_array($key,$show_select_group_user)){
+            $group_str .= ' checked="checked" ';
+          }
+          $group_str .= ' value="'.$val.'" >';
+          $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
+          $group_str .= '&nbsp;&nbsp;&nbsp;';
+		}
+
         $group_str .= '</div>';
         $group_str .= '</td>';
         $group_str .= '<td align="right">';

@@ -56,7 +56,7 @@ define('TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK','毎月固定星期');
 define('TEXT_CALENDAR_REPEAT_TYPE_YEAR','毎年');
 define('IMAGE_HISTORY','出勤记录');
 define('IMAGE_REPLACE_ATTENDANCE','出勤调整');
-define('TEXT_ADL_SELECT_USER','模板');
+define('TEXT_ADL_SELECT_USER','状态');
 define('TEXT_ADL_SELECT_USER_TEXT','上班时间');
 define('TEXT_REPLACE_ADL','变更状态');
 define('TEXT_ALLOW_USER','许可者');

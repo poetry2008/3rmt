@@ -13925,7 +13925,7 @@ function tep_get_attendance_by_user_date($date,$user=0,$show_all=false){
   $res = array();
   $att_list = array();
   if($show_all){
-  $sql_type = "select * from ".TABLE_ATTENDANCE_DETAIL;
+  $sql_type = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
   $query_type = tep_db_query($sql_type);
   while($row_type = tep_db_fetch_array($query_type)){
     $res[] = $row_type;
