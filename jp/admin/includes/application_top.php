@@ -306,6 +306,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CONFIGURATION_META','configuration_meta');
   define('TABLE_GROUPS','groups');
   define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
+  define('TABLE_ATTENDANCE_DETAIL_DATE_USER','attendance_detail_date_user');
   define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');
 // customization for the design layout
   define('BOX_WIDTH', 170); // how wide the boxes should be in pixels (default: 125)
