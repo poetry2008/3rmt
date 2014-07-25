@@ -14032,7 +14032,7 @@ function tep_is_show_att_user($uid,$date){
     $day = substr($date,6,2); 
     $time_str = mktime(0,0,0,$month,$day,$year);
     $sql = "select * from ".TABLE_USERS.  " WHERE 
-      userid='".$uid."' and UNIX_TIMESTAMP(date_added) < ".$time_str."";
+      userid='".$uid."' and status='1' and UNIX_TIMESTAMP(date_added) < ".$time_str."";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       return $row;
