@@ -1956,7 +1956,9 @@ require("includes/note_js.php");
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-	        <td class="pageHeading">
+                <td>
+                  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tr><td class="pageHeading">
 			<?php
 				if($_GET['status'] == 'sent'){
 					echo HEADING_TITLE_SENT;
@@ -1967,8 +1969,8 @@ require("includes/note_js.php");
 				}else{ 
 					echo HEADING_TITLE; 
 				}
-			?>
-                <div style="float:right">
+                        ?>
+                </td><td  class="pageHeading" align="right">
                 <form name="search_messages" method="get" action="messages.php">
                 <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>"><input type="submit" value="<?php echo IMAGE_SEARCH;?>"><input type="hidden" name="status" value="<?php echo $_GET['status'];?>">
 			<select id="messages_select_status" name="messages_status_flag">
@@ -1977,8 +1979,8 @@ require("includes/note_js.php");
   				<option <?php if($_GET['status'] == 'drafts'){echo 'selected';}?>  value ="2"><?php echo MESSAGE_SELECT_DRAFT; ?></option>
   				<option <?php if($_GET['status'] == 'trash'){echo 'selected';}?>  value ="3"><?php echo MESSAGE_SELECT_TRASH; ?></option>
                         </select>
-                </form>
-		</div>
+                </form><br/>
+		</td></tr></table>
 		</td>
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
             </tr>
