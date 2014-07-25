@@ -9646,6 +9646,9 @@ echo  $return_res;
   $buttons = array();
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
+  if($ocertify->npermission > 10){
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USET_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
+  }
   if(!isset($_GET['gid'])||$_GET['gid']==''){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
   }
@@ -9897,7 +9900,7 @@ echo  $return_res;
     $already_add_user_array = array_unique($already_add_user_array);
     $current_users_list = array();
     if($ocertify->npermission >= '15'){
-      $sql_all_user = "select * from ".TABLE_USERS." order by name asc";
+      $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
@@ -10179,4 +10182,243 @@ if($row_array['set_time']==0){
     var_dump("0,0");
 }
 
+}else if($_GET['action'] == 'attendance_setting_user'){
+
+
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
+  //获得 所有排班表
+  $attendance_detail_list = array();
+  $attendance_detail_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
+  $attendance_detail_query = tep_db_query($attendance_detail_sql);
+  while($attendance_detail_row = tep_db_fetch_array($attendance_detail_query)){
+    $attendance_detail_list[] = $attendance_detail_row;
+  }
+  //获得所有用户
+  $all_user = array();
+  if($ocertify->npermission >= '15'){
+    $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+    $query_all_user = tep_db_query($sql_all_user);
+    while($row_all_user = tep_db_fetch_array($query_all_user)){
+      $all_user[] = $row_all_user;
+    }
+  }else{
+    $all_user[] = tep_get_user_info($_GET['uid']);
+  }
+  //获得所有循环方式
+  $type_list = array(
+     TEXT_CALENDAR_REPEAT_TYPE_NO,
+     TEXT_CALENDAR_REPEAT_TYPE_WEEK,
+     TEXT_CALENDAR_REPEAT_TYPE_MONTH,
+     TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK,
+     TEXT_CALENDAR_REPEAT_TYPE_YEAR
+      );
+  //判断管理员修改
+  if($ocertify->npermission<15){
+    $disabled =  ' disabled="disabled" ';
+  }
+
+  include(DIR_FS_ADMIN.'classes/notice_box.php'); 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+ 
+  //头部内容
+  $heading = array();
+  $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+
+  /*
+  获得 应该在浮动IDV 里显示的数据 管理员显示 可用用户
+  当前用户显示当前用过显示的那个
+  */
+  if(isset($_GET['uid'])&&$_GET['uid']!=''){
+    $attendance_dd_arr = tep_get_attendance_user($_GET['date'],$_GET['uid'],false,$_GET['add_id']);
+    $self_user = tep_get_user_info($_GET['uid']);
+    $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
+  }else{
+    $attendance_dd_arr = array();
+    foreach($all_user as $user_info){
+      $attendance_dd_arr =
+        array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
+    }
+  }
+
+
+  //默认的排班模板
+  $adl_select = '<select name="attendance_id[]" '.$show_only.' >';
+  foreach($attendance_detail_list as $a_value){
+    $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
+  }
+  $adl_select .= '</select>';
+
+  //默认的用户显示
+  $user_select = '<select name="user[]" '.$disabled.'>';
+  $hidden_user_select = '<select name="user[]" >';
+  $user_select_hidden = '';
+  $default_hidden = '';
+  foreach($all_user as $user){
+    if($default_hidden == ''){
+      $default_hidden = '<input type="hidden" name="user_hidden[]" value="'.$user['userid'].'">';
+    }
+    $user_select .= '<option value="'.$user['userid'].'"';
+    $hidden_user_select .= '<option value="'.$user['userid'].'"';
+    if($user['userid']==$_GET['uid']){
+      $user_select .= ' selected ';
+      $hidden_user_select .= ' selected ';
+      $user_select_hidden = '<input type="hidden" name="user_hidden[]" value="'.$user['user'].'">';
+    }
+    $user_select .= '>'.$user['name'].'</oprion>';
+    $hidden_user_select .= '>'.$user['name'].'</oprion>';
+  }
+  $user_select .= '</select>';
+  $hidden_user_select .= '</select>';
+
+  //循环模式
+  $type_select = '<select name="type[]" '.$disabled.' >';
+  foreach($type_list as $t_key => $t_value){
+    $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
+  }
+  $type_select .= '</select>';
+
+
+  $hidden_div = '<div style="display:none">';
+  $hidden_div .= '<table id="add_source">';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '</table></div>';
+  $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  if($group_disabled!=''){
+    $hidden_date .= '<input type="hidden" name="default_uid" value="'.$_GET['uid'].'">';
+  }
+
+  $heading[] = array('align' => 'left', 'text' => $date_str);
+  $heading[] = array('align' => 'right', 'text' => $page_str.$hidden_div);
+
+  //主体内容
+  $as_info_row = array();
+  $show_arr = true;
+  foreach($attendance_dd_arr as $a_info){
+    $has_adl_select = '<select name="has_attendance_id[]" '.$disabled.' >';
+    foreach($attendance_detail_list as $a_value){
+      $has_adl_select .= '<option value="'.$a_value['id'].'"';
+      if($a_info['attendance_detail_id'] == $a_value['id']){
+        $has_adl_select .= ' selected ';
+      }
+      $has_adl_select .=' >'.$a_value['title'].'</option>';
+    }
+    $has_adl_select .= '</select>';
+
+    $has_user_select = '<select name="has_user[]" '.$disabled.'>';
+    $has_user_select_hidden = '';
+    $default_has_user = '';
+    foreach($all_user as $user){
+      if($default_has_user == ''){
+      $default_has_user = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
+      }
+      $has_user_select .= '<option value="'.$user['userid'].'" ';
+      if($a_info['user_id'] == $user['userid']){
+        $has_user_select .= 'selected ';
+        $has_user_select_hidden = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
+      }
+      $has_user_select .= ' >'.$user['name'].'</oprion>';
+    }
+    $has_user_select .= '</select>';
+    if($disabled){
+      if($has_user_select_hidden!=''){
+        $has_user_select .= $has_user_select_hidden;
+      }else{
+        $has_user_select .= $default_has_user;
+      }
+    }
+    $has_type_select = '<select name="has_type[]" '.$disabled.' >';
+    foreach($type_list as $t_key => $t_value){
+      $has_type_select .= '<option value="'.$t_key.'" ';
+      if($a_info['type'] == $t_key){
+        $has_type_select .= ' selected ';
+      }
+      $has_type_select .= ' >'.$t_value.'</option>';
+    }
+    $has_type_select .= '</select>';
+    $as_info_row_tmp = array(); 
+
+    $as_info_row_tmp = array(); 
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'">');
+    if($show_arr){
+      $as_user_added = $a_info['add_user'];
+      $as_date_added = $a_info['add_time'];
+      $as_user_update = $a_info['update_user'];
+      $as_last_modified = $a_info['update_time'];
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">');
+      $show_arr = false;
+    }else{
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
+    }
+    $as_info_row[]['text'] = $as_info_row_tmp;
+    $as_info_row[]['text'] = array(
+      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+      array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_user_select)
+    );
+    $as_info_row[]['text'] = array(
+      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
+      array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_type_select)
+    );
+
+
+  }
+
+
+//没有个人排班的时候显示新数据
+  if(empty($as_info_row)){
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">')
+      );
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $user_select)
+      );
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $type_select)
+      );
+  }
+
+
+
+  //更新日创建日 更新时间 创建时间
+  $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
+        array('align' => 'left', 'text' => $hidden_date.TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($as_user_added)?$as_user_added:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($as_date_added)?$as_date_added:TEXT_UNSET_DATA))
+      ));
+  $as_info_row[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($as_user_update)?$as_user_update:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($as_last_modified)?$as_last_modified:TEXT_UNSET_DATA))
+      );
+
+
+  //底部内容
+  $buttons = array();
+  if($ocertify->npermission>10&&$_GET['add_id']==''){
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\')"').'</a>'; 
+  }
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+
+  $action_url_date = substr($_GET['date'],0,4) == date('Y') ? '' : '&y='.substr($_GET['date'],0,4);
+  $action_url_month = substr($_GET['date'],4,2) == date('m') ? '' : '&m='.substr($_GET['date'],4,2);
+  $action_url = 'action=save_as_user_list'.$action_url_date.$action_url_month;
+  $form_str = tep_draw_form('attendance_setting_form', FILENAME_ROSTER_RECORDS, $action_url);
+
+  //生成表单 
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);   
+  $notice_box->get_contents($as_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
 }
