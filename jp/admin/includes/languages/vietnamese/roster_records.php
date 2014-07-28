@@ -68,5 +68,6 @@ define('TEXT_ADL_TEXT_INFO','Nhận xét');
 define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','Người dùng');
 define('TEXT_DELETE_REMIND','Bạn có muốn xóa không?');
+define('TEXT_ONLY_USER_ATTENDANCE','スタッフ設定');
 ?>
 

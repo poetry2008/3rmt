@@ -69,6 +69,6 @@ define('TEXT_ADL_TEXT_INFO','备注');
 define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','用户名');
 define('TEXT_DELETE_REMIND','确定删除吗？');
-
+define('TEXT_ONLY_USER_ATTENDANCE','个人排班设定');
 ?>
 
