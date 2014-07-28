@@ -9445,7 +9445,7 @@ echo  $return_res;
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
   //获得 所有排班表
   $attendance_detail_list = array();
-  $attendance_detail_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
+  $attendance_detail_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
   $attendance_detail_query = tep_db_query($attendance_detail_sql);
   while($attendance_detail_row = tep_db_fetch_array($attendance_detail_query)){
     $attendance_detail_list[] = $attendance_detail_row;
