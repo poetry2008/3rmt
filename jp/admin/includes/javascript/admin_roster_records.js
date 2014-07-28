@@ -172,6 +172,9 @@ function attendance_setting(date,ele,gid,add_id){
   if(!gid){
     gid='';
   }
+  if(!add_id){
+    add_id='';
+  }
   var index = ele;
   var ele = document.getElementById('date_td_'+ele);
   var ele_width = $(".box_warp").width(); 
@@ -580,6 +583,9 @@ function resizepage(){
 function attendance_setting_user(date,ele,uid,add_id){
   if(!uid){
     uid='';
+  }
+  if(!add_id){
+    add_id='';
   }
   var index = ele;
   var ele = document.getElementById('date_td_'+ele);
