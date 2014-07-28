@@ -9770,13 +9770,75 @@ echo  $return_res;
 
   //底部内容
   $buttons = array();
+    //判断出勤变更按钮是否可用
+    //当天已排班的员工
+    $already_add_group_array = array();
+    $already_add_user_array = array();
+    $already_add_group = tep_get_attendance($_GET['date']);
+    foreach($already_add_group as $already_group_user_value){
+
+      $already_add_group_array[] = $already_group_user_value['group_id']; 
+    }
+    if(!empty($already_add_group_array)){
+      $already_group_query = tep_db_query("select all_users_id from ".TABLE_GROUPS." where id in (".implode(',',$already_add_group_array).")");
+      while($already_group_array = tep_db_fetch_array($already_group_query)){
+
+        $already_add_user_temp = explode('|||',$already_group_array['all_users_id']);
+        foreach($already_add_user_temp as $already_add_user_temp_value){
+          $already_add_user_array[] = $already_add_user_temp_value; 
+        }
+      }
+      tep_db_free_result($already_group_query);
+    }
+    //当天请假的员工
+    $leave_user_query = tep_db_query("select user from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where date='".$_GET['date']."'");
+    while($leave_user_array = tep_db_fetch_array($leave_user_query)){
+
+      $already_add_user_array[] = $leave_user_array['user'];
+    }
+    tep_db_free_result($leave_user_query);
+    $already_add_user_array = array_unique($already_add_user_array);
+    $current_users_list = array();
+    if($ocertify->npermission >= '15'){
+      $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+      $query_all_user = tep_db_query($sql_all_user);
+      while($row_all_user = tep_db_fetch_array($query_all_user)){
+        if(!in_array($row_all_user['userid'],$already_add_user_array)){
+          $current_users_list[] = $row_all_user['userid'];
+        }
+      }
+    }else{
+ 
+      $group_show_query = tep_db_query("select all_users_id,all_managers_id from ".TABLE_GROUPS." where group_status=1");
+      while($group_show_array = tep_db_fetch_array($group_show_query)){
+
+        $group_list_select_array = explode('|||',$group_show_array['all_managers_id']); 
+        if(in_array($ocertify->auth_user,$group_list_select_array)&&!empty($group_list_select_array)){
+
+          $all_user_select_array = explode('|||',$group_show_array['all_users_id']);
+          foreach($all_user_select_array as $all_user_select_value){
+            $row_all_user[] = $all_user_select_value;
+          }
+        }
+      }
+      tep_db_free_result($group_show_query);
+      $row_all_user = array_unique($row_all_user);
+      foreach($row_all_user as $row_all_user_value){
+
+        $row_all_user_value_name = tep_get_user_info($row_all_user_value);
+        if(!in_array($row_all_user_value,$already_add_user_array)){
+          $current_users_list[] = $row_all_user_value;
+        }
+      }
+    }
+    //end
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'as\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
