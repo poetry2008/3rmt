@@ -34,14 +34,60 @@
 	      $all_managers_id = '';
 	    }
 
+            //终始日
+            $end_date = $_POST['end_date'];
+            $start_date = $_POST['start_date'];
+            $date_array = array();
+            foreach($end_date as $end_date_key=>$end_date_value){
+
+              $date_array[] = $end_date_value.'-'.$start_date[$end_date_key];
+            }
+            $date_str = implode('|||',$date_array);
 	    $group_sql_array = array('name' => $_POST['group_name'],
 				     'parent_id' => $_GET['parent_id'],
 				     'all_users_id' => $all_users_id,
 				     'all_managers_id' => $all_managers_id,
                                      'create_time' => 'now()',
-                                     'create_user' => $_SESSION['user_name'] 
+                                     'create_user' => $_SESSION['user_name'],
+                                     'group_contents' => tep_db_prepare_input($_POST['group_contents']), 
+                                     'currency_type' => tep_db_prepare_input($_POST['currency_type']), 
+                                     'begin_end_date' => $date_str, 
+                                     'cycle_flag' => tep_db_prepare_input($_POST['cycle_flag']), 
+                                     'begin_end_hour' => tep_db_prepare_input($_POST['start_end_hour']), 
+                                     'order_sort' => tep_db_prepare_input($_POST['order_sort']) 
 			            );
-	    tep_db_perform(TABLE_GROUPS, $group_sql_array);	
+            tep_db_perform(TABLE_GROUPS, $group_sql_array);	
+            $insert_group_id = tep_db_insert_id();
+            //计算工资的标题、公式
+            $object_title = tep_db_prepare_input($_POST['object_title']);
+            $object_contents = tep_db_prepare_input($_POST['object_contents']);
+
+            foreach($object_title as $object_title_key=>$object_title_value){
+
+             if(trim($object_title_value) != '' && trim($object_contents[$object_title_key]) != ''){ 
+               $object_sql_array = array('group_id' => $insert_group_id,
+				     'project_id' => 0,
+				     'title' => $object_title_value,
+				     'contents' => $object_contents[$object_title_key] 
+			            );
+               tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
+             }
+            }
+
+            $formula_title = tep_db_prepare_input($_POST['formula_title']);
+            $formula_contents = tep_db_prepare_input($_POST['formula_contents']);
+
+            foreach($formula_title as $formula_title_key=>$formula_title_value){
+
+             if(trim($formula_title_value) != '' && trim($formula_contents[$formula_title_key]) != ''){ 
+               $formula_sql_array = array('group_id' => $insert_group_id,
+				     'project_id' => 1,
+				     'title' => $formula_title_value,
+				     'contents' => $formula_contents[$formula_title_key] 
+			            );
+               tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
+             }
+            } 
 	  }
         }
         tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$_GET['parent_id']));
@@ -63,13 +109,59 @@
 	      $all_managers_id = '';
 	    }
 
+          //终始日
+          $end_date = $_POST['end_date'];
+          $start_date = $_POST['start_date'];
+          $date_array = array();
+          foreach($end_date as $end_date_key=>$end_date_value){
+
+            $date_array[] = $end_date_value.'-'.$start_date[$end_date_key];
+          }
+          $date_str = implode('|||',$date_array);
 	  $group_sql_array = array('name' => $_POST['group_name'],
 				   'all_users_id' => $all_users_id,
 				   'all_managers_id' => $all_managers_id,
                                    'update_time' => 'now()',
-                                   'update_user' => $_SESSION['user_name'] 
+                                   'update_user' => $_SESSION['user_name'],
+                                   'group_contents' => tep_db_prepare_input($_POST['group_contents']), 
+                                   'currency_type' => tep_db_prepare_input($_POST['currency_type']), 
+                                   'begin_end_date' => $date_str, 
+                                   'cycle_flag' => tep_db_prepare_input($_POST['cycle_flag']), 
+                                   'begin_end_hour' => tep_db_prepare_input($_POST['start_end_hour']), 
+                                   'order_sort' => tep_db_prepare_input($_POST['order_sort']) 
 			           );
-	  tep_db_perform(TABLE_GROUPS, $group_sql_array, 'update', 'id='.$group_id);
+          tep_db_perform(TABLE_GROUPS, $group_sql_array, 'update', 'id='.$group_id);
+          //计算工资的标题、公式
+          tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
+          $object_title = tep_db_prepare_input($_POST['object_title']);
+          $object_contents = tep_db_prepare_input($_POST['object_contents']);
+
+          foreach($object_title as $object_title_key=>$object_title_value){
+
+           if(trim($object_title_value) != '' && trim($object_contents[$object_title_key]) != ''){ 
+             $object_sql_array = array('group_id' => $group_id,
+				     'project_id' => 0,
+				     'title' => $object_title_value,
+				     'contents' => $object_contents[$object_title_key] 
+			            );
+             tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
+           }
+          }
+
+          $formula_title = tep_db_prepare_input($_POST['formula_title']);
+          $formula_contents = tep_db_prepare_input($_POST['formula_contents']);
+
+          foreach($formula_title as $formula_title_key=>$formula_title_value){
+
+            if(trim($formula_title_value) != '' && trim($formula_contents[$formula_title_key]) != ''){
+              $formula_sql_array = array('group_id' => $group_id,
+				     'project_id' => 1,
+				     'title' => $formula_title_value,
+				     'contents' => $formula_contents[$formula_title_key] 
+			            );
+              tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
+            }
+          }
         }
         tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$_GET['parent_id']));
         break;

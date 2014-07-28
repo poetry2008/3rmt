@@ -237,3 +237,97 @@ function group_change_action(value,group_list_id,c_permission,parent_id)
     alert(must_select_group); 
   }
 }
+//add object
+function add_obj(ele,obj_name_1,obj_name_2,delete_name){
+
+  var obj_type = $("#wage_select").val();
+  var obj_num = $("#obj_num").val();
+  obj_num = parseInt(obj_num);
+  var obj_str = '';
+  if(obj_type == 0){
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"></td></tr>';
+  }else if(obj_type == 1){
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" class="td_input" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"><br><input type="text" name="formula_contents[]" class="td_input" value=""></td></tr>';
+  }
+  if(obj_num == 0){
+    $(ele).parent().parent().after(obj_str);
+  }else{
+    $("#obj_tr_"+obj_num).after(obj_str); 
+  }
+  $("#obj_num").val(obj_num+1);
+}
+//delete object
+function delete_obj(num){
+
+  var obj_num = $("#obj_num").val();
+  $("#obj_tr_"+num).remove();
+  $("#obj_num").val(obj_num-1);
+}
+//date select
+function date_select(ele,end_str,start_str,date_str){
+
+  var end_date = document.getElementsByName("end_date[]"); 
+  var end_date_length = end_date.length;
+  var start_date = document.getElementsByName("start_date[]"); 
+  var start_date_length = start_date.length;
+  var date_select_array = new Array();
+
+  var date_i = 0;
+  for(var i=0;i<end_date_length;i++){
+  
+    for(var j=start_date[i].value;j<=end_date[i].value;j++){
+    
+      date_select_array[date_i] = j;
+      date_i++;
+    }
+  }
+  date_select_array.sort(function(a,b){return a>b?1:-1});
+  var all_date_array = new Array();
+  for(var k=1;k<=28;k++){
+  
+    all_date_array[k-1] = k;
+  }
+
+  var diff_date_array = new Array();
+
+  for(var m=0;m<all_date_array.length;m++){
+ 
+    var flag = true;
+    for(var n=0;n<date_select_array.length;n++){
+    
+      if(all_date_array[m] == date_select_array[n]){
+      
+        flag = false;
+      }
+    }
+    if(flag){
+    
+      diff_date_array.push(all_date_array[m]);
+    }
+  }
+  //alert(diff_date_array.toString());
+  if(diff_date_array.length > 0){
+ 
+    var select_str = '<tr><td width="20%"></td><td>';
+    var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
+    var select_start_str = start_str+'<select name="start_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
+    for(var p=0;p<diff_date_array.length;p++){
+   
+      if(p != diff_date_array.length-1 && diff_date_array[p]+1 == diff_date_array[p+1]){
+     
+        select_end_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+        select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+      }else{
+    
+        if(p == diff_date_array.length-1){
+           select_end_str += '<option value="'+diff_date_array[p]+'" selected>'+diff_date_array[p]+date_str+'</option>';
+           select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+        }else{
+          select_str += select_end_str+'</select>'+select_start_str+'</select></td></tr><tr><td width="20%"></td><td>';
+        }
+      }
+    }
+    select_str += select_end_str+'</select>'+select_start_str+'</select></td></tr>';
+    $(ele).parent().parent().after(select_str);
+  }
+}

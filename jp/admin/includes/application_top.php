@@ -305,6 +305,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_MAIL_TEMPLATES','mail_templates');
   define('TABLE_CONFIGURATION_META','configuration_meta');
   define('TABLE_GROUPS','groups');
+  define('TABLE_WAGE_SETTLEMENT','wage_settlement');
   define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
   define('TABLE_ATTENDANCE_DETAIL_DATE_USER','attendance_detail_date_user');
   define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');

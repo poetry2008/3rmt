@@ -8879,15 +8879,24 @@ if($_GET['latest_messages_id']>0){
  	$form_str = tep_draw_form('new_latest_group', FILENAME_GROUPS,'action=update_group&id='.$_POST['group_id'].'&parent_id='.$_POST['parent_group_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }
  $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ //读取groups数据
+ $groups_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$_POST['group_id']."'");
+ $groups_array = tep_db_fetch_array($groups_query);
+ tep_db_free_result($groups_query);
  $group_content_table = array();
  $group_content_row_name = array();
  $group_content_row_name[] = array('params'=>'width="20%"','text'=> GROUP_NAME );
+ $group_content_row_contents = array();
+ $group_content_row_contents[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_CONTENTS);
  if($_POST['group_id'] < 0){
  	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value=""><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+ 	$group_content_row_contents[] = array('text' => '<textarea name="group_contents" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:300px;height:42px;*height:40px;"></textarea>');
  }else{
 	$group_content_row_name[] = array('text' => '<input type="text" name="group_name" class="td_input" value="'.$_POST['group_name'].'"><span id="group_name_error">'.TEXT_FIELD_REQUIRED.'</span>');
+ 	$group_content_row_contents[] = array('text' => '<textarea name="group_contents" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:300px;height:42px;*height:40px;">'.html_entity_decode($groups_array['group_contents']).'</textarea>');
  }
  $group_content_table[] = array('text'=>$group_content_row_name); 
+ $group_content_table[] = array('text'=>$group_content_row_contents); 
 
  //管理员
  $group_manager[] = array('params'=>'width="20%"','text'=> GROUP_MANAGERS );
@@ -8940,6 +8949,111 @@ if($_GET['latest_messages_id']>0){
  }
  $group_content_row_staff[] = array('text' => $all_users);
  $group_content_table[] = array('text'=>$group_content_row_staff);
+ //货币类型
+ $group_content_row_currency = array();
+ $group_content_row_currency[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_CURRENCY_TYPE);
+ $currency_str = '<select name="currency_type">';
+ $currency_str .= '<option value="0"'.($groups_array['currency_type'] == 0 ? ' selected' : '').'>'.TEXT_GROUP_CURRENCY_TYPE_JPY.'</option>';
+ $currency_str .= '<option value="1"'.($groups_array['currency_type'] == 1 ? ' selected' : '').'>'.TEXT_GROUP_CURRENCY_TYPE_RMB.'</option>';
+ $currency_str .= '<option value="2"'.($groups_array['currency_type'] == 2 ? ' selected' : '').'>'.TEXT_GROUP_CURRENCY_TYPE_USD.'</option>';
+ $currency_str .= '<option value="3"'.($groups_array['currency_type'] == 3 ? ' selected' : '').'>'.TEXT_GROUP_CURRENCY_TYPE_VND.'</option>';
+ $currency_str .= '</select>';
+ $group_content_row_currency[] = array('text' => $currency_str);
+ $group_content_table[] = array('text'=>$group_content_row_currency);
+ //终始日 
+ if($_POST['group_id'] < 0){
+   $group_content_row_date = array();
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE);
+   $date_str = TEXT_GROUP_END_DATE; 
+   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+   for($i=1;$i<=28;$i++){
+
+     $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
+   }
+   $date_str .= '</select>';
+   $date_str .= TEXT_GROUP_BEGIN_DATE; 
+   $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+   for($i=1;$i<=28;$i++){
+
+     $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
+   }
+   $date_str .= '</select>';
+   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
+   $group_content_row_date[] = array('text' => $date_str);
+   $group_content_table[] = array('text'=>$group_content_row_date);
+ }else{
+   $groups_start_end_date = $groups_array['begin_end_date'];
+   $groups_start_end_date_array = explode('|||',$groups_start_end_date);
+   foreach($groups_start_end_date_array as $start_end_date_key=>$start_end_date_value){
+
+     $group_content_row_date = array();
+     $group_content_row_date[] = array('params'=>'width="20%"','text'=> $start_end_date_key == 0 ? TEXT_GROUP_BEGIN_END_DATE : '');
+     $start_end_date = explode('-',$start_end_date_value);
+     $date_str = TEXT_GROUP_END_DATE; 
+     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     for($i=1;$i<=28;$i++){
+
+       $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
+     }
+     $date_str .= '</select>';
+     $date_str .= TEXT_GROUP_BEGIN_DATE; 
+     $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     for($i=1;$i<=28;$i++){
+
+       $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
+     }
+     $date_str .= '</select>';
+     if($start_end_date_key == 0){
+       $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
+     }
+     $group_content_row_date[] = array('text' => $date_str);
+     $group_content_table[] = array('text'=>$group_content_row_date);
+   } 
+ } 
+ //終始時
+ $group_content_row_hour = array();
+ $group_content_row_hour[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_HOUR);
+ $hour_str = '<select name="start_end_hour">';
+ for($i=0;$i<=23;$i++){
+
+   $hour_str .= '<option value="'.$i.'"'.($groups_array['begin_end_hour'] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_HOUR.'</option>'; 
+ }
+ $hour_str .= '</select>';
+ $group_content_row_hour[] = array('text' => $hour_str);
+ $group_content_table[] = array('text'=>$group_content_row_hour); 
+ //工资计算
+ $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$_POST['group_id']."' order by id"); 
+ $group_content_row_wage = array();
+ $group_content_row_wage[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_WAGE_OBJECT);
+ $wage_str = '<select id="wage_select">';
+ $wage_str .= '<option value="0">'.TEXT_GROUP_WAGE_OBJECT_VALUE.'</option>'; 
+ $wage_str .= '<option value="1">'.TEXT_GROUP_WAGE_OBJECT_FORMULA.'</option>'; 
+ $wage_str .= '</select>';
+ $wage_str .= '&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\');">';
+ $group_content_row_wage[] = array('text' => $wage_str.'<input type="hidden" id="obj_num" value="'.($_POST['group_id'] < 0 ? '0' : tep_db_num_rows($wage_query)).'">');
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+ //计算工资的项目
+ if(tep_db_num_rows($wage_query) > 0){
+   $i = 1;
+   while($wage_array = tep_db_fetch_array($wage_query)){
+
+     $group_content_row_wage = array();
+     $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
+     if($wage_array['project_id'] == 0){
+       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
+     }else{
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" class="td_input" name="formula_title[]"><input type="button" onclick="delete_obj('.$i.');" value="削除"><br><input type="text" value="'.$wage_array['contents'].'" class="td_input" name="formula_contents[]">');
+     }
+     $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
+     $i++;
+   }
+ }
+ tep_db_free_result($wage_query); 
+ //排序
+ $group_content_row_order = array();
+ $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT);
+ $group_content_row_order[] = array('text' => '<input type="text" style="text-align:right;width:20%;" size="31" value="'.(isset($groups_array['order_sort']) ? $groups_array['order_sort'] : '1000').'" name="order_sort">');
+ $group_content_table[] = array('text'=>$group_content_row_order);
 
  if($_POST['group_id'] > 0){
 	$group_content_row_subgroup = array();
@@ -8963,6 +9077,18 @@ if($_GET['latest_messages_id']>0){
          */
 	$group_content_row_subgroup[] = array('text'=> count($sub_group_list));
 	$group_content_table[] = array('text'=>$group_content_row_subgroup);
+ }
+ if($_POST['group_id'] > 0){
+   //作成者、作成时间、更新者、更新时间
+   $group_content_table[]['text'] = array(
+        array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($groups_array['create_user'])?$groups_array['create_user']:TEXT_UNSET_DATA))), 
+        array('align' => 'left','params' => 'width="70%"','text' => TEXT_DATE_ADDED.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['create_time'])))?tep_datetime_short($groups_array['create_time']):TEXT_UNSET_DATA)), 
+      );
+  
+   $group_content_table[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;'.((tep_not_null($groups_array['update_user'])?$groups_array['update_user']:TEXT_UNSET_DATA))), 
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['update_time'])))?tep_datetime_short($groups_array['update_time']):TEXT_UNSET_DATA)), 
+      ); 
  }
  $group_content_row_opt = array();
  $group_content_row_opt[] = array('params'=>'align="center" colspan="2"','text'=>'<input class="element_button" type="submit" onclick="check_group();" value="'.GROUP_SAVE.'">'.($_POST['group_id'] < 0 && $ocertify->npermission >= 15 ? '' : '&nbsp;&nbsp;<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="delete_group('.$_POST['group_id'].','.$_POST['parent_group_id'].');">'));
