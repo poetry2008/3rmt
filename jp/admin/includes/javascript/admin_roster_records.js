@@ -252,6 +252,8 @@ function change_scheduling_time(mould_id){
 function delete_submit(c_permission,type){
   if(type=='as'){
     del_url = href_attendance_calendar+'?action=delete_as_list';
+  }else if(type=='user'){
+    del_url = href_attendance_calendar+'?action=delete_as_user_list';
   }else{
     del_url = href_attendance_calendar+'?action=delete_as_replace';
   }
@@ -398,7 +400,9 @@ function attendance_replace(date,ele,uid,att_id){
       ele_index = index;
       $('#show_attendance_edit').css('display','block');
 	  var tep_val = $("#att_detail_id").val();
-	  change_scheduling_time(tep_val);
+          if(uid==''){
+	    change_scheduling_time(tep_val);
+          }
     }
   });
 }
@@ -570,4 +574,44 @@ function resizepage(){
       }
     }   
   }
+}
+
+
+function attendance_setting_user(date,ele,uid,add_id){
+  if(!uid){
+    uid='';
+  }
+  var index = ele;
+  var ele = document.getElementById('date_td_'+ele);
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $(ele).offset();   
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax.php?action=attendance_setting_user&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id,
+    dataType: 'text',
+    async: false,
+    success: function(text) {
+      //show content 
+      $('#show_attendance_edit').html(text);  
+      $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height()+2);
+      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
+
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
+      }else{
+        $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
+      } 
+      ele_value_obj_att = ele;
+      ele_index = index;
+      $('#show_attendance_edit').css('display','block');
+    }
+  });
 }

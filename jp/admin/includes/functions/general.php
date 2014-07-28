@@ -13945,9 +13945,9 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
                 break;
               }
             }
-          }
-          if($add_flag){
-            $diff_arr[] = $att_row;
+            if($add_flag){
+              $diff_arr[] = $att_row;
+            }
           }
         }
       }
@@ -14185,7 +14185,7 @@ function tep_is_show_att_user($uid,$date){
     $day = substr($date,6,2); 
     $time_str = mktime(0,0,0,$month,$day,$year);
     $sql = "select * from ".TABLE_USERS.  " WHERE 
-      userid='".$uid."' and UNIX_TIMESTAMP(date_added) < ".$time_str."";
+      userid='".$uid."' and status='1' and UNIX_TIMESTAMP(date_added) < ".$time_str."";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       return $row;
@@ -14236,4 +14236,75 @@ function tep_get_userlist_by_group_uid($uid){
   }
   asort($res);
   return $res;
+}
+
+function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
+  global $all_att_arr;
+  if(empty($all_att_arr)){
+    $all_att_arr = array();
+    $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
+    $all_att_auery = tep_db_query($all_att_sql);
+    while($all_att_row = tep_db_fetch_array($all_att_auery)){
+        $all_att_arr[$all_att_row['id']] = $all_att_row;
+    }
+  }
+  $date_info = tep_date_info($date);
+  $attendance_dd_arr = array();
+  if($add_id == 0){
+    if($uid==''){
+      $where_str = " where (type='0' and date='".$date."') 
+        or (type='1' and week='".$date_info['week']."') 
+        or (type='2' and date like '______".$date_info['day']."') 
+        or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
+        or (type='4' and date like '____".$date_info['month'].$date_info['day']."')";
+    }else{
+      $where_str = " where ((type='0' and date='".$date."') 
+        or (type='1' and week='".$date_info['week']."') 
+        or (type='2' and date like '______".$date_info['day']."') 
+        or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
+        or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))
+        and user_id='".$uid."'";
+    }
+  }else{
+    $where_str = " where id='".$add_id."' ";
+  }
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE_USER." ".$where_str." order by id desc";
+  $query = tep_db_query($sql);
+  while($row = tep_db_fetch_array($query)){
+    $attendance_dd_arr[] = $row;
+  }
+  if($show_all||$add_id!=0){
+    return $attendance_dd_arr;
+  }else{
+    $diff_arr = array();
+    if(count($attendance_dd_arr)>1){
+      foreach($attendance_dd_arr as $pk => $att_row){
+        $add_flag = true;
+        if(empty($diff_arr)){
+          $diff_arr[] = $att_row;
+        }else{
+          if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==1){
+            $diff_arr[] = $att_row;
+          }else{
+            foreach($diff_arr as $diff){
+              if(valatete_two_time($all_att_arr[$att_row['attendance_detail_id']]['work_start'],
+                    $all_att_arr[$att_row['attendance_detail_id']]['work_end'],
+                    $all_att_arr[$diff['attendance_detail_id']]['work_start'],
+                    $all_att_arr[$diff['attendance_detail_id']]['work_end']
+                    )&&$att_row['user_id']==$diff['user_id']){
+                $add_flag = false;
+                break;
+              }
+            }
+            if($add_flag){
+              $diff_arr[] = $att_row;
+            }
+          }
+        }
+      }
+      return $diff_arr;
+    }else{
+      return $attendance_dd_arr;
+    }
+  }
 }
