@@ -2332,6 +2332,7 @@ width:160px;
 	line-height:16px;
     height:16px;
 	white-space:nowrap;
+	width:5%;
 }
 #date_month_frist{
 	min-width:40px;
@@ -2339,8 +2340,7 @@ width:160px;
 .date_month li a{
 	font-weight:bold;
 	color:#3C7FB1;
-}
-/*end*/
+}/*end*/
 .rectangle{ 
 width:13px;
 height:13px; 

@@ -109,7 +109,7 @@ if(isset($_GET['action'])){
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE_USER.' where
               id="'.$del_as.'"');
         }
       }
@@ -527,26 +527,64 @@ require("includes/note_js.php");
         $show_select_group_user = array();
         $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
         $show_group_query = tep_db_query($show_group_sql);
+        $has_default = false;
         while($show_group_row = tep_db_fetch_array($show_group_query)){
+          $has_default = true;
           $show_group_id = $show_group_row['gid'];
           if($show_group_row['user_id']!=''){
             $show_select_group_user[] = $show_group_row['user_id'];
           }
         }
-        if($show_group_id==0){
-          $user_sql = "select * from ".TABLE_USERS." where status='1'";
-          $user_query = tep_db_query($user_sql);
-          while($user_row = tep_db_fetch_array($user_query)){
-            $show_group_user[] = $user_row['userid'];
+        if($has_default){
+          if($show_group_id==0){
+            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_query = tep_db_query($user_sql);
+            while($user_row = tep_db_fetch_array($user_query)){
+              $show_group_user[] = $user_row['userid'];
+            }
+          } else {
+            $user_sql = "select * from ".TABLE_GROUPS." 
+               where id='".$show_group_id."'";
+            $user_query = tep_db_query($user_sql);
+            if($user_row = tep_db_fetch_array($user_query)){
+              $show_group_user = explode('|||',$user_row['all_users_id']);
+            }
           }
-        } else {
-          $user_sql = "select * from ".TABLE_GROUPS." 
-            where id='".$show_group_id."'";
-          $user_query = tep_db_query($user_sql);
-          if($user_row = tep_db_fetch_array($user_query)){
-            $show_group_user = explode('|||',$user_row['all_users_id']);
+        }else{
+          if($ocertify->npermission>10){
+            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_query = tep_db_query($user_sql);
+            while($user_row = tep_db_fetch_array($user_query)){
+              $show_group_user[] = $user_row['userid'];
+              $show_select_group_user[] = $user_row['userid'];
+            }
+          }else{
+            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
+            if(!empty($prent_group)){
+              $show_group_id = $prent_group[0];
+              if($show_group_id==0){
+                $user_sql = "select * from ".TABLE_USERS." where status='1'";
+                $user_query = tep_db_query($user_sql);
+                while($user_row = tep_db_fetch_array($user_query)){
+                  $show_group_user[] = $user_row['userid'];
+                }
+              } else {
+                $user_sql = "select * from ".TABLE_GROUPS." 
+                   where id='".$show_group_id."'";
+                $user_query = tep_db_query($user_sql);
+                if($user_row = tep_db_fetch_array($user_query)){
+                  $show_group_user = explode('|||',$user_row['all_users_id']);
+                }
+              }
+            }else{
+              $user_sql = "select * from ".TABLE_USERS." where status='1'";
+              $user_query = tep_db_query($user_sql);
+              while($user_row = tep_db_fetch_array($user_query)){
+                $show_group_user[] = $user_row['userid'];
+              }
+            }
           }
-
+          $show_select_group_user[] = $ocertify->auth_user;
         }
         $group_str = '<form action="'.
         tep_href_link(FILENAME_ROSTER_RECORDS,'action=update_show_user'.
@@ -853,7 +891,8 @@ while($j<=$day_num)
           }else{
             $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
           }
-          if($user_replace['allow_status']==0&&in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))){
+          if($user_replace['allow_status']==0&&
+              (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
@@ -925,7 +964,8 @@ while($j<=$day_num)
           }else{
             $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
           }
-          if($user_replace['allow_status']==0&&in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))){
+          if($user_replace['allow_status']==0&&
+              (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
@@ -985,7 +1025,8 @@ while($j<=$day_num)
           echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
         }
       }
-      if($user_replace['allow_status']==0&&in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))){
+      if($user_replace['allow_status']==0&&
+           (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
         echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
       }
