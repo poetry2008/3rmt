@@ -8990,14 +8990,14 @@ if($_GET['latest_messages_id']>0){
      $group_content_row_date[] = array('params'=>'width="20%"','text'=> $start_end_date_key == 0 ? TEXT_GROUP_BEGIN_END_DATE : '');
      $start_end_date = explode('-',$start_end_date_value);
      $date_str = TEXT_GROUP_END_DATE; 
-     $date_str .= '<select name="end_date[]" onchange="date_select(this.value,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
      for($i=1;$i<=28;$i++){
 
        $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
      $date_str .= TEXT_GROUP_BEGIN_DATE; 
-     $date_str .= '<select name="start_date[]" onchange="date_select(this.value,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
      for($i=1;$i<=28;$i++){
 
        $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
