@@ -13917,7 +13917,7 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." order by id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." and  is_user=0 order by id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
@@ -14268,7 +14268,7 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE_USER." ".$where_str." order by id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." and  is_user=1 order by id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;

@@ -69,7 +69,8 @@ if(isset($_GET['action'])){
           if(isset($_POST['default_uid'])&&$_POST['default_uid']!=''){
             $sql_arr['user_id'] = $_POST['default_uid'];
           }
-          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE_USER,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+          $sql_arr['is_user'] = 1;
+          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
         }
       }
       if(isset($_POST['attendance_id'])
@@ -104,12 +105,13 @@ if(isset($_GET['action'])){
               );
             $sql_arr = tep_array_merge($sql_arr,$sql_other_arr);
           }
-          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE_USER,$sql_arr);
+          $sql_arr['is_user'] = 1;
+          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
         }
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE_USER.' where
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
               id="'.$del_as.'"');
         }
       }
@@ -201,7 +203,7 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $add_id){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE_USER.' where id="'.$add_id.'"');
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
