@@ -2335,7 +2335,7 @@ width:160px;
 }
 #date_month_frist{
 	margin-right:10px;
-
+	min-width:40px;
 }
 .date_month li a{
 	font-weight:bold;
