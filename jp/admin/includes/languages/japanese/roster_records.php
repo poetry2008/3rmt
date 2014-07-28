@@ -55,7 +55,7 @@ define('TEXT_CALENDAR_REPEAT_TYPE_MONTH','毎月');
 define('TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK','毎月の固定曜日');
 define('TEXT_CALENDAR_REPEAT_TYPE_YEAR','毎年');
 define('IMAGE_HISTORY','出勤履歴');
-define('IMAGE_REPLACE_ATTENDANCE','スタッフ調整');
+define('IMAGE_REPLACE_ATTENDANCE','シフト変更');
 define('TEXT_ADL_SELECT_USER','シフトテンプレート');
 define('TEXT_ADL_SELECT_USER_TEXT','出勤時間');
 define('TEXT_REPLACE_ADL','変更ステータ');
@@ -69,5 +69,6 @@ define('TEXT_ADL_TEXT_INFO','コメント');
 define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','ユーザ');
 define('TEXT_DELETE_REMIND','削除しますか？');
+define('TEXT_ONLY_USER_ATTENDANCE','スタッフ設定');
 ?>
 

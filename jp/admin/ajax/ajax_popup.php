@@ -9647,7 +9647,7 @@ echo  $return_res;
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USET_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
