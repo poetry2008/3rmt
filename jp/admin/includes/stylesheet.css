@@ -2327,17 +2327,15 @@ width:160px;
 	width:100%;
 }
 .date_month li{
-	margin-right:5px;
+	margin-right:10px;
 	float:left;
 	line-height:16px;
     height:16px;
 	white-space:nowrap;
-	width:5%;
 }
 #date_month_frist{
 	margin-right:10px;
-	min-width:75px;
-	width:6%;
+
 }
 .date_month li a{
 	font-weight:bold;
