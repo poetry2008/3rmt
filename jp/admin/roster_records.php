@@ -835,7 +835,7 @@ while($j<=$day_num)
   }
   $style= (empty($att_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
-  echo '<div id ="calendar_attendance"><table width="100%" border="0"
+  echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
     cellspacing="0" cellpadding="0" class="uroster_record">';
   echo "<tr><td align='left' style='font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
