@@ -14148,6 +14148,16 @@ function tep_get_groups_by_user($user){
   return $res;
 }
 function tep_get_user_list_by_userid($user){
+  global $all_user_info;
+  if(empty($all_user_info)){
+    $all_user_info = array();
+    $all_user_sql = "select * from ". TABLE_USERS ." where status='1'";
+    $all_user_query = tep_db_query($all_user_sql);
+    while($user_info_row = tep_db_fetch_array($all_user_query)){
+      $all_user_info[] = $user_info_row['userid'];
+    }
+  }
+
   $res = array();
   $sql = "select all_managers_id from ".TABLE_GROUPS." WHERE
     (all_users_id like '".$user."' or
@@ -14164,7 +14174,13 @@ function tep_get_user_list_by_userid($user){
   $res_arr = explode('|||',$res_str);
   $res_arr = array_unique($res_arr);
   rsort($res_arr);
-  return $res_arr;
+  $real_res_arr = array();
+  foreach($res_arr as $res){
+    if(in_array($res,$all_user_info)){
+      $real_res_arr[] = $res;
+    }
+  }
+  return $real_res_arr;
 }
 function tep_get_attendance_by_id($aid){
   $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE

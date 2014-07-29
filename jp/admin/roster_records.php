@@ -677,6 +677,13 @@ $tep_result = tep_db_query($att_select_sql);
  while($rows= tep_db_fetch_array($tep_result)) {
    $attendance_list[] = $rows;
  }
+$all_user_info = array();
+$all_user_sql = "select * from ". TABLE_USERS ." where status='1'";
+$all_user_query = tep_db_query($all_user_sql);
+while($user_info_row = tep_db_fetch_array($all_user_query)){
+  $all_user_info[] = $user_info_row['userid'];
+}
+
  $num = count($attendance_list);
  $i=0;
  foreach($attendance_list as $k=>$val) {
@@ -887,9 +894,9 @@ while($j<=$day_num)
           if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$u_list
               ||$ocertify->npermission>'10'||in_array($ocertify->auth_user,tep_get_user_list_by_userid($user_replace['user']))){
           if($att_date_info['scheduling_type'] == 1){
-            $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';">&nbsp;</span>';
+            $replace_str =  '<span class="rectangle" style="background-color:'.$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'].';">&nbsp;</span>';
           }else{
-            $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
+            $replace_str = "<img src='images/".$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text']."' alt='".$all_att_arr[$user_replace['replace_attendance_detail_id']]['alt_text']."' style='width: 16px;'>";
           }
           if($user_replace['allow_status']==0&&
               (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
@@ -959,9 +966,9 @@ while($j<=$day_num)
           if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$uatt_arr['user_id']
               ||$ocertify->npermission>'10'){
           if($att_date_info['scheduling_type'] == 1){
-            $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';">&nbsp;</span>';
+            $replace_str =  '<span class="rectangle" style="background-color:'.$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'].';">&nbsp;</span>';
           }else{
-            $replace_str = "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
+            $replace_str = "<img src='images/".$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text']."' alt='".$all_att_arr[$user_replace['replace_attendance_detail_id']]['alt_text']."' style='width: 16px;'>";
           }
           if($user_replace['allow_status']==0&&
               (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
@@ -1019,9 +1026,9 @@ while($j<=$day_num)
       }
       if(!empty($att_date_info)){
         if($att_date_info['scheduling_type'] == 1){
-          echo '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';"></span>';
+          echo '<span class="rectangle" style="background-color:'.$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'].';">&nbsp;</span>';
         }else{
-          echo "<img src='images/".$att_date_info['src_text']."' alt='".$att_date_info['alt_text']."' style='width: 16px;'>";
+          echo "<img src='images/".$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text']."' alt='".$all_att_arr[$user_replace['replace_attendance_detail_id']]['alt_text']."' style='width: 16px;'>";
         }
       }
       if($user_replace['allow_status']==0&&
