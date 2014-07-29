@@ -371,6 +371,9 @@ function attendance_replace(date,ele,uid,att_id){
   if(!uid){
     uid='';
   }
+  if(!att_id){
+    att_id='';
+  }
   var index = ele;
   var ele = document.getElementById('date_td_'+ele);
   var ele_width = $(".box_warp").width(); 
