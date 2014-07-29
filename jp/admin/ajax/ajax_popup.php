@@ -9884,7 +9884,6 @@ echo  $return_res;
     $replace_attendance_id_array[] = $replace_attendance_array['attendance_detail_id'];
   }
   tep_db_free_result($replace_attendance_query);
-  $att_id_flag = $_GET['att_id'];
   if($_GET['att_id'] == ''){
     $_GET['att_id'] = !empty($replace_attendance_id_array) ? current(array_intersect($attendance_id_array,$replace_attendance_id_array)) : current($attendance_id_array);
   }
@@ -9974,10 +9973,10 @@ echo  $return_res;
         $replace_show_array[] = $att_info['id'];
 
         //当前登录用户不是管理员，也不是组长的情况下
-        if($groups_flag == false && $admin_flag == false && $att_id_flag == ''){
+        if($groups_flag == false && $admin_flag == false){
           if(in_array($att_info['id'],$attendance_id_array)){
             $att_select .= '<option value="'.$att_info['id'].'"';
-            if($att_id_flag == '' && $_GET['att_id']==$att_info['id']){
+            if($_GET['att_id']==$att_info['id']){
               $att_select .= ' selected ';
               $select_att = $att_info['id'];
               $current_att_title = $att_info['title'];
@@ -10020,6 +10019,14 @@ echo  $return_res;
         }
         $replace_select .= '>'.$att_info_rep['title'].'</option>';
       }
+    }else{
+      if($select_att!=$att_info_rep['id']){
+        $replace_select .= '<option value="'.$att_info_rep['id'].'"';
+        if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
+          $replace_select .= ' selected ';
+        }
+        $replace_select .= '>'.$att_info_rep['title'].'</option>';
+      } 
     }
   }
   $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
