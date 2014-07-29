@@ -9296,7 +9296,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
   }else{
    $style_image = 'style="display:none;"';
   }
-	$select_type_image = '<div class="upload_image" '.$style_image.'>'.tep_draw_input_field('src_image_input',$src_text, 'class="input_text_width"'. $show_style .'');
+	$select_type_image = '<div class="upload_image" '.$style_image.'>'.tep_draw_input_field('src_image_input',$src_text, 'id="src_text_image" class="input_text_width"'. $show_style .'');
     $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" '. $show_style .'').'</div>'; 
 	 
 	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</div>';
