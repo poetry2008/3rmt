@@ -13901,11 +13901,11 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
   $attendance_dd_arr = array();
   if($add_id == 0){
     if($gid==0){
-      $where_str = " where (type='0' and date='".$date."') 
+      $where_str = " where ((type='0' and date='".$date."') 
         or (type='1' and week='".$date_info['week']."') 
         or (type='2' and date like '______".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and date like '____".$date_info['month'].$date_info['day']."')";
+        or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))";
     }else{
       $where_str = " where ((type='0' and date='".$date."') 
         or (type='1' and week='".$date_info['week']."') 
@@ -13999,8 +13999,7 @@ function valatete_two_time($first_start,$first_end,$second_start,$second_end){
 }
 
 function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
-  global $ocertify;
-  $today = date('Ymd',time());
+  global $ocertify,$user_atted;
   $manager_list = tep_get_user_list_by_userid($uid);
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
@@ -14008,38 +14007,47 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
       $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\')">';
     }
   }
+  $work_start = $att_info['work_start'];
+  $work_end = $att_info['work_end'];
+  $work_start_str = str_replace(':','',$work_start);
+  $work_end_str = str_replace(':','',$work_end);
   $user_info = tep_get_user_info($uid);
   $sql = "select * from ".TABLE_ATTENDANCE." WHERE 
     user_name='".$uid."' and date='".$date."'";
   $query = tep_db_query($sql);
   $show_user = false;
+  if($user_atted[$uid]&&$user_atted[$uid]<$date){
+  }else{
+    $return_str = $user_info['name'].'&nbsp;';
+    return $return_str;
+  }
+  $today = date('Ymd',time());
   if($row = tep_db_fetch_array($query)){
     if($att_info['set_time']==0){
       $real_work_start = substr($row['login_time'],11,5);
       $real_work_end = substr($row['logout_time'],11,5);
-      $work_start = $att_info['work_start'];
-      $work_end = $att_info['work_end'];
       $real_work_start_str = str_replace(':','',$real_work_start);
       $real_work_end_str = str_replace(':','',$real_work_end);
-      $work_start_str = str_replace(':','',$work_start);
-      $work_end_str = str_replace(':','',$work_end);
-      if($real_work_start_str < $work_start_str && $real_work_end_str > $work_end_str){
-      }else if($real_work_start_str < $work_start_str && $real_work_end_str == 0 && $date==$today){
+      if($work_start_str > $work_end_str){
       }else{
-        if($date==$today){
-          $now_time = date('H:i',time());
-          $tow_sub_time = floor((strtotime($real_work_end)-strtotime($now_time))%86400/3600)+0.5;
-          if($tow_sub_time>0){
-            if($real_work_end_str > $work_start_str|| $real_work_end_str< $work_end_str){
-              $show_user = true;
+        if($real_work_start_str < $work_start_str && $real_work_end_str > $work_end_str){
+        }else if($real_work_start_str < $work_start_str && $real_work_end_str == 0 && $date==$today){
+        }else{
+          if($date==$today){
+            $now_time = date('H:i',time());
+            $tow_sub_time = floor((strtotime($real_work_end)-strtotime($now_time))%86400/3600)+0.5;
+            if($tow_sub_time>0){
+              if($real_work_end_str > $work_start_str|| $real_work_end_str< $work_end_str){
+                $show_user = true;
+              }
+            }else{
+              if($real_work_start_str > $work_start_str){
+                $show_user = true;
+              }
             }
           }else{
-            if($real_work_start_str > $work_start_str){
-              $show_user = true;
-            }
+            $show_user = true;
           }
-        }else{
-          $show_user = true;
         }
       }
     }else{
@@ -14072,6 +14080,19 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
     }else{
       return false;
     }
+  }else{
+    $return_str = $user_info['name'].'&nbsp;';
+    if($param_str != ''){
+      $return_str .= $param_str;
+    }
+    if($bg_color == '#FE0000'){
+      $return_str .= '<font color ="#FFFFFF">';
+    }else{
+      $return_str .= '<font color ="#FE0000">';
+    }
+    $return_str .= '......' . '～' . '......';
+    $return_str .= '</font><br>';
+    return $return_str;
   }
 }
 function tep_get_attendance_by_user_date($date,$user=0,$show_all=false){
@@ -14094,6 +14115,10 @@ function tep_get_attendance_by_user_date($date,$user=0,$show_all=false){
   }
   }else{
     $att_list = tep_get_attendance($date,0,true);
+  }
+  if($user!=0){
+    $user_self_att_list = tep_get_attendance_user($date,$user);
+    $att_list = array_merge($att_list,$user_self_att_list);
   }
   foreach($att_list as $att_date){
     $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE 
@@ -14252,11 +14277,11 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
   $attendance_dd_arr = array();
   if($add_id == 0){
     if($uid==''){
-      $where_str = " where (type='0' and date='".$date."') 
+      $where_str = " where ((type='0' and date='".$date."') 
         or (type='1' and week='".$date_info['week']."') 
         or (type='2' and date like '______".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and date like '____".$date_info['month'].$date_info['day']."')";
+        or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))";
     }else{
       $where_str = " where ((type='0' and date='".$date."') 
         or (type='1' and week='".$date_info['week']."') 
@@ -14268,7 +14293,7 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." and  is_user=1 order by id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." and is_user='1' order by user_id asc,id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
@@ -14306,5 +14331,15 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
     }else{
       return $attendance_dd_arr;
     }
+  }
+}
+function tep_is_attenandced_date($user){
+  $sql = "select id,date from ". TABLE_ATTENDANCE ." WHERE user_name='".$user."'
+    order by id asc";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row['date'];
+  }else{
+    return false;
   }
 }
