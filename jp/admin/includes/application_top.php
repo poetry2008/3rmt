@@ -310,7 +310,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_ATTENDANCE_DETAIL_DATE_USER','attendance_detail_date_user');
   define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');
 // customization for the design layout
-  define('BOX_WIDTH', 170); // how wide the boxes should be in pixels (default: 125)
+  define('BOX_WIDTH', 174); // how wide the boxes should be in pixels (default: 125)
 
 // Define how do we update currency exchange rates
 // Possible values are 'oanda' 'xe' or ''
