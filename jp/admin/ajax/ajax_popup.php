@@ -9869,7 +9869,7 @@ echo  $return_res;
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
     `date`='".$_GET['date']."' ";
-    $replace_sql .= " and user ='".$_GET['uid']."'";
+    $replace_sql .= " and user ='".$_GET['uid']."' and attendance_detail_id = '".$_GET['att_id']."'";
   $change_flag = true;
   $replace_query = tep_db_query($replace_sql);
   if($replace_info_res = tep_db_fetch_array($replace_query)){
@@ -9954,9 +9954,12 @@ echo  $return_res;
     $select_att = '';
     $replace_show_array = array();
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+    $att_select_hidden = '';
     if(!empty($replace_att_list)){
       foreach($replace_att_list as $att_info){
-        $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
+        if($att_select_hidden =='' ){
+          $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
+        }
         $replace_show_array[] = $att_info['id'];
 
         //当前登录用户不是管理员，也不是组长的情况下
