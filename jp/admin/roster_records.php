@@ -941,7 +941,7 @@ while($j<=$day_num)
   }
   // 跟人排班显示
   foreach($user_att_arr as $uatt_arr){
-    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&($ocertify->npermission>10||$ocertify->auth_user==$uatt_arr['user_id'])){
+    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)){
       $att_user_row = $uatt_arr;
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
       echo "<tr>";
