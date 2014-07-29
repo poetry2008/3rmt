@@ -514,6 +514,8 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <?php
+      //判断用户是否打过卡
+        $user_atted = array();
         $status_str = '<table border="0" cellspacing="0" cellpadding="0"><tr>';
         $status_str .= '<td>userlist</td>';
         $status_str .= '</tr></table>';
@@ -588,6 +590,7 @@ require("includes/note_js.php");
           }
           $show_select_group_user[] = $ocertify->auth_user;
         }
+        $show_select_group_user = array_unique($show_select_group_user);
         $group_str = '<form action="'.
         tep_href_link(FILENAME_ROSTER_RECORDS,'action=update_show_user'.
             ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
@@ -634,6 +637,7 @@ require("includes/note_js.php");
           $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
           if(in_array($key,$show_select_group_user)){
             $group_str .= ' checked="checked" ';
+            $user_atted[$key] = tep_is_attenandced_date($key);
           }
           $group_str .= ' value="'.$key.'" >';
           $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
@@ -817,17 +821,7 @@ while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
   $att_arr = tep_get_attendance($date,$show_group_id,false);
-  $user_att_arr = tep_get_attendance_user($date,'',$false);
-  $show_user_att = array();
-  $all_user_list = array();
-  $show_att_user_list = array();
-  foreach($user_att_arr as $user_att){
-    if(in_array($user_att['user_id'],$show_group_user)){
-      $all_user_list[] = $user_att['user_id'];
-      $show_user_att[$user_att['user_id']] = $user_att;
-      $show_att_user_list[$user_att['user_id']] = $group_user_list[$user_att['user_id']];
-    }
-  }
+  $user_att_arr = tep_get_attendance_user($date,'',false);
   if($j==23){
   }
   if(!empty($show_att_user_list)){
@@ -861,7 +855,7 @@ while($j<=$day_num)
     $att_info = $all_att_arr[$att_row['attendance_detail_id']];
     if(!empty($att_info)){
     if(!empty($show_select_group_user)&&$date){
-    if(tep_is_show_att_group($att_row['group_id'],$date)){
+    if(tep_is_show_att($att_row['id'],$date)){
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
 		  echo '<td style="border-width:1px;">';
@@ -878,14 +872,14 @@ while($j<=$day_num)
         if(in_array($u_list,$all_user_list)){
           continue;
         }
-        if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
+        if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
           if($date<= $today){
             $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
           }else{
             $v_att = false;
           }
         $replace_str ='';
-        $user_replace = tep_get_replace_by_uid_date($u_list,$date);
+        $user_replace = tep_get_replace_by_uid_date($u_list,$date,$att_row['attendance_detail_id']);
         echo "<span>";
         if(!empty($user_replace)){
           $user_worker_list[] = $u_list;
@@ -939,15 +933,14 @@ while($j<=$day_num)
     }
   }
   // 跟人排班显示
-
-  foreach($show_att_user_list as $att_uid => $att_uname){
-    if(!empty($show_user_att[$att_uid])&&($ocertify->npermission>10||$ocertify->auth_user==$att_uid)){
-      $att_user_row = $show_user_att[$att_uid];
+  foreach($user_att_arr as $uatt_arr){
+    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&($ocertify->npermission>10||$ocertify->auth_user==$uatt_arr['user_id'])){
+      $att_user_row = $uatt_arr;
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
         echo '<td style="border-width:1px;">';
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['userp_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
+        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'].'<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
       }else{
         echo "<td bgcolor='".$att_info['src_text']."'>";
@@ -956,14 +949,14 @@ while($j<=$day_num)
       }
       echo "</div>";
 
-      $v_att = tep_valadate_attendance($att_uid,$date,$att_info,$att_info['src_text'],$j);
+      $v_att = tep_valadate_attendance($uatt_arr['user_id'],$date,$att_info,$att_info['src_text'],$j);
       $replace_str ='';
-      $user_replace = tep_get_replace_by_uid_date($att_uid,$date);
+      $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$att_info['attendance_detail_id']);
       echo "<span>";
       if(!empty($user_replace)){
-          $user_worker_list[] = $att_uid;
+          $user_worker_list[] = $uatt_arr['user_id'];
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
-          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$att_uid
+          if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$uatt_arr['user_id']
               ||$ocertify->npermission>'10'){
           if($att_date_info['scheduling_type'] == 1){
             $replace_str =  '<span class="rectangle" style="background-color:'.$att_date_info['src_text'].';">&nbsp;</span>';
@@ -979,10 +972,10 @@ while($j<=$day_num)
 
 
       echo "<a href='javascript:void(0)' ";
-      $manager_list = tep_get_user_list_by_userid($att_uid);
+      $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
       if($ocertify->auth_user==$att_uid||$ocertify->npermission>'10'){
         if($date>=$today||!empty($user_replace)){
-          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$att_uid."\",\"".$att_user_row['attendance_detail_id']."\")' ";
+          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$att_user_row['attendance_detail_id']."\")' ";
         }
       }else{
         $replace_str = '';
