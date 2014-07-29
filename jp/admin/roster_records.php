@@ -879,7 +879,11 @@ while($j<=$day_num)
           continue;
         }
         if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
-        $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
+          if($date<= $today){
+            $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
+          }else{
+            $v_att = false;
+          }
         $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date);
         echo "<span>";
