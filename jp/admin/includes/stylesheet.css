@@ -2298,7 +2298,7 @@ google hack
 /*排班模板样式
  */
 
-.attendance_input {
+.input_text_width {
     width:180px;
 }
 #type_id,#src_text_color{
@@ -2307,7 +2307,7 @@ google hack
 .set_time_field_content tr td select {
     width:57px;
 }
-#calendar_attendance {
+#table_div_databox_minsize {
 	min-width:40px; 
 	min-height:75px;
 	word-break:break-all;
