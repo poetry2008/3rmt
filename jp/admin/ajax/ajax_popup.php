@@ -9267,6 +9267,8 @@ else if($_GET['action'] == 'edit_attendance_info') {
     $attendance_select_type .= '<option value="0" '.($att_info_res['scheduling_type']=='0'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</option>';
     $attendance_select_type .= '<option value="1" '.($att_info_res['scheduling_type']=='1'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</option>';
     $attendance_select_type .= '</select>';
+	//被隐藏的上传图片按钮
+    $attendance_select_type .= tep_draw_file_field('src_image','','id="upload_file_image" onchange=change_image_text(this) style="opacity:0; width:0px"');
 
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_SCHEDULING_TYPE),
@@ -9296,7 +9298,6 @@ else if($_GET['action'] == 'edit_attendance_info') {
   }
 	$select_type_image = '<div>'.tep_draw_input_field('src_image_input',$src_text,'id="src_text_image" class="input_text_width"'.$style_image.' '.$show_style.'');
     $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button"'.$style_image.' '.$show_style.'').'</div>'; 
-    $select_type_image .= tep_draw_file_field('src_image','','id="upload_file_image" onchange=change_image_text(this) style="opacity:0; width:0px"');
 	 
 	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</div>';
 	$div_color ='<div id="color_div" '.$style_color.'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</div>';
