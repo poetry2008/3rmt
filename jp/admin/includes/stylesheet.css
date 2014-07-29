@@ -2047,7 +2047,7 @@ sidebar
 	font-size:12px;
 	color:#000000;
 }
-#col1, #col2, #col3, #col4, #col5, #col6, #col7, #col8{ width:160px;}
+#col1, #col2, #col3, #col4, #col5, #col6, #col7, #col8{ width:168px;}
 /* ---------------------------
 menusidebar
 --------------------------- */
@@ -2066,7 +2066,7 @@ menusidebar
 	padding:1px;                   
 }
 .menusidebar span{
-	margin-left:5px;
+	margin-left:4px;
 	float:left;
 }
 .menusidebarover span{
@@ -2315,7 +2315,13 @@ google hack
 }
 
 .leftTitle{
-width:160px;
+    width:165px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.leftTitle{
+    width:174px;
+}
 }
 
 /*@date 20140723 排班页面年月样式

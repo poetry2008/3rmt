@@ -311,7 +311,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_ATTENDANCE', 'attendance'); //add calendar
 // customization for the design layout
   //左侧栏表格宽度
-  define('BOX_WIDTH', 170); // how wide the boxes should be in pixels (default: 125)
+  define('BOX_WIDTH', 174); // how wide the boxes should be in pixels (default: 125)
 
 // Define how do we update currency exchange rates
 // Possible values are 'oanda' 'xe' or ''
