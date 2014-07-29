@@ -9866,7 +9866,27 @@ echo  $return_res;
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
 
+  //获取当前登录用户所属的组
+  $group_id_array = tep_get_groups_by_user($ocertify->auth_user);
+  //获取当前登录用户的当天排班
+  $attendance_id_array = array();
+  foreach(tep_get_attendance_user($_GET['date']) as $groups_users_value){
 
+    if(in_array($groups_users_value['group_id'],$group_id_array)){
+
+      $attendance_id_array[] = $groups_users_value['attendance_detail_id'];
+    }
+  }
+  //获取当前登录用户的请假
+  $replace_attendance_id_array = array();
+  $replace_attendance_query = tep_db_query("select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user='".$ocertify->auth_user."' and `date`='".$_GET['date']."'");
+  while($replace_attendance_array = tep_db_fetch_array($replace_attendance_query)){
+    $replace_attendance_id_array[] = $replace_attendance_array['attendance_detail_id'];
+  }
+  tep_db_free_result($replace_attendance_query);
+  if($_GET['att_id'] == ''){
+    $_GET['att_id'] = !empty($replace_attendance_id_array) ? current(array_intersect($attendance_id_array,$replace_attendance_id_array)) : current($attendance_id_array);
+  }
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
     `date`='".$_GET['date']."' ";
@@ -9938,20 +9958,9 @@ echo  $return_res;
 
     $admin_flag = true;
   }
-  $att_select = '<select name="attendance_detail_id"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
+  $att_select = '<select name="attendance_detail_id" onchange="attendance_replace(\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value);"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
-    //获取当前登录用户所属的组
-    $group_id_array = tep_get_groups_by_user($ocertify->auth_user);
-    //获取当前登录用户的当天排班
-    $attendance_id_array = array();
-    foreach(tep_get_attendance_user($_GET['date']) as $groups_users_value){
-
-      if(in_array($groups_users_value['group_id'],$group_id_array)){
-
-        $attendance_id_array[] = $groups_users_value['attendance_detail_id'];
-      }
-    }
+    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user); 
     $select_att = '';
     $replace_show_array = array();
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
@@ -9964,10 +9973,10 @@ echo  $return_res;
         $replace_show_array[] = $att_info['id'];
 
         //当前登录用户不是管理员，也不是组长的情况下
-        if($groups_flag == false && $admin_flag == false && (int)$_GET['att_id'] == 0){
+        if($groups_flag == false && $admin_flag == false){
           if(in_array($att_info['id'],$attendance_id_array)){
             $att_select .= '<option value="'.$att_info['id'].'"';
-            if(current($attendance_id_array)==$att_info['id']){
+            if($_GET['att_id']==$att_info['id']){
               $att_select .= ' selected ';
               $select_att = $att_info['id'];
               $current_att_title = $att_info['title'];
@@ -10010,6 +10019,14 @@ echo  $return_res;
         }
         $replace_select .= '>'.$att_info_rep['title'].'</option>';
       }
+    }else{
+      if($select_att!=$att_info_rep['id']){
+        $replace_select .= '<option value="'.$att_info_rep['id'].'"';
+        if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
+          $replace_select .= ' selected ';
+        }
+        $replace_select .= '>'.$att_info_rep['title'].'</option>';
+      } 
     }
   }
   $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
@@ -10211,12 +10228,14 @@ echo  $return_res;
   foreach($allow_user_list as $allow_user){
     $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
     foreach($current_users_array as $user_info){
-      $allow_user_select .= '<option value="'.$user_info.'"';
-      if($allow_user == $user_info){
-        $allow_user_select .= ' selected ';
-      }
       $t_user_info = tep_get_user_info($user_info);
-      $allow_user_select .= '>'.$t_user_info['name'].'</option>';
+      if($t_user_info['status'] == 1){
+        $allow_user_select .= '<option value="'.$user_info.'"';
+        if($allow_user == $user_info){
+          $allow_user_select .= ' selected ';
+        }
+        $allow_user_select .= '>'.$t_user_info['name'].'</option>';
+      }
     }
     $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
     if($is_first){
