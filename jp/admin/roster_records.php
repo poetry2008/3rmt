@@ -855,7 +855,7 @@ while($j<=$day_num)
     $att_info = $all_att_arr[$att_row['attendance_detail_id']];
     if(!empty($att_info)){
     if(!empty($show_select_group_user)&&$date){
-    if(tep_is_show_att_group($att_row['group_id'],$date)){
+    if(tep_is_show_att($att_row['id'],$date)){
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
 		  echo '<td style="border-width:1px;">';
@@ -872,7 +872,7 @@ while($j<=$day_num)
         if(in_array($u_list,$all_user_list)){
           continue;
         }
-        if(tep_is_show_att_user($u_list,$date)&&in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
+        if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
           if($date<= $today){
             $v_att = tep_valadate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
           }else{
@@ -934,7 +934,7 @@ while($j<=$day_num)
   }
   // 跟人排班显示
   foreach($user_att_arr as $uatt_arr){
-    if(!empty($uatt_arr)&&($ocertify->npermission>10||$ocertify->auth_user==$uatt_arr['user_id'])){
+    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&($ocertify->npermission>10||$ocertify->auth_user==$uatt_arr['user_id'])){
       $att_user_row = $uatt_arr;
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
       echo "<tr>";

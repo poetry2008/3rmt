@@ -14188,29 +14188,13 @@ function tep_is_manager_by_gid($uid,$gid){
 }
 
 
-function tep_is_show_att_group($gid,$date){
+function tep_is_show_att($aid,$date){
     $year = substr($date,0,4); 
     $month = substr($date,4,2); 
     $day = substr($date,6,2); 
     $time_str = mktime(0,0,0,$month,$day,$year);
-    $sql = "select * from ".TABLE_GROUPS.  " WHERE 
-      id='".$gid."' and group_status ='1'  and UNIX_TIMESTAMP(create_time) < ".$time_str."";
-    $query = tep_db_query($sql);
-    if($row = tep_db_fetch_array($query)){
-      return $row;
-    }else{
-      return false;
-    }
-}
-
-
-function tep_is_show_att_user($uid,$date){
-    $year = substr($date,0,4); 
-    $month = substr($date,4,2); 
-    $day = substr($date,6,2); 
-    $time_str = mktime(0,0,0,$month,$day,$year);
-    $sql = "select * from ".TABLE_USERS.  " WHERE 
-      userid='".$uid."' and status='1' and UNIX_TIMESTAMP(date_added) < ".$time_str."";
+    $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE.  " WHERE 
+      id='".$aid."' and UNIX_TIMESTAMP(add_time) < ".$time_str."";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       return $row;
