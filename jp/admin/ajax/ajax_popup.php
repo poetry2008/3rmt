@@ -9925,9 +9925,32 @@ echo  $return_res;
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
   }
 
-  $att_select = '<select name="attendance_detail_id" disabled="disabled">';
+  //判断当前登录用户是否是组长
+  $groups_flag = false;
+  if(tep_is_group_manager($ocertify->auth_user) > 0){
+
+    $groups_flag = true;
+  }
+  //判断当前登录用户是否是管理员
+  $admin_flag = false;
+  if($ocertify->npermission > 10){
+
+    $admin_flag = true;
+  }
+  $att_select = '<select name="attendance_detail_id"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
+    //获取当前登录用户所属的组
+    $group_id_array = tep_get_groups_by_user($ocertify->auth_user);
+    //获取当前登录用户的当天排班
+    $attendance_id_array = array();
+    foreach(tep_get_attendance_user($_GET['date']) as $groups_users_value){
+
+      if(in_array($groups_users_value['group_id'],$group_id_array)){
+
+        $attendance_id_array[] = $groups_users_value['attendance_detail_id'];
+      }
+    }
     $select_att = '';
     $replace_show_array = array();
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
@@ -9935,14 +9958,29 @@ echo  $return_res;
       foreach($replace_att_list as $att_info){
         $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
         $replace_show_array[] = $att_info['id'];
-        $att_select .= '<option value="'.$att_info['id'].'"';
-        if(isset($_GET['att_id'])&&$_GET['att_id']==$att_info['id']){
-          $att_select .= ' selected ';
-          $select_att = $att_info['id'];
-          $current_att_title = $att_info['title'];
-          $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
+
+        //当前登录用户不是管理员，也不是组长的情况下
+        if($groups_flag == false && $admin_flag == false && (int)$_GET['att_id'] == 0){
+          if(in_array($att_info['id'],$attendance_id_array)){
+            $att_select .= '<option value="'.$att_info['id'].'"';
+            if(current($attendance_id_array)==$att_info['id']){
+              $att_select .= ' selected ';
+              $select_att = $att_info['id'];
+              $current_att_title = $att_info['title'];
+              $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
+            }
+            $att_select .= '>'.$att_info['title'].'</option>';
+          }
+        }else{
+          $att_select .= '<option value="'.$att_info['id'].'"';
+          if(isset($_GET['att_id'])&&$_GET['att_id']==$att_info['id']){
+            $att_select .= ' selected ';
+            $select_att = $att_info['id'];
+            $current_att_title = $att_info['title'];
+            $att_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$att_info['id'].'">';
+          }
+          $att_select .= '>'.$att_info['title'].'</option>'; 
         }
-        $att_select .= '>'.$att_info['title'].'</option>';
  
       }
       if($select_att == ''){
@@ -9960,12 +9998,14 @@ echo  $return_res;
 
   foreach($replace_att_list_rep as $att_info_rep){
 
-    if($select_att!=$att_info_rep['id']){
-      $replace_select .= '<option value="'.$att_info_rep['id'].'"';
-      if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
-        $replace_select .= ' selected ';
+    if($groups_flag == false && $admin_flag == false && !in_array($att_info_rep['id'],$attendance_id_array)){
+      if($select_att!=$att_info_rep['id']){
+        $replace_select .= '<option value="'.$att_info_rep['id'].'"';
+        if(isset($replace_info_res['replace_attendance_detail_id'])&&$replace_info_res['replace_attendance_detail_id']==$att_info_rep['id']){
+          $replace_select .= ' selected ';
+        }
+        $replace_select .= '>'.$att_info_rep['title'].'</option>';
       }
-      $replace_select .= '>'.$att_info_rep['title'].'</option>';
     }
   }
   $att_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
