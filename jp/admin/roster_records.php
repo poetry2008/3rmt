@@ -879,7 +879,7 @@ while($j<=$day_num)
             $v_att = false;
           }
         $replace_str ='';
-        $user_replace = tep_get_replace_by_uid_date($u_list,$date);
+        $user_replace = tep_get_replace_by_uid_date($u_list,$date,$att_row['attendance_detail_id']);
         echo "<span>";
         if(!empty($user_replace)){
           $user_worker_list[] = $u_list;
@@ -951,7 +951,7 @@ while($j<=$day_num)
 
       $v_att = tep_valadate_attendance($uatt_arr['user_id'],$date,$att_info,$att_info['src_text'],$j);
       $replace_str ='';
-      $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date);
+      $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$att_info['attendance_detail_id']);
       echo "<span>";
       if(!empty($user_replace)){
           $user_worker_list[] = $uatt_arr['user_id'];
