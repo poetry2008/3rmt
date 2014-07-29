@@ -64,19 +64,16 @@ function change_type_text(){
 	var select_val = $("#type_id").val();
 
 	if(select_val==1){
-      $("#src_text_image").css("display","none");	
+      $(".upload_image").css("display","none");	
       $("#image_div").css("display","none");	
-      $("#upload_button").css("display","none");	
       $("#src_text_color").css("display","block");	
       $("#color_div").css("display","block");	
 	}
 	if(select_val==0){
       $("#image_div").css("display","block");	
-      $("#src_text_image").css("display","block");	
-      $("#upload_button").css("display","block");	
+      $(".upload_image").css("display","block");	
       $("#src_text_color").css("display","none");	
       $("#color_div").css("display","none");	
-	
 	}
 }
 
