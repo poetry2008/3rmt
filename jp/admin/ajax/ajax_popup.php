@@ -9296,8 +9296,8 @@ else if($_GET['action'] == 'edit_attendance_info') {
   }else{
    $style_image = 'style="display:none;"';
   }
-	$select_type_image = '<div class="upload_image" '.$style_image.'>'.tep_draw_input_field('src_image_input',$src_text, 'class="input_text_width"'. $show_style .'');
-    $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" '. $show_style .'').'</div>'; 
+	$select_type_image = '<div>'.tep_draw_input_field('src_image_input',$src_text,'id="src_text_image" class="input_text_width"'.$style_image.' '.$show_style.'');
+    $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button"'.$style_image.' '.$show_style.'').'</div>'; 
 	 
 	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</div>';
 	$div_color ='<div id="color_div" '.$style_color.'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</div>';
@@ -9870,13 +9870,15 @@ echo  $return_res;
   $group_id_array = tep_get_groups_by_user($ocertify->auth_user);
   //获取当前登录用户的当天排班
   $attendance_id_array = array();
-  foreach(tep_get_attendance_user($_GET['date']) as $groups_users_value){
+  $date_attendance_query = tep_db_query("select attendance_detail_id,group_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where `date`='".$_GET['date']."' order by add_time desc");
+  while($date_attendance_array = tep_db_fetch_array($date_attendance_query)){
 
-    if(in_array($groups_users_value['group_id'],$group_id_array)){
+    if(in_array($date_attendance_array['group_id'],$group_id_array)){
 
-      $attendance_id_array[] = $groups_users_value['attendance_detail_id'];
+      $attendance_id_array[] = $date_attendance_array['attendance_detail_id'];
     }
   }
+  tep_db_free_result($date_attendance_query);
   //获取当前登录用户的请假
   $replace_attendance_id_array = array();
   $replace_attendance_query = tep_db_query("select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user='".$ocertify->auth_user."' and `date`='".$_GET['date']."'");
