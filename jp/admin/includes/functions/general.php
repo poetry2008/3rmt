@@ -13902,16 +13902,18 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
   if($add_id == 0){
     if($gid==0){
       $where_str = " where ((type='0' and date='".$date."') 
-        or (type='1' and week='".$date_info['week']."') 
-        or (type='2' and date like '______".$date_info['day']."') 
+        or (type='1' and week='".$date_info['week']."' and `space` = 0) 
+        or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
+        or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))";
+        or (type='4' and month='".$date_info['month'].$date_info['day']."'))";
     }else{
       $where_str = " where ((type='0' and date='".$date."') 
-        or (type='1' and week='".$date_info['week']."') 
-        or (type='2' and date like '______".$date_info['day']."') 
+        or (type='1' and week='".$date_info['week']."' and `space` = 0) 
+        or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
+        or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))
+        or (type='4' and month='".$date_info['month'].$date_info['day']."'))
         and group_id='".$gid."'";
     }
   }else{
@@ -14285,16 +14287,18 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
   if($add_id == 0){
     if($uid==''){
       $where_str = " where ((type='0' and date='".$date."') 
-        or (type='1' and week='".$date_info['week']."') 
-        or (type='2' and date like '______".$date_info['day']."') 
+        or (type='1' and week='".$date_info['week']."' and `space` = 0) 
+        or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
+        or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))";
+        or (type='4' and month='".$date_info['month'].$date_info['day']."'))";
     }else{
       $where_str = " where ((type='0' and date='".$date."') 
-        or (type='1' and week='".$date_info['week']."') 
-        or (type='2' and date like '______".$date_info['day']."') 
+        or (type='1' and week='".$date_info['week']."' and `space` = 0) 
+        or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
+        or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and date like '____".$date_info['month'].$date_info['day']."'))
+        or (type='4' and month='".$date_info['month'].$date_info['day']."'))
         and user_id='".$uid."'";
     }
   }else{
