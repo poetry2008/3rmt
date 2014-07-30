@@ -57,7 +57,7 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 		
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val) || $type_arr[$k]){
+			if(empty($val) || $type_arr[$k]!=1){
 		        $_POST['space'][$k] = "0";	
 			}	
 		}
