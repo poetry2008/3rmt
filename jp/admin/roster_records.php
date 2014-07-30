@@ -55,6 +55,12 @@ if(isset($_GET['action'])){
           $user_arr = $_POST['has_group_hidden'];
         }
         $type_arr = $_POST['has_type'];
+		
+		foreach($_POST['space'] as $k => $val) {
+			if(empty($val)){
+		        $_POST['space'][$k] = "0";	
+			}	
+		}
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
               'date' => $_POST['get_date'],
@@ -65,6 +71,7 @@ if(isset($_GET['action'])){
               'type' => $type_arr[$key],
               'update_user' => $user,
               'update_time' => 'now()',
+			  'space' => $_POST['space'][$key],
               );
           if(isset($_POST['default_uid'])&&$_POST['default_uid']!=''){
             $sql_arr['user_id'] = $_POST['default_uid'];
@@ -83,6 +90,12 @@ if(isset($_GET['action'])){
           $user_arr = $_POST['user_hidden'];
         }
         $type_arr = $_POST['type'];
+
+		foreach($_POST['space'] as $k => $val) {
+			if(empty($val)){
+		        $_POST['space'][$k] = "0";	
+			}	
+		}
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
               'date' => $_POST['get_date'],
@@ -93,6 +106,7 @@ if(isset($_GET['action'])){
               'type' => $type_arr[$key],
               'add_user' => $user,
               'add_time' => 'now()',
+			  'space' => $_POST['space'][$key],
               );
           if(isset($_POST['default_uid'])&&$_POST['default_uid']!=''){
             $sql_arr['user_id'] = $_POST['default_uid'];
@@ -134,6 +148,12 @@ if(isset($_GET['action'])){
           $group_arr = $_POST['has_group_hidden'];
         }
         $type_arr = $_POST['has_type'];
+
+		foreach($_POST['space'] as $k => $val) {
+			if(empty($val)){
+		        $_POST['space'][$k] = 0;	
+			}	
+		}
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
               'date' => $_POST['get_date'],
@@ -144,10 +164,12 @@ if(isset($_GET['action'])){
               'type' => $type_arr[$key],
               'update_user' => $user,
               'update_time' => 'now()',
+			  'space' => $_POST['space'][$key],
               );
           if(isset($_POST['default_gid'])&&$_POST['default_gid']!=''){
             $sql_arr['group_id'] = $_POST['default_gid'];
           }
+
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
         }
       }
@@ -161,6 +183,13 @@ if(isset($_GET['action'])){
           $group_arr = $_POST['group_hidden'];
         }
         $type_arr = $_POST['type'];
+
+		foreach($_POST['space'] as $k => $val) {
+			if(empty($val)){
+		        $_POST['space'][$k] = "0";	
+			}	
+		}
+
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
               'date' => $_POST['get_date'],
@@ -171,6 +200,7 @@ if(isset($_GET['action'])){
               'type' => $type_arr[$key],
               'add_user' => $user,
               'add_time' => 'now()',
+			  'space' => $_POST['space'][$key],
               );
           if(isset($_POST['default_gid'])&&$_POST['default_gid']!=''){
             $sql_arr['group_id'] = $_POST['default_gid'];
@@ -296,7 +326,6 @@ if(isset($_GET['action'])){
       }
       break;
     case 'update_show_user':
-
       $operator_id = $ocertify->auth_user;
       if(isset($_POST['show_group_user_list'])&&
           is_array($_POST['show_group_user_list'])&&
