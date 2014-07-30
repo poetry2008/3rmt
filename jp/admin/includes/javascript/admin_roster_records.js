@@ -493,17 +493,17 @@ function change_att_date(date,ele,uid){
     success: function(text) {
       //show content 
       $('#show_attendance_edit').html(text);  
-      var top_div = $('.compatible_head').height();
-      $("#show_attendance_edit").css('top',ele.top-box_warp_top+$(ele).height()-top_div);
+      $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height()+2);
       if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
         $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
       }else{
         $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
-      }
+      } 
       ele_value_obj_att = ele;
       ele_index = index;
       $('#show_attendance_edit').css('display','block');
+      $('#show_attendance_edit').html(text);  
     }
   });
 }

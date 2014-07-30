@@ -14000,6 +14000,12 @@ function valatete_two_time($first_start,$first_end,$second_start,$second_end){
 
 function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
   global $ocertify,$user_atted;
+  $today = date('Ymd',time());
+  $user_info = tep_get_user_info($uid);
+  if($date>$today){
+    $return_str = $user_info['name'].'&nbsp;';
+    return $return_str;
+  }
   $manager_list = tep_get_user_list_by_userid($uid);
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
@@ -14011,7 +14017,6 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
   $work_end = $att_info['work_end'];
   $work_start_str = str_replace(':','',$work_start);
   $work_end_str = str_replace(':','',$work_end);
-  $user_info = tep_get_user_info($uid);
   $sql = "select * from ".TABLE_ATTENDANCE." WHERE 
     user_name='".$uid."' and date='".$date."'";
   $query = tep_db_query($sql);
@@ -14021,7 +14026,6 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
     $return_str = $user_info['name'].'&nbsp;';
     return $return_str;
   }
-  $today = date('Ymd',time());
   if($row = tep_db_fetch_array($query)){
     if($att_info['set_time']==0){
       $real_work_start = substr($row['login_time'],11,5);
@@ -14148,6 +14152,16 @@ function tep_get_groups_by_user($user){
   return $res;
 }
 function tep_get_user_list_by_userid($user){
+  global $all_user_info;
+  if(empty($all_user_info)){
+    $all_user_info = array();
+    $all_user_sql = "select * from ". TABLE_USERS ." where status='1'";
+    $all_user_query = tep_db_query($all_user_sql);
+    while($user_info_row = tep_db_fetch_array($all_user_query)){
+      $all_user_info[] = $user_info_row['userid'];
+    }
+  }
+
   $res = array();
   $sql = "select all_managers_id from ".TABLE_GROUPS." WHERE
     (all_users_id like '".$user."' or
@@ -14164,7 +14178,13 @@ function tep_get_user_list_by_userid($user){
   $res_arr = explode('|||',$res_str);
   $res_arr = array_unique($res_arr);
   rsort($res_arr);
-  return $res_arr;
+  $real_res_arr = array();
+  foreach($res_arr as $res){
+    if(in_array($res,$all_user_info)){
+      $real_res_arr[] = $res;
+    }
+  }
+  return $real_res_arr;
 }
 function tep_get_attendance_by_id($aid){
   $sql = "select * from ".TABLE_ATTENDANCE_DETAIL." WHERE

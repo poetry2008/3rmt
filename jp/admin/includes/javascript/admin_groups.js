@@ -245,9 +245,9 @@ function add_obj(ele,obj_name_1,obj_name_2,delete_name){
   obj_num = parseInt(obj_num);
   var obj_str = '';
   if(obj_type == 0){
-    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"></td></tr>';
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"><br><input type="text" name="object_value[]" class="td_input" value=""></td></tr>';
   }else if(obj_type == 1){
-    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" class="td_input" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"><br><input type="text" name="formula_contents[]" class="td_input" value=""></td></tr>';
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" style="width:145px;" value=""><input type="text" name="formula_contents[]" style="width:150px;" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"><br><input type="text" name="formula_value[]" class="td_input" value=""></td></tr>';
   }
   if(obj_num == 0){
     $(ele).parent().parent().after(obj_str);
@@ -275,7 +275,7 @@ function date_select(ele,end_str,start_str,date_str){
   var date_i = 0;
   for(var i=0;i<end_date_length;i++){
   
-    for(var j=start_date[i].value;j<=end_date[i].value;j++){
+    for(var j=parseInt(start_date[i].value);j<=parseInt(end_date[i].value);j++){
     
       date_select_array[date_i] = j;
       date_i++;
