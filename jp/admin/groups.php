@@ -61,7 +61,6 @@
             //计算工资的标题、公式
             $object_title = tep_db_prepare_input($_POST['object_title']);
             $object_contents = tep_db_prepare_input($_POST['object_contents']);
-            $object_value = tep_db_prepare_input($_POST['object_value']);
 
             foreach($object_title as $object_title_key=>$object_title_value){
 
@@ -69,8 +68,7 @@
                $object_sql_array = array('group_id' => $insert_group_id,
 				     'project_id' => 0,
 				     'title' => $object_title_value,
-				     'contents' => $object_contents[$object_title_key], 
-				     'project_value' => $object_value[$object_title_key] 
+				     'contents' => $object_contents[$object_title_key] 
 			            );
                tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
              }
@@ -139,7 +137,6 @@
           tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
           $object_title = tep_db_prepare_input($_POST['object_title']);
           $object_contents = tep_db_prepare_input($_POST['object_contents']);
-          $object_value = tep_db_prepare_input($_POST['object_value']);
 
           foreach($object_title as $object_title_key=>$object_title_value){
 
@@ -147,8 +144,7 @@
              $object_sql_array = array('group_id' => $group_id,
 				     'project_id' => 0,
 				     'title' => $object_title_value,
-				     'contents' => $object_contents[$object_title_key], 
-				     'project_value' => $object_value[$object_title_key] 
+				     'contents' => $object_contents[$object_title_key] 
 			            );
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
            }

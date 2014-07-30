@@ -9040,9 +9040,9 @@ if($_GET['latest_messages_id']>0){
      $group_content_row_wage = array();
      $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
      if($wage_array['project_id'] == 0){
-       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><input type="text" name="object_value[]" class="td_input" value="'.$wage_array['project_value'].'">');
+       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
      }else{
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="formula_title[]"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="formula_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="削除"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="formula_value[]">');
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="formula_title[]"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="formula_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="formula_value[]">');
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
