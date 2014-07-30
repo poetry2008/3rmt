@@ -9642,11 +9642,11 @@ echo  $return_res;
   }
   $hidden_group_select .= '</select>';
 
-  $type_select = '<select name="type[]" '.$show_only.' >';
+  $type_select = '<select name="type[]" '.$show_only.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select>';
+  $type_select .= '</select><span class="space" type="display:none" '.$show_only.'><input type="text" name="space[]" value=""></span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
@@ -9711,7 +9711,7 @@ echo  $return_res;
         }
       }
 
-      $has_type_select = '<select name="has_type[]" '.$show_only.' >';
+      $has_type_select = '<select name="has_type[]" '.$show_only.'  onchange="edit_space_nums(this,this.value);" >';
       foreach($type_list as $t_key => $t_value){
         $has_type_select .= '<option value="'.$t_key.'" ';
         if($a_info['type'] == $t_key){
@@ -9719,7 +9719,8 @@ echo  $return_res;
         }
         $has_type_select .= ' >'.$t_value.'</option>';
       }
-      $has_type_select .= '</select>';
+	  $style_space=$a_info['type']==1?'':'style="display:none"' ;
+      $has_type_select .= '</select><span class="space" '.$style_space.' '.$show_only.'><input type="text" name="space[]" value='.$a_info['space'].'></span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'">');
@@ -10527,11 +10528,11 @@ if($row_array['set_time']==0){
   $hidden_user_select .= '</select>';
 
   //循环模式
-  $type_select = '<select name="type[]" '.$disabled.' >';
+  $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select>';
+  $type_select .= '</select><span class="space" style="display:none" '.$disabled.'><input type="text" name="space[]" value=""></span>';
 
 
   $hidden_div = '<div style="display:none">';
@@ -10582,7 +10583,7 @@ if($row_array['set_time']==0){
         $has_user_select .= $default_has_user;
       }
     }
-    $has_type_select = '<select name="has_type[]" '.$disabled.' >';
+    $has_type_select = '<select name="has_type[]" '.$disabled.'  onchange="edit_space_nums(this,this.value);" >';
     foreach($type_list as $t_key => $t_value){
       $has_type_select .= '<option value="'.$t_key.'" ';
       if($a_info['type'] == $t_key){
@@ -10590,7 +10591,10 @@ if($row_array['set_time']==0){
       }
       $has_type_select .= ' >'.$t_value.'</option>';
     }
-    $has_type_select .= '</select>';
+	//隔周
+    $style_space=$a_info['type']==1?'':'style="display:none"'	;
+	
+    $has_type_select .= '</select><span class="space" '.$style_space.'  '.$disabled.'><input type="text" name="space[]" value='.$a_info['space'].' '.$disabled.' ></span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 
