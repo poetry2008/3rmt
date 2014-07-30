@@ -1042,14 +1042,18 @@ while($j<=$day_num)
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
-      if((!empty($user_replace))&&($ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
+      $show_flag = false;
+      if(!empty($user_replace)&&$user_replace['allow_status']==1){
+        $show_flag = true;
+      }
+      if((!empty($user_replace))&&($show_flag||$ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
       $u_info = tep_get_user_info($row_replace_att['user']);
       $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
       echo "<span>";
       echo "<a href='javascript:void(0)' ";
       echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\")' ";
       echo " >";
-      if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']){
+      if($show_flag||in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']){
       if(!empty($u_info)){
         echo $u_info['name'];
       }
