@@ -51,6 +51,8 @@ define('TEXT_DEL_ADL', 'Xóa');
 define('TEXT_TYPE_SELECT', 'Lặp lại');
 define('TEXT_CALENDAR_REPEAT_TYPE_NO','Không lặp lại');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK','Mỗi tuần');
+define('TEXT_CALENDAR_REPEAT_TYPE_HEAD','');
+define('TEXT_CALENDAR_REPEAT_TYPE_TAIL','');
 define('TEXT_CALENDAR_REPEAT_TYPE_MONTH','Mỗi tháng');
 define('TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK','Ngày cố định mỗi tháng ');
 define('TEXT_CALENDAR_REPEAT_TYPE_YEAR','Mỗi năm');
