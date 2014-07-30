@@ -9646,7 +9646,7 @@ echo  $return_res;
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" '.$show_only.'><input type="text" name="space[]" value=""></span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
@@ -9720,7 +9720,7 @@ echo  $return_res;
         $has_type_select .= ' >'.$t_value.'</option>';
       }
 	  $style_space=$a_info['type']==1?'':'style="display:none"' ;
-      $has_type_select .= '</select><span class="space" '.$style_space.' '.$show_only.'><input type="text" name="space[]" value='.$a_info['space'].'></span>';
+      $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value='.$a_info['space'].' '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -10532,7 +10532,7 @@ if($row_array['set_time']==0){
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" '.$disabled.'><input type="text" name="space[]" value=""></span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$disabled.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
 
   $hidden_div = '<div style="display:none">';
@@ -10594,7 +10594,7 @@ if($row_array['set_time']==0){
 	//隔周
     $style_space=$a_info['type']==1?'':'style="display:none"'	;
 	
-    $has_type_select .= '</select><span class="space" '.$style_space.'  '.$disabled.'><input type="text" name="space[]" value='.$a_info['space'].' '.$disabled.' ></span>';
+    $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value='.$a_info['space'].' '.$disabled.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 
