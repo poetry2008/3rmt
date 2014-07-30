@@ -57,26 +57,32 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 		
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)){
+			if(empty($val) || $type_arr[$k]){
 		        $_POST['space'][$k] = "0";	
 			}	
 		}
         foreach($a_id_arr as $key => $value){
-          $sql_arr = array(
-              'date' => $_POST['get_date'],
-              'week' => $date_info['week'],
-              'week_index' => $date_info['week_index'],
-              'attendance_detail_id' => $value,
-              'user_id' => $user_arr[$key],
-              'type' => $type_arr[$key],
-              'update_user' => $user,
-              'update_time' => 'now()',
-			  'space' => $_POST['space'][$key],
+               $sql_arr = array(
+                  'week' => $date_info['week'],
+                  'week_index' => $date_info['week_index'],
+                  'attendance_detail_id' => $value,
+                  'user_id' => $user_arr[$key],
+                  'type' => $type_arr[$key],
+                  'update_user' => $user,
+                  'update_time' => 'now()',
+			      'space' => $_POST['space'][$key],
               );
           if(isset($_POST['default_uid'])&&$_POST['default_uid']!=''){
             $sql_arr['user_id'] = $_POST['default_uid'];
           }
           $sql_arr['is_user'] = 1;
+
+	      if($_POST['type_array'][$key]!= $type_arr[$key]){
+            $sql_arr['date'] =  $_POST['get_date'];
+            $sql_arr['month'] =  $date_info['month'];
+            $sql_arr['day'] =  $date_info['day']; 
+                
+		  }
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
         }
       }
@@ -92,13 +98,18 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)){
+			if(empty($val)|| $type_arr[$k]){
 		        $_POST['space'][$k] = "0";	
 			}	
 		}
         foreach($a_id_arr as $key => $value){
+			if($_POST['type_array'][$k]= $type_arr[$key]){
+			
+			}
           $sql_arr = array(
               'date' => $_POST['get_date'],
+              'month' => $date_info['month'],
+              'day' => $date_info['day'],
               'week' => $date_info['week'],
               'week_index' => $date_info['week_index'],
               'attendance_detail_id' => $value,
@@ -150,13 +161,13 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)){
+			if(empty($val)|| $type_arr[$k]!=1){
 		        $_POST['space'][$k] = 0;	
 			}	
 		}
+		
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
-              'date' => $_POST['get_date'],
               'week' => $date_info['week'],
               'week_index' => $date_info['week_index'],
               'attendance_detail_id' => $value,
@@ -169,6 +180,12 @@ if(isset($_GET['action'])){
           if(isset($_POST['default_gid'])&&$_POST['default_gid']!=''){
             $sql_arr['group_id'] = $_POST['default_gid'];
           }
+	      if($_POST['type_array'][$key]!= $type_arr[$key]){
+            $sql_arr['date'] =  $_POST['get_date'];
+            $sql_arr['month'] =  $date_info['month'];
+            $sql_arr['day'] =  $date_info['day']; 
+                
+		  }
 
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
         }
@@ -185,7 +202,7 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)){
+			if(empty($val) || $type_arr[$k]!=1){
 		        $_POST['space'][$k] = "0";	
 			}	
 		}
@@ -193,6 +210,8 @@ if(isset($_GET['action'])){
         foreach($a_id_arr as $key => $value){
           $sql_arr = array(
               'date' => $_POST['get_date'],
+              'month' => $date_info['month'],
+              'day' => $date_info['day'],
               'week' => $date_info['week'],
               'week_index' => $date_info['week_index'],
               'attendance_detail_id' => $value,

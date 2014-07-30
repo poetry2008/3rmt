@@ -9040,9 +9040,9 @@ if($_GET['latest_messages_id']>0){
      $group_content_row_wage = array();
      $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
      if($wage_array['project_id'] == 0){
-       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
+       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><input type="text" name="object_value[]" class="td_input" value="'.$wage_array['project_value'].'">');
      }else{
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="formula_title[]"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="formula_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="formula_value[]">');
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="formula_title[]"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="formula_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="削除"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="formula_value[]">');
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
@@ -9723,7 +9723,7 @@ echo  $return_res;
       $has_type_select .= '</select><span class="space" '.$style_space.' '.$show_only.'><input type="text" name="space[]" value='.$a_info['space'].'></span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'">');
+      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
       if($show_arr){
         $as_user_added = $a_info['add_user'];
         $as_date_added = $a_info['add_time'];
@@ -10599,7 +10599,7 @@ if($row_array['set_time']==0){
 
     $as_info_row_tmp = array(); 
     $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'">');
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
     if($show_arr){
       $as_user_added = $a_info['add_user'];
       $as_date_added = $a_info['add_time'];
