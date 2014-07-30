@@ -9646,7 +9646,7 @@ echo  $return_res;
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" type="display:none" '.$show_only.'><input type="text" name="space[]" value=""></span>';
+  $type_select .= '</select><span class="space" style="display:none" '.$show_only.'><input type="text" name="space[]" value=""></span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
