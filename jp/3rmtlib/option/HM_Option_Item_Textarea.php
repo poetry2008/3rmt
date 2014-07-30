@@ -221,7 +221,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        }
        
-       if ($this->require == '1') {
+       if ($this->require == '1' && $this->imax_num != '') {
          if ($back_pos !== false) {
            if (!isset($option_error_array[$pre_item_str.$this->formname])) {
              if (isset($_POST['cstep'])) {
@@ -264,7 +264,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        }
        
-       if ($this->require == '1') {
+       if ($this->require == '1' && $this->imax_num != '') {
          if ($back_pos !== false) {
            if (!isset($option_error_array[$pre_item_str.$this->formname])) {
              if (isset($_POST['cstep'])) { 
@@ -330,7 +330,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
      
-     if ($this->require == '1') {
+     if ($this->require == '1' && $this->imax_num != '') {
        if ($input_text_str == '') {
          $option_error_array[$pre_error_str.$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL;  
          return true; 
