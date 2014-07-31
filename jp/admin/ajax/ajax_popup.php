@@ -8200,7 +8200,7 @@ $banner_query = tep_db_query("
  $messages_to_all = '<input id="message_to_all" type="radio" value="0" name="messages_to" onclick="messages_to_all_radio()"><label for="message_to_all">ALL</label>';
  $messages_to_groups = '<input id="message_to_groups" type="radio" value="2" name="messages_to" onclick="messages_to_groups_radio()"'.$groups_selected.'><label for="message_to_groups">'.MESSAGE_SELECT_GROUPS.'</label>';
  $messages_to_appoint = '<input id="message_to_appoint" type="radio" value="1"'.($groups_selected == '' ? 'checked="checked"' : '').' name="messages_to" onclick="messages_to_appoint_radio()"><label for="message_to_appoint">'.MESSAGES_APPOINT_SB.'</label>';
- $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_groups.$messages_to_appoint);
+ $messages_content_row_to [] = array('text'=>$messages_to_all.$messages_to_groups.$messages_to_appoint.'<input type="hidden" id="old_messages_to" value="'.($groups_selected != '' ? 2 : 1).'"><input type="hidden" id="current_messages_to" value="'.($groups_selected != '' ? 2 : 1).'">');
  $messages_content_table[] = array('text'=> $messages_content_row_to);
  $messages_content_row_choose = array();
  $messages_content_row_choose [] =  array('text'=> '');
@@ -8209,10 +8209,13 @@ $banner_query = tep_db_query("
  //组选择
  $all_user_to_td = '';
  $all_groups_to_td = '';
+ $old_users_array = array();
+ $old_groups_array = array();
    if(($_GET['messages_sta'] == 'drafts' || $_GET['messages_sta'] == 'sent') && $_GET['latest_messages_id'] >= 0){
 	if($_GET['recipient_name'] == 'ALL'){
 		while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
                   $recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
+                  $old_users_array[] = $message_all_users['userid'];
 		}
 	}else{
 		$recipient_name_all = explode(';',$_GET['recipient_name']);
@@ -8220,6 +8223,7 @@ $banner_query = tep_db_query("
 			$n_flag = 0;
 			foreach($recipient_name_all as $value){
 				if($message_all_users['name'] == $value){
+                                  $old_users_array[] = $message_all_users['userid'];
                                   $recipient .= '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';     
 					$n_flag = 1;
 					break;
@@ -8235,6 +8239,7 @@ $banner_query = tep_db_query("
    }else{
 	while($message_all_users = tep_db_fetch_array($sql_for_all_users_query)){
 		if($_GET['latest_messages_id']>0&&$message_all_users['userid'] == $_GET['sender_id']){
+                        $old_users_array[] = $message_all_users['userid'];
 			$recipient = '<div style="cursor:pointer;-moz-user-select:none;" onclick="checkbox_event(this,event)" value="'.$message_all_users['name'].'"><input hidden value="'.$message_all_users['userid'].'|||'.$message_all_users['name'].'" type="checkbox" name="selected_staff[]">'.$message_all_users['name'].'</div>';
 			continue;
 		}
@@ -8323,7 +8328,8 @@ $banner_query = tep_db_query("
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><input type="hidden" id="delete_groups_list" value="'.$all_groups_str.'"><div width="100%" id="delete_to_groups" style="overflow-y:scroll;height:105px;">'.$all_groups_to_td.'</div></td>
 	</tr>
 </table></div>';
- $messages_content_row_choose [] = array('text'=> $messages_choose_table.$messages_group_table);
+ $old_groups_array = $send_groups_list_str;
+ $messages_content_row_choose [] = array('text'=> $messages_choose_table.$messages_group_table.'<input type="hidden" id="old_groups_str" value="'.$old_groups_array.'"><input type="hidden" id="old_users_str" value="'.implode(',',$old_users_array).'">');
  $messages_content_table[] = array('text'=> $messages_content_row_choose); 
 
  $messages_content_row_must_selected = array();
@@ -8347,7 +8353,7 @@ $banner_query = tep_db_query("
  $users_icon .= '</ul>';
  $messages_content_row_mark = array();
  $messages_content_row_mark[] = array('text'=> MESSAGES_MARK);
- $messages_content_row_mark[] = array('text'=> $users_icon);
+ $messages_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
  $messages_content_table[] = array('text'=> $messages_content_row_mark);
  $messages_content_row_text = array();
  $messages_content_row_text[] = array('text'=> MESSAGES_TEXT);
@@ -9040,9 +9046,9 @@ if($_GET['latest_messages_id']>0){
      $group_content_row_wage = array();
      $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
      if($wage_array['project_id'] == 0){
-       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><input type="text" name="object_value[]" class="td_input" value="'.$wage_array['project_value'].'">');
+       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
      }else{
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="formula_title[]"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="formula_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="削除"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="formula_value[]">');
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="formula_title[]"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="formula_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="formula_value[]">');
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
@@ -9871,10 +9877,15 @@ echo  $return_res;
   $group_id_array = tep_get_groups_by_user($ocertify->auth_user);
   //获取当前登录用户的当天排班
   $attendance_id_array = array();
-  $date_attendance_query = tep_db_query("select attendance_detail_id,group_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where `date`='".$_GET['date']."' order by add_time desc");
+  $attendance_user_array = array();
+  $date_attendance_query = tep_db_query("select attendance_detail_id,group_id,is_user,user_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where `date`='".$_GET['date']."' order by add_time desc");
   while($date_attendance_array = tep_db_fetch_array($date_attendance_query)){
 
-    if(in_array($date_attendance_array['group_id'],$group_id_array)){
+    if($date_attendance_array['is_user'] == 1){
+
+      $attendance_user_array[] = $date_attendance_array['attendance_detail_id'];
+    }
+    if(in_array($date_attendance_array['group_id'],$group_id_array) || ($date_attendance_array['is_user'] == 1 && $date_attendance_array['user_id'] == $ocertify->auth_user)){
 
       $attendance_id_array[] = $date_attendance_array['attendance_detail_id'];
     }
@@ -9964,6 +9975,14 @@ echo  $return_res;
   $att_select = '<select name="attendance_detail_id" onchange="attendance_replace(\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value);"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user); 
+    if(!empty($attendance_user_array)){
+      $users_attendance_query = tep_db_query("select * from ".TABLE_ATTENDANCE_DETAIL." where id in (".implode(',',$attendance_user_array).") order by sort asc");
+      while($users_attendance_array = tep_db_fetch_array($users_attendance_query)){
+
+        $replace_att_list[] = $users_attendance_array;
+      }
+      tep_db_free_result($users_attendance_query);
+    }
     $select_att = '';
     $replace_show_array = array();
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
