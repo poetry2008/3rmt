@@ -69,9 +69,9 @@ if(isset($_GET['action'])){
         }
         $type_arr = $_POST['has_type'];
 		
-		foreach($_POST['space'] as $k => $val) {
+		foreach($_POST['has_space'] as $k => $val) {
 			if(empty($val) || $type_arr[$k]!=1){
-		        $_POST['space'][$k] = "0";	
+		        $_POST['has_space'][$k] = "0";	
 			}	
 		}
         foreach($a_id_arr as $key => $value){
@@ -83,7 +83,7 @@ if(isset($_GET['action'])){
                   'type' => $type_arr[$key],
                   'update_user' => $user,
                   'update_time' => 'now()',
-			      'space' => $_POST['space'][$key],
+			      'space' => $_POST['has_space'][$key],
               );
           if(isset($_POST['default_uid'])&&$_POST['default_uid']!=''){
             $sql_arr['user_id'] = $_POST['default_uid'];
@@ -102,6 +102,7 @@ if(isset($_GET['action'])){
       if(isset($_POST['attendance_id'])
           &&is_array($_POST['attendance_id'])
           &&!empty($_POST['attendance_id'])){
+			  var_dump($_POST);
         $a_id_arr = $_POST['attendance_id'];
         if(isset($_POST['user'])&&!empty($_POST['user'])){
           $user_arr = $_POST['user'];
@@ -111,7 +112,7 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)|| $type_arr[$k]){
+			if(empty($val)|| $type_arr[$k]!=1){
 		        $_POST['space'][$k] = "0";	
 			}	
 		}
@@ -173,9 +174,9 @@ if(isset($_GET['action'])){
         }
         $type_arr = $_POST['has_type'];
 
-		foreach($_POST['space'] as $k => $val) {
+		foreach($_POST['has_space'] as $k => $val) {
 			if(empty($val)|| $type_arr[$k]!=1){
-		        $_POST['space'][$k] = 0;	
+		        $_POST['has_space'][$k] = 0;	
 			}	
 		}
 		
@@ -188,7 +189,7 @@ if(isset($_GET['action'])){
               'type' => $type_arr[$key],
               'update_user' => $user,
               'update_time' => 'now()',
-			  'space' => $_POST['space'][$key],
+			  'space' => $_POST['has_space'][$key],
               );
           if(isset($_POST['default_gid'])&&$_POST['default_gid']!=''){
             $sql_arr['group_id'] = $_POST['default_gid'];
@@ -513,6 +514,7 @@ case 'update':
 <script language="javascript" src="includes/javascript/admin_roster_records.js"></script>
 
 <script language="javascript">
+var warn_attendance_type_diff = '<?php echo TEXT_WARN_ATTENDANCE_TYPE_DIFF;?>';
 var js_remind_delete = '<?php echo TEXT_DELETE_REMIND;?>';
 var js_text_input_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';
 var js_text_onetime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';

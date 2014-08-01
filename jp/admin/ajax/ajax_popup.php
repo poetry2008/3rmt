@@ -9215,6 +9215,46 @@ if($_GET['latest_messages_id']>0){
 
 
 }
+//检测同一天同一组是否有多个排班
+else if($_GET['action'] == 'check_same_group_att') {
+
+  $group_arr = explode('||',$_POST['group_id']);
+  $att_arr = explode('||',$_POST['att_id']);
+  $group_arr = array_filter($group_arr);
+  $att_arr = array_filter($att_arr);
+
+  for($i=0; $i<count($group_arr); $i++) {
+    for ($j=count($group_arr)-1; $j>$i; $j--) {
+		//组或个人有相同的
+		if($group_arr[$i] == $group_arr[$j]){
+			 $att_sql_i = "select set_time from ".TABLE_ATTENDANCE_DETAIL." where id = ".$att_arr[$i]."";
+             $att_info_i = tep_db_fetch_array(tep_db_query($att_sql_i)); 
+
+			 $att_sql_j = "select set_time from ".TABLE_ATTENDANCE_DETAIL." where id = ".$att_arr[$j]."";
+             $att_info_j = tep_db_fetch_array(tep_db_query($att_sql_j)); 
+
+			 //判断相同的组或者个人是否有相同类型的排班
+    		 if($att_info_i['set_time']!=$att_info_j['set_time']) {
+				 if(is_numeric($group_arr[$i])){
+					 //是组
+			       $sql_get_group = "select name from ".TABLE_GROUPS." where id = ".$group_arr[$i]."";
+                   $group_info = tep_db_fetch_array(tep_db_query($sql_get_group)); 
+			       echo  $group_info['name'];
+				   exit;
+				 }else{
+					 //是个人
+			       $sql_get_uname = "select name from ".TABLE_USERS." where userid = '".$group_arr[$i]."'";
+                   $user_info = tep_db_fetch_array(tep_db_query($sql_get_uname)); 
+			       echo  $user_info['name'];
+				   exit;
+		         }
+			  
+			 }
+	     } 
+     }
+  } 
+
+}
 
  /**
   *@date20140709 
@@ -9726,7 +9766,7 @@ echo  $return_res;
         $has_type_select .= ' >'.$t_value.'</option>';
       }
 	  $style_space=$a_info['type']==1?'':'style="display:none"' ;
-      $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value='.$a_info['space'].' '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+      $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -10626,7 +10666,7 @@ if($row_array['set_time']==0){
 	//隔周
     $style_space=$a_info['type']==1?'':'style="display:none"'	;
 	
-    $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value='.$a_info['space'].' '.$disabled.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+    $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 

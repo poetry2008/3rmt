@@ -71,5 +71,6 @@ define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','Người dùng');
 define('TEXT_DELETE_REMIND','Bạn có muốn xóa không?');
 define('TEXT_ONLY_USER_ATTENDANCE','スタッフ設定');
+define('TEXT_WARN_ATTENDANCE_TYPE_DIFF','tep_remind_diff');
 ?>
 

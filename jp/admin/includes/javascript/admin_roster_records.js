@@ -300,6 +300,69 @@ function delete_submit(c_permission,type){
   }
 }
 function save_submit(c_permission){
+	//选择的组
+  group_id = '';
+  var group_select = $("select[name='has_group[]']");
+  if(group_select.length>0){
+    group_select.each(function(){
+      group_id += $(this).val() + '||';
+    })
+  }
+  //后加组
+  var group_select_add = $("select[name='group[]']");
+  group_select_add.each(function(i){
+	if(group_select_add.length>1 && i!=group_select_add.length-1 ){
+        group_id += $(this).val() + '||';
+	}
+  })
+
+//个人
+  var user_select = $("select[name='has_user[]']");
+  if(user_select.length>0){
+    user_select.each(function(){
+      group_id += $(this).val() + '||';
+    })
+  }
+  //后加个人
+  var user_select_add = $("select[name='user[]']");
+  user_select_add.each(function(i){
+	if(user_select_add.length>1 && i!=user_select_add.length-1 ){
+        group_id += $(this).val() + '||';
+	}
+  })
+
+//选择的排班
+  var att_select = $("select[name='has_attendance_id[]']");
+  att_id = '';
+  att_select.each(function(){
+    att_id += $(this).val() + '||';
+  })
+  //后加排版
+  var att_select_add = $("select[name='attendance_id[]']");
+  att_select_add.each(function(i){
+	if(att_select_add.length>1 && i!=0 ){
+      att_id += $(this).val() + '||';
+	}
+  })
+
+   $.ajax({
+       url: 'ajax.php?action=check_same_group_att',
+       type: 'POST',
+       dataType: 'text',
+       data: 'group_id='+group_id+'&att_id='+att_id, 
+       async : false,
+       success: function(data){
+		   if(data) {
+			 var data =data + warn_attendance_type_diff;
+			 alert(data);
+			 flag = 1;
+		   }else{
+		     flag = 0;
+		   }
+       }
+  }); 
+
+if(flag !=1) {
   if (c_permission == 31) {
     document.attendance_setting_form.submit();
   } else {
@@ -336,6 +399,7 @@ function save_submit(c_permission){
       }
     });
   }
+}
 }
 
 function del_as(ele,asl_id,c_permission){
