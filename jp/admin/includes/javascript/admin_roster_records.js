@@ -300,7 +300,7 @@ function delete_submit(c_permission,type){
   }
 }
 function save_submit(c_permission){
-	//选择的组
+  //选择的组
   group_id = '';
   var group_select = $("select[name='has_group[]']");
   if(group_select.length>0){
@@ -309,16 +309,14 @@ function save_submit(c_permission){
     })
   }
   //后加组
-  var group_select_add = $("select[name='group[]']");
-  if(group_select_add.length>1){
+  var group_select_add = $("form select[name='group[]']");
+  if(group_select_add.length>0){
     group_select_add.each(function(i){
-    	if( i!=0){
            group_id += $(this).val() + '||';
-	    }
     })
   }
 
-//个人
+  //个人
   var user_select = $("select[name='has_user[]']");
   if(user_select.length>0){
     user_select.each(function(){
@@ -326,27 +324,23 @@ function save_submit(c_permission){
     })
   }
   //后加个人
-  var user_select_add = $("select[name='user[]']");
-  if(user_select_add.length>1){
+  var user_select_add = $("form select[name='user[]']");
+  if(user_select_add.length>0){
      user_select_add.each(function(i){
-	    if(i!=0){
           group_id += $(this).val() + '||';
-	    }
      })
   }
 
-//选择的排班
+  //选择的排班
   var att_select = $("select[name='has_attendance_id[]']");
   att_id = '';
   att_select.each(function(){
     att_id += $(this).val() + '||';
   })
   //后加排版
-  var att_select_add = $("select[name='attendance_id[]']");
+  var att_select_add = $("form select[name='attendance_id[]']");
   att_select_add.each(function(i){
-	if(i!=0 ){
       att_id += $(this).val() + '||';
-	}
   })
 
    $.ajax({
