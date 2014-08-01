@@ -13906,14 +13906,14 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
         or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
         or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and month='".$date_info['month'].$date_info['day']."'))";
+        or (type='4' and month='".$date_info['month']."' and day='".$date_info['day']."'))";
     }else{
       $where_str = " where ((type='0' and date='".$date."') 
         or (type='1' and week='".$date_info['week']."' and `space` = 0) 
         or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
         or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and month='".$date_info['month'].$date_info['day']."'))
+        or (type='4' and month='".$date_info['month']."' and day='".$date_info['day']."'))
         and group_id='".$gid."'";
     }
   }else{
@@ -13938,7 +13938,7 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
             $diff_arr[] = $att_row;
           }else{
             foreach($diff_arr as $diff){
-              if(valatete_two_time($all_att_arr[$att_row['attendance_detail_id']]['work_start'],
+              if(validate_two_time($all_att_arr[$att_row['attendance_detail_id']]['work_start'],
                     $all_att_arr[$att_row['attendance_detail_id']]['work_end'],
                     $all_att_arr[$diff['attendance_detail_id']]['work_start'],
                     $all_att_arr[$diff['attendance_detail_id']]['work_end']
@@ -13972,7 +13972,7 @@ function del_zero($nums) {
 }
 
 
-function valatete_two_time($first_start,$first_end,$second_start,$second_end){
+function validate_two_time($first_start,$first_end,$second_start,$second_end){
   $fs_arr = explode(':',$first_start);
   $fe_arr = explode(':',$first_end);
   $ss_arr = explode(':',$second_start);
@@ -14000,7 +14000,7 @@ function valatete_two_time($first_start,$first_end,$second_start,$second_end){
   return false;
 }
 
-function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
+function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
   global $ocertify,$user_atted;
   $today = date('Ymd',time());
   $user_info = tep_get_user_info($uid);
@@ -14101,7 +14101,7 @@ function tep_valadate_attendance($uid,$date,$att_info,$bg_color,$index=0){
     return $return_str;
   }
 }
-function tep_get_attendance_by_user_date($date,$user=0,$show_all=false){
+function tep_get_attendance_by_user_date($date,$user=0,$user_self='',$show_all=false){
   $res = array();
   $att_list = array();
   if($show_all){
@@ -14122,8 +14122,8 @@ function tep_get_attendance_by_user_date($date,$user=0,$show_all=false){
   }else{
     $att_list = tep_get_attendance($date,0,true);
   }
-  if($user!=0){
-    $user_self_att_list = tep_get_attendance_user($date,$user);
+  if($user_self!=''){
+    $user_self_att_list = tep_get_attendance_user($date,$user_self);
     $att_list = array_merge($att_list,$user_self_att_list);
   }
   foreach($att_list as $att_date){
@@ -14214,7 +14214,7 @@ function tep_is_show_att($aid,$date){
     $year = substr($date,0,4); 
     $month = substr($date,4,2); 
     $day = substr($date,6,2); 
-    $time_str = mktime(0,0,0,$month,$day,$year);
+    $time_str = mktime(23,59,59,$month,$day,$year);
     $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE.  " WHERE 
       id='".$aid."' and UNIX_TIMESTAMP(add_time) < ".$time_str."";
     $query = tep_db_query($sql);
@@ -14291,14 +14291,14 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
         or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
         or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and month='".$date_info['month'].$date_info['day']."'))";
+        or (type='4' and month='".$date_info['month']."' and day='".$date_info['day']."'))";
     }else{
       $where_str = " where ((type='0' and date='".$date."') 
         or (type='1' and week='".$date_info['week']."' and `space` = 0) 
         or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
         or (type='2' and day='".$date_info['day']."') 
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
-        or (type='4' and month='".$date_info['month'].$date_info['day']."'))
+        or (type='4' and month='".$date_info['month']."' and day='".$date_info['day']."'))
         and user_id='".$uid."'";
     }
   }else{
@@ -14323,7 +14323,7 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
             $diff_arr[] = $att_row;
           }else{
             foreach($diff_arr as $diff){
-              if(valatete_two_time($all_att_arr[$att_row['attendance_detail_id']]['work_start'],
+              if(validate_two_time($all_att_arr[$att_row['attendance_detail_id']]['work_start'],
                     $all_att_arr[$att_row['attendance_detail_id']]['work_end'],
                     $all_att_arr[$diff['attendance_detail_id']]['work_start'],
                     $all_att_arr[$diff['attendance_detail_id']]['work_end']
@@ -14352,5 +14352,20 @@ function tep_is_attenandced_date($user){
     return $row['date'];
   }else{
     return false;
+  }
+}
+function tep_validate_user_attenandced($all_user,$date,$group_alist,$user_alist,$show_group){
+  global $all_att_arr;
+  if(empty($all_att_arr)){
+    $all_att_arr = array();
+    $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
+    $all_att_auery = tep_db_query($all_att_sql);
+    while($all_att_row = tep_db_fetch_array($all_att_auery)){
+        $all_att_arr[$all_att_row['id']] = $all_att_row;
+    }
+  }
+  $user_att_list = array();
+  foreach($all_user as $user){
+    //先判断请假的是否迟到
   }
 }
