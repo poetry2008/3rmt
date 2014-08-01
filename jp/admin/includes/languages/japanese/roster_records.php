@@ -72,5 +72,6 @@ define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','ユーザ');
 define('TEXT_DELETE_REMIND','削除しますか？');
 define('TEXT_ONLY_USER_ATTENDANCE','スタッフ設定');
+define('TEXT_WARN_ATTENDANCE_TYPE_DIFF','同じく時間帯／時間数で設定してください。');
 ?>
 
