@@ -9877,15 +9877,24 @@ echo  $return_res;
   $group_id_array = tep_get_groups_by_user($ocertify->auth_user);
   //获取当前登录用户的当天排班
   $attendance_id_array = array();
-  $date_attendance_query = tep_db_query("select attendance_detail_id,group_id,is_user,user_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where `date`='".$_GET['date']."' order by add_time desc");
-  while($date_attendance_array = tep_db_fetch_array($date_attendance_query)){
+  //组的排班
+  $attendance_group_id_array = tep_get_attendance($_GET['date']);
+  foreach($attendance_group_id_array as $date_attendance_array){
 
-    if(in_array($date_attendance_array['group_id'],$group_id_array) || ($date_attendance_array['is_user'] == 1 && $date_attendance_array['user_id'] == $ocertify->auth_user)){
+    if(in_array($date_attendance_array['group_id'],$group_id_array)){
 
       $attendance_id_array[] = $date_attendance_array['attendance_detail_id'];
     }
   }
-  tep_db_free_result($date_attendance_query);
+  //个人的排班
+  $attendance_user_id_array = tep_get_attendance_user($_GET['date']);
+  foreach($attendance_group_id_array as $date_attendance_array){
+
+    if($date_attendance_array['user_id'] == $ocertify->auth_user){
+
+      $attendance_id_array[] = $date_attendance_array['attendance_detail_id'];
+    }
+  }
   //获取当前登录用户的请假
   $replace_attendance_id_array = array();
   $replace_attendance_query = tep_db_query("select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user='".$ocertify->auth_user."' and `date`='".$_GET['date']."'");
