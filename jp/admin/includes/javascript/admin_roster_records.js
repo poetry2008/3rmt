@@ -310,11 +310,13 @@ function save_submit(c_permission){
   }
   //后加组
   var group_select_add = $("select[name='group[]']");
-  group_select_add.each(function(i){
-	if(group_select_add.length>1 && i!=group_select_add.length-1 ){
-        group_id += $(this).val() + '||';
-	}
-  })
+  if(group_select_add.length>1){
+    group_select_add.each(function(i){
+    	if( i!=0){
+           group_id += $(this).val() + '||';
+	    }
+    })
+  }
 
 //个人
   var user_select = $("select[name='has_user[]']");
@@ -325,11 +327,13 @@ function save_submit(c_permission){
   }
   //后加个人
   var user_select_add = $("select[name='user[]']");
-  user_select_add.each(function(i){
-	if(user_select_add.length>1 && i!=user_select_add.length-1 ){
-        group_id += $(this).val() + '||';
-	}
-  })
+  if(user_select_add.length>1){
+     user_select_add.each(function(i){
+	    if(i!=0){
+          group_id += $(this).val() + '||';
+	    }
+     })
+  }
 
 //选择的排班
   var att_select = $("select[name='has_attendance_id[]']");
@@ -340,7 +344,7 @@ function save_submit(c_permission){
   //后加排版
   var att_select_add = $("select[name='attendance_id[]']");
   att_select_add.each(function(i){
-	if(att_select_add.length>1 && i!=0 ){
+	if(i!=0 ){
       att_id += $(this).val() + '||';
 	}
   })
