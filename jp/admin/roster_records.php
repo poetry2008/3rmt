@@ -32,10 +32,23 @@ if(isset($_GET['action'])){
         $login = $att_login_start.$att_start.$att_login_end; 
         $logout = $att_logout_start.$att_end.$att_logout_end; 
       }
-      $sql_update = "update ".TABLE_ATTENDANCE." set
-        login_time='".$login."',logout_time='".$logout."' where
-        id='".$_POST['aid']."'";
-      tep_db_query($sql_update);
+      $date_info = tep_date_info($_POST['get_date']);
+      $start_str = $date_info['year'].'-'.$date_info['month'].'-'.$date_info['day'];
+      if(isset($_GET['aid'])&&$_GET['aid']!=''){
+        $sql_update = "update ".TABLE_ATTENDANCE." set
+          login_time='".$login."',logout_time='".$logout."' where
+          id='".$_POST['aid']."'";
+        tep_db_query($sql_update);
+      }else{
+
+        $sql_insert = array(
+            'user_name' => $_POST['uid'],
+            'login_time' => $start_str.' '.$att_start.':00',
+            'logout_time' => $start_str.' '.$att_end.':00',
+            'date' => $_POST['get_date'],
+            );
+          tep_db_perform(TABLE_ATTENDANCE,$sql_insert);
+      }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
         $date_info = tep_date_info($_POST['get_date']);
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
