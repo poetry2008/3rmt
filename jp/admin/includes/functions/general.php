@@ -13981,6 +13981,16 @@ function validate_two_time($first_start,$first_end,$second_start,$second_end){
   $fe_time = mktime($fe_arr[0],$fe_arr[1]);
   $ss_time = mktime($ss_arr[0],$ss_arr[1]);
   $se_time = mktime($se_arr[0],$se_arr[1]);
+  $first_start_str = str_replace(':','',$first_start);
+  $first_end_str = str_replace(':','',$first_end);
+  $secoud_start_str = str_replace(':','',$first_start);
+  $second_end_str = str_replace(':','',$first_end);
+  if($first_start_str > $first_end_str){
+    $fe_time = $fe_time+24*60*60;
+  }
+  if($second_start_str > $second_end_str){
+    $se_time = $se_time+24*60*60;
+  }
   //第二个时间的起始时间在第一个时间内
   if($fs_time < $ss_time && $ss_time < $fe_time){
     return true;
@@ -14354,18 +14364,102 @@ function tep_is_attenandced_date($user){
     return false;
   }
 }
-function tep_validate_user_attenandced($all_user,$date,$group_alist,$user_alist,$show_group){
-  global $all_att_arr;
-  if(empty($all_att_arr)){
-    $all_att_arr = array();
-    $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
-    $all_att_auery = tep_db_query($all_att_sql);
-    while($all_att_row = tep_db_fetch_array($all_att_auery)){
-        $all_att_arr[$all_att_row['id']] = $all_att_row;
-    }
+function tep_all_attenande_by_uid($user,$date,$show_group=0){
+  $date_info = tep_date_info($date);
+  $all_sql = "select * from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
+    ". TABLE_ATTENDANCE_DETAIL ." ad on atd.attendance_detail_id = ad.id  
+    where ((type='0' and date='".$date."') 
+    or (type='1' and week='".$date_info['week']."' and `space` = 0) 
+    or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
+    or (type='2' and day='".$date_info['day']."')) and ((is_user='1' and
+      user_id='".$user."') or ( is_user='0' and ";
+  if($show_group!=0){
+    $all_sql .= " group_id='".$show_group."' ";
+  }else{
+    $group_list = tep_get_groups_by_user($user);
+    $group_str = implode(',',$group_list);
+    $all_sql .= " group_id in ( ".$group_str." ))) ";
   }
+  $all_sql .= " order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
+  $query = tep_db_query($all_sql);
+  while($row = tep_db_fetch_array($query)){
+    $attendance_dd_arr[] = $row;
+  }
+  $diff_arr = array();
+  if(count($attendance_dd_arr)>1){
+    // 时间段 和 时间数 的排班数组
+    $set_array = array();
+    $unset_array = array();
+    foreach($attendance_dd_arr as $pk => $att_row){
+      $add_flag = true;
+      if($att_row['set_time']==1){
+        $unset_array[] = $att_row;
+      }else{
+        if(empty($set_array)){
+          $set_array[] = $att_row;
+        }else{
+           foreach($set_array as $diff){
+             if(validate_two_time($att_row['work_start'], $att_row['work_end'], $diff['work_start'], $diff['work_end'])){
+               $add_flag = false;
+               break;
+             }
+           }
+           if($add_flag){
+             $set_array[] = $att_row;
+           }
+        }
+      }
+    }
+    $diff_arr['time'] = $set_array;
+    $diff_arr['sum'] = $unset_array;
+    return $diff_arr;
+  }else{
+    return $attendance_dd_arr;
+  }
+}
+function tep_validate_user_attenandced($all_user,$date,$show_group=0){
+  $user_att_info = array();
   $user_att_list = array();
+  //获得当天 所有打卡信息
+  $att_sql = "select * from attendance_record where `date`='".$date."'";
+  $att_query = tep_db_query($att_sql);
+  while($att_row = tep_db_fetch_array($att_query)){
+    $user_att_info[$att_row['user_name']][$att_row['nums']] = $att_row;
+    $user_att_list[] = $att_row['user_name'];
+  }
+  $user_att_list = array_unique($user_att_list);
+  $user_date_att_info = array();
   foreach($all_user as $user){
     //先判断请假的是否迟到
+    $user_att_date_list = array();
+    $user_att_date_list = tep_all_attenande_by_uid($user,$date,$show_group);
+    if(count($user_att_date_list)>1){
+      $uadl_time = $user_att_date_list['time'];
+      $uadl_sum = $user_att_date_list['sum'];
+    }else{
+      $user_date_att_info[$user] = array();
+      if(!empty($user_att_info[$user])){
+        $work_start = str_replace(':','',$user_att_date_list['work_start'])
+        $work_end = str_replace(':','',$user_att_date_list['work_end'])
+        $error_flag = true;
+        foreach($user_att_info[$user] as $uai_value){
+          $real_work_start = substr($uai_value['login_time'],11,5);
+          $real_work_end = substr($uai_value['logout_time'],11,5);
+          if($work_start > $work_end){
+            if($date< intval(substr($uai_value['logout_time']))&&$real_work_end_str >= $work_end&&$real_work_start_str <= $work_start){
+              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
+              break;
+            }
+          }else{
+            if($real_work_start_str <= $work_start && $real_work_end_str >= $work_end){
+              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
+              break;
+            }
+          }
+        }
+      }else{
+        $user_date_att_info[$user] = array();
+      }
+    }
   }
 }
