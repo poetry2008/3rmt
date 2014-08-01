@@ -10465,6 +10465,7 @@ echo  $return_res;
   }
   $att_end .= '</select>&nbsp;&nbsp;<font color="red" id="att_end_error"></font>';
   $att_end .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  $att_end .= '<input type="hidden" name="uid" value="'.$_GET['uid'].'">';
   $att_end .= '<input type="hidden" name="aid" value="'.$aid.'">';
 
   $as_info_row[]['text'] = array(
