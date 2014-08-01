@@ -9911,7 +9911,6 @@ echo  $return_res;
       $attendance_id_array[] = $date_attendance_array['attendance_detail_id'];
     }
   }
->>>>>>> 0de4eb39a423148ff9fe3bae85143292c995d837
   //获取当前登录用户的请假
   $replace_attendance_id_array = array();
   $replace_attendance_query = tep_db_query("select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user='".$_GET['uid']."' and `date`='".$_GET['date']."'");
