@@ -9220,6 +9220,46 @@ if($_GET['latest_messages_id']>0){
 
 
 }
+//检测同一天同一组是否有多个排班
+else if($_GET['action'] == 'check_same_group_att') {
+
+  $group_arr = explode('||',$_POST['group_id']);
+  $att_arr = explode('||',$_POST['att_id']);
+  $group_arr = array_filter($group_arr);
+  $att_arr = array_filter($att_arr);
+
+  for($i=0; $i<count($group_arr); $i++) {
+    for ($j=count($group_arr)-1; $j>$i; $j--) {
+		//组或个人有相同的
+		if($group_arr[$i] == $group_arr[$j]){
+			 $att_sql_i = "select set_time from ".TABLE_ATTENDANCE_DETAIL." where id = ".$att_arr[$i]."";
+             $att_info_i = tep_db_fetch_array(tep_db_query($att_sql_i)); 
+
+			 $att_sql_j = "select set_time from ".TABLE_ATTENDANCE_DETAIL." where id = ".$att_arr[$j]."";
+             $att_info_j = tep_db_fetch_array(tep_db_query($att_sql_j)); 
+
+			 //判断相同的组或者个人是否有相同类型的排班
+    		 if($att_info_i['set_time']!=$att_info_j['set_time']) {
+				 if(is_numeric($group_arr[$i])){
+					 //是组
+			       $sql_get_group = "select name from ".TABLE_GROUPS." where id = ".$group_arr[$i]."";
+                   $group_info = tep_db_fetch_array(tep_db_query($sql_get_group)); 
+			       echo  $group_info['name'];
+				   exit;
+				 }else{
+					 //是个人
+			       $sql_get_uname = "select name from ".TABLE_USERS." where userid = '".$group_arr[$i]."'";
+                   $user_info = tep_db_fetch_array(tep_db_query($sql_get_uname)); 
+			       echo  $user_info['name'];
+				   exit;
+		         }
+			  
+			 }
+	     } 
+     }
+  } 
+
+}
 
  /**
   *@date20140709 
@@ -9731,7 +9771,7 @@ echo  $return_res;
         $has_type_select .= ' >'.$t_value.'</option>';
       }
 	  $style_space=$a_info['type']==1?'':'style="display:none"' ;
-      $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value='.$a_info['space'].' '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+      $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -9880,8 +9920,12 @@ echo  $return_res;
 
   //获取当前登录用户所属的组
   $group_id_array = tep_get_groups_by_user($ocertify->auth_user);
+  /*
   //获取当前登录用户的当天排班
   $attendance_id_array = array();
+  $date_attendance_query = tep_db_query("select attendance_detail_id,group_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where `date`='".$_GET['date']."' order by add_time desc");
+  $date_attendance_query = tep_db_query("select attendance_detail_id,group_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where `date`='".$_GET['date']."' order by add_time desc");
+  while($date_attendance_array = tep_db_fetch_array($date_attendance_query)){
   //组的排班
   $attendance_group_id_array = tep_get_attendance($_GET['date']);
   foreach($attendance_group_id_array as $date_attendance_array){
@@ -9891,6 +9935,18 @@ echo  $return_res;
       $attendance_id_array[] = $date_attendance_array['attendance_detail_id'];
     }
   }
+  tep_db_free_result($date_attendance_query);
+  */
+  $attendance_id_array = array();
+  $attendance_tmp_id_array = array();
+  foreach($group_id_array as $g_list_id){
+    $attendance_array = tep_get_attendance($_GET['date'],$g_list_id,false);
+    $attendance_tmp_id_array = array_merge($attendance_array,$attendance_tmp_id_array);
+  }
+  foreach($attendance_tmp_id_array as $att_id_arr){
+    $attendance_id_array[] = $att_id_arr['attendance_detail_id'];
+  }
+
   //个人的排班
   $attendance_user_id_array = tep_get_attendance_user($_GET['date']);
   foreach($attendance_group_id_array as $date_attendance_array){
@@ -9902,7 +9958,7 @@ echo  $return_res;
   }
   //获取当前登录用户的请假
   $replace_attendance_id_array = array();
-  $replace_attendance_query = tep_db_query("select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user='".$ocertify->auth_user."' and `date`='".$_GET['date']."'");
+  $replace_attendance_query = tep_db_query("select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user='".$_GET['uid']."' and `date`='".$_GET['date']."'");
   while($replace_attendance_array = tep_db_fetch_array($replace_attendance_query)){
     $replace_attendance_id_array[] = $replace_attendance_array['attendance_detail_id'];
   }
@@ -9938,7 +9994,7 @@ echo  $return_res;
   
 
 
-  $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user);
+  $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,$_GET['uid']);
   if($disabled){
     $att_select = '<select name="attendance_detail_id" disabled="disabled">';
   }else{
@@ -9983,7 +10039,7 @@ echo  $return_res;
   }
   $att_select = '<select name="attendance_detail_id" onchange="attendance_replace(\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value);"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user); 
+    $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,$_GET['uid']); 
     $select_att = '';
     $replace_show_array = array();
     $att_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
@@ -10030,7 +10086,7 @@ echo  $return_res;
   }
 
 
-  $replace_att_list_rep = tep_get_attendance_by_user_date($_GET['date'],0,true);
+  $replace_att_list_rep = tep_get_attendance_by_user_date($_GET['date'],0,$_GET['uid'],true);
 
   foreach($replace_att_list_rep as $att_info_rep){
 
@@ -10414,6 +10470,7 @@ echo  $return_res;
   }
   $att_end .= '</select>&nbsp;&nbsp;<font color="red" id="att_end_error"></font>';
   $att_end .= '<input type="hidden" name="get_date" value="'.$_GET['date'].'">';
+  $att_end .= '<input type="hidden" name="uid" value="'.$_GET['uid'].'">';
   $att_end .= '<input type="hidden" name="aid" value="'.$aid.'">';
 
   $as_info_row[]['text'] = array(
@@ -10614,7 +10671,7 @@ if($row_array['set_time']==0){
 	//隔周
     $style_space=$a_info['type']==1?'':'style="display:none"'	;
 	
-    $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value='.$a_info['space'].' '.$disabled.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+    $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 
