@@ -163,6 +163,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_MAIL_TEMPLATES','mail_templates.php');
   define('FILENAME_ALL_ORDERS','all_orders.php');
   define('FILENAME_GROUPS','groups.php');
+  define('FILENAME_PAYROLLS','payrolls.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -307,6 +308,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CONFIGURATION_META','configuration_meta');
   define('TABLE_GROUPS','groups');
   define('TABLE_WAGE_SETTLEMENT','wage_settlement');
+  define('TABLE_USER_WAGE','user_wage');
   //排班相关的表
   define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
   define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');

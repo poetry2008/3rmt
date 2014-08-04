@@ -9041,14 +9041,19 @@ if($_GET['latest_messages_id']>0){
  //计算工资的项目
  if(tep_db_num_rows($wage_query) > 0){
    $i = 1;
+   //已有的项目ID
+   $old_project_id_array = array();
+   $old_formula_id_array = array();
    while($wage_array = tep_db_fetch_array($wage_query)){
 
      $group_content_row_wage = array();
      $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
      if($wage_array['project_id'] == 0){
-       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="object_title[]"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="object_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
+       $old_project_id_array[] = $wage_array['id'];
+       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="old_object_title['.$wage_array['id'].']"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="old_object_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
      }else{
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="formula_title[]"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="formula_contents[]"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="formula_value[]">');
+       $old_formula_id_array[] = $wage_array['id'];
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="old_formula_value['.$wage_array['id'].']">');
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
@@ -9057,7 +9062,7 @@ if($_GET['latest_messages_id']>0){
  tep_db_free_result($wage_query); 
  //排序
  $group_content_row_order = array();
- $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT);
+ $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT.'<input type="hidden" name="old_project_str" value="'.implode(',',$old_project_id_array).'"><input type="hidden" name="old_formula_str" value="'.implode(',',$old_formula_id_array).'">');
  $group_content_row_order[] = array('text' => '<input type="text" style="text-align:right;width:20%;" size="31" value="'.(isset($groups_array['order_sort']) ? $groups_array['order_sort'] : '1000').'" name="order_sort">');
  $group_content_table[] = array('text'=>$group_content_row_order);
 
@@ -10693,4 +10698,130 @@ if($row_array['set_time']==0){
   $notice_box->get_contents($as_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}else if($_GET['action'] == 'show_user_wage'){
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PAYROLLS);
+ include(DIR_FS_ADMIN.'classes/notice_box.php');
+ $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ //头部
+ $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+ $heading[] = array('text' => $_POST['user_name'].TEXT_PAYROLLS_TITLE);
+ $form_str = tep_draw_form('save_user_wage', FILENAME_PAYROLLS,'action=save_user_wage', 'post', 'enctype="multipart/form-data"').'<input type="hidden" name="user_id" value="'.$_POST['user_id'].'"><input type="hidden" name="user_wage_list" value="'.$_POST['user_wage_list'].'"><input type="hidden" name="save_date" value="'.$_POST['save_date'].'">';
+ 
+ $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+
+ //基本工资
+ //获取组对应的工资项目
+ $groups_id = $_POST['groups_id'];
+ $user_wage_list = $_POST['user_wage_list'];
+ $user_wage_list_array = array();
+ $user_wage_date_array = array();
+ $user_wage_contents = '';
+ if($user_wage_list != ''){
+
+   $user_wage_query = tep_db_query("select wage_id,wage_value,start_date,end_date,contents from ".TABLE_USER_WAGE." where id in (".$user_wage_list.")"); 
+   while($user_wage_array = tep_db_fetch_array($user_wage_query)){
+
+     $user_wage_list_array[$user_wage_array['wage_id']] = $user_wage_array['wage_value'];
+     $user_wage_date_array[$user_wage_array['wage_id']] = array('start'=>$user_wage_array['start_date'],'end'=>$user_wage_array['end_date']);
+     if($user_wage_contents == ''){
+       $user_wage_contents = $user_wage_array['contents'];
+     }
+   }
+   tep_db_free_result($user_wage_query);
+ }
+ $groups_users_id = array();
+ if($groups_id != 0){
+   $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' and project_id=0 order by id");
+   while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
+     $group_content_row_wage = array();
+     $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '<input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : $groups_wage_array['contents']).'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="user_wage_start_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['start'].'">～<input type="text" name="user_wage_end_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['end'].'">'), 
+     );
+     $group_content_table[] = array('text'=>$group_content_row_wage);
+     $groups_users_id[] = $groups_wage_array['id'];
+   }
+   tep_db_free_result($groups_wage_query);
+ }else{
+   $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where project_id=0 group by title order by id");
+   while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
+     $group_content_row_wage = array();
+     $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '<input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : $groups_wage_array['contents']).'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="user_wage_start_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['start'].'">～<input type="text" name="user_wage_end_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['end'].'">'), 
+     );
+     $group_content_table[] = array('text'=>$group_content_row_wage);
+     $groups_users_id[] = $groups_wage_array['id'];
+   }
+   tep_db_free_result($groups_wage_query);
+ } 
+
+ //备注
+ $group_content_row_wage = array();
+ $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_CONTENTS), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '<textarea name="wage_contents" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:300px;height:42px;*height:40px;">'.$user_wage_contents.'</textarea>'), 
+     );
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+
+ //总计时间
+ $group_content_row_wage = array();
+ $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '总计时间'), 
+     );
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+
+ //正常上班
+ $group_content_row_wage = array();
+ $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_NORMAL_ATTENDANCE), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '正常上班'), 
+     );
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+
+ //加班
+ $group_content_row_wage = array();
+ $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_NORMAL_OVERTIME), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '加班'), 
+     );
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+
+ //带薪休假
+ $group_content_row_wage = array();
+ $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_PAID_LEAVE), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '带薪休假'), 
+     );
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+
+ //请假
+ $group_content_row_wage = array();
+ $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_UNPAID_VACATION), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '请假'), 
+     );
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+ 
+ if($_POST['group_id'] > 0){
+   //作成者、作成时间、更新者、更新时间
+   $group_content_table[]['text'] = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($groups_array['create_user'])?$groups_array['create_user']:TEXT_UNSET_DATA))), 
+        array('align' => 'left','params' => 'width="85%"','text' => TEXT_DATE_ADDED.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['create_time'])))?tep_datetime_short($groups_array['create_time']):TEXT_UNSET_DATA)), 
+      );
+  
+   $group_content_table[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;'.((tep_not_null($groups_array['update_user'])?$groups_array['update_user']:TEXT_UNSET_DATA))), 
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['update_time'])))?tep_datetime_short($groups_array['update_time']):TEXT_UNSET_DATA)), 
+      ); 
+ }
+ $group_content_row_opt = array();
+ $group_content_row_opt[] = array('params'=>'align="center" colspan="2"','text'=>'<input class="element_button" type="submit" value="'.IMAGE_SAVE.'">');
+ $group_content_table[] = array('text'=>$group_content_row_opt);
+ $notice_box->get_heading($heading);
+ $notice_box->get_form($form_str);
+ $notice_box->get_contents($group_content_table);
+ echo $notice_box->show_notice();
 }
