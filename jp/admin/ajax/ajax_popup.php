@@ -8969,7 +8969,7 @@ if($_GET['latest_messages_id']>0){
  //终始日 
  if($_POST['group_id'] < 0){
    $group_content_row_date = array();
-   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE);
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">');
    $date_str = TEXT_GROUP_END_DATE; 
    $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
    for($i=1;$i<=28;$i++){

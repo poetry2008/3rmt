@@ -2,7 +2,8 @@
 /*
   $Id$
 */
-  require('includes/application_top.php');
+require('includes/application_top.php');
+tep_user_wage('${pay}*20+${pay1}-${tax}');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){

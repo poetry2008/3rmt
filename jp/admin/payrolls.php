@@ -390,11 +390,13 @@ if(tep_db_num_rows($user_wage_query) > 0){
             $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id']);
           }
           tep_db_free_result($groups_wage_query);
+          $group_id = $groups_id;
         }else{
           $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." group by title order by id");
           while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
             $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
             $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id']);
+            $group_id = $groups_wage_array['group_id'];
           }
           tep_db_free_result($groups_wage_query);
         }
@@ -461,7 +463,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                   }
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.($user_wage_val != '' ? $user_wage_val :$wage_id['value']).'">' 
+                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.($user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id)).'">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
