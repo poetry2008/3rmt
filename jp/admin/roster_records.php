@@ -997,6 +997,7 @@ while($j<=$day_num)
           }
         }
         $replace_str = '';
+        $v_att=false;
         if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
           if($date<= $today){
             if($date == $today){
@@ -1095,6 +1096,7 @@ while($j<=$day_num)
       echo "</div>";
 
       $replace_str ='';
+      $v_att=false;
       if($date<= $today){
         $time_flag = false;
         if($date == $today){
