@@ -858,6 +858,7 @@ if($month==12){
    $prev_month = $month-1;
    $prev_year = $year;
  }
+$now_time = date('Hi',time());
 $str_next_month = '?y='.$next_year.'&m='.$next_month;
 $str_prev_month = '?y='.$prev_year.'&m='.$prev_month;
 
@@ -890,7 +891,7 @@ while($all_att_row = tep_db_fetch_array($all_att_auery)){
   $all_att_arr[$all_att_row['id']] = $all_att_row;
 }
 ?>
-<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dataTable_border">
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="dataTable_border">
 <tr>
 <?php 
 echo '
@@ -948,7 +949,7 @@ while($j<=$day_num)
   }
   if($date == $today){
     echo "<div class='dataTable_hight_red'>";
-    echo $j;
+    echo '&nbsp;'.$j;
     echo "</div>";
   }else{
     echo $j;
@@ -963,14 +964,14 @@ while($j<=$day_num)
     if(tep_is_show_att($att_row['id'],$date)){
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
-		  echo '<td style="border-width:1px;">';
+		echo '<td style="border-width:0px; padding-bottom:6px;">';
         echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'];
-        if(file_exists("images/".$all_info['src_text'])&&$all_info['src_text']!=''){
+        if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
-        echo "<td bgcolor='".$att_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
         echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'];
       }
@@ -995,13 +996,28 @@ while($j<=$day_num)
             continue;
           }
         }
+        $replace_str = '';
+        $v_att=false;
         if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
           if($date<= $today){
-            $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
+            if($date == $today){
+            if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
+              $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
+              $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
+              if($now_time> $att_start && $now_time < $att_end){
+                $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+                $v_att = false;
+              }
+            }else{
+              $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+              $v_att = false;
+            }
+            }else{
+              $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
+            }
           }else{
             $v_att = false;
           }
-        $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date,$att_row['attendance_detail_id']);
         echo "<span>";
         if(!empty($user_replace)){
@@ -1029,11 +1045,12 @@ while($j<=$day_num)
             echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$att_row['attendance_detail_id']."\")' ";
           }
         }else{
+          $v_att = false;
           $replace_str = '';
         }
         echo ">";
         if($v_att!=false){
-          echo preg_replace("/<br>$/",$replace_str.'<br>',$v_att);
+          echo preg_replace("/$/",$replace_str.'',$v_att);
         }else{
           $temp_user_sql = "select * from ".TABLE_GROUPS." 
             where id='".$att_row['group_id']."'";
@@ -1065,21 +1082,41 @@ while($j<=$day_num)
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
-        echo '<td style="border-width:1px;">';
+        echo '<td style="border-width:0px; padding-bottom:6px;">';
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
-        if(file_exists("images/".$all_info['src_text'])&&$all_info['src_text']!=''){
+        if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
-        echo "<td bgcolor='".$att_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
       }
       echo "</div>";
 
-      $v_att = tep_validate_attendance($uatt_arr['user_id'],$date,$att_info,$att_info['src_text'],$j);
       $replace_str ='';
+      $v_att=false;
+      if($date<= $today){
+        $time_flag = false;
+        if($date == $today){
+        if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
+          $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
+          $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
+          if($now_time> $att_start && $now_time < $att_end){
+            $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+            $v_att = false;
+          }
+        }else{
+          $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+          $v_att = false;
+        }
+        }else{
+          $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
+        }
+      }else{
+        $v_att = false;
+      }
       echo "<span>";
 
       echo "<a href='javascript:void(0)' ";
@@ -1089,6 +1126,7 @@ while($j<=$day_num)
           echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$att_user_row['attendance_detail_id']."\")' ";
         }
       }else{
+        $v_att =false;
         $replace_str = '';
       }
       echo ">";
