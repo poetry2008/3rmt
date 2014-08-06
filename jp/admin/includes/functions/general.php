@@ -13872,21 +13872,26 @@ function tep_change_attendance_logout($uid) {
           $sql_update_yes = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and logout_time IS NULL" ;
           return  tep_db_query($sql_update_yes);
 		}
-		 //当前时间大于work_start的个数n 大于今天打上班卡的次数(说明有没打上卡的)
-	  }elseif($n>$today_login_nums) {
-         //最后下班
-		if($now_str>$max_work_end && $m >= $today_logout_nums+2){
-
-	      for($i=0;$i<=$m-$today_logout_nums-2;$i++) {
+	 }
+	    /**当前时间大于work_start的个数n 大于今天打上班卡的次数(说明有没打上卡的)
+         *当前时间大于下班时间的个数m 大于今天打下班卡的次数
+		 *这说明之前有整个班未打卡
+	     */
+	   if($n>=$today_login_nums+2 && $m >= $today_logout_nums+2) {
+				  
+		   //当前时间大于上班时间和大于下班时间相同  没迟到
+		if($n==$m){ 
+	      for($i=0;$i<=$m-$today_logout_nums-1;$i++) {
 	         $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '00:00', '00:00', ".$nums.", '". $date ."')";
 	         $nums ++;
              tep_db_query($sql_insert_no_att);
 		  }
-             $sql_update = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
-             return tep_db_query($sql_update);
-				  
-		//当前时间大于下班时间的个数m 大于今天打下班卡的次数
-		}elseif($m >= $today_logout_nums+2){
+
+          $sql_update = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
+          return  tep_db_query($sql_update);
+		}
+		//迟到了
+		if($n > $m){
 	      for($i=0;$i<=$m-$today_logout_nums-2;$i++) {
 	         $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '00:00', '00:00', ".$nums.", '". $date ."')";
 	         $nums ++;
@@ -13897,20 +13902,34 @@ function tep_change_attendance_logout($uid) {
           tep_db_query($sql_update);
           $sql_insert_login= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '".$now_time."', null, ".$nums.", '". $date ."')";
           return tep_db_query($sql_insert_login);
-		}else{
 		
-			//更新
-          $sql_update = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
-          return tep_db_query($sql_update);
-    	} 
+		}
 
-   }else{
-	 $now_hour =  date('H');
-	 $now_minute =  date('i');
-	  if($login_one_hour==$now_hour && $now_minute-$login_one_minute<10){
-        $sql_update_today = "update attendance_record set logout_time = '".$now_time."',nums=".$large_nums." where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL" ;
-	  }else{
-        $sql_update_today = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL" ;
+	   }
+	   //上一个班没打下班这个班没打上班
+	   if($n==$today_login_nums+1 && $m==$today_logout_nums+2){
+          $sql_update = "update attendance_record set logout_time = '00:00' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
+          tep_db_query($sql_update);
+          $sql_insert_login= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."','00:00', '".$now_time."', ".$nums.", '". $date ."')";
+          return tep_db_query($sql_insert_login);
+	     
+	   }
+	   //上一个班没打下班这个班迟到了
+	   if($n > $m){
+          $sql_update = "update attendance_record set logout_time = '00:00' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
+          tep_db_query($sql_update);
+          return tep_db_query($sql_insert_login);
+	     
+	   }
+	   
+	   
+	   else{
+	    $now_hour =  date('H');
+	    $now_minute =  date('i');
+	    if($login_one_hour==$now_hour && $now_minute-$login_one_minute<10){
+          $sql_update_today = "update attendance_record set logout_time = '".$now_time."',nums=".$large_nums." where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL" ;
+	    }else{
+          $sql_update_today = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL" ;
 	  }
         return tep_db_query($sql_update_today);
 	   
