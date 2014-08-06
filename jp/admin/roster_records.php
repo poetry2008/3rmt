@@ -890,7 +890,7 @@ while($all_att_row = tep_db_fetch_array($all_att_auery)){
   $all_att_arr[$all_att_row['id']] = $all_att_row;
 }
 ?>
-<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dataTable_border">
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="dataTable_border">
 <tr>
 <?php 
 echo '
