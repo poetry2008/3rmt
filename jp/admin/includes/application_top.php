@@ -273,6 +273,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('TABLE_ATTENDANCE_DETAIL', 'attendance_detail'); //add calendar
   define('TABLE_ATTENDANCE_DETAIL_REPLACE', 'attendance_detail_replace'); //add calendar
   define('TABLE_ATTENDANCE', 'attendance'); //add calendar
+  define('TABLE_ATTENDANCE_RECORD', 'attendance_record'); 
   
   //Add DB - ds-style
   define('TABLE_INFORMATION_PAGE', 'information_page');//information box

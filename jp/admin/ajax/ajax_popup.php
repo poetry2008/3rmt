@@ -9309,7 +9309,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
            array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'id="short_language" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
      ); 
 //排班类型
-    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id" '.$show_style.'>';
+    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id" style="width: 109px;" '.$show_style.'>';
     $attendance_select_type .= '<option value="0" '.($att_info_res['scheduling_type']=='0'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</option>';
     $attendance_select_type .= '<option value="1" '.($att_info_res['scheduling_type']=='1'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</option>';
     $attendance_select_type .= '</select>';
@@ -9321,19 +9321,22 @@ else if($_GET['action'] == 'edit_attendance_info') {
            array('text' => $attendance_select_type)
      ); 
 //颜色
-  $color_array = array('#FFFFFF','#FE0000','#FFCD00','#FEFF00','#00ff00','#2F68FF','#CC99FE','#FF99CB','#993400','#DDDDDD');
+  $color_array = array('#000000','#808080','#800000','#800080','#008000','#808000','#000080','#008080','#C0C0C0','#FFFFFF','#FF0000','#FF00FF','#00FF00','#FFFF00','#0000FF','#00FFFF');
   $color_font_array = array(TEXT_CALENDAR_COLOR_WHITE,TEXT_CALENDAR_COLOR_RED,TEXT_CALENDAR_COLOR_BLUE_ORANGE,TEXT_CALENDAR_COLOR_BLUE_YELLOW,TEXT_CALENDAR_COLOR_BLUE_GREEN,TEXT_CALENDAR_COLOR_BLUE,TEXT_CALENDAR_COLOR_BLUE_PURPLE,TEXT_CALENDAR_COLOR_BLUE_PINK,TEXT_CALENDAR_COLOR_BLUE_BROWN,TEXT_CALENDAR_COLOR_BLUE_GRAY); 
   if(!empty($id) && $att_info_res['scheduling_type']==1){
      $style_color = 'style="display:block;"'; 
   }else{
      $style_color = 'style="display:none;"'; 
   }
-  $select_type_color = '<select name="scheduling_type_color" id="src_text_color"'.$style_color.' '.$show_style.'>';
+  $select_type_color .='<table id="src_text_color" '. $style_color.'><tr>';
   foreach($color_array as $color_key=>$color_value){
-	$selected = $att_info_res['src_text']==$color_value ? 'selected=selected':'';
-    $select_type_color .= '<option value="'.$color_value.'"'.$selected.'>'.$color_font_array[$color_key].'</option>';
-  }
-  $select_type_color .= '</select>';
+	$border_style = $att_info_res['src_text']==$color_value ? 'border: 1px solid #4F4F4F;':'border: 1px solid #CCCCCC;';
+    $select_type_color .= '<td><a href="javascript:void(0);" onclick="document.getElementById(\'color_val\').value = \''.$color_value.'\'"><div style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
+ }
+
+  $select_type_color .='<td><input name="scheduling_type_color" id="color_val" style="opacity:0;"></td></tr></table>';
+  
+	  
 
 //图片
   if((!empty($id) && $att_info_res['scheduling_type']==0) || empty($id)){

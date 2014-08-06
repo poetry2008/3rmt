@@ -3431,6 +3431,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $show_group_id = $show_group_row['gid'];
           $show_select_group_user[] = $show_group_row['user_id'];
+		  $show_att_status = $show_group_row['att_status'];
         }
         if($show_group_id==0){
           $user_sql = "select * from ".TABLE_USERS." where status='1'";
@@ -3472,6 +3473,6 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         if($group_str == ''){
           echo '  ';
         }else{
-          echo $group_str;
+          echo $group_str.'|||'.$show_att_status;
         }
 }
