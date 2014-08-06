@@ -997,7 +997,7 @@ while($j<=$day_num)
         }
         if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
           if($date<= $today){
-            $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j);
+            $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
           }else{
             $v_att = false;
           }
@@ -1029,11 +1029,12 @@ while($j<=$day_num)
             echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$att_row['attendance_detail_id']."\")' ";
           }
         }else{
+          $v_att = false;
           $replace_str = '';
         }
         echo ">";
         if($v_att!=false){
-          echo preg_replace("/<br>$/",$replace_str.'<br>',$v_att);
+          echo preg_replace("/$/",$replace_str.'',$v_att);
         }else{
           $temp_user_sql = "select * from ".TABLE_GROUPS." 
             where id='".$att_row['group_id']."'";
@@ -1078,7 +1079,7 @@ while($j<=$day_num)
       }
       echo "</div>";
 
-      $v_att = tep_validate_attendance($uatt_arr['user_id'],$date,$att_info,$att_info['src_text'],$j);
+      $v_att = tep_validate_attendance($uatt_arr['user_id'],$date,$att_info,$att_info['src_text'],$j,$show_att_status);
       $replace_str ='';
       echo "<span>";
 
@@ -1089,6 +1090,7 @@ while($j<=$day_num)
           echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$att_user_row['attendance_detail_id']."\")' ";
         }
       }else{
+        $v_att =false;
         $replace_str = '';
       }
       echo ">";
