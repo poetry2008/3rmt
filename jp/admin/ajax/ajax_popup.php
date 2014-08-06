@@ -10543,7 +10543,7 @@ if($row_array['set_time']==0){
     while($row_all_user = tep_db_fetch_array($query_all_user)){
       $all_user[] = $row_all_user;
     }
-	$all_user = array_intersect($all_check_user,$all_user);
+	$all_user = array_intersect($all_user,$all_check_user);
   }else{
     $all_user[] = tep_get_user_info($_GET['uid']);
   }
