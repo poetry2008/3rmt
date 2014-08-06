@@ -14588,20 +14588,25 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   $group_date_array = tep_db_fetch_array($group_date_query);
   tep_db_free_result($group_date_query);
   $begin_end_date = explode('|||',$group_date_array['begin_end_date']);
-  $begin_end_date = explode('-',$begin_end_date[0]);
-  $start_date = $begin_end_date[1];
-  $end_date = $begin_end_date[0];
+  $begin_end_date_array = array();
+  foreach($begin_end_date as $begin_end_date_value){
+    $begin_end_date_temp = explode('-',$begin_end_date_value);
+    $begin_end_date_array[] = $begin_end_date_temp[0]; 
+    $begin_end_date_array[] = $begin_end_date_temp[1]; 
+  }
+  $start_date = min($begin_end_date_array);
+  $end_date = max($begin_end_date_array);
 
   //关于打卡出勤的相关参数及对应的值
   $attendance_replace_array = array();
-  $attendance_detail_query = tep_db_query("select param_a,param_b,work_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL); 
+  $attendance_detail_query = tep_db_query("select param_a,param_b,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL); 
   while($attendance_detail_array = tep_db_fetch_array($attendance_detail_query)){
 
     //要求员工的出勤时间
     if(in_array('${'.$attendance_detail_array['param_a'].'}',$parameters_value_array)){
 
       if($attendance_detail_array['work_hours'] > 0){
-        $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $attendance_detail_array['work_hours'];
+        $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $attendance_detail_array['work_hours']+$attendance_detail_array['rest_hours'];
       }else{
         $work_hours = 0;
         if($attendance_detail_array['work_start'] < $attendance_detail_array['work_end']){
@@ -14625,10 +14630,16 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
 
     //员工的实际出勤时间 
     if(in_array('${'.$attendance_detail_array['param_b'].'}',$parameters_value_array)){
-
       $attendance_num = 0;
+      if($end_date < date('d',strtotime($wage_date))){
+
+        $year_month = date('Ym',strtotime($wage_date));
+      }else{
+        $year_month = date('Ym',strtotime("-1 month",strtotime($wage_date)));
+      }
       for($i = $start_date;$i <= $end_date;$i++){
-        $attendance_num += tep_attendance_record_time($user_id,date('Ym',strtotime($wage_date)).($i < 10 ? '0'.$i : $i));
+        //echo $i.'=>'.tep_attendance_record_time($user_id,$year_month.($i < 10 ? '0'.$i : $i)).'<br>';
+        $attendance_num += tep_attendance_record_time($user_id,$year_month.($i < 10 ? '0'.$i : $i));
       }
 
       $attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'] = $attendance_num; 
@@ -14680,7 +14691,7 @@ function tep_attendance_record_time($user_id,$date){
   }
 
   //获取排班要求的出勤时间
-  $attendance_query = tep_db_query("select work_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL." where id='".$attendance_detail_id."'");
+  $attendance_query = tep_db_query("select set_time,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL." where id='".$attendance_detail_id."'");
   $attendance_array = tep_db_fetch_array($attendance_query);
   tep_db_free_result($attendance_query);
   
@@ -14696,28 +14707,76 @@ function tep_attendance_record_time($user_id,$date){
   }
   tep_db_free_result($attendance_record_query);
 
-  if($attendance_array['work_hours'] > 0){
+  //如果当前没有出勤
+  if(empty($attendance_record_temp) || date('Y-m-d H:i',strtotime($attendance_record_temp['start'])) == date('Y-m-d H:i',strtotime($attendance_record_temp['end']))){
 
-    if($temp_time >= $attendance_array['work_hours']*60*60){
+    return 0;
+  }
 
-      return round($temp_time/60/60);
+  //如果当天没有排班
+  if($attendance_detail_id == ''){
+
+    return time_diff(date('H:i',strtotime($attendance_record_temp['start'])),date('H:i',strtotime($attendance_record_temp['end']))); 
+  }
+
+  $work_end_time = str_replace(':','',$attendance_array['work_end']);
+  $work_start_time = str_replace(':','',$attendance_array['work_start']);
+  $temp_start = date('Hi',strtotime($attendance_record_temp['start']));
+  $temp_end = date('Hi',strtotime($attendance_record_temp['end']));
+
+  //隔日时间处理
+  if($work_end_time <= $work_start_time){
+
+    $time_temp_array = explode(':',$attendance_array['work_end']);
+    $attendance_array['work_end'] = ($time_temp_array[0]+24).':'.$time_temp_array[1];
+    $work_end_time = str_replace(':','',$attendance_array['work_end']);
+  }
+
+  if($temp_end <= $temp_start){
+
+    $time_temp_array = explode(':',date('H:i',strtotime($attendance_record_temp['end'])));
+    $attendance_record_temp['end'] = ($time_temp_array[0]+24).':'.$time_temp_array[1];
+    $temp_end = date('Hi',strtotime($attendance_record_temp['end']));
+  }
+  //要求出勤时间
+  $work_hours_time = time_diff($attendance_array['work_start'],$attendance_array['work_end']);
+  
+  if($attendance_array['work_hours'] > 0 && $attendance_array['set_time'] == 1){
+
+    if($temp_time >= ($attendance_array['work_hours']+$attendance_array['rest_hours'])*60*60){
+
+      return $attendance_array['work_hours']+$attendance_array['rest_hours'];
     }
   }else{
 
-    if($attendance_array['work_end'] > $attendance_array['work_start']){
+    $work_start_time_temp = explode(':',$attendance_array['work_start']);
+    $work_end_time_temp = explode(':',$attendance_array['work_end']);
+    $work_time_array = range($work_start_time_temp[0],$work_end_time_temp[0]);
+    $att_start_time_temp = explode(':',date('H:i',strtotime($attendance_record_temp['start'])));
+    $att_end_time_temp = explode(':',date('H:i',strtotime($attendance_record_temp['end'])));
+    $att_time_array = range($att_start_time_temp[0],$att_end_time_temp[0]);
 
-      if(date('H:i',$attendance_record_temp['start']) < $attendance_array['work_start'] && date('H:i',$attendance_record_temp['end']) > $attendance_array['work_end']){
+    $diff_work_time = array_intersect($work_time_array,$att_time_array);
 
-        return round($temp_time/60/60);
+    if(!empty($diff_work_time)){
+      if($temp_start <= $work_start_time && $temp_end >= $work_end_time){
+
+        return $work_hours_time;
       }
-    }else{
 
-      if($attendance_record_temp['end'] < $attendance_record_temp['start']){
- 
-        if(date('H:i',$attendance_record_temp['start']) < $attendance_array['work_start'] && date('H:i',$attendance_record_temp['end']) > $attendance_array['work_end']){
+      if($temp_start <= $work_start_time && $temp_end <= $work_end_time){
 
-          return round($temp_time/60/60);
-        }
+        return time_diff($attendance_array['work_start'],date('H:i',strtotime($attendance_record_temp['end'])));
+      }
+
+      if($temp_start >= $work_start_time && $temp_end <= $work_end_time){
+
+        return time_diff(date('H:i',strtotime($attendance_record_temp['start'])),date('H:i',strtotime($attendance_record_temp['end'])));
+      }
+
+      if($temp_start >= $work_start_time && $temp_end >= $work_end_time){
+
+        return time_diff(date('H:i',strtotime($attendance_record_temp['start'])),$attendance_array['work_end']);
       }
     }
   }
@@ -14773,4 +14832,26 @@ function wage_rate($XSum){
     $TSum = 0;
   }
   return $TSum;
+}
+function time_diff($start_time,$end_time){
+  $work_hours_time = 0;
+  $work_start_time = str_replace(':','',$start_time);
+  $work_end_time = str_replace(':','',$end_time);
+  if($work_start_time < $work_end_time){
+
+    $work_temp = explode(':',$end_time);
+    $work_end = $work_temp[0]+$work_temp[1]/60;
+    $work_temp = explode(':',$start_time);
+    $work_start = $work_temp[0]+$work_temp[1]/60;
+    $work_hours_time = $work_end - $work_start;
+  }else{
+
+    $work_temp = explode(':',$end_time);
+    $work_end = ($work_temp[0]+24)+$work_temp[1]/60;
+    $work_temp = explode(':',$start_time);
+    $work_start = $work_temp[0]+$work_temp[1]/60;
+    $work_hours_time = $work_end - $work_start; 
+  }
+
+  return round($work_hours_time,1);
 }
