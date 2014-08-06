@@ -14084,8 +14084,7 @@ function validate_two_time($first_start,$first_end,$second_start,$second_end){
   return false;
 }
 
-function
-tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_status=0){
+function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_status=0){
   global $ocertify,$user_atted;
   $today = date('Ymd',time());
   $user_info = tep_get_user_info($uid);
@@ -14467,15 +14466,16 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
   }
   $all_sql .= " order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
   $query = tep_db_query($all_sql);
+  $attendance_dd_arr_tmp = array();
   while($row = tep_db_fetch_array($query)){
-    $attendance_dd_arr[] = $row;
+    $attendance_dd_arr_tmp[] = $row;
   }
   $diff_arr = array();
-  if(count($attendance_dd_arr)>1){
+  if(count($attendance_dd_arr_tmp)>1){
     // 时间段 和 时间数 的排班数组
     $set_array = array();
     $unset_array = array();
-    foreach($attendance_dd_arr as $pk => $att_row){
+    foreach($attendance_dd_arr_tmp as $pk => $att_row){
       $add_flag = true;
       if($att_row['set_time']==1){
         $unset_array[] = $att_row;
@@ -14497,9 +14497,24 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     }
     $diff_arr['time'] = $set_array;
     $diff_arr['sum'] = $unset_array;
-    return $diff_arr;
+  }
+
+  $replace_arr = array();
+  $replace_sql = "select * from ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where 
+     date='".$date."' and allow_status = '1'";
+  $replace_query = tep_db_query($replace_sql);
+  $replace_aid = array();
+  while($replace_row = tep_db_fetch_array($replace_query)){
+    $replace_arr[] = $replace_row;
+    $replace_aid[] = $replace_row['attendance_detail_id'];
+  }
+  $res_arr = array();
+  if(count($attendance_dd_arr_tmp)>1){
   }else{
-    return $attendance_dd_arr;
+    $row_arr = array();
+    if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
+      
+    }
   }
 }
 function tep_validate_user_attenandced($all_user,$date,$show_group=0){
