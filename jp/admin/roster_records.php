@@ -942,7 +942,7 @@ while($j<=$day_num)
   }
   if($date == $today){
     echo "<div class='dataTable_hight_red'>";
-    echo $j;
+    echo '&nbsp;'.$j;
     echo "</div>";
   }else{
     echo $j;
@@ -957,11 +957,11 @@ while($j<=$day_num)
     if(tep_is_show_att($att_row['id'],$date)){
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
-		  echo '<td style="border-width:1px;">';
+		  echo '<td style="border-width:0px; padding-bottom:6px;">';
         echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'].'<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
       }else{
-        echo "<td bgcolor='".$att_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
         echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'];
       }
@@ -1053,11 +1053,11 @@ while($j<=$day_num)
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
-        echo '<td style="border-width:1px;">';
+        echo '<td style="border-width:0px; padding-bottom:6px;">';
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'].'<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
       }else{
-        echo "<td bgcolor='".$att_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
       }

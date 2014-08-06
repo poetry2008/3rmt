@@ -2355,9 +2355,15 @@ line-height:14px;
 display:inline-block;
 
 }
+/*@date 20140806 roster_record 日历框框间距*/
 .uroster_records span{
 	line-height:14px;
 	display:block;
 	float:left;	
+	padding-left:6px;
 }
+.uroster_record  img{
+	padding-left:6px;
+}
+
 
