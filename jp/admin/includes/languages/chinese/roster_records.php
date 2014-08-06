@@ -73,5 +73,9 @@ define('TEXT_SELECT_USER','用户名');
 define('TEXT_DELETE_REMIND','确定删除吗？');
 define('TEXT_ONLY_USER_ATTENDANCE','个人排班设定');
 define('TEXT_WARN_ATTENDANCE_TYPE_DIFF','请用同样的时间带/时间数进行设置');
+
+define('SHOW_ALL_ATT_STATUS','全部显示');
+define('SHOW_ERROR_ATT_STATUS','迟到/早退');
+define('SHOW_NULL_ATT_STATUS','不显示');
 ?>
 

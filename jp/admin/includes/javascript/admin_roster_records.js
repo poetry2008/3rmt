@@ -420,7 +420,13 @@ function change_user_list(ele){
     async: false,
     success: function(msg) {
       if(msg!=''){
-        $("#show_user_list").html(msg);
+         var msg_arr = msg.split('|||'); 
+		 if(msg_arr[1]=='') {
+			msg_arr[1]=0;
+		 } 
+		 var i= msg_arr[1];
+		 $("input[name='att_status']:eq("+i+")").attr("checked",'checked');
+         $("#show_user_list").html(msg_arr[0]);
       }
     }
   });

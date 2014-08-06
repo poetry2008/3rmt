@@ -374,6 +374,7 @@ if(isset($_GET['action'])){
           $insert_arr['user_id'] = $user_id_tmp;
           $insert_arr['is_select'] = '1';
           $insert_arr['operator_id'] = $operator_id;
+          $insert_arr['att_status'] = $_POST['att_status'];
           tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
         }
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
@@ -392,6 +393,7 @@ if(isset($_GET['action'])){
         $insert_arr['user_id'] = '';
         $insert_arr['is_select'] = '1';
         $insert_arr['operator_id'] = $operator_id;
+        $insert_arr['att_status'] = $_POST['att_status'];
         tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
 
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
@@ -599,6 +601,7 @@ require("includes/note_js.php");
           if($show_group_row['user_id']!=''){
             $show_select_group_user[] = $show_group_row['user_id'];
           }
+		  $show_att_status =$show_group_row['att_status'];
         }
         if($has_default){
           if($show_group_id==0){
@@ -710,6 +713,25 @@ require("includes/note_js.php");
         $group_str .= '<td align="right">';
         $group_str .= '<input type="submit" value="'.TEXT_UPDATE.'">';
         $group_str .= '</td>';
+        $group_str .= '</tr>';
+        $group_str .= '<tr>';
+
+        $group_str .= '<td valign="top">';
+        $group_str .= TEXT_ADL_SELECT_USER_TEXT;
+        $group_sr .= '</td>';
+        $group_str .= '<td>';
+		if($show_att_status==1){
+	      $status_error = 'checked ="ckecked"';
+		}elseif($show_att_status==2) {
+	      $status_null = 'checked ="ckecked"';
+		}else{
+	      $status_all = 'checked ="ckecked"';
+		}
+        $group_str .= '<input type="radio" name="att_status" id="show_all" value="0" '.$status_all.' ><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>';
+        $group_str .= '<input type="radio" name="att_status" id="show_error" value="1" '.$status_error.'><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>';
+        $group_str .= '<input type="radio" name="att_status" id="show_null" value="2" '.$status_null.'><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>';
+        $group_sr .= '</td>';
+
         $group_str .= '</tr>';
         $group_str .= '</table></form>';
       ?>
