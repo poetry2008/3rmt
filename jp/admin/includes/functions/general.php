@@ -14084,7 +14084,8 @@ function validate_two_time($first_start,$first_end,$second_start,$second_end){
   return false;
 }
 
-function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
+function
+tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_status=0){
   global $ocertify,$user_atted;
   $today = date('Ymd',time());
   $user_info = tep_get_user_info($uid);
@@ -14148,11 +14149,13 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
         $show_user = true;
       }
     }
-    if($show_user){
-        $return_str = $user_info['name'].'&nbsp;';
-        if($param_str != ''){
-          $return_str .= $param_str;
-        }
+    $return_str = $user_info['name'].'&nbsp;';
+    if($param_str != ''){
+      if($show_status !=2 ){
+        $return_str .= $param_str;
+      }
+    }
+    if($show_user&&$show_status!=2){
         if($bg_color == '#FE0000'){
           $return_str .= '<font color ="#FFFFFF">';
         }else{
@@ -14166,22 +14169,30 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
           $return_str .= substr($row['logout_time'],11,5);
         }
         $return_str .= '</font><br>';
-        return $return_str;
     }else{
-      return false;
+      if($show_status == 0){
+        $return_str .= '<font color ="#000000">';
+        $return_str .= substr($row['login_time'],11,5)
+          .  '～';
+        $return_str .= substr($row['logout_time'],11,5);
+        $return_str .= '</font><br>';
+      }
     }
+    return $return_str;
   }else{
     $return_str = $user_info['name'].'&nbsp;';
     if($param_str != ''){
-      $return_str .= $param_str;
+      if($show_status !=2 ){
+        $return_str .= $param_str;
+        if($bg_color == '#FE0000'){
+          $return_str .= '<font color ="#FFFFFF">';
+        }else{
+          $return_str .= '<font color ="#FE0000">';
+        }
+        $return_str .= '......' . '～' . '......';
+        $return_str .= '</font><br>';
+      }
     }
-    if($bg_color == '#FE0000'){
-      $return_str .= '<font color ="#FFFFFF">';
-    }else{
-      $return_str .= '<font color ="#FE0000">';
-    }
-    $return_str .= '......' . '～' . '......';
-    $return_str .= '</font><br>';
     return $return_str;
   }
 }
@@ -14644,6 +14655,8 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   
   //把公式中的 num％ 字符替换为 (num/100) 
   $wage_str = preg_replace('/([0-9]+)%/','($1/100)',$wage_str);
+  //针对复杂运算的处理 ROUND MAX MIN {} 等
+  
   return tep_operations($wage_str);
 }
 /* -------------------------------------
@@ -14722,9 +14735,8 @@ function tep_attendance_record_time($user_id,$date){
   return 0;
 }
 /* -------------------------------------
-    功能: 获取指定员工指定时间的出勤时间 
-    参数: $user_id  员工ID 
-    参数: $date  时间 
+    功能: 计算工资的个税 
+    参数: $XSum  最终工资 
     返回值: 计算结果 
     ------------------------------------ */
 function wage_rate($XSum){
