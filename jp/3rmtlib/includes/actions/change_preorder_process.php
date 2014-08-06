@@ -769,7 +769,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
   }
   tep_db_perform(TABLE_ORDERS, $insert_sql_data_array);
   if(isset($_SESSION['paypal_order_info'])&&is_array($_SESSION['paypal_order_info'])&&!empty($_SESSION['paypal_order_info'])){
-    tep_db_perform(TABLE_ORDERS, $_SESSION['paypal_order_info'],'update', "orders_id='".$insert_id."'");
+    tep_db_perform(TABLE_ORDERS, $_SESSION['paypal_order_info'],'update', "orders_id='".$orders_id."'");
   }
 
   foreach($totals_info_array as $t_info_arr){
