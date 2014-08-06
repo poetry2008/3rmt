@@ -858,6 +858,7 @@ if($month==12){
    $prev_month = $month-1;
    $prev_year = $year;
  }
+$now_time = date('Hi',time());
 $str_next_month = '?y='.$next_year.'&m='.$next_month;
 $str_prev_month = '?y='.$prev_year.'&m='.$prev_month;
 
@@ -995,13 +996,27 @@ while($j<=$day_num)
             continue;
           }
         }
+        $replace_str = '';
         if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
           if($date<= $today){
-            $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
+            if($date == $today){
+            if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
+              $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
+              $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
+              if($now_time> $att_start && $now_time < $att_end){
+                $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+                $v_att = false;
+              }
+            }else{
+              $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+              $v_att = false;
+            }
+            }else{
+              $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
+            }
           }else{
             $v_att = false;
           }
-        $replace_str ='';
         $user_replace = tep_get_replace_by_uid_date($u_list,$date,$att_row['attendance_detail_id']);
         echo "<span>";
         if(!empty($user_replace)){
@@ -1079,8 +1094,27 @@ while($j<=$day_num)
       }
       echo "</div>";
 
-      $v_att = tep_validate_attendance($uatt_arr['user_id'],$date,$att_info,$att_info['src_text'],$j,$show_att_status);
       $replace_str ='';
+      if($date<= $today){
+        $time_flag = false;
+        if($date == $today){
+        if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
+          $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
+          $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
+          if($now_time> $att_start && $now_time < $att_end){
+            $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+            $v_att = false;
+          }
+        }else{
+          $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+          $v_att = false;
+        }
+        }else{
+          $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
+        }
+      }else{
+        $v_att = false;
+      }
       echo "<span>";
 
       echo "<a href='javascript:void(0)' ";
