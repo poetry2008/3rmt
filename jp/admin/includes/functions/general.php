@@ -14010,7 +14010,7 @@ function validate_two_time($first_start,$first_end,$second_start,$second_end){
   return false;
 }
 
-function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
+function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_status=0){
   global $ocertify,$user_atted;
   $today = date('Ymd',time());
   $user_info = tep_get_user_info($uid);
@@ -14029,6 +14029,8 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
   $work_end = $att_info['work_end'];
   $work_start_str = str_replace(':','',$work_start);
   $work_end_str = str_replace(':','',$work_end);
+
+
   $sql = "select * from ".TABLE_ATTENDANCE." WHERE 
     user_name='".$uid."' and date='".$date."'";
   $query = tep_db_query($sql);
@@ -14074,11 +14076,13 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
         $show_user = true;
       }
     }
-    if($show_user){
-        $return_str = $user_info['name'].'&nbsp;';
-        if($param_str != ''){
-          $return_str .= $param_str;
-        }
+    $return_str = $user_info['name'].'&nbsp;';
+    if($param_str != ''){
+      if($show_status !=2 ){
+        $return_str .= $param_str;
+      }
+    }
+    if($show_user&&$show_status!=2){
         if($bg_color == '#FE0000'){
           $return_str .= '<font color ="#FFFFFF">';
         }else{
@@ -14092,15 +14096,24 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
           $return_str .= substr($row['logout_time'],11,5);
         }
         $return_str .= '</font><br>';
-        return $return_str;
     }else{
-      return false;
+      if($show_status == 0){
+        $return_str .= '<font color ="#000000">';
+        $return_str .= substr($row['login_time'],11,5)
+          .  '～';
+        $return_str .= substr($row['logout_time'],11,5);
+        $return_str .= '</font><br>';
+      }
     }
+    return $return_str;
   }else{
     $return_str = $user_info['name'].'&nbsp;';
     if($param_str != ''){
-      $return_str .= $param_str;
+      if($show_status !=2 ){
+        $return_str .= $param_str;
+      }
     }
+    if($show_status==0){
     if($bg_color == '#FE0000'){
       $return_str .= '<font color ="#FFFFFF">';
     }else{
@@ -14108,6 +14121,7 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
     }
     $return_str .= '......' . '～' . '......';
     $return_str .= '</font><br>';
+    }
     return $return_str;
   }
 }
@@ -14372,14 +14386,17 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     or (type='1' and week='".$date_info['week']."' and `space` = 0) 
     or (type='1' and week='".$date_info['week']."' and `space` != 0 and (datediff(  '".$date."',`date` )%  (7 * (space+1))  = 0 ))
     or (type='2' and day='".$date_info['day']."')) and ((is_user='1' and
-      user_id='".$user."') or ( is_user='0' and ";
+      user_id='".$user."') ";
   if($show_group!=0){
-    $all_sql .= " group_id='".$show_group."' ";
+    $all_sql .= " or ( is_user='0' and  group_id='".$show_group."' )";
   }else{
     $group_list = tep_get_groups_by_user($user);
-    $group_str = implode(',',$group_list);
-    $all_sql .= " group_id in ( ".$group_str." ))) ";
+    if(!empty($group_list)){
+      $group_str = implode(',',$group_list);
+      $all_sql .= " or ( is_user='0' and  group_id in ( ".$group_str." )) ";
+    }
   }
+  $all_sql .= " ) ";
   $all_sql .= " order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
   $query = tep_db_query($all_sql);
   while($row = tep_db_fetch_array($query)){
@@ -14428,38 +14445,99 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
     $user_att_list[] = $att_row['user_name'];
   }
   $user_att_list = array_unique($user_att_list);
-  $user_date_att_info = array();
+  $result_user_att = array();
   foreach($all_user as $user){
     //先判断请假的是否迟到
-    $user_att_date_list = array();
-    $user_att_date_list = tep_all_attenande_by_uid($user,$date,$show_group);
-    if(count($user_att_date_list)>1){
-      $uadl_time = $user_att_date_list['time'];
-      $uadl_sum = $user_att_date_list['sum'];
+    $user_all_att_date = array();
+    $user_all_att_date = tep_all_attenande_by_uid($user,$date,$show_group);
+    if(count($user_all_att_date)>1){
+      $uadl_time = $user_all_att_date['time'];
+      $uadl_sum = $user_all_att_date['sum'];
+      if(empty($uadl_sum)){
+      //只有时间段打卡
+        foreach($uadl_time as $key=>$value){
+          $index = $key+1;
+          if(isset($user_att_info[$user][$index])){
+            $tmp_user = $user_att_info[$user][$index];
+            $work_start = str_replace(':','',$value['work_start']);
+            $work_end = str_replace(':','',$value['work_end']);
+            $real_work_start = str_replace(':','',substr($tmp_user['login_time'],11,5));
+            $real_work_end = str_replace(':','',substr($tmp_user['logout_time'],11,5));
+            $real_date = str_replace('-','',substr($tmp_user['logout_time'],0,10));
+            if($work_start > $work_end){
+              if($date< $real_date&&$real_work_end >= $work_end&&$real_work_start <= $work_start){
+                $user_real_att = array('type'=>true,'aid'=>$tmp_user['id'],'login_time'=>$tmp_user['login_time'],'logout_time'=>$tmp_user['logout_time']);
+              }
+            }else{
+              if($real_work_start <= $work_start && $real_work_end >= $work_end){
+                $user_real_att = array('type'=>true,'aid'=>$tmp_user['id'],'login_time'=>$tmp_user['login_time'],'logout_time'=>$tmp_user['logout_time']);
+              }
+            }
+          }else{
+            $user_real_att = array('type'=>false,'aid'=>$tmp_user['id'],'login_time'=>$tmp_user['login_time'],'logout_time'=>$tmp_user['logout_time']);
+          }
+          $result_user_att[$user][$value['attendance_detail_id']] = $user_real_att;
+        }
+      }else if(empty($uadl_time)){
+      //只有时间数打卡
+        foreach($uadl_sum as $key=>$value){
+          $index = $key+1;
+          if(isset($user_att_info[$user][$index])){
+            $tmp_user = $user_att_info[$user][$index];
+            $work_start = explode(':',$value['work_start']);
+            $work_end = explode(':',$value['work_end']);
+            $real_work_start = str_replace(':','',substr($tmp_user['login_time'],11,5));
+            $real_work_end = str_replace(':','',substr($tmp_user['logout_time'],11,5));
+            $real_date = str_replace('-','',substr($tmp_user['logout_time'],0,10));
+            if($work_start > $work_end){
+              if($date< $real_date&&$real_work_end >= $work_end&&$real_work_start <= $work_start){
+                $user_real_att = array('type'=>true,'aid'=>$tmp_user['id'],'login_time'=>$tmp_user['login_time'],'logout_time'=>$tmp_user['logout_time']);
+              }
+            }else{
+              if($real_work_start <= $work_start && $real_work_end >= $work_end){
+                $user_real_att = array('type'=>true,'aid'=>$tmp_user['id'],'login_time'=>$tmp_user['login_time'],'logout_time'=>$tmp_user['logout_time']);
+              }
+            }
+          }else{
+            $user_real_att = array('type'=>false,'aid'=>$tmp_user['id'],'login_time'=>$tmp_user['login_time'],'logout_time'=>$tmp_user['logout_time']);
+          }
+          $result_user_att[$user][$value['attendance_detail_id']] = $user_real_att;
+        }
+      }else{
+      //混合打卡
+      }
     }else{
-      $user_date_att_info[$user] = array();
+      $result_user_att[$user] = array();
       if(!empty($user_att_info[$user])){
-        $work_start = str_replace(':','',$user_att_date_list['work_start'])
-        $work_end = str_replace(':','',$user_att_date_list['work_end'])
+        $work_start = str_replace(':','',$user_all_att_date[0]['work_start']);
+        $work_end = str_replace(':','',$user_all_att_date[0]['work_end']);
         $error_flag = true;
         foreach($user_att_info[$user] as $uai_value){
-          $real_work_start = substr($uai_value['login_time'],11,5);
-          $real_work_end = substr($uai_value['logout_time'],11,5);
+          $real_work_start = str_replace(':','',substr($uai_value['login_time'],11,5));
+          $real_work_end = str_replace(':','',substr($uai_value['logout_time'],11,5));
+          $real_date = intval(str_replace('-','',substr($uai_value['logout_time'],0,10)));
           if($work_start > $work_end){
-            if($date< intval(substr($uai_value['logout_time']))&&$real_work_end_str >= $work_end&&$real_work_start_str <= $work_start){
-              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
+            if($date< $real_date&&$real_work_end >= $work_end&&$real_work_start <= $work_start){
+              $user_real_att = array('type'=>true,'aid'=>$uai_value['id'],'login_time'=>$uai_value['login_time'],'logout_time'=>$uai_value['logout_time']);
+              $error_flag = false;
               break;
             }
           }else{
-            if($real_work_start_str <= $work_start && $real_work_end_str >= $work_end){
-              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
+            if($real_work_start <= $work_start && $real_work_end >= $work_end){
+              $user_real_att = array('type'=>true,'aid'=>$uai_value['id'],'login_time'=>$uai_value['login_time'],'logout_time'=>$uai_value['logout_time']);
+              $error_flag = false;
               break;
             }
           }
         }
+        if($error_flag){
+          $user_real_att = array('type'=>false,'aid'=>$uai_value['id'],'login_time'=>$uai_value['login_time'],'logout_time'=>$uai_value['logout_time']);
+        }
       }else{
-        $user_date_att_info[$user] = array();
+        $user_real_att = array('type'=>false,'aid'=>'','login_time'=>'0000-00-00 00:00:00','logout_time'=>'0000-00-00 00:00:00');
       }
+      $result_user_att[$user][$user_all_att_date[0]['attendance_detail_id']] = $user_real_att;
     }
   }
+  return $result_user_att;
 }
