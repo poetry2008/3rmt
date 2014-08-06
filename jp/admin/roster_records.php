@@ -964,10 +964,10 @@ while($j<=$day_num)
     if(tep_is_show_att($att_row['id'],$date)){
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
-		  echo '<td style="border-width:0px; padding-bottom:6px;">';
+		echo '<td style="border-width:0px; padding-bottom:6px;">';
         echo "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         echo $att_info['short_language'];
-        if(file_exists("images/".$all_info['src_text'])&&$all_info['src_text']!=''){
+        if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
@@ -1085,7 +1085,7 @@ while($j<=$day_num)
         echo '<td style="border-width:0px; padding-bottom:6px;">';
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
-        if(file_exists("images/".$all_info['src_text'])&&$all_info['src_text']!=''){
+        if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
