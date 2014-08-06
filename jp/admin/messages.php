@@ -286,7 +286,8 @@
                 foreach($users_list_array as $key => $value){
 			$recipient_name[] =  $value;
 		}
-          $recipient_name = mb_substr($recipient_str,0,-1).'||||||'.implode(';',$recipient_name);
+                $recipient_name = mb_substr($recipient_str,0,-1).'||||||'.implode(';',$recipient_name);
+                $recipient_name = $recipient_name == '||||||' ?  '' : $recipient_name;
         }
       //判断是发信，还是存草稿箱
       if($_POST['messages_flag'] == 0){
@@ -684,6 +685,7 @@
 			$recipient_name[] =  $value;
                 }
                 $recipient_name = mb_substr($recipient_str,0,-1).'||||||'.implode(';',$recipient_name);
+                $recipient_name = $recipient_name == '||||||' ?  '' : $recipient_name;
         }	
 	if($_GET['status'] == 'sent' || $_GET['status'] == 'drafts'){
 		$reply_status = '0';
@@ -886,6 +888,7 @@
         $groups_id_list = array_unique($groups_id_list);
         $groups_id_list = array_filter($groups_id_list);
         $groups_id_str = implode(',',$groups_id_list); 
+        $groups_id_str = $_POST['messages_to'] == 2 ? $groups_id_str : '';
         if($messages_file_status == '0' && $messages_file_name == ''){
 
           $messages_file_query = tep_db_query("select attach_file,file_name from messages where id='".$_GET['id']."'");
@@ -1581,15 +1584,18 @@ function checkbox_event(obj,event){
 var messages_radio_all = '';
 function messages_to_all_radio(){	
 	$('#select_groups').css('display', 'none');	
-	$('#select_user').css('display', 'none');
+        $('#select_user').css('display', 'none');
+        $("#current_messages_to").val(0);
 }
 function messages_to_appoint_radio(){	
 	$('#select_groups').css('display', 'none');	
 	$('#select_user').css('display', '');	
+        $("#current_messages_to").val(1);
 }
 function messages_to_groups_radio(){	 
 	$('#select_user').css('display', 'none');	
 	$('#select_groups').css('display', '');	
+        $("#current_messages_to").val(2);
 }
 function add_select_user(){
 	$('input[name=all_staff]').each(function() {	
@@ -1783,6 +1789,8 @@ function messages_check(is_back,flag){
         if(flag == 1 || flag == 4){
 
           error_status_select = 1;
+          error_status_contents = 1;
+          error_status_back_contents = 1;
         }
 	if(error_status_contents == 0){
 		$('#messages_must_write').css('display','');
@@ -1902,9 +1910,56 @@ function drafts_auto_save(flag,num){
   old_contents = old_contents.replace(/(^\s*)|(\s*$)/g,'');
   var current_contents = $("#current_contents").val();
   current_contents = current_contents.replace(/(^\s*)|(\s*$)/g,'');
+  //group user
+  var old_messages_to = $("#old_messages_to").val();
+  var old_groups_str = $("#old_groups_str").val();
+  var old_groups_array = old_groups_str.split(',');
+  old_groups_array.sort(function(a,b){return a>b?1:-1});
+  var current_groups_str = $("#send_groups_list").val();
+  if(current_groups_str.substr(-1,1) == ','){
+
+    current_groups_str = current_groups_str.substr(0,-1);
+  }
+  var current_groups_array = current_groups_str.split(',');
+  current_groups_array.sort(function(a,b){return a>b?1:-1});
+  var old_users_str = $("#old_users_str").val();
+  var old_users_array = old_users_str.split(',');
+  old_users_array.sort(function(a,b){return a>b?1:-1});
+  var current_users_array = new Array();
+  $("input[name='selected_staff[]']").each(function(){
+
+    var current_users_str = $(this).val();
+    current_users_temp = current_users_str.split('|||');
+    current_users_array.push(current_users_temp[0]);
+  });
+  current_users_array.sort(function(a,b){return a>b?1:-1});
+  var messages_submit_flag = false;
+  var current_messages_to = $("#current_messages_to").val();
+  if(old_messages_to != current_messages_to){
+
+    messages_submit_flag = true; 
+  }else{
+    if(current_messages_to == 2){
+
+      if(old_groups_array.toString() != current_groups_array.toString()){
+
+        messages_submit_flag = true;
+      }
+    }else if(current_messages_to == 1){
+
+      if(old_users_array.toString() != current_users_array.toString()){
+
+        messages_submit_flag = true;
+      }
+    } 
+  }
 
   if(old_contents != current_contents){
 
+    messages_submit_flag = true;
+  }
+
+  if(messages_submit_flag == true){
     messages_check(flag,num);
   }
 }
@@ -2307,7 +2362,7 @@ require("includes/note_js.php");
           }
           $to_messages = '<span alt="'.$groups_string_alt.'" title="'.$groups_string_alt.'">'.mb_substr($groups_string,0,-1).'</span>';
         }else{
-          $to_messages = '<span alt="'.$latest_messages['recipient_name'].'" title="'.$latest_messages['recipient_name'].'">'.$latest_messages['recipient_name'].'</span>'; 
+          $to_messages = '<span alt="'.$latest_messages['recipient_name'].'" title="'.($latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name']).'">'.($latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name']).'</span>'; 
         }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',

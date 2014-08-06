@@ -1,0 +1,32 @@
+<?php
+//japanese languages
+define('TEXT_HEAD_TITLE','給料計算');
+define('TEXT_SHOW_CONTENTS_TITLE','表示内容');
+define('TEXT_PAYROLLS_CURRENCY_TYPE_JPY','円');
+define('TEXT_PAYROLLS_CURRENCY_TYPE_RMB','人民元');
+define('TEXT_PAYROLLS_CURRENCY_TYPE_USD','ドル');
+define('TEXT_PAYROLLS_CURRENCY_TYPE_VND','ドン');
+define('TEXT_PAYROLLS_DATE_SELECT','日付から選ぶ');
+define('TEXT_PAYROLLS_CONTENTS_SELECT','保存した内容から選ぶ');
+define('TEXT_GROUP_SELECT', 'グループ');
+define('TEXT_GROUP_USER_LIST', 'スタッフ');
+define('TEXT_ALL_GROUP', '全て');
+define('TEXT_UPDATE', '更新');
+define('TEXT_PAYROLLS_NAME', '氏名');
+define('TEXT_PAYROLLS_OPTION', '操作');
+define('TEXT_PAYROLLS_RESET', '重置');
+define('TEXT_PAYROLLS_PRINT', '打印');
+define('TEXT_PAYROLLS_EXPORT', '导出');
+define('TEXT_PAYROLLS_SEND_MAIL', '給料明細送信');
+define('TEXT_PAYROLLS_TOTAL', '計');
+define('TEXT_USER_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
+define('TEXT_USER_SEND_MAIL_CONFIRM','本当に送信しますか？');
+define('TEXT_PAYROLLS_TITLE','の給与　情報統計');
+define('TEXT_PAYROLLS_EFFECTIVE_PERIOD','有効期間');
+define('TEXT_PAYROLLS_CONTENTS','コメント');
+define('TEXT_PAYROLLS_DATE_TOTAL','集計期間');
+define('TEXT_PAYROLLS_NORMAL_ATTENDANCE','通常出勤');
+define('TEXT_PAYROLLS_NORMAL_OVERTIME','通常残業');
+define('TEXT_PAYROLLS_PAID_LEAVE','有給休暇');
+define('TEXT_PAYROLLS_UNPAID_VACATION','無給休み');
+?>

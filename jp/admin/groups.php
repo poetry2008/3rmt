@@ -2,7 +2,8 @@
 /*
   $Id$
 */
-  require('includes/application_top.php');
+require('includes/application_top.php');
+tep_user_wage('${pay}*20+${pay1}-${tax}');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){
@@ -133,8 +134,33 @@
                                    'order_sort' => tep_db_prepare_input($_POST['order_sort']) 
 			           );
           tep_db_perform(TABLE_GROUPS, $group_sql_array, 'update', 'id='.$group_id);
+          //需要删除的项目
+          $old_delete_project_array = array();
+          $old_project_current_array = array();
+          $old_project_str = tep_db_prepare_input($_POST['old_project_str']);
+          $old_project_array = explode(',',$old_project_str);
+          $old_object_title = tep_db_prepare_input($_POST['old_object_title']);
+          $old_object_contents = tep_db_prepare_input($_POST['old_object_contents']);
+
+          foreach($old_object_title as $old_object_title_key=>$old_object_title_value){
+
+           $old_project_current_array[] = $old_object_title_key;
+           if(trim($old_object_title_value) != '' && trim($old_object_contents[$old_object_title_key]) != ''){ 
+             $old_object_sql_array = array(
+				     'title' => $old_object_title_value,
+				     'contents' => $old_object_contents[$old_object_title_key] 
+			            );
+             tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_object_sql_array, 'update', 'id='.$old_object_title_key);
+           }else{
+             tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id='".$old_object_title_key."'");
+           }
+          } 
+          $old_delete_project_array = array_diff($old_project_array,$old_project_current_array);
+
           //计算工资的标题、公式
-          tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
+          if(!empty($old_delete_project_array)){
+            tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id in ('".implode(',',$old_delete_project_array)."')");
+          }
           $object_title = tep_db_prepare_input($_POST['object_title']);
           $object_contents = tep_db_prepare_input($_POST['object_contents']);
 
@@ -149,6 +175,36 @@
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
            }
           }
+
+          //start
+          //需要删除的项目
+          $old_delete_formula_array = array();
+          $old_formula_current_array = array();
+          $old_formula_str = tep_db_prepare_input($_POST['old_formula_str']);
+          $old_formula_array = explode(',',$old_formula_str);
+          $old_formula_title = tep_db_prepare_input($_POST['old_formula_title']);
+          $old_formula_contents = tep_db_prepare_input($_POST['old_formula_contents']);
+          $old_formula_value = tep_db_prepare_input($_POST['old_formula_value']);
+
+          foreach($old_formula_title as $old_formula_title_key=>$old_formula_title_value){
+
+           $old_formula_current_array[] = $old_formula_title_key;
+           if(trim($old_formula_title_value) != '' && trim($old_formula_contents[$old_formula_title_key]) != ''){ 
+             $old_formula_sql_array = array(
+				     'title' => $old_formula_title_value,
+				     'contents' => $old_formula_contents[$old_formula_title_key], 
+				     'project_value' => $old_formula_value[$old_formula_title_key] 
+			            );
+             tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_formula_sql_array, 'update', 'id='.$old_formula_title_key);
+           }else{
+             tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id='".$old_formula_title_key."'");
+           }
+          } 
+          $old_delete_formula_array = array_diff($old_formula_array,$old_formula_current_array);
+          if(!empty($old_delete_formula_array)){
+            tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id in ('".implode(',',$old_delete_formula_array)."')");
+          }
+          //end
 
           $formula_title = tep_db_prepare_input($_POST['formula_title']);
           $formula_contents = tep_db_prepare_input($_POST['formula_contents']);

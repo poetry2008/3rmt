@@ -34,13 +34,12 @@ if(isset($_GET['action'])){
       }
       $date_info = tep_date_info($_POST['get_date']);
       $start_str = $date_info['year'].'-'.$date_info['month'].'-'.$date_info['day'];
-      if(isset($_GET['aid'])&&$_GET['aid']!=''){
+      if(isset($_POST['aid'])&&$_POST['aid']!=''){
         $sql_update = "update ".TABLE_ATTENDANCE." set
           login_time='".$login."',logout_time='".$logout."' where
           id='".$_POST['aid']."'";
         tep_db_query($sql_update);
       }else{
-
         $sql_insert = array(
             'user_name' => $_POST['uid'],
             'login_time' => $start_str.' '.$att_start.':00',
