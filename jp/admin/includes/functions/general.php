@@ -14084,7 +14084,8 @@ function validate_two_time($first_start,$first_end,$second_start,$second_end){
   return false;
 }
 
-function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
+function
+tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_status=0){
   global $ocertify,$user_atted;
   $today = date('Ymd',time());
   $user_info = tep_get_user_info($uid);
@@ -14148,11 +14149,13 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
         $show_user = true;
       }
     }
-    if($show_user){
-        $return_str = $user_info['name'].'&nbsp;';
-        if($param_str != ''){
-          $return_str .= $param_str;
-        }
+    $return_str = $user_info['name'].'&nbsp;';
+    if($param_str != ''){
+      if($show_status !=2 ){
+        $return_str .= $param_str;
+      }
+    }
+    if($show_user&&$show_status!=2){
         if($bg_color == '#FE0000'){
           $return_str .= '<font color ="#FFFFFF">';
         }else{
@@ -14166,22 +14169,30 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0){
           $return_str .= substr($row['logout_time'],11,5);
         }
         $return_str .= '</font><br>';
-        return $return_str;
     }else{
-      return false;
+      if($show_status == 0){
+        $return_str .= '<font color ="#000000">';
+        $return_str .= substr($row['login_time'],11,5)
+          .  '～';
+        $return_str .= substr($row['logout_time'],11,5);
+        $return_str .= '</font><br>';
+      }
     }
+    return $return_str;
   }else{
     $return_str = $user_info['name'].'&nbsp;';
     if($param_str != ''){
-      $return_str .= $param_str;
+      if($show_status !=2 ){
+        $return_str .= $param_str;
+        if($bg_color == '#FE0000'){
+          $return_str .= '<font color ="#FFFFFF">';
+        }else{
+          $return_str .= '<font color ="#FE0000">';
+        }
+        $return_str .= '......' . '～' . '......';
+        $return_str .= '</font><br>';
+      }
     }
-    if($bg_color == '#FE0000'){
-      $return_str .= '<font color ="#FFFFFF">';
-    }else{
-      $return_str .= '<font color ="#FE0000">';
-    }
-    $return_str .= '......' . '～' . '......';
-    $return_str .= '</font><br>';
     return $return_str;
   }
 }
