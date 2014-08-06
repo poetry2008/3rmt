@@ -772,7 +772,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
     tep_db_perform(TABLE_ORDERS, $_SESSION['paypal_order_info'],'update', "orders_id='".$insert_id."'");
   }
 
-  foreach($totals_info_array as $t_info_arr)
+  foreach($totals_info_array as $t_info_arr){
     tep_db_perform(TABLE_ORDERS_TOTAL, $t_info_arr);
   }
   $customer_i = 0;
