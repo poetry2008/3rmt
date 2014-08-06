@@ -10529,12 +10529,21 @@ if($row_array['set_time']==0){
   }
   //获得所有用户
   $all_user = array();
+  $operator = $ocertify->auth_user;
   if($ocertify->npermission >= '15'){
+	  //选中的
+	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
+    $query_all_check_user = tep_db_query($sql_all_check_user);
+    while($row_all_check_user = tep_db_fetch_array($query_all_check_user)){
+      $all_check_user[] = $row_all_check_user;
+    }
+	//全部的
     $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
       $all_user[] = $row_all_user;
     }
+	$all_user = array_intersect($all_check_user,$all_user);
   }else{
     $all_user[] = tep_get_user_info($_GET['uid']);
   }
