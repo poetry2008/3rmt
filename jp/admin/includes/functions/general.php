@@ -14644,6 +14644,8 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   
   //把公式中的 num％ 字符替换为 (num/100) 
   $wage_str = preg_replace('/([0-9]+)%/','($1/100)',$wage_str);
+  //针对复杂运算的处理 ROUND MAX MIN {} 等
+  
   return tep_operations($wage_str);
 }
 /* -------------------------------------
@@ -14722,9 +14724,8 @@ function tep_attendance_record_time($user_id,$date){
   return 0;
 }
 /* -------------------------------------
-    功能: 获取指定员工指定时间的出勤时间 
-    参数: $user_id  员工ID 
-    参数: $date  时间 
+    功能: 计算工资的个税 
+    参数: $XSum  最终工资 
     返回值: 计算结果 
     ------------------------------------ */
 function wage_rate($XSum){
