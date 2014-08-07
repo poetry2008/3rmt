@@ -271,10 +271,21 @@ function date_select(ele,end_str,start_str,date_str){
   var start_date = document.getElementsByName("start_date[]"); 
   var start_date_length = start_date.length;
   var date_select_array = new Array();
+  var tr_date_id = $("#tr_date_id").val();
+  tr_date_id = parseInt(tr_date_id);
+  var cycle_flag_id = document.getElementById("cycle_flag_id");
+
+  var one_start_date = '';
+  var one_end_date = '';
 
   var date_i = 0;
   for(var i=0;i<end_date_length;i++){
-  
+ 
+    if(i == 0){
+    
+      one_start_date = parseInt(start_date[i].value);
+      one_end_date = parseInt(end_date[i].value);
+    }
     for(var j=parseInt(start_date[i].value);j<=parseInt(end_date[i].value);j++){
     
       date_select_array[date_i] = j;
@@ -283,7 +294,7 @@ function date_select(ele,end_str,start_str,date_str){
   }
   date_select_array.sort(function(a,b){return a>b?1:-1});
   var all_date_array = new Array();
-  for(var k=1;k<=28;k++){
+  for(var k=1;k<=31;k++){
   
     all_date_array[k-1] = k;
   }
@@ -308,26 +319,49 @@ function date_select(ele,end_str,start_str,date_str){
   //alert(diff_date_array.toString());
   if(diff_date_array.length > 0){
  
-    var select_str = '<tr><td width="20%"></td><td>';
-    var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
-    var select_start_str = start_str+'<select name="start_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
-    for(var p=0;p<diff_date_array.length;p++){
+    if(cycle_flag_id.checked == false){
+       var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
+       var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
+       var select_start_str = start_str+'<select name="start_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">'; 
+
+      for(var p=0;p<diff_date_array.length;p++){
    
-      if(p != diff_date_array.length-1 && diff_date_array[p]+1 == diff_date_array[p+1]){
+        if(p != diff_date_array.length-1 && diff_date_array[p]+1 == diff_date_array[p+1]){
      
-        select_end_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
-        select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
-      }else{
-    
-        if(p == diff_date_array.length-1){
-           select_end_str += '<option value="'+diff_date_array[p]+'" selected>'+diff_date_array[p]+date_str+'</option>';
-           select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+          select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+          select_end_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
         }else{
-          select_str += select_end_str+'</select>'+select_start_str+'</select></td></tr><tr><td width="20%"></td><td>';
+    
+          if(p == diff_date_array.length-1){
+            select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+            select_end_str += '<option value="'+diff_date_array[p]+'" selected>'+diff_date_array[p]+date_str+'</option>';
+          }else{
+            select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr><tr><td width="20%"></td><td>';
+          }
         }
-      }
-    }
-    select_str += select_end_str+'</select>'+select_start_str+'</select></td></tr>';
-    $(ele).parent().parent().after(select_str);
+      } 
+      select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
+      $(ele).parent().parent().after(select_str);
+      $("#tr_date_id").val(tr_date_id+1);
+    }else{
+     if(one_end_date >= one_start_date){
+      for(var j=one_end_date+1;j<=31;j++){
+        tr_date_id = $("#tr_date_id").val();
+        tr_date_id = parseInt(tr_date_id);
+        var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
+        var select_end_str = end_str+'<select name="end_date[]">';
+        var select_start_str = start_str+'<select name="start_date[]">';
+        var m = j+(one_end_date-one_start_date) < 31 ? j+(one_end_date-one_start_date) : 31;
+        for(var k=j;k<=m;k++){
+          select_start_str += '<option value="'+k+'"'+(k==j ? ' selected' : '')+'>'+k+date_str+'</option>';
+          select_end_str += '<option value="'+k+'"'+(k==m ? ' selected' : '')+'>'+k+date_str+'</option>'; 
+        }
+        select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
+        $("#tr_date_"+(tr_date_id-1)).after(select_str);
+        $("#tr_date_id").val(tr_date_id+1);
+        j=j+(one_end_date-one_start_date);
+      }    
+     }
+    } 
   }
 }

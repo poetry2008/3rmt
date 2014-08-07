@@ -868,4 +868,5 @@ define('TEXT_PRODUCTS_PAYMENT_ERROR','总额不在规定的%s的结算金额(%s)
 define('TEXT_NOW_MONTH', '本月');
 define('TEXT_PRE_YEAR', '去年');
 define('TEXT_NEXT_YEAR', '明年');
+define('HEADER_TEXT_PAYROLLS','计算工资');
 
