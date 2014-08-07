@@ -14606,7 +14606,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT);
   while($wage_setting_array = tep_db_fetch_array($wage_setting_query)){
 
-    if(in_array($wage_setting_array['contents'],$parameters_value_array)){
+    //if(in_array($wage_setting_array['contents'],$parameters_value_array)){
 
       if($wage_setting_array['project_id'] == 1){
         if($wage_setting_array['project_value'] != ''){
@@ -14624,7 +14624,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           $parameters_replace_basic_array[$wage_setting_array['contents']] = 0; 
         }
       }
-    } 
+    //} 
   }
   tep_db_free_result($wage_setting_query);
 
