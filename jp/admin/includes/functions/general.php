@@ -14625,13 +14625,13 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
       $real_work_start = tep_get_sec_by_str($real_work_start_str);
       $real_work_end = tep_get_sec_by_str($real_work_end_str);
       $real_date = tep_date_info($user_att_info[$user][$index]['date']);
+      $error = true;
       if($att_info['set_time']!=1){
-        $error = 1;
         $need_work_start_str = $att_info['work_start'];
         $need_work_end_str = $att_info['work_end'];
         $need_work_start = str_replace(':','',$need_work_start_str);
         $need_work_end = str_replace(':','',$need_work_end_str);
-        $need_ymd_str = $real_date['year'].'-'.$real_date['month'].$real_date['day'];
+        $need_ymd_str = $real_date['year'].'-'.$real_date['month'].'-'.$real_date['day'];
         $need_his_start_str = $need_work_start_str.':59';
         $need_his_end_str = $need_work_end_str.':00';
         //判断 隔天 排班
@@ -14640,13 +14640,13 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
         if($need_work_end < $need_work_start){
           $need_end_sec = $need_end_sec+24*60*60; 
         }
-        if($real_work_start < $need_work_start && $real_work_end > $need_work_end){
-          $error = 0;
+        if($real_work_start < $need_start_sec && $real_work_end > $need_end_sec){
+          $error = false;
         }
       }else{
         $work_hour = ($real_work_end_sec-$real_work_start_sec)/60;
         if($work_hour > ($att_info['work_hours']+$att_info['rest_hours'])){
-          $error = 0;
+          $error = false;
         }
       }
       $tmp = array(
@@ -15004,7 +15004,7 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
     if($date<$today){
-      $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\')">';
+      $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
     }
   }
   $return_str = $user_info['name'].'&nbsp;';
