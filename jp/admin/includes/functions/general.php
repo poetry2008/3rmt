@@ -14111,7 +14111,7 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_s
     $return_str = $user_info['name'].'&nbsp;';
     return $return_str;
   }
-  $manager_list = tep_get_user_list_by_userid($uid);
+  $mger_listanager_list = tep_get_user_list_by_userid($uid);
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
     if($date<$today){
@@ -14517,10 +14517,11 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     $diff_arr['time'] = $set_array;
     $diff_arr['sum'] = $unset_array;
   }
-
+  //去除所有排班里的请假排班
+  $res_array = array();
   $replace_arr = array();
   $replace_sql = "select * from ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where 
-     date='".$date."' and allow_status = '1'";
+     date='".$date."' and user='".$user."' and  allow_status = '1'";
   $replace_query = tep_db_query($replace_sql);
   $replace_aid = array();
   while($replace_row = tep_db_fetch_array($replace_query)){
@@ -14528,13 +14529,69 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     $replace_aid[] = $replace_row['attendance_detail_id'];
   }
   $res_arr = array();
+  $row_arr = array();
+  $last_key = 0;
+  foreach($replace_arr as $r_info){
+    $last_key = str_replace(':','',$r_info['leave_start']);
+    $row_arr[$last_key] = array(
+          'type' => 'replace',
+          'attendance_detail_id' => $r_info['attendance_detail_id'],
+          'work_start' => $r_info['leave_start'],
+          'work_end' => $r_info['leave_end'],
+          'set_time' => '',
+          'work_hours' => '',
+          'rest_hours' => '' 
+        );
+  }
   if(count($attendance_dd_arr_tmp)>1){
+    foreach($diff_arr['time'] as $k => $v){
+      if(!in_array($v['attendance_detail_id'],$replace_aid)){
+        $last_key = str_replace(':','',$v['work_start']);
+        $row_arr[$last_key] = array(
+          'type' => '',
+          'attendance_detail_id' => $v['attendance_detail_id'],
+          'work_start' => $v['work_start'],
+          'work_end' => $v['work_end'],
+          'set_time' => $v['set_time'],
+          'work_hours' => $v['work_hours'],
+          'rest_hours' => $v['rest_hours']
+          );
+      }
+    }
   }else{
-    $row_arr = array();
     if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
-      
+      $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
+      $row_arr[$last_key] = array(
+          'type' => '',
+          'attendance_detail_id' => $attendance_dd_arr_tmp[0]['attendance_detail_id'],
+          'work_start' => $attendance_dd_arr_tmp[0]['work_start'],
+          'work_end' => $attendance_dd_arr_tmp[0]['work_end'],
+          'set_time' => $attendance_dd_arr_tmp[0]['set_time'],
+          'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
+          'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours']
+          );
     }
   }
+  //按时间排序
+  ksort($row_arr);
+  //添加 时间段排班信息
+  if(count($attendance_dd_arr_tmp)>1){
+    foreach($diff_arr['sum'] as $sk => $sv){
+      if(!in_array($sv['attendance_detail_id'],$replace_aid)){
+        $last_key++;
+        $row_arr[$last_key] = array(
+          'type' => '',
+          'attendance_detail_id' => $sv['attendance_detail_id'],
+          'work_start' => $sv['work_start'],
+          'work_end' => $sv['work_end'],
+          'set_time' => $sv['set_time'],
+          'work_hours' => $sv['work_hours'],
+          'rest_hours' => $sv['rest_hours']
+          );
+      }
+    }
+  }
+  return $row_arr;
 }
 function tep_validate_user_attenandced($all_user,$date,$show_group=0){
   $user_att_info = array();
@@ -14551,34 +14608,16 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
   foreach($all_user as $user){
     //先判断请假的是否迟到
     $user_att_date_list = array();
+    //获得所有时间信息
     $user_att_date_list = tep_all_attenande_by_uid($user,$date,$show_group);
-    if(count($user_att_date_list)>1){
-      $uadl_time = $user_att_date_list['time'];
-      $uadl_sum = $user_att_date_list['sum'];
-    }else{
-      $user_date_att_info[$user] = array();
-      if(!empty($user_att_info[$user])){
-        $work_start = str_replace(':','',$user_att_date_list['work_start']);
-        $work_end = str_replace(':','',$user_att_date_list['work_end']);
-        $error_flag = true;
-        foreach($user_att_info[$user] as $uai_value){
-          $real_work_start = substr($uai_value['login_time'],11,5);
-          $real_work_end = substr($uai_value['logout_time'],11,5);
-          if($work_start > $work_end){
-            if($date< intval(substr($uai_value['logout_time']))&&$real_work_end_str >= $work_end&&$real_work_start_str <= $work_start){
-              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
-              break;
-            }
-          }else{
-            if($real_work_start_str <= $work_start && $real_work_end_str >= $work_end){
-              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
-              break;
-            }
-          }
-        }
-      }else{
-        $user_date_att_info[$user] = array();
-      }
+    //判断每一个用户 当天排班的 出勤状态
+    //返回出勤信息 兵标记是否迟到
+    $index = 1;
+    foreach($user_att_date_list as $att_info){
+      $real_work_start = $user_att_info[$user][$index]['login_time'];
+      $real_work_end = $user_att_info[$user][$index]['logout_time'];
+      
+      $index++;
     }
   }
 }
