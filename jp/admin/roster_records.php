@@ -590,6 +590,7 @@ require("includes/note_js.php");
         $user_info = tep_get_user_info($ocertify->auth_user);
         $group_list = tep_get_group_tree();
         $show_group_id=0;
+        $show_checked_user_list = array();
         $show_group_user = array();
         $show_select_group_user = array();
         $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
@@ -702,6 +703,7 @@ require("includes/note_js.php");
           if(in_array($key,$show_select_group_user)){
             $group_str .= ' checked="checked" ';
             $user_atted[$key] = tep_is_attenandced_date($key);
+            $show_checked_user_list[] = $key;
           }
           $group_str .= ' value="'.$key.'" >';
           $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
@@ -920,6 +922,11 @@ while($j<=$day_num)
   $user_att_arr = tep_get_attendance_user($date,'',false);
   $all_user_list = array();
   $all_user_att_info = array();
+  if($show_att_status!=2){
+    if($date<=$today){
+      $all_att_info = tep_validate_user_attenandced($show_checked_user_list,$date,$show_group_id);
+    }
+  }
   foreach($user_att_arr as $t_value){
     $all_user_list[] = $t_value['user_id'];
     $all_user_att_info[$t_value['user_id']][] = $t_value;
@@ -987,7 +994,7 @@ while($j<=$day_num)
               break;
             }
             if(validate_two_time($att_info['work_start'],$att_info['work_end'],
-                  $tmp_uai['work_start'],$tmp_uai['work_start'])&&$tmp_uai['set_time']==1&&$att_info['set_time']==1){
+                  $tmp_uai['work_start'],$tmp_uai['work_end'])&&$tmp_uai['set_time']==1&&$att_info['set_time']==1){
               $show_user_flag = true;
               break;
             }
@@ -1013,7 +1020,7 @@ while($j<=$day_num)
               $v_att = false;
             }
             }else{
-              $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
+              $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
             }
           }else{
             $v_att = false;
@@ -1112,7 +1119,7 @@ while($j<=$day_num)
           $v_att = false;
         }
         }else{
-          $v_att = tep_validate_attendance($u_list,$date,$att_info,$att_info['src_text'],$j,$show_att_status);
+          $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
         }
       }else{
         $v_att = false;
