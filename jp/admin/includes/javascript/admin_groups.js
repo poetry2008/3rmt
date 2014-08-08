@@ -273,7 +273,6 @@ function date_select(ele,end_str,start_str,date_str){
   var date_select_array = new Array();
   var tr_date_id = $("#tr_date_id").val();
   tr_date_id = parseInt(tr_date_id);
-  var cycle_flag_id = document.getElementById("cycle_flag_id");
 
   var one_start_date = '';
   var one_end_date = '';
@@ -281,23 +280,37 @@ function date_select(ele,end_str,start_str,date_str){
   var date_i = 0;
   for(var i=0;i<end_date_length;i++){
  
-    if(i == 0){
+    if(i != tr_date_id){
     
-      one_start_date = parseInt(start_date[i].value);
-      one_end_date = parseInt(end_date[i].value);
+      start_date[i].disabled = true;
+      end_date[i].disabled = true;
     }
-    for(var j=parseInt(start_date[i].value);j<=parseInt(end_date[i].value);j++){
+    var start_time = parseInt(start_date[i].value);
+    var end_time = parseInt(end_date[i].value);
+    if(start_time > end_time){
+   
+      end_time = end_time+28;
+    }
+    for(var j=start_time;j<=end_time;j++){
     
       date_select_array[date_i] = j;
       date_i++;
     }
+   
+    if(i == 0){
+      one_start_date = parseInt(start_date[i].value);
+      one_end_date = parseInt(end_date[i].value);
+    }
   }
   date_select_array.sort(function(a,b){return a>b?1:-1});
   var all_date_array = new Array();
-  for(var k=1;k<=31;k++){
-  
-    all_date_array[k-1] = k;
+  var date_i = 0;
+  for(var k=one_start_date;k<=one_start_date-1+28;k++){
+     
+    all_date_array[date_i] = k;
+    date_i++;
   }
+  alert(date_select_array.toString());
 
   var diff_date_array = new Array();
 
@@ -316,52 +329,120 @@ function date_select(ele,end_str,start_str,date_str){
       diff_date_array.push(all_date_array[m]);
     }
   }
-  //alert(diff_date_array.toString());
+  alert(diff_date_array.toString());
   if(diff_date_array.length > 0){
  
-    if(cycle_flag_id.checked == false){
        var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
-       var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
-       var select_start_str = start_str+'<select name="start_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">'; 
+       var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" disabled>';
+       var select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');">'; 
 
       for(var p=0;p<diff_date_array.length;p++){
-   
+  
+        var diff_value = diff_date_array[p] > 28 ? diff_date_array[p]-28 : diff_date_array[p];
+        var diff_value_str = diff_value == 28 ? '28~31' : diff_value;
         if(p != diff_date_array.length-1 && diff_date_array[p]+1 == diff_date_array[p+1]){
      
-          select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
-          select_end_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+          select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
+          select_end_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
         }else{
     
           if(p == diff_date_array.length-1){
-            select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
-            select_end_str += '<option value="'+diff_date_array[p]+'" selected>'+diff_date_array[p]+date_str+'</option>';
+            select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
+            select_end_str += '<option value="'+diff_value+'" selected>'+diff_value_str+date_str+'</option>';
           }else{
-            select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr><tr><td width="20%"></td><td>';
+            select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
+            select_end_str += '<option value="'+diff_value+'" selected>'+diff_value_str+date_str+'</option>';
+            select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
+            var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
+            var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" disabled>';
+            var select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');">';
           }
         }
       } 
       select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
       $(ele).parent().parent().after(select_str);
       $("#tr_date_id").val(tr_date_id+1);
-    }else{
-     if(one_end_date >= one_start_date){
-      for(var j=one_end_date+1;j<=31;j++){
-        tr_date_id = $("#tr_date_id").val();
-        tr_date_id = parseInt(tr_date_id);
-        var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
-        var select_end_str = end_str+'<select name="end_date[]">';
-        var select_start_str = start_str+'<select name="start_date[]">';
-        var m = j+(one_end_date-one_start_date) < 31 ? j+(one_end_date-one_start_date) : 31;
-        for(var k=j;k<=m;k++){
-          select_start_str += '<option value="'+k+'"'+(k==j ? ' selected' : '')+'>'+k+date_str+'</option>';
-          select_end_str += '<option value="'+k+'"'+(k==m ? ' selected' : '')+'>'+k+date_str+'</option>'; 
+  }
+}
+//popup calendar
+function open_new_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    //mm-dd-yyyy || mm/dd/yyyy
+    $('#toggle_open').val('1'); 
+
+    var rules = {
+      "all": {
+        "all": {
+          "all": {
+            "all": "current_s_day",
+          }
         }
-        select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
-        $("#tr_date_"+(tr_date_id-1)).after(select_str);
-        $("#tr_date_id").val(tr_date_id+1);
-        j=j+(one_end_date-one_start_date);
-      }    
-     }
-    } 
+      }};
+    if ($("#date_orders").val() != '') {
+      if ($("#date_orders").val() == '0000-00-00') {
+        date_info_str =  js_cale_date;  
+        date_info = date_info_str.split('-');  
+      } else {
+        date_info = $("#date_orders").val().split('-'); 
+      }
+    } else {
+      //mm-dd-yyyy || mm/dd/yyyy
+      date_info_str = js_cale_date;  
+      date_info = date_info_str.split('-');  
+    }
+    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+contentBox: "#mycalendar",
+width:'170px',
+date: new_date
+
+}).render();
+        if (rules != '') {
+        month_tmp = date_info[1].substr(0, 1);
+        if (month_tmp == '0') {
+        month_tmp = date_info[1].substr(1);
+        month_tmp = month_tmp-1;
+        } else {
+        month_tmp = date_info[1]-1; 
+        }
+        day_tmp = date_info[2].substr(0, 1);
+
+        if (day_tmp == '0') {
+        day_tmp = date_info[2].substr(1);
+        } else {
+        day_tmp = date_info[2];   
+        }
+        data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
+        calendar.set("customRenderer", {
+rules: rules,
+filterFunction: function (date, node, rules) {
+cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+if (cmp_tmp_str == data_tmp_str) {
+node.addClass("redtext"); 
+}
+}
+});
+}
+var dtdate = Y.DataType.Date;
+calendar.on("selectionChange", function (ev) {
+    var newDate = ev.newSelection[0];
+    tmp_show_date = dtdate.format(newDate); 
+    tmp_show_date_array = tmp_show_date.split('-');
+    $("input[name=wage_date]").val(tmp_show_date); 
+    $("#date_orders").val(tmp_show_date); 
+    $('#toggle_open').val('0');
+    $('#toggle_open').next().html('<div id="mycalendar"></div>');
+    });
+});
+}
+}
+//start date select
+function start_date_select(ele,num){
+
+  if(ele.value != 1){
+    document.getElementsByName("end_date[]")[num].disabled = false;
   }
 }
