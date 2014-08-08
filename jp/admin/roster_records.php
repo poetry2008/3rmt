@@ -76,11 +76,14 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 		
 		foreach($_POST['has_space'] as $k => $val) {
-			if(empty($val) || $type_arr[$k]!=2){
-		        $_POST['has_space'][$k] = "0";	
+			if(empty($val) || $type_arr[$k]!=1){
+		        $_POST['has_space'][$k] = 0;	
 			}	
 		}
         foreach($a_id_arr as $key => $value){
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
+			}
                $sql_arr = array(
                   'week' => $date_info['week'],
                   'week_index' => $date_info['week_index'],
@@ -117,13 +120,13 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)|| $type_arr[$k]!=2){
-		        $_POST['space'][$k] = "0";	
+			if(empty($val)|| $type_arr[$k]!=1){
+		        $_POST['space'][$k] = 0;	
 			}	
 		}
         foreach($a_id_arr as $key => $value){
-			if($_POST['type_array'][$k]= $type_arr[$key]){
-			
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
 			}
           $sql_arr = array(
               'date' => $_POST['get_date'],
@@ -167,6 +170,8 @@ if(isset($_GET['action'])){
       }
       break;
     case 'save_as_list':
+		echo '<pre>';
+		var_dump($_POST);
       $date_info = tep_date_info($_POST['get_date']);
       $user = $_SESSION['user_name'];
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
@@ -180,12 +185,15 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 
 		foreach($_POST['has_space'] as $k => $val) {
-			if(empty($val)|| $type_arr[$k]!=2){
+			if(empty($val)|| $type_arr[$k]!=1){
 		        $_POST['has_space'][$k] = 0;	
 			}	
 		}
 		
         foreach($a_id_arr as $key => $value){
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
+			}
           $sql_arr = array(
               'week' => $date_info['week'],
               'week_index' => $date_info['week_index'],
@@ -221,12 +229,15 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val) || $type_arr[$k]!=2){
-		        $_POST['space'][$k] = "0";	
+			if(empty($val) || $type_arr[$k]!=1){
+		        $_POST['space'][$k] = 0;	
 			}	
 		}
 
         foreach($a_id_arr as $key => $value){
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
+			}
           $sql_arr = array(
               'date' => $_POST['get_date'],
               'month' => $date_info['month'],
