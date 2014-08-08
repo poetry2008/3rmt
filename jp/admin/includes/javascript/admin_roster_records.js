@@ -692,7 +692,7 @@ function attendance_setting_user(date,ele,uid,add_id){
 
 //show edit interval
 function edit_space_nums(ele,val) {
-   if(val==2){
+   if(val==1){
       $(ele).parent().find('span').eq(0).show();
    }
    else{

@@ -9719,7 +9719,13 @@ echo  $return_res;
 
   $type_select = '<select name="type[]" '.$show_only.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
-    $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+		$t_key = $t_key-1;
+	  }	
+        $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
   $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$show_only.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
@@ -9788,13 +9794,24 @@ echo  $return_res;
 
       $has_type_select = '<select name="has_type[]" '.$show_only.'  onchange="edit_space_nums(this,this.value);" >';
       foreach($type_list as $t_key => $t_value){
+		  //给每周一个value
+	     if($t_key==1){
+	       $t_key =9;
+	     }
+		 if($t_key>1){
+		   $t_key = $t_key-1;
+		 }
         $has_type_select .= '<option value="'.$t_key.'" ';
+		 //判断是不是每周
+		 if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+		 }
         if($a_info['type'] == $t_key){
           $has_type_select .= ' selected ';
         }
         $has_type_select .= ' >'.$t_value.'</option>';
       }
-	  $style_space=$a_info['type']==2?'':'style="display:none"' ;
+	  $style_space=($a_info['type']==1&&$a_info['space']!=0)?'':'style="display:none"' ;
 	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
@@ -10641,6 +10658,12 @@ if($row_array['set_time']==0){
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+	    $t_key = $t_key-1;
+	  }
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
   $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
@@ -10696,14 +10719,24 @@ if($row_array['set_time']==0){
     }
     $has_type_select = '<select name="has_type[]" '.$disabled.'  onchange="edit_space_nums(this,this.value);" >';
     foreach($type_list as $t_key => $t_value){
+	   if($t_key==1){
+	     $t_key =9;
+	   }
+		if($t_key>1){
+		  $t_key = $t_key-1;
+		}
       $has_type_select .= '<option value="'.$t_key.'" ';
+	 //判断是不是每周
+	  if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+	  }
       if($a_info['type'] == $t_key){
         $has_type_select .= ' selected ';
       }
       $has_type_select .= ' >'.$t_value.'</option>';
     }
 	//隔周
-    $style_space=$a_info['type']==2?'':'style="display:none"';
+    $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
 	
 	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
