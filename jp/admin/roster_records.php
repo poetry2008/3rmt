@@ -1001,7 +1001,7 @@ while($j<=$day_num)
               break;
             }
             if(validate_two_time($att_info['work_start'],$att_info['work_end'],
-                  $tmp_uai['work_start'],$tmp_uai['work_end'])&&$tmp_uai['set_time']==1&&$att_info['set_time']==1){
+                  $tmp_uai['work_start'],$tmp_uai['work_end'])&&$tmp_uai['set_time']==0&&$att_info['set_time']==0){
               $show_user_flag = true;
               break;
             }
@@ -1015,17 +1015,24 @@ while($j<=$day_num)
         if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
           if($date<= $today){
             if($date == $today){
-            if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
-              $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
-              $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
-              if($now_time> $att_start && $now_time < $att_end){
-                $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
-                $v_att = false;
+              $is_work = tep_check_show_login_logout($u_list);
+              if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
+                $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
+                $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
+                if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+                  $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+                  $v_att = false;
+                }else if($now_time>$att_end){
+                  $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
+                }
+              }else{
+                if($is_work==1){
+                  $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+                  $v_att = false;
+                }else{
+                  $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
+                }
               }
-            }else{
-              $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
-              $v_att = false;
-            }
             }else{
               $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
             }
@@ -1114,17 +1121,24 @@ while($j<=$day_num)
       if($date<= $today){
         $time_flag = false;
         if($date == $today){
-        if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
-          $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
-          $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
-          if($now_time> $att_start && $now_time < $att_end){
-            $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
-            $v_att = false;
+          $is_work = tep_check_show_login_logout($uatt_arr['user_id']);
+          if($att_info['set_time']==0){
+            $att_start = str_replace(':','',$att_info['work_start']);
+            $att_end = str_replace(':','',$att_info['work_end']);
+            if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+              $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+              $v_att = false;
+            }else if($now_time>$att_end||$is_work==0){
+              $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$att_info['id']],$uatt_arr['user_id'],$date,$att_info['src_text'],$j,$show_att_status);
+            }
+          }else{
+            if($is_work==1){
+              $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+              $v_att = false;
+            }else{
+              $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$att_info['id']],$uatt_arr['user_id'],$date,$att_info['src_text'],$j,$show_att_status);
+            }
           }
-        }else{
-          $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
-          $v_att = false;
-        }
         }else{
           $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$att_info['id']],$uatt_arr['user_id'],$date,$att_info['src_text'],$j,$show_att_status);
         }
