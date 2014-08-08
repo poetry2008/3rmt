@@ -9641,6 +9641,7 @@ echo  $return_res;
   //获得所有循环方式
   $type_list = array(
      TEXT_CALENDAR_REPEAT_TYPE_NO,
+	 TEXT_CALENDAR_REPEAT_TYPE_EVERY_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK,
@@ -9703,7 +9704,7 @@ echo  $return_res;
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$show_only.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
@@ -9776,8 +9777,8 @@ echo  $return_res;
         }
         $has_type_select .= ' >'.$t_value.'</option>';
       }
-	  $style_space=$a_info['type']==1?'':'style="display:none"' ;
-      $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	  $style_space=$a_info['type']==2?'':'style="display:none"' ;
+	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -10553,6 +10554,7 @@ if($row_array['set_time']==0){
   //获得所有循环方式
   $type_list = array(
      TEXT_CALENDAR_REPEAT_TYPE_NO,
+	 TEXT_CALENDAR_REPEAT_TYPE_EVERY_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK,
@@ -10624,7 +10626,7 @@ if($row_array['set_time']==0){
   foreach($type_list as $t_key => $t_value){
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$disabled.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
 
   $hidden_div = '<div style="display:none">';
@@ -10684,9 +10686,9 @@ if($row_array['set_time']==0){
       $has_type_select .= ' >'.$t_value.'</option>';
     }
 	//隔周
-    $style_space=$a_info['type']==1?'':'style="display:none"'	;
+    $style_space=$a_info['type']==2?'':'style="display:none"';
 	
-    $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 

@@ -692,12 +692,12 @@ function attendance_setting_user(date,ele,uid,add_id){
 
 //show edit interval
 function edit_space_nums(ele,val) {
-   if(val==1){
-       $(ele).parent().find('span').eq(0).show();
-   }else{
-   
-       $(ele).parent().find('span').eq(0).hide();
-       $(ele).parent().find('span input').eq(0).val("");
+   if(val==2){
+      $(ele).parent().find('span').eq(0).show();
+   }
+   else{
+      $(ele).parent().find('span').eq(0).hide();
+      $(ele).parent().find('span input').eq(0).val("");
    }
 
 }

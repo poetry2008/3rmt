@@ -69,7 +69,7 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 		
 		foreach($_POST['has_space'] as $k => $val) {
-			if(empty($val) || $type_arr[$k]!=1){
+			if(empty($val) || $type_arr[$k]!=2){
 		        $_POST['has_space'][$k] = "0";	
 			}	
 		}
@@ -110,7 +110,7 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)|| $type_arr[$k]!=1){
+			if(empty($val)|| $type_arr[$k]!=2){
 		        $_POST['space'][$k] = "0";	
 			}	
 		}
@@ -173,7 +173,7 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 
 		foreach($_POST['has_space'] as $k => $val) {
-			if(empty($val)|| $type_arr[$k]!=1){
+			if(empty($val)|| $type_arr[$k]!=2){
 		        $_POST['has_space'][$k] = 0;	
 			}	
 		}
@@ -214,7 +214,7 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val) || $type_arr[$k]!=1){
+			if(empty($val) || $type_arr[$k]!=2){
 		        $_POST['space'][$k] = "0";	
 			}	
 		}
