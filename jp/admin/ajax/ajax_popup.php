@@ -9765,9 +9765,15 @@ echo  $return_res;
 
   $type_select = '<select name="type[]" '.$show_only.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
-    $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+		$t_key = $t_key-1;
+	  }	
+        $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$show_only.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$show_only.' onkeyup="if(this.value!=\'\'){if(!/^[1-9][0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
@@ -9834,14 +9840,28 @@ echo  $return_res;
 
       $has_type_select = '<select name="has_type[]" '.$show_only.'  onchange="edit_space_nums(this,this.value);" >';
       foreach($type_list as $t_key => $t_value){
+		  //给每周一个value
+	     if($t_key==1){
+	       $t_key =9;
+	     }
+		 if($t_key>1){
+		   $t_key = $t_key-1;
+		 }
         $has_type_select .= '<option value="'.$t_key.'" ';
+		 //判断是不是每周
+		 if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+		 }
         if($a_info['type'] == $t_key){
           $has_type_select .= ' selected ';
         }
         $has_type_select .= ' >'.$t_value.'</option>';
       }
-	  $style_space=$a_info['type']==2?'':'style="display:none"' ;
-	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	  $style_space=($a_info['type']==1&&$a_info['space']!=0)?'':'style="display:none"' ;
+	  if($a_info['space']==0 || $a_info['space']==''){
+	    $a_info['space']=1;
+	  }
+	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -9958,7 +9978,8 @@ echo  $return_res;
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
+    $button[] = '<a
+      href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
@@ -10642,8 +10663,8 @@ if($row_array['set_time']==0){
   获得 应该在浮动IDV 里显示的数据 管理员显示 可用用户
   当前用户显示当前用过显示的那个
   */
-  if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $attendance_dd_arr = tep_get_attendance_user($_GET['date'],$_GET['uid'],false,$_GET['add_id']);
+  if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
+    $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
@@ -10687,9 +10708,15 @@ if($row_array['set_time']==0){
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+	    $t_key = $t_key-1;
+	  }
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
 
   $hidden_div = '<div style="display:none">';
@@ -10742,16 +10769,29 @@ if($row_array['set_time']==0){
     }
     $has_type_select = '<select name="has_type[]" '.$disabled.'  onchange="edit_space_nums(this,this.value);" >';
     foreach($type_list as $t_key => $t_value){
+	   if($t_key==1){
+	     $t_key =9;
+	   }
+		if($t_key>1){
+		  $t_key = $t_key-1;
+		}
       $has_type_select .= '<option value="'.$t_key.'" ';
+	 //判断是不是每周
+	  if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+	  }
       if($a_info['type'] == $t_key){
         $has_type_select .= ' selected ';
       }
       $has_type_select .= ' >'.$t_value.'</option>';
     }
 	//隔周
-    $style_space=$a_info['type']==2?'':'style="display:none"';
-	
-	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+    $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
+
+    if($a_info['space']==0 || $a_info['space']==''){
+	    $a_info['space']=1;
+	  }
+	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 

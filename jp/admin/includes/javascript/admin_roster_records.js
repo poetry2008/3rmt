@@ -648,7 +648,7 @@ function resizepage(){
 }
 
 
-function attendance_setting_user(date,ele,uid,add_id){
+function attendance_setting_user(date,ele,uid,add_id,u_att_id){
   if(!uid){
     uid='';
   }
@@ -670,7 +670,7 @@ function attendance_setting_user(date,ele,uid,add_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting_user&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id,
+    url: 'ajax.php?action=attendance_setting_user&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -692,7 +692,7 @@ function attendance_setting_user(date,ele,uid,add_id){
 
 //show edit interval
 function edit_space_nums(ele,val) {
-   if(val==2){
+   if(val==1){
       $(ele).parent().find('span').eq(0).show();
    }
    else{

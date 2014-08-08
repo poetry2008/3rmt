@@ -76,11 +76,14 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 		
 		foreach($_POST['has_space'] as $k => $val) {
-			if(empty($val) || $type_arr[$k]!=2){
-		        $_POST['has_space'][$k] = "0";	
+			if(empty($val) || $type_arr[$k]!=1){
+		        $_POST['has_space'][$k] = 0;	
 			}	
 		}
         foreach($a_id_arr as $key => $value){
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
+			}
                $sql_arr = array(
                   'week' => $date_info['week'],
                   'week_index' => $date_info['week_index'],
@@ -117,13 +120,13 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val)|| $type_arr[$k]!=2){
-		        $_POST['space'][$k] = "0";	
+			if(empty($val)|| $type_arr[$k]!=1){
+		        $_POST['space'][$k] = 0;	
 			}	
 		}
         foreach($a_id_arr as $key => $value){
-			if($_POST['type_array'][$k]= $type_arr[$key]){
-			
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
 			}
           $sql_arr = array(
               'date' => $_POST['get_date'],
@@ -180,12 +183,15 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['has_type'];
 
 		foreach($_POST['has_space'] as $k => $val) {
-			if(empty($val)|| $type_arr[$k]!=2){
+			if(empty($val)|| $type_arr[$k]!=1){
 		        $_POST['has_space'][$k] = 0;	
 			}	
 		}
 		
         foreach($a_id_arr as $key => $value){
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
+			}
           $sql_arr = array(
               'week' => $date_info['week'],
               'week_index' => $date_info['week_index'],
@@ -221,12 +227,15 @@ if(isset($_GET['action'])){
         $type_arr = $_POST['type'];
 
 		foreach($_POST['space'] as $k => $val) {
-			if(empty($val) || $type_arr[$k]!=2){
-		        $_POST['space'][$k] = "0";	
+			if(empty($val) || $type_arr[$k]!=1){
+		        $_POST['space'][$k] = 0;	
 			}	
 		}
 
         foreach($a_id_arr as $key => $value){
+			if($type_arr[$key]==8){
+			  $type_arr[$key]=1;
+			}
           $sql_arr = array(
               'date' => $_POST['get_date'],
               'month' => $date_info['month'],
@@ -938,6 +947,17 @@ while($j<=$day_num)
     $all_user_list[] = $t_value['user_id'];
     $all_user_att_info[$t_value['user_id']][] = $t_value;
   }
+  $user_att_arr_source = $user_att_arr;
+  $user_att_arr = array();
+  $tmp_user_att_arr = array();
+  foreach($user_att_arr_source as $uaas_value){
+    $tmp_user_att_arr[$uaas_value['attendance_detail_id']][] = $uaas_value;
+  }
+  foreach($tmp_user_att_arr as $tuaa_value){
+    foreach($tuaa_value as $tmp_value){
+      $user_att_arr[] = $tmp_value;
+    }
+  }
   if($j==23){
   }
   if(!empty($show_att_user_list)){
@@ -1067,7 +1087,6 @@ while($j<=$day_num)
           }
         }else{
           $v_att = false;
-          $replace_str = '';
         }
         echo ">";
         if($v_att!=false){
@@ -1095,26 +1114,42 @@ while($j<=$day_num)
     }
     }
   }
-  // 跟人排班显示
+  // 个人排班显示
+  $last_att_id = 0;
+  $show_att_div = true;
+  $show_ulist_flag = false;
   foreach($user_att_arr as $uatt_arr){
-    $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$att_info['attendance_detail_id']);
+    if($last_att_id==0||$last_att_id!=$uatt_arr['attendance_detail_id']){
+      $last_att_id = $uatt_arr['attendance_detail_id'];
+      $show_att_div = true;
+    }else{
+      $show_att_div = false;
+    }
+    if($last_att_id!=0&&$last_att_id!=$uatt_arr['attendance_detail_id']){
+      echo "</td>";
+      echo "</tr>";
+    }
+    $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
     if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&empty($user_replace)){
       $att_user_row = $uatt_arr;
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
+      if($show_att_div){
+        $show_ulist_flag = true;
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
         echo '<td style="border-width:0px; padding-bottom:6px;">';
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
+        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
         if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
         echo "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
+        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
       }
       echo "</div>";
+      }
 
       $replace_str ='';
       $v_att=false;
@@ -1149,13 +1184,12 @@ while($j<=$day_num)
 
       echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
-      if($ocertify->auth_user==$att_uid||$ocertify->npermission>'10'){
+      if($ocertify->auth_user==$uatt_arr['user_id']||$ocertify->npermission>'10'){
         if($date>=$today||!empty($user_replace)){
           echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$att_user_row['attendance_detail_id']."\")' ";
         }
       }else{
         $v_att =false;
-        $replace_str = '';
       }
       echo ">";
       if($v_att!=false){
@@ -1166,10 +1200,14 @@ while($j<=$day_num)
       echo "</a>";
 
       echo "</span>";
-      echo "</td>";
-      echo "</tr>";
+      if($show_att_div){
+      }
     }
   }
+if($show_ulist_flag){
+      echo "</td>";
+      echo "</tr>";
+}
 
 
 
