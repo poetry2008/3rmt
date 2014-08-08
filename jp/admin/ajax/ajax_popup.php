@@ -10418,8 +10418,8 @@ echo  $return_res;
   $heading[] = array('align' => 'left', 'text' => $date_str);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
-  $att_sql = "select * from ".TABLE_ATTENDANCE." WHERE 
-    `date` ='".$_GET['date']."' and user_name = '".$_GET['uid']."'";
+  $att_sql = "select * from attendance_record WHERE 
+    id ='".$_GET['aid']."' and user_name = '".$_GET['uid']."'";
   $att_query = tep_db_query($att_sql);
   if($att_row = tep_db_fetch_array($att_query)){
     $login_end = substr($att_row['login_time'],11,5);
