@@ -9311,13 +9311,13 @@ else if($_GET['action'] == 'check_same_group_att') {
 			       $sql_get_group = "select name from ".TABLE_GROUPS." where id = ".$group_arr[$i]."";
                    $group_info = tep_db_fetch_array(tep_db_query($sql_get_group)); 
 			       echo  $group_info['name'];
-				   exit;
+				   break;
 				 }else{
 					 //是个人
 			       $sql_get_uname = "select name from ".TABLE_USERS." where userid = '".$group_arr[$i]."'";
                    $user_info = tep_db_fetch_array(tep_db_query($sql_get_uname)); 
 			       echo  $user_info['name'];
-				   exit;
+				   break;
 		         }
 			  
 			 }
@@ -9325,8 +9325,41 @@ else if($_GET['action'] == 'check_same_group_att') {
      }
   } 
 
-}
+}elseif($_GET['action']=='check_change_ros_rest'){
+//请假时间不能重叠
+	$user_id = $_POST['user_id'];
+	$date = $_POST['date_str'];
+	$start_time = $_POST['start_time'];
+	$end_time = $_POST['end_time'];
+	$user_all_att = tep_all_attenande_by_uid($user_id,$date);
+	$n=0;
+	$m=0;
+	foreach($user_all_att as $key=>$val) {
+		
+		if($val['set_time']==1){
+			unset($user_all_att[$key]);
+		}
+		//work_start 大于开始时间小于结束时间
 
+		if(strtotime($val['work_start'])> strtotime($start_time)&& strtotime($val['work_start'])< strtotime($end_time) )	{
+			$work_start = strtotime($val['work_start']);
+			$n++;
+		}
+		if(strtotime($val['work_end'])< strtotime($end_time)&& strtotime($val['work_end'])> strtotime($start_time) )	{
+			$work_end = strtotime($val['work_end']);
+			$m++;
+		}
+	}
+	if($n>1||$m>1){
+		echo 'error'; 
+	}if($n==1 && $m==1){
+		if($work_start>$work_end){
+		echo  'error';
+		}
+	
+	}
+
+}
  /**
   *@date20140709 
   *出勤管理列表弹框编辑
@@ -10281,7 +10314,7 @@ echo  $return_res;
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
     $user_info_self = tep_get_user_info($_GET['uid']);
-    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'];
+    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'].'<span id="use_get_userid" style="display:none;">'.$_GET['uid'].'||'.$_GET['date'].'</span>';
   }
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');

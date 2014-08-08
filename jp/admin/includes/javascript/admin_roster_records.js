@@ -235,8 +235,7 @@ function change_scheduling_time(mould_id){
        data: 'mould_id='+mould_id, 
        async : false,
        success: function(data){
-		   var tep = data.split('"');
-		   var info = tep[1].split(',');
+		   var info = data.split(',');
 		   $("#leave_start_hour").val(info[0]);
 		   $("#leave_start_min_l").val(info[1]);
 		   $("#leave_start_minute_b").val(info[2]);
@@ -359,6 +358,38 @@ function save_submit(c_permission){
 		   }
        }
   }); 
+
+
+   var s_hour =$("#leave_start_hour").val();
+   var s_m_l =$("#leave_start_min_l").val();
+   var s_m_r =$("#leave_start_min_r").val();
+   var start_time =s_hour+':'+s_m_l+s_m_r;
+   
+   var e_hour =$("#leave_end_hour").val();
+   var e_m_l =$("#leave_end_min_l").val();
+   var e_m_r =$("#leave_end_min_r").val();
+   var end_time = e_hour+':'+e_m_l+e_m_r;
+
+   var tep_str = $("#use_get_userid").text();
+   tep_arr = tep_str.split("||");
+   var user_id = tep_arr[0];
+   var date_str = tep_arr[1];
+   $.ajax({
+       url: 'ajax.php?action=check_change_ros_rest',
+       type: 'POST',
+       dataType: 'text',
+       data: 'user_id='+user_id+'&date_str='+date_str+'&start_time='+start_time+'&end_time='+end_time, 
+       async : false,
+       success: function(data){
+		   if(data=='error') {
+			   //请假排版有交集
+			   alert('error');
+             flag=1;
+		   }else{
+		     flag=0; 
+		   }
+       }
+   });
 
 if(flag !=1) {
   if (c_permission == 31) {
