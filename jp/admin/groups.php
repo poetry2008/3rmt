@@ -2,8 +2,7 @@
 /*
   $Id$
 */
-require('includes/application_top.php');
-tep_user_wage('${pay}*20+${pay1}-${tax}');
+  require('includes/application_top.php');
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){
@@ -36,14 +35,20 @@ tep_user_wage('${pay}*20+${pay1}-${tax}');
 	    }
 
             //终始日
-            $end_date = $_POST['end_date'];
-            $start_date = $_POST['start_date'];
-            $date_array = array();
-            foreach($end_date as $end_date_key=>$end_date_value){
+            if($_POST['cycle_flag'] == 0){
+              $end_date = $_POST['end_date'];
+              $start_date = $_POST['start_date'];
+              $date_array = array();
+              foreach($end_date as $end_date_key=>$end_date_value){
 
-              $date_array[] = $end_date_value.'-'.$start_date[$end_date_key];
+                $date_array[] = $end_date_value.'-'.$start_date[$end_date_key];
+              }
+              $date_str = implode('|||',$date_array);
+            }else{
+              $wage_date = tep_db_prepare_input($_POST['select_date']);
+              $cycle_date = tep_db_prepare_input($_POST['cycle_date']);
+              $date_str = $wage_date.'|||'.$cycle_date; 
             }
-            $date_str = implode('|||',$date_array);
 	    $group_sql_array = array('name' => $_POST['group_name'],
 				     'parent_id' => $_GET['parent_id'],
 				     'all_users_id' => $all_users_id,
@@ -113,14 +118,20 @@ tep_user_wage('${pay}*20+${pay1}-${tax}');
 	    }
 
           //终始日
-          $end_date = $_POST['end_date'];
-          $start_date = $_POST['start_date'];
-          $date_array = array();
-          foreach($end_date as $end_date_key=>$end_date_value){
+          if($_POST['cycle_flag'] == 0){
+              $end_date = $_POST['end_date'];
+              $start_date = $_POST['start_date'];
+              $date_array = array();
+              foreach($end_date as $end_date_key=>$end_date_value){
 
-            $date_array[] = $end_date_value.'-'.$start_date[$end_date_key];
-          }
-          $date_str = implode('|||',$date_array);
+                $date_array[] = $end_date_value.'-'.$start_date[$end_date_key];
+              }
+              $date_str = implode('|||',$date_array);
+          }else{
+              $wage_date = tep_db_prepare_input($_POST['select_date']);
+              $cycle_date = tep_db_prepare_input($_POST['cycle_date']);
+              $date_str = $wage_date.'|||'.$cycle_date; 
+          } 
 	  $group_sql_array = array('name' => $_POST['group_name'],
 				   'all_users_id' => $all_users_id,
 				   'all_managers_id' => $all_managers_id,
@@ -274,6 +285,7 @@ tep_user_wage('${pay}*20+${pay1}-${tax}');
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js?v=<?php echo $back_rand_info?>"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
   var group_name_must = '<?php echo TEXT_GROUP_MUST_INPUT;?>';
@@ -305,6 +317,39 @@ if($belong_temp_array[0][0] != ''){
 }
 require("includes/note_js.php");
 ?>
+<style type="text/css">
+a.dpicker {
+width: 16px;
+height: 18px;
+border: none;
+color: #fff;
+padding: 0;
+margin:0;
+overflow: hidden;
+display:block;
+cursor: pointer;
+background: url(./includes/calendar.png) no-repeat;
+}
+#new_yui3 {
+  margin-left:-168px;
+  *margin-left:-28px;
+  margin-left:-170px\9;
+position: absolute;
+          z-index:200px;
+          margin-top:15px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#new_yui3{
+position: absolute;
+          z-index:200px;
+          margin-top:17px;
+}
+}
+.yui3-skin-sam img,.yui3-skin-sam input,.date_box{ float:left;}
+.yui3-skin-sam .redtext {
+color:#0066CC;
+}
+</style>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
