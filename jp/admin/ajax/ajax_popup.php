@@ -9975,7 +9975,8 @@ echo  $return_res;
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
+    $button[] = '<a
+      href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
@@ -10659,8 +10660,8 @@ if($row_array['set_time']==0){
   获得 应该在浮动IDV 里显示的数据 管理员显示 可用用户
   当前用户显示当前用过显示的那个
   */
-  if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $attendance_dd_arr = tep_get_attendance_user($_GET['date'],$_GET['uid'],false,$_GET['add_id']);
+  if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
+    $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{

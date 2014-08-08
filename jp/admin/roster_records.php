@@ -1104,26 +1104,42 @@ while($j<=$day_num)
     }
     }
   }
-  // 跟人排班显示
+  // 个人排班显示
+  $last_att_id = 0;
+  $show_att_div = true;
+  $show_ulist_flag = false;
   foreach($user_att_arr as $uatt_arr){
-    $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$att_info['attendance_detail_id']);
+    if($last_att_id==0||$last_att_id!=$uatt_arr['attendance_detail_id']){
+      $last_att_id = $uatt_arr['attendance_detail_id'];
+      $show_att_div = true;
+    }else{
+      $show_att_div = false;
+    }
+    if($last_att_id!=0&&$last_att_id!=$uatt_arr['attendance_detail_id']){
+      echo "</td>";
+      echo "</tr>";
+    }
+    $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
     if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&empty($user_replace)){
       $att_user_row = $uatt_arr;
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
+      if($show_att_div){
+        $show_ulist_flag = true;
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
         echo '<td style="border-width:0px; padding-bottom:6px;">';
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
+        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
         if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
         echo "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\")' style='cursor:pointer;'>";
+        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
       }
       echo "</div>";
+      }
 
       $replace_str ='';
       $v_att=false;
@@ -1175,10 +1191,14 @@ while($j<=$day_num)
       echo "</a>";
 
       echo "</span>";
-      echo "</td>";
-      echo "</tr>";
+      if($show_att_div){
+      }
     }
   }
+if($show_ulist_flag){
+      echo "</td>";
+      echo "</tr>";
+}
 
 
 
