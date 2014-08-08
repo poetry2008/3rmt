@@ -1078,7 +1078,6 @@ while($j<=$day_num)
           }
         }else{
           $v_att = false;
-          $replace_str = '';
         }
         echo ">";
         if($v_att!=false){
@@ -1182,7 +1181,6 @@ while($j<=$day_num)
         }
       }else{
         $v_att =false;
-        $replace_str = '';
       }
       echo ">";
       if($v_att!=false){
