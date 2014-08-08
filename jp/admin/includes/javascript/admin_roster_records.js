@@ -536,7 +536,7 @@ function change_users_allow(value){
     allow_status.disabled = true;
   }
 }
-function change_att_date(date,ele,uid){
+function change_att_date(date,ele,uid,aid){
     if(!uid){
     uid='';
   }
@@ -555,7 +555,7 @@ function change_att_date(date,ele,uid){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=change_att_date&date='+date+'&uid='+uid+'&index='+index,
+    url: 'ajax.php?action=change_att_date&date='+date+'&uid='+uid+'&index='+index+'&aid='+aid,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -692,12 +692,12 @@ function attendance_setting_user(date,ele,uid,add_id){
 
 //show edit interval
 function edit_space_nums(ele,val) {
-   if(val==1){
-       $(ele).parent().find('span').eq(0).show();
-   }else{
-   
-       $(ele).parent().find('span').eq(0).hide();
-       $(ele).parent().find('span input').eq(0).val("");
+   if(val==2){
+      $(ele).parent().find('span').eq(0).show();
+   }
+   else{
+      $(ele).parent().find('span').eq(0).hide();
+      $(ele).parent().find('span input').eq(0).val("");
    }
 
 }
