@@ -13654,6 +13654,79 @@ function size_to_b($str){
   }
   return $size;
 }
+function tep_check_show_login_logout($uid) {
+  
+	$date_today = date("Ymd");
+	$date_yestoday = date("Ymd",strtotime("-1 day"));
+
+    $sql_max_nums = "select nums from attendance_record where user_name='".$uid."' and date=".$date_today." ";	
+	$query = tep_db_query($sql_max_nums);
+	$max_array=	tep_db_fetch_array($query);
+    if($max_array['nums']>0){
+      $sql_before ="update attendance_record set login_time=0,logout_time=0 where date<".$date_today." and (login_time IS NULL or logout_time IS NULL)";
+      $rows = tep_db_query($sql_before);
+    }
+	//当前用户所在组
+    $group_id_lists =tep_get_groups_by_user($uid);
+    $now_time = date('Y-m-d H:i:s');
+
+
+	//昨天用户所在组的排班
+    foreach($group_id_lists as $group_id) {
+        $group_att[] = tep_get_attendance($date_yestoday,$group_id,true);
+    }
+	//个人昨天排班
+	$user_att[]= tep_get_attendance_user($date_yestoday,$uid,true);
+	$group_a=array_merge($group_att,$user_att);
+    //去空
+    foreach ( $group_a as $k => $v ) {
+      if (empty($v)){
+	   	unset($group_att[$k]);
+	  } elseif (is_array($v)) {
+		for($i=0;$i<count($v);$i++){
+	      $arr[] = $v[$i]['attendance_detail_id'];
+		}
+      }
+    }
+     //昨天排班详情
+    $attendance_detail_list_yes=array();
+    foreach($arr as $att_id) {
+        $attendance_detail_list_yes[] = tep_get_attendance_by_id($att_id);
+    }
+
+
+    foreach($attendance_detail_list_yes as $value) {
+        $work_start=explode(':',$value['work_start']);
+        $work_end=explode(':',$value['work_end']);
+        $res_tep = $work_start[0]-$work_end[0]; //大于0说明有跨夜的班
+    } 
+	if($res_tep<0){
+	$sql_yestoday_logout = "select * from attendance_record where user_name='". $uid ."' and date<'". $date_today ."'  and logout_time IS NULL and login_time IS NOT NULL";
+     $query_yestoday_tep = tep_db_query($sql_yestoday_logout);
+	  if(mysql_num_rows($query_yestoday_tep)>0){
+	    $check_flag =0;
+	  }else{
+       $sql = "select * from attendance_record where user_name='". $uid ."' and logout_time IS NULL and login_time IS NOT NULL and date='".$date_today."'";
+       $rows = tep_db_query($sql);
+       $res = tep_db_fetch_array($rows);
+	   if(empty($res)){
+	     $check_flag = 0;
+	   }else{
+	     $check_flag =1;
+	   }
+	  }
+	}else{
+       $sql = "select * from attendance_record where user_name='". $uid ."' and logout_time IS NULL and login_time IS NOT NULL and date='".$date_today."'";
+       $rows = tep_db_query($sql);
+       $res = tep_db_fetch_array($rows);
+	   if(empty($res)){
+	     $check_flag = 0;
+	   }else{
+	     $check_flag =1;
+	   }
+	}
+	return $check_flag;
+}
 function tep_change_attendance_login($uid) {
 
 	//原表 
@@ -13677,6 +13750,58 @@ function tep_change_attendance_login($uid) {
 	/* @date 20140725
 	 * 记录出勤
 	 **/
+
+    $group_id_lists =tep_get_groups_by_user($uid);
+	//今天所在组排班
+     foreach($group_id_lists as $group_ids) {
+         $group_att_tep[] = tep_get_attendance($date,$group_ids,true);
+     }
+
+	$user_att_tep[]= tep_get_attendance_user($date,$uid,true);
+
+	$group_a_tep=array_merge($group_att_tep,$user_att_tep);
+	//去空
+     foreach ( $group_a_tep as $k => $v ) {
+        if (empty($v)){
+	        unset($group_att[$k]);
+        } elseif (is_array($v)) {
+			for($i=0;$i<count($v);$i++){
+			$arr_t[] = $v[$i]['attendance_detail_id'];
+			}
+        }
+     }
+
+	 //排班模板
+      $attendance_detail_list_today=array();
+      foreach($arr_t as $att_id) {
+         $attendance_detail_list_today[] = tep_get_attendance_by_id($att_id);
+	  }
+	  //几天上班的个数
+	  $today_att_nums = count($attendance_detail_list_today);
+
+	   $min_work_start = strtotime('23:59:59');
+	   $max_work_start = strtotime('00:00:00');
+	   $max_work_end = strtotime('00:00:00');
+	  //当前时间 时:分:秒
+	   $now_str= strtotime(date('H:i',time()));
+	   $n=0;
+	   $m=0;
+
+	   foreach($attendance_detail_list_today as $work_val) {
+		 if($work_val['set_time']==0){
+		   //当前时间大于工作开始时间的个数
+		   $work_start_str = strtotime($work_val['work_start']);	
+		   if($now_str > $work_start_str && $work_val['set_time']==0){
+		       $n++;
+		   }
+		   //大于结束时间
+		   $work_end_str = strtotime($work_val['work_end']);	
+		   if($now_str > $work_end_str && $work_val['set_time']==0){
+		       $m++;
+		   }
+	     }
+	   }
+
 	$date = date('Ymd');
 	$now = date('Y-m-d H:i:s');
     $sql_max_nums = "select max(nums) as nums from attendance_record where user_name='".$uid."' and date=".$date." and nums<100";	
@@ -13684,12 +13809,49 @@ function tep_change_attendance_login($uid) {
 	$max_array=	tep_db_fetch_array($query);
 	
 	if(empty($max_array['nums'])){
-	    $max_nums=1;
+	    $nums=1;
 	}else{
-        $max_nums = $max_array['nums']+1;	
+        $nums = $max_array['nums']+1;	
 	}
-	$sql_insert= "insert into attendance_record (user_name,login_time,nums,date) values('". $uid ."','". $now ."','". $max_nums ."','". $date ."')";
-	return tep_db_query($sql_insert);
+
+	$nums_all_today = count($arr_t);
+	$sql_today_default = "select * from attendance_record where user_name='".$uid."' and date=".$date;
+	$query_tep = tep_db_query($sql_today_default);
+	$num_rows = tep_db_num_rows($query_tep);
+	//没有加默认
+	if($num_rows == 0){
+		for($i=1;$i<=$nums_all_today;$i++){
+		if($i<=$m){
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', 0, 0, ".$nums.", '". $date ."')";
+			  $nums++;
+		}elseif($m==$n && $i==$n+1){
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '".$now_time."', null, ".$nums.", '". $date ."')";
+			  $nums++;
+		}elseif($n==$m+1 && $i==$n){
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '".$now_time."', null, ".$nums.", '". $date ."')";
+			  $nums++;
+		}else{
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', null, null, ".$nums.", '". $date ."')";
+			  $nums++;
+		}
+
+               tep_db_query($sql_insert_no_att);
+	 }
+		return true;
+	}else{
+		//已添加默认
+		$sql_check = "select * from attendance_record where user_name='".$uid."' and login_time IS NULL and logout_time IS NULL order by nums asc";
+        $afect_rows = tep_db_num_rows(tep_db_query($sql_check));	
+		if($afect_rows>0){
+		  $sql_check_nums = "select min(nums) as nums from attendance_record where user_name='".$uid."' and login_time IS NULL and logout_time IS NULL order by nums asc";
+	      $nums_tep = tep_db_fetch_array(tep_db_query($sql_check_nums));
+		  $sql_insert ="update attendance_record set login_time='".$now_time."' where user_name='".$uid."' and date=".$date." and nums=".$nums_tep['nums'];
+		}else{
+	      $sql_insert= "insert into attendance_record (user_name,login_time,nums,date) values('". $uid ."','". $now_time ."','". $nums ."','". $date ."')";
+		}
+	
+               return tep_db_query($sql_insert);
+	}
 
 	//删除end
 }
@@ -13748,6 +13910,7 @@ function tep_change_attendance_logout($uid) {
         $attendance_detail_list_yes[] = tep_get_attendance_by_id($att_id);
     }
 
+
     foreach($attendance_detail_list_yes as $value) {
         $work_start=explode(':',$value['work_start']);
         $work_end=explode(':',$value['work_end']);
@@ -13755,12 +13918,12 @@ function tep_change_attendance_logout($uid) {
     } 
 
 	 //昨天最后一个没打下班卡
-	 $sql_yestoday_logout = "select * from attendance_record where user_name='". $uid ."' and date<'". $date_today ."'  and logout_time IS NULL ";
+	$sql_yestoday_logout = "select * from attendance_record where user_name='". $uid ."' and date<'". $date_today ."'  and logout_time IS NULL and login_time IS NOT NULL";
      $query_yestoday_tep = tep_db_query($sql_yestoday_logout);
 
 
 	 //今天打上班卡但没有下班卡的时间
-	 $sql_today_login_one = "select login_time from attendance_record where user_name='". $uid ."' and date='". $date_today ."'  and logout_time IS NULL ";
+	 $sql_today_login_one = "select login_time from attendance_record where user_name='". $uid ."' and date='". $date_today ."' and logout_time IS NULL and login_time IS NOT NULL ";
 	 $login_one_res = tep_db_fetch_array(tep_db_query($sql_today_login_one));
 
 	 $arr=explode(':',$login_one_res['login_time']);
@@ -13768,7 +13931,7 @@ function tep_change_attendance_logout($uid) {
 	 $login_one_minute = $arr[1];
 
 	 //今天打上班卡的次数
-	 $sql_today_login = "select * from attendance_record where user_name='". $uid ."' and date='". $date_today ."'  and login_time IS NOT NULL ";
+	 $sql_today_login = "select * from attendance_record where user_name='". $uid ."' and date='". $date_today ."'  and login_time IS NOT NULL";
 	 $today_login_nums = mysql_num_rows(tep_db_query($sql_today_login));
 	 
 	 //今天打下班卡的次数
@@ -13798,6 +13961,8 @@ function tep_change_attendance_logout($uid) {
          $attendance_detail_list_today[] = tep_get_attendance_by_id($att_id);
 
 	  }
+	  //今天上班的个数
+	  $today_att_nums = count($attendance_detail_list_today);
 
 	   $min_work_start = strtotime('23:59:59');
 	   $max_work_start = strtotime('00:00:00');
@@ -13855,81 +14020,68 @@ function tep_change_attendance_logout($uid) {
 	   
 
 	 //晚班下班没打卡
-	 if(mysql_num_rows($query_yestoday_tep)>0){
+	 if(mysql_num_rows($query_yestoday_tep)>0 && $res_tep<0 && $nums==1){
 		 //当前打卡时间大于今天最早上班时间
 		 
-		 if($now_str <$min_work_start && $res_tep > 0){
-          $sql_update_yes = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and logout_time IS NULL" ;
-          return  tep_db_query($sql_update_yes);
-		 }elseif($now_str >$min_work_start || $date_yestoday >= $result_tep['date']){
-		    $result_tep = tep_db_fetch_array($query_yestoday_tep);
-            $sql_update_yes = "update attendance_record set logout_time = '00:00' where user_name= '". $uid ."' and logout_time IS NULL" ;
-            tep_db_query($sql_update_yes);
-	        $sql_insert_tep= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."','". $now_time ."',null,".$nums.",'". $date ."')";
-            return tep_db_query($sql_insert_tep);
+		 if($now_str <$min_work_start){
+           $sql_update_yes = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and logout_time IS NULL" ;
+		   //夜班没打卡  上班迟到
+		 }elseif($now_str >$min_work_start ){
 
-		}else{
-          $sql_update_yes = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and logout_time IS NULL" ;
-          return  tep_db_query($sql_update_yes);
+           $sql_update_yes = "update attendance_record set logout_time =0 where user_name= '". $uid ."' and logout_time IS NULL" ;
+           tep_db_query($sql_update_yes);
+		  for($i=1;$i<=$today_att_nums;$i++){
+			 if($i==$n &&$n==$m+1){
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', 0, '".$now_time."', ".$nums.", '". $date ."')";
+			  $nums++;
+			 }
+			 elseif($i==$m+1 && $m==$n){
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."',0, '".$now_time."',  ".$nums.", '". $date ."')";
+			  $nums++;
+			}elseif($i<=$m){
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', 0, 0, ".$nums.", '". $date ."')";
+			  $nums++;
+			}else{
+	          $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', null, null, ".$nums.", '". $date ."')";
+			  $nums++;
+			}
+
+              tep_db_query($sql_insert_no_att);
+		}
+           // '昨天没打下班卡,今天早上迟到了'
+		   return true;
 		}
 	 }
 	    /**当前时间大于work_start的个数n 大于今天打上班卡的次数(说明有没打上卡的)
          *当前时间大于下班时间的个数m 大于今天打下班卡的次数
 		 *这说明之前有整个班未打卡
 	     */
-	   if($n>=$today_login_nums+2 && $m >= $today_logout_nums+2) {
 				  
-		   //当前时间大于上班时间和大于下班时间相同  没迟到
-		if($n==$m){ 
-	      for($i=0;$i<=$m-$today_logout_nums-1;$i++) {
-	         $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '00:00', '00:00', ".$nums.", '". $date ."')";
-	         $nums ++;
-             tep_db_query($sql_insert_no_att);
-		  }
-
-          $sql_update = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
-          return  tep_db_query($sql_update);
-		}
 		//迟到了
-		if($n > $m){
-	      for($i=0;$i<=$m-$today_logout_nums-2;$i++) {
-	         $sql_insert_no_att= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '00:00', '00:00', ".$nums.", '". $date ."')";
-	         $nums ++;
-             tep_db_query($sql_insert_no_att);
-		  }
-
-          $sql_update = "update attendance_record set logout_time = '00:00' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
-          tep_db_query($sql_update);
-          $sql_insert_login= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', '".$now_time."', null, ".$nums.", '". $date ."')";
-          return tep_db_query($sql_insert_login);
-		
+		if($n-$today_login_nums > 0 ){
+            $sql_update_today = "update attendance_record set logout_time = 0 where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL and login_time IS NOT NULL and nums=".$nums."" ;
+            tep_db_query($sql_update_today);
+            $sql_update = "update attendance_record set login_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL and nums=".$n."" ;
+            return tep_db_query($sql_update);
 		}
-
-	   }
-	   //上一个班没打下班这个班没打上班
-	   if($n==$today_login_nums+1 && $m==$today_logout_nums+2){
-          $sql_update = "update attendance_record set logout_time = '00:00' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
-          tep_db_query($sql_update);
-          $sql_insert_login= "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."','00:00', '".$now_time."', ".$nums.", '". $date ."')";
-          return tep_db_query($sql_insert_login);
-	     
-	   }
-	   //上一个班没打下班这个班迟到了
-	   if($n > $m){
-          $sql_update = "update attendance_record set logout_time = '00:00' where user_name= '". $uid ."' and date = '".$date_today."' and logout_time IS NULL" ;
-          tep_db_query($sql_update);
-          return tep_db_query($sql_insert_login);
-	     
-	   }
-	   
 	   
 	   else{
 	    $now_hour =  date('H');
 	    $now_minute =  date('i');
-	    if($login_one_hour==$now_hour && $now_minute-$login_one_minute<10){
-          $sql_update_today = "update attendance_record set logout_time = '".$now_time."',nums=".$large_nums." where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL" ;
-	    }else{
-          $sql_update_today = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL" ;
+	  if($login_one_hour==$now_hour && $now_minute-$login_one_minute<10){
+      //时间间隔小于10分 插入一条 update nums为大数字
+        $sql_update_today = "update attendance_record set logout_time = '".$now_time."',nums=".$large_nums." where user_name= '". $uid ."' and date = '".$date_today."'and login_time IS NOT NULL and logout_time IS NULL " ;
+		$sql_delete = "delete from attendance_record where login_time IS NULL and logout_time IS NULL";
+        tep_db_query($sql_delete);
+		for($j=0;$j < $today_att_nums-$today_login_nums;$j++){
+		  $sql_check_nums = "select max(nums) as nums from attendance_record where user_name='".$uid."' and login_time IS NOT NULL and logout_time IS NOT NULL and nums<100 and date=".$date_today."";
+	      $nums_tep = tep_db_fetch_array(tep_db_query($sql_check_nums));
+		  $nums_new= $nums_tep['nums']+1;
+	      $sql_ff = "insert into attendance_record (user_name,login_time,logout_time,nums,date) values('". $uid ."', null, null, ".$nums_new.", '". $date ."')";
+          tep_db_query($sql_ff);
+		}
+	  }else{
+        $sql_update_today = "update attendance_record set logout_time = '".$now_time."' where user_name= '". $uid ."' and date = '".$date_today."'and logout_time IS NULL and login_time IS NOT NULL " ;
 	  }
         return tep_db_query($sql_update_today);
 	   
@@ -14480,13 +14632,17 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     or (type='2' and day='".$date_info['day']."')) and ((is_user='1' and
       user_id='".$user."') or ( is_user='0' and ";
   if($show_group!=0){
-    $all_sql .= " group_id='".$show_group."' ";
+    $all_sql .= " group_id='".$show_group."' )";
   }else{
     $group_list = tep_get_groups_by_user($user);
-    $group_str = implode(',',$group_list);
-    $all_sql .= " group_id in ( ".$group_str." ))) ";
+    if(!empty($group_list)){
+      $group_str = implode(',',$group_list);
+      $all_sql .= " group_id in ( ".$group_str." )) ";
+    }else{
+      $all_sql .= " false )";
+    }
   }
-  $all_sql .= " order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
+  $all_sql .= ") order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
   $query = tep_db_query($all_sql);
   $attendance_dd_arr_tmp = array();
   while($row = tep_db_fetch_array($query)){
@@ -14562,9 +14718,10 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       }
     }
   }else{
-    if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
-      $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
-      $row_arr[$last_key] = array(
+    if(!empty($attendance_dd_arr_tmp)){
+      if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
+        $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
+        $row_arr[$last_key] = array(
           'type' => '',
           'attendance_detail_id' => $attendance_dd_arr_tmp[0]['attendance_detail_id'],
           'work_start' => $attendance_dd_arr_tmp[0]['work_start'],
@@ -14573,6 +14730,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
           'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours']
           );
+      }
     }
   }
   //按时间排序
@@ -14620,12 +14778,13 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
     //返回出勤信息 兵标记是否迟到
     $index = 1;
     foreach($user_att_date_list as $att_info){
+      $error = true;
+      if(!empty($user_att_info[$user][$index])&&$user_att_info[$user][$index]!=null){
       $real_work_start_str = $user_att_info[$user][$index]['login_time'];
       $real_work_end_str = $user_att_info[$user][$index]['logout_time'];
       $real_work_start = tep_get_sec_by_str($real_work_start_str);
       $real_work_end = tep_get_sec_by_str($real_work_end_str);
       $real_date = tep_date_info($user_att_info[$user][$index]['date']);
-      $error = true;
       if($att_info['set_time']!=1){
         $need_work_start_str = $att_info['work_start'];
         $need_work_end_str = $att_info['work_end'];
@@ -14640,7 +14799,7 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
         if($need_work_end < $need_work_start){
           $need_end_sec = $need_end_sec+24*60*60; 
         }
-        if($real_work_start < $need_start_sec && $real_work_end > $need_end_sec){
+        if($real_work_start <= $need_start_sec && $real_work_end >= $need_end_sec){
           $error = false;
         }
       }else{
@@ -14649,6 +14808,7 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
           $error = false;
         }
       }
+}
       $tmp = array(
           'aid'=>$user_att_info[$user][$index]['id'],
           'login_time'=>$user_att_info[$user][$index]['login_time'],
