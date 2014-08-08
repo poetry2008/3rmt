@@ -310,6 +310,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_GROUPS','groups');
   define('TABLE_WAGE_SETTLEMENT','wage_settlement');
   define('TABLE_USER_WAGE','user_wage');
+  define('TABLE_USER_WAGE_INFO','user_wage_info');
   //排班相关的表
   define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
   define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');
