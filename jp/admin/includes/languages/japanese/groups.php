@@ -34,4 +34,6 @@ define('TEXT_GROUP_WAGE_OBJECT','給料清算項目');
 define('TEXT_GROUP_WAGE_OBJECT_VALUE','ユーザー項目値');
 define('TEXT_GROUP_WAGE_OBJECT_FORMULA','給料計算公式');
 define('TEXT_GROUP_ORDER_SORT','整列順');
+define('TEXT_GROUP_DAYS','日間');
+define('TEXT_GROUP_RESET','重置');
 ?>

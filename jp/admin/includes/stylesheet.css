@@ -2365,5 +2365,8 @@ display:inline-block;
 .uroster_record  img{
 	padding-left:6px;
 }
-
+/*限制单个输入框的宽度--隔周输入框 @date20140808*/
+.limit_input_width {
+   width:30px;
+}
 

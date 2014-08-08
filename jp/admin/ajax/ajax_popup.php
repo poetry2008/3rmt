@@ -8985,7 +8985,7 @@ if($_GET['latest_messages_id']>0){
      $date_str .= '<option value="'.$i.'"'.($i == 28 ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
    }
    $date_str .= '</select>';
-   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="'.TEXT_GROUP_RESET.'">'; 
+   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="check_reset();" value="'.TEXT_GROUP_RESET.'">'; 
    $group_content_row_date[] = array('text' => $date_str);
    $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);
 
@@ -9004,37 +9004,83 @@ if($_GET['latest_messages_id']>0){
                 </div>';
    $date_str .= TEXT_TIME_LINK.'<input type="text" name="cycle_date" size="5">'.TEXT_GROUP_DAYS.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="cycle_flag_true">'.TEXT_GROUP_LOOP.'</label>';
    $group_content_row_date[] = array('text' => $date_str);
-   $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);
+   $group_content_table[] = array('text'=>$group_content_row_date);
  }else{
    $groups_start_end_date = $groups_array['begin_end_date'];
    $groups_start_end_date_array = explode('|||',$groups_start_end_date);
+
+  if($groups_array['cycle_flag'] == 0){
    $date_i = 0;
    foreach($groups_start_end_date_array as $start_end_date_key=>$start_end_date_value){
 
      $group_content_row_date = array();
      $group_content_row_date[] = array('params'=>'width="20%"','text'=> $start_end_date_key == 0 ? TEXT_GROUP_BEGIN_END_DATE : '');
      $start_end_date = explode('-',$start_end_date_value); 
-     $date_str = TEXT_GROUP_BEGIN_DATE; 
-     $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     if($start_end_date_key == 0){
+       $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
+     }else{
+       $date_str = TEXT_GROUP_BEGIN_DATE; 
+     }
+     $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);"'.($date_i != count($groups_start_end_date_array)-1 ? ' disabled' : '').'>';
      for($i=1;$i<=28;$i++){
 
        $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
      $date_str .= TEXT_GROUP_END_DATE; 
-     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');" disabled>';
      for($i=1;$i<=28;$i++){
 
        $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
      if($start_end_date_key == 0){
-       $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
+       $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="check_reset();" value="'.TEXT_GROUP_RESET.'">';
      }
      $group_content_row_date[] = array('text' => $date_str);
      $group_content_table[] = array('params'=>'id="tr_date_'.$date_i.'"','text'=>$group_content_row_date);
      $date_i++;
    } 
+  }else{
+   $date_i = 1;
+   $group_content_row_date = array();
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">'); 
+   $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
+   $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);">';
+   for($i=1;$i<=28;$i++){
+
+     $date_str .= '<option value="'.$i.'">'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
+   }
+   $date_str .= '</select>';
+   $date_str .= TEXT_GROUP_END_DATE; 
+   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');" disabled>';
+   for($i=1;$i<=28;$i++){
+
+     $date_str .= '<option value="'.$i.'"'.($i == 28 ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
+   }
+   $date_str .= '</select>';
+   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="check_reset();" value="'.TEXT_GROUP_RESET.'">'; 
+   $group_content_row_date[] = array('text' => $date_str);
+   $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);  
+  
+  }
+
+   $group_content_row_date = array();
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
+   $date_str = '';
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'>'.tep_draw_input_field('wage_date',($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())).'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+                <div class="yui3-u" id="new_yui3">
+                <div id="mycalendar"></div> 
+                </div>
+                </div>';
+   $date_str .= TEXT_TIME_LINK.'<input type="text" name="cycle_date" size="5" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[1] : '').'">'.TEXT_GROUP_DAYS.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="cycle_flag_true">'.TEXT_GROUP_LOOP.'</label>';
+   $group_content_row_date[] = array('text' => $date_str);
+   $group_content_table[] = array('text'=>$group_content_row_date);
  } 
  //終始時
  $group_content_row_hour = array();
@@ -9719,9 +9765,15 @@ echo  $return_res;
 
   $type_select = '<select name="type[]" '.$show_only.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
-    $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+		$t_key = $t_key-1;
+	  }	
+        $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$show_only.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$show_only.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
@@ -9788,14 +9840,25 @@ echo  $return_res;
 
       $has_type_select = '<select name="has_type[]" '.$show_only.'  onchange="edit_space_nums(this,this.value);" >';
       foreach($type_list as $t_key => $t_value){
+		  //给每周一个value
+	     if($t_key==1){
+	       $t_key =9;
+	     }
+		 if($t_key>1){
+		   $t_key = $t_key-1;
+		 }
         $has_type_select .= '<option value="'.$t_key.'" ';
+		 //判断是不是每周
+		 if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+		 }
         if($a_info['type'] == $t_key){
           $has_type_select .= ' selected ';
         }
         $has_type_select .= ' >'.$t_value.'</option>';
       }
-	  $style_space=$a_info['type']==2?'':'style="display:none"' ;
-	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	  $style_space=($a_info['type']==1&&$a_info['space']!=0)?'':'style="display:none"' ;
+	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -10642,9 +10705,15 @@ if($row_array['set_time']==0){
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+	    $t_key = $t_key-1;
+	  }
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="" '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
 
   $hidden_div = '<div style="display:none">';
@@ -10697,16 +10766,26 @@ if($row_array['set_time']==0){
     }
     $has_type_select = '<select name="has_type[]" '.$disabled.'  onchange="edit_space_nums(this,this.value);" >';
     foreach($type_list as $t_key => $t_value){
+	   if($t_key==1){
+	     $t_key =9;
+	   }
+		if($t_key>1){
+		  $t_key = $t_key-1;
+		}
       $has_type_select .= '<option value="'.$t_key.'" ';
+	 //判断是不是每周
+	  if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+	  }
       if($a_info['type'] == $t_key){
         $has_type_select .= ' selected ';
       }
       $has_type_select .= ' >'.$t_value.'</option>';
     }
 	//隔周
-    $style_space=$a_info['type']==2?'':'style="display:none"';
+    $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
 	
-	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 
