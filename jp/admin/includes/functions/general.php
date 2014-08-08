@@ -14111,7 +14111,7 @@ function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_s
     $return_str = $user_info['name'].'&nbsp;';
     return $return_str;
   }
-  $manager_list = tep_get_user_list_by_userid($uid);
+  $mger_listanager_list = tep_get_user_list_by_userid($uid);
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
     if($date<$today){
@@ -14467,6 +14467,9 @@ function tep_is_attenandced_date($user){
     return false;
   }
 }
+/***************************
+  获得用户当前日期需要初期的所哟排班
+***************************/
 function tep_all_attenande_by_uid($user,$date,$show_group=0){
   $date_info = tep_date_info($date);
   $all_sql = "select * from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
@@ -14517,10 +14520,11 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     $diff_arr['time'] = $set_array;
     $diff_arr['sum'] = $unset_array;
   }
-
+  //去除所有排班里的请假排班
+  $res_array = array();
   $replace_arr = array();
   $replace_sql = "select * from ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where 
-     date='".$date."' and allow_status = '1'";
+     date='".$date."' and user='".$user."' and  allow_status = '1'";
   $replace_query = tep_db_query($replace_sql);
   $replace_aid = array();
   while($replace_row = tep_db_fetch_array($replace_query)){
@@ -14528,14 +14532,73 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     $replace_aid[] = $replace_row['attendance_detail_id'];
   }
   $res_arr = array();
+  $row_arr = array();
+  $last_key = 0;
+  foreach($replace_arr as $r_info){
+    $last_key = str_replace(':','',$r_info['leave_start']);
+    $row_arr[$last_key] = array(
+          'type' => 'replace',
+          'attendance_detail_id' => $r_info['attendance_detail_id'],
+          'work_start' => $r_info['leave_start'],
+          'work_end' => $r_info['leave_end'],
+          'set_time' => '',
+          'work_hours' => '',
+          'rest_hours' => '' 
+        );
+  }
   if(count($attendance_dd_arr_tmp)>1){
+    foreach($diff_arr['time'] as $k => $v){
+      if(!in_array($v['attendance_detail_id'],$replace_aid)){
+        $last_key = str_replace(':','',$v['work_start']);
+        $row_arr[$last_key] = array(
+          'type' => '',
+          'attendance_detail_id' => $v['attendance_detail_id'],
+          'work_start' => $v['work_start'],
+          'work_end' => $v['work_end'],
+          'set_time' => $v['set_time'],
+          'work_hours' => $v['work_hours'],
+          'rest_hours' => $v['rest_hours']
+          );
+      }
+    }
   }else{
-    $row_arr = array();
     if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
-      
+      $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
+      $row_arr[$last_key] = array(
+          'type' => '',
+          'attendance_detail_id' => $attendance_dd_arr_tmp[0]['attendance_detail_id'],
+          'work_start' => $attendance_dd_arr_tmp[0]['work_start'],
+          'work_end' => $attendance_dd_arr_tmp[0]['work_end'],
+          'set_time' => $attendance_dd_arr_tmp[0]['set_time'],
+          'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
+          'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours']
+          );
     }
   }
+  //按时间排序
+  ksort($row_arr);
+  //添加 时间段排班信息
+  if(count($attendance_dd_arr_tmp)>1){
+    foreach($diff_arr['sum'] as $sk => $sv){
+      if(!in_array($sv['attendance_detail_id'],$replace_aid)){
+        $last_key++;
+        $row_arr[$last_key] = array(
+          'type' => '',
+          'attendance_detail_id' => $sv['attendance_detail_id'],
+          'work_start' => $sv['work_start'],
+          'work_end' => $sv['work_end'],
+          'set_time' => $sv['set_time'],
+          'work_hours' => $sv['work_hours'],
+          'rest_hours' => $sv['rest_hours']
+          );
+      }
+    }
+  }
+  return $row_arr;
 }
+/* -------------------------------------
+   根据用户和组 获得所有出勤时间的详细信息
+ ------------------------------------ */
 function tep_validate_user_attenandced($all_user,$date,$show_group=0){
   $user_att_info = array();
   $user_att_list = array();
@@ -14547,40 +14610,69 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
     $user_att_list[] = $att_row['user_name'];
   }
   $user_att_list = array_unique($user_att_list);
-  $user_date_att_info = array();
+  $res_info_array = array();
   foreach($all_user as $user){
     //先判断请假的是否迟到
     $user_att_date_list = array();
+    //获得所有时间信息
     $user_att_date_list = tep_all_attenande_by_uid($user,$date,$show_group);
-    if(count($user_att_date_list)>1){
-      $uadl_time = $user_att_date_list['time'];
-      $uadl_sum = $user_att_date_list['sum'];
-    }else{
-      $user_date_att_info[$user] = array();
-      if(!empty($user_att_info[$user])){
-        $work_start = str_replace(':','',$user_att_date_list['work_start']);
-        $work_end = str_replace(':','',$user_att_date_list['work_end']);
-        $error_flag = true;
-        foreach($user_att_info[$user] as $uai_value){
-          $real_work_start = substr($uai_value['login_time'],11,5);
-          $real_work_end = substr($uai_value['logout_time'],11,5);
-          if($work_start > $work_end){
-            if($date< intval(substr($uai_value['logout_time']))&&$real_work_end_str >= $work_end&&$real_work_start_str <= $work_start){
-              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
-              break;
-            }
-          }else{
-            if($real_work_start_str <= $work_start && $real_work_end_str >= $work_end){
-              $user_date_att_info[$user][$user_att_date_list['attendance_detail_id']] = $user_att_date_list[$user];
-              break;
-            }
-          }
+    //判断每一个用户 当天排班的 出勤状态
+    //返回出勤信息 兵标记是否迟到
+    $index = 1;
+    foreach($user_att_date_list as $att_info){
+      $real_work_start_str = $user_att_info[$user][$index]['login_time'];
+      $real_work_end_str = $user_att_info[$user][$index]['logout_time'];
+      $real_work_start = tep_get_sec_by_str($real_work_start_str);
+      $real_work_end = tep_get_sec_by_str($real_work_end_str);
+      $real_date = tep_date_info($user_att_info[$user][$index]['date']);
+      $error = true;
+      if($att_info['set_time']!=1){
+        $need_work_start_str = $att_info['work_start'];
+        $need_work_end_str = $att_info['work_end'];
+        $need_work_start = str_replace(':','',$need_work_start_str);
+        $need_work_end = str_replace(':','',$need_work_end_str);
+        $need_ymd_str = $real_date['year'].'-'.$real_date['month'].'-'.$real_date['day'];
+        $need_his_start_str = $need_work_start_str.':59';
+        $need_his_end_str = $need_work_end_str.':00';
+        //判断 隔天 排班
+        $need_start_sec = tep_get_sec_by_str($need_ymd_str.' '.$need_his_start_str);
+        $need_end_sec = tep_get_sec_by_str($need_ymd_str.' '.$need_his_end_str);
+        if($need_work_end < $need_work_start){
+          $need_end_sec = $need_end_sec+24*60*60; 
+        }
+        if($real_work_start < $need_start_sec && $real_work_end > $need_end_sec){
+          $error = false;
         }
       }else{
-        $user_date_att_info[$user] = array();
+        $work_hour = ($real_work_end_sec-$real_work_start_sec)/60;
+        if($work_hour > ($att_info['work_hours']+$att_info['rest_hours'])){
+          $error = false;
+        }
       }
+      $tmp = array(
+          'aid'=>$user_att_info[$user][$index]['id'],
+          'login_time'=>$user_att_info[$user][$index]['login_time'],
+          'logout_time'=>$user_att_info[$user][$index]['logout_time'],
+          'date'=>$user_att_info[$user][$index]['date'],
+          'nums'=>$user_att_info[$user][$index]['nums'],
+          'error'=>$error);
+      $res_info_array[$user][$att_info['attendance_detail_id']] = $tmp;
+      $index++;
     }
   }
+  return $res_info_array;
+}
+/*--------------------------------------
+  获得 输入字符串 所代表的时间戳
+  -------------------------------------*/
+function tep_get_sec_by_str($str){
+  $str_arr = explode(' ',$str);
+  $ymd = $str_arr[0];
+  $his = $str_arr[1];
+  $ymd_arr = explode('-',$ymd);
+  $his_arr = explode(':',$his);
+  $sec = mktime($his_arr[0],$his_arr[1],$his_arr[2],$ymd_arr[1],$ymd_arr[2],$ymd_arr[0]);
+  return $sec;
 }
 /* -------------------------------------
     功能: 计算工资的公式 
@@ -14899,4 +14991,56 @@ function time_diff($start_time,$end_time){
   }
 
   return round($work_hours_time,1);
+}
+function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_status=0){
+  global $ocertify,$user_atted;
+  $today = date('Ymd',time());
+  $user_info = tep_get_user_info($uid);
+  if($date>$today){
+    $return_str = $user_info['name'].'&nbsp;';
+    return $return_str;
+  }
+  $mger_listanager_list = tep_get_user_list_by_userid($uid);
+  $param_str = '';
+  if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
+    if($date<$today){
+      $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
+    }
+  }
+  $return_str = $user_info['name'].'&nbsp;';
+  if(!empty($atted_info)){
+    if($param_str != ''){
+      if($show_status !=2 ){
+        $return_str .= $param_str;
+      }
+    }
+    if($atted_info['error']&&$show_status!=2){
+      if($bg_color == '#FE0000'){
+        $return_str .= '<font color ="#FFFFFF">';
+      }else{
+        $return_str .= '<font color ="#FE0000">';
+      }
+      if(substr($atted_info['login_time'],11,5)=='00:00'||$atted_info['login_time']==null){
+        $return_str .= '......';
+      }else{
+        $return_str .= substr($atted_info['login_time'],11,5);
+      }
+        $return_str .= '～';
+      if(substr($atted_info['logout_time'],11,5)=='00:00'||$atted_info['logout_time']==null){
+        $return_str .= '......';
+      }else{
+        $return_str .= substr($atted_info['logout_time'],11,5);
+      }
+      $return_str .= '</font><br>';
+    }else{
+      if($show_status == 0){
+        $return_str .= '<font color ="#000000">';
+        $return_str .= substr($atted_info['login_time'],11,5)
+          .  '～';
+        $return_str .= substr($atted_info['logout_time'],11,5);
+        $return_str .= '</font><br>';
+      }
+    }
+  }
+  return $return_str;
 }
