@@ -90,6 +90,15 @@ function check_group(){
   }
 
   if(error == false){
+    var end_date = document.getElementsByName("end_date[]"); 
+    var end_date_length = end_date.length;
+    var start_date = document.getElementsByName("start_date[]"); 
+
+    for(var i=0;i<=end_date_length-1;i++){
+    
+      end_date[i].disabled = false;
+      start_date[i].disabled = false;
+    }
     document.forms.new_latest_group.submit();
   }
 }
@@ -292,8 +301,14 @@ function date_select(ele,end_str,start_str,date_str){
       end_time = end_time+28;
     }
     for(var j=start_time;j<=end_time;j++){
-    
-      date_select_array[date_i] = j;
+   
+      if(j < one_start_date){
+
+        date_select_array[date_i] = j+28;
+      }else{
+      
+        date_select_array[date_i] = j;
+      }
       date_i++;
     }
    
@@ -310,7 +325,8 @@ function date_select(ele,end_str,start_str,date_str){
     all_date_array[date_i] = k;
     date_i++;
   }
-  alert(date_select_array.toString());
+  //alert(all_date_array.toString());
+  //alert(date_select_array.toString());
 
   var diff_date_array = new Array();
 
@@ -329,7 +345,7 @@ function date_select(ele,end_str,start_str,date_str){
       diff_date_array.push(all_date_array[m]);
     }
   }
-  alert(diff_date_array.toString());
+  //alert(diff_date_array.toString());
   if(diff_date_array.length > 0){
  
        var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
@@ -350,17 +366,24 @@ function date_select(ele,end_str,start_str,date_str){
             select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
             select_end_str += '<option value="'+diff_value+'" selected>'+diff_value_str+date_str+'</option>';
           }else{
+            var temp_num = tr_date_id;
+            $("#tr_date_id").val(tr_date_id+1);
+            tr_date_id = $("#tr_date_id").val();
+            tr_date_id = parseInt(tr_date_id);
             select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
             select_end_str += '<option value="'+diff_value+'" selected>'+diff_value_str+date_str+'</option>';
             select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
-            var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
-            var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" disabled>';
-            var select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');">';
+            select_str += '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
+            select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" disabled>';
+            select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');">';
           }
         }
       } 
       select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
       $(ele).parent().parent().after(select_str);
+      if(temp_num){
+        document.getElementsByName("start_date[]")[temp_num].disabled = true;
+      }
       $("#tr_date_id").val(tr_date_id+1);
   }
 }
@@ -445,4 +468,21 @@ function start_date_select(ele,num){
   if(ele.value != 1){
     document.getElementsByName("end_date[]")[num].disabled = false;
   }
+}
+//reset date
+function check_reset(){
+
+    document.getElementsByName("start_date[]")[0].value = 1;
+    document.getElementsByName("start_date[]")[0].disabled = false;
+    document.getElementsByName("end_date[]")[0].value = 28;
+    document.getElementsByName("end_date[]")[0].disabled = true;
+
+    var tr_date_id = $("#tr_date_id").val();
+
+    tr_date_id = parseInt(tr_date_id);
+    for(var i=1;i<=tr_date_id;i++){
+    
+      $("#tr_date_"+i).remove();
+    }
+    $("#tr_date_id").val(1);
 }
