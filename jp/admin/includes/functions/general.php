@@ -14537,7 +14537,7 @@ function tep_get_userlist_by_group_uid($uid){
   return $res;
 }
 
-function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
+function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_id=0){
   global $all_att_arr;
   if(empty($all_att_arr)){
     $all_att_arr = array();
@@ -14565,6 +14565,9 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
         or (type='4' and month='".$date_info['month']."' and day='".$date_info['day']."'))
         and user_id='".$uid."'";
+    }
+    if($u_att_id!=0){
+      $where_str .= " and attendance_detail_id='".$u_att_id."'";
     }
   }else{
     $where_str = " where id='".$add_id."' ";
@@ -14867,11 +14870,42 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           $parameters_replace_other_array[$wage_setting_array['contents']] = 0;
         }
       }else{
-        $user_wage_query = tep_db_query("select wage_value from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_setting_array['id']."' and user_id='".$user_id."'");
+        $user_wage_query = tep_db_query("select wage_value,start_date,end_date from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_setting_array['id']."' and user_id='".$user_id."'");
         if(tep_db_num_rows($user_wage_query) > 0){
           $user_wage_array = tep_db_fetch_array($user_wage_query);
           tep_db_free_result($user_wage_query);
-          $parameters_replace_basic_array[$wage_setting_array['contents']] = $user_wage_array['wage_value']; 
+          $user_wage_value_array['start_date'] = $user_wage_array['start_date'];
+          $user_wage_value_array['end_date'] = $user_wage_array['end_date'];
+          $user_wage_value_array['wage_value'] = $user_wage_array['wage_value'];
+          //判断工资的有效期
+          $now_date = date('Y-m-d',strtotime($wage_date));
+          if($user_wage_value_array['start_date'] != '' && $user_wage_value_array['end_date'] != ''){
+            if($now_date >= $user_wage_value_array['start_date'] && $now_date <= $user_wage_value_array['end_date']){
+              $user_wage_val = $user_wage_value_array['wage_value'];
+            }else{
+                       
+              $user_wage_val = 0;
+            }
+          }else if($user_wage_value_array['start_date'] != ''){
+
+            if($now_date >= $user_wage_value_array['start_date']){
+
+              $user_wage_val = $user_wage_value_array['wage_value'];
+            }else{
+              $user_wage_val = 0; 
+            }
+          }else if($user_wage_value_array['end_date'] != ''){
+
+            if($now_date <= $user_wage_value_array['end_date']){
+
+              $user_wage_val = $user_wage_value_array['wage_value'];
+            }else{
+              $user_wage_val = 0; 
+            } 
+          }else{
+            $user_wage_val = $user_wage_value_array['wage_value']; 
+          }
+          $parameters_replace_basic_array[$wage_setting_array['contents']] = $user_wage_val; 
         }else{
           $parameters_replace_basic_array[$wage_setting_array['contents']] = 0; 
         }
@@ -14963,7 +14997,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
     返回值: 计算结果 
 ------------------------------------ */
 function tep_attendance_record_time($user_id,$date){
-
+  return 0;
   //获取员工所属的组
   $group_id_array = tep_get_groups_by_user($user_id);
   //获取组的排班

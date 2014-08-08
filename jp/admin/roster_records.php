@@ -947,6 +947,17 @@ while($j<=$day_num)
     $all_user_list[] = $t_value['user_id'];
     $all_user_att_info[$t_value['user_id']][] = $t_value;
   }
+  $user_att_arr_source = $user_att_arr;
+  $user_att_arr = array();
+  $tmp_user_att_arr = array();
+  foreach($user_att_arr_source as $uaas_value){
+    $tmp_user_att_arr[$uaas_value['attendance_detail_id']][] = $uaas_value;
+  }
+  foreach($tmp_user_att_arr as $tuaa_value){
+    foreach($tuaa_value as $tmp_value){
+      $user_att_arr[] = $tmp_value;
+    }
+  }
   if($j==23){
   }
   if(!empty($show_att_user_list)){
@@ -1173,7 +1184,7 @@ while($j<=$day_num)
 
       echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
-      if($ocertify->auth_user==$att_uid||$ocertify->npermission>'10'){
+      if($ocertify->auth_user==$uatt_arr['user_id']||$ocertify->npermission>'10'){
         if($date>=$today||!empty($user_replace)){
           echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$att_user_row['attendance_detail_id']."\")' ";
         }
