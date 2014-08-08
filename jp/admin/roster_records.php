@@ -170,8 +170,6 @@ if(isset($_GET['action'])){
       }
       break;
     case 'save_as_list':
-		echo '<pre>';
-		var_dump($_POST);
       $date_info = tep_date_info($_POST['get_date']);
       $user = $_SESSION['user_name'];
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])

@@ -9773,7 +9773,7 @@ echo  $return_res;
 	  }	
         $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$show_only.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$show_only.' onkeyup="if(this.value!=\'\'){if(!/^[1-9][0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
@@ -9858,7 +9858,7 @@ echo  $return_res;
         $has_type_select .= ' >'.$t_value.'</option>';
       }
 	  $style_space=($a_info['type']==1&&$a_info['space']!=0)?'':'style="display:none"' ;
-	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -10713,7 +10713,7 @@ if($row_array['set_time']==0){
 	  }
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="" '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
 
   $hidden_div = '<div style="display:none">';
@@ -10785,7 +10785,7 @@ if($row_array['set_time']==0){
 	//隔周
     $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
 	
-	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(!/^[0-9]*[1-9]*$/.test(this.value)){this.value=\'1\'}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 
