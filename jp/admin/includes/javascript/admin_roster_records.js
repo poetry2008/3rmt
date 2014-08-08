@@ -536,7 +536,7 @@ function change_users_allow(value){
     allow_status.disabled = true;
   }
 }
-function change_att_date(date,ele,uid){
+function change_att_date(date,ele,uid,aid){
     if(!uid){
     uid='';
   }
@@ -555,7 +555,7 @@ function change_att_date(date,ele,uid){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=change_att_date&date='+date+'&uid='+uid+'&index='+index,
+    url: 'ajax.php?action=change_att_date&date='+date+'&uid='+uid+'&index='+index+'&aid='+aid,
     dataType: 'text',
     async: false,
     success: function(text) {
