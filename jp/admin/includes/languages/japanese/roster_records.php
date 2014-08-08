@@ -50,6 +50,7 @@ define('TEXT_ADD_ADL', '追加');
 define('TEXT_DEL_ADL', '削除');
 define('TEXT_TYPE_SELECT', '繰り返す');
 define('TEXT_CALENDAR_REPEAT_TYPE_NO','繰り返しなし');
+define('TEXT_CALENDAR_REPEAT_TYPE_EVERY_WEEK','毎週');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK','隔週');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD','隔');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL','週');
