@@ -14615,7 +14615,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           $parameters_replace_other_array[$wage_setting_array['contents']] = 0;
         }
       }else{
-        $user_wage_query = tep_db_query("select wage_value from ".TABLE_USER_WAGE." where wage_id='".$wage_setting_array['id']."' and user_id='".$user_id."' and save_date='".$wage_date."'");
+        $user_wage_query = tep_db_query("select wage_value from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_setting_array['id']."' and user_id='".$user_id."'");
         if(tep_db_num_rows($user_wage_query) > 0){
           $user_wage_array = tep_db_fetch_array($user_wage_query);
           tep_db_free_result($user_wage_query);
