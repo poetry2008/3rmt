@@ -63,7 +63,7 @@
 
         if($user_wage_list != ''){
           $user_wage_list_array = array();
-          $user_wage_query = tep_db_query("select id,wage_id from ".TABLE_USER_WAGE." where id in (".$user_wage_list.")"); 
+          $user_wage_query = tep_db_query("select id,wage_id from ".TABLE_USER_WAGE_INFO." where id in (".$user_wage_list.")"); 
           while($user_wage_array = tep_db_fetch_array($user_wage_query)){
 
             $user_wage_list_array[$user_wage_array['wage_id']] = $user_wage_array['id'];
@@ -72,13 +72,13 @@
 
           foreach($user_wage as $user_wage_key=>$user_wage_value){
 
-            tep_db_query("update ".TABLE_USER_WAGE." set wage_value='".$user_wage_value."',start_date='".$user_wage_start_date[$user_wage_key]."',end_date='".$user_wage_end_date[$user_wage_key]."',contents='".$wage_contents."',update_date=now() where id='".$user_wage_list_array[$user_wage_key]."'");
+            tep_db_query("update ".TABLE_USER_WAGE_INFO." set wage_value='".$user_wage_value."',start_date='".$user_wage_start_date[$user_wage_key]."',end_date='".$user_wage_end_date[$user_wage_key]."',contents='".$wage_contents."',update_date=now() where id='".$user_wage_list_array[$user_wage_key]."'");
           }
         }else{
          
           foreach($user_wage as $user_wage_key=>$user_wage_value){
 
-            tep_db_query("insert into ".TABLE_USER_WAGE."(id,wage_id,user_id,wage_value,start_date,end_date,contents,save_date,update_date) values(NULL,".$user_wage_key.",'".$user_id."','".$user_wage_value."','".$user_wage_start_date[$user_wage_key]."','".$user_wage_end_date[$user_wage_key]."','".$wage_contents."','".$save_date."',now())");
+            tep_db_query("insert into ".TABLE_USER_WAGE_INFO."(id,wage_id,user_id,wage_value,start_date,end_date,contents,update_date) values(NULL,".$user_wage_key.",'".$user_id."','".$user_wage_value."','".$user_wage_start_date[$user_wage_key]."','".$user_wage_end_date[$user_wage_key]."','".$wage_contents."',now())");
           } 
         }
         tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
@@ -446,9 +446,8 @@ if(tep_db_num_rows($user_wage_query) > 0){
                 $user_project_id_array = array();
                 $update_time = '';
                 foreach($groups_users_id as $wage_id){
-                  //根据工资ID与用户ID及日期，来获取对应的值
-                  $user_wage_value_query = tep_db_query("select id,wage_value,update_date from ".TABLE_USER_WAGE." where wage_id='".$wage_id['id']."' and user_id='".$users_value."' and save_date='".$default_date."'");
-                  $user_wage_val = '';
+                  //根据工资ID与用户ID，来获取对应的值
+                  $user_wage_value_query = tep_db_query("select id,wage_value,update_date from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_id['id']."' and user_id='".$users_value."'");
                   if(tep_db_num_rows($user_wage_value_query) > 0){
                     $user_wage_value_array = tep_db_fetch_array($user_wage_value_query);
                     tep_db_free_result($user_wage_value_query);
@@ -461,6 +460,21 @@ if(tep_db_num_rows($user_wage_query) > 0){
                       $user_project_id_array[] = $user_wage_value_array['id'];
                     }
                   }
+
+                  //根据工资ID与用户ID及日期，来获取对应的值
+                  $user_wage_value_query = tep_db_query("select id,wage_value,update_date from ".TABLE_USER_WAGE." where wage_id='".$wage_id['id']."' and user_id='".$users_value."' and save_date='".$default_date."'");
+                  $user_wage_val = '';
+                  if(tep_db_num_rows($user_wage_value_query) > 0){
+                    $user_wage_value_array = tep_db_fetch_array($user_wage_value_query);
+                    tep_db_free_result($user_wage_value_query);
+                    $user_wage_val = $user_wage_value_array['wage_value'];
+                    if($update_time == ''){
+
+                      $update_time = $user_wage_value_array['update_date'];
+                    }
+                    
+                  }
+
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
                 	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.($user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id)).'">' 

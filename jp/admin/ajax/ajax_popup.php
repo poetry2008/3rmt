@@ -8971,21 +8971,38 @@ if($_GET['latest_messages_id']>0){
    $date_i = 1;
    $group_content_row_date = array();
    $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">'); 
-   $date_str = TEXT_GROUP_BEGIN_DATE; 
-   $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-   for($i=1;$i<=31;$i++){
+   $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
+   $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);">';
+   for($i=1;$i<=28;$i++){
 
-     $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
+     $date_str .= '<option value="'.$i.'">'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
    }
    $date_str .= '</select>';
    $date_str .= TEXT_GROUP_END_DATE; 
-   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-   for($i=1;$i<=31;$i++){
+   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');" disabled>';
+   for($i=1;$i<=28;$i++){
 
-     $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
+     $date_str .= '<option value="'.$i.'"'.($i == 28 ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
    }
    $date_str .= '</select>';
-   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
+   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="'.TEXT_GROUP_RESET.'">'; 
+   $group_content_row_date[] = array('text' => $date_str);
+   $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);
+
+   $group_content_row_date = array();
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
+   $date_str = '';
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;">'.tep_draw_input_field('wage_date',date('Y-m-d',time()),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.date('Y-m-d',time()).'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+                <div class="yui3-u" id="new_yui3">
+                <div id="mycalendar"></div> 
+                </div>
+                </div>';
+   $date_str .= TEXT_TIME_LINK.'<input type="text" name="cycle_date" size="5">'.TEXT_GROUP_DAYS.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="cycle_flag_true">'.TEXT_GROUP_LOOP.'</label>';
    $group_content_row_date[] = array('text' => $date_str);
    $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);
  }else{
@@ -8999,16 +9016,16 @@ if($_GET['latest_messages_id']>0){
      $start_end_date = explode('-',$start_end_date_value); 
      $date_str = TEXT_GROUP_BEGIN_DATE; 
      $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-     for($i=1;$i<=31;$i++){
+     for($i=1;$i<=28;$i++){
 
-       $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
+       $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
      $date_str .= TEXT_GROUP_END_DATE; 
      $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-     for($i=1;$i<=31;$i++){
+     for($i=1;$i<=28;$i++){
 
-       $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
+       $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
      if($start_end_date_key == 0){
@@ -10791,7 +10808,7 @@ if($row_array['set_time']==0){
  $user_wage_contents = '';
  if($user_wage_list != ''){
 
-   $user_wage_query = tep_db_query("select wage_id,wage_value,start_date,end_date,contents from ".TABLE_USER_WAGE." where id in (".$user_wage_list.")"); 
+   $user_wage_query = tep_db_query("select wage_id,wage_value,start_date,end_date,contents from ".TABLE_USER_WAGE_INFO." where id in (".$user_wage_list.")"); 
    while($user_wage_array = tep_db_fetch_array($user_wage_query)){
 
      $user_wage_list_array[$user_wage_array['wage_id']] = $user_wage_array['wage_value'];
