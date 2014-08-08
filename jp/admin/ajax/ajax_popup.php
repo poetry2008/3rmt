@@ -8968,57 +8968,60 @@ if($_GET['latest_messages_id']>0){
  $group_content_table[] = array('text'=>$group_content_row_currency);
  //终始日 
  if($_POST['group_id'] < 0){
+   $date_i = 1;
    $group_content_row_date = array();
-   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">');
-   $date_str = TEXT_GROUP_END_DATE; 
-   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-   for($i=1;$i<=28;$i++){
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">'); 
+   $date_str = TEXT_GROUP_BEGIN_DATE; 
+   $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+   for($i=1;$i<=31;$i++){
 
      $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
    }
    $date_str .= '</select>';
-   $date_str .= TEXT_GROUP_BEGIN_DATE; 
-   $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-   for($i=1;$i<=28;$i++){
+   $date_str .= TEXT_GROUP_END_DATE; 
+   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+   for($i=1;$i<=31;$i++){
 
      $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
    }
    $date_str .= '</select>';
    $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
    $group_content_row_date[] = array('text' => $date_str);
-   $group_content_table[] = array('text'=>$group_content_row_date);
+   $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);
  }else{
    $groups_start_end_date = $groups_array['begin_end_date'];
    $groups_start_end_date_array = explode('|||',$groups_start_end_date);
+   $date_i = 0;
    foreach($groups_start_end_date_array as $start_end_date_key=>$start_end_date_value){
 
      $group_content_row_date = array();
      $group_content_row_date[] = array('params'=>'width="20%"','text'=> $start_end_date_key == 0 ? TEXT_GROUP_BEGIN_END_DATE : '');
-     $start_end_date = explode('-',$start_end_date_value);
-     $date_str = TEXT_GROUP_END_DATE; 
-     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-     for($i=1;$i<=28;$i++){
-
-       $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
-     }
-     $date_str .= '</select>';
-     $date_str .= TEXT_GROUP_BEGIN_DATE; 
+     $start_end_date = explode('-',$start_end_date_value); 
+     $date_str = TEXT_GROUP_BEGIN_DATE; 
      $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
-     for($i=1;$i<=28;$i++){
+     for($i=1;$i<=31;$i++){
 
        $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
+     }
+     $date_str .= '</select>';
+     $date_str .= TEXT_GROUP_END_DATE; 
+     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     for($i=1;$i<=31;$i++){
+
+       $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
      if($start_end_date_key == 0){
        $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
      }
      $group_content_row_date[] = array('text' => $date_str);
-     $group_content_table[] = array('text'=>$group_content_row_date);
+     $group_content_table[] = array('params'=>'id="tr_date_'.$date_i.'"','text'=>$group_content_row_date);
+     $date_i++;
    } 
  } 
  //終始時
  $group_content_row_hour = array();
- $group_content_row_hour[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_HOUR);
+ $group_content_row_hour[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_HOUR.'<input type="hidden" id="tr_date_id" value="'.$date_i.'">');
  $hour_str = '<select name="start_end_hour">';
  for($i=0;$i<=23;$i++){
 

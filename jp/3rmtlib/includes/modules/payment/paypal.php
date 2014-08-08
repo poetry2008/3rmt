@@ -486,6 +486,20 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
   }
   $orders_status_id = get_configuration_by_site_id('MODULE_PAYMENT_'.strtoupper($this->code).'_ORDER_STATUS_ID', SITE_ID); 
   $orders_status_id = $orders_status_id != 0 ? $orders_status_id : DEFAULT_ORDERS_STATUS_ID;
+  $_SESSION['paypal_order_info'] = array(
+                                     'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
+                                     'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
+                                     'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
+                                     'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
+				     'paypal_business'      => $paypalData['BUSINESS'],
+                                     'telecom_email'        => $paypalData['EMAIL'],
+                                     'telecom_money'        => $paypalData['AMT'],
+                                     'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
+                                     'telecom_tel'          => $paypalData['PHONENUM'],
+                                     'orders_status'        => $orders_status_id,
+                                     'paypal_playerid'      => $payerID,
+                                     'paypal_token'         => $token,);
+  /*
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
@@ -500,6 +514,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
                                      ), 'update', "orders_id='".$insert_id."'");
+    */
     return true;
   }else{
     return false;
@@ -596,6 +611,20 @@ function getpreexpress($pre_value, $pre_pid){
   }
   $orders_status_id = get_configuration_by_site_id('MODULE_PAYMENT_'.strtoupper($this->code).'_ORDER_STATUS_ID', SITE_ID); 
   $orders_status_id = $orders_status_id != 0 ? $orders_status_id : DEFAULT_ORDERS_STATUS_ID;
+  $_SESSION['paypal_order_info'] = array(
+                                     'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
+                                     'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
+                                     'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
+                                     'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
+				     'paypal_business'      => $paypalData['BUSINESS'],
+                                     'telecom_email'        => $paypalData['EMAIL'],
+                                     'telecom_money'        => $paypalData['AMT'],
+                                     'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
+                                     'telecom_tel'          => $paypalData['PHONENUM'],
+                                     'orders_status'        => $orders_status_id,
+                                     'paypal_playerid'      => $payerID,
+                                     'paypal_token'         => $token,);
+  /*
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
@@ -610,6 +639,7 @@ function getpreexpress($pre_value, $pre_pid){
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
                                      ), 'update', "orders_id='".$pre_pid."'");
+    */
     return true;
   }else{
     return false;
@@ -976,7 +1006,9 @@ function PPHttpPost($methodName_, $nvpStr_) {
   $API_UserName = urlencode(my_api_username);
   $API_Password = urlencode(my_api_password);
   $API_Signature = urlencode(my_api_signature);
-  $API_Endpoint = "https://api-3t.paypal.com/nvp";
+//  $API_Endpoint = "https://api-3t.paypal.com/nvp";
+  $API_Endpoint = "https://api-3t.sandbox.paypal.com/nvp";
+    
 
 
   $version = urlencode('51.0');
