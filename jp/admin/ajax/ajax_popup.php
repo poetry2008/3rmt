@@ -9858,6 +9858,9 @@ echo  $return_res;
         $has_type_select .= ' >'.$t_value.'</option>';
       }
 	  $style_space=($a_info['type']==1&&$a_info['space']!=0)?'':'style="display:none"' ;
+	  if($a_info['space']==0 || $a_info['space']==''){
+	    $a_info['space']=1;
+	  }
 	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
@@ -10784,7 +10787,10 @@ if($row_array['set_time']==0){
     }
 	//隔周
     $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
-	
+
+    if($a_info['space']==0 || $a_info['space']==''){
+	    $a_info['space']=1;
+	  }
 	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
