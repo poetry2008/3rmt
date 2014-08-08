@@ -447,11 +447,38 @@ if(tep_db_num_rows($user_wage_query) > 0){
                 $update_time = '';
                 foreach($groups_users_id as $wage_id){
                   //根据工资ID与用户ID，来获取对应的值
-                  $user_wage_value_query = tep_db_query("select id,wage_value,update_date from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_id['id']."' and user_id='".$users_value."'");
+                  $user_wage_value_query = tep_db_query("select id,wage_value,start_date,end_date,update_date from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_id['id']."' and user_id='".$users_value."'");
                   if(tep_db_num_rows($user_wage_value_query) > 0){
                     $user_wage_value_array = tep_db_fetch_array($user_wage_value_query);
                     tep_db_free_result($user_wage_value_query);
-                    $user_wage_val = $user_wage_value_array['wage_value'];
+                    //判断工资的有效期
+                    $now_date = date('Y-m-d',strtotime($default_date));
+                    if($user_wage_value_array['start_date'] != '' && $user_wage_value_array['end_date'] != ''){
+                      if($now_date >= $user_wage_value_array['start_date'] && $now_date <= $user_wage_value_array['end_date']){
+                        $user_wage_val = $user_wage_value_array['wage_value'];
+                      }else{
+                       
+                        $user_wage_val = 0;
+                      }
+                    }else if($user_wage_value_array['start_date'] != ''){
+
+                      if($now_date >= $user_wage_value_array['start_date']){
+
+                        $user_wage_val = $user_wage_value_array['wage_value'];
+                      }else{
+                        $user_wage_val = 0; 
+                      }
+                    }else if($user_wage_value_array['end_date'] != ''){
+
+                      if($now_date <= $user_wage_value_array['end_date']){
+
+                        $user_wage_val = $user_wage_value_array['wage_value'];
+                      }else{
+                        $user_wage_val = 0; 
+                      } 
+                    }else{
+                        $user_wage_val = $user_wage_value_array['wage_value']; 
+                    }
                     if($update_time == ''){
 
                       $update_time = $user_wage_value_array['update_date'];
