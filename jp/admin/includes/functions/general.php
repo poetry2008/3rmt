@@ -14480,13 +14480,17 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     or (type='2' and day='".$date_info['day']."')) and ((is_user='1' and
       user_id='".$user."') or ( is_user='0' and ";
   if($show_group!=0){
-    $all_sql .= " group_id='".$show_group."' ";
+    $all_sql .= " group_id='".$show_group."' )";
   }else{
     $group_list = tep_get_groups_by_user($user);
-    $group_str = implode(',',$group_list);
-    $all_sql .= " group_id in ( ".$group_str." ))) ";
+    if(!empty($group_list)){
+      $group_str = implode(',',$group_list);
+      $all_sql .= " group_id in ( ".$group_str." )) ";
+    }else{
+      $all_sql .= " false )";
+    }
   }
-  $all_sql .= " order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
+  $all_sql .= ") order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
   $query = tep_db_query($all_sql);
   $attendance_dd_arr_tmp = array();
   while($row = tep_db_fetch_array($query)){
@@ -14562,9 +14566,10 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       }
     }
   }else{
-    if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
-      $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
-      $row_arr[$last_key] = array(
+    if(!empty($attendance_dd_arr_tmp)){
+      if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
+        $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
+        $row_arr[$last_key] = array(
           'type' => '',
           'attendance_detail_id' => $attendance_dd_arr_tmp[0]['attendance_detail_id'],
           'work_start' => $attendance_dd_arr_tmp[0]['work_start'],
@@ -14573,6 +14578,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
           'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours']
           );
+      }
     }
   }
   //按时间排序
@@ -14620,12 +14626,13 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
     //返回出勤信息 兵标记是否迟到
     $index = 1;
     foreach($user_att_date_list as $att_info){
+      $error = true;
+      if(!empty($user_att_info[$user][$index])&&$user_att_info[$user][$index]!=null){
       $real_work_start_str = $user_att_info[$user][$index]['login_time'];
       $real_work_end_str = $user_att_info[$user][$index]['logout_time'];
       $real_work_start = tep_get_sec_by_str($real_work_start_str);
       $real_work_end = tep_get_sec_by_str($real_work_end_str);
       $real_date = tep_date_info($user_att_info[$user][$index]['date']);
-      $error = true;
       if($att_info['set_time']!=1){
         $need_work_start_str = $att_info['work_start'];
         $need_work_end_str = $att_info['work_end'];
@@ -14640,7 +14647,7 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
         if($need_work_end < $need_work_start){
           $need_end_sec = $need_end_sec+24*60*60; 
         }
-        if($real_work_start < $need_start_sec && $real_work_end > $need_end_sec){
+        if($real_work_start <= $need_start_sec && $real_work_end >= $need_end_sec){
           $error = false;
         }
       }else{
@@ -14649,6 +14656,7 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
           $error = false;
         }
       }
+}
       $tmp = array(
           'aid'=>$user_att_info[$user][$index]['id'],
           'login_time'=>$user_att_info[$user][$index]['login_time'],
