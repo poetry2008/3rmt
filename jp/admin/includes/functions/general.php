@@ -14537,7 +14537,7 @@ function tep_get_userlist_by_group_uid($uid){
   return $res;
 }
 
-function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
+function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_id=0){
   global $all_att_arr;
   if(empty($all_att_arr)){
     $all_att_arr = array();
@@ -14565,6 +14565,9 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0){
         or (type='3' and week='".$date_info['week']."' and week_index='".$date_info['week_index']."') 
         or (type='4' and month='".$date_info['month']."' and day='".$date_info['day']."'))
         and user_id='".$uid."'";
+    }
+    if($u_att_id!=0){
+      $where_str .= " and attendance_detail_id='".$u_att_id."'";
     }
   }else{
     $where_str = " where id='".$add_id."' ";

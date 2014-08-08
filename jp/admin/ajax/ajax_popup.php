@@ -10632,8 +10632,6 @@ if($row_array['set_time']==0){
       $all_user[] = $row_all_user;
     }
 	$all_user = array_intersect($all_user,$all_check_user);
-  }else{
-    $all_user[] = tep_get_user_info($_GET['uid']);
   }
   //获得所有循环方式
   $type_list = array(
@@ -10666,6 +10664,9 @@ if($row_array['set_time']==0){
   if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
     $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
+    foreach($attendance_dd_arr as $u_att){
+      $all_user[] = tep_get_user_info($u_att['user_id']);
+    }
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
     $attendance_dd_arr = array();
