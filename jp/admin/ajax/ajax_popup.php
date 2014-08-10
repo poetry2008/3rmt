@@ -11092,11 +11092,18 @@ if($row_array['set_time']==0){
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
+ //获取工资计算的开始日、结束日
+ $wage_date_array = tep_start_end_date($_POST['group_id'],$_POST['save_date']);
+ //开始日
+ $wage_start_date = $wage_date_array['start_date'];
+ //结束日
+ $wage_end_date = $wage_date_array['end_date'];
+
  //总计时间
  $group_content_row_wage = array();
  $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '总计时间'), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '总计时间'.$wage_start_date.$wage_end_date), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 

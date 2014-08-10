@@ -510,7 +510,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                 $user_project_id_array = array_filter($user_project_id_array);
 		$user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<a href="javascript:void(0)" onclick="show_user_wage(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$groups_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a>'
+                	'text'   => '<a href="javascript:void(0)" onclick="show_user_wage(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$groups_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a>'
         	);
 		$wage_table_row[] = array('params' => $user_params, 'text' => $user_info);
         }

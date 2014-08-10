@@ -14921,34 +14921,25 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
     //} 
   }
   tep_db_free_result($wage_setting_query);
-
-  //根据所属组的ID，来获取始终日
-  $group_date_query = tep_db_query("select begin_end_date from ".TABLE_GROUPS." where id='".$group_id."'");
-  $group_date_array = tep_db_fetch_array($group_date_query);
-  tep_db_free_result($group_date_query);
-  $begin_end_date = explode('|||',$group_date_array['begin_end_date']);
-  $begin_end_date_array = array();
-  foreach($begin_end_date as $begin_end_date_value){
-    $begin_end_date_temp = explode('-',$begin_end_date_value);
-    $begin_end_date_array[] = $begin_end_date_temp[0]; 
-    $begin_end_date_array[] = $begin_end_date_temp[1]; 
-  }
-  $start_date = min($begin_end_date_array);
-  $end_date = max($begin_end_date_array);
+ 
+  //获取工资计算的开始日、结束日  
+  $start_end_time_array = tep_start_end_date($group_id,$wage_date);
 
   //关于打卡出勤的相关参数及对应的值
   $attendance_replace_array = array();
-  $attendance_detail_query = tep_db_query("select param_a,param_b,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL); 
+  $attendance_detail_query = tep_db_query("select id,param_a,param_b,set_time,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL); 
   while($attendance_detail_array = tep_db_fetch_array($attendance_detail_query)){
 
     //要求员工的出勤时间
     if(in_array('${'.$attendance_detail_array['param_a'].'}',$parameters_value_array)){
 
-      if($attendance_detail_array['work_hours'] > 0){
+      if($attendance_detail_array['set_time'] == 1){
         $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $attendance_detail_array['work_hours']+$attendance_detail_array['rest_hours'];
       }else{
         $work_hours = 0;
-        if($attendance_detail_array['work_start'] < $attendance_detail_array['work_end']){
+        $work_start_num = str_replace(':','',$attendance_detail_array['work_start']);
+        $work_end_num = str_replace(':','',$attendance_detail_array['work_end']);
+        if($work_start_num < $work_end_num){
 
           $work_temp = explode(':',$attendance_detail_array['work_end']);
           $work_end = $work_temp[0]+$work_temp[1]/60;
@@ -14963,22 +14954,36 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           $work_start = $work_temp[0]+$work_temp[1]/60;
           $work_hours = $work_end - $work_start; 
         }
-        $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours;
+        $work_hours_num = 0;
+
+        $wage_start_date = strtotime($start_end_time_array['start_date']);
+        $wage_end_date = strtotime($start_end_time_array['end_date']);
+        while($wage_start_date <= $wage_end_date){
+          $att_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$wage_start_date));
+
+          foreach($att_user_array as $att_user_value){
+
+            if($att_user_value['attendance_detail_id'] == $attendance_detail_array['id']){
+
+              $work_hours_num++; 
+            }
+          }
+          $wage_start_date = $wage_start_date+3600*24;
+        }
+        $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours*$work_hours_num;
       }
     } 
 
     //员工的实际出勤时间 
     if(in_array('${'.$attendance_detail_array['param_b'].'}',$parameters_value_array)){
       $attendance_num = 0;
-      if($end_date < date('d',strtotime($wage_date))){
+      
+      $start_time = strtotime($start_end_time_array['start_date']);
+      $end_time = strtotime($start_end_time_array['end_date']); 
 
-        $year_month = date('Ym',strtotime($wage_date));
-      }else{
-        $year_month = date('Ym',strtotime("-1 month",strtotime($wage_date)));
-      }
-      for($i = $start_date;$i <= $end_date;$i++){
-        //echo $i.'=>'.tep_attendance_record_time($user_id,$year_month.($i < 10 ? '0'.$i : $i)).'<br>';
-        $attendance_num += tep_attendance_record_time($user_id,$year_month.($i < 10 ? '0'.$i : $i));
+      while($start_time <= $end_time){
+        $attendance_num += tep_attendance_record_time($user_id,date('Ymd',$start_time));
+        $start_time += 3600*24; 
       }
 
       $attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'] = $attendance_num; 
@@ -15005,121 +15010,58 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
     返回值: 计算结果 
 ------------------------------------ */
 function tep_attendance_record_time($user_id,$date){
-  return 0;
-  //获取员工所属的组
-  $group_id_array = tep_get_groups_by_user($user_id);
-  //获取组的排班
-  $group_attendance_array = tep_get_attendance($date);
-  foreach($group_attendance_array as $group_attendance_value){
+  //获取指定用户指定日期内的排班   
+  $att_array = tep_all_attenande_by_uid($user_id,$date);
+  //获取指定用户指定日期内的出勤时间
+  $record_array = tep_validate_user_attenandced(array($user_id),$date);
 
-    if(in_array($group_attendance_value['group_id'],$group_id_array)){
+  $validate_time = 0;
+  foreach($att_array as $att_value){
 
-      $attendance_detail_id = $group_attendance_value['attendance_detail_id'];
-      break;
-    }
-  }
-  //获取个人的排班
-  $user_attendance_array = tep_get_attendance_user($date);
-  foreach($user_attendance_array as  $user_attendance_value){
+      //如果是请假
+      if($att_value['type'] == 'replace'){
 
-    if($user_attendance_value['user_id'] == $user_id){
+        $att_query = tep_db_query("select set_time,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL." where id='".$record_array[$user_id][$att_value['attendance_detail_id']]."'"); 
+        $att_array = tep_db_fetch_array($att_query);
+        tep_db_free_result($att_query);
 
-      $attendance_detail_id = $user_attendance_value['attendance_detail_id'];
-      break;
-    }
-  }
-
-  //获取排班要求的出勤时间
-  $attendance_query = tep_db_query("select set_time,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL." where id='".$attendance_detail_id."'");
-  $attendance_array = tep_db_fetch_array($attendance_query);
-  tep_db_free_result($attendance_query);
-  
-  $attendance_record_query = tep_db_query("select login_time,logout_time from attendance_record where user_name='".$user_id."' and date='".$date."'");
-  $attendance_record_temp = array();
-  $temp_time = 0;
-  while($attendance_record_array = tep_db_fetch_array($attendance_record_query)){
-
-    if(strtotime($attendance_record_array['logout_time'])-strtotime($attendance_record_array['login_time']) > $temp_time){
-      $temp_time = strtotime($attendance_record_array['logout_time'])-strtotime($attendance_record_array['login_time']);
-      $attendance_record_temp = array('start'=>$attendance_record_array['login_time'],'end'=>$attendance_record_array['logout_time']);
-    }
-  }
-  tep_db_free_result($attendance_record_query);
-
-  //如果当前没有出勤
-  if(empty($attendance_record_temp) || date('Y-m-d H:i',strtotime($attendance_record_temp['start'])) == date('Y-m-d H:i',strtotime($attendance_record_temp['end']))){
-
-    return 0;
-  }
-
-  //如果当天没有排班
-  if($attendance_detail_id == ''){
-
-    return time_diff(date('H:i',strtotime($attendance_record_temp['start'])),date('H:i',strtotime($attendance_record_temp['end']))); 
-  }
-
-  $work_end_time = str_replace(':','',$attendance_array['work_end']);
-  $work_start_time = str_replace(':','',$attendance_array['work_start']);
-  $temp_start = date('Hi',strtotime($attendance_record_temp['start']));
-  $temp_end = date('Hi',strtotime($attendance_record_temp['end']));
-
-  //隔日时间处理
-  if($work_end_time <= $work_start_time){
-
-    $time_temp_array = explode(':',$attendance_array['work_end']);
-    $attendance_array['work_end'] = ($time_temp_array[0]+24).':'.$time_temp_array[1];
-    $work_end_time = str_replace(':','',$attendance_array['work_end']);
-  }
-
-  if($temp_end <= $temp_start){
-
-    $time_temp_array = explode(':',date('H:i',strtotime($attendance_record_temp['end'])));
-    $attendance_record_temp['end'] = ($time_temp_array[0]+24).':'.$time_temp_array[1];
-    $temp_end = date('Hi',strtotime($attendance_record_temp['end']));
-  }
-  //要求出勤时间
-  $work_hours_time = time_diff($attendance_array['work_start'],$attendance_array['work_end']);
-  
-  if($attendance_array['work_hours'] > 0 && $attendance_array['set_time'] == 1){
-
-    if($temp_time >= ($attendance_array['work_hours']+$attendance_array['rest_hours'])*60*60){
-
-      return $attendance_array['work_hours']+$attendance_array['rest_hours'];
-    }
-  }else{
-
-    $work_start_time_temp = explode(':',$attendance_array['work_start']);
-    $work_end_time_temp = explode(':',$attendance_array['work_end']);
-    $work_time_array = range($work_start_time_temp[0],$work_end_time_temp[0]);
-    $att_start_time_temp = explode(':',date('H:i',strtotime($attendance_record_temp['start'])));
-    $att_end_time_temp = explode(':',date('H:i',strtotime($attendance_record_temp['end'])));
-    $att_time_array = range($att_start_time_temp[0],$att_end_time_temp[0]);
-
-    $diff_work_time = array_intersect($work_time_array,$att_time_array);
-
-    if(!empty($diff_work_time)){
-      if($temp_start <= $work_start_time && $temp_end >= $work_end_time){
-
-        return $work_hours_time;
+        $att_value['work_start'] = $att_array['work_start'];
+        $att_value['work_end'] = $att_array['work_end'];
+        $att_value['work_hours'] = $att_array['work_hours'];
+        $att_value['rest_hours'] = $att_array['rest_hours'];
+        $att_value['set_time'] = $att_array['set_time'];
       }
+      //获取用户的指定排班的出勤时间
+      $login_time = $record_array[$user_id][$att_value['attendance_detail_id']]['login_time'];
+      $logout_time = $record_array[$user_id][$att_value['attendance_detail_id']]['logout_time'];
+ 
+      //如果排班是时间段
+      if($att_value['set_time'] == 0){
 
-      if($temp_start <= $work_start_time && $temp_end <= $work_end_time){
+        $work_start = $att_value['work_start'];
+        $work_end = $att_value['work_end'];
 
-        return time_diff($attendance_array['work_start'],date('H:i',strtotime($attendance_record_temp['end'])));
+        if($login_time != '' && $logout_time != ''){
+          $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time);
+        }
+      //如果排班是时间数
+      }else{
+       
+        $work_time = $att_value['work_hours']+$att_value['rest_hours']; 
+
+        if($login_time != '' && $logout_time != ''){
+
+          $login_diff_time = time_diff(date('H:i',strtotime($login_time)),date('H:i',strtotime($logout_time))); 
+          if($login_diff_time >= $work_time){
+
+            $validate_time += $work_time;
+          }else{
+            $validate_time += $login_diff_time; 
+          } 
+        }
       }
-
-      if($temp_start >= $work_start_time && $temp_end <= $work_end_time){
-
-        return time_diff(date('H:i',strtotime($attendance_record_temp['start'])),date('H:i',strtotime($attendance_record_temp['end'])));
-      }
-
-      if($temp_start >= $work_start_time && $temp_end >= $work_end_time){
-
-        return time_diff(date('H:i',strtotime($attendance_record_temp['start'])),$attendance_array['work_end']);
-      }
-    }
   }
-  return 0;
+  return $validate_time;
 }
 /* -------------------------------------
     功能: 计算工资的个税 
@@ -15172,6 +15114,12 @@ function wage_rate($XSum){
   }
   return $TSum;
 }
+/* -------------------------------------
+    功能: 获取两个时间的时间差 
+    参数: $start_time 开始时间 
+    参数: $end_time 结束时间 
+    返回值: 时间差 
+------------------------------------ */
 function time_diff($start_time,$end_time){
   $work_hours_time = 0;
   $work_start_time = str_replace(':','',$start_time);
@@ -15245,4 +15193,115 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
     }
   }
   return $return_str;
+}
+/* -------------------------------------
+    功能: 根据要求时间、出勤时间，计算有效的出勤时间 
+    参数: $work_start 开始时间 
+    参数: $work_end 结束时间 
+    参数: $login_time 开始出勤时间 
+    参数: $logout_time 结束出勤时间 
+    返回值: 时间差 
+------------------------------------ */
+function tep_validate_time($work_start,$work_end,$login_time,$logout_time){
+
+  $work_start_num = str_replace(':','',$work_start);
+  $work_end_num = str_replace(':','',$work_end);
+  $login_time_num = date('Hi',strtotime($login_time));
+  $logout_time_num = date('Hi',strtotime($logout_time));
+  $login_time = date('H:i',strtotime($login_time));
+  $logout_time = date('H:i',strtotime($logout_time));
+
+  if($work_start_num >= $work_end_num){
+
+    $wort_end_array = explode(':',$work_end);
+    $work_end_num = ($wort_end_array[0]+24).$wort_end_array[1];
+  }
+
+  if($login_time_num >= $logout_time_num){
+
+    $logout_time_array = explode(':',date('H:i',strtotime($logout_time)));
+    $logout_time_num = ($logout_time_array[0]+24).$logout_time_array[1];
+  }
+
+  if($login_time_num <= $work_start_num && $logout_time_num >= $work_end_num){
+
+    $time_diff = time_diff($work_start,$work_end);
+  } 
+
+  if($login_time_num <= $work_start_num && $logout_time_num <= $work_end_num){
+
+    $time_diff = time_diff($work_start,$logout_time);
+  }
+
+  if($login_time_num >= $work_start_num && $logout_time_num <= $work_end_num){
+
+    $time_diff = time_diff($login_time,$logout_time);
+  }
+    
+  if($login_time_num >= $work_start_num && $logout_time_num >= $work_end_num){
+
+    $time_diff = time_diff($login_time,$work_end);
+  }
+
+  return $time_diff;
+}
+/* -------------------------------------
+    功能: 根据组的终始日、工资做成时间来计算工资的开始日，结束日 
+    参数: $group_id 组ID 
+    参数: $wage_date 做成工资的日期 
+    返回值: 计算工资的开始日、结束日 
+------------------------------------ */
+function tep_start_end_date($group_id,$wage_date){
+
+  //根据所属组的ID，来获取始终日
+  $group_date_query = tep_db_query("select cycle_flag,begin_end_date from ".TABLE_GROUPS." where id='".$group_id."'");
+  $group_date_array = tep_db_fetch_array($group_date_query);
+  tep_db_free_result($group_date_query);
+  $begin_end_date = explode('|||',$group_date_array['begin_end_date']);
+  if($group_date_array['cycle_flag'] == 0){
+    $time_i = 0;
+    foreach($begin_end_date as $begin_end_date_value){
+      $begin_end_date_temp = explode('-',$begin_end_date_value);
+      if($time_i == 0){
+
+        $start_date = $begin_end_date_temp[1];
+      }
+      $end_date = $begin_end_date_temp[0];
+      $time_i++;
+    }
+
+    if($end_date <= date('d',strtotime($wage_date))){
+
+        if($start_date <= $end_date){
+          $start_year_month = date('Y-m',strtotime($wage_date));
+          $end_year_month = date('Y-m',strtotime($wage_date));
+        }else{
+          $start_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
+          $end_year_month = date('Y-m',strtotime($wage_date));
+        }
+    }else{
+        if($start_date <= $end_date){
+          $start_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
+          $end_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
+        }else{
+          $start_year_month = date('Y-m',strtotime("-2 month",strtotime($wage_date)));
+          $end_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
+        }
+    }
+    $start_time = strtotime($start_year_month.'-'.$start_date);
+    $end_time = strtotime($end_year_month.'-'.$end_date);
+  }else{
+
+    $start_time_date = strtotime($begin_end_date[0]);
+    $time_diff_num = $begin_end_date[1];
+
+    $wage_time_date = strtotime($wage_date);
+
+    $date_diff = abs($wage_time_date - $start_time_date)/(3600*24)+1;
+
+    $end_time = strtotime("-".($date_diff % $time_diff_num)." day",$wage_time_date);
+    $start_time = strtotime("-".($time_diff_num-1)." day",$end_time);
+  }
+
+  return array('start_date'=>date('Y-m-d',$start_time),'end_date'=>date('Y-m-d',$end_time));
 }

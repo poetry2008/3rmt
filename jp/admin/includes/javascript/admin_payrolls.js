@@ -35,11 +35,11 @@ $(document).ready(function() {
     }
   }); 
 });
-function show_user_wage(ele,user_id,user_name,groups_id,user_wage_list,save_date){
+function show_user_wage(ele,user_id,user_name,groups_id,user_wage_list,save_date,group_id){
  $.ajax({
  type: "POST",
  url: 'ajax.php?&action=show_user_wage',
- data: {user_id:user_id,user_name:user_name,groups_id:groups_id,user_wage_list:user_wage_list,save_date:save_date} ,
+ data: {user_id:user_id,user_name:user_name,groups_id:groups_id,user_wage_list:user_wage_list,save_date:save_date,group_id:group_id} ,
  dataType: 'text',
  async : false,
  success: function(data){
