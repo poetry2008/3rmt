@@ -11099,14 +11099,108 @@ if($row_array['set_time']==0){
  //结束日
  $wage_end_date = $wage_date_array['end_date'];
 
+ $wage_start_arr = explode('-',$wage_start_date);
+ $wage_end_arr = explode('-',$wage_end_date);
+
+ //上班时间段日期列表
+ $date_arr = array();
+ $i=0;
+ while(mktime(0,0,0,$wage_start_arr[1],$wage_start_arr[2]+$i,$wage_start_arr[0]) != mktime(0,0,0,$wage_end_arr[1],$wage_end_arr[2],$wage_end_arr[0])){
+  $date_arr[] = date('Ymd',mktime(0,0,0,$wage_start_arr[1],$wage_start_arr[2]+$i,$wage_start_arr[0]));
+  $i++;
+ }
+
+ //所有排班列表
+
+
+ $user = $_POST['user_id'];
+ //要求出勤时间 不见算变更出勤
+ $all_att_time = 0;
+ //实际出勤时间 包括变更排班
+ $all_real_time = 0;
+ $att_list_arr = array();
+ foreach($date_arr as $_date){
+   //用户当天出勤信息
+   $att_array = tep_all_attenande_by_uid($user,$_date);
+   $real_time = tep_attendance_record_time($user,$_date,$att_array);
+   $all_real_time += $real_time;
+   foreach($att_array as $att_value){
+     if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
+       $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
+       $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
+     }
+     if($att_value['type']=='replace'){
+       if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
+         $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
+         $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
+       }
+     }
+     $real_time_tmp = tep_attendance_record_time($user,$_date,$att_array,$att_value['attendance_detail_id']);
+     $att_list_arr[$att_value['attendance_detail_id']]['real_time'] += $real_time_tmp;
+     if($att_value['set_time']==0){
+       $t_work_time = time_diff($att_value['work_start'],$att_value['work_end']);
+       if($att_value['type'] == 'replace'||$att_value['rest_start']==$att_value['rest_end']){
+         $t_rest_time = 0;
+       }else{
+         $t_rest_time = time_diff($att_value['rest_start'],$att_value['rest_end']);
+       }
+       $t_rwork_time = $t_work_time - $t_rest_time;
+     }else{
+       $t_rwork_time = $att_value['work_hours'] - $att_value['rest_hours'];
+     }
+     $att_list_arr[$att_value['attendance_detail_id']]['time'] += $t_rwork_time;
+     $tmp_att_info = array();
+     if($att_value['type']=='replace'){
+       $tmp_att_info = tep_get_attendance_by_id($att_value['attendance_detail_id']);
+       if($tmp_att_info['set_time']==0){
+         $w_time = time_diff($tmp_att_info['work_start'],$tmp_att_info['work_end']);
+         if($tmp_att_info['rest_start'] == $tmp_att_info['rest_end']){
+           $r_time = 0;
+         }else{
+           $r_time = time_diff($tmp_att_info['rest_start'],$tmp_att_info['rest_end']);
+         }
+         $all_att_time += $w_time - $r_time;
+       }else{
+         $all_att_time += $tmp_att_info['work_hours'] - $tmp_att_info['rest_hours'];
+       }
+     }else{
+       $all_att_time += $t_rwork_time;
+     }
+   }
+ }
+
+ 
  //总计时间
  $group_content_row_wage = array();
  $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '总计时间'.$wage_start_date.$wage_end_date), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => $all_att_time.' '.$all_real_time), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
+
+ $sum_time = 0;
+ $sum_real_time = 0;
+
+ foreach($att_list_arr as $a_key => $a_value){
+   $a_info = tep_get_attendance_by_id($a_key);
+   $group_content_row_wage = array();
+   $group_content_row_wage = array(
+          array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['short_language']), 
+          array('align' => 'left','params' => 'width="85%"', 'text' => $a_value['time'].' '.$a_value['real_time']), 
+       );
+   $sum_time += $a_value['time'];
+   $sum_real_time += $a_value['real_time'];
+   $group_content_table[] = array('text'=>$group_content_row_wage);
+ }
+ $group_content_row_wage = array();
+ $group_content_row_wage = array(
+        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_SUM_TIME), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => $sum_time.' '.$sum_real_time), 
+     );
+ $group_content_table[] = array('text'=>$group_content_row_wage);
+
+  /*
  //正常上班
  $group_content_row_wage = array();
  $group_content_row_wage = array(
@@ -11138,8 +11232,8 @@ if($row_array['set_time']==0){
         array('align' => 'left','params' => 'width="85%"', 'text' => '请假'), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
- 
- if($_POST['group_id'] > 0){
+ */
+ if($_POST['group_id'] > 0&&false){
    //作成者、作成时间、更新者、更新时间
    $group_content_table[]['text'] = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($groups_array['create_user'])?$groups_array['create_user']:TEXT_UNSET_DATA))), 

@@ -14646,7 +14646,7 @@ function tep_is_attenandced_date($user){
 /***************************
   获得用户当前日期需要出勤的所有排班
 ***************************/
-function tep_all_attenande_by_uid($user,$date,$show_group=0,$replace_flag=true){
+function tep_all_attenande_by_uid($user,$date,$show_group=0){
   $date_info = tep_date_info($date);
   $all_sql = "select * from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
     ". TABLE_ATTENDANCE_DETAIL ." ad on atd.attendance_detail_id = ad.id  
@@ -15031,14 +15031,19 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
     参数: $date  时间 
     返回值: 计算结果 
 ------------------------------------ */
-function tep_attendance_record_time($user_id,$date){
+function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=false){
   //获取指定用户指定日期内的排班   
-  $att_array = tep_all_attenande_by_uid($user_id,$date);
+  if(empty($att_array)){
+    $att_array = tep_all_attenande_by_uid($user_id,$date);
+  }
   //获取指定用户指定日期内的出勤时间
   $record_array = tep_validate_user_attenandced(array($user_id),$date);
 
   $validate_time = 0;
   foreach($att_array as $att_value){
+      if($att_id!=false&&$att_id!=$att_value['attendance_detail_id']){
+        continue;
+      }
 
       //如果是请假
       if($att_value['type'] == 'replace'){

@@ -1042,7 +1042,7 @@ while($j<=$day_num)
                 if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
                   $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
                   $v_att = false;
-                }else if($now_time>$att_end){
+                }else if($now_time>$att_end&&$now_time>$att_start){
                   $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
                 }
               }else{
