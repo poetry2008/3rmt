@@ -15053,12 +15053,14 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
       //如果是请假
       if($att_value['type'] == 'replace'){
 
-        $att_query = tep_db_query("select set_time,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL." where id='".$record_array[$user_id][$att_value['attendance_detail_id']]."'"); 
+        $att_query = tep_db_query("select set_time,work_hours,rest_hours,work_start,work_end,rest_start,rest_end from ".TABLE_ATTENDANCE_DETAIL." where id='".$record_array[$user_id][$att_value['attendance_detail_id']]."'"); 
         $att_array = tep_db_fetch_array($att_query);
         tep_db_free_result($att_query);
 
         $att_value['work_start'] = $att_array['work_start'];
         $att_value['work_end'] = $att_array['work_end'];
+        $att_value['rest_start'] = $att_array['rest_start'];
+        $att_value['rest_end'] = $att_array['rest_end'];
         $att_value['work_hours'] = $att_array['work_hours'];
         $att_value['rest_hours'] = $att_array['rest_hours'];
         $att_value['set_time'] = $att_array['set_time'];
@@ -15074,7 +15076,7 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
         $work_end = $att_value['work_end'];
 
         if($login_time != '' && $logout_time != ''){
-          $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time);
+          $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time)-time_diff($att_value['rest_start'],$att_value['rest_end']);
         }
       //如果排班是时间数
       }else{

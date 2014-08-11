@@ -562,10 +562,11 @@ if(tep_db_num_rows($user_wage_query) > 0){
                     
                   }
 
-                  $user_wage_value[$wage_id['id']] += $user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
+                  $wage_value = $user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
+                  $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.($user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id)).'">' 
+                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
