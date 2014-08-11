@@ -13666,39 +13666,6 @@ function tep_check_show_login_logout($uid) {
       $sql_before ="update attendance_record set login_time=0,logout_time=0 where date<".$date_today." and (login_time IS NULL or logout_time IS NULL)";
       $rows = tep_db_query($sql_before);
     }
-    /*
-	//当前用户所在组
-    $group_id_lists =tep_get_groups_by_user($uid);
-    $now_time = date('Y-m-d H:i:s');
-
-
-	//昨天用户所在组的排班
-    foreach($group_id_lists as $group_id) {
-        $group_att[] = tep_get_attendance($date_yestoday,$group_id,true);
-    }
-	//个人昨天排班
-	$user_att[]= tep_get_attendance_user($date_yestoday,$uid,true);
-	$group_a=array_merge($group_att,$user_att);
-
-	//获得用户昨天所有排班
-
-    //去空
-    foreach ( $group_a as $k => $v ) {
-      if (empty($v)){
-	   	unset($group_att[$k]);
-	  } elseif (is_array($v)) {
-		for($i=0;$i<count($v);$i++){
-	      $arr[] = $v[$i]['attendance_detail_id'];
-		}
-      }
-    }
-     //昨天排班详情
-    $attendance_detail_list_yes=array();
-    foreach($arr as $att_id) {
-        $attendance_detail_list_yes[] = tep_get_attendance_by_id($att_id);
-    }
-    	*/
-
 
     $attendance_detail_list_yes = tep_all_attenande_by_uid($uid,$date_yestoday);
     foreach($attendance_detail_list_yes as $value) {
@@ -13756,37 +13723,6 @@ function tep_change_attendance_login($uid) {
 	/* @date 20140725
 	 * 记录出勤
 	 **/
-    /*
-    $group_id_lists =tep_get_groups_by_user($uid);
-	//今天所在组排班
-     foreach($group_id_lists as $group_ids) {
-         $group_att_tep[] = tep_get_attendance($date,$group_ids,true);
-     }
-
-	$user_att_tep[]= tep_get_attendance_user($date,$uid,true);
-
-	$group_a_tep=array_merge($group_att_tep,$user_att_tep);
-
-	//获得用户当天所有出勤
-
-	//去空
-     foreach ( $group_a_tep as $k => $v ) {
-        if (empty($v)){
-	        unset($group_att[$k]);
-        } elseif (is_array($v)) {
-			for($i=0;$i<count($v);$i++){
-			$arr_t[] = $v[$i]['attendance_detail_id'];
-			}
-        }
-     }
-
-     
-	 //排班模板
-      $attendance_detail_list_today=array();
-      foreach($arr_t as $att_id) {
-         $attendance_detail_list_today[] = tep_get_attendance_by_id($att_id);
-	  }
-	       */
 	  $attendance_detail_list_today = tep_all_attenande_by_uid($uid,$date);
 	  //几天上班的个数
 	  $today_att_nums = count($attendance_detail_list_today);
@@ -13897,34 +13833,6 @@ function tep_change_attendance_logout($uid) {
     
     $now_time = date('Y-m-d H:i:s');
 
-    /*
-    $group_id_lists =tep_get_groups_by_user($uid);
-	//昨天用户所在组的排班
-    foreach($group_id_lists as $group_id) {
-        $group_att[] = tep_get_attendance($date_yestoday,$group_id,true);
-    }
-	//个人昨天排班
-	$user_att[]= tep_get_attendance_user($date_yestoday,$uid,true);
-	$group_a=array_merge($group_att,$user_att);
-
-
-    //去空
-    foreach ( $group_a as $k => $v ) {
-      if (empty($v)){
-	   	unset($group_att[$k]);
-	  } elseif (is_array($v)) {
-		for($i=0;$i<count($v);$i++){
-	      $arr[] = $v[$i]['attendance_detail_id'];
-		}
-      }
-    }
- 
-     //昨天排班详情
-    $attendance_detail_list_yes=array();
-    foreach($arr as $att_id) {
-        $attendance_detail_list_yes[] = tep_get_attendance_by_id($att_id);
-    }
-    */
     $attendance_detail_list_yes = tep_all_attenande_by_uid($uid,$date_yestoday);
 
     foreach($attendance_detail_list_yes as $value) {
