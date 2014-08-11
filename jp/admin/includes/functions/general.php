@@ -14876,7 +14876,7 @@ function tep_get_sec_by_str($str){
     参数: $parameters_array 参数及对应值数组 
     返回值: 计算结果 
  ------------------------------------ */
-function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array()){
+function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$parameters_array=array()){
  
   //把数组中的参数替换为对应的值
   $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
@@ -14888,7 +14888,12 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
   $parameters_value_array = $parameters_value_temp[0];
   //关于组设置的公式中的参数替换
-  $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT);
+  if($groups_id == 0){
+    $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT);
+  }else{
+     
+    $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
+  }
   while($wage_setting_array = tep_db_fetch_array($wage_setting_query)){
 
     //if(in_array($wage_setting_array['contents'],$parameters_value_array)){
@@ -14908,9 +14913,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           $user_wage_value_array['end_date'] = $user_wage_array['end_date'];
           $user_wage_value_array['wage_value'] = $user_wage_array['wage_value'];
           //判断工资的有效期
-          $wage_date = tep_start_end_date($group_id,$wage_date);
+          $wage_date_array = tep_start_end_date($group_id,$wage_date);
           if($user_wage_value_array['start_date'] != '' && $user_wage_value_array['end_date'] != ''){
-            if($wage_date['start_date'] >= $user_wage_value_array['start_date'] && $wage_date['end_date'] <= $user_wage_value_array['end_date']){
+            if($wage_date_array['start_date'] >= $user_wage_value_array['start_date'] && $wage_date_array['end_date'] <= $user_wage_value_array['end_date']){
               $user_wage_val = $user_wage_value_array['wage_value'];
             }else{
                        
@@ -14918,7 +14923,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
             }
           }else if($user_wage_value_array['start_date'] != ''){
 
-            if($wage_date['start_date'] >= $user_wage_value_array['start_date']){
+            if($wage_date_array['start_date'] >= $user_wage_value_array['start_date']){
 
               $user_wage_val = $user_wage_value_array['wage_value'];
             }else{
@@ -14926,7 +14931,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
             }
           }else if($user_wage_value_array['end_date'] != ''){
 
-            if($wage_date['end_date'] <= $user_wage_value_array['end_date']){
+            if($wage_date_array['end_date'] <= $user_wage_value_array['end_date']){
 
               $user_wage_val = $user_wage_value_array['wage_value'];
             }else{
@@ -15022,6 +15027,13 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   $wage_str = str_replace(array_keys($parameters_replace_other_array),array_values($parameters_replace_other_array),$wage_str);
   $wage_str = str_replace(array_keys($parameters_replace_basic_array),array_values($parameters_replace_basic_array),$wage_str);
   $wage_str = str_replace(array_keys($attendance_replace_array),array_values($attendance_replace_array),$wage_str);
+
+  preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
+
+  if(!empty($parameters_value_temp[0])){
+
+    $wage_str = tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$parameters_array);
+  }
   
   //把公式中的 num％ 字符替换为 (num/100) 
   $wage_str = preg_replace('/([0-9]+)%/','($1/100)',$wage_str);
