@@ -22,7 +22,7 @@ if(isset($_GET['action'])){
     case 'save_att_date':
       $att_start = $_POST['att_start_hour'].':'.$_POST['att_start_minute_a'].$_POST['att_start_minute_b'];
       $att_end = $_POST['att_end_hour'].':'.$_POST['att_end_minute_a'].$_POST['att_end_minute_b'];
-      $sql_att_info = "select * from attendance_record where id='".$_POST['aid']."'";
+      $sql_att_info = "select * from " .TABLE_ATTENDANCE_RECORD. " where id='".$_POST['aid']."'";
       $query_att_info = tep_db_query($sql_att_info);
       if($row_att_info = tep_db_fetch_array($query_att_info)){
         $att_login_start = substr($row_att_info['login_time'],0,11);
@@ -35,12 +35,12 @@ if(isset($_GET['action'])){
       $date_info = tep_date_info($_POST['get_date']);
       $start_str = $date_info['year'].'-'.$date_info['month'].'-'.$date_info['day'];
       if(isset($_POST['aid'])&&$_POST['aid']!=''){
-        $sql_update = "update attendance_record set
+        $sql_update = "update " .TABLE_ATTENDANCE_RECORD. " set
           login_time='".$login."',logout_time='".$logout."' where
           id='".$_POST['aid']."'";
         tep_db_query($sql_update);
       }else{
-        $sql_last_index  = "select nums from attendance_record where user_name='".$_POST['uid']."' and nums < 100 and date='".$_POST['get_date']."' order by nums desc limit 1";
+        $sql_last_index  = "select nums from " .TABLE_ATTENDANCE_RECORD. " where user_name='".$_POST['uid']."' and nums < 100 and date='".$_POST['get_date']."' order by nums desc limit 1";
         $query_last_index = tep_db_query($sql_last_index);
         $index=1;
         if($t_row = tep_db_fetch_array($query_last_index)){
@@ -53,7 +53,7 @@ if(isset($_GET['action'])){
             'date' => $_POST['get_date'],
             'nums' => $index,
             );
-          tep_db_perform('attendance_record',$sql_insert);
+          tep_db_perform(TABLE_ATTENDANCE_RECORD,$sql_insert);
       }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
         $date_info = tep_date_info($_POST['get_date']);

@@ -8973,6 +8973,7 @@ if($_GET['latest_messages_id']>0){
    $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">'); 
    $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
    $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);">';
+   $date_str .= '<option value="0">--</option>';
    for($i=1;$i<=28;$i++){
 
      $date_str .= '<option value="'.$i.'">'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
@@ -9022,6 +9023,7 @@ if($_GET['latest_messages_id']>0){
        $date_str = TEXT_GROUP_BEGIN_DATE; 
      }
      $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);"'.($date_i != count($groups_start_end_date_array)-1 ? ' disabled' : '').'>';
+     $date_str .= '<option value="0">--</option>';
      for($i=1;$i<=28;$i++){
 
        $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
@@ -9047,6 +9049,7 @@ if($_GET['latest_messages_id']>0){
    $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">'); 
    $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
    $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);">';
+   $date_str .= '<option value="0">--</option>';
    for($i=1;$i<=28;$i++){
 
      $date_str .= '<option value="'.$i.'">'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
@@ -10536,7 +10539,7 @@ echo  $return_res;
   $heading[] = array('align' => 'left', 'text' => $date_str);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
-  $att_sql = "select * from attendance_record WHERE 
+  $att_sql = "select * from " .TABLE_ATTENDANCE_RECORD. " WHERE 
     id ='".$_GET['aid']."' and user_name = '".$_GET['uid']."'";
   $att_query = tep_db_query($att_sql);
   if($att_row = tep_db_fetch_array($att_query)){
@@ -11005,7 +11008,7 @@ if($row_array['set_time']==0){
                 </div></td>';
      $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : $groups_wage_array['contents']).'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
      );
      $group_content_table[] = array('text'=>$group_content_row_wage);
      $groups_users_id[] = $groups_wage_array['id'];
@@ -11075,7 +11078,7 @@ if($row_array['set_time']==0){
                 </div></td>';
      $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : $groups_wage_array['contents']).'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
      );
      $group_content_table[] = array('text'=>$group_content_row_wage);
      $groups_users_id[] = $groups_wage_array['id'];
@@ -11174,65 +11177,22 @@ if($row_array['set_time']==0){
  $group_content_row_wage = array();
  $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => $all_att_time.' '.$all_real_time), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => $wage_start_date.'～'.$wage_end_date), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
 
- $sum_time = 0;
- $sum_real_time = 0;
 
  foreach($att_list_arr as $a_key => $a_value){
    $a_info = tep_get_attendance_by_id($a_key);
    $group_content_row_wage = array();
    $group_content_row_wage = array(
           array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['short_language']), 
-          array('align' => 'left','params' => 'width="85%"', 'text' => $a_value['time'].' '.$a_value['real_time']), 
+          array('align' => 'left','params' => 'width="85%"', 'text' => $a_value['time'].'～'.$a_value['real_time']), 
        );
-   $sum_time += $a_value['time'];
-   $sum_real_time += $a_value['real_time'];
    $group_content_table[] = array('text'=>$group_content_row_wage);
  }
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_SUM_TIME), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => $sum_time.' '.$sum_real_time), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
-
-  /*
- //正常上班
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_NORMAL_ATTENDANCE), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '正常上班'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
-
- //加班
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_NORMAL_OVERTIME), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '加班'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
-
- //带薪休假
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_PAID_LEAVE), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '带薪休假'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
-
- //请假
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_UNPAID_VACATION), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '请假'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
- */
+ 
  if($_POST['group_id'] > 0&&false){
    //作成者、作成时间、更新者、更新时间
    $group_content_table[]['text'] = array(
