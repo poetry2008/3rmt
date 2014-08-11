@@ -9438,7 +9438,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
     $select_type_color .= '<td><a href="javascript:void(0);" onclick="document.getElementById(\'color_val\').value = \''.$color_value.'\'"><div style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
  }
 
-  $select_type_color .='<td><input name="scheduling_type_color" id="color_val" style="opacity:0;"></td></tr></table>';
+  $select_type_color .='<td><input name="scheduling_type_color" id="color_val" style="opacity:0;" value=\''.$att_info_res['src_text'].'\'></td></tr></table>';
   
 	  
 

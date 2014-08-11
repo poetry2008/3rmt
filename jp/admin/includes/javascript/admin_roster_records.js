@@ -360,6 +360,7 @@ function save_submit(c_permission){
   }); 
 
 
+   sign = '';
    var s_hour =$("#leave_start_hour").val();
    var s_m_l =$("#leave_start_min_l").val();
    var s_m_r =$("#leave_start_min_r").val();
@@ -383,15 +384,15 @@ function save_submit(c_permission){
        success: function(data){
 		   if(data=='error') {
 			   //请假排版有交集
-			   alert('error');
-             flag=1;
+			   alert(warn_change_attendance_error);
+             sign=1;
 		   }else{
-		     flag=0; 
+		     sign=0; 
 		   }
        }
    });
 
-if(flag !=1) {
+if(flag !=1 && sign!=1) {
   if (c_permission == 31) {
     document.attendance_setting_form.submit();
   } else {
