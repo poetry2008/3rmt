@@ -14908,9 +14908,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           $user_wage_value_array['end_date'] = $user_wage_array['end_date'];
           $user_wage_value_array['wage_value'] = $user_wage_array['wage_value'];
           //判断工资的有效期
-          $now_date = date('Y-m-d',strtotime($wage_date));
+          $wage_date = tep_start_end_date($group_id,$wage_date);
           if($user_wage_value_array['start_date'] != '' && $user_wage_value_array['end_date'] != ''){
-            if($now_date >= $user_wage_value_array['start_date'] && $now_date <= $user_wage_value_array['end_date']){
+            if($wage_date['start_date'] >= $user_wage_value_array['start_date'] && $wage_date['end_date'] <= $user_wage_value_array['end_date']){
               $user_wage_val = $user_wage_value_array['wage_value'];
             }else{
                        
@@ -14918,7 +14918,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
             }
           }else if($user_wage_value_array['start_date'] != ''){
 
-            if($now_date >= $user_wage_value_array['start_date']){
+            if($wage_date['start_date'] >= $user_wage_value_array['start_date']){
 
               $user_wage_val = $user_wage_value_array['wage_value'];
             }else{
@@ -14926,7 +14926,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
             }
           }else if($user_wage_value_array['end_date'] != ''){
 
-            if($now_date <= $user_wage_value_array['end_date']){
+            if($wage_date['end_date'] <= $user_wage_value_array['end_date']){
 
               $user_wage_val = $user_wage_value_array['wage_value'];
             }else{
@@ -14935,9 +14935,13 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           }else{
             $user_wage_val = $user_wage_value_array['wage_value']; 
           }
-          $parameters_replace_basic_array[$wage_setting_array['contents']] = $user_wage_val; 
+          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_basic_array))){
+            $parameters_replace_basic_array[$wage_setting_array['contents']] = $user_wage_val; 
+          }
         }else{
-          $parameters_replace_basic_array[$wage_setting_array['contents']] = 0; 
+          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_basic_array))){
+            $parameters_replace_basic_array[$wage_setting_array['contents']] = 0; 
+          }
         }
       }
     //} 
@@ -15022,8 +15026,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   //把公式中的 num％ 字符替换为 (num/100) 
   $wage_str = preg_replace('/([0-9]+)%/','($1/100)',$wage_str);
   //针对复杂运算的处理 ROUND MAX MIN {} 等
-  
-  return tep_operations($wage_str);
+
+  $return = tep_operations($wage_str); 
+  return is_numeric($return) ? $return : 0;
 }
 /* -------------------------------------
     功能: 获取指定员工指定时间的出勤时间 
@@ -15316,7 +15321,7 @@ function tep_start_end_date($group_id,$wage_date){
         }
     }
     $start_time = strtotime($start_year_month.'-'.$start_date);
-    $end_time = strtotime($end_year_month.'-'.$end_date);
+    $end_time = strtotime($end_year_month.'-'.($end_date == 28 ? date('t',strtotime($end_year_month)) : $end_date));
   }else{
 
     $start_time_date = strtotime($begin_end_date[0]);

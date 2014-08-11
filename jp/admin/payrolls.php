@@ -15,12 +15,18 @@
     /* -----------------------------------------------------
       case 'edit_users_wage' 编辑员工工资  
       case 'update_show_user'保存用户记录
-      case 'save_user_wage'保存用户工资
+      case 'save_user_wage' 编辑员工工资的设置
+      case 'reset_user_wage' 重置员工工资
     ------------------------------------------------------*/
       case 'edit_users_wage':
 
         $users_wage = tep_db_prepare_input($_POST['users_wage']); 
         $save_date = tep_db_prepare_input($_POST['save_date']);
+        $group_id = tep_db_prepare_input($_POST['group_id']);
+
+        $user_wage_date = tep_start_end_date($group_id,$save_date);
+
+        $save_date = $user_wage_date['end_date'];
 
         foreach($users_wage as $users_wage_key=>$users_wage_value){
 
@@ -29,7 +35,7 @@
             if(tep_db_num_rows($exist_query) > 0){
               tep_db_query("update ".TABLE_USER_WAGE." set wage_value='".$value."',update_date=now() where wage_id='".$users_wage_key."' and user_id='".$key."' and save_date='".$save_date."'");
             }else{
-              tep_db_query("insert into ".TABLE_USER_WAGE."(id,wage_id,user_id,wage_value,save_date,update_date) value(NULL,".$users_wage_key.",'".$key."','".$value."','".date('Y-m-d',time())."',now())");
+              tep_db_query("insert into ".TABLE_USER_WAGE."(id,wage_id,user_id,wage_value,save_date,update_date) value(NULL,".$users_wage_key.",'".$key."','".$value."','".$save_date."',now())");
             }
           }
         }
@@ -83,6 +89,27 @@
         }
         tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
         break;
+        case 'reset_user_wage':
+
+        $users_wage = tep_db_prepare_input($_POST['users_wage']); 
+        $save_date = tep_db_prepare_input($_POST['save_date']);
+        $group_id = tep_db_prepare_input($_POST['group_id']);
+
+        $user_wage_date = tep_start_end_date($group_id,$save_date);
+
+        $save_date = $user_wage_date['end_date'];
+
+        foreach($users_wage as $users_wage_key=>$users_wage_value){
+
+          foreach($users_wage_value as $key=>$value){
+            $exist_query = tep_db_query("select id from ".TABLE_USER_WAGE." where wage_id='".$users_wage_key."' and user_id='".$key."' and save_date='".$save_date."'");
+            if(tep_db_num_rows($exist_query) > 0){
+              tep_db_query("delete from ".TABLE_USER_WAGE." where wage_id='".$users_wage_key."' and user_id='".$key."' and save_date='".$save_date."'");
+            }
+          }
+        }
+        tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
+        break;
     }
   }
 ?>
@@ -104,6 +131,7 @@
   var must_select_user = '<?php echo TEXT_USER_EDIT_MUST_SELECT;?>';
   var ontime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'; 
   var ontime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
+  var js_ed_orders_input_right_date = '<?php echo ERROR_INPUT_RIGHT_DATE;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_payrolls.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -213,9 +241,37 @@ color:#0066CC;
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr><td width="90">
           <input type="radio" name="select_mode" id="select_mode_date" value="date"<?php echo $_GET['select_mode'] != 'contents' ? ' checked': '';?> style="padding-left:0;margin-left:0;"><label for="select_mode_date"><?php echo TEXT_PAYROLLS_DATE_SELECT;?></label>
-          </td><td width="150">
+          </td><td width="142">
+    <select id="fetch_year" onchange="change_fetch_date();">
+   <?php
+      $default_fetch_year = isset($_GET['select_date']) && $_GET['select_date'] ? date('Y',strtotime($_GET['select_date'])) : date('Y',time()); 
+      for ($f_num = 2006; $f_num <= 2050; $f_num++) {
+	if($default_fetch_year == $f_num || $f_num >= date('Y',time())){
+        	echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
+      	}	
+      }
+    ?>
+    </select>
+    <select id="fetch_month" onchange="change_fetch_date();">
+    <?php
+      for ($f_num = 1; $f_num <= 12; $f_num++) {
+        $default_fetch_month = isset($_GET['select_date']) && $_GET['select_date'] ? date('m',strtotime($_GET['select_date'])) : date('m',time()); 
+        $tmp_fetch_month = sprintf('%02d', $f_num); 
+        echo '<option value="'.$tmp_fetch_month.'"'.(($default_fetch_month == $tmp_fetch_month)?' selected':'').'>'.$tmp_fetch_month.'</option>'; 
+      }
+    ?>
+    </select>
+    <select id="fetch_day" onchange="change_fetch_date();">
+    <?php
+      for ($f_num = 1; $f_num <= 31; $f_num++) {
+        $default_fetch_day = isset($_GET['select_date']) && $_GET['select_date'] ? date('d',strtotime($_GET['select_date'])) : date('d',time()); 
+        $tmp_fetch_day = sprintf('%02d', $f_num); 
+        echo '<option value="'.$tmp_fetch_day.'"'.(($default_fetch_day == $tmp_fetch_day)?' selected':'').'>'.$tmp_fetch_day.'</option>'; 
+      }
+    ?>
+    </select>
+          </td><td width="10"> 
           <div class="yui3-skin-sam yui3-g">
-                <?php echo  tep_draw_input_field('wage_date',($_GET['select_mode'] == 'date' ? $_GET['select_date'] : date('Y-m-d',time())),'class="readonly" disabled');?>
 <input id="date_orders" type="hidden" name='select_date' size='15' value='<?php echo $_GET['select_mode'] == 'date' ? $_GET['select_date'] : date('Y-m-d',time());?>'>
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
@@ -383,6 +439,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
         //获取组对应的工资项目
         $groups_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
         $groups_users_id = array();
+        $group_id = '';
         if($groups_id != 0){
           $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' order by id");
           while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
@@ -396,11 +453,13 @@ if(tep_db_num_rows($user_wage_query) > 0){
           while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
             $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
             $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id']);
-            $group_id = $groups_wage_array['group_id'];
+            if($group_id == ''){
+              $group_id = $groups_wage_array['group_id'];
+            }
           }
           tep_db_free_result($groups_wage_query);
         }
-	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
+	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
 	$wage_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $wage_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
 		$wage_id = 0;
@@ -423,6 +482,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
           $all_users_info[$all_users_array['userid']] = $all_users_array['name'];
         }
         tep_db_free_result($all_users_query); 
+        $user_wage_value = array();
 	foreach($show_group_user_list as $users_value) {
 		$even = 'dataTableSecondRow';
         	$odd  = 'dataTableRow';
@@ -452,9 +512,9 @@ if(tep_db_num_rows($user_wage_query) > 0){
                     $user_wage_value_array = tep_db_fetch_array($user_wage_value_query);
                     tep_db_free_result($user_wage_value_query);
                     //判断工资的有效期
-                    $now_date = date('Y-m-d',strtotime($default_date));
+                    $wage_date = tep_start_end_date($group_id,$default_date);
                     if($user_wage_value_array['start_date'] != '' && $user_wage_value_array['end_date'] != ''){
-                      if($now_date >= $user_wage_value_array['start_date'] && $now_date <= $user_wage_value_array['end_date']){
+                      if($wage_date['start_date'] >= $user_wage_value_array['start_date'] && $wage_date['end_start'] <= $user_wage_value_array['end_date']){
                         $user_wage_val = $user_wage_value_array['wage_value'];
                       }else{
                        
@@ -462,7 +522,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                       }
                     }else if($user_wage_value_array['start_date'] != ''){
 
-                      if($now_date >= $user_wage_value_array['start_date']){
+                      if($wage_date['start_date'] >= $user_wage_value_array['start_date']){
 
                         $user_wage_val = $user_wage_value_array['wage_value'];
                       }else{
@@ -470,7 +530,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                       }
                     }else if($user_wage_value_array['end_date'] != ''){
 
-                      if($now_date <= $user_wage_value_array['end_date']){
+                      if($wage_date['end_date'] <= $user_wage_value_array['end_date']){
 
                         $user_wage_val = $user_wage_value_array['wage_value'];
                       }else{
@@ -489,7 +549,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                   }
 
                   //根据工资ID与用户ID及日期，来获取对应的值
-                  $user_wage_value_query = tep_db_query("select id,wage_value,update_date from ".TABLE_USER_WAGE." where wage_id='".$wage_id['id']."' and user_id='".$users_value."' and save_date='".$default_date."'");
+                  $user_wage_value_query = tep_db_query("select id,wage_value,update_date from ".TABLE_USER_WAGE." where wage_id='".$wage_id['id']."' and user_id='".$users_value."' and save_date='".$wage_date['end_date']."'");
                   $user_wage_val = '';
                   if(tep_db_num_rows($user_wage_value_query) > 0){
                     $user_wage_value_array = tep_db_fetch_array($user_wage_value_query);
@@ -502,6 +562,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                     
                   }
 
+                  $user_wage_value[$wage_id['id']] += $user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
                 	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.($user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id)).'">' 
@@ -531,7 +592,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
             foreach($groups_users_id as $wage_id){
               $user_info[] = array(
                 	           'params' => '',
-                	           'text'   => '<input type="text" name="users_wage_total['.$wage_id['id'].']">' 
+                	           'text'   => '<input type="text" name="users_wage_total['.$wage_id['id'].']" value="'.$user_wage_value[$wage_id['id']].'">' 
                                   ); 
             } 
             $user_info[] = array(
@@ -570,7 +631,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                      if (in_array(0,$site_id_array)) {
                        echo '<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT) . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_RESET) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_wage();"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_wage();"') . '</a>';
                      }else{
                        echo tep_html_element_button(TEXT_PAYROLLS_EXPORT,'disabled="disabled"').'&nbsp;' ;

@@ -465,7 +465,7 @@ calendar.on("selectionChange", function (ev) {
 //start date select
 function start_date_select(ele,num){
 
-  if(ele.value != 1){
+  if(ele.value != 0){
     document.getElementsByName("end_date[]")[num].disabled = false;
   }
 }

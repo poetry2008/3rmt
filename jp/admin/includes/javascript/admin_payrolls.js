@@ -181,7 +181,9 @@ calendar.on("selectionChange", function (ev) {
     var newDate = ev.newSelection[0];
     tmp_show_date = dtdate.format(newDate); 
     tmp_show_date_array = tmp_show_date.split('-');
-    $("input[name=wage_date]").val(tmp_show_date); 
+    $("#fetch_year").val(tmp_show_date_array[0]); 
+    $("#fetch_month").val(tmp_show_date_array[1]); 
+    $("#fetch_day").val(tmp_show_date_array[2]);
     $("#date_orders").val(tmp_show_date); 
     $('#toggle_open').val('0');
     $('#toggle_open').next().html('<div id="mycalendar"></div>');
@@ -335,4 +337,53 @@ calendar.on("selectionChange", function (ev) {
     });
 });
 }
+}
+//check date is right
+function is_date(dateval)
+{
+  var arr = new Array();
+  if(dateval.indexOf("-") != -1){
+    arr = dateval.toString().split("-");
+  }else if(dateval.indexOf("/") != -1){
+    arr = dateval.toString().split("/");
+  }else{
+    return false;
+  }
+  if(arr[0].length==4){
+    var date = new Date(arr[0],arr[1]-1,arr[2]);
+    if(date.getFullYear()==arr[0] && date.getMonth()==arr[1]-1 && date.getDate()==arr[2]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[1]-1,arr[0]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[1]-1 && date.getDate()==arr[0]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[0]-1,arr[1]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[0]-1 && date.getDate()==arr[1]) {
+      return true;
+    }
+  }
+ 
+  return false;
+}
+//copy the date of delivery time to hide field
+function change_fetch_date() {
+  fetch_date_str = $("#fetch_year").val()+"-"+$("#fetch_month").val()+"-"+$("#fetch_day").val(); 
+  if (!is_date(fetch_date_str)) {
+    alert(js_ed_orders_input_right_date); 
+  } else {
+    $("#date_orders").val(fetch_date_str); 
+  }
+}
+//reset user wage
+function reset_user_wage(){
+
+  document.edit_users_wage.action = 'payrolls.php?action=reset_user_wage'; 
+  document.edit_users_wage.submit(); 
 }
