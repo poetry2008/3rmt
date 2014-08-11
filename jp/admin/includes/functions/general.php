@@ -15247,7 +15247,12 @@ function tep_start_end_date($group_id,$wage_date){
   }else{
 
     $start_time_date = strtotime($begin_end_date[0]);
-    $time_diff_num = $begin_end_date[1];
+    if($begin_end_date[1] != ''){
+      $time_diff_num = (int)$begin_end_date[1];
+    }else{
+
+      $time_diff_num = 1;
+    }
 
     $wage_time_date = strtotime($wage_date);
 
