@@ -530,6 +530,7 @@ case 'update':
 <script language="javascript" src="includes/javascript/admin_roster_records.js"></script>
 
 <script language="javascript">
+var warn_change_attendance_error = '<?php echo TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP;?>'
 var warn_attendance_type_diff = '<?php echo TEXT_WARN_ATTENDANCE_TYPE_DIFF;?>';
 var js_remind_delete = '<?php echo TEXT_DELETE_REMIND;?>';
 var js_text_input_onetime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>';

@@ -74,6 +74,7 @@ define('TEXT_SELECT_USER','ユーザ');
 define('TEXT_DELETE_REMIND','削除しますか？');
 define('TEXT_ONLY_USER_ATTENDANCE','スタッフ設定');
 define('TEXT_WARN_ATTENDANCE_TYPE_DIFF','同じく時間帯／時間数で設定してください。');
+define('TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP','休暇時間は一つのシフトの出勤時間内にコントロールしてください。');
 
 define('SHOW_ALL_ATT_STATUS','全時間');
 define('SHOW_ERROR_ATT_STATUS','遅刻・早退');
