@@ -1120,6 +1120,8 @@ while($j<=$day_num)
   $show_att_div = true;
   $show_ulist_flag = false;
   foreach($user_att_arr as $uatt_arr){
+    $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
+    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&empty($user_replace)){
     if($last_att_id==0||$last_att_id!=$uatt_arr['attendance_detail_id']){
       $last_att_id = $uatt_arr['attendance_detail_id'];
       $show_att_div = true;
@@ -1130,8 +1132,6 @@ while($j<=$day_num)
       echo "</td>";
       echo "</tr>";
     }
-    $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
-    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&empty($user_replace)){
       $att_user_row = $uatt_arr;
       $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
       if($show_att_div){

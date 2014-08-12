@@ -562,7 +562,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                     
                   }
 
-                  $wage_value = $user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
+                  $wage_value = $user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,$groups_id);
                   $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
