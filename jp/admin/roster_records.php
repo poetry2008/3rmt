@@ -1205,7 +1205,7 @@ while($j<=$day_num)
       }
     }
   }
-if($show_ulist_flag){
+if($show_ulist_flag&&count($user_att_arr)>1){
       echo "</td>";
       echo "</tr>";
 }
