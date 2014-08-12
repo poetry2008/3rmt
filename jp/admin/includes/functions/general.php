@@ -14940,7 +14940,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
 
   if(!empty($parameters_value_temp[0])){
 
-//    $wage_str = tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$parameters_array);
+    $wage_str = tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$parameters_array);
   }
   
   //把公式中的 num％ 字符替换为 (num/100) 
@@ -15247,7 +15247,12 @@ function tep_start_end_date($group_id,$wage_date){
   }else{
 
     $start_time_date = strtotime($begin_end_date[0]);
-    $time_diff_num = $begin_end_date[1];
+    if($begin_end_date[1] != ''){
+      $time_diff_num = (int)$begin_end_date[1];
+    }else{
+
+      $time_diff_num = 1;
+    }
 
     $wage_time_date = strtotime($wage_date);
 

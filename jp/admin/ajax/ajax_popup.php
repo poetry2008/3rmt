@@ -8968,57 +8968,126 @@ if($_GET['latest_messages_id']>0){
  $group_content_table[] = array('text'=>$group_content_row_currency);
  //终始日 
  if($_POST['group_id'] < 0){
+   $date_i = 1;
    $group_content_row_date = array();
-   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE);
-   $date_str = TEXT_GROUP_END_DATE; 
-   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">'); 
+   $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
+   $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);">';
+   $date_str .= '<option value="0">--</option>';
    for($i=1;$i<=28;$i++){
 
-     $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
+     $date_str .= '<option value="'.$i.'">'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
    }
    $date_str .= '</select>';
-   $date_str .= TEXT_GROUP_BEGIN_DATE; 
-   $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+   $date_str .= TEXT_GROUP_END_DATE; 
+   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');" disabled>';
    for($i=1;$i<=28;$i++){
 
-     $date_str .= '<option value="'.$i.'">'.$i.TEXT_GROUP_DAY.'</option>'; 
+     $date_str .= '<option value="'.$i.'"'.($i == 28 ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
    }
    $date_str .= '</select>';
-   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
+   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="check_reset();" value="'.TEXT_GROUP_RESET.'">'; 
+   $group_content_row_date[] = array('text' => $date_str);
+   $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);
+
+   $group_content_row_date = array();
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
+   $date_str = '';
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;">'.tep_draw_input_field('wage_date',date('Y-m-d',time()),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.date('Y-m-d',time()).'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+                <div class="yui3-u" id="new_yui3">
+                <div id="mycalendar"></div> 
+                </div>
+                </div>';
+   $date_str .= TEXT_TIME_LINK.'<input type="text" name="cycle_date" size="5">'.TEXT_GROUP_DAYS.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="cycle_flag_true">'.TEXT_GROUP_LOOP.'</label>';
    $group_content_row_date[] = array('text' => $date_str);
    $group_content_table[] = array('text'=>$group_content_row_date);
  }else{
    $groups_start_end_date = $groups_array['begin_end_date'];
    $groups_start_end_date_array = explode('|||',$groups_start_end_date);
+
+  if($groups_array['cycle_flag'] == 0){
+   $date_i = 0;
    foreach($groups_start_end_date_array as $start_end_date_key=>$start_end_date_value){
 
      $group_content_row_date = array();
      $group_content_row_date[] = array('params'=>'width="20%"','text'=> $start_end_date_key == 0 ? TEXT_GROUP_BEGIN_END_DATE : '');
-     $start_end_date = explode('-',$start_end_date_value);
-     $date_str = TEXT_GROUP_END_DATE; 
-     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     $start_end_date = explode('-',$start_end_date_value); 
+     if($start_end_date_key == 0){
+       $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
+     }else{
+       $date_str = TEXT_GROUP_BEGIN_DATE; 
+     }
+     $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);"'.($date_i != count($groups_start_end_date_array)-1 ? ' disabled' : '').'>';
+     $date_str .= '<option value="0">--</option>';
      for($i=1;$i<=28;$i++){
 
-       $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
+       $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
-     $date_str .= TEXT_GROUP_BEGIN_DATE; 
-     $date_str .= '<select name="start_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');">';
+     $date_str .= TEXT_GROUP_END_DATE; 
+     $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');" disabled>';
      for($i=1;$i<=28;$i++){
 
-       $date_str .= '<option value="'.$i.'"'.($start_end_date[1] == $i ? ' selected' : '').'>'.$i.TEXT_GROUP_DAY.'</option>'; 
+       $date_str .= '<option value="'.$i.'"'.($start_end_date[0] == $i ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
      }
      $date_str .= '</select>';
      if($start_end_date_key == 0){
-       $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="cycle_flag" id="cycle_flag_id" value="1"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'><label for="cycle_flag_id">'.TEXT_GROUP_LOOP.'</label>';
+       $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="check_reset();" value="'.TEXT_GROUP_RESET.'">';
      }
      $group_content_row_date[] = array('text' => $date_str);
-     $group_content_table[] = array('text'=>$group_content_row_date);
+     $group_content_table[] = array('params'=>'id="tr_date_'.$date_i.'"','text'=>$group_content_row_date);
+     $date_i++;
    } 
+  }else{
+   $date_i = 1;
+   $group_content_row_date = array();
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_DATE.'<input type="hidden" id="date_num_id" value="0">'); 
+   $date_str = '<input type="radio" name="cycle_flag" id="cycle_flag_false" value="0" checked style="padding-left:0;margin-left:0;">'.TEXT_GROUP_BEGIN_DATE; 
+   $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);">';
+   $date_str .= '<option value="0">--</option>';
+   for($i=1;$i<=28;$i++){
+
+     $date_str .= '<option value="'.$i.'">'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
+   }
+   $date_str .= '</select>';
+   $date_str .= TEXT_GROUP_END_DATE; 
+   $date_str .= '<select name="end_date[]" onchange="date_select(this,\''.TEXT_GROUP_END_DATE.'\',\''.TEXT_GROUP_BEGIN_DATE.'\',\''.TEXT_GROUP_DAY.'\');" disabled>';
+   for($i=1;$i<=28;$i++){
+
+     $date_str .= '<option value="'.$i.'"'.($i == 28 ? ' selected' : '').'>'.($i == 28 ? '28~31' : $i).TEXT_GROUP_DAY.'</option>'; 
+   }
+   $date_str .= '</select>';
+   $date_str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="check_reset();" value="'.TEXT_GROUP_RESET.'">'; 
+   $group_content_row_date[] = array('text' => $date_str);
+   $group_content_table[] = array('params'=>'id="tr_date_0"','text'=>$group_content_row_date);  
+  
+  }
+
+   $group_content_row_date = array();
+   $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
+   $date_str = '';
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'>'.tep_draw_input_field('wage_date',($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())).'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+                <div class="yui3-u" id="new_yui3">
+                <div id="mycalendar"></div> 
+                </div>
+                </div>';
+   $date_str .= TEXT_TIME_LINK.'<input type="text" name="cycle_date" size="5" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[1] : '').'">'.TEXT_GROUP_DAYS.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="cycle_flag_true">'.TEXT_GROUP_LOOP.'</label>';
+   $group_content_row_date[] = array('text' => $date_str);
+   $group_content_table[] = array('text'=>$group_content_row_date);
  } 
  //終始時
  $group_content_row_hour = array();
- $group_content_row_hour[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_HOUR);
+ $group_content_row_hour[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_BEGIN_END_HOUR.'<input type="hidden" id="tr_date_id" value="'.$date_i.'">');
  $hour_str = '<select name="start_end_hour">';
  for($i=0;$i<=23;$i++){
 
@@ -9245,13 +9314,13 @@ else if($_GET['action'] == 'check_same_group_att') {
 			       $sql_get_group = "select name from ".TABLE_GROUPS." where id = ".$group_arr[$i]."";
                    $group_info = tep_db_fetch_array(tep_db_query($sql_get_group)); 
 			       echo  $group_info['name'];
-				   exit;
+				   break;
 				 }else{
 					 //是个人
 			       $sql_get_uname = "select name from ".TABLE_USERS." where userid = '".$group_arr[$i]."'";
                    $user_info = tep_db_fetch_array(tep_db_query($sql_get_uname)); 
 			       echo  $user_info['name'];
-				   exit;
+				   break;
 		         }
 			  
 			 }
@@ -9259,8 +9328,41 @@ else if($_GET['action'] == 'check_same_group_att') {
      }
   } 
 
-}
+}elseif($_GET['action']=='check_change_ros_rest'){
+//请假时间不能重叠
+	$user_id = $_POST['user_id'];
+	$date = $_POST['date_str'];
+	$start_time = $_POST['start_time'];
+	$end_time = $_POST['end_time'];
+	$user_all_att = tep_all_attenande_by_uid($user_id,$date);
+	$n=0;
+	$m=0;
+	foreach($user_all_att as $key=>$val) {
+		
+		if($val['set_time']==1){
+			unset($user_all_att[$key]);
+		}
+		//work_start 大于开始时间小于结束时间
 
+		if(strtotime($val['work_start'])> strtotime($start_time)&& strtotime($val['work_start'])< strtotime($end_time) )	{
+			$work_start = strtotime($val['work_start']);
+			$n++;
+		}
+		if(strtotime($val['work_end'])< strtotime($end_time)&& strtotime($val['work_end'])> strtotime($start_time) )	{
+			$work_end = strtotime($val['work_end']);
+			$m++;
+		}
+	}
+	if($n>1||$m>1){
+		echo 'error'; 
+	}if($n==1 && $m==1){
+		if($work_start>$work_end){
+		echo  'error';
+		}
+	
+	}
+
+}
  /**
   *@date20140709 
   *出勤管理列表弹框编辑
@@ -9314,7 +9416,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
            array('text' => tep_draw_input_field('short_language',$att_info_res['short_language'],'id="short_language" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
      ); 
 //排班类型
-    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id" '.$show_style.'>';
+    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id" style="width: 109px;" '.$show_style.'>';
     $attendance_select_type .= '<option value="0" '.($att_info_res['scheduling_type']=='0'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</option>';
     $attendance_select_type .= '<option value="1" '.($att_info_res['scheduling_type']=='1'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</option>';
     $attendance_select_type .= '</select>';
@@ -9326,19 +9428,22 @@ else if($_GET['action'] == 'edit_attendance_info') {
            array('text' => $attendance_select_type)
      ); 
 //颜色
-  $color_array = array('#FFFFFF','#FE0000','#FFCD00','#FEFF00','#00ff00','#2F68FF','#CC99FE','#FF99CB','#993400','#DDDDDD');
+  $color_array = array('#000000','#808080','#800000','#800080','#008000','#808000','#000080','#008080','#C0C0C0','#FFFFFF','#FF0000','#FF00FF','#00FF00','#FFFF00','#0000FF','#00FFFF');
   $color_font_array = array(TEXT_CALENDAR_COLOR_WHITE,TEXT_CALENDAR_COLOR_RED,TEXT_CALENDAR_COLOR_BLUE_ORANGE,TEXT_CALENDAR_COLOR_BLUE_YELLOW,TEXT_CALENDAR_COLOR_BLUE_GREEN,TEXT_CALENDAR_COLOR_BLUE,TEXT_CALENDAR_COLOR_BLUE_PURPLE,TEXT_CALENDAR_COLOR_BLUE_PINK,TEXT_CALENDAR_COLOR_BLUE_BROWN,TEXT_CALENDAR_COLOR_BLUE_GRAY); 
   if(!empty($id) && $att_info_res['scheduling_type']==1){
      $style_color = 'style="display:block;"'; 
   }else{
      $style_color = 'style="display:none;"'; 
   }
-  $select_type_color = '<select name="scheduling_type_color" id="src_text_color"'.$style_color.' '.$show_style.'>';
+  $select_type_color .='<table id="src_text_color" '. $style_color.'><tr>';
   foreach($color_array as $color_key=>$color_value){
-	$selected = $att_info_res['src_text']==$color_value ? 'selected=selected':'';
-    $select_type_color .= '<option value="'.$color_value.'"'.$selected.'>'.$color_font_array[$color_key].'</option>';
-  }
-  $select_type_color .= '</select>';
+	$border_style = $att_info_res['src_text']==$color_value ? 'border: 1px solid #4F4F4F;':'border: 1px solid #CCCCCC;';
+    $select_type_color .= '<td><a href="javascript:void(0);" onclick="document.getElementById(\'color_val\').value = \''.$color_value.'\'"><div style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
+ }
+
+  $select_type_color .='<td><input name="scheduling_type_color" id="color_val" style="opacity:0;" value=\''.$att_info_res['src_text'].'\'></td></tr></table>';
+  
+	  
 
 //图片
   if((!empty($id) && $att_info_res['scheduling_type']==0) || empty($id)){
@@ -9364,11 +9469,11 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
+           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_SET_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_a',$att_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
-           array('text' => '<div style="margin-left: -13px;">${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
+           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_ACTUAL_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_b',$att_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 
 
@@ -9635,6 +9740,7 @@ echo  $return_res;
   //获得所有循环方式
   $type_list = array(
      TEXT_CALENDAR_REPEAT_TYPE_NO,
+	 TEXT_CALENDAR_REPEAT_TYPE_EVERY_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK,
@@ -9695,9 +9801,15 @@ echo  $return_res;
 
   $type_select = '<select name="type[]" '.$show_only.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
-    $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+		$t_key = $t_key-1;
+	  }	
+        $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$show_only.' onkeyup="if(this.value!=\'\'){if(!/^[1-9][0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
@@ -9764,14 +9876,28 @@ echo  $return_res;
 
       $has_type_select = '<select name="has_type[]" '.$show_only.'  onchange="edit_space_nums(this,this.value);" >';
       foreach($type_list as $t_key => $t_value){
+		  //给每周一个value
+	     if($t_key==1){
+	       $t_key =9;
+	     }
+		 if($t_key>1){
+		   $t_key = $t_key-1;
+		 }
         $has_type_select .= '<option value="'.$t_key.'" ';
+		 //判断是不是每周
+		 if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+		 }
         if($a_info['type'] == $t_key){
           $has_type_select .= ' selected ';
         }
         $has_type_select .= ' >'.$t_value.'</option>';
       }
-	  $style_space=$a_info['type']==1?'':'style="display:none"' ;
-      $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+	  $style_space=($a_info['type']==1&&$a_info['space']!=0)?'':'style="display:none"' ;
+	  if($a_info['space']==0 || $a_info['space']==''){
+	    $a_info['space']=1;
+	  }
+	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
@@ -9888,7 +10014,8 @@ echo  $return_res;
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\')"').'</a>'; 
+    $button[] = '<a
+      href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
@@ -10190,7 +10317,7 @@ echo  $return_res;
   $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
   if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
     $user_info_self = tep_get_user_info($_GET['uid']);
-    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'];
+    $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'].'<span id="use_get_userid" style="display:none;">'.$_GET['uid'].'||'.$_GET['date'].'</span>';
   }
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -10412,8 +10539,8 @@ echo  $return_res;
   $heading[] = array('align' => 'left', 'text' => $date_str);
   $heading[] = array('align' => 'right', 'text' => $page_str);
 
-  $att_sql = "select * from ".TABLE_ATTENDANCE." WHERE 
-    `date` ='".$_GET['date']."' and user_name = '".$_GET['uid']."'";
+  $att_sql = "select * from " .TABLE_ATTENDANCE_RECORD. " WHERE 
+    id ='".$_GET['aid']."' and user_name = '".$_GET['uid']."'";
   $att_query = tep_db_query($att_sql);
   if($att_row = tep_db_fetch_array($att_query)){
     $login_end = substr($att_row['login_time'],11,5);
@@ -10526,18 +10653,26 @@ if($row_array['set_time']==0){
   }
   //获得所有用户
   $all_user = array();
+  $operator = $ocertify->auth_user;
   if($ocertify->npermission >= '15'){
+	  //选中的
+	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
+    $query_all_check_user = tep_db_query($sql_all_check_user);
+    while($row_all_check_user = tep_db_fetch_array($query_all_check_user)){
+      $all_check_user[] = $row_all_check_user;
+    }
+	//全部的
     $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
       $all_user[] = $row_all_user;
     }
-  }else{
-    $all_user[] = tep_get_user_info($_GET['uid']);
+	$all_user = array_intersect($all_user,$all_check_user);
   }
   //获得所有循环方式
   $type_list = array(
      TEXT_CALENDAR_REPEAT_TYPE_NO,
+	 TEXT_CALENDAR_REPEAT_TYPE_EVERY_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_WEEK,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH,
      TEXT_CALENDAR_REPEAT_TYPE_MONTH_WEEK,
@@ -10562,9 +10697,12 @@ if($row_array['set_time']==0){
   获得 应该在浮动IDV 里显示的数据 管理员显示 可用用户
   当前用户显示当前用过显示的那个
   */
-  if(isset($_GET['uid'])&&$_GET['uid']!=''){
-    $attendance_dd_arr = tep_get_attendance_user($_GET['date'],$_GET['uid'],false,$_GET['add_id']);
+  if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
+    $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
+    foreach($attendance_dd_arr as $u_att){
+      $all_user[] = tep_get_user_info($u_att['user_id']);
+    }
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
     $attendance_dd_arr = array();
@@ -10607,9 +10745,15 @@ if($row_array['set_time']==0){
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
+	  if($t_key==1){
+	    $t_key =9;
+	  }
+	  if($t_key>1){
+	    $t_key = $t_key-1;
+	  }
     $type_select .= '<option value="'.$t_key.'">'.$t_value.'</option>';
   }
-  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="space[]" value="" '.$disabled.'>'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+  $type_select .= '</select><span class="space" style="display:none" >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="space[]" value="1" '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
 
   $hidden_div = '<div style="display:none">';
@@ -10662,16 +10806,29 @@ if($row_array['set_time']==0){
     }
     $has_type_select = '<select name="has_type[]" '.$disabled.'  onchange="edit_space_nums(this,this.value);" >';
     foreach($type_list as $t_key => $t_value){
+	   if($t_key==1){
+	     $t_key =9;
+	   }
+		if($t_key>1){
+		  $t_key = $t_key-1;
+		}
       $has_type_select .= '<option value="'.$t_key.'" ';
+	 //判断是不是每周
+	  if($a_info['type']==1 && $a_info['space']==0){
+		   $a_info['type']=8;
+	  }
       if($a_info['type'] == $t_key){
         $has_type_select .= ' selected ';
       }
       $has_type_select .= ' >'.$t_value.'</option>';
     }
 	//隔周
-    $style_space=$a_info['type']==1?'':'style="display:none"'	;
-	
-    $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
+    $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
+
+    if($a_info['space']==0 || $a_info['space']==''){
+	    $a_info['space']=1;
+	  }
+	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
     $as_info_row_tmp = array(); 
 
     $as_info_row_tmp = array(); 
@@ -10758,7 +10915,7 @@ if($row_array['set_time']==0){
 }else if($_GET['action'] == 'show_user_wage'){
  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PAYROLLS);
  include(DIR_FS_ADMIN.'classes/notice_box.php');
- $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ $notice_box = new notice_box('popup_order_title', 'popup_order_info'); 
  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
  //头部
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -10776,7 +10933,7 @@ if($row_array['set_time']==0){
  $user_wage_contents = '';
  if($user_wage_list != ''){
 
-   $user_wage_query = tep_db_query("select wage_id,wage_value,start_date,end_date,contents from ".TABLE_USER_WAGE." where id in (".$user_wage_list.")"); 
+   $user_wage_query = tep_db_query("select wage_id,wage_value,start_date,end_date,contents from ".TABLE_USER_WAGE_INFO." where id in (".$user_wage_list.")"); 
    while($user_wage_array = tep_db_fetch_array($user_wage_query)){
 
      $user_wage_list_array[$user_wage_array['wage_id']] = $user_wage_array['wage_value'];
@@ -10790,26 +10947,142 @@ if($row_array['set_time']==0){
  $groups_users_id = array();
  if($groups_id != 0){
    $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' and project_id=0 order by id");
+   $date_i = 0;
    while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
      $group_content_row_wage = array();
+     $date_str = '<td>';
+     $date_str .= '<style type="text/css">
+  #new_yui3_'.$date_i.' {
+  margin-left:-168px;
+  *margin-left:-28px;
+  margin-left:-170px\9;
+  position: absolute;
+  z-index:200;
+  margin-top:15px;
+  }
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+  #new_yui3_'.$date_i.'{
+  position: absolute;
+  z-index:200;
+  margin-top:17px;
+  }
+  }
+  </style>';
+     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order_'.$date_i.'" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open_'.$date_i.'"> 
+                <div class="yui3-u" id="new_yui3_'.$date_i.'">
+                <div id="mycalendar_'.$date_i.'"></div> 
+                </div>
+                </div></td>';
+     $date_i++;
+     $date_str .= '<style type="text/css">
+  #new_yui3_'.$date_i.' {
+  margin-left:-168px;
+  *margin-left:-28px;
+  margin-left:-170px\9;
+  position: absolute;
+  z-index:200;
+  margin-top:15px;
+  }
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+  #new_yui3_'.$date_i.'{
+  position: absolute;
+  z-index:200;
+  margin-top:17px;
+  }
+  }
+  </style>';
+     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order_'.$date_i.'" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open_'.$date_i.'"> 
+                <div class="yui3-u" id="new_yui3_'.$date_i.'">
+                <div id="mycalendar_'.$date_i.'"></div> 
+                </div>
+                </div></td>';
      $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : $groups_wage_array['contents']).'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="user_wage_start_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['start'].'">～<input type="text" name="user_wage_end_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['end'].'">'), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
      );
      $group_content_table[] = array('text'=>$group_content_row_wage);
      $groups_users_id[] = $groups_wage_array['id'];
+     $date_i++;
    }
    tep_db_free_result($groups_wage_query);
  }else{
    $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where project_id=0 group by title order by id");
+   $date_i = 0;
    while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
      $group_content_row_wage = array();
+     $date_str = '<td>';
+     $date_str .= '<style type="text/css">
+  #new_yui3_'.$date_i.' {
+  margin-left:-168px;
+  *margin-left:-28px;
+  margin-left:-170px\9;
+  position: absolute;
+  z-index:200;
+  margin-top:15px;
+  }
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+  #new_yui3_'.$date_i.'{
+  position: absolute;
+  z-index:200;
+  margin-top:17px;
+  }
+  }
+  </style>';
+     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order_'.$date_i.'" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open_'.$date_i.'"> 
+                <div class="yui3-u" id="new_yui3_'.$date_i.'">
+                <div id="mycalendar_'.$date_i.'"></div> 
+                </div>
+                </div></td>';
+     $date_i++;
+     $date_str .= '<style type="text/css">
+  #new_yui3_'.$date_i.' {
+  margin-left:-168px;
+  *margin-left:-28px;
+  margin-left:-170px\9;
+  position: absolute;
+  z-index:200;
+  margin-top:15px;
+  }
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+  #new_yui3_'.$date_i.'{
+  position: absolute;
+  z-index:200;
+  margin-top:17px;
+  }
+  }
+  </style>';
+     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
+                <div class="date_box">
+                <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
+                </div>
+                <input type="hidden" id="date_order_'.$date_i.'" name="update_date" value="">
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open_'.$date_i.'"> 
+                <div class="yui3-u" id="new_yui3_'.$date_i.'">
+                <div id="mycalendar_'.$date_i.'"></div> 
+                </div>
+                </div></td>';
      $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : $groups_wage_array['contents']).'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="user_wage_start_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['start'].'">～<input type="text" name="user_wage_end_date['.$groups_wage_array['id'].']" value="'.$user_wage_date_array[$groups_wage_array['id']]['end'].'">'), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
      );
      $group_content_table[] = array('text'=>$group_content_row_wage);
      $groups_users_id[] = $groups_wage_array['id'];
+     $date_i++;
    }
    tep_db_free_result($groups_wage_query);
  } 
@@ -10822,47 +11095,105 @@ if($row_array['set_time']==0){
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
+ //获取工资计算的开始日、结束日
+ $wage_date_array = tep_start_end_date($_POST['group_id'],$_POST['save_date']);
+ //开始日
+ $wage_start_date = $wage_date_array['start_date'];
+ //结束日
+ $wage_end_date = $wage_date_array['end_date'];
+
+ $wage_start_arr = explode('-',$wage_start_date);
+ $wage_end_arr = explode('-',$wage_end_date);
+
+ //上班时间段日期列表
+ $date_arr = array();
+ $i=0;
+ while(mktime(0,0,0,$wage_start_arr[1],$wage_start_arr[2]+$i,$wage_start_arr[0]) != mktime(0,0,0,$wage_end_arr[1],$wage_end_arr[2],$wage_end_arr[0])){
+  $date_arr[] = date('Ymd',mktime(0,0,0,$wage_start_arr[1],$wage_start_arr[2]+$i,$wage_start_arr[0]));
+  $i++;
+ }
+
+ //所有排班列表
+
+
+ $user = $_POST['user_id'];
+ //要求出勤时间 不见算变更出勤
+ $all_att_time = 0;
+ //实际出勤时间 包括变更排班
+ $all_real_time = 0;
+ $att_list_arr = array();
+ foreach($date_arr as $_date){
+   //用户当天出勤信息
+   $att_array = tep_all_attenande_by_uid($user,$_date);
+   $real_time = tep_attendance_record_time($user,$_date,$att_array);
+   $all_real_time += $real_time;
+   foreach($att_array as $att_value){
+     if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
+       $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
+       $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
+     }
+     if($att_value['type']=='replace'){
+       if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
+         $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
+         $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
+       }
+     }
+     $real_time_tmp = tep_attendance_record_time($user,$_date,$att_array,$att_value['attendance_detail_id']);
+     $att_list_arr[$att_value['attendance_detail_id']]['real_time'] += $real_time_tmp;
+     if($att_value['set_time']==0){
+       $t_work_time = time_diff($att_value['work_start'],$att_value['work_end']);
+       if($att_value['type'] == 'replace'||$att_value['rest_start']==$att_value['rest_end']){
+         $t_rest_time = 0;
+       }else{
+         $t_rest_time = time_diff($att_value['rest_start'],$att_value['rest_end']);
+       }
+       $t_rwork_time = $t_work_time - $t_rest_time;
+     }else{
+       $t_rwork_time = $att_value['work_hours'] - $att_value['rest_hours'];
+     }
+     $att_list_arr[$att_value['attendance_detail_id']]['time'] += $t_rwork_time;
+     $tmp_att_info = array();
+     if($att_value['type']=='replace'){
+       $tmp_att_info = tep_get_attendance_by_id($att_value['attendance_detail_id']);
+       if($tmp_att_info['set_time']==0){
+         $w_time = time_diff($tmp_att_info['work_start'],$tmp_att_info['work_end']);
+         if($tmp_att_info['rest_start'] == $tmp_att_info['rest_end']){
+           $r_time = 0;
+         }else{
+           $r_time = time_diff($tmp_att_info['rest_start'],$tmp_att_info['rest_end']);
+         }
+         $all_att_time += $w_time - $r_time;
+       }else{
+         $all_att_time += $tmp_att_info['work_hours'] - $tmp_att_info['rest_hours'];
+       }
+     }else{
+       $all_att_time += $t_rwork_time;
+     }
+   }
+ }
+
+ 
  //总计时间
  $group_content_row_wage = array();
  $group_content_row_wage = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '总计时间'), 
+        array('align' => 'left','params' => 'width="85%"', 'text' => $wage_start_date.'～'.$wage_end_date), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
- //正常上班
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_NORMAL_ATTENDANCE), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '正常上班'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
 
- //加班
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_NORMAL_OVERTIME), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '加班'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
 
- //带薪休假
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_PAID_LEAVE), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '带薪休假'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
-
- //请假
- $group_content_row_wage = array();
- $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_UNPAID_VACATION), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '请假'), 
-     );
- $group_content_table[] = array('text'=>$group_content_row_wage);
+ foreach($att_list_arr as $a_key => $a_value){
+   $a_info = tep_get_attendance_by_id($a_key);
+   $group_content_row_wage = array();
+   $group_content_row_wage = array(
+          array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['short_language']), 
+          array('align' => 'left','params' => 'width="85%"', 'text' => $a_value['time'].'～'.$a_value['real_time']), 
+       );
+   $group_content_table[] = array('text'=>$group_content_row_wage);
+ }
  
- if($_POST['group_id'] > 0){
+ if($_POST['group_id'] > 0&&false){
    //作成者、作成时间、更新者、更新时间
    $group_content_table[]['text'] = array(
         array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($groups_array['create_user'])?$groups_array['create_user']:TEXT_UNSET_DATA))), 

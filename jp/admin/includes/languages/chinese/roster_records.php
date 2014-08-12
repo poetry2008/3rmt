@@ -50,6 +50,7 @@ define('TEXT_ADD_ADL', '追加');
 define('TEXT_DEL_ADL', '删除');
 define('TEXT_TYPE_SELECT', '循环');
 define('TEXT_CALENDAR_REPEAT_TYPE_NO','不循环');
+define('TEXT_CALENDAR_REPEAT_TYPE_EVERY_WEEK','毎周');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK','隔周');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD','隔');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL','周');
@@ -73,5 +74,12 @@ define('TEXT_SELECT_USER','用户名');
 define('TEXT_DELETE_REMIND','确定删除吗？');
 define('TEXT_ONLY_USER_ATTENDANCE','个人排班设定');
 define('TEXT_WARN_ATTENDANCE_TYPE_DIFF','请用同样的时间带/时间数进行设置');
+define('TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP','请假时间请控制在某一个排班的上班时间内');
+
+define('SHOW_ALL_ATT_STATUS','全部显示');
+define('SHOW_ERROR_ATT_STATUS','迟到/早退');
+define('SHOW_NULL_ATT_STATUS','不显示');
+define('TEXT_ATT_SET_VALUE','指定在席時間数小計');
+define('TEXT_ATT_ACTUAL_VALUE','指定在席時間数小計');
 ?>
 
