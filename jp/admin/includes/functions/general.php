@@ -14795,6 +14795,24 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
   $parameters_replace_other_array = array();
   preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
   $parameters_value_array = $parameters_value_temp[0];
+  $un_error = true;
+  foreach($parameters_value_array as $has_param){
+    $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
+      param_b='".$has_param."' OR param_a='".$has_param."' limit 1";
+    $att_query = tep_db_query($att_sql);
+    if($att_row = tep_db_fetch_array($att_query)){
+      $un_erro = false;
+    }
+    $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
+      `contents`='".$has_param."'";
+    $wage_query = tep_db_query($wage_sql);
+    if($wage_row = tep_db_fetch_array($wage_query)){
+      $un_erro = false;
+    }
+  }
+  if($error){
+    return 0;
+  }
   //关于组设置的公式中的参数替换
   if($groups_id == 0){
     $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT);
@@ -14947,6 +14965,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
   $wage_str = preg_replace('/([0-9]+)%/','($1/100)',$wage_str);
   //针对复杂运算的处理 ROUND MAX MIN {} 等
 
+  $return = tep_run_str($wage_str);
   $return = tep_operations($wage_str); 
   return is_numeric($return) ? $return : 0;
 }
@@ -15263,4 +15282,106 @@ function tep_start_end_date($group_id,$wage_date){
   }
 
   return array('start_date'=>date('Y-m-d',$start_time),'end_date'=>date('Y-m-d',$end_time));
+}
+
+
+function tep_resolve_str($str,$fun_arr=array()){
+  $error = false;
+  if(preg_match_all('/\{([^\}]*)\}/',$str,$arr)){
+    $tmp_att_str = $arr[1];
+  }else{
+    return tep_operations($str);
+  }
+  $count = 0;
+  foreach($tmp_att_str as $t_arr_str){
+    $t_arr = explode(',',$t_arr_str);
+    $con = count($t_arr);
+    if($count == 0){
+      $count = $con; 
+    }
+    if($count!=$con){
+      $error = true;
+    }
+  }
+  if($error){
+    return 0;
+  }
+  $res_arr =  array();
+  if(preg_match('/^round\((.*),\d+\)/is',$str,$arr)){
+    $fun_arr[] = 'round';
+    if(preg_match('/max|min/is',$arr[1],$arr_sub)){
+      $res_arr = tep_resolve_str($arr[1],$fun_arr); 
+    }else{
+      $res_arr['str'] = $arr[1];
+      $res_arr['fun'] = $fun_arr;
+    }
+  }
+  if(preg_match('/^max\((.*)\)$/is',$str,$arr)){
+    $fun_arr[] = 'max';
+    if(preg_match('/min|round/is',$arr[1],$arr_sub)){
+      $res_arr = tep_resolve_str($arr[1],$fun_arr); 
+    }else{
+      $res_arr['str'] = $arr[1];
+      $res_arr['fun'] = $fun_arr;
+    }
+  }
+  if(preg_match('/^min\((.*)\)$/is',$str,$arr)){
+    $fun_arr[] = 'min';
+    if(preg_match('/max|round/is',$arr[1],$arr_sub)){
+      $res_arr = tep_resolve_str($arr[1],$fun_arr); 
+    }else{
+      $res_arr['str'] = $arr[1];
+      $res_arr['fun'] = $fun_arr;
+    }
+  }
+  return $res_arr;
+}
+function tep_run_str($str){
+
+  $info_arr = tep_resolve_str($str);
+  $str_run = $info_arr['str'];
+  $fun_arr = $info_arr['fun'];
+  $im_arr = array();
+  $ex_arr = array();
+  if(preg_match_all('/\{([^\}]*)\}/',$str_run,$arr)){
+    $im_arr = $arr[0];
+    $ex_arr = $arr[1];
+  }else{
+    return tep_operations($str);
+  }
+  $temp_arr = explode($im_arr[count($im_arr)-1],$str_run);
+  $t_end_str = $temp_arr[count($temp_arr)-1];
+  $end_str = 0;
+  if(preg_match('/\d$/',$t_end_str,$arr)){
+    $end_str = $arr[0];
+  }
+  $str_res = str_replace($t_end_str,'',$str_run);
+  $res_arr = array();
+  foreach($ex_arr as $k_ex => $ex){
+    $ex_a =  explode(',',$ex);
+    foreach($ex_a as $k => $value){
+      if(!isset($res_arr[$k])||$res_arr[$k]==''){
+        $res_arr[$k] = str_replace($im_arr[$k_ex],$value,$str_res);
+      }else{
+        $res_arr[$k] = str_replace($im_arr[$k_ex],$value,$res_arr[$k]);
+      }
+    }
+  }
+  $int_res_arr = array();
+  $int_res_arr[] = intval($end_str);
+  foreach($res_arr as $value){
+    $int_res_arr[] = tep_operations($value);
+  }
+  foreach(array_reverse($fun_arr) as $fun){
+    if($fun == 'max'){
+      $int_res_arr = max($int_res_arr);
+    }
+    if($fun == 'min'){
+      $int_res_arr = min($int_res_arr);
+    }
+    if($fun == 'round'){
+      $int_res_arr = round($int_res_arr,2);
+    }
+  }
+  return $int_res_arr;
 }
