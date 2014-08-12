@@ -741,8 +741,10 @@ if ($customers_referer_array['is_quited'] == '1') {
 if ($_SESSION['guestchk'] == '1') {
   $sql_data_array['is_guest'] = '1';
 }
+tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
-$order_sql_data_array = $sql_data_array;
+tep_order_status_change($insert_id,$sql_data_array['orders_status']);
+
 $total_data_arr = array();
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
@@ -757,14 +759,6 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   }
   $total_data_arr[] = $sql_data_array;
 }
-
-
-tep_db_perform(TABLE_ORDERS, $order_sql_data_array);
-if(isset($_SESSION['paypal_order_info'])&&is_array($_SESSION['paypal_order_info'])&&!empty($_SESSION['paypal_order_info'])){
-  tep_db_perform(TABLE_ORDERS, $_SESSION['paypal_order_info'],'update', "orders_id='".$insert_id."'");
-}
-
-tep_order_status_change($insert_id,$order_sql_data_array['orders_status']);
 
 foreach ($total_data_arr as $sql_data_array){
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
@@ -1340,9 +1334,6 @@ unset($_SESSION['option_list']);
 unset($_SESSION['character']);
 unset($_SESSION['option']);
 unset($_SESSION['referer_adurl']);
-if(isset($_SESSION['paypal_order_info'])){
-  unset($_SESSION['paypal_order_info']);
-}
 
   
 unset($_SESSION['campaign_fee']); 

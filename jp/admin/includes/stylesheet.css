@@ -2355,18 +2355,9 @@ line-height:14px;
 display:inline-block;
 
 }
-/*@date 20140806 roster_record 日历框框间距*/
 .uroster_records span{
 	line-height:14px;
 	display:block;
 	float:left;	
-	padding-left:6px;
-}
-.uroster_record  img{
-	padding-left:6px;
-}
-/*限制单个输入框的宽度--隔周输入框 @date20140808*/
-.limit_input_width {
-   width:30px;
 }
 

@@ -253,10 +253,12 @@ echo "</a>";
 </b>
 <?php
 //打卡
-	 $uid = $user_info['userid'];
-	 $check_result=tep_check_show_login_logout($uid);
+	 $date = date('Ymd');
+     $sql = "select * from attendance_record where user_name='".$user_info['userid']."' and logout_time IS NULL";
+     $rows = tep_db_query($sql);
+     $res = tep_db_fetch_array($rows);
 	 
-if($check_result==0) { 
+if(empty($res)) { 
 	echo sprintf(HEADER_ATTENDANCE_LOGOUT,'href="javascript:void(0);" onclick=change_attendance_login("'.$user_info['userid'].'") title="'.HEADER_ATTENDANCE_LOGIN_TITLE.'" style="text-decoration:underline;"');
 }else {
 	echo sprintf(HEADER_ATTENDANCE_LOGIN,'href="javascript:void(0);" onclick=change_attendance_logout("'.$user_info['userid'].'") title="'.HEADER_ATTENDANCE_LOGOUT_TITLE.'" style="text-decoration:underline;"');

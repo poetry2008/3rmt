@@ -603,7 +603,7 @@ echo TEXT_ORDERS_EMPTY_COMMENT;
   
   $telecom_option_ok = $payment_modules->preorderDealUnknow($sql_data_array, $cpayment_code); 
   
-  $insert_sql_data_array = $sql_data_array;
+  tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
   //住所信息录入
   $add_list = array();
@@ -707,7 +707,6 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
   $totals_email_str = '';
   $totals_print_email_str = '';
   $totals_custom_array = array();
-  $totals_info_array = array();
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     if ($preorder_total_res['class'] == 'ot_total') {
       //总价 
@@ -759,7 +758,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
         $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_num, $orders_id, $cpayment_code); 
       }
     }
-    $totals_info_array[] = $sql_data_array;
+    tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
 
     //total customer email
     if($preorder_total_res['class'] == 'ot_custom' && trim($preorder_total_res['title']) != ''){
@@ -767,14 +766,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
       $totals_custom_array[] = array('title'=>$preorder_total_res['title'],'value'=>$preorder_total_res['value']);
     }
   }
-  tep_db_perform(TABLE_ORDERS, $insert_sql_data_array);
-  if(isset($_SESSION['paypal_order_info'])&&is_array($_SESSION['paypal_order_info'])&&!empty($_SESSION['paypal_order_info'])){
-    tep_db_perform(TABLE_ORDERS, $_SESSION['paypal_order_info'],'update', "orders_id='".$orders_id."'");
-  }
 
-  foreach($totals_info_array as $t_info_arr){
-    tep_db_perform(TABLE_ORDERS_TOTAL, $t_info_arr);
-  }
   $customer_i = 0;
   foreach($totals_custom_array as $totals_custom_value){
 
@@ -1355,9 +1347,6 @@ $_SESSION['customer_id'] = $preorder['customers_id'];
 unset($_SESSION['insert_id']);
 unset($_SESSION['preorder_option']);
 unset($_SESSION['referer_adurl']);
-if(isset($_SESSION['paypal_order_info'])){
-  unset($_SESSION['paypal_order_info']);
-}
 
 unset($_SESSION['preorder_campaign_fee']);
 unset($_SESSION['preorder_camp_id']);

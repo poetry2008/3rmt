@@ -90,15 +90,6 @@ function check_group(){
   }
 
   if(error == false){
-    var end_date = document.getElementsByName("end_date[]"); 
-    var end_date_length = end_date.length;
-    var start_date = document.getElementsByName("start_date[]"); 
-
-    for(var i=0;i<=end_date_length-1;i++){
-    
-      end_date[i].disabled = false;
-      start_date[i].disabled = false;
-    }
     document.forms.new_latest_group.submit();
   }
 }
@@ -280,53 +271,22 @@ function date_select(ele,end_str,start_str,date_str){
   var start_date = document.getElementsByName("start_date[]"); 
   var start_date_length = start_date.length;
   var date_select_array = new Array();
-  var tr_date_id = $("#tr_date_id").val();
-  tr_date_id = parseInt(tr_date_id);
-
-  var one_start_date = '';
-  var one_end_date = '';
 
   var date_i = 0;
   for(var i=0;i<end_date_length;i++){
- 
-    if(i != tr_date_id){
+  
+    for(var j=parseInt(start_date[i].value);j<=parseInt(end_date[i].value);j++){
     
-      start_date[i].disabled = true;
-      end_date[i].disabled = true;
-    }
-    var start_time = parseInt(start_date[i].value);
-    var end_time = parseInt(end_date[i].value);
-    if(start_time > end_time){
-   
-      end_time = end_time+28;
-    }
-    for(var j=start_time;j<=end_time;j++){
-   
-      if(j < one_start_date){
-
-        date_select_array[date_i] = j+28;
-      }else{
-      
-        date_select_array[date_i] = j;
-      }
+      date_select_array[date_i] = j;
       date_i++;
-    }
-   
-    if(i == 0){
-      one_start_date = parseInt(start_date[i].value);
-      one_end_date = parseInt(end_date[i].value);
     }
   }
   date_select_array.sort(function(a,b){return a>b?1:-1});
   var all_date_array = new Array();
-  var date_i = 0;
-  for(var k=one_start_date;k<=one_start_date-1+28;k++){
-     
-    all_date_array[date_i] = k;
-    date_i++;
+  for(var k=1;k<=28;k++){
+  
+    all_date_array[k-1] = k;
   }
-  //alert(all_date_array.toString());
-  //alert(date_select_array.toString());
 
   var diff_date_array = new Array();
 
@@ -348,141 +308,26 @@ function date_select(ele,end_str,start_str,date_str){
   //alert(diff_date_array.toString());
   if(diff_date_array.length > 0){
  
-       var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
-       var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" disabled>';
-       var select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');">'; 
-
-      for(var p=0;p<diff_date_array.length;p++){
-  
-        var diff_value = diff_date_array[p] > 28 ? diff_date_array[p]-28 : diff_date_array[p];
-        var diff_value_str = diff_value == 28 ? '28~31' : diff_value;
-        if(p != diff_date_array.length-1 && diff_date_array[p]+1 == diff_date_array[p+1]){
+    var select_str = '<tr><td width="20%"></td><td>';
+    var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
+    var select_start_str = start_str+'<select name="start_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');">';
+    for(var p=0;p<diff_date_array.length;p++){
+   
+      if(p != diff_date_array.length-1 && diff_date_array[p]+1 == diff_date_array[p+1]){
      
-          select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
-          select_end_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
+        select_end_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+        select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
+      }else{
+    
+        if(p == diff_date_array.length-1){
+           select_end_str += '<option value="'+diff_date_array[p]+'" selected>'+diff_date_array[p]+date_str+'</option>';
+           select_start_str += '<option value="'+diff_date_array[p]+'">'+diff_date_array[p]+date_str+'</option>';
         }else{
-    
-          if(p == diff_date_array.length-1){
-            select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
-            select_end_str += '<option value="'+diff_value+'" selected>'+diff_value_str+date_str+'</option>';
-          }else{
-            var temp_num = tr_date_id;
-            $("#tr_date_id").val(tr_date_id+1);
-            tr_date_id = $("#tr_date_id").val();
-            tr_date_id = parseInt(tr_date_id);
-            select_start_str += '<option value="'+diff_value+'">'+diff_value_str+date_str+'</option>';
-            select_end_str += '<option value="'+diff_value+'" selected>'+diff_value_str+date_str+'</option>';
-            select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
-            select_str += '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
-            select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" disabled>';
-            select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');">';
-          }
+          select_str += select_end_str+'</select>'+select_start_str+'</select></td></tr><tr><td width="20%"></td><td>';
         }
-      } 
-      select_str += select_start_str+'</select>'+select_end_str+'</select></td></tr>';
-      $(ele).parent().parent().after(select_str);
-      if(temp_num){
-        document.getElementsByName("start_date[]")[temp_num].disabled = true;
       }
-      $("#tr_date_id").val(tr_date_id+1);
-  }
-}
-//popup calendar
-function open_new_calendar()
-{
-  var is_open = $('#toggle_open').val(); 
-  if (is_open == 0) {
-    //mm-dd-yyyy || mm/dd/yyyy
-    $('#toggle_open').val('1'); 
-
-    var rules = {
-      "all": {
-        "all": {
-          "all": {
-            "all": "current_s_day",
-          }
-        }
-      }};
-    if ($("#date_orders").val() != '') {
-      if ($("#date_orders").val() == '0000-00-00') {
-        date_info_str =  js_cale_date;  
-        date_info = date_info_str.split('-');  
-      } else {
-        date_info = $("#date_orders").val().split('-'); 
-      }
-    } else {
-      //mm-dd-yyyy || mm/dd/yyyy
-      date_info_str = js_cale_date;  
-      date_info = date_info_str.split('-');  
     }
-    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
-    YUI().use('calendar', 'datatype-date',  function(Y) {
-        var calendar = new Y.Calendar({
-contentBox: "#mycalendar",
-width:'170px',
-date: new_date
-
-}).render();
-        if (rules != '') {
-        month_tmp = date_info[1].substr(0, 1);
-        if (month_tmp == '0') {
-        month_tmp = date_info[1].substr(1);
-        month_tmp = month_tmp-1;
-        } else {
-        month_tmp = date_info[1]-1; 
-        }
-        day_tmp = date_info[2].substr(0, 1);
-
-        if (day_tmp == '0') {
-        day_tmp = date_info[2].substr(1);
-        } else {
-        day_tmp = date_info[2];   
-        }
-        data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
-        calendar.set("customRenderer", {
-rules: rules,
-filterFunction: function (date, node, rules) {
-cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
-if (cmp_tmp_str == data_tmp_str) {
-node.addClass("redtext"); 
-}
-}
-});
-}
-var dtdate = Y.DataType.Date;
-calendar.on("selectionChange", function (ev) {
-    var newDate = ev.newSelection[0];
-    tmp_show_date = dtdate.format(newDate); 
-    tmp_show_date_array = tmp_show_date.split('-');
-    $("input[name=wage_date]").val(tmp_show_date); 
-    $("#date_orders").val(tmp_show_date); 
-    $('#toggle_open').val('0');
-    $('#toggle_open').next().html('<div id="mycalendar"></div>');
-    });
-});
-}
-}
-//start date select
-function start_date_select(ele,num){
-
-  if(ele.value != 0){
-    document.getElementsByName("end_date[]")[num].disabled = false;
+    select_str += select_end_str+'</select>'+select_start_str+'</select></td></tr>';
+    $(ele).parent().parent().after(select_str);
   }
-}
-//reset date
-function check_reset(){
-
-    document.getElementsByName("start_date[]")[0].value = 1;
-    document.getElementsByName("start_date[]")[0].disabled = false;
-    document.getElementsByName("end_date[]")[0].value = 28;
-    document.getElementsByName("end_date[]")[0].disabled = true;
-
-    var tr_date_id = $("#tr_date_id").val();
-
-    tr_date_id = parseInt(tr_date_id);
-    for(var i=1;i<=tr_date_id;i++){
-    
-      $("#tr_date_"+i).remove();
-    }
-    $("#tr_date_id").val(1);
 }
