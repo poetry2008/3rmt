@@ -13702,22 +13702,8 @@ function tep_check_show_login_logout($uid) {
 }
 function tep_change_attendance_login($uid) {
 
-	//原表 
 	$date = date('Ymd');
-	$sql = "select * from attendance where user_name='".$uid."' and date='".$date."'";
-	$query = tep_db_query($sql);
-    $num_rows = tep_db_num_rows($query);	
-	
-    $now_time = date('Y-m-d H:i:s');
-
-	if($num_rows ==0) {
-        $sql_old = "insert into attendance (user_name,login_time,login_time_tep,date,att_status) values('". $uid ."','". $now_time ."','". $now_time ."','". $date ."',1)";
-	}elseif($num_rows !=0) {
-        $sql_old = "update attendance set login_time_tep = '". $now_time ."',att_status=1 where user_name ='" .$uid. "'and date= '". $date ."'";
-	}
-	//删除下面的时候,这个加return
-	tep_db_query($sql_old);
-
+        $now_time = date('Y-m-d H:i:s');
 	//一下是新表,打补丁时删除
 	
 	/* @date 20140725
@@ -13805,22 +13791,7 @@ function tep_change_attendance_login($uid) {
 
 function tep_change_attendance_logout($uid) {
 
-	//原表
 	$date = date('Ymd');
-	$sql = "select * from attendance where user_name='".$uid."' and date='".$date."' and logout_time=0";
-	$query = tep_db_query($sql);
-    $num_rows = tep_db_num_rows($query);	
-    $now_time = date('Y-m-d H:i:s');
-	
-	if($num_rows!=0) {
-        $sql_old = "update attendance set logout_time = '". $now_time ."',logout_time_tep = '". $now_time ."',att_status=0 where user_name ='" .$uid. "'and date= '". $date ."'";
-	}else {
-        $sql_old = "update attendance set logout_time_tep = '". $now_time ."', att_status = 0 where user_name ='" .$uid. "'and date= '". $date ."'";
-	}
-	//打补丁删除新表的时候 这个加return
-	tep_db_query($sql_old);
-
-
 	//新表 打补丁时删除
 
 	/*@date 20140725
@@ -14184,117 +14155,6 @@ function validate_two_time($first_start,$first_end,$second_start,$second_end){
   return false;
 }
 
-function tep_validate_attendance($uid,$date,$att_info,$bg_color,$index=0,$show_status=0){
-  global $ocertify,$user_atted;
-  $today = date('Ymd',time());
-  $user_info = tep_get_user_info($uid);
-  if($date>$today){
-    $return_str = $user_info['name'].'&nbsp;';
-    return $return_str;
-  }
-  $mger_listanager_list = tep_get_user_list_by_userid($uid);
-  $param_str = '';
-  if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
-    if($date<$today){
-      $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\')">';
-    }
-  }
-  $work_start = $att_info['work_start'];
-  $work_end = $att_info['work_end'];
-  $work_start_str = str_replace(':','',$work_start);
-  $work_end_str = str_replace(':','',$work_end);
-  $sql = "select * from ".TABLE_ATTENDANCE." WHERE 
-    user_name='".$uid."' and date='".$date."'";
-  $query = tep_db_query($sql);
-  $show_user = false;
-  if($user_atted[$uid]&&$user_atted[$uid]<$date){
-  }else{
-    $return_str = $user_info['name'].'&nbsp;';
-    return $return_str;
-  }
-  if($row = tep_db_fetch_array($query)){
-    if($att_info['set_time']==0){
-      $real_work_start = substr($row['login_time'],11,5);
-      $real_work_end = substr($row['logout_time'],11,5);
-      $real_work_start_str = str_replace(':','',$real_work_start);
-      $real_work_end_str = str_replace(':','',$real_work_end);
-      if($work_start_str > $work_end_str){
-      }else{
-        if($real_work_start_str < $work_start_str && $real_work_end_str > $work_end_str){
-        }else if($real_work_start_str < $work_start_str && $real_work_end_str == 0 && $date==$today){
-        }else{
-          if($date==$today){
-            $now_time = date('H:i',time());
-            $tow_sub_time = floor((strtotime($real_work_end)-strtotime($now_time))%86400/3600)+0.5;
-            if($tow_sub_time>0){
-              if($real_work_end_str > $work_start_str|| $real_work_end_str< $work_end_str){
-                $show_user = true;
-              }
-            }else{
-              if($real_work_start_str > $work_start_str){
-                $show_user = true;
-              }
-            }
-          }else{
-            $show_user = true;
-          }
-        }
-      }
-    }else{
-      $real_work_start = $row['login_time'];
-      $real_work_end = $row['logout_time'];
-      $work_hour = floor((strtotime($real_work_end)-strtotime($real_work_start))%86400/3600);
-      if($work_hour < $att_info['rest_hours']+$att_info['work_hours']){
-        $show_user = true;
-      }
-    }
-    $return_str = $user_info['name'].'&nbsp;';
-    if($param_str != ''){
-      if($show_status !=2 ){
-        $return_str .= $param_str;
-      }
-    }
-    if($show_user&&$show_status!=2){
-        if($bg_color == '#FE0000'){
-          $return_str .= '<font color ="#FFFFFF">';
-        }else{
-          $return_str .= '<font color ="#FE0000">';
-        }
-        $return_str .= substr($row['login_time'],11,5)
-          .  '～';
-        if(substr($row['logout_time'],11,5)=='00:00'||$row['logout_time']==null){
-          $return_str .= '......';
-        }else{
-          $return_str .= substr($row['logout_time'],11,5);
-        }
-        $return_str .= '</font><br>';
-    }else{
-      if($show_status == 0){
-        $return_str .= '<font color ="#000000">';
-        $return_str .= substr($row['login_time'],11,5)
-          .  '～';
-        $return_str .= substr($row['logout_time'],11,5);
-        $return_str .= '</font><br>';
-      }
-    }
-    return $return_str;
-  }else{
-    $return_str = $user_info['name'].'&nbsp;';
-    if($param_str != ''){
-      if($show_status !=2 ){
-        $return_str .= $param_str;
-        if($bg_color == '#FE0000'){
-          $return_str .= '<font color ="#FFFFFF">';
-        }else{
-          $return_str .= '<font color ="#FE0000">';
-        }
-        $return_str .= '......' . '～' . '......';
-        $return_str .= '</font><br>';
-      }
-    }
-    return $return_str;
-  }
-}
 function tep_get_attendance_by_user_date($date,$user=0,$user_self='',$show_all=false){
   $res = array();
   $att_list = array();
