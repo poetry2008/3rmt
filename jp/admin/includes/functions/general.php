@@ -14416,7 +14416,7 @@ function tep_is_attenandced_date($user){
 ***************************/
 function tep_all_attenande_by_uid($user,$date,$show_group=0){
   $date_info = tep_date_info($date);
-  $all_sql = "select * from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
+  $all_sql = "select atd.id as aid,atd.*,ad.* from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
     ". TABLE_ATTENDANCE_DETAIL ." ad on atd.attendance_detail_id = ad.id  
     where ((type='0' and date='".$date."') 
     or (type='1' and week='".$date_info['week']."' and `space` = 0) 
@@ -14502,6 +14502,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       if(!in_array($v['attendance_detail_id'],$replace_aid)){
         $last_key = str_replace(':','',$v['work_start']);
         $row_arr[$last_key] = array(
+          'aid' => $v['aid'],
           'type' => '',
           'attendance_detail_id' => $v['attendance_detail_id'],
           'work_start' => $v['work_start'],
@@ -14519,6 +14520,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
         $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
         $row_arr[$last_key] = array(
+          'aid' => $attendance_dd_arr_tmp[0]['aid'],
           'type' => '',
           'attendance_detail_id' => $attendance_dd_arr_tmp[0]['attendance_detail_id'],
           'work_start' => $attendance_dd_arr_tmp[0]['work_start'],
@@ -14540,6 +14542,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       if(!in_array($sv['attendance_detail_id'],$replace_aid)){
         $last_key++;
         $row_arr[$last_key] = array(
+          'aid' => $sv['aid'],
           'type' => '',
           'attendance_detail_id' => $sv['attendance_detail_id'],
           'work_start' => $sv['work_start'],

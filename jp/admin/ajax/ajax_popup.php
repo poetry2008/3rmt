@@ -11120,6 +11120,7 @@ if($row_array['set_time']==0){
   $date_arr[] = date('Ymd',mktime(0,0,0,$wage_start_arr[1],$wage_start_arr[2]+$i,$wage_start_arr[0]));
   $i++;
  }
+ $date_arr[] = date('Ymd',mktime(0,0,0,$wage_start_arr[1],$wage_start_arr[2]+$i,$wage_start_arr[0]));
 
  //所有排班列表
 
@@ -11136,14 +11137,18 @@ if($row_array['set_time']==0){
    $real_time = tep_attendance_record_time($user,$_date,$att_array);
    $all_real_time += $real_time;
    foreach($att_array as $att_value){
-     if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
-       $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
-       $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
-     }
      if($att_value['type']=='replace'){
        if(!isset($att_list_arr[$att_value['replace_attendance_detail_id']])){
          $att_list_arr[$att_value['replace_attendance_detail_id']]['time'] = 0;
          $att_list_arr[$att_value['replace_attendance_detail_id']]['real_time'] = 0;
+       }
+     }else{
+       if(!tep_is_show_att($att_value['aid'],$_date)){
+         continue;
+       }
+       if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
+         $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
+         $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
        }
      }
      $real_time_tmp = tep_attendance_record_time($user,$_date,$att_array,$att_value['attendance_detail_id']);
