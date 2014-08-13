@@ -9764,6 +9764,7 @@ echo  $return_res;
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 
   $adl_select = '<select name="attendance_id[]" '.$show_only.' >';
+  $adl_select .= '<option value="">--</option>';
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
   }
@@ -9771,7 +9772,9 @@ echo  $return_res;
 
   $group_select = '<select name="group[]" '.$group_disabled.'>';
   $hidden_group_select = '<select name="group[]" >';
+  $group_select .= '<option value="">--</option>';
   $group_select_hidden = '';
+  $hidden_group_select .= '<option value="">--</option>';
   $default_hidden = '';
   foreach($group_list as $group){
     if(in_array($group['id'],$show_manage_group)||$ocertify->npermission>10){
@@ -9785,8 +9788,8 @@ echo  $return_res;
       $hidden_group_select .= ' selected ';
       $group_select_hidden = '<input type="hidden" name="group_hidden[]" value="'.$group['id'].'">';
     }
-    $group_select .= '>'.$group['text'].'</oprion>';
-    $hidden_group_select .= '>'.$group['text'].'</oprion>';
+    $group_select .= '>'.$group['text'].'</option>';
+    $hidden_group_select .= '>'.$group['text'].'</option>';
     }
   }
   $group_select .= '</select>';
@@ -10715,6 +10718,7 @@ if($row_array['set_time']==0){
 
   //默认的排班模板
   $adl_select = '<select name="attendance_id[]" '.$show_only.' >';
+  $adl_select .= '<option value="">--</option>';
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
   }
@@ -10722,7 +10726,9 @@ if($row_array['set_time']==0){
 
   //默认的用户显示
   $user_select = '<select name="user[]" '.$disabled.'>';
+  $user_select .= '<option value="">--</option>';
   $hidden_user_select = '<select name="user[]" >';
+  $hidden_user_select .= '<option value="">--</option>';
   $user_select_hidden = '';
   $default_hidden = '';
   foreach($all_user as $user){
@@ -10732,8 +10738,10 @@ if($row_array['set_time']==0){
     $user_select .= '<option value="'.$user['userid'].'"';
     $hidden_user_select .= '<option value="'.$user['userid'].'"';
     if($user['userid']==$_GET['uid']){
+		/*
       $user_select .= ' selected ';
       $hidden_user_select .= ' selected ';
+		 */
       $user_select_hidden = '<input type="hidden" name="user_hidden[]" value="'.$user['user'].'">';
     }
     $user_select .= '>'.$user['name'].'</oprion>';
@@ -11188,7 +11196,7 @@ if($row_array['set_time']==0){
    $group_content_row_wage = array();
    $group_content_row_wage = array(
           array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['short_language']), 
-          array('align' => 'left','params' => 'width="85%"', 'text' => $a_value['time'].'～'.$a_value['real_time']), 
+          array('align' => 'left','params' => 'width="85%"', 'text' => TEXT_ATT_SET_VALUE .'&nbsp;&nbsp;'. $a_value['time'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. TEXT_ATT_ACTUAL_VALUE .'&nbsp;&nbsp;'. $a_value['real_time']), 
        );
    $group_content_table[] = array('text'=>$group_content_row_wage);
  }
