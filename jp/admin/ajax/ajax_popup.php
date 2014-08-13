@@ -9816,7 +9816,7 @@ echo  $return_res;
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_group_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"><input  '.$show_only.' type="button" onclick="add_att_rows(this)" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_group_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   if($group_disabled!=''){
@@ -9909,7 +9909,7 @@ echo  $return_res;
         $as_date_added = $a_info['add_time'];
         $as_user_update = $a_info['update_user'];
         $as_last_modified = $a_info['update_time'];
-        $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$show_only.' type="button" onclick="$(\'#add_end\').before($(\'#add_source tbody\').html())" value="'.TEXT_ADD_ADL.'">');
+        $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$show_only.' type="button" onclick="add_att_rows(this)" value="'.TEXT_ADD_ADL.'">');
         $show_arr = false;
       }else{
         $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
@@ -11141,13 +11141,17 @@ if($row_array['set_time']==0){
        $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
      }
      if($att_value['type']=='replace'){
-       if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
-         $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
-         $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
+       if(!isset($att_list_arr[$att_value['replace_attendance_detail_id']])){
+         $att_list_arr[$att_value['replace_attendance_detail_id']]['time'] = 0;
+         $att_list_arr[$att_value['replace_attendance_detail_id']]['real_time'] = 0;
        }
      }
      $real_time_tmp = tep_attendance_record_time($user,$_date,$att_array,$att_value['attendance_detail_id']);
-     $att_list_arr[$att_value['attendance_detail_id']]['real_time'] += $real_time_tmp;
+     if($att_value['type']=='replace'){
+       $att_list_arr[$att_value['replace_attendance_detail_id']]['real_time'] += $real_time_tmp;
+     }else{
+       $att_list_arr[$att_value['attendance_detail_id']]['real_time'] += $real_time_tmp;
+     }
      if($att_value['set_time']==0){
        $t_work_time = time_diff($att_value['work_start'],$att_value['work_end']);
        if($att_value['type'] == 'replace'||$att_value['rest_start']==$att_value['rest_end']){
@@ -11159,10 +11163,14 @@ if($row_array['set_time']==0){
      }else{
        $t_rwork_time = $att_value['work_hours'] - $att_value['rest_hours'];
      }
-     $att_list_arr[$att_value['attendance_detail_id']]['time'] += $t_rwork_time;
+     if($att_value['type']=='replace'){
+       $att_list_arr[$att_value['replace_attendance_detail_id']]['time'] += $t_rwork_time;
+     }else{
+       $att_list_arr[$att_value['attendance_detail_id']]['time'] += $t_rwork_time;
+     }
      $tmp_att_info = array();
      if($att_value['type']=='replace'){
-       $tmp_att_info = tep_get_attendance_by_id($att_value['attendance_detail_id']);
+       $tmp_att_info = tep_get_attendance_by_id($att_value['replace_attendance_detail_id']);
        if($tmp_att_info['set_time']==0){
          $w_time = time_diff($tmp_att_info['work_start'],$tmp_att_info['work_end']);
          if($tmp_att_info['rest_start'] == $tmp_att_info['rest_end']){

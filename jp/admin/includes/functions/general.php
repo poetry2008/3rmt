@@ -14657,20 +14657,21 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
   $parameters_value_array = $parameters_value_temp[0];
   $un_error = true;
   foreach($parameters_value_array as $has_param){
+    $att_param = substr('${','',substr('}','',$has_param)); 
     $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
-      param_b='".$has_param."' OR param_a='".$has_param."' limit 1";
+      param_b='".$att_param."' OR param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
     if($att_row = tep_db_fetch_array($att_query)){
-      $un_erro = false;
+      $un_error = false;
     }
     $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
       `contents`='".$has_param."'";
     $wage_query = tep_db_query($wage_sql);
     if($wage_row = tep_db_fetch_array($wage_query)){
-      $un_erro = false;
+      $un_error = false;
     }
   }
-  if($error){
+  if($un_error){
     return 0;
   }
   //关于组设置的公式中的参数替换
@@ -14874,16 +14875,21 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
         $work_end = $att_value['work_end'];
 
         if($login_time != '' && $logout_time != ''){
-          $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time)-time_diff($att_value['rest_start'],$att_value['rest_end']);
+          if($att_value['rest_start']==$att_value['rest_end']){
+            $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time);
+          }else{
+            $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time)-time_diff($att_value['rest_start'],$att_value['rest_end']);
+          }
         }
       //如果排班是时间数
       }else{
        
-        $work_time = $att_value['work_hours']+$att_value['rest_hours']; 
+        $work_time = $att_value['work_hours']-$att_value['rest_hours']; 
+        $rest_time = $att_value['rest_hours'];
 
         if($login_time != '' && $logout_time != ''){
 
-          $login_diff_time = time_diff(date('H:i',strtotime($login_time)),date('H:i',strtotime($logout_time))); 
+          $login_diff_time = time_diff(date('H:i',strtotime($login_time)),date('H:i',strtotime($logout_time)))-$rest_time; 
           if($login_diff_time >= $work_time){
 
             $validate_time += $work_time;
