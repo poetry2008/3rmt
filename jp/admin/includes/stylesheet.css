@@ -2272,8 +2272,10 @@ google hack
 
 
 .dataTable_hight_red{
-    background:url(../images/icon_today.png) no-repeat;
-    color:#FFFFFF;
+  color:#FFFFFF;
+  background:#ffcc00;
+  text-align:right;
+  font-weight:bold;
 }
 
 /* 日历表格去掉白线
