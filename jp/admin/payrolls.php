@@ -241,7 +241,7 @@ color:#0066CC;
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr><td width="90">
           <input type="radio" name="select_mode" id="select_mode_date" value="date"<?php echo $_GET['select_mode'] != 'contents' ? ' checked': '';?> style="padding-left:0;margin-left:0;"><label for="select_mode_date"><?php echo TEXT_PAYROLLS_DATE_SELECT;?></label>
-          </td><td width="142">
+          </td><td width="160">
     <select id="fetch_year" onchange="change_fetch_date();">
    <?php
       $default_fetch_year = isset($_GET['select_date']) && $_GET['select_date'] ? date('Y',strtotime($_GET['select_date'])) : date('Y',time()); 
