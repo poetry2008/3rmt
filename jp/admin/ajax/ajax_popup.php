@@ -9122,7 +9122,7 @@ if($_GET['latest_messages_id']>0){
        $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="old_object_title['.$wage_array['id'].']"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="old_object_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
      }else{
        $old_formula_id_array[] = $wage_array['id'];
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" class="td_input" name="old_formula_value['.$wage_array['id'].']">');
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" style="width: 302px;" name="old_formula_value['.$wage_array['id'].']">');
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
