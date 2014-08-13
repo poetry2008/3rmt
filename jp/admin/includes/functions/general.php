@@ -14657,20 +14657,21 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
   $parameters_value_array = $parameters_value_temp[0];
   $un_error = true;
   foreach($parameters_value_array as $has_param){
+    $att_param = substr('${','',substr('}','',$has_param)); 
     $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
-      param_b='".$has_param."' OR param_a='".$has_param."' limit 1";
+      param_b='".$att_param."' OR param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
     if($att_row = tep_db_fetch_array($att_query)){
-      $un_erro = false;
+      $un_error = false;
     }
     $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
       `contents`='".$has_param."'";
     $wage_query = tep_db_query($wage_sql);
     if($wage_row = tep_db_fetch_array($wage_query)){
-      $un_erro = false;
+      $un_error = false;
     }
   }
-  if($error){
+  if($un_error){
     return 0;
   }
   //关于组设置的公式中的参数替换
