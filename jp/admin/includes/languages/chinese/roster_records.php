@@ -80,6 +80,6 @@ define('SHOW_ALL_ATT_STATUS','全部显示');
 define('SHOW_ERROR_ATT_STATUS','迟到/早退');
 define('SHOW_NULL_ATT_STATUS','不显示');
 define('TEXT_ATT_SET_VALUE','指定在席時間数小計');
-define('TEXT_ATT_ACTUAL_VALUE','指定在席時間数小計');
+define('TEXT_ATT_ACTUAL_VALUE','实际在席時間数小計');
 ?>
 
