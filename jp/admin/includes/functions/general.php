@@ -14542,7 +14542,7 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_i
   }
 }
 function tep_is_attenandced_date($user){
-  $sql = "select id,date from ". TABLE_ATTENDANCE ." WHERE user_name='".$user."'
+  $sql = "select id,date from ". TABLE_ATTENDANCE_RECORD ." WHERE user_name='".$user."'
     order by id asc";
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){
@@ -14966,7 +14966,6 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
   //针对复杂运算的处理 ROUND MAX MIN {} 等
 
   $return = tep_run_str($wage_str);
-  $return = tep_operations($wage_str); 
   return is_numeric($return) ? $return : 0;
 }
 /* -------------------------------------
@@ -15285,7 +15284,7 @@ function tep_start_end_date($group_id,$wage_date){
 }
 
 
-function tep_resolve_str($str,$fun_arr=array()){
+function tep_resolve_str($str,$fun_arr=array(),$point=2){
   $error = false;
   if(preg_match_all('/\{([^\}]*)\}/',$str,$arr)){
     $tmp_att_str = $arr[1];
@@ -15307,10 +15306,11 @@ function tep_resolve_str($str,$fun_arr=array()){
     return 0;
   }
   $res_arr =  array();
-  if(preg_match('/^round\((.*),\d+\)/is',$str,$arr)){
+  if(preg_match('/^round\((.*),(\d+)\)/is',$str,$arr)){
     $fun_arr[] = 'round';
+    $point = $arr[2]; 
     if(preg_match('/max|min/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
@@ -15319,7 +15319,7 @@ function tep_resolve_str($str,$fun_arr=array()){
   if(preg_match('/^max\((.*)\)$/is',$str,$arr)){
     $fun_arr[] = 'max';
     if(preg_match('/min|round/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
@@ -15328,12 +15328,13 @@ function tep_resolve_str($str,$fun_arr=array()){
   if(preg_match('/^min\((.*)\)$/is',$str,$arr)){
     $fun_arr[] = 'min';
     if(preg_match('/max|round/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
     }
   }
+  $res_arr['point'] = $point;
   return $res_arr;
 }
 function tep_run_str($str){
@@ -15341,6 +15342,7 @@ function tep_run_str($str){
   $info_arr = tep_resolve_str($str);
   $str_run = $info_arr['str'];
   $fun_arr = $info_arr['fun'];
+  $point = $info_arr['point'];
   $im_arr = array();
   $ex_arr = array();
   if(preg_match_all('/\{([^\}]*)\}/',$str_run,$arr)){
@@ -15380,7 +15382,7 @@ function tep_run_str($str){
       $int_res_arr = min($int_res_arr);
     }
     if($fun == 'round'){
-      $int_res_arr = round($int_res_arr,2);
+      $int_res_arr = round($int_res_arr,$point);
     }
   }
   return $int_res_arr;
