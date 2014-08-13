@@ -301,6 +301,7 @@ function delete_submit(c_permission,type){
 function save_submit(c_permission){
   //选择的组
   group_id = '';
+  error_default ='';
   var group_select = $("select[name='has_group[]']");
   if(group_select.length>0){
     group_select.each(function(){
@@ -311,6 +312,9 @@ function save_submit(c_permission){
   var group_select_add = $("form select[name='group[]']");
   if(group_select_add.length>0){
     group_select_add.each(function(i){
+		if($(this).val()==''){
+		  error_default=1;	
+		}
            group_id += $(this).val() + '||';
     })
   }
@@ -326,6 +330,9 @@ function save_submit(c_permission){
   var user_select_add = $("form select[name='user[]']");
   if(user_select_add.length>0){
      user_select_add.each(function(i){
+		if($(this).val()==''){
+		  error_default=1;	
+		}
           group_id += $(this).val() + '||';
      })
   }
@@ -339,8 +346,15 @@ function save_submit(c_permission){
   //后加排版
   var att_select_add = $("form select[name='attendance_id[]']");
   att_select_add.each(function(i){
+		if($(this).val()==''){
+		  error_default=1;	
+		}
       att_id += $(this).val() + '||';
   })
+  //默认值没有进行更改
+  if(error_default==1){
+	  return false;
+  }
 
    $.ajax({
        url: 'ajax.php?action=check_same_group_att',
