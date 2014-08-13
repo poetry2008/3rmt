@@ -435,7 +435,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
 	$wage_table_row = array();
 	$wage_title_row = array();
 	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
-        $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_NAME.'</a>');
+        $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_NAME.'</a>');
         //获取组对应的工资项目
         $groups_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
         $groups_users_id = array();
@@ -459,7 +459,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
           }
           tep_db_free_result($groups_wage_query);
         }
-	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
+	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:8%;"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
 	$wage_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $wage_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
 		$wage_id = 0;
@@ -566,7 +566,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                   $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'">' 
+                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:50%;">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
