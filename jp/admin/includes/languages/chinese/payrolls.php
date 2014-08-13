@@ -28,4 +28,7 @@ define('TEXT_PAYROLLS_NORMAL_ATTENDANCE','正常上班');
 define('TEXT_PAYROLLS_NORMAL_OVERTIME','加班');
 define('TEXT_PAYROLLS_PAID_LEAVE','带薪休假');
 define('TEXT_PAYROLLS_UNPAID_VACATION','请假');
+
+define('TEXT_ATT_SET_VALUE','打卡时间设定值小计');
+define('TEXT_ATT_ACTUAL_VALUE','打卡时间实际值小计');
 ?>

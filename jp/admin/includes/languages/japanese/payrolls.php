@@ -29,4 +29,7 @@ define('TEXT_PAYROLLS_NORMAL_ATTENDANCE','通常出勤');
 define('TEXT_PAYROLLS_NORMAL_OVERTIME','通常残業');
 define('TEXT_PAYROLLS_PAID_LEAVE','有給休暇');
 define('TEXT_PAYROLLS_UNPAID_VACATION','無給休み');
+
+define('TEXT_ATT_SET_VALUE','指定在席時間数小計');
+define('TEXT_ATT_ACTUAL_VALUE','実際在席時間数小計');
 ?>
