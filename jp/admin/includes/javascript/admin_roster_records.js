@@ -747,3 +747,7 @@ function edit_space_nums(ele,val) {
    }
 
 }
+function add_att_rows(ele){
+  $(ele).parent().parent().before($('#add_source tbody').html());
+  $(ele).remove();
+}
