@@ -14875,16 +14875,21 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
         $work_end = $att_value['work_end'];
 
         if($login_time != '' && $logout_time != ''){
-          $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time)-time_diff($att_value['rest_start'],$att_value['rest_end']);
+          if($att_value['rest_start']==$att_value['rest_end']){
+            $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time);
+          }else{
+            $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time)-time_diff($att_value['rest_start'],$att_value['rest_end']);
+          }
         }
       //如果排班是时间数
       }else{
        
-        $work_time = $att_value['work_hours']+$att_value['rest_hours']; 
+        $work_time = $att_value['work_hours']-$att_value['rest_hours']; 
+        $rest_time = $att_value['rest_hours'];
 
         if($login_time != '' && $logout_time != ''){
 
-          $login_diff_time = time_diff(date('H:i',strtotime($login_time)),date('H:i',strtotime($logout_time))); 
+          $login_diff_time = time_diff(date('H:i',strtotime($login_time)),date('H:i',strtotime($logout_time)))-$rest_time; 
           if($login_diff_time >= $work_time){
 
             $validate_time += $work_time;

@@ -11141,13 +11141,17 @@ if($row_array['set_time']==0){
        $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
      }
      if($att_value['type']=='replace'){
-       if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
-         $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
-         $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
+       if(!isset($att_list_arr[$att_value['replace_attendance_detail_id']])){
+         $att_list_arr[$att_value['replace_attendance_detail_id']]['time'] = 0;
+         $att_list_arr[$att_value['replace_attendance_detail_id']]['real_time'] = 0;
        }
      }
      $real_time_tmp = tep_attendance_record_time($user,$_date,$att_array,$att_value['attendance_detail_id']);
-     $att_list_arr[$att_value['attendance_detail_id']]['real_time'] += $real_time_tmp;
+     if($att_value['type']=='replace'){
+       $att_list_arr[$att_value['replace_attendance_detail_id']]['real_time'] += $real_time_tmp;
+     }else{
+       $att_list_arr[$att_value['attendance_detail_id']]['real_time'] += $real_time_tmp;
+     }
      if($att_value['set_time']==0){
        $t_work_time = time_diff($att_value['work_start'],$att_value['work_end']);
        if($att_value['type'] == 'replace'||$att_value['rest_start']==$att_value['rest_end']){
@@ -11159,10 +11163,14 @@ if($row_array['set_time']==0){
      }else{
        $t_rwork_time = $att_value['work_hours'] - $att_value['rest_hours'];
      }
-     $att_list_arr[$att_value['attendance_detail_id']]['time'] += $t_rwork_time;
+     if($att_value['type']=='replace'){
+       $att_list_arr[$att_value['replace_attendance_detail_id']]['time'] += $t_rwork_time;
+     }else{
+       $att_list_arr[$att_value['attendance_detail_id']]['time'] += $t_rwork_time;
+     }
      $tmp_att_info = array();
      if($att_value['type']=='replace'){
-       $tmp_att_info = tep_get_attendance_by_id($att_value['attendance_detail_id']);
+       $tmp_att_info = tep_get_attendance_by_id($att_value['replace_attendance_detail_id']);
        if($tmp_att_info['set_time']==0){
          $w_time = time_diff($tmp_att_info['work_start'],$tmp_att_info['work_end']);
          if($tmp_att_info['rest_start'] == $tmp_att_info['rest_end']){
