@@ -313,7 +313,10 @@ function save_submit(c_permission){
   if(group_select_add.length>0){
     group_select_add.each(function(i){
 		if($(this).val()==''){
+			$(this).next('font').show();
 		  error_default=1;	
+		}else{
+		   $(this).next('font').hide();
 		}
            group_id += $(this).val() + '||';
     })
@@ -331,7 +334,10 @@ function save_submit(c_permission){
   if(user_select_add.length>0){
      user_select_add.each(function(i){
 		if($(this).val()==''){
+			$(this).next('font').show();
 		  error_default=1;	
+		}else{
+			$(this).next('font').hide();
 		}
           group_id += $(this).val() + '||';
      })
@@ -347,7 +353,10 @@ function save_submit(c_permission){
   var att_select_add = $("form select[name='attendance_id[]']");
   att_select_add.each(function(i){
 		if($(this).val()==''){
-		  error_default=1;	
+			$(this).next('font').show();
+		    error_default=1;	
+		}else{
+            $(this).next('font').hide();
 		}
       att_id += $(this).val() + '||';
   })
@@ -356,6 +365,7 @@ function save_submit(c_permission){
 	  return false;
   }
 
+  //同组同天不能有不同排班类型
    $.ajax({
        url: 'ajax.php?action=check_same_group_att',
        type: 'POST',
@@ -373,7 +383,7 @@ function save_submit(c_permission){
        }
   }); 
 
-
+   //请假或加班时间问题的验证
    sign = '';
    var s_hour =$("#leave_start_hour").val();
    var s_m_l =$("#leave_start_min_l").val();
@@ -384,7 +394,18 @@ function save_submit(c_permission){
    var e_m_l =$("#leave_end_min_l").val();
    var e_m_r =$("#leave_end_min_r").val();
    var end_time = e_hour+':'+e_m_l+e_m_r;
-
+if(s_hour==0 && s_m_l==0 && s_m_r==0){
+  $("#leave_start_error").show();
+  return false;
+}else{
+  $("#leave_start_error").hide();
+}
+if(e_hour==0 && e_m_l==0 && e_m_r==0){
+  $("#leave_end_error").show();
+  return false;
+}else{
+  $("#leave_end_error").hide();
+}
    var tep_str = $("#use_get_userid").text();
    tep_arr = tep_str.split("||");
    var user_id = tep_arr[0];
@@ -448,9 +469,16 @@ if(flag !=1 && sign!=1) {
 
 function del_as(ele,asl_id,c_permission){
   var tr_index = $(ele).parent().parent().index();
+  var next_input = $(ele).parent().html();
+
   $('.popup_order_info').find('tr').eq(tr_index).remove();
   $('.popup_order_info').find('tr').eq(tr_index).remove();
   $('.popup_order_info').find('tr').eq(tr_index).remove();
+
+  var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
+  if(tr_index==0 && check_last.length>0){
+   $('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
+  }
   if(asl_id!=''){
     $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
   }
