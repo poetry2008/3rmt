@@ -15100,15 +15100,17 @@ function tep_start_end_date($group_id,$wage_date){
   tep_db_free_result($group_date_query);
   $begin_end_date = explode('|||',$group_date_array['begin_end_date']);
   if($group_date_array['cycle_flag'] == 0){
-    $time_i = 0;
+    $current_day = date('d',strtotime($wage_date));
     foreach($begin_end_date as $begin_end_date_value){
       $begin_end_date_temp = explode('-',$begin_end_date_value);
-      if($time_i == 0){
 
-        $start_date = $begin_end_date_temp[1];
-      }
+      $start_date = $begin_end_date_temp[1];
       $end_date = $begin_end_date_temp[0];
-      $time_i++;
+
+      if($current_day >= $start_date && $current_day <= $end_date){
+
+        break; 
+      }
     }
 
     if($end_date <= date('d',strtotime($wage_date))){

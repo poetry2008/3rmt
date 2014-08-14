@@ -85,6 +85,7 @@ function change_user_list(ele){
     success: function(msg) {
       if(msg!=''){
         msg = msg.replace(/(\|\|\|[0-9]+)|(\|\|\|)/g,'');
+        msg = msg.replace(/checked="checked"/g,'');
         $("#show_user_list").html(msg);
       }
     }
@@ -382,8 +383,7 @@ function change_fetch_date() {
   }
 }
 //reset user wage
-function reset_user_wage(){
+function reset_user_wage(pam_str){
 
-  document.edit_users_wage.action = 'payrolls.php?action=reset_user_wage'; 
-  document.edit_users_wage.submit(); 
+  location.href = 'payrolls.php?'+pam_str+'&reset=1'; 
 }
