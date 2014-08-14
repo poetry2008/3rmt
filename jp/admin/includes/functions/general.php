@@ -14784,10 +14784,16 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   while($attendance_detail_array = tep_db_fetch_array($attendance_detail_query)){
 
     //要求员工的出勤时间
+    if(!isset($attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'])){
     if(in_array('${'.$attendance_detail_array['param_a'].'}',$parameters_value_array)){
 
       if($attendance_detail_array['set_time'] == 1){
-        $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $attendance_detail_array['work_hours']+$attendance_detail_array['rest_hours'];
+        $tmp_set_time = $attendance_detail_array['work_hours'] - $attendance_detail_array['rest_hours'];
+        if($tmp_set_time > 0){
+          $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $tmp_set_time;
+        }else{
+          $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = 0;
+        }
       }else{
         $work_hours = 0;
         $work_start_num = str_replace(':','',$attendance_detail_array['work_start']);
@@ -14828,13 +14834,13 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           }
           $wage_start_date = $wage_start_date+3600*24;
         }
-        if(!isset($attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'])){
           $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours*$work_hours_num;
         }
       }
     } 
 
     //员工的实际出勤时间 
+    if(!isset($attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'])){
     if(in_array('${'.$attendance_detail_array['param_b'].'}',$parameters_value_array)){
       $attendance_num = 0;
       
@@ -14852,7 +14858,6 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
         $start_time += 3600*24; 
       }
 
-      if(!isset($attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'])){
         $attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'] = $attendance_num; 
       }
     
