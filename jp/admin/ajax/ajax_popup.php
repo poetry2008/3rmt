@@ -9768,7 +9768,7 @@ echo  $return_res;
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
   }
-  $adl_select .= '</select>';
+  $adl_select .= '</select>&nbsp;&nbsp;<font color="red" style="display:none;">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   $group_select = '<select name="group[]" '.$group_disabled.'>';
   $hidden_group_select = '<select name="group[]" >';
@@ -9800,7 +9800,7 @@ echo  $return_res;
       $group_select .= $default_hidden;
     }
   }
-  $hidden_group_select .= '</select>';
+  $hidden_group_select .= '</select>&nbsp;&nbsp;<font style="display:none;" color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   $type_select = '<select name="type[]" '.$show_only.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
@@ -10288,7 +10288,7 @@ echo  $return_res;
     $selected = $leave_start_min_right!=$i ?'':' selected ';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
+  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font style="display:none" color="red" id="leave_start_error">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   $leave_end_array = explode(':',$replace_info_res['leave_end']);
   $leave_end_min_left= substr($leave_end_array[1],0,1);
@@ -10313,7 +10313,7 @@ echo  $return_res;
     $selected = $leave_end_min_right!=$i ?'':' selected ';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_end_error"></font>';
+  $leave_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font style="display:none;" color="red" id="leave_end_error">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //头部内容
   $heading = array();
@@ -10722,7 +10722,7 @@ if($row_array['set_time']==0){
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
   }
-  $adl_select .= '</select>';
+  $adl_select .= '</select>&nbsp;&nbsp;<font color="red" style="display:none;">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //默认的用户显示
   $user_select = '<select name="user[]" '.$disabled.'>';
@@ -10748,7 +10748,7 @@ if($row_array['set_time']==0){
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
   $user_select .= '</select>';
-  $hidden_user_select .= '</select>';
+  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red" style="display:none;">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';

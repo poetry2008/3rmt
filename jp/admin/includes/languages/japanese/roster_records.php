@@ -81,5 +81,6 @@ define('SHOW_ERROR_ATT_STATUS','遅刻・早退');
 define('SHOW_NULL_ATT_STATUS','非表示');
 define('TEXT_ATT_SET_VALUE','指定在席時間数小計');
 define('TEXT_ATT_ACTUAL_VALUE','実際在席時間数小計');
+define('TEXT_REMIND_CHOICE_SELECT','を選択してください');
 ?>
 

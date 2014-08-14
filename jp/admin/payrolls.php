@@ -46,15 +46,28 @@
         $show_group = tep_db_prepare_input($_GET['show_group']);
         //获取选中的员工
         $show_group_user_list = tep_db_prepare_input($_GET['show_group_user_list']);
+        //选择查询模式
+        $select_mode = tep_db_prepare_input($_GET['select_mode']);
+        //选择的日期
+
+        if($select_mode == 'date'){
+
+          $selected_date = tep_db_prepare_input($_GET['select_date']);
+        }else{
+        
+          $selected_date = tep_db_prepare_input($_GET['old_wage_date']);
+        }
         $show_user_array = array();
         if(USER_WAGE_SETTING != ''){
 
-          $show_user_array = unserialize(USER_WAGE_SETTING); 
-          $show_user_array[$ocertify->auth_user] = array('group'=>$show_group,'user'=>implode(',',$show_group_user_list));
-        }else{
-
-          $show_user_array[$ocertify->auth_user] = array('group'=>$show_group,'user'=>implode(',',$show_group_user_list));   
+          $show_user_array = unserialize(USER_WAGE_SETTING);  
         }
+
+        $show_user_array[$ocertify->auth_user] = array('group'=>$show_group,
+                                                       'user'=>implode(',',$show_group_user_list),
+                                                       'type'=>$select_mode, 
+                                                       'date'=>$selected_date
+                                                        );
         $show_user_str = serialize($show_user_array);
         tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value='".$show_user_str."' where configuration_key='USER_WAGE_SETTING'");
         break;
@@ -226,27 +239,40 @@ color:#0066CC;
       </tr> 
       <tr><td>
         <form action="<?php echo tep_href_link(FILENAME_PAYROLLS);?>" method="get">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr>
         <td class="smallText" width="100" height="25"><?php echo TEXT_SHOW_CONTENTS_TITLE;?></td>
         <td>
-          <input type="hidden" name="action" value="update_show_user">
-          <input type="checkbox" name="currency_type[]" id="currency_type_jpy" value="0"<?php echo in_array(0,$_GET['currency_type']) ? ' checked' : '';?> style="padding-left:0;margin-left:0;"><label for="currency_type_jpy"><?php echo TEXT_PAYROLLS_CURRENCY_TYPE_JPY;?></label>
-          <input type="checkbox" name="currency_type[]" id="currency_type_rmb" value="1"<?php echo in_array(1,$_GET['currency_type']) ? ' checked' : '';?>><label for="currency_type_rmb"><?php echo TEXT_PAYROLLS_CURRENCY_TYPE_RMB;?></label>
-          <input type="checkbox" name="currency_type[]" id="currency_type_usd" value="2"<?php echo in_array(2,$_GET['currency_type']) ? ' checked' : '';?>><label for="currency_type_usd"><?php echo TEXT_PAYROLLS_CURRENCY_TYPE_USD;?></label>
-          <input type="checkbox" name="currency_type[]" id="currency_type_vnd" value="3"<?php echo in_array(3,$_GET['currency_type']) ? ' checked' : '';?>><label for="currency_type_vnd"><?php echo TEXT_PAYROLLS_CURRENCY_TYPE_VND;?></label>
-        </td>
-        </tr> 
-        <tr>
-        <td class="smallText" width="100" height="25">&nbsp;</td>
-        <td>
+      <?php
+      //表示内容获取默认选项
+      $show_select_type = 'date';
+      $show_select_date = date('Y-m-d',time());
+      if(USER_WAGE_SETTING != ''){
+
+        $user_wage_array = unserialize(USER_WAGE_SETTING);
+        if(isset($user_wage_array[$ocertify->auth_user])){
+          $show_select_type = $user_wage_array[$ocertify->auth_user]['type'];
+          $show_select_date = $user_wage_array[$ocertify->auth_user]['date'];
+        }
+      }
+
+      if($show_select_type != 'date'){
+
+        $show_selected_date = date('Y-m-d',time());
+      }else{
+        $show_selected_date = $show_select_date;
+      }
+      $default_year = date('Y',strtotime($show_selected_date));
+      $default_month = date('m',strtotime($show_selected_date));
+      $default_day = date('d',strtotime($show_selected_date));
+      ?>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr><td width="90">
+          <tr><td width="90"><input type="hidden" name="action" value="update_show_user">
           <input type="radio" name="select_mode" id="select_mode_date" value="date"<?php echo $_GET['select_mode'] != 'contents' ? ' checked': '';?> style="padding-left:0;margin-left:0;"><label for="select_mode_date"><?php echo TEXT_PAYROLLS_DATE_SELECT;?></label>
           </td><td width="160">
     <select id="fetch_year" onchange="change_fetch_date();">
-   <?php
-      $default_fetch_year = isset($_GET['select_date']) && $_GET['select_date'] ? date('Y',strtotime($_GET['select_date'])) : date('Y',time()); 
+    <?php
+      $default_fetch_year = isset($_GET['select_date']) && $_GET['select_date'] ? date('Y',strtotime($_GET['select_date'])) : $default_year; 
       for ($f_num = 2006; $f_num <= 2050; $f_num++) {
 	if($default_fetch_year == $f_num || $f_num >= date('Y',time())){
         	echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
@@ -257,7 +283,7 @@ color:#0066CC;
     <select id="fetch_month" onchange="change_fetch_date();">
     <?php
       for ($f_num = 1; $f_num <= 12; $f_num++) {
-        $default_fetch_month = isset($_GET['select_date']) && $_GET['select_date'] ? date('m',strtotime($_GET['select_date'])) : date('m',time()); 
+        $default_fetch_month = isset($_GET['select_date']) && $_GET['select_date'] ? date('m',strtotime($_GET['select_date'])) : $default_month; 
         $tmp_fetch_month = sprintf('%02d', $f_num); 
         echo '<option value="'.$tmp_fetch_month.'"'.(($default_fetch_month == $tmp_fetch_month)?' selected':'').'>'.$tmp_fetch_month.'</option>'; 
       }
@@ -266,7 +292,7 @@ color:#0066CC;
     <select id="fetch_day" onchange="change_fetch_date();">
     <?php
       for ($f_num = 1; $f_num <= 31; $f_num++) {
-        $default_fetch_day = isset($_GET['select_date']) && $_GET['select_date'] ? date('d',strtotime($_GET['select_date'])) : date('d',time()); 
+        $default_fetch_day = isset($_GET['select_date']) && $_GET['select_date'] ? date('d',strtotime($_GET['select_date'])) : $default_day; 
         $tmp_fetch_day = sprintf('%02d', $f_num); 
         echo '<option value="'.$tmp_fetch_day.'"'.(($default_fetch_day == $tmp_fetch_day)?' selected':'').'>'.$tmp_fetch_day.'</option>'; 
       }
@@ -274,7 +300,7 @@ color:#0066CC;
     </select>
           </td><td width="10"> 
           <div class="yui3-skin-sam yui3-g">
-<input id="date_orders" type="hidden" name='select_date' size='15' value='<?php echo $_GET['select_mode'] == 'date' ? $_GET['select_date'] : date('Y-m-d',time());?>'>
+<input id="date_orders" type="hidden" name='select_date' size='15' value='<?php echo $_GET['select_mode'] == 'date' ? $_GET['select_date'] : $show_selected_date;?>'>
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
                 </div>
@@ -285,7 +311,7 @@ color:#0066CC;
                 </div>
           </div>
           </td><td>
-          <input type="radio" name="select_mode" id="select_mode_contents" value="contents"<?php echo $_GET['select_mode'] == 'contents' ? ' checked': '';?>><label for="select_mode_contents"><?php echo TEXT_PAYROLLS_CONTENTS_SELECT;?></label> 
+          <input type="radio" name="select_mode" id="select_mode_contents" value="contents"<?php echo $_GET['select_mode'] == 'contents' || (!isset($_GET['select_mode']) && $show_select_type == 'contents') ? ' checked': '';?>><label for="select_mode_contents"><?php echo TEXT_PAYROLLS_CONTENTS_SELECT;?></label> 
 <?php
 //获取已存在数据的日期列表
 $user_wage_query = tep_db_query("select * from ".TABLE_USER_WAGE." group by save_date order by save_date");
@@ -295,7 +321,7 @@ $user_wage_query = tep_db_query("select * from ".TABLE_USER_WAGE." group by save
 if(tep_db_num_rows($user_wage_query) > 0){
   while($user_wage_array = tep_db_fetch_array($user_wage_query)){
 ?>
-  <option value="<?php echo date('Y-m-d',strtotime($user_wage_array['save_date']));?>"<?php echo ($_GET['select_mode'] == 'contents' && $_GET['old_wage_date'] == date('Y-m-d',strtotime($user_wage_array['save_date'])) ? ' selected' : '');?>><?php echo date('Y-m-d',strtotime($user_wage_array['save_date']));?></option>
+  <option value="<?php echo date('Y-m-d',strtotime($user_wage_array['save_date']));?>"<?php echo (($_GET['select_mode'] == 'contents' && $_GET['old_wage_date'] == date('Y-m-d',strtotime($user_wage_array['save_date']))) || ($show_select_type == 'contents' && $show_select_date == date('Y-m-d',strtotime($user_wage_array['save_date']))) ? ' selected' : '');?>><?php echo date('Y-m-d',strtotime($user_wage_array['save_date']));?></option>
 <?php
   }
   tep_db_free_result($user_wage_query);
@@ -309,8 +335,6 @@ if(tep_db_num_rows($user_wage_query) > 0){
         </td>
         </tr>
         <tr>
-        <td class="smallText" width="100" height="25">&nbsp;</td>
-        <td>
         <?php
         //通过组选择员工
         $group_list = tep_get_group_tree();
@@ -319,51 +343,48 @@ if(tep_db_num_rows($user_wage_query) > 0){
         //选中的员工
         $show_select_group_user = array();
         //获取记录
+        $default_select_flag = false;
         if(USER_WAGE_SETTING != ''){
 
           $user_wage_array = unserialize(USER_WAGE_SETTING);
-          $show_group_id = $user_wage_array[$ocertify->auth_user]['group'];
-          $show_select_group_user = explode(',',$user_wage_array[$ocertify->auth_user]['user']);
+          if(isset($user_wage_array[$ocertify->auth_user])){
+            $show_group_id = $user_wage_array[$ocertify->auth_user]['group'];
+            $show_select_group_user = explode(',',$user_wage_array[$ocertify->auth_user]['user']);
+          }else{
+            $show_group_id = $group_list[0]['id'];
+            $default_select_flag = true; 
+          }
         }else{
 
-          $show_group_id = 0;
+          $show_group_id = $group_list[0]['id'];
+          $default_select_flag = true;
         }
+
         //默认选中的组
         $show_group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
+
+        $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."'";
+        $user_query = tep_db_query($user_sql);
+        if($user_row = tep_db_fetch_array($user_query)){
+          $show_group_user = explode('|||',$user_row['all_users_id']);
+          $currency_type = $user_row['currency_type'];
+        }
+
+        if($default_select_flag == true){
+
+          $show_select_group_user = $show_group_user;
+        }
+ 
         //默认选中的员工
         $show_select_group_user = isset($_GET['show_group_user_list']) && $_GET['show_group_user_list'] != '' ? $_GET['show_group_user_list'] : $show_select_group_user;
-
-
-        if($show_group_id==0){
-          $user_sql = "select * from ".TABLE_USERS." where status='1'";
-          $user_query = tep_db_query($user_sql);
-          while($user_row = tep_db_fetch_array($user_query)){
-            $show_group_user[] = $user_row['userid'];
-            if(USER_WAGE_SETTING == ''){
-              $show_select_group_user[] = $user_row['userid'];
-            }
-          }
-        } else {
-          $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."'";
-          $user_query = tep_db_query($user_sql);
-          if($user_row = tep_db_fetch_array($user_query)){
-            $show_group_user = explode('|||',$user_row['all_users_id']);
-          }
-        }
-   
+  
         $group_str = '';
-        $group_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
-        $group_str .= '<tr >';
-        $group_str .= '<td width="15%" align="left">';
+        $group_str .= '<td class="smallText" width="100" height="25">';
         $group_str .= TEXT_GROUP_SELECT;
         $group_str .= '</td>';
-        $group_str .= '<td colspan="2" align="left">';
+        $group_str .= '<td align="left">';
         $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
-        $group_str .= '<option value="0" ';
-        if($show_group_id==0){
-          $group_str .= ' selected ';
-        }
-        $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
+       
         foreach($group_list as $group){
           $group_str .= '<option value="'.$group['id'].'"';
           if($show_group_id == $group['id']){
@@ -375,7 +396,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
         $group_str .= '</td>';
         $group_str .= '</tr>';
         $group_str .= '<tr>';
-        $group_str .= '<td valign="top">';
+        $group_str .= '<td class="smallText" width="100" height="25" valign="top">';
         $group_str .= TEXT_GROUP_USER_LIST;
         $group_str .= '</td>';
         $group_str .= '<td align="left">';
@@ -392,7 +413,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
 
 	foreach($group_user_list as $key=>$val) {
           $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
-          if(in_array($key,$show_select_group_user)){
+          if(in_array($key,$show_select_group_user) || (!isset($_GET) && $default_select_flag == true)){
             $group_str .= ' checked="checked" ';
           }
           $group_str .= ' value="'.$key.'" >';
@@ -401,16 +422,13 @@ if(tep_db_num_rows($user_wage_query) > 0){
 	}
 
         $group_str .= '</div>';
-        $group_str .= '</td>';
-        $group_str .= '<td align="right">';
+        $group_str .= '<div style="float:right;">';
         $group_str .= '<input type="submit" value="'.TEXT_UPDATE.'">';
+        $group_str .= '</div>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
-        $group_str .= '</table>';
         echo $group_str;
         ?>
-        </td>
-        </tr>
         </table> 
         </form>
       </td></tr>
@@ -429,7 +447,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
         tep_db_free_result($site_query);
         echo tep_show_site_filter(FILENAME_PAYROLLS,false,$site_list_array);
         //默认保存日期
-        $default_date = date('Y-m-d');
+        $default_date = $show_select_date;
         $default_date = $_GET['select_mode'] == 'date' ? $_GET['select_date'] : ($_GET['select_mode'] == 'contents' ? $_GET['old_wage_date'] : $default_date);
 	$form_str = tep_draw_form('edit_users_wage', FILENAME_PAYROLLS,'action=edit_users_wage&page='.$_GET['page'], 'post', 'onSubmit="return false;"');
 	$wage_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
@@ -564,7 +582,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                     
                   }
 
-                  $wage_value = $user_wage_val != '' ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,$groups_id);
+                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,$groups_id);
                   $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
@@ -578,33 +596,31 @@ if(tep_db_num_rows($user_wage_query) > 0){
         	);
 		$wage_table_row[] = array('params' => $user_params, 'text' => $user_info);
         }
-        if(!empty($_GET['currency_type'])){
+        if(isset($currency_type)){
 
           $currency_type_array = array(TEXT_PAYROLLS_CURRENCY_TYPE_JPY,TEXT_PAYROLLS_CURRENCY_TYPE_RMB,TEXT_PAYROLLS_CURRENCY_TYPE_USD,TEXT_PAYROLLS_CURRENCY_TYPE_VND); 
           $i = 0;
-          foreach($_GET['currency_type'] as $currency_type_value){
-            $user_info = array();
+          $user_info = array();
+          $user_info[] = array(
+               	         'params' => '',
+               	         'text'   => $i == 0 ? TEXT_PAYROLLS_TOTAL : ''  
+                              );
+          $user_info[] = array(
+               	        'params' => '',
+               	        'text'   => $currency_type_array[$currency_type] 
+                               );
+          foreach($groups_users_id as $wage_id){
             $user_info[] = array(
-                	         'params' => '',
-                	         'text'   => $i == 0 ? TEXT_PAYROLLS_TOTAL : ''  
-                                );
-            $user_info[] = array(
-                	        'params' => '',
-                	        'text'   => $currency_type_array[$currency_type_value] 
-                                );
-            foreach($groups_users_id as $wage_id){
-              $user_info[] = array(
                 	           'params' => '',
-                	           'text'   => '<input type="text" name="users_wage_total['.$wage_id['id'].']" value="'.$user_wage_value[$wage_id['id']].'">' 
-                                  ); 
-            } 
-            $user_info[] = array(
-                	         'params' => '',
-                	         'text'   => ''  
-                                );
-            $wage_table_row[] = array('params' => '', 'text' => $user_info);  
-            $i++;
-          }
+                	           'text'   => '<input type="text" style="width:80%;" name="users_wage_total['.$wage_id['id'].']" value="'.$user_wage_value[$wage_id['id']].'">' 
+                                 ); 
+          } 
+          $user_info[] = array(
+               	         'params' => '',
+               	         'text'   => ''  
+                               );
+          $wage_table_row[] = array('params' => '', 'text' => $user_info);  
+          $i++;
         }
 	$notice_box->get_form($form_str);
 	$notice_box->get_contents($wage_table_row);
@@ -634,7 +650,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                      if (in_array(0,$site_id_array)) {
                        echo '<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT) . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_wage();"') . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_wage(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_wage();"') . '</a>';
                      }else{
                        echo tep_html_element_button(TEXT_PAYROLLS_EXPORT,'disabled="disabled"').'&nbsp;' ;
