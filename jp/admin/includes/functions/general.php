@@ -14828,7 +14828,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           }
           $wage_start_date = $wage_start_date+3600*24;
         }
-        $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours*$work_hours_num;
+        if(!isset($attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'])){
+          $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours*$work_hours_num;
+        }
       }
     } 
 
@@ -14850,7 +14852,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
         $start_time += 3600*24; 
       }
 
-      $attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'] = $attendance_num; 
+      if(!isset($attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'])){
+        $attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'] = $attendance_num; 
+      }
     
     }
 
