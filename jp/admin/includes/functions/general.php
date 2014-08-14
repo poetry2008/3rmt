@@ -14916,7 +14916,13 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
           if($att_value['rest_start']==$att_value['rest_end']){
             $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time);
           }else{
-            $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time)-time_diff($att_value['rest_start'],$att_value['rest_end']);
+            $t_time = tep_validate_time($work_start,$work_end,$login_time,$logout_time);
+            $t_rest_time = time_diff($att_value['rest_start'],$att_value['rest_end']);
+            if($t_time > $t_rest_time){
+              $validate_time += $t_time-$t_rest_time; 
+            }else{
+              $validate_time += 0
+            }
           }
         }
       //如果排班是时间数
