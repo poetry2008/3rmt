@@ -14682,7 +14682,7 @@ function tep_get_sec_by_str($str){
     参数: $parameters_array 参数及对应值数组 
     返回值: 计算结果 
  ------------------------------------ */
-function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$parameters_array=array()){
+function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array()){
  
   //把数组中的参数替换为对应的值
   $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
@@ -14703,7 +14703,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
       $un_error = false;
     }
     $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
-      `contents`='".$has_param."'";
+      `contents`='".$has_param."' and group_id='".$group_id."'";
     $wage_query = tep_db_query($wage_sql);
     if($wage_row = tep_db_fetch_array($wage_query)){
       $un_error = false;
@@ -14713,12 +14713,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
     return 0;
   }
   //关于组设置的公式中的参数替换
-  if($groups_id == 0){
-    $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT);
-  }else{
+  
      
-    $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
-  }
+  $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
   while($wage_setting_array = tep_db_fetch_array($wage_setting_query)){
 
     //if(in_array($wage_setting_array['contents'],$parameters_value_array)){
@@ -14857,7 +14854,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
 
   if(!empty($parameters_value_temp[0])){
 
-    $wage_str = tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$parameters_array);
+    $wage_str = tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array);
   }
   
   //把公式中的 num％ 字符替换为 (num/100) 
