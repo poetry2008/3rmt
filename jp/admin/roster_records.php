@@ -959,7 +959,11 @@ while($j<=$day_num)
       $user_att_arr[] = $tmp_value;
     }
   }
-  if($j==23){
+  $sql_replace_att = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." WHERE 
+    `date` = '".$date."'";
+  $query_replace_att = tep_db_query($sql_replace_att);
+  while($row_replace_res = tep_db_fetch_array($query_replace_att)){
+    $all_replace_att[] = $row_replace_res;
   }
   if(!empty($show_att_user_list)){
     asort($show_att_user_list);
@@ -1023,6 +1027,12 @@ while($j<=$day_num)
             }
             if(validate_two_time($att_info['work_start'],$att_info['work_end'],
                   $tmp_uai['work_start'],$tmp_uai['work_end'])&&$tmp_uai['set_time']==0&&$att_info['set_time']==0){
+              $show_user_flag = true;
+              break;
+            }
+          }
+          foreach($all_replace_att as $row_replace_att){
+            if(validate_two_time($att_info['work_start'],$att_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$att_info['set_time']==0){
               $show_user_flag = true;
               break;
             }
@@ -1120,7 +1130,19 @@ while($j<=$day_num)
   $show_att_div = true;
   $show_ulist_flag = false;
   foreach($user_att_arr as $uatt_arr){
+    $att_user_row = $uatt_arr;
+    $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
+    $show_user_flag = false;
     $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
+    foreach($all_replace_att as $row_replace_att){
+      if(validate_two_time($att_info['work_start'],$att_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$att_info['set_time']==0){
+        $show_user_flag = true;
+        break;
+      }
+    }
+    if($show_user_flag){
+      continue;
+    }
     if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&empty($user_replace)){
     if($last_att_id==0||$last_att_id!=$uatt_arr['attendance_detail_id']){
       $last_att_id = $uatt_arr['attendance_detail_id'];
@@ -1132,8 +1154,6 @@ while($j<=$day_num)
       echo "</td>";
       echo "</tr>";
     }
-      $att_user_row = $uatt_arr;
-      $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
       if($show_att_div){
         $show_ulist_flag = true;
       echo "<tr>";
@@ -1215,10 +1235,7 @@ if($show_ulist_flag){
   //不在排班组的请假
     echo "<tr><td style='font-size:14px; border-width:0px;'>";
     echo '<div>';
-    $sql_replace_att = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." WHERE 
-      `date` = '".$date."'";
-    $query_replace_att = tep_db_query($sql_replace_att);
-    while($row_replace_att = tep_db_fetch_array($query_replace_att)){
+    foreach($all_replace_att as $row_replace_att){
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
