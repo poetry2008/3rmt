@@ -14042,6 +14042,10 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
         $all_att_arr[$all_att_row['id']] = $all_att_row;
     }
   }
+  $year = substr($date,0,4); 
+  $month = substr($date,4,2); 
+  $day = substr($date,6,2); 
+  $time_str = mktime(23,59,59,$month,$day,$year);
   $date_info = tep_date_info($date);
   $attendance_dd_arr = array();
   if($add_id == 0){
@@ -14064,7 +14068,7 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." and  is_user=0 order by id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and UNIX_TIMESTAMP(add_time) < ".$time_str." and  is_user=0 order by id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
@@ -14336,6 +14340,10 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_i
         $all_att_arr[$all_att_row['id']] = $all_att_row;
     }
   }
+  $year = substr($date,0,4); 
+  $month = substr($date,4,2); 
+  $day = substr($date,6,2); 
+  $time_str = mktime(23,59,59,$month,$day,$year);
   $date_info = tep_date_info($date);
   $attendance_dd_arr = array();
   if($add_id == 0){
@@ -14361,7 +14369,7 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_i
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str." and is_user='1' order by user_id asc,id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and UNIX_TIMESTAMP(add_time) < ".$time_str." and is_user='1' order by user_id asc,id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
@@ -14415,6 +14423,10 @@ function tep_is_attenandced_date($user){
   获得用户当前日期需要出勤的所有排班
 ***************************/
 function tep_all_attenande_by_uid($user,$date,$show_group=0){
+  $year = substr($date,0,4); 
+  $month = substr($date,4,2); 
+  $day = substr($date,6,2); 
+  $time_str = mktime(23,59,59,$month,$day,$year);
   $date_info = tep_date_info($date);
   $all_sql = "select atd.id as aid,atd.*,ad.* from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
     ". TABLE_ATTENDANCE_DETAIL ." ad on atd.attendance_detail_id = ad.id  
@@ -14434,7 +14446,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       $all_sql .= " false )";
     }
   }
-  $all_sql .= ") order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
+  $all_sql .= ")  and UNIX_TIMESTAMP(atd.add_time) < ".$time_str." order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
   $query = tep_db_query($all_sql);
   $attendance_dd_arr_tmp = array();
   while($row = tep_db_fetch_array($query)){
@@ -14475,8 +14487,10 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
      date='".$date."' and user='".$user."' and  allow_status = '1'";
   $replace_query = tep_db_query($replace_sql);
   $replace_aid = array();
+  $replace_null_time = array();
   while($replace_row = tep_db_fetch_array($replace_query)){
     $replace_arr[] = $replace_row;
+    $replace_null_time[] = $replace_row;
     $replace_aid[] = $replace_row['attendance_detail_id'];
   }
   $res_arr = array();
@@ -14499,6 +14513,17 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
   }
   if(count($attendance_dd_arr_tmp)>1){
     foreach($diff_arr['time'] as $k => $v){
+      $continue = false;
+      if($v['set_time'] == 0){
+        foreach($replace_null_time as $replace_no_aid){
+          if(validate_two_time($v['work_start'],$v['work_end'],$replace_no_aid['leave_start'],$replace_no_aid['leave_end'])){
+            $continue = true;
+          }
+        }
+      }
+      if($continue){
+        continue;
+      }
       if(!in_array($v['attendance_detail_id'],$replace_aid)){
         $last_key = str_replace(':','',$v['work_start']);
         $row_arr[$last_key] = array(
@@ -14517,20 +14542,30 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
     }
   }else{
     if(!empty($attendance_dd_arr_tmp)){
-      if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
-        $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
-        $row_arr[$last_key] = array(
-          'aid' => $attendance_dd_arr_tmp[0]['aid'],
-          'type' => '',
-          'attendance_detail_id' => $attendance_dd_arr_tmp[0]['attendance_detail_id'],
-          'work_start' => $attendance_dd_arr_tmp[0]['work_start'],
-          'work_end' => $attendance_dd_arr_tmp[0]['work_end'],
-          'rest_start' => $attendance_dd_arr_tmp[0]['rest_start'],
-          'rest_end' => $attendance_dd_arr_tmp[0]['rest_end'],
-          'set_time' => $attendance_dd_arr_tmp[0]['set_time'],
-          'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
-          'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours']
-          );
+      $continue = false;
+      if($attendance_dd_arr_tmp[0]['set_time'] == 0){
+        foreach($replace_null_time as $replace_no_aid){
+          if(validate_two_time($attendance_dd_arr_tmp[0]['work_start'],$attendance_dd_arr_tmp[0]['work_end'],$replace_no_aid['leave_start'],$replace_no_aid['leave_end'])){
+            $continue = true;
+          }
+        }
+      }
+      if(!$continue){
+        if(!in_array($attendance_dd_arr_tmp[0]['attendance_detail_id'],$replace_aid)){
+          $last_key = str_replace(':','',$attendance_dd_arr_tmp[0]['work_start']);
+          $row_arr[$last_key] = array(
+            'aid' => $attendance_dd_arr_tmp[0]['aid'],
+            'type' => '',
+            'attendance_detail_id' => $attendance_dd_arr_tmp[0]['attendance_detail_id'],
+            'work_start' => $attendance_dd_arr_tmp[0]['work_start'],
+            'work_end' => $attendance_dd_arr_tmp[0]['work_end'],
+            'rest_start' => $attendance_dd_arr_tmp[0]['rest_start'],
+            'rest_end' => $attendance_dd_arr_tmp[0]['rest_end'],
+            'set_time' => $attendance_dd_arr_tmp[0]['set_time'],
+            'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
+            'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours']
+            );
+        }
       }
     }
   }
@@ -14877,7 +14912,7 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
         $work_start = $att_value['work_start'];
         $work_end = $att_value['work_end'];
 
-        if($login_time != '' && $logout_time != ''){
+        if($login_time != '' && $logout_time != ''&&$login_time!=$logout_time){
           if($att_value['rest_start']==$att_value['rest_end']){
             $validate_time += tep_validate_time($work_start,$work_end,$login_time,$logout_time);
           }else{
