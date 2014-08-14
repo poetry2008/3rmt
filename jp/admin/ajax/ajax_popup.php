@@ -11144,9 +11144,6 @@ if($row_array['set_time']==0){
          $att_list_arr[$att_value['replace_attendance_detail_id']]['real_time'] = 0;
        }
      }else{
-       if(!tep_is_show_att($att_value['aid'],$_date)){
-         continue;
-       }
        if(!isset($att_list_arr[$att_value['attendance_detail_id']])){
          $att_list_arr[$att_value['attendance_detail_id']]['time'] = 0;
          $att_list_arr[$att_value['attendance_detail_id']]['real_time'] = 0;
