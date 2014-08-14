@@ -14695,7 +14695,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
   $parameters_value_array = $parameters_value_temp[0];
   $un_error = true;
   foreach($parameters_value_array as $has_param){
-    $att_param = substr('${','',substr('}','',$has_param)); 
+    $att_param = str_replace('${','',str_replace('}','',$has_param)); 
     $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
       param_b='".$att_param."' OR param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
@@ -14783,7 +14783,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
 
   //关于打卡出勤的相关参数及对应的值
   $attendance_replace_array = array();
-  $attendance_detail_query = tep_db_query("select id,param_a,param_b,set_time,work_hours,rest_hours,work_start,work_end from ".TABLE_ATTENDANCE_DETAIL); 
+  $attendance_detail_query = tep_db_query("select id,param_a,param_b,set_time,work_hours,rest_hours,work_start,work_end,rest_start,rest_end from ".TABLE_ATTENDANCE_DETAIL); 
   while($attendance_detail_array = tep_db_fetch_array($attendance_detail_query)){
 
     //要求员工的出勤时间
@@ -14795,6 +14795,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
         $work_hours = 0;
         $work_start_num = str_replace(':','',$attendance_detail_array['work_start']);
         $work_end_num = str_replace(':','',$attendance_detail_array['work_end']);
+        $work_rest = time_diff($attendance_detail_array['rest_start'],$attendance_detail_array['rest_end']);
         if($work_start_num < $work_end_num){
 
           $work_temp = explode(':',$attendance_detail_array['work_end']);
@@ -14810,6 +14811,11 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
           $work_start = $work_temp[0]+$work_temp[1]/60;
           $work_hours = $work_end - $work_start; 
         }
+        if($work_hours > $work_rest){
+          $work_hours = $work_hours - $work_rest;
+        }else{
+          $work_hours = 0;
+        }
         $work_hours_num = 0;
 
         $wage_start_date = strtotime($start_end_time_array['start_date']);
@@ -14819,8 +14825,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
 
           foreach($att_user_array as $att_user_value){
 
-            if($att_user_value['attendance_detail_id'] == $attendance_detail_array['id']){
-
+            if(($att_user_value['attendance_detail_id'] == $attendance_detail_array['id']&&$att_user_value['replace']==null) ||($att_user_value['replace_attendance_detail_id'] == $attendance_detail_array['id']&&$att_user_value['replace']=='replace')){
               $work_hours_num++; 
             }
           }
@@ -14838,7 +14843,13 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$groups_id,$param
       $end_time = strtotime($start_end_time_array['end_date']); 
 
       while($start_time <= $end_time){
-        $attendance_num += tep_attendance_record_time($user_id,date('Ymd',$start_time));
+        $att_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$start_time));
+        foreach($att_user_array as $att_user_value){
+          if(($att_user_value['attendance_detail_id'] == $attendance_detail_array['id']&&$att_user_value['replace']==null) ||($att_user_value['replace_attendance_detail_id'] == $attendance_detail_array['id']&&$att_user_value['replace']=='replace')){
+            $t = tep_attendance_record_time($user_id,date('Ymd',$start_time),$att_user_array,$attendance_detail_array['id']);
+            $attendance_num += $t;
+          }
+        }
         $start_time += 3600*24; 
       }
 
