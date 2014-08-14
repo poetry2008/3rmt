@@ -67,6 +67,8 @@
         $user_wage_end_date = tep_db_prepare_input($_POST['user_wage_end_date']);
         $wage_contents = tep_db_prepare_input($_POST['wage_contents']);
 
+        $user_info = tep_get_user_info($ocertify->auth_user);
+        $user=$user_info['name'];
         if($user_wage_list != ''){
           $user_wage_list_array = array();
           $user_wage_query = tep_db_query("select id,wage_id from ".TABLE_USER_WAGE_INFO." where id in (".$user_wage_list.")"); 
@@ -78,13 +80,13 @@
 
           foreach($user_wage as $user_wage_key=>$user_wage_value){
 
-            tep_db_query("update ".TABLE_USER_WAGE_INFO." set wage_value='".$user_wage_value."',start_date='".$user_wage_start_date[$user_wage_key]."',end_date='".$user_wage_end_date[$user_wage_key]."',contents='".$wage_contents."',update_date=now() where id='".$user_wage_list_array[$user_wage_key]."'");
+            tep_db_query("update ".TABLE_USER_WAGE_INFO." set wage_value='".$user_wage_value."',start_date='".$user_wage_start_date[$user_wage_key]."',end_date='".$user_wage_end_date[$user_wage_key]."',contents='".$wage_contents."',update_user='".$user."',update_date=now() where id='".$user_wage_list_array[$user_wage_key]."'");
           }
         }else{
          
           foreach($user_wage as $user_wage_key=>$user_wage_value){
 
-            tep_db_query("insert into ".TABLE_USER_WAGE_INFO."(id,wage_id,user_id,wage_value,start_date,end_date,contents,update_date) values(NULL,".$user_wage_key.",'".$user_id."','".$user_wage_value."','".$user_wage_start_date[$user_wage_key]."','".$user_wage_end_date[$user_wage_key]."','".$wage_contents."',now())");
+            tep_db_query("insert into ".TABLE_USER_WAGE_INFO."(id,wage_id,user_id,wage_value,start_date,end_date,contents,create_user,create_date) values(NULL,".$user_wage_key.",'".$user_id."','".$user_wage_value."','".$user_wage_start_date[$user_wage_key]."','".$user_wage_end_date[$user_wage_key]."','".$wage_contents."','".$user."',now())");
           } 
         }
         tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
@@ -566,7 +568,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                   $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:50%;">' 
+                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:80%;">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
