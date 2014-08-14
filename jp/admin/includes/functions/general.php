@@ -14921,7 +14921,7 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
             if($t_time > $t_rest_time){
               $validate_time += $t_time-$t_rest_time; 
             }else{
-              $validate_time += 0
+              $validate_time += 0;
             }
           }
         }
