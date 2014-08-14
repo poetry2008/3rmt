@@ -1136,7 +1136,7 @@ while($j<=$day_num)
     $show_user_flag = false;
     $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
     foreach($all_replace_att as $row_replace_att){
-      if($row_replace_att['user_id'] != $uatt_arr['user_id']){
+      if($row_replace_att['user'] != $uatt_arr['user_id']){
         continue;
       }
       if(validate_two_time($att_info['work_start'],$att_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$att_info['set_time']==0){
