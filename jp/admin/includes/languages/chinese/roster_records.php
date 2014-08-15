@@ -81,6 +81,6 @@ define('SHOW_ERROR_ATT_STATUS','迟到/早退');
 define('SHOW_NULL_ATT_STATUS','不显示');
 define('TEXT_ATT_SET_VALUE','打卡时间设定值小计');
 define('TEXT_ATT_ACTUAL_VALUE','打卡时间实际值小计');
-define('TEXT_REMIND_CHOICE_SELECT','请选择');
+define('TEXT_REMIND_CHOICE_SELECT','*必须');
 ?>
 

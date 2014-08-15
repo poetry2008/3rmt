@@ -312,12 +312,7 @@ function save_submit(c_permission){
   var group_select_add = $("form select[name='group[]']");
   if(group_select_add.length>0){
     group_select_add.each(function(i){
-		if($(this).val()==''){
-			$(this).next('font').show();
 		  error_default=1;	
-		}else{
-		   $(this).next('font').hide();
-		}
            group_id += $(this).val() + '||';
     })
   }
@@ -333,12 +328,7 @@ function save_submit(c_permission){
   var user_select_add = $("form select[name='user[]']");
   if(user_select_add.length>0){
      user_select_add.each(function(i){
-		if($(this).val()==''){
-			$(this).next('font').show();
 		  error_default=1;	
-		}else{
-			$(this).next('font').hide();
-		}
           group_id += $(this).val() + '||';
      })
   }
@@ -352,12 +342,7 @@ function save_submit(c_permission){
   //后加排版
   var att_select_add = $("form select[name='attendance_id[]']");
   att_select_add.each(function(i){
-		if($(this).val()==''){
-			$(this).next('font').show();
 		    error_default=1;	
-		}else{
-            $(this).next('font').hide();
-		}
       att_id += $(this).val() + '||';
   })
   //默认值没有进行更改
@@ -394,17 +379,8 @@ function save_submit(c_permission){
    var e_m_l =$("#leave_end_min_l").val();
    var e_m_r =$("#leave_end_min_r").val();
    var end_time = e_hour+':'+e_m_l+e_m_r;
-if(s_hour==0 && s_m_l==0 && s_m_r==0){
-  $("#leave_start_error").show();
+if(s_hour==0 && s_m_l==0 && s_m_r==0 && e_hour==0 && e_m_l==0 && e_m_r==0){
   return false;
-}else{
-  $("#leave_start_error").hide();
-}
-if(e_hour==0 && e_m_l==0 && e_m_r==0){
-  $("#leave_end_error").show();
-  return false;
-}else{
-  $("#leave_end_error").hide();
 }
    var tep_str = $("#use_get_userid").text();
    tep_arr = tep_str.split("||");

@@ -9768,7 +9768,7 @@ echo  $return_res;
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
   }
-  $adl_select .= '</select>&nbsp;&nbsp;<font color="red" style="display:none;">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $adl_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   $group_select = '<select name="group[]" '.$group_disabled.'>';
   $hidden_group_select = '<select name="group[]" >';
@@ -9800,7 +9800,7 @@ echo  $return_res;
       $group_select .= $default_hidden;
     }
   }
-  $hidden_group_select .= '</select>&nbsp;&nbsp;<font style="display:none;" color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $hidden_group_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   $type_select = '<select name="type[]" '.$show_only.' onchange="edit_space_nums(this,this.value);">';
   foreach($type_list as $t_key => $t_value){
@@ -10288,7 +10288,7 @@ echo  $return_res;
     $selected = $leave_start_min_right!=$i ?'':' selected ';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font style="display:none" color="red" id="leave_start_error">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
 
   $leave_end_array = explode(':',$replace_info_res['leave_end']);
   $leave_end_min_left= substr($leave_end_array[1],0,1);
@@ -10313,7 +10313,7 @@ echo  $return_res;
     $selected = $leave_end_min_right!=$i ?'':' selected ';
     $leave_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font style="display:none;" color="red" id="leave_end_error">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $leave_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_end_error">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //头部内容
   $heading = array();
@@ -10396,7 +10396,7 @@ echo  $return_res;
       $all_user_select .= '</select>';
     } 
     $as_info_row[]['text'] = array(
-      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+      array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $all_user_select)
     );
   }else{
@@ -10404,15 +10404,15 @@ echo  $return_res;
   }
 
   $as_info_row[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER), 
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER), 
     array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $att_select)
   );
   $as_info_row[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
     array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl">'.$user_adl.'</div>')
   );
   $as_info_row[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_REPLACE_ADL), 
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_REPLACE_ADL), 
     array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $replace_select)
   );
 
@@ -10455,7 +10455,7 @@ echo  $return_res;
       $allow_user_button = '<input type="button" value="'.TEXT_DEL_ADL.'" '.$disabled.' onclick="del_allow_user(this)">';
     }
     $as_info_row[]['text'] = array(
-      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => $allow_user_text), 
+      array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => $allow_user_text), 
       array('align' => 'left', 'params' => 'nowrap="nowrap" id="users_groups"', 'text' => $allow_user_select),
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $allow_user_button)
     );
@@ -10463,21 +10463,18 @@ echo  $return_res;
 
   }
   $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
-    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ALLOW_STATUS), 
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ALLOW_STATUS), 
     array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $status_str)
   ));
 
   $as_info_row[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ALLOW_START), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $leave_start)
-  );
-  $as_info_row[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ALLOW_END), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $leave_end)
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ALLOW_START), 
+    array('align' => 'left', 'params' => 'width="195" nowrap="nowrap"', 'text' => TEXT_ALLOW_START.$leave_start), 
+    array('align' => 'left', 'params' => 'width="195" nowrap="nowrap"', 'text' => TEXT_ALLOW_END.$leave_end),
   );
 
   $as_info_row[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_TEXT_INFO), 
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_TEXT_INFO), 
     array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => tep_draw_textarea_field('text_info', 'hard', '40', '5', $replace_info_res['text_info'], 'onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.$disabled))
   );
 
@@ -10722,7 +10719,7 @@ if($row_array['set_time']==0){
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
   }
-  $adl_select .= '</select>&nbsp;&nbsp;<font color="red" style="display:none;">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $adl_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //默认的用户显示
   $user_select = '<select name="user[]" '.$disabled.'>';
@@ -10748,7 +10745,7 @@ if($row_array['set_time']==0){
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
   $user_select .= '</select>';
-  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red" style="display:none;">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
@@ -11209,7 +11206,7 @@ if($row_array['set_time']==0){
    $a_info = tep_get_attendance_by_id($a_key);
    $group_content_row_wage = array();
    $group_content_row_wage = array(
-          array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['short_language']), 
+          array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['title']), 
           array('align' => 'left','params' => 'width="85%"', 'text' => TEXT_ATT_SET_VALUE .'&nbsp;&nbsp;'. $a_value['time'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. TEXT_ATT_ACTUAL_VALUE .'&nbsp;&nbsp;'. $a_value['real_time']), 
        );
    $group_content_table[] = array('text'=>$group_content_row_wage);
