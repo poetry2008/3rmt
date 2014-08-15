@@ -10289,7 +10289,7 @@ echo  $return_res;
     $selected = $leave_start_min_right!=$i ?'':' selected ';
     $leave_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
   }
-  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="leave_start_error"></font>';
+  $leave_start .= '</select>&nbsp;'.MINUTE_TEXT.'';
 
   $leave_end_array = explode(':',$replace_info_res['leave_end']);
   $leave_end_min_left= substr($leave_end_array[1],0,1);
@@ -10470,8 +10470,7 @@ echo  $return_res;
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ALLOW_START), 
-    array('align' => 'left', 'params' => 'width="195" nowrap="nowrap"', 'text' => TEXT_ALLOW_START.$leave_start), 
-    array('align' => 'left', 'params' => 'width="195" nowrap="nowrap"', 'text' => TEXT_ALLOW_END.$leave_end),
+    array('align' => 'left', 'params' => 'width="195" nowrap="nowrap"', 'text' => $leave_start.'&nbsp;～&nbsp;'.$leave_end), 
   );
 
   $as_info_row[]['text'] = array(

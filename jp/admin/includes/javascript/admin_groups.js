@@ -349,8 +349,8 @@ function date_select(ele,end_str,start_str,date_str){
   if(diff_date_array.length > 0){
  
        var select_str = '<tr id="tr_date_'+tr_date_id+'"><td width="20%"></td><td>';
-       var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" disabled>';
-       var select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');">'; 
+       var select_end_str = end_str+'<select name="end_date[]" onchange="date_select(this,\''+end_str+'\',\''+start_str+'\',\''+date_str+'\');" >';
+       var select_start_str = '&nbsp;&nbsp;'+start_str+'<select name="start_date[]" onchange="start_date_select(this,'+tr_date_id+');" disabled>'; 
 
       for(var p=0;p<diff_date_array.length;p++){
   
