@@ -1,13 +1,11 @@
 <?php
 //japanese languages
 define('TEXT_HEAD_TITLE','給料計算');
-define('TEXT_SHOW_CONTENTS_TITLE','表示内容');
+define('TEXT_SHOW_CONTENTS_TITLE','日付');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_JPY','円');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_RMB','人民元');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_USD','ドル');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_VND','ドン');
-define('TEXT_PAYROLLS_DATE_SELECT','日付から選ぶ');
-define('TEXT_PAYROLLS_CONTENTS_SELECT','保存した内容から選ぶ');
 define('TEXT_GROUP_SELECT', 'グループ');
 define('TEXT_GROUP_USER_LIST', 'スタッフ');
 define('TEXT_ALL_GROUP', '全て');
