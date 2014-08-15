@@ -457,28 +457,16 @@ if(tep_db_num_rows($user_wage_query) > 0){
 	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
         $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_NAME.'</a>');
         //获取组对应的工资项目
-        $groups_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
-        $groups_users_id = array();
         $group_id = '';
-        if($groups_id != 0){
-          $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' order by id");
-          while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
-            $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
-            $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id']);
-          }
-          tep_db_free_result($groups_wage_query);
-          $group_id = $groups_id;
-        }else{
-          $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." group by title order by id");
-          while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
-            $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
-            $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id']);
-            if($group_id == ''){
-              $group_id = $groups_wage_array['group_id'];
-            }
-          }
-          tep_db_free_result($groups_wage_query);
+        $group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
+        $groups_users_id = array();
+        $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."' order by id");
+        while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
+          $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
+          $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id']);
         }
+        tep_db_free_result($groups_wage_query);
+        
 	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:8%;"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
 	$wage_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $wage_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
@@ -582,7 +570,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                     
                   }
 
-                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,$groups_id);
+                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
                   $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
@@ -592,7 +580,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
                 $user_project_id_array = array_filter($user_project_id_array);
 		$user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<a href="javascript:void(0)" onclick="show_user_wage(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$groups_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a>'
+                	'text'   => '<a href="javascript:void(0)" onclick="show_user_wage(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$group_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a>'
         	);
 		$wage_table_row[] = array('params' => $user_params, 'text' => $user_info);
         }

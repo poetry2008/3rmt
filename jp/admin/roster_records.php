@@ -962,6 +962,7 @@ while($j<=$day_num)
   $sql_replace_att = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." WHERE 
     `date` = '".$date."'";
   $query_replace_att = tep_db_query($sql_replace_att);
+  $all_replace_att = array();
   while($row_replace_res = tep_db_fetch_array($query_replace_att)){
     $all_replace_att[] = $row_replace_res;
   }
@@ -1135,6 +1136,9 @@ while($j<=$day_num)
     $show_user_flag = false;
     $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
     foreach($all_replace_att as $row_replace_att){
+      if($row_replace_att['user'] != $uatt_arr['user_id']){
+        continue;
+      }
       if(validate_two_time($att_info['work_start'],$att_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$att_info['set_time']==0){
         $show_user_flag = true;
         break;
