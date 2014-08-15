@@ -15298,6 +15298,17 @@ function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
       $res_arr['other'] = $other;
     }
   }
+  if(preg_match('/round\((.*),(\d+)\)/is',$str,$arr)){
+    $fun_arr[] = 'round';
+    $point = $arr[2]; 
+    if(preg_match('/max|min/is',$arr[1],$arr_sub)){
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$other,$point); 
+    }else{
+      $res_arr['str'] = $arr[1];
+      $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
+    }
+  }
   if(preg_match('/^max\((.*)\)$/is',$str,$arr)){
     $fun_arr[] = 'max';
     if(preg_match('/min|round/is',$arr[1],$arr_sub)){
