@@ -751,7 +751,13 @@ function edit_space_nums(ele,val) {
    }
 
 }
-function add_att_rows(ele){
+function add_att_rows(ele,check_val){
   $(ele).parent().parent().before($('#add_source tbody').html());
-  $(ele).remove();
+  if(check_val!=''){
+    var tep_data = $("#tep_data").html();
+    $(ele).parent().html(tep_data);
+  }  
+  if(check_val==''){
+    $(ele).remove();
+  }  
 }
