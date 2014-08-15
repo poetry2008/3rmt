@@ -15213,7 +15213,7 @@ function tep_start_end_date($group_id,$wage_date){
 }
 
 
-function tep_resolve_str($str,$fun_arr=array(),$point=2){
+function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
   $error = false;
   if(preg_match_all('/\{([^\}]*)\}/',$str,$arr)){
     $tmp_att_str = $arr[1];
@@ -15235,32 +15235,36 @@ function tep_resolve_str($str,$fun_arr=array(),$point=2){
     return 0;
   }
   $res_arr =  array();
-  if(preg_match('/^round\((.*),(\d+)\)/is',$str,$arr)){
+  if(preg_match('/(.*)\(round\((.*),(\d+)\)\)(.*)/is',$str,$arr)){
     $fun_arr[] = 'round';
-    $point = $arr[2]; 
-    if(preg_match('/max|min/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
+    $point = $arr[3]; 
+    $other = array($arr[1],$arr[4]);
+    if(preg_match('/max|min/is',$arr[2],$arr_sub)){
+      $res_arr = tep_resolve_str($arr[2],$fun_arr,$other,$point); 
     }else{
-      $res_arr['str'] = $arr[1];
+      $res_arr['str'] = $arr[2];
       $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
     }
   }
   if(preg_match('/^max\((.*)\)$/is',$str,$arr)){
     $fun_arr[] = 'max';
     if(preg_match('/min|round/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$other,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
     }
   }
   if(preg_match('/^min\((.*)\)$/is',$str,$arr)){
     $fun_arr[] = 'min';
     if(preg_match('/max|round/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$other,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
     }
   }
   $res_arr['point'] = $point;
@@ -15271,6 +15275,7 @@ function tep_run_str($str){
   $info_arr = tep_resolve_str($str);
   $str_run = $info_arr['str'];
   $fun_arr = $info_arr['fun'];
+  $other = $info_arr['other'];
   $point = $info_arr['point'];
   $im_arr = array();
   $ex_arr = array();
@@ -15314,5 +15319,7 @@ function tep_run_str($str){
       $int_res_arr = round($int_res_arr,$point);
     }
   }
+  $res_str = $other[0].$int_res_arr.$other[1];
+  $int_res_arr = tep_operations($res_str);
   return $int_res_arr;
 }
