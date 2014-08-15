@@ -45,32 +45,24 @@
         //获取选中的组
         $show_group = tep_db_prepare_input($_GET['show_group']);
         //获取选中的员工
-        $show_group_user_list = tep_db_prepare_input($_GET['show_group_user_list']);
-        //选择查询模式
-        $select_mode = tep_db_prepare_input($_GET['select_mode']);
+        $show_group_user_list = tep_db_prepare_input($_GET['show_group_user_list']); 
         //选择的日期
 
-        if($select_mode == 'date'){
 
-          $selected_date = tep_db_prepare_input($_GET['select_date']);
-        }else{
+        $selected_date = tep_db_prepare_input($_GET['select_date']);
         
-          $selected_date = tep_db_prepare_input($_GET['old_wage_date']);
-        }
         $show_user_array = array();
         if(USER_WAGE_SETTING != ''){
 
           $show_user_array = unserialize(USER_WAGE_SETTING);  
           $show_user_array[$ocertify->auth_user]['group'] = $show_group;
           $show_user_array[$ocertify->auth_user]['user'] = implode(',',$show_group_user_list);
-          $show_user_array[$ocertify->auth_user]['type'] = $select_mode;
           $show_user_array[$ocertify->auth_user]['date'] = $selected_date;
         }else{
 
         
           $show_user_array[$ocertify->auth_user] = array('group'=>$show_group,
                                                        'user'=>implode(',',$show_group_user_list),
-                                                       'type'=>$select_mode, 
                                                        'date'=>$selected_date
                                                      );
         }
@@ -259,25 +251,20 @@ color:#0066CC;
 
         $user_wage_array = unserialize(USER_WAGE_SETTING);
         if(isset($user_wage_array[$ocertify->auth_user])){
-          $show_select_type = $user_wage_array[$ocertify->auth_user]['type'];
           $show_select_date = $user_wage_array[$ocertify->auth_user]['date'];
         }
       }
 
-      if($show_select_type != 'date'){
+      
+      $show_selected_date = $show_select_date;
 
-        $show_selected_date = date('Y-m-d',time());
-      }else{
-        $show_selected_date = $show_select_date;
-      }
       $default_year = date('Y',strtotime($show_selected_date));
       $default_month = date('m',strtotime($show_selected_date));
       $default_day = date('d',strtotime($show_selected_date));
       ?>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr><td width="90"><input type="hidden" name="action" value="update_show_user">
-          <input type="radio" name="select_mode" id="select_mode_date" value="date"<?php echo $_GET['select_mode'] != 'contents' ? ' checked': '';?> style="padding-left:0;margin-left:0;"><label for="select_mode_date"><?php echo TEXT_PAYROLLS_DATE_SELECT;?></label>
-          </td><td width="160">
+          <tr> 
+          <td width="160"><input type="hidden" name="action" value="update_show_user">
     <select id="fetch_year" onchange="change_fetch_date();">
     <?php
       $default_fetch_year = isset($_GET['select_date']) && $_GET['select_date'] ? date('Y',strtotime($_GET['select_date'])) : $default_year; 
@@ -306,9 +293,9 @@ color:#0066CC;
       }
     ?>
     </select>
-          </td><td width="10"> 
+          </td><td align="left"> 
           <div class="yui3-skin-sam yui3-g">
-<input id="date_orders" type="hidden" name='select_date' size='15' value='<?php echo $_GET['select_mode'] == 'date' ? $_GET['select_date'] : $show_selected_date;?>'>
+<input id="date_orders" type="hidden" name='select_date' size='15' value='<?php echo isset($_GET['select_date']) ? $_GET['select_date'] : $show_selected_date;?>'>
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
                 </div>
@@ -318,26 +305,6 @@ color:#0066CC;
                 <div id="mycalendar"></div> 
                 </div>
           </div>
-          </td><td>
-          <input type="radio" name="select_mode" id="select_mode_contents" value="contents"<?php echo $_GET['select_mode'] == 'contents' || (!isset($_GET['select_mode']) && $show_select_type == 'contents') ? ' checked': '';?>><label for="select_mode_contents"><?php echo TEXT_PAYROLLS_CONTENTS_SELECT;?></label> 
-<?php
-//获取已存在数据的日期列表
-$user_wage_query = tep_db_query("select * from ".TABLE_USER_WAGE." group by save_date order by save_date");
-?>
-          <select name="old_wage_date">
-<?php
-if(tep_db_num_rows($user_wage_query) > 0){
-  while($user_wage_array = tep_db_fetch_array($user_wage_query)){
-?>
-  <option value="<?php echo date('Y-m-d',strtotime($user_wage_array['save_date']));?>"<?php echo (($_GET['select_mode'] == 'contents' && $_GET['old_wage_date'] == date('Y-m-d',strtotime($user_wage_array['save_date']))) || ($show_select_type == 'contents' && $show_select_date == date('Y-m-d',strtotime($user_wage_array['save_date']))) ? ' selected' : '');?>><?php echo date('Y-m-d',strtotime($user_wage_array['save_date']));?></option>
-<?php
-  }
-  tep_db_free_result($user_wage_query);
-}else{
-  echo '<option value="'.date('Y-m-d',time()).'">'.date('Y-m-d',time()).'</option>';
-}
-?>
-          </select>
           </td>
           </tr></table>
         </td>
@@ -456,7 +423,7 @@ if(tep_db_num_rows($user_wage_query) > 0){
         echo tep_show_site_filter(FILENAME_PAYROLLS,false,$site_list_array);
         //默认保存日期
         $default_date = $show_select_date;
-        $default_date = $_GET['select_mode'] == 'date' ? $_GET['select_date'] : ($_GET['select_mode'] == 'contents' ? $_GET['old_wage_date'] : $default_date);
+        $default_date = isset($_GET['select_date']) ? $_GET['select_date'] : $default_date;
 	$form_str = tep_draw_form('edit_users_wage', FILENAME_PAYROLLS,'action=edit_users_wage&page='.$_GET['page'], 'post', 'onSubmit="return false;"');
 	$wage_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
 	$notice_box = new notice_box('','',$wage_table_params);

@@ -1,12 +1,10 @@
 <?php
 define('TEXT_HEAD_TITLE','计算工资');
-define('TEXT_SHOW_CONTENTS_TITLE','显示内容');
+define('TEXT_SHOW_CONTENTS_TITLE','日期');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_JPY','日元');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_RMB','人民元');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_USD','美元');
 define('TEXT_PAYROLLS_CURRENCY_TYPE_VND','盾');
-define('TEXT_PAYROLLS_DATE_SELECT','从日期里选');
-define('TEXT_PAYROLLS_CONTENTS_SELECT','从保存的内容里选');
 define('TEXT_GROUP_SELECT', '组');
 define('TEXT_GROUP_USER_LIST', '员工');
 define('TEXT_ALL_GROUP', '全部');

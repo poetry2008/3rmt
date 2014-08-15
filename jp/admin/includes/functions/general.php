@@ -13998,7 +13998,7 @@ function tep_change_attendance_logout($uid) {
 function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
 
   if (!is_array($group_tree_array)) $group_tree_array = array();
-  $group_sql = "select name,parent_id,id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1'";
+  $group_sql = "select name,parent_id,id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1' and all_users_id!=''";
   $group_query = tep_db_query($group_sql);
   while ($groups = tep_db_fetch_array($group_query)){
     $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
@@ -15128,6 +15128,10 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
 ------------------------------------ */
 function tep_validate_time($work_start,$work_end,$login_time,$logout_time){
 
+  if($login_time == NULL || $login_time == '0000-00-00 00:00:00' || $logout_time == NULL || $logout_time == '0000-00-00 00:00:00'){
+
+    return 0;
+  }
   $work_start_num = str_replace(':','',$work_start);
   $work_end_num = str_replace(':','',$work_end);
   $login_time_num = date('Hi',strtotime($login_time));
@@ -15264,7 +15268,7 @@ function tep_start_end_date($group_id,$wage_date){
 }
 
 
-function tep_resolve_str($str,$fun_arr=array(),$point=2){
+function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
   $error = false;
   if(preg_match_all('/\{([^\}]*)\}/',$str,$arr)){
     $tmp_att_str = $arr[1];
@@ -15286,32 +15290,47 @@ function tep_resolve_str($str,$fun_arr=array(),$point=2){
     return 0;
   }
   $res_arr =  array();
-  if(preg_match('/^round\((.*),(\d+)\)/is',$str,$arr)){
+  if(preg_match('/(.*)\(round\((.*),(\d+)\)\)(.*)/is',$str,$arr)){
+    $fun_arr[] = 'round';
+    $point = $arr[3]; 
+    $other = array($arr[1],$arr[4]);
+    if(preg_match('/max|min/is',$arr[2],$arr_sub)){
+      $res_arr = tep_resolve_str($arr[2],$fun_arr,$other,$point); 
+    }else{
+      $res_arr['str'] = $arr[2];
+      $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
+    }
+  }
+  if(preg_match('/round\((.*),(\d+)\)/is',$str,$arr)){
     $fun_arr[] = 'round';
     $point = $arr[2]; 
     if(preg_match('/max|min/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$other,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
     }
   }
   if(preg_match('/^max\((.*)\)$/is',$str,$arr)){
     $fun_arr[] = 'max';
     if(preg_match('/min|round/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$other,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
     }
   }
   if(preg_match('/^min\((.*)\)$/is',$str,$arr)){
     $fun_arr[] = 'min';
     if(preg_match('/max|round/is',$arr[1],$arr_sub)){
-      $res_arr = tep_resolve_str($arr[1],$fun_arr,$point); 
+      $res_arr = tep_resolve_str($arr[1],$fun_arr,$other,$point); 
     }else{
       $res_arr['str'] = $arr[1];
       $res_arr['fun'] = $fun_arr;
+      $res_arr['other'] = $other;
     }
   }
   $res_arr['point'] = $point;
@@ -15322,6 +15341,7 @@ function tep_run_str($str){
   $info_arr = tep_resolve_str($str);
   $str_run = $info_arr['str'];
   $fun_arr = $info_arr['fun'];
+  $other = $info_arr['other'];
   $point = $info_arr['point'];
   $im_arr = array();
   $ex_arr = array();
@@ -15365,5 +15385,7 @@ function tep_run_str($str){
       $int_res_arr = round($int_res_arr,$point);
     }
   }
+  $res_str = $other[0].$int_res_arr.$other[1];
+  $int_res_arr = tep_operations($res_str);
   return $int_res_arr;
 }
