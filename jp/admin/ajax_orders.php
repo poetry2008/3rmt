@@ -3475,4 +3475,46 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         }else{
           echo $group_str.'|||'.$show_att_status;
         }
+}else if($_GET['action'] == 'payrolls_user_list'){
+        $show_group_id = $_POST['gid'];
+        $show_group_user = array();
+        $show_select_group_user = array();
+
+        if(USER_WAGE_SETTING != ''){
+
+          $select_user_list = unserialize(USER_WAGE_SETTING);
+          $show_select_group_user = explode(',',$select_user_list[$ocertify->auth_user]['select_user'][$show_group_id]);
+        }
+         
+        $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status='1'";
+        $user_query = tep_db_query($user_sql);
+        if($user_row = tep_db_fetch_array($user_query)){
+          $show_group_user = explode('|||',$user_row['all_users_id']);
+        }
+ 
+        $group_str = '';
+        foreach($show_group_user as $show_list_uid){
+          if($show_list_uid!=''){
+	     $tep_array= tep_get_user_info($show_list_uid);
+	     $uname_arr[] = $tep_array['name'];
+	  }
+        }
+        $group_user_list = array_combine($show_group_user,$uname_arr);
+	asort($group_user_list);
+
+        foreach($group_user_list as $key=>$val) {
+          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
+          if(in_array($key,$show_select_group_user)){
+	    $group_str .= ' checked="checked" ';
+          }
+   	  $group_str .= ' value="'.$key.'" >';
+	  $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
+	  $group_str .= '&nbsp;&nbsp;&nbsp;';
+	}	
+
+        if($group_str == ''){
+          echo '  ';
+        }else{
+          echo $group_str;
+        }
 }

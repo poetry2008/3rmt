@@ -244,8 +244,10 @@
         tep_db_query("update ".TABLE_GROUPS." set group_status='".$flag."' where id='".$group_id."'");
         //获取当前组包含的子组
         group_id_list($group_id,$group_status_id_list);
-        $group_status_str = implode(',',$group_status_id_list);
-        tep_db_query("update ".TABLE_GROUPS." set group_status='".$flag."' where id in (".$group_status_str.")");
+		if(!empty($group_status_id_list)){
+          $group_status_str = implode(',',$group_status_id_list);
+          tep_db_query("update ".TABLE_GROUPS." set group_status='".$flag."' where id in (".$group_status_str.")");
+		}
         tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$_GET['parent_id']));
         break;
       case 'delete_group':
@@ -295,6 +297,7 @@
   var must_select_group = '<?php echo TEXT_GROUP_EDIT_MUST_SELECT;?>';
   var ontime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'; 
   var ontime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
+  var js_news_self = '<?php echo $_SERVER['PHP_SELF'];?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_groups.js?v=<?php echo $back_rand_info?>"></script>
 <?php 

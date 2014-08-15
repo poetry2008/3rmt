@@ -14693,25 +14693,23 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   $parameters_replace_other_array = array();
   preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
   $parameters_value_array = $parameters_value_temp[0];
-  $un_error = true;
   foreach($parameters_value_array as $has_param){
     $att_param = str_replace('${','',str_replace('}','',$has_param)); 
     $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
       param_b='".$att_param."' OR param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
-    if($att_row = tep_db_fetch_array($att_query)){
-      $un_error = false;
-    }
+    
     $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
       `contents`='".$has_param."' and group_id='".$group_id."'";
     $wage_query = tep_db_query($wage_sql);
-    if($wage_row = tep_db_fetch_array($wage_query)){
-      $un_error = false;
+
+    if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
+      if(!in_array($has_param,array_keys($parameters_replace_basic_array))){
+        $parameters_replace_basic_array[$has_param] = 0;
+      }
     }
   }
-  if($un_error){
-    return 0;
-  }
+  
   //关于组设置的公式中的参数替换
   
      
@@ -14722,9 +14720,13 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
 
       if($wage_setting_array['project_id'] == 1){
         if($wage_setting_array['project_value'] != ''){
-          $parameters_replace_other_array[$wage_setting_array['contents']] = $wage_setting_array['project_value'];
+          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_other_array))){
+            $parameters_replace_other_array[$wage_setting_array['contents']] = $wage_setting_array['project_value'];
+          }
         }else{
-          $parameters_replace_other_array[$wage_setting_array['contents']] = 0;
+          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_other_array))){
+            $parameters_replace_other_array[$wage_setting_array['contents']] = 0;
+          }
         }
       }else{
         $user_wage_query = tep_db_query("select wage_value,start_date,end_date from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_setting_array['id']."' and user_id='".$user_id."'");
@@ -14790,9 +14792,27 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
       if($attendance_detail_array['set_time'] == 1){
         $tmp_set_time = $attendance_detail_array['work_hours'] - $attendance_detail_array['rest_hours'];
         if($tmp_set_time > 0){
-          $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $tmp_set_time;
+          $work_hours_num = 0;
+          $wage_start_date = strtotime($start_end_time_array['start_date']);
+          $wage_end_date = strtotime($start_end_time_array['end_date']);
+          while($wage_start_date <= $wage_end_date){
+            $att_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$wage_start_date));
+
+            foreach($att_user_array as $att_user_value){
+
+              if(($att_user_value['attendance_detail_id'] == $attendance_detail_array['id']&&$att_user_value['replace']==null) ||($att_user_value['replace_attendance_detail_id'] == $attendance_detail_array['id']&&$att_user_value['replace']=='replace')){
+                $work_hours_num++; 
+              }
+            }
+            $wage_start_date = $wage_start_date+3600*24;
+          }
+          if(!in_array('${'.$attendance_detail_array['param_a'].'}',array_keys($attendance_replace_array))){
+            $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $tmp_set_time*$work_hours_num;
+          }
         }else{
-          $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = 0;
+          if(!in_array('${'.$attendance_detail_array['param_a'].'}',array_keys($attendance_replace_array))){
+            $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = 0;
+          }
         }
       }else{
         $work_hours = 0;
@@ -14834,7 +14854,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
           }
           $wage_start_date = $wage_start_date+3600*24;
         }
-          $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours*$work_hours_num;
+          if(!in_array('${'.$attendance_detail_array['param_a'].'}',array_keys($attendance_replace_array))){
+            $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours*$work_hours_num;
+          }
         }
       }
     } 
@@ -14858,7 +14880,9 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
         $start_time += 3600*24; 
       }
 
-        $attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'] = $attendance_num; 
+        if(!in_array('${'.$attendance_detail_array['param_b'].'}',array_keys($attendance_replace_array))){
+          $attendance_replace_array['${'.$attendance_detail_array['param_b'].'}'] = $attendance_num; 
+        }
       }
     
     }
@@ -14866,6 +14890,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   }
   tep_db_free_result($attendance_detail_query);
 
+  $wage_str = preg_replace('/(\$\{\w+?\})/is','($1)',$wage_str);
   $wage_str = str_replace(array_keys($parameters_replace_other_array),array_values($parameters_replace_other_array),$wage_str);
   $wage_str = str_replace(array_keys($parameters_replace_basic_array),array_values($parameters_replace_basic_array),$wage_str);
   $wage_str = str_replace(array_keys($attendance_replace_array),array_values($attendance_replace_array),$wage_str);
@@ -15159,16 +15184,42 @@ function tep_start_end_date($group_id,$wage_date){
   $begin_end_date = explode('|||',$group_date_array['begin_end_date']);
   if($group_date_array['cycle_flag'] == 0){
     $current_day = date('d',strtotime($wage_date));
+    $date_i = 0;
     foreach($begin_end_date as $begin_end_date_value){
       $begin_end_date_temp = explode('-',$begin_end_date_value);
 
-      $start_date = $begin_end_date_temp[1];
-      $end_date = $begin_end_date_temp[0];
-
-      if($current_day >= $start_date && $current_day <= $end_date){
-
-        break; 
+      if($date_i == 0){
+        $start_date_num = $begin_end_date_temp[1];
       }
+      $end_date_num = $begin_end_date_temp[0]; 
+
+      $date_i++;
+    }
+
+    if($start_date_num < $end_date_num){
+      foreach($begin_end_date as $begin_end_date_value){
+        $begin_end_date_temp = explode('-',$begin_end_date_value);
+
+        $start_date = $begin_end_date_temp[1];
+        $end_date = $begin_end_date_temp[0];
+
+        if($current_day >= $start_date && $current_day <= $end_date){
+
+          break; 
+        }
+      }
+    }else{
+      foreach($begin_end_date as $begin_end_date_value){
+        $begin_end_date_temp = explode('-',$begin_end_date_value);
+
+        $start_date = $begin_end_date_temp[1];
+        $end_date = $begin_end_date_temp[0];
+
+        if($current_day >= $end_date){
+
+          break; 
+        }
+      } 
     }
 
     if($end_date <= date('d',strtotime($wage_date))){

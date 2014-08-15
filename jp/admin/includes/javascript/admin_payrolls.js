@@ -77,15 +77,13 @@ function hidden_info_box(){
 function change_user_list(ele){
   var gid = $(ele).val();
   $.ajax({
-    url: 'ajax_orders.php?action=roster_records_user_list',   
+    url: 'ajax_orders.php?action=payrolls_user_list',   
     type: 'POST',
     dataType: 'text',
     data: 'gid='+gid, 
     async: false,
     success: function(msg) {
       if(msg!=''){
-        msg = msg.replace(/(\|\|\|[0-9]+)|(\|\|\|)/g,'');
-        msg = msg.replace(/checked="checked"/g,'');
         $("#show_user_list").html(msg);
       }
     }
