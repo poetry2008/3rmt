@@ -13998,7 +13998,7 @@ function tep_change_attendance_logout($uid) {
 function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
 
   if (!is_array($group_tree_array)) $group_tree_array = array();
-  $group_sql = "select name,parent_id,id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1'";
+  $group_sql = "select name,parent_id,id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1' and all_users_id!=''";
   $group_query = tep_db_query($group_sql);
   while ($groups = tep_db_fetch_array($group_query)){
     $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
@@ -15128,6 +15128,10 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
 ------------------------------------ */
 function tep_validate_time($work_start,$work_end,$login_time,$logout_time){
 
+  if($login_time == NULL || $login_time == '0000-00-00 00:00:00' || $logout_time == NULL || $logout_time == '0000-00-00 00:00:00'){
+
+    return 0;
+  }
   $work_start_num = str_replace(':','',$work_start);
   $work_end_num = str_replace(':','',$work_end);
   $login_time_num = date('Hi',strtotime($login_time));
