@@ -61,13 +61,21 @@
         if(USER_WAGE_SETTING != ''){
 
           $show_user_array = unserialize(USER_WAGE_SETTING);  
-        }
+          $show_user_array[$ocertify->auth_user]['group'] = $show_group;
+          $show_user_array[$ocertify->auth_user]['user'] = implode(',',$show_group_user_list);
+          $show_user_array[$ocertify->auth_user]['type'] = $select_mode;
+          $show_user_array[$ocertify->auth_user]['date'] = $selected_date;
+        }else{
 
-        $show_user_array[$ocertify->auth_user] = array('group'=>$show_group,
+        
+          $show_user_array[$ocertify->auth_user] = array('group'=>$show_group,
                                                        'user'=>implode(',',$show_group_user_list),
                                                        'type'=>$select_mode, 
                                                        'date'=>$selected_date
-                                                        );
+                                                     );
+        }
+        $show_user_array[$ocertify->auth_user]['select_user'][$show_group] = implode(',',$show_group_user_list);
+
         $show_user_str = serialize($show_user_array);
         tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value='".$show_user_str."' where configuration_key='USER_WAGE_SETTING'");
         break;
