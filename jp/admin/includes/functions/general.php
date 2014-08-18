@@ -13997,8 +13997,9 @@ function tep_change_attendance_logout($uid) {
 **********************************/
 function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
 
+  global $ocertify;
   if (!is_array($group_tree_array)) $group_tree_array = array();
-  $group_sql = "select name,parent_id,id,all_users_id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1'";
+  $group_sql = "select name,parent_id,id,all_users_id,payrolls_admin from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1'";
   $group_query = tep_db_query($group_sql);
   while ($groups = tep_db_fetch_array($group_query)){
     $group_id_list = array();
@@ -14014,8 +14015,21 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
       }
       tep_db_free_result($child_user_query);
     }
-    if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == ''))){
-      $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+
+    //工资计算管理员
+    $payrolls_admin = $groups['payrolls_admin'];
+    $payrolls_admin_array = array();
+    if(trim($payrolls_admin) != ''){
+      $payrolls_admin_array = explode('|||',$payrolls_admin);
+    }
+    if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PAYROLLS && $ocertify->npermission != 31){
+      if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == '')) && in_array($ocertify->auth_user,$payrolls_admin_array)){
+        $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+      }
+    }else{
+      if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == ''))){
+        $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+      } 
     }
     $group_tree_array = tep_get_group_tree($groups['id'],$spacing.  '&nbsp;&nbsp;&nbsp;',$group_tree_array);
   }

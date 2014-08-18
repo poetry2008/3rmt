@@ -8933,6 +8933,61 @@ if($_GET['latest_messages_id']>0){
 
  $group_content_table[] = array('text'=>$group_manager);
 
+ //工资计算管理
+ $group_content_row_staff = array();
+ $group_content_row_staff[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_WAGE_ADMIN);
+ if($_POST['group_id'] < 0){
+ 	$users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+   	$all_users = '<span><select name="wage_admin[]">'; 
+   	$all_users .= '<option vlaue="">--</option>'; 
+   	while ($users_list_res = tep_db_fetch_array($users_list)) {
+     		$all_users .= '<option value="'.$users_list_res['userid'].'">'.$users_list_res['name'].'</option>'; 
+        }
+        tep_db_free_result($users_list);
+ 	$all_users .= '</select></span>';
+ 	$all_users .= '&nbsp;&nbsp;<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');">';
+ }else{
+        $payrolls_admin = $groups_array['payrolls_admin'];
+
+        if(trim($payrolls_admin) == ''){
+	  $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+   	  $all_users = '<span><select name="wage_admin[]">'; 
+   	  $all_users .= '<option vlaue="">--</option>'; 
+   	  while ($users_list_res = tep_db_fetch_array($users_list)) {
+     		$all_users .= '<option value="'.$users_list_res['userid'].'">'.$users_list_res['name'].'</option>'; 
+          }
+          tep_db_free_result($users_list);
+ 	  $all_users .= '</select></span>';
+          $all_users .= '&nbsp;&nbsp;<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');">';
+        }else{
+
+          $payrolls_admin_array = explode('|||',$payrolls_admin);
+          $admin_i = 0;
+          foreach($payrolls_admin_array as $payrolls_admin_value){
+            if($admin_i != 0){
+
+              $group_content_row_staff = array();
+              $group_content_row_staff[] = array('params'=>'width="20%"','text'=> '');
+            }
+            $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+   	    $all_users = '<span><select name="wage_admin[]">'; 
+   	    $all_users .= '<option vlaue="">--</option>'; 
+   	    while ($users_list_res = tep_db_fetch_array($users_list)) {
+     		$all_users .= '<option value="'.$users_list_res['userid'].'"'.($users_list_res['userid'] == $payrolls_admin_value ? ' selected' : '').'>'.$users_list_res['name'].'</option>'; 
+            }
+            tep_db_free_result($users_list);
+ 	    $all_users .= '</select></span>';
+            $all_users .= '&nbsp;&nbsp;'.($admin_i == 0 ? '<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');">' : '<input type="button" onclick="del_admin_list(this);" value="'.IMAGE_DELETE.'">'); 
+            if(count($payrolls_admin_array)-1 != $admin_i){
+              $group_content_row_staff[] = array('text' => $all_users);
+              $group_content_table[] = array('text'=>$group_content_row_staff);  
+            } 
+            $admin_i++;
+          }
+        }
+ }
+ $group_content_row_staff[] = array('text' => $all_users);
+ $group_content_table[] = array('text'=>$group_content_row_staff);
  //用户
  $group_content_row_staff = array();
  $group_content_row_staff[] = array('params'=>'width="20%"','text'=> GROUP_STAFF );
@@ -8954,7 +9009,7 @@ if($_GET['latest_messages_id']>0){
  	$all_users .= '</ul>';
  }
  $group_content_row_staff[] = array('text' => $all_users);
- $group_content_table[] = array('text'=>$group_content_row_staff);
+ $group_content_table[] = array('params'=>'id="add_end"','text'=>$group_content_row_staff); 
  //货币类型
  $group_content_row_currency = array();
  $group_content_row_currency[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_CURRENCY_TYPE);

@@ -3,6 +3,36 @@
   $Id$
 */
   require('includes/application_top.php');
+  //管理员可管理的组
+  $admin_group_list_array = array();
+  $admin_user_list_array = array();
+  $admin_group_query = tep_db_query("select id,all_users_id,payrolls_admin from ".TABLE_GROUPS);
+  while($admin_group_array = tep_db_fetch_array($admin_group_query)){
+
+   if(trim($admin_group_array['payrolls_admin']) != ''){
+
+     $payrolls_admin_array = explode('|||',$admin_group_array['payrolls_admin']);
+
+        if(in_array($ocertify->auth_user,$payrolls_admin_array)){
+
+            $admin_group_list_array[] = $admin_group_array['id']; 
+            if(trim($admin_group_array['all_users_id']) != ''){
+              $admin_user_list_temp = explode('|||',$admin_group_array['all_users_id']);
+              foreach($admin_user_list_temp as $admin_user_list_value){
+                $admin_user_list_array[] = $admin_user_list_value; 
+              }
+            }
+        }
+    }
+  }
+  tep_db_free_result($admin_group_query);
+  $admin_user_list_array = array_unique($admin_user_list_array);
+
+  if(empty($admin_group_list_array) && $ocertify->npermission != 31){
+
+    one_time_pwd_forward401($page_name, (!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:tep_href_link(FILENAME_DEFAULT)), $one_time_arr);
+  }
+
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){
@@ -341,6 +371,11 @@ color:#0066CC;
 
         //默认选中的组
         $show_group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
+        
+        if(!in_array($show_group_id,$admin_group_list_array) && $ocertify->npermission != 31){
+
+          $show_group_id = 0;
+        }
 
         $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."'";
         $user_query = tep_db_query($user_sql);
@@ -458,6 +493,17 @@ color:#0066CC;
 	
         $show_group_user_list = isset($_GET['show_group_user_list']) && $_GET['show_group_user_list'] != '' ? $_GET['show_group_user_list'] : $show_select_group_user;
         $show_group_user_list = array_filter($show_group_user_list);
+
+        if($ocertify->npermission != 31){
+          foreach($show_group_user_list as $show_group_user_key=>$show_group_user_value){
+
+            if(!in_array($show_group_user_value,$admin_user_list_array)){
+
+              unset($show_group_user_list[$show_group_user_key]);
+            }
+          }
+        }
+
         if(empty($show_group_user_list)){
           $group_data_row[] = array('align' => 'left','params' => 'colspan="7" nowrap="nowrap"', 'text' => '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>');
                     
