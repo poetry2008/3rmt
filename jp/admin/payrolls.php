@@ -93,7 +93,11 @@
 
           foreach($user_wage as $user_wage_key=>$user_wage_value){
 
-            tep_db_query("update ".TABLE_USER_WAGE_INFO." set wage_value='".$user_wage_value."',start_date='".$user_wage_start_date[$user_wage_key]."',end_date='".$user_wage_end_date[$user_wage_key]."',contents='".$wage_contents."',update_user='".$user."',update_date=now() where id='".$user_wage_list_array[$user_wage_key]."'");
+            if(in_array($user_wage_key,array_keys($user_wage_list_array))){
+              tep_db_query("update ".TABLE_USER_WAGE_INFO." set wage_value='".$user_wage_value."',start_date='".$user_wage_start_date[$user_wage_key]."',end_date='".$user_wage_end_date[$user_wage_key]."',contents='".$wage_contents."',update_user='".$user."',update_date=now() where id='".$user_wage_list_array[$user_wage_key]."'");
+            }else{
+              tep_db_query("insert into ".TABLE_USER_WAGE_INFO."(id,wage_id,user_id,wage_value,start_date,end_date,contents,create_user,create_date) values(NULL,".$user_wage_key.",'".$user_id."','".$user_wage_value."','".$user_wage_start_date[$user_wage_key]."','".$user_wage_end_date[$user_wage_key]."','".$wage_contents."','".$user."',now())");
+            }
           }
         }else{
          
