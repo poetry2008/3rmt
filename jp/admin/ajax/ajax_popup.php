@@ -9714,6 +9714,14 @@ echo  $return_res;
       $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance($_GET['date'],$g_value,true));
     }
   }
+  //处理数据排序
+  $att_temp_arr = array();
+   foreach($attendance_dd_arr as $att_temp){
+     $att_temp_arr[$att_temp['id']] = $att_temp;
+   }
+   krsort($att_temp_arr);
+   $attendance_dd_arr = $att_temp_arr;
+
   if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'&&!empty($attendance_dd_arr)){
     $show_only = ' disabled="disabled" ';
     $group_disabled = ' disabled="disabled" ';
@@ -10712,6 +10720,13 @@ if($row_array['set_time']==0){
     }
   }
 
+  //处理数据排序
+  $att_temp_arr = array();
+  foreach($attendance_dd_arr as $att_temp){
+     $att_temp_arr[$att_temp['id']] = $att_temp;
+   }
+  krsort($att_temp_arr);
+  $attendance_dd_arr = $att_temp_arr;
 
   //默认的排班模板
   $adl_select = '<select name="attendance_id[]" '.$show_only.' >';

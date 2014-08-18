@@ -142,6 +142,7 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_REFERER', 'referer.php');
   define('FILENAME_BUTTONS', 'buttons.php');
   define('FILENAME_ROSTER_RECORDS','roster_records.php');
+  define('FILENAME_BULLETIN_BOARD','bulletin_board.php');
   
   //add files
   define('FILENAME_DATA_MANAGEMENT','data_management.php');
@@ -314,6 +315,11 @@ define('TABLE_PERMISSIONS','permissions');
   //排班相关的表
   define('TABLE_ATTENDANCE_DETAIL_DATE','attendance_detail_date');
   define('TABLE_ATTENDANCE_GROUP_SHOW','attendance_group_show');
+  //bulletin_board 相关表
+  define('TABLE_BULLETIN_BOARD','bulletin_board');
+  define('TABLE_BULLETIN_BOARD_REPLY','bulletin_board_reply');
+  //bulletin_board 附件存储路径
+  define('PATH_BULLETIN_BOARD_UPLOAD','upload/bulletin_board/');
 // customization for the design layout
   //左侧栏表格宽度
   define('BOX_WIDTH', 174); // how wide the boxes should be in pixels (default: 125)
