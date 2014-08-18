@@ -3,6 +3,7 @@ define('HEADING_TITLE', '提醒日志');
 
 
 define('TEXT_ERRINFO_DB_NO_LOGINFO', '无法获得访问信息');
+define('NOTICE_BULLETIN_TITLE', '网络游戏快报');
 
 
 define('TEXT_INFO_DELETE_DAY', '删除访问信息');

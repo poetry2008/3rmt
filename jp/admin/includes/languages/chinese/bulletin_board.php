@@ -31,5 +31,14 @@ define('BUTTON_ADD_TEXT','添加');
 define('ADD_STAFF','增加');
 define('TEXT_TO_BODY','浏览者');
 define('TEXT_STAFF_LIST','员工列表');
-
+define('TEXT_AUTHOR','作  者');
+define('TEXT_DONE_TIME','完成时间');
+define('TEXT_UPDATE_AUTHOR','更新者');
+define('TEXT_FILE_DOWNLOAD_URL','附件');
+define('TEXT_EDIT_BULLETIN','编辑帖子');
+define('TEXT_CREATE_BULLETIN_ERPLY','回复');
+define('TEXT_EDIT_BULLETIN_ERPLY','跟帖回复');
+define('TEXT_DELETE','删除');
+define('TEXT_LAST_BULLETIN','上一个帖');
+define('TEXT_NEXT_BULLETIN','下一个贴');
 ?>
