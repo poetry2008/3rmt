@@ -14005,12 +14005,15 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
     $all_users_id = '';
     $parent_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups['id']."'");
     group_id_list($groups['id'],$group_id_list);
-    $child_user_query = tep_db_query("select all_users_id from ".TABLE_GROUPS." where id in ('".implode(',',$group_id_list)."')");
-    while($child_user_array = tep_db_fetch_array($child_user_query)){
 
-      $all_users_id .= $child_user_array['all_users_id'];
+    if(!empty($group_id_list)){
+      $child_user_query = tep_db_query("select all_users_id from ".TABLE_GROUPS." where id in ('".implode(',',$group_id_list)."')");
+      while($child_user_array = tep_db_fetch_array($child_user_query)){
+
+        $all_users_id .= $child_user_array['all_users_id'];
+      }
+      tep_db_free_result($child_user_query);
     }
-    tep_db_free_result($child_user_query);
     if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == ''))){
       $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
     }

@@ -10976,7 +10976,7 @@ if($row_array['set_time']==0){
   }
   }
   </style>';
-     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
+     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="15" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
                 </div>
@@ -11004,77 +11004,7 @@ if($row_array['set_time']==0){
   }
   }
   </style>';
-     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
-                <div class="date_box">
-                <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
-                </div>
-                <input type="hidden" id="date_order_'.$date_i.'" name="update_date" value="">
-                <input type="hidden" name="toggle_open" value="0" id="toggle_open_'.$date_i.'"> 
-                <div class="yui3-u" id="new_yui3_'.$date_i.'">
-                <div id="mycalendar_'.$date_i.'"></div> 
-                </div>
-                </div></td>';
-     $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
-     );
-     $group_content_table[] = array('text'=>$group_content_row_wage);
-     $groups_users_id[] = $groups_wage_array['id'];
-     $date_i++;
-   }
-   tep_db_free_result($groups_wage_query);
- }else{
-   $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where project_id=0 group by title order by id");
-   $date_i = 0;
-   while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
-     $group_content_row_wage = array();
-     $date_str = '<td>';
-     $date_str .= '<style type="text/css">
-  #new_yui3_'.$date_i.' {
-  margin-left:-168px;
-  *margin-left:-28px;
-  margin-left:-170px\9;
-  position: absolute;
-  z-index:200;
-  margin-top:15px;
-  }
-  @media screen and (-webkit-min-device-pixel-ratio:0) {
-  #new_yui3_'.$date_i.'{
-  position: absolute;
-  z-index:200;
-  margin-top:17px;
-  }
-  }
-  </style>';
-     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
-                <div class="date_box">
-                <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
-                </div>
-                <input type="hidden" id="date_order_'.$date_i.'" name="update_date" value="">
-                <input type="hidden" name="toggle_open" value="0" id="toggle_open_'.$date_i.'"> 
-                <div class="yui3-u" id="new_yui3_'.$date_i.'">
-                <div id="mycalendar_'.$date_i.'"></div> 
-                </div>
-                </div></td>';
-     $date_i++;
-     $date_str .= '<style type="text/css">
-  #new_yui3_'.$date_i.' {
-  margin-left:-168px;
-  *margin-left:-28px;
-  margin-left:-170px\9;
-  position: absolute;
-  z-index:200;
-  margin-top:15px;
-  }
-  @media screen and (-webkit-min-device-pixel-ratio:0) {
-  #new_yui3_'.$date_i.'{
-  position: absolute;
-  z-index:200;
-  margin-top:17px;
-  }
-  }
-  </style>';
-     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="15" class="readonly" disabled').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
+     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="15" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
                 </div>

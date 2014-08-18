@@ -385,3 +385,8 @@ function reset_user_wage(pam_str){
 
   location.href = 'payrolls.php?'+pam_str+'&reset=1'; 
 }
+//
+function date_change(ele,num){
+
+  $("#date_orders_"+num).val(ele.value);
+}
