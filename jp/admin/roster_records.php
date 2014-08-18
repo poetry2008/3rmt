@@ -1256,7 +1256,45 @@ if($show_ulist_flag){
       echo " >";
       if($show_flag||in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']){
       if(!empty($u_info)){
-        echo $u_info['name'];
+      if($row_replace_att['attendance_detail_id']!=''&&$row_replace_att['attendance_detail_id']!=0){
+        $att_info = $all_att_arr[$row_replace_att['attendance_detail_id']];
+      }else{
+        $att_info = $all_att_arr[$row_replace_att['replace_attendance_detail_id']];
+      }
+      $replace_str = '';
+      $v_att=false;
+      if($date<= $today){
+        $time_flag = false;
+        if($date == $today){
+          $is_work = tep_check_show_login_logout($row_replace_att['user']);
+          if($att_info['set_time']==0){
+            $att_start = str_replace(':','',$row_replace_att['leave_start']);
+            $att_end = str_replace(':','',$row_replace_att['leave_end']);
+            if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+              $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+              $v_att = false;
+            }else if($now_time>$att_end||$is_work==0){
+              $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$att_info['id']],$row_replace_att['user'],$date,$att_info['src_text'],$j,$show_att_status);
+            }
+          }else{
+            if($is_work==1){
+              $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
+              $v_att = false;
+            }else{
+              $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$att_info['id']],$row_replace_att['user'],$date,$att_info['src_text'],$j,$show_att_status);
+            }
+          }
+        }else{
+          $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$att_info['id']],$row_replace_att['user'],$date,$att_info['src_text'],$j,$show_att_status);
+        }
+      }else{
+        $v_att = false;
+      }
+      if($v_att!=false){
+        echo preg_replace('/<br>$/','',$v_att);
+      }else{
+        echo $u_info['name'].$replace_str."&nbsp;";
+      }
       }
       if(!empty($att_date_info)){
         if($att_date_info['scheduling_type'] == 1){
@@ -1274,6 +1312,9 @@ if($show_ulist_flag){
       }
       echo "</a>";
       echo "</span>";
+      if($v_att!=false){
+        echo "<br>";
+      }
     }
     }
     }
