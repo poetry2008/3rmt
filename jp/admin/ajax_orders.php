@@ -3496,20 +3496,22 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         foreach($show_group_user as $show_list_uid){
           if($show_list_uid!=''){
 	     $tep_array= tep_get_user_info($show_list_uid);
-	     $uname_arr[] = $tep_array['name'];
+	     $uname_arr[] = array('status'=>$tep_array['status'],'name'=>$tep_array['name']);
 	  }
         }
         $group_user_list = array_combine($show_group_user,$uname_arr);
 	asort($group_user_list);
 
         foreach($group_user_list as $key=>$val) {
-          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
-          if(in_array($key,$show_select_group_user)){
-	    $group_str .= ' checked="checked" ';
+          if($val['status'] == 1){
+            $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
+            if(in_array($key,$show_select_group_user)){
+	      $group_str .= ' checked="checked" ';
+            }
+   	    $group_str .= ' value="'.$key.'" >';
+	    $group_str .=  '<label for="'.$key.'">'.$val['name'].'</label>';
+            $group_str .= '&nbsp;&nbsp;&nbsp;';
           }
-   	  $group_str .= ' value="'.$key.'" >';
-	  $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
-	  $group_str .= '&nbsp;&nbsp;&nbsp;';
 	}	
 
         if($group_str == ''){
