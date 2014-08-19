@@ -8,7 +8,7 @@ define('GROUP_STAFF_NUM','员工人数');
 define('GROUP_STATUS','状态');
 define('GROUP_OPT',' 操作');
 define('GROUP_STAFF','员工');
-define('GROUP_MANAGERS','管理者');
+define('GROUP_MANAGERS','排班.上班管理');
 define('GROUP_COMPANY_NAME','公司名');
 define('GROUP_CREATE','创建组');
 define('GROUP_SAVE','保存');
@@ -34,4 +34,7 @@ define('TEXT_GROUP_WAGE_OBJECT','工资结算项目');
 define('TEXT_GROUP_WAGE_OBJECT_VALUE','用户项目值');
 define('TEXT_GROUP_WAGE_OBJECT_FORMULA','工资计算公式');
 define('TEXT_GROUP_ORDER_SORT','排列顺序');
+define('TEXT_GROUP_DAYS','日間');
+define('TEXT_GROUP_RESET','重置');
+define('TEXT_GROUP_WAGE_ADMIN','給料計算管理');
 ?>

@@ -390,3 +390,9 @@ function date_change(ele,num){
 
   $("#date_orders_"+num).val(ele.value);
 }
+//again computing wage
+function again_computing(){
+
+  document.edit_users_wage.action = 'payrolls.php?action=again_computing';
+  document.edit_users_wage.submit(); 
+}

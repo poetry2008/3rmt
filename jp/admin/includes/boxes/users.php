@@ -69,7 +69,23 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
           }
         }
         //计算工资
-        if (!check_whether_is_limited(FILENAME_PAYROLLS)) {
+        //管理员可管理的组
+        $admin_group_list_array = array();
+        $admin_group_query = tep_db_query("select id,payrolls_admin from ".TABLE_GROUPS);
+        while($admin_group_array = tep_db_fetch_array($admin_group_query)){
+
+          if(trim($admin_group_array['payrolls_admin']) != ''){
+
+            $payrolls_admin_array = explode('|||',$admin_group_array['payrolls_admin']);
+
+            if(in_array($ocertify->auth_user,$payrolls_admin_array)){
+
+              $admin_group_list_array[] = $admin_group_array['id'];  
+            }
+          }
+        }
+        tep_db_free_result($admin_group_query);
+        if (!check_whether_is_limited(FILENAME_PAYROLLS) && (!empty($admin_group_list_array) || $ocertify->npermission == 31)) {
           if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PAYROLLS){
             echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_PAYROLLS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_wage.gif').  '</span><span>'.HEADER_TEXT_PAYROLLS.'</span></div>'; 
           }else{

@@ -49,6 +49,8 @@
               $cycle_date = tep_db_prepare_input($_POST['cycle_date']);
               $date_str = $wage_date.'|||'.$cycle_date; 
             }
+
+            $payrolls_admin = tep_db_prepare_input($_POST['wage_admin']);
 	    $group_sql_array = array('name' => $_POST['group_name'],
 				     'parent_id' => $_GET['parent_id'],
 				     'all_users_id' => $all_users_id,
@@ -60,7 +62,8 @@
                                      'begin_end_date' => $date_str, 
                                      'cycle_flag' => tep_db_prepare_input($_POST['cycle_flag']), 
                                      'begin_end_hour' => tep_db_prepare_input($_POST['start_end_hour']), 
-                                     'order_sort' => tep_db_prepare_input($_POST['order_sort']) 
+                                     'order_sort' => tep_db_prepare_input($_POST['order_sort']), 
+                                     'payrolls_admin' => implode('|||',$payrolls_admin)  
 			            );
             tep_db_perform(TABLE_GROUPS, $group_sql_array);	
             $insert_group_id = tep_db_insert_id();
@@ -132,6 +135,7 @@
               $cycle_date = tep_db_prepare_input($_POST['cycle_date']);
               $date_str = $wage_date.'|||'.$cycle_date; 
           } 
+          $payrolls_admin = tep_db_prepare_input($_POST['wage_admin']);
 	  $group_sql_array = array('name' => $_POST['group_name'],
 				   'all_users_id' => $all_users_id,
 				   'all_managers_id' => $all_managers_id,
@@ -142,7 +146,8 @@
                                    'begin_end_date' => $date_str, 
                                    'cycle_flag' => tep_db_prepare_input($_POST['cycle_flag']), 
                                    'begin_end_hour' => tep_db_prepare_input($_POST['start_end_hour']), 
-                                   'order_sort' => tep_db_prepare_input($_POST['order_sort']) 
+                                   'order_sort' => tep_db_prepare_input($_POST['order_sort']),
+                                   'payrolls_admin' => implode('|||',$payrolls_admin) 
 			           );
           tep_db_perform(TABLE_GROUPS, $group_sql_array, 'update', 'id='.$group_id);
           //需要删除的项目

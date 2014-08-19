@@ -3,6 +3,36 @@
   $Id$
 */
   require('includes/application_top.php');
+  //管理员可管理的组
+  $admin_group_list_array = array();
+  $admin_user_list_array = array();
+  $admin_group_query = tep_db_query("select id,all_users_id,payrolls_admin from ".TABLE_GROUPS);
+  while($admin_group_array = tep_db_fetch_array($admin_group_query)){
+
+   if(trim($admin_group_array['payrolls_admin']) != ''){
+
+     $payrolls_admin_array = explode('|||',$admin_group_array['payrolls_admin']);
+
+        if(in_array($ocertify->auth_user,$payrolls_admin_array)){
+
+            $admin_group_list_array[] = $admin_group_array['id']; 
+            if(trim($admin_group_array['all_users_id']) != ''){
+              $admin_user_list_temp = explode('|||',$admin_group_array['all_users_id']);
+              foreach($admin_user_list_temp as $admin_user_list_value){
+                $admin_user_list_array[] = $admin_user_list_value; 
+              }
+            }
+        }
+    }
+  }
+  tep_db_free_result($admin_group_query);
+  $admin_user_list_array = array_unique($admin_user_list_array);
+
+  if(empty($admin_group_list_array) && $ocertify->npermission != 31){
+
+    one_time_pwd_forward401($page_name, (!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:tep_href_link(FILENAME_DEFAULT)), $one_time_arr);
+  }
+
   require(DIR_FS_ADMIN . 'classes/notice_box.php');
   $sites_id_sql = tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$ocertify->auth_user."' limit 0,1");
   while($userslist= tep_db_fetch_array($sites_id_sql)){
@@ -17,6 +47,7 @@
       case 'update_show_user'保存用户记录
       case 'save_user_wage' 编辑员工工资的设置
       case 'reset_user_wage' 重置员工工资
+      case 'again_computing' 重新计算工资 
     ------------------------------------------------------*/
       case 'edit_users_wage':
 
@@ -128,6 +159,39 @@
           }
         }
         tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
+        break;
+        case 'again_computing':
+          $users_wage = tep_db_prepare_input($_POST['users_wage']);
+          $hidden_users_wage = tep_db_prepare_input($_POST['hidden_users_wage']);
+          $pam_users_wage = tep_db_prepare_input($_POST['pam_users_wage']);
+          $formula_users_wage = tep_db_prepare_input($_POST['formula_users_wage']);
+          $save_date = tep_db_prepare_input($_POST['save_date']);
+          $group_id = tep_db_prepare_input($_POST['group_id']);
+
+          $pam_array = array();
+          foreach($users_wage as $key=>$value){
+
+            foreach($value as $key_k=>$value_v){
+              if($value_v != $hidden_users_wage[$key][$key_k]){
+
+                $pam_array[$key_k][$pam_users_wage[$key][$key_k]] = $value_v;
+              }
+            }
+          }
+
+          $replace_pam_value = array();
+          foreach($formula_users_wage as $keys=>$values){
+
+            foreach($values as $keys_k=>$values_v){
+              $pam_key_array = array_keys($pam_array[$keys_k]);
+
+            if(!in_array($pam_users_wage[$keys][$keys_k],$pam_key_array)){
+              $replace_pam_value[$keys][$keys_k] = tep_user_wage($values_v,$keys_k,$save_date,$group_id,$pam_array[$keys_k]);  
+            }else{
+              $replace_pam_value[$keys][$keys_k] = $users_wage[$keys][$keys_k];
+            }
+            }
+          }
         break;
     }
   }
@@ -341,6 +405,11 @@ color:#0066CC;
 
         //默认选中的组
         $show_group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
+        
+        if(!in_array($show_group_id,$admin_group_list_array) && $ocertify->npermission != 31){
+
+          $show_group_id = 0;
+        }
 
         $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."'";
         $user_query = tep_db_query($user_sql);
@@ -444,7 +513,7 @@ color:#0066CC;
         $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."' order by id");
         while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
           $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
-          $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id']);
+          $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id'],'pam'=>$groups_wage_array['contents']);
         }
         tep_db_free_result($groups_wage_query);
         
@@ -458,6 +527,17 @@ color:#0066CC;
 	
         $show_group_user_list = isset($_GET['show_group_user_list']) && $_GET['show_group_user_list'] != '' ? $_GET['show_group_user_list'] : $show_select_group_user;
         $show_group_user_list = array_filter($show_group_user_list);
+
+        if($ocertify->npermission != 31){
+          foreach($show_group_user_list as $show_group_user_key=>$show_group_user_value){
+
+            if(!in_array($show_group_user_value,$admin_user_list_array)){
+
+              unset($show_group_user_list[$show_group_user_key]);
+            }
+          }
+        }
+
         if(empty($show_group_user_list)){
           $group_data_row[] = array('align' => 'left','params' => 'colspan="7" nowrap="nowrap"', 'text' => '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>');
                     
@@ -552,10 +632,14 @@ color:#0066CC;
                   }
 
                   $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
+                  if($_GET['action'] == 'again_computing' && isset($_POST['users_wage']) && !empty($replace_pam_value)){
+
+                    $wage_value = $replace_pam_value[$wage_id['id']][$users_value];
+                  }
                   $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:80%;">' 
+                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:80%;"><input type="hidden" name="hidden_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'"><input type="hidden" name="pam_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['pam'].'"><input type="hidden" name="formula_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['value'].'">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
@@ -617,10 +701,11 @@ color:#0066CC;
                      <div class="td_button"><?php 
                      //通过site_id判断是否允许新建
                      if (in_array(0,$site_id_array)) {
-                       echo '<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT) . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_wage(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)" onclick="">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_wage();"') . '</a>';
+                       echo '<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'onclick="again_computing();"') . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_wage(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_wage();"') . '</a>';
                      }else{
                        echo tep_html_element_button(TEXT_PAYROLLS_EXPORT,'disabled="disabled"').'&nbsp;' ;
                        echo tep_html_element_button(TEXT_PAYROLLS_PRINT,'disabled="disabled"').'&nbsp;' ;

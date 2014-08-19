@@ -13997,8 +13997,9 @@ function tep_change_attendance_logout($uid) {
 **********************************/
 function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
 
+  global $ocertify;
   if (!is_array($group_tree_array)) $group_tree_array = array();
-  $group_sql = "select name,parent_id,id,all_users_id from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1'";
+  $group_sql = "select name,parent_id,id,all_users_id,payrolls_admin from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1'";
   $group_query = tep_db_query($group_sql);
   while ($groups = tep_db_fetch_array($group_query)){
     $group_id_list = array();
@@ -14014,8 +14015,21 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
       }
       tep_db_free_result($child_user_query);
     }
-    if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == ''))){
-      $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+
+    //工资计算管理员
+    $payrolls_admin = $groups['payrolls_admin'];
+    $payrolls_admin_array = array();
+    if(trim($payrolls_admin) != ''){
+      $payrolls_admin_array = explode('|||',$payrolls_admin);
+    }
+    if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PAYROLLS && $ocertify->npermission != 31){
+      if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == '')) && in_array($ocertify->auth_user,$payrolls_admin_array)){
+        $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+      }
+    }else{
+      if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == ''))){
+        $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+      } 
     }
     $group_tree_array = tep_get_group_tree($groups['id'],$spacing.  '&nbsp;&nbsp;&nbsp;',$group_tree_array);
   }
@@ -14906,8 +14920,12 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   tep_db_free_result($attendance_detail_query);
 
   $wage_str = preg_replace('/(\$\{\w+?\})/is','($1)',$wage_str);
+  $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
+
   $wage_str = str_replace(array_keys($parameters_replace_other_array),array_values($parameters_replace_other_array),$wage_str);
+  $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
   $wage_str = str_replace(array_keys($parameters_replace_basic_array),array_values($parameters_replace_basic_array),$wage_str);
+  $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
   $wage_str = str_replace(array_keys($attendance_replace_array),array_values($attendance_replace_array),$wage_str);
 
   preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
@@ -15218,27 +15236,61 @@ function tep_start_end_date($group_id,$wage_date){
     if($start_date_num < $end_date_num){
       foreach($begin_end_date as $begin_end_date_value){
         $begin_end_date_temp = explode('-',$begin_end_date_value);
+        $start_date_temp = $begin_end_date_temp[1];
+        $end_date_temp = $begin_end_date_temp[0];
 
-        $start_date = $begin_end_date_temp[1];
-        $end_date = $begin_end_date_temp[0];
-
-        if($current_day >= $start_date && $current_day <= $end_date){
-
-          break; 
+        if($current_day >= ($begin_end_date_temp[0] == 28 ? date('t',strtotime(date('Y-m',strtotime($wage_date)))) : $begin_end_date_temp[0])){
+          $start_date = $begin_end_date_temp[1];
+          $end_date = $begin_end_date_temp[0];
         }
       }
+      if($start_date == '' && $end_date == ''){
+
+        $start_date = $start_date_temp;
+        $end_date = $end_date_temp;
+      }
     }else{
+      $date_list_array = array();
       foreach($begin_end_date as $begin_end_date_value){
         $begin_end_date_temp = explode('-',$begin_end_date_value);
 
         $start_date = $begin_end_date_temp[1];
         $end_date = $begin_end_date_temp[0];
 
-        if($current_day >= $end_date){
+        if($start_date >= $start_date_num && $current_day <= $end_date_num){
 
-          break; 
+          $start_date_i = date('Ym',strtotime('-1 month',strtotime($wage_date))).($start_date < 10 ? '0'.$start_date : $start_date);
+        }else{
+
+          if($start_date <= $end_date_num){
+            $start_date_i = date('Ym',strtotime('+1 month',strtotime($wage_date))).($start_date < 10 ? '0'.$start_date : $start_date);
+          }else{
+            $start_date_i = date('Ym',strtotime($wage_date)).($start_date < 10 ? '0'.$start_date : $start_date);
+          }
         }
+
+        if($end_date >= $start_date_num && $current_day <= $end_date_num){
+
+          $end_date_i = date('Ym',strtotime('-1 month',strtotime($wage_date))).($end_date < 10 ? '0'.$end_date : $end_date);
+        }else{
+          if($end_date <= $end_date_num){ 
+            $end_date_i = date('Ym',strtotime('+1 month',strtotime($wage_date))).($end_date < 10 ? '0'.$end_date : $end_date);
+          }else{
+            $end_date_i = date('Ym',strtotime($wage_date)).($end_date < 10 ? '0'.$end_date : $end_date);
+          }
+        }
+        $date_list_array[] = array('start'=>$start_date_i,'end'=>$end_date_i,'start_num'=>$start_date,'end_num'=>$end_date);  
       } 
+
+      $current_date = date('Ymd',strtotime($wage_date));
+      foreach($date_list_array as $date_list_value){
+
+        if($current_date >= $date_list_value['end']){
+
+          $start_date = $date_list_value['start_num'];
+          $end_date = $date_list_value['end_num'];
+        }
+      }
     }
 
     if($end_date <= date('d',strtotime($wage_date))){
