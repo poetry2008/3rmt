@@ -109,7 +109,7 @@ if(isset($_GET['action'])){
             $sql_arr['day'] =  $date_info['day']; 
                 
 		  }
-            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
 		 
         }
 			$old_info_list[$u_key]=$sql_arr;
@@ -119,8 +119,6 @@ if(isset($_GET['action'])){
 		foreach($_POST['has_user']['new'] as $k=>$userlist) {
 			for($i=0;$i<count($userlist);$i++){
 				$sql_new_has_arr = $old_info_list[$k]; 
-				unset($sql_new_has_arr['update_time']);
-				unset($sql_new_has_arr['update_user']);
 				$sql_new_has_arr['user_id']=$userlist[$i];
 				$sql_new_has_arr['add_time']=date("Y-m-d H:i:s");
 				$sql_new_has_arr['add_user']=$user;
@@ -166,7 +164,7 @@ if(isset($_GET['action'])){
               'week' => $date_info['week'],
               'week_index' => $date_info['week_index'],
               'attendance_detail_id' => $value,
-              'user_id' => $user_new[$j],
+              'user_id' => $user_new,
               'u_group' => $u_group_tep,
               'type' => $type_arr[$key],
               'add_user' => $user,
