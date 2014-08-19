@@ -486,3 +486,28 @@ function check_reset(){
     }
     $("#tr_date_id").val(1);
 }
+//add wage admin
+function add_admin_list(ele,del_str){
+  var select_str = $(ele).parent().find('span').html();
+  $("select[name='wage_admin[]']").each(function(){
+ 
+    var reg = new RegExp('<option value="'+$(this).val()+'".*?>.*?<\/option>','g');
+    select_str = select_str.replace(reg,'');
+  });
+
+  select_str_temp = select_str.replace('<option vlaue="">--</option>','');
+
+  if(select_str_temp.indexOf('<option') > 0){
+
+    $("#add_end").before('<tr><td width="20%"></td><td>'+select_str+'&nbsp;&nbsp;<input type="button" value="'+del_str+'" onclick="del_admin_list(this);"></td></tr>');
+  }else{
+  
+    ele.disabled = true;
+  }
+}
+//delete admin list
+function del_admin_list(ele){
+  var add_admin_button = document.getElementById('add_admin_button');
+  add_admin_button.disabled = false;
+  $(ele).parent().parent().remove();
+}
