@@ -9077,7 +9077,7 @@ if($_GET['latest_messages_id']>0){
      }else{
        $date_str = TEXT_GROUP_BEGIN_DATE; 
      }
-     $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);"'.($date_i != count($groups_start_end_date_array)-1 ? ' disabled' : '').'>';
+     $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);" disabled>';
      $date_str .= '<option value="0">--</option>';
      for($i=1;$i<=28;$i++){
 

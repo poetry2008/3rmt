@@ -472,7 +472,7 @@ function start_date_select(ele,num){
 //reset date
 function check_reset(){
 
-    document.getElementsByName("start_date[]")[0].value = 1;
+    document.getElementsByName("start_date[]")[0].value = 0;
     document.getElementsByName("start_date[]")[0].disabled = false;
     document.getElementsByName("end_date[]")[0].value = 28;
     document.getElementsByName("end_date[]")[0].disabled = true;
