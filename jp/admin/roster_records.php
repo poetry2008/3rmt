@@ -80,15 +80,19 @@ if(isset($_GET['action'])){
 		        $_POST['has_space'][$k] = 0;	
 			}	
 		}
+
         foreach($a_id_arr as $key => $value){
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
+		$u_key = $_POST['u_group'][$key];	
+			foreach($_POST['has_user'][$u_key] as $k=>$user_id){
                $sql_arr = array(
                   'week' => $date_info['week'],
                   'week_index' => $date_info['week_index'],
                   'attendance_detail_id' => $value,
-                  'user_id' => $user_arr[$key],
+                  'user_id' => $user_id,
+				  'u_group' => $u_key, 
                   'type' => $type_arr[$key],
                   'update_user' => $user,
                   'update_time' => 'now()',
@@ -105,8 +109,28 @@ if(isset($_GET['action'])){
             $sql_arr['day'] =  $date_info['day']; 
                 
 		  }
-          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+		 
         }
+			$old_info_list[$u_key]=$sql_arr;
+			}
+
+		$sql_new_arr = array();
+		foreach($_POST['has_user']['new'] as $k=>$userlist) {
+			for($i=0;$i<count($userlist);$i++){
+				$sql_new_has_arr = $old_info_list[$k]; 
+				unset($sql_new_has_arr['update_time']);
+				unset($sql_new_has_arr['update_user']);
+				$sql_new_has_arr['user_id']=$userlist[$i];
+				$sql_new_has_arr['add_time']=date("Y-m-d H:i:s");
+				$sql_new_has_arr['add_user']=$user;
+                $sql_new_has_arr['date'] =  $_POST['get_date'];
+                $sql_new_has_arr['month'] =  $date_info['month'];
+                $sql_new_has_arr['day'] =  $date_info['day']; 
+             tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_new_has_arr);
+            }
+		}
+		
       }
       if(isset($_POST['attendance_id'])
           &&is_array($_POST['attendance_id'])
@@ -128,6 +152,13 @@ if(isset($_GET['action'])){
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
+			$query_get_max = tep_db_query("select max(id) as nums from ".TABLE_ATTENDANCE_DETAIL_DATE."");
+			$max_id =  tep_db_fetch_array($query_get_max);
+			$u_group_tep = $max_id['nums']+1;
+
+			foreach($_POST['user'][$key+1] as $k=>$user_new){
+				for($j=0;$j<count($user_new);$j++){
+
           $sql_arr = array(
               'date' => $_POST['get_date'],
               'month' => $date_info['month'],
@@ -135,7 +166,8 @@ if(isset($_GET['action'])){
               'week' => $date_info['week'],
               'week_index' => $date_info['week_index'],
               'attendance_detail_id' => $value,
-              'user_id' => $user_arr[$key],
+              'user_id' => $user_new[$j],
+              'u_group' => $u_group_tep,
               'type' => $type_arr[$key],
               'add_user' => $user,
               'add_time' => 'now()',
@@ -154,6 +186,10 @@ if(isset($_GET['action'])){
           }
           $sql_arr['is_user'] = 1;
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
+
+				
+				}
+			}
         }
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){

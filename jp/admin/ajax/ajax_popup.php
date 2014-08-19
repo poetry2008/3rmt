@@ -10737,9 +10737,9 @@ if($row_array['set_time']==0){
   $adl_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //默认的用户显示
-  $user_select = '<select name="user[]" '.$disabled.'>';
+  $user_select = '<select id="user_default" name="user[1][]" '.$disabled.'>';
   $user_select .= '<option value="">--</option>';
-  $hidden_user_select = '<select name="user[]" >';
+  $hidden_user_select = '<select name="user[]" id="user_default">';
   $hidden_user_select .= '<option value="">--</option>';
   $user_select_hidden = '';
   $default_hidden = '';
@@ -10759,8 +10759,17 @@ if($row_array['set_time']==0){
     $user_select .= '>'.$user['name'].'</oprion>';
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
-  $user_select .= '</select></select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
-  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $user_select .= '</select></select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'">';
+  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'">';
+
+
+  //追加个人
+  $hidden_user_add = '<select id="user_tep" onchange="add_user_list(this)">';
+  $hidden_user_add .= '<option value="">--</option>';
+  foreach($all_user as $user){
+    $hidden_user_add .= '<option value="'.$user['userid'].'">'.$user['name'].'</oprion>';
+  }
+  $hidden_user_add .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input  '.$disabled.' type="button" onclick="del_one_person(this)" value="'.TEXT_DEL_ADL.'"></td>';
 
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
@@ -10778,33 +10787,64 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"><input type="button"  onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"><input type="button"  onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></div>';
+
+
+  //追加个人
+  $hidden_tep = '<div style="display:none">';
+  $hidden_tep .= '<table id="add_person">';
+  $hidden_tep .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td>'.$hidden_user_add.'</td></tr>';
+  $hidden_tep .= '</table></div>';
 
   if($group_disabled!=''){
     $hidden_date .= '<input type="hidden" name="default_uid" value="'.$_GET['uid'].'">';
   }
 
   $heading[] = array('align' => 'left', 'text' => $date_str);
-  $heading[] = array('align' => 'right', 'text' => $page_str.$hidden_div);
+  $heading[] = array('align' => 'right', 'text' => $page_str.$hidden_div.$hidden_tep);
 
   //主体内容
   $as_info_row = array();
   $show_arr = true;
-  foreach($attendance_dd_arr as $a_info){
+  $attendane_temp_user_list_arr = array();
+  foreach($attendance_dd_arr as $k=>$val) {
+	$kkey = $val['u_group'];
+	if(!isset($attendane_temp_user_list_arr[$kkey])){
+	  $attendane_temp_user_list_arr[$kkey] = array();
+	}
+    $attendane_temp_user_list_arr[$kkey][]=$val;
+  }
+  foreach($attendane_temp_user_list_arr as $a_info){
     $has_adl_select = '<select name="has_attendance_id[]" '.$disabled.' >';
     foreach($attendance_detail_list as $a_value){
       $has_adl_select .= '<option value="'.$a_value['id'].'"';
-      if($a_info['attendance_detail_id'] == $a_value['id']){
+      if($a_info[0]['attendance_detail_id'] == $a_value['id']){
         $has_adl_select .= ' selected ';
       }
       $has_adl_select .=' >'.$a_value['title'].'</option>';
     }
     $has_adl_select .= '</select>';
 
-    $has_user_select = '<select name="has_user[]" '.$disabled.'>';
+    $as_info_row_tmp = array(); 
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="u_group[]" value="'.$a_info[0]['u_group'].'"><input type="hidden" name="data_as[]" value="'.$a_info[0]['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
+    if($show_arr){
+      $as_user_added = $a_info[0]['add_user'];
+      $as_date_added = $a_info[0]['add_time'];
+      $as_user_update = $a_info[0]['update_user'];
+      $as_last_modified = $a_info[0]['update_time'];
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info[0]['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
+      $show_arr = false;
+    }else{
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info[0]['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
+    }
+    $as_info_row[]['text'] = $as_info_row_tmp;
+
+  for($j=0; $j<count($a_info);$j++){
+    $has_user_select = '<select name="has_user['.$a_info[$j]["u_group"].'][]" '.$disabled.'>';
     $has_user_select_hidden = '';
     $default_has_user = '';
     foreach($all_user as $user){
@@ -10812,13 +10852,25 @@ if($row_array['set_time']==0){
       $default_has_user = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
       }
       $has_user_select .= '<option value="'.$user['userid'].'" ';
-      if($a_info['user_id'] == $user['userid']){
+      if($a_info[$j]['user_id'] == $user['userid']){
         $has_user_select .= 'selected ';
         $has_user_select_hidden = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
       }
       $has_user_select .= ' >'.$user['name'].'</oprion>';
     }
-    $has_user_select .= '</select>';
+	if($i!=0){
+	$style_hidden_del = 'style="display:none;"';
+	}else{
+	$style_hidden_del = 'style="display:block inline;"';
+	}
+    $has_user_select .= '</select><td nowrap="nowrap"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_one_person(this)"><input '.$style_hidden_del.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\')" value="'.TEXT_ADD_ADL.'"></td>';
+    $as_info_row[]['text'] = array(
+      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)
+    );
+
+
+  }
     if($disabled){
       if($has_user_select_hidden!=''){
         $has_user_select .= $has_user_select_hidden;
@@ -10836,48 +10888,29 @@ if($row_array['set_time']==0){
 		}
       $has_type_select .= '<option value="'.$t_key.'" ';
 	 //判断是不是每周
-	  if($a_info['type']==1 && $a_info['space']==0){
-		   $a_info['type']=8;
+	  if($a_info[0]['type']==1 && $a_info[0]['space']==0){
+		   $a_info[0]['type']=8;
 	  }
-      if($a_info['type'] == $t_key){
+      if($a_info[0]['type'] == $t_key){
         $has_type_select .= ' selected ';
       }
       $has_type_select .= ' >'.$t_value.'</option>';
     }
 	//隔周
-    $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
+    $style_space=($a_info[0]['type']==1 && $a_info[0]['space']!=0)?'':'style="display:none"';
 
-    if($a_info['space']==0 || $a_info['space']==''){
-	    $a_info['space']=1;
+    if($a_info[0]['space']==0 || $a_info[0]['space']==''){
+	    $a_info[0]['space']=1;
 	  }
-	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
-    $as_info_row_tmp = array(); 
+	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info[0]['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
-    $as_info_row_tmp = array(); 
-    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
-    if($show_arr){
-      $as_user_added = $a_info['add_user'];
-      $as_date_added = $a_info['add_time'];
-      $as_user_update = $a_info['update_user'];
-      $as_last_modified = $a_info['update_time'];
-      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
-      $show_arr = false;
-    }else{
-      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
-    }
-    $as_info_row[]['text'] = $as_info_row_tmp;
-    $as_info_row[]['text'] = array(
-      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
-      array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_user_select)
-    );
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_type_select)
     );
 
-
   }
+		  
 
 
 //没有个人排班的时候显示新数据
