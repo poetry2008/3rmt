@@ -198,6 +198,12 @@ if(isset($_GET['action'])){
               id="'.$del_as.'"');
         }
       }
+      if(isset($_POST['del_group'])&&!empty($_POST['del_group'])){
+        foreach($_POST['del_group'] as $del_group){
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
+             u_group ="'.$del_group.'"');
+        }
+      }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
         $date_info = tep_date_info($_POST['get_date']);
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
