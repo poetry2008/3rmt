@@ -465,13 +465,35 @@ function del_as(ele,asl_id,c_permission){
     $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
   }
 }
+function del_as_user(ele,asl_id,is_new){
+  var tr_index = $(ele).parent().parent().index();
+  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  if(!is_new){
+    $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
+  }
+}
 function del_as_group(ele,attendance_group,is_new,c_permission){
   var tr_index = $(ele).parent().parent().index();
-  var next_input = $(ele).parent().html();
 
+  if(is_new == false){
+  var del_sum = 0;
+  $(".popup_order_info select[name='has_user["+attendance_group+"][]']").each(function(){
+      del_sum ++;
+  });
+  }else{
+  var del_sum = 0;
+  $(".popup_order_info select[name='user["+attendance_group+"][]']").each(function(){
+      del_sum ++;
+  });
+  }
+  var next_input = $('.popup_order_info').find('tr').eq(del_sum+2).find('td:last').html();
+  var add_str = $('#add_user_group').html();
+  next_input = next_input+add_str;
   // get count by attendance_group and for this to remove
   $('.popup_order_info').find('tr').eq(tr_index).remove();
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  for(var i=0;i<del_sum;i++){
+    $('.popup_order_info').find('tr').eq(tr_index).remove();
+  }
   $('.popup_order_info').find('tr').eq(tr_index).remove();
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
@@ -780,7 +802,9 @@ function add_att_rows(ele,check_val){
 var aid=$(".popup_order_info").find('select[name="attendance_id[]"]').length+1;
 $('#add_source select[id="user_default"]').attr('name','user['+aid+'][]');
 
-  $(ele).parent().parent().before($('#add_source tbody').html());
+  var add_str = $('#add_source tbody').html();
+  add_str = add_str.replace("'temp_del_group_id'",aid);
+  $(ele).parent().parent().before(add_str);
 
 //not null add delete button
   if(check_val!=''){
@@ -803,9 +827,3 @@ function add_person_row(ele,aid){
   }
     $(ele).parent().parent().after($('#add_person tbody').html());
 }
-//delete person
-function del_one_person(ele) {
-  $(ele).parent().parent().remove();
-
-}
-
