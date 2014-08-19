@@ -9967,7 +9967,7 @@ echo  $return_res;
 	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
+      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
       if($show_arr){
         $as_user_added = $a_info['add_user'];
         $as_date_added = $a_info['add_time'];
@@ -10763,9 +10763,11 @@ if($row_array['set_time']==0){
   if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
     $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
+	/*
     foreach($attendance_dd_arr as $u_att){
       $all_user[] = tep_get_user_info($u_att['user_id']);
     }
+	 */
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
     $attendance_dd_arr = array();
@@ -10886,7 +10888,7 @@ if($row_array['set_time']==0){
 
     $as_info_row_tmp = array(); 
     $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="u_group[]" value="'.$a_info[0]['u_group'].'"><input type="hidden" name="data_as[]" value="'.$a_info[0]['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="u_group[]" value="'.$a_info[0]['u_group'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
     if($show_arr){
       $as_user_added = $a_info[0]['add_user'];
       $as_date_added = $a_info[0]['add_time'];
@@ -10912,14 +10914,14 @@ if($row_array['set_time']==0){
         $has_user_select .= 'selected ';
         $has_user_select_hidden = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
       }
-      $has_user_select .= ' >'.$user['name'].'</oprion>';
+      $has_user_select .= ' >'.$user['name'].'</option>';
     }
 	if($i!=0){
 	$style_hidden_del = 'style="display:none;"';
 	}else{
 	$style_hidden_del = 'style="display:block inline;"';
 	}
-    $has_user_select .= '</select><td nowrap="nowrap"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_del.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
+    $has_user_select .= '</select><input type="hidden" name="data_as['.$a_info[$j]['u_group'].'][]" value="'.$a_info[$j]['id'].'"><td nowrap="nowrap"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_del.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)
