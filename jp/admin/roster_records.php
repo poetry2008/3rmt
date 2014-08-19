@@ -374,6 +374,7 @@ if(isset($_GET['action'])){
       break;
     case 'update_show_user':
       $operator_id = $ocertify->auth_user;
+      $error = true;
       if(isset($_POST['show_group_user_list'])&&
           is_array($_POST['show_group_user_list'])&&
           !empty($_POST['show_group_user_list'])){
@@ -391,11 +392,16 @@ if(isset($_GET['action'])){
           $insert_arr['is_select'] = '1';
           $insert_arr['operator_id'] = $operator_id;
           $insert_arr['att_status'] = $_POST['att_status'];
-          tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
+          $perform_flag =tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
+          if($error){
+             $error = $perform_flag;
+          }
         }
+        if($error){
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
             ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
+        }
       }elseif(empty($_POST['show_group_user_list'])) {
         //当没有选择用户的时候
 		//操作原有数据
@@ -410,11 +416,16 @@ if(isset($_GET['action'])){
         $insert_arr['is_select'] = '1';
         $insert_arr['operator_id'] = $operator_id;
         $insert_arr['att_status'] = $_POST['att_status'];
-        tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
+        $perform_flag =tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
+        if($error){
+           $error = $perform_flag;
+        }
 
+        if($error){
         tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,
             ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')));
+        }
 	  }
       break;
 	  /**
@@ -694,7 +705,7 @@ require("includes/note_js.php");
           if($show_group_id == $group['id']){
             $group_str .= ' selected ';
           }
-          $group_str .= '>'.$group['text'].'</oprion>';
+          $group_str .= '>'.$group['text'].'</option>';
         }
         $group_str .= '</select>';
         $group_str .= '</td>';
@@ -972,7 +983,7 @@ while($j<=$day_num)
   $style= (empty($att_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
-    cellspacing="0" cellpadding="0" class="uroster_record">';
+    cellspacing="0" cellpadding="0" class="info_table_small">';
   echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
