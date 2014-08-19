@@ -10824,7 +10824,7 @@ if($row_array['set_time']==0){
   foreach($all_user as $user){
     $hidden_user_add .= '<option value="'.$user['userid'].'">'.$user['name'].'</oprion>';
   }
-  $hidden_user_add .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input  '.$disabled.' type="button" onclick="del_one_person(this)" value="'.TEXT_DEL_ADL.'"></td>';
+  $hidden_user_add .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input  '.$disabled.' type="button" onclick="del_as_user(this)" value="'.TEXT_DEL_ADL.'"></td>';
 
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
@@ -10842,10 +10842,11 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"><input type="button"  onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'temp_del_group_id\')"><input type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
-  $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></div>';
+  $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'\')"></div>';
+  $hidden_date .= '<span id="add_user_group" style="display:none;"><input type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></span>';
 
 
   //追加个人
@@ -10891,10 +10892,10 @@ if($row_array['set_time']==0){
       $as_date_added = $a_info[0]['add_time'];
       $as_user_update = $a_info[0]['update_user'];
       $as_last_modified = $a_info[0]['update_time'];
-      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info[0]['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
       $show_arr = false;
     }else{
-      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info[0]['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
     }
     $as_info_row[]['text'] = $as_info_row_tmp;
 
@@ -10918,7 +10919,7 @@ if($row_array['set_time']==0){
 	}else{
 	$style_hidden_del = 'style="display:block inline;"';
 	}
-    $has_user_select .= '</select><td nowrap="nowrap"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_one_person(this)"><input '.$style_hidden_del.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\')" value="'.TEXT_ADD_ADL.'"></td>';
+    $has_user_select .= '</select><td nowrap="nowrap"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_del.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)
