@@ -68,6 +68,20 @@
             tep_db_perform(TABLE_GROUPS, $group_sql_array);	
             $insert_group_id = tep_db_insert_id();
             //计算工资的标题、公式
+            $wage_sort = $_POST['wage_sort'];
+            $wage_object_sort = array();
+            $wage_formula_sort = array();
+
+            foreach($wage_sort as $wage_sort_key=>$wage_sort_value){
+
+              if($wage_sort_value == 0){
+
+                $wage_object_sort[] = $wage_sort_key;
+              }else if($wage_sort_value == -1){
+
+                $wage_formula_sort[] = $wage_sort_key; 
+              }
+            }
             $object_title = tep_db_prepare_input($_POST['object_title']);
             $object_contents = tep_db_prepare_input($_POST['object_contents']);
 
@@ -77,7 +91,8 @@
                $object_sql_array = array('group_id' => $insert_group_id,
 				     'project_id' => 0,
 				     'title' => $object_title_value,
-				     'contents' => $object_contents[$object_title_key] 
+                                     'contents' => $object_contents[$object_title_key],
+                                     'sort'=>$wage_object_sort[$object_title_key] 
 			            );
                tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
              }
@@ -94,7 +109,8 @@
 				     'project_id' => 1,
 				     'title' => $formula_title_value,
 				     'contents' => $formula_contents[$formula_title_key], 
-				     'project_value' => $formula_value[$formula_title_key] 
+                                     'project_value' => $formula_value[$formula_title_key],
+                                     'sort'=>$wage_formula_sort[$formula_title_key] 
 			            );
                tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
              }
@@ -158,13 +174,32 @@
           $old_object_title = tep_db_prepare_input($_POST['old_object_title']);
           $old_object_contents = tep_db_prepare_input($_POST['old_object_contents']);
 
+          $wage_sort = $_POST['wage_sort'];
+          $wage_object_sort = array();
+          $wage_formula_sort = array();
+          $wage_old_sort = array();
+
+          foreach($wage_sort as $wage_sort_key=>$wage_sort_value){
+
+            if($wage_sort_value == 0){
+
+              $wage_object_sort[] = $wage_sort_key;
+            }else if($wage_sort_value == -1){
+
+              $wage_formula_sort[] = $wage_sort_key; 
+            }else{
+              $wage_old_sort[$wage_sort_value] = $wage_sort_key; 
+            }
+          }
+          
           foreach($old_object_title as $old_object_title_key=>$old_object_title_value){
 
            $old_project_current_array[] = $old_object_title_key;
            if(trim($old_object_title_value) != '' && trim($old_object_contents[$old_object_title_key]) != ''){ 
              $old_object_sql_array = array(
 				     'title' => $old_object_title_value,
-				     'contents' => $old_object_contents[$old_object_title_key] 
+                                     'contents' => $old_object_contents[$old_object_title_key],
+                                     'sort'=> $wage_old_sort[$old_object_title_key] 
 			            );
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_object_sql_array, 'update', 'id='.$old_object_title_key);
            }else{
@@ -186,7 +221,8 @@
              $object_sql_array = array('group_id' => $group_id,
 				     'project_id' => 0,
 				     'title' => $object_title_value,
-				     'contents' => $object_contents[$object_title_key] 
+                                     'contents' => $object_contents[$object_title_key], 
+                                     'sort'=> $wage_object_sort[$object_title_key]
 			            );
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
            }
@@ -209,7 +245,8 @@
              $old_formula_sql_array = array(
 				     'title' => $old_formula_title_value,
 				     'contents' => $old_formula_contents[$old_formula_title_key], 
-				     'project_value' => $old_formula_value[$old_formula_title_key] 
+				     'project_value' => $old_formula_value[$old_formula_title_key], 
+                                     'sort'=> $wage_old_sort[$old_formula_title_key]
 			            );
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_formula_sql_array, 'update', 'id='.$old_formula_title_key);
            }else{
@@ -233,7 +270,8 @@
 				     'project_id' => 1,
 				     'title' => $formula_title_value,
 				     'contents' => $formula_contents[$formula_title_key], 
-				     'project_value' => $formula_value[$formula_title_key] 
+				     'project_value' => $formula_value[$formula_title_key], 
+                                     'sort'=> $wage_formula_sort[$formula_title_key]
 			            );
               tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
             }

@@ -183,13 +183,17 @@
           foreach($formula_users_wage as $keys=>$values){
 
             foreach($values as $keys_k=>$values_v){
-              $pam_key_array = array_keys($pam_array[$keys_k]);
+              if(!empty($pam_array[$keys_k])){
+                $pam_key_array = array_keys($pam_array[$keys_k]);
 
-            if(!in_array($pam_users_wage[$keys][$keys_k],$pam_key_array)){
-              $replace_pam_value[$keys][$keys_k] = tep_user_wage($values_v,$keys_k,$save_date,$group_id,$pam_array[$keys_k]);  
-            }else{
-              $replace_pam_value[$keys][$keys_k] = $users_wage[$keys][$keys_k];
-            }
+                if(!in_array($pam_users_wage[$keys][$keys_k],$pam_key_array)){
+                  $replace_pam_value[$keys][$keys_k] = tep_user_wage($values_v,$keys_k,$save_date,$group_id,$pam_array[$keys_k]);  
+                }else{
+                  $replace_pam_value[$keys][$keys_k] = $users_wage[$keys][$keys_k];
+                }
+              }else{
+                  $replace_pam_value[$keys][$keys_k] = $users_wage[$keys][$keys_k];
+              }
             }
           }
         break;
@@ -510,7 +514,7 @@ color:#0066CC;
         $group_id = '';
         $group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
         $groups_users_id = array();
-        $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."' order by id");
+        $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."' order by sort");
         while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
           $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
           $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id'],'pam'=>$groups_wage_array['contents']);
@@ -639,7 +643,7 @@ color:#0066CC;
                   $user_wage_value[$wage_id['id']] += $wage_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:80%;"><input type="hidden" name="hidden_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'"><input type="hidden" name="pam_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['pam'].'"><input type="hidden" name="formula_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['value'].'">' 
+                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:80%;" onblur="if(this.value==\'\'){this.value=0;}"><input type="hidden" name="hidden_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'"><input type="hidden" name="pam_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['pam'].'"><input type="hidden" name="formula_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['value'].'">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
