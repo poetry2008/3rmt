@@ -10004,7 +10004,7 @@ echo  $return_res;
 	  $has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$show_only.'  onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
       $as_info_row_tmp = array(); 
       $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
+      $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
       if($show_arr){
         $as_user_added = $a_info['add_user'];
         $as_date_added = $a_info['add_time'];
@@ -11059,7 +11059,7 @@ if($row_array['set_time']==0){
   //底部内容
   $buttons = array();
   if($ocertify->npermission>10&&$_GET['add_id']==''){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['back_group_id'].'\',\''.$_GET['back_attendance_id'].'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
 

@@ -1,3 +1,5 @@
+var temp_group_id = '';
+var temp_attendance_id = '';
 var ele_value_obj_att = '';
 var ele_index = 0;
 //show attendance info
@@ -168,9 +170,15 @@ function change_image_text(_this) {
 function attendance_setting(date,ele,gid,add_id){
   if(!gid){
     gid='';
+    temp_group_id='';
+  }else{
+    temp_group_id=gid;
   }
   if(!add_id){
     add_id='';
+    temp_attendance_id='';
+  }else{
+    temp_attendance_id=add_id;
   }
   var index = ele;
   var ele = document.getElementById('date_td_'+ele);
@@ -224,6 +232,8 @@ function change_model_get_time(model_id){
 
 function hidden_info_box(){
   $('#show_attendance_edit').css('display','none');
+  temp_group_id = '';
+  temp_attendance_id = '';
 }
 
 //change mould time
@@ -764,11 +774,13 @@ function attendance_setting_user(date,ele,uid,add_id,u_att_id){
     box_warp_top = box_warp.top;
     box_warp_left = box_warp.left;
   }
+  var back_group_id = temp_group_id;
+  var back_attendance_id = temp_attendance_id;
   var ele_obj = '';
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting_user&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id,
+    url: 'ajax.php?action=attendance_setting_user&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id+'&back_group_id='+back_group_id+'&back_attendance_id='+back_attendance_id,
     dataType: 'text',
     async: false,
     success: function(text) {
