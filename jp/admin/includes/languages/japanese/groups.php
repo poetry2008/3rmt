@@ -37,4 +37,8 @@ define('TEXT_GROUP_ORDER_SORT','整列順');
 define('TEXT_GROUP_DAYS','日間');
 define('TEXT_GROUP_RESET','重置');
 define('TEXT_GROUP_WAGE_ADMIN','給料計算管理');
+define('TEXT_INFO_HEADING_MOVE_GROUP','グループを移動');
+define('TEXT_MOVE_GROUP_INTRO','%s&nbsp;&nbsp;を移動する先のグループを選んでください');
+define('TEXT_MOVE','%s&nbsp;&nbsp;の移動先:');
+define('TEXT_CURRENT_GROUPS','現在のグループ');
 ?>
