@@ -8884,7 +8884,18 @@ if($_GET['latest_messages_id']>0){
 	$heading[] = array('text' => $_POST['group_name']);
  	$form_str = tep_draw_form('new_latest_group', FILENAME_GROUPS,'action=update_group&id='.$_POST['group_id'].'&parent_id='.$_POST['parent_group_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }
- $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+
+//管理员的隐藏 
+$manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
+ $all_manager_add ='<div id="add_manager_hidden" style="display:none;">';
+	$all_manager_add .='<li><select class="manager_select" name="managers_list[]">';	
+	while($manager_list_res = tep_db_fetch_array($manager_list)){
+       $all_manager_add .='<option value="'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</option>';
+	}
+	$all_manager_add .='</select><input onclick="del_manager_row(this)" type="button" value="'.TEXT_DEL_ADL.'"></li>';
+ $all_manager_add .='</div>';
+
+ $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str.$all_manager_add);
  //读取groups数据
  $groups_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$_POST['group_id']."'");
  $groups_array = tep_db_fetch_array($groups_query);
@@ -8903,24 +8914,35 @@ if($_GET['latest_messages_id']>0){
  }
  $group_content_table[] = array('text'=>$group_content_row_name); 
  $group_content_table[] = array('text'=>$group_content_row_contents); 
+ 
+
 
  //管理员
  $group_manager[] = array('params'=>'width="20%"','text'=> GROUP_MANAGERS );
  if($_POST['group_id'] < 0){
  	$manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
-   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+   /*	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	$res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
     $permission = tep_db_fetch_array($res_tep_row);
 	$hidden =  $permission['permission']>10 ? 'style="display:none"':'';
         $all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
- 	 $all_manager .= '</ul>';
+	$all_manager .= '</ul>';*/
+
+   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+	$all_manager .='<li><select class="manager_select" name="managers_list[]">';	
+	while($manager_list_res = tep_db_fetch_array($manager_list)){
+       $all_manager .='<option value="'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</option>';
+	}
+	$all_manager .='</select></li><input type="button" onclick="add_manager_row(this)" value="'.TEXT_ADD_ADL.'">';
+   	$all_manager .= '</ul>'; 
+	
  }else{
      $group_all_manager = tep_db_fetch_array(tep_db_query('select all_managers_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
 	 $group_all_manager = explode('|||',$group_all_manager['all_managers_id']);
 	 $manager_list = tep_db_query('select * from '.TABLE_USERS.' where status=1');
-	 $all_manager = '<ul class="table_img_list" style="width:100%">'; 
+/*	 $all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	 while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	     $res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
          $permission = tep_db_fetch_array($res_tep_row);
@@ -8928,6 +8950,21 @@ if($_GET['latest_messages_id']>0){
      		$all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	$all_manager .= '</ul>';
+ */
+    $manager_list_res = array();
+	 while($row = tep_db_fetch_array($manager_list)){
+		 $manager_list_res[]=$row;
+	 }
+   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+	for($i=0; $i<count($group_all_manager); $i++){
+	  $all_manager .='<li><select class="manager_select" name="managers_list[]">';	
+	  foreach($manager_list_res as $manager_info){
+        $all_manager .='<option value="'.$manager_info['userid'].'"'.($manager_info['userid']==$group_all_manager[$i] ? ' selected="selected"' : '').'>'.$manager_info['name'].'</option>';
+	 }
+	    $all_manager .='</select><input '.($i==0 ? 'style="display:none;"':'').' onclick="del_manager_row(this)" type="button" value="'.TEXT_DEL_ADL.'"></li>';
+	}
+   	$all_manager .= '<input type="button" onclick="add_manager_row(this)" value="'.TEXT_ADD_ADL.'"></ul>'; 
+
  }
  $group_manager[] = array('text' => $all_manager);
 
@@ -10819,8 +10856,8 @@ if($row_array['set_time']==0){
     $user_select .= '>'.$user['name'].'</oprion>';
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
-  $user_select .= '</select></select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'">';
-  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'">';
+  $user_select .= '</select></select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'"></td>';
+  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'"></td>';
 
 
   //追加个人
@@ -10924,12 +10961,16 @@ if($row_array['set_time']==0){
       }
       $has_user_select .= ' >'.$user['name'].'</option>';
     }
-	if($i!=0){
-	$style_hidden_del = 'style="display:none;"';
+	if($j!=0){
+	    //隐藏除第一个以外的add按钮
+	  $style_hidden_add = 'style="display:none;"';
+	    //隐藏第一个删除按钮
+	  $style_hidden_del = 'style="display:block inline;"';
 	}else{
-	$style_hidden_del = 'style="display:block inline;"';
+	  $style_hidden_add = 'style="display:block inline;"';
+	  $style_hidden_del = 'style="opacity:0;"'.'disabled="disabled"';
 	}
-    $has_user_select .= '</select><input type="hidden" name="data_as['.$a_info[$j]['u_group'].'][]" value="'.$a_info[$j]['id'].'"><td nowrap="nowrap"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_del.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
+    $has_user_select .= '</select><input type="hidden" name="data_as['.$a_info[$j]['u_group'].'][]" value="'.$a_info[$j]['id'].'"><td nowrap="nowrap"><input '.$style_hidden_del.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_add.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
     $temp_as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)

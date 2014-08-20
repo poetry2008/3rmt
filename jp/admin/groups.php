@@ -28,6 +28,7 @@
 	      $all_users_id = '';
 	    }
 
+       $_POST['managers_list'] = array_unique($_POST['managers_list']);
 	    if(!empty($_POST['managers_list'])){
 	      $all_managers_id = implode('|||',$_POST['managers_list'] );
 	    }else{
@@ -130,6 +131,7 @@
 	  }
 
 
+       $_POST['managers_list'] = array_unique($_POST['managers_list']);
 	    if(!empty($_POST['managers_list'])){
 	      $all_managers_id = implode('|||',$_POST['managers_list'] );
 	    }else{

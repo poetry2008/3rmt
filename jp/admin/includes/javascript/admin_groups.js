@@ -515,3 +515,10 @@ function del_admin_list(ele){
   add_admin_button.disabled = false;
   $(ele).parent().parent().remove();
 }
+
+function add_manager_row(ele){
+	$(ele).before($("#add_manager_hidden").html());
+}
+function del_manager_row(ele){
+	$(ele).parent().remove();
+}
