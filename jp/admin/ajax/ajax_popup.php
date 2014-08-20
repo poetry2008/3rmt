@@ -10719,16 +10719,20 @@ if($row_array['set_time']==0){
   $operator = $ocertify->auth_user;
   if($ocertify->npermission >= '15'){
 	  //选中的
+    $show_user_id_list = array();
 	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
     $query_all_check_user = tep_db_query($sql_all_check_user);
     while($row_all_check_user = tep_db_fetch_array($query_all_check_user)){
       $all_check_user[] = $row_all_check_user;
+      $show_user_id_list[] = $row_all_check_user['userid'];
     }
 	//全部的
     $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
-      $all_user[] = $row_all_user;
+      if(in_array($row_all_user['userid'],$show_user_id_list)){
+        $all_user[] = $row_all_user;
+      }
     }
 	$all_user = array_intersect($all_user,$all_check_user);
   }
@@ -10763,17 +10767,16 @@ if($row_array['set_time']==0){
   if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
     $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
-	/*
-    foreach($attendance_dd_arr as $u_att){
-      $all_user[] = tep_get_user_info($u_att['user_id']);
+    if($ocertify->npermission<15){
+      foreach($attendance_dd_arr as $u_att){
+        $all_user[] = tep_get_user_info($u_att['user_id']);
+      }
     }
-	 */
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
     $attendance_dd_arr = array();
     foreach($all_user as $user_info){
-      $attendance_dd_arr =
-        array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
+      $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
     }
   }
 
@@ -10895,16 +10898,21 @@ if($row_array['set_time']==0){
       $as_user_update = $a_info[0]['update_user'];
       $as_last_modified = $a_info[0]['update_time'];
       $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
-      $show_arr = false;
     }else{
       $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
     }
-    $as_info_row[]['text'] = $as_info_row_tmp;
 
+  $temp_as_info_row = array();
+  $show_user = true;
+  $temp_count = 0;
   for($j=0; $j<count($a_info);$j++){
     $has_user_select = '<select name="has_user['.$a_info[$j]["u_group"].'][]" '.$disabled.'>';
     $has_user_select_hidden = '';
     $default_has_user = '';
+    if(!in_array($a_info[$j]['user_id'],$show_user_id_list)){
+      $temp_count++;
+      continue;
+    }
     foreach($all_user as $user){
       if($default_has_user == ''){
       $default_has_user = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
@@ -10922,13 +10930,19 @@ if($row_array['set_time']==0){
 	$style_hidden_del = 'style="display:block inline;"';
 	}
     $has_user_select .= '</select><input type="hidden" name="data_as['.$a_info[$j]['u_group'].'][]" value="'.$a_info[$j]['id'].'"><td nowrap="nowrap"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_del.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
-    $as_info_row[]['text'] = array(
+    $temp_as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)
     );
 
 
   }
+    if($j==$temp_count){
+      continue;
+    }
+    $as_info_row[]['text'] = $as_info_row_tmp;
+    $show_arr = false;
+    $as_info_row = array_merge($as_info_row,$temp_as_info_row);
     if($disabled){
       if($has_user_select_hidden!=''){
         $has_user_select .= $has_user_select_hidden;
