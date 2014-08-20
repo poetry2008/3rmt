@@ -9263,7 +9263,11 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
       ); 
  }
  $group_content_row_opt = array();
- $group_content_row_opt[] = array('params'=>'align="center" colspan="2"','text'=>'<input class="element_button" type="submit" onclick="check_group();" value="'.GROUP_SAVE.'">'.($_POST['group_id'] < 0 && $ocertify->npermission >= 15 ? '' : '&nbsp;&nbsp;<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="delete_group('.$_POST['group_id'].','.$_POST['parent_group_id'].');">'));
+ $move_copy_str = '';
+ if($_POST['group_id'] > 0 && $ocertify->npermission >= 10){
+   $move_copy_str = '<input class="element_button" type="button" value="'.IMAGE_MOVE.'" onclick="move_group_id('.$groups_array['id'].');">&nbsp;&nbsp;<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="copy_group_id('.$groups_array['id'].')">&nbsp;&nbsp;';
+ }
+ $group_content_row_opt[] = array('params'=>'align="center" colspan="2"','text'=> ($_POST['group_id'] < 0 && $ocertify->npermission >= 15 ? '' : '<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="delete_group('.$_POST['group_id'].','.$_POST['parent_group_id'].');">').'&nbsp;&nbsp;'.$move_copy_str.'<input class="element_button" type="submit" onclick="check_group();" value="'.GROUP_SAVE.'">');
  $group_content_table[] = array('text'=>$group_content_row_opt);
  $notice_box->get_heading($heading);
  $notice_box->get_form($form_str);
@@ -11176,8 +11180,8 @@ if($row_array['set_time']==0){
                 </div>
                 </div></td>';
      $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => $groups_wage_array['title']), 
+        array('align' => 'left','params' => 'width="70%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
      );
      $group_content_table[] = array('text'=>$group_content_row_wage);
      $groups_users_id[] = $groups_wage_array['id'];
@@ -11189,8 +11193,8 @@ if($row_array['set_time']==0){
  //备注
  $group_content_row_wage = array();
  $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_CONTENTS), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<textarea name="wage_contents" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:300px;height:42px;*height:40px;">'.$user_wage_contents.'</textarea>'), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_PAYROLLS_CONTENTS), 
+        array('align' => 'left','params' => 'width="70%"', 'text' => '<textarea name="wage_contents" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:300px;height:42px;*height:40px;">'.$user_wage_contents.'</textarea>'), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
@@ -11285,8 +11289,8 @@ if($row_array['set_time']==0){
  //总计时间
  $group_content_row_wage = array();
  $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => $wage_start_date.'～'.$wage_end_date), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
+        array('align' => 'left','params' => 'width="70%"', 'text' => $wage_start_date.'～'.$wage_end_date), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
@@ -11296,16 +11300,16 @@ if($row_array['set_time']==0){
    $a_info = tep_get_attendance_by_id($a_key);
    $group_content_row_wage = array();
    $group_content_row_wage = array(
-          array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['title']), 
-          array('align' => 'left','params' => 'width="85%"', 'text' => TEXT_ATT_SET_VALUE .'&nbsp;&nbsp;'. $a_value['time'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. TEXT_ATT_ACTUAL_VALUE .'&nbsp;&nbsp;'. $a_value['real_time']), 
+          array('align' => 'left','params' => 'width="30%"', 'text' => $a_info['title']), 
+          array('align' => 'left','params' => 'width="70%"', 'text' => TEXT_ATT_SET_VALUE .'&nbsp;&nbsp;'. $a_value['time'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. TEXT_ATT_ACTUAL_VALUE .'&nbsp;&nbsp;'. $a_value['real_time']), 
        );
    $group_content_table[] = array('text'=>$group_content_row_wage);
  }
  if($_POST['group_id'] > 0){
    //作成者、作成时间、更新者、更新时间
    $group_content_table[]['text'] = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($show_tep_info[0]['create_user'])?$show_tep_info[0]['create_user']:TEXT_UNSET_DATA))), 
-        array('align' => 'left','params' => 'width="85%"','text' => TEXT_DATE_ADDED.'&nbsp;'.((tep_not_null(tep_datetime_short($show_tep_info[0]['create_date'])))?tep_datetime_short($show_tep_info[0]['create_date']):TEXT_UNSET_DATA)), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($show_tep_info[0]['create_user'])?$show_tep_info[0]['create_user']:TEXT_UNSET_DATA))), 
+        array('align' => 'left','params' => 'width="70%"','text' => TEXT_DATE_ADDED.'&nbsp;'.((tep_not_null(tep_datetime_short($show_tep_info[0]['create_date'])))?tep_datetime_short($show_tep_info[0]['create_date']):TEXT_UNSET_DATA)), 
       );
   
    $group_content_table[]['text'] = array(
@@ -11320,4 +11324,116 @@ if($row_array['set_time']==0){
  $notice_box->get_form($form_str);
  $notice_box->get_contents($group_content_table);
  echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'move_group') {
+/* -----------------------------------------------------
+    功能: 移动组信息的弹出框
+    参数: $_GET['id'] 组id 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_GROUPS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //获取组的信息
+  $group_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$_GET['id']."'");
+  $group_array = tep_db_fetch_array($group_query);
+  tep_db_free_result($group_query);
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_MOVE_GROUP);
+  $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
+
+  $buttons = array();
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_MOVE, 'onclick="toggle_group_form(\''.tep_href_link(FILENAME_GROUPS,tep_get_all_get_params(array('action'))).'\',\'move_group\');"').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $move_category_info = array();
+  
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => sprintf(TEXT_MOVE_GROUP_INTRO, $group_array['name'])), 
+      );
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => sprintf(TEXT_MOVE, $group_array['name']).tep_draw_hidden_field('group_id', $_GET['id'])), 
+      );
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => tep_draw_pull_down_menu('move_to_group_id', tep_get_group_tree(0,'',array(0=>array('id'=>0,'text'=>HEADER_TITLE_TOP)),(int)$group_array['id']), 0)), 
+      );
+ 
+  $form_str = tep_draw_form('move_group', FILENAME_GROUPS, 'action=move_group_confirm');
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($move_category_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+
+  echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'copy_group') {
+/* -----------------------------------------------------
+    功能: 复制组信息的弹出框
+    参数: $_GET['id'] 组id 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_GROUPS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //获取组的信息
+  $group_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$_GET['id']."'");
+  $group_array = tep_db_fetch_array($group_query);
+  tep_db_free_result($group_query);
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => IMAGE_COPY_TO);
+  $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
+
+  $buttons = array();
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_COPY, 'onclick="toggle_group_form(\''.tep_href_link(FILENAME_GROUPS,tep_get_all_get_params(array('action'))).'\',\'copy_group\');"').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $move_category_info = array();
+
+  //获取组的父类名称 
+  $parent_id_array = array();
+  $parent_query = tep_db_query("select id,name from ".TABLE_GROUPS);
+  while($parent_array = tep_db_fetch_array($parent_query)){
+
+    $parent_id_array[$parent_array['id']] = $parent_array['name'];
+  }
+  tep_db_free_result($parent_query);
+  group_parent_id_list($group_array['id'],$group_parent_id_list);
+  $group_list_str = HEADER_TITLE_TOP;
+  if(!empty($group_parent_id_list)){
+
+    krsort($group_parent_id_list);
+    foreach($group_parent_id_list as $group_id_value){
+
+      $group_list_str .= '&nbsp;>&nbsp;'.$parent_id_array[$group_id_value];
+    }
+  }
+  $group_list_str .= '&nbsp;>&nbsp;'.$group_array['name'];
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_CURRENT_GROUPS.tep_draw_hidden_field('group_id', $_GET['id'])), 
+        array('align' => 'left', 'text' => $group_list_str), 
+      ); 
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => IMAGE_COPY_TO), 
+        array('align' => 'left', 'text' => tep_draw_pull_down_menu('copy_to_group_id', tep_get_group_tree(0,'',array(0=>array('id'=>0,'text'=>HEADER_TITLE_TOP)),(int)$group_array['id']), 0)), 
+      );
+ 
+  $form_str = tep_draw_form('copy_group', FILENAME_GROUPS, 'action=copy_group_confirm');
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($move_category_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+
+  echo $notice_box->show_notice();
 }

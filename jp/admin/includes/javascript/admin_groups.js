@@ -515,7 +515,84 @@ function del_admin_list(ele){
   add_admin_button.disabled = false;
   $(ele).parent().parent().remove();
 }
-
+//popup move group page
+function move_group_id(id){
+  $.ajax({
+dataType: 'text',
+url: 'ajax.php?'+move_group_id_url+'&action=move_group&id='+id,
+success: function(text) {
+$('#show_latest_news').html(text);
+$('#show_latest_news').css('display','block');
+}
+});
+}
+//move group submit
+function toggle_group_form(group_url_str,action) 
+{
+  if (user_permission == 31) {
+    if(action == 'move_group'){
+      document.forms.move_group.submit();
+    }else if(action == 'copy_group'){
+      document.forms.copy_group.submit(); 
+    }
+  } else {
+    $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name='+js_news_self, 
+    async: false,
+    success: function(msg) {
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
+      if (tmp_msg_arr[0] == '0') {
+        if(action == 'move_group'){
+          document.forms.move_group.submit();
+        }else if(action == 'copy_group'){
+          document.forms.copy_group.submit(); 
+        }
+      } else {
+        if ($('#button_save')) {
+          $('#button_save').attr('id', 'tmp_button_save'); 
+        }
+        var input_pwd_str = window.prompt(js_onetime_pwd, ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(group_url_str),
+            async: false,
+            success: function(msg_info) {
+              if(action == 'move_group'){
+                document.forms.move_group.submit();
+              }else if(action == 'copy_group'){
+                document.forms.copy_group.submit(); 
+              }
+            }
+          }); 
+        } else {
+          alert(js_onetime_error); 
+          if ($('#tmp_button_save')) {
+            setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+          }
+        }
+      }
+    }
+    });
+  }
+}
+//popup copy group page
+function copy_group_id(id){
+  $.ajax({
+dataType: 'text',
+url: 'ajax.php?'+move_group_id_url+'&action=copy_group&id='+id,
+success: function(text) {
+$('#show_latest_news').html(text);
+$('#show_latest_news').css('display','block');
+}
+});
+}
 function add_manager_row(ele){
 	$(ele).before($("#add_manager_hidden").html());
 }
