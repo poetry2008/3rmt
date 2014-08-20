@@ -827,10 +827,10 @@ if($param_tep[0]!=''){
 $attendance_select_sql = "select attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where "; 
 $replace_select_sql = '';
 if(!empty($show_select_group_user)){
-  if($show_group_id = 0){
+  if($show_group_id == 0){
     $attendance_select_sql .= " is_user = 0 ";
   }else{
-    $attendance_select_sql .= " group_id = '".$show_group_id."'";
+    $attendance_select_sql .= "(is_user=0 and group_id = '".$show_group_id."')";
   }
   $replace_select_sql = "select replace_attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user in ('".implode("','",$show_select_group_user)."')";
   $attendance_select_sql .= " or (is_user=1 and user_id in ('".implode("','",$show_select_group_user)."'))";

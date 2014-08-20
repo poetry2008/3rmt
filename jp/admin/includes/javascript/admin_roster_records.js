@@ -468,8 +468,10 @@ function del_as(ele,asl_id,c_permission){
   $('.popup_order_info').find('tr').eq(tr_index).remove();
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
-  if(tr_index==0 && check_last.length>0){
-   $('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
+  if(check_last){
+    if(tr_index==0 && check_last.length>0){
+     $('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
+    }
   }
   if(asl_id!=''){
     $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
@@ -507,8 +509,10 @@ function del_as_group(ele,attendance_group,is_new,c_permission){
   $('.popup_order_info').find('tr').eq(tr_index).remove();
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
-  if(tr_index==0 && check_last.length>0){
-   $('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
+  if(check_last){
+    if(tr_index==0 && check_last.length>0){
+     $('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
+    }
   }
   if(is_new==false){
     $('#get_att_date').after('<input type="hidden" name="del_group[]" value="'+attendance_group+'">');
