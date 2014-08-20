@@ -9048,7 +9048,7 @@ if($_GET['latest_messages_id']>0){
    $group_content_row_date = array();
    $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
    $date_str = '';
-   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;">'.tep_draw_input_field('wage_date',date('Y-m-d',time()),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.date('Y-m-d',time()).'">
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;">'.tep_draw_input_field('wage_date',date('Y-m-d',time()),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="10" value="'.date('Y-m-d',time()).'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
                 </div>
@@ -9126,7 +9126,7 @@ if($_GET['latest_messages_id']>0){
    $group_content_row_date = array();
    $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
    $date_str = '';
-   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'>'.tep_draw_input_field('wage_date',($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())).'">
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'>'.tep_draw_input_field('wage_date',($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="10" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())).'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
                 </div>
@@ -9152,7 +9152,7 @@ if($_GET['latest_messages_id']>0){
  $group_content_row_hour[] = array('text' => $hour_str);
  $group_content_table[] = array('text'=>$group_content_row_hour); 
  //工资计算
- $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$_POST['group_id']."' order by id"); 
+ $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$_POST['group_id']."' order by sort"); 
  $group_content_row_wage = array();
  $group_content_row_wage[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_WAGE_OBJECT);
  $wage_str = '<select id="wage_select">';
@@ -9171,13 +9171,13 @@ if($_GET['latest_messages_id']>0){
    while($wage_array = tep_db_fetch_array($wage_query)){
 
      $group_content_row_wage = array();
-     $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
+     $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '<input type="hidden" value="'.$wage_array['id'].'" name="wage_sort[]">&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
      if($wage_array['project_id'] == 0){
        $old_project_id_array[] = $wage_array['id'];
-       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="old_object_title['.$wage_array['id'].']"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="old_object_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
+       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="old_object_title['.$wage_array['id'].']"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="old_object_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);">');
      }else{
        $old_formula_id_array[] = $wage_array['id'];
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" style="width: 302px;" name="old_formula_value['.$wage_array['id'].']">');
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><input type="text" value="'.$wage_array['project_value'].'" style="width: 302px;" name="old_formula_value['.$wage_array['id'].']">');
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
@@ -9188,7 +9188,7 @@ if($_GET['latest_messages_id']>0){
  $group_content_row_order = array();
  $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT.'<input type="hidden" name="old_project_str" value="'.implode(',',$old_project_id_array).'"><input type="hidden" name="old_formula_str" value="'.implode(',',$old_formula_id_array).'">');
  $group_content_row_order[] = array('text' => '<input type="text" style="text-align:right;width:20%;" size="31" value="'.(isset($groups_array['order_sort']) ? $groups_array['order_sort'] : '1000').'" name="order_sort">');
- $group_content_table[] = array('text'=>$group_content_row_order);
+ $group_content_table[] = array('params'=>'id="end_tr"','text'=>$group_content_row_order);
 
  if($_POST['group_id'] > 0){
 	$group_content_row_subgroup = array();
@@ -10719,16 +10719,20 @@ if($row_array['set_time']==0){
   $operator = $ocertify->auth_user;
   if($ocertify->npermission >= '15'){
 	  //选中的
+    $show_user_id_list = array();
 	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
     $query_all_check_user = tep_db_query($sql_all_check_user);
     while($row_all_check_user = tep_db_fetch_array($query_all_check_user)){
       $all_check_user[] = $row_all_check_user;
+      $show_user_id_list[] = $row_all_check_user['userid'];
     }
 	//全部的
     $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
-      $all_user[] = $row_all_user;
+      if(in_array($row_all_user['userid'],$show_user_id_list)){
+        $all_user[] = $row_all_user;
+      }
     }
 	$all_user = array_intersect($all_user,$all_check_user);
   }
@@ -10763,17 +10767,16 @@ if($row_array['set_time']==0){
   if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
     $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
-	/*
-    foreach($attendance_dd_arr as $u_att){
-      $all_user[] = tep_get_user_info($u_att['user_id']);
+    if($ocertify->npermission<15){
+      foreach($attendance_dd_arr as $u_att){
+        $all_user[] = tep_get_user_info($u_att['user_id']);
+      }
     }
-	 */
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
     $attendance_dd_arr = array();
     foreach($all_user as $user_info){
-      $attendance_dd_arr =
-        array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
+      $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
     }
   }
 
@@ -10895,16 +10898,21 @@ if($row_array['set_time']==0){
       $as_user_update = $a_info[0]['update_user'];
       $as_last_modified = $a_info[0]['update_time'];
       $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
-      $show_arr = false;
     }else{
       $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
     }
-    $as_info_row[]['text'] = $as_info_row_tmp;
 
+  $temp_as_info_row = array();
+  $show_user = true;
+  $temp_count = 0;
   for($j=0; $j<count($a_info);$j++){
     $has_user_select = '<select name="has_user['.$a_info[$j]["u_group"].'][]" '.$disabled.'>';
     $has_user_select_hidden = '';
     $default_has_user = '';
+    if(!in_array($a_info[$j]['user_id'],$show_user_id_list)){
+      $temp_count++;
+      continue;
+    }
     foreach($all_user as $user){
       if($default_has_user == ''){
       $default_has_user = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
@@ -10926,13 +10934,19 @@ if($row_array['set_time']==0){
 	  $style_hidden_del = 'style="opacity:0;"'.'disabled="disabled"';
 	}
     $has_user_select .= '</select><input type="hidden" name="data_as['.$a_info[$j]['u_group'].'][]" value="'.$a_info[$j]['id'].'"><td nowrap="nowrap"><input '.$style_hidden_del.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_add.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
-    $as_info_row[]['text'] = array(
+    $temp_as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)
     );
 
 
   }
+    if($j==$temp_count){
+      continue;
+    }
+    $as_info_row[]['text'] = $as_info_row_tmp;
+    $show_arr = false;
+    $as_info_row = array_merge($as_info_row,$temp_as_info_row);
     if($disabled){
       if($has_user_select_hidden!=''){
         $has_user_select .= $has_user_select_hidden;
@@ -11064,7 +11078,7 @@ if($row_array['set_time']==0){
  }
  $groups_users_id = array();
  if($groups_id != 0){
-   $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' and project_id=0 order by id");
+   $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' and project_id=0 order by sort");
    $date_i = 0;
    while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
      $group_content_row_wage = array();
@@ -11086,7 +11100,7 @@ if($row_array['set_time']==0){
   }
   }
   </style>';
-     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="15" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
+     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="10" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="10" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
                 </div>
@@ -11114,7 +11128,7 @@ if($row_array['set_time']==0){
   }
   }
   </style>';
-     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="15" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
+     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="10" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="10" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
                 </div>

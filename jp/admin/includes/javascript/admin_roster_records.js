@@ -750,6 +750,9 @@ function attendance_setting_user(date,ele,uid,add_id,u_att_id){
   if(!add_id){
     add_id='';
   }
+  if(!u_att_id){
+    u_att_id='';
+  }
   var index = ele;
   var ele = document.getElementById('date_td_'+ele);
   var ele_width = $(".box_warp").width(); 
