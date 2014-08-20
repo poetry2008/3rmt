@@ -593,3 +593,9 @@ $('#show_latest_news').css('display','block');
 }
 });
 }
+function add_manager_row(ele){
+	$(ele).before($("#add_manager_hidden").html());
+}
+function del_manager_row(ele){
+	$(ele).parent().remove();
+}

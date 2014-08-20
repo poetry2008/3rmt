@@ -41,4 +41,6 @@ define('TEXT_INFO_HEADING_MOVE_GROUP','移动组');
 define('TEXT_MOVE_GROUP_INTRO','请选择移动到的组%s');
 define('TEXT_MOVE','%s&nbsp;&nbsp;移动到:');
 define('TEXT_CURRENT_GROUPS','现有的组');
+define('TEXT_ADD_ADL', '追加');
+define('TEXT_DEL_ADL', '削除');
 ?>

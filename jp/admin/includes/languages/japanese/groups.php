@@ -41,4 +41,6 @@ define('TEXT_INFO_HEADING_MOVE_GROUP','グループを移動');
 define('TEXT_MOVE_GROUP_INTRO','%s&nbsp;&nbsp;を移動する先のグループを選んでください');
 define('TEXT_MOVE','%s&nbsp;&nbsp;の移動先:');
 define('TEXT_CURRENT_GROUPS','現在のグループ');
+define('TEXT_ADD_ADL', '追加');
+define('TEXT_DEL_ADL', '削除');
 ?>
