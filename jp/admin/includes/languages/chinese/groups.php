@@ -37,4 +37,6 @@ define('TEXT_GROUP_ORDER_SORT','排列顺序');
 define('TEXT_GROUP_DAYS','日間');
 define('TEXT_GROUP_RESET','重置');
 define('TEXT_GROUP_WAGE_ADMIN','給料計算管理');
+define('TEXT_ADD_ADL', '追加');
+define('TEXT_DEL_ADL', '削除');
 ?>
