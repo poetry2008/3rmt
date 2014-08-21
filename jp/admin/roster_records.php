@@ -857,12 +857,41 @@ if($param_tep[0]!=''){
 	}
 }
 
+
+$attendance_select_sql = "select attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where "; 
+$replace_select_sql = '';
+if(!empty($show_select_group_user)){
+  if($show_group_id == 0){
+    $attendance_select_sql .= " is_user = 0 ";
+  }else{
+    $attendance_select_sql .= "(is_user=0 and group_id = '".$show_group_id."')";
+  }
+  $replace_select_sql = "select replace_attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where user in ('".implode("','",$show_select_group_user)."')";
+  $attendance_select_sql .= " or (is_user=1 and user_id in ('".implode("','",$show_select_group_user)."'))";
+}else{
+  $attendance_select_sql .= ' false ';
+}
+$attendance_select_query = tep_db_query($attendance_select_sql);
+$attendance_select_array = array();
+while($rows = tep_db_fetch_array($attendance_select_query)){
+  $attendance_select_array[] = $rows['attendance_detail_id'];
+}
+if($replace_select_sql != ''){
+  $replace_select_query = tep_db_query($replace_select_sql);
+  while($rows = tep_db_fetch_array($replace_select_query)){
+    $attendance_select_array[] = $rows['replace_attendance_detail_id'];
+  }
+}
+$attendance_select_array = array_unique($attendance_select_array);
+
+
 $att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
 $tep_result = tep_db_query($att_select_sql);
-
  $attendance_list=array();
  while($rows= tep_db_fetch_array($tep_result)) {
-   $attendance_list[] = $rows;
+   if(in_array($rows['id'],$attendance_select_array)){
+     $attendance_list[] = $rows;
+   }
  }
 $all_user_info = array();
 $all_user_name_info;

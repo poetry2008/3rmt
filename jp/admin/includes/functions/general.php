@@ -13995,7 +13995,7 @@ function tep_change_attendance_logout($uid) {
   参数: $group_tree_array(array) 给定的组目录数组
   返回值: 返回所有组信息的数组
 **********************************/
-function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
+function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array='',$group_id=''){
 
   global $ocertify;
   if (!is_array($group_tree_array)) $group_tree_array = array();
@@ -14024,14 +14024,24 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array=''){
     }
     if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PAYROLLS && $ocertify->npermission != 31){
       if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == '')) && in_array($ocertify->auth_user,$payrolls_admin_array)){
-        $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+        if(!($group_id != '' && $group_id == $groups['id'])){
+          $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+        }
       }
-    }else{
-      if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == ''))){
+    }else if($group_id != ''){
+      if(!($group_id != '' && $group_id == $groups['id'])){
         $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
       } 
+    }else{
+      if(!($groups['all_users_id'] == '' && (tep_db_num_rows($parent_query) == 0 || trim($all_users_id) == ''))){
+        if(!($group_id != '' && $group_id == $groups['id'])){
+          $group_tree_array[] = array('id' => $groups['id'],'text' => $spacing.$groups['name']);
+        }
+      } 
     }
-    $group_tree_array = tep_get_group_tree($groups['id'],$spacing.  '&nbsp;&nbsp;&nbsp;',$group_tree_array);
+    if(!($group_id != '' && $group_id == $groups['id'])){
+      $group_tree_array = tep_get_group_tree($groups['id'],$spacing.  '&nbsp;&nbsp;&nbsp;',$group_tree_array,$group_id);
+    }
   }
   return $group_tree_array;
 }
