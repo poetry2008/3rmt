@@ -30,4 +30,5 @@ define('TEXT_PAYROLLS_UNPAID_VACATION','请假');
 define('TEXT_ATT_SET_VALUE','打卡时间设定值小计');
 define('TEXT_ATT_ACTUAL_VALUE','打卡时间实际值小计');
 define('TEXT_PAYROLLS_AGAIN_COMPUTING','重新计算');
+define('TEXT_PAYROLLS_ERROR_PAM','<font color="#FF0000">*</font> 注：%s 数据错误');
 ?>
