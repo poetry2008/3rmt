@@ -994,7 +994,7 @@ require("includes/note_js.php");
                           'text' => $mark_html 
                         );
 	$title=explode("\n",$bulletin["content"]);
-	$title=strlen($title[0])>20? substr($title[0],0,20)."......":$title[0];
+	$title=strlen($title[0])>20? mb_substr($title[0],0,20,'utf-8')."......":$title[0];
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
                           'text' => $title
