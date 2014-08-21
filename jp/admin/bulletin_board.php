@@ -76,7 +76,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_info_raw=tep_db_query("select * from bulletin_board where id=$id");
 	 $bulletin_info_row=tep_db_fetch_array($bulletin_info_raw);
 	 $update_author=$ocertify->auth_user;
-	 if($update_author!=$bulletin_info_row['manager']&&$ocertify->npermission1=31&&$update_author!=$bulletin_info_row['author']){
+	 if($update_author!=$bulletin_info_row['manager']&&$ocertify->npermission!=31&&$update_author!=$bulletin_info_row['author']){
 		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD));
 			 }
 	 $content=$_POST['content'];
