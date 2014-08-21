@@ -508,7 +508,7 @@ color:#0066CC;
 	$notice_box = new notice_box('','',$wage_table_params);
 	$wage_table_row = array();
 	$wage_title_row = array();
-	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
+	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent" width="5%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
         $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_NAME.'</a>');
         //获取组对应的工资项目
         $group_id = '';
@@ -521,7 +521,7 @@ color:#0066CC;
         }
         tep_db_free_result($groups_wage_query);
         
-	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:8%;"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
+	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:5%;"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
 	$wage_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $wage_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
 		$wage_id = 0;
@@ -635,7 +635,7 @@ color:#0066CC;
                     
                   }
 
-                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
+                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,array(),$error_pam_array);
                   if($_GET['action'] == 'again_computing' && isset($_POST['users_wage']) && !empty($replace_pam_value)){
 
                     $wage_value = $replace_pam_value[$wage_id['id']][$users_value];
@@ -669,7 +669,7 @@ color:#0066CC;
           foreach($groups_users_id as $wage_id){
             $user_info[] = array(
                 	           'params' => '',
-                	           'text'   => '<input type="text" style="width:80%;" name="users_wage_total['.$wage_id['id'].']" value="'.$user_wage_value[$wage_id['id']].'">' 
+                	           'text'   => '<input type="text" style="width:80%;" disabled name="users_wage_total['.$wage_id['id'].']" value="'.$user_wage_value[$wage_id['id']].'">' 
                                  ); 
           } 
           $user_info[] = array(
@@ -690,15 +690,14 @@ color:#0066CC;
 <br>
 		    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:-10px;">
                     <tr>                 
-                    <td valign="top" class="smallText">
+                    <td valign="top" class="smallText" colspan="2">
                     <?php 
                     echo '<select name="user_action" onchange="user_change_action(this.value, \'user_id[]\','.$ocertify->npermission.');">';
                     echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';   
                     echo '<option value="1">'.TEXT_PAYROLLS_SEND_MAIL.'</option>';
                     echo '</select>';
+                    echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('　',$error_pam_array));
                     ?> 
-                    </td>
-                    <td align="right" class="smallText">
                     </td>
                     </tr> 
                     <tr><td></td><td align="right">

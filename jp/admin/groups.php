@@ -556,7 +556,7 @@ color:#0066CC;
 		$group_id = $_GET['id'];
 	}
 	$latest_group_query_raw = ' select *
-                from '.TABLE_GROUPS.' where parent_id = "'.$group_id.'"';
+                from '.TABLE_GROUPS.' where parent_id = "'.$group_id.'" order by order_sort asc';
 	$latest_group_split = new splitPageResults($group_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_group_query_raw, $latest_group_query_numrows);
 	$latest_group_query = tep_db_query($latest_group_query_raw);
         $all_group_array = array();
