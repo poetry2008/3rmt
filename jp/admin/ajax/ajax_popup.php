@@ -10894,7 +10894,7 @@ if($row_array['set_time']==0){
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'\')"></div>';
-  $hidden_date .= '<span id="add_user_group" style="display:none;"><input type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></span>';
+  $hidden_date .= '<span id="add_user_group" style="display:none;"><input type="button" onclick="add_att_rows(this,\'\')" value="'.iiTEXT_ADD_ADL.'"></span>';
 
 
   //追加个人
@@ -11041,7 +11041,7 @@ if($row_array['set_time']==0){
       );
     $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $user_select)
+        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $user_select)
       );
     $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
@@ -11086,6 +11086,17 @@ if($row_array['set_time']==0){
   $notice_box->get_contents($as_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+}else if($_GET['action'] == 'tep_show_info_attendance') {
+	/*@date 20140821 验证当前用户是不是组长
+	 * 以便控制是否能够查看组排班信息
+	 * */
+	if(tep_is_manager_by_gid($ocertify->auth_user,$_POST['gid'])) {
+	  $flag ='true';	
+	}else{
+      $flag='false';
+	}
+	echo $flag;
+
 }else if($_GET['action'] == 'show_user_wage'){
  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_PAYROLLS);
  include(DIR_FS_ADMIN.'classes/notice_box.php');

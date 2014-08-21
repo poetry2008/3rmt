@@ -50,6 +50,7 @@ define('TEXT_ADD_ADL', 'Thêm vào');
 define('TEXT_DEL_ADL', 'Xóa');
 define('TEXT_TYPE_SELECT', 'Lặp lại');
 define('TEXT_CALENDAR_REPEAT_TYPE_NO','Không lặp lại');
+define('TEXT_CALENDAR_REPEAT_TYPE_EVERY_WEEK','Mỗi tuần');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK','Mỗi tuần');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD','');
 define('TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL','');
@@ -70,7 +71,13 @@ define('TEXT_ADL_TEXT_INFO','Nhận xét');
 define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','Người dùng');
 define('TEXT_DELETE_REMIND','Bạn có muốn xóa không?');
-define('TEXT_ONLY_USER_ATTENDANCE','スタッフ設定');
+define('TEXT_ONLY_USER_ATTENDANCE','Thiết lập nhân viên');
 define('TEXT_WARN_ATTENDANCE_TYPE_DIFF','tep_remind_diff');
+define('TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP','Vui lòng  thiết lập trong phạm vi "Thời gian bắt đầu" và " Thời gian kết thúc".');
+define('SHOW_ALL_ATT_STATUS','Toàn thời gian');
+define('SHOW_ERROR_ATT_STATUS','Đi trễ /Về sớm');
+define('SHOW_NULL_ATT_STATUS','Không hiển thị');
+define('TEXT_ATT_SET_VALUE','Tổng phụ số thời gian làm việc quy định');
+define('TEXT_ATT_ACTUAL_VALUE','Tổng phụ số thời gian làm việc thực tế');
 ?>
 

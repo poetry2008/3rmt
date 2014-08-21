@@ -302,6 +302,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $index=1;
 	 $user=$ocertify->auth_user;
 	 foreach(explode('|||',$bulletin_info['file_path']) as $value){
+		 if($value=='')continue;
 		 $file_download_url.='<div id="delete_file_'.$index.'"><a href="'.PATH_BULLETIN_BOARD_UPLOAD.$value.'" style="text-decoration:underline;color:#0000FF;" >'.$value.'</a>';
 		 if($user==$bulletin_info['manager']||$ocertify->npermission==31)$file_download_url.='<a href="javascript:void(0)" onclick="delete_file(\'delete_file_'.$index.'\',\''.$value.'\')">&nbsp;X&nbsp</a>';
 		 $file_download_url.='</div>';
@@ -416,6 +417,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $index=1;
 	 $user=$ocertify->auth_user;
 	 foreach(explode('|||',$bulletin_info['file_path']) as $value){
+		 if($value=='')continue;
 		 $file_download_url.='<div id="delete_file_'.$index.'"><a href="'.PATH_BULLETIN_BOARD_UPLOAD.$value.'" style="text-decoration:underline;color:#0000FF;" >'.$value.'</a>';
 		 if($user==$bulletin_info['manager']||$ocertify->npermission==31)$file_download_url.='<a href="javascript:void(0)" onclick="delete_file(\'delete_file_'.$index.'\',\''.$value.'\')">&nbsp;X&nbsp</a>';
 		 $file_download_url.='</div>';

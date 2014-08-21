@@ -168,6 +168,27 @@ function change_image_text(_this) {
 }
 
 function attendance_setting(date,ele,gid,add_id){
+	//check the user if is manager or group leader
+   $.ajax({
+      url: 'ajax.php?action=tep_show_info_attendance',
+      data: 'gid='+gid,
+      type: 'POST',
+      dataType: 'text',
+      async : false,
+      success: function(data){
+        if(data){
+	      if(data=='true'){
+            is_manager=1;
+		  }else{
+	   	    is_manager=0;	
+		  }
+	    }
+     }
+  }); 
+  if(is_manager==0 && admin_npermission < 15){
+	return false;
+  }
+
   if(!gid){
     gid='';
     temp_group_id='';

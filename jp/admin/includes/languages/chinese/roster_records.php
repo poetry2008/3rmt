@@ -73,7 +73,7 @@ define('TEXT_LEAVE_ONE_DAY','--');
 define('TEXT_SELECT_USER','用户名');
 define('TEXT_DELETE_REMIND','确定删除吗？');
 define('TEXT_ONLY_USER_ATTENDANCE','个人排班设定');
-define('TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP','请假时间请控制在某一个排班的上班时间内');
+define('TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP','请控制在开始时间和结束时间的范围内');
 
 define('SHOW_ALL_ATT_STATUS','全部显示');
 define('SHOW_ERROR_ATT_STATUS','迟到/早退');
