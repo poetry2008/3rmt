@@ -635,7 +635,13 @@ color:#0066CC;
                     
                   }
 
-                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,array(),$error_pam_array);
+                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id);
+                  $error_pam_temp = tep_param_error($wage_id['value'],$group_id);
+
+                  foreach($error_pam_temp as $pam_value){
+
+                    $error_pam_array[] =$pam_value ;
+                  }
                   if($_GET['action'] == 'again_computing' && isset($_POST['users_wage']) && !empty($replace_pam_value)){
 
                     $wage_value = $replace_pam_value[$wage_id['id']][$users_value];

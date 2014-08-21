@@ -14721,7 +14721,7 @@ function tep_get_sec_by_str($str){
     参数: $parameters_array 参数及对应值数组 
     返回值: 计算结果 
  ------------------------------------ */
-function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array(),&$error_pam_array=array()){
+function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array()){
  
   //把数组中的参数替换为对应的值
   $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
@@ -14745,7 +14745,6 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
     if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
       if(!in_array($has_param,array_keys($parameters_replace_basic_array))){
         $parameters_replace_basic_array[$has_param] = 0;
-        $error_pam_array[] = $has_param;
       }
     }
   }
@@ -15466,4 +15465,30 @@ function tep_run_str($str){
   $res_str = $other[0].$int_res_arr.$other[1];
   $int_res_arr = tep_operations($res_str);
   return $int_res_arr;
+}
+/* -------------------------------------
+    功能: 找出公式中错误的参数 
+    参数: $wage_str 公式 
+    参数: $group_id 组ID 
+    返回值: 错误参数的数组 
+------------------------------------ */
+function tep_param_error($wage_str,$group_id){
+  $error_pam_array = array();
+  preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
+  $parameters_value_array = $parameters_value_temp[0];
+  foreach($parameters_value_array as $has_param){
+    $att_param = str_replace('${','',str_replace('}','',$has_param)); 
+    $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
+      binary param_b='".$att_param."' OR binary param_a='".$att_param."' limit 1";
+    $att_query = tep_db_query($att_sql);
+    
+    $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
+      binary `contents`='".$has_param."' and group_id='".$group_id."'";
+    $wage_query = tep_db_query($wage_sql);
+
+    if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
+        $error_pam_array[] = $has_param;
+    }
+  }   
+  return $error_pam_array;
 }
