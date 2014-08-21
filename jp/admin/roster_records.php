@@ -214,6 +214,7 @@ if(isset($_GET['action'])){
       $user = $_SESSION['user_name'];
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
+
         $a_id_arr = $_POST['has_attendance_id'];
         if(isset($_POST['has_group'])&&!empty($_POST['has_group'])){
           $group_arr = $_POST['has_group'];
@@ -369,6 +370,38 @@ if(isset($_GET['action'])){
       $leave_end = $_POST['leave_end_hour'].':'.$_POST['leave_end_minute_a'].$_POST['leave_end_minute_b'];
       $allow_user = implode('|||',$_POST['allow_user']);
       $text_info = $_POST['text_info'];
+//发送请假邮件
+		if($_POST['allow_status']==0){
+		    $mail_model_tep = TEXT_MAIL_MODLE_STR;
+		}else{
+		   $mail_model_tep = TEXT_MAIL_MODLE_RETURN_STR;
+		}
+        $staff_info = tep_get_user_info($_POST['user_id']);
+		for($i=0;$i<count($_POST['allow_user']);$i++){
+			$allow_user = tep_get_user_info($_POST['allow_user'][$i]);
+            $mail_model_tep = str_replace(array(
+				'${URL_START}',
+				'${URL_END}',
+              '${STAFF_NAME}',
+              '${ALLOW_PERSON}',
+              '${WORK_START}',
+              '${WORK_END}',
+              '${REST_START}',
+              '${REST_END}'
+              ),array(
+				 '<a href="'.$_SERVER['HTTP_REFERER'].'">',
+				 '</a>',
+				  $staff_info['name'],
+				  $allow_user['name'],
+				  $_POST['email_work_start'],
+				  $_POST['email_work_end'],
+				  $leave_start,
+				 $leave_end 
+                ),$mail_model_tep);
+		}
+
+      tep_mail($staff_info['name'],$staff_info['email'],TEXT_MAIL_REPLY_TITLE,$mail_model_tep,'info@iimy.co.jp','iimy');
+
       if(isset($_POST['replace_id'])&&$_POST['replace_id']!=''&&$_POST['replace_id']!=0) {
         $sql_update_arr = array(
             'replace_attendance_detail_id' => $replace_attendance_detail_id,
@@ -388,6 +421,7 @@ if(isset($_GET['action'])){
             $sql_update_arr['allow_status'] = $allow_status;
           }
         }
+
         tep_db_perform(TABLE_ATTENDANCE_DETAIL_REPLACE,$sql_update_arr,'update','id=\''.$_POST['replace_id'].'\'');
       }else{
         $sql_insert_arr = array(

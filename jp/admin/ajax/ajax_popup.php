@@ -10247,7 +10247,7 @@ echo  $return_res;
   }
   //show work time detail
   if($replace_att_list[0]['set_time']==0){
-          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].'</span>';
+          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$replace_att_list[0]['work_start'].'"><input type="hidden" name="email_work_end" value="'.$replace_att_list[0]['work_end'].'">';
   }elseif($replace_att_list[0]['set_time']==1){
          $work_time = $replace_att_list[0]['work_hours']+$replace_att_list[0]['rest_hours'];
          $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
