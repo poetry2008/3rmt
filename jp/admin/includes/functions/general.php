@@ -14760,7 +14760,7 @@ function tep_get_sec_by_str($str){
     参数: $parameters_array 参数及对应值数组 
     返回值: 计算结果 
  ------------------------------------ */
-function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array()){
+function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array(),&$error_pam_array){
  
   //把数组中的参数替换为对应的值
   $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
@@ -14784,6 +14784,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
     if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
       if(!in_array($has_param,array_keys($parameters_replace_basic_array))){
         $parameters_replace_basic_array[$has_param] = 0;
+        $error_pam_array[] = $has_param;
       }
     }
   }
