@@ -9205,6 +9205,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
    //已有的项目ID
    $old_project_id_array = array();
    $old_formula_id_array = array();
+   $text_array = array();
    while($wage_array = tep_db_fetch_array($wage_query)){
 
      $group_content_row_wage = array();
@@ -9214,7 +9215,8 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
        $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="old_object_title['.$wage_array['id'].']"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="old_object_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);">');
      }else{
        $old_formula_id_array[] = $wage_array['id'];
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><input type="text" value="'.$wage_array['project_value'].'" style="width: 302px;" name="old_formula_value['.$wage_array['id'].']">');
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><textarea style="overflow-y: hidden; width: 299px; height: 15px;" name="old_formula_value['.$wage_array['id'].']" id="textarea_'.$i.'">'.$wage_array['project_value'].'</textarea>');
+       $text_array[] = $i;
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
@@ -9223,7 +9225,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  tep_db_free_result($wage_query); 
  //排序
  $group_content_row_order = array();
- $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT.'<input type="hidden" name="old_project_str" value="'.implode(',',$old_project_id_array).'"><input type="hidden" name="old_formula_str" value="'.implode(',',$old_formula_id_array).'">');
+ $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT.'<input type="hidden" id="text_num" value="'.implode(',',$text_array).'"><input type="hidden" name="old_project_str" value="'.implode(',',$old_project_id_array).'"><input type="hidden" name="old_formula_str" value="'.implode(',',$old_formula_id_array).'">');
  $group_content_row_order[] = array('text' => '<input type="text" style="text-align:right;width:20%;" size="31" value="'.(isset($groups_array['order_sort']) ? $groups_array['order_sort'] : '1000').'" name="order_sort">');
  $group_content_table[] = array('params'=>'id="end_tr"','text'=>$group_content_row_order);
 

@@ -70,6 +70,13 @@ function group_ajax(ele,group_id,parent_group_id,group_name){
    $('#show_latest_news').css('left',leftset);
    $('#show_latest_news').css('display', 'block');
    o_submit_single = true;
+   var text_num = $("#text_num").val();
+   var text_array = new Array();
+   text_array = text_num.split(",");
+   for(x in text_array){
+   
+     document.getElementById("textarea_"+text_array[x]).style.height = document.getElementById("textarea_"+text_array[x]).scrollHeight - 5 + "px";
+   }
    }
   }); 
 }
