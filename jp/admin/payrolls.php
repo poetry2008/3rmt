@@ -696,7 +696,10 @@ color:#0066CC;
                     echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';   
                     echo '<option value="1">'.TEXT_PAYROLLS_SEND_MAIL.'</option>';
                     echo '</select>';
-                    echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('　',$error_pam_array));
+                    $error_pam_array = array_unique($error_pam_array);
+                    if(!empty($error_pam_array)){
+                      echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('　',$error_pam_array));
+                    }
                     ?> 
                     </td>
                     </tr> 
