@@ -8884,7 +8884,18 @@ if($_GET['latest_messages_id']>0){
 	$heading[] = array('text' => $_POST['group_name']);
  	$form_str = tep_draw_form('new_latest_group', FILENAME_GROUPS,'action=update_group&id='.$_POST['group_id'].'&parent_id='.$_POST['parent_group_id'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
  }
- $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+
+//管理员的隐藏 
+$manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
+ $all_manager_add ='<div id="add_manager_hidden" style="display:none;">';
+	$all_manager_add .='<li><select class="manager_select" name="managers_list[]">';	
+	while($manager_list_res = tep_db_fetch_array($manager_list)){
+       $all_manager_add .='<option value="'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</option>';
+	}
+	$all_manager_add .='</select><input onclick="del_manager_row(this)" type="button" value="'.TEXT_DEL_ADL.'"></li>';
+ $all_manager_add .='</div>';
+
+ $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str.$all_manager_add);
  //读取groups数据
  $groups_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$_POST['group_id']."'");
  $groups_array = tep_db_fetch_array($groups_query);
@@ -8903,24 +8914,35 @@ if($_GET['latest_messages_id']>0){
  }
  $group_content_table[] = array('text'=>$group_content_row_name); 
  $group_content_table[] = array('text'=>$group_content_row_contents); 
+ 
+
 
  //管理员
  $group_manager[] = array('params'=>'width="20%"','text'=> GROUP_MANAGERS );
  if($_POST['group_id'] < 0){
  	$manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
-   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+   /*	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	$res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
     $permission = tep_db_fetch_array($res_tep_row);
 	$hidden =  $permission['permission']>10 ? 'style="display:none"':'';
         $all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
- 	 $all_manager .= '</ul>';
+	$all_manager .= '</ul>';*/
+
+   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+	$all_manager .='<li><select class="manager_select" name="managers_list[]">';	
+	while($manager_list_res = tep_db_fetch_array($manager_list)){
+       $all_manager .='<option value="'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</option>';
+	}
+	$all_manager .='</select></li><input type="button" onclick="add_manager_row(this)" value="'.TEXT_ADD_ADL.'">';
+   	$all_manager .= '</ul>'; 
+	
  }else{
      $group_all_manager = tep_db_fetch_array(tep_db_query('select all_managers_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
 	 $group_all_manager = explode('|||',$group_all_manager['all_managers_id']);
 	 $manager_list = tep_db_query('select * from '.TABLE_USERS.' where status=1');
-	 $all_manager = '<ul class="table_img_list" style="width:100%">'; 
+/*	 $all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	 while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	     $res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
          $permission = tep_db_fetch_array($res_tep_row);
@@ -8928,6 +8950,21 @@ if($_GET['latest_messages_id']>0){
      		$all_manager .= '<li '.$hidden.'><input type="checkbox" name="managers_list[]" value="'.$manager_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="managers_id_'.$manager_list_res['userid'].'"'.(in_array($manager_list_res['userid'],$group_all_manager) ? ' checked="checked"' : '').'><label for="managers_id_'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</label></li>'; 
    	}
  	$all_manager .= '</ul>';
+ */
+    $manager_list_res = array();
+	 while($row = tep_db_fetch_array($manager_list)){
+		 $manager_list_res[]=$row;
+	 }
+   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+	for($i=0; $i<count($group_all_manager); $i++){
+	  $all_manager .='<li><select class="manager_select" name="managers_list[]">';	
+	  foreach($manager_list_res as $manager_info){
+        $all_manager .='<option value="'.$manager_info['userid'].'"'.($manager_info['userid']==$group_all_manager[$i] ? ' selected="selected"' : '').'>'.$manager_info['name'].'</option>';
+	 }
+	    $all_manager .='</select><input '.($i==0 ? 'style="display:none;"':'').' onclick="del_manager_row(this)" type="button" value="'.TEXT_DEL_ADL.'"></li>';
+	}
+   	$all_manager .= '<input type="button" onclick="add_manager_row(this)" value="'.TEXT_ADD_ADL.'"></ul>'; 
+
  }
  $group_manager[] = array('text' => $all_manager);
 
@@ -9048,7 +9085,7 @@ if($_GET['latest_messages_id']>0){
    $group_content_row_date = array();
    $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
    $date_str = '';
-   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;">'.tep_draw_input_field('wage_date',date('Y-m-d',time()),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.date('Y-m-d',time()).'">
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;">'.tep_draw_input_field('wage_date',date('Y-m-d',time()),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="10" value="'.date('Y-m-d',time()).'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
                 </div>
@@ -9077,7 +9114,7 @@ if($_GET['latest_messages_id']>0){
      }else{
        $date_str = TEXT_GROUP_BEGIN_DATE; 
      }
-     $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);"'.($date_i != count($groups_start_end_date_array)-1 ? ' disabled' : '').'>';
+     $date_str .= '<select name="start_date[]" onchange="start_date_select(this,0);" disabled>';
      $date_str .= '<option value="0">--</option>';
      for($i=1;$i<=28;$i++){
 
@@ -9126,7 +9163,7 @@ if($_GET['latest_messages_id']>0){
    $group_content_row_date = array();
    $group_content_row_date[] = array('params'=>'width="20%"','text'=> '');
    $date_str = '';
-   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'>'.tep_draw_input_field('wage_date',($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="15" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())).'">
+   $date_str .= '<div class="yui3-skin-sam yui3-g"><input type="radio" name="cycle_flag" id="cycle_flag_true" value="1" style="padding-left:0;margin-left:0;"'.($groups_array['cycle_flag'] == 1 ? ' checked' : '').'>'.tep_draw_input_field('wage_date',($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())),'size="8" class="readonly" disabled').'<input id="date_orders" type="hidden" name="select_date" size="10" value="'.($groups_array['cycle_flag'] == 1 ? $groups_start_end_date_array[0] : date('Y-m-d',time())).'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a> 
                 </div>
@@ -9152,7 +9189,7 @@ if($_GET['latest_messages_id']>0){
  $group_content_row_hour[] = array('text' => $hour_str);
  $group_content_table[] = array('text'=>$group_content_row_hour); 
  //工资计算
- $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$_POST['group_id']."' order by id"); 
+ $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$_POST['group_id']."' order by sort"); 
  $group_content_row_wage = array();
  $group_content_row_wage[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_WAGE_OBJECT);
  $wage_str = '<select id="wage_select">';
@@ -9168,16 +9205,18 @@ if($_GET['latest_messages_id']>0){
    //已有的项目ID
    $old_project_id_array = array();
    $old_formula_id_array = array();
+   $text_array = array();
    while($wage_array = tep_db_fetch_array($wage_query)){
 
      $group_content_row_wage = array();
-     $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
+     $group_content_row_wage[] = array('params'=>'width="20%"','text'=> '<input type="hidden" value="'.$wage_array['id'].'" name="wage_sort[]">&nbsp;&nbsp;&nbsp;&nbsp;'.($wage_array['project_id'] == 0 ? TEXT_GROUP_WAGE_OBJECT_VALUE : TEXT_GROUP_WAGE_OBJECT_FORMULA)); 
      if($wage_array['project_id'] == 0){
        $old_project_id_array[] = $wage_array['id'];
-       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="old_object_title['.$wage_array['id'].']"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="old_object_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">');
+       $group_content_row_wage[] = array('text' => '<input type="text" style="width: 145px;" value="'.$wage_array['title'].'" name="old_object_title['.$wage_array['id'].']"><input type="text" style="width: 150px;" value="'.$wage_array['contents'].'" name="old_object_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);">');
      }else{
        $old_formula_id_array[] = $wage_array['id'];
-       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'"><br><input type="text" value="'.$wage_array['project_value'].'" style="width: 302px;" name="old_formula_value['.$wage_array['id'].']">');
+       $group_content_row_wage[] = array('text' => '<input type="text" value="'.$wage_array['title'].'" style="width: 145px;" name="old_formula_title['.$wage_array['id'].']"><input type="text" value="'.$wage_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$wage_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_WAGE_OBJECT_VALUE.'\',\''.TEXT_GROUP_WAGE_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><textarea style="overflow-y: hidden; width: 299px; height: 15px;" name="old_formula_value['.$wage_array['id'].']" id="textarea_'.$i.'">'.$wage_array['project_value'].'</textarea>');
+       $text_array[] = $i;
      }
      $group_content_table[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_wage);
      $i++;
@@ -9186,9 +9225,9 @@ if($_GET['latest_messages_id']>0){
  tep_db_free_result($wage_query); 
  //排序
  $group_content_row_order = array();
- $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT.'<input type="hidden" name="old_project_str" value="'.implode(',',$old_project_id_array).'"><input type="hidden" name="old_formula_str" value="'.implode(',',$old_formula_id_array).'">');
+ $group_content_row_order[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_ORDER_SORT.'<input type="hidden" id="text_num" value="'.implode(',',$text_array).'"><input type="hidden" name="old_project_str" value="'.implode(',',$old_project_id_array).'"><input type="hidden" name="old_formula_str" value="'.implode(',',$old_formula_id_array).'">');
  $group_content_row_order[] = array('text' => '<input type="text" style="text-align:right;width:20%;" size="31" value="'.(isset($groups_array['order_sort']) ? $groups_array['order_sort'] : '1000').'" name="order_sort">');
- $group_content_table[] = array('text'=>$group_content_row_order);
+ $group_content_table[] = array('params'=>'id="end_tr"','text'=>$group_content_row_order);
 
  if($_POST['group_id'] > 0){
 	$group_content_row_subgroup = array();
@@ -9226,7 +9265,11 @@ if($_GET['latest_messages_id']>0){
       ); 
  }
  $group_content_row_opt = array();
- $group_content_row_opt[] = array('params'=>'align="center" colspan="2"','text'=>'<input class="element_button" type="submit" onclick="check_group();" value="'.GROUP_SAVE.'">'.($_POST['group_id'] < 0 && $ocertify->npermission >= 15 ? '' : '&nbsp;&nbsp;<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="delete_group('.$_POST['group_id'].','.$_POST['parent_group_id'].');">'));
+ $move_copy_str = '';
+ if($_POST['group_id'] > 0 && $ocertify->npermission >= 10){
+   $move_copy_str = '<input class="element_button" type="button" value="'.IMAGE_MOVE.'" onclick="move_group_id('.$groups_array['id'].');">&nbsp;&nbsp;<input class="element_button" type="button" value="'.IMAGE_COPY.'" onclick="copy_group_id('.$groups_array['id'].')">&nbsp;&nbsp;';
+ }
+ $group_content_row_opt[] = array('params'=>'align="center" colspan="2"','text'=> ($_POST['group_id'] < 0 && $ocertify->npermission >= 15 ? '' : '<input class="element_button" type="button" value="'.IMAGE_DELETE.'" onclick="delete_group('.$_POST['group_id'].','.$_POST['parent_group_id'].');">').'&nbsp;&nbsp;'.$move_copy_str.'<input class="element_button" type="submit" onclick="check_group();" value="'.GROUP_SAVE.'">');
  $group_content_table[] = array('text'=>$group_content_row_opt);
  $notice_box->get_heading($heading);
  $notice_box->get_form($form_str);
@@ -10210,7 +10253,7 @@ echo  $return_res;
   }
   //show work time detail
   if($replace_att_list[0]['set_time']==0){
-          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].'</span>';
+          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$replace_att_list[0]['work_start'].'"><input type="hidden" name="email_work_end" value="'.$replace_att_list[0]['work_end'].'">';
   }elseif($replace_att_list[0]['set_time']==1){
          $work_time = $replace_att_list[0]['work_hours']+$replace_att_list[0]['rest_hours'];
          $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
@@ -10719,16 +10762,20 @@ if($row_array['set_time']==0){
   $operator = $ocertify->auth_user;
   if($ocertify->npermission >= '15'){
 	  //选中的
+    $show_user_id_list = array();
 	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
     $query_all_check_user = tep_db_query($sql_all_check_user);
     while($row_all_check_user = tep_db_fetch_array($query_all_check_user)){
       $all_check_user[] = $row_all_check_user;
+      $show_user_id_list[] = $row_all_check_user['userid'];
     }
 	//全部的
     $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
-      $all_user[] = $row_all_user;
+      if(in_array($row_all_user['userid'],$show_user_id_list)){
+        $all_user[] = $row_all_user;
+      }
     }
 	$all_user = array_intersect($all_user,$all_check_user);
   }
@@ -10763,15 +10810,16 @@ if($row_array['set_time']==0){
   if(isset($_GET['u_att_id'])&&$_GET['u_att_id']!=''){
     $attendance_dd_arr = tep_get_attendance_user($_GET['date'],0,false,0,$_GET['u_att_id']);
     $self_user = tep_get_user_info($_GET['uid']);
-    foreach($attendance_dd_arr as $u_att){
-      $all_user[] = tep_get_user_info($u_att['user_id']);
+    if($ocertify->npermission<15){
+      foreach($attendance_dd_arr as $u_att){
+        $all_user[] = tep_get_user_info($u_att['user_id']);
+      }
     }
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
     $attendance_dd_arr = array();
     foreach($all_user as $user_info){
-      $attendance_dd_arr =
-        array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
+      $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
     }
   }
 
@@ -10792,9 +10840,9 @@ if($row_array['set_time']==0){
   $adl_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
   //默认的用户显示
-  $user_select = '<select name="user[]" '.$disabled.'>';
+  $user_select = '<select id="user_default" name="user[1][]" '.$disabled.'>';
   $user_select .= '<option value="">--</option>';
-  $hidden_user_select = '<select name="user[]" >';
+  $hidden_user_select = '<select name="user[]" id="user_default">';
   $hidden_user_select .= '<option value="">--</option>';
   $user_select_hidden = '';
   $default_hidden = '';
@@ -10814,8 +10862,17 @@ if($row_array['set_time']==0){
     $user_select .= '>'.$user['name'].'</oprion>';
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
-  $user_select .= '</select></select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
-  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
+  $user_select .= '</select></select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'"></td>';
+  $hidden_user_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'"></td>';
+
+
+  //追加个人
+  $hidden_user_add = '<select id="user_tep" onchange="add_user_list(this)">';
+  $hidden_user_add .= '<option value="">--</option>';
+  foreach($all_user as $user){
+    $hidden_user_add .= '<option value="'.$user['userid'].'">'.$user['name'].'</oprion>';
+  }
+  $hidden_user_add .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input  '.$disabled.' type="button" onclick="del_as_user(this)" value="'.TEXT_DEL_ADL.'"></td>';
 
   //循环模式
   $type_select = '<select name="type[]" '.$disabled.' onchange="edit_space_nums(this,this.value);">';
@@ -10833,47 +10890,106 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"><input type="button"  onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'temp_del_group_id\')"><input type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
-  $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(this,\'\')"></div>';
+  $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'\')"></div>';
+  $hidden_date .= '<span id="add_user_group" style="display:none;"><input type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></span>';
+
+
+  //追加个人
+  $hidden_tep = '<div style="display:none">';
+  $hidden_tep .= '<table id="add_person">';
+  $hidden_tep .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td>'.$hidden_user_add.'</td></tr>';
+  $hidden_tep .= '</table></div>';
 
   if($group_disabled!=''){
     $hidden_date .= '<input type="hidden" name="default_uid" value="'.$_GET['uid'].'">';
   }
 
   $heading[] = array('align' => 'left', 'text' => $date_str);
-  $heading[] = array('align' => 'right', 'text' => $page_str.$hidden_div);
+  $heading[] = array('align' => 'right', 'text' => $page_str.$hidden_div.$hidden_tep);
 
   //主体内容
   $as_info_row = array();
   $show_arr = true;
-  foreach($attendance_dd_arr as $a_info){
+  $attendane_temp_user_list_arr = array();
+  foreach($attendance_dd_arr as $k=>$val) {
+	$kkey = $val['u_group'];
+	if(!isset($attendane_temp_user_list_arr[$kkey])){
+	  $attendane_temp_user_list_arr[$kkey] = array();
+	}
+    $attendane_temp_user_list_arr[$kkey][]=$val;
+  }
+  foreach($attendane_temp_user_list_arr as $a_info){
     $has_adl_select = '<select name="has_attendance_id[]" '.$disabled.' >';
     foreach($attendance_detail_list as $a_value){
       $has_adl_select .= '<option value="'.$a_value['id'].'"';
-      if($a_info['attendance_detail_id'] == $a_value['id']){
+      if($a_info[0]['attendance_detail_id'] == $a_value['id']){
         $has_adl_select .= ' selected ';
       }
       $has_adl_select .=' >'.$a_value['title'].'</option>';
     }
     $has_adl_select .= '</select>';
 
-    $has_user_select = '<select name="has_user[]" '.$disabled.'>';
+    $as_info_row_tmp = array(); 
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="u_group[]" value="'.$a_info[0]['u_group'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
+    if($show_arr){
+      $as_user_added = $a_info[0]['add_user'];
+      $as_date_added = $a_info[0]['add_time'];
+      $as_user_update = $a_info[0]['update_user'];
+      $as_last_modified = $a_info[0]['update_time'];
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
+    }else{
+      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
+    }
+
+  $temp_as_info_row = array();
+  $show_user = true;
+  $temp_count = 0;
+  for($j=0; $j<count($a_info);$j++){
+    $has_user_select = '<select name="has_user['.$a_info[$j]["u_group"].'][]" '.$disabled.'>';
     $has_user_select_hidden = '';
     $default_has_user = '';
+    if(!in_array($a_info[$j]['user_id'],$show_user_id_list)){
+      $temp_count++;
+      continue;
+    }
     foreach($all_user as $user){
       if($default_has_user == ''){
       $default_has_user = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
       }
       $has_user_select .= '<option value="'.$user['userid'].'" ';
-      if($a_info['user_id'] == $user['userid']){
+      if($a_info[$j]['user_id'] == $user['userid']){
         $has_user_select .= 'selected ';
         $has_user_select_hidden = '<input type="hidden" name="has_user_hidden[]" value="'.$user['userid'].'">';
       }
-      $has_user_select .= ' >'.$user['name'].'</oprion>';
+      $has_user_select .= ' >'.$user['name'].'</option>';
     }
-    $has_user_select .= '</select>';
+	if($j!=0){
+	    //隐藏除第一个以外的add按钮
+	  $style_hidden_add = 'style="display:none;"';
+	    //隐藏第一个删除按钮
+	  $style_hidden_del = 'style="display:block inline;"';
+	}else{
+	  $style_hidden_add = 'style="display:block inline;"';
+	  $style_hidden_del = 'style="opacity:0;"'.'disabled="disabled"';
+	}
+    $has_user_select .= '</select><input type="hidden" name="data_as['.$a_info[$j]['u_group'].'][]" value="'.$a_info[$j]['id'].'"><td nowrap="nowrap"><input '.$style_hidden_del.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"><input '.$style_hidden_add.'  type="button" onclick="add_person_row(this,\''.$a_info[$j]['id'].'\',false)" value="'.TEXT_ADD_ADL.'"></td>';
+    $temp_as_info_row[]['text'] = array(
+      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)
+    );
+
+
+  }
+    if($j==$temp_count){
+      continue;
+    }
+    $as_info_row[]['text'] = $as_info_row_tmp;
+    $show_arr = false;
+    $as_info_row = array_merge($as_info_row,$temp_as_info_row);
     if($disabled){
       if($has_user_select_hidden!=''){
         $has_user_select .= $has_user_select_hidden;
@@ -10891,48 +11007,29 @@ if($row_array['set_time']==0){
 		}
       $has_type_select .= '<option value="'.$t_key.'" ';
 	 //判断是不是每周
-	  if($a_info['type']==1 && $a_info['space']==0){
-		   $a_info['type']=8;
+	  if($a_info[0]['type']==1 && $a_info[0]['space']==0){
+		   $a_info[0]['type']=8;
 	  }
-      if($a_info['type'] == $t_key){
+      if($a_info[0]['type'] == $t_key){
         $has_type_select .= ' selected ';
       }
       $has_type_select .= ' >'.$t_value.'</option>';
     }
 	//隔周
-    $style_space=($a_info['type']==1 && $a_info['space']!=0)?'':'style="display:none"';
+    $style_space=($a_info[0]['type']==1 && $a_info[0]['space']!=0)?'':'style="display:none"';
 
-    if($a_info['space']==0 || $a_info['space']==''){
-	    $a_info['space']=1;
+    if($a_info[0]['space']==0 || $a_info[0]['space']==''){
+	    $a_info[0]['space']=1;
 	  }
-	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
-    $as_info_row_tmp = array(); 
+	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info[0]['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
-    $as_info_row_tmp = array(); 
-    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
-    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="data_as[]" value="'.$a_info['id'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
-    if($show_arr){
-      $as_user_added = $a_info['add_user'];
-      $as_date_added = $a_info['add_time'];
-      $as_user_update = $a_info['update_user'];
-      $as_last_modified = $a_info['update_time'];
-      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'">');
-      $show_arr = false;
-    }else{
-      $as_info_row_tmp[] =  array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as(this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">');
-    }
-    $as_info_row[]['text'] = $as_info_row_tmp;
-    $as_info_row[]['text'] = array(
-      array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
-      array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_user_select)
-    );
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
       array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $has_type_select)
     );
 
-
   }
+		  
 
 
 //没有个人排班的时候显示新数据
@@ -10968,7 +11065,7 @@ if($row_array['set_time']==0){
   //底部内容
   $buttons = array();
   if($ocertify->npermission>10&&$_GET['add_id']==''){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['back_group_id'].'\',\''.$_GET['back_attendance_id'].'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
 
@@ -11024,7 +11121,7 @@ if($row_array['set_time']==0){
  }
  $groups_users_id = array();
  if($groups_id != 0){
-   $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' and project_id=0 order by id");
+   $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$groups_id."' and project_id=0 order by sort");
    $date_i = 0;
    while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
      $group_content_row_wage = array();
@@ -11046,7 +11143,7 @@ if($row_array['set_time']==0){
   }
   }
   </style>';
-     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="15" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
+     $date_str .= '<div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : ''),'size="10" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_start_date['.$groups_wage_array['id'].']" size="10" value="'.($user_wage_date_array[$groups_wage_array['id']]['start'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['start'] : '').'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
                 </div>
@@ -11074,7 +11171,7 @@ if($row_array['set_time']==0){
   }
   }
   </style>';
-     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="15" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="15" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
+     $date_str .= '<td><div class="yui3-skin-sam yui3-g">'.tep_draw_input_field('wage_date['.$date_i.']',($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : ''),'size="10" onchange="date_change(this,'.$date_i.');"').'<input id="date_orders_'.$date_i.'" type="hidden" name="user_wage_end_date['.$groups_wage_array['id'].']" size="10" value="'.($user_wage_date_array[$groups_wage_array['id']]['end'] != '' ? $user_wage_date_array[$groups_wage_array['id']]['end'] : '').'">
                 <div class="date_box">
                 <a href="javascript:void(0);" onclick="open_new_calendar_num('.$date_i.');" class="dpicker"></a> 
                 </div>
@@ -11085,8 +11182,8 @@ if($row_array['set_time']==0){
                 </div>
                 </div></td>';
      $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => $groups_wage_array['title']), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => $groups_wage_array['title']), 
+        array('align' => 'left','params' => 'width="70%"', 'text' => '<table width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td><input type="text" name="user_wage['.$groups_wage_array['id'].']" value="'.($user_wage_list_array[$groups_wage_array['id']] != '' ? $user_wage_list_array[$groups_wage_array['id']] : '').'"></td><td>'.TEXT_PAYROLLS_EFFECTIVE_PERIOD.'</td>'.$date_str.'</tr></table>'), 
      );
      $group_content_table[] = array('text'=>$group_content_row_wage);
      $groups_users_id[] = $groups_wage_array['id'];
@@ -11098,8 +11195,8 @@ if($row_array['set_time']==0){
  //备注
  $group_content_row_wage = array();
  $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_CONTENTS), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => '<textarea name="wage_contents" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:300px;height:42px;*height:40px;">'.$user_wage_contents.'</textarea>'), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_PAYROLLS_CONTENTS), 
+        array('align' => 'left','params' => 'width="70%"', 'text' => '<textarea name="wage_contents" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;width:300px;height:42px;*height:40px;">'.$user_wage_contents.'</textarea>'), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
@@ -11194,8 +11291,8 @@ if($row_array['set_time']==0){
  //总计时间
  $group_content_row_wage = array();
  $group_content_row_wage = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
-        array('align' => 'left','params' => 'width="85%"', 'text' => $wage_start_date.'～'.$wage_end_date), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_PAYROLLS_DATE_TOTAL), 
+        array('align' => 'left','params' => 'width="70%"', 'text' => $wage_start_date.'～'.$wage_end_date), 
      );
  $group_content_table[] = array('text'=>$group_content_row_wage);
 
@@ -11205,16 +11302,16 @@ if($row_array['set_time']==0){
    $a_info = tep_get_attendance_by_id($a_key);
    $group_content_row_wage = array();
    $group_content_row_wage = array(
-          array('align' => 'left','params' => 'width="15%"', 'text' => $a_info['title']), 
-          array('align' => 'left','params' => 'width="85%"', 'text' => TEXT_ATT_SET_VALUE .'&nbsp;&nbsp;'. $a_value['time'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. TEXT_ATT_ACTUAL_VALUE .'&nbsp;&nbsp;'. $a_value['real_time']), 
+          array('align' => 'left','params' => 'width="30%"', 'text' => $a_info['title']), 
+          array('align' => 'left','params' => 'width="70%"', 'text' => TEXT_ATT_SET_VALUE .'&nbsp;&nbsp;'. $a_value['time'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. TEXT_ATT_ACTUAL_VALUE .'&nbsp;&nbsp;'. $a_value['real_time']), 
        );
    $group_content_table[] = array('text'=>$group_content_row_wage);
  }
  if($_POST['group_id'] > 0){
    //作成者、作成时间、更新者、更新时间
    $group_content_table[]['text'] = array(
-        array('align' => 'left','params' => 'width="15%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($show_tep_info[0]['create_user'])?$show_tep_info[0]['create_user']:TEXT_UNSET_DATA))), 
-        array('align' => 'left','params' => 'width="85%"','text' => TEXT_DATE_ADDED.'&nbsp;'.((tep_not_null(tep_datetime_short($show_tep_info[0]['create_date'])))?tep_datetime_short($show_tep_info[0]['create_date']):TEXT_UNSET_DATA)), 
+        array('align' => 'left','params' => 'width="30%"', 'text' => TEXT_USER_ADDED.'&nbsp;'.((tep_not_null($show_tep_info[0]['create_user'])?$show_tep_info[0]['create_user']:TEXT_UNSET_DATA))), 
+        array('align' => 'left','params' => 'width="70%"','text' => TEXT_DATE_ADDED.'&nbsp;'.((tep_not_null(tep_datetime_short($show_tep_info[0]['create_date'])))?tep_datetime_short($show_tep_info[0]['create_date']):TEXT_UNSET_DATA)), 
       );
   
    $group_content_table[]['text'] = array(
@@ -11229,4 +11326,116 @@ if($row_array['set_time']==0){
  $notice_box->get_form($form_str);
  $notice_box->get_contents($group_content_table);
  echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'move_group') {
+/* -----------------------------------------------------
+    功能: 移动组信息的弹出框
+    参数: $_GET['id'] 组id 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_GROUPS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //获取组的信息
+  $group_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$_GET['id']."'");
+  $group_array = tep_db_fetch_array($group_query);
+  tep_db_free_result($group_query);
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => TEXT_INFO_HEADING_MOVE_GROUP);
+  $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
+
+  $buttons = array();
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_MOVE, 'onclick="toggle_group_form(\''.tep_href_link(FILENAME_GROUPS,tep_get_all_get_params(array('action'))).'\',\'move_group\');"').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $move_category_info = array();
+  
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => sprintf(TEXT_MOVE_GROUP_INTRO, $group_array['name'])), 
+      );
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => sprintf(TEXT_MOVE, $group_array['name']).tep_draw_hidden_field('group_id', $_GET['id'])), 
+      );
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => tep_draw_pull_down_menu('move_to_group_id', tep_get_group_tree(0,'',array(0=>array('id'=>0,'text'=>HEADER_TITLE_TOP)),(int)$group_array['id']), 0)), 
+      );
+ 
+  $form_str = tep_draw_form('move_group', FILENAME_GROUPS, 'action=move_group_confirm');
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($move_category_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+
+  echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'copy_group') {
+/* -----------------------------------------------------
+    功能: 复制组信息的弹出框
+    参数: $_GET['id'] 组id 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_GROUPS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  //获取组的信息
+  $group_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$_GET['id']."'");
+  $group_array = tep_db_fetch_array($group_query);
+  tep_db_free_result($group_query);
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => IMAGE_COPY_TO);
+  $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
+
+  $buttons = array();
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_COPY, 'onclick="toggle_group_form(\''.tep_href_link(FILENAME_GROUPS,tep_get_all_get_params(array('action'))).'\',\'copy_group\');"').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="hidden_info_box();"').'</a>';
+
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $move_category_info = array();
+
+  //获取组的父类名称 
+  $parent_id_array = array();
+  $parent_query = tep_db_query("select id,name from ".TABLE_GROUPS);
+  while($parent_array = tep_db_fetch_array($parent_query)){
+
+    $parent_id_array[$parent_array['id']] = $parent_array['name'];
+  }
+  tep_db_free_result($parent_query);
+  group_parent_id_list($group_array['id'],$group_parent_id_list);
+  $group_list_str = HEADER_TITLE_TOP;
+  if(!empty($group_parent_id_list)){
+
+    krsort($group_parent_id_list);
+    foreach($group_parent_id_list as $group_id_value){
+
+      $group_list_str .= '&nbsp;>&nbsp;'.$parent_id_array[$group_id_value];
+    }
+  }
+  $group_list_str .= '&nbsp;>&nbsp;'.$group_array['name'];
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_CURRENT_GROUPS.tep_draw_hidden_field('group_id', $_GET['id'])), 
+        array('align' => 'left', 'text' => $group_list_str), 
+      ); 
+  $move_category_info[]['text'] = array(
+        array('align' => 'left', 'text' => IMAGE_COPY_TO), 
+        array('align' => 'left', 'text' => tep_draw_pull_down_menu('copy_to_group_id', tep_get_group_tree(0,'',array(0=>array('id'=>0,'text'=>HEADER_TITLE_TOP)),(int)$group_array['id']), 0)), 
+      );
+ 
+  $form_str = tep_draw_form('copy_group', FILENAME_GROUPS, 'action=copy_group_confirm');
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($move_category_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+
+  echo $notice_box->show_notice();
 }

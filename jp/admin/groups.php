@@ -18,6 +18,8 @@
        case 'setflag' 切换组的状态 
        case 'delete_group' 删除组及其子组 
        case 'delete_select_group' 删除选中的组及其子组 
+       case 'move_group_confirm' 移动组 
+       case 'copy_group_confirm' 复制组 
     ------------------------------------------------------*/
       case 'new_group':
         if(trim($_POST['group_name']) != ''){
@@ -28,6 +30,7 @@
 	      $all_users_id = '';
 	    }
 
+       $_POST['managers_list'] = array_unique($_POST['managers_list']);
 	    if(!empty($_POST['managers_list'])){
 	      $all_managers_id = implode('|||',$_POST['managers_list'] );
 	    }else{
@@ -68,6 +71,20 @@
             tep_db_perform(TABLE_GROUPS, $group_sql_array);	
             $insert_group_id = tep_db_insert_id();
             //计算工资的标题、公式
+            $wage_sort = $_POST['wage_sort'];
+            $wage_object_sort = array();
+            $wage_formula_sort = array();
+
+            foreach($wage_sort as $wage_sort_key=>$wage_sort_value){
+
+              if($wage_sort_value == 0){
+
+                $wage_object_sort[] = $wage_sort_key;
+              }else if($wage_sort_value == -1){
+
+                $wage_formula_sort[] = $wage_sort_key; 
+              }
+            }
             $object_title = tep_db_prepare_input($_POST['object_title']);
             $object_contents = tep_db_prepare_input($_POST['object_contents']);
 
@@ -77,7 +94,8 @@
                $object_sql_array = array('group_id' => $insert_group_id,
 				     'project_id' => 0,
 				     'title' => $object_title_value,
-				     'contents' => $object_contents[$object_title_key] 
+                                     'contents' => $object_contents[$object_title_key],
+                                     'sort'=>$wage_object_sort[$object_title_key] 
 			            );
                tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
              }
@@ -94,7 +112,8 @@
 				     'project_id' => 1,
 				     'title' => $formula_title_value,
 				     'contents' => $formula_contents[$formula_title_key], 
-				     'project_value' => $formula_value[$formula_title_key] 
+                                     'project_value' => $formula_value[$formula_title_key],
+                                     'sort'=>$wage_formula_sort[$formula_title_key] 
 			            );
                tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
              }
@@ -114,6 +133,7 @@
 	  }
 
 
+       $_POST['managers_list'] = array_unique($_POST['managers_list']);
 	    if(!empty($_POST['managers_list'])){
 	      $all_managers_id = implode('|||',$_POST['managers_list'] );
 	    }else{
@@ -158,13 +178,32 @@
           $old_object_title = tep_db_prepare_input($_POST['old_object_title']);
           $old_object_contents = tep_db_prepare_input($_POST['old_object_contents']);
 
+          $wage_sort = $_POST['wage_sort'];
+          $wage_object_sort = array();
+          $wage_formula_sort = array();
+          $wage_old_sort = array();
+
+          foreach($wage_sort as $wage_sort_key=>$wage_sort_value){
+
+            if($wage_sort_value == 0){
+
+              $wage_object_sort[] = $wage_sort_key;
+            }else if($wage_sort_value == -1){
+
+              $wage_formula_sort[] = $wage_sort_key; 
+            }else{
+              $wage_old_sort[$wage_sort_value] = $wage_sort_key; 
+            }
+          }
+          
           foreach($old_object_title as $old_object_title_key=>$old_object_title_value){
 
            $old_project_current_array[] = $old_object_title_key;
            if(trim($old_object_title_value) != '' && trim($old_object_contents[$old_object_title_key]) != ''){ 
              $old_object_sql_array = array(
 				     'title' => $old_object_title_value,
-				     'contents' => $old_object_contents[$old_object_title_key] 
+                                     'contents' => $old_object_contents[$old_object_title_key],
+                                     'sort'=> $wage_old_sort[$old_object_title_key] 
 			            );
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_object_sql_array, 'update', 'id='.$old_object_title_key);
            }else{
@@ -186,7 +225,8 @@
              $object_sql_array = array('group_id' => $group_id,
 				     'project_id' => 0,
 				     'title' => $object_title_value,
-				     'contents' => $object_contents[$object_title_key] 
+                                     'contents' => $object_contents[$object_title_key], 
+                                     'sort'=> $wage_object_sort[$object_title_key]
 			            );
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
            }
@@ -209,7 +249,8 @@
              $old_formula_sql_array = array(
 				     'title' => $old_formula_title_value,
 				     'contents' => $old_formula_contents[$old_formula_title_key], 
-				     'project_value' => $old_formula_value[$old_formula_title_key] 
+				     'project_value' => $old_formula_value[$old_formula_title_key], 
+                                     'sort'=> $wage_old_sort[$old_formula_title_key]
 			            );
              tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_formula_sql_array, 'update', 'id='.$old_formula_title_key);
            }else{
@@ -233,7 +274,8 @@
 				     'project_id' => 1,
 				     'title' => $formula_title_value,
 				     'contents' => $formula_contents[$formula_title_key], 
-				     'project_value' => $formula_value[$formula_title_key] 
+				     'project_value' => $formula_value[$formula_title_key], 
+                                     'sort'=> $wage_formula_sort[$formula_title_key]
 			            );
               tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
             }
@@ -280,6 +322,103 @@
 
         tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$_GET['parent_id']));
         break;
+      case 'move_group_confirm':
+
+        $group_id = $_POST['group_id'];
+        $move_to_group_id = $_POST['move_to_group_id'];
+
+        tep_db_query("update ".TABLE_GROUPS." set parent_id='".$move_to_group_id."',update_user='".$_SESSION['user_name']."',update_time=now() where id='".$group_id."'");
+        tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$move_to_group_id));
+        break;
+      case 'copy_group_confirm':
+
+        $group_id = $_POST['group_id'];
+        $copy_to_group_id = $_POST['copy_to_group_id'];
+
+        $group_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$group_id."'");
+        $group_array = tep_db_fetch_array($group_query);
+        tep_db_free_result($group_query);
+        $group_sql_array = array('name' => $group_array['name'],
+				 'parent_id' => $copy_to_group_id,
+                                 'create_time' => 'now()',
+				 'all_managers_id' => $group_array['all_managers_id'],
+                                 'all_users_id' => $group_array['all_users_id'],
+                                 'group_status' => $group_array['group_status'],
+                                 'create_user' => $_SESSION['user_name'],
+                                 'group_contents' => $group_array['group_contents'], 
+                                 'currency_type' => $group_array['currency_type'], 
+                                 'begin_end_date' => $group_array['begin_end_date'], 
+                                 'cycle_flag' => $group_array['cycle_flag'], 
+                                 'begin_end_hour' => $group_array['start_end_hour'], 
+                                 'order_sort' => $group_array['order_sort'], 
+                                 'payrolls_admin' => $group_array['payrolls_admin']  
+			         );
+        tep_db_perform(TABLE_GROUPS, $group_sql_array);
+        $insert_group_id = tep_db_insert_id();
+
+        //复制关联表的数据 
+        $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
+        while($wage_array = tep_db_fetch_array($wage_query)){
+
+          $wage_sql_array = array('group_id'=>$insert_group_id,
+                                  'project_id'=>$wage_array['project_id'],
+                                  'title'=>$wage_array['title'], 
+                                  'contents'=>$wage_array['contents'],
+                                  'project_value'=>$wage_array['project_value'],
+                                  'sort'=>$wage_array['sort']
+                                );
+          tep_db_perform(TABLE_WAGE_SETTLEMENT, $wage_sql_array);
+        }
+        tep_db_free_result($wage_query);
+
+        //获取此组的子组
+        group_id_list($group_id,$group_id_list);
+
+        $child_parent_id_array = array();
+        $child_parent_id_array[$group_id] = $insert_group_id;
+        foreach($group_id_list as $group_id_value){
+
+          $group_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$group_id_value."'");
+          $group_array = tep_db_fetch_array($group_query);
+          tep_db_free_result($group_query);
+           
+          $group_sql_array = array('name' => $group_array['name'],
+				 'parent_id' => $child_parent_id_array[$group_array['parent_id']],
+                                 'create_time' => 'now()',
+				 'all_managers_id' => $group_array['all_managers_id'],
+                                 'all_users_id' => $group_array['all_users_id'],
+                                 'group_status' => $group_array['group_status'],
+                                 'create_user' => $_SESSION['user_name'],
+                                 'group_contents' => $group_array['group_contents'], 
+                                 'currency_type' => $group_array['currency_type'], 
+                                 'begin_end_date' => $group_array['begin_end_date'], 
+                                 'cycle_flag' => $group_array['cycle_flag'], 
+                                 'begin_end_hour' => $group_array['start_end_hour'], 
+                                 'order_sort' => $group_array['order_sort'], 
+                                 'payrolls_admin' => $group_array['payrolls_admin']  
+			         );
+          tep_db_perform(TABLE_GROUPS, $group_sql_array);
+          $child_insert_group_id = tep_db_insert_id();
+          $child_parent_id_array[$group_id_value] = $child_insert_group_id;
+
+          //复制关联表的数据 
+          $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id_value."'");
+          while($wage_array = tep_db_fetch_array($wage_query)){
+
+            $wage_sql_array = array('group_id'=>$child_insert_group_id,
+                                  'project_id'=>$wage_array['project_id'],
+                                  'title'=>$wage_array['title'], 
+                                  'contents'=>$wage_array['contents'],
+                                  'project_value'=>$wage_array['project_value'],
+                                  'sort'=>$wage_array['sort']
+                                );
+            tep_db_perform(TABLE_WAGE_SETTLEMENT, $wage_sql_array);
+          }
+          tep_db_free_result($wage_query);
+        }
+
+        tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$copy_to_group_id));
+        break;
     }
   }
 ?>
@@ -303,6 +442,7 @@
   var ontime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'; 
   var ontime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
   var js_news_self = '<?php echo $_SERVER['PHP_SELF'];?>';
+  var move_group_id_url = '<?php echo tep_get_all_get_params(array('action', 'id'));?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_groups.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -416,7 +556,7 @@ color:#0066CC;
 		$group_id = $_GET['id'];
 	}
 	$latest_group_query_raw = ' select *
-                from '.TABLE_GROUPS.' where parent_id = "'.$group_id.'"';
+                from '.TABLE_GROUPS.' where parent_id = "'.$group_id.'" order by order_sort asc';
 	$latest_group_split = new splitPageResults($group_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_group_query_raw, $latest_group_query_numrows);
 	$latest_group_query = tep_db_query($latest_group_query_raw);
         $all_group_array = array();

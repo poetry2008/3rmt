@@ -17,4 +17,6 @@ define('TEXT_GROUP_CREATE','Tạo nhóm text');
 define('TEXT_GROUP_DELETE','Bạn có chắc chắn muốn xóa Gurupu này thực sự?');
 define('TEXT_GROUP_EDIT_MUST_SELECT','Hãy chọn một ít nhất.');
 define('TEXT_GROUP_EDIT_CONFIRM','Bạn có chắc chắn muốn xóa?');
+define('TEXT_ADD_ADL', 'Thêm vào');
+define('TEXT_DEL_ADL', 'Xóa');
 ?>

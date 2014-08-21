@@ -34,7 +34,13 @@ define('TEXT_GROUP_WAGE_OBJECT','工资结算项目');
 define('TEXT_GROUP_WAGE_OBJECT_VALUE','用户项目值');
 define('TEXT_GROUP_WAGE_OBJECT_FORMULA','工资计算公式');
 define('TEXT_GROUP_ORDER_SORT','排列顺序');
-define('TEXT_GROUP_DAYS','日間');
+define('TEXT_GROUP_DAYS','天');
 define('TEXT_GROUP_RESET','重置');
-define('TEXT_GROUP_WAGE_ADMIN','給料計算管理');
+define('TEXT_GROUP_WAGE_ADMIN','工资计算管理');
+define('TEXT_INFO_HEADING_MOVE_GROUP','移动组');
+define('TEXT_MOVE_GROUP_INTRO','请选择移动到的组%s');
+define('TEXT_MOVE','%s&nbsp;&nbsp;移动到:');
+define('TEXT_CURRENT_GROUPS','现有的组');
+define('TEXT_ADD_ADL', '追加');
+define('TEXT_DEL_ADL', '削除');
 ?>

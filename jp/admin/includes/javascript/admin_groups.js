@@ -70,6 +70,13 @@ function group_ajax(ele,group_id,parent_group_id,group_name){
    $('#show_latest_news').css('left',leftset);
    $('#show_latest_news').css('display', 'block');
    o_submit_single = true;
+   var text_num = $("#text_num").val();
+   var text_array = new Array();
+   text_array = text_num.split(",");
+   for(x in text_array){
+   
+     document.getElementById("textarea_"+text_array[x]).style.height = document.getElementById("textarea_"+text_array[x]).scrollHeight - 5 + "px";
+   }
    }
   }); 
 }
@@ -247,21 +254,25 @@ function group_change_action(value,group_list_id,c_permission,parent_id)
   }
 }
 //add object
-function add_obj(ele,obj_name_1,obj_name_2,delete_name){
+function add_obj(ele,obj_name_1,obj_name_2,delete_name,flag){
 
   var obj_type = $("#wage_select").val();
   var obj_num = $("#obj_num").val();
   obj_num = parseInt(obj_num);
   var obj_str = '';
   if(obj_type == 0){
-    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"></td></tr>';
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="wage_sort[]" value="0">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"></td></tr>';
   }else if(obj_type == 1){
-    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" style="width:145px;" value=""><input type="text" name="formula_contents[]" style="width:150px;" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');"><br><input type="text" name="formula_value[]" class="td_input" value=""></td></tr>';
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="wage_sort[]" value="-1">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" style="width:145px;" value=""><input type="text" name="formula_contents[]" style="width:150px;" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"><br><input type="text" name="formula_value[]" class="td_input" value=""></td></tr>';
   }
   if(obj_num == 0){
     $(ele).parent().parent().after(obj_str);
   }else{
-    $("#obj_tr_"+obj_num).after(obj_str); 
+    if(flag == 1){
+      $(ele).parent().parent().after(obj_str); 
+    }else{
+      $("#end_tr").before(obj_str); 
+    }
   }
   $("#obj_num").val(obj_num+1);
 }
@@ -472,7 +483,7 @@ function start_date_select(ele,num){
 //reset date
 function check_reset(){
 
-    document.getElementsByName("start_date[]")[0].value = 1;
+    document.getElementsByName("start_date[]")[0].value = 0;
     document.getElementsByName("start_date[]")[0].disabled = false;
     document.getElementsByName("end_date[]")[0].value = 28;
     document.getElementsByName("end_date[]")[0].disabled = true;
@@ -510,4 +521,88 @@ function del_admin_list(ele){
   var add_admin_button = document.getElementById('add_admin_button');
   add_admin_button.disabled = false;
   $(ele).parent().parent().remove();
+}
+//popup move group page
+function move_group_id(id){
+  $.ajax({
+dataType: 'text',
+url: 'ajax.php?'+move_group_id_url+'&action=move_group&id='+id,
+success: function(text) {
+$('#show_latest_news').html(text);
+$('#show_latest_news').css('display','block');
+}
+});
+}
+//move group submit
+function toggle_group_form(group_url_str,action) 
+{
+  if (user_permission == 31) {
+    if(action == 'move_group'){
+      document.forms.move_group.submit();
+    }else if(action == 'copy_group'){
+      document.forms.copy_group.submit(); 
+    }
+  } else {
+    $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'current_page_name='+js_news_self, 
+    async: false,
+    success: function(msg) {
+      var tmp_msg_arr = msg.split('|||'); 
+      var pwd_list_array = tmp_msg_arr[1].split(',');
+      if (tmp_msg_arr[0] == '0') {
+        if(action == 'move_group'){
+          document.forms.move_group.submit();
+        }else if(action == 'copy_group'){
+          document.forms.copy_group.submit(); 
+        }
+      } else {
+        if ($('#button_save')) {
+          $('#button_save').attr('id', 'tmp_button_save'); 
+        }
+        var input_pwd_str = window.prompt(js_onetime_pwd, ''); 
+        if (in_array(input_pwd_str, pwd_list_array)) {
+          $.ajax({
+            url: 'ajax_orders.php?action=record_pwd_log',   
+            type: 'POST',
+            dataType: 'text',
+            data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent(group_url_str),
+            async: false,
+            success: function(msg_info) {
+              if(action == 'move_group'){
+                document.forms.move_group.submit();
+              }else if(action == 'copy_group'){
+                document.forms.copy_group.submit(); 
+              }
+            }
+          }); 
+        } else {
+          alert(js_onetime_error); 
+          if ($('#tmp_button_save')) {
+            setTimeOut($('#tmp_button_save').attr('id', 'button_save'), 1); 
+          }
+        }
+      }
+    }
+    });
+  }
+}
+//popup copy group page
+function copy_group_id(id){
+  $.ajax({
+dataType: 'text',
+url: 'ajax.php?'+move_group_id_url+'&action=copy_group&id='+id,
+success: function(text) {
+$('#show_latest_news').html(text);
+$('#show_latest_news').css('display','block');
+}
+});
+}
+function add_manager_row(ele){
+	$(ele).before($("#add_manager_hidden").html());
+}
+function del_manager_row(ele){
+	$(ele).parent().remove();
 }
