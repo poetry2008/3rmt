@@ -11,7 +11,7 @@ define('TEXT_GROUP_USER_LIST', 'Nhân viên');
 define('TEXT_ALL_GROUP', 'Toàn bộ');
 define('TEXT_UPDATE', 'Cập nhật');
 define('TEXT_PAYROLLS_NAME', 'Tên');
-define('TEXT_PAYROLLS_OPTION', '操作');
+define('TEXT_PAYROLLS_OPTION', 'Thao tác');
 define('TEXT_PAYROLLS_RESET', 'リセット');
 define('TEXT_PAYROLLS_PRINT', 'プリント');
 define('TEXT_PAYROLLS_EXPORT', 'エクスポート');
