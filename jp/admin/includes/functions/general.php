@@ -9334,13 +9334,12 @@ function tep_get_notice_info($return_type = 0)
   //计算剩余的记录
   $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
   
-  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bm.`to` to_users,bm.`from` from_users from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.type = '1' and n.is_show='1' and bm.is_show='1' and bm.deleted='0'";
-
+  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.type = '1' and n.is_show='1' union select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.type = '2' and n.is_show='1' and bb.id=br.bulletin_id";
   $notice_micro_query = tep_db_query($notice_micro_sql);
   $num = 0;
   while($notice_micro_array = tep_db_fetch_array($notice_micro_query)){
 
-    if($notice_micro_array['to_users'] == ''){
+    if($notice_micro_array['to_users'] == 'all'){
 
       if($notice_micro_array['deleted'] == ''){
 
@@ -9357,24 +9356,48 @@ function tep_get_notice_info($return_type = 0)
     }else{
 
       $users_id_array = array();
-      $users_id_array = explode(',',$notice_micro_array['to_users']);
-      array_push($users_id_array,$notice_micro_array['from_users']);
+      $users_id_array = explode(':',$notice_micro_array['to_users']);
+	  if($users_id_array[0]=='id'){
+		  $users_id_array=explode(",",$users_id_array[1]);
+		array_push($users_id_array,$notice_micro_array['from_users']);
 
-      if(in_array($ocertify->auth_user,$users_id_array)){
+		 if(in_array($ocertify->auth_user,$users_id_array)){
 
-        if($notice_micro_array['deleted'] == ''){
+			if($notice_micro_array['deleted'] == ''){
 
-          $num++;
-        }else{
+			 $num++;
+		 }else{
 
-          $notice_users_array = array();
-          $notice_users_array = explode(',',$notice_micro_array['deleted']);
-          if(!in_array($ocertify->auth_user,$notice_users_array)){
+			 $notice_users_array = array();
+			 $notice_users_array = explode(',',$notice_micro_array['deleted']);
+			 if(!in_array($ocertify->auth_user,$notice_users_array)){
 
-            $num++;
-          }
-        }
-      }
+				$num++;
+			 }	
+		 }
+		}
+	  }else{
+		  $group_list=explode(",",$users_id_array[1]);
+		  $users_id_array = array();
+		  foreach($group_list as $group){
+			  $raw=tep_db_query("select * from ".TABLE_GROUPS." where name='$group'");
+			  while($row=tep_db_fetch_array($raw)){
+			  $users_id_array=array_merge($users_id_array,explode("|||",$row['all_users_id']));
+			  }
+		  }
+		  array_push($users_id_array,$notice_micro_array['from_users']);
+		  if(in_array($ocertify->auth_user,$users_id_array)){
+			if($notice_micro_array['deleted'] == ''){
+				 $num++;
+			}else{
+				$notice_users_array = array();
+				$notice_users_array = explode(',',$notice_micro_array['deleted']);
+				if(!in_array($ocertify->auth_user,$notice_users_array)){
+					 $num++;
+				}
+			}
+		  }				  
+	  }
     }
   } 
 
@@ -9483,11 +9506,10 @@ function tep_get_notice_info($return_type = 0)
     $notice_num = $notice_tmp_num; 
   }
 
-  $micro_notice_raw = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id,bm.date_update date_update from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
-
+  $micro_notice_raw = tep_db_query("select n.type type,n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bb.allow to_users,bb.manager from_users,bb.mark icon,bb.id bb_id,bb.update_time date_update from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.is_show='1'  and n.type = '1'  union select n.type type,n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bb.allow to_users,bb.manager from_users,br.mark icon,bb.id bb_id,br.update_time date_update from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.is_show='1'  and n.type = '2' and br.bulletin_id=bb.id order by created_at desc,set_time asc");
   $micro_tmp_num = 0; 
   while($micro_notice = tep_db_fetch_array($micro_notice_raw)){
-    if($micro_notice['to_users'] == ''){
+    if($micro_notice['to_users'] == 'all'){
       if($micro_notice['users_deleted'] == ''){
         $micro_notice_array['id'] = $micro_notice['id']; 
         $micro_notice_array['title'] = $micro_notice['title']; 
@@ -9495,8 +9517,9 @@ function tep_get_notice_info($return_type = 0)
         $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
         $micro_notice_array['created_at'] = $micro_notice['created_at'];
         $micro_notice_array['icon'] = $micro_notice['icon'];
-        $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+        $micro_notice_array['bb_id'] = $micro_notice['bb_id'];
         $micro_notice_array['date_update'] = $micro_notice['date_update'];
+        $micro_notice_array['type'] = $micro_notice['type'];
         unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
         break;
       }else{
@@ -9511,16 +9534,30 @@ function tep_get_notice_info($return_type = 0)
           $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
           $micro_notice_array['created_at'] = $micro_notice['created_at'];
           $micro_notice_array['icon'] = $micro_notice['icon'];
-          $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+          $micro_notice_array['bb_id'] = $micro_notice['bb_id'];
           $micro_notice_array['date_update'] = $micro_notice['date_update'];
+          $micro_notice_array['type'] = $micro_notice['type'];
           unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
           break;
         }
       }
     }else{
-
       $users_id_array = array();
-      $users_id_array = explode(',',$micro_notice['to_users']);
+      $users_id_array = explode(':',$micro_notice['to_users']);
+	  if($users_id_array[0]=='id'){
+		  $users_id_array=explode(",",$users_id_array[1]);
+	  }else{
+		  $users_tmp=explode(",",$users_id_array[1]);
+		  $users_id_array = array();
+		  foreach($users_tmp as $group){
+			  $raw=tep_db_query("select * from ".TABLE_GROUPS." where name='$group'");
+			  while($row=tep_db_fetch_array($raw)){
+				  $users_id=$row['all_users_id'];
+				  $array_tmp=explode("|||",$users_id);
+				$users_id_array=array_merge($users_id_array,$array_tmp);
+			  }
+		  }
+	  }
       array_push($users_id_array,$micro_notice['from_users']);
 
       if(in_array($ocertify->auth_user,$users_id_array)){
@@ -9532,8 +9569,9 @@ function tep_get_notice_info($return_type = 0)
           $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
           $micro_notice_array['created_at'] = $micro_notice['created_at'];
           $micro_notice_array['icon'] = $micro_notice['icon'];
-          $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+          $micro_notice_array['bb_id'] = $micro_notice['bb_id'];
           $micro_notice_array['date_update'] = $micro_notice['date_update'];
+          $micro_notice_array['type'] = $micro_notice['type'];
           unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
           break;
         }else{
@@ -9548,20 +9586,20 @@ function tep_get_notice_info($return_type = 0)
             $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
             $micro_notice_array['created_at'] = $micro_notice['created_at'];
             $micro_notice_array['icon'] = $micro_notice['icon'];
-            $micro_notice_array['bm_id'] = $micro_notice['bm_id'];
+            $micro_notice_array['bb_id'] = $micro_notice['bb_id'];
             $micro_notice_array['date_update'] = $micro_notice['date_update'];
+			$micro_notice_array['type'] = $micro_notice['type'];
             unset($notice_id_array[array_search($micro_notice['id'],$notice_id_array)]);
             break;
           }
         }  
       }
-    } 
+    }
   }
-
-  $micro_notice_query = tep_db_query("select n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.is_show='1' and bm.is_show='1' and bm.deleted='0' and n.type = '1' order by created_at desc,set_time asc");
+  $micro_notice_query = tep_db_query("select n.type type,n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bb.allow to_users,bb.manager from_users,bb.mark icon from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.is_show='1' and n.type = '1' union select n.type type, n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bb.allow to_users,bb.manager from_users,br.mark icon from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb ,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.is_show='1' and n.type = '2' and bb.id=br.bulletin_id order by created_at desc,set_time asc");
 
   while($micro_notice = tep_db_fetch_array($micro_notice_query)){
-    if($micro_notice['to_users'] == ''){
+    if($micro_notice['to_users'] == 'all'){
       if($micro_notice['users_deleted'] == ''){ 
         $micro_tmp_num++;
         if($micro_tmp_num == 2){break;}
@@ -9761,18 +9799,18 @@ function tep_get_notice_info($return_type = 0)
     $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
     $html_str .= '<tr>'; 
     
-    $html_str .= '<td width="142" id="alert_buttons">'; 
+    $html_str .= '<td width="142" id="alert_buttons"><img src="images/icons/bbs.gif">'; 
     if (($notice_num + $micro_num) > 1) {
-      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_EXTEND_TITLE.'▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
+      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
       $more_single = 1; 
     } else {
-      $html_str .= '&nbsp;'.NOTICE_EXTEND_TITLE;
+      $html_str .= '&nbsp;';
     } 
     $html_str .= '</td>'; 
  
     $html_str .= '<td class="notice_info" id="alert_time">';  
     $html_str .= '<div style="float:left; width:136px;">'; 
-    $html_str .= date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($micro_notice_array['created_at'])); 
+    $html_str .= substr(str_replace("-","/",$micro_notice_array['set_time']),0,16);
     $html_str .= '</div>'; 
 
     //获取图标信息
@@ -9782,12 +9820,13 @@ function tep_get_notice_info($return_type = 0)
     $html_str .= '<div id="icon_images_id" style="float:left; width:16px;margin:3px 8px 0 8px;">';
     $html_str .= $micro_notice_array['icon'] != 0 ? tep_image(DIR_WS_IMAGES.'icon_list/'.$icon_array['pic_name'],$icon_array['pic_alt']) : '';
     $html_str .= '</div>';
+    if($micro_notice_array['type']==1)$html_str .= '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,'bulletin_id='.$micro_notice_array['bb_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
 
-    $html_str .= '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$micro_notice_array['bm_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    if($micro_notice_array['type']==2)$html_str .= '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,'action=show_reply&bulletin_id='.$micro_notice_array['bb_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
     $html_str .= '&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'" style="display:none;">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
     $html_str .= '<td align="right" id="alert_close">'; 
-    $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
+    $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
     $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0, \''.DAY_TEXT.'\', \''.HOUR_TEXT.'\', \''.MINUTE_TEXT.'\');});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 
@@ -14721,7 +14760,7 @@ function tep_get_sec_by_str($str){
     参数: $parameters_array 参数及对应值数组 
     返回值: 计算结果 
  ------------------------------------ */
-function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array(),&$error_pam_array=array()){
+function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array(),&$error_pam_array){
  
   //把数组中的参数替换为对应的值
   $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
@@ -14735,11 +14774,11 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   foreach($parameters_value_array as $has_param){
     $att_param = str_replace('${','',str_replace('}','',$has_param)); 
     $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
-      param_b='".$att_param."' OR param_a='".$att_param."' limit 1";
+      binary param_b='".$att_param."' OR binary param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
     
     $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
-      `contents`='".$has_param."' and group_id='".$group_id."'";
+      binary `contents`='".$has_param."' and group_id='".$group_id."'";
     $wage_query = tep_db_query($wage_sql);
 
     if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
@@ -15466,4 +15505,30 @@ function tep_run_str($str){
   $res_str = $other[0].$int_res_arr.$other[1];
   $int_res_arr = tep_operations($res_str);
   return $int_res_arr;
+}
+/* -------------------------------------
+    功能: 找出公式中错误的参数 
+    参数: $wage_str 公式 
+    参数: $group_id 组ID 
+    返回值: 错误参数的数组 
+------------------------------------ */
+function tep_param_error($wage_str,$group_id){
+  $error_pam_array = array();
+  preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
+  $parameters_value_array = $parameters_value_temp[0];
+  foreach($parameters_value_array as $has_param){
+    $att_param = str_replace('${','',str_replace('}','',$has_param)); 
+    $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
+      binary param_b='".$att_param."' OR binary param_a='".$att_param."' limit 1";
+    $att_query = tep_db_query($att_sql);
+    
+    $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
+      binary `contents`='".$has_param."' and group_id='".$group_id."'";
+    $wage_query = tep_db_query($wage_sql);
+
+    if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
+        $error_pam_array[] = $has_param;
+    }
+  }   
+  return $error_pam_array;
 }

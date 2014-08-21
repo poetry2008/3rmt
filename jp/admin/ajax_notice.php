@@ -53,7 +53,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
  -----------------------------------------------------*/
   $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
 
-  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.type = '1' and n.is_show='1' and bm.is_show='1' and bm.deleted='0'"; 
+  $notice_micro_sql = "select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,bb.mark icon,bb.id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.type = '1' and n.is_show='1' union select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,br.mark icon,br.bulletin_id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.type = '2' and n.is_show='1' and bb.id=br.bulletin_id"; 
 
   $notice_micro_query = tep_db_query($notice_micro_sql);
   $notice_id_array = array();
@@ -61,22 +61,34 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   $memo_cid_array = array();
   while($notice_micro_array = tep_db_fetch_array($notice_micro_query)){
 
-    if($notice_micro_array['to_users'] == ''){
+    if($notice_micro_array['to_users'] == 'all'){
 
       $notice_id_array[] = $notice_micro_array['id'];
       $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
-      $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
+      $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bb_id'];
+      $memo_type_array[$notice_micro_array['id']] = $notice_micro_array['type'];
     }else{
 
       $users_id_array = array();
-      $users_id_array = explode(',',$notice_micro_array['to_users']);
+      $users_id_array_tmp = explode(':',$notice_micro_array['to_users']);
+	  if($users_id_array_tmp[0]=='id'){
+		  $users_id_array=explode(',',$users_id_array_tmp[1]);
+	  }else{
+		  foreach(explode(',',$users_id_array_tmp[1]) as $group){
+			  $raw=tep_db_query("select * from ".TABLE_GROUPS." where name='$group'");
+			  while($row=tep_db_fetch_array($raw)){
+				  $users_id_array=array_merge($users_id_array,explode("|||",$row['all_users_id']));
+			  }
+		  }
+	  }
       array_push($users_id_array,$notice_micro_array['from_users']);
 
       if(in_array($ocertify->auth_user,$users_id_array)){
 
         $notice_id_array[] = $notice_micro_array['id'];
         $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
-        $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
+        $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bb_id'];
+      $memo_type_array[$notice_micro_array['id']] = $notice_micro_array['type'];
       }
     }
   }
@@ -140,7 +152,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
           echo '&nbsp;'.$title_str; 
         }
       } else {
-        echo '&nbsp;'.NOTICE_EXTEND_TITLE; 
+        echo '&nbsp;<img src="images/icons/bbs_item.gif">'; 
       }
       echo '</td>'; 
       echo '<td class="notice_info">'; 
@@ -158,7 +170,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
         $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
       }
       echo '<div style="float:left; width:136px;">'; 
-      echo '<span>'.date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR,strtotime($notice_list['created_at'])).'</span>';
+      echo '<span>'. substr(str_replace("-","/",$notice_list['created_at']),0,16).'</span>';
       echo '</div>'; 
 
       if(in_array($notice_list['id'],$notice_id_array)){
@@ -186,7 +198,9 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
           echo '<a href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
         }
       } else {
-        echo '<a href="'.tep_href_link(FILENAME_BUSINESS_MEMO,'cID='.$memo_cid_array[$notice_list['id']]).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
+		$type_html="";
+		if($memo_type_array[$notice_list['id']]==2)$type_html='action=show_reply&';
+        echo '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$type_html.'bulletin_id='.$memo_cid_array[$notice_list['id']]).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
         echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         echo '&nbsp;'; 
         echo '<span style="display:none;">'.$leave_date.'</span>';
@@ -216,12 +230,12 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
       if ($notice_list['type'] == '0') {
         echo '&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'1\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
       } else {
-        echo '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'1\');"><img src="images/icons/del_img.gif" alt="close"></a>'; 
+        echo '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'1\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
       }
       echo '</td>'; 
       echo '</tr>'; 
     }
-    echo '<tr><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_notice(\''.DELETE_ALL_NOTICE.'\',\''.$_POST['aid'].'\')">'.tep_html_element_button(TEXT_CLEAR).'</a></td></tr>';
+    echo '<tr><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_notice(\''.DELETE_ALL_NOTICE.'\',\''.$_POST['aid'].'\')"><img src="images/icons/bbs_del.gif"></a></td></tr>';
     echo '</table>'; 
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='delete_alarm') {
@@ -232,7 +246,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   if($_POST['all_del'] == '1'){
   $notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
 
-  $notice_micro_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bm.`to` to_users,bm.`from` from_users,bm.icon icon,bm.id bm_id from ".TABLE_NOTICE." n,".TABLE_BUSINESS_MEMO." bm where n.from_notice=bm.id and n.type = '1' and n.is_show='1' and bm.is_show='1' and bm.deleted='0'"; 
+  $notice_micro_sql = "select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,bb.mark icon,bb.id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.type = '1' and n.is_show='1' union select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,br.mark icon,br.bulletin_id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.type = '2' and n.is_show='1' and bb.id=br.bulletin_id"; 
 
   $notice_micro_query = tep_db_query($notice_micro_sql);
   $notice_id_array = array();
@@ -240,22 +254,32 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   $memo_cid_array = array();
   while($notice_micro_array = tep_db_fetch_array($notice_micro_query)){
 
-    if($notice_micro_array['to_users'] == ''){
+    if($notice_micro_array['to_users'] == 'all'){
 
       $notice_id_array[] = $notice_micro_array['id'];
       $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
-      $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
+      $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bb_id'];
     }else{
 
       $users_id_array = array();
-      $users_id_array = explode(',',$notice_micro_array['to_users']);
+      $users_id_array_tmp = explode(':',$notice_micro_array['to_users']);
+	  if($users_id_array_tmp[0]=='id'){
+		  $users_id_array=explode(',',$users_id_array_tmp[1]);
+	  }else{
+		  foreach(explode(',',$users_id_array_tmp[1]) as $group){
+			  $raw=tep_db_query("select * from ".TABLE_GROUPS." where name='$group'");
+			  while($row=tep_db_query($raw)){
+				  $users_id_array=array_merge($users_id_array,explode("|||",$row['all_users_list']));
+			  }
+		  }
+	  }
       array_push($users_id_array,$notice_micro_array['from_users']);
 
       if(in_array($ocertify->auth_user,$users_id_array)){
 
         $notice_id_array[] = $notice_micro_array['id'];
         $memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
-        $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bm_id'];
+        $memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bb_id'];
       }
     }
   }
@@ -317,7 +341,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     功能: 把指定的micro_log的id和当前用户关联
     参数: $_POST['nid'] micro_log的id值 
  -----------------------------------------------------*/
-  $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '1'");
+  $notice_raw = tep_db_query("select * from ".TABLE_NOTICE." where id = '".$_POST['nid']."'");
   $notice = tep_db_fetch_array($notice_raw);
 
   $notice_users_str = ''; 

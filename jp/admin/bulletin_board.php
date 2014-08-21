@@ -59,7 +59,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 if(strlen($file_path)!=0)$file_path.="|||";
 		 $file_name=date("Ymdhisa_").$author.rand(1000,9999).".".$file_name;
 		 $file_path.=$file_name;
-	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
+	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name);
 	 }
 		$bulletin_sql="insert into bulletin_board values($id,'$author','$content',now(),'$allow','$manager','$mark',$collect,$reply_number,now(),'$title','$file_path','$update_author')";
 		tep_db_query($bulletin_sql);
@@ -76,6 +76,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_info_raw=tep_db_query("select * from bulletin_board where id=$id");
 	 $bulletin_info_row=tep_db_fetch_array($bulletin_info_raw);
 	 $update_author=$ocertify->auth_user;
+	 if($update_author!=$bulletin_info_row['manager']&&$ocertify->npermission!=31&&$update_author!=$bulletin_info_row['author']){
+		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD));
+			 }
 	 $content=$_POST['content'];
 	 $collect=0;
 	 $allow="";
@@ -115,7 +118,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 if(strlen($file_path)!=0)$file_path.="|||";
 		 $file_name=date("Ymdhisa_").$author.rand(1000,9999).".".$file_name;
 		 $file_path.=$file_name;
-	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_PATH.$file_name); 
+	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
 	 }
 	 $bulletin_sql="update  ".TABLE_BULLETIN_BOARD." set update_author='$update_author',content='$content',allow='$allow',title='$title',mark='$mark',file_path='$file_path',manager='$manager',update_time=now() where id=$id";
 		tep_db_query($bulletin_sql);
@@ -161,7 +164,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_info_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
 	 $content=$_POST['old_content'];
 	 $content=str_replace("\n","\n>",$content);
-	 $content= $_POST['new_content']==''?'>'.$content : $_POST['new_content'].'\n>'.$content;
+	 $content= $_POST['content']==''?'>'.$content : $_POST['content'].'\n>'.$content;
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $value){
 		 if(strlen($mark)<1)$mark.=$value;
@@ -226,7 +229,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title><?php echo NETWORK_GAME_NEWS; ?></title>
+<title><?php echo TEXT_BULLETIN_BOARD; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="js2php.php?path=includes&name=general&type=js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
@@ -298,7 +301,7 @@ function select_bulletin_change(value,bulletin_list_id,c_permission)
   } 
 
   if(sel_num == 1){
-    if (confirm('<?php echo TEXT_MEMO_EDIT_CONFIRM;?>')) {
+    if (confirm('<?php echo TEXT_DELETE;?>')) {
       if (c_permission == 31) {
         document.edit_bulletin_form.action = "<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['action'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>";
         document.edit_bulletin_form.submit(); 
@@ -470,7 +473,7 @@ function create_bulletin(ele)
 
 
 <?php //改变收藏状态 ?>
-function change_collect_status(id){
+function change_collect_status(id,user){
   var bulletin_id = document.getElementById("bulletin_board_collect_"+id);
   var bulletin_id_src = bulletin_id.src;
   var flag=0;
@@ -483,7 +486,7 @@ function change_collect_status(id){
   }
   $.ajax({
     url: 'ajax_bulletin_board.php?action=change_collect_status',      
-    data: 'id='+id+"&collect="+flag+"&collect_type="+type,
+    data: 'id='+id+"&collect="+flag+"&collect_type="+type+"&user_id="+user,
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -767,6 +770,24 @@ function delete_file(id,file_name){
 		$("#"+id).html(html_str);
 	}
 }
+
+function check_value(type){
+	if(type==0){
+		if($("#current_contents").val()==''||$("#bulletin_title").val()==''){
+			alert('<?php echo TEXT_WARNING_EMPTY;?>');
+			return false;
+		}else{
+			return true;
+		}
+	}else if(type==1){
+		 if($("#current_contents").val()==''){
+			alert('<?php echo TEXT_WARNING_EMPTY;?>');
+			 return false;
+		 }
+		 else return true;
+	}else
+	return false;
+}
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -807,25 +828,25 @@ require("includes/note_js.php");
 		$header_content=$header_title_row['title'];
 		$last_id=$header_id - 1;
 		$next_id=$header_id + 1;
-		$header_title_html='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icon_last.jpg" alt="'.TEXT_LAST_BULLETIN.'"></a>
-						<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icon_next.jpg" alt="'.TEXT_NEXT_BULLETIN.'"></a>
+		$header_title_html='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" alt="'.TEXT_LAST_BULLETIN.'"></a>
+						<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" alt="'.TEXT_NEXT_BULLETIN.'"></a>
 						  '.$header_content.'';
-	}else $header_title_html=NETWORK_GAME_NEWS;
+	}else $header_title_html=TEXT_BULLETIN_BOARD;
 ?>
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="60%" class="pageHeading"><?php echo '<div id="header_title">'.$header_title_html."</div>"; ?></td>
+            <td class="pageHeading"><?php echo $header_title_html; ?></td>
+            <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
+			<td class="pageHeading" align="right">
 			<form method="get" action="bulletin_board.php">
-			<td width="30%" align="right"><input type="text" id="search_text" name="search_text"></td>
-			<td width="10%" align="left">
+				<input type="text" id="search_text" name="search_text">
 				<input type="submit" value="<?php echo SEARCH;?>">
 				<input type="hidden" name="action" value="search">
-				<input type="hidden" name="bulletin_id" value="<?php echo $_GET['bulletin_id']?>">
 				<input type="hidden" name="search_type" value="<?php echo $_GET['action']=='show_reply'? 'show_reply':'show';?>">
-			</td>
 			</form>
+			</td>
           </tr>
         </table></td>
       </tr>
@@ -840,9 +861,9 @@ require("includes/note_js.php");
   }
   
   tep_db_free_result($site_query);
-	echo '<div id="tep_new_site_filter"><ul><li class="site_filter_selected"><img src="images/icons/common_stiles.gif" alt="シングル・マルチモードの切り替え" title="シングル・マルチモードの切り替え"></li><li id="site_0" title="共用データ"><img src="images/icons/common_blackpoint.gif" alt="共用データ"></li></a><li id="site_1" class="site_filter_unselected" title="RMTジャックポット">jp</li><li id="site_2" class="site_filter_unselected" title="RMTゲームマネー">gm</li><li id="site_3" class="site_filter_unselected" title="RMTワールドマネー">wm</li><li id="site_4" class="site_filter_unselected" title="RMTアイテムデポ">id</li><li id="site_5" class="site_filter_unselected" title="RMTカメズ">rk</li><li id="site_6" class="site_filter_unselected" title="RMT学園">rg</li><li id="site_7" class="site_filter_unselected" title="RedStone-RMT.com">rr</li><li id="site_8" class="site_filter_unselected" title="FF14-RMT.com">14</li><li id="site_9" class="site_filter_unselected" title="RMTゲームプラネット">gp</li><li id="site_10" class="site_filter_unselected" title="GM-Exchange">ge</li><input type="hidden" id="unshow_site_list" value=""></ul></div>'
+	echo '<div id="tep_new_site_filter"><ul><li class="site_filter_selected"><img src="images/icons/common_stiles.gif" alt="シングル・マルチモードの切り替え" title="シングル・マルチモードの切り替え"></li><li id="site_0" title="共用データ"><img src="images/icons/common_whitepoint.gif" alt="共用データ"></li></a><li id="site_1" class="site_filter_unselected" title="RMTジャックポット">jp</li><li id="site_2" class="site_filter_unselected" title="RMTゲームマネー">gm</li><li id="site_3" class="site_filter_unselected" title="RMTワールドマネー">wm</li><li id="site_4" class="site_filter_unselected" title="RMTアイテムデポ">id</li><li id="site_5" class="site_filter_unselected" title="RMTカメズ">rk</li><li id="site_6" class="site_filter_unselected" title="RMT学園">rg</li><li id="site_7" class="site_filter_unselected" title="RedStone-RMT.com">rr</li><li id="site_8" class="site_filter_unselected" title="FF14-RMT.com">14</li><li id="site_9" class="site_filter_unselected" title="RMTゲームプラネット">gp</li><li id="site_10" class="site_filter_unselected" title="GM-Exchange">ge</li><input type="hidden" id="unshow_site_list" value=""></ul></div>'
 ?>
-<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
+<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:750px;margin-left:0;display:none;"></div>
           <table border="0" width="100%" cellspacing="0" cellpadding="0" id="memo_list_box">
           <tr>
             <td valign="top">
@@ -944,13 +965,18 @@ require("includes/note_js.php");
     }
 
     $bulletin_item_info = array();  
+	if(($ocertify->auth_user!=$bulletin["author"])&&($ocertify->npermission != 31)){
+		$select_html='disabled="disabled"';
+	}else{
+		$select_html='';
+	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
                           'text' => '<input type="checkbox" name="bulletin_list_id[]"  value="'.$bulletin["id"].'">'   
                           );
 
 	//收藏
-	$collect_status = $bulletin['collect']==0 ? '<img onclick="change_collect_status('.$bulletin['id'].')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/gray_right.gif" border="0">': '<img onclick="change_collect_status('.$bulletin['id'].')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/green_right.gif" border="0">';
+	$collect_status = in_array($ocertify->auth_user,explode(",",$bulletin['collect']))? '<img onclick="change_collect_status('.$bulletin['id'].',\''.$ocertify->auth_user.'\')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/green_right.gif" border="0">': '<img onclick="change_collect_status('.$bulletin['id'].',\''.$ocertify->auth_user.'\')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/gray_right.gif" border="0">';
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
                           'text' => $collect_status
@@ -968,7 +994,7 @@ require("includes/note_js.php");
                           'text' => $mark_html 
                         );
 	$title=explode("\n",$bulletin["content"]);
-	$title=strlen($title[0])>20? substr($title[0],0,20)."......":$title[0];
+	$title=strlen($title[0])>20? mb_substr($title[0],0,20,'utf-8')."......":$title[0];
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
                           'text' => $title
@@ -987,7 +1013,7 @@ require("includes/note_js.php");
     $bulletin_item_info[] = array(
                           'align' => 'left', 
                           'params' => 'class="dataTableContent"', 
-						  'text' => '<a id="m_696" onclick="reply_bulletin('.$bulletin["id"].','.$bulletin["bulletin_id"].')" href="javascript:void(0)"><img border="0" title=" 2014/07/23 14:43:47 " alt="2014/07/23 14:43:47" src="images/icons/info_blink.gif"></a>'
+						  'text' => '<a id="m_696" onclick="reply_bulletin('.$bulletin["id"].','.$bulletin["bulletin_id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
                           ); 
                       
     $bulletin_table_row[] = array('params' => $bulletin_item_params, 'text' => $bulletin_item_info);
@@ -1092,15 +1118,19 @@ require("includes/note_js.php");
     } else {
       $bulletin_item_params = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
-
+	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->auth_user!=$bulletin["author"])&&($ocertify->npermission != 31)){
+		$select_html='disabled="disabled"';
+	}else{
+		$select_html='';
+	}
     $bulletin_item_info = array();  
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
-                          'text' => '<input type="checkbox" name="bulletin_list_id[]"  value="'.$bulletin["id"].'">'   
+                          'text' => '<input type="checkbox" name="bulletin_list_id[]" '.$select_html.' value="'.$bulletin["id"].'">'   
                           );
 
 	//收藏
-	$collect_status = $bulletin['collect']==0 ? '<img onclick="change_collect_status('.$bulletin['id'].')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/gray_right.gif" border="0">': '<img onclick="change_collect_status('.$bulletin['id'].')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/green_right.gif" border="0">';
+	$collect_status =in_array($ocertify->auth_user,explode(",",$bulletin['collect']))? '<img onclick="change_collect_status('.$bulletin['id'].',\''.$ocertify->auth_user.'\')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/green_right.gif" border="0">': '<img onclick="change_collect_status('.$bulletin['id'].',\''.$ocertify->auth_user.'\')" id="bulletin_board_collect_'.$bulletin['id'].'" src="images/icons/gray_right.gif" border="0">';
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
                           'text' => $collect_status
@@ -1147,7 +1177,7 @@ require("includes/note_js.php");
     $bulletin_item_info[] = array(
                           'align' => 'left', 
                           'params' => 'class="dataTableContent"', 
-						  'text' => '<a id="m_696" onclick="edit_bulletin('.$bulletin["id"].')" href="javascript:void(0)"><img border="0" title=" 2014/07/23 14:43:47 " alt="2014/07/23 14:43:47" src="images/icons/info_blink.gif"></a>'
+						  'text' => '<a id="m_696" onclick="edit_bulletin('.$bulletin["id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
                           ); 
                       
     $bulletin_table_row[] = array('params' => $bulletin_item_params, 'text' => $bulletin_item_info);
@@ -1167,9 +1197,9 @@ require("includes/note_js.php");
                   <?php
                   if($ocertify->npermission >= 0 && tep_db_num_rows($bulletin_query) > 0){
                     echo '<div class="td_box">';
-                    echo '<select name="edit_bulletin_list" onchange="select_bulletin_change(this.value,\'bulletin_list_id[]\',\''.$ocertify->npermission.'\');"'.($site_permission_flag == false ? '' : '').'>';
+                    echo '<select name="edit_bulletin_list" '.($site_permission_flag == false ? '' : '').'>';
                     echo '<option value="0">'.TEXT_BULLETIN_EDIT_SELECT.'</option>';
-                    echo '<option value="1" >'.TEXT_BULLETIN_EDIT_DELETE.'</option>';
+                    echo '<option value="1"  onclick="select_bulletin_change(this.value,\'bulletin_list_id[]\',\''.$ocertify->npermission.'\');" >'.TEXT_BULLETIN_EDIT_DELETE.'</option>';
                     echo '</select>';
                     echo '</div>';
                   }
@@ -1184,11 +1214,11 @@ require("includes/note_js.php");
                     <td colspan="2" align="right"><div class="td_button"><?php 
 					if($_GET['action']=='show_reply'){
 						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? '' : '') . '</a>';
-						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(IMAGE_NEW_PROJECT,$site_permission_flag == false ? '' : '') . '</a>'; 
+						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN,$site_permission_flag == false ? '' : '') . '</a>'; 
 					}
 					else{
 						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? '' : '') . '</a>';
-						echo '<a href="javascript:void(0);" onclick="create_bulletin(this);">' .tep_html_element_button(IMAGE_NEW_PROJECT,$site_permission_flag == false ? '' : '') . '</a>'; 
+						echo '<a href="javascript:void(0);" onclick="create_bulletin(this);">' .tep_html_element_button(TEXT_CREATE_BULLETIN,$site_permission_flag == false ? '' : '') . '</a>'; 
 					}?></div></td>
                   </tr>
           </table>

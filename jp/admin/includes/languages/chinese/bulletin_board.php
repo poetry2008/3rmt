@@ -5,7 +5,7 @@ if (extension_loaded('mbstring')) {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
 }
-define('NETWORK_GAME_NEWS','网络游戏快报');
+define('TEXT_BULLETIN_BOARD','公告栏');
 define('SEARCH','搜索');
 define('TEXT_COLLECT','收藏');
 define('TEXT_MARK','标记');
@@ -28,7 +28,7 @@ define('TEXT_GROUP_SELECT','组选择');
 define('TEXT_SELECT_ID','id选择');
 define('DELETE_STAFF','删除');
 define('BUTTON_ADD_TEXT','添加');
-define('ADD_STAFF','增加');
+define('ADD_STAFF','添加');
 define('TEXT_TO_BODY','浏览者');
 define('TEXT_STAFF_LIST','员工列表');
 define('TEXT_AUTHOR','作  者');
@@ -41,4 +41,9 @@ define('TEXT_EDIT_BULLETIN_ERPLY','跟帖回复');
 define('TEXT_DELETE','删除');
 define('TEXT_LAST_BULLETIN','上一个帖');
 define('TEXT_NEXT_BULLETIN','下一个贴');
+define('TEXT_MUST_WRITE','必填');
+define('TEXT_WARNING_EMPTY','请填写');
+define('TEXT_CONTENT_REPLY','内容');
+define('TEXT_CONTENT_REPLY_LAST','回复');
+define('TEXT_CONTENT_NEW','内容');
 ?>

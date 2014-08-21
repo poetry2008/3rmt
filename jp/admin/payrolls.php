@@ -636,6 +636,14 @@ color:#0066CC;
                   }
 
                   $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,array(),$error_pam_array);
+                  if($user_wage_val != '' && !isset($_GET['reset'])){
+                    $error_pam_temp = tep_param_error($wage_id['value'],$group_id);
+
+                    foreach($error_pam_temp as $pam_value){
+
+                      $error_pam_array[] =$pam_value ;
+                    }
+                  }
                   if($_GET['action'] == 'again_computing' && isset($_POST['users_wage']) && !empty($replace_pam_value)){
 
                     $wage_value = $replace_pam_value[$wage_id['id']][$users_value];
@@ -696,7 +704,10 @@ color:#0066CC;
                     echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';   
                     echo '<option value="1">'.TEXT_PAYROLLS_SEND_MAIL.'</option>';
                     echo '</select>';
-                    echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('　',$error_pam_array));
+                    $error_pam_array = array_unique($error_pam_array);
+                    if(!empty($error_pam_array)){
+                      echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('　',$error_pam_array));
+                    }
                     ?> 
                     </td>
                     </tr> 

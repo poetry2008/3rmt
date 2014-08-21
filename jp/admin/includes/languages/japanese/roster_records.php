@@ -66,7 +66,7 @@ define('TEXT_ALLOW_USER','許可者');
 define('TEXT_ALLOW_STATUS','許可ステータス');
 define('TEXT_REPLACE_NOT_ALLOW','--');
 define('TEXT_REPLACE_IS_ALLOW','許可');
-define('TEXT_ALLOW_START','開始日時');
+define('TEXT_ALLOW_START','終始時刻');
 define('TEXT_ALLOW_END','終了日時');
 define('TEXT_ADL_TEXT_INFO','コメント');
 define('TEXT_LEAVE_ONE_DAY','--');
