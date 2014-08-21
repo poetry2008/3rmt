@@ -14735,11 +14735,11 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   foreach($parameters_value_array as $has_param){
     $att_param = str_replace('${','',str_replace('}','',$has_param)); 
     $att_sql = "SELECT id FROM `". TABLE_ATTENDANCE_DETAIL ."` WHERE 
-      param_b='".$att_param."' OR param_a='".$att_param."' limit 1";
+      binary param_b='".$att_param."' OR binary param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
     
     $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
-      `contents`='".$has_param."' and group_id='".$group_id."'";
+      binary `contents`='".$has_param."' and group_id='".$group_id."'";
     $wage_query = tep_db_query($wage_sql);
 
     if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
