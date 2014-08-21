@@ -4,7 +4,7 @@ define('HEADING_TITLE', 'アラートログ');
 
 // 访问表错误信息
 define('TEXT_ERRINFO_DB_NO_LOGINFO', 'アクセス情報が取得できませんでした');
-define('NOTICE_BULLETIN_TITLE', 'ネトゲ速報');
+define('TEXT_BULLETIN_BOARD','掲示板');
 
 // 信息
 define('TEXT_INFO_DELETE_DAY', 'アクセス情報の削除');
