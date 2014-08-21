@@ -828,8 +828,8 @@ require("includes/note_js.php");
 		$header_content=$header_title_row['title'];
 		$last_id=$header_id - 1;
 		$next_id=$header_id + 1;
-		$header_title_html='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icon_last.jpg" alt="'.TEXT_LAST_BULLETIN.'"></a>
-						<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icon_next.jpg" alt="'.TEXT_NEXT_BULLETIN.'"></a>
+		$header_title_html='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" alt="'.TEXT_LAST_BULLETIN.'"></a>
+						<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" alt="'.TEXT_NEXT_BULLETIN.'"></a>
 						  '.$header_content.'';
 	}else $header_title_html=TEXT_BULLETIN_BOARD;
 ?>
