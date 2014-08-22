@@ -48,12 +48,12 @@
               }
               $date_str = implode('|||',$date_array);
             }else{
-              $wage_date = tep_db_prepare_input($_POST['select_date']);
+              $payroll_date = tep_db_prepare_input($_POST['select_date']);
               $cycle_date = tep_db_prepare_input($_POST['cycle_date']);
-              $date_str = $wage_date.'|||'.$cycle_date; 
+              $date_str = $payroll_date.'|||'.$cycle_date; 
             }
 
-            $payrolls_admin = tep_db_prepare_input($_POST['wage_admin']);
+            $payrolls_admin = tep_db_prepare_input($_POST['payroll_admin']);
 	    $group_sql_array = array('name' => $_POST['group_name'],
 				     'parent_id' => $_GET['parent_id'],
 				     'all_users_id' => $all_users_id,
@@ -71,18 +71,18 @@
             tep_db_perform(TABLE_GROUPS, $group_sql_array);	
             $insert_group_id = tep_db_insert_id();
             //计算工资的标题、公式
-            $wage_sort = $_POST['wage_sort'];
-            $wage_object_sort = array();
-            $wage_formula_sort = array();
+            $payroll_sort = $_POST['payroll_sort'];
+            $payroll_object_sort = array();
+            $payroll_formula_sort = array();
 
-            foreach($wage_sort as $wage_sort_key=>$wage_sort_value){
+            foreach($payroll_sort as $payroll_sort_key=>$payroll_sort_value){
 
-              if($wage_sort_value == 0){
+              if($payroll_sort_value == 0){
 
-                $wage_object_sort[] = $wage_sort_key;
-              }else if($wage_sort_value == -1){
+                $payroll_object_sort[] = $payroll_sort_key;
+              }else if($payroll_sort_value == -1){
 
-                $wage_formula_sort[] = $wage_sort_key; 
+                $payroll_formula_sort[] = $payroll_sort_key; 
               }
             }
             $object_title = tep_db_prepare_input($_POST['object_title']);
@@ -95,9 +95,9 @@
 				     'project_id' => 0,
 				     'title' => $object_title_value,
                                      'contents' => $object_contents[$object_title_key],
-                                     'sort'=>$wage_object_sort[$object_title_key] 
+                                     'sort'=>$payroll_object_sort[$object_title_key] 
 			            );
-               tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
+               tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $object_sql_array);
              }
             }
 
@@ -113,9 +113,9 @@
 				     'title' => $formula_title_value,
 				     'contents' => $formula_contents[$formula_title_key], 
                                      'project_value' => $formula_value[$formula_title_key],
-                                     'sort'=>$wage_formula_sort[$formula_title_key] 
+                                     'sort'=>$payroll_formula_sort[$formula_title_key] 
 			            );
-               tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
+               tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $formula_sql_array);
              }
             } 
 	  }
@@ -151,11 +151,11 @@
               }
               $date_str = implode('|||',$date_array);
           }else{
-              $wage_date = tep_db_prepare_input($_POST['select_date']);
+              $payroll_date = tep_db_prepare_input($_POST['select_date']);
               $cycle_date = tep_db_prepare_input($_POST['cycle_date']);
-              $date_str = $wage_date.'|||'.$cycle_date; 
+              $date_str = $payroll_date.'|||'.$cycle_date; 
           } 
-          $payrolls_admin = tep_db_prepare_input($_POST['wage_admin']);
+          $payrolls_admin = tep_db_prepare_input($_POST['payroll_admin']);
 	  $group_sql_array = array('name' => $_POST['group_name'],
 				   'all_users_id' => $all_users_id,
 				   'all_managers_id' => $all_managers_id,
@@ -178,21 +178,21 @@
           $old_object_title = tep_db_prepare_input($_POST['old_object_title']);
           $old_object_contents = tep_db_prepare_input($_POST['old_object_contents']);
 
-          $wage_sort = $_POST['wage_sort'];
-          $wage_object_sort = array();
-          $wage_formula_sort = array();
-          $wage_old_sort = array();
+          $payroll_sort = $_POST['payroll_sort'];
+          $payroll_object_sort = array();
+          $payroll_formula_sort = array();
+          $payroll_old_sort = array();
 
-          foreach($wage_sort as $wage_sort_key=>$wage_sort_value){
+          foreach($payroll_sort as $payroll_sort_key=>$payroll_sort_value){
 
-            if($wage_sort_value == 0){
+            if($payroll_sort_value == 0){
 
-              $wage_object_sort[] = $wage_sort_key;
-            }else if($wage_sort_value == -1){
+              $payroll_object_sort[] = $payroll_sort_key;
+            }else if($payroll_sort_value == -1){
 
-              $wage_formula_sort[] = $wage_sort_key; 
+              $payroll_formula_sort[] = $payroll_sort_key; 
             }else{
-              $wage_old_sort[$wage_sort_value] = $wage_sort_key; 
+              $payroll_old_sort[$payroll_sort_value] = $payroll_sort_key; 
             }
           }
           
@@ -203,18 +203,18 @@
              $old_object_sql_array = array(
 				     'title' => $old_object_title_value,
                                      'contents' => $old_object_contents[$old_object_title_key],
-                                     'sort'=> $wage_old_sort[$old_object_title_key] 
+                                     'sort'=> $payroll_old_sort[$old_object_title_key] 
 			            );
-             tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_object_sql_array, 'update', 'id='.$old_object_title_key);
+             tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $old_object_sql_array, 'update', 'id='.$old_object_title_key);
            }else{
-             tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id='".$old_object_title_key."'");
+             tep_db_query("delete from ".TABLE_PAYROLL_SETTLEMENT." where id='".$old_object_title_key."'");
            }
           } 
           $old_delete_project_array = array_diff($old_project_array,$old_project_current_array);
 
           //计算工资的标题、公式
           if(!empty($old_delete_project_array)){
-            tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id in ('".implode(',',$old_delete_project_array)."')");
+            tep_db_query("delete from ".TABLE_PAYROLL_SETTLEMENT." where id in ('".implode(',',$old_delete_project_array)."')");
           }
           $object_title = tep_db_prepare_input($_POST['object_title']);
           $object_contents = tep_db_prepare_input($_POST['object_contents']);
@@ -226,9 +226,9 @@
 				     'project_id' => 0,
 				     'title' => $object_title_value,
                                      'contents' => $object_contents[$object_title_key], 
-                                     'sort'=> $wage_object_sort[$object_title_key]
+                                     'sort'=> $payroll_object_sort[$object_title_key]
 			            );
-             tep_db_perform(TABLE_WAGE_SETTLEMENT, $object_sql_array);
+             tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $object_sql_array);
            }
           }
 
@@ -250,16 +250,16 @@
 				     'title' => $old_formula_title_value,
 				     'contents' => $old_formula_contents[$old_formula_title_key], 
 				     'project_value' => $old_formula_value[$old_formula_title_key], 
-                                     'sort'=> $wage_old_sort[$old_formula_title_key]
+                                     'sort'=> $payroll_old_sort[$old_formula_title_key]
 			            );
-             tep_db_perform(TABLE_WAGE_SETTLEMENT, $old_formula_sql_array, 'update', 'id='.$old_formula_title_key);
+             tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $old_formula_sql_array, 'update', 'id='.$old_formula_title_key);
            }else{
-             tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id='".$old_formula_title_key."'");
+             tep_db_query("delete from ".TABLE_PAYROLL_SETTLEMENT." where id='".$old_formula_title_key."'");
            }
           } 
           $old_delete_formula_array = array_diff($old_formula_array,$old_formula_current_array);
           if(!empty($old_delete_formula_array)){
-            tep_db_query("delete from ".TABLE_WAGE_SETTLEMENT." where id in ('".implode(',',$old_delete_formula_array)."')");
+            tep_db_query("delete from ".TABLE_PAYROLL_SETTLEMENT." where id in ('".implode(',',$old_delete_formula_array)."')");
           }
           //end
 
@@ -275,9 +275,9 @@
 				     'title' => $formula_title_value,
 				     'contents' => $formula_contents[$formula_title_key], 
 				     'project_value' => $formula_value[$formula_title_key], 
-                                     'sort'=> $wage_formula_sort[$formula_title_key]
+                                     'sort'=> $payroll_formula_sort[$formula_title_key]
 			            );
-              tep_db_perform(TABLE_WAGE_SETTLEMENT, $formula_sql_array);
+              tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $formula_sql_array);
             }
           }
         }
@@ -357,19 +357,19 @@
         $insert_group_id = tep_db_insert_id();
 
         //复制关联表的数据 
-        $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
-        while($wage_array = tep_db_fetch_array($wage_query)){
+        $payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."'");
+        while($payroll_array = tep_db_fetch_array($payroll_query)){
 
-          $wage_sql_array = array('group_id'=>$insert_group_id,
-                                  'project_id'=>$wage_array['project_id'],
-                                  'title'=>$wage_array['title'], 
-                                  'contents'=>$wage_array['contents'],
-                                  'project_value'=>$wage_array['project_value'],
-                                  'sort'=>$wage_array['sort']
+          $payroll_sql_array = array('group_id'=>$insert_group_id,
+                                  'project_id'=>$payroll_array['project_id'],
+                                  'title'=>$payroll_array['title'], 
+                                  'contents'=>$payroll_array['contents'],
+                                  'project_value'=>$payroll_array['project_value'],
+                                  'sort'=>$payroll_array['sort']
                                 );
-          tep_db_perform(TABLE_WAGE_SETTLEMENT, $wage_sql_array);
+          tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $payroll_sql_array);
         }
-        tep_db_free_result($wage_query);
+        tep_db_free_result($payroll_query);
 
         //获取此组的子组
         group_id_list($group_id,$group_id_list);
@@ -402,19 +402,19 @@
           $child_parent_id_array[$group_id_value] = $child_insert_group_id;
 
           //复制关联表的数据 
-          $wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id_value."'");
-          while($wage_array = tep_db_fetch_array($wage_query)){
+          $payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id_value."'");
+          while($payroll_array = tep_db_fetch_array($payroll_query)){
 
-            $wage_sql_array = array('group_id'=>$child_insert_group_id,
-                                  'project_id'=>$wage_array['project_id'],
-                                  'title'=>$wage_array['title'], 
-                                  'contents'=>$wage_array['contents'],
-                                  'project_value'=>$wage_array['project_value'],
-                                  'sort'=>$wage_array['sort']
+            $payroll_sql_array = array('group_id'=>$child_insert_group_id,
+                                  'project_id'=>$payroll_array['project_id'],
+                                  'title'=>$payroll_array['title'], 
+                                  'contents'=>$payroll_array['contents'],
+                                  'project_value'=>$payroll_array['project_value'],
+                                  'sort'=>$payroll_array['sort']
                                 );
-            tep_db_perform(TABLE_WAGE_SETTLEMENT, $wage_sql_array);
+            tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $payroll_sql_array);
           }
-          tep_db_free_result($wage_query);
+          tep_db_free_result($payroll_query);
         }
 
         tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$copy_to_group_id));
