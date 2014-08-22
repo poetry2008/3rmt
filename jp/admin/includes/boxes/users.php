@@ -87,9 +87,9 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
         tep_db_free_result($admin_group_query);
         if (!check_whether_is_limited(FILENAME_PAYROLLS) && (!empty($admin_group_list_array) || $ocertify->npermission == 31)) {
           if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PAYROLLS){
-            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_PAYROLLS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_wage.gif').  '</span><span>'.HEADER_TEXT_PAYROLLS.'</span></div>'; 
+            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_PAYROLLS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_payroll.gif').  '</span><span>'.HEADER_TEXT_PAYROLLS.'</span></div>'; 
           }else{
-            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_PAYROLLS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_wage.gif').  '</span><span>'.HEADER_TEXT_PAYROLLS.'</span></div>'; 
+            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_PAYROLLS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_payroll.gif').  '</span><span>'.HEADER_TEXT_PAYROLLS.'</span></div>'; 
           }
         }
         if (!check_whether_is_limited(FILENAME_ALERT_LOG)) {

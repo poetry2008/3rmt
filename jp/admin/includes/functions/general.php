@@ -14741,23 +14741,23 @@ function tep_get_sec_by_str($str){
 }
 /* -------------------------------------
     功能: 计算工资的公式 
-    参数: $wage_str 需要计算的公式 
+    参数: $payroll_str 需要计算的公式 
     参数: $user_id  员工ID 
-    参数: $wage_date 工资日期 
+    参数: $payroll_date 工资日期 
     参数: $group_id 所属组ID 
     参数: $parameters_array 参数及对应值数组 
     返回值: 计算结果 
  ------------------------------------ */
-function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array=array(),&$error_pam_array){
+function tep_user_payroll($payroll_str,$user_id,$payroll_date,$group_id,$parameters_array=array(),&$error_pam_array){
  
   //把数组中的参数替换为对应的值
-  $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
+  $payroll_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$payroll_str);
   //找出剩余的所有参数
   $parameters_value_array = array();
   $parameters_value_temp = array();
   $parameters_replace_basic_array = array();
   $parameters_replace_other_array = array();
-  preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
+  preg_match_all('/\$\{\w+?\}/is',$payroll_str,$parameters_value_temp);
   $parameters_value_array = $parameters_value_temp[0];
   foreach($parameters_value_array as $has_param){
     $att_param = str_replace('${','',str_replace('}','',$has_param)); 
@@ -14765,11 +14765,11 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
       binary param_b='".$att_param."' OR binary param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
     
-    $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
+    $payroll_sql = "select id from ". TABLE_PAYROLL_SETTLEMENT ." where 
       binary `contents`='".$has_param."' and group_id='".$group_id."'";
-    $wage_query = tep_db_query($wage_sql);
+    $payroll_query = tep_db_query($payroll_sql);
 
-    if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
+    if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($payroll_query) == 0){
       if(!in_array($has_param,array_keys($parameters_replace_basic_array))){
         $parameters_replace_basic_array[$has_param] = 0;
         $error_pam_array[] = $has_param;
@@ -14780,72 +14780,72 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   //关于组设置的公式中的参数替换
   
      
-  $wage_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."'");
-  while($wage_setting_array = tep_db_fetch_array($wage_setting_query)){
+  $payroll_setting_query = tep_db_query("select id,project_id,contents,project_value from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."'");
+  while($payroll_setting_array = tep_db_fetch_array($payroll_setting_query)){
 
-    //if(in_array($wage_setting_array['contents'],$parameters_value_array)){
+    //if(in_array($payroll_setting_array['contents'],$parameters_value_array)){
 
-      if($wage_setting_array['project_id'] == 1){
-        if($wage_setting_array['project_value'] != ''){
-          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_other_array))){
-            $parameters_replace_other_array[$wage_setting_array['contents']] = $wage_setting_array['project_value'];
+      if($payroll_setting_array['project_id'] == 1){
+        if($payroll_setting_array['project_value'] != ''){
+          if(!in_array($payroll_setting_array['contents'],array_keys($parameters_replace_other_array))){
+            $parameters_replace_other_array[$payroll_setting_array['contents']] = $payroll_setting_array['project_value'];
           }
         }else{
-          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_other_array))){
-            $parameters_replace_other_array[$wage_setting_array['contents']] = 0;
+          if(!in_array($payroll_setting_array['contents'],array_keys($parameters_replace_other_array))){
+            $parameters_replace_other_array[$payroll_setting_array['contents']] = 0;
           }
         }
       }else{
-        $user_wage_query = tep_db_query("select wage_value,start_date,end_date from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_setting_array['id']."' and user_id='".$user_id."'");
-        if(tep_db_num_rows($user_wage_query) > 0){
-          $user_wage_array = tep_db_fetch_array($user_wage_query);
-          tep_db_free_result($user_wage_query);
-          $user_wage_value_array['start_date'] = $user_wage_array['start_date'];
-          $user_wage_value_array['end_date'] = $user_wage_array['end_date'];
-          $user_wage_value_array['wage_value'] = $user_wage_array['wage_value'];
+        $user_payroll_query = tep_db_query("select payroll_value,start_date,end_date from ".TABLE_USER_PAYROLL_INFO." where payroll_id='".$payroll_setting_array['id']."' and user_id='".$user_id."'");
+        if(tep_db_num_rows($user_payroll_query) > 0){
+          $user_payroll_array = tep_db_fetch_array($user_payroll_query);
+          tep_db_free_result($user_payroll_query);
+          $user_payroll_value_array['start_date'] = $user_payroll_array['start_date'];
+          $user_payroll_value_array['end_date'] = $user_payroll_array['end_date'];
+          $user_payroll_value_array['payroll_value'] = $user_payroll_array['payroll_value'];
           //判断工资的有效期
-          $wage_date_array = tep_start_end_date($group_id,$wage_date);
-          if($user_wage_value_array['start_date'] != '' && $user_wage_value_array['end_date'] != ''){
-            if($wage_date_array['start_date'] >= $user_wage_value_array['start_date'] && $wage_date_array['end_date'] <= $user_wage_value_array['end_date']){
-              $user_wage_val = $user_wage_value_array['wage_value'];
+          $payroll_date_array = tep_start_end_date($group_id,$payroll_date);
+          if($user_payroll_value_array['start_date'] != '' && $user_payroll_value_array['end_date'] != ''){
+            if($payroll_date_array['start_date'] >= $user_payroll_value_array['start_date'] && $payroll_date_array['end_date'] <= $user_payroll_value_array['end_date']){
+              $user_payroll_val = $user_payroll_value_array['payroll_value'];
             }else{
                        
-              $user_wage_val = 0;
+              $user_payroll_val = 0;
             }
-          }else if($user_wage_value_array['start_date'] != ''){
+          }else if($user_payroll_value_array['start_date'] != ''){
 
-            if($wage_date_array['start_date'] >= $user_wage_value_array['start_date']){
+            if($payroll_date_array['start_date'] >= $user_payroll_value_array['start_date']){
 
-              $user_wage_val = $user_wage_value_array['wage_value'];
+              $user_payroll_val = $user_payroll_value_array['payroll_value'];
             }else{
-              $user_wage_val = 0; 
+              $user_payroll_val = 0; 
             }
-          }else if($user_wage_value_array['end_date'] != ''){
+          }else if($user_payroll_value_array['end_date'] != ''){
 
-            if($wage_date_array['end_date'] <= $user_wage_value_array['end_date']){
+            if($payroll_date_array['end_date'] <= $user_payroll_value_array['end_date']){
 
-              $user_wage_val = $user_wage_value_array['wage_value'];
+              $user_payroll_val = $user_payroll_value_array['payroll_value'];
             }else{
-              $user_wage_val = 0; 
+              $user_payroll_val = 0; 
             } 
           }else{
-            $user_wage_val = $user_wage_value_array['wage_value']; 
+            $user_payroll_val = $user_payroll_value_array['payroll_value']; 
           }
-          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_basic_array))){
-            $parameters_replace_basic_array[$wage_setting_array['contents']] = $user_wage_val; 
+          if(!in_array($payroll_setting_array['contents'],array_keys($parameters_replace_basic_array))){
+            $parameters_replace_basic_array[$payroll_setting_array['contents']] = $user_payroll_val; 
           }
         }else{
-          if(!in_array($wage_setting_array['contents'],array_keys($parameters_replace_basic_array))){
-            $parameters_replace_basic_array[$wage_setting_array['contents']] = 0; 
+          if(!in_array($payroll_setting_array['contents'],array_keys($parameters_replace_basic_array))){
+            $parameters_replace_basic_array[$payroll_setting_array['contents']] = 0; 
           }
         }
       }
     //} 
   }
-  tep_db_free_result($wage_setting_query);
+  tep_db_free_result($payroll_setting_query);
  
   //获取工资计算的开始日、结束日  
-  $start_end_time_array = tep_start_end_date($group_id,$wage_date);
+  $start_end_time_array = tep_start_end_date($group_id,$payroll_date);
 
   //关于打卡出勤的相关参数及对应的值
   $attendance_replace_array = array();
@@ -14860,10 +14860,10 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
         $tmp_set_time = $attendance_detail_array['work_hours'] - $attendance_detail_array['rest_hours'];
         if($tmp_set_time > 0){
           $work_hours_num = 0;
-          $wage_start_date = strtotime($start_end_time_array['start_date']);
-          $wage_end_date = strtotime($start_end_time_array['end_date']);
-          while($wage_start_date <= $wage_end_date){
-            $att_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$wage_start_date));
+          $payroll_start_date = strtotime($start_end_time_array['start_date']);
+          $payroll_end_date = strtotime($start_end_time_array['end_date']);
+          while($payroll_start_date <= $payroll_end_date){
+            $att_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$payroll_start_date));
 
             foreach($att_user_array as $att_user_value){
 
@@ -14871,7 +14871,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
                 $work_hours_num++; 
               }
             }
-            $wage_start_date = $wage_start_date+3600*24;
+            $payroll_start_date = $payroll_start_date+3600*24;
           }
           if(!in_array('${'.$attendance_detail_array['param_a'].'}',array_keys($attendance_replace_array))){
             $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $tmp_set_time*$work_hours_num;
@@ -14908,10 +14908,10 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
         }
         $work_hours_num = 0;
 
-        $wage_start_date = strtotime($start_end_time_array['start_date']);
-        $wage_end_date = strtotime($start_end_time_array['end_date']);
-        while($wage_start_date <= $wage_end_date){
-          $att_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$wage_start_date));
+        $payroll_start_date = strtotime($start_end_time_array['start_date']);
+        $payroll_end_date = strtotime($start_end_time_array['end_date']);
+        while($payroll_start_date <= $payroll_end_date){
+          $att_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$payroll_start_date));
 
           foreach($att_user_array as $att_user_value){
 
@@ -14919,7 +14919,7 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
               $work_hours_num++; 
             }
           }
-          $wage_start_date = $wage_start_date+3600*24;
+          $payroll_start_date = $payroll_start_date+3600*24;
         }
           if(!in_array('${'.$attendance_detail_array['param_a'].'}',array_keys($attendance_replace_array))){
             $attendance_replace_array['${'.$attendance_detail_array['param_a'].'}'] = $work_hours*$work_hours_num;
@@ -14957,27 +14957,27 @@ function tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array
   }
   tep_db_free_result($attendance_detail_query);
 
-  $wage_str = preg_replace('/(\$\{\w+?\})/is','($1)',$wage_str);
-  $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
+  $payroll_str = preg_replace('/(\$\{\w+?\})/is','($1)',$payroll_str);
+  $payroll_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$payroll_str);
 
-  $wage_str = str_replace(array_keys($parameters_replace_other_array),array_values($parameters_replace_other_array),$wage_str);
-  $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
-  $wage_str = str_replace(array_keys($parameters_replace_basic_array),array_values($parameters_replace_basic_array),$wage_str);
-  $wage_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$wage_str);
-  $wage_str = str_replace(array_keys($attendance_replace_array),array_values($attendance_replace_array),$wage_str);
+  $payroll_str = str_replace(array_keys($parameters_replace_other_array),array_values($parameters_replace_other_array),$payroll_str);
+  $payroll_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$payroll_str);
+  $payroll_str = str_replace(array_keys($parameters_replace_basic_array),array_values($parameters_replace_basic_array),$payroll_str);
+  $payroll_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$payroll_str);
+  $payroll_str = str_replace(array_keys($attendance_replace_array),array_values($attendance_replace_array),$payroll_str);
 
-  preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
+  preg_match_all('/\$\{\w+?\}/is',$payroll_str,$parameters_value_temp);
 
   if(!empty($parameters_value_temp[0])){
 
-    $wage_str = tep_user_wage($wage_str,$user_id,$wage_date,$group_id,$parameters_array);
+    $payroll_str = tep_user_payroll($payroll_str,$user_id,$payroll_date,$group_id,$parameters_array);
   }
   
   //把公式中的 num％ 字符替换为 (num/100) 
-  $wage_str = preg_replace('/([0-9]+)%/','($1/100)',$wage_str);
+  $payroll_str = preg_replace('/([0-9]+)%/','($1/100)',$payroll_str);
   //针对复杂运算的处理 ROUND MAX MIN {} 等
 
-  $return = tep_run_str($wage_str);
+  $return = tep_run_str($payroll_str);
   return is_numeric($return) ? $return : 0;
 }
 /* -------------------------------------
@@ -15063,7 +15063,7 @@ function tep_attendance_record_time($user_id,$date,$att_array=array(),$att_id=fa
     参数: $XSum  最终工资 
     返回值: 计算结果 
     ------------------------------------ */
-function wage_rate($XSum){
+function payroll_rate($XSum){
   $Rate;
   $Balan;
   $TSum;
@@ -15247,10 +15247,10 @@ function tep_validate_time($work_start,$work_end,$login_time,$logout_time){
 /* -------------------------------------
     功能: 根据组的终始日、工资做成时间来计算工资的开始日，结束日 
     参数: $group_id 组ID 
-    参数: $wage_date 做成工资的日期 
+    参数: $payroll_date 做成工资的日期 
     返回值: 计算工资的开始日、结束日 
 ------------------------------------ */
-function tep_start_end_date($group_id,$wage_date){
+function tep_start_end_date($group_id,$payroll_date){
 
   //根据所属组的ID，来获取始终日
   $group_date_query = tep_db_query("select cycle_flag,begin_end_date from ".TABLE_GROUPS." where id='".$group_id."'");
@@ -15258,7 +15258,7 @@ function tep_start_end_date($group_id,$wage_date){
   tep_db_free_result($group_date_query);
   $begin_end_date = explode('|||',$group_date_array['begin_end_date']);
   if($group_date_array['cycle_flag'] == 0){
-    $current_day = date('d',strtotime($wage_date));
+    $current_day = date('d',strtotime($payroll_date));
     $date_i = 0;
     foreach($begin_end_date as $begin_end_date_value){
       $begin_end_date_temp = explode('-',$begin_end_date_value);
@@ -15277,7 +15277,7 @@ function tep_start_end_date($group_id,$wage_date){
         $start_date_temp = $begin_end_date_temp[1];
         $end_date_temp = $begin_end_date_temp[0];
 
-        if($current_day >= ($begin_end_date_temp[0] == 28 ? date('t',strtotime(date('Y-m',strtotime($wage_date)))) : $begin_end_date_temp[0])){
+        if($current_day >= ($begin_end_date_temp[0] == 28 ? date('t',strtotime(date('Y-m',strtotime($payroll_date)))) : $begin_end_date_temp[0])){
           $start_date = $begin_end_date_temp[1];
           $end_date = $begin_end_date_temp[0];
         }
@@ -15297,30 +15297,30 @@ function tep_start_end_date($group_id,$wage_date){
 
         if($start_date >= $start_date_num && $current_day <= $end_date_num){
 
-          $start_date_i = date('Ym',strtotime('-1 month',strtotime($wage_date))).($start_date < 10 ? '0'.$start_date : $start_date);
+          $start_date_i = date('Ym',strtotime('-1 month',strtotime($payroll_date))).($start_date < 10 ? '0'.$start_date : $start_date);
         }else{
 
           if($start_date <= $end_date_num){
-            $start_date_i = date('Ym',strtotime('+1 month',strtotime($wage_date))).($start_date < 10 ? '0'.$start_date : $start_date);
+            $start_date_i = date('Ym',strtotime('+1 month',strtotime($payroll_date))).($start_date < 10 ? '0'.$start_date : $start_date);
           }else{
-            $start_date_i = date('Ym',strtotime($wage_date)).($start_date < 10 ? '0'.$start_date : $start_date);
+            $start_date_i = date('Ym',strtotime($payroll_date)).($start_date < 10 ? '0'.$start_date : $start_date);
           }
         }
 
         if($end_date >= $start_date_num && $current_day <= $end_date_num){
 
-          $end_date_i = date('Ym',strtotime('-1 month',strtotime($wage_date))).($end_date < 10 ? '0'.$end_date : $end_date);
+          $end_date_i = date('Ym',strtotime('-1 month',strtotime($payroll_date))).($end_date < 10 ? '0'.$end_date : $end_date);
         }else{
           if($end_date <= $end_date_num){ 
-            $end_date_i = date('Ym',strtotime('+1 month',strtotime($wage_date))).($end_date < 10 ? '0'.$end_date : $end_date);
+            $end_date_i = date('Ym',strtotime('+1 month',strtotime($payroll_date))).($end_date < 10 ? '0'.$end_date : $end_date);
           }else{
-            $end_date_i = date('Ym',strtotime($wage_date)).($end_date < 10 ? '0'.$end_date : $end_date);
+            $end_date_i = date('Ym',strtotime($payroll_date)).($end_date < 10 ? '0'.$end_date : $end_date);
           }
         }
         $date_list_array[] = array('start'=>$start_date_i,'end'=>$end_date_i,'start_num'=>$start_date,'end_num'=>$end_date);  
       } 
 
-      $current_date = date('Ymd',strtotime($wage_date));
+      $current_date = date('Ymd',strtotime($payroll_date));
       foreach($date_list_array as $date_list_value){
 
         if($current_date >= $date_list_value['end']){
@@ -15331,22 +15331,22 @@ function tep_start_end_date($group_id,$wage_date){
       }
     }
 
-    if($end_date <= date('d',strtotime($wage_date))){
+    if($end_date <= date('d',strtotime($payroll_date))){
 
         if($start_date <= $end_date){
-          $start_year_month = date('Y-m',strtotime($wage_date));
-          $end_year_month = date('Y-m',strtotime($wage_date));
+          $start_year_month = date('Y-m',strtotime($payroll_date));
+          $end_year_month = date('Y-m',strtotime($payroll_date));
         }else{
-          $start_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
-          $end_year_month = date('Y-m',strtotime($wage_date));
+          $start_year_month = date('Y-m',strtotime("-1 month",strtotime($payroll_date)));
+          $end_year_month = date('Y-m',strtotime($payroll_date));
         }
     }else{
         if($start_date <= $end_date){
-          $start_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
-          $end_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
+          $start_year_month = date('Y-m',strtotime("-1 month",strtotime($payroll_date)));
+          $end_year_month = date('Y-m',strtotime("-1 month",strtotime($payroll_date)));
         }else{
-          $start_year_month = date('Y-m',strtotime("-2 month",strtotime($wage_date)));
-          $end_year_month = date('Y-m',strtotime("-1 month",strtotime($wage_date)));
+          $start_year_month = date('Y-m',strtotime("-2 month",strtotime($payroll_date)));
+          $end_year_month = date('Y-m',strtotime("-1 month",strtotime($payroll_date)));
         }
     }
     $start_time = strtotime($start_year_month.'-'.$start_date);
@@ -15361,11 +15361,11 @@ function tep_start_end_date($group_id,$wage_date){
       $time_diff_num = 1;
     }
 
-    $wage_time_date = strtotime($wage_date);
+    $payroll_time_date = strtotime($payroll_date);
 
-    $date_diff = abs($wage_time_date - $start_time_date)/(3600*24)+1;
+    $date_diff = abs($payroll_time_date - $start_time_date)/(3600*24)+1;
 
-    $end_time = strtotime("-".($date_diff % $time_diff_num)." day",$wage_time_date);
+    $end_time = strtotime("-".($date_diff % $time_diff_num)." day",$payroll_time_date);
     $start_time = strtotime("-".($time_diff_num-1)." day",$end_time);
   }
 
@@ -15496,13 +15496,13 @@ function tep_run_str($str){
 }
 /* -------------------------------------
     功能: 找出公式中错误的参数 
-    参数: $wage_str 公式 
+    参数: $payroll_str 公式 
     参数: $group_id 组ID 
     返回值: 错误参数的数组 
 ------------------------------------ */
-function tep_param_error($wage_str,$group_id){
+function tep_param_error($payroll_str,$group_id){
   $error_pam_array = array();
-  preg_match_all('/\$\{\w+?\}/is',$wage_str,$parameters_value_temp);
+  preg_match_all('/\$\{\w+?\}/is',$payroll_str,$parameters_value_temp);
   $parameters_value_array = $parameters_value_temp[0];
   foreach($parameters_value_array as $has_param){
     $att_param = str_replace('${','',str_replace('}','',$has_param)); 
@@ -15510,11 +15510,11 @@ function tep_param_error($wage_str,$group_id){
       binary param_b='".$att_param."' OR binary param_a='".$att_param."' limit 1";
     $att_query = tep_db_query($att_sql);
     
-    $wage_sql = "select id from ". TABLE_WAGE_SETTLEMENT ." where 
+    $payroll_sql = "select id from ". TABLE_PAYROLL_SETTLEMENT ." where 
       binary `contents`='".$has_param."' and group_id='".$group_id."'";
-    $wage_query = tep_db_query($wage_sql);
+    $payroll_query = tep_db_query($payroll_sql);
 
-    if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($wage_query) == 0){
+    if(tep_db_num_rows($att_query) == 0 && tep_db_num_rows($payroll_query) == 0){
         $error_pam_array[] = $has_param;
     }
   }   

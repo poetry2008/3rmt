@@ -3480,9 +3480,9 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         $show_group_user = array();
         $show_select_group_user = array();
 
-        if(USER_WAGE_SETTING != ''){
+        if(USER_PAYROLL_SETTING != ''){
 
-          $select_user_list = unserialize(USER_WAGE_SETTING);
+          $select_user_list = unserialize(USER_PAYROLL_SETTING);
           $show_select_group_user = explode(',',$select_user_list[$ocertify->auth_user]['select_user'][$show_group_id]);
         }
          

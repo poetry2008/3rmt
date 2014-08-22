@@ -79,5 +79,6 @@ define('SHOW_ERROR_ATT_STATUS','Đi trễ /Về sớm');
 define('SHOW_NULL_ATT_STATUS','Không hiển thị');
 define('TEXT_ATT_SET_VALUE','Tổng phụ số thời gian làm việc quy định');
 define('TEXT_ATT_ACTUAL_VALUE','Tổng phụ số thời gian làm việc thực tế');
+define('TEXT_REMIND_CHOICE_SELECT','*Bắt buộc');
 ?>
 

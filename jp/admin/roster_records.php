@@ -432,8 +432,8 @@ if(isset($_GET['action'])){
               '${REST_START}',
               '${REST_END}'
               ),array(
-				 '<a href="'.$_SERVER['HTTP_REFERER'].'">',
-				 '</a>',
+				 $_SERVER['HTTP_REFERER'],
+				 '',
 				  $staff_info['name'],
 				  $allow_user['name'],
 				  $_POST['email_work_start'],
