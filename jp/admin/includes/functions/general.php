@@ -14120,10 +14120,6 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
         $all_att_arr[$all_att_row['id']] = $all_att_row;
     }
   }
-  $year = substr($date,0,4); 
-  $month = substr($date,4,2); 
-  $day = substr($date,6,2); 
-  $time_str = mktime(23,59,59,$month,$day,$year);
   $date_info = tep_date_info($date);
   $attendance_dd_arr = array();
   if($add_id == 0){
@@ -14146,7 +14142,7 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and UNIX_TIMESTAMP(add_time) < ".$time_str." and  is_user=0 order by id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and date <= ".$date." and  is_user=0 order by id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
@@ -14352,7 +14348,7 @@ function tep_is_show_att($aid,$date){
     $day = substr($date,6,2); 
     $time_str = mktime(23,59,59,$month,$day,$year);
     $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE.  " WHERE 
-      id='".$aid."' and UNIX_TIMESTAMP(add_time) < ".$time_str."";
+      id='".$aid."' and (UNIX_TIMESTAMP(add_time) < ".$time_str." or date<= '".$date."')";
     $query = tep_db_query($sql);
     if($row = tep_db_fetch_array($query)){
       return $row;
@@ -14418,10 +14414,6 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_i
         $all_att_arr[$all_att_row['id']] = $all_att_row;
     }
   }
-  $year = substr($date,0,4); 
-  $month = substr($date,4,2); 
-  $day = substr($date,6,2); 
-  $time_str = mktime(23,59,59,$month,$day,$year);
   $date_info = tep_date_info($date);
   $attendance_dd_arr = array();
   if($add_id == 0){
@@ -14447,7 +14439,7 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_i
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and UNIX_TIMESTAMP(add_time) < ".$time_str." and is_user='1' order by user_id asc,id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and date <= ".$date." and is_user='1' order by user_id asc,id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
@@ -14501,10 +14493,6 @@ function tep_is_attenandced_date($user){
   获得用户当前日期需要出勤的所有排班
 ***************************/
 function tep_all_attenande_by_uid($user,$date,$show_group=0){
-  $year = substr($date,0,4); 
-  $month = substr($date,4,2); 
-  $day = substr($date,6,2); 
-  $time_str = mktime(23,59,59,$month,$day,$year);
   $date_info = tep_date_info($date);
   $all_sql = "select atd.id as aid,atd.*,ad.* from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
     ". TABLE_ATTENDANCE_DETAIL ." ad on atd.attendance_detail_id = ad.id  
@@ -14524,7 +14512,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       $all_sql .= " false )";
     }
   }
-  $all_sql .= ")  and UNIX_TIMESTAMP(atd.add_time) < ".$time_str." order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
+  $all_sql .= ")  and atd.date <= ".$date." order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
   $query = tep_db_query($all_sql);
   $attendance_dd_arr_tmp = array();
   while($row = tep_db_fetch_array($query)){

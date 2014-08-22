@@ -102,8 +102,30 @@ if(isset($_GET['action'])){
             $sql_arr['user_id'] = $_POST['default_uid'];
           }
           $sql_arr['is_user'] = 1;
+          $update_date = false;
+          if(!empty($_POST['has_user']['new'][$u_key])){
+            $update_date = true;
+          }
+          if(!$update_date){
+            $old_attendance_detail_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE. " WHERE id ='".$_POST['data_as'][$u_key][$k]."' limit 1";
+            $old_attendance_detail_query = tep_db_query($old_attendance_detail_sql);
+            if($temp_row = tep_db_fetch_array($old_attendance_detail_query)){
+              if($user_id != $temp_row['user_id']){
+                $update_date = true;
+              }
+              if($type_arr[$key] != $temp_row['type']){
+                $update_date = true;
+              }
+              if($value != $temp_row['attendance_detail_id']){
+                $update_date = true;
+              }
+              if($_POST['has_space'][$key] != $temp_row['space']){
+                $update_date = true;
+              }
+            }
+          }
 
-	      if($_POST['type_array'][$key]!= $type_arr[$key]){
+	      if($_POST['type_array'][$key]!= $type_arr[$key]||$update_date){
             $sql_arr['date'] =  $_POST['get_date'];
             $sql_arr['month'] =  $date_info['month'];
             $sql_arr['day'] =  $date_info['day']; 
@@ -246,14 +268,35 @@ if(isset($_GET['action'])){
           if(isset($_POST['default_gid'])&&$_POST['default_gid']!=''){
             $sql_arr['group_id'] = $_POST['default_gid'];
           }
-	      if($_POST['type_array'][$key]!= $type_arr[$key]){
+          $old_attendance_detail_sql = "select * from
+            ".TABLE_ATTENDANCE_DETAIL_DATE. " WHERE id ='".$_POST['data_as'][$key]."' limit 1";
+          $old_attendance_detail_query = tep_db_query($old_attendance_detail_sql);
+          $update_date = false;
+          if($temp_row = tep_db_fetch_array($old_attendance_detail_query)){
+            if($group_arr[$key] != $temp_row['group_id']){
+              $update_date = true;
+            }
+            if($type_arr[$key] != $temp_row['type']){
+              $update_date = true;
+            }
+            if($value != $temp_row['attendance_detail_id']){
+              $update_date = true;
+            }
+            if($_POST['has_space'][$key] != $temp_row['space']){
+              $update_date = true;
+            }
+          }
+	      if($_POST['type_array'][$key]!= $type_arr[$key]||$update_date){
             $sql_arr['date'] =  $_POST['get_date'];
             $sql_arr['month'] =  $date_info['month'];
             $sql_arr['day'] =  $date_info['day']; 
                 
 		  }
 
-          tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+
+          if($update_date){
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+          }
         }
       }
       if(isset($_POST['attendance_id'])
