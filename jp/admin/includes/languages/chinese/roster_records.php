@@ -23,17 +23,6 @@ define('ATTENDANCE_UPDATE_USER', '更新者:');
 define('ATTENDANCE_ADD_TIME', '作成日:');
 define('ATTENDANCE_UPDATE_TIME', '更新日:');
 define('ATTENDANCE_TIME', '時間');
-//COLOR
-define('TEXT_CALENDAR_COLOR_WHITE','白色');
-define('TEXT_CALENDAR_COLOR_RED','红色');
-define('TEXT_CALENDAR_COLOR_BLUE_ORANGE','橙色');
-define('TEXT_CALENDAR_COLOR_BLUE_YELLOW','黄色');
-define('TEXT_CALENDAR_COLOR_BLUE_GREEN','绿色');
-define('TEXT_CALENDAR_COLOR_BLUE','蓝色');
-define('TEXT_CALENDAR_COLOR_BLUE_PURPLE','紫色');
-define('TEXT_CALENDAR_COLOR_BLUE_GRAY','粉色');
-define('TEXT_CALENDAR_COLOR_BLUE_PINK','棕色');
-define('TEXT_CALENDAR_COLOR_BLUE_BROWN','灰色');
 
 define('TEP_ERROR_NULL','请输入');
 define('IMAGE_NEW_ATTENDANCE', '新建');

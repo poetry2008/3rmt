@@ -9527,7 +9527,6 @@ else if($_GET['action'] == 'edit_attendance_info') {
      ); 
 //颜色
   $color_array = array('#000000','#808080','#800000','#800080','#008000','#808000','#000080','#008080','#C0C0C0','#FFFFFF','#FF0000','#FF00FF','#00FF00','#FFFF00','#0000FF','#00FFFF');
-  $color_font_array = array(TEXT_CALENDAR_COLOR_WHITE,TEXT_CALENDAR_COLOR_RED,TEXT_CALENDAR_COLOR_BLUE_ORANGE,TEXT_CALENDAR_COLOR_BLUE_YELLOW,TEXT_CALENDAR_COLOR_BLUE_GREEN,TEXT_CALENDAR_COLOR_BLUE,TEXT_CALENDAR_COLOR_BLUE_PURPLE,TEXT_CALENDAR_COLOR_BLUE_PINK,TEXT_CALENDAR_COLOR_BLUE_BROWN,TEXT_CALENDAR_COLOR_BLUE_GRAY); 
   if(!empty($id) && $att_info_res['scheduling_type']==1){
      $style_color = 'style="display:block;"'; 
   }else{

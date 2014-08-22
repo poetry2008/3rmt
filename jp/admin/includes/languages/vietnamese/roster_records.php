@@ -23,17 +23,6 @@ define('ATTENDANCE_UPDATE_USER', 'Người cập nhật');
 define('ATTENDANCE_ADD_TIME', 'Ngày tạo');
 define('ATTENDANCE_UPDATE_TIME', 'Ngày cập nhật');
 define('ATTENDANCE_TIME', 'Thời gian');
-//COLOR
-define('TEXT_CALENDAR_COLOR_WHITE','Trắng');
-define('TEXT_CALENDAR_COLOR_RED','Đỏ');
-define('TEXT_CALENDAR_COLOR_BLUE_ORANGE','Cam');
-define('TEXT_CALENDAR_COLOR_BLUE_YELLOW','Vàng');
-define('TEXT_CALENDAR_COLOR_BLUE_GREEN','Xanh lá cây');
-define('TEXT_CALENDAR_COLOR_BLUE','Xanh da trời');
-define('TEXT_CALENDAR_COLOR_BLUE_PURPLE','Tím đỏ');
-define('TEXT_CALENDAR_COLOR_BLUE_GRAY','Ghi');
-define('TEXT_CALENDAR_COLOR_BLUE_PINK','Hồng');
-define('TEXT_CALENDAR_COLOR_BLUE_BROWN','Nâu');
 
 define('TEP_ERROR_NULL','Vui lòng nhập lại');
 define('IMAGE_NEW_ATTENDANCE', 'Thêm template');

@@ -23,17 +23,6 @@ define('ATTENDANCE_UPDATE_USER', '更新者:');
 define('ATTENDANCE_ADD_TIME', '作成日:');
 define('ATTENDANCE_UPDATE_TIME', '更新日:');
 define('ATTENDANCE_TIME', '時間');
-//COLOR
-define('TEXT_CALENDAR_COLOR_WHITE','ホワイト');
-define('TEXT_CALENDAR_COLOR_RED','レッド');
-define('TEXT_CALENDAR_COLOR_BLUE_ORANGE','オレンジ');
-define('TEXT_CALENDAR_COLOR_BLUE_YELLOW','イエロー');
-define('TEXT_CALENDAR_COLOR_BLUE_GREEN','グリーン');
-define('TEXT_CALENDAR_COLOR_BLUE','ブルー');
-define('TEXT_CALENDAR_COLOR_BLUE_PURPLE','パープル');
-define('TEXT_CALENDAR_COLOR_BLUE_GRAY','グレー');
-define('TEXT_CALENDAR_COLOR_BLUE_PINK','ピンク');
-define('TEXT_CALENDAR_COLOR_BLUE_BROWN','ブラウン');
 
 define('TEP_ERROR_NULL','入力してください。');
 define('IMAGE_NEW_ATTENDANCE', 'テンプレート追加');
