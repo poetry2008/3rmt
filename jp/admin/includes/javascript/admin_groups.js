@@ -499,7 +499,7 @@ function check_reset(){
 }
 //add payroll admin
 function add_admin_list(ele,del_str){
-  var select_str = $(ele).parent().find('span').html();
+  var select_str = $("#add_payroll_list").find("select").html();
   $("select[name='payroll_admin[]']").each(function(){
  
     var reg = new RegExp('<option value="'+$(this).val()+'".*?>.*?<\/option>','g');
@@ -508,9 +508,9 @@ function add_admin_list(ele,del_str){
 
   select_str_temp = select_str.replace('<option vlaue="">--</option>','');
 
-  if(select_str_temp.indexOf('<option') > 0){
+  if(select_str_temp != ''){
 
-    $("#add_end").before('<tr><td width="20%"></td><td>'+select_str+'&nbsp;&nbsp;<input type="button" value="'+del_str+'" onclick="del_admin_list(this);"></td></tr>');
+    $("#add_payroll_list").append('<li><select name="payroll_admin[]">'+select_str+'</select><input type="button" value="'+del_str+'" onclick="del_admin_list(this);"></li>');
   }else{
   
     ele.disabled = true;
@@ -520,7 +520,7 @@ function add_admin_list(ele,del_str){
 function del_admin_list(ele){
   var add_admin_button = document.getElementById('add_admin_button');
   add_admin_button.disabled = false;
-  $(ele).parent().parent().remove();
+  $(ele).parent().remove();
 }
 //popup move group page
 function move_group_id(id){
@@ -600,8 +600,8 @@ $('#show_latest_news').css('display','block');
 }
 });
 }
-function add_manager_row(ele){
-	$(ele).before($("#add_manager_hidden").html());
+function add_manager_row(){
+	$("#add_manager_list").append($("#add_manager_hidden").html());
 }
 function del_manager_row(ele){
 	$(ele).parent().remove();
