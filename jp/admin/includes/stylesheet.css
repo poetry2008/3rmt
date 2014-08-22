@@ -1873,6 +1873,9 @@ Public list
 	min-width:60px;
     white-space:nowrap;
 }
+.table_img_user{
+    margin-right:10px;
+}
 @media all and (-webkit-min-device-pixel-ratio:0){
 .table_img_list li{
 	float:left;

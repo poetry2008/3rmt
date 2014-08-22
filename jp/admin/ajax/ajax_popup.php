@@ -8930,12 +8930,12 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
    	}
 	$all_manager .= '</ul>';*/
 
-   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+   	$all_manager = '<ul id="add_manager_list" class="table_img_list" style="width:100%">'; 
 	$all_manager .='<li><select class="manager_select" name="managers_list[]">';	
 	while($manager_list_res = tep_db_fetch_array($manager_list)){
        $all_manager .='<option value="'.$manager_list_res['userid'].'">'.$manager_list_res['name'].'</option>';
 	}
-	$all_manager .='</select></li><input type="button" onclick="add_manager_row(this)" value="'.TEXT_ADD_ADL.'">';
+	$all_manager .='</select><input type="button" onclick="add_manager_row();" value="'.TEXT_ADD_ADL.'"></li>';
    	$all_manager .= '</ul>'; 
 	
  }else{
@@ -8955,15 +8955,15 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
 	 while($row = tep_db_fetch_array($manager_list)){
 		 $manager_list_res[]=$row;
 	 }
-   	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
+   	$all_manager = '<ul id="add_manager_list" class="table_img_list" style="width:100%">'; 
 	for($i=0; $i<count($group_all_manager); $i++){
 	  $all_manager .='<li><select class="manager_select" name="managers_list[]">';	
 	  foreach($manager_list_res as $manager_info){
         $all_manager .='<option value="'.$manager_info['userid'].'"'.($manager_info['userid']==$group_all_manager[$i] ? ' selected="selected"' : '').'>'.$manager_info['name'].'</option>';
 	 }
-	    $all_manager .='</select><input '.($i==0 ? 'style="display:none;"':'').' onclick="del_manager_row(this)" type="button" value="'.TEXT_DEL_ADL.'"></li>';
+	    $all_manager .='</select>'.($i == 0 ? '<input type="button" onclick="add_manager_row();" value="'.TEXT_ADD_ADL.'">' : '').'<input '.($i==0 ? 'style="display:none;"':'').' onclick="del_manager_row(this)" type="button" value="'.TEXT_DEL_ADL.'"></li>';
 	}
-   	$all_manager .= '<input type="button" onclick="add_manager_row(this)" value="'.TEXT_ADD_ADL.'"></ul>'; 
+   	$all_manager .= '</ul>'; 
 
  }
  $group_manager[] = array('text' => $all_manager);
@@ -8974,53 +8974,51 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  $group_content_row_staff = array();
  $group_content_row_staff[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_PAYROLL_ADMIN);
  if($_POST['group_id'] < 0){
- 	$users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
-   	$all_users = '<span><select name="payroll_admin[]">'; 
+        $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+        $all_users .= '<ul id="add_payroll_list" class="table_img_list" style="width:100%">'; 
+   	$all_users .= '<li><select name="payroll_admin[]">'; 
    	$all_users .= '<option vlaue="">--</option>'; 
    	while ($users_list_res = tep_db_fetch_array($users_list)) {
      		$all_users .= '<option value="'.$users_list_res['userid'].'">'.$users_list_res['name'].'</option>'; 
         }
         tep_db_free_result($users_list);
- 	$all_users .= '</select></span>';
- 	$all_users .= '&nbsp;&nbsp;<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');">';
+ 	$all_users .= '</select>';
+ 	$all_users .= '<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');"></li></ul>';
  }else{
         $payrolls_admin = $groups_array['payrolls_admin'];
 
         if(trim($payrolls_admin) == ''){
-	  $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
-   	  $all_users = '<span><select name="payroll_admin[]">'; 
+          $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+          $all_users = '<ul id="add_payroll_list" class="table_img_list" style="width:100%">';
+   	  $all_users .= '<li><select name="payroll_admin[]">'; 
    	  $all_users .= '<option vlaue="">--</option>'; 
    	  while ($users_list_res = tep_db_fetch_array($users_list)) {
      		$all_users .= '<option value="'.$users_list_res['userid'].'">'.$users_list_res['name'].'</option>'; 
           }
           tep_db_free_result($users_list);
- 	  $all_users .= '</select></span>';
-          $all_users .= '&nbsp;&nbsp;<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');">';
+ 	  $all_users .= '</select>';
+          $all_users .= '<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');"></li>';
+          $all_users .= '</ul>';
         }else{
 
           $payrolls_admin_array = explode('|||',$payrolls_admin);
           $admin_i = 0;
+          $all_users = '<ul id="add_payroll_list" class="table_img_list" style="width:100%">';
           foreach($payrolls_admin_array as $payrolls_admin_value){
-            if($admin_i != 0){
-
-              $group_content_row_staff = array();
-              $group_content_row_staff[] = array('params'=>'width="20%"','text'=> '');
-            }
+            
             $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
-   	    $all_users = '<span><select name="payroll_admin[]">'; 
+   	    $all_users .= '<li><select name="payroll_admin[]">'; 
    	    $all_users .= '<option vlaue="">--</option>'; 
    	    while ($users_list_res = tep_db_fetch_array($users_list)) {
      		$all_users .= '<option value="'.$users_list_res['userid'].'"'.($users_list_res['userid'] == $payrolls_admin_value ? ' selected' : '').'>'.$users_list_res['name'].'</option>'; 
             }
             tep_db_free_result($users_list);
- 	    $all_users .= '</select></span>';
-            $all_users .= '&nbsp;&nbsp;'.($admin_i == 0 ? '<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');">' : '<input type="button" onclick="del_admin_list(this);" value="'.IMAGE_DELETE.'">'); 
-            if(count($payrolls_admin_array)-1 != $admin_i){
-              $group_content_row_staff[] = array('text' => $all_users);
-              $group_content_table[] = array('text'=>$group_content_row_staff);  
-            } 
+ 	    $all_users .= '</select>';
+            $all_users .= ($admin_i == 0 ? '<input type="button" id="add_admin_button" value="'.BUTTON_ADD_TEXT.'" onclick="add_admin_list(this,\''.IMAGE_DELETE.'\');"></li>' : '<input type="button" onclick="del_admin_list(this);" value="'.IMAGE_DELETE.'"></li>'); 
+             
             $admin_i++;
           }
+          $all_users .= '</ul>';
         }
  }
  $group_content_row_staff[] = array('text' => $all_users);
@@ -9032,7 +9030,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  	$users_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
    	$all_users = '<ul class="table_img_list" style="width:100%">'; 
    	while ($users_list_res = tep_db_fetch_array($users_list)) {
-     		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
+     		$all_users .= '<li class="table_img_user"><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
    	}
  	$all_users .= '</ul>';
  }else{
@@ -9041,7 +9039,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
 	$users_list = tep_db_query('select * from '.TABLE_USERS.' where status=1');
 	$all_users = '<ul class="table_img_list" style="width:100%">'; 
    	while ($users_list_res = tep_db_fetch_array($users_list)) {
-     		$all_users .= '<li><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"'.(in_array($users_list_res['userid'],$group_all_user) ? ' checked="checked"' : '').'><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
+     		$all_users .= '<li class="table_img_user"><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"'.(in_array($users_list_res['userid'],$group_all_user) ? ' checked="checked"' : '').'><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
    	}
  	$all_users .= '</ul>';
  }

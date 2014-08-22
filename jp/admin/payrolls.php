@@ -461,13 +461,15 @@ color:#0066CC;
           }
         }
 	$group_user_list = array_combine($show_group_user,$uname_arr);
-	asort($group_user_list);
+        asort($group_user_list);
+        $able_user_array = array();
 
         foreach($group_user_list as $key=>$val) {
           if($val['status'] == 1){
             $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
             if(in_array($key,$show_select_group_user) || (!isset($_GET) && $default_select_flag == true)){
               $group_str .= ' checked="checked" ';
+              $able_user_array[] = $key;
             }
             $group_str .= ' value="'.$key.'" >';
             $group_str .=  '<label for="'.$key.'">'.$val['name'].'</label>';
@@ -531,6 +533,14 @@ color:#0066CC;
 	
         $show_group_user_list = isset($_GET['show_group_user_list']) && $_GET['show_group_user_list'] != '' ? $_GET['show_group_user_list'] : $show_select_group_user;
         $show_group_user_list = array_filter($show_group_user_list);
+        //判断当前员工列表中的员工是否可用
+        foreach($show_group_user_list as $k_user=>$v_user){
+
+          if(!in_array($v_user,$able_user_array)){
+
+            unset($show_group_user_list[$k_user]);
+          }
+        }
 
         if($ocertify->npermission != 31){
           foreach($show_group_user_list as $show_group_user_key=>$show_group_user_value){
