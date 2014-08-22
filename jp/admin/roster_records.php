@@ -858,7 +858,7 @@ require("includes/note_js.php");
         $group_str .= '</div>';
         $group_str .= '</td>';
         $group_str .= '<td align="right">';
-        $group_str .= '<input type="submit" value="'.TEXT_UPDATE.'">';
+        $group_str .= '<input type="submit" value="'.IMAGE_UPDATE.'">';
         $group_str .= '</td>';
         $group_str .= '</tr>';
         $group_str .= '<tr>';

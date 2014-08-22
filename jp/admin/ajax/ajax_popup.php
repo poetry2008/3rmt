@@ -9503,7 +9503,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
   
   $attendance_info_row = array();
       $attendance_info_row[]['text'] = array(
-           array('text' => ATTENDANCE_TITLE),
+           array('text' => TEXT_TITLE_NOTE),
            array('text' => tep_draw_input_field('title',$att_info_res['title'],'id="attendance_title" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
         array('text' => tep_draw_hidden_field('id', $id)) 
      ); 
@@ -9548,7 +9548,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
    $style_image = 'style="display:none;"';
   }
 	$select_type_image = '<div class="upload_image" '.$style_image.'>'.tep_draw_input_field('src_image_input',$src_text, 'id="src_text_image" class="input_text_width"'. $show_style .'');
-    $select_type_image .= tep_html_element_button(ATTENDANCE_IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button" '. $show_style .'').'</div>'; 
+    $select_type_image .= tep_html_element_button(IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button" '. $show_style .'').'</div>'; 
 	 
 	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</div>';
 	$div_color ='<div id="color_div" '.$style_color.'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</div>';
@@ -9709,8 +9709,8 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	    $att_work_hours= del_zero($att_info_res['work_hours']);
 	    $att_rest_hours= del_zero($att_info_res['rest_hours']);
 	 }
-      $work_hours=  tep_draw_input_field('work_hours',$att_work_hours,'id="work_hours" class="input_text_width" style="text-align:right;"' .$show_style) . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
-      $rest_hours =  tep_draw_input_field('rest_hours',$att_rest_hours,'id="rest_hours" class="input_text_width" style="text-align:right;"' .$show_style) . ATTENDANCE_TIME.'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
+      $work_hours=  tep_draw_input_field('work_hours',$att_work_hours,'id="work_hours" class="input_text_width" style="text-align:right;"' .$show_style) . TELECOM_UNKNOW_TABLE_TIME .'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
+      $rest_hours =  tep_draw_input_field('rest_hours',$att_rest_hours,'id="rest_hours" class="input_text_width" style="text-align:right;"' .$show_style) . TELECOM_UNKNOW_TABLE_TIME .'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
 	  
 	  if($att_info_res['set_time']==1 && !empty($id)){
 	      $time_numbers_style = 'style="display:block;"';
@@ -9736,10 +9736,10 @@ else if($_GET['action'] == 'edit_attendance_info') {
            array('text' => ATTENDANCE_SORT),
            array('text' => tep_draw_input_field('sort',$att_info_res['sort'],'class="input_text_width" style="text-align:right;"'.$show_style))
      ); 
-    $add_user_text= ATTENDANCE_ADD_USER.$att_info_res['add_user'];
-    $update_user_text= ATTENDANCE_ADD_TIME.$att_info_res['add_time'];
-    $add_time_text= ATTENDANCE_UPDATE_USER.$att_info_res['update_user'];
-    $update_time_text= ATTENDANCE_UPDATE_TIME.$att_info_res['update_time'];
+    $add_user_text= TEXT_USER_ADDED.$att_info_res['add_user'];
+    $update_user_text= TEXT_DATE_ADDED.$att_info_res['add_time'];
+    $add_time_text= TEXT_USER_UPDATE.$att_info_res['update_user'];
+    $update_time_text= TEXT_DATE_UPDATE.$att_info_res['update_time'];
      $hidden_add_user = tep_draw_input_field('add_user',$att_info_res['add_user'],'style="display:none"');
      $hidden_add_time = tep_draw_input_field('add_time',$att_info_res['add_time'],'style="display:none"');
 

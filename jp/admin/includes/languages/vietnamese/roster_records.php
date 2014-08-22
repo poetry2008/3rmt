@@ -1,13 +1,11 @@
 <?php
 define('ATTENDANCE_HEAD_TITLE', 'Thiết lập template');
-define('ATTENDANCE_TITLE', 'Tiêu đề');
 define('ATTENDANCE_ABBREVIATION', 'Từ viết tắt');
 define('ATTENDANCE_SCHEDULING_TYPE', 'Loại ca');
 define('ATTENDANCE_SCHEDULING_TYPE_IMAGE', 'Biểu tượng');
 define('ATTENDANCE_SCHEDULING_TYPE_COLOR', 'Vùng màu');
 
 define('ATTENDANCE_PARAM_TEXT', 'Tham số');
-define('ATTENDANCE_IMAGE_SELECT', 'Chọn lựa');
 define('ATTENDANCE_SET_TIME', 'Timecard');
 define('ATTENDANCE_SET_TIME_FIELD', 'Thiết lập khoảng thời gian');
 define('ATTENDANCE_SET_FIELD_TIME', 'Tính toán số thời gian');
@@ -18,11 +16,6 @@ define('ATTENDANCE_REST_END', 'Kết thúc nghỉ giải lao');
 define('ATTENDANCE_WORK_HOURS', 'Số thời gian làm');
 define('ATTENDANCE_REST_HOURS', 'Số thời gian nghỉ giải lao');
 define('ATTENDANCE_SORT', 'Thứ tự canh chỉnh');
-define('ATTENDANCE_ADD_USER', 'Người tạo');
-define('ATTENDANCE_UPDATE_USER', 'Người cập nhật');
-define('ATTENDANCE_ADD_TIME', 'Ngày tạo');
-define('ATTENDANCE_UPDATE_TIME', 'Ngày cập nhật');
-define('ATTENDANCE_TIME', 'Thời gian');
 
 define('TEP_ERROR_NULL','Vui lòng nhập lại');
 define('IMAGE_NEW_ATTENDANCE', 'Thêm template');
@@ -32,7 +25,6 @@ define('ROSTER_TITLE_TEXT', 'Làm theo ca');
 define('TEXT_GROUP_SELECT', 'Nhóm');
 define('TEXT_GROUP_USER_LIST', 'Nhân viên');
 define('TEXT_ALL_GROUP', 'Toàn bộ');
-define('TEXT_UPDATE', 'Cập nhật');
 define('TEXT_ADL_SELECT', 'Mẫu ca');
 define('COMPANY_SYSTEM_SELECT', 'Tổ chức công ty');
 define('TEXT_ADD_ADL', 'Thêm vào');

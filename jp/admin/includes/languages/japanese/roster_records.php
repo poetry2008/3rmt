@@ -1,13 +1,11 @@
 <?php
 define('ATTENDANCE_HEAD_TITLE', 'テンプレート設定');
-define('ATTENDANCE_TITLE', 'タイトル');
 define('ATTENDANCE_ABBREVIATION', '略語');
 define('ATTENDANCE_SCHEDULING_TYPE', 'シフトタイプ');
 define('ATTENDANCE_SCHEDULING_TYPE_IMAGE', 'アイコン');
 define('ATTENDANCE_SCHEDULING_TYPE_COLOR', 'カラーゾーン');
 
 define('ATTENDANCE_PARAM_TEXT', 'パラメータ');
-define('ATTENDANCE_IMAGE_SELECT', '選択');
 define('ATTENDANCE_SET_TIME', 'タイムカード');
 define('ATTENDANCE_SET_TIME_FIELD', '時間帯設定');
 define('ATTENDANCE_SET_FIELD_TIME', '時間数カウント');
@@ -18,11 +16,6 @@ define('ATTENDANCE_REST_END', '休憩終了');
 define('ATTENDANCE_WORK_HOURS', '出勤時間数');
 define('ATTENDANCE_REST_HOURS', '休憩時間数');
 define('ATTENDANCE_SORT', '整列順');
-define('ATTENDANCE_ADD_USER', '作成者:');
-define('ATTENDANCE_UPDATE_USER', '更新者:');
-define('ATTENDANCE_ADD_TIME', '作成日:');
-define('ATTENDANCE_UPDATE_TIME', '更新日:');
-define('ATTENDANCE_TIME', '時間');
 
 define('TEP_ERROR_NULL','入力してください。');
 define('IMAGE_NEW_ATTENDANCE', 'テンプレート追加');
@@ -32,7 +25,6 @@ define('ROSTER_TITLE_TEXT', 'シフト・出勤');
 define('TEXT_GROUP_SELECT', 'グループ');
 define('TEXT_GROUP_USER_LIST', 'スタッフ');
 define('TEXT_ALL_GROUP', '全て');
-define('TEXT_UPDATE', '更新');
 define('TEXT_ADL_SELECT', 'シフトテンプレート');
 define('COMPANY_SYSTEM_SELECT', 'グループ');
 define('TEXT_ADD_ADL', '追加');

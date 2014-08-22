@@ -1,13 +1,11 @@
 <?php
 define('ATTENDANCE_HEAD_TITLE', '设置模板');
-define('ATTENDANCE_TITLE', '标题');
 define('ATTENDANCE_ABBREVIATION', '略語');
 define('ATTENDANCE_SCHEDULING_TYPE', '排班类型');
 define('ATTENDANCE_SCHEDULING_TYPE_IMAGE', '图片');
 define('ATTENDANCE_SCHEDULING_TYPE_COLOR', '颜色');
 
 define('ATTENDANCE_PARAM_TEXT', '参数');
-define('ATTENDANCE_IMAGE_SELECT', '选择');
 define('ATTENDANCE_SET_TIME', '设置时间');
 define('ATTENDANCE_SET_TIME_FIELD', '时间带设定');
 define('ATTENDANCE_SET_FIELD_TIME', '时间数设定');
@@ -18,11 +16,6 @@ define('ATTENDANCE_REST_END', '休息结束');
 define('ATTENDANCE_WORK_HOURS', '出勤时间数');
 define('ATTENDANCE_REST_HOURS', '休息时间数');
 define('ATTENDANCE_SORT', '顺序');
-define('ATTENDANCE_ADD_USER', '作成者:');
-define('ATTENDANCE_UPDATE_USER', '更新者:');
-define('ATTENDANCE_ADD_TIME', '作成日:');
-define('ATTENDANCE_UPDATE_TIME', '更新日:');
-define('ATTENDANCE_TIME', '時間');
 
 define('TEP_ERROR_NULL','请输入');
 define('IMAGE_NEW_ATTENDANCE', '新建');
@@ -32,7 +25,6 @@ define('ROSTER_TITLE_TEXT', '排班/出勤');
 define('TEXT_GROUP_SELECT', '组');
 define('TEXT_GROUP_USER_LIST', '员工');
 define('TEXT_ALL_GROUP', '全选');
-define('TEXT_UPDATE', '更新');
 define('TEXT_ADL_SELECT', '排班模板');
 define('COMPANY_SYSTEM_SELECT', '组');
 define('TEXT_ADD_ADL', '追加');
