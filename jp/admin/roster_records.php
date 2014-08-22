@@ -1163,14 +1163,14 @@ while($j<=$day_num)
     if(tep_is_show_att($att_row['id'],$date)){
       $info_td_attendance_str .= "<tr>";
       if($att_info['scheduling_type'] == 0){
-        $info_td_attendance_str .=  '<td style="border-width:0px; padding-bottom:6px;">';
+        $info_td_attendance_str .=  '<td style="border-width:0px; padding-top:6px;">';
         $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         $info_td_attendance_str .=  $att_info['short_language'];
         if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
-        $info_td_attendance_str .=  "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
+        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;' bgcolor='".$att_info['src_text']."'>";
         $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         $info_td_attendance_str .=  $att_info['short_language'];
       }
@@ -1325,14 +1325,14 @@ while($j<=$day_num)
         $show_ulist_flag = true;
       echo "<tr>";
       if($att_info['scheduling_type'] == 0){
-        echo '<td style="border-width:0px; padding-bottom:6px;">';
+        echo '<td style="border-width:0px; padding-top:6px;">';
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
         if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
-        echo "<td style='border-width:0px; padding-bottom:6px;' bgcolor='".$att_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-top:6px;' bgcolor='".$att_info['src_text']."'>";
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
       }
