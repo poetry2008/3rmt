@@ -2362,7 +2362,7 @@ display:inline-block;
 	line-height:14px;
 	display:block;
 	float:left;	
-	padding-left:6px;
+	margin-right:6px;
 }
 .info_table_small img{
 	padding-left:6px;
