@@ -4,13 +4,13 @@ $(document).ready(function() {
   $(document).keyup(function(event) {
     if (event.which == 27) {
       //esc 
-      if ($('#show_user_wage').css('display') != 'none') {
+      if ($('#show_user_payroll').css('display') != 'none') {
         hidden_info_box(); 
       }
     }
      if (event.which == 13) {
         //回车
-        if ($('#show_user_wage').css('display') != 'none') {
+        if ($('#show_user_payroll').css('display') != 'none') {
           if (o_submit_single) {
             $("#button_save").trigger("click");  
           }
@@ -19,7 +19,7 @@ $(document).ready(function() {
 
      if (event.ctrlKey && event.which == 37) {
       //Ctrl+方向左 
-      if ($('#show_user_wage').css('display') != 'none') {
+      if ($('#show_user_payroll').css('display') != 'none') {
         if ($("#option_prev")) {
           $("#option_prev").trigger("click");
         }
@@ -27,7 +27,7 @@ $(document).ready(function() {
     }
     if (event.ctrlKey && event.which == 39) {
       //Ctrl+方向右
-      if ($('#show_user_wage').css('display') != 'none') {
+      if ($('#show_user_payroll').css('display') != 'none') {
         if ($("#option_next")) {
           $("#option_next").trigger("click");
         }
@@ -35,42 +35,42 @@ $(document).ready(function() {
     }
   }); 
 });
-function show_user_wage(ele,user_id,user_name,groups_id,user_wage_list,save_date,group_id){
+function show_user_payroll(ele,user_id,user_name,groups_id,user_payroll_list,save_date,group_id){
  $.ajax({
  type: "POST",
- url: 'ajax.php?&action=show_user_wage',
- data: {user_id:user_id,user_name:user_name,groups_id:groups_id,user_wage_list:user_wage_list,save_date:save_date,group_id:group_id} ,
+ url: 'ajax.php?&action=show_user_payroll',
+ data: {user_id:user_id,user_name:user_name,groups_id:groups_id,user_payroll_list:user_payroll_list,save_date:save_date,group_id:group_id} ,
  dataType: 'text',
  async : false,
  success: function(data){
-   $("div#show_user_wage").html(data);
+   $("div#show_user_payroll").html(data);
    ele = ele.parentNode;
    head_top = $('.compatible_head').height();
    if($(ele).parent().next()[0] === undefined){
-     if($('#show_user_wage').height() > ($(ele).parent().parent().height() - $(ele).parent().height())){
+     if($('#show_user_payroll').height() > ($(ele).parent().parent().height() - $(ele).parent().height())){
        var topset = $(ele).offset().top + $(ele).height() + 3;
      }else{
-       var topset = $(ele).offset().top - $('#show_user_wage').height();
+       var topset = $(ele).offset().top - $('#show_user_payroll').height();
      }
    }else{
      var topset = $(ele).offset().top + $(ele).height() + 3;
    }
-   $('#show_user_wage').css('top', topset);
+   $('#show_user_payroll').css('top', topset);
    if($('.show_left_menu').width()){
      leftset = $('.leftmenu').width()+$('.show_left_menu').width()+parseInt($('.leftmenu').css('padding-left'))+parseInt($('.show_left_menu').css('padding-right'))+parseInt($('#categories_right_td table').attr('cellpadding'));
    }else{
      leftset = parseInt($('.content').attr('cellspacing'))+parseInt($('.content').attr('cellpadding'))*2+parseInt($('.columnLeft').attr('cellspacing'))*2+parseInt($('.columnLeft').attr('cellpadding'))*2+parseInt($('.compatible table').attr('cellpadding'));
    } 
  
-   $('#show_user_wage').css('z-index','1');
-   $('#show_user_wage').css('left',leftset);
-   $('#show_user_wage').css('display', 'block');
+   $('#show_user_payroll').css('z-index','1');
+   $('#show_user_payroll').css('left',leftset);
+   $('#show_user_payroll').css('display', 'block');
    o_submit_single = true;
    }
   }); 
 }
 function hidden_info_box(){
-  $('#show_user_wage').css('display','none');
+  $('#show_user_payroll').css('display','none');
   o_submit_single = true;
 }
 //change users list
@@ -92,22 +92,22 @@ function change_user_list(ele){
 //all select
 function all_select_user(user_list_id)
 {
-  var check_flag = document.edit_users_wage.all_check.checked;
-  if (document.edit_users_wage.elements[user_list_id]) {
-    if (document.edit_users_wage.elements[user_list_id].length == null) {
+  var check_flag = document.edit_users_payroll.all_check.checked;
+  if (document.edit_users_payroll.elements[user_list_id]) {
+    if (document.edit_users_payroll.elements[user_list_id].length == null) {
       if (check_flag == true) {
-        document.edit_users_wage.elements[user_list_id].checked = true;
+        document.edit_users_payroll.elements[user_list_id].checked = true;
       } else {
-        document.edit_users_wage.elements[user_list_id].checked = false;
+        document.edit_users_payroll.elements[user_list_id].checked = false;
       }
     } else {
-      for (i = 0; i < document.edit_users_wage.elements[user_list_id].length; i++) {
+      for (i = 0; i < document.edit_users_payroll.elements[user_list_id].length; i++) {
         if (check_flag == true) {
-          if(!(document.edit_users_wage.elements[user_list_id][i].disabled)){
-            document.edit_users_wage.elements[user_list_id][i].checked = true;
+          if(!(document.edit_users_payroll.elements[user_list_id][i].disabled)){
+            document.edit_users_payroll.elements[user_list_id][i].checked = true;
           }
         } else {
-          document.edit_users_wage.elements[user_list_id][i].checked = false;
+          document.edit_users_payroll.elements[user_list_id][i].checked = false;
         }
       }
     }
@@ -194,13 +194,13 @@ calendar.on("selectionChange", function (ev) {
 function user_change_action(value,user_list_id,c_permission)
 {
   sel_num = 0;
-  if (document.edit_users_wage.elements[user_list_id].length == null) {
-    if (document.edit_users_wage.elements[user_list_id].checked == true) {
+  if (document.edit_users_payroll.elements[user_list_id].length == null) {
+    if (document.edit_users_payroll.elements[user_list_id].checked == true) {
       sel_num = 1;
     }
   } else {
-    for (i = 0; i < document.edit_users_wage.elements[user_list_id].length; i++) {
-      if (document.edit_users_wage.elements[user_list_id][i].checked == true) {
+    for (i = 0; i < document.edit_users_payroll.elements[user_list_id].length; i++) {
+      if (document.edit_users_payroll.elements[user_list_id][i].checked == true) {
         sel_num = 1;
         break;
       }
@@ -210,8 +210,8 @@ function user_change_action(value,user_list_id,c_permission)
   if(sel_num == 1){
     if (confirm(user_select_send_mail)) {
       if (c_permission == 31) {
-        document.edit_users_wage.action = 'payrolls.php?action=send_mail';
-        document.edit_users_wage.submit(); 
+        document.edit_users_payroll.action = 'payrolls.php?action=send_mail';
+        document.edit_users_payroll.submit(); 
       } else {
         $.ajax({
           url: 'ajax_orders.php?action=getallpwd',   
@@ -223,8 +223,8 @@ function user_change_action(value,user_list_id,c_permission)
             var tmp_msg_arr = msg.split('|||'); 
             var pwd_list_array = tmp_msg_arr[1].split(',');
             if (tmp_msg_arr[0] == '0') {
-              document.edit_users_wage.action = 'payrolls.php?action=send_mail';
-              document.edit_users_wage.submit(); 
+              document.edit_users_payroll.action = 'payrolls.php?action=send_mail';
+              document.edit_users_payroll.submit(); 
             } else {
               var input_pwd_str = window.prompt(ntime_pwd, ''); 
               if (in_array(input_pwd_str, pwd_list_array)) {
@@ -235,8 +235,8 @@ function user_change_action(value,user_list_id,c_permission)
                   data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('payrolls.php?action=send_mail'),
                   async: false,
                   success: function(msg_info) {
-                    document.edit_users_wage.action = 'payrolls.php?action=send_mail';
-                    document.edit_users_wage.submit(); 
+                    document.edit_users_payroll.action = 'payrolls.php?action=send_mail';
+                    document.edit_users_payroll.submit(); 
                   }
                 }); 
               } else {
@@ -257,10 +257,10 @@ function user_change_action(value,user_list_id,c_permission)
   }
 }
 
-//save user wage
-function save_user_wage(){
+//save user payroll
+function save_user_payroll(){
 
-  document.edit_users_wage.submit(); 
+  document.edit_users_payroll.submit(); 
 }
 //popup calendar
 function open_new_calendar_num(num)
@@ -329,7 +329,7 @@ calendar.on("selectionChange", function (ev) {
     var newDate = ev.newSelection[0];
     tmp_show_date = dtdate.format(newDate); 
     tmp_show_date_array = tmp_show_date.split('-');
-    $("input[name='wage_date["+num+"]']").val(tmp_show_date); 
+    $("input[name='payroll_date["+num+"]']").val(tmp_show_date); 
     $("#date_orders_"+num).val(tmp_show_date); 
     $('#toggle_open_'+num).val('0');
     $('#toggle_open_'+num).next().html('<div id="mycalendar_'+num+'"></div>');
@@ -380,8 +380,8 @@ function change_fetch_date() {
     $("#date_orders").val(fetch_date_str); 
   }
 }
-//reset user wage
-function reset_user_wage(pam_str){
+//reset user payroll
+function reset_user_payroll(pam_str){
 
   location.href = 'payrolls.php?'+pam_str+'&reset=1'; 
 }
@@ -390,9 +390,9 @@ function date_change(ele,num){
 
   $("#date_orders_"+num).val(ele.value);
 }
-//again computing wage
+//again computing payroll
 function again_computing(){
 
-  document.edit_users_wage.action = 'payrolls.php?action=again_computing';
-  document.edit_users_wage.submit(); 
+  document.edit_users_payroll.action = 'payrolls.php?action=again_computing';
+  document.edit_users_payroll.submit(); 
 }

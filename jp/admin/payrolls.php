@@ -43,30 +43,30 @@
   if(isset($_GET['action']) && $_GET['action'] != ''){
     switch($_GET['action']){
     /* -----------------------------------------------------
-      case 'edit_users_wage' 编辑员工工资  
+      case 'edit_users_payroll' 编辑员工工资  
       case 'update_show_user'保存用户记录
-      case 'save_user_wage' 编辑员工工资的设置
-      case 'reset_user_wage' 重置员工工资
+      case 'save_user_payroll' 编辑员工工资的设置
+      case 'reset_user_payroll' 重置员工工资
       case 'again_computing' 重新计算工资 
     ------------------------------------------------------*/
-      case 'edit_users_wage':
+      case 'edit_users_payroll':
 
-        $users_wage = tep_db_prepare_input($_POST['users_wage']); 
+        $users_payroll = tep_db_prepare_input($_POST['users_payroll']); 
         $save_date = tep_db_prepare_input($_POST['save_date']);
         $group_id = tep_db_prepare_input($_POST['group_id']);
 
-        $user_wage_date = tep_start_end_date($group_id,$save_date);
+        $user_payroll_date = tep_start_end_date($group_id,$save_date);
 
-        $save_date = $user_wage_date['end_date'];
+        $save_date = $user_payroll_date['end_date'];
 
-        foreach($users_wage as $users_wage_key=>$users_wage_value){
+        foreach($users_payroll as $users_payroll_key=>$users_payroll_value){
 
-          foreach($users_wage_value as $key=>$value){
-            $exist_query = tep_db_query("select id from ".TABLE_USER_WAGE." where wage_id='".$users_wage_key."' and user_id='".$key."' and save_date='".$save_date."'");
+          foreach($users_payroll_value as $key=>$value){
+            $exist_query = tep_db_query("select id from ".TABLE_USER_PAYROLL." where payroll_id='".$users_payroll_key."' and user_id='".$key."' and save_date='".$save_date."'");
             if(tep_db_num_rows($exist_query) > 0){
-              tep_db_query("update ".TABLE_USER_WAGE." set wage_value='".$value."',update_date=now() where wage_id='".$users_wage_key."' and user_id='".$key."' and save_date='".$save_date."'");
+              tep_db_query("update ".TABLE_USER_PAYROLL." set payroll_value='".$value."',update_date=now() where payroll_id='".$users_payroll_key."' and user_id='".$key."' and save_date='".$save_date."'");
             }else{
-              tep_db_query("insert into ".TABLE_USER_WAGE."(id,wage_id,user_id,wage_value,save_date,update_date) value(NULL,".$users_wage_key.",'".$key."','".$value."','".$save_date."',now())");
+              tep_db_query("insert into ".TABLE_USER_PAYROLL."(id,payroll_id,user_id,payroll_value,save_date,update_date) value(NULL,".$users_payroll_key.",'".$key."','".$value."','".$save_date."',now())");
             }
           }
         }
@@ -83,9 +83,9 @@
         $selected_date = tep_db_prepare_input($_GET['select_date']);
         
         $show_user_array = array();
-        if(USER_WAGE_SETTING != ''){
+        if(USER_PAYROLL_SETTING != ''){
 
-          $show_user_array = unserialize(USER_WAGE_SETTING);  
+          $show_user_array = unserialize(USER_PAYROLL_SETTING);  
           $show_user_array[$ocertify->auth_user]['group'] = $show_group;
           $show_user_array[$ocertify->auth_user]['user'] = implode(',',$show_group_user_list);
           $show_user_array[$ocertify->auth_user]['date'] = $selected_date;
@@ -100,99 +100,99 @@
         $show_user_array[$ocertify->auth_user]['select_user'][$show_group] = implode(',',$show_group_user_list);
 
         $show_user_str = serialize($show_user_array);
-        tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value='".$show_user_str."' where configuration_key='USER_WAGE_SETTING'");
+        tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value='".$show_user_str."' where configuration_key='USER_PAYROLL_SETTING'");
         break;
-      case 'save_user_wage':
-        $user_wage_list = tep_db_prepare_input($_POST['user_wage_list']);
+      case 'save_user_payroll':
+        $user_payroll_list = tep_db_prepare_input($_POST['user_payroll_list']);
         $user_id = tep_db_prepare_input($_POST['user_id']);
         $save_date = tep_db_prepare_input($_POST['save_date']);
-        $user_wage = tep_db_prepare_input($_POST['user_wage']);
-        $user_wage_start_date = tep_db_prepare_input($_POST['user_wage_start_date']);
-        $user_wage_end_date = tep_db_prepare_input($_POST['user_wage_end_date']);
-        $wage_contents = tep_db_prepare_input($_POST['wage_contents']);
+        $user_payroll = tep_db_prepare_input($_POST['user_payroll']);
+        $user_payroll_start_date = tep_db_prepare_input($_POST['user_payroll_start_date']);
+        $user_payroll_end_date = tep_db_prepare_input($_POST['user_payroll_end_date']);
+        $payroll_contents = tep_db_prepare_input($_POST['payroll_contents']);
 
         $user_info = tep_get_user_info($ocertify->auth_user);
         $user=$user_info['name'];
-        if($user_wage_list != ''){
-          $user_wage_list_array = array();
-          $user_wage_query = tep_db_query("select id,wage_id from ".TABLE_USER_WAGE_INFO." where id in (".$user_wage_list.")"); 
-          while($user_wage_array = tep_db_fetch_array($user_wage_query)){
+        if($user_payroll_list != ''){
+          $user_payroll_list_array = array();
+          $user_payroll_query = tep_db_query("select id,payroll_id from ".TABLE_USER_PAYROLL_INFO." where id in (".$user_payroll_list.")"); 
+          while($user_payroll_array = tep_db_fetch_array($user_payroll_query)){
 
-            $user_wage_list_array[$user_wage_array['wage_id']] = $user_wage_array['id'];
+            $user_payroll_list_array[$user_payroll_array['payroll_id']] = $user_payroll_array['id'];
           }
-          tep_db_free_result($user_wage_query);
+          tep_db_free_result($user_payroll_query);
 
-          foreach($user_wage as $user_wage_key=>$user_wage_value){
+          foreach($user_payroll as $user_payroll_key=>$user_payroll_value){
 
-            if(in_array($user_wage_key,array_keys($user_wage_list_array))){
-              tep_db_query("update ".TABLE_USER_WAGE_INFO." set wage_value='".$user_wage_value."',start_date='".$user_wage_start_date[$user_wage_key]."',end_date='".$user_wage_end_date[$user_wage_key]."',contents='".$wage_contents."',update_user='".$user."',update_date=now() where id='".$user_wage_list_array[$user_wage_key]."'");
+            if(in_array($user_payroll_key,array_keys($user_payroll_list_array))){
+              tep_db_query("update ".TABLE_USER_PAYROLL_INFO." set payroll_value='".$user_payroll_value."',start_date='".$user_payroll_start_date[$user_payroll_key]."',end_date='".$user_payroll_end_date[$user_payroll_key]."',contents='".$payroll_contents."',update_user='".$user."',update_date=now() where id='".$user_payroll_list_array[$user_payroll_key]."'");
             }else{
-              tep_db_query("insert into ".TABLE_USER_WAGE_INFO."(id,wage_id,user_id,wage_value,start_date,end_date,contents,create_user,create_date) values(NULL,".$user_wage_key.",'".$user_id."','".$user_wage_value."','".$user_wage_start_date[$user_wage_key]."','".$user_wage_end_date[$user_wage_key]."','".$wage_contents."','".$user."',now())");
+              tep_db_query("insert into ".TABLE_USER_PAYROLL_INFO."(id,payroll_id,user_id,payroll_value,start_date,end_date,contents,create_user,create_date) values(NULL,".$user_payroll_key.",'".$user_id."','".$user_payroll_value."','".$user_payroll_start_date[$user_payroll_key]."','".$user_payroll_end_date[$user_payroll_key]."','".$payroll_contents."','".$user."',now())");
             }
           }
         }else{
          
-          foreach($user_wage as $user_wage_key=>$user_wage_value){
+          foreach($user_payroll as $user_payroll_key=>$user_payroll_value){
 
-            tep_db_query("insert into ".TABLE_USER_WAGE_INFO."(id,wage_id,user_id,wage_value,start_date,end_date,contents,create_user,create_date) values(NULL,".$user_wage_key.",'".$user_id."','".$user_wage_value."','".$user_wage_start_date[$user_wage_key]."','".$user_wage_end_date[$user_wage_key]."','".$wage_contents."','".$user."',now())");
+            tep_db_query("insert into ".TABLE_USER_PAYROLL_INFO."(id,payroll_id,user_id,payroll_value,start_date,end_date,contents,create_user,create_date) values(NULL,".$user_payroll_key.",'".$user_id."','".$user_payroll_value."','".$user_payroll_start_date[$user_payroll_key]."','".$user_payroll_end_date[$user_payroll_key]."','".$payroll_contents."','".$user."',now())");
           } 
         }
         tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
         break;
-        case 'reset_user_wage':
+        case 'reset_user_payroll':
 
-        $users_wage = tep_db_prepare_input($_POST['users_wage']); 
+        $users_payroll = tep_db_prepare_input($_POST['users_payroll']); 
         $save_date = tep_db_prepare_input($_POST['save_date']);
         $group_id = tep_db_prepare_input($_POST['group_id']);
 
-        $user_wage_date = tep_start_end_date($group_id,$save_date);
+        $user_payroll_date = tep_start_end_date($group_id,$save_date);
 
-        $save_date = $user_wage_date['end_date'];
+        $save_date = $user_payroll_date['end_date'];
 
-        foreach($users_wage as $users_wage_key=>$users_wage_value){
+        foreach($users_payroll as $users_payroll_key=>$users_payroll_value){
 
-          foreach($users_wage_value as $key=>$value){
-            $exist_query = tep_db_query("select id from ".TABLE_USER_WAGE." where wage_id='".$users_wage_key."' and user_id='".$key."' and save_date='".$save_date."'");
+          foreach($users_payroll_value as $key=>$value){
+            $exist_query = tep_db_query("select id from ".TABLE_USER_PAYROLL." where payroll_id='".$users_payroll_key."' and user_id='".$key."' and save_date='".$save_date."'");
             if(tep_db_num_rows($exist_query) > 0){
-              tep_db_query("delete from ".TABLE_USER_WAGE." where wage_id='".$users_wage_key."' and user_id='".$key."' and save_date='".$save_date."'");
+              tep_db_query("delete from ".TABLE_USER_PAYROLL." where payroll_id='".$users_payroll_key."' and user_id='".$key."' and save_date='".$save_date."'");
             }
           }
         }
         tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
         break;
         case 'again_computing':
-          $users_wage = tep_db_prepare_input($_POST['users_wage']);
-          $hidden_users_wage = tep_db_prepare_input($_POST['hidden_users_wage']);
-          $pam_users_wage = tep_db_prepare_input($_POST['pam_users_wage']);
-          $formula_users_wage = tep_db_prepare_input($_POST['formula_users_wage']);
+          $users_payroll = tep_db_prepare_input($_POST['users_payroll']);
+          $hidden_users_payroll = tep_db_prepare_input($_POST['hidden_users_payroll']);
+          $pam_users_payroll = tep_db_prepare_input($_POST['pam_users_payroll']);
+          $formula_users_payroll = tep_db_prepare_input($_POST['formula_users_payroll']);
           $save_date = tep_db_prepare_input($_POST['save_date']);
           $group_id = tep_db_prepare_input($_POST['group_id']);
 
           $pam_array = array();
-          foreach($users_wage as $key=>$value){
+          foreach($users_payroll as $key=>$value){
 
             foreach($value as $key_k=>$value_v){
-              if($value_v != $hidden_users_wage[$key][$key_k]){
+              if($value_v != $hidden_users_payroll[$key][$key_k]){
 
-                $pam_array[$key_k][$pam_users_wage[$key][$key_k]] = $value_v;
+                $pam_array[$key_k][$pam_users_payroll[$key][$key_k]] = $value_v;
               }
             }
           }
 
           $replace_pam_value = array();
-          foreach($formula_users_wage as $keys=>$values){
+          foreach($formula_users_payroll as $keys=>$values){
 
             foreach($values as $keys_k=>$values_v){
               if(!empty($pam_array[$keys_k])){
                 $pam_key_array = array_keys($pam_array[$keys_k]);
 
-                if(!in_array($pam_users_wage[$keys][$keys_k],$pam_key_array)){
-                  $replace_pam_value[$keys][$keys_k] = tep_user_wage($values_v,$keys_k,$save_date,$group_id,$pam_array[$keys_k]);  
+                if(!in_array($pam_users_payroll[$keys][$keys_k],$pam_key_array)){
+                  $replace_pam_value[$keys][$keys_k] = tep_user_payroll($values_v,$keys_k,$save_date,$group_id,$pam_array[$keys_k]);  
                 }else{
-                  $replace_pam_value[$keys][$keys_k] = $users_wage[$keys][$keys_k];
+                  $replace_pam_value[$keys][$keys_k] = $users_payroll[$keys][$keys_k];
                 }
               }else{
-                  $replace_pam_value[$keys][$keys_k] = $users_wage[$keys][$keys_k];
+                  $replace_pam_value[$keys][$keys_k] = $users_payroll[$keys][$keys_k];
               }
             }
           }
@@ -286,8 +286,8 @@ color:#0066CC;
 <!-- header_eof -->
 
 <!-- body -->
-<input type="hidden" name="show_info_id" value="show_user_wage" id="show_info_id">
-<div style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;" id="show_user_wage"></div>
+<input type="hidden" name="show_info_id" value="show_user_payroll" id="show_info_id">
+<div style="min-width: 550px; position: absolute; background: none repeat scroll 0% 0% rgb(255, 255, 0); width: 70%; display:none;" id="show_user_payroll"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -319,11 +319,11 @@ color:#0066CC;
       //表示内容获取默认选项
       $show_select_type = 'date';
       $show_select_date = date('Y-m-d',time());
-      if(USER_WAGE_SETTING != ''){
+      if(USER_PAYROLL_SETTING != ''){
 
-        $user_wage_array = unserialize(USER_WAGE_SETTING);
-        if(isset($user_wage_array[$ocertify->auth_user])){
-          $show_select_date = $user_wage_array[$ocertify->auth_user]['date'];
+        $user_payroll_array = unserialize(USER_PAYROLL_SETTING);
+        if(isset($user_payroll_array[$ocertify->auth_user])){
+          $show_select_date = $user_payroll_array[$ocertify->auth_user]['date'];
         }
       }
 
@@ -391,12 +391,12 @@ color:#0066CC;
         $show_select_group_user = array();
         //获取记录
         $default_select_flag = false;
-        if(USER_WAGE_SETTING != ''){
+        if(USER_PAYROLL_SETTING != ''){
 
-          $user_wage_array = unserialize(USER_WAGE_SETTING);
-          if(isset($user_wage_array[$ocertify->auth_user])){
-            $show_group_id = $user_wage_array[$ocertify->auth_user]['group'];
-            $show_select_group_user = explode(',',$user_wage_array[$ocertify->auth_user]['user']);
+          $user_payroll_array = unserialize(USER_PAYROLL_SETTING);
+          if(isset($user_payroll_array[$ocertify->auth_user])){
+            $show_group_id = $user_payroll_array[$ocertify->auth_user]['group'];
+            $show_select_group_user = explode(',',$user_payroll_array[$ocertify->auth_user]['user']);
           }else{
             $show_group_id = $group_list[0]['id'];
             $default_select_flag = true; 
@@ -503,30 +503,30 @@ color:#0066CC;
         //默认保存日期
         $default_date = $show_select_date;
         $default_date = isset($_GET['select_date']) ? $_GET['select_date'] : $default_date;
-	$form_str = tep_draw_form('edit_users_wage', FILENAME_PAYROLLS,'action=edit_users_wage&page='.$_GET['page'], 'post', 'onSubmit="return false;"');
-	$wage_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
-	$notice_box = new notice_box('','',$wage_table_params);
-	$wage_table_row = array();
-	$wage_title_row = array();
-	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent" width="5%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
-        $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_NAME.'</a>');
+	$form_str = tep_draw_form('edit_users_payroll', FILENAME_PAYROLLS,'action=edit_users_payroll&page='.$_GET['page'], 'post', 'onSubmit="return false;"');
+	$payroll_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+	$notice_box = new notice_box('','',$payroll_table_params);
+	$payroll_table_row = array();
+	$payroll_title_row = array();
+	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent" width="5%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
+        $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_NAME.'</a>');
         //获取组对应的工资项目
         $group_id = '';
         $group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
         $groups_users_id = array();
-        $groups_wage_query = tep_db_query("select * from ".TABLE_WAGE_SETTLEMENT." where group_id='".$group_id."' order by sort");
-        while($groups_wage_array = tep_db_fetch_array($groups_wage_query)){
-          $wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_wage_array['title'].'</a>');
-          $groups_users_id[] = array('id'=>$groups_wage_array['id'],'value'=>($groups_wage_array['project_id'] == 0 ? $groups_wage_array['contents'] : $groups_wage_array['project_value']),'project_id'=>$groups_wage_array['project_id'],'pam'=>$groups_wage_array['contents']);
+        $groups_payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' order by sort");
+        while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
+          $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_payroll_array['title'].'</a>');
+          $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
         }
-        tep_db_free_result($groups_wage_query);
+        tep_db_free_result($groups_payroll_query);
         
-	$wage_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:5%;"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
-	$wage_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $wage_title_row);
+	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:5%;"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
+	$payroll_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $payroll_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
-		$wage_id = 0;
+		$payroll_id = 0;
 	}else{
-		$wage_id = $_GET['id'];
+		$payroll_id = $_GET['id'];
 	}
 	
         $show_group_user_list = isset($_GET['show_group_user_list']) && $_GET['show_group_user_list'] != '' ? $_GET['show_group_user_list'] : $show_select_group_user;
@@ -545,7 +545,7 @@ color:#0066CC;
         if(empty($show_group_user_list)){
           $group_data_row[] = array('align' => 'left','params' => 'colspan="7" nowrap="nowrap"', 'text' => '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>');
                     
-          $wage_table_row[] = array('params' => '', 'text' => $group_data_row);  
+          $payroll_table_row[] = array('params' => '', 'text' => $group_data_row);  
         } 
         //获取所有员工的相关信息
         $all_users_info = array();
@@ -555,7 +555,7 @@ color:#0066CC;
           $all_users_info[$all_users_array['userid']] = $all_users_array['name'];
         }
         tep_db_free_result($all_users_query); 
-        $user_wage_value = array();
+        $user_payroll_value = array();
 	foreach($show_group_user_list as $users_value) {
 		$even = 'dataTableSecondRow';
         	$odd  = 'dataTableRow';
@@ -564,7 +564,7 @@ color:#0066CC;
         	} else {
                 	$nowColor = $odd;
         	}
-		$user_params = 'id="wage_'.$users_wage['id'].'" class="'.$nowColor.'" onclick="" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+		$user_params = 'id="payroll_'.$users_payroll['id'].'" class="'.$nowColor.'" onclick="" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
 		$user_info = array();
 		$group_checkbox = '<input type="checkbox" name="user_id[]" value="'.$users_value.'">';
 		$user_info[] = array(
@@ -578,88 +578,88 @@ color:#0066CC;
                 //用户项目的ID
                 $user_project_id_array = array();
                 $update_time = '';
-                foreach($groups_users_id as $wage_id){
+                foreach($groups_users_id as $payroll_id){
                   //根据工资ID与用户ID，来获取对应的值
-                  $user_wage_value_query = tep_db_query("select id,wage_value,start_date,end_date,update_date from ".TABLE_USER_WAGE_INFO." where wage_id='".$wage_id['id']."' and user_id='".$users_value."'");
-                  if(tep_db_num_rows($user_wage_value_query) > 0){
-                    $user_wage_value_array = tep_db_fetch_array($user_wage_value_query);
-                    tep_db_free_result($user_wage_value_query);
+                  $user_payroll_value_query = tep_db_query("select id,payroll_value,start_date,end_date,update_date from ".TABLE_USER_PAYROLL_INFO." where payroll_id='".$payroll_id['id']."' and user_id='".$users_value."'");
+                  if(tep_db_num_rows($user_payroll_value_query) > 0){
+                    $user_payroll_value_array = tep_db_fetch_array($user_payroll_value_query);
+                    tep_db_free_result($user_payroll_value_query);
                     //判断工资的有效期
-                    $wage_date = tep_start_end_date($group_id,$default_date);
-                    if($user_wage_value_array['start_date'] != '' && $user_wage_value_array['end_date'] != ''){
-                      if($wage_date['start_date'] >= $user_wage_value_array['start_date'] && $wage_date['end_start'] <= $user_wage_value_array['end_date']){
-                        $user_wage_val = $user_wage_value_array['wage_value'];
+                    $payroll_date = tep_start_end_date($group_id,$default_date);
+                    if($user_payroll_value_array['start_date'] != '' && $user_payroll_value_array['end_date'] != ''){
+                      if($payroll_date['start_date'] >= $user_payroll_value_array['start_date'] && $payroll_date['end_start'] <= $user_payroll_value_array['end_date']){
+                        $user_payroll_val = $user_payroll_value_array['payroll_value'];
                       }else{
                        
-                        $user_wage_val = 0;
+                        $user_payroll_val = 0;
                       }
-                    }else if($user_wage_value_array['start_date'] != ''){
+                    }else if($user_payroll_value_array['start_date'] != ''){
 
-                      if($wage_date['start_date'] >= $user_wage_value_array['start_date']){
+                      if($payroll_date['start_date'] >= $user_payroll_value_array['start_date']){
 
-                        $user_wage_val = $user_wage_value_array['wage_value'];
+                        $user_payroll_val = $user_payroll_value_array['payroll_value'];
                       }else{
-                        $user_wage_val = 0; 
+                        $user_payroll_val = 0; 
                       }
-                    }else if($user_wage_value_array['end_date'] != ''){
+                    }else if($user_payroll_value_array['end_date'] != ''){
 
-                      if($wage_date['end_date'] <= $user_wage_value_array['end_date']){
+                      if($payroll_date['end_date'] <= $user_payroll_value_array['end_date']){
 
-                        $user_wage_val = $user_wage_value_array['wage_value'];
+                        $user_payroll_val = $user_payroll_value_array['payroll_value'];
                       }else{
-                        $user_wage_val = 0; 
+                        $user_payroll_val = 0; 
                       } 
                     }else{
-                        $user_wage_val = $user_wage_value_array['wage_value']; 
+                        $user_payroll_val = $user_payroll_value_array['payroll_value']; 
                     }
                     if($update_time == ''){
 
-                      $update_time = $user_wage_value_array['update_date'];
+                      $update_time = $user_payroll_value_array['update_date'];
                     }
-                    if($wage_id['project_id'] == 0){
-                      $user_project_id_array[] = $user_wage_value_array['id'];
+                    if($payroll_id['project_id'] == 0){
+                      $user_project_id_array[] = $user_payroll_value_array['id'];
                     }
                   }
 
                   //根据工资ID与用户ID及日期，来获取对应的值
-                  $user_wage_value_query = tep_db_query("select id,wage_value,update_date from ".TABLE_USER_WAGE." where wage_id='".$wage_id['id']."' and user_id='".$users_value."' and save_date='".$wage_date['end_date']."'");
-                  $user_wage_val = '';
-                  if(tep_db_num_rows($user_wage_value_query) > 0){
-                    $user_wage_value_array = tep_db_fetch_array($user_wage_value_query);
-                    tep_db_free_result($user_wage_value_query);
-                    $user_wage_val = $user_wage_value_array['wage_value'];
+                  $user_payroll_value_query = tep_db_query("select id,payroll_value,update_date from ".TABLE_USER_PAYROLL." where payroll_id='".$payroll_id['id']."' and user_id='".$users_value."' and save_date='".$payroll_date['end_date']."'");
+                  $user_payroll_val = '';
+                  if(tep_db_num_rows($user_payroll_value_query) > 0){
+                    $user_payroll_value_array = tep_db_fetch_array($user_payroll_value_query);
+                    tep_db_free_result($user_payroll_value_query);
+                    $user_payroll_val = $user_payroll_value_array['payroll_value'];
                     if($update_time == ''){
 
-                      $update_time = $user_wage_value_array['update_date'];
+                      $update_time = $user_payroll_value_array['update_date'];
                     }
                     
                   }
 
-                  $wage_value = $user_wage_val != '' && !isset($_GET['reset']) ? $user_wage_val :tep_user_wage($wage_id['value'],$users_value,$default_date,$group_id,array(),$error_pam_array);
-                  if($user_wage_val != '' && !isset($_GET['reset'])){
-                    $error_pam_temp = tep_param_error($wage_id['value'],$group_id);
+                  $payroll_value = $user_payroll_val != '' && !isset($_GET['reset']) ? $user_payroll_val :tep_user_payroll($payroll_id['value'],$users_value,$default_date,$group_id,array(),$error_pam_array);
+                  if($user_payroll_val != '' && !isset($_GET['reset'])){
+                    $error_pam_temp = tep_param_error($payroll_id['value'],$group_id);
 
                     foreach($error_pam_temp as $pam_value){
 
                       $error_pam_array[] =$pam_value ;
                     }
                   }
-                  if($_GET['action'] == 'again_computing' && isset($_POST['users_wage']) && !empty($replace_pam_value)){
+                  if($_GET['action'] == 'again_computing' && isset($_POST['users_payroll']) && !empty($replace_pam_value)){
 
-                    $wage_value = $replace_pam_value[$wage_id['id']][$users_value];
+                    $payroll_value = $replace_pam_value[$payroll_id['id']][$users_value];
                   }
-                  $user_wage_value[$wage_id['id']] += $wage_value;
+                  $user_payroll_value[$payroll_id['id']] += $payroll_value;
                   $user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'" style="width:80%;" onblur="if(this.value==\'\'){this.value=0;}"><input type="hidden" name="hidden_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_value.'"><input type="hidden" name="pam_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['pam'].'"><input type="hidden" name="formula_users_wage['.$wage_id['id'].']['.$users_value.']" value="'.$wage_id['value'].'">' 
+                	'text'   => '<input type="text" name="users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'" style="width:80%;" onblur="if(this.value==\'\'){this.value=0;}"><input type="hidden" name="hidden_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'"><input type="hidden" name="pam_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['pam'].'"><input type="hidden" name="formula_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['value'].'">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
 		$user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<a href="javascript:void(0)" onclick="show_user_wage(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$group_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a>'
+                	'text'   => '<a href="javascript:void(0)" onclick="show_user_payroll(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$group_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a>'
         	);
-		$wage_table_row[] = array('params' => $user_params, 'text' => $user_info);
+		$payroll_table_row[] = array('params' => $user_params, 'text' => $user_info);
         }
         if(isset($currency_type)){
 
@@ -674,21 +674,21 @@ color:#0066CC;
                	        'params' => '',
                	        'text'   => $currency_type_array[$currency_type] 
                                );
-          foreach($groups_users_id as $wage_id){
+          foreach($groups_users_id as $payroll_id){
             $user_info[] = array(
                 	           'params' => '',
-                	           'text'   => '<input type="text" style="width:80%;" disabled name="users_wage_total['.$wage_id['id'].']" value="'.$user_wage_value[$wage_id['id']].'">' 
+                	           'text'   => '<input type="text" style="width:80%;" disabled name="users_payroll_total['.$payroll_id['id'].']" value="'.$user_payroll_value[$payroll_id['id']].'">' 
                                  ); 
           } 
           $user_info[] = array(
                	         'params' => '',
                	         'text'   => ''  
                                );
-          $wage_table_row[] = array('params' => '', 'text' => $user_info);  
+          $payroll_table_row[] = array('params' => '', 'text' => $user_info);  
           $i++;
         }
 	$notice_box->get_form($form_str);
-	$notice_box->get_contents($wage_table_row);
+	$notice_box->get_contents($payroll_table_row);
 	$notice_box->get_eof(tep_eof_hidden());
 	echo $notice_box->show_notice();
 ?>	
@@ -718,8 +718,8 @@ color:#0066CC;
                        echo '<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'onclick="again_computing();"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT) . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_wage(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_wage();"') . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_payroll(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_payroll();"') . '</a>';
                      }else{
                        echo tep_html_element_button(TEXT_PAYROLLS_EXPORT,'disabled="disabled"').'&nbsp;' ;
                        echo tep_html_element_button(TEXT_PAYROLLS_PRINT,'disabled="disabled"').'&nbsp;' ;

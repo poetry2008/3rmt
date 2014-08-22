@@ -256,14 +256,14 @@ function group_change_action(value,group_list_id,c_permission,parent_id)
 //add object
 function add_obj(ele,obj_name_1,obj_name_2,delete_name,flag){
 
-  var obj_type = $("#wage_select").val();
+  var obj_type = $("#payroll_select").val();
   var obj_num = $("#obj_num").val();
   obj_num = parseInt(obj_num);
   var obj_str = '';
   if(obj_type == 0){
-    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="wage_sort[]" value="0">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"></td></tr>';
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="payroll_sort[]" value="0">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"></td></tr>';
   }else if(obj_type == 1){
-    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="wage_sort[]" value="-1">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" style="width:145px;" value=""><input type="text" name="formula_contents[]" style="width:150px;" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"><br><input type="text" name="formula_value[]" class="td_input" value=""></td></tr>';
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="payroll_sort[]" value="-1">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" style="width:145px;" value=""><input type="text" name="formula_contents[]" style="width:150px;" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"><br><input type="text" name="formula_value[]" class="td_input" value=""></td></tr>';
   }
   if(obj_num == 0){
     $(ele).parent().parent().after(obj_str);
@@ -465,7 +465,7 @@ calendar.on("selectionChange", function (ev) {
     var newDate = ev.newSelection[0];
     tmp_show_date = dtdate.format(newDate); 
     tmp_show_date_array = tmp_show_date.split('-');
-    $("input[name=wage_date]").val(tmp_show_date); 
+    $("input[name=payroll_date]").val(tmp_show_date); 
     $("#date_orders").val(tmp_show_date); 
     $('#toggle_open').val('0');
     $('#toggle_open').next().html('<div id="mycalendar"></div>');
@@ -497,10 +497,10 @@ function check_reset(){
     }
     $("#tr_date_id").val(1);
 }
-//add wage admin
+//add payroll admin
 function add_admin_list(ele,del_str){
   var select_str = $(ele).parent().find('span').html();
-  $("select[name='wage_admin[]']").each(function(){
+  $("select[name='payroll_admin[]']").each(function(){
  
     var reg = new RegExp('<option value="'+$(this).val()+'".*?>.*?<\/option>','g');
     select_str = select_str.replace(reg,'');
