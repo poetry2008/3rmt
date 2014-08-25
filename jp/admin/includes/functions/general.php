@@ -9799,7 +9799,7 @@ function tep_get_notice_info($return_type = 0)
     $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
     $html_str .= '<tr>'; 
     
-    $html_str .= '<td width="142" id="alert_buttons"><img src="images/icons/bbs.gif">'; 
+	$html_str .= '<td width="142" id="alert_buttons"><img src="images/icons/bbs.gif">'; 
     if (($notice_num + $micro_num) > 1) {
       $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">▼</font></a>'.str_replace('${ALERT_NUM}',$notice_list_num-1,HEADER_TEXT_ALERT_NUM);
       $more_single = 1; 
