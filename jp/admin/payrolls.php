@@ -259,6 +259,8 @@
   var ontime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'; 
   var ontime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
   var js_ed_orders_input_right_date = '<?php echo ERROR_INPUT_RIGHT_DATE;?>';
+  var submit_url = '<?php echo tep_href_link('payrolls_csv_exe.php','csv_exe=true', 'SSL');?>';
+  var user_export_confirm = '<?php echo TEXT_USER_EXPORT_CONFIRM;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_payrolls.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -722,7 +724,7 @@ color:#0066CC;
                               );
           $user_info[] = array(
                	        'params' => '',
-               	        'text'   => $currency_type_array[$currency_type] 
+               	        'text'   => $currency_type_array[$currency_type].'<input type="hidden" name="currency_type_str" value="'.$currency_type_array[$currency_type].'">' 
                                );
           foreach($groups_users_id as $payroll_id){
             $user_info[] = array(
@@ -753,6 +755,8 @@ color:#0066CC;
                     echo '<select name="user_action" onchange="user_change_action(this.value, \'user_id[]\','.$ocertify->npermission.');">';
                     echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';   
                     echo '<option value="1">'.TEXT_PAYROLLS_SEND_MAIL.'</option>';
+                    echo '<option value="2">'.TEXT_PAYROLLS_EXPORT.'</option>';
+                    echo '<option value="3">'.TEXT_PAYROLLS_PRINT.'</option>';
                     echo '</select>';
                     $error_pam_array = array_unique($error_pam_array);
                     if(!empty($error_pam_array)){
@@ -766,7 +770,7 @@ color:#0066CC;
                      //通过site_id判断是否允许新建
                      if (in_array(0,$site_id_array)) {
                        echo '<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'onclick="again_computing();"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT,'onclick=" payrolls_csv_exe();"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_payroll(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_payroll();"') . '</a>';
