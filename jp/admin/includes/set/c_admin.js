@@ -473,7 +473,7 @@ function set_new_price(pid, cnt) {
         }
        }
       });
-          
+	location = location;
         }
       }
     }); 

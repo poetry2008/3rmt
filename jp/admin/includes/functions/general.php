@@ -13702,8 +13702,10 @@ function tep_check_show_login_logout($uid) {
 	$query = tep_db_query($sql_max_nums);
 	$max_array=	tep_db_fetch_array($query);
     if($max_array['nums']>0){
-      $sql_before ="update " .TABLE_ATTENDANCE_RECORD. " set login_time=0,logout_time=0 where date<".$date_today." and (login_time IS NULL or logout_time IS NULL)";
-      $rows = tep_db_query($sql_before);
+      $sql_set_login ="update " .TABLE_ATTENDANCE_RECORD. " set login_time=0 where date<".$date_today." and login_time IS NULL ";
+      tep_db_query($sql_set_login);
+      $sql_set_logout ="update " .TABLE_ATTENDANCE_RECORD. " set logout_time=0 where date<".$date_today." and logout_time IS NULL";
+      tep_db_query($sql_set_logout);
     }
 
     $attendance_detail_list_yes = tep_all_attenande_by_uid($uid,$date_yestoday);
@@ -13793,6 +13795,11 @@ function tep_change_attendance_login($uid) {
 	$sql_today_default = "select * from " .TABLE_ATTENDANCE_RECORD. " where user_name='".$uid."' and date=".$date;
 	$query_tep = tep_db_query($sql_today_default);
 	$num_rows = tep_db_num_rows($query_tep);
+	//今天没有排班
+	if($nums_all_today==0){
+       $sql_no_att= "insert into " .TABLE_ATTENDANCE_RECORD. " (user_name,login_time,logout_time,nums,date) values('". $uid ."', '".$now_time."', null, ".$nums.", '". $date ."')";
+       return tep_db_query($sql_no_att);
+	}
 	//没有加默认
 	if($num_rows == 0){
 		for($i=1;$i<=$nums_all_today;$i++){

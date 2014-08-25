@@ -48,6 +48,7 @@
       case 'save_user_payroll' 编辑员工工资的设置
       case 'reset_user_payroll' 重置员工工资
       case 'again_computing' 重新计算工资 
+      case 'send_mail' 给员工发信 
     ------------------------------------------------------*/
       case 'edit_users_payroll':
 
@@ -196,7 +197,46 @@
               }
             }
           }
-        break;
+          break;
+        case 'send_mail':
+          $user_id = $_POST['user_id'];
+          $users_payroll = $_POST['users_payroll'];
+          $payroll_title = $_POST['payroll_title'];
+          $payroll_date = tep_db_prepare_input($_POST['save_date']);
+          $group_id = tep_db_prepare_input($_POST['group_id']);
+
+          $lenght_array = array();
+          foreach($payroll_title as $title_value){
+
+            $lenght_array[] = mb_strlen($title_value);
+          }
+          $max_lenght = max($lenght_array);
+
+          $payroll_email = tep_get_mail_templates('PAYROLL_MAIL_TEMPLATES','0'); 
+          $mode_array = array('${USER_NAME}','${CONTENTS}','${PERIOD}');
+
+          //管理者信息
+          $admin_info = tep_get_user_info($ocertify->auth_user);
+
+          foreach($user_id as $user_value){
+
+            $payroll_str = '';
+            foreach($users_payroll as $payroll_key=>$payroll_value){
+
+              $payroll_str .= $payroll_title[$payroll_key].str_repeat('　',$max_lenght-mb_strlen($payroll_title[$payroll_key])).'　　　　　　　　　　　　　'.$payroll_value[$user_value]."\r\n";
+            }
+            $user_info = tep_get_user_info($user_value);
+            $period_date = tep_start_end_date($group_id,$payroll_date);
+            $email_title = tep_replace_mail_templates($payroll_email['title'],$user_info['email'],$user_info['name']);
+            $email_text = tep_replace_mail_templates($payroll_email['contents'],$user_info['email'],$user_info['name']);
+            $replace_array = array($user_info['name'],$payroll_str,$period_date['start_date'].'～'.$period_date['end_date']);
+            $email_title = str_replace($mode_array,$replace_array,$email_title);  
+            $email_text = str_replace($mode_array,$replace_array,$email_text);
+
+            tep_mail($user_info['name'], $user_info['email'], $email_title, $email_text, $admin_info['name'], $admin_info['email'],0);
+          }
+          tep_redirect(tep_href_link(FILENAME_PAYROLLS,''));
+          break;
     }
   }
 ?>
@@ -219,6 +259,8 @@
   var ontime_pwd = '<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>'; 
   var ontime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
   var js_ed_orders_input_right_date = '<?php echo ERROR_INPUT_RIGHT_DATE;?>';
+  var submit_url = '<?php echo tep_href_link('payrolls_csv_exe.php','csv_exe=true', 'SSL');?>';
+  var user_export_confirm = '<?php echo TEXT_USER_EXPORT_CONFIRM;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_payrolls.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -518,7 +560,7 @@ color:#0066CC;
         $groups_users_id = array();
         $groups_payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' order by sort");
         while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
-          $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_payroll_array['title'].'</a>');
+          $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
           $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
         }
         tep_db_free_result($groups_payroll_query);
@@ -682,7 +724,7 @@ color:#0066CC;
                               );
           $user_info[] = array(
                	        'params' => '',
-               	        'text'   => $currency_type_array[$currency_type] 
+               	        'text'   => $currency_type_array[$currency_type].'<input type="hidden" name="currency_type_str" value="'.$currency_type_array[$currency_type].'">' 
                                );
           foreach($groups_users_id as $payroll_id){
             $user_info[] = array(
@@ -713,6 +755,8 @@ color:#0066CC;
                     echo '<select name="user_action" onchange="user_change_action(this.value, \'user_id[]\','.$ocertify->npermission.');">';
                     echo '<option value="0">'.TEXT_CONTENTS_SELECT_ACTION.'</option>';   
                     echo '<option value="1">'.TEXT_PAYROLLS_SEND_MAIL.'</option>';
+                    echo '<option value="2">'.TEXT_PAYROLLS_EXPORT.'</option>';
+                    echo '<option value="3">'.TEXT_PAYROLLS_PRINT.'</option>';
                     echo '</select>';
                     $error_pam_array = array_unique($error_pam_array);
                     if(!empty($error_pam_array)){
@@ -726,7 +770,7 @@ color:#0066CC;
                      //通过site_id判断是否允许新建
                      if (in_array(0,$site_id_array)) {
                        echo '<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'onclick="again_computing();"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT) . '</a>';
+                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT,'onclick=" payrolls_csv_exe();"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_payroll(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_payroll();"') . '</a>';

@@ -453,6 +453,15 @@ require("includes/note_js.php");
     $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);
     $reviews_query = tep_db_query($reviews_query_raw);
     $rows = 0;
+	$reviews = tep_db_fetch_array($reviews_query);
+
+	//@date 20140825没有评论
+	$review_no_row=array();
+	if(!$reviews){
+      $review_no_row[] = array('params' => 'class="order" ', 'text' =>TEXT_DATA_EMPTY);
+      $review_table_row[] = array('params' => 'class="no_info"', 'text' => $review_no_row);
+	}
+
     while ($reviews = tep_db_fetch_array($reviews_query)) {
       $self_link = false;
       $rows++;
