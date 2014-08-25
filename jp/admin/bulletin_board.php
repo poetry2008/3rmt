@@ -107,7 +107,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 				 $file_path=str_replace("||||||","|||",$file_path);
 				 if(substr($file_path,0,3)=="|||")$file_path=substr($file_path,3);
 				 if(substr($file_path,-3,3)=="|||")$file_path=substr($file_path,0,-3);
-				 unlink(PATH_BULLETIN_BOARD.$value);
+				 unlink(PATH_BULLETIN_BOARD_UPLOAD.$value);
 			 }
 		 }
 	 }
@@ -209,7 +209,10 @@ if (isset($_GET['action']) and $_GET['action']) {
         $param_str = $_GET['page'];
         foreach($bulletin_id_list as $id){
          if($_GET['delete_type']=='show_reply') tep_db_query("delete from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$id);
-		 else tep_db_query("delete from ".TABLE_BULLETIN_BOARD." where id=".$id);
+		 else {
+			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD." where id=".$id);
+			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=".$id);
+		 }
         }
         if($_GET['delete_type']=='show_reply')tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'action=show_reply&page='.$param_str));
 		else tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'page='.$param_str));
@@ -432,13 +435,12 @@ function read_time(){
 }
 
 
-<?php //编辑memo的上一个，下一个信息?>
-function show_link_memo_info(bulletin_id, param_str)
+<?php //编辑bulletin的上一个，下一个信息?>
+function show_link_bulletin_info(bulletin_id)
 {
-  param_str = decodeURIComponent(param_str);
   $.ajax({
-    url: 'ajax.php?action=edit_memo',      
-    data: 'bulletin_id='+bulletin_id+'&param_str='+param_str+'<?php echo isset($_GET['order_sort']) ? '&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'] : '';?>',
+    url: 'ajax_bulletin_board.php?action=edit_bulletin',      
+    data: 'bulletin_id='+bulletin_id,
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -449,6 +451,21 @@ function show_link_memo_info(bulletin_id, param_str)
   });  
 }
 
+<?php //编辑bulletin_reply的上一个，下一个信息?>
+function show_link_reply_info(id,bulletin_id)
+{
+  $.ajax({
+    url: 'ajax_bulletin_board.php?action=edit_bulletin_reply',      
+    data: 'bulletin_id='+bulletin_id+"&id="+id,
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $('#show_popup_info').html(data);  
+      $('#show_popup_info').show(); 
+    }
+  });  
+}
 <?php //隐藏弹出页面?>
 function hidden_info_box(){
   $('#show_popup_info').css('display','none');
@@ -709,22 +726,43 @@ function add_email_file(b_id){
 
 function file_cancel(obj){
 	$('#'+obj).attr('value','');
-        if(obj!='messages_file'&&obj!='messages_file_back'){
+        if(obj!='bulletin_file'){
 	  $('#'+obj+'_boder').remove();
         }
 }
 
-function edit_bulletin(id){
+function edit_bulletin(obj,id){
+  var tmp =obj;
+  obj = obj.parentNode;
+  origin_offset_symbol = 1;
   $.ajax({
     url: 'ajax_bulletin_board.php?action=edit_bulletin',      
-    data: 'bulletin_id='+id,
+    data: 'bulletin_id='+id+'&obj='+tmp,
     type: 'POST',
     dataType: 'text',
     async:false,
     success: function (data) {
-      $('#show_popup_info').html(data);  
+      $('#show_popup_info').html(data); 
+      if (document.documentElement.clientHeight < document.body.scrollHeight) {
+        if (obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
+          $('#show_popup_info').css('top', offset).show(); 
+        } else {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        }
+      } else {
+        if ((document.documentElement.clientHeight-obj.offsetTop) < obj.offsetTop) {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height()-obj.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        } else {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        }
+      }
       $('#show_popup_info').show(); 
-      setting_users(0);
+      $('#show_popup_info').css('z-index', data_info_array[1]); 
+      o_submit_single = true;
     }
   }); 
 }
@@ -745,7 +783,9 @@ function create_bulletin_reply(obj,id){
   }); 
 }
 
-function reply_bulletin(id,bulletin_id){
+function reply_bulletin(obj,id,bulletin_id){
+  obj = obj.parentNode;
+  origin_offset_symbol = 1;
   $.ajax({
     url: 'ajax_bulletin_board.php?action=edit_bulletin_reply',      
     data: 'id='+id,
@@ -753,9 +793,27 @@ function reply_bulletin(id,bulletin_id){
     dataType: 'text',
     async:false,
     success: function (data) {
-      $('#show_popup_info').html(data);  
+      $('#show_popup_info').html(data); 
+      if (document.documentElement.clientHeight < document.body.scrollHeight) {
+        if (obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
+          $('#show_popup_info').css('top', offset).show(); 
+        } else {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        }
+      } else {
+        if ((document.documentElement.clientHeight-obj.offsetTop) < obj.offsetTop) {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height()-obj.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        } else {
+          offset = obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight;
+          $('#show_popup_info').css('top', offset).show(); 
+        }
+      }
       $('#show_popup_info').show(); 
-      setting_users(0);
+      $('#show_popup_info').css('z-index', data_info_array[1]); 
+      o_submit_single = true;
     }
   }); 
 }
@@ -772,22 +830,27 @@ function delete_file(id,file_name){
 }
 
 function check_value(type){
-	if(type==0){
-		if($("#current_contents").val()==''||$("#bulletin_title").val()==''){
-			alert('<?php echo TEXT_WARNING_EMPTY;?>');
-			return false;
-		}else{
-			return true;
-		}
-	}else if(type==1){
-		 if($("#current_contents").val()==''){
-			alert('<?php echo TEXT_WARNING_EMPTY;?>');
-			 return false;
-		 }
-		 else return true;
-	}else
-	return false;
+	var flag=0;
+	if($("#current_contents").val()==''){
+		document.getElementById("popup_content").style.display="inline";
+		flag=1;
+	}
+	if(type==0 && $("#bulletin_title").val()==''){
+		document.getElementById("popup_title").style.display="inline";
+		flag=1;
+	}
+	if(flag==1)return false;
+	else return true;
 }
+
+function bulletin_board_select(id,type){
+	var str='<?php echo FILENAME_BULLETIN_BOARD;?>'+'?';
+	if(type==1)str+='action=show_reply&bulletin_id=<?php echo $_GET["bulletin_id"];?>&';
+	str+='choose=1&c_id='+id+'<?echo isset($_GET["page"])?"&page=".$_GET["page"]:"";?>';
+	window.location.href=str;
+}
+
+
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -818,18 +881,18 @@ require("includes/note_js.php");
 	$header_title_sql="select * from bulletin_board ";
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
 		if($_GET['bulletin_id']<1)$_GET['bulletin_id']=1;
-		if($_GET['from']=='last')$header_title_sql.=" where id <=".$_GET['bulletin_id'];
-		elseif($_GET['from']=='next') $header_title_sql.=" where id >=".$_GET['bulletin_id'];
+		if($_GET['from']=='last')$header_title_sql.=" where id >=".$_GET['bulletin_id']." order by id asc";
+		elseif($_GET['from']=='next') $header_title_sql.=" where id <=".$_GET['bulletin_id']." order by id desc";
 		else $header_title_sql.=" where id = ".$_GET['bulletin_id'];
 		$header_title_sql.= " limit 1";
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
 		$header_content=$header_title_row['title'];
-		$last_id=$header_id - 1;
-		$next_id=$header_id + 1;
-		$header_title_html='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" alt="'.TEXT_LAST_BULLETIN.'"></a>
-						<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" alt="'.TEXT_NEXT_BULLETIN.'"></a>
+		$last_id=$header_id + 1;
+		$next_id=$header_id - 1;
+		$header_title_html='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>
+						<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>
 						  '.$header_content.'';
 	}else $header_title_html=TEXT_BULLETIN_BOARD;
 ?>
@@ -863,8 +926,8 @@ require("includes/note_js.php");
   tep_db_free_result($site_query);
 	echo '<div id="tep_new_site_filter"><ul><li class="site_filter_selected"><img src="images/icons/common_stiles.gif" alt="シングル・マルチモードの切り替え" title="シングル・マルチモードの切り替え"></li><li id="site_0" title="共用データ"><img src="images/icons/common_whitepoint.gif" alt="共用データ"></li></a><li id="site_1" class="site_filter_unselected" title="RMTジャックポット">jp</li><li id="site_2" class="site_filter_unselected" title="RMTゲームマネー">gm</li><li id="site_3" class="site_filter_unselected" title="RMTワールドマネー">wm</li><li id="site_4" class="site_filter_unselected" title="RMTアイテムデポ">id</li><li id="site_5" class="site_filter_unselected" title="RMTカメズ">rk</li><li id="site_6" class="site_filter_unselected" title="RMT学園">rg</li><li id="site_7" class="site_filter_unselected" title="RedStone-RMT.com">rr</li><li id="site_8" class="site_filter_unselected" title="FF14-RMT.com">14</li><li id="site_9" class="site_filter_unselected" title="RMTゲームプラネット">gp</li><li id="site_10" class="site_filter_unselected" title="GM-Exchange">ge</li><input type="hidden" id="unshow_site_list" value=""></ul></div>'
 ?>
-<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:750px;margin-left:0;display:none;"></div>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" id="memo_list_box">
+<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" id="bulletin_list_box">
           <tr>
             <td valign="top">
 <?php
@@ -900,37 +963,37 @@ require("includes/note_js.php");
     switch($_GET['order_sort']){
 
     case 'mark':
-      $order_sort = 'mark';
+      $order_sort = 'order by r.mark';
       $order_type = $_GET['order_type'];
       break;
     case 'content':
-      $order_sort = 'content';
+      $order_sort = 'order by r.content';
       $order_type = $_GET['order_type'];
       break;
     case 'manager':
-      $order_sort = 'manager';
+      $order_sort = 'order by r.manager';
       $order_type = $_GET['order_type'];
       break;
     case 'title':
-      $order_sort = 'title';
+      $order_sort = 'order by r.title';
       $order_type = $_GET['order_type'];
       break;
     case 'author':
-      $order_sort = 'author';
+      $order_sort = 'order by r.author';
       $order_type = $_GET['order_type'];
       break;
     case 'collect':
-      $order_sort = 'collect';
+      $order_sort = 'order by r.collect';
       $order_type = $_GET['order_type'];
       break;
     case 'action':
-      $order_sort = 'date_update';
+      $order_sort = 'order by r.update_time';
       $order_type = $_GET['order_type'];
       break;
     }
   }else{
-    $order_sort = 'id';
-    $order_type = ''; 
+    $order_sort = 'order by r.id';
+    $order_type = 'desc'; 
   }
   $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
   $group_name=$group_raw['name'];
@@ -938,7 +1001,13 @@ require("includes/note_js.php");
   if(isset($_GET['search_text'])&& $_GET['search_text']){
 	  $bulletin_query_str.=" and (r.content like '%".$search_text."%' )";
   }
-  $bulletin_query_raw = "select r.id id, r.content content, r.file_path file_path ,r.update_time update_time ,r.author ,r.collect collect ,r.mark mark,r.bulletin_id bulletin_id, b.id bid,b.allow ,b.manager ,b.author from " . TABLE_BULLETIN_BOARD_REPLY ." r ,".TABLE_BULLETIN_BOARD." b where r.bulletin_id=b.id  ".$bulletin_query_str."  order by r.".$order_sort." ".$order_type;
+  $bulletin_query_raw = "select r.id id, r.content content, r.file_path file_path ,r.update_time update_time ,r.author ,r.collect collect ,r.mark mark,r.bulletin_id bulletin_id, b.id bid,b.allow ,b.manager ,b.author from " . TABLE_BULLETIN_BOARD_REPLY ." r ,".TABLE_BULLETIN_BOARD." b where r.bulletin_id=b.id  ".$bulletin_query_str." ";
+  if($order_sort=='collect'){
+	  $user_collect = $bulletin_query_raw."and r.id in ( select id from ".TABLE_BULLETIN_BOARD_REPLY." where (b.allow='all' or ((b.allow like 'id:%' and( b.allow like '%:$ocertify->auth_user,%' or b.allow like '%:$ocertify->auth_user' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user') ) or (b.allow like 'group:%' and (b.allow like '%:$group_name,%' or b.allow like '%:$group_name' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')))) and (r.collect='$ocertify->auth_user' or r.collect like '$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user'))";
+$user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_BULLETIN_BOARD_REPLY." where (b.allow='all' or ((b.allow like 'id:%' and( b.allow like '%:$ocertify->auth_user,%' or b.allow like '%:$ocertify->auth_user' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user') ) or (b.allow like 'group:%' and (b.allow like '%:$group_name,%' or b.allow like '%:$group_name' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')))) and (r.collect='$ocertify->auth_user' or r.collect like '$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user'))";
+  if($order_type=='asc')$bulletin_query_raw=$user_collect." union ".$user_not_collect;
+  else $bulletin_query_raw=$user_not_collect." union ".$user_collect;
+  }else  $bulletin_query_raw .=  " ".$order_sort." ".$order_type;
   $bulletin_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $bulletin_query_raw, $bulletin_query_numrows);
   $bulletin_query = tep_db_query($bulletin_query_raw);
   if(tep_db_num_rows($bulletin_query) == 0){
@@ -947,9 +1016,6 @@ require("includes/note_js.php");
     $bulletin_table_row[] = array('params' => '', 'text' => $bulletin_data_row);  
   }
   while ($bulletin = tep_db_fetch_array($bulletin_query)) {
-      if (( (!@$_GET['cID']) || (@$_GET['cID'] == $bulletin['id'])) && (!@$cInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
-      $cInfo = new objectInfo($bulletin);
-    }
     $even = 'dataTableSecondRow';
     $odd  = 'dataTableRow';
     if (isset($nowColor) && $nowColor == $odd) {
@@ -958,10 +1024,10 @@ require("includes/note_js.php");
       $nowColor = $odd; 
     }
 
-    if (isset($cInfo) && (is_object($cInfo)) && ($bulletin['id'] == $cInfo->id) ) {
-      $bulletin_item_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
+    if ($_GET['choose']==1 && $bulletin['id']==$_GET['c_id']) {
+      $bulletin_item_params = 'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = 'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 
     $bulletin_item_info = array();  
@@ -994,26 +1060,26 @@ require("includes/note_js.php");
                           'text' => $mark_html 
                         );
 	$title=explode("\n",$bulletin["content"]);
-	$title=strlen($title[0])>20? mb_substr($title[0],0,20,'utf-8')."......":$title[0];
+	$title=strlen($title[0])>20? mb_substr($title[0],0,20,'utf-8')."...":$title[0];
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"', 
+                          'params' => 'class="dataTableContent"  onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $title
                         );
 
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"', 
+                          'params' => 'class="dataTableContent"  onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $bulletin['author']
                         );
 
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"', 
+                          'params' => 'class="dataTableContent"  onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $bulletin['update_time'] 
                         );
 
     $bulletin_item_info[] = array(
                           'align' => 'left', 
                           'params' => 'class="dataTableContent"', 
-						  'text' => '<a id="m_696" onclick="reply_bulletin('.$bulletin["id"].','.$bulletin["bulletin_id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
+						  'text' => '<a id="m_696" onclick="reply_bulletin(this,'.$bulletin["id"].','.$bulletin["bulletin_id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
                           ); 
                       
     $bulletin_table_row[] = array('params' => $bulletin_item_params, 'text' => $bulletin_item_info);
@@ -1076,24 +1142,29 @@ require("includes/note_js.php");
       $order_type = $_GET['order_type'];
       break;
     case 'action':
-      $order_sort = 'date_update';
+      $order_sort = 'update_time';
       $order_type = $_GET['order_type'];
       break;
     }
   }else{
     $order_sort = 'id';
-    $order_type = ''; 
+    $order_type = 'desc'; 
   }
 
   $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
   $group_name=$group_raw['name'];
 	
-  $bulletin_query_str = $ocertify->npermission == 31 ? ' where id>0 ' : " where allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
+  $bulletin_query_str = $ocertify->npermission == 31 ? ' where id>0 ' : " where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
   if(isset($_GET['action'])&& $_GET['search_text']){
 	  $bulletin_query_str.=" and (content like '%".$search_text."%' or title like '%".$search_text."%')";
   }
   $bulletin_query_raw = "select * from " . TABLE_BULLETIN_BOARD .$bulletin_query_str;
-  $bulletin_query_raw .=  "  order by ".$order_sort." ".$order_type;
+  if($order_sort=='collect'){
+	  $user_collect = $bulletin_query_raw."and id in ( select id from ".TABLE_BULLETIN_BOARD." where (allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
+$user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BULLETIN_BOARD." where (allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
+  if($order_type=='asc')$bulletin_query_raw=$user_collect." union ".$user_not_collect;
+  else $bulletin_query_raw=$user_not_collect." union ".$user_collect;
+  }else  $bulletin_query_raw .=  "  order by ".$order_sort." ".$order_type;
   $bulletin_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $bulletin_query_raw, $bulletin_query_numrows);
   $bulletin_query = tep_db_query($bulletin_query_raw);
   if(tep_db_num_rows($bulletin_query) == 0){
@@ -1113,10 +1184,10 @@ require("includes/note_js.php");
       $nowColor = $odd; 
     }
 
-    if (isset($cInfo) && (is_object($cInfo)) && ($bulletin['id'] == $cInfo->id) ) {
-      $bulletin_item_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'"';
+    if (($_GET['choose']==1 && $bulletin['id']==$_GET['c_id'])||$bulletin['id']==$_GET['bulletin_id']) {
+      $bulletin_item_params = 'class="dataTableRowSelected"   onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = 'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->auth_user!=$bulletin["author"])&&($ocertify->npermission != 31)){
 		$select_html='disabled="disabled"';
@@ -1144,7 +1215,7 @@ require("includes/note_js.php");
 		}
 	}
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"', 
+                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&choose=1&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $mark_html 
                         );
 
@@ -1154,30 +1225,30 @@ require("includes/note_js.php");
                         );
 
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"', 
+                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&choose=1&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $bulletin['manager']
                         );
 	$allow=explode(":",$bulletin['allow']);
 	$allow=$allow[1]?$allow[1]:$allow[0];
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"', 
+                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&choose=1&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => str_replace(",","  ",$allow)
 			);
 
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&cID=' . $bulletin['id']) . '\'"', 
+                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&choose=1&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $bulletin['reply_number']
                         );
 
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&cID=' . $bulletin['id']) . '\'"', 
+                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&choose=1&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $bulletin['update_time'] 
                         );
 
     $bulletin_item_info[] = array(
                           'align' => 'left', 
                           'params' => 'class="dataTableContent"', 
-						  'text' => '<a id="m_696" onclick="edit_bulletin('.$bulletin["id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
+						  'text' => '<a id="m_696" onclick="edit_bulletin(this,'.$bulletin["id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
                           ); 
                       
     $bulletin_table_row[] = array('params' => $bulletin_item_params, 'text' => $bulletin_item_info);
@@ -1214,7 +1285,7 @@ require("includes/note_js.php");
                     <td colspan="2" align="right"><div class="td_button"><?php 
 					if($_GET['action']=='show_reply'){
 						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? '' : '') . '</a>';
-						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN,$site_permission_flag == false ? '' : '') . '</a>'; 
+						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN_REPLY,$site_permission_flag == false ? '' : '') . '</a>'; 
 					}
 					else{
 						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? '' : '') . '</a>';
@@ -1233,6 +1304,7 @@ require("includes/note_js.php");
 <!-- body_text_eof //-->
   </tr>
 </table>
+<?php  echo $bulletin_query_raw;exit;?>
 <!-- body_eof //-->
 
 <!-- footer //-->

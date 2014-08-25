@@ -25,6 +25,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 			}else{
 				$collect=$collect_info['collect'].",".$_POST['user_id'];
 			}
+			$collect=substr($collect,1);
 			$sql="update ".TABLE_BULLETIN_BOARD." set collect='$collect' where id=$id";
 		}
 		else {
@@ -38,6 +39,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 			}else{
 				$collect=$collect_info['collect'].",".$_POST['user_id'];
 			}
+			 $collect=substr($collect,1);
 			$sql="update ".TABLE_BULLETIN_BOARD_REPLY." set collect='$collect' where id=$id";
 		}
 		if(!tep_db_query($sql))print "sql:$sql";
@@ -53,7 +55,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-	 $bulletin_content_row_from[] = array('params'=>'width="100%" style="color:#FF0000;"','text'=>'<input type="text" name="title" id="bulletin_title" size=100> * '.TEXT_MUST_WRITE);
+	 $bulletin_content_row_from[] = array('params'=>'width="70%" style="color:#FF0000;"','text'=>'<input type="text" name="title" id="bulletin_title" size=80> * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
+	 $bulletin_content_row_from[] = array('params'=>'width="10%"','text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
 	 $bulletin_content_row_manager = array();
 	 $bulletin_content_row_manager [] = array('text'=>"From(".TEXT_MANAGER.")");
@@ -117,8 +120,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	<tr>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="group_add" width="100%" style="overflow-y:scroll;height:105px;"></div></td>
 		<td align="center" style="vertical-align:middle;">
-			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(1)">&lt'.ADD_STAFF.'</div>
-			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(1)">'.DELETE_STAFF.'&gt</div>
+			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(0)">&lt'.ADD_STAFF.'</div>
+			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(0)">'.DELETE_STAFF.'&gt</div>
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
@@ -137,24 +140,18 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_CONTENT);
- if($_GET['latest_bulletin_id']>0){
-	$sql_message_content = tep_db_query('select * from bulletin where id = "'.$_GET['latest_bulletin_id'].'"');
-	$sql_message_content_res = tep_db_fetch_array($sql_message_content);
-        $bulletin_text_area = '<textarea id="bulletin_text" style="overflow-y:hidden;width:100%;height:163px;" disabled="disabled" name="contents">'.$sql_message_content_res['content'].'</textarea><input type="hidden" name="drafts_contents" value="'.$sql_message_content_res['content'].'">';
- }else{
- 	$bulletin_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea>';
- }
+ 	$bulletin_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $bulletin_content_row_must_write = array();
 	 $bulletin_content_row_must_write[] = array('text'=> '');
-	 $bulletin_content_row_must_write[] = array('text'=> '<div id="bulletin_must_write" style="display: none;"><span style="color:#ff0000;">'.CONTENT_MUST_WRITE.'</span></div>');
+	 $bulletin_content_row_must_write[] = array('text'=> '<div id="bulletin_must_write" style="display: none;"><span style="color:#ff0000;"> '.CONTENT_MUST_WRITE.'</span></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_must_write);
 	 $bulletin_content_row_addfile = array();
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="reset" value="'.TEXT_RESET.'"><input type="submit"   value="'.TEXT_SUBMIT.'">'.$bulletin_buttons);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.TEXT_SUBMIT.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
@@ -169,8 +166,18 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => TEXT_EDIT_BULLETIN);
-	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin&bulletin_id='.$bulletin_id,'post','enctype="multipart/form-data" id="form1"'); 
-	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+	$next_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id<'$bulletin_id'  order by id desc limit 1"));
+	$next=$next_raw['id'];
+	$last_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id>'$bulletin_id' order by id asc limit 1"));
+	$last=$last_raw['id'];
+	if($bulletin_id<=1)$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$last.')">'.TEXT_LAST.'</a>';
+	else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id>='$bulletin_id'"))==1){
+		$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$next.')">'.TEXT_NEXT.'</a>';
+	}else{
+		$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$last.')">'.TEXT_LAST.'</a><a href="javascript:void(0)" onclick="show_link_bulletin_info('.$next.')">'.TEXT_NEXT.'</a>';
+	}
+	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin&bulletin_id='.$bulletin_id,'post','enctype="multipart/form-data" id="form1"'); 
+	 $heading[] = array('align' => 'right', 'text' => $turn_html.'<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 
      //bulletin infomation
 	 $bulletin_sql="select * from bulletin_board where id=$bulletin_id";
@@ -197,7 +204,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-	 $bulletin_content_row_from[] = array('params'=>'width="100%" style="color:#FF0000;"','text'=>'<input type="text" name="title" value="'.$bulletin_info["title"].'" id="bulletin_title" size=100> * '.TEXT_MUST_WRITE);
+	 $bulletin_content_row_from[] = array('params'=>'width="100%" style="color:#FF0000;"','text'=>'<input type="text" name="title" value="'.$bulletin_info["title"].'" id="bulletin_title" size="80" > * '.TEXT_MUST_WRITE);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
 	 $bulletin_content_row_manager = array();
 	 $bulletin_content_row_manager [] = array('text'=>TEXT_MANAGER);
@@ -273,8 +280,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	<tr>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="group_add" width="100%" style="overflow-y:scroll;height:105px;">'.$group_select_html.'</div></td>
 		<td align="center" style="vertical-align:middle;">
-			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(1)">&lt'.ADD_STAFF.'</div>
-			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(1)">'.DELETE_STAFF.'&gt</div>
+			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(0)">&lt'.ADD_STAFF.'</div>
+			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(0)">'.DELETE_STAFF.'&gt</div>
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
@@ -293,7 +300,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_CONTENT);
-	if($user==$bulletin_info['manager']||$ocertify->npermission==31||$user==$bulletin_info['author']);
+	$user=$ocertify->auth_user;
+	if($user==$bulletin_info['manager']||$ocertify->npermission==31||$user==$bulletin_info['author'])$read_only_html='';
 	else $read_only_html='disabled="disabled"';
  	$bulletin_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" '.$read_only_html.' name="content">'.$bulletin_info["content"].'</textarea>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
@@ -311,7 +319,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_download = array();
 	 $bulletin_content_row_download[] = array('text'=> TEXT_FILE_DOWNLOAD_URL);
 	 $bulletin_content_row_download[] = array('text'=> $file_download_url);
-	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
+	 if($file_download_url)$bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
 	 $bulletin_content_row_addfile = array();
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
@@ -326,7 +334,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_TIME.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="reset" value="'.TEXT_RESET.'"><input type="submit"   value="'.TEXT_SUBMIT.'">'.$bulletin_buttons);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.TEXT_SUBMIT.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
@@ -360,9 +368,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 
     
 	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
- 	 $bulletin_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea> ';
+ 	 $bulletin_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea> <div id="popup_content" style    ="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
-	 $bulletin_content_row_text[] = array('text'=> '<p style="color:#FF0000;"> * '.TEXT_MUST_WRITE.'  </p>');
+	 $bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"','text'=> '&nbsp;*'.TEXT_MUST_WRITE);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $bulletin_content_row_must_write = array();
 	 $bulletin_content_row_must_write[] = array('text'=> '');
@@ -372,7 +380,7 @@ if (isset($_GET['action']) and $_GET['action']) {
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="reset" value="'.TEXT_RESET.'"><input type="submit"   value="'.TEXT_SUBMIT.'">'.$bulletin_buttons);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.TEXT_SUBMIT.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
@@ -382,15 +390,28 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	case 'edit_bulletin_reply':
 	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+     $bulletin_info=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id'].""));
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	 $heading[] = array('text' => TEXT_EDIT_BULLETIN_ERPLY);
+	 $id=$bulletin_info['id'];
+	 $bulletin_id=$bulletin_info['bulletin_id'];
+	 $turn_html='';
+	$next_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id<$id  and bulletin_id=$bulletin_id order by id desc limit 1"));
+	$next=$next_raw['id'];
+	$last_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id>$id  and bulletin_id=$bulletin_id order by id asc limit 1"));
+	$last=$last_raw['id'];
+	if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id<='$id' and bulletin_id=$bulletin_id"))==1)$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$last.','.$bulletin_id.')">'.TEXT_LAST.'</a>';
+	else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id>='$id' and bulletin_id=$bulletin_id"))==1){
+		$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$next.','.$bulletin_id.')">'.TEXT_NEXT.'</a>';
+	}else{
+		$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$last.','.$bulletin_id.')">'.TEXT_LAST.'</a><a href="javascript:void(0)" onclick="show_link_reply_info('.$next.','.$bulletin_id.')">'.TEXT_NEXT.'</a>';
+	}
 	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin_reply&id='.$_POST["id"].'','post','enctype="multipart/form-data" id="form1" '); 
-	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
-     $bulletin_info=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id'].""));
+	 $heading[] = array('align' => 'right', 'text' => $turn_html.'<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 	 $old_content=$bulletin_info['content'];
 	 $bulletin_content_table = array();
-	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY_LAST);
+	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
  	 $bulletin_text_area =  '<textarea style="resize:vertical;  background:#CCCCCC; width:100%;" class="textarea_width"  rows="10" id="current_contents" name="old_content" readonly="readonly">'.$old_content.'</textarea>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
@@ -408,10 +429,10 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_mark[] = array('params'=>'width="10%"','text'=>' ');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	
-	 $new_bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
+	 $new_bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY_LAST);
  	$new_bulletin_text_area ='<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea>';
 	 $new_bulletin_content_row_text[] = array('text'=> $new_bulletin_text_area);
-	 $new_bulletin_content_row_text[] = array('text'=> ' <p style="color:#FF0000;"> * '.TEXT_MUST_WRITE.'  </p>');
+	 $new_bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"','text'=> '&nbsp;*'.TEXT_MUST_WRITE);
 	 $bulletin_content_table[] = array('text'=> $new_bulletin_content_row_text);
 	 $file_download_url='';
 	 $index=1;
@@ -426,7 +447,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_download = array();
 	 $bulletin_content_row_download[] = array('text'=> TEXT_FILE_DOWNLOAD_URL);
 	 $bulletin_content_row_download[] = array('text'=> $file_download_url);
-	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
+	 if($file_download_url)$bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
 	 $bulletin_content_row_addfile = array();
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');

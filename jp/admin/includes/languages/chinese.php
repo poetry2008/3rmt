@@ -869,4 +869,4 @@ define('TEXT_NOW_MONTH', '本月');
 define('TEXT_PRE_YEAR', '去年');
 define('TEXT_NEXT_YEAR', '明年');
 define('HEADER_TEXT_PAYROLLS','计算工资');
-
+define('HEADER_TEXT_BULLETIN','公告栏');
