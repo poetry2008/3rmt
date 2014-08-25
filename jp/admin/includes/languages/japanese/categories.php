@@ -175,14 +175,14 @@ define('CATEGORY_BUTTON_UPDATE_TEXT', 'よく確認してから押しなさい')
 define('CATEGORY_MONEY_UNIT_TEXT', '円');
 define('CATEGORY_AVERAGE_PRICE', '現在庫の平均原価');
 define('CATEGORY_ACTUALLY_IN_LIBRARY_TEXT', '実&nbsp;在&nbsp;&nbsp;庫：&nbsp;');
-define('CATEGORY_UNIT_TEXT', '個');
+define('CATEGORY_GE_UNIT_TEXT', '個');
 define('CATEGORY_RULI_TEXT', 'メールに記載する注意書きの入力欄：');
 define('CATEGORY_CAL_TITLE_TEXT', '計算する');
 define('CATEGORY_NEXTLINE_TEXT', '下一桁');
 define('CATEGORY_CAL_ORIGIN_SELECT', 'ズバリ');
 define('TABLE_HEADING_PRODUCT_HISTORY', '商品履歴');
 define('TABLE_HEADING_FETCHTIME_TEXT', '取引日');
-define('TABLE_HEADING_AMOUNT', '個数');
+define('TABLE_HEADING_GESHU', '個数');
 define('TABLE_HEADING_OSTATUS', 'ステータス');
 define('CATEGORY_TOTALNUM_TEXT', '合計');
 define('CATEGORY_AVERAGENUM_TEXT', '平均'); 
