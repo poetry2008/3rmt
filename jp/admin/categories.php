@@ -2774,6 +2774,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               ?>
                 <td valign="top" width="15%" style="min-width:155px;"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
                 <td width="60%"><?php echo $products_shipping_time; ?></td>
+                <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
                 <td valign="top"><?php echo TEXT_PRODUCTS_PREORDER_TEXT;?></td>
@@ -3129,7 +3130,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                             <tr><td colspan="2">
                                           <table id="cattags_contents" width="100%" style="margin-left: -3px;"<?php echo !$pInfo->products_cartflag ? ' style="display:none;"' : '';?>>
                                           <tr><td></td><td colspan="2" style="text-align:leflt;"> <a href="javascript:void(0);" onclick="get_cart_products()"><?php echo TEXT_PRODUCT_RESULT_CONFIRM;?></a></td></tr>
-                                          <tr><td width="15%" valign="top" style="min-width:154px;"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" class="other_input" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
+                                          <tr><td width="20%" valign="top" style="min-width:154px;"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" class="other_input" <?php echo ($s_site_id)?'class="readonly td_readonly" disabled':'class="td_input"';?> name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                                           </td></tr> 
                                           <?php if (false) {?>
                                             <tr>
@@ -3221,7 +3222,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 echo tep_html_element_submit(IMAGE_SAVE);
               } 
               if(isset($_GET['pID']) && $_GET['pID'] != ''){
-                echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
+                echo '<a target="_blank" href="'.$site_url_array[$sid].'/product_info.php?products_id=' . $_GET['pID'] .'"><input class="element_button" type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
               }
 ?>
               <?php
@@ -3299,7 +3300,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
                 <td class="main" align="right">
-                <div style="float:left;"><?php echo $_GET['s_site_id']?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></div>
+                <div style="float:left;"><?php echo (isset($_GET['s_site_id']))?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></div>
               <?php
               if ($_GET['action'] == 'new_category') {
                 if (isset($_GET['new_c_type'])) {
@@ -3332,7 +3333,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $sid = $s_site_id == 0 ? 1 : $s_site_id;
               if(isset($_GET['cID']) && $_GET['cID'] != ''){
                 $cpath = $_GET['cPath'] != '' ? $_GET['cPath'].'_' : '';
-                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
+                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input class="element_button" type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
               }
               ?>
                 </td> 
@@ -3647,7 +3648,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $sid = $s_site_id == 0 ? 1 : $s_site_id;
               if(isset($_GET['cID']) && $_GET['cID'] != ''){
                 $cpath = $_GET['cPath'] != '' ? $_GET['cPath'].'_' : '';
-                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
+                echo '<a target="_blank" href="'.$site_url_array[$sid].'/index.php?cPath=' .$cpath.$_GET['cID'] .'"><input class="element_button" type="button" name="preview" value="'.MOVE_TO_SITE.'"></a>&nbsp;&nbsp;';
               }
               ?> 
                 </td>
@@ -5276,10 +5277,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               ?>
                 <?php if (in_array(0,explode('-',$_GET['site_id']))) {?> 
                   <?php if ($ocertify->npermission > 7) { ?>
-                    <input type='button' value='<?php echo CATEGORY_BUTTON_CAL_SETTING;?>' onClick="cleat_set('set_bairitu.php')">
+                    <input class="element_button" type='button' value='<?php echo CATEGORY_BUTTON_CAL_SETTING;?>' onClick="cleat_set('set_bairitu.php')">
                       <?php }?>
-                      &nbsp;<input type='button' value='<?php echo CATEGORY_BUTTON_XIEYE_PRICE;?>' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'].'|||'.str_replace('&','|||',tep_get_all_get_params(array('action','cPath')));?>')">
-                      &nbsp;<input type='button' name='x' value="<?php echo CATEGORY_BUTTON_ALL_UPDATE;?>" onClick="all_update('<?php echo $ocertify->npermission;?>')"> 
+                      &nbsp;<input class="element_button" type='button' value='<?php echo CATEGORY_BUTTON_XIEYE_PRICE;?>' onClick="list_display('<?php echo $cPath_yobi?$cPath_yobi:0;?>','<?php echo $current_category_id;?>','<?php echo $_GET['cPath'].'|||'.str_replace('&','|||',tep_get_all_get_params(array('action','cPath')));?>')">
+                      &nbsp;<input class="element_button"  type='button' name='x' value="<?php echo CATEGORY_BUTTON_ALL_UPDATE;?>" onClick="all_update('<?php echo $ocertify->npermission;?>')"> 
                       <?php }?> 
 					  </div>
                       </td>
