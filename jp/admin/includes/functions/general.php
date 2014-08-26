@@ -14149,11 +14149,12 @@ function tep_get_attendance($date,$gid=0,$show_all=true,$add_id=0){
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and date <= ".$date." and  is_user=0 order by id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and ( valid_date = 0 or valid_date > ".$date.")  and date <= ".$date." and  is_user=0 order by id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
   }
+  $attendance_dd_arr = tep_no_parent_data($attendance_dd_arr);
   if($show_all||$add_id!=0){
     return $attendance_dd_arr;
   }else{
@@ -14411,6 +14412,24 @@ function tep_get_userlist_by_group_uid($uid){
   return $res;
 }
 
+function tep_no_parent_data($arr,$parent_arr=array()){
+  if(empty($parent_arr)){
+    foreach($arr as $info){
+      $parent_arr[] = $info['parent_id']; 
+    }
+  }
+  if(!empty($parent_arr)){
+  $res_arr = array();
+  foreach($arr as $value){
+    if(!in_array($value['id'],$parent_arr)){
+      $res_arr[] = $value;
+    }
+  }
+  return $res_arr;
+  }else{
+    return $arr;
+  }
+}
 function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_id=0){
   global $all_att_arr;
   if(empty($all_att_arr)){
@@ -14446,11 +14465,12 @@ function tep_get_attendance_user($date,$uid='',$show_all=true,$add_id=0,$u_att_i
   }else{
     $where_str = " where id='".$add_id."' ";
   }
-  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and date <= ".$date." and is_user='1' order by user_id asc,id desc";
+  $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_DATE." ".$where_str."  and ( valid_date = 0 or valid_date > ".$date.") and date <= ".$date." and is_user='1' order by user_id asc,id desc";
   $query = tep_db_query($sql);
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr[] = $row;
   }
+  $attendance_dd_arr = tep_no_parent_data($attendance_dd_arr);
   if($show_all||$add_id!=0){
     return $attendance_dd_arr;
   }else{
@@ -14525,6 +14545,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr_tmp[] = $row;
   }
+  $attendance_dd_arr = tep_no_parent_data($attendance_dd_arr);
   $diff_arr = array();
   if(count($attendance_dd_arr_tmp)>1){
     // 时间段 和 时间数 的排班数组
