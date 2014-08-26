@@ -871,4 +871,4 @@ define('TEXT_NOW_MONTH', '今月');
 define('TEXT_PRE_YEAR', '前年');
 define('TEXT_NEXT_YEAR', '翌年');
 define('HEADER_TEXT_PAYROLLS','給料計算');
-
+define('HEADER_TEXT_BULLETIN','掲示板');

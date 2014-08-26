@@ -734,22 +734,22 @@ if ($_GET['action'] == 'show_category_info') {
   $product_row_count = tep_get_relate_product_history_sum($pInfo->products_id, $product_sub_date, 0,$radices);
   $arr_td_product[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$product_sub_date,number_format($product_row_count));
   if($radices!=''&&$radices!=1&&$radices!=0){
-    $product_td_real_quantity = (empty($_GET['s_site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $product_td_real_quantity = (empty($_GET['s_site_id'])?number_format((int)($pInfo->products_real_quantity/$radices)).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format(tep_new_get_quantity($pInfo)):tep_draw_input_field('products_quantity', strval(tep_new_get_quantity($pInfo)),'size="8" id="product_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
     $product_td_quantity = (empty($_GET['s_site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="product_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $product_td_real_quantity = (empty($_GET['s_site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $product_td_real_quantity = (empty($_GET['s_site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .  ((!empty($_GET['s_site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
     $product_td_quantity = (empty($_GET['s_site_id'])?number_format($pInfo->products_real_quantity).  '&rarr;':'') .((!empty($_GET['s_site_id']))?number_format($pInfo->products_real_quantity):tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
   $arr_td_product[] = $product_td_real_quantity.'<input id="product_radices" type="hidden" value="'.$radices.'">';
   $arr_td_product[] = $product_td_quantity;
-  $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
+  $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($pInfo->products_virtual_quantity):tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
 
   
   if(empty($site_id)) {
     $max_inventory_num = $max_inventory_num < 0 ? 0 : $max_inventory_num;
     $min_inventory_num = $min_inventory_num < 0 ? 0 : $min_inventory_num;
-    $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
-    $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+    $arr_td_product[] = (empty($_GET['s_site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
   }
   $inventory['max'] = $max_inventory_num;
   $inventory['min'] = $min_inventory_num;
@@ -836,22 +836,22 @@ if ($_GET['action'] == 'show_category_info') {
     $arr_td_relate[] = sprintf(TEXT_PRODUCT_ORDER_HISTORY_INFO,$relate_sub_date,number_format($relate_row_count));
   
   if($relate_radices!=''&&$relate_radices!=1&&$relate_radices!=0){
-    $relate_td_real_quantity = (empty($_GET['s_site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $relate_td_real_quantity = (empty($_GET['s_site_id'])?number_format((int)($relate_pInfo->products_real_quantity/$relate_radices)).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format(tep_new_get_quantity($relate_pInfo)):tep_draw_input_field('relate_products_quantity', strval(tep_new_get_quantity($relate_pInfo)),'size="8" id="relate_qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
     $relate_td_quantity = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" id="relate_qtr" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);rsync_num(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }else{
-    $relate_td_real_quantity = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_UNIT_TEXT;
+    $relate_td_real_quantity = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;' .CATEGORY_GE_UNIT_TEXT;
     $relate_td_quantity = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_real_quantity).'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_real_quantity):tep_draw_input_field('relate_products_real_quantity', $relate_pInfo->products_real_quantity,'size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')).'&nbsp;&nbsp;&nbsp;&nbsp;';
   }
     $arr_td_relate[] = $relate_td_real_quantity.'<input id="relate_radices" type="hidden" value="'.$relate_radices.'">';
     $arr_td_relate[] = $relate_td_quantity;
-    $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_UNIT_TEXT;
+    $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($relate_pInfo->products_virtual_quantity) .'&rarr;':'').((!empty($_GET['s_site_id']))?number_format($relate_pInfo->products_virtual_quantity):tep_draw_input_field('relate_products_virtual_quantity', $relate_pInfo->products_virtual_quantity,' size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"')) . '&nbsp;'.CATEGORY_GE_UNIT_TEXT;
     
 
     if(empty($site_id)){  
       $max_inventory_num = $max_inventory_num < 0 ? 0 : $max_inventory_num;
       $min_inventory_num = $min_inventory_num < 0 ? 0 : $min_inventory_num;
-      $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
-      $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($max_inventory_num):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
+      $arr_td_relate[] = (empty($_GET['s_site_id'])?number_format($min_inventory_num):'').'&nbsp'.CATEGORY_GE_UNIT_TEXT;
     }
     $inventory['max'] = $max_inventory_num;
     $inventory['min'] = $min_inventory_num;
@@ -887,7 +887,7 @@ if ($_GET['action'] == 'show_category_info') {
   $product_history_array[] = array('text' => array(
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
         array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>'),
         ),'mouse' => true 
       );      
@@ -975,7 +975,7 @@ if ($_GET['action'] == 'show_category_info') {
     $relate_product_history_array[] = array('text' => array(
         array('align' => 'left', 'params' => 'width="35%"', 'text' => '<b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b>'), 
         array('align' => 'left', 'params' => 'width="20%"', 'text' => '<b>'.TABLE_HEADING_OSTATUS.'</b>'),
-        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_AMOUNT.'</b>'), 
+        array('align' => 'right', 'params' => 'width="15%"', 'text' => '<b>'.TABLE_HEADING_GESHU.'</b>'), 
         array('align' => 'right', 'params' => 'width="30%"', 'text' => '<b>'.TABLE_HEADING_DANJIA_TEXT.'</b>')
         ),'mouse' => true
       );      

@@ -40,4 +40,7 @@ define('TEXT_WARNING_EMPTY','入力して下さい');
 define('TEXT_CONTENT_REPLY_LAST','上記の内容にコメント');
 define('TEXT_CONTENT_REPLY','内容');
 define('TEXT_CONTENT_NEW','内容');
+define('TEXT_CREATE_BULLETIN_REPLY','書き込む');
+define('TEXT_LAST','<前へ');
+define('TEXT_NEXT','次へ>');
 ?>

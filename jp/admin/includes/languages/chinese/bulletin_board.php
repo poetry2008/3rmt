@@ -21,7 +21,7 @@ define('TEXT_BACK','返回');
 define('TEXT_CREATE_BULLETIN','新建');
 define('TEXT_MUST_INPUT','');
 define('TEXT_SUBMIT','保存');
-define('TEXT_RESET','取消');
+define('TEXT_RESET','删除');
 define('TEXT_ADDFILE','附件');
 define('TEXT_CONTENT','内容');
 define('TEXT_GROUP_SELECT','组选择');
@@ -46,4 +46,7 @@ define('TEXT_WARNING_EMPTY','请填写');
 define('TEXT_CONTENT_REPLY','内容');
 define('TEXT_CONTENT_REPLY_LAST','回复');
 define('TEXT_CONTENT_NEW','内容');
+define('TEXT_CREATE_BULLETIN_REPLY','回复');
+define('TEXT_LAST','上一项');
+define('TEXT_NEXT','下一项');
 ?>
