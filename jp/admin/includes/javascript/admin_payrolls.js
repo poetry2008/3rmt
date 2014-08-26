@@ -315,11 +315,7 @@ function user_change_action(value,user_list_id,c_permission)
        document.getElementsByName("user_action")[0].value = 0;
      }
    }else if(value == 3){
-     if(confirm(user_print_confirm)){
-       payrolls_print_exe(); 
-     }else{
-       document.getElementsByName("user_action")[0].value = 0; 
-     }
+     payrolls_print_exe(); 
    }
   }else{
     document.getElementsByName("user_action")[0].value = 0;

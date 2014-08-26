@@ -261,7 +261,6 @@
   var js_ed_orders_input_right_date = '<?php echo ERROR_INPUT_RIGHT_DATE;?>';
   var submit_url = '<?php echo tep_href_link('payrolls_csv_exe.php','csv_exe=true', 'SSL');?>';
   var user_export_confirm = '<?php echo TEXT_USER_EXPORT_CONFIRM;?>';
-  var user_print_confirm = '<?php echo TEXT_USER_PRINT_CONFIRM;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_payrolls.js?v=<?php echo $back_rand_info?>"></script>
 <?php 

@@ -26,15 +26,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
 <?php }?>
-<table border="0" width="100%" cellspacing="2" cellpadding="2" class="compatible_print">
+<table width="100%" cellpadding="0" cellspacing="0" border="1">
 <tr>
-<td width="100%" valign="top">
-<div class="print_assets_title">
-<?php echo TEXT_HEAD_TITLE;?>
-</div>
-<table width="99%" cellpadding="0" cellspacing="1" border="0" class="assets_box">
-<tr class="assets_text">
-<td align="center"><?php echo TEXT_PAYROLLS_NAME;?></td>
+<td align="center" bgcolor="#808080"><?php echo TEXT_PAYROLLS_NAME;?></td>
 <?php
   $payroll_title = $_GET['payroll_title'];
   $payroll_title_array = explode('|',$payroll_title);
@@ -43,7 +37,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   $payroll_title_lenght = count($payroll_title_array);
   foreach($payroll_title_array as $title_value){
 ?>
-  <td align="center"><?php echo $title_value;?></td>    
+  <td align="center" bgcolor="#808080"><?php echo $title_value;?></td>    
 <?php
   }
   $user_id = $_GET['user_id'];
@@ -64,7 +58,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $user_info = tep_get_user_info($user_value);
 ?>
 </tr>
-          <tr class="assets_c">
+          <tr>
           <td align="right"><?php echo $user_info['name'];?></td>
 <?php
     for($j=$user_num_array[$user_key]*$payroll_title_lenght;$j<=$user_num_array[$user_key]*$payroll_title_lenght+$payroll_title_lenght-1;$j++){
@@ -77,15 +71,14 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <?php
   }
 ?>
-  <tr class="assets_c"><td align="right"><?php echo TEXT_PAYROLLS_TOTAL.'('.$_GET['currency_type'].')';?></td>
+  <tr><td align="right"><?php echo TEXT_PAYROLLS_TOTAL.'('.$_GET['currency_type'].')';?></td>
 <?php
   foreach($total_array as $total_value){
 
     echo '<td align="right">'.$total_value.'</td>';
   }
 ?>
-  </tr>
-      </table>
-</td></tr></table>
+</tr>
+</table>
 </body>
 </html>
