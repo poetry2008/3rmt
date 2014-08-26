@@ -152,7 +152,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
           echo '&nbsp;'.$title_str; 
         }
       } else {
-        echo '&nbsp;<img src="images/icons/bbs_item.gif">'; 
+        echo '&nbsp;<img src="images/icons/bbs.gif">'; 
       }
       echo '</td>'; 
       echo '<td class="notice_info">'; 
