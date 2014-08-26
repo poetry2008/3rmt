@@ -574,3 +574,99 @@ function payrolls_print_exe(){
             });
            }
 }
+//payrolls sort
+function payrolls_sort(type,sort,name,asc,desc,num){
+
+  var user_str = '';
+  var i = 0;
+  $('input[name="user_id[]"]').each(function() {
+    if(i != $('input[name="user_id[]"]').length-1){
+      user_str += $(this).val()+'|';
+    }else{
+      user_str += $(this).val();
+    }
+    i++;
+  });
+  var user_payrolls_str = '';
+  var j = 0;
+  switch(type){
+  
+    case 'name':
+      $('input[name="user_name[]"]').each(function() {
+        if(j != $('input[name="user_name[]"]').length-1){
+          user_payrolls_str += $(this).val()+'|';
+        }else{
+          user_payrolls_str += $(this).val();
+        }
+        j++;
+      });     
+    break;
+    case 'title':
+      $('input[name^="users_payroll['+num+']"]').each(function() {
+        if(j != $('input[name^="users_payroll['+num+']"]').length-1){
+          user_payrolls_str += $(this).val()+'|';
+        }else{
+          user_payrolls_str += $(this).val();
+        }
+      }); 
+    break;
+    case 'time':
+      $('input[name="payrolls_time[]"]').each(function() {
+        if(j != $('input[name="payrolls_time[]"]').length-1){
+          user_payrolls_str += $(this).val()+'|';
+        }else{
+          user_payrolls_str += $(this).val();
+        }
+        j++;
+      });     
+    break;
+  }
+
+  //ajax submit
+  $.ajax({
+    url: 'ajax_orders.php?action=payrolls_sort',   
+    type: 'POST',
+    dataType: 'text',
+    data: 'user_str='+user_str+'&user_payrolls_str='+user_payrolls_str+'&sort='+sort, 
+    async: false,
+    success: function(msg) {
+      if(msg!=''){
+        var user_id = new Array();
+        user_id = msg.split('|');
+        var html_str = '';
+        var style_str = '';
+        for(z in user_id){
+      
+          style_str = 'dataTableSecondRow';
+          if(z%2 == 1){
+         
+            style_str = 'dataTableRow';
+          }
+          html_str += '<tr id="payroll_'+user_id[z]+'" class="'+style_str+'" onmouseout="this.className=\''+style_str+'\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'">'+$("#payroll_"+user_id[z]).html()+'</tr>';
+          $("#payroll_"+user_id[z]).remove();
+        } 
+        $("#payrolls_total").before(html_str);
+        var sort_str = 0;
+        var order_sort = '<font color="#c0c0c0">'+asc+'</font><font color="#facb9c">'+desc+'</font>';
+        if(sort == 0){
+        
+          sort_str = 1;
+          order_sort  = '<font color="#facb9c">'+asc+'</font><font color="#c0c0c0">'+desc+'</font>';
+        }
+
+        var tr_index = $("#tr_index").html();
+        tr_index = tr_index.replace(/<font.*?>.*?<\/font>/g,"");
+        tr_index = tr_index.replace(",0,",",1,");
+        $("#tr_index").html(tr_index);
+        if(type == 'name'){
+          $("#td_"+type).html('<a href="javascript:payrolls_sort(\'name\','+sort_str+',\''+name+'\',\''+asc+'\',\''+desc+'\',\'\');">'+name+order_sort+'</a>');
+        }else if(type == 'title'){
+          $("#td_"+type+'_'+num).html('<a href="javascript:payrolls_sort(\'title\','+sort_str+',\''+name+'\',\''+asc+'\',\''+desc+'\','+num+');">'+name+order_sort+'</a><input type="hidden" value="'+name+'" name="payroll_title['+num+']">');
+        }else if(type == 'time'){
+          var group_id = document.getElementsByName("group_id")[0].value;
+          $("#td_"+type).html('<a href="javascript:payrolls_sort(\'time\','+sort_str+',\''+name+'\',\''+asc+'\',\''+desc+'\',\'\');">'+name+order_sort+'</a><input type="hidden" value="'+group_id+'" name="group_id">');
+        }
+      }
+    }
+  });
+}
