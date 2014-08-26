@@ -32,4 +32,5 @@ define('TEXT_ATT_ACTUAL_VALUE','打卡时间实际值小计');
 define('TEXT_PAYROLLS_AGAIN_COMPUTING','重新计算');
 define('TEXT_PAYROLLS_ERROR_PAM','<font color="#FF0000">*</font> 注：%s 数据错误');
 define('TEXT_USER_EXPORT_CONFIRM','确定要导出吗？');
+define('TEXT_USER_PRINT_CONFIRM','确定要打印吗？');
 ?>

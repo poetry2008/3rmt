@@ -314,6 +314,12 @@ function user_change_action(value,user_list_id,c_permission)
      }else{
        document.getElementsByName("user_action")[0].value = 0;
      }
+   }else if(value == 3){
+     if(confirm(user_print_confirm)){
+       payrolls_print_exe(); 
+     }else{
+       document.getElementsByName("user_action")[0].value = 0; 
+     }
    }
   }else{
     document.getElementsByName("user_action")[0].value = 0;
@@ -495,6 +501,72 @@ function payrolls_csv_exe(){
                       async: false,
                       success: function(msg_info) {
                          change_action(submit_url);
+                         document.getElementsByName("user_action")[0].value = 0;
+                      }
+                    }); 
+                  } else {
+                    alert(ontime_pwd_error); 
+                  }
+                }
+              }
+            });
+           }
+}
+//print payrolls
+function payrolls_print(){
+
+       var payroll_title = '';
+       $('input[name^="payroll_title"]').each(function() {
+         payroll_title += $(this).val()+'|';
+       });
+       var user_id = '';
+       var user_num = '';
+       var i = 0;
+       $('input[name="user_id[]"]').each(function() {
+          if($(this).attr("checked")) {
+            user_id += $(this).val()+'|';
+            user_num += i+'|';
+	  }
+          i++;
+       });
+       var user_payroll = ''; 
+       $('input[name^="users_payroll"]').each(function() {
+         user_payroll += $(this).val()+'|';
+       });
+       var currency_type = document.getElementsByName("currency_type_str")[0].value;
+       window.open('print_payrolls.php?payroll_title='+payroll_title+'&user_id='+user_id+'&user_payroll='+user_payroll+'&currency_type='+currency_type+'&user_num='+user_num);
+}
+
+//print payrolls action
+function payrolls_print_exe(){
+           if (user_permission == 31) {
+             payrolls_print();
+             document.getElementsByName("user_action")[0].value = 0;
+           } else {
+             $.ajax({
+              url: 'ajax_orders.php?action=getallpwd',   
+              type: 'POST',
+              dataType: 'text',
+              data: 'current_page_name=payrolls.php', 
+              async: false,
+              success: function(msg) {
+                var tmp_msg_arr = msg.split('|||'); 
+                var pwd_list_array = tmp_msg_arr[1].split(',');
+                if (tmp_msg_arr[0] == '0') {
+                   payrolls_print();
+                   document.getElementsByName("user_action")[0].value = 0;
+                } else {
+                  $("#button_save").attr('id', 'tmp_button_save');
+                  var input_pwd_str = window.prompt(ontime_pwd, ''); 
+                  if (in_array(input_pwd_str,pwd_list_array)) {
+                    $.ajax({
+                      url: 'ajax_orders.php?action=record_pwd_log',   
+                      type: 'POST',
+                      dataType: 'text',
+                      data: 'current_pwd='+input_pwd_str,
+                      async: false,
+                      success: function(msg_info) {
+                         payrolls_print();
                          document.getElementsByName("user_action")[0].value = 0;
                       }
                     }); 

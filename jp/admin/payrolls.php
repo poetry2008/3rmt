@@ -261,6 +261,7 @@
   var js_ed_orders_input_right_date = '<?php echo ERROR_INPUT_RIGHT_DATE;?>';
   var submit_url = '<?php echo tep_href_link('payrolls_csv_exe.php','csv_exe=true', 'SSL');?>';
   var user_export_confirm = '<?php echo TEXT_USER_EXPORT_CONFIRM;?>';
+  var user_print_confirm = '<?php echo TEXT_USER_PRINT_CONFIRM;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_payrolls.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -770,13 +771,10 @@ color:#0066CC;
                      //通过site_id判断是否允许新建
                      if (in_array(0,$site_id_array)) {
                        echo '<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'onclick="again_computing();"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT,'onclick=" payrolls_csv_exe();"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_payroll(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_payroll();"') . '</a>';
                      }else{
-                       echo tep_html_element_button(TEXT_PAYROLLS_EXPORT,'disabled="disabled"').'&nbsp;' ;
-                       echo tep_html_element_button(TEXT_PAYROLLS_PRINT,'disabled="disabled"').'&nbsp;' ;
+                       echo tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'disabled="disabled"').'&nbsp;' ;
                        echo tep_html_element_button(TEXT_PAYROLLS_RESET,'disabled="disabled"').'&nbsp;' ;
                        echo tep_html_element_button(IMAGE_SAVE,'disabled="disabled"');
                      } 
