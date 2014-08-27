@@ -531,7 +531,9 @@ function payrolls_print(){
          user_payroll += $(this).val()+'|';
        });
        var currency_type = document.getElementsByName("currency_type_str")[0].value;
-       window.open('print_payrolls.php?payroll_title='+payroll_title+'&user_id='+user_id+'&user_payroll='+user_payroll+'&currency_type='+currency_type+'&user_num='+user_num);
+       var group_id = document.getElementsByName("group_id")[0].value;
+       var save_date = document.getElementsByName("save_date")[0].value;
+       window.open('print_payrolls.php?payroll_title='+payroll_title+'&user_id='+user_id+'&user_payroll='+user_payroll+'&currency_type='+currency_type+'&user_num='+user_num+'&group_id='+group_id+'&save_date='+save_date);
 }
 
 //print payrolls action
