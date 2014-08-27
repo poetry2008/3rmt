@@ -67,7 +67,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 		$nid_raw=tep_db_fetch_array(tep_db_query("select id from notice order by id desc limit 1"));
 		$nid=$nid_raw['id'] + 1;
 		tep_db_query("insert into notice values($nid,1,'$title',now(),$id,'$author',now(),1,'')");
-		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD));
+		$parm=isset($_GET['order_sort'])?'order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
+		if(isset($_GET['page']))$parm.="&page=".$_GET['page'];
+		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,$parm));
 	 break;
 
 
@@ -205,16 +207,20 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 
       case 'delete':
-        $bulletin_id_list = tep_db_prepare_input($_POST['bulletin_list_id']);
+		if(isset($_GET['id']))$bulletin_id_list[]=$_GET['id'];
+		else $bulletin_id_list = tep_db_prepare_input($_POST['bulletin_list_id']);
         $param_str = $_GET['page'];
         foreach($bulletin_id_list as $id){
-         if($_GET['delete_type']=='show_reply') tep_db_query("delete from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$id);
-		 else {
+         if($_GET['delete_type']=='show_reply' && (tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id and author='$ocertify->auth_user'"))>0|| $ocertify->npermission==31 )) {
+			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$id);
+			 tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number-1 where id=".$_GET['bulletin_id']);
+		 }
+		 else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id and (author='$ocertify->auth_user' or manager='$ocertify->auth_user')"))>0|| $ocertify->npermission==31 ){
 			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD." where id=".$id);
 			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=".$id);
 		 }
         }
-        if($_GET['delete_type']=='show_reply')tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'action=show_reply&page='.$param_str));
+        if($_GET['delete_type']=='show_reply')tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'action=show_reply&bulletin_id='.$_GET['bulletin_id'].'&page='.$param_str));
 		else tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'page='.$param_str));
         break;
       case 'end':
@@ -475,7 +481,7 @@ function create_bulletin(ele)
 {
   ele = ele.parentNode;
   $.ajax({
-    url: 'ajax_bulletin_board.php?action=new_bulletin',      
+    url: 'ajax_bulletin_board.php?action=new_bulletin&order_sort=<?php echo $_GET["order_sort"];?>&order_type=<?php echo $_GET["order_type"];?>',      
     data: '',
     type: 'POST',
     dataType: 'text',
@@ -736,7 +742,7 @@ function edit_bulletin(obj,id){
   obj = obj.parentNode;
   origin_offset_symbol = 1;
   $.ajax({
-    url: 'ajax_bulletin_board.php?action=edit_bulletin',      
+	url: 'ajax_bulletin_board.php?action=edit_bulletin<?php echo isset($_GET['order_sort'])?'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';?><?php echo isset($_GET['page'])?'&page='.$_GET['page']:'';?>',      
     data: 'bulletin_id='+id+'&obj='+tmp,
     type: 'POST',
     dataType: 'text',
@@ -851,6 +857,11 @@ function bulletin_board_select(id,type){
 }
 
 
+function delete_bulletin(id,type){
+    window.location.href='bulletin_board.php?action=delete&delete_type='+type+'&id='+id+'&bulletin_id=<?php echo $_GET['bulletin_id'];?>';
+}
+
+
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -878,12 +889,14 @@ require("includes/note_js.php");
 <!-- body_text //-->
 <?php
 	//设置标题
-	$header_title_sql="select * from bulletin_board ";
+	$group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user') limit 1"));
+	$group_name=$group_raw['name'];
+	$header_title_sql="select * from bulletin_board where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
 		if($_GET['bulletin_id']<1)$_GET['bulletin_id']=1;
-		if($_GET['from']=='last')$header_title_sql.=" where id >=".$_GET['bulletin_id']." order by id asc";
-		elseif($_GET['from']=='next') $header_title_sql.=" where id <=".$_GET['bulletin_id']." order by id desc";
-		else $header_title_sql.=" where id = ".$_GET['bulletin_id'];
+		if($_GET['from']=='last')$header_title_sql.=" and id >=".$_GET['bulletin_id']." order by id asc";
+		elseif($_GET['from']=='next') $header_title_sql.=" and id <=".$_GET['bulletin_id']." order by id desc";
+		else $header_title_sql.=" and id = ".$_GET['bulletin_id'];
 		$header_title_sql.= " limit 1";
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
@@ -891,8 +904,9 @@ require("includes/note_js.php");
 		$header_content=$header_title_row['title'];
 		$last_id=$header_id + 1;
 		$next_id=$header_id - 1;
-		$header_title_html='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>
-						<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>
+		$header_title_html='';
+		if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name'))) and id>=".$last_id))!=0)$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
+		if($next_id>=1)$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>
 						  '.$header_content.'';
 	}else $header_title_html=TEXT_BULLETIN_BOARD;
 ?>
@@ -924,7 +938,7 @@ require("includes/note_js.php");
   }
   
   tep_db_free_result($site_query);
-	echo '<div id="tep_new_site_filter"><ul><li class="site_filter_selected"><img src="images/icons/common_stiles.gif" alt="シングル・マルチモードの切り替え" title="シングル・マルチモードの切り替え"></li><li id="site_0" title="共用データ"><img src="images/icons/common_whitepoint.gif" alt="共用データ"></li></a><li id="site_1" class="site_filter_unselected" title="RMTジャックポット">jp</li><li id="site_2" class="site_filter_unselected" title="RMTゲームマネー">gm</li><li id="site_3" class="site_filter_unselected" title="RMTワールドマネー">wm</li><li id="site_4" class="site_filter_unselected" title="RMTアイテムデポ">id</li><li id="site_5" class="site_filter_unselected" title="RMTカメズ">rk</li><li id="site_6" class="site_filter_unselected" title="RMT学園">rg</li><li id="site_7" class="site_filter_unselected" title="RedStone-RMT.com">rr</li><li id="site_8" class="site_filter_unselected" title="FF14-RMT.com">14</li><li id="site_9" class="site_filter_unselected" title="RMTゲームプラネット">gp</li><li id="site_10" class="site_filter_unselected" title="GM-Exchange">ge</li><input type="hidden" id="unshow_site_list" value=""></ul></div>'
+	echo '<div id="tep_new_site_filter"><ul><li><img src="images/icons/common_stiles_gray.gif" alt="シングル・マルチモードの切り替え" title="シングル・マルチモードの切り替え"></li><li id="site_0" title="共用データ"><img src="images/icons/common_whitepoint.gif" alt="共用データ"></li></a><li id="site_1" class="site_filter_unselected" title="RMTジャックポット">jp</li><li id="site_2" class="site_filter_unselected" title="RMTゲームマネー">gm</li><li id="site_3" class="site_filter_unselected" title="RMTワールドマネー">wm</li><li id="site_4" class="site_filter_unselected" title="RMTアイテムデポ">id</li><li id="site_5" class="site_filter_unselected" title="RMTカメズ">rk</li><li id="site_6" class="site_filter_unselected" title="RMT学園">rg</li><li id="site_7" class="site_filter_unselected" title="RedStone-RMT.com">rr</li><li id="site_8" class="site_filter_unselected" title="FF14-RMT.com">14</li><li id="site_9" class="site_filter_unselected" title="RMTゲームプラネット">gp</li><li id="site_10" class="site_filter_unselected" title="GM-Exchange">ge</li><input type="hidden" id="unshow_site_list" value=""></ul></div>'
 ?>
 <div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
           <table border="0" width="100%" cellspacing="0" cellpadding="0" id="bulletin_list_box">
@@ -1035,6 +1049,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 		$select_html='disabled="disabled"';
 	}else{
 		$select_html='';
+		$show_flag=1;
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
@@ -1193,6 +1208,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 		$select_html='disabled="disabled"';
 	}else{
 		$select_html='';
+		$show_flag=1;
 	}
     $bulletin_item_info = array();  
     $bulletin_item_info[] = array(
@@ -1268,7 +1284,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                   <?php
                   if($ocertify->npermission >= 0 && tep_db_num_rows($bulletin_query) > 0){
                     echo '<div class="td_box">';
-                    echo '<select name="edit_bulletin_list" '.($site_permission_flag == false ? '' : '').'>';
+                    echo '<select name="edit_bulletin_list" '.($show_flag == 1 ? '':'disabled="disabled"').'>';
                     echo '<option value="0">'.TEXT_BULLETIN_EDIT_SELECT.'</option>';
                     echo '<option value="1"  onclick="select_bulletin_change(this.value,\'bulletin_list_id[]\',\''.$ocertify->npermission.'\');" >'.TEXT_BULLETIN_EDIT_DELETE.'</option>';
                     echo '</select>';
@@ -1278,7 +1294,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                   </td>
                   </tr>
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $bulletin_split->display_count($bulletin_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD); ?></td>
+                    <td class="smallText" valign="top"><?php echo $bulletin_split->display_count($bulletin_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], $_GET['action']=='show_reply'?TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD_REPLY:TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $bulletin_split->display_links($bulletin_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],tep_get_all_get_params(array('x', 'y', 'page'))); ?></div></td>
                   </tr>
                   <tr>
@@ -1304,7 +1320,6 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 <!-- body_text_eof //-->
   </tr>
 </table>
-<?php  echo $bulletin_query_raw;exit;?>
 <!-- body_eof //-->
 
 <!-- footer //-->

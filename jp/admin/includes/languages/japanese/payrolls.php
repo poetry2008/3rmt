@@ -33,4 +33,8 @@ define('TEXT_ATT_ACTUAL_VALUE','実際在席時間数小計');
 define('TEXT_PAYROLLS_AGAIN_COMPUTING','再計算');
 define('TEXT_PAYROLLS_ERROR_PAM','<font color="#FF0000">*</font> 注：%s データーエラー');
 define('TEXT_USER_EXPORT_CONFIRM','本当にエクスポートしますか？');
+define('TEXT_ERROR_LINK','の');
+define('TEXT_ERROR_LEFT','「');
+define('TEXT_ERROR_RIGHT','」');
+define('TEXT_ERROR_TITLE_LINK','・');
 ?>

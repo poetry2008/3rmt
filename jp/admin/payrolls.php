@@ -760,7 +760,19 @@ color:#0066CC;
                     echo '</select>';
                     $error_pam_array = array_unique($error_pam_array);
                     if(!empty($error_pam_array)){
-                      echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('　',$error_pam_array));
+                      $error_string = '';
+                      $error_string_array = array();
+                      foreach($error_pam_array as $error_value){
+                        $error_array = array();
+                        $payroll_title_query = tep_db_query("select title from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' and project_value like '%".$error_value."%'");
+                        while($payroll_title_array = tep_db_fetch_array($payroll_title_query)){
+
+                          $error_array[] = TEXT_ERROR_LEFT.$payroll_title_array['title'].TEXT_ERROR_RIGHT; 
+                        }
+                        tep_db_free_result($payroll_title_query);
+                        $error_string_array[] = implode(TEXT_ERROR_TITLE_LINK,$error_array).TEXT_ERROR_LINK.$error_value;
+                      }
+                      echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('、',$error_string_array));
                     }
                     ?> 
                     </td>

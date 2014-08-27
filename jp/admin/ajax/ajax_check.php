@@ -232,7 +232,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
               break;
             }
           }
-                $new_messages['time'] = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT.' H'.TEXT_TORIHIKI_HOUR_STR.'i'.TEXT_TORIHIKI_MIN_STR, strtotime($new_messages['time']));
+                $new_messages['time'] = str_replace("-","/",substr($new_messages['time'],0,16));
                 //针对返信内容处理
                 $contents_text = $new_messages['content'];
                 $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text);
@@ -259,6 +259,8 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 		}
 		$messages_header_all[] = $new_messages;
 	}
+
+
 	if(empty($messages_header_all)){
         	$messages_header_all = '0';
 		echo $messages_header_all;
