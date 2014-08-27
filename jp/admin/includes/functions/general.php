@@ -9431,7 +9431,7 @@ function tep_get_notice_info($return_type = 0)
   
 
 
-  $notice_list_num = $num_i+$num;
+  $notice_list_num = $num_i+$num+tep_db_num_rows(tep_db_query("select * from messages where recipient_id = '$ocertify->auth_user' and header_status = '0' and trash_status='0'"));
   tep_db_free_result($notice_list_raw);
 
   $order_notice_array = array();
@@ -9595,6 +9595,27 @@ function tep_get_notice_info($return_type = 0)
         }  
       }
     }
+  }
+  //检测是否有messages需要显示
+  $last_message_row=tep_db_fetch_array(tep_db_query("select * from messages where recipient_id = '$ocertify->auth_user' and header_status = '0' and trash_status='0'"));
+  if(strtotime($micro_notice_array['date_update'])<strtotime($last_message_row['time'])){
+	  $micro_notice_array['id']=$last_message_row['id'];
+      $contents_text = $last_message_row['content'];
+      $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text);
+      if(trim($contents_text) != ''){
+		  $contents_text = explode("\r\n",$contents_text);
+          $contents_text = $contents_text[0];
+          if(trim($contents_text) == ''){
+			  $contents_text = '...';
+		  }
+	  }else{
+		  $contents_text = '...'; 
+	  }
+		$micro_notice_array['title'] = str_replace('>','&gt',str_replace('<','&lt',(mb_strlen($contents_text) > 30 ? mb_substr($contents_text, 0, 30).'...' : $contents_text)));
+	  $micro_notice_array['set_time']=$last_message_row['time'];
+	  $micro_notice_array['created_at']=$last_message_row['time'];
+	  $micro_notice_array['icon']=$last_message_row['mark'];
+	  $micro_notice_array['type']=4;
   }
   $micro_notice_query = tep_db_query("select n.type type,n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bb.allow to_users,bb.manager from_users,bb.mark icon from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.is_show='1' and n.type = '1' union select n.type type, n.id, n.title, n.set_time, n.from_notice, n.created_at,n.deleted users_deleted,bb.allow to_users,bb.manager from_users,br.mark icon from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb ,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.is_show='1' and n.type = '2' and bb.id=br.bulletin_id order by created_at desc,set_time asc");
 
@@ -9823,10 +9844,12 @@ function tep_get_notice_info($return_type = 0)
     if($micro_notice_array['type']==1)$html_str .= '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,'bulletin_id='.$micro_notice_array['bb_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
 
     if($micro_notice_array['type']==2)$html_str .= '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,'action=show_reply&bulletin_id='.$micro_notice_array['bb_id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+    if($micro_notice_array['type']==4)$html_str .= '<a href="'.tep_href_link(FILENAME_MESSAGES,'id='.$micro_notice_array['id']).'"><span id="memo_contents">'.(mb_strlen($micro_notice_array['title']) > 30 ? mb_substr($micro_notice_array['title'],0,30,'utf-8').'...' : $micro_notice_array['title']).'</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
     $html_str .= '&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'" style="display:none;">'.$leave_date.'</span>';
     $html_str .= '</td>'; 
     $html_str .= '<td align="right" id="alert_close">'; 
-    $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
+    if($micro_notice_array['type']==4) $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'1\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
+    else  $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
     $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0, \''.DAY_TEXT.'\', \''.HOUR_TEXT.'\', \''.MINUTE_TEXT.'\');});</script>'; 
     $html_str .= '</td>'; 
     $html_str .= '</tr>'; 

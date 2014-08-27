@@ -115,9 +115,9 @@ function check_header_messages(){
 					img_mark += '<img border="0" src="images/icon_list/icon_'+this+'.gif">'
 				});
 					if(messages_num == 0){
-						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td id="messages_head" width="142px">&nbsp<span><?php echo HAVE_MESSAGES;?></span></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
+						$('#show_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td id="messages_head" width="142px"><img src="images/icons/messages.gif"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>')
 					}else{
-                                                $('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td width="142px">&nbsp<?php echo HAVE_MESSAGES;?></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
+					$('#show_all_messages_notice').append('<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td width="142px"><img src="images/icons/messages.gif"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/del_img.gif"></a></td></tr></table>');
 					}
 					messages_num++;
                                 });
@@ -128,7 +128,7 @@ function check_header_messages(){
 			}
 			if(eval(data).length > 1){
 				$('#messages_head').children().remove();
-				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);"><?PHP echo HAVE_MESSAGES;?><?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
+				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);"><img src="images/icons/messages.gif"><?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
 				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td align="right"><input class="element_button" type="button" value="<?php echo TEXT_CLEAR;?>" onclick="delete_header_messages_all()"></td></tr></table>');
 			};
   		}
