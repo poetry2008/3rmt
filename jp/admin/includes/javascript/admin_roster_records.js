@@ -839,11 +839,12 @@ function edit_space_nums(ele,val) {
 function add_att_rows(ele,check_val){
 
 //rename new user->name
-var aid=$(".popup_order_info").find('select[name="attendance_id[]"]').length+1;
-$('#add_source select[id="user_default"]').attr('name','user['+aid+'][]');
+var bid=$(".popup_order_info").find('select[name="attendance_id[]"]').length+1;
+var aid=$('#add_source input[class="tep_index_num"]').attr('value',bid);
+$('#add_source select[id="user_default"]').attr('name','user['+bid+'][]');
 
   var add_str = $('#add_source tbody').html();
-  add_str = add_str.replace("'temp_del_group_id'",aid);
+  add_str = add_str.replace("'temp_del_group_id'",bid);
   $(ele).parent().parent().before(add_str);
 
 //not null add delete button
@@ -862,7 +863,7 @@ function add_person_row(ele,aid){
     $('#add_person select[id="user_tep"]').attr('name','has_user['+'new'+']['+aid+'][]');
   }else{
 
-    var aid=$(".popup_order_info").find('select[name="attendance_id[]"]').length;
+    var aid=$(ele).parent().parent().find('input[class="tep_index_num"]').eq(0).val();
     $('#add_person select[id="user_tep"]').attr('name','user['+aid+'][]');
   }
     $(ele).parent().parent().after($('#add_person tbody').html());
