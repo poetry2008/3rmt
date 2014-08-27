@@ -2362,7 +2362,7 @@ display:inline-block;
 }
 /*@date 20140806 roster_record 日历框框间距*/
 .info_table_small span{
-	height:14px;
+	height:auto;
 	display:block;
 	float:left;	
 	margin-right:6px;
