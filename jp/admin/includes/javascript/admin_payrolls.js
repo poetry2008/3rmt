@@ -272,7 +272,7 @@ function user_change_action(value,user_list_id,c_permission)
                     url: 'ajax_orders.php?action=getallpwd',   
                     type: 'POST',
                     dataType: 'text',
-                    data: '', 
+                    data: 'current_page_name=/admin/payrolls.php', 
                     async: false,
                     success: function(msg) {
                       var tmp_msg_arr = msg.split('|||'); 
@@ -281,7 +281,7 @@ function user_change_action(value,user_list_id,c_permission)
                         document.edit_users_payroll.action = 'payrolls.php?action=send_mail';
                         document.edit_users_payroll.submit(); 
                       } else {
-                        var input_pwd_str = window.prompt(ntime_pwd, ''); 
+                        var input_pwd_str = window.prompt(ontime_pwd, ''); 
                         if (in_array(input_pwd_str, pwd_list_array)) {
                         $.ajax({
                           url: 'ajax_orders.php?action=record_pwd_log',   
@@ -477,7 +477,7 @@ function payrolls_csv_exe(){
               url: 'ajax_orders.php?action=getallpwd',   
               type: 'POST',
               dataType: 'text',
-              data: 'current_page_name=payrolls.php', 
+              data: 'current_page_name=/admin/payrolls.php', 
               async: false,
               success: function(msg) {
                 var tmp_msg_arr = msg.split('|||'); 
@@ -502,6 +502,7 @@ function payrolls_csv_exe(){
                     }); 
                   } else {
                     alert(ontime_pwd_error); 
+                    document.getElementsByName("user_action")[0].value = 0;
                   }
                 }
               }
@@ -543,7 +544,7 @@ function payrolls_print_exe(){
               url: 'ajax_orders.php?action=getallpwd',   
               type: 'POST',
               dataType: 'text',
-              data: 'current_page_name=payrolls.php', 
+              data: 'current_page_name=/admin/payrolls.php', 
               async: false,
               success: function(msg) {
                 var tmp_msg_arr = msg.split('|||'); 
@@ -568,6 +569,7 @@ function payrolls_print_exe(){
                     }); 
                   } else {
                     alert(ontime_pwd_error); 
+                    document.getElementsByName("user_action")[0].value = 0;
                   }
                 }
               }
