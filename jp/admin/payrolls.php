@@ -553,20 +553,20 @@ color:#0066CC;
 	$payroll_table_row = array();
 	$payroll_title_row = array();
 	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent" width="5%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
-        $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;"','text' => '<a href="javascript:void(0)">'.TEXT_PAYROLLS_NAME.'</a>');
+        $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;" id="td_name"','text' => '<a href="javascript:payrolls_sort(\'name\',1,\''.TEXT_PAYROLLS_NAME.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_NAME.'</a>');
         //获取组对应的工资项目
         $group_id = '';
         $group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
         $groups_users_id = array();
         $groups_payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' order by sort");
         while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
-          $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
+          $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" id="td_title_'.$groups_payroll_array['id'].'"','text' => '<a href="javascript:payrolls_sort(\'title\',1,\''.$groups_payroll_array['title'].'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\','.$groups_payroll_array['id'].');">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
           $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
         }
         tep_db_free_result($groups_payroll_query);
         
-	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:5%;"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:void(0)">'.TEXT_PAYROLLS_OPTION.'</a>');
-	$payroll_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $payroll_title_row);
+	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;" id="td_time"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:payrolls_sort(\'time\',1,\''.TEXT_PAYROLLS_OPTION.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_OPTION.'</a>');
+	$payroll_table_row[] = array('params' => 'class="dataTableHeadingRow" id="tr_index"','text' => $payroll_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
 		$payroll_id = 0;
 	}else{
@@ -616,7 +616,7 @@ color:#0066CC;
         	} else {
                 	$nowColor = $odd;
         	}
-		$user_params = 'id="payroll_'.$users_payroll['id'].'" class="'.$nowColor.'" onclick="" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+		$user_params = 'id="payroll_'.$users_value.'" class="'.$nowColor.'" onclick="" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
 		$user_info = array();
 		$group_checkbox = '<input type="checkbox" name="user_id[]" value="'.$users_value.'">';
 		$user_info[] = array(
@@ -625,7 +625,7 @@ color:#0066CC;
         	);
 		$user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => $all_users_info[$users_value] 
+                	'text'   => $all_users_info[$users_value].'<input type="hidden" name="user_name[]" value="'.$all_users_info[$users_value].'">' 
                 ); 
                 //用户项目的ID
                 $user_project_id_array = array();
@@ -709,7 +709,7 @@ color:#0066CC;
                 $user_project_id_array = array_filter($user_project_id_array);
 		$user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<a href="javascript:void(0)" onclick="show_user_payroll(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$group_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a>'
+                	'text'   => '<a href="javascript:void(0)" onclick="show_user_payroll(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$group_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a><input type="hidden" name="payrolls_time[]" value="'.$update_time.'">'
         	);
 		$payroll_table_row[] = array('params' => $user_params, 'text' => $user_info);
         }
@@ -736,7 +736,7 @@ color:#0066CC;
                	         'params' => '',
                	         'text'   => ''  
                                );
-          $payroll_table_row[] = array('params' => '', 'text' => $user_info);  
+          $payroll_table_row[] = array('params' => 'id="payrolls_total"', 'text' => $user_info);  
           $i++;
         }
 	$notice_box->get_form($form_str);
@@ -760,7 +760,19 @@ color:#0066CC;
                     echo '</select>';
                     $error_pam_array = array_unique($error_pam_array);
                     if(!empty($error_pam_array)){
-                      echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('　',$error_pam_array));
+                      $error_string = '';
+                      $error_string_array = array();
+                      foreach($error_pam_array as $error_value){
+                        $error_array = array();
+                        $payroll_title_query = tep_db_query("select title from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' and project_value like '%".$error_value."%'");
+                        while($payroll_title_array = tep_db_fetch_array($payroll_title_query)){
+
+                          $error_array[] = TEXT_ERROR_LEFT.$payroll_title_array['title'].TEXT_ERROR_RIGHT; 
+                        }
+                        tep_db_free_result($payroll_title_query);
+                        $error_string_array[] = implode(TEXT_ERROR_TITLE_LINK,$error_array).TEXT_ERROR_LINK.$error_value;
+                      }
+                      echo '<br>'.sprintf(TEXT_PAYROLLS_ERROR_PAM,implode('、',$error_string_array));
                     }
                     ?> 
                     </td>
@@ -770,13 +782,10 @@ color:#0066CC;
                      //通过site_id判断是否允许新建
                      if (in_array(0,$site_id_array)) {
                        echo '<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'onclick="again_computing();"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_EXPORT,'onclick=" payrolls_csv_exe();"') . '</a>';
-                       echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_PRINT) . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(TEXT_PAYROLLS_RESET,'onclick="reset_user_payroll(\''.tep_get_all_get_params(array('reset')).'\');"') . '</a>';
                        echo '&nbsp;<a href="javascript:void(0)">' .tep_html_element_button(IMAGE_SAVE,'onclick="save_user_payroll();"') . '</a>';
                      }else{
-                       echo tep_html_element_button(TEXT_PAYROLLS_EXPORT,'disabled="disabled"').'&nbsp;' ;
-                       echo tep_html_element_button(TEXT_PAYROLLS_PRINT,'disabled="disabled"').'&nbsp;' ;
+                       echo tep_html_element_button(TEXT_PAYROLLS_AGAIN_COMPUTING,'disabled="disabled"').'&nbsp;' ;
                        echo tep_html_element_button(TEXT_PAYROLLS_RESET,'disabled="disabled"').'&nbsp;' ;
                        echo tep_html_element_button(IMAGE_SAVE,'disabled="disabled"');
                      } 
