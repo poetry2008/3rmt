@@ -3519,4 +3519,27 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         }else{
           echo $group_str;
         }
+}else if($_GET['action'] == 'payrolls_sort'){
+
+  $user_str = $_POST['user_str'];
+  $user_payrolls_str = $_POST['user_payrolls_str'];
+  $sort = $_POST['sort'];
+  $user_id_array = array();
+
+  $user_array = explode('|',$user_str);
+  $user_payrolls_array = explode('|',$user_payrolls_str);
+
+  if($sort == 0){
+    asort($user_payrolls_array);
+  }else{
+    arsort($user_payrolls_array);
+  }
+
+  foreach($user_payrolls_array as $key=>$value){
+
+    $user_id_array[] = $user_array[$key];
+  }
+
+
+  echo implode('|',$user_id_array);
 }
