@@ -86,22 +86,8 @@ if(isset($_GET['action'])){
 			  $type_arr[$key]=1;
 			}
 		$u_key = $_POST['u_group'][$key];	
+                $update_flag = false;
 			foreach($_POST['has_user'][$u_key] as $k=>$user_id){
-               $sql_arr = array(
-                  'week' => $date_info['week'],
-                  'week_index' => $date_info['week_index'],
-                  'attendance_detail_id' => $value,
-                  'user_id' => $user_id,
-				  'u_group' => $u_key, 
-                  'type' => $type_arr[$key],
-                  'update_user' => $user,
-                  'update_time' => 'now()',
-			      'space' => $_POST['has_space'][$key],
-              );
-          if(isset($_POST['default_uid'])&&$_POST['default_uid']!=''){
-            $sql_arr['user_id'] = $_POST['default_uid'];
-          }
-          $sql_arr['is_user'] = 1;
           $update_date = false;
           if(!empty($_POST['has_user']['new'][$u_key])){
             $update_date = true;
@@ -122,17 +108,56 @@ if(isset($_GET['action'])){
               if($_POST['has_space'][$key] != $temp_row['space']){
                 $update_date = true;
               }
+              if($_POST['get_date'] == $temp_row['date']){
+                $update_date = false;
+              }
             }
           }
+          if($update_date==true){
+            $update_flag = $update_date;
+          }
 
-	      if($_POST['type_array'][$key]!= $type_arr[$key]||$update_date){
+          if(!$update_date){
+          }
+        }
+        $update_insert_id = '';                        
+        foreach($_POST['has_user'][$u_key] as $k=>$user_id){
+               $sql_arr = array(
+                  'week' => $date_info['week'],
+                  'week_index' => $date_info['week_index'],
+                  'attendance_detail_id' => $value,
+                  'user_id' => $user_id,
+				  'u_group' => $u_key, 
+                  'type' => $type_arr[$key],
+                  'update_user' => $user,
+                  'update_time' => 'now()',
+			      'space' => $_POST['has_space'][$key],
+              );
+          if(isset($_POST['default_uid'])&&$_POST['default_uid']!=''){
+            $sql_arr['user_id'] = $_POST['default_uid'];
+          }
+          $sql_arr['is_user'] = 1;
+          if($_POST['type_array'][$key]!= $type_arr[$key]||$update_date){
             $sql_arr['date'] =  $_POST['get_date'];
             $sql_arr['month'] =  $date_info['month'];
             $sql_arr['day'] =  $date_info['day']; 
                 
-		  }
+          }
+        if($update_flag){
+//            $temp_arr['valid_date'] = $_POST['get_date'];
+//            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$temp_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
+            $sql_arr['add_user'] = $user;
+            $sql_arr['add_time'] = 'now()';
+            $sql_arr['parent_id'] = $_POST['data_as'][$u_key][$k];
+            $sql_arr['u_group'] = $update_insert_id;
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
+            if($update_insert_id == ''){
+              $update_insert_id = tep_db_insert_id();
+               tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,array('u_group'=>$update_insert_id),'update','id=\''.$update_insert_id.'\'');
+            }
+        }else{
             tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
-		 
+        }
         }
 			$old_info_list[$u_key]=$sql_arr;
 			}
@@ -172,10 +197,8 @@ if(isset($_GET['action'])){
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
-			$query_get_max = tep_db_query("select max(id) as nums from ".TABLE_ATTENDANCE_DETAIL_DATE."");
-			$max_id =  tep_db_fetch_array($query_get_max);
-			$u_group_tep = $max_id['nums']+1;
 
+                        $update_insert_id = '';
 			foreach($_POST['user'][$key+1] as $k=>$user_new){
 				for($j=0;$j<count($user_new);$j++){
 
@@ -187,7 +210,6 @@ if(isset($_GET['action'])){
               'week_index' => $date_info['week_index'],
               'attendance_detail_id' => $value,
               'user_id' => $user_new,
-              'u_group' => $u_group_tep,
               'type' => $type_arr[$key],
               'add_user' => $user,
               'add_time' => 'now()',
@@ -205,7 +227,13 @@ if(isset($_GET['action'])){
             $sql_arr = tep_array_merge($sql_arr,$sql_other_arr);
           }
           $sql_arr['is_user'] = 1;
+          $sql_arr['u_group'] = $update_insert_id;
           tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
+          if($update_insert_id == ''){
+            $update_insert_id = tep_db_insert_id();
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,array('u_group'=>$update_insert_id),'update','id=\''.$update_insert_id.'\'');
+          }
+
 
 				
 				}
@@ -285,6 +313,9 @@ if(isset($_GET['action'])){
             if($_POST['has_space'][$key] != $temp_row['space']){
               $update_date = true;
             }
+            if($_POST['get_date'] == $temp_row['date']){
+              $update_date = false;
+            }
           }
 	      if($_POST['type_array'][$key]!= $type_arr[$key]||$update_date){
             $sql_arr['date'] =  $_POST['get_date'];
@@ -295,6 +326,14 @@ if(isset($_GET['action'])){
 
 
           if($update_date){
+            $temp_arr['valid_date'] = $_POST['get_date'];
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$temp_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+            $sql_arr['add_user'] = $user;
+            $sql_arr['add_time'] = 'now()';
+            $sql_arr['parent_id'] = $_POST['data_as'][$key];
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr);
+//            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
+          }else{
             tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$key].'\'');
           }
         }
@@ -1130,7 +1169,7 @@ while($j<=$day_num)
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
     cellspacing="0" cellpadding="0" class="info_table_small">';
-  echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
+  echo "<tr><td align='right' style='border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
       echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$show_group_id."\")' >";
@@ -1400,7 +1439,7 @@ if($show_ulist_flag){
 
 
   //不在排班组的请假
-    echo "<tr><td style='font-size:14px; border-width:0px;'>";
+    echo "<tr><td style='padding-top:6px; border-width:0px;'>";
     echo '<div>';
     foreach($all_replace_att as $row_replace_att){
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
