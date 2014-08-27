@@ -17,7 +17,7 @@ charset=<?php echo CHARSET; ?>">
 <script language="javascript">
   window.print();
 </script>
-<title><?php echo TEXT_HEAD_TITLE;?></title>
+<title></title>
 </head>
 <body>
 <?php
@@ -25,7 +25,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>', '<?php echo (!empty($_SERVER['HTTP_REFERER']))?urlencode($_SERVER['HTTP_REFERER']):urlencode(tep_href_link(FILENAME_DEFAULT));?>');
   </script>
-<?php }?>
+<?php 
+}
+$group_id = $_GET['group_id'];
+$payroll_date = $_GET['save_date'];
+$date = tep_start_end_date($group_id,$payroll_date);
+?>
+<div style="text-align:center;"><?php echo $date['start_date'].'~'.$date['end_date'].'&nbsp;'.TEXT_HEAD_TITLE;?></div>
 <table width="100%" cellpadding="0" cellspacing="0" border="1">
 <tr>
 <td align="center" bgcolor="#808080"><?php echo TEXT_PAYROLLS_NAME;?></td>

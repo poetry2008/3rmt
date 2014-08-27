@@ -503,11 +503,7 @@ if(isset($_GET['action'])){
 //发送请假邮件
 		if($_POST['allow_status']==0){
 		    $mail_model_tep = TEXT_MAIL_MODLE_STR;
-		}else{
-		   $mail_model_tep = TEXT_MAIL_MODLE_RETURN_STR;
-		}
-        $staff_info = tep_get_user_info($_POST['user_id']);
-		for($i=0;$i<count($_POST['allow_user']);$i++){
+		  for($i=0;$i<count($_POST['allow_user']);$i++){
 			$allow_user = tep_get_user_info($_POST['allow_user'][$i]);
             $mail_model_tep = str_replace(array(
 				'${URL_START}',
@@ -517,7 +513,8 @@ if(isset($_GET['action'])){
               '${WORK_START}',
               '${WORK_END}',
               '${REST_START}',
-              '${REST_END}'
+              '${REST_END}',
+			  '${DATE}' 
               ),array(
 				 $_SERVER['HTTP_REFERER'],
 				 '',
@@ -526,11 +523,39 @@ if(isset($_GET['action'])){
 				  $_POST['email_work_start'],
 				  $_POST['email_work_end'],
 				  $leave_start,
-				 $leave_end 
+				 $leave_end,
+				 $date
                 ),$mail_model_tep);
-		}
+             tep_mail($allow_user['name'],$allow_user['email'],TEXT_MAIL_REPLY_TITLE,$mail_model_tep,'info@iimy.co.jp','iimy');
+		  }
+
+	}else{
+		   $mail_model_tep = TEXT_MAIL_MODLE_RETURN_STR;
+        $staff_info = tep_get_user_info($_POST['user_id']);
+            $mail_model_tep = str_replace(array(
+				'${URL_START}',
+				'${URL_END}',
+              '${STAFF_NAME}',
+              '${ALLOW_PERSON}',
+              '${WORK_START}',
+              '${WORK_END}',
+              '${REST_START}',
+              '${REST_END}',
+			  '${DATE}' 
+              ),array(
+				 $_SERVER['HTTP_REFERER'],
+				 '',
+				  $staff_info['name'],
+				  $allow_user['name'],
+				  $_POST['email_work_start'],
+				  $_POST['email_work_end'],
+				  $leave_start,
+				 $leave_end, 
+				 $date
+                ),$mail_model_tep);
 
       tep_mail($staff_info['name'],$staff_info['email'],TEXT_MAIL_REPLY_TITLE,$mail_model_tep,'info@iimy.co.jp','iimy');
+	}
 
       if(isset($_POST['replace_id'])&&$_POST['replace_id']!=''&&$_POST['replace_id']!=0) {
         $sql_update_arr = array(
@@ -1217,7 +1242,7 @@ while($j<=$day_num)
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
     cellspacing="0" cellpadding="0" class="info_table_small">';
-  echo "<tr><td align='right' style='border-width:0px; cursor:pointer;' ";
+  echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
       echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$show_group_id."\")' >";
