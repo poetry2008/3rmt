@@ -117,8 +117,6 @@ if(isset($_GET['action'])){
             $update_flag = $update_date;
           }
 
-          if(!$update_date){
-          }
         }
         $update_insert_id = '';                        
         foreach($_POST['has_user'][$u_key] as $k=>$user_id){
@@ -144,8 +142,8 @@ if(isset($_GET['action'])){
                 
           }
         if($update_flag){
-//            $temp_arr['valid_date'] = $_POST['get_date'];
-//            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$temp_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
+            $temp_arr['valid_date'] = $_POST['get_date'];
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$temp_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
             $sql_arr['add_user'] = $user;
             $sql_arr['add_time'] = 'now()';
             $sql_arr['parent_id'] = $_POST['data_as'][$u_key][$k];
@@ -154,8 +152,10 @@ if(isset($_GET['action'])){
             if($update_insert_id == ''){
               $update_insert_id = tep_db_insert_id();
                tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,array('u_group'=>$update_insert_id),'update','id=\''.$update_insert_id.'\'');
+               $sql_arr['u_group'] = $update_insert_id;
             }
         }else{
+            $sql_arr['u_group'] = $_POST['data_as'][$u_key][$k];
             tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
         }
         }
@@ -242,14 +242,33 @@ if(isset($_GET['action'])){
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$del_as."'";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$del_as."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
               id="'.$del_as.'"');
         }
       }
       if(isset($_POST['del_group'])&&!empty($_POST['del_group'])){
         foreach($_POST['del_group'] as $del_group){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
-             u_group ="'.$del_group.'"');
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE u_group='".$del_group."' order by id asc limit 1";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$old_res_temp['id']."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where u_group ="'.$del_group.'"');
         }
       }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
@@ -388,8 +407,17 @@ if(isset($_GET['action'])){
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
-              id="'.$del_as.'"');
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$del_as."'";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$del_as."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$del_as.'"');
         }
       }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
@@ -403,6 +431,16 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $add_id){
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$add_id."'";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$add_id."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
@@ -417,6 +455,16 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $add_id){
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$add_id."'";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$add_id."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
