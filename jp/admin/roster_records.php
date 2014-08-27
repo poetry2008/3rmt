@@ -1130,7 +1130,7 @@ while($j<=$day_num)
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
     cellspacing="0" cellpadding="0" class="info_table_small">';
-  echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
+  echo "<tr><td align='right' style='border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
       echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$show_group_id."\")' >";
@@ -1400,7 +1400,7 @@ if($show_ulist_flag){
 
 
   //不在排班组的请假
-    echo "<tr><td style='font-size:14px; border-width:0px;'>";
+    echo "<tr><td style='padding-top:6px; border-width:0px;'>";
     echo '<div>';
     foreach($all_replace_att as $row_replace_att){
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
