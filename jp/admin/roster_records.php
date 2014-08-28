@@ -517,7 +517,7 @@ if(isset($_GET['action'])){
               '${DATE}',
               '${COMMENT}' 
               ),array(
-	      '<a href="'.$_SERVER['HTTP_REFERER'].'">'.TEXT_MAIL_HREF.'</a>',
+	      $_SERVER['HTTP_REFERER'],
 	      $staff_info['name'],
 	      $allow_user['name'],
 	      $_POST['email_work_start'],
@@ -552,7 +552,7 @@ if(isset($_GET['action'])){
 	      '${DATE}', 
               '${COMMENT}' 
               ),array(
-	      '<a href="'.$_SERVER['HTTP_REFERER'].'">'.TEXT_MAIL_HREF.'</a>',
+	      $_SERVER['HTTP_REFERER'],
 	      $staff_info['name'],
 	      implode(' ',$allow_user_info),
 	      $_POST['email_work_start'],
