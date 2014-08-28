@@ -15213,10 +15213,10 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
       }
     }
     if($atted_info['error']&&$show_status!=2){
-      if($bg_color == '#FE0000'){
+      if($bg_color == '#FF0000'){
         $return_str .= '<font color ="#FFFFFF">';
       }else{
-        $return_str .= '<font color ="#FE0000">';
+        $return_str .= '<font color ="#FF0000">';
       }
       if(substr($atted_info['login_time'],11,5)=='00:00'||$atted_info['login_time']==null){
         $return_str .= '......';

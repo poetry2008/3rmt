@@ -623,12 +623,43 @@ function add_allow_user(ele,del_str){
   
     ele.disabled = true;
   }
+
+  var allow_status = document.getElementsByName("allow_status")[0];
+  var allow_flag = false;
+  $("select[name='allow_user[]']").each(function(){
+        if($(this).val() == admin_id){
+      
+          allow_flag = true;
+        }
+  });
+  if(allow_flag == true){
+  
+    allow_status.disabled = false;
+  }else{
+
+    allow_status.disabled = true;
+  }
 }
 
 function del_allow_user(ele){
   var add_allow_user_button = document.getElementById('add_allow_user_button');
   add_allow_user_button.disabled = false;
   $(ele).parent().parent().remove();
+  var allow_status = document.getElementsByName("allow_status")[0];
+  var allow_flag = false;
+  $("select[name='allow_user[]']").each(function(){
+        if($(this).val() == admin_id){
+      
+          allow_flag = true;
+        }
+  });
+  if(allow_flag == true){
+  
+    allow_status.disabled = false;
+  }else{
+
+    allow_status.disabled = true;
+  }
 }
 
 //change groups
@@ -658,7 +689,7 @@ function change_users_allow(value){
           allow_flag = true;
         }
   });
-  if(value == admin_id  || allow_flag == true || admin_npermission >= 15){
+  if(value == admin_id  || allow_flag == true){
   
     allow_status.disabled = false;
   }else{

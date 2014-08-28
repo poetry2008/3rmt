@@ -10347,7 +10347,7 @@ echo  $return_res;
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
   $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
-  if($ocertify->auth_user == current($allow_user_list) || $ocertify->npermission >= '15'){
+  if($ocertify->auth_user == current($allow_user_list)){
     if($_GET['date']<date('Ymd',time())){
       $allow_disabled = ' disabled="disabled" '; 
     }else{

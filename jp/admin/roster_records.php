@@ -502,7 +502,7 @@ if(isset($_GET['action'])){
       $allow_status = $_POST['allow_status'];
       $leave_start = $_POST['leave_start_hour'].':'.$_POST['leave_start_minute_a'].$_POST['leave_start_minute_b'];
       $leave_end = $_POST['leave_end_hour'].':'.$_POST['leave_end_minute_a'].$_POST['leave_end_minute_b'];
-      $allow_user = implode('|||',$_POST['allow_user']);
+      $allow_user_str = implode('|||',$_POST['allow_user']);
       $text_info = $_POST['text_info'];
       //变更前模板名称
       $attendance_name = array();
@@ -597,7 +597,7 @@ if(isset($_GET['action'])){
             'replace_attendance_detail_id' => $replace_attendance_detail_id,
             'leave_start' => $leave_start,
             'leave_end' => $leave_end,
-            'allow_user' => $allow_user,
+            'allow_user' => $allow_user_str,
             'text_info' => $text_info,
             'update_user' => $user,
             'update_time' => 'now()',
@@ -622,7 +622,7 @@ if(isset($_GET['action'])){
             'allow_status' => $allow_status,
             'leave_start' => $leave_start,
             'leave_end' => $leave_end,
-            'allow_user' => $allow_user,
+            'allow_user' => $allow_user_str,
             'text_info' => $text_info,
             'add_user' => $user,
             'add_time' => 'now()',
@@ -1479,7 +1479,7 @@ while($j<=$day_num)
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
-        echo "<td style='border-width:0px; padding-top:6px;' bgcolor='".$att_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-top:6px;".($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$att_info['src_text']."'>";
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
       }
@@ -1526,7 +1526,7 @@ while($j<=$day_num)
       }else{
         $v_att =false;
       }
-      echo ">";
+      echo ($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
       if($v_att!=false){
         echo $v_att;
       }else{
