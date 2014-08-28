@@ -155,7 +155,11 @@ if(isset($_GET['action'])){
                $sql_arr['u_group'] = $update_insert_id;
             }
         }else{
-            $sql_arr['u_group'] = $_POST['data_as'][$u_key][$k];
+            $sql_arr['u_group'] = $update_insert_id;
+            if($update_insert_id==''){
+              $update_insert_id = $_POST['data_as'][$u_key][$k];
+              $sql_arr['u_group'] = $update_insert_id;
+            }
             tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
         }
         }
