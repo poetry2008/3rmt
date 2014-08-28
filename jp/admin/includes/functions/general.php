@@ -15213,10 +15213,10 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
       }
     }
     if($atted_info['error']&&$show_status!=2){
-      if($bg_color == '#FE0000'){
+      if($bg_color == '#FF0000'){
         $return_str .= '<font color ="#FFFFFF">';
       }else{
-        $return_str .= '<font color ="#FE0000">';
+        $return_str .= '<font color ="#FF0000">';
       }
       if(substr($atted_info['login_time'],11,5)=='00:00'||$atted_info['login_time']==null){
         $return_str .= '......';
@@ -15430,12 +15430,13 @@ function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
   $error = false;
   if(preg_match_all('/\{([^\}]*)\}/',$str,$arr)){
     $tmp_att_str = $arr[1];
-  }else{
-    return tep_operations($str);
   }
   $count = 0;
   foreach($tmp_att_str as $t_arr_str){
     $t_arr = explode(',',$t_arr_str);
+    if(!is_array($t_arr)){
+      $t_arr = explode(';',$t_arr_str);
+    }
     $con = count($t_arr);
     if($count == 0){
       $count = $con; 
@@ -15448,7 +15449,7 @@ function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
     return 0;
   }
   $res_arr =  array();
-  if(preg_match('/(.*)\(round\((.*),(\d+)\)\)(.*)/is',$str,$arr)){
+  if(preg_match('/(.*)\(round\((.*)[,;](\d+)\)\)(.*)/is',$str,$arr)){
     $fun_arr[] = 'round';
     $point = $arr[3]; 
     $other = array($arr[1],$arr[4]);
@@ -15507,7 +15508,18 @@ function tep_run_str($str){
     $im_arr = $arr[0];
     $ex_arr = $arr[1];
   }else{
-    return tep_operations($str);
+    $int_res_str = '';
+    if(count($str_run)==1){
+      if($fun_arr[0] == 'round'){
+        $temp_str = tep_operations($str_run);
+        $int_res_str = round($temp_str,$point);
+        $res_str = $other[0].$int_res_str.$other[1];
+        $int_res_arr = tep_operations($res_str);
+        return $int_res_arr;
+      }
+    }else{
+      return tep_operations($str);
+    }
   }
   $temp_arr = explode($im_arr[count($im_arr)-1],$str_run);
   $t_end_str = $temp_arr[count($temp_arr)-1];
@@ -15519,6 +15531,9 @@ function tep_run_str($str){
   $res_arr = array();
   foreach($ex_arr as $k_ex => $ex){
     $ex_a =  explode(',',$ex);
+    if(!is_array($ex_a)){
+      $ex_a =  explode(';',$ex);
+    }
     foreach($ex_a as $k => $value){
       if(!isset($res_arr[$k])||$res_arr[$k]==''){
         $res_arr[$k] = str_replace($im_arr[$k_ex],$value,$str_res);

@@ -24,5 +24,5 @@ define('TITLE_YEAR', '年:');
 define('TITLE_MONTH', '月:');
 
 define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', "エラー:  'graphs' ディレクトリが存在しません。'images' ディレクトリ内に'graphs'ディレクトリを作成してください。");
-define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', "エラー:  'images/graphs' ディレクトリに書き込みができません。正しいユーザ権限を設定してください。");
+define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', "エラー:  'images/graphs' ディレクトリに書き込みができません。正しいユーザー権限を設定してください。");
 ?>

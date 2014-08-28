@@ -51,7 +51,7 @@ define('TEXT_ALLOW_START','終始時刻');
 define('TEXT_ALLOW_END','終了日時');
 define('TEXT_ADL_TEXT_INFO','コメント');
 define('TEXT_LEAVE_ONE_DAY','--');
-define('TEXT_SELECT_USER','ユーザ');
+define('TEXT_SELECT_USER','ユーザー');
 define('TEXT_DELETE_REMIND','削除しますか？');
 define('TEXT_ONLY_USER_ATTENDANCE','スタッフ設定');
 define('TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP','「開始時刻」と「終了時刻」の範囲内に設定してください。');
@@ -62,61 +62,5 @@ define('SHOW_NULL_ATT_STATUS','非表示');
 define('TEXT_ATT_SET_VALUE','指定在席時間数小計');
 define('TEXT_ATT_ACTUAL_VALUE','実際在席時間数小計');
 define('TEXT_REMIND_CHOICE_SELECT','*必須');
-define('TEXT_MAIL_APPLY_TITLE','シフト変更依頼');
-define('TEXT_MAIL_REPLY_TITLE','シフト変更返事はありました');
-
-define('TEXT_MAIL_MODLE_STR',
-	'${ALLOW_PERSON} 様
-
-	下記のスタッフからシフト変更の依頼はありました。
-	下記のリンクをクリックすれば、許可することになります。
-
-	シフト内容の変更を受け付けました。
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	シフトテンプレート 通常出勤
-	開始日時：${WORK_START}
-	終了日時: ${WORK_END}
-
-	変更ステータ 通常残業
-	許可者: ${ALLOW_PERSON}
-	許可ステータス 確認中
-	開始日時: ${REST_START}
-	終了日時: ${REST_END}
-	コメント 予定より早め完成するため、残業させてくれ
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	RMTジャックポット サポートセンター
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-	${URL_START}ココをクリック${URL_END}
-	');
-
-define('TEXT_MAIL_MODLE_RETURN_STR',
-	'${STAFF_NAME} 様
-
-	${ALLOW_PERSON} ${ALLOW_PERSON}から返事はありました。
-	下記のリンクをクリックすれば、確認できます。
-
-	シフト内容の変更を受け付けました。
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	シフトテンプレート 通常出勤
-	開始日時：${WORK_START}
-	終了日時: ${WORK_END
-}
-	変更ステータ 通常残業
-	許可者: ${ALLOW_PERSON}
-	許可ステータス 許可
-	開始日時: ${REST_START}
-	終了日時: ${REST_END}
-	コメント 予定より早め完成するため、残業させてくれ
-
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	RMTジャックポット サポートセンター
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-	${URL_START}ココをクリック${URL_END}
-	');
-
-
-	
 ?>
 

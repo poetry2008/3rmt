@@ -3,7 +3,7 @@
   $Id$
 */
 include("includes/application_top.php");
-
+include_once(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 //删除过期未允许数据
 $date = date('Ymd',time());
 tep_db_query("delete from  ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where allow_status =0 and date<".$date);
@@ -117,8 +117,6 @@ if(isset($_GET['action'])){
             $update_flag = $update_date;
           }
 
-          if(!$update_date){
-          }
         }
         $update_insert_id = '';                        
         foreach($_POST['has_user'][$u_key] as $k=>$user_id){
@@ -144,8 +142,8 @@ if(isset($_GET['action'])){
                 
           }
         if($update_flag){
-//            $temp_arr['valid_date'] = $_POST['get_date'];
-//            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$temp_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
+            $temp_arr['valid_date'] = $_POST['get_date'];
+            tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$temp_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
             $sql_arr['add_user'] = $user;
             $sql_arr['add_time'] = 'now()';
             $sql_arr['parent_id'] = $_POST['data_as'][$u_key][$k];
@@ -154,8 +152,14 @@ if(isset($_GET['action'])){
             if($update_insert_id == ''){
               $update_insert_id = tep_db_insert_id();
                tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,array('u_group'=>$update_insert_id),'update','id=\''.$update_insert_id.'\'');
+               $sql_arr['u_group'] = $update_insert_id;
             }
         }else{
+            $sql_arr['u_group'] = $update_insert_id;
+            if($update_insert_id==''){
+              $update_insert_id = $_POST['data_as'][$u_key][$k];
+              $sql_arr['u_group'] = $update_insert_id;
+            }
             tep_db_perform(TABLE_ATTENDANCE_DETAIL_DATE,$sql_arr,'update','id=\''.$_POST['data_as'][$u_key][$k].'\'');
         }
         }
@@ -242,14 +246,33 @@ if(isset($_GET['action'])){
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$del_as."'";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$del_as."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
               id="'.$del_as.'"');
         }
       }
       if(isset($_POST['del_group'])&&!empty($_POST['del_group'])){
         foreach($_POST['del_group'] as $del_group){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
-             u_group ="'.$del_group.'"');
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE u_group='".$del_group."' order by id asc limit 1";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$old_res_temp['id']."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where u_group ="'.$del_group.'"');
         }
       }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
@@ -388,8 +411,17 @@ if(isset($_GET['action'])){
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
-              id="'.$del_as.'"');
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$del_as."'";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$del_as."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$del_as.'"');
         }
       }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
@@ -402,8 +434,18 @@ if(isset($_GET['action'])){
     case 'delete_as_user_list':
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
-        foreach($_POST['data_as'] as $add_id){
-          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
+        foreach($_POST['data_as'] as $key => $add_id){
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE u_group='".$key."' order by id asc limit 1";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$old_res_temp['id']."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
+          tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where u_group="'.$key.'"');
         }
       }
       if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
@@ -417,6 +459,16 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $add_id){
+          //修改 原来的时间
+          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$add_id."'";
+          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
+          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
+            $old_valid_date = $old_res_temp['valid_date'];
+            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$add_id."'";
+            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
+            tep_db_query($update_parent_id_sql);
+            tep_db_query($update_valid_date_sql);
+          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
@@ -450,71 +502,102 @@ if(isset($_GET['action'])){
       $allow_status = $_POST['allow_status'];
       $leave_start = $_POST['leave_start_hour'].':'.$_POST['leave_start_minute_a'].$_POST['leave_start_minute_b'];
       $leave_end = $_POST['leave_end_hour'].':'.$_POST['leave_end_minute_a'].$_POST['leave_end_minute_b'];
-      $allow_user = implode('|||',$_POST['allow_user']);
+      $allow_user_str = implode('|||',$_POST['allow_user']);
       $text_info = $_POST['text_info'];
-//发送请假邮件
-		if($_POST['allow_status']==0){
-		    $mail_model_tep = TEXT_MAIL_MODLE_STR;
-		  for($i=0;$i<count($_POST['allow_user']);$i++){
-			$allow_user = tep_get_user_info($_POST['allow_user'][$i]);
+      //变更前模板名称
+      $attendance_name = array();
+      $attendance_name_query = tep_db_query("select id,title from ".TABLE_ATTENDANCE_DETAIL." where id='".$attendance_detail_id."' or id='".$replace_attendance_detail_id."'");
+      while($attendance_name_array = tep_db_fetch_array($attendance_name_query)){
+
+
+        $attendance_name[$attendance_name_array['id']] = $attendance_name_array['title'];
+      }
+      tep_db_free_result($attendance_name_query);
+      //发送请假邮件
+      if($_POST['allow_status']==0){ 
+        for($i=0;$i<count($_POST['allow_user']);$i++){
+            $leave_email = tep_get_mail_templates('LEAVE_MAIL_TEMPLATES','0');
+            $mail_model_tep = $leave_email['contents'];
+	    $allow_user = tep_get_user_info($_POST['allow_user'][$i]);
+            $staff_info = tep_get_user_info($_POST['user_id']);
             $mail_model_tep = str_replace(array(
-				'${URL_START}',
-				'${URL_END}',
+	      '${URL}',
               '${STAFF_NAME}',
               '${ALLOW_PERSON}',
               '${WORK_START}',
               '${WORK_END}',
-              '${REST_START}',
-              '${REST_END}',
-			  '${DATE}' 
+              '${ALTERED_START}',
+              '${ALTERED_END}',
+              '${DATE}',
+              '${COMMENT}',
+              '${STATUS}', 
+              '${BEFORE}', 
+              '${AFTER}' 
               ),array(
-				 $_SERVER['HTTP_REFERER'],
-				 '',
-				  $staff_info['name'],
-				  $allow_user['name'],
-				  $_POST['email_work_start'],
-				  $_POST['email_work_end'],
-				  $leave_start,
-				 $leave_end,
-				 $date
-                ),$mail_model_tep);
-             tep_mail($allow_user['name'],$allow_user['email'],TEXT_MAIL_REPLY_TITLE,$mail_model_tep,'info@iimy.co.jp','iimy');
-		  }
-
-	}else{
-		   $mail_model_tep = TEXT_MAIL_MODLE_RETURN_STR;
-        $staff_info = tep_get_user_info($_POST['user_id']);
-            $mail_model_tep = str_replace(array(
-				'${URL_START}',
-				'${URL_END}',
-              '${STAFF_NAME}',
-              '${ALLOW_PERSON}',
-              '${WORK_START}',
-              '${WORK_END}',
-              '${REST_START}',
-              '${REST_END}',
-			  '${DATE}' 
-              ),array(
-				 $_SERVER['HTTP_REFERER'],
-				 '',
-				  $staff_info['name'],
-				  $allow_user['name'],
-				  $_POST['email_work_start'],
-				  $_POST['email_work_end'],
-				  $leave_start,
-				 $leave_end, 
-				 $date
-                ),$mail_model_tep);
-
-      tep_mail($staff_info['name'],$staff_info['email'],TEXT_MAIL_REPLY_TITLE,$mail_model_tep,'info@iimy.co.jp','iimy');
+	      $_SERVER['HTTP_REFERER'],
+	      $staff_info['name'],
+	      $allow_user['name'],
+	      $_POST['email_work_start'],
+	      $_POST['email_work_end'],
+	      $leave_start,
+	      $leave_end,
+              date('Y-m-d',strtotime($date)),
+              $_POST['text_info'],
+              SENDMAIL_ROSTER_STATUS_CONFIRM,
+              $attendance_name[$attendance_detail_id],
+              $attendance_name[$replace_attendance_detail_id]
+            ),$mail_model_tep);
+            $mail_model_tep = tep_replace_mail_templates($mail_model_tep);  
+            tep_mail($allow_user['name'],$allow_user['email'],$leave_email['title'],$mail_model_tep,get_configuration_by_site_id('STORE_OWNER', 0), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', 0));
 	}
+      }else{
+        $leave_email = tep_get_mail_templates('LEAVE_REPLY_MAIL_TEMPLATES','0');
+        $mail_model_tep = $leave_email['contents'];
+        $staff_info = tep_get_user_info($_POST['user_id']);
+        //许可者
+        $allow_user_info = array();
+        foreach($_POST['allow_user'] as $allow_user_value){
+
+          $allow_user_name = tep_get_user_info($allow_user_value);
+          $allow_user_info[] = $allow_user_name['name'];
+        }
+        $mail_model_tep = str_replace(array(
+	      '${URL}',
+              '${STAFF_NAME}',
+              '${ALLOW_PERSON}',
+              '${WORK_START}',
+              '${WORK_END}',
+              '${ALTERED_START}',
+              '${ALTERED_END}',
+	      '${DATE}', 
+              '${COMMENT}', 
+              '${STATUS}', 
+              '${BEFORE}', 
+              '${AFTER}'
+              ),array(
+	      $_SERVER['HTTP_REFERER'],
+	      $staff_info['name'],
+	      implode(' ',$allow_user_info),
+	      $_POST['email_work_start'],
+	      $_POST['email_work_end'],
+	      $leave_start,
+	      $leave_end, 
+              date('Y-m-d',strtotime($date)),
+              $_POST['text_info'],
+              SENDMAIL_ROSTER_STATUS_ALLOW,
+              $attendance_name[$attendance_detail_id],
+              $attendance_name[$replace_attendance_detail_id]
+              ),$mail_model_tep);
+        $mail_model_tep = tep_replace_mail_templates($mail_model_tep);
+        tep_mail($staff_info['name'],$staff_info['email'],$leave_email['title'],$mail_model_tep,get_configuration_by_site_id('STORE_OWNER', 0), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', 0));
+      }
 
       if(isset($_POST['replace_id'])&&$_POST['replace_id']!=''&&$_POST['replace_id']!=0) {
         $sql_update_arr = array(
             'replace_attendance_detail_id' => $replace_attendance_detail_id,
             'leave_start' => $leave_start,
             'leave_end' => $leave_end,
-            'allow_user' => $allow_user,
+            'allow_user' => $allow_user_str,
             'text_info' => $text_info,
             'update_user' => $user,
             'update_time' => 'now()',
@@ -539,7 +622,7 @@ if(isset($_GET['action'])){
             'allow_status' => $allow_status,
             'leave_start' => $leave_start,
             'leave_end' => $leave_end,
-            'allow_user' => $allow_user,
+            'allow_user' => $allow_user_str,
             'text_info' => $text_info,
             'add_user' => $user,
             'add_time' => 'now()',
@@ -1396,7 +1479,7 @@ while($j<=$day_num)
           echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
-        echo "<td style='border-width:0px; padding-top:6px;' bgcolor='".$att_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-top:6px;".($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$att_info['src_text']."'>";
         echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $att_info['short_language'];
       }
@@ -1443,7 +1526,7 @@ while($j<=$day_num)
       }else{
         $v_att =false;
       }
-      echo ">";
+      echo ($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
       if($v_att!=false){
         echo $v_att;
       }else{
