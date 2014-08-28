@@ -15430,8 +15430,6 @@ function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
   $error = false;
   if(preg_match_all('/\{([^\}]*)\}/',$str,$arr)){
     $tmp_att_str = $arr[1];
-  }else{
-    return tep_operations($str);
   }
   $count = 0;
   foreach($tmp_att_str as $t_arr_str){
@@ -15507,7 +15505,18 @@ function tep_run_str($str){
     $im_arr = $arr[0];
     $ex_arr = $arr[1];
   }else{
-    return tep_operations($str);
+    $int_res_str = '';
+    if(count($str_run)==1){
+      if($fun_arr[0] == 'round'){
+        $temp_str = tep_operations($str_run);
+        $int_res_str = round($temp_str,$point);
+        $res_str = $other[0].$int_res_str.$other[1];
+        $int_res_arr = tep_operations($res_str);
+        return $int_res_arr;
+      }
+    }else{
+      return tep_operations($str);
+    }
   }
   $temp_arr = explode($im_arr[count($im_arr)-1],$str_run);
   $t_end_str = $temp_arr[count($temp_arr)-1];
