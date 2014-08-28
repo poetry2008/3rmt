@@ -23,7 +23,7 @@ define('BUTTON_JUMP_PAGE', 'ページへジャンプ');
 define('TABLE_HEADING_LOGINID', 'ID');
 define('TABLE_HEADING_LOGINTIME', 'ログイン日時');
 define('TABLE_HEADING_LAST_ACCESSTIME', '最終アクセス日時');
-define('TABLE_HEADING_USER', 'ユーザ');
+define('TABLE_HEADING_USER', 'ユーザー');
 define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_ADDRESS', 'アドレス');
 define('TABLE_HEADING_PAGE', 'ページ');

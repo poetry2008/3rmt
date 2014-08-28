@@ -35,7 +35,7 @@ define('TEXT_FORGET', '(忘れてしまった)');
 define('ERROR_BACKUP_DIRECTORY_DOES_NOT_EXIST', 'エラー: バックアップ・ディレクトリが存在しません。includes/configure.phpの設定を確認してください。');
 define('ERROR_BACKUP_DIRECTORY_NOT_WRITEABLE', 'エラー: バックアップ・ディレクトリに書き込みできません。');
 define('ERROR_DOWNLOAD_LINK_NOT_ACCEPTABLE', 'エラー: ダウンロードが許されていません。');
-define('ERROR_FILE_NOT_REMOVEABLE', 'エラー: バックアップファイルの削除ができませんでした。ファイルのユーザ権限を確認してください。');	//Add Japanese osCommerce
+define('ERROR_FILE_NOT_REMOVEABLE', 'エラー: バックアップファイルの削除ができませんでした。ファイルのユーザー権限を確認してください。');	//Add Japanese osCommerce
 
 define('SUCCESS_LAST_RESTORE_CLEARED', '成功: 最新の復元データは消去されました。');
 define('SUCCESS_DATABASE_SAVED', '成功: データベースが保存されました。');

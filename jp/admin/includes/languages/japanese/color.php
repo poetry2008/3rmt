@@ -24,7 +24,7 @@ define('TEXT_COLORS_TAG2', 'カラータグ:');
 
 define('TEXT_DELETE_INTRO', '本当にこの商品カラーを削除しますか?');
 
-define('ERROR_DIRECTORY_NOT_WRITEABLE', 'エラー: このディレクトリに書き込みできません。正しいユーザ権限を %s に設定してください。');
+define('ERROR_DIRECTORY_NOT_WRITEABLE', 'エラー: このディレクトリに書き込みできません。正しいユーザー権限を %s に設定してください。');
 define('ERROR_DIRECTORY_DOES_NOT_EXIST', 'エラー: %s ディレクトリが存在しません。');
 
 define('TEXT_DISPLAY_NUMBER_OF_COLORS', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> の商品カラーのうち)');

@@ -1,6 +1,6 @@
 <?php
 // 页面标题
-define('HEADING_TITLE', 'ユーザログ');
+define('HEADING_TITLE', 'ユーザーログ');
 
 // 访问表错误信息
 define('TEXT_ERRINFO_DB_NO_LOGINFO', 'アクセス情報が取得できませんでした');
@@ -23,7 +23,7 @@ define('BUTTON_JUMP_PAGE', 'ページへジャンプ');
 define('TABLE_HEADING_LOGINID', 'ID');
 define('TABLE_HEADING_LOGINTIME', 'ログイン日時');
 define('TABLE_HEADING_LAST_ACCESSTIME', '最終アクセス日時');
-define('TABLE_HEADING_USER', 'ユーザ');
+define('TABLE_HEADING_USER', 'ユーザー');
 define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_ADDRESS', 'アドレス');
 define('TABLE_HEADING_PAGE', 'ページ');
@@ -38,7 +38,7 @@ define('TABLE_HEADING_OPERATE','操作');
 define('TEXT_IP_UNLOCK','ロック解除');
 define('TEXT_DELETE_CONFIRM','本当にこのIPアドレスのロックを解除しますか？');
 define('TEXT_CONFIRM','本当に該当IPアドレスをロックしますか？');
-define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同じIPで管理者権限のAdmin,Staff,Chiefのユーザはロックされたとき、先にAdminを解除してください。');
+define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同じIPで管理者権限のAdmin,Staff,Chiefのユーザーはロックされたとき、先にAdminを解除してください。');
 define('TEXT_LOGS_EDIT_SELECT','選択したものを');
 define('TEXT_LOGS_EDIT_DELETE','削除する');
 define('TEXT_LOGS_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
