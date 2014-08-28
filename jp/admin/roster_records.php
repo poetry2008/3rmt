@@ -1336,7 +1336,7 @@ while($j<=$day_num)
           }
           if(in_array($u_list,$temp_show_group_user)){
             $t_info = tep_get_user_info($u_list);
-            $info_td_attendance_str .=  $t_info['name'].$replace_str.'&nbsp;';
+            $info_td_attendance_str .=  $t_info['name'].$replace_str;
           }
         }
         $info_td_attendance_str .=  "</a>";
@@ -1520,7 +1520,7 @@ if($show_ulist_flag){
       if($v_att!=false){
         echo preg_replace('/<br>$/','',$v_att);
       }else{
-        echo $u_info['name'].$replace_str."&nbsp;";
+        echo $u_info['name'].$replace_str;
       }
       }
       if(!empty($att_date_info)){
