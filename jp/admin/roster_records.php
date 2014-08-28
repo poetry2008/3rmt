@@ -3,7 +3,7 @@
   $Id$
 */
 include("includes/application_top.php");
-
+include_once(DIR_FS_ADMIN . DIR_WS_LANGUAGES .  '/default.php');
 //删除过期未允许数据
 $date = date('Ymd',time());
 tep_db_query("delete from  ". TABLE_ATTENDANCE_DETAIL_REPLACE ." where allow_status =0 and date<".$date);
@@ -500,12 +500,22 @@ if(isset($_GET['action'])){
       $leave_end = $_POST['leave_end_hour'].':'.$_POST['leave_end_minute_a'].$_POST['leave_end_minute_b'];
       $allow_user = implode('|||',$_POST['allow_user']);
       $text_info = $_POST['text_info'];
+      //变更前模板名称
+      $attendance_name = array();
+      $attendance_name_query = tep_db_query("select id,title from ".TABLE_ATTENDANCE_DETAIL." where id='".$attendance_detail_id."' or id='".$replace_attendance_detail_id."'");
+      while($attendance_name_array = tep_db_fetch_array($attendance_name_query)){
+
+
+        $attendance_name[$attendance_name_array['id']] = $attendance_name_array['title'];
+      }
+      tep_db_free_result($attendance_name_query);
       //发送请假邮件
       if($_POST['allow_status']==0){ 
         for($i=0;$i<count($_POST['allow_user']);$i++){
             $leave_email = tep_get_mail_templates('LEAVE_MAIL_TEMPLATES','0');
             $mail_model_tep = $leave_email['contents'];
 	    $allow_user = tep_get_user_info($_POST['allow_user'][$i]);
+            $staff_info = tep_get_user_info($_POST['user_id']);
             $mail_model_tep = str_replace(array(
 	      '${URL}',
               '${STAFF_NAME}',
@@ -515,7 +525,10 @@ if(isset($_GET['action'])){
               '${ALTERED_START}',
               '${ALTERED_END}',
               '${DATE}',
-              '${COMMENT}' 
+              '${COMMENT}',
+              '${STATUS}', 
+              '${BEFORE}', 
+              '${AFTER}' 
               ),array(
 	      $_SERVER['HTTP_REFERER'],
 	      $staff_info['name'],
@@ -525,9 +538,12 @@ if(isset($_GET['action'])){
 	      $leave_start,
 	      $leave_end,
               date('Y-m-d',strtotime($date)),
-              $_POST['text_info']
+              $_POST['text_info'],
+              SENDMAIL_ROSTER_STATUS_CONFIRM,
+              $attendance_name[$attendance_detail_id],
+              $attendance_name[$replace_attendance_detail_id]
             ),$mail_model_tep);
-            $mail_model_tep = tep_replace_mail_templates($mail_model_tep); 
+            $mail_model_tep = tep_replace_mail_templates($mail_model_tep);  
             tep_mail($allow_user['name'],$allow_user['email'],$leave_email['title'],$mail_model_tep,get_configuration_by_site_id('STORE_OWNER', 0), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', 0));
 	}
       }else{
@@ -550,7 +566,10 @@ if(isset($_GET['action'])){
               '${ALTERED_START}',
               '${ALTERED_END}',
 	      '${DATE}', 
-              '${COMMENT}' 
+              '${COMMENT}', 
+              '${STATUS}', 
+              '${BEFORE}', 
+              '${AFTER}'
               ),array(
 	      $_SERVER['HTTP_REFERER'],
 	      $staff_info['name'],
@@ -560,7 +579,10 @@ if(isset($_GET['action'])){
 	      $leave_start,
 	      $leave_end, 
               date('Y-m-d',strtotime($date)),
-              $_POST['text_info']
+              $_POST['text_info'],
+              SENDMAIL_ROSTER_STATUS_ALLOW,
+              $attendance_name[$attendance_detail_id],
+              $attendance_name[$replace_attendance_detail_id]
               ),$mail_model_tep);
         $mail_model_tep = tep_replace_mail_templates($mail_model_tep);
         tep_mail($staff_info['name'],$staff_info['email'],$leave_email['title'],$mail_model_tep,get_configuration_by_site_id('STORE_OWNER', 0), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', 0));
