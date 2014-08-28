@@ -117,7 +117,7 @@ define('BOX_TOOLS_MAIL', 'E-Mail 送信');
 define('BOX_TOOLS_NEWSLETTER_MANAGER', 'メールマガジン管理');
 define('BOX_TOOLS_MAIL_TEMPLATES', 'メールテンプレート設定');
 define('BOX_TOOLS_SERVER_INFO', 'サーバー情報');
-define('BOX_TOOLS_WHOS_ONLINE', 'オンラインユーザ');
+define('BOX_TOOLS_WHOS_ONLINE', 'オンラインユーザー');
 define('BOX_TOOLS_PRESENT','プレゼント機能');
 
 // localizaion box text in includes/boxes/localization.php
@@ -715,9 +715,9 @@ define('HEADER_TEXT_PERSONAL_SETTING','個人設定');
 define('TEXT_FLAG_CHECKED','確認済');
 define('TEXT_FLAG_UNCHECK','未確認');
 
-define('BOX_HEADING_USER', 'ユーザ');
-define('BOX_USER_ADMIN', 'ユーザ管理');
-define('BOX_USER_LOG', 'ユーザログ');
+define('BOX_HEADING_USER', 'ユーザー');
+define('BOX_USER_ADMIN', 'ユーザー管理');
+define('BOX_USER_LOG', 'ユーザーログ');
 define('BOX_USER_LOGOUT', 'ログアウト');
 define('JUMP_PAGE_TEXT', 'ページへ');
 define('JUMP_PAGE_BUTTON_TEXT', '移動');

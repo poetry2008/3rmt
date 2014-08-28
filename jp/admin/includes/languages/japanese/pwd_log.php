@@ -18,7 +18,7 @@ define('BUTTON_NEXT_PAGE', '次ページ');
 define('BUTTON_JUMP_PAGE', 'ページへジャンプ');
 
 // 项目名称
-define('TABLE_HEADING_USERNAME','ログインユーザ');
+define('TABLE_HEADING_USERNAME','ログインユーザー');
 define('TABLE_HEADING_PWD_USERNAME','許可者');
 define('TABLE_HEADING_URL','操作説明');
 define('TABLE_HEADING_CREATED_AT','操作日時');

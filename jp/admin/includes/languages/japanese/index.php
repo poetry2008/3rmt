@@ -34,7 +34,7 @@ define('REPORTS_ORDERS', '顧客別');
 define('TOOLS_BACKUP', 'バックアップ');
 define('TOOLS_BANNERS', 'バナー');
 define('TOOLS_FILES', 'ファイル');
-define('BOX_PERMISSION_USERS','ユーザ管理');
+define('BOX_PERMISSION_USERS','ユーザー管理');
 
 
 ?>

@@ -59,7 +59,7 @@ define('MESSAGE_RECOVERY_CONFIRM','本当に元に戻しますか？');
 define('EMAIL_RADIO','Email');
 define('EMAIL_SUBJECT','メッセージ管理 [%s]');
 define('TEXT_SEND_MAIL','このまま送信してよろしいですか？');
-define('TEXT_USER_NO_EMAIL','のユーザはメールアドレスが設定されていません。');
+define('TEXT_USER_NO_EMAIL','のユーザーはメールアドレスが設定されていません。');
 define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','添付ファイルのサイズは%s以内にしてください。');
 define('TEXT_MESSAGES_DELETE_DATA','[ゴミ箱]のメールは%s日後に自動的に削除されます。');
 ?>
