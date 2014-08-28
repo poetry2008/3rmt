@@ -15434,6 +15434,9 @@ function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
   $count = 0;
   foreach($tmp_att_str as $t_arr_str){
     $t_arr = explode(',',$t_arr_str);
+    if(!is_array($t_arr)){
+      $t_arr = explode(';',$t_arr_str);
+    }
     $con = count($t_arr);
     if($count == 0){
       $count = $con; 
@@ -15446,7 +15449,7 @@ function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
     return 0;
   }
   $res_arr =  array();
-  if(preg_match('/(.*)\(round\((.*),(\d+)\)\)(.*)/is',$str,$arr)){
+  if(preg_match('/(.*)\(round\((.*)[,;](\d+)\)\)(.*)/is',$str,$arr)){
     $fun_arr[] = 'round';
     $point = $arr[3]; 
     $other = array($arr[1],$arr[4]);
@@ -15528,6 +15531,9 @@ function tep_run_str($str){
   $res_arr = array();
   foreach($ex_arr as $k_ex => $ex){
     $ex_a =  explode(',',$ex);
+    if(!is_array($ex_a)){
+      $ex_a =  explode(';',$ex);
+    }
     foreach($ex_a as $k => $value){
       if(!isset($res_arr[$k])||$res_arr[$k]==''){
         $res_arr[$k] = str_replace($im_arr[$k_ex],$value,$str_res);
