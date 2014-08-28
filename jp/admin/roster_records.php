@@ -452,62 +452,71 @@ if(isset($_GET['action'])){
       $leave_end = $_POST['leave_end_hour'].':'.$_POST['leave_end_minute_a'].$_POST['leave_end_minute_b'];
       $allow_user = implode('|||',$_POST['allow_user']);
       $text_info = $_POST['text_info'];
-//发送请假邮件
-		if($_POST['allow_status']==0){
-		    $mail_model_tep = TEXT_MAIL_MODLE_STR;
-		  for($i=0;$i<count($_POST['allow_user']);$i++){
-			$allow_user = tep_get_user_info($_POST['allow_user'][$i]);
+      //发送请假邮件
+      if($_POST['allow_status']==0){ 
+        for($i=0;$i<count($_POST['allow_user']);$i++){
+            $leave_email = tep_get_mail_templates('LEAVE_MAIL_TEMPLATES','0');
+            $mail_model_tep = $leave_email['contents'];
+	    $allow_user = tep_get_user_info($_POST['allow_user'][$i]);
             $mail_model_tep = str_replace(array(
-				'${URL_START}',
-				'${URL_END}',
+	      '${URL}',
               '${STAFF_NAME}',
               '${ALLOW_PERSON}',
               '${WORK_START}',
               '${WORK_END}',
-              '${REST_START}',
-              '${REST_END}',
-			  '${DATE}' 
+              '${ALTERED_START}',
+              '${ALTERED_END}',
+              '${DATE}',
+              '${COMMENT}' 
               ),array(
-				 $_SERVER['HTTP_REFERER'],
-				 '',
-				  $staff_info['name'],
-				  $allow_user['name'],
-				  $_POST['email_work_start'],
-				  $_POST['email_work_end'],
-				  $leave_start,
-				 $leave_end,
-				 $date
-                ),$mail_model_tep);
-             tep_mail($allow_user['name'],$allow_user['email'],TEXT_MAIL_REPLY_TITLE,$mail_model_tep,'info@iimy.co.jp','iimy');
-		  }
-
-	}else{
-		   $mail_model_tep = TEXT_MAIL_MODLE_RETURN_STR;
-        $staff_info = tep_get_user_info($_POST['user_id']);
-            $mail_model_tep = str_replace(array(
-				'${URL_START}',
-				'${URL_END}',
-              '${STAFF_NAME}',
-              '${ALLOW_PERSON}',
-              '${WORK_START}',
-              '${WORK_END}',
-              '${REST_START}',
-              '${REST_END}',
-			  '${DATE}' 
-              ),array(
-				 $_SERVER['HTTP_REFERER'],
-				 '',
-				  $staff_info['name'],
-				  $allow_user['name'],
-				  $_POST['email_work_start'],
-				  $_POST['email_work_end'],
-				  $leave_start,
-				 $leave_end, 
-				 $date
-                ),$mail_model_tep);
-
-      tep_mail($staff_info['name'],$staff_info['email'],TEXT_MAIL_REPLY_TITLE,$mail_model_tep,'info@iimy.co.jp','iimy');
+	      '<a href="'.$_SERVER['HTTP_REFERER'].'">'.TEXT_MAIL_HREF.'</a>',
+	      $staff_info['name'],
+	      $allow_user['name'],
+	      $_POST['email_work_start'],
+	      $_POST['email_work_end'],
+	      $leave_start,
+	      $leave_end,
+              date('Y-m-d',strtotime($date)),
+              $_POST['text_info']
+            ),$mail_model_tep);
+            $mail_model_tep = tep_replace_mail_templates($mail_model_tep); 
+            tep_mail($allow_user['name'],$allow_user['email'],$leave_email['title'],$mail_model_tep,get_configuration_by_site_id('STORE_OWNER', 0), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', 0));
 	}
+      }else{
+        $leave_email = tep_get_mail_templates('LEAVE_REPLY_MAIL_TEMPLATES','0');
+        $mail_model_tep = $leave_email['contents'];
+        $staff_info = tep_get_user_info($_POST['user_id']);
+        //许可者
+        $allow_user_info = array();
+        foreach($_POST['allow_user'] as $allow_user_value){
+
+          $allow_user_name = tep_get_user_info($allow_user_value);
+          $allow_user_info[] = $allow_user_name['name'];
+        }
+        $mail_model_tep = str_replace(array(
+	      '${URL}',
+              '${STAFF_NAME}',
+              '${ALLOW_PERSON}',
+              '${WORK_START}',
+              '${WORK_END}',
+              '${ALTERED_START}',
+              '${ALTERED_END}',
+	      '${DATE}', 
+              '${COMMENT}' 
+              ),array(
+	      '<a href="'.$_SERVER['HTTP_REFERER'].'">'.TEXT_MAIL_HREF.'</a>',
+	      $staff_info['name'],
+	      implode(' ',$allow_user_info),
+	      $_POST['email_work_start'],
+	      $_POST['email_work_end'],
+	      $leave_start,
+	      $leave_end, 
+              date('Y-m-d',strtotime($date)),
+              $_POST['text_info']
+              ),$mail_model_tep);
+        $mail_model_tep = tep_replace_mail_templates($mail_model_tep);
+        tep_mail($staff_info['name'],$staff_info['email'],$leave_email['title'],$mail_model_tep,get_configuration_by_site_id('STORE_OWNER', 0), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', 0));
+      }
 
       if(isset($_POST['replace_id'])&&$_POST['replace_id']!=''&&$_POST['replace_id']!=0) {
         $sql_update_arr = array(

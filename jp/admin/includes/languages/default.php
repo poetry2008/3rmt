@@ -105,3 +105,4 @@ define('TEXT_POINT_NOTIFY_DESCRIPTION','
 define('TEXT_SELECT_LANGUAGES_JP','日本語');
 define('TEXT_SELECT_LANGUAGES_CH','简体中文');
 define('TEXT_SELECT_LANGUAGES_VN','Tiếng Việt');
+define('TEXT_MAIL_HREF','ココをクリック');
