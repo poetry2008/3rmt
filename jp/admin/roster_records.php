@@ -1165,12 +1165,13 @@ $today_date= tep_date_info($today);
 $year_tep=$today_date['year']; 
 $month_tep=$today_date['month']; 
 
+echo $month_tep;
 if($month==12){
    $next_month = 1;
    $next_year = $year+1;
    $prev_month = $month-1;
   $prev_year = $year;
- }else if($month_tep==1){
+ }else if($month==1){
    $next_month = $month+1;
    $next_year = $year;
    $prev_month = 12;
