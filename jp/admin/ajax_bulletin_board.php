@@ -64,11 +64,11 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $sql_for_all_users_query = tep_db_query($sql_for_all_users);
 	 $user_name=array();
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
-		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$row['userid']."'"))==1)continue;
 		 $user_name[]=$row['userid'];
 	 }
 	 $option_html='<option >----</option>';
 	 foreach($user_name as $name){
+		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))==1)continue;
 		 $option_html.='<option name="manager" value='.$name.'>'.$name.'</option>';
 	 }
 	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="----">'.$option_html.'</select>');
@@ -226,11 +226,11 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $sql_for_all_users_query = tep_db_query($sql_for_all_users);
 	 $user_name=array();
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
-		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$row['userid']."'"))==1)continue;
 		 $user_name[]=$row['userid'];
 	 }
 	 $option_html='<option name="manager" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' value="'.$bulletin_info["manager"].'">'.$bulletin_info["manager"].'</option>';
 	 foreach($user_name as $name){
+		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))==1)continue;
 		 if($name==$bulletin_info['manager'])continue;
 		 $option_html.='<option name="manager" value='.$name.'>'.$name.'</option>';
 	 }

@@ -101,9 +101,7 @@ function expend_all_notice(aid)
 }
 //delete all notice
 function delete_notice(all_notice,aid){
-  if(confirm(all_notice)){
   delete_alarm_notice('','1','1',aid);
-  }
 }
 //delete alarm notice
 function delete_alarm_notice(nid, e_type,all_del,aid)

@@ -69,8 +69,8 @@ function delete_header_messages(messages_id){
 	}
 }
 function delete_header_messages_all(){
-	delete_notice('<?php echo DELETE_ALL_NOTICE;?>',0);
    if(confirm('<?php echo DELETE_ALL_NOTICE;?>')){	
+	delete_notice('',0);
 	var delete_num = 1;
 	var messages_id_all = '';
 	$('[name="messages_notice"]').each(function(){
@@ -117,12 +117,12 @@ function check_header_messages(){
 				});
 					var str_html='';
 					if(messages_num == 0){
-						str_html+='<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td  width="142px" id="messages_head">';
+						str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFCC00"><td  width="142px" id="messages_head">';
 						if(this['type']=='messages')str_html+='<img src="images/icons/messages.gif" onmousemove="this.src=\'images/icons/white_messages.png\'" onmouseout="this.src=\'images/icons/messages.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.gif"></a></td></tr></table>';
 				else str_html+='<img src="images/icons/bbs.gif" onmousemove="this.src=\'images/icons/white_bbs.png\'" onmouseout="this.src=\'images/icons/bbs.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp'+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
 				$('#show_messages_notice').append(str_html);
 					}else{
-					str_html+='<table value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFB3B5"><td width="142px">';
+					str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFCC00"><td width="142px">';
 					if(this['type']=='messages')str_html+='<img src="images/icons/messages.gif" onmousemove="this.src=\'images/icons/white_messages.png\'" onmouseout="this.src=\'images/icons/messages.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.gif"></a></td></tr></table>';
 				else str_html+='<img src="images/icons/bbs.gif"  onmousemove="this.src=\'images/icons/white_bbs.png\'" onmouseout="this.src=\'images/icons/bbs.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp'+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
 					$('#show_all_messages_notice').append(str_html);
@@ -136,7 +136,7 @@ function check_header_messages(){
 			}
 			if(eval(data).length > 1){
 				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);"><?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
-				$('#show_all_messages_notice').append('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFB3B5"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.gif"  onmousemove="this.src=\'images/icons/white_bbs_del.gif\'" onmouseout="this.src=\'images/icons/bbs_del.gif\'"></a></td></tr></table>');
+				$('#show_all_messages_notice').append('<table style="background:#FFCC00" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFCC00"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.gif"  onmousemove="this.src=\'images/icons/white_bbs_del.gif\'" onmouseout="this.src=\'images/icons/bbs_del.gif\'"></a></td></tr></table>');
 			};
   		}
 	);
