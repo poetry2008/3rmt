@@ -20,17 +20,17 @@ $str_str = '?y='.$year.'&m=';
 if(isset($_GET['action'])){
   switch($_GET['action']){
     case 'save_att_date':
-      $att_start = $_POST['att_start_hour'].':'.$_POST['att_start_minute_a'].$_POST['att_start_minute_b'];
-      $att_end = $_POST['att_end_hour'].':'.$_POST['att_end_minute_a'].$_POST['att_end_minute_b'];
+      $attendance_start = $_POST['att_start_hour'].':'.$_POST['att_start_minute_a'].$_POST['att_start_minute_b'];
+      $attendance_end = $_POST['att_end_hour'].':'.$_POST['att_end_minute_a'].$_POST['att_end_minute_b'];
       $sql_att_info = "select * from " .TABLE_ATTENDANCE_RECORD. " where id='".$_POST['aid']."'";
       $query_att_info = tep_db_query($sql_att_info);
       if($row_att_info = tep_db_fetch_array($query_att_info)){
-        $att_login_start = substr($row_att_info['login_time'],0,11);
-        $att_login_end = substr($row_att_info['login_time'],16,3);
-        $att_logout_start = substr($row_att_info['logout_time'],0,11);
-        $att_logout_end = substr($row_att_info['logout_time'],16,3);
-        $login = $att_login_start.$att_start.$att_login_end; 
-        $logout = $att_logout_start.$att_end.$att_logout_end; 
+        $attendance_login_start = substr($row_att_info['login_time'],0,11);
+        $attendance_login_end = substr($row_att_info['login_time'],16,3);
+        $attendance_logout_start = substr($row_att_info['logout_time'],0,11);
+        $attendance_logout_end = substr($row_att_info['logout_time'],16,3);
+        $login = $attendance_login_start.$attendance_start.$attendance_login_end; 
+        $logout = $attendance_logout_start.$attendance_end.$attendance_logout_end; 
       }
       $date_info = tep_date_info($_POST['get_date']);
       $start_str = $date_info['year'].'-'.$date_info['month'].'-'.$date_info['day'];
@@ -48,8 +48,8 @@ if(isset($_GET['action'])){
         }
         $sql_insert = array(
             'user_name' => $_POST['uid'],
-            'login_time' => $start_str.' '.$att_start.':00',
-            'logout_time' => $start_str.' '.$att_end.':00',
+            'login_time' => $start_str.' '.$attendance_start.':00',
+            'logout_time' => $start_str.' '.$attendance_end.':00',
             'date' => $_POST['get_date'],
             'nums' => $index,
             );
@@ -415,16 +415,6 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $key => $add_id){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE u_group='".$key."' order by id asc limit 1";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$old_res_temp['id']."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where u_group="'.$key.'"');
         }
       }
@@ -1045,8 +1035,8 @@ if($replace_select_sql != ''){
 $attendance_select_array = array_unique($attendance_select_array);
 
 
-$att_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
-$tep_result = tep_db_query($att_select_sql);
+$attendance_select_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
+$tep_result = tep_db_query($attendance_select_sql);
  $attendance_list=array();
  while($rows= tep_db_fetch_array($tep_result)) {
    if(in_array($rows['id'],$attendance_select_array)){
@@ -1209,7 +1199,7 @@ $j=1;
 while($j<=$day_num)
 {
   $date = $year.tep_add_front_zone($month).tep_add_front_zone($j);
-  $att_arr = tep_get_attendance($date,$show_group_id,false);
+  $attendance_arr = tep_get_attendance($date,$show_group_id,false);
   $user_att_arr = tep_get_attendance_user($date,'',false);
   $all_user_list = array();
   $all_user_att_info = array();
@@ -1243,7 +1233,7 @@ while($j<=$day_num)
   if(!empty($show_att_user_list)){
     asort($show_att_user_list);
   }
-  $style= (empty($att_arr)) ? '':'cursor:pointer;';
+  $style= (empty($attendance_arr)) ? '':'cursor:pointer;';
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
     cellspacing="0" cellpadding="0" class="info_table_small">';
@@ -1271,25 +1261,25 @@ while($j<=$day_num)
   echo "</td></tr>";
   $user_worker_list = array();
   $user_att_info = array();
-  foreach($att_arr as $att_row){
+  foreach($attendance_arr as $attendance_row){
     $info_td_attendance_str = '';
     $show_info_td_attendance_str = false;
-    $att_info = $all_att_arr[$att_row['attendance_detail_id']];
-    if(!empty($att_info)){
+    $attendance_info = $all_att_arr[$attendance_row['attendance_detail_id']];
+    if(!empty($attendance_info)){
     if(!empty($show_select_group_user)&&$date){
-    if(tep_is_show_att($att_row['id'],$date)){
+    if(tep_is_show_att($attendance_row['id'],$date)){
       $info_td_attendance_str .= "<tr>";
-      if($att_info['scheduling_type'] == 0){
+      if($attendance_info['scheduling_type'] == 0){
         $info_td_attendance_str .=  '<td style="border-width:0px; padding-top:6px;">';
-        $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
-        $info_td_attendance_str .=  $att_info['short_language'];
-        if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
-          $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
+        $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\")' style=".$style.">";
+        $info_td_attendance_str .=  $attendance_info['short_language'];
+        if(file_exists("images/".$attendance_info['src_text'])&&$attendance_info['src_text']!=''){
+          $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
-        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$att_info['src_text']."'>";
-        $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
-        $info_td_attendance_str .=  $att_info['short_language'];
+        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
+        $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\")' style=".$style.">";
+        $info_td_attendance_str .=  $attendance_info['short_language'];
       }
       $info_td_attendance_str .=  "</div>";
       foreach($show_select_group_user as $u_list){
@@ -1298,18 +1288,18 @@ while($j<=$day_num)
           $show_user_flag = false;
           foreach($all_user_att_info[$u_list] as $u_att_info){
             $tmp_uai = $all_att_arr[$u_att_info['attendance_detail_id']];
-            if($tmp_uai == $att_info){
+            if($tmp_uai == $attendance_info){
               $show_user_flag = true;
               break;
             }
-            if(validate_two_time($att_info['work_start'],$att_info['work_end'],
-                  $tmp_uai['work_start'],$tmp_uai['work_end'])&&$tmp_uai['set_time']==0&&$att_info['set_time']==0){
+            if(validate_two_time($attendance_info['work_start'],$attendance_info['work_end'],
+                  $tmp_uai['work_start'],$tmp_uai['work_end'])&&$tmp_uai['set_time']==0&&$attendance_info['set_time']==0){
               $show_user_flag = true;
               break;
             }
           }
           foreach($all_replace_att as $row_replace_att){
-            if(validate_two_time($att_info['work_start'],$att_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$att_info['set_time']==0){
+            if(validate_two_time($attendance_info['work_start'],$attendance_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$attendance_info['set_time']==0){
               $show_user_flag = true;
               break;
             }
@@ -1320,42 +1310,46 @@ while($j<=$day_num)
         }
         $replace_str = '';
         $v_att=false;
-        if(in_array($att_row['group_id'],tep_get_groups_by_user($u_list))){
+        if(in_array($attendance_row['group_id'],tep_get_groups_by_user($u_list))){
           $show_info_td_attendance_str = true;
           if($date<= $today){
             if($date == $today){
               $is_work = tep_check_show_login_logout($u_list);
-              if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
-                $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
-                $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
-                if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
+              if($all_att_arr[$attendance_row['attendance_detail_id']]['set_time']==0){
+                $attendance_start = str_replace(':','',$all_att_arr[$attendance_row['attendance_detail_id']]['work_start']);
+                $attendance_end = str_replace(':','',$all_att_arr[$attendance_row['attendance_detail_id']]['work_end']);
+                if((($now_time> $attendance_start && $now_time < $attendance_end)||($attendance_start > $attendance_end&&!($now_time<$attendance_start&&$now_time>$attendance_end)))&&$is_work==1){
                   $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
                   $v_att = false;
-                }else if($now_time>$att_end&&$now_time>$att_start){
-                  $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
+                }else if($now_time>$attendance_end&&$now_time>$attendance_start){
+                  $v_att = tep_show_att_time($all_att_info[$u_list][$attendance_info['id']],$u_list,$date,$attendance_info['src_text'],$j,$show_att_status);
                 }
               }else{
                 if($is_work==1){
                   $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
                   $v_att = false;
                 }else{
-                  $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
+                  $v_att = tep_show_att_time($all_att_info[$u_list][$attendance_info['id']],$u_list,$date,$attendance_info['src_text'],$j,$show_att_status);
                 }
               }
             }else{
-              $v_att = tep_show_att_time($all_att_info[$u_list][$att_info['id']],$u_list,$date,$att_info['src_text'],$j,$show_att_status);
+              $v_att = tep_show_att_time($all_att_info[$u_list][$attendance_info['id']],$u_list,$date,$attendance_info['src_text'],$j,$show_att_status);
             }
           }else{
             $v_att = false;
           }
-        $user_replace = tep_get_replace_by_uid_date($u_list,$date,$att_row['attendance_detail_id']);
+        $user_replace = tep_get_replace_by_uid_date($u_list,$date,$attendance_row['attendance_detail_id']);
         $info_td_attendance_str .=  "<span>";
         if(!empty($user_replace)){
+          if($user_replace['allow_status']==1){
+             continue;  
+          }
+          /*
           $user_worker_list[] = $u_list;
-          $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
+          $attendance_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
           if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$u_list
               ||$ocertify->npermission>'10'||in_array($ocertify->auth_user,tep_get_user_list_by_userid($user_replace['user']))){
-          if($att_date_info['scheduling_type'] == 1){
+          if($attendance_date_info['scheduling_type'] == 1){
             $replace_str =  '<span class="rectangle" style="background-color:'.$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'].';">&nbsp;</span>';
           }else{
             if(file_exists("images/".$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'])&&$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text']!=''){
@@ -1366,22 +1360,23 @@ while($j<=$day_num)
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
+        */
         }
         $info_td_attendance_str .=  "<a href='javascript:void(0)' ";
         $manager_list = tep_get_user_list_by_userid($u_list);
         if($ocertify->auth_user==$u_list||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list)){
           if($date>=$today||!empty($user_replace)){
-            $info_td_attendance_str .=  " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$att_row['attendance_detail_id']."\")' ";
+            $info_td_attendance_str .=  " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$attendance_row['attendance_detail_id']."\")' ";
           }
         }else{
           $v_att = false;
         }
-        $info_td_attendance_str .=  ($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
+        $info_td_attendance_str .=  ($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
         if($v_att!=false){
           $info_td_attendance_str .=  preg_replace("/$/",$replace_str.'',$v_att);
         }else{
           $temp_user_sql = "select * from ".TABLE_GROUPS." 
-            where id='".$att_row['group_id']."'";
+            where id='".$attendance_row['group_id']."'";
           $temp_user_query = tep_db_query($temp_user_sql);
           if($temp_user_row = tep_db_fetch_array($temp_user_query)){
             $temp_show_group_user = explode('|||',$temp_user_row['all_users_id']);
@@ -1410,15 +1405,15 @@ while($j<=$day_num)
   $show_att_div = true;
   $show_ulist_flag = false;
   foreach($user_att_arr as $uatt_arr){
-    $att_user_row = $uatt_arr;
-    $att_info = $all_att_arr[$att_user_row['attendance_detail_id']];
+    $attendance_user_row = $uatt_arr;
+    $attendance_info = $all_att_arr[$attendance_user_row['attendance_detail_id']];
     $show_user_flag = false;
     $user_replace = tep_get_replace_by_uid_date($uatt_arr['user_id'],$date,$uatt_arr['attendance_detail_id']);
     foreach($all_replace_att as $row_replace_att){
       if($row_replace_att['user'] != $uatt_arr['user_id']){
         continue;
       }
-      if(validate_two_time($att_info['work_start'],$att_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$att_info['set_time']==0){
+      if(validate_two_time($attendance_info['work_start'],$attendance_info['work_end'],$row_replace_att['leave_start'],$row_replace_att['leave_end'])&&$attendance_info['set_time']==0){
         $show_user_flag = true;
         break;
       }
@@ -1426,7 +1421,8 @@ while($j<=$day_num)
     if($show_user_flag){
       continue;
     }
-    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&empty($user_replace)){
+    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&
+        (empty($user_replace)||$user_replace['allow_status']==0)){
     if($last_att_id==0||$last_att_id!=$uatt_arr['attendance_detail_id']){
       $last_att_id = $uatt_arr['attendance_detail_id'];
       $show_att_div = true;
@@ -1440,17 +1436,17 @@ while($j<=$day_num)
       if($show_att_div){
         $show_ulist_flag = true;
       echo "<tr>";
-      if($att_info['scheduling_type'] == 0){
+      if($attendance_info['scheduling_type'] == 0){
         echo '<td style="border-width:0px; padding-top:6px;">';
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
-        echo $att_info['short_language'];
-        if(file_exists("images/".$att_info['src_text'])&&$att_info['src_text']!=''){
-          echo '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
+        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
+        echo $attendance_info['short_language'];
+        if(file_exists("images/".$attendance_info['src_text'])&&$attendance_info['src_text']!=''){
+          echo '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
-        echo "<td style='border-width:0px; padding-top:6px;".($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$att_info['src_text']."'>";
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$att_user_row['user_id']."\",\"".$att_user_row['id']."\",\"".$att_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
-        echo $att_info['short_language'];
+        echo "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
+        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
+        echo $attendance_info['short_language'];
       }
       echo "</div>";
       }
@@ -1461,44 +1457,46 @@ while($j<=$day_num)
         $time_flag = false;
         if($date == $today){
           $is_work = tep_check_show_login_logout($uatt_arr['user_id']);
-          if($att_info['set_time']==0){
-            $att_start = str_replace(':','',$att_info['work_start']);
-            $att_end = str_replace(':','',$att_info['work_end']);
-            if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
+          if($attendance_info['set_time']==0){
+            $attendance_start = str_replace(':','',$attendance_info['work_start']);
+            $attendance_end = str_replace(':','',$attendance_info['work_end']);
+            if((($now_time> $attendance_start && $now_time < $attendance_end)||($attendance_start > $attendance_end&&!($now_time<$attendance_start&&$now_time>$attendance_end)))&&$is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
-            }else if($now_time>$att_end||$is_work==0){
-              $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$att_info['id']],$uatt_arr['user_id'],$date,$att_info['src_text'],$j,$show_att_status);
+            }else if($now_time>$attendance_end||$is_work==0){
+              $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$attendance_info['id']],$uatt_arr['user_id'],$date,$attendance_info['src_text'],$j,$show_att_status);
             }
           }else{
             if($is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
             }else{
-              $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$att_info['id']],$uatt_arr['user_id'],$date,$att_info['src_text'],$j,$show_att_status);
+              $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$attendance_info['id']],$uatt_arr['user_id'],$date,$attendance_info['src_text'],$j,$show_att_status);
             }
           }
         }else{
-          $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$att_info['id']],$uatt_arr['user_id'],$date,$att_info['src_text'],$j,$show_att_status);
+          $v_att = tep_show_att_time($all_att_info[$uatt_arr['user_id']][$attendance_info['id']],$uatt_arr['user_id'],$date,$attendance_info['src_text'],$j,$show_att_status);
         }
       }else{
         $v_att = false;
       }
       echo "<span>";
+      /*
       if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
         $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
+      */
 
       echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
       if($ocertify->auth_user==$uatt_arr['user_id']||$ocertify->npermission>'10'){
         if($date>=$today||!empty($user_replace)){
-          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$att_user_row['attendance_detail_id']."\")' ";
+          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' ";
         }
       }else{
         $v_att =false;
       }
-      echo ($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
+      echo ($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
       if($v_att!=false){
         echo $v_att;
       }else{
@@ -1521,17 +1519,16 @@ if($show_ulist_flag){
   //不在排班组的请假
     echo "<tr><td style='padding-top:6px; border-width:0px;'>";
     echo '<div>';
+    $show_replace_array = array();
     foreach($all_replace_att as $row_replace_att){
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
-      $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
+      $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date,0,$show_replace_array);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
-      $show_flag = false;
-      if(!empty($user_replace)&&$user_replace['allow_status']==1){
-        $show_flag = true;
-      }
-      if((!empty($user_replace))&&($show_flag||$ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
+      if((!empty($user_replace))&&($ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
+      $show_replace_array[] = $user_replace['id'];
+      $show_flag = true;
       $u_info = tep_get_user_info($row_replace_att['user']);
-      $att_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
+      $attendance_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
       echo "<span>";
       echo "<a href='javascript:void(0)' ";
       echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\",\"".$row_replace_att['attendance_detail_id']."\")' ";
@@ -1539,9 +1536,9 @@ if($show_ulist_flag){
       if($show_flag||in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']){
       if(!empty($u_info)){
       if($row_replace_att['attendance_detail_id']!=''&&$row_replace_att['attendance_detail_id']!=0){
-        $att_info = $all_att_arr[$row_replace_att['attendance_detail_id']];
+        $attendance_info = $all_att_arr[$row_replace_att['attendance_detail_id']];
       }else{
-        $att_info = $all_att_arr[$row_replace_att['replace_attendance_detail_id']];
+        $attendance_info = $all_att_arr[$row_replace_att['replace_attendance_detail_id']];
       }
       $replace_str = '';
       $v_att=false;
@@ -1549,25 +1546,25 @@ if($show_ulist_flag){
         $time_flag = false;
         if($date == $today){
           $is_work = tep_check_show_login_logout($row_replace_att['user']);
-          if($att_info['set_time']==0){
-            $att_start = str_replace(':','',$row_replace_att['leave_start']);
-            $att_end = str_replace(':','',$row_replace_att['leave_end']);
-            if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
+          if($attendance_info['set_time']==0){
+            $attendance_start = str_replace(':','',$row_replace_att['leave_start']);
+            $attendance_end = str_replace(':','',$row_replace_att['leave_end']);
+            if((($now_time> $attendance_start && $now_time < $attendance_end)||($attendance_start > $attendance_end&&!($now_time<$attendance_start&&$now_time>$attendance_end)))&&$is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
-            }else if($now_time>$att_end||$is_work==0){
-              $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$att_info['id']],$row_replace_att['user'],$date,$att_info['src_text'],$j,$show_att_status);
+            }else if($now_time>$attendance_end||$is_work==0){
+              $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$attendance_info['id']],$row_replace_att['user'],$date,$attendance_info['src_text'],$j,$show_att_status);
             }
           }else{
             if($is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
             }else{
-              $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$att_info['id']],$row_replace_att['user'],$date,$att_info['src_text'],$j,$show_att_status);
+              $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$attendance_info['id']],$row_replace_att['user'],$date,$attendance_info['src_text'],$j,$show_att_status);
             }
           }
         }else{
-          $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$att_info['id']],$row_replace_att['user'],$date,$att_info['src_text'],$j,$show_att_status);
+          $v_att = tep_show_att_time($all_att_info[$row_replace_att['user']][$attendance_info['id']],$row_replace_att['user'],$date,$attendance_info['src_text'],$j,$show_att_status);
         }
       }else{
         $v_att = false;
@@ -1578,8 +1575,8 @@ if($show_ulist_flag){
         echo $u_info['name'].$replace_str;
       }
       }
-      if(!empty($att_date_info)){
-        if($att_date_info['scheduling_type'] == 1){
+      if(!empty($attendance_date_info)){
+        if($attendance_date_info['scheduling_type'] == 1){
           echo '<span class="rectangle" style="background-color:'.$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'].';">&nbsp;</span>';
         }else{
           if(file_exists("images/".$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'])&&$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text']!=''){
