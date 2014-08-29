@@ -31,7 +31,8 @@ $group_id = $_GET['group_id'];
 $payroll_date = $_GET['save_date'];
 $date = tep_start_end_date($group_id,$payroll_date);
 ?>
-<div style="text-align:center;"><?php echo $date['start_date'].'~'.$date['end_date'].'&nbsp;'.TEXT_HEAD_TITLE;?></div>
+<div style="text-align:center;"><?php echo $date['start_date'].'～'.$date['end_date'].'&nbsp;'.TEXT_HEAD_TITLE;?></div>
+<br>
 <table width="100%" cellpadding="0" cellspacing="0" border="1">
 <tr>
 <td align="center" bgcolor="#808080"><?php echo TEXT_PAYROLLS_NAME;?></td>
