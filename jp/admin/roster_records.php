@@ -1328,7 +1328,7 @@ while($j<=$day_num)
               if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
                 $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
                 $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
-                if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+                if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
                   $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
                   $v_att = false;
                 }else if($now_time>$att_end&&$now_time>$att_start){
@@ -1362,8 +1362,7 @@ while($j<=$day_num)
               $replace_str = "<img src='images/".$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text']."' alt='".$all_att_arr[$user_replace['replace_attendance_detail_id']]['alt_text']."' style='width: 16px;'>";
             }
           }
-          if($user_replace['allow_status']==0&&
-              (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']||$ocertify->auth_user==$user_replace['allow_user'])){
+          if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
@@ -1465,7 +1464,7 @@ while($j<=$day_num)
           if($att_info['set_time']==0){
             $att_start = str_replace(':','',$att_info['work_start']);
             $att_end = str_replace(':','',$att_info['work_end']);
-            if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+            if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
             }else if($now_time>$att_end||$is_work==0){
@@ -1486,7 +1485,7 @@ while($j<=$day_num)
         $v_att = false;
       }
       echo "<span>";
-      if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']||$ocertify->auth_user==$user_replace['allow_user'])){
+      if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
         $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
 
@@ -1553,7 +1552,7 @@ if($show_ulist_flag){
           if($att_info['set_time']==0){
             $att_start = str_replace(':','',$row_replace_att['leave_start']);
             $att_end = str_replace(':','',$row_replace_att['leave_end']);
-            if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+            if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
             }else if($now_time>$att_end||$is_work==0){
@@ -1588,8 +1587,7 @@ if($show_ulist_flag){
           }
         }
       }
-      if($user_replace['allow_status']==0&&
-          (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']||$ocertify->auth_user==$user_replace['allow_user'])){
+      if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
         echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
       }
