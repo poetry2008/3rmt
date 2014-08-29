@@ -14390,11 +14390,14 @@ function tep_is_show_att($aid,$date){
     }
 }
 
-function tep_get_replace_by_uid_date($uid,$date,$aid=0){
+function tep_get_replace_by_uid_date($uid,$date,$aid=0,$show_list=array()){
   $sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
     user='".$uid."' and `date` = '".$date."'";
   if($aid!=0){
     $sql .= " and attendance_detail_id ='".$aid."'";
+  }
+  if(!empty($show_list)){
+    $sql .= " and id not in (".implode(',',$show_list).") ";
   }
   $query = tep_db_query($sql);
   if($row = tep_db_fetch_array($query)){

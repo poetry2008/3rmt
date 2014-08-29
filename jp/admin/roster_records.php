@@ -415,16 +415,6 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $key => $add_id){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE u_group='".$key."' order by id asc limit 1";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$old_res_temp['id']."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where u_group="'.$key.'"');
         }
       }
@@ -1352,6 +1342,10 @@ while($j<=$day_num)
         $user_replace = tep_get_replace_by_uid_date($u_list,$date,$att_row['attendance_detail_id']);
         $info_td_attendance_str .=  "<span>";
         if(!empty($user_replace)){
+          if($user_replace['allow_status']==1){
+             continue;  
+          }
+          /*
           $user_worker_list[] = $u_list;
           $att_date_info = tep_get_attendance_by_id($user_replace['replace_attendance_detail_id']);
           if(in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$u_list
@@ -1367,6 +1361,7 @@ while($j<=$day_num)
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
+        */
         }
         $info_td_attendance_str .=  "<a href='javascript:void(0)' ";
         $manager_list = tep_get_user_list_by_userid($u_list);
@@ -1427,7 +1422,8 @@ while($j<=$day_num)
     if($show_user_flag){
       continue;
     }
-    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&empty($user_replace)){
+    if(tep_is_show_att($uatt_arr['id'],$date)&&!empty($uatt_arr)&&in_array($uatt_arr['user_id'],$show_select_group_user)&&
+        (empty($user_replace)||$user_replace['allow_status']==0)){
     if($last_att_id==0||$last_att_id!=$uatt_arr['attendance_detail_id']){
       $last_att_id = $uatt_arr['attendance_detail_id'];
       $show_att_div = true;
@@ -1486,9 +1482,11 @@ while($j<=$day_num)
         $v_att = false;
       }
       echo "<span>";
+      /*
       if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
         $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
+      */
 
       echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
@@ -1522,12 +1520,14 @@ if($show_ulist_flag){
   //不在排班组的请假
     echo "<tr><td style='padding-top:6px; border-width:0px;'>";
     echo '<div>';
+    $show_replace_array = array();
     foreach($all_replace_att as $row_replace_att){
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
-      $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date);
+      $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date,0,$show_replace_array);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
       $show_flag = false;
-      if(!empty($user_replace)&&$user_replace['allow_status']==1){
+      if(!empty($user_replace)){
+        $show_replace_array[] = $user_replace['id'];
         $show_flag = true;
       }
       if((!empty($user_replace))&&($show_flag||$ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
