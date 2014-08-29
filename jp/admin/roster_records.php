@@ -246,32 +246,12 @@ if(isset($_GET['action'])){
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$del_as."'";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$del_as."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
               id="'.$del_as.'"');
         }
       }
       if(isset($_POST['del_group'])&&!empty($_POST['del_group'])){
         foreach($_POST['del_group'] as $del_group){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE u_group='".$del_group."' order by id asc limit 1";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$old_res_temp['id']."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where u_group ="'.$del_group.'"');
         }
       }
@@ -459,16 +439,6 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $add_id){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$add_id."'";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$add_id."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
@@ -1393,7 +1363,7 @@ while($j<=$day_num)
             }
           }
           if($user_replace['allow_status']==0&&
-              (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
+              (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']||$ocertify->auth_user==$user_replace['allow_user'])){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
@@ -1516,6 +1486,9 @@ while($j<=$day_num)
         $v_att = false;
       }
       echo "<span>";
+      if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']||$ocertify->auth_user==$user_replace['allow_user'])){
+        $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
+      }
 
       echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
@@ -1616,7 +1589,7 @@ if($show_ulist_flag){
         }
       }
       if($user_replace['allow_status']==0&&
-           (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
+          (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']||$ocertify->auth_user==$user_replace['allow_user'])){
         echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
       }
