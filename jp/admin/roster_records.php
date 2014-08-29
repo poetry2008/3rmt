@@ -1590,9 +1590,6 @@ if($show_ulist_flag){
       }
       echo "</a>";
       echo "</span>";
-      if($v_att!=false){
-        echo "<br>";
-      }
     }
     }
     }
