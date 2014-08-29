@@ -1135,7 +1135,6 @@ $today_date= tep_date_info($today);
 $year_tep=$today_date['year']; 
 $month_tep=$today_date['month']; 
 
-echo $month_tep;
 if($month==12){
    $next_month = 1;
    $next_year = $year+1;
