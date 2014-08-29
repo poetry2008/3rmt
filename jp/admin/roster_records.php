@@ -1498,7 +1498,7 @@ while($j<=$day_num)
       }
       echo ($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
       if($v_att!=false){
-        echo preg_replace('/<br>$/','',$v_att);
+        echo $v_att;
       }else{
         echo $all_user_name_info[$uatt_arr['user_id']].$replace_str."&nbsp;";
       }
@@ -1590,6 +1590,9 @@ if($show_ulist_flag){
       }
       echo "</a>";
       echo "</span>";
+      if($v_att!=false){
+        echo "<br>";
+      }
     }
     }
     }
