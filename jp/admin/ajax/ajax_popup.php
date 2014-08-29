@@ -10519,7 +10519,7 @@ echo  $return_res;
   $current_users_array= array_unique($current_users_array);
   $first_user = current($current_users_array);
   foreach($allow_user_list as $allow_user){
-    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value,'.$replace_info_res['allow_status'].');">';
+    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value,'.(isset($replace_info_res['allow_status']) ? $replace_info_res['allow_status'] : 0).');">';
     foreach($current_users_array as $user_info){
       $t_user_info = tep_get_user_info($user_info);
       if($t_user_info['status'] == 1){
