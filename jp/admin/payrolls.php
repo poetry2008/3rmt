@@ -205,13 +205,6 @@
           $payroll_date = tep_db_prepare_input($_POST['save_date']);
           $group_id = tep_db_prepare_input($_POST['group_id']);
 
-          $lenght_array = array();
-          foreach($payroll_title as $title_value){
-
-            $lenght_array[] = mb_strlen($title_value);
-          }
-          $max_lenght = max($lenght_array);
-
           $payroll_email = tep_get_mail_templates('PAYROLL_MAIL_TEMPLATES','0'); 
           $mode_array = array('${USER_NAME}','${CONTENTS}','${PERIOD}');
 
@@ -223,7 +216,7 @@
             $payroll_str = '';
             foreach($users_payroll as $payroll_key=>$payroll_value){
 
-              $payroll_str .= $payroll_title[$payroll_key].str_repeat('　',$max_lenght-mb_strlen($payroll_title[$payroll_key])).'　　　　　　　　　　　　　'.$payroll_value[$user_value]."\r\n";
+              $payroll_str .= $payroll_title[$payroll_key].' '.$payroll_value[$user_value]."\r\n";
             }
             $user_info = tep_get_user_info($user_value);
             $period_date = tep_start_end_date($group_id,$payroll_date);

@@ -523,7 +523,7 @@ if(isset($_GET['action'])){
             $mail_model_tep = str_replace(array(
 	      '${URL}',
               '${STAFF_NAME}',
-              '${ALLOW_PERSON}',
+              '${APPROVER}',
               '${WORK_START}',
               '${WORK_END}',
               '${ALTERED_START}',
@@ -564,7 +564,7 @@ if(isset($_GET['action'])){
         $mail_model_tep = str_replace(array(
 	      '${URL}',
               '${STAFF_NAME}',
-              '${ALLOW_PERSON}',
+              '${APPROVER}',
               '${WORK_START}',
               '${WORK_END}',
               '${ALTERED_START}',

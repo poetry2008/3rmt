@@ -679,7 +679,7 @@ function change_users_groups(value){
         });
 }
 //change users allow
-function change_users_allow(value){
+function change_users_allow(value,allow_status_value){
 
   var allow_status = document.getElementsByName("allow_status")[0];
   var allow_flag = false;
@@ -690,10 +690,15 @@ function change_users_allow(value){
         }
   });
   if(value == admin_id  || allow_flag == true){
-  
+ 
+    if(allow_status_value == 1){
+    
+      allow_status.value = '1';
+    }
     allow_status.disabled = false;
   }else{
 
+    allow_status.value = '0';
     allow_status.disabled = true;
   }
 }

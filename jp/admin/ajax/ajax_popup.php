@@ -10346,29 +10346,6 @@ echo  $return_res;
   $att_select .= $att_select_hidden;
   $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
 
-  $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
-  if($ocertify->auth_user == current($allow_user_list)){
-    if($_GET['date']<date('Ymd',time())){
-      $allow_disabled = ' disabled="disabled" '; 
-    }else{
-      $allow_disabled = ''; 
-    }
-  }else{
-    $allow_disabled = ' disabled="disabled" '; 
-  }
-
-  $status_str = '<select name="allow_status" '.$allow_disabled.'>';
-  if(isset($replace_info_res['allow_status'])&&$replace_info_res['allow_status']==1){
-    $status_str .= '<option value="0">'.TEXT_REPLACE_NOT_ALLOW.'</option>';
-    $status_str .= '<option value="1" selected >'.TEXT_REPLACE_IS_ALLOW.'</option>';
-    $change_flag = false;
-  }else{
-    $status_str .= '<option value="0" selected >'.TEXT_REPLACE_NOT_ALLOW.'</option>';
-    $status_str .= '<option value="1" >'.TEXT_REPLACE_IS_ALLOW.'</option>';
-  }
-  $status_str .= '</select>&nbsp;&nbsp;<font color="red" id="allow_status_error"></font>';
-
-
   $leave_start_array = explode(':',$replace_info_res['leave_start']);
   $leave_start_min_left= substr($leave_start_array[1],0,1);
   $leave_start_min_right= substr($leave_start_array[1],1,2);
@@ -10529,6 +10506,8 @@ echo  $return_res;
   }else{
     $current_users = $_GET['uid']; 
   }
+
+  $allow_user_list = array_reverse(explode('|||',$replace_info_res['allow_user']));
   $current_users_array = tep_get_user_list_by_userid($current_users);
   //获取admin及ROOT
   $permissions_query = tep_db_query("select userid from ".TABLE_PERMISSIONS." where permission>=15 order by permission");
@@ -10537,9 +10516,10 @@ echo  $return_res;
     $current_users_array[] = $permissions_array['userid'];
   }
   tep_db_free_result($permissions_query);
- $current_users_array= array_unique($current_users_array);
+  $current_users_array= array_unique($current_users_array);
+  $first_user = current($current_users_array);
   foreach($allow_user_list as $allow_user){
-    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value);">';
+    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value,'.$replace_info_res['allow_status'].');">';
     foreach($current_users_array as $user_info){
       $t_user_info = tep_get_user_info($user_info);
       if($t_user_info['status'] == 1){
@@ -10566,6 +10546,37 @@ echo  $return_res;
     $is_first = false;
 
   }
+
+  $allow_user_list = array_filter($allow_user_list); 
+  if(!empty($allow_user_list)){
+    if(in_array($ocertify->auth_user,$allow_user_list)){
+      if($_GET['date']<date('Ymd',time())){
+        $allow_disabled = ' disabled="disabled" '; 
+      }else{
+        $allow_disabled = ''; 
+      }
+    }else{
+
+      $allow_disabled = ' disabled="disabled" ';
+    }
+  }else{
+    if($ocertify->auth_user == $first_user){
+      $allow_disabled = '';
+    }else{
+      $allow_disabled = ' disabled="disabled" '; 
+    }
+  }
+
+  $status_str = '<select name="allow_status" '.$allow_disabled.'>';
+  if(isset($replace_info_res['allow_status'])&&$replace_info_res['allow_status']==1){
+    $status_str .= '<option value="0">'.TEXT_REPLACE_NOT_ALLOW.'</option>';
+    $status_str .= '<option value="1" selected >'.TEXT_REPLACE_IS_ALLOW.'</option>';
+    $change_flag = false;
+  }else{
+    $status_str .= '<option value="0" selected >'.TEXT_REPLACE_NOT_ALLOW.'</option>';
+    $status_str .= '<option value="1" >'.TEXT_REPLACE_IS_ALLOW.'</option>';
+  }
+  $status_str .= '</select>&nbsp;&nbsp;<font color="red" id="allow_status_error"></font>';
   $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ALLOW_STATUS), 
     array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $status_str)
