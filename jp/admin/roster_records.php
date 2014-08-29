@@ -1525,12 +1525,9 @@ if($show_ulist_flag){
       if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date,0,$show_replace_array);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
-      $show_flag = false;
-      if(!empty($user_replace)){
-        $show_replace_array[] = $user_replace['id'];
-        $show_flag = true;
-      }
-      if((!empty($user_replace))&&($show_flag||$ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
+      if((!empty($user_replace))&&($ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){
+      $show_replace_array[] = $user_replace['id'];
+      $show_flag = true;
       $u_info = tep_get_user_info($row_replace_att['user']);
       $attendance_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
       echo "<span>";
