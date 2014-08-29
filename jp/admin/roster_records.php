@@ -1287,7 +1287,7 @@ while($j<=$day_num)
           $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$att_info['src_text'].'" alt="'.$att_info['title'].'">';
         }
       }else{
-        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;' bgcolor='".$att_info['src_text']."'>";
+        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$att_info['src_text']."'>";
         $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$att_row['group_id']."\",\"".$att_row['id']."\")' style=".$style.">";
         $info_td_attendance_str .=  $att_info['short_language'];
       }
@@ -1376,7 +1376,7 @@ while($j<=$day_num)
         }else{
           $v_att = false;
         }
-        $info_td_attendance_str .=  ">";
+        $info_td_attendance_str .=  ($att_info['scheduling_type'] == 1 && $att_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
         if($v_att!=false){
           $info_td_attendance_str .=  preg_replace("/$/",$replace_str.'',$v_att);
         }else{
