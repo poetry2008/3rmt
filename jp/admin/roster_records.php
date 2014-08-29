@@ -246,32 +246,12 @@ if(isset($_GET['action'])){
       }
       if(isset($_POST['del_as'])&&!empty($_POST['del_as'])){
         foreach($_POST['del_as'] as $del_as){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$del_as."'";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$del_as."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where
               id="'.$del_as.'"');
         }
       }
       if(isset($_POST['del_group'])&&!empty($_POST['del_group'])){
         foreach($_POST['del_group'] as $del_group){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE u_group='".$del_group."' order by id asc limit 1";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$old_res_temp['id']."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where u_group ="'.$del_group.'"');
         }
       }
@@ -459,16 +439,6 @@ if(isset($_GET['action'])){
       if(isset($_POST['data_as'])&&is_array($_POST['data_as'])
           &&!empty($_POST['data_as'])){
         foreach($_POST['data_as'] as $add_id){
-          //修改 原来的时间
-          $old_attandance_detail_date_sql = " select * from ".TABLE_ATTENDANCE_DETAIL_DATE." WHERE id='".$add_id."'";
-          $old_attandance_detail_date_query = tep_db_query($old_attandance_detail_date_sql);
-          if($old_res_temp = tep_db_fetch_array($old_attandance_detail_date_query)){
-            $old_valid_date = $old_res_temp['valid_date'];
-            $update_parent_id_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set parent_id =".$old_res_temp['parent_id']." where parent_id='".$add_id."'";
-            $update_valid_date_sql = "update ".TABLE_ATTENDANCE_DETAIL_DATE." set valid_date=".$old_valid_date." where id='".$old_res_temp['parent_id']."'";
-            tep_db_query($update_parent_id_sql);
-            tep_db_query($update_valid_date_sql);
-          }
           tep_db_query('delete from '.TABLE_ATTENDANCE_DETAIL_DATE.' where id="'.$add_id.'"');
         }
       }
@@ -1358,7 +1328,7 @@ while($j<=$day_num)
               if($all_att_arr[$att_row['attendance_detail_id']]['set_time']==0){
                 $att_start = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_start']);
                 $att_end = str_replace(':','',$all_att_arr[$att_row['attendance_detail_id']]['work_end']);
-                if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+                if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
                   $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
                   $v_att = false;
                 }else if($now_time>$att_end&&$now_time>$att_start){
@@ -1392,8 +1362,7 @@ while($j<=$day_num)
               $replace_str = "<img src='images/".$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text']."' alt='".$all_att_arr[$user_replace['replace_attendance_detail_id']]['alt_text']."' style='width: 16px;'>";
             }
           }
-          if($user_replace['allow_status']==0&&
-              (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
+          if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
             $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
           }
         }
@@ -1419,7 +1388,7 @@ while($j<=$day_num)
           }
           if(in_array($u_list,$temp_show_group_user)){
             $t_info = tep_get_user_info($u_list);
-            $info_td_attendance_str .=  $t_info['name'].$replace_str.'&nbsp;';
+            $info_td_attendance_str .=  $t_info['name'].$replace_str;
           }
         }
         $info_td_attendance_str .=  "</a>";
@@ -1495,7 +1464,7 @@ while($j<=$day_num)
           if($att_info['set_time']==0){
             $att_start = str_replace(':','',$att_info['work_start']);
             $att_end = str_replace(':','',$att_info['work_end']);
-            if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+            if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
             }else if($now_time>$att_end||$is_work==0){
@@ -1516,6 +1485,9 @@ while($j<=$day_num)
         $v_att = false;
       }
       echo "<span>";
+      if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
+        $replace_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
+      }
 
       echo "<a href='javascript:void(0)' ";
       $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
@@ -1580,7 +1552,7 @@ if($show_ulist_flag){
           if($att_info['set_time']==0){
             $att_start = str_replace(':','',$row_replace_att['leave_start']);
             $att_end = str_replace(':','',$row_replace_att['leave_end']);
-            if($now_time> $att_start && $now_time < $att_end&&$is_work==1){
+            if((($now_time> $att_start && $now_time < $att_end)||($att_start > $att_end&&!($now_time<$att_start&&$now_time>$att_end)))&&$is_work==1){
               $replace_str .= "<img src='images/icons/working.jpg' alt='working'>";
               $v_att = false;
             }else if($now_time>$att_end||$is_work==0){
@@ -1603,7 +1575,7 @@ if($show_ulist_flag){
       if($v_att!=false){
         echo preg_replace('/<br>$/','',$v_att);
       }else{
-        echo $u_info['name'].$replace_str."&nbsp;";
+        echo $u_info['name'].$replace_str;
       }
       }
       if(!empty($att_date_info)){
@@ -1615,8 +1587,7 @@ if($show_ulist_flag){
           }
         }
       }
-      if($user_replace['allow_status']==0&&
-           (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
+      if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
         echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
       }
       }
