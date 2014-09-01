@@ -10584,7 +10584,7 @@ echo  $return_res;
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ALLOW_START), 
-    array('align' => 'left', 'params' => 'width="195" nowrap="nowrap"', 'text' => $leave_start.'&nbsp;～&nbsp;'.$leave_end), 
+    array('align' => 'left', 'params' => 'width="40%" nowrap="nowrap"', 'text' => $leave_start.'&nbsp;～&nbsp;'.$leave_end), 
   );
 
   $as_info_row[]['text'] = array(
