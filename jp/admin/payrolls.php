@@ -547,8 +547,8 @@ color:#0066CC;
 	$notice_box = new notice_box('','',$payroll_table_params);
 	$payroll_table_row = array();
 	$payroll_title_row = array();
-	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent" width="5%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
-        $payroll_title_row[] = array('params' => 'align="center" class="dataTableHeadingContent_order" style="width:10%;" id="td_name"','text' => '<a href="javascript:payrolls_sort(\'name\',1,\''.TEXT_PAYROLLS_NAME.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_NAME.'</a>');
+	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent" width="2%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
+        $payroll_title_row[] = array('params' => 'align="center" class="dataTableHeadingContent_order" style="width:5%;" id="td_name"','text' => '<a href="javascript:payrolls_sort(\'name\',1,\''.TEXT_PAYROLLS_NAME.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_NAME.'</a>');
         //获取组对应的工资项目
         $group_id = '';
         $group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
