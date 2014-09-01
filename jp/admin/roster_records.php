@@ -1116,7 +1116,7 @@ if($ocertify->npermission>'10'){
 			<li><a href="<?php echo FILENAME_ROSTER_RECORDS.$str_next_year?>"><?php echo TEXT_NEXT_YEAR;?>&gt;&gt;</a></li>
             </ul>
         </td>
-        <td align="right">
+        <td align="right" style="line-height:23px;">
 		<?php  
 			
 $today = date('Ymd',time());

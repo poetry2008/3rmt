@@ -2340,10 +2340,15 @@ google hack
 .date_month li{
 	margin-right:9px;
 	float:left;
-	line-height:16px;
-    height:16px;
+	line-height:20px; 
+    height:18px;
 	white-space:nowrap;
 }
+/*@date20140828 当月样式*/
+.date_month input {
+	margin-top:3px;
+}
+
 #date_month_frist{
 	margin-right:10px;
 	min-width:40px;

@@ -558,7 +558,7 @@ color:#0066CC;
         }
         tep_db_free_result($groups_payroll_query);
         
-	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;" id="td_time"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:payrolls_sort(\'time\',1,\''.TEXT_PAYROLLS_OPTION.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_OPTION.'</a>');
+	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:3%;" id="td_time"','text' => '<input type="hidden" name="group_id" value="'.$group_id.'"><a href="javascript:payrolls_sort(\'time\',1,\''.TEXT_PAYROLLS_OPTION.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_OPTION.'</a>');
 	$payroll_table_row[] = array('params' => 'class="dataTableHeadingRow" id="tr_index"','text' => $payroll_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
 		$payroll_id = 0;
