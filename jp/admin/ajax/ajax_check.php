@@ -257,10 +257,197 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 				$n++;
 			}
 		}
+		$new_messages['type']="messages";
 		$messages_header_all[] = $new_messages;
 	}
+	//bulletin_board 消息
+	$notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
+
+	$notice_micro_sql = "select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,bb.mark icon,bb.id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.type = '1' and n.is_show='1' union select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,br.mark icon,br.bulletin_id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.type = '2' and n.is_show='1' and bb.id=br.bulletin_id"; 
+
+	$notice_micro_query = tep_db_query($notice_micro_sql);
+	$notice_id_array = array();
+	$memo_id_array = array();
+	$memo_cid_array = array();
+	 while($notice_micro_array = tep_db_fetch_array($notice_micro_query)){
+
+		if($notice_micro_array['to_users'] == 'all'){
+
+		$notice_id_array[] = $notice_micro_array['id'];
+		$memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
+		$memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bb_id'];
+		$memo_type_array[$notice_micro_array['id']] = $notice_micro_array['type'];
+		}else{
+
+			$users_id_array = array();
+			$users_id_array_tmp = explode(':',$notice_micro_array['to_users']);
+			if($users_id_array_tmp[0]=='id'){
+			$users_id_array=explode(',',$users_id_array_tmp[1]);
+			}else{
+				foreach(explode(',',$users_id_array_tmp[1]) as $group){
+				$raw=tep_db_query("select * from ".TABLE_GROUPS." where name='$group'");
+			    while($row=tep_db_fetch_array($raw)){
+					$users_id_array=array_merge($users_id_array,explode("|||",$row['all_users_id']));
+				}
+				}
+			}
+			array_push($users_id_array,$notice_micro_array['from_users']);
+
+			if(in_array($ocertify->auth_user,$users_id_array)){
+
+			$notice_id_array[] = $notice_micro_array['id'];
+			$memo_id_array[$notice_micro_array['id']] = $notice_micro_array['icon'];
+			$memo_cid_array[$notice_micro_array['id']] = $notice_micro_array['bb_id'];
+			$memo_type_array[$notice_micro_array['id']] = $notice_micro_array['type'];
+		}
+	 }
+	}
+	tep_db_free_result($notice_micro_query);
+	 $notice_id_str = implode(',',$notice_id_array);
+
+	 if($notice_id_str != ''){
+	 $notice_micro_sqls = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n where n.id in (".$notice_id_str.")";
+	}
+  //警告提示
+	$alarm_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='1'";
+  
+	$notice_total_sql = "select * from (".$notice_order_sql.($notice_id_str != '' ? " union ".$notice_micro_sqls : '')." union ".$alarm_order_sql.") taf where id != '".$_POST['aid']."' order by created_at desc,set_time asc, type asc"; 
+  
+	$notice_list_raw = tep_db_query($notice_total_sql);
+  
+	$now_time = strtotime(date('Y-m-d H:i:00', time()));
+
+	//获取图标信息
+	$icon_list_array = array();
+	 $icon_query = tep_db_query("select id,pic_name,pic_alt from ". TABLE_CUSTOMERS_PIC_LIST);
+	while($icon_array = tep_db_fetch_array($icon_query)){
+
+		$icon_list_array[$icon_array['id']] = array('name'=>$icon_array['pic_name'],'alt'=>$icon_array['pic_alt']);
+	 }
+	tep_db_free_result($icon_query);
+	if (tep_db_num_rows($notice_list_raw) > 0) {
+	 while ($notice_list = tep_db_fetch_array($notice_list_raw)) {
+		 $new_header=array();
+		  if($notice_list['deleted'] != ''){
+          
+			$notice_users_array = array();
+			$notice_users_array = explode(',',$notice_list['deleted']);
+        
+			if(in_array($ocertify->auth_user,$notice_users_array)){
+			continue;
+			}
+		}
+      $check_notice_query = tep_db_query("select a.alarm_flag from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.id='".$_POST['aid']."'");
+      $check_notice_array = tep_db_fetch_array($check_notice_query);
+      tep_db_free_result($check_notice_query);
+      if ($notice_list['type'] == '0') {
+        $alarm_flag_query = tep_db_query("select alarm_flag,alarm_show,orders_flag from ".TABLE_ALARM." where alarm_id='".$notice_list['from_notice']."'");
+        $alarm_flag_array = tep_db_fetch_array($alarm_flag_query);
+        tep_db_free_result($alarm_flag_query);
+      }
+      if ($notice_list['type'] == '0') { 
+        if($alarm_flag_array['orders_flag'] == '1'){
+		  $new_header['mark']='';
+          $title_str = HEADER_TEXT_ALERT_TITLE;
+        }else{
+          $title_str = HEADER_TEXT_ALERT_TITLE_PREORDERS; 
+        }
+        if($alarm_flag_array['alarm_flag'] == '0'){
+          $new_header['title']='&nbsp;'.NOTICE_ALARM_TITLE; 
+        }else{
+          $new_header['title']='&nbsp;'.$title_str; 
+        }
+      } else {
+        $new_header['title']='&nbsp;<img src="images/icons/bbs.gif">'; 
+      }
+      $set_time = strtotime($notice_list['set_time']);
+      $leave_time = $set_time - $now_time;
+      if ($leave_time > 0) {
+        $leave_time_day = floor($leave_time/(3600*24));
+        $leave_time_tmp = $leave_time % (3600*24);
+        $leave_time_seconds = $leave_time_tmp % 3600;
+        $leave_time_hour = ($leave_time_tmp - $leave_time_seconds) / 3600;
+        $leave_time_minute = $leave_time_seconds % 60;
+        $leave_time_minute = ($leave_time_seconds - $leave_time_minute) / 60;
+        $leave_date = sprintf('%02d', $leave_time_day).DAY_TEXT.sprintf('%02d', $leave_time_hour).HOUR_TEXT.sprintf('%02d', $leave_time_minute).MINUTE_TEXT;
+      } else {
+        $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
+      }
+      $new_header['time']=substr(str_replace("-","/",$notice_list['created_at']),0,16);
+
+      if(in_array($notice_list['id'],$notice_id_array)){
+		  $new_header['mark']=$memo_id_array[$notice_list['id']];
+			if($new_header['mark'] != '' && $new_header['mark'] != null){
+				$new_header['mark'] = explode(',',$new_header['mark']);
+				$n = 0;
+				foreach($new_header['mark'] as $value){
+					if(strlen($value)==1){
+						$new_header['mark'][$n] = '0'.$value;
+					}
+					$n++;
+				}
+			}
+	  }else{
+      }
+      if ($notice_list['type'] == '0') {
+        $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$notice_list['from_notice']."'"); 
+        $alarm = tep_db_fetch_array($alarm_raw); 
+        if($alarm_flag_array['alarm_flag'] == '0'){
+          $new_header['content']='<a style="color:#0000FF;text-decoration:underline;" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
+        }else{
+          if($alarm_flag_array['orders_flag'] == '1'){
+
+            $filename_str = FILENAME_ORDERS;
+          }else{
+            $filename_str = FILENAME_PREORDERS; 
+          }
+           $new_header['content']='<a style="color:#0000FF;text-decoration:underline;"  href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
+        }
+      } else {
+		$type_html="";
+		if($memo_type_array[$notice_list['id']]==2){
+			$type_html='action=show_reply&';
+			$count_row=tep_db_num_rows(tep_db_query("select id from ".TABLE_BULLETIN_BOARD_REPLY." where id>=".$notice_list['from_notice']));
+			$page=ceil($count_row/MAX_DISPLAY_SEARCH_RESULTS);
+			$type_html.='page='.$page.'&c_id='.$notice_list['from_notice'].'&';
+		}else{
+			$count_row=tep_db_num_rows(tep_db_query("select id from ".TABLE_BULLETIN_BOARD." where id>=".$notice_list['from_notice']));
+			$page=ceil($count_row/MAX_DISPLAY_SEARCH_RESULTS);
+			$type_html.='page='.$page.'&';
+		}
+         $new_header['content']='<a style="color:#0000FF;text-decoration:underline;"  href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$type_html.'bulletin_id='.$memo_cid_array[$notice_list['id']]).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
+      }
+      if ($notice_list['type'] == '0') {
+      if($alarm_flag_array['alarm_flag'] == '1'){
+         $new_header['content'].='<div style="float:left;" id="alarm_user_'.$notice_list['from_notice'].'">';
+        $new_header['content'].=$notice_list['user'].'&nbsp;'.HEADER_TEXT_ALERT_LINK;
+        $new_header['content'].= '</div>';
+        $new_header['content'].= '<div style="float:left;">';
+        if($alarm_flag_array['alarm_show'] == '1'){
+          $new_header['content'].= '&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$notice_list['from_notice'].'">ON</span>';
+        }else{
+          $new_header['content'].= '&nbsp;'.str_replace('${ALERT_TITLE}',(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']),HEADER_TEXT_ALERT_COMMENT).'/&nbsp;<span id="alarm_id_'.$notice_list['from_notice'].'">OFF</span>'; 
+        }
+        $new_header['content'].= '</div>';
+      }else{
+        $new_header['content'].= '<div style="float:left;">';
+        $new_header['content'].= NOTICE_DIFF_TIME_TEXT.'&nbsp;'; 
+        $new_header['content'].= '<span>'.$leave_date.'</span>';
+        $new_header['content'].= '</div>';
+      }
+      }
+      if ($notice_list['type'] == '0') {
+        $new_header['delete']='&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
+      } else {
+        $new_header['delete']= '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"  onmousemove="this.src=\'images/icons/white_bbs_del_one.gif\'" onmouseout="this.src=\'images/icons/bbs_del_one.gif\'"></a>'; 
+      }
+		$new_header['type']='bulletin';
+		$messages_header_all[] = $new_header;
+    }
+  }
 
 
+	//bulletin_board 消息结束
 	if(empty($messages_header_all)){
         	$messages_header_all = '0';
 		echo $messages_header_all;

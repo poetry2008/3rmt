@@ -49,13 +49,13 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => TEXT_CREATE_BULLETIN);
-	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=create_bulletin&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'','post','enctype="multipart/form-data" onsubmit="return check_value(0)" id="form_create_bulletin"'); 
+	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=create_bulletin&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" onsubmit="return check_value(0)" id="form_create_bulletin"'); 
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-	 $bulletin_content_row_from[] = array('params'=>'width="70%" style="color:#FF0000;"','text'=>'<input type="text" name="title" id="bulletin_title" size=80> * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
+	 $bulletin_content_row_from[] = array('params'=>'width="70%" style="color:#FF0000;"','text'=>'<input type="text" name="title" id="bulletin_title" style="width:80%;"> * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
 	 $bulletin_content_row_from[] = array('params'=>'width="10%"','text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
 	 $bulletin_content_row_manager = array();
@@ -68,6 +68,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $option_html='<option >----</option>';
 	 foreach($user_name as $name){
+		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))==1)continue;
 		 $option_html.='<option name="manager" value='.$name.'>'.$name.'</option>';
 	 }
 	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="----">'.$option_html.'</select>');
@@ -76,7 +77,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 //To
 	 $bulletin_content_row_allow = array();
 	 $bulletin_content_row_allow [] =array('text'=>'To');
-	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input type="radio" value="all" onclick="select_allow(this,0)" checked="true" name="select_all" id="select_all_radio">ALL</td><td><input type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)">'.TEXT_GROUP_SELECT.'</td><td><input type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio">'.TEXT_SELECT_ID.'</td></tr></table>');
+	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input type="radio" value="all" onclick="select_allow(this,0)" checked="true" name="select_all" id="select_all_radio"><label for="select_all_radio">ALL</label></td><td><input type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)"><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label></td><td><input type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label></td></tr></table>');
 	 $bulletin_content_row_allow [] =array('text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
 	 $users_list_html='';
@@ -96,7 +97,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $bulletin_content_row_choose = array();
 	 $bulletin_content_row_choose [] =  array('text'=> '');
-	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:none;"><table width="100%">
+	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:none;"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -104,14 +105,14 @@ if (isset($_GET['action']) and $_GET['action']) {
 	</tr>
 	<tr>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="user_add" width="100%" style="overflow-y:scroll;height:105px;"></div></td>
-		<td  board="0" align="center" style="vertical-align:middle;">
-			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(1)">&lt'.ADD_STAFF.'</div>
-			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(1)">'.DELETE_STAFF.'&gt</div>
+		<td  board="0" align="center" style="vertical-align:middle;width:15%;">
+			<button type="button" width="100%" onclick="add_select_user(1)">&lt&lt'.ADD_STAFF.'</button>
+			<button type="button" width="100%" onclick="delete_select_user(1)">'.DELETE_STAFF.'&gt&gt</button>
 		</td>
 		<td board="0" style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="user_delete_to" style="overflow-y:scroll;height:105px;">'.$users_list_html.'</div></td>
 	</tr>
 </table></div>
-<div width="100%" id="select_group" style="display:none;"><table width="100%">
+<div width="100%" id="select_group" style="display:none;"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -119,9 +120,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	</tr>
 	<tr>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="group_add" width="100%" style="overflow-y:scroll;height:105px;"></div></td>
-		<td align="center" style="vertical-align:middle;">
-			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(0)">&lt'.ADD_STAFF.'</div>
-			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(0)">'.DELETE_STAFF.'&gt</div>
+		<td align="center" style="vertical-align:middle;width:15%">
+			<button type="button" width="100%" onclick="add_select_user(0)">&lt&lt'.ADD_STAFF.'</button>
+			<button type="button" width="100%" onclick="delete_select_user(0)">'.DELETE_STAFF.'&gt&gt</button>
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
@@ -140,7 +141,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_CONTENT);
- 	$bulletin_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
+ 	$bulletin_text_area =  '<textarea style="resize:vertical; width:80%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $bulletin_content_row_must_write = array();
@@ -182,11 +183,11 @@ if (isset($_GET['action']) and $_GET['action']) {
 		if($row['id']>$max_id)$max_id=$row['id'];
 		if($row['id']<$min_id)$min_id=$row['id'];
 	}
-	if($next<$min_id)$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$last.')">'.TEXT_LAST.'</a>';
+	if($next<$min_id)$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$last.')">'.TEXT_LAST.'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 	else if($last>$max_id||$last==''){
 		$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$next.')">'.TEXT_NEXT.'</a>';
 	}else{
-		$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$last.')">'.TEXT_LAST.'</a><a href="javascript:void(0)" onclick="show_link_bulletin_info('.$next.')">'.TEXT_NEXT.'</a>';
+		$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$last.')">'.TEXT_LAST.'</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$next.')">'.TEXT_NEXT.'</a>';
 	}
 	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin&bulletin_id='.$bulletin_id.'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1"'); 
 	 $heading[] = array('align' => 'right', 'text' => $turn_html.'<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
@@ -217,7 +218,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-	 $bulletin_content_row_from[] = array('params'=>'width="100%" style="color:#FF0000;"','text'=>'<input type="text" name="title" value="'.$bulletin_info["title"].'" id="bulletin_title" size="80" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'> * '.TEXT_MUST_WRITE);
+	 $bulletin_content_row_from[] = array('params'=>'width="80%" style="color:#FF0000;"','text'=>'<input type="text" name="title" style="width:80%;" value="'.$bulletin_info["title"].'" id="bulletin_title"  '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'> * '.TEXT_MUST_WRITE);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
 	 $bulletin_content_row_manager = array();
 	 $bulletin_content_row_manager [] = array('text'=>TEXT_MANAGER);
@@ -227,18 +228,19 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
 		 $user_name[]=$row['userid'];
 	 }
-	 $option_html='<option name="manager" value="'.$bulletin_info["manager"].'">'.$bulletin_info["manager"].'</option>';
+	 $option_html='<option name="manager" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' value="'.$bulletin_info["manager"].'">'.$bulletin_info["manager"].'</option>';
 	 foreach($user_name as $name){
+		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))==1)continue;
 		 if($name==$bulletin_info['manager'])continue;
 		 $option_html.='<option name="manager" value='.$name.'>'.$name.'</option>';
 	 }
-	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="">'.$option_html.'</select>');
+	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'>'.$option_html.'</select>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
 	 
 	 //To
 	 $bulletin_content_row_allow = array();
 	 $bulletin_content_row_allow [] =array('text'=>'TO');
-	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input type="radio" value="all" onclick="select_allow(this,0)" name="select_all" id="select_all_radio" >ALL</td><td><input type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)" >'.TEXT_GROUP_SELECT.'</td><td><input type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio">'.TEXT_SELECT_ID.'</td></tr></table>');
+	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'type="radio" value="all" onclick="select_allow(this,0)" name="select_all" id="select_all_radio" ><label for="select_all_radio">ALL</label></td><td><input '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)" ><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label></td><td><input '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label></td></tr></table>');
 	 $bulletin_content_row_allow [] =array('text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
 	 $users_list_html='';
@@ -269,7 +271,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $bulletin_content_row_choose = array();
 	 $bulletin_content_row_choose [] =  array('text'=> '');
-	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:'.$id_show.';"><table width="100%">
+	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:'.$id_show.';"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -277,14 +279,14 @@ if (isset($_GET['action']) and $_GET['action']) {
 	</tr>
 	<tr>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="user_add" width="100%" style="overflow-y:scroll;height:105px;">'.$users_select_html.'</div></td>
-		<td align="center" style="vertical-align:middle;">
-			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(1)">&lt'.ADD_STAFF.'</div>
-			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(1)">'.DELETE_STAFF.'&gt</div>
+		<td align="center" style="vertical-align:middle;width:15%;">
+			<button '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' type="button" width="100%" onclick="add_select_user(1)">&lt&lt'.ADD_STAFF.'</button>
+			<button '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' type="button" width="100%" onclick="delete_select_user(1)">'.DELETE_STAFF.'&gt&gt</button>
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="user_delete_to" style="overflow-y:scroll;height:105px;">'.$users_list_html.'</div></td>
 	</tr>
 </table></div>
-<div width="100%" id="select_group" style="display:'.$group_show.';"><table width="100%">
+<div width="100%" id="select_group" style="display:'.$group_show.';"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -292,9 +294,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	</tr>
 	<tr>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div id="group_add" width="100%" style="overflow-y:scroll;height:105px;">'.$group_select_html.'</div></td>
-		<td align="center" style="vertical-align:middle;">
-			<div style="background:#CCCCCC;" width="100%" onclick="add_select_user(0)">&lt'.ADD_STAFF.'</div>
-			<div style="background:#CCCCCC;" width="100%" onclick="delete_select_user(0)">'.DELETE_STAFF.'&gt</div>
+		<td align="center" style="vertical-align:middle;width:15%;">
+			<button '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' type="button" width="100%" onclick="add_select_user(0)">&lt&lt'.ADD_STAFF.'</button>
+			<button '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' type="button" width="100%" onclick="delete_select_user(0)">'.DELETE_STAFF.'&gt&gt</button>
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
@@ -302,9 +304,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_choose);
 	$mark_array = explode(',',$bulletin_info['mark']);
 	$pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
-    $users_icon = '<ul class="table_img_list" style="width:100%">'; 
+    $users_icon = '<ul  class="table_img_list" style="width:100%">'; 
     while ($pic_list_res = tep_db_fetch_array($pic_list_raw)) {
-     $users_icon .= '<li><input type="checkbox" name="pic_icon[]" value="'.$pic_list_res['id'].'"'.(in_array($pic_list_res['id'],$mark_array) ? ' checked="checked"' : '').' style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
+     $users_icon .= '<li><input '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' type="checkbox" name="pic_icon[]" value="'.$pic_list_res['id'].'"'.(in_array($pic_list_res['id'],$mark_array) ? ' checked="checked"' : '').' style="padding-left:0;margin-left:0;"><img src="images/icon_list/'.$pic_list_res['pic_name'].'" alt="'.$pic_list_res['pic_alt'].'" title="'.$pic_list_res['pic_alt'].'"></li>'; 
    }
 	$users_icon .= '</ul>';
 	$bulletin_content_row_mark = array();
@@ -314,19 +316,18 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_CONTENT);
 	$user=$ocertify->auth_user;
- 	$bulletin_text_area =  '<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'   name="content">'.$bulletin_info["content"].'</textarea>';
+ 	$bulletin_text_area =  '<textarea style="resize:vertical; width:80%;" class="textarea_width" rows="10" id="current_contents" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'   name="content">'.$bulletin_info["content"].'</textarea>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
-	 $file_download_url='<div>';
+	 $file_download_url='';
 	 $index=1;
 	 foreach(explode('|||',$bulletin_info['file_path']) as $value){
 		 if($value=='')continue;
 		 $file_download_url.='&nbsp;<div id="delete_file_'.$index.'" style="float:left;"><a href="'.PATH_BULLETIN_BOARD_UPLOAD.$value.'" style="text-decoration:underline;color:#0000FF;" >'.$value.'</a>';
-		 if($user==$bulletin_info['manager']||$ocertify->npermission==31)$file_download_url.='<a href="javascript:void(0)" onclick="delete_file(\'delete_file_'.$index.'\',\''.$value.'\')" style="text-decoration:underline;color:#0000FF;">&nbsp;X&nbsp;</a>';
+		 if($user==$bulletin_info['manager']||$ocertify->npermission>=15)$file_download_url.='&nbsp;&nbsp;<a href="javascript:void(0)" onclick="delete_file(\'delete_file_'.$index.'\',\''.$value.'\')" style="text-decoration:underline;color:#0000FF;">&nbsp;X&nbsp;</a>';
 		$index++;
 		$file_download_url.='&nbsp;&nbsp;&nbsp;</div>';
 	 }
-	 $file_download_url.='</div>';
 	 $bulletin_content_row_download = array();
 	 $bulletin_content_row_download[] = array('text'=> TEXT_FILE_DOWNLOAD_URL);
 	 $bulletin_content_row_download[] = array('text'=> $file_download_url);
@@ -359,7 +360,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => TEXT_CREATE_BULLETIN_ERPLY);
-	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=create_bulletin_reply&bulletin_id='.$_POST["bulletin_id"].'','post','enctype="multipart/form-data" id="form1" onsubmit="return check_value(1)"'); 
+	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=create_bulletin_reply&bulletin_id='.$_POST["bulletin_id"].'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1" onsubmit="return check_value(1)"'); 
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
 	 $bulletin_content_table = array();
@@ -374,7 +375,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_mark = array();
 	 $bulletin_content_row_mark[] = array('params'=>'width="20%"','text'=> TEXT_MARK);
 	 $bulletin_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
-	 $bulletin_content_row_mark[] = array('params'=>'width="10%"','text'=> ' ');
+	 $bulletin_content_row_mark[] = array('params'=>'width="20%"','text'=> ' ');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 
     
@@ -412,13 +413,13 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$next=$next_raw['id'];
 	$last_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id>$id  and bulletin_id=$bulletin_id order by id asc limit 1"));
 	$last=$last_raw['id'];
-	if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id<='$id' and bulletin_id=$bulletin_id"))==1)$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$last.','.$bulletin_id.')">'.TEXT_LAST.'</a>';
-	else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id>='$id' and bulletin_id=$bulletin_id"))==1){
-		$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$next.','.$bulletin_id.')">'.TEXT_NEXT.'</a>';
+	if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id<='$next' and bulletin_id=$bulletin_id"))==0||!$next)$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$last.','.$bulletin_id.')">'.TEXT_LAST.'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id>='$last' and bulletin_id=$bulletin_id"))==0||!$last){
+		$turn_html='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_reply_info('.$next.','.$bulletin_id.')">'.TEXT_NEXT.'</a>';
 	}else{
-		$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$last.','.$bulletin_id.')">'.TEXT_LAST.'</a><a href="javascript:void(0)" onclick="show_link_reply_info('.$next.','.$bulletin_id.')">'.TEXT_NEXT.'</a>';
+		$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$last.','.$bulletin_id.')">'.TEXT_LAST.'</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_reply_info('.$next.','.$bulletin_id.')">'.TEXT_NEXT.'</a>';
 	}
-	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin_reply&id='.$_POST["id"].'&bulletin_id='.$bulletin_info['bulletin_id'],'post','enctype="multipart/form-data" id="form1" '); 
+	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin_reply&id='.$_POST["id"].'&bulletin_id='.$bulletin_info['bulletin_id'].'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1" '); 
 	 $heading[] = array('align' => 'right', 'text' => $turn_html.'<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 	 $old_content=$bulletin_info['content'];
 	 $bulletin_content_table = array();
@@ -437,7 +438,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_mark = array();
 	 $bulletin_content_row_mark[] = array('params'=>'width="20%"','text'=> TEXT_MARK);
 	 $bulletin_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$bulletin_info['mark'].'">');
-	 $bulletin_content_row_mark[] = array('params'=>'width="10%"','text'=>' ');
+	 $bulletin_content_row_mark[] = array('params'=>'width="20%"','text'=>' ');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	
 	 $new_bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY_LAST);
@@ -450,9 +451,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $user=$ocertify->auth_user;
 	 foreach(explode('|||',$bulletin_info['file_path']) as $value){
 		 if($value=='')continue;
-		 $file_download_url.='<div id="delete_file_'.$index.'"><a href="'.PATH_BULLETIN_BOARD_UPLOAD.$value.'" style="text-decoration:underline;color:#0000FF;" >'.$value.'</a>';
-		 if($user==$bulletin_info['manager']||$ocertify->npermission==31)$file_download_url.='<a href="javascript:void(0)" onclick="delete_file(\'delete_file_'.$index.'\',\''.$value.'\')">&nbsp;X&nbsp</a>';
-		 $file_download_url.='</div>';
+		 $file_download_url.='&nbsp;<div id="delete_file_'.$index.'" style="float:left;"><a href="'.PATH_BULLETIN_BOARD_UPLOAD.$value.'"style="text-decoration:underline;color:#0000FF;">'.$value.'</a>';
+		 if($ocertify->npermission>=15)$file_download_url.='&nbsp;&nbsp;<a href="javascript:void(0)" onclick="delete_file(\'delete_file_'.$index.'\',\''.$value.'\')" style="text-decoration:underline;color:#0000FF;">&nbsp;X&nbsp;</a>';
+		 $file_download_url.='&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 		$index++;
 	 }
 	 $bulletin_content_row_download = array();
@@ -473,7 +474,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_TIME.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 	 if($ocertify->npermission>=15||$user==$bulletin_info['author'])$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',\'show_reply\')">';
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit" '.(($ocertify->npermission>=15||$user==$bulletin_info['author'])?"":'disabled="disabled"').'  value="'.TEXT_SUBMIT.'">'.$delete_button_html);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"  value="'.TEXT_SUBMIT.'">'.$delete_button_html);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);

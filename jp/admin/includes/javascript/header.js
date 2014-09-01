@@ -1,6 +1,6 @@
 var alert_update_id = '';
 $(function() {
-   setTimeout(function() {show_head_notice(1)}, 35000);
+   setTimeout(function() {check_header_messages()}, 35000);
 });
 //handle notice time
 function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, notice_day_title, notice_hour_title, notice_min_title)
@@ -101,9 +101,7 @@ function expend_all_notice(aid)
 }
 //delete all notice
 function delete_notice(all_notice,aid){
-  if(confirm(all_notice)){
   delete_alarm_notice('','1','1',aid);
-  }
 }
 //delete alarm notice
 function delete_alarm_notice(nid, e_type,all_del,aid)
@@ -120,7 +118,7 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
         }
         $('#show_all_notice').css('display', 'none');
         $('#show_all_notice').html(''); 
-        show_head_notice(0);
+        check_header_messages();
         if($("#notice_id_str").val()){
           $("#notice_id_str").remove();
           $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">');
@@ -141,7 +139,7 @@ function delete_micro_notice(nid, e_type)
       success: function(data) {
         $('#show_all_notice').css('display', 'none');
         $('#show_all_notice').html(''); 
-        show_head_notice(0);
+        check_header_messages();
       } 
       });
 }
@@ -218,7 +216,7 @@ function show_head_notice(no_type)
               $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">'); 
             }
           }
-          setTimeout(function() {show_head_notice(1)}, 35000);
+          setTimeout(function() {check_header_messages()}, 35000);
         }
       } 
       });
