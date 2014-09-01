@@ -1574,7 +1574,6 @@ if($show_ulist_flag){
       }else{
         echo $u_info['name'].$replace_str;
       }
-      }
       if(!empty($attendance_date_info)){
         if($attendance_date_info['scheduling_type'] == 1){
           echo '<span class="rectangle" style="background-color:'.$all_att_arr[$user_replace['replace_attendance_detail_id']]['src_text'].';">&nbsp;</span>';
@@ -1586,6 +1585,7 @@ if($show_ulist_flag){
       }
       if($user_replace['allow_status']==0&& (in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user'])){
         echo "<img src='images/icons/mark.gif' alt='UNALLOW'>";
+      }
       }
       }
       echo "</a>";
