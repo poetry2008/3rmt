@@ -173,6 +173,159 @@ function select_logs_change(value,logs_list_id,c_permission){
     alert("<?php echo TEXT_LOGS_EDIT_MUST_SELECT;?>"); 
   }
 }
+
+
+function show_popup_info(obj,id,type){
+	var tmp=obj;
+	obj=obj.parentNode;
+	origin_offset_symbol=1;
+	switch(type){
+		case 0:
+			$.ajax({
+				url: "ajax.php?action=show_order_info",   
+                type: "POST",
+                dataType: "text",
+                data: "id="+id,
+                async: false,
+                success: function(data) {
+					$("#show_popup_info").html(data);
+					if (document.documentElement.clientHeight < document.body.scrollHeight) {
+						if (obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
+							 offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
+							$('#show_popup_info').css('top', offset).show(); 
+						} else {
+							offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+							$('#show_popup_info').css('top', offset).show(); 
+						}
+					} else {
+						 if ((document.documentElement.clientHeight-obj.offsetTop) < obj.offsetTop) {
+						offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height()-obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+					} else {
+						offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+						}	
+					}
+					$('#show_popup_info').show(); 
+					$('#show_popup_info').css('z-index', data_info_array[1]); 
+					o_submit_single = true;
+				}
+			});
+			break;
+		case 1:
+			$.ajax({
+				url: "ajax.php?action=show_bulletin_info",   
+                type: "POST",
+                dataType: "text",
+                data: "id="+id,
+                async: false,
+                success: function(data) {
+					$("#show_popup_info").html(data);
+					if (document.documentElement.clientHeight < document.body.scrollHeight) {
+						if (obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
+							 offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
+							$('#show_popup_info').css('top', offset).show(); 
+						} else {
+							offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+							$('#show_popup_info').css('top', offset).show(); 
+						}
+					} else {
+						 if ((document.documentElement.clientHeight-obj.offsetTop) < obj.offsetTop) {
+						offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height()-obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+					} else {
+						offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+						}	
+					}
+					$('#show_popup_info').show(); 
+					$('#show_popup_info').css('z-index', data_info_array[1]); 
+					o_submit_single = true;
+				}
+				});
+			  break;
+		case 2:
+			$.ajax({
+				url: "ajax.php?action=show_bulletin_reply_info",   
+                type: "POST",
+                dataType: "text",
+                data: "id="+id,
+                async: false,
+                success: function(data) {
+					$("#show_popup_info").html(data);
+					$("#show_popup_info").show();
+					if (document.documentElement.clientHeight < document.body.scrollHeight) {
+						if (obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
+							 offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
+							$('#show_popup_info').css('top', offset).show(); 
+						} else {
+							offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+							$('#show_popup_info').css('top', offset).show(); 
+						}
+					} else {
+						 if ((document.documentElement.clientHeight-obj.offsetTop) < obj.offsetTop) {
+						offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height()-obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+					} else {
+						offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+						}	
+					}
+					$('#show_popup_info').show(); 
+					o_submit_single = true;
+				}
+				});
+			  break;
+		case 3:
+			$.ajax({
+				url: "ajax.php?action=show_messages_info",   
+                type: "POST",
+                dataType: "text",
+                data: "id="+id,
+                async: false,
+                success: function(data) {
+					$("#show_popup_info").html(data);
+					if (document.documentElement.clientHeight < document.body.scrollHeight) {
+						if (obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
+							 offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
+							$('#show_popup_info').css('top', offset).show(); 
+						} else {
+							offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+							$('#show_popup_info').css('top', offset).show(); 
+						}
+					} else {
+						 if ((document.documentElement.clientHeight-obj.offsetTop) < obj.offsetTop) {
+						offset = obj.offsetTop+$('#log_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height()-obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+					} else {
+						offset = obj.offsetTop+$('#log_list_box').position().top+obj.offsetHeight;
+						$('#show_popup_info').css('top', offset).show(); 
+						}	
+					}
+					$('#show_popup_info').show(); 
+					$('#show_popup_info').css('z-index', data_info_array[1]); 
+					o_submit_single = true;
+				}
+				});
+			break;
+		default:
+			alert(1);
+			break;
+	}
+}
+
+function hidden_info_box(){
+	$("#show_popup_info").html('');
+}
+
+function delete_alert(id,type){
+	var str="check_box_";
+	if(type==3)str+="messages";
+	else str+="log";
+	str+="_"+id;
+	document.getElementById(str).checked="checked";
+    select_logs_change(1,'logs_list_id[]','<?php echo $ocertify->npermission;?>');
+}
 </script>
 <?php 
 $belong = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
@@ -190,7 +343,7 @@ require("includes/note_js.php");
 <!-- header_eof -->
 
 <!-- body -->
-<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
+<table border="0" width="100%" cellspacing="2" cellpadding="2" class="content" >
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top">
      <table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
@@ -213,7 +366,7 @@ require("includes/note_js.php");
                             </tr>
                             <tr>
                                <td>
-<table width="100%" cellspacing="0" cellpadding="0" border="0"> 
+<table width="100%" cellspacing="0" cellpadding="0" border="0" id="log_list_box"> 
   <tr>      
    <td>
 <?php 
@@ -342,6 +495,7 @@ require("includes/note_js.php");
       $site_list_array[] = $site_array['id'];
     }
     echo tep_show_site_filter(FILENAME_ALERT_LOG,false,$site_list_array);
+	echo '<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>';
     // 表标签的开始
     $alert_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
     $notice_box = new notice_box('','',$alert_table_params);
@@ -458,7 +612,7 @@ if ($rec_c % 2) {
       $micro_info_query = tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id='".$arec['from_notice']."'");
       $micro_info_array = tep_db_fetch_array($micro_info_query);
 
-      $alert_user = $micro_info_array['author'];
+      $alert_user = $micro_info_array['update_author'];
       $user_info = tep_get_user_info($alert_user);
       $alert_user = $user_info['name'];
       $alert_button_name = TEXT_BULLETIN_BOARD;
@@ -469,12 +623,12 @@ if ($rec_c % 2) {
     if($arec['type'] == '3'){
       $alert_info[] = array(
         'params' => ' class="main"',
-        'text'   => '<input type="checkbox" value="'.$arec['id'].'" name="messages_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'>'
+        'text'   => '<input type="checkbox" id="check_box_messages_'.$arec['from_notice'].'" value="'.$arec['id'].'" name="messages_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'>'
       ); 
     }else{
       $alert_info[] = array(
         'params' => ' class="main"',
-        'text'   => '<input type="checkbox" value="'.$arec['id'].'" name="logs_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'>'
+        'text'   => '<input type="checkbox" id="check_box_log_'.$arec['from_notice'].'" value="'.$arec['id'].'" name="logs_list_id[]"'.(($is_disabled_single)?' disabled="disabled"':'').'>'
       ); 
     }
     $alert_info[] = array(
@@ -494,8 +648,8 @@ if ($rec_c % 2) {
         'text'   => $arec['created_at']
         ); 
     $alert_info[] = array(
-        'params' => 'class="main" align="right"',
-        'text'   => tep_image('images/icons/info_gray.gif')
+        'params' => 'class="main" align="right" onclick="show_popup_info(this,'.$arec['from_notice'].','.$arec['type'].')"',
+		'text' => '<a id="m_696" href="javascript:void(0);">'.tep_get_signal_pic_info($arec['date_update']).'</a>'
         ); 
     $alert_table_row[] = array('params' => $alert_params, 'text' => $alert_info);
     $rec_c++;

@@ -437,24 +437,36 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
       }
       }
       if ($notice_list['type'] == '0') {
+		$new_header['type']='order';
         $new_header['delete']='&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
       } else {
+		$new_header['type']='bulletin';
         $new_header['delete']= '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"  onmousemove="this.src=\'images/icons/white_bbs_del_one.gif\'" onmouseout="this.src=\'images/icons/bbs_del_one.gif\'"></a>'; 
       }
-		$new_header['type']='bulletin';
 		$messages_header_all[] = $new_header;
     }
   }
-
-
 	//bulletin_board 消息结束
 	if(empty($messages_header_all)){
         	$messages_header_all = '0';
 		echo $messages_header_all;
 	}else{
+		//按照时间排序
+		$header_num=count($messages_header_all);
+		for($i=0;$i<$header_num;$i++){
+			$min_time=strtotime($messages_header_all[$i]['time']);
+			for($j=$i;$j<$header_num;$j++){
+				if(strtotime($messages_header_all[$j]['time'])>$min_time){
+					$min_time=strtotime($messages_header_all[$j]['time']);
+					$tmp=$messages_header_all[$j];
+					$messages_header_all[$j]=$messages_header_all[$i];
+					$messages_header_all[$i]=$tmp;
+				}
+			}
+		}
 		echo json_encode($messages_header_all);
-	}
 	//die(var_dump($messages_header_all));
+	}
 }else if(isset($_GET['action']) && $_GET['action'] == 'delete_messages_header'){
 	if($_POST['id'] != '' && $_POST['id'] != null){
 		$is_delete = tep_db_query('update messages set header_status = "1" where id = '.$_POST['id']);

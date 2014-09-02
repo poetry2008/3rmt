@@ -6,6 +6,7 @@ if (extension_loaded('mbstring')) {
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
 }
 define('TEXT_BULLETIN_BOARD','公告栏');
+define('TEXT_BULLETIN_EDIT_CONFIRM','确定要删除吗？');
 define('SEARCH','搜索');
 define('TEXT_COLLECT','收藏');
 define('TEXT_MARK','标记');
@@ -50,4 +51,5 @@ define('TEXT_CONTENT_NEW','内容');
 define('TEXT_CREATE_BULLETIN_REPLY','回复');
 define('TEXT_LAST','上一项');
 define('TEXT_NEXT','下一项');
+define('TEXT_ALERT_TYPE','类型');
 ?>
