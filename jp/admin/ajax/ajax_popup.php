@@ -10120,11 +10120,10 @@ echo  $return_res;
     //end
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
-  if($ocertify->npermission > 10){
-    $button[] = '<a
-      href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
+  if($ocertify->npermission > 10 || tep_is_group_manager($ocertify->auth_user)){
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
   }
-  if(!isset($_GET['gid'])||$_GET['gid']==''){
+  if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'as\');"').'</a>'; 
@@ -10604,8 +10603,12 @@ echo  $return_res;
   //底部内容
   $buttons = array();
   
-  if(!isset($_GET['uid'])||$_GET['uid']==''){
+  if(!isset($_GET['uid'])||$_GET['uid']==''||tep_is_group_manager($ocertify->auth_user)){
+    if(tep_is_group_manager($ocertify->auth_user)){
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',temp_group_id,\'\')"').'</a>'; 
+    }else{
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\')"').'</a>'; 
+    }
   }
   if($ocertify->npermission>10
     ||($ocertify->auth_user==$replace_info_res['user']&&$replace_info_res['allow_status'] ==0)
@@ -10768,7 +10771,7 @@ if($row_array['set_time']==0){
   //获得所有用户
   $all_user = array();
   $operator = $ocertify->auth_user;
-  if($ocertify->npermission >= '15'){
+  if($ocertify->npermission >= '15'||tep_is_group_manager($ocertify->auth_user)){
 	  //选中的
     $show_user_id_list = array();
 	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
@@ -10797,7 +10800,7 @@ if($row_array['set_time']==0){
      TEXT_CALENDAR_REPEAT_TYPE_YEAR
       );
   //判断管理员修改
-  if($ocertify->npermission<15){
+  if(!tep_is_group_manager($ocertify->auth_user)){
     $disabled =  ' disabled="disabled" ';
   }
 
@@ -11072,7 +11075,7 @@ if($row_array['set_time']==0){
 
   //底部内容
   $buttons = array();
-  if($ocertify->npermission>10&&$_GET['add_id']==''){
+  if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']==''){
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['back_group_id'].'\',\''.$_GET['back_attendance_id'].'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
