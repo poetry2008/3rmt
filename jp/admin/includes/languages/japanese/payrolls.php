@@ -37,4 +37,5 @@ define('TEXT_ERROR_LINK','の');
 define('TEXT_ERROR_LEFT','「');
 define('TEXT_ERROR_RIGHT','」');
 define('TEXT_ERROR_TITLE_LINK','・');
+define('TEXT_DISPLAY_NUMBER_OF_PAYROLLS', '%d &sim; %d 番目を表示 (%d 件のうち)');
 ?>

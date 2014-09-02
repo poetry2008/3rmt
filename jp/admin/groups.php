@@ -288,12 +288,12 @@
         $flag = $_GET['flag'];
         $group_id = $_GET['group_id'];
 
-        tep_db_query("update ".TABLE_GROUPS." set group_status='".$flag."' where id='".$group_id."'");
+        tep_db_query("update ".TABLE_GROUPS." set group_status='".$flag."',update_user='".$_SESSION['user_name']."',update_time=now() where id='".$group_id."'");
         //获取当前组包含的子组
         group_id_list($group_id,$group_status_id_list);
 		if(!empty($group_status_id_list)){
           $group_status_str = implode(',',$group_status_id_list);
-          tep_db_query("update ".TABLE_GROUPS." set group_status='".$flag."' where id in (".$group_status_str.")");
+          tep_db_query("update ".TABLE_GROUPS." set group_status='".$flag."',update_user='".$_SESSION['user_name']."',update_time=now() where id in (".$group_status_str.")");
 		}
         tep_redirect(tep_href_link(FILENAME_GROUPS,'id='.$_GET['parent_id']));
         break;
