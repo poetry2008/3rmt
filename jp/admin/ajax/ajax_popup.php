@@ -11115,7 +11115,7 @@ if($row_array['set_time']==0){
  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
  //头部
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
- $heading[] = array('text' => $_POST['user_name'].TEXT_PAYROLLS_TITLE);
+ $heading[] = array('text' => $_POST['user_name']);
  $form_str = tep_draw_form('save_user_payroll', FILENAME_PAYROLLS,'action=save_user_payroll', 'post', 'enctype="multipart/form-data"').'<input type="hidden" name="user_id" value="'.$_POST['user_id'].'"><input type="hidden" name="user_payroll_list" value="'.$_POST['user_payroll_list'].'"><input type="hidden" name="save_date" value="'.$_POST['save_date'].'">';
  
  $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);

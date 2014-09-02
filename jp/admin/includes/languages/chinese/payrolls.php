@@ -18,7 +18,6 @@ define('TEXT_PAYROLLS_SEND_MAIL', '工资明细送信');
 define('TEXT_PAYROLLS_TOTAL', '总计');
 define('TEXT_USER_EDIT_MUST_SELECT','至少选择一个');
 define('TEXT_USER_SEND_MAIL_CONFIRM','确定要送信吗？');
-define('TEXT_PAYROLLS_TITLE','的工资 信息统计');
 define('TEXT_PAYROLLS_EFFECTIVE_PERIOD','有效期');
 define('TEXT_PAYROLLS_CONTENTS','备注');
 define('TEXT_PAYROLLS_DATE_TOTAL','总计期间');

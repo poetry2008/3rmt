@@ -19,14 +19,9 @@ define('TEXT_PAYROLLS_SEND_MAIL', 'Gởi chi tiết tiền lương');
 define('TEXT_PAYROLLS_TOTAL', 'Tổng');
 define('TEXT_USER_EDIT_MUST_SELECT','Vui lòng chọn ít nhất một lựa chọn');
 define('TEXT_USER_SEND_MAIL_CONFIRM','Bạn có thật sự muốn gởi');
-define('TEXT_PAYROLLS_TITLE','の給与　情報統計');
 define('TEXT_PAYROLLS_EFFECTIVE_PERIOD','Thời hạn hiệu lực');
 define('TEXT_PAYROLLS_CONTENTS','Nhận xét');
 define('TEXT_PAYROLLS_DATE_TOTAL','Thời hạn tổng kết');
-define('TEXT_PAYROLLS_NORMAL_ATTENDANCE','通常出勤');
-define('TEXT_PAYROLLS_NORMAL_OVERTIME','通常残業');
-define('TEXT_PAYROLLS_PAID_LEAVE','有給休暇');
-define('TEXT_PAYROLLS_UNPAID_VACATION','無給休み');
 
 define('TEXT_ATT_SET_VALUE','Tổng phụ số thời gian làm việc quy định');
 define('TEXT_ATT_ACTUAL_VALUE','Tổng phụ số thời gian làm việc quy định');
