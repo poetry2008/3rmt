@@ -11460,4 +11460,174 @@ if($row_array['set_time']==0){
   $notice_box->get_eof(tep_eof_hidden());
 
   echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_order_info') {
+/* -----------------------------------------------------
+    功能: 显示订单信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ALERT_LOG);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $order_sql="select * from ".TABLE_NOTICE." where from_notice=".$_POST['id']." and type=0";
+	 $order_row=tep_db_fetch_array(tep_db_query($order_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $order_id=$_POST['order_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $order_content_table = array();
+	 $order_content_row_type = array();
+	 $order_content_row_type[] = array('params'=>'width="20%"','text'=>TABLE_HEADING_TYPE );
+	 $order_content_row_type[] = array('text'=> TEXT_ORDER);
+	 $order_content_row_type[] = array('params'=>'width="20%"','text'=>'');
+	 $order_content_table[] = array('text'=> $order_content_row_type);
+
+    
+	 $order_content_row_text[] = array('text'=>TABLE_HEADING_BUTTON_NAME);
+ 	 $order_text_area =  '<div style="width: 100%;min-height:200px;">'.$order_row['title'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at'].'</div>';
+	 $order_content_row_text[] = array('text'=> $order_text_area);
+	 $order_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $order_content_table[] = array('text'=> $order_content_row_text);
+	 $order_content_row_author = array();
+	 $order_content_row_author[] = array('text'=> TEXT_USER_ADDED);
+	 $order_content_row_author[] = array('text'=> $author);
+	 $order_content_table[] = array('text'=> $order_content_row_author);
+	 $order_content_row_update = array();
+	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE);
+	 $order_content_row_update[] = array('text'=> $update_author);
+	 $order_content_table[] = array('text'=> $order_content_row_update);
+	 $order_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',0)"  value="'.IMAGE_DELETE.'">');
+	 $order_content_table[] = array('text'=> $order_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($order_content_table); 
+	 echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_bulletin_info') {
+/* -----------------------------------------------------
+    功能: 显示告示板信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ALERT_LOG);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $bulletin_sql="select * from ".TABLE_BULLETIN_BOARD." where id=".$_POST['id'];
+	 $bulletin_row=tep_db_fetch_array(tep_db_query($bulletin_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $bulletin_id=$_POST['bulletin_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $bulletin_content_table = array();
+	 $bulletin_content_row_type = array();
+	 $bulletin_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $bulletin_content_row_type[] = array('text'=> TEXT_BULLETIN_BOARD);
+	 $bulletin_content_row_type[] = array('params'=>'width="20%"','text'=> '');
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_type);
+
+    
+	 $bulletin_content_row_text[] = array('params'=>'valign="top"','text'=> TABLE_HEADING_BUTTON_NAME);
+ 	 $bulletin_text_area =  '<div style="width: 100%;min-height:200px;">'.$bulletin_row['content'].'</div>';
+	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
+	 $bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
+	 $bulletin_content_row_author = array();
+	 $bulletin_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['author']);
+	 $bulletin_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['time']);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_author);
+	 $bulletin_content_row_update = array();
+	 $bulletin_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_author']);
+	 $bulletin_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_time']);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',1)"  value="'.IMAGE_DELETE.'">');
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($bulletin_content_table); 
+	 echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_bulletin_reply_info') {
+/* -----------------------------------------------------
+    功能: 显示告示板信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ALERT_LOG);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $reply_sql="select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id'];
+	 $reply_row=tep_db_fetch_array(tep_db_query($reply_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $reply_id=$_POST['reply_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $reply_content_table = array();
+	 $reply_content_row_type = array();
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $reply_content_row_type[] = array('text'=> TEXT_BULLETIN_BOARD);
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
+	 $reply_content_table[] = array('text'=> $reply_content_row_type);
+
+    
+	 $reply_content_row_text[] = array('params'=>'valign="top"','text'=>TABLE_HEADING_BUTTON_NAME);
+ 	 $reply_text_area =  '<div style="width: 100%; min-height:200px;">'.$reply_row['content'].'</div>';
+	 $reply_content_row_text[] = array('text'=> $reply_text_area);
+	 $reply_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $reply_content_table[] = array('text'=> $reply_content_row_text);
+	 $reply_content_row_author = array();
+	 $reply_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['author']);
+	 $reply_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['time']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_author);
+	 $reply_content_row_update = array();
+	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_author']);
+	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_time']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_update);
+	 $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',2)"  value="'.IMAGE_DELETE.'">');
+	 $reply_content_table[] = array('text'=> $reply_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($reply_content_table); 
+	 echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_messages_info') {
+/* -----------------------------------------------------
+    功能: 显示messages信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.'alert_log.php');
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $reply_sql="select * from messages  where id=".$_POST['id'];
+	 $reply_row=tep_db_fetch_array(tep_db_query($reply_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $reply_id=$_POST['reply_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $reply_content_table = array();
+	 $reply_content_row_type = array();
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $reply_content_row_type[] = array('text'=> MESSAGES_PAGE_LINK_NAME);
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
+	 $reply_content_table[] = array('text'=> $reply_content_row_type);
+	 $reply_content_row_text[] = array('params'=>'valign="top"','text'=> TABLE_HEADING_BUTTON_NAME);
+ 	 $reply_text_area =  '<div style="width: 100%;min-height:200px;">'.nl2br($reply_row['content']).'</div>';
+	 $reply_content_row_text[] = array('text'=> $reply_text_area);
+	 $reply_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $reply_content_table[] = array('text'=> $reply_content_row_text);
+	 $reply_content_row_author = array();
+	 $reply_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['sender_name']);
+	 $reply_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['time']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_author);
+	 $reply_content_row_update = array();
+	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['user_update']);
+	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['date_update']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_update);
+	 $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',3)"  value="'.IMAGE_DELETE.'">');
+	 $reply_content_table[] = array('text'=> $reply_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($reply_content_table); 
+	 echo $notice_box->show_notice();
 }

@@ -68,7 +68,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $option_html='<option >----</option>';
 	 foreach($user_name as $name){
-		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))==1)continue;
+		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))>=1)continue;
 		 $option_html.='<option name="manager" value='.$name.'>'.$name.'</option>';
 	 }
 	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="----">'.$option_html.'</select>');
@@ -169,16 +169,16 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$heading[] = array('text' => TEXT_EDIT_BULLETIN);
 	$group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user') limit 1"));
 	$group_name=$group_raw['name'];
-	$page_raw=(tep_db_fetch_array(tep_db_query("select count(id) num from ".TABLE_BULLETIN_BOARD." where id>=$bulletin_id ".($ocertify->npermission==31?"":"and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))"))));
+	$page_raw=(tep_db_fetch_array(tep_db_query("select count(id) num from ".TABLE_BULLETIN_BOARD." where id>=$bulletin_id ".($ocertify->npermission>=15?"":"and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))"))));
 	$page=ceil($page_raw['num']/MAX_DISPLAY_SEARCH_RESULTS);
-	$next_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id<'$bulletin_id' ".($ocertify->npermission==31?"":"and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))")." order by id desc limit 1"));
+	$next_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id<'$bulletin_id' ".($ocertify->npermission>=15?"":"and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))")." order by id desc limit 1"));
 	$next=$next_raw['id'];
-	$last_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id>'$bulletin_id' ".($ocertify->npermission==31?"":"and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))")."  order by id asc limit 1"));
+	$last_raw=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id>'$bulletin_id' ".($ocertify->npermission>=15?"":"and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))")."  order by id asc limit 1"));
 	$last=$last_raw['id'];
 	$max_id=0;
 	$min_id=100000000;
 	$limit_str=(($page-1)*MAX_DISPLAY_SEARCH_RESULTS).','.MAX_DISPLAY_SEARCH_RESULTS;
-	$max_min_raw=tep_db_query("select * from ".TABLE_BULLETIN_BOARD."  ".($ocertify->npermission==31?"":"where (allow='all' or (allow like 'id:%' and ( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))")." order by id desc limit ".$limit_str);
+	$max_min_raw=tep_db_query("select * from ".TABLE_BULLETIN_BOARD."  ".($ocertify->npermission>=15?"":"where (allow='all' or (allow like 'id:%' and ( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))")." order by id desc limit ".$limit_str);
 	while($row=tep_db_fetch_array($max_min_raw)){
 		if($row['id']>$max_id)$max_id=$row['id'];
 		if($row['id']<$min_id)$min_id=$row['id'];
@@ -314,7 +314,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
-	$bulletin_content_row_text[] = array('text'=> TEXT_CONTENT);
+	$bulletin_content_row_text[] = array('text'=> TEXT_BULLETIN_EDIT_CONTENT);
 	$user=$ocertify->auth_user;
  	$bulletin_text_area =  '<textarea style="resize:vertical; width:80%;" class="textarea_width" rows="10" id="current_contents" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'   name="content">'.$bulletin_info["content"].'</textarea>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
@@ -331,10 +331,15 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_download = array();
 	 $bulletin_content_row_download[] = array('text'=> TEXT_FILE_DOWNLOAD_URL);
 	 $bulletin_content_row_download[] = array('text'=> $file_download_url);
-	 if($file_download_url)$bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
-	 $bulletin_content_row_addfile = array();
-     $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
-     $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
+	 if($file_download_url){
+		$bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
+		$bulletin_content_row_addfile = array();
+		$bulletin_content_row_addfile[] = array('text'=> '');
+	 }else{
+		$bulletin_content_row_addfile = array();
+		$bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
+	 }
+     $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'  type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?' onclick="add_email_file(\'bulletin_file\')"':'').'>'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_author=array();
 	 $bulletin_content_row_author[] = array('text'=>TEXT_AUTHOR."    ".$bulletin_info['author']);
@@ -459,9 +464,14 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_download = array();
 	 $bulletin_content_row_download[] = array('text'=> TEXT_FILE_DOWNLOAD_URL);
 	 $bulletin_content_row_download[] = array('text'=> $file_download_url);
-	 if($file_download_url)$bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
-	 $bulletin_content_row_addfile = array();
-     $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
+	 if($file_download_url){
+		 $bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
+		 $bulletin_content_row_addfile = array();
+		 $bulletin_content_row_addfile[] = array('text'=> '');
+	 }else{
+		 $bulletin_content_row_addfile = array();
+		 $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
+	 }
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_author=array();
