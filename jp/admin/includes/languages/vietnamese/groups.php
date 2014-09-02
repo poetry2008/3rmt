@@ -46,17 +46,3 @@ define('TEXT_CURRENT_GROUPS','Group hiện tại');
 define('TEXT_ADD_ADL', 'Thêm vào');
 define('TEXT_DEL_ADL', 'Xóa');
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
