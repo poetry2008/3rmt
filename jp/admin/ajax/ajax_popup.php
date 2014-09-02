@@ -9259,7 +9259,7 @@ $manager_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_US
   
    $group_content_table[]['text'] = array(
         array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;'.((tep_not_null($groups_array['update_user'])?$groups_array['update_user']:TEXT_UNSET_DATA))), 
-        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['update_time'])))?tep_datetime_short($groups_array['update_time']):TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['update_time']))) && tep_not_null($groups_array['update_user'])?tep_datetime_short($groups_array['update_time']):TEXT_UNSET_DATA)), 
       ); 
  }
  $group_content_row_opt = array();

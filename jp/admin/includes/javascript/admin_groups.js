@@ -44,6 +44,28 @@ function group_ajax(ele,group_id,parent_group_id,group_name){
  async : false,
  success: function(data){
    $("div#show_latest_news").html(data);
+   //prev next
+   if($('#groups_'+group_id).prev().attr('id') != '' && $('#groups_'+group_id).prev().attr('id') != null){
+      var groups_prev_id = $('#groups_'+group_id).prev().attr('id');
+      groups_prev_id = groups_prev_id.split('_');
+
+      if(groups_prev_id[0] == 'groups' && groups_prev_id[1] != ''){
+        var groups_id = $('#groups_'+group_id).prev().attr('id');
+        groups_id = groups_id.split('_');
+        $('#next_prev').append('<a id="groups_prev" onclick="'+$('#action_'+groups_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+groups_prev+'</a>&nbsp&nbsp');
+      }
+   }
+   if($('#groups_'+group_id).next().attr('id') != '' && $('#groups_'+group_id).next().attr('id') != null){
+     var groups_next_id = $('#groups_'+group_id).next().attr('id');
+     groups_next_id = groups_next_id.split('_');
+     
+     if(groups_next_id[0] == 'groups' && groups_next_id[1] != ''){
+       var groups_id = $('#groups_'+group_id).next().attr('id');
+       groups_id = groups_id.split('_');
+       $('#next_prev').append('<a id="groups_next" onclick="'+$('#action_'+groups_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+groups_next+'&gt</a>&nbsp&nbsp');
+     }
+   } 
+   //end
    ele = ele.parentNode;
    head_top = $('.compatible_head').height();
    if(group_id != -1){

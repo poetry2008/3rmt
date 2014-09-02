@@ -59,6 +59,7 @@
 				     'all_users_id' => $all_users_id,
 				     'all_managers_id' => $all_managers_id,
                                      'create_time' => 'now()',
+                                     'update_time' => 'now()',
                                      'create_user' => $_SESSION['user_name'],
                                      'group_contents' => tep_db_prepare_input($_POST['group_contents']), 
                                      'currency_type' => tep_db_prepare_input($_POST['currency_type']), 
@@ -443,6 +444,8 @@
   var ontime_pwd_error = '<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>';
   var js_news_self = '<?php echo $_SERVER['PHP_SELF'];?>';
   var move_group_id_url = '<?php echo tep_get_all_get_params(array('action', 'id'));?>';
+  var groups_prev = '<?php echo IMAGE_PREV;?>';
+  var groups_next = '<?php echo IMAGE_NEXT;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_groups.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -539,24 +542,87 @@ color:#0066CC;
           <tr>
             <td valign="top">
 <?php
-	$form_str = tep_draw_form('edit_group', FILENAME_GROUPS,'action=delete_group&group_sort='.$_GET['group_sort'].'&group_sort_type='.$_GET['group_sort_type'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+        $form_str = tep_draw_form('edit_group', FILENAME_GROUPS,'action=delete_group&group_sort='.$_GET['group_sort'].'&group_sort_type='.$_GET['group_sort_type'].'&page='.$_GET['page'], 'post', 'enctype="multipart/form-data" onSubmit="return false;"');
+
+        //sort start
+        $group_order_sort_name = 'order_sort'; 
+        $group_order_sort = 'asc'; 
+              
+              if (isset($_GET['group_sort'])) {
+                if ($_GET['group_sort_type'] == 'asc') {
+                  $type_str = '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>'; 
+                  $tmp_type_str = 'desc'; 
+                } else {
+                  $type_str = '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>'; 
+                  $tmp_type_str = 'asc'; 
+                }
+                switch ($_GET['group_sort']) {
+                  case 'group_name':
+                    $group_order_sort_name = 'name';
+                    $group_table_name_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_name&group_sort_type='.$tmp_type_str).'">'.GROUP_NAME.$type_str.'</a>'; 
+                    $group_table_num_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=user_num&group_sort_type=desc').'">'.GROUP_STAFF_NUM.'</a>'; 
+                    $group_table_status_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_status&group_sort_type=desc').'">'.GROUP_STATUS.'</a>'; 
+                    $group_table_action_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_action&group_sort_type=desc').'">'.GROUP_OPT.'</a>'; 
+                    break;  
+                  case 'user_num':
+                    $group_order_sort_name = 'num';
+                    $group_table_name_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_name&group_sort_type=desc').'">'.GROUP_NAME.'</a>'; 
+                    $group_table_num_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=user_num&group_sort_type='.$tmp_type_str).'">'.GROUP_STAFF_NUM.$type_str.'</a>'; 
+                    $group_table_status_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_status&group_sort_type=desc').'">'.GROUP_STATUS.'</a>'; 
+                    $group_table_action_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_action&group_sort_type=desc').'">'.GROUP_OPT.'</a>'; 
+                    break;
+                  case 'group_status':
+                    $group_order_sort_name = 'group_status';
+                    $group_table_name_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_name&group_sort_type=desc').'">'.GROUP_NAME.'</a>'; 
+                    $group_table_num_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=user_num&group_sort_type=desc').'">'.GROUP_STAFF_NUM.'</a>'; 
+                    $group_table_status_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_status&group_sort_type='.$tmp_type_str).'">'.GROUP_STATUS.$type_str.'</a>'; 
+                    $group_table_action_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_action&group_sort_type=desc').'">'.GROUP_OPT.'</a>'; 
+                    break;
+                  case 'group_action':
+                    $group_order_sort_name = 'update_time';
+                    $group_table_name_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_name&group_sort_type=desc').'">'.GROUP_NAME.'</a>'; 
+                    $group_table_num_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=user_num&group_sort_type=desc').'">'.GROUP_STAFF_NUM.'</a>'; 
+                    $group_table_status_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_status&group_sort_type=desc').'">'.GROUP_STATUS.'</a>'; 
+                    $group_table_action_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_action&group_sort_type='.$tmp_type_str).'">'.GROUP_OPT.$type_str.'</a>'; 
+                  break;
+                }
+              }
+              if (isset($_GET['group_sort_type'])) {
+                if ($_GET['group_sort_type'] == 'asc') {
+                  $group_order_sort = 'asc'; 
+                } else {
+                  $group_order_sort = 'desc'; 
+                }
+              }
+              
+              $group_order_sql = $group_order_sort_name.' '.$group_order_sort; 
+              if (!isset($_GET['group_sort_type'])) {
+                $group_table_name_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_name&group_sort_type=desc').'">'.GROUP_NAME.'</a>'; 
+                $group_table_num_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=user_num&group_sort_type=desc').'">'.GROUP_STAFF_NUM.'</a>'; 
+                $group_table_status_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_status&group_sort_type=desc').'">'.GROUP_STATUS.'</a>'; 
+                $group_table_action_str = '<a href="'.tep_href_link(FILENAME_GROUPS, tep_get_all_get_params(array('action', 'group_sort', 'group_sort_type')).'group_sort=group_action&group_sort_type=desc').'">'.GROUP_OPT.'</a>'; 
+              }
+        //sort end
 	$group_table_params = array('width'=>'100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
 	$notice_box = new notice_box('','',$group_table_params);
 	$group_table_row = array();
 	$group_title_row = array();
 	$group_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_group(\'group_id[]\');">');
-	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.GROUP_NAME.'</a>');
-	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.GROUP_STAFF_NUM.'</a>');
-	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.GROUP_STATUS.'</a>');
-	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="javascript:void(0)">'.GROUP_OPT.'</a>');
+	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $group_table_name_str);
+	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $group_table_num_str);
+	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $group_table_status_str);
+	$group_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $group_table_action_str);
 	$group_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $group_title_row);
 	if($_GET['id'] == '' || !is_numeric($_GET['id'])){
 		$group_id = 0;
 	}else{
 		$group_id = $_GET['id'];
-	}
-	$latest_group_query_raw = ' select *
-                from '.TABLE_GROUPS.' where parent_id = "'.$group_id.'" order by order_sort asc';
+        }
+        if($group_order_sort_name == 'num'){
+	  $latest_group_query_raw = ' select *,(length(all_users_id)-length(replace(all_users_id,"|||","")))/length("|||") user_num from '.TABLE_GROUPS.' where parent_id = "'.$group_id.'" order by user_num '.$group_order_sort.',all_users_id '.$group_order_sort;
+        }else{
+          $latest_group_query_raw = ' select * from '.TABLE_GROUPS.' where parent_id = "'.$group_id.'" order by '.$group_order_sql; 
+        }
 	$latest_group_split = new splitPageResults($group_page, MAX_DISPLAY_SEARCH_RESULTS, $latest_group_query_raw, $latest_group_query_numrows);
 	$latest_group_query = tep_db_query($latest_group_query_raw);
         $all_group_array = array();
@@ -573,7 +639,7 @@ color:#0066CC;
         	} else {
                 	$nowColor = $odd;
         	}
-		$group_params = 'id="'.$latest_group['id'].'" class="'.$nowColor.'" onclick="" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+		$group_params = 'id="groups_'.$latest_group['id'].'" class="'.$nowColor.'" onclick="" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
 		$group_info = array();
 		$group_checkbox = '<input type="checkbox" name="group_id[]" value="'.$latest_group['id'].'">';
 		$group_info[] = array(
@@ -613,7 +679,7 @@ color:#0066CC;
         	);
 		$group_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<a href="javascript:void(0)" onclick="group_ajax(this,\''.$latest_group['id'].'\',\''.$group_id.'\',\''.$latest_group['name'].'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($latest_group['update_time'] != '' && $latest_group['update_time'] != '0000-00-00 00:00:00' ? $latest_group['update_time'] : $latest_group['create_time'])))).'</a>'
+                	'text'   => '<a id="action_'.$latest_group['id'].'" href="javascript:void(0)" onclick="group_ajax(this,\''.$latest_group['id'].'\',\''.$group_id.'\',\''.$latest_group['name'].'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($latest_group['update_time'] != '' && $latest_group['update_time'] != '0000-00-00 00:00:00' ? $latest_group['update_time'] : $latest_group['create_time'])))).'</a>'
         	);
 		$group_table_row[] = array('params' => $group_params, 'text' => $group_info);
 		$all_group_array[] = $latest_group;
