@@ -39,7 +39,6 @@ $date = tep_start_end_date($group_id,$payroll_date);
 <?php
   $payroll_title = $_GET['payroll_title'];
   $payroll_title_array = explode('|',$payroll_title);
-  $payroll_title_array = array_unique($payroll_title_array);
   $payroll_title_array = array_filter($payroll_title_array);
   $payroll_title_lenght = count($payroll_title_array);
   foreach($payroll_title_array as $title_value){
