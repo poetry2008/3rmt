@@ -32,7 +32,7 @@ define('TEXT_ATT_SET_VALUE','Tổng phụ số thời gian làm việc quy đị
 define('TEXT_ATT_ACTUAL_VALUE','Tổng phụ số thời gian làm việc quy định');
 define('TEXT_PAYROLLS_AGAIN_COMPUTING','Tính lại');
 define('TEXT_PAYROLLS_ERROR_PAM','<font color="#FF0000">*</font>Chú ý：%s');
-define('TEXT_USER_EXPORT_CONFIRM','本当にエクスポートしますか？');
+define('TEXT_USER_EXPORT_CONFIRM','Thao tác này đã được ghi lại. Trường hợp tiếp tục thao tác, vui lòng nhấn[ OK ]');
 define('TEXT_ERROR_LINK','của');
 define('TEXT_ERROR_LEFT','「');
 define('TEXT_ERROR_RIGHT','」');
