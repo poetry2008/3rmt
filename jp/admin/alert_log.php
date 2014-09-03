@@ -178,7 +178,6 @@ function select_logs_change(value,logs_list_id,c_permission){
 
 
 function show_popup_info(obj,id,type){
-	var tmp=obj;
 	obj=obj.parentNode;
 	origin_offset_symbol=1;
 	switch(type){
@@ -311,7 +310,6 @@ function show_popup_info(obj,id,type){
 				});
 			break;
 		default:
-			alert(1);
 			break;
         }
    //prev next

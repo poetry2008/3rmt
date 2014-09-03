@@ -66,6 +66,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
 		 $user_name[]=$row['userid'];
 	 }
+	 asort($user_name);
 	 $option_html='<option >----</option>';
 	 foreach($user_name as $name){
 		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))>=1)continue;
@@ -140,7 +141,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
-	$bulletin_content_row_text[] = array('text'=> TEXT_CONTENT);
+	$bulletin_content_row_text[] = array('text'=> TEXT_BULLETIN_EDIT_CONTENT);
  	$bulletin_text_area =  '<textarea style="resize:vertical; width:80%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
@@ -228,6 +229,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
 		 $user_name[]=$row['userid'];
 	 }
+	 asort($user_name);
 	 $option_html='<option name="manager" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').' value="'.$bulletin_info["manager"].'">'.$bulletin_info["manager"].'</option>';
 	 foreach($user_name as $name){
 		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$name."'"))==1)continue;
@@ -342,12 +344,18 @@ if (isset($_GET['action']) and $_GET['action']) {
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'  type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?' onclick="add_email_file(\'bulletin_file\')"':'').'>'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_author=array();
-	 $bulletin_content_row_author[] = array('text'=>TEXT_AUTHOR."    ".$bulletin_info['author']);
+     $user_info = tep_get_user_info($bulletin_info['author']);
+     $user_name = $user_info['name'];
+	 if(!$user_name)$user_name=$bulletin_info['author'];
+	 $bulletin_content_row_author[] = array('text'=>TEXT_AUTHOR."    ".$user_name);
 	 $bulletin_content_row_author[] = array('text'=>TEXT_DONE_TIME.'    '.$bulletin_info['time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_author);
 
 	 $bulletin_content_row_update=array();
-	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$bulletin_info['update_author']);
+     $user_info = tep_get_user_info($bulletin_info['update_author']);
+     $user_name = $user_info['name'];
+	 if(!$user_name)$user_name=$bulletin_info['update_author'];
+	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$user_name);
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_TIME.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 	 if($ocertify->npermission>=15||$user==$bulletin_info['manager']||$user==$bulletin_info['author'])$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',0)">';
@@ -424,6 +432,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	}else{
 		$turn_html='<a href="javascript:void(0)" onclick="show_link_reply_info('.$last.','.$bulletin_id.')">'.TEXT_LAST.'</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_reply_info('.$next.','.$bulletin_id.')">'.TEXT_NEXT.'</a>';
 	}
+	 if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=$bulletin_id"))==1)$turn_html='';
 	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin_reply&id='.$_POST["id"].'&bulletin_id='.$bulletin_info['bulletin_id'].'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1" '); 
 	 $heading[] = array('align' => 'right', 'text' => $turn_html.'<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 	 $old_content=$bulletin_info['content'];
@@ -475,15 +484,21 @@ if (isset($_GET['action']) and $_GET['action']) {
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_author=array();
-	 $bulletin_content_row_author[] = array('text'=>TEXT_AUTHOR."    ".$bulletin_info['author']);
+     $user_info = tep_get_user_info($bulletin_info['author']);
+     $user_name = $user_info['name'];
+	 if(!$user_name)$user_name=$bulletin_info['author'];
+	 $bulletin_content_row_author[] = array('text'=>TEXT_AUTHOR."    ".$user_name);
 	 $bulletin_content_row_author[] = array('text'=>TEXT_DONE_TIME.'    '.$bulletin_info['time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_author);
 
 	 $bulletin_content_row_update=array();
-	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$bulletin_info['update_author']);
+     $user_info = tep_get_user_info($bulletin_info['update_author']);
+     $user_name = $user_info['name'];
+	 if(!$user_name)$user_name=$bulletin_info['update_author'];
+	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$user_name);
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_TIME.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
-	 if($ocertify->npermission>=15||$user==$bulletin_info['author'])$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',\'show_reply\')">';
+	 if($ocertify->npermission>=15)$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',\'show_reply\')">';
 	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"  value="'.TEXT_SUBMIT.'">'.$delete_button_html);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);

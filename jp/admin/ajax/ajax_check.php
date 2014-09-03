@@ -357,8 +357,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
         }else{
           $new_header['title']='&nbsp;'.$title_str; 
         }
+        $new_header['title']='<img src="images/icons/order.png" onmousemove="this.src=\'images/icons/white_order.png\'" onmouseout="this.src=\'images/icons/order.png\'">'; 
       } else {
-        $new_header['title']='&nbsp;<img src="images/icons/bbs.gif">'; 
+        $new_header['title']='<img src="images/icons/bbs.png" onmousemove="this.src=\'images/icons/white_bbs.png\'" onmouseout="this.src=\'images/icons/bbs.png\'">'; 
       }
       $set_time = strtotime($notice_list['set_time']);
       $leave_time = $set_time - $now_time;
@@ -393,7 +394,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
         $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$notice_list['from_notice']."'"); 
         $alarm = tep_db_fetch_array($alarm_raw); 
         if($alarm_flag_array['alarm_flag'] == '0'){
-          $new_header['content']='<a style="color:#0000FF;text-decoration:underline;" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
+          $new_header['content']='<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
         }else{
           if($alarm_flag_array['orders_flag'] == '1'){
 
@@ -401,7 +402,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
           }else{
             $filename_str = FILENAME_PREORDERS; 
           }
-           $new_header['content']='<a style="color:#0000FF;text-decoration:underline;"  href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
+           $new_header['content']='<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;"  href="'.tep_href_link($filename_str, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$alarm['orders_id'].'</a>'; 
         }
       } else {
 		$type_html="";
@@ -415,7 +416,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 			$page=ceil($count_row/MAX_DISPLAY_SEARCH_RESULTS);
 			$type_html.='page='.$page.'&';
 		}
-         $new_header['content']='<a style="color:#0000FF;text-decoration:underline;"  href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$type_html.'bulletin_id='.$memo_cid_array[$notice_list['id']]).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
+         $new_header['content']='<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;"  href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$type_html.'bulletin_id='.$memo_cid_array[$notice_list['id']]).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
       }
       if ($notice_list['type'] == '0') {
       if($alarm_flag_array['alarm_flag'] == '1'){
@@ -437,11 +438,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
       }
       }
       if ($notice_list['type'] == '0') {
-		$new_header['type']='order';
-        $new_header['delete']='&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"></a>'; 
+		if(tep_db_num_rows(tep_db_query("select * from alarm where alarm_id=".$notice_list['from_notice']." and alarm_flag=1"))>=1)$new_header['type']='button';
+		else $new_header['type']='order';
+        $new_header['delete']='&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.png" alt="close" onmousemove="this.src=\'images/icons/white_bbs_del_one.png\'" onmouseout="this.src=\'images/icons/bbs_del_one.png\'"></a>'; 
       } else {
 		$new_header['type']='bulletin';
-        $new_header['delete']= '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.gif" alt="close"  onmousemove="this.src=\'images/icons/white_bbs_del_one.gif\'" onmouseout="this.src=\'images/icons/bbs_del_one.gif\'"></a>'; 
+        $new_header['delete']= '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.png" alt="close"  onmousemove="this.src=\'images/icons/white_bbs_del_one.png\'" onmouseout="this.src=\'images/icons/bbs_del_one.png\'"></a>'; 
       }
 		$messages_header_all[] = $new_header;
     }

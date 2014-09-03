@@ -47,4 +47,5 @@ define('TEXT_CREATE_BULLETIN_REPLY','書き込む');
 define('TEXT_LAST','<前へ');
 define('TEXT_NEXT','次へ>');
 define('TEXT_ALERT_TYPE','タイプ');
+define('TEXT_DELETED_INFO','「管理者によりレスを削除されました。」');
 ?>

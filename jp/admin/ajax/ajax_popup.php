@@ -11485,17 +11485,19 @@ if($row_array['set_time']==0){
 
     
 	 $order_content_row_text[] = array('text'=>TABLE_HEADING_BUTTON_NAME);
- 	 $order_text_area =  '<div style="width: 100%;min-height:200px;">'.$order_row['title'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at'].'</div>';
+ 	 $order_text_area =  '<div style="width: 100%;min-height:100px;">'.$order_row['title'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at'].'</div>';
 	 $order_content_row_text[] = array('text'=> $order_text_area);
 	 $order_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $order_content_table[] = array('text'=> $order_content_row_text);
 	 $order_content_row_author = array();
-	 $order_content_row_author[] = array('text'=> TEXT_USER_ADDED);
-	 $order_content_row_author[] = array('text'=> $author);
+	 $user_info=tep_get_user_info($order_row['author']);
+	 $user_name=$user_info['name'];
+	 $order_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $order_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at']);
 	 $order_content_table[] = array('text'=> $order_content_row_author);
 	 $order_content_row_update = array();
-	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE);
-	 $order_content_row_update[] = array('text'=> $update_author);
+	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $order_content_row_update[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['set_time']);
 	 $order_content_table[] = array('text'=> $order_content_row_update);
 	 $order_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',0)"  value="'.IMAGE_DELETE.'">');
 	 $order_content_table[] = array('text'=> $order_content_row_submit);
