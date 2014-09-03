@@ -15620,7 +15620,7 @@ function tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id){
         $temp_start = str_replace('-','',$start_date);
         $temp_end = str_replace('-','',$end_date);
         $temp_info_start = str_replace('-','',$payroll_info_array['start_date']);
-        $temp_info_end = str_replace('-','',$payroll_info_array['start_end']);
+        $temp_info_end = str_replace('-','',$payroll_info_array['end_date']);
         if($temp_start < $temp_info_start && $payroll_info_array['start_date']!=''){
           $start_date = $payroll_info_array['start_date'];
         }
@@ -15628,7 +15628,6 @@ function tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id){
           $end_date = $payroll_info_array['end_date'];
         }
       }
-
   //关于打卡出勤的相关参数及对应的值
   $attendance_replace_array = array();
   $attendance_detail_query = tep_db_query("select id,param_a,param_b,set_time,work_hours,rest_hours,work_start,work_end,rest_start,rest_end from ".TABLE_ATTENDANCE_DETAIL); 
@@ -15726,7 +15725,7 @@ function tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id){
 
   }
   tep_db_free_result($attendance_detail_query);
-  $payroll_str = str_replace($has_param,$replace_str,$replace_str);
+  $payroll_str = str_replace($has_param,$replace_str,$payroll_str);
     }
   }
   return $payroll_str;
