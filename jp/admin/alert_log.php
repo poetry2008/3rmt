@@ -43,6 +43,8 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
+var alert_prev = '<?php echo IMAGE_PREV;?>';
+var alert_next = '<?php echo IMAGE_NEXT;?>';
 function formConfirm(type) {
   if (type == "delete") {
       rtn = confirm("<?php echo  JAVA_SCRIPT_INFO_DELETE;?>");
@@ -311,7 +313,29 @@ function show_popup_info(obj,id,type){
 		default:
 			alert(1);
 			break;
-	}
+        }
+   //prev next
+   if($('#alert_'+id+'_'+type).prev().attr('id') != '' && $('#alert_'+id+'_'+type).prev().attr('id') != null){
+      var alert_prev_id = $('#alert_'+id+'_'+type).prev().attr('id');
+      alert_prev_id = alert_prev_id.split('_');
+
+      if(alert_prev_id[0] == 'alert' && alert_prev_id[1] != '' && alert_prev_id[2] != ''){
+        var alert_id = $('#alert_'+id+'_'+type).prev().attr('id');
+        alert_id = alert_id.split('_');
+        $('#next_prev').append('<a id="alert_prev" onclick="'+$('#log_'+alert_id[1]+'_'+alert_id[2]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+alert_prev+'</a>&nbsp&nbsp');
+      }
+   }
+   if($('#alert_'+id+'_'+type).next().attr('id') != '' && $('#alert_'+id+'_'+type).next().attr('id') != null){
+     var alert_next_id = $('#alert_'+id+'_'+type).next().attr('id');
+     alert_next_id = alert_next_id.split('_');
+     
+     if(alert_next_id[0] == 'alert' && alert_next_id[1] != '' && alert_next_id[2] != ''){
+       var alert_id = $('#alert_'+id+'_'+type).next().attr('id');
+       alert_id = alert_id.split('_');
+       $('#next_prev').append('<a id="alert_next" onclick="'+$('#log_'+alert_id[1]+'_'+alert_id[2]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+alert_next+'&gt</a>&nbsp&nbsp');
+     }
+   } 
+   //end
 }
 
 function hidden_info_box(){
@@ -366,7 +390,7 @@ require("includes/note_js.php");
                             </tr>
                             <tr>
                                <td>
-<table width="100%" cellspacing="0" cellpadding="0" border="0" id="log_list_box"> 
+<table width="100%" cellspacing="0" cellpadding="0" border="0"> 
   <tr>      
    <td>
 <?php 
@@ -497,7 +521,7 @@ require("includes/note_js.php");
     echo tep_show_site_filter(FILENAME_ALERT_LOG,false,$site_list_array);
 	echo '<div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>';
     // 表标签的开始
-    $alert_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0');
+    $alert_table_params = array('width' => '100%','cellpadding'=>'2','border'=>'0', 'cellspacing'=>'0','parameters' => 'id="log_list_box"');
     $notice_box = new notice_box('','',$alert_table_params);
     $alert_table_row = array(); 
     $alert_title_row = array();
@@ -556,9 +580,9 @@ if ($rec_c % 2) {
   $nowColor = $odd;
 }
     if(isset($_GET['log_id'])&&$_GET['log_id']==$arec['id']){ 
-      $alert_params = 'class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
+      $alert_params = 'id="alert_'.$arec['from_notice'].'_'.$arec['type'].'" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ';
     }else{
-      $alert_params = 'class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
+      $alert_params = 'id="alert_'.$arec['from_notice'].'_'.$arec['type'].'" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'' . $nowColor . '\'"';
     }
     $alert_button_comment = '';
     $alert_button_title = '';
@@ -648,8 +672,8 @@ if ($rec_c % 2) {
         'text'   => $arec['created_at']
         ); 
     $alert_info[] = array(
-        'params' => 'class="main" align="right" onclick="show_popup_info(this,'.$arec['from_notice'].','.$arec['type'].')"',
-		'text' => '<a id="m_696" href="javascript:void(0);">'.tep_get_signal_pic_info($arec['date_update']).'</a>'
+        'params' => 'class="main" align="right"',
+		'text' => '<a id="log_'.$arec['from_notice'].'_'.$arec['type'].'" href="javascript:void(0);" onclick="show_popup_info(this,'.$arec['from_notice'].','.$arec['type'].')">'.tep_get_signal_pic_info($arec['date_update']).'</a>'
         ); 
     $alert_table_row[] = array('params' => $alert_params, 'text' => $alert_info);
     $rec_c++;
