@@ -88,6 +88,7 @@
             }
             $object_title = tep_db_prepare_input($_POST['object_title']);
             $object_contents = tep_db_prepare_input($_POST['object_contents']);
+            $object_value = tep_db_prepare_input($_POST['object_value']);
 
             foreach($object_title as $object_title_key=>$object_title_value){
 
@@ -96,6 +97,7 @@
 				     'project_id' => 0,
 				     'title' => $object_title_value,
                                      'contents' => $object_contents[$object_title_key],
+                                     'project_value' => $object_value[$object_title_key],
                                      'sort'=>$payroll_object_sort[$object_title_key] 
 			            );
                tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $object_sql_array);
@@ -178,6 +180,7 @@
           $old_project_array = explode(',',$old_project_str);
           $old_object_title = tep_db_prepare_input($_POST['old_object_title']);
           $old_object_contents = tep_db_prepare_input($_POST['old_object_contents']);
+          $old_object_value = tep_db_prepare_input($_POST['old_object_value']);
 
           $payroll_sort = $_POST['payroll_sort'];
           $payroll_object_sort = array();
@@ -204,6 +207,7 @@
              $old_object_sql_array = array(
 				     'title' => $old_object_title_value,
                                      'contents' => $old_object_contents[$old_object_title_key],
+                                     'project_value' => $old_object_value[$old_object_title_key],
                                      'sort'=> $payroll_old_sort[$old_object_title_key] 
 			            );
              tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $old_object_sql_array, 'update', 'id='.$old_object_title_key);
@@ -219,6 +223,7 @@
           }
           $object_title = tep_db_prepare_input($_POST['object_title']);
           $object_contents = tep_db_prepare_input($_POST['object_contents']);
+          $object_value = tep_db_prepare_input($_POST['object_value']);
 
           foreach($object_title as $object_title_key=>$object_title_value){
 
@@ -227,6 +232,7 @@
 				     'project_id' => 0,
 				     'title' => $object_title_value,
                                      'contents' => $object_contents[$object_title_key], 
+                                     'project_value' => $object_value[$object_title_key], 
                                      'sort'=> $payroll_object_sort[$object_title_key]
 			            );
              tep_db_perform(TABLE_PAYROLL_SETTLEMENT, $object_sql_array);
