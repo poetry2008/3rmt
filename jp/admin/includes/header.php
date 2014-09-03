@@ -115,28 +115,32 @@ function check_header_messages(){
 				$.each(this['mark'], function(){
 					img_mark += '<img border="0" src="images/icon_list/icon_'+this+'.gif">'
 				});
+					if(img_mark !='')img_mark+='&nbsp&nbsp';
 					var str_html='';
 					if(messages_num == 0){
-						str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFCC00"><td  width="142px" id="messages_head">';
-						if(this['type']=='messages')str_html+='<img src="images/icons/messages.gif" onmousemove="this.src=\'images/icons/white_messages.png\'" onmouseout="this.src=\'images/icons/messages.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.gif"></a></td></tr></table>';
-				else str_html+='<img src="images/icons/bbs.gif" onmousemove="this.src=\'images/icons/white_bbs.png\'" onmouseout="this.src=\'images/icons/bbs.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp'+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
+						if(this['type']=='messages')str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td  width="142px" id="messages_head"><a onclick="hide_messages();" style="color:#0000FF;" href="javascript:void(0);"><img src="images/icons/messages.png" onmousemove="this.src=\'images/icons/white_messages.png\'" onmouseout="this.src=\'images/icons/messages.png\'"></a></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
+				else str_html+='<table style="background:#FFCC00" value='+this['id']+'  width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td  width="142px" id="messages_head"><a onclick="hide_messages();" style="color:#0000FF;" href="javascript:void(0);">'+this['title']+'</a></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
 				$('#show_messages_notice').append(str_html);
+				if(play_flag == true){
+					switch(this['type']){
+					case 'messages':var notice_audio = document.getElementById('head_notice_audio'); break;
+					case 'bulletin':var notice_audio = document.getElementById("head_notice"); break;
+					case 'order':var notice_audio = document.getElementById("head_order_audio");break;
+					case 'button':var notice_audio = document.getElementById("head_button_audio");break;
+						}
+                    notice_audio.play();
+                }
 					}else{
-					str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="21px" style="background:#FFCC00"><td width="142px">';
-					if(this['type']=='messages')str_html+='<img src="images/icons/messages.gif" onmousemove="this.src=\'images/icons/white_messages.png\'" onmouseout="this.src=\'images/icons/messages.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp<a style="color:#0000FF;text-decoration:underline;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.gif"></a></td></tr></table>';
-				else str_html+='<img src="images/icons/bbs.gif"  onmousemove="this.src=\'images/icons/white_bbs.png\'" onmouseout="this.src=\'images/icons/bbs.gif\'"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'&nbsp&nbsp'+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
+					if(this['type']=='messages')str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td width="142px"><a onclick="hide_messages();" style="color:#0000FF;" href="javascript:void(0);"><img src="images/icons/messages.png" onmousemove="this.src=\'images/icons/white_messages.png\'" onmouseout="this.src=\'images/icons/messages.png\'"></a></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
+				else str_html+='<table style="background:#FFCC00" value='+this['id']+' width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td width="142px"><a onclick="hide_messages();" style="color:#0000FF;" href="javascript:void(0);">'+this['title']+'</a></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
 					$('#show_all_messages_notice').append(str_html);
 					}
 					messages_num++;
                                 });
-                                if(play_flag == true){
-				  var notice_audio = document.getElementById('head_notice_audio');
-                                  notice_audio.play();
-                                }
 			}
 			if(eval(data).length > 1){
-				$('#messages_head').append('<span><a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);"><?php echo TEXT_SORT_DESC;?></a>（他'+(eval(data).length - 1)+'件）</span>');
-				$('#show_all_messages_notice').append('<table style="background:#FFCC00" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFCC00"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.gif"  onmousemove="this.src=\'images/icons/white_bbs_del.gif\'" onmouseout="this.src=\'images/icons/bbs_del.gif\'"></a></td></tr></table>');
+				$('#messages_head').append('<span>&nbsp&nbsp&nbsp（他'+(eval(data).length - 1)+'件）</span>');
+				$('#show_all_messages_notice').append('<table style="background:#FFCC00" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFCC00"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.png"  onmousemove="this.src=\'images/icons/white_bbs_del.png\'" onmouseout="this.src=\'images/icons/bbs_del.png\'"></a></td></tr></table>');
 			};
   		}
 	);
@@ -195,6 +199,14 @@ function change_attendance_logout(uid) {
 
 	}
 
+}
+function mouse_on(obj){
+	obj.style.textDecoration="underline";
+	obj.style.color="#333333";
+}
+function mouse_leave(obj){
+	obj.style.textDecoration="none";
+	obj.style.color="#0000FF";
 }
 </script>
 <noscript>
@@ -270,19 +282,21 @@ if($check_result==0) {
 
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
-<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<audio id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></audio>
 <?php
 }
 ?>
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 ?>
-<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<audio id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></audio>
 <?php
 }
 ?>
-<embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<audio id="head_notice" src="images/bbs.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></audio>
 <audio id="head_notice_audio" src="images/messages_notice.mp3"></audio>
+<audio id="head_order_audio" src="images/warn.mp3"></audio>
+<audio id="head_button_audio" src="images/button.mp3"></audio>
 <br>
 </td>
 </tr>

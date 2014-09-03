@@ -254,6 +254,8 @@
   var js_ed_orders_input_right_date = '<?php echo ERROR_INPUT_RIGHT_DATE;?>';
   var submit_url = '<?php echo tep_href_link('payrolls_csv_exe.php','csv_exe=true', 'SSL');?>';
   var user_export_confirm = '<?php echo TEXT_USER_EXPORT_CONFIRM;?>';
+  var payroll_prev = '<?php echo IMAGE_PREV;?>';
+  var payroll_next = '<?php echo IMAGE_NEXT;?>';
 </script>
 <script language="javascript" src="includes/javascript/admin_payrolls.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
@@ -545,15 +547,15 @@ color:#0066CC;
 	$notice_box = new notice_box('','',$payroll_table_params);
 	$payroll_table_row = array();
 	$payroll_title_row = array();
-	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent" width="5%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
-        $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" style="width:10%;" id="td_name"','text' => '<a href="javascript:payrolls_sort(\'name\',1,\''.TEXT_PAYROLLS_NAME.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_NAME.'</a>');
+	$payroll_title_row[] = array('params' => 'class="dataTableHeadingContent" width="2%"','text' => '<input type="checkbox" name="all_check" onclick="all_select_user(\'user_id[]\');"><input type="hidden" name="save_date" value="'.$default_date.'">');
+        $payroll_title_row[] = array('params' => 'align="center" class="dataTableHeadingContent_order" style="width:5%;" id="td_name"','text' => '<a href="javascript:payrolls_sort(\'name\',1,\''.TEXT_PAYROLLS_NAME.'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\',\'\');">'.TEXT_PAYROLLS_NAME.'</a>');
         //获取组对应的工资项目
         $group_id = '';
         $group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
         $groups_users_id = array();
         $groups_payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' order by sort");
         while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
-          $payroll_title_row[] = array('params' => 'class="dataTableHeadingContent_order" id="td_title_'.$groups_payroll_array['id'].'"','text' => '<a href="javascript:payrolls_sort(\'title\',1,\''.$groups_payroll_array['title'].'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\','.$groups_payroll_array['id'].');">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
+          $payroll_title_row[] = array('params' => 'align="center" class="dataTableHeadingContent_order" id="td_title_'.$groups_payroll_array['id'].'"','text' => '<a href="javascript:payrolls_sort(\'title\',1,\''.$groups_payroll_array['title'].'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\','.$groups_payroll_array['id'].');">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
           $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
         }
         tep_db_free_result($groups_payroll_query);
@@ -695,18 +697,18 @@ color:#0066CC;
                   }
                   $user_payroll_value[$payroll_id['id']] += $payroll_value;
                   $user_info[] = array(
-                	'params' => 'class="dataTableContent"',
-                	'text'   => '<input type="text" name="users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'" style="width:80%;" onblur="if(this.value==\'\'){this.value=0;}"><input type="hidden" name="hidden_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'"><input type="hidden" name="pam_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['pam'].'"><input type="hidden" name="formula_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['value'].'">' 
+                	'params' => 'align="right" class="dataTableContent"',
+                	'text'   => '<input type="text" name="users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'" style="width:80%;text-align:right;" onblur="if(this.value==\'\'){this.value=0;}"><input type="hidden" name="hidden_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'"><input type="hidden" name="pam_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['pam'].'"><input type="hidden" name="formula_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['value'].'">' 
                   );  
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
 		$user_info[] = array(
                 	'params' => 'class="dataTableContent"',
-                	'text'   => '<a href="javascript:void(0)" onclick="show_user_payroll(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$group_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a><input type="hidden" name="payrolls_time[]" value="'.$update_time.'">'
+                	'text'   => '<a id="click_'.$users_value.'" href="javascript:void(0)" onclick="show_user_payroll(this,\''.$users_value.'\',\''.$all_users_info[$users_value].'\',\''.$group_id.'\',\''.implode(',',$user_project_id_array).'\',\''.$default_date.'\',\''.$group_id.'\')">'.tep_get_signal_pic_info(date('Y-m-d H:i:s',strtotime(($update_time != '' && $update_time != '0000-00-00 00:00:00' ? $update_time : $update_time)))).'</a><input type="hidden" name="payrolls_time[]" value="'.$update_time.'">'
         	);
 		$payroll_table_row[] = array('params' => $user_params, 'text' => $user_info);
         }
-        if(isset($currency_type)){
+        if(isset($currency_type) && !empty($show_group_user_list)){
 
           $currency_type_array = array(TEXT_PAYROLLS_CURRENCY_TYPE_JPY,TEXT_PAYROLLS_CURRENCY_TYPE_RMB,TEXT_PAYROLLS_CURRENCY_TYPE_USD,TEXT_PAYROLLS_CURRENCY_TYPE_VND); 
           $i = 0;
@@ -721,8 +723,8 @@ color:#0066CC;
                                );
           foreach($groups_users_id as $payroll_id){
             $user_info[] = array(
-                	           'params' => '',
-                	           'text'   => '<input type="text" style="width:80%;" disabled name="users_payroll_total['.$payroll_id['id'].']" value="'.$user_payroll_value[$payroll_id['id']].'">' 
+                	           'params' => 'align="right"',
+                	           'text'   => $user_payroll_value[$payroll_id['id']] 
                                  ); 
           } 
           $user_info[] = array(
@@ -741,7 +743,15 @@ color:#0066CC;
             </tr>
             </table>
 <br>
-		    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:-10px;">
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:-10px;">
+                    <?php
+                    $show_user_count = count($show_group_user_list);
+                    if($show_user_count > 0){
+                    ?>
+                    <tr><td><?php echo sprintf(TEXT_DISPLAY_NUMBER_OF_PAYROLLS,1,$show_user_count,$show_user_count);?></td></tr>
+                    <?php
+                    }
+                    ?>
                     <tr>                 
                     <td valign="top" class="smallText" colspan="2">
                     <?php 

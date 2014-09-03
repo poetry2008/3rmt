@@ -44,6 +44,28 @@ function show_user_payroll(ele,user_id,user_name,groups_id,user_payroll_list,sav
  async : false,
  success: function(data){
    $("div#show_user_payroll").html(data);
+   //prev next
+   if($('#payroll_'+user_id).prev().attr('id') != '' && $('#payroll_'+user_id).prev().attr('id') != null){
+      var payroll_prev_id = $('#payroll_'+user_id).prev().attr('id');
+      payroll_prev_id = payroll_prev_id.split('_');
+
+      if(payroll_prev_id[0] == 'payroll' && payroll_prev_id[1] != '' && payroll_prev_id[1] != 'total'){
+        var payroll_id = $('#payroll_'+user_id).prev().attr('id');
+        payroll_id = payroll_id.split('_');
+        $('#next_prev').append('<a id="payroll_prev" onclick="'+$('#click_'+payroll_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+payroll_prev+'</a>&nbsp&nbsp');
+      }
+   }
+   if($('#payroll_'+user_id).next().attr('id') != '' && $('#payroll_'+user_id).next().attr('id') != null){
+     var payroll_next_id = $('#payroll_'+user_id).next().attr('id');
+     payroll_next_id = payroll_next_id.split('_');
+     
+     if(payroll_next_id[0] == 'payroll' && payroll_next_id[1] != '' && payroll_next_id[1] != 'total'){
+       var payroll_id = $('#payroll_'+user_id).next().attr('id');
+       payroll_id = payroll_id.split('_');
+       $('#next_prev').append('<a id="payroll_next" onclick="'+$('#click_'+payroll_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+payroll_next+'&gt</a>&nbsp&nbsp');
+     }
+   } 
+   //end
    ele = ele.parentNode;
    head_top = $('.compatible_head').height();
    if($(ele).parent().next()[0] === undefined){

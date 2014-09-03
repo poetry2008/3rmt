@@ -866,4 +866,5 @@ define('TEXT_NOW_MONTH', 'Tháng này');
 define('TEXT_PRE_YEAR', 'Năm trước');
 define('TEXT_NEXT_YEAR', 'Năm sau');
 define('HEADER_TEXT_PAYROLLS','Thanh toán tiền lương');
+define('HEADER_TEXT_BULLETIN','Bảng thông báo');
 

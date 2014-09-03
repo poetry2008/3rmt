@@ -31,6 +31,7 @@ $group_id = $_GET['group_id'];
 $payroll_date = $_GET['save_date'];
 $date = tep_start_end_date($group_id,$payroll_date);
 ?>
+<br>
 <div style="text-align:center;"><?php echo $date['start_date'].'～'.$date['end_date'].'&nbsp;'.TEXT_HEAD_TITLE;?></div>
 <br>
 <table width="100%" cellpadding="0" cellspacing="0" border="1">
@@ -39,7 +40,6 @@ $date = tep_start_end_date($group_id,$payroll_date);
 <?php
   $payroll_title = $_GET['payroll_title'];
   $payroll_title_array = explode('|',$payroll_title);
-  $payroll_title_array = array_unique($payroll_title_array);
   $payroll_title_array = array_filter($payroll_title_array);
   $payroll_title_lenght = count($payroll_title_array);
   foreach($payroll_title_array as $title_value){
@@ -66,7 +66,7 @@ $date = tep_start_end_date($group_id,$payroll_date);
 ?>
 </tr>
           <tr>
-          <td align="right"><?php echo $user_info['name'];?></td>
+          <td align="left"><?php echo $user_info['name'];?></td>
 <?php
     for($j=$user_num_array[$user_key]*$payroll_title_lenght;$j<=$user_num_array[$user_key]*$payroll_title_lenght+$payroll_title_lenght-1;$j++){
 
@@ -78,7 +78,7 @@ $date = tep_start_end_date($group_id,$payroll_date);
 <?php
   }
 ?>
-  <tr><td align="right"><?php echo TEXT_PAYROLLS_TOTAL.'('.$_GET['currency_type'].')';?></td>
+  <tr><td align="left"><?php echo TEXT_PAYROLLS_TOTAL.'('.$_GET['currency_type'].')';?></td>
 <?php
   foreach($total_array as $total_value){
 

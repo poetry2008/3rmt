@@ -8886,7 +8886,7 @@ if($_GET['latest_messages_id']>0){
  }
 
 //管理员的隐藏 
-$manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
+$manager_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission<15 order by u.name asc"); 
  $all_manager_add ='<div id="add_manager_hidden" style="display:none;">';
 	$all_manager_add .='<li><select class="manager_select" name="managers_list[]">';	
 	while($manager_list_res = tep_db_fetch_array($manager_list)){
@@ -8920,7 +8920,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  //管理员
  $group_manager[] = array('params'=>'width="20%"','text'=> GROUP_MANAGERS );
  if($_POST['group_id'] < 0){
- 	$manager_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission<15"); 
+ 	$manager_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission<15 order by u.name asc"); 
    /*	$all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	$res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
@@ -8941,7 +8941,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  }else{
      $group_all_manager = tep_db_fetch_array(tep_db_query('select all_managers_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
 	 $group_all_manager = explode('|||',$group_all_manager['all_managers_id']);
-	 $manager_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission<15");
+	 $manager_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission<15 order by u.name asc");
 /*	 $all_manager = '<ul class="table_img_list" style="width:100%">'; 
    	 while ($manager_list_res = tep_db_fetch_array($manager_list)) {
  	     $res_tep_row = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$manager_list_res['userid']."'"); 
@@ -8974,7 +8974,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  $group_content_row_staff = array();
  $group_content_row_staff[] = array('params'=>'width="20%"','text'=> TEXT_GROUP_PAYROLL_ADMIN);
  if($_POST['group_id'] < 0){
-        $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+        $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31 order by u.name asc"); 
         $all_users .= '<ul id="add_payroll_list" class="table_img_list" style="width:100%">'; 
    	$all_users .= '<li><select name="payroll_admin[]">'; 
    	$all_users .= '<option vlaue="">--</option>'; 
@@ -8988,7 +8988,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
         $payrolls_admin = $groups_array['payrolls_admin'];
 
         if(trim($payrolls_admin) == ''){
-          $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+          $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31 order by u.name asc"); 
           $all_users = '<ul id="add_payroll_list" class="table_img_list" style="width:100%">';
    	  $all_users .= '<li><select name="payroll_admin[]">'; 
    	  $all_users .= '<option vlaue="">--</option>'; 
@@ -9006,7 +9006,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
           $all_users = '<ul id="add_payroll_list" class="table_img_list" style="width:100%">';
           foreach($payrolls_admin_array as $payrolls_admin_value){
             
-            $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31"); 
+            $users_list = tep_db_query("select u.userid userid,u.name name from ".TABLE_USERS." u left join ".TABLE_PERMISSIONS." p on u.userid=p.userid where u.status=1 and p.permission!=31 order by u.name asc"); 
    	    $all_users .= '<li><select name="payroll_admin[]">'; 
    	    $all_users .= '<option vlaue="">--</option>'; 
    	    while ($users_list_res = tep_db_fetch_array($users_list)) {
@@ -9027,7 +9027,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  $group_content_row_staff = array();
  $group_content_row_staff[] = array('params'=>'width="20%"','text'=> GROUP_STAFF );
  if($_POST['group_id'] < 0){
- 	$users_list = tep_db_query("select * from ".TABLE_USERS." where status=1"); 
+ 	$users_list = tep_db_query("select * from ".TABLE_USERS." where status=1 order by name asc"); 
    	$all_users = '<ul class="table_img_list" style="width:100%">'; 
    	while ($users_list_res = tep_db_fetch_array($users_list)) {
      		$all_users .= '<li class="table_img_user"><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
@@ -9036,7 +9036,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
  }else{
 	$group_all_user = tep_db_fetch_array(tep_db_query('select all_users_id from '.TABLE_GROUPS.' where id = "'.$_POST['group_id'].'"'));
 	$group_all_user = explode('|||',$group_all_user['all_users_id']);
-	$users_list = tep_db_query('select * from '.TABLE_USERS.' where status=1');
+	$users_list = tep_db_query('select * from '.TABLE_USERS.' where status=1 order by name asc');
 	$all_users = '<ul class="table_img_list" style="width:100%">'; 
    	while ($users_list_res = tep_db_fetch_array($users_list)) {
      		$all_users .= '<li class="table_img_user"><input type="checkbox" name="users_list[]" value="'.$users_list_res['userid'].'" style="padding-left:0;margin-left:0;" id="users_id_'.$users_list_res['userid'].'"'.(in_array($users_list_res['userid'],$group_all_user) ? ' checked="checked"' : '').'><label for="users_id_'.$users_list_res['userid'].'">'.$users_list_res['name'].'</label></li>'; 
@@ -9210,7 +9210,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
      $group_content_row_payroll[] = array('params'=>'width="20%"','text'=> '<input type="hidden" value="'.$payroll_array['id'].'" name="payroll_sort[]">&nbsp;&nbsp;&nbsp;&nbsp;'.($payroll_array['project_id'] == 0 ? TEXT_GROUP_PAYROLL_OBJECT_VALUE : TEXT_GROUP_PAYROLL_OBJECT_FORMULA)); 
      if($payroll_array['project_id'] == 0){
        $old_project_id_array[] = $payroll_array['id'];
-       $group_content_row_payroll[] = array('text' => '<input type="text" style="width: 145px;" value="'.$payroll_array['title'].'" name="old_object_title['.$payroll_array['id'].']"><input type="text" style="width: 150px;" value="'.$payroll_array['contents'].'" name="old_object_contents['.$payroll_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_PAYROLL_OBJECT_VALUE.'\',\''.TEXT_GROUP_PAYROLL_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);">');
+       $group_content_row_payroll[] = array('text' => '<input type="text" style="width: 145px;" value="'.$payroll_array['title'].'" name="old_object_title['.$payroll_array['id'].']"><input type="text" style="width: 150px;" value="'.$payroll_array['contents'].'" name="old_object_contents['.$payroll_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_PAYROLL_OBJECT_VALUE.'\',\''.TEXT_GROUP_PAYROLL_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><textarea style="overflow-y: hidden; width: 299px; height: 15px;" name="old_object_value['.$payroll_array['id'].']" id="textarea_'.$i.'">'.$payroll_array['project_value'].'</textarea>');
      }else{
        $old_formula_id_array[] = $payroll_array['id'];
        $group_content_row_payroll[] = array('text' => '<input type="text" value="'.$payroll_array['title'].'" style="width: 145px;" name="old_formula_title['.$payroll_array['id'].']"><input type="text" value="'.$payroll_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$payroll_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_PAYROLL_OBJECT_VALUE.'\',\''.TEXT_GROUP_PAYROLL_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><textarea style="overflow-y: hidden; width: 299px; height: 15px;" name="old_formula_value['.$payroll_array['id'].']" id="textarea_'.$i.'">'.$payroll_array['project_value'].'</textarea>');
@@ -9259,7 +9259,7 @@ $manager_list = tep_db_query("select * from ".TABLE_USERS." where status=1");
   
    $group_content_table[]['text'] = array(
         array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;'.((tep_not_null($groups_array['update_user'])?$groups_array['update_user']:TEXT_UNSET_DATA))), 
-        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['update_time'])))?tep_datetime_short($groups_array['update_time']):TEXT_UNSET_DATA)), 
+        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;'.((tep_not_null(tep_datetime_short($groups_array['update_time']))) && tep_not_null($groups_array['update_user'])?tep_datetime_short($groups_array['update_time']):TEXT_UNSET_DATA)), 
       ); 
  }
  $group_content_row_opt = array();
@@ -10120,11 +10120,10 @@ echo  $return_res;
     //end
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
-  if($ocertify->npermission > 10){
-    $button[] = '<a
-      href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
+  if($ocertify->npermission > 10 || tep_is_group_manager($ocertify->auth_user)){
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="attendance_setting_user(\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
   }
-  if(!isset($_GET['gid'])||$_GET['gid']==''){
+  if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="attendance_replace(\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'as\');"').'</a>'; 
@@ -10604,8 +10603,12 @@ echo  $return_res;
   //底部内容
   $buttons = array();
   
-  if(!isset($_GET['uid'])||$_GET['uid']==''){
+  if(!isset($_GET['uid'])||$_GET['uid']==''||tep_is_group_manager($ocertify->auth_user)){
+    if(tep_is_group_manager($ocertify->auth_user)){
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',temp_group_id,\'\')"').'</a>'; 
+    }else{
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\')"').'</a>'; 
+    }
   }
   if($ocertify->npermission>10
     ||($ocertify->auth_user==$replace_info_res['user']&&$replace_info_res['allow_status'] ==0)
@@ -10768,7 +10771,7 @@ if($row_array['set_time']==0){
   //获得所有用户
   $all_user = array();
   $operator = $ocertify->auth_user;
-  if($ocertify->npermission >= '15'){
+  if($ocertify->npermission >= '15'||tep_is_group_manager($ocertify->auth_user)){
 	  //选中的
     $show_user_id_list = array();
 	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
@@ -10797,7 +10800,7 @@ if($row_array['set_time']==0){
      TEXT_CALENDAR_REPEAT_TYPE_YEAR
       );
   //判断管理员修改
-  if($ocertify->npermission<15){
+  if(!tep_is_group_manager($ocertify->auth_user)){
     $disabled =  ' disabled="disabled" ';
   }
 
@@ -11072,7 +11075,7 @@ if($row_array['set_time']==0){
 
   //底部内容
   $buttons = array();
-  if($ocertify->npermission>10&&$_GET['add_id']==''){
+  if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']==''){
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="attendance_setting(\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['back_group_id'].'\',\''.$_GET['back_attendance_id'].'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
@@ -11112,7 +11115,7 @@ if($row_array['set_time']==0){
  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
  //头部
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
- $heading[] = array('text' => $_POST['user_name'].TEXT_PAYROLLS_TITLE);
+ $heading[] = array('text' => $_POST['user_name']);
  $form_str = tep_draw_form('save_user_payroll', FILENAME_PAYROLLS,'action=save_user_payroll', 'post', 'enctype="multipart/form-data"').'<input type="hidden" name="user_id" value="'.$_POST['user_id'].'"><input type="hidden" name="user_payroll_list" value="'.$_POST['user_payroll_list'].'"><input type="hidden" name="save_date" value="'.$_POST['save_date'].'">';
  
  $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
@@ -11457,4 +11460,176 @@ if($row_array['set_time']==0){
   $notice_box->get_eof(tep_eof_hidden());
 
   echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_order_info') {
+/* -----------------------------------------------------
+    功能: 显示订单信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ALERT_LOG);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $order_sql="select * from ".TABLE_NOTICE." where from_notice=".$_POST['id']." and type=0";
+	 $order_row=tep_db_fetch_array(tep_db_query($order_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $order_id=$_POST['order_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $order_content_table = array();
+	 $order_content_row_type = array();
+	 $order_content_row_type[] = array('params'=>'width="20%"','text'=>TABLE_HEADING_TYPE );
+	 $order_content_row_type[] = array('text'=> TEXT_ORDER);
+	 $order_content_row_type[] = array('params'=>'width="20%"','text'=>'');
+	 $order_content_table[] = array('text'=> $order_content_row_type);
+
+    
+	 $order_content_row_text[] = array('text'=>TABLE_HEADING_BUTTON_NAME);
+ 	 $order_text_area =  '<div style="width: 100%;min-height:100px;">'.$order_row['title'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at'].'</div>';
+	 $order_content_row_text[] = array('text'=> $order_text_area);
+	 $order_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $order_content_table[] = array('text'=> $order_content_row_text);
+	 $order_content_row_author = array();
+	 $user_info=tep_get_user_info($order_row['author']);
+	 $user_name=$user_info['name'];
+	 $order_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $order_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at']);
+	 $order_content_table[] = array('text'=> $order_content_row_author);
+	 $order_content_row_update = array();
+	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $order_content_row_update[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['set_time']);
+	 $order_content_table[] = array('text'=> $order_content_row_update);
+	 $order_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',0)"  value="'.IMAGE_DELETE.'">');
+	 $order_content_table[] = array('text'=> $order_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($order_content_table); 
+	 echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_bulletin_info') {
+/* -----------------------------------------------------
+    功能: 显示告示板信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ALERT_LOG);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $bulletin_sql="select * from ".TABLE_BULLETIN_BOARD." where id=".$_POST['id'];
+	 $bulletin_row=tep_db_fetch_array(tep_db_query($bulletin_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $bulletin_id=$_POST['bulletin_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $bulletin_content_table = array();
+	 $bulletin_content_row_type = array();
+	 $bulletin_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $bulletin_content_row_type[] = array('text'=> TEXT_BULLETIN_BOARD);
+	 $bulletin_content_row_type[] = array('params'=>'width="20%"','text'=> '');
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_type);
+
+    
+	 $bulletin_content_row_text[] = array('params'=>'valign="top"','text'=> TABLE_HEADING_BUTTON_NAME);
+ 	 $bulletin_text_area =  '<div style="width: 100%;min-height:200px;">'.$bulletin_row['content'].'</div>';
+	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
+	 $bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
+	 $bulletin_content_row_author = array();
+	 $bulletin_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['author']);
+	 $bulletin_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['time']);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_author);
+	 $bulletin_content_row_update = array();
+	 $bulletin_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_author']);
+	 $bulletin_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_time']);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',1)"  value="'.IMAGE_DELETE.'">');
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($bulletin_content_table); 
+	 echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_bulletin_reply_info') {
+/* -----------------------------------------------------
+    功能: 显示告示板信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_ALERT_LOG);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $reply_sql="select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id'];
+	 $reply_row=tep_db_fetch_array(tep_db_query($reply_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $reply_id=$_POST['reply_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $reply_content_table = array();
+	 $reply_content_row_type = array();
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $reply_content_row_type[] = array('text'=> TEXT_BULLETIN_BOARD);
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
+	 $reply_content_table[] = array('text'=> $reply_content_row_type);
+
+    
+	 $reply_content_row_text[] = array('params'=>'valign="top"','text'=>TABLE_HEADING_BUTTON_NAME);
+ 	 $reply_text_area =  '<div style="width: 100%; min-height:200px;">'.$reply_row['content'].'</div>';
+	 $reply_content_row_text[] = array('text'=> $reply_text_area);
+	 $reply_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $reply_content_table[] = array('text'=> $reply_content_row_text);
+	 $reply_content_row_author = array();
+	 $reply_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['author']);
+	 $reply_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['time']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_author);
+	 $reply_content_row_update = array();
+	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_author']);
+	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_time']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_update);
+	 $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',2)"  value="'.IMAGE_DELETE.'">');
+	 $reply_content_table[] = array('text'=> $reply_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($reply_content_table); 
+	 echo $notice_box->show_notice();
+} else if ($_GET['action'] == 'show_messages_info') {
+/* -----------------------------------------------------
+    功能: 显示messages信息
+    参数: $_POST['id']
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.'alert_log.php');
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+	 $reply_sql="select * from messages  where id=".$_POST['id'];
+	 $reply_row=tep_db_fetch_array(tep_db_query($reply_sql));
+	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+	 $reply_id=$_POST['reply_id'];
+	 $page_str = '<a onclick="hidden_info_box()" href="javascript:void(0);">X</a>';
+	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+	 $heading[] = array('text' => TEXT_ALERT_INFO);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+ 
+	 $reply_content_table = array();
+	 $reply_content_row_type = array();
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $reply_content_row_type[] = array('text'=> MESSAGES_PAGE_LINK_NAME);
+	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
+	 $reply_content_table[] = array('text'=> $reply_content_row_type);
+	 $reply_content_row_text[] = array('params'=>'valign="top"','text'=> TABLE_HEADING_BUTTON_NAME);
+ 	 $reply_text_area =  '<div style="width: 100%;min-height:200px;display:block;word-break: break-all;word-wrap: break-word;">'.nl2br($reply_row['content']).'</div>';
+	 $reply_content_row_text[] = array('text'=> $reply_text_area);
+	 $reply_content_row_text[] = array('params'=>'style="color:#FF0000;"');
+	 $reply_content_table[] = array('text'=> $reply_content_row_text);
+	 $reply_content_row_author = array();
+	 $reply_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['sender_name']);
+	 $reply_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['time']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_author);
+	 $reply_content_row_update = array();
+	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['user_update']);
+	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['date_update']);
+	 $reply_content_table[] = array('text'=> $reply_content_row_update);
+	 $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',3)"  value="'.IMAGE_DELETE.'">');
+	 $reply_content_table[] = array('text'=> $reply_content_row_submit);
+	 $notice_box->get_heading($heading);
+	 $notice_box->get_form($form_str);
+	 $notice_box->get_contents($reply_content_table); 
+	 echo $notice_box->show_notice();
 }

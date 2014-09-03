@@ -14806,6 +14806,7 @@ function tep_get_sec_by_str($str){
  ------------------------------------ */
 function tep_user_payroll($payroll_str,$user_id,$payroll_date,$group_id,$parameters_array=array(),&$error_pam_array){
  
+  $payroll_str = tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id);
   //把数组中的参数替换为对应的值
   $payroll_str = str_replace(array_keys($parameters_array),array_values($parameters_array),$payroll_str);
   //找出剩余的所有参数
@@ -15590,4 +15591,142 @@ function tep_param_error($payroll_str,$group_id){
     }
   }   
   return $error_pam_array;
+}
+/* -----------------------------------------
+    功能: 替换字符串内特殊计算方式
+    参数: $payroll_str 需要计算的公式 
+    参数: $user_id  员工ID 
+    参数: $payroll_date 工资日期 
+    参数: $group_id 所属组ID 
+    返回值: 替换后的字符串
+   --------------------------------------- */
+function tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id){
+  preg_match_all('/\$\{\w+?\}:\$\{\w+?\}/is',$payroll_str,$parameters_value_temp);
+  $parameters_value_array = $parameters_value_temp[0];
+  foreach($parameters_value_array as $has_param){
+    $all_paramenters_arr = explode(':',$has_param);
+    //判断工资的有效期
+    $replace_str = '';
+    $param_temp = $all_paramenters_arr[1];
+    $payroll_date_array = tep_start_end_date($group_id,$payroll_date);
+    $payroll_setting_query = tep_db_query("select id from ".TABLE_PAYROLL_SETTLEMENT." 
+        where group_id='".$group_id."' and project_id='0' and project_value='".$all_paramenters_arr[0]."'");
+    if($payroll_setting_array = tep_db_fetch_array($payroll_setting_query)){
+      $start_date = $payroll_date_array['start_date'];
+      $end_date = $payroll_date_array['end_date'];
+      $payroll_info_query = tep_db_query("select start_date,end_date from ".TABLE_USER_PAYROLL_INFO." 
+          WHERE user_id='".$user_id."' and payroll_id ='".$payroll_setting_array['id']."'");
+      if($payroll_info_array = tep_db_fetch_array($payroll_info_query)){
+        $temp_start = str_replace('-','',$start_date);
+        $temp_end = str_replace('-','',$end_date);
+        $temp_info_start = str_replace('-','',$payroll_info_array['start_date']);
+        $temp_info_end = str_replace('-','',$payroll_info_array['end_date']);
+        if($temp_start < $temp_info_start && $payroll_info_array['start_date']!=''){
+          $start_date = $payroll_info_array['start_date'];
+        }
+        if($temp_end > $temp_info_end && $payroll_info_array['end_date']!=''){
+          $end_date = $payroll_info_array['end_date'];
+        }
+      }
+  //关于打卡出勤的相关参数及对应的值
+  $attendance_replace_array = array();
+  $attendance_detail_query = tep_db_query("select id,param_a,param_b,set_time,work_hours,rest_hours,work_start,work_end,rest_start,rest_end from ".TABLE_ATTENDANCE_DETAIL); 
+  while($attendance_detail_array = tep_db_fetch_array($attendance_detail_query)){
+
+    //要求员工的出勤时间
+    if('${'.$attendance_detail_array['param_a'].'}'==$param_temp){
+
+      if($attendance_detail_array['set_time'] == 1){
+        $tmp_set_time = $attendance_detail_array['work_hours'] - $attendance_detail_array['rest_hours'];
+        if($tmp_set_time > 0){
+          $work_hours_num = 0;
+          $payroll_start_date = strtotime($start_date);
+          $payroll_end_date = strtotime($end_date);
+          while($payroll_start_date <= $payroll_end_date){
+            $attendance_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$payroll_start_date));
+
+            foreach($attendance_user_array as $attendance_user_value){
+
+              if(($attendance_user_value['attendance_detail_id'] == $attendance_detail_array['id']&&$attendance_user_value['replace']==null) ||($attendance_user_value['replace_attendance_detail_id'] == $attendance_detail_array['id']&&$attendance_user_value['replace']=='replace')){
+                $work_hours_num++; 
+              }
+            }
+            $payroll_start_date = $payroll_start_date+3600*24;
+          }
+          $replace_str = $tmp_set_time*$work_hours_num;
+        }else{
+          $replace_str = 0;
+        }
+      }else{
+        $work_hours = 0;
+        $work_start_num = str_replace(':','',$attendance_detail_array['work_start']);
+        $work_end_num = str_replace(':','',$attendance_detail_array['work_end']);
+        $work_rest = time_diff($attendance_detail_array['rest_start'],$attendance_detail_array['rest_end']);
+        if($work_start_num < $work_end_num){
+
+          $work_temp = explode(':',$attendance_detail_array['work_end']);
+          $work_end = $work_temp[0]+$work_temp[1]/60;
+          $work_temp = explode(':',$attendance_detail_array['work_start']);
+          $work_start = $work_temp[0]+$work_temp[1]/60;
+          $work_hours = $work_end - $work_start;
+        }else{
+
+          $work_temp = explode(':',$attendance_detail_array['work_end']);
+          $work_end = ($work_temp[0]+24)+$work_temp[1]/60;
+          $work_temp = explode(':',$attendance_detail_array['work_start']);
+          $work_start = $work_temp[0]+$work_temp[1]/60;
+          $work_hours = $work_end - $work_start; 
+        }
+        if($work_hours > $work_rest){
+          $work_hours = $work_hours - $work_rest;
+        }else{
+          $work_hours = 0;
+        }
+        $work_hours_num = 0;
+
+        $payroll_start_date = strtotime($start_date);
+        $payroll_end_date = strtotime($end_date);
+        while($payroll_start_date <= $payroll_end_date){
+          $attendance_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$payroll_start_date));
+
+          foreach($attendance_user_array as $attendance_user_value){
+
+            if(($attendance_user_value['attendance_detail_id'] == $attendance_detail_array['id']&&$attendance_user_value['replace']==null) ||($attendance_user_value['replace_attendance_detail_id'] == $attendance_detail_array['id']&&$attendance_user_value['replace']=='replace')){
+              $work_hours_num++; 
+            }
+          }
+          $payroll_start_date = $payroll_start_date+3600*24;
+        }
+          $replace_str = $work_hours*$work_hours_num;;
+        }
+      }
+
+    //员工的实际出勤时间 
+    if('${'.$attendance_detail_array['param_b'].'}'==$param_temp){
+      $attendance_num = 0;
+      
+      $start_time = strtotime($start_date);
+      $end_time = strtotime($end_date); 
+
+      while($start_time <= $end_time){
+        $attendance_user_array = tep_all_attenande_by_uid($user_id,date('Ymd',$start_time));
+        foreach($attendance_user_array as $attendance_user_value){
+          if(($attendance_user_value['attendance_detail_id'] == $attendance_detail_array['id']&&$attendance_user_value['replace']==null) ||($attendance_user_value['replace_attendance_detail_id'] == $attendance_detail_array['id']&&$attendance_user_value['replace']=='replace')){
+            $t = tep_attendance_record_time($user_id,date('Ymd',$start_time),$attendance_user_array,$attendance_detail_array['id']);
+            $attendance_num += $t;
+          }
+        }
+        $start_time += 3600*24; 
+      }
+
+        $replace_str = $attendance_num;
+      }
+    
+
+  }
+  tep_db_free_result($attendance_detail_query);
+  $payroll_str = str_replace($has_param,$replace_str,$payroll_str);
+    }
+  }
+  return $payroll_str;
 }

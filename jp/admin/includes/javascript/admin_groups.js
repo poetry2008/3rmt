@@ -44,6 +44,28 @@ function group_ajax(ele,group_id,parent_group_id,group_name){
  async : false,
  success: function(data){
    $("div#show_latest_news").html(data);
+   //prev next
+   if($('#groups_'+group_id).prev().attr('id') != '' && $('#groups_'+group_id).prev().attr('id') != null){
+      var groups_prev_id = $('#groups_'+group_id).prev().attr('id');
+      groups_prev_id = groups_prev_id.split('_');
+
+      if(groups_prev_id[0] == 'groups' && groups_prev_id[1] != ''){
+        var groups_id = $('#groups_'+group_id).prev().attr('id');
+        groups_id = groups_id.split('_');
+        $('#next_prev').append('<a id="groups_prev" onclick="'+$('#action_'+groups_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+groups_prev+'</a>&nbsp&nbsp');
+      }
+   }
+   if($('#groups_'+group_id).next().attr('id') != '' && $('#groups_'+group_id).next().attr('id') != null){
+     var groups_next_id = $('#groups_'+group_id).next().attr('id');
+     groups_next_id = groups_next_id.split('_');
+     
+     if(groups_next_id[0] == 'groups' && groups_next_id[1] != ''){
+       var groups_id = $('#groups_'+group_id).next().attr('id');
+       groups_id = groups_id.split('_');
+       $('#next_prev').append('<a id="groups_next" onclick="'+$('#action_'+groups_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+groups_next+'&gt</a>&nbsp&nbsp');
+     }
+   } 
+   //end
    ele = ele.parentNode;
    head_top = $('.compatible_head').height();
    if(group_id != -1){
@@ -261,7 +283,7 @@ function add_obj(ele,obj_name_1,obj_name_2,delete_name,flag){
   obj_num = parseInt(obj_num);
   var obj_str = '';
   if(obj_type == 0){
-    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="payroll_sort[]" value="0">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"></td></tr>';
+    obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="payroll_sort[]" value="0">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_1+'</td><td><input type="text" name="object_title[]" value="" style="width:145px;"><input type="text" name="object_contents[]" value="" style="width:150px;"><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"><br><input type="text" name="object_value[]" class="td_input" value=""></td></tr>';
   }else if(obj_type == 1){
     obj_str = '<tr id="obj_tr_'+(obj_num+1)+'"><td width="20%" valign="top"><input type="hidden" name="payroll_sort[]" value="-1">&nbsp;&nbsp;&nbsp;&nbsp;'+obj_name_2+'</td><td><input type="text" name="formula_title[]" style="width:145px;" value=""><input type="text" name="formula_contents[]" style="width:150px;" value=""><input type="button" value="'+delete_name+'" onclick="delete_obj('+(obj_num+1)+');">&nbsp;&nbsp;<input type="button" onclick="add_obj(this,\''+obj_name_1+'\',\''+obj_name_2+'\',\''+delete_name+'\',1);" value="'+ele.value+'"><br><input type="text" name="formula_value[]" class="td_input" value=""></td></tr>';
   }

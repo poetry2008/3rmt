@@ -4,6 +4,8 @@ define('HEADING_TITLE', '提醒日志');
 
 define('TEXT_ERRINFO_DB_NO_LOGINFO', '无法获得访问信息');
 define('TEXT_BULLETIN_BOARD','公告栏');
+define('TEXT_ORDER','提醒');
+define('TEXT_ALERT_INFO','日志内容');
 
 
 define('TEXT_INFO_DELETE_DAY', '删除访问信息');

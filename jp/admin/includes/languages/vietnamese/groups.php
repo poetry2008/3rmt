@@ -39,24 +39,10 @@ define('TEXT_GROUP_ORDER_SORT','Thứ tự sắp xếp');
 define('TEXT_GROUP_DAYS','Ngày');
 define('TEXT_GROUP_RESET','Thiết lập lại');
 define('TEXT_GROUP_PAYROLL_ADMIN','Quản lí tính lương');
-define('TEXT_INFO_HEADING_MOVE_GROUP','グループを移動');
-define('TEXT_MOVE_GROUP_INTRO','%s&nbsp;&nbsp;を移動する先のグループを選んでください');
-define('TEXT_MOVE','%s&nbsp;&nbsp;の移動先:');
-define('TEXT_CURRENT_GROUPS','現在のグループ');
+define('TEXT_INFO_HEADING_MOVE_GROUP','Chuyển đến group');
+define('TEXT_MOVE_GROUP_INTRO','%s&nbsp;&nbsp;Vui lòng chọn group điểm đến');
+define('TEXT_MOVE','%s&nbsp;&nbsp;Điểm đến:');
+define('TEXT_CURRENT_GROUPS','Group hiện tại');
 define('TEXT_ADD_ADL', 'Thêm vào');
 define('TEXT_DEL_ADL', 'Xóa');
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -42,6 +42,13 @@
          echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('messages.php').'\';"><span>'.  tep_image(DIR_WS_MENU_ICON .  'icon_messages.png').'</span><span>' . MESSAGES_PAGE_LINK_NAME .  '</span></div>';
        }
      }
+     if (!check_whether_is_limited('bulletin_board.php')) {
+       if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == 'bulletin_board.php'){
+         echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link('bulletin_board.php').'\';"><span>'.  tep_image('images/icons/left_bbs.png').'</span><span>' .HEADER_TEXT_BULLETIN .  '</span></div>';
+       }else{
+         echo ' <div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link('bulletin_board.php').'\';"><span>'.  tep_image('images/icons/left_bbs.png').'</span><span>' . HEADER_TEXT_BULLETIN .  '</span></div>';
+       }
+     }
      if (!check_whether_is_limited(FILENAME_BANNER_MANAGER)) {
        if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_BANNER_MANAGER){
          echo ' <div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_BANNER_MANAGER).'\';"><span>'.  tep_image(DIR_WS_MENU_ICON .  'icon_banner.gif').'</span><span>' . BOX_TOOLS_BANNER_MANAGER .  '</span></div>';
