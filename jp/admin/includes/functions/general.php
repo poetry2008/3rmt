@@ -14861,9 +14861,26 @@ function tep_user_payroll($payroll_str,$user_id,$payroll_date,$group_id,$paramet
           $user_payroll_value_array['end_date'] = $user_payroll_array['end_date'];
           $user_payroll_value_array['payroll_value'] = $user_payroll_array['payroll_value'];
           //判断工资的有效期
-          $payroll_date_array = tep_start_end_date($group_id,$payroll_date);
+          $payroll_date_array = tep_start_end_date($group_id,$payroll_date); 
           if($user_payroll_value_array['start_date'] != '' && $user_payroll_value_array['end_date'] != ''){
-            if($payroll_date_array['start_date'] >= $user_payroll_value_array['start_date'] && $payroll_date_array['end_date'] <= $user_payroll_value_array['end_date']){
+            $payroll_time_array = array();
+            $payroll_start_time = strtotime($payroll_date_array['start_date']);
+            $payroll_end_time = strtotime($payroll_date_array['end_date']);
+            while($payroll_start_time <= $payroll_end_time){
+
+              $payroll_time_array[] = $payroll_start_time;
+              $payroll_start_time = strtotime('+1 days',$payroll_start_time);
+            }
+            $payroll_user_time_array = array();
+            $payroll_user_start_time = strtotime($user_payroll_value_array['start_date']);
+            $payroll_user_end_time = strtotime($user_payroll_value_array['end_date']);
+            while($payroll_user_start_time <= $payroll_user_end_time){
+
+              $payroll_user_time_array[] = $payroll_user_start_time;
+              $payroll_user_start_time = strtotime('+1 days',$payroll_user_start_time);
+            }
+            $diff_payroll_array = array_intersect($payroll_time_array,$payroll_user_time_array);
+            if(!empty($diff_payroll_array)){
               $user_payroll_val = $user_payroll_value_array['payroll_value'];
             }else{
                        
@@ -14871,7 +14888,7 @@ function tep_user_payroll($payroll_str,$user_id,$payroll_date,$group_id,$paramet
             }
           }else if($user_payroll_value_array['start_date'] != ''){
 
-            if($payroll_date_array['start_date'] >= $user_payroll_value_array['start_date']){
+            if($user_payroll_value_array['start_date'] <= $payroll_date_array['end_date']){
 
               $user_payroll_val = $user_payroll_value_array['payroll_value'];
             }else{
@@ -14879,7 +14896,7 @@ function tep_user_payroll($payroll_str,$user_id,$payroll_date,$group_id,$paramet
             }
           }else if($user_payroll_value_array['end_date'] != ''){
 
-            if($payroll_date_array['end_date'] <= $user_payroll_value_array['end_date']){
+            if($user_payroll_value_array['end_date'] >= $payroll_date_array['start_date']){
 
               $user_payroll_val = $user_payroll_value_array['payroll_value'];
             }else{

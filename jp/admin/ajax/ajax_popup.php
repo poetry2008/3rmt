@@ -10901,7 +10901,7 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'temp_del_group_id\')"><input type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
+  $hidden_div .= '<tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'temp_del_group_id\')"><input type="button" onclick="add_att_rows(this,\'\')" value="'.TEXT_ADD_ADL.'"></td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\' \')"></div>';
@@ -11485,7 +11485,7 @@ if($row_array['set_time']==0){
 
     
 	 $order_content_row_text[] = array('text'=>TABLE_HEADING_BUTTON_NAME);
- 	 $order_text_area =  '<div style="width: 100%;min-height:100px;">'.$order_row['title'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at'].'</div>';
+ 	 $order_text_area =  '<div style="width: 100%;min-height:100px;display:block;word-break: break-all;word-wrap: break-word;">'.$order_row['title'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at'].'</div>';
 	 $order_content_row_text[] = array('text'=> $order_text_area);
 	 $order_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $order_content_table[] = array('text'=> $order_content_row_text);
@@ -11498,9 +11498,11 @@ if($row_array['set_time']==0){
 	 $order_content_row_update = array();
 	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
 	 $order_content_row_update[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['set_time']);
-	 $order_content_table[] = array('text'=> $order_content_row_update);
-	 $order_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',0)"  value="'.IMAGE_DELETE.'">');
-	 $order_content_table[] = array('text'=> $order_content_row_submit);
+         $order_content_table[] = array('text'=> $order_content_row_update);
+         if($ocertify->npermission >= 15){
+	   $order_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',0)"  value="'.IMAGE_DELETE.'">');
+           $order_content_table[] = array('text'=> $order_content_row_submit);
+         }
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
 	 $notice_box->get_contents($order_content_table); 
@@ -11530,7 +11532,7 @@ if($row_array['set_time']==0){
 
     
 	 $bulletin_content_row_text[] = array('params'=>'valign="top"','text'=> TABLE_HEADING_BUTTON_NAME);
- 	 $bulletin_text_area =  '<div style="width: 100%;min-height:200px;">'.$bulletin_row['content'].'</div>';
+ 	 $bulletin_text_area =  '<div style="width: 100%;min-height:100px;display:block;word-break: break-all;word-wrap: break-word;">'.$bulletin_row['content'].'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
@@ -11541,9 +11543,11 @@ if($row_array['set_time']==0){
 	 $bulletin_content_row_update = array();
 	 $bulletin_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_author']);
 	 $bulletin_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_time']);
-	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',1)"  value="'.IMAGE_DELETE.'">');
-	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
+         $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
+         if($ocertify->npermission >= 15){
+	   $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',1)"  value="'.IMAGE_DELETE.'">');
+           $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
+         }
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
 	 $notice_box->get_contents($bulletin_content_table); 
@@ -11573,7 +11577,7 @@ if($row_array['set_time']==0){
 
     
 	 $reply_content_row_text[] = array('params'=>'valign="top"','text'=>TABLE_HEADING_BUTTON_NAME);
- 	 $reply_text_area =  '<div style="width: 100%; min-height:200px;">'.$reply_row['content'].'</div>';
+ 	 $reply_text_area =  '<div style="width: 100%; min-height:100px;display:block;word-break: break-all;word-wrap: break-word;">'.$reply_row['content'].'</div>';
 	 $reply_content_row_text[] = array('text'=> $reply_text_area);
 	 $reply_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $reply_content_table[] = array('text'=> $reply_content_row_text);
@@ -11584,9 +11588,11 @@ if($row_array['set_time']==0){
 	 $reply_content_row_update = array();
 	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_author']);
 	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_time']);
-	 $reply_content_table[] = array('text'=> $reply_content_row_update);
-	 $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',2)"  value="'.IMAGE_DELETE.'">');
-	 $reply_content_table[] = array('text'=> $reply_content_row_submit);
+         $reply_content_table[] = array('text'=> $reply_content_row_update);
+         if($ocertify->npermission >= 15){
+	   $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',2)"  value="'.IMAGE_DELETE.'">');
+           $reply_content_table[] = array('text'=> $reply_content_row_submit);
+         }
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
 	 $notice_box->get_contents($reply_content_table); 
@@ -11614,7 +11620,7 @@ if($row_array['set_time']==0){
 	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
 	 $reply_content_table[] = array('text'=> $reply_content_row_type);
 	 $reply_content_row_text[] = array('params'=>'valign="top"','text'=> TABLE_HEADING_BUTTON_NAME);
- 	 $reply_text_area =  '<div style="width: 100%;min-height:200px;display:block;word-break: break-all;word-wrap: break-word;">'.nl2br($reply_row['content']).'</div>';
+ 	 $reply_text_area =  '<div style="width: 100%;min-height:100px;display:block;word-break: break-all;word-wrap: break-word;">'.nl2br($reply_row['content']).'</div>';
 	 $reply_content_row_text[] = array('text'=> $reply_text_area);
 	 $reply_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $reply_content_table[] = array('text'=> $reply_content_row_text);
@@ -11625,9 +11631,11 @@ if($row_array['set_time']==0){
 	 $reply_content_row_update = array();
 	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['user_update']);
 	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['date_update']);
-	 $reply_content_table[] = array('text'=> $reply_content_row_update);
-	 $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',3)"  value="'.IMAGE_DELETE.'">');
-	 $reply_content_table[] = array('text'=> $reply_content_row_submit);
+         $reply_content_table[] = array('text'=> $reply_content_row_update);
+         if($ocertify->npermission >= 15){
+	   $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',3)"  value="'.IMAGE_DELETE.'">');
+           $reply_content_table[] = array('text'=> $reply_content_row_submit);
+         }
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
 	 $notice_box->get_contents($reply_content_table); 

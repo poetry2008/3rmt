@@ -7,7 +7,6 @@ if (extension_loaded('mbstring')) {
 }
 define('TEXT_BULLETIN_BOARD','公告栏');
 define('TEXT_BULLETIN_EDIT_CONFIRM','确定要删除吗？');
-define('SEARCH','搜索');
 define('TEXT_COLLECT','收藏');
 define('TEXT_MARK','标记');
 define('TEXT_TITLE','标题');
@@ -23,7 +22,6 @@ define('TEXT_BACK','返回');
 define('TEXT_BULLETIN_EDIT_CONTENT','内容');
 define('TEXT_CREATE_BULLETIN','新建');
 define('TEXT_MUST_INPUT','');
-define('TEXT_SUBMIT','保存');
 define('TEXT_RESET','删除');
 define('TEXT_ADDFILE','附件');
 define('TEXT_CONTENT','内容');
@@ -54,4 +52,5 @@ define('TEXT_LAST','上一项');
 define('TEXT_NEXT','下一项');
 define('TEXT_ALERT_TYPE','类型');
 define('TEXT_DELETED_INFO','该回复已被管理员删除');
+define('TEXT_MEMO_EDIT_MUST_SELECT','至少选择一项。');
 ?>

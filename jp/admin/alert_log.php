@@ -332,6 +332,8 @@ function show_popup_info(obj,id,type){
        alert_id = alert_id.split('_');
        $('#next_prev').append('<a id="alert_next" onclick="'+$('#log_'+alert_id[1]+'_'+alert_id[2]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+alert_next+'&gt</a>&nbsp&nbsp');
      }
+   }else{
+       $('#next_prev').append('<font color="#000000">'+alert_next+'&gt</font>&nbsp&nbsp'); 
    } 
    //end
 }

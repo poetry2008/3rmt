@@ -113,17 +113,6 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
       dataType: 'text',
       async: false,
       success: function(data) {
-        if($("#notice_id_str").val()){
-          var notice_id_str = $("#notice_id_str").val();
-        }
-        $('#show_all_notice').css('display', 'none');
-        $('#show_all_notice').html(''); 
-        check_header_messages();
-        if($("#notice_id_str").val()){
-          $("#notice_id_str").remove();
-          $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">');
-        }
-      window.location.reload();
       } 
       });
 }

@@ -20,7 +20,7 @@ define('TEXT_SUBMIT','Lưu');
 define('TEXT_RESET','Xóa');
 define('TEXT_ADDFILE','File đính kèm');
 define('TEXT_CONTENT','Nội dung');
-define('TEXT_BULLETIN_EDIT_CONTENT','Chú thích');
+define('TEXT_BULLETIN_EDIT_CONTENT','Điền vào');
 define('TEXT_GROUP_SELECT','Người xem qua');
 define('TEXT_SELECT_ID','Chỉ ID đã quy định');
 define('DELETE_STAFF','Xóa');
@@ -47,4 +47,6 @@ define('TEXT_CREATE_BULLETIN_REPLY','Điền vào');
 define('TEXT_LAST','< Về phía trước');
 define('TEXT_NEXT','Tiếp theo >');
 define('TEXT_ALERT_TYPE','Loại');
+define('TEXT_MEMO_EDIT_MUST_SELECT','Vui lòng chọn ít nhất một cách lựa chọn.');
+define('TEXT_DELETED_INFO','Câu trả lời đã bị xóa bởi người quản lý');
 ?>
