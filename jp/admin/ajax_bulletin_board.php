@@ -310,7 +310,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_download[] = array('text'=> TEXT_FILE_DOWNLOAD_URL);
 	 $bulletin_content_row_download[] = array('text'=> $file_download_url);
 	 if($file_download_url){
-		$bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
+//		$bulletin_content_table[] = array('text'=> $bulletin_content_row_download);
 		$bulletin_content_row_addfile = array();
 		$bulletin_content_row_addfile[] = array('text'=> '');
 	 }else{
@@ -380,7 +380,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_addfile = array();
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
-	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
+//	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.IMAGE_SAVE.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);

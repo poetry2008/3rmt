@@ -1089,6 +1089,10 @@ require("includes/note_js.php");
       $order_sort = 'order by r.update_time';
       $order_type = $_GET['order_type'];
 	  break;
+    case 'add_file':
+      $order_sort = 'order by r.file_path';
+      $order_type = $_GET['order_type'];
+	  break;
     }
   }else{
     $order_sort = 'order by r.id';
@@ -1266,6 +1270,10 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
       $order_sort = 'update_time';
       $order_type = $_GET['order_type'];
       break;
+    case 'add_file':
+      $order_sort = 'file_path';
+      $order_type = $_GET['order_type'];
+	  break;
     }
   }else{
     $order_sort = 'id';
