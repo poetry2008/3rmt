@@ -20,7 +20,7 @@ define('TEXT_SUBMIT','Lưu');
 define('TEXT_RESET','Xóa');
 define('TEXT_ADDFILE','File đính kèm');
 define('TEXT_CONTENT','Nội dung');
-define('TEXT_BULLETIN_EDIT_CONTENT','Chú thích');
+define('TEXT_BULLETIN_EDIT_CONTENT','Điền vào');
 define('TEXT_GROUP_SELECT','Người xem qua');
 define('TEXT_SELECT_ID','Chỉ ID đã quy định');
 define('DELETE_STAFF','Xóa');

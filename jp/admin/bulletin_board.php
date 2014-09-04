@@ -1302,9 +1302,19 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                           'text' => $bulletin['reply_number']
                         );
 
+    //发帖时间格式化
+    //如果是当天
+    if(date('Y-m-d') == date('Y-m-d',strtotime($bulletin['update_time']))){
+      $time_str = date('H:i',strtotime($bulletin['update_time']));
+    //如果不是当天，但是当年
+    }else if(date('Y') == date('Y',strtotime($bulletin['update_time']))){
+      $time_str = date('m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($bulletin['update_time']));
+    }else{
+      $time_str = date('Y/m/d',strtotime($bulletin['update_time']));
+    }
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
-                          'text' => $bulletin['update_time'] 
+                          'text' => $time_str 
                         );
 
     $bulletin_item_info[] = array(
