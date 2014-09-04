@@ -15449,7 +15449,7 @@ function tep_start_end_date($group_id,$payroll_date){
 
 function tep_resolve_str($str,$fun_arr=array(),$other=array(),$point=2){
   $error = false;
-  while(preg_match('/(.*)\(round\((.*)[,;](\d+)\)\)(.*)/is',$str,$arr)){
+  while(preg_match('/(.*)\(round\(([^,;]*)[,;](\d+)\)\)(.*)/is',$str,$arr)){
     if($arr[1]==''){
       break;
     }
