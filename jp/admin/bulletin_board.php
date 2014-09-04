@@ -266,6 +266,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
+var memo_prev = '<?php echo IMAGE_PREV;?>';
+var memo_next = '<?php echo IMAGE_NEXT;?>';
 <?php //快捷键监听?>
 $(document).ready(function() { 
 var box_warp_height = $(".box_warp").height();
@@ -770,6 +772,30 @@ function edit_bulletin(obj,id){
     async:false,
     success: function (data) {
       $('#show_popup_info').html(data); 
+      //prev next
+      if($('#memo_'+id).prev().attr('id') != '' && $('#memo_'+id).prev().attr('id') != null){
+        var memo_prev_id = $('#memo_'+id).prev().attr('id');
+        memo_prev_id = memo_prev_id.split('_');
+
+        if(memo_prev_id[0] == 'memo' && memo_prev_id[1] != ''){
+          var memo_id = $('#memo_'+id).prev().attr('id');
+          memo_id = memo_id.split('_');
+          $('#next_prev').append('<a id="memo_prev" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+memo_prev+'</a>&nbsp&nbsp');
+        }
+      }
+      if($('#memo_'+id).next().attr('id') != '' && $('#memo_'+id).next().attr('id') != null){
+        var memo_next_id = $('#memo_'+id).next().attr('id');
+        memo_next_id = memo_next_id.split('_');
+     
+        if(memo_next_id[0] == 'memo' && memo_next_id[1] != ''){
+          var memo_id = $('#memo_'+id).next().attr('id');
+          memo_id = memo_id.split('_');
+          $('#next_prev').append('<a id="memo_next" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+memo_next+'&gt</a>&nbsp&nbsp');
+        }
+      }else{
+        $('#next_prev').append('<font color="#000000">'+memo_next+'&gt</font>&nbsp&nbsp'); 
+      } 
+      //end
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
         if (obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
           offset = obj.offsetTop+$('#bulletin_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
@@ -822,6 +848,30 @@ function reply_bulletin(obj,id,bulletin_id){
     async:false,
     success: function (data) {
       $('#show_popup_info').html(data); 
+      //prev next
+      if($('#memo_'+id).prev().attr('id') != '' && $('#memo_'+id).prev().attr('id') != null){
+        var memo_prev_id = $('#memo_'+id).prev().attr('id');
+        memo_prev_id = memo_prev_id.split('_');
+
+        if(memo_prev_id[0] == 'memo' && memo_prev_id[1] != ''){
+          var memo_id = $('#memo_'+id).prev().attr('id');
+          memo_id = memo_id.split('_');
+          $('#next_prev').append('<a id="memo_prev" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+memo_prev+'</a>&nbsp&nbsp');
+        }
+      }
+      if($('#memo_'+id).next().attr('id') != '' && $('#memo_'+id).next().attr('id') != null){
+        var memo_next_id = $('#memo_'+id).next().attr('id');
+        memo_next_id = memo_next_id.split('_');
+     
+        if(memo_next_id[0] == 'memo' && memo_next_id[1] != ''){
+          var memo_id = $('#memo_'+id).next().attr('id');
+          memo_id = memo_id.split('_');
+          $('#next_prev').append('<a id="memo_next" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+memo_next+'&gt</a>&nbsp&nbsp');
+        }
+      }else{
+        $('#next_prev').append('<font color="#000000">'+memo_next+'&gt</font>&nbsp&nbsp'); 
+      } 
+      //end
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
         if (obj.offsetTop+$('#bulletin_list_box').position().top+obj.offsetHeight+$('#show_popup_info').height() > document.body.scrollHeight) {
           offset = obj.offsetTop+$('#bulletin_list_box').position().top-$('#show_popup_info').height()-$('#offsetHeight').height();
@@ -1074,9 +1124,9 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
     }
 
     if ($bulletin['id']==$_GET['c_id']) {
-      $bulletin_item_params = 'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
+      $bulletin_item_params = 'id="memo_'.$bulletin["id"].'" class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = 'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = 'id="memo_'.$bulletin["id"].'" class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 
     $bulletin_item_info = array();  
@@ -1144,7 +1194,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 	if($bulletin["content"]=='deleted'){
 		$edit_html='<img src="images/icons/info_gray.gif">';
 	}else{
-		$edit_html='<a id="m_696" onclick="reply_bulletin(this,'.$bulletin["id"].','.$bulletin["bulletin_id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>';
+		$edit_html='<a id="click_'.$bulletin["id"].'" onclick="reply_bulletin(this,'.$bulletin["id"].','.$bulletin["bulletin_id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>';
 	}
     $bulletin_item_info[] = array(
                           'align' => 'left', 
@@ -1256,9 +1306,9 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
     }
 
     if ($bulletin['id']==$_GET['c_id']||$bulletin['id']==$_GET['bulletin_id']) {
-      $bulletin_item_params = 'class="dataTableRowSelected"   onmouseover="this.style.cursor=\'hand\'"';
+      $bulletin_item_params = 'id="memo_'.$bulletin['id'].'" class="dataTableRowSelected"   onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = 'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = 'id="memo_'.$bulletin['id'].'" class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->auth_user!=$bulletin["author"])&&($ocertify->npermission <15)){
 		$select_html='disabled="disabled"';
@@ -1342,7 +1392,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
     $bulletin_item_info[] = array(
                           'align' => 'left', 
                           'params' => 'class="dataTableContent"', 
-						  'text' => '<a id="m_696" onclick="edit_bulletin(this,'.$bulletin["id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
+						  'text' => '<a id="click_'.$bulletin['id'].'" onclick="edit_bulletin(this,'.$bulletin["id"].')" href="javascript:void(0)">'.tep_get_signal_pic_info($bulletin['update_time']).'</a>'
                           ); 
                       
     $bulletin_table_row[] = array('params' => $bulletin_item_params, 'text' => $bulletin_item_info);

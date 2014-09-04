@@ -190,7 +190,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		$turn_html='<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$last.')">'.TEXT_LAST.'</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_bulletin_info('.$next.')">'.TEXT_NEXT.'</a>';
 	}
 	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin&bulletin_id='.$bulletin_id.'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1"'); 
-	 $heading[] = array('align' => 'right', 'text' => $turn_html.'<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 
      //bulletin infomation
 	 $bulletin_sql="select * from bulletin_board where id=$bulletin_id";
@@ -432,7 +432,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	}
 	 if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=$bulletin_id"))==1)$turn_html='';
 	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin_reply&id='.$_POST["id"].'&bulletin_id='.$bulletin_info['bulletin_id'].'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1" '); 
-	 $heading[] = array('align' => 'right', 'text' => $turn_html.'<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
+	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 	 $old_content=$bulletin_info['content'];
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
