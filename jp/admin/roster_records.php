@@ -86,7 +86,7 @@ if(isset($_GET['action'])){
 			  $type_arr[$key]=1;
 			}
 		$u_key = $_POST['u_group'][$key];	
-                $update_flag = false;
+                $update_flag = true;
 			foreach($_POST['has_user'][$u_key] as $k=>$user_id){
           $update_date = false;
           if(!empty($_POST['has_user']['new'][$u_key])){
@@ -113,7 +113,7 @@ if(isset($_GET['action'])){
               }
             }
           }
-          if($update_date==true){
+          if($update_date==false){
             $update_flag = $update_date;
           }
 
@@ -1261,6 +1261,7 @@ while($j<=$day_num)
   echo "</td></tr>";
   $user_worker_list = array();
   $user_att_info = array();
+  $attendance_arr = tep_sort_attendance($attendance_arr,$all_att_arr);
   foreach($attendance_arr as $attendance_row){
     $info_td_attendance_str = '';
     $show_info_td_attendance_str = false;
@@ -1404,6 +1405,7 @@ while($j<=$day_num)
   $last_att_id = 0;
   $show_att_div = true;
   $show_ulist_flag = false;
+  $user_att_arr = tep_sort_attendance($user_att_arr,$all_att_arr);
   foreach($user_att_arr as $uatt_arr){
     $attendance_user_row = $uatt_arr;
     $attendance_info = $all_att_arr[$attendance_user_row['attendance_detail_id']];

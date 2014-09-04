@@ -15730,3 +15730,25 @@ function tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id){
   }
   return $payroll_str;
 }
+/*-------------------------------
+  功能:按照时间排序排班
+  参数:排班列表 $attendance_list
+  参数:所有排班模板信息 $attendance_info
+  返回值:根据实际排班后的排班列表
+  ------------------------------*/
+function tep_sort_attendance($attendance_list,$attendance_info){
+  $temp_time_arr = array();
+  $temp_sum_arr = array();
+  foreach($attendance_list as $attendance_value){
+    $temp_info = $attendance_info[$attendance_value['attendance_detail_id']];
+    if($temp_info['set_time'] == 1){
+      $temp_sum_arr[] = $attendance_value;
+    }else{
+      $temp_key = str_replace(':','',$temp_info['work_start']);
+      $temp_time_arr[$temp_key] = $attendance_value;
+    }
+  }
+  ksort($temp_time_arr);
+  $res_arr = array_merge($temp_time_arr,$temp_sum_arr);
+  return $res_arr;
+}
