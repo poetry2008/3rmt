@@ -54,4 +54,5 @@ define('TEXT_LAST','上一项');
 define('TEXT_NEXT','下一项');
 define('TEXT_ALERT_TYPE','类型');
 define('TEXT_DELETED_INFO','该回复已被管理员删除');
+define('TEXT_MEMO_EDIT_MUST_SELECT','至少选择一项。');
 ?>

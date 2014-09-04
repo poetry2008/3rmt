@@ -356,7 +356,7 @@ function select_bulletin_change(value,bulletin_list_id,c_permission)
                   }
                 }); 
               } else {
-                document.getElementsByName("edit_memo_list")[0].value = 0;
+                document.getElementsByName("edit_bulletin_list")[0].value = 0;
                 alert('<?php echo JS_TEXT_ONETIME_PWD_ERROR;?>'); 
               }
             }
@@ -365,10 +365,10 @@ function select_bulletin_change(value,bulletin_list_id,c_permission)
       }
     }else{
 
-      document.getElementsByName("edit_memo_list")[0].value = 0;
+      document.getElementsByName("edit_bulletin_list")[0].value = 0;
     } 
   }else{
-    document.getElementsByName("edit_memo_list")[0].value = 0;
+    document.getElementsByName("edit_bulletin_list")[0].value = 0;
     alert("<?php echo TEXT_MEMO_EDIT_MUST_SELECT;?>"); 
   }
 }
