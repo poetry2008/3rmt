@@ -330,6 +330,7 @@ function delete_submit(c_permission,type){
   }
 }
 function save_submit(c_permission){
+   hidden_info_box();
   //选择的组
   group_id = '';
   error_default ='';
