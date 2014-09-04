@@ -291,7 +291,6 @@ function delete_submit(c_permission,type){
   if (c_permission == 31) {
     document.attendance_setting_form.action = del_url 
     document.attendance_setting_form.submit();
-    hidden_info_box();
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
@@ -305,7 +304,6 @@ function delete_submit(c_permission,type){
          if (tmp_msg_arr[0] == '0') {
            document.attendance_setting_form.action = del_url 
            document.attendance_setting_form.submit();
-           hidden_info_box();
          } else {
            $('#button_delete').attr('id', 'tmp_button_delete'); 
            var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
@@ -319,7 +317,6 @@ function delete_submit(c_permission,type){
                async: false,
                success: function(msg_info) {
                  document.attendance_setting_form.submit();
-                 hidden_info_box();
                }
              }); 
            } else {
@@ -333,6 +330,7 @@ function delete_submit(c_permission,type){
   }
 }
 function save_submit(c_permission){
+   hidden_info_box();
   //选择的组
   group_id = '';
   error_default ='';
@@ -446,7 +444,6 @@ if(s_hour==0 && s_m_l==0 && s_m_r==0 && e_hour==0 && e_m_l==0 && e_m_r==0){
 if(flag !=1 && sign!=1) {
   if (c_permission == 31) {
     document.attendance_setting_form.submit();
-    hidden_info_box();
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
@@ -459,7 +456,6 @@ if(flag !=1 && sign!=1) {
          var pwd_list_array = tmp_msg_arr[1].split(',');
          if (tmp_msg_arr[0] == '0') {
            document.attendance_setting_form.submit();
-           hidden_info_box();
          } else {
            $('#button_save').attr('id', 'tmp_button_save'); 
            var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
@@ -472,7 +468,6 @@ if(flag !=1 && sign!=1) {
                async: false,
                success: function(msg_info) {
                  document.attendance_setting_form.submit();
-                 hidden_info_box();
                }
              }); 
            } else {
@@ -752,7 +747,6 @@ function delete_replace_submit(c_permission){
   if (c_permission == 31) {
     document.attendance_setting_form.action = del_url 
     document.attendance_setting_form.submit();
-    hidden_info_box();
   } else {
     $.ajax({
       url: 'ajax_orders.php?action=getallpwd',   
@@ -766,7 +760,6 @@ function delete_replace_submit(c_permission){
          if (tmp_msg_arr[0] == '0') {
            document.attendance_setting_form.action = del_url 
            document.attendance_setting_form.submit();
-           hidden_info_box();
          } else {
            $('#button_delete').attr('id', 'tmp_button_delete'); 
            var input_pwd_str = window.prompt(js_text_input_onetime_pwd, ''); 
@@ -780,7 +773,6 @@ function delete_replace_submit(c_permission){
                async: false,
                success: function(msg_info) {
                  document.attendance_setting_form.submit();
-                 hidden_info_box();
                }
              }); 
            } else {
