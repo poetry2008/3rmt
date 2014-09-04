@@ -48,4 +48,5 @@ define('TEXT_LAST','< Về phía trước');
 define('TEXT_NEXT','Tiếp theo >');
 define('TEXT_ALERT_TYPE','Loại');
 define('TEXT_MEMO_EDIT_MUST_SELECT','Vui lòng chọn ít nhất một cách lựa chọn.');
+define('TEXT_DELETED_INFO','Câu trả lời đã bị xóa bởi người quản lý');
 ?>

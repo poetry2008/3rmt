@@ -205,6 +205,12 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_id=$bulletin_info_row['bulletin_id'];
 	 $bulletin_reply_sql="insert into ".TABLE_BULLETIN_BOARD_REPLY." values($id,$bulletin_id,'$author',now(),'$content','$update_author','$mark','$file_path',now(),0)";
 	 if(tep_db_query($bulletin_reply_sql))tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number+1 where id=$bulletin_id");
+	 $nid_raw=tep_db_fetch_array(tep_db_query("select id from notice order by id desc limit 1"));
+	 $nid=$nid_raw['id'] + 1;
+	 $content=explode(">",$content);
+	 $content=$content[0];
+	 $title=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
+	 tep_db_query("insert into notice values($nid,2,'$title',now(),$id,'$update_author',now(),1,'')");
 	 $bulletin_id=$bulletin_info_row['bulletin_id'];
 	 $page=isset($_GET['page'])?$_GET['page']:1;
 	 $parm=isset($_GET['order_sort'])?'order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
@@ -942,7 +948,7 @@ require("includes/note_js.php");
 			<td class="pageHeading" align="right">
 			<form method="get" action="bulletin_board.php">
 				<input type="text" id="search_text" name="search_text">
-				<input type="submit" value="<?php echo SEARCH;?>">
+				<input type="submit" value="<?php echo HEADING_TITLE_SEARCH;?>">
 				<input type="hidden" name="action" value="search">
 				<input type="hidden" name="bulletin_id" value="<?php echo $_GET['bulletin_id'];?>">
 				<input type="hidden" name="search_type" value="<?php echo $_GET['action']=='show_reply'? 'show_reply':'show';?>">
