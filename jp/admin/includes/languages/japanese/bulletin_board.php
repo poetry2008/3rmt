@@ -8,7 +8,6 @@ define('TEXT_REPLY_NUMBER','レス数');
 define('TEXT_UPDATE_TIME','更新日');
 define('TEXT_BULLETIN_BOARD','掲示板');
 define('TEXT_BULLETIN_EDIT_CONFIRM','本当に削除しますか？');
-define('SEARCH','検索');
 define('TEXT_BULLETIN_EDIT_SELECT','選択したものを');
 define('TEXT_BULLETIN_EDIT_DELETE','削除する');
 define('TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD', '<b>%d</b> &sim; <b>%d</b>番目を表示(<b>%d</b>のスレッドのうち)');
@@ -16,7 +15,6 @@ define('TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD_REPLY', '<b>%d</b> &sim; <b>%d</b>
 define('TEXT_BACK','戻る');
 define('TEXT_CREATE_BULLETIN','新規作成');
 define('TEXT_MUST_INPUT','');
-define('TEXT_SUBMIT','保存');
 define('TEXT_RESET','削除');
 define('TEXT_ADDFILE','添付ファイル');
 define('TEXT_CONTENT','書込み');

@@ -153,7 +153,7 @@ if (isset($_GET['action']) and $_GET['action']) {
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.TEXT_SUBMIT.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.IMAGE_SAVE.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
@@ -356,10 +356,10 @@ if (isset($_GET['action']) and $_GET['action']) {
      $user_name = $user_info['name'];
 	 if(!$user_name)$user_name=$bulletin_info['update_author'];
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$user_name);
-	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_TIME.'    '.$bulletin_info['update_time']);
+	 $bulletin_content_row_update[] = array('text'=>TEXT_DATE_UPDATE.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 	 if($ocertify->npermission>=15||$user==$bulletin_info['manager']||$user==$bulletin_info['author'])$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',0)">';
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'  value="'.TEXT_SUBMIT.'">'.$delete_button_html);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit" '.(($ocertify->npermission>=15||$user==$bulletin_info['author']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'  value="'.IMAGE_SAVE.'">'.$delete_button_html);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
@@ -388,7 +388,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_mark = array();
 	 $bulletin_content_row_mark[] = array('params'=>'width="20%"','text'=> TEXT_MARK);
 	 $bulletin_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
-	 $bulletin_content_row_mark[] = array('params'=>'width="20%"','text'=> ' ');
+	 $bulletin_content_row_mark[] = array('params'=>'width="10%"','text'=> ' ');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 
     
@@ -405,7 +405,7 @@ if (isset($_GET['action']) and $_GET['action']) {
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.TEXT_SUBMIT.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"   value="'.IMAGE_SAVE.'"><input type="reset" value="'.TEXT_RESET.'">'.$bulletin_buttons);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
@@ -439,7 +439,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
  	 $bulletin_text_area =  '<textarea style="resize:vertical;  background:#CCCCCC; width:100%;" class="textarea_width"  rows="10" id="current_contents" name="old_content" readonly="readonly">'.$old_content.'</textarea>';
-	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
+	 $bulletin_content_row_text[] = array('params'=>'width="70%"','text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $mark_array = explode(',',$bulletin_info['mark']);
 	 $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
@@ -456,7 +456,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	
 	 $new_bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY_LAST);
- 	$new_bulletin_text_area ='<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea>';
+	 $new_bulletin_text_area ='<textarea style="resize:vertical; width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea>';
 	 $new_bulletin_content_row_text[] = array('text'=> $new_bulletin_text_area);
 	 $new_bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"','text'=> '&nbsp;*'.TEXT_MUST_WRITE);
 	 $bulletin_content_table[] = array('text'=> $new_bulletin_content_row_text);
@@ -496,10 +496,10 @@ if (isset($_GET['action']) and $_GET['action']) {
      $user_name = $user_info['name'];
 	 if(!$user_name)$user_name=$bulletin_info['update_author'];
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$user_name);
-	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_TIME.'    '.$bulletin_info['update_time']);
+	 $bulletin_content_row_update[] = array('text'=>TEXT_DATE_UPDATE.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 	 if($ocertify->npermission>=15)$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',\'show_reply\')">';
-	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"  value="'.TEXT_SUBMIT.'">'.$delete_button_html);
+	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit"  value="'.IMAGE_SAVE.'">'.$delete_button_html);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
 	 $notice_box->get_form($form_str);
