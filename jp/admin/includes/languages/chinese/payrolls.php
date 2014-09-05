@@ -32,4 +32,5 @@ define('TEXT_ERROR_LEFT','「');
 define('TEXT_ERROR_RIGHT','」');
 define('TEXT_ERROR_TITLE_LINK','・');
 define('TEXT_DISPLAY_NUMBER_OF_PAYROLLS', '当前显示%d &sim; %d (共%d 项)');
+define('TEXT_PAYROLLS_SHOW_TITLE', '显示项目');
 ?>

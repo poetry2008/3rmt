@@ -33,4 +33,5 @@ define('TEXT_ERROR_LEFT','「');
 define('TEXT_ERROR_RIGHT','」');
 define('TEXT_ERROR_TITLE_LINK','・');
 define('TEXT_DISPLAY_NUMBER_OF_PAYROLLS', '%d &sim; %d Hiển thị số thứ tự (%d Trong số các đơn hàng)');
+define('TEXT_PAYROLLS_SHOW_TITLE', '显示项目');
 ?>

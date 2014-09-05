@@ -82,6 +82,8 @@
 
 
         $selected_date = tep_db_prepare_input($_GET['select_date']);
+        //选中的工资标题
+        $selected_title = tep_db_prepare_input($_GET['project_title']);
         
         $show_user_array = array();
         if(USER_PAYROLL_SETTING != ''){
@@ -90,12 +92,14 @@
           $show_user_array[$ocertify->auth_user]['group'] = $show_group;
           $show_user_array[$ocertify->auth_user]['user'] = implode(',',$show_group_user_list);
           $show_user_array[$ocertify->auth_user]['date'] = $selected_date;
+          $show_user_array[$ocertify->auth_user]['payroll_title'] = implode(',',$selected_title);
         }else{
 
         
           $show_user_array[$ocertify->auth_user] = array('group'=>$show_group,
                                                        'user'=>implode(',',$show_group_user_list),
-                                                       'date'=>$selected_date
+                                                       'date'=>$selected_date,
+                                                       'payroll_title'=>implode(',',$selected_title)
                                                      );
         }
         $show_user_array[$ocertify->auth_user]['select_user'][$show_group] = implode(',',$show_group_user_list);
@@ -426,22 +430,32 @@ color:#0066CC;
         $show_group_user = array();
         //选中的员工
         $show_select_group_user = array();
+        //选中的工资标题
+        $show_select_payroll_title = array();
         //获取记录
         $default_select_flag = false;
+        $default_payroll_title_flag = false;
         if(USER_PAYROLL_SETTING != ''){
 
           $user_payroll_array = unserialize(USER_PAYROLL_SETTING);
           if(isset($user_payroll_array[$ocertify->auth_user])){
             $show_group_id = $user_payroll_array[$ocertify->auth_user]['group'];
             $show_select_group_user = explode(',',$user_payroll_array[$ocertify->auth_user]['user']);
+            $show_select_payroll_title = explode(',',$user_payroll_array[$ocertify->auth_user]['payroll_title']);
+            if(!isset($user_payroll_array[$ocertify->auth_user]['payroll_title'])){
+
+              $default_payroll_title_flag = true;
+            }
           }else{
             $show_group_id = $group_list[0]['id'];
             $default_select_flag = true; 
+            $default_payroll_title_flag = true;
           }
         }else{
 
           $show_group_id = $group_list[0]['id'];
           $default_select_flag = true;
+          $default_payroll_title_flag = true;
         }
 
         //默认选中的组
@@ -515,13 +529,46 @@ color:#0066CC;
 	}
 
         $group_str .= '</div>';
-        $group_str .= '<div style="float:right;">';
-        $group_str .= '<input type="submit" value="'.TEXT_UPDATE.'">';
-        $group_str .= '</div>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
         echo $group_str;
         ?>
+        <tr>
+        <td class="smallText" width="100" height="25" valign="top"><?php echo TEXT_PAYROLLS_SHOW_TITLE;?></td>
+        <td>
+        <div id="show_user_list">
+        <?php 
+        //获取组对应的工资项目
+        $group_id = '';
+        $group_id = isset($_GET['show_group']) && $_GET['show_group'] != '' ? $_GET['show_group'] : $show_group_id;
+        $groups_users_id = array();
+        $show_select_payroll_title = isset($_GET['project_title']) ? $_GET['project_title'] : $show_select_payroll_title;
+        if(isset($_GET['project_title'])){
+
+          $default_payroll_title_flag = false;
+        }
+        $groups_payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' order by sort");
+        while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
+          $checked = '';
+          if($default_payroll_title_flag == true){
+
+            $checked = ' checked'; 
+            $show_select_payroll_title[] = $groups_payroll_array['id'];
+          }else{
+
+            if(in_array($groups_payroll_array['id'],$show_select_payroll_title)){
+
+              $checked = ' checked';
+            }
+          }
+          echo '<input type="checkbox" id="title_'.$groups_payroll_array['id'].'" name="project_title[]" value="'.$groups_payroll_array['id'].'"'.$checked.'><label for="title_'.$groups_payroll_array['id'].'">'.$groups_payroll_array['title'].'</label>&nbsp;&nbsp;&nbsp;';
+        }
+        tep_db_free_result($groups_payroll_query);
+        ?>
+        </div>
+        <div style="float:right;"><input type="submit" value="<?php echo TEXT_UPDATE;?>"></div>
+        </td>
+        </tr>
         </table> 
         </form>
       </td></tr>
@@ -555,8 +602,10 @@ color:#0066CC;
         $groups_users_id = array();
         $groups_payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$group_id."' order by sort");
         while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
-          $payroll_title_row[] = array('params' => 'align="center" class="dataTableHeadingContent_order" id="td_title_'.$groups_payroll_array['id'].'"','text' => '<a href="javascript:payrolls_sort(\'title\',1,\''.$groups_payroll_array['title'].'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\','.$groups_payroll_array['id'].');">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
-          $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
+          if(in_array($groups_payroll_array['id'],$show_select_payroll_title)){
+            $payroll_title_row[] = array('params' => 'align="center" class="dataTableHeadingContent_order" id="td_title_'.$groups_payroll_array['id'].'"','text' => '<a href="javascript:payrolls_sort(\'title\',1,\''.$groups_payroll_array['title'].'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\','.$groups_payroll_array['id'].');">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
+            $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
+          }
         }
         tep_db_free_result($groups_payroll_query);
         
