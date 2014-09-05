@@ -12,8 +12,7 @@
   tep_db_free_result($sites_id_sql);
   $site_permission_array = explode(',',$userslist['site_permission']); 
   $site_permission_flag = false;
-  if(in_array('0',$site_permission_array)){
-
+  if(in_array('0',$site_permission_array)||$ocertify->npermission==31){
     $site_permission_flag = true;
   }
 
@@ -228,12 +227,14 @@ if (isset($_GET['action']) and $_GET['action']) {
 		else $bulletin_id_list = tep_db_prepare_input($_POST['bulletin_list_id']);
         $param_str = $_GET['page'];
         foreach($bulletin_id_list as $id){
-         if($_GET['delete_type']=='show_reply' && $ocertify->npermission>=15) {
-			 $reply_number_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
-			 tep_db_query("update ".TABLE_BULLETIN_BOARD_REPLY." set content='deleted' where id=".$id);
-			 $bulletin_id=$reply_number_row['bulletin_id'];
-			 tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number-1 where id=$bulletin_id");
-			 tep_db_query("delete from ".TABLE_NOTICE." where from_notice=$id and type=2");
+         if($_GET['delete_type']=='show_reply' && ($ocertify->npermission>=15 || tep_db_num_rows(tep_db_query("select br.id from bulletin_board_reply br,bulletin_board bb where br.id=$id and br.bulletin_id=bb.id and bb.manager='$ocertify->auth_user'"))>=1)) {
+			 $reply_number_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id  and content!='deleted'"));
+			 if(tep_db_query("update ".TABLE_BULLETIN_BOARD_REPLY." set content='deleted' where  content!='deleted' and id=".$id)){
+				$bulletin_id=$reply_number_row['bulletin_id'];
+				$_GET['bulletin_id']=$bulletin_id;
+				tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number-1 where id=$bulletin_id");
+				tep_db_query("delete from ".TABLE_NOTICE." where from_notice=$id and type=2");
+			 }
 		 }
 		 else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id and (author='$ocertify->auth_user' or manager='$ocertify->auth_user')"))>0|| $ocertify->npermission>=15 ){
 			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD." where id=".$id);
@@ -969,14 +970,14 @@ require("includes/note_js.php");
 	$last_id_sql.=$ocertify->npermission <15 ? " and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow  like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))":"";	
 	$next_id_sql=$last_id_sql;
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
-		if($_GET['bulletin_id']<1)$_GET['bulletin_id']=1;
-		if($_GET['from']=='last')$header_title_sql.=" and id >=".$_GET['bulletin_id']." order by id asc";
-		else $header_title_sql.=" and id <=".$_GET['bulletin_id']." order by id desc";
+		
+		$header_title_sql.=" and id =".$_GET['bulletin_id']." order by id desc";
 		$header_title_sql.= " limit 1";
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
 		$header_content=$header_title_row['title'];
+		if(!$header_id)$header_id=$_GET['bulletin_id'];
 		$last_id_row=tep_db_fetch_array(tep_db_query($last_id_sql." and id > $header_id order by id asc limit 1"));
 		$next_id_row=tep_db_fetch_array(tep_db_query($next_id_sql." and id < $header_id order by id desc limit 1"));
 		$last_id=$last_id_row['id'];
@@ -1134,7 +1135,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
     }
 
     $bulletin_item_info = array();  
-	if($ocertify->npermission <15 && $ocertify->auth_user!=$bulletin['manager']){
+	if(($ocertify->npermission <15 && $ocertify->auth_user!=$bulletin['manager'])||$bulletin["content"]=='deleted'||!$site_permission_flag){
 		$select_html='disabled="disabled"';
 	}else{
 		$select_html='';
@@ -1191,6 +1192,14 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
                           'text' => $user_name
                         );
 
+    if(date('Y-m-d') == date('Y-m-d',strtotime($bulletin['update_time']))){
+      $time_str = date('H:i',strtotime($bulletin['update_time']));
+    //如果不是当天，但是当年
+    }else if(date('Y') == date('Y',strtotime($bulletin['update_time']))){
+      $time_str = date('m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($bulletin['update_time']));
+    }else{
+      $time_str = date('Y/m/d',strtotime($bulletin['update_time']));
+    }
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $bulletin['update_time'] 
@@ -1318,7 +1327,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
     } else {
       $bulletin_item_params = 'id="memo_'.$bulletin['id'].'" class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
-	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->auth_user!=$bulletin["author"])&&($ocertify->npermission <15)){
+	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->npermission <15)|| !$site_permission_flag){
 		$select_html='disabled="disabled"';
 	}else{
 		$select_html='';
@@ -1349,15 +1358,16 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                           'text' => $mark_html 
                         );
 
+	$title=$bulletin['title'];
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"', 
-                          'text' => '<a href="bulletin_board.php?action=show_reply&bulletin_id='.$bulletin["id"].'">'.$bulletin["title"].'</a>'
+                          'params' => 'class="dataTableContent"  width="300px"', 
+                          'text' => '<a href="bulletin_board.php?action=show_reply&bulletin_id='.$bulletin["id"].'"><p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " title="'.$title.'">'.$title.'</p></a>'
                         );
 	$add_file_html='';
 	$file_list=explode("|||",$bulletin["file_path"]);
 	foreach($file_list as $f){
 		if($f=='')continue;
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="mages/icons/common_stiles_gray.gifimages/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
@@ -1420,7 +1430,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                   <?php
                   if($ocertify->npermission >= 0 && tep_db_num_rows($bulletin_query) > 0){
                     echo '<div class="td_box">';
-                    echo '<select onchange="select_bulletin_change(this.value,\'bulletin_list_id[]\',\''.$ocertify->npermission.'\')" name="edit_bulletin_list" '.(($site_permission_flag == true ||$show_flag==1 ) ? '':'disabled="disabled"').'>';
+                    echo '<select onchange="select_bulletin_change(this.value,\'bulletin_list_id[]\',\''.$ocertify->npermission.'\')" name="edit_bulletin_list" '.(($site_permission_flag == true && $show_flag==1 ) ? '':'disabled="disabled"').'>';
                     echo '<option value="0">'.TEXT_BULLETIN_EDIT_SELECT.'</option>';
                     echo '<option value="1">'.TEXT_BULLETIN_EDIT_DELETE.'</option>';
                     echo '</select>';
@@ -1436,12 +1446,12 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                   <tr>
                     <td colspan="2" align="right"><div class="td_button"><?php 
 					if($_GET['action']=='show_reply'){
-						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? '' : '') . '</a>';
-						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN_REPLY,$site_permission_flag == false ? '' : '') . '</a>'; 
+						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
+						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN_REPLY,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
 					}
 					else{
-						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? '' : '') . '</a>';
-						echo '<a href="javascript:void(0);" onclick="create_bulletin(this);">' .tep_html_element_button(TEXT_CREATE_BULLETIN,$site_permission_flag == false ? '' : '') . '</a>'; 
+						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
+						echo '<a href="javascript:void(0);" onclick="create_bulletin(this);">' .tep_html_element_button(TEXT_CREATE_BULLETIN,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
 					}?></div></td>
                   </tr>
           </table>

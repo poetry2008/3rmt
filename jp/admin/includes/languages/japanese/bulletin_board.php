@@ -18,7 +18,7 @@ define('TEXT_MUST_INPUT','');
 define('TEXT_RESET','削除');
 define('TEXT_ADDFILE','添付ファイル');
 define('TEXT_CONTENT','書込み');
-define('TEXT_BULLETIN_EDIT_CONTENT','備考');
+define('TEXT_BULLETIN_EDIT_CONTENT','書込み');
 define('TEXT_GROUP_SELECT','グループ選択');
 define('TEXT_SELECT_ID','指定したIDのみ');
 define('DELETE_STAFF','削除');
