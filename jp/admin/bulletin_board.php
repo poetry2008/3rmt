@@ -11,7 +11,7 @@
   $userslist= tep_db_fetch_array($sites_id_sql);
   tep_db_free_result($sites_id_sql);
   $site_permission_array = explode(',',$userslist['site_permission']); 
-  $site_permission_flag = false;
+  $site_permission_flag = true;
   if(in_array('0',$site_permission_array)||$ocertify->npermission==31){
     $site_permission_flag = true;
   }
