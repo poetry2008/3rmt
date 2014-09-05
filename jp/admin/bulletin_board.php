@@ -1019,7 +1019,7 @@ require("includes/note_js.php");
   }
   
   tep_db_free_result($site_query);
-	echo '<div id="tep_new_site_filter"><ul><li><img src="images/icons/common_stiles_gray.gif" alt="シングル・マルチモードの切り替え" title="シングル・マルチモードの切り替え"></li><li id="site_0" title="共用データ"><img src="images/icons/common_whitepoint.gif" alt="共用データ"></li></a><li id="site_1" class="site_filter_unselected" title="RMTジャックポット">jp</li><li id="site_2" class="site_filter_unselected" title="RMTゲームマネー">gm</li><li id="site_3" class="site_filter_unselected" title="RMTワールドマネー">wm</li><li id="site_4" class="site_filter_unselected" title="RMTアイテムデポ">id</li><li id="site_5" class="site_filter_unselected" title="RMTカメズ">rk</li><li id="site_6" class="site_filter_unselected" title="RMT学園">rg</li><li id="site_7" class="site_filter_unselected" title="RedStone-RMT.com">rr</li><li id="site_8" class="site_filter_unselected" title="FF14-RMT.com">14</li><li id="site_9" class="site_filter_unselected" title="RMTゲームプラネット">gp</li><li id="site_10" class="site_filter_unselected" title="GM-Exchange">ge</li><input type="hidden" id="unshow_site_list" value=""></ul></div>'
+	echo '<div id="tep_new_site_filter"><ul><li><img src="images/icons/gray_box.png" alt="シングル・マルチモードの切り替え" title="シングル・マルチモードの切り替え"></li><li id="site_0" title="共用データ"><img src="images/icons/common_whitepoint.gif" alt="共用データ"></li></a><li id="site_1" class="site_filter_unselected" title="RMTジャックポット">jp</li><li id="site_2" class="site_filter_unselected" title="RMTゲームマネー">gm</li><li id="site_3" class="site_filter_unselected" title="RMTワールドマネー">wm</li><li id="site_4" class="site_filter_unselected" title="RMTアイテムデポ">id</li><li id="site_5" class="site_filter_unselected" title="RMTカメズ">rk</li><li id="site_6" class="site_filter_unselected" title="RMT学園">rg</li><li id="site_7" class="site_filter_unselected" title="RedStone-RMT.com">rr</li><li id="site_8" class="site_filter_unselected" title="FF14-RMT.com">14</li><li id="site_9" class="site_filter_unselected" title="RMTゲームプラネット">gp</li><li id="site_10" class="site_filter_unselected" title="GM-Exchange">ge</li><input type="hidden" id="unshow_site_list" value=""></ul></div>'
 ?>
 <div id="show_popup_info" style="background-color:#FFFF00;position:absolute;width:70%;min-width:550px;margin-left:0;display:none;"></div>
           <table border="0" width="100%" cellspacing="0" cellpadding="0" id="bulletin_list_box">
@@ -1367,7 +1367,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 	$file_list=explode("|||",$bulletin["file_path"]);
 	foreach($file_list as $f){
 		if($f=='')continue;
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="mages/icons/common_stiles_gray.gifimages/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
