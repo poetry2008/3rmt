@@ -98,6 +98,7 @@ function hidden_info_box(){
 //change users list
 function change_user_list(ele){
   var gid = $(ele).val();
+  var contents_array = new Array();
   $.ajax({
     url: 'ajax_orders.php?action=payrolls_user_list',   
     type: 'POST',
@@ -106,7 +107,9 @@ function change_user_list(ele){
     async: false,
     success: function(msg) {
       if(msg!=''){
-        $("#show_user_list").html(msg);
+        contents_array = msg.split('|||');
+        $("#show_user_list").html(contents_array[0]);
+        $("#show_title_list").html(contents_array[1]);
       }
     }
   });

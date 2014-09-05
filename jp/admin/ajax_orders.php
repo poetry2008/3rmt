@@ -3480,10 +3480,27 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         $show_group_user = array();
         $show_select_group_user = array();
 
+        $show_user_flag = false;
+        $show_title_flag = false;
+
         if(USER_PAYROLL_SETTING != ''){
 
           $select_user_list = unserialize(USER_PAYROLL_SETTING);
           $show_select_group_user = explode(',',$select_user_list[$ocertify->auth_user]['select_user'][$show_group_id]);
+          $show_select_payroll_title = explode(',',$select_user_list[$ocertify->auth_user]['select_title'][$show_group_id]);
+          if(!isset($select_user_list[$ocertify->auth_user]['select_user'][$show_group_id])){
+
+            $show_user_flag = true;
+          }
+
+          if(!isset($select_user_list[$ocertify->auth_user]['select_title'][$show_group_id])){
+
+            $show_title_flag = true;
+          }
+        }else{
+
+          $show_user_flag = true;
+          $show_title_flag = true;
         }
          
         $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status='1'";
@@ -3508,6 +3525,9 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
             if(in_array($key,$show_select_group_user)){
 	      $group_str .= ' checked="checked" ';
             }
+            if($show_user_flag == true){
+	      $group_str .= ' checked="checked" ';
+            }
    	    $group_str .= ' value="'.$key.'" >';
 	    $group_str .=  '<label for="'.$key.'">'.$val['name'].'</label>';
             $group_str .= '&nbsp;&nbsp;&nbsp;';
@@ -3515,10 +3535,28 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
 	}	
 
         if($group_str == ''){
-          echo '  ';
-        }else{
-          echo $group_str;
+          $group_str = '  ';
         }
+
+        //生成组对应的工资标题
+        $payroll_title_str = '';
+        $groups_payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$show_group_id."' order by sort");
+        while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
+          $checked = '';
+          if(in_array($groups_payroll_array['id'],$show_select_payroll_title)){
+            $checked = ' checked';
+          }
+          if($show_title_flag == true){
+
+            $checked = ' checked';
+          }
+          $payroll_title_str .= '<input type="checkbox" id="title_'.$groups_payroll_array['id'].'" name="project_title[]" value="'.$groups_payroll_array['id'].'"'.$checked.'><label for="title_'.$groups_payroll_array['id'].'">'.$groups_payroll_array['title'].'</label>&nbsp;&nbsp;&nbsp;';
+        }
+        tep_db_free_result($groups_payroll_query);
+
+        $payroll_title_str == '' ? $payroll_title_str : '  ';
+
+        echo $group_str.'|||'.$payroll_title_str;
 }else if($_GET['action'] == 'payrolls_sort'){
 
   $user_str = $_POST['user_str'];

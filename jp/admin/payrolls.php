@@ -103,6 +103,7 @@
                                                      );
         }
         $show_user_array[$ocertify->auth_user]['select_user'][$show_group] = implode(',',$show_group_user_list);
+        $show_user_array[$ocertify->auth_user]['select_title'][$show_group] = implode(',',$selected_title);
 
         $show_user_str = serialize($show_user_array);
         tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value='".$show_user_str."' where configuration_key='USER_PAYROLL_SETTING'");
@@ -536,7 +537,7 @@ color:#0066CC;
         <tr>
         <td class="smallText" width="100" height="25" valign="top"><?php echo TEXT_PAYROLLS_SHOW_TITLE;?></td>
         <td>
-        <div id="show_user_list">
+        <div id="show_title_list">
         <?php 
         //获取组对应的工资项目
         $group_id = '';
