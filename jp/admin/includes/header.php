@@ -282,20 +282,19 @@ if($check_result==0) {
 
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
-<audio id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></audio>
+<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <?php
 }
 ?>
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 ?>
-<audio id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></audio>
+<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <?php
 }
 ?>
 <audio id="head_notice" src="images/bbs.mp3"></audio>
 <audio id="head_notice_audio" src="images/messages_notice.mp3"></audio>
-<audio id="head_order_audio"  src="images/warn.mp3" ></audio>
 <audio id="head_button_audio" src="images/button.mp3" ></audio>
 <br>
 </td>
