@@ -1128,9 +1128,9 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
     }
 
     if ($bulletin['id']==$_GET['c_id']) {
-      $bulletin_item_params = 'id="memo_'.$bulletin["id"].'" class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
+      $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="memo_'.$bulletin["id"].'" ').'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = 'id="memo_'.$bulletin["id"].'" class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="memo_'.$bulletin["id"].'" ').'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 
     $bulletin_item_info = array();  
