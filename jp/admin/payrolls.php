@@ -605,8 +605,8 @@ color:#0066CC;
         while($groups_payroll_array = tep_db_fetch_array($groups_payroll_query)){
           if(in_array($groups_payroll_array['id'],$show_select_payroll_title)){
             $payroll_title_row[] = array('params' => 'align="center" class="dataTableHeadingContent_order" id="td_title_'.$groups_payroll_array['id'].'"','text' => '<a href="javascript:payrolls_sort(\'title\',1,\''.$groups_payroll_array['title'].'\',\''.TEXT_SORT_ASC.'\',\''.TEXT_SORT_DESC.'\','.$groups_payroll_array['id'].');">'.$groups_payroll_array['title'].'</a><input type="hidden" name="payroll_title['.$groups_payroll_array['id'].']" value="'.$groups_payroll_array['title'].'">');
-            $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
           }
+          $groups_users_id[] = array('id'=>$groups_payroll_array['id'],'value'=>($groups_payroll_array['project_id'] == 0 ? $groups_payroll_array['contents'] : $groups_payroll_array['project_value']),'project_id'=>$groups_payroll_array['project_id'],'pam'=>$groups_payroll_array['contents']);
         }
         tep_db_free_result($groups_payroll_query);
         
@@ -746,10 +746,12 @@ color:#0066CC;
                     $payroll_value = $replace_pam_value[$payroll_id['id']][$users_value];
                   }
                   $user_payroll_value[$payroll_id['id']] += $payroll_value;
-                  $user_info[] = array(
+                  if(in_array($payroll_id['id'],$show_select_payroll_title)){
+                    $user_info[] = array(
                 	'params' => 'align="right" class="dataTableContent"',
                 	'text'   => '<input type="text" name="users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'" style="width:80%;text-align:right;" onblur="if(this.value==\'\'){this.value=0;}"><input type="hidden" name="hidden_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_value.'"><input type="hidden" name="pam_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['pam'].'"><input type="hidden" name="formula_users_payroll['.$payroll_id['id'].']['.$users_value.']" value="'.$payroll_id['value'].'">' 
-                  );  
+                      );  
+                  }
                 }
                 $user_project_id_array = array_filter($user_project_id_array);
 		$user_info[] = array(
