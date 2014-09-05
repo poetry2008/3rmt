@@ -774,8 +774,14 @@ color:#0066CC;
                	        'text'   => $currency_type_array[$currency_type].'<input type="hidden" name="currency_type_str" value="'.$currency_type_array[$currency_type].'">' 
                                );
           foreach($groups_users_id as $payroll_id){
+			  if(in_array($payroll_id['id'],$show_select_payroll_title)){
+			     $style_show = '';
+			  }else{
+			    $style_show = 'style="display:none;"';
+			  }
+
             $user_info[] = array(
-                	           'params' => 'align="right"',
+                	           'params' => 'align="right"'.$style_show,
                 	           'text'   => $user_payroll_value[$payroll_id['id']] 
                                  ); 
           } 
