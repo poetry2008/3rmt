@@ -115,6 +115,7 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
       success: function(data) {
       } 
       });
+  check_header_messages();
 }
 //delete notice
 function delete_micro_notice(nid, e_type)
@@ -131,6 +132,7 @@ function delete_micro_notice(nid, e_type)
         check_header_messages();
       } 
       });
+  check_header_messages();
 }
 //show header notice
 function show_head_notice(no_type)
