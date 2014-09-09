@@ -217,9 +217,6 @@ function mouse_leave(obj){
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
   <td colspan="2">
-  <div id="show_head_notice">
-</div>
-<div id="show_all_notice" style="display:none; z-index:30000;"></div>
 <div id="show_messages_notice"></div>
 <div id="show_all_messages_notice" style="display:none; z-index:30000;"></div>
   </td>

@@ -79,26 +79,6 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, n
     });
   } 
 }
-//show all notice
-function expend_all_notice(aid)
-{
-  if ($('#show_all_notice').css('display') == 'none') {
-    $('#show_all_notice').css('display', 'block');
-    $.ajax({
-      url: 'ajax_notice.php?action=show_all_notice',     
-      data: 'aid='+aid, 
-      type: 'POST',
-      dataType: 'text',
-      async: false,
-      success: function(data) {
-        $('#show_all_notice').html(data); 
-      }
-    });
-  } else {
-    $('#show_all_notice').css('display', 'none');
-    $('#show_all_notice').html(''); 
-  }
-}
 //delete all notice
 function delete_notice(all_notice,aid){
   delete_alarm_notice('','1','1',aid);
@@ -127,8 +107,6 @@ function delete_micro_notice(nid, e_type)
       dataType: 'text',
       async: false,
       success: function(data) {
-        $('#show_all_notice').css('display', 'none');
-        $('#show_all_notice').html(''); 
         check_header_messages();
       } 
       });
@@ -196,7 +174,6 @@ function show_head_notice(no_type)
         
         if (no_type == 1) { 
           if((alert_update_id != data_info[2] && notice_new_flag == true) || (data_info[6] > update_time_id)){
-            $("#show_all_notice").hide();
             $('#alert_buttons').css('background-color','darkred');
             $('#alert_time').css('background-color','darkred');
             $('#alert_close').css('background-color','darkred');
@@ -204,7 +181,6 @@ function show_head_notice(no_type)
           }else{
             if($("#notice_id_str").val()){
               $("#notice_id_str").remove();
-              $('#show_all_notice').append('<input type="hidden" value="'+notice_id_str+'" id="notice_id_str">'); 
             }
           }
           setTimeout(function() {check_header_messages()}, 35000);
