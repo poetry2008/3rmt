@@ -188,7 +188,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'file_path' => $file_path,
 		'add_time'=> $add_time,
 		'update_time'=> 'now()',
-	    'add_user' => $add_user
+	    'add_user' => $add_user,
 	    'update_user' => $update_user
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_bullention);
@@ -258,7 +258,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'file_path' => $file_path,
 		'add_time'=> $add_time,
 		'update_time'=> 'now()',
-	    'add_user' => $add_user
+	    'add_user' => $add_user,
 	    'update_user' => $update_user
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_notice);
