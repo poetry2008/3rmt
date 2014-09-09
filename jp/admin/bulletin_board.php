@@ -1050,7 +1050,8 @@ require("includes/note_js.php");
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
-		$header_content=$header_title_row['title'];
+		$content=$header_title_row['title'];
+	        $header_content=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
 		if(!$header_id)$header_id=$_GET['bulletin_id'];
 		$last_id_row=tep_db_fetch_array(tep_db_query($last_id_sql." and id > $header_id order by id asc limit 1"));
 		$next_id_row=tep_db_fetch_array(tep_db_query($next_id_sql." and id < $header_id order by id desc limit 1"));
@@ -1068,7 +1069,8 @@ require("includes/note_js.php");
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading"><?php echo $header_title_html; ?></td>
+            <td class="pageHeading"><?php 
+            echo $header_title_html; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
 			<td class="pageHeading" align="right">
 			<form method="get" action="bulletin_board.php">
