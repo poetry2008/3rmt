@@ -160,7 +160,6 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_HELP_INFO','help_info.php');
   define('FILENAME_PERSONAL_SETTING','personal_setting.php');
   define('FILENAME_ALERT_LOG','alert_log.php');
-  define('FILENAME_BUSINESS_MEMO','business_memo.php');
   define('FILENAME_MAIL_TEMPLATES','mail_templates.php');
   define('FILENAME_ALL_ORDERS','all_orders.php');
   define('FILENAME_GROUPS','groups.php');
@@ -305,7 +304,6 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_CALENDAR_STATUS','calendar_status');
   define('TABLE_CALENDAR_DATE','calendar_date');
   define('TABLE_SHOW_SITE','show_site');
-  define('TABLE_BUSINESS_MEMO','business_memo');
   define('TABLE_MAIL_TEMPLATES','mail_templates');
   define('TABLE_CONFIGURATION_META','configuration_meta');
   define('TABLE_GROUPS','groups');

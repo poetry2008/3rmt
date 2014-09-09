@@ -245,14 +245,6 @@ if (isset($_GET['action']) and $_GET['action']) {
         if($_GET['delete_type']=='show_reply')tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'action=show_reply&bulletin_id='.$_GET['bulletin_id'].'&page='.$param_str));
 		else tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'page='.$param_str));
         break;
-      case 'end':
-        $bulletin_id = $_GET['end_id'];
-        $param_str = tep_db_prepare_input($_POST['param_str']);
-
-        tep_db_query("update " . TABLE_NOTICE . " set is_show='0' where from_notice = '" . tep_db_input($bulletin_id) . "' and type='1'");
-        tep_db_query("update " . TABLE_BUSINESS_MEMO . " set finished='1',user_update='".$_SESSION['user_name']."',date_update=now() where id = '" . tep_db_input($bulletin_id) . "'");
-        tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, $param_str));
-        break;
     }
   }
 ?>
@@ -267,8 +259,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
-var memo_prev = '<?php echo IMAGE_PREV;?>';
-var memo_next = '<?php echo IMAGE_NEXT;?>';
+var bulletin_prev = '<?php echo IMAGE_PREV;?>';
+var bulletin_next = '<?php echo IMAGE_NEXT;?>';
 <?php //快捷键监听?>
 $(document).ready(function() { 
 var box_warp_height = $(".box_warp").height();
@@ -289,16 +281,16 @@ var box_warp_height = $(".box_warp").height();
     
     if (event.ctrlKey && event.which == 37) {
       if ($("#show_popup_info").css("display") != "none") {
-        if ($("#memo_prev")) {
-          $("#memo_prev").trigger("click");
+        if ($("#bulletin_prev")) {
+          $("#bulletin_prev").trigger("click");
         }
       }
     }
     
     if (event.ctrlKey && event.which == 39) {
       if ($("#show_popup_info").css("display") != "none") {
-        if ($("#memo_next")) {
-          $("#memo_next").trigger("click");
+        if ($("#bulletin_next")) {
+          $("#bulletin_next").trigger("click");
         }
       }
     }
@@ -383,7 +375,7 @@ function select_bulletin_change(value,bulletin_list_id,c_permission)
 }
 
 <?php //全选动作?>
-function all_select_memo(bulletin_list_id)
+function all_select_bulletin(bulletin_list_id)
 {
   var check_flag = document.edit_bulletin_form.all_check.checked;
   if (document.edit_bulletin_form.elements[bulletin_list_id]) {
@@ -774,27 +766,27 @@ function edit_bulletin(obj,id){
     success: function (data) {
       $('#show_popup_info').html(data); 
       //prev next
-      if($('#memo_'+id).prev().attr('id') != '' && $('#memo_'+id).prev().attr('id') != null){
-        var memo_prev_id = $('#memo_'+id).prev().attr('id');
-        memo_prev_id = memo_prev_id.split('_');
+      if($('#bulletin_'+id).prev().attr('id') != '' && $('#bulletin_'+id).prev().attr('id') != null){
+        var bulletin_prev_id = $('#bulletin_'+id).prev().attr('id');
+        bulletin_prev_id = bulletin_prev_id.split('_');
 
-        if(memo_prev_id[0] == 'memo' && memo_prev_id[1] != ''){
-          var memo_id = $('#memo_'+id).prev().attr('id');
-          memo_id = memo_id.split('_');
-          $('#next_prev').append('<a id="memo_prev" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+memo_prev+'</a>&nbsp&nbsp');
+        if(bulletin_prev_id[0] == 'bulletin' && bulletin_prev_id[1] != ''){
+          var bulletin_id = $('#bulletin_'+id).prev().attr('id');
+          bulletin_id = bulletin_id.split('_');
+          $('#next_prev').append('<a id="bulletin_prev" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+bulletin_prev+'</a>&nbsp&nbsp');
         }
       }
-      if($('#memo_'+id).next().attr('id') != '' && $('#memo_'+id).next().attr('id') != null){
-        var memo_next_id = $('#memo_'+id).next().attr('id');
-        memo_next_id = memo_next_id.split('_');
+      if($('#bulletin_'+id).next().attr('id') != '' && $('#bulletin_'+id).next().attr('id') != null){
+        var bulletin_next_id = $('#bulletin_'+id).next().attr('id');
+        bulletin_next_id = bulletin_next_id.split('_');
      
-        if(memo_next_id[0] == 'memo' && memo_next_id[1] != ''){
-          var memo_id = $('#memo_'+id).next().attr('id');
-          memo_id = memo_id.split('_');
-          $('#next_prev').append('<a id="memo_next" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+memo_next+'&gt</a>&nbsp&nbsp');
+        if(bulletin_next_id[0] == 'bulletin' && bulletin_next_id[1] != ''){
+          var bulletin_id = $('#bulletin_'+id).next().attr('id');
+          bulletin_id = bulletin_id.split('_');
+          $('#next_prev').append('<a id="bulletin_next" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+bulletin_next+'&gt</a>&nbsp&nbsp');
         }
       }else{
-        $('#next_prev').append('<font color="#000000">'+memo_next+'&gt</font>&nbsp&nbsp'); 
+        $('#next_prev').append('<font color="#000000">'+bulletin_next+'&gt</font>&nbsp&nbsp'); 
       } 
       //end
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
@@ -850,27 +842,27 @@ function reply_bulletin(obj,id,bulletin_id){
     success: function (data) {
       $('#show_popup_info').html(data); 
       //prev next
-      if($('#memo_'+id).prev().attr('id') != '' && $('#memo_'+id).prev().attr('id') != null){
-        var memo_prev_id = $('#memo_'+id).prev().attr('id');
-        memo_prev_id = memo_prev_id.split('_');
+      if($('#bulletin_'+id).prev().attr('id') != '' && $('#bulletin_'+id).prev().attr('id') != null){
+        var bulletin_prev_id = $('#bulletin_'+id).prev().attr('id');
+        bulletin_prev_id = bulletin_prev_id.split('_');
 
-        if(memo_prev_id[0] == 'memo' && memo_prev_id[1] != ''){
-          var memo_id = $('#memo_'+id).prev().attr('id');
-          memo_id = memo_id.split('_');
-          $('#next_prev').append('<a id="memo_prev" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+memo_prev+'</a>&nbsp&nbsp');
+        if(bulletin_prev_id[0] == 'bulletin' && bulletin_prev_id[1] != ''){
+          var bulletin_id = $('#bulletin_'+id).prev().attr('id');
+          bulletin_id = bulletin_id.split('_');
+          $('#next_prev').append('<a id="bulletin_prev" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+bulletin_prev+'</a>&nbsp&nbsp');
         }
       }
-      if($('#memo_'+id).next().attr('id') != '' && $('#memo_'+id).next().attr('id') != null){
-        var memo_next_id = $('#memo_'+id).next().attr('id');
-        memo_next_id = memo_next_id.split('_');
+      if($('#bulletin_'+id).next().attr('id') != '' && $('#bulletin_'+id).next().attr('id') != null){
+        var bulletin_next_id = $('#bulletin_'+id).next().attr('id');
+        bulletin_next_id = bulletin_next_id.split('_');
      
-        if(memo_next_id[0] == 'memo' && memo_next_id[1] != ''){
-          var memo_id = $('#memo_'+id).next().attr('id');
-          memo_id = memo_id.split('_');
-          $('#next_prev').append('<a id="memo_next" onclick="'+$('#click_'+memo_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+memo_next+'&gt</a>&nbsp&nbsp');
+        if(bulletin_next_id[0] == 'bulletin' && bulletin_next_id[1] != ''){
+          var bulletin_id = $('#bulletin_'+id).next().attr('id');
+          bulletin_id = bulletin_id.split('_');
+          $('#next_prev').append('<a id="bulletin_next" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+bulletin_next+'&gt</a>&nbsp&nbsp');
         }
       }else{
-        $('#next_prev').append('<font color="#000000">'+memo_next+'&gt</font>&nbsp&nbsp'); 
+        $('#next_prev').append('<font color="#000000">'+bulletin_next+'&gt</font>&nbsp&nbsp'); 
       } 
       //end
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
@@ -1035,7 +1027,7 @@ require("includes/note_js.php");
   if(isset($_GET['action'])&& $_GET['action']=='show_reply'){
   $bulletin_title_row = array();                
   //bulletin列表  
-  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_memo(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
+  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_bulletin(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=collect&order_type='.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_COLLECT.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=mark&order_type='.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MARK.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap" style="width:40%;"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=content&order_type='.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_CONTENT_REPLY.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
@@ -1129,9 +1121,9 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
     }
 
     if ($bulletin['id']==$_GET['c_id']) {
-      $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="memo_'.$bulletin["id"].'" ').'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
+      $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="bulletin_'.$bulletin["id"].'" ').'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="memo_'.$bulletin["id"].'" ').'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="bulletin_'.$bulletin["id"].'" ').'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 
     $bulletin_item_info = array();  
@@ -1227,7 +1219,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
   }else{
   $bulletin_title_row = array();                
   //bulletin列表  
-  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_memo(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
+  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_bulletin(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=collect&order_type='.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_COLLECT.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=mark&order_type='.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MARK.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=title&order_type='.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_TITLE.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
@@ -1323,9 +1315,9 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
     }
 
     if ($bulletin['id']==$_GET['c_id']||$bulletin['id']==$_GET['bulletin_id']) {
-      $bulletin_item_params = 'id="memo_'.$bulletin['id'].'" class="dataTableRowSelected"   onmouseover="this.style.cursor=\'hand\'"';
+      $bulletin_item_params = 'id="bulletin_'.$bulletin['id'].'" class="dataTableRowSelected"   onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = 'id="memo_'.$bulletin['id'].'" class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = 'id="bulletin_'.$bulletin['id'].'" class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->npermission <15)|| !$site_permission_flag){
 		$select_html='disabled="disabled"';
