@@ -1172,7 +1172,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 	$file_list=explode("|||",$bulletin["file_path"]);
 	foreach($file_list as $f){
 		if($f=='')continue;
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.base64_encode($f).'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
@@ -1361,7 +1361,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 	$file_list=explode("|||",$bulletin["file_path"]);
 	foreach($file_list as $f){
 		if($f=='')continue;
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.base64_encode($f).'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
