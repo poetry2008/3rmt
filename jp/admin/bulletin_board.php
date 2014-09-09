@@ -22,15 +22,9 @@ if (isset($_GET['action']) and $_GET['action']) {
    case 'delete' 删除选中的bulletin 或回复
 ------------------------------------------------------*/
 	case 'create_bulletin':
-	 $id_raw=tep_db_query("select id from bulletin_board ");
-	 while($id_row=tep_db_fetch_array($id_raw)){
-		 if($id<$id_row['id'])$id=$id_row['id'];
-	 }
-	 $id+=1;
 	 $author=$ocertify->auth_user;
-	 $update_author=$author;
 	 $content=$_POST['content'];
-	 $collect=0;
+	 $collect='';
 	 $allow="";
 	 if($_POST['select_all'])$allow="all";
 	 if($_POST['select_group'])$allow="group:";
@@ -58,16 +52,35 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 $file_path.=$file_name;
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name);
 	 }
-		$bulletin_sql="insert into ".TABLE_BULLETIN_BOARD." values($id,'$author','$content',now(),'$allow','$manager','$mark',$collect,$reply_number,now(),'$title','$file_path','$update_author')";
-		$rid_row=tep_db_fetch_array(tep_db_query("select id from ".TABLE_BULLETIN_BOARD_REPLY." order by id desc limit 1"));
-		$rid=$rid_row['id']+1;
-		$bulletin_reply_sql="insert into ".TABLE_BULLETIN_BOARD_REPLY."  values($rid,$id,'$author',now(),'$content','$author','$mark','$file_path',now(),0)";
-		tep_db_query($bulletin_sql);
-		tep_db_query($bulletin_reply_sql);
+	 $sql_add_bullention = array(
+	    'content' => $content,
+	    'allow' => $allow,
+	    'manager' => $manager,
+		'mark' => $mark,
+		'collect' => $collect,
+		'reply_number' => $reply_number, 
+	    'title' => $title,
+		'file_path' => $file_path,
+		'add_time'=> 'now()',
+	    'add_user' => $author
+	 );
+	 tep_db_perform(TABLE_BULLETIN_BOARD,$sql_add_bullention);
+	 //notice记录帖子的id
+	 $insert_board_id = tep_db_insert_id();
+	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLAY,$sql_add_bullention);
 		//添加提醒和日志
-		$nid_raw=tep_db_fetch_array(tep_db_query("select id from notice order by id desc limit 1"));
-		$nid=$nid_raw['id'] + 1;
-		tep_db_query("insert into notice values($nid,1,'$title',now(),$id,'$author',now(),1,'')");
+	 $sql_add_notice = array(
+	    'type' => 1,
+	    'title' => $title,
+		'set_time' => 'now()',
+		'from_notice' => $insert_board_id,
+		'user' => $author,
+		'created_at'=> 'now()',
+		'is_show' =>1,
+	    'deleted' =>''	
+	 );
+
+	 tep_db_perform(TABLE_NOTICE,$sql_add_notice);
 		$parm=isset($_GET['order_sort'])?'order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
 		if(isset($_GET['page']))$parm.="&page=".$_GET['page'];
 		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,$parm));
@@ -121,8 +134,19 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 $file_path.=$file_name;
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
 	 }
-	 $bulletin_sql="update  ".TABLE_BULLETIN_BOARD." set update_author='$update_author',content='$content',allow='$allow',title='$title',mark='$mark',file_path='$file_path',manager='$manager',update_time=now() where id=$id";
-		tep_db_query($bulletin_sql);
+	 $sql_add_bullention = array(
+	    'content' => $content,
+	    'allow' => $allow,
+	    'manager' => $manager,
+		'mark' => $mark,
+		'collect' => $collect,
+		'reply_number' => $reply_number, 
+	    'title' => $title,
+		'file_path' => $file_path,
+		'update_time'=> 'now()',
+	    'update_user' => $update_author
+	 );
+	 tep_db_perform(TABLE_BULLETIN_BOARD, $sql_add_bullention, 'update',  "id = '" .$id  . "'");
 		$page=isset($_GET['page'])?'page='.$_GET['page']:1;
 		$parm=isset($_GET['order_sort'])?'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
 		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,$page.$parm));
@@ -130,10 +154,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	case 'create_bulletin_reply':
 	 $bulletin_id=$_GET['bulletin_id'];
-	 $id_sql='select id from '.TABLE_BULLETIN_BOARD_REPLY.' order by id desc limit 1';
-	 $id_raw=tep_db_query($id_sql);
-	 $id_row=tep_db_fetch_array($id_raw);
-	 $id=$id_row['id']+1;
 	 $content=$_POST['content'];
 	 $title=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
 	 $mark="";
@@ -141,7 +161,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 if(strlen($mark)<1)$mark.=$value;
 		 else $mark.=",".$value;
 	 }
-	 $name=$ocertify->auth_user;
+	 $add_user=$ocertify->auth_user;
 	 $author_row=tep_db_fetch_array(tep_db_query('select * from '.TABLE_BULLETIN_BOARD.' where id='.$bulletin_id.' limit 1'));
 	 $author=$author_row['author'];
 	 $file_path="";
@@ -153,12 +173,36 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 $file_path.=$file_name;
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
 	 }
-	 $bulletin_reply_sql="insert into ".TABLE_BULLETIN_BOARD_REPLY." values($id,$bulletin_id,'$author',now(),'$content','$name','$mark','$file_path',now(),0)";
-	 if(tep_db_query($bulletin_reply_sql))tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number+1 where id=$bulletin_id");
+	 $sql_add_bullention = array(
+		 'bulletin_id' => $bulletin_id,
+	    'content' => $content,
+	    'allow' => $allow,
+	    'manager' => $manager,
+		'mark' => $mark,
+		'collect' => $collect,
+		'reply_number' => $reply_number, 
+	    'title' => $title,
+		'file_path' => $file_path,
+		'update_time'=> 'now()',
+	    'update_user' => $add_user
+	 );
+	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_bullention);
+	 $insert_reply_id = tep_db_insert_id();
+	 tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number+1 where id=$bulletin_id");
+
 	//添加提醒和日志
-	 $nid_raw=tep_db_fetch_array(tep_db_query("select id from notice order by id desc limit 1"));
-	 $nid=$nid_raw['id'] + 1;
-	 tep_db_query("insert into notice values($nid,2,'$title',now(),$id,'$name',now(),1,'')");
+	 $sql_add_notice = array(
+	    'type' => 2,
+	    'title' => $title,
+		'set_time' => 'now()',
+		'from_notice' => $insert_reply_id,
+		'user' => $add_user,
+		'created_at'=> 'now()',
+		'is_show' =>1,
+	    'deleted' =>''	
+	 );
+
+	 tep_db_perform(TABLE_NOTICE,$sql_add_notice);
 		$page=isset($_GET['page'])?'page='.$_GET['page']:1;
 		$parm=isset($_GET['order_sort'])?'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
 		 tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,"action=show_reply&bulletin_id=$bulletin_id&".$page.$parm));
@@ -195,17 +239,38 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 $file_path.=$file_name;
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
 	 }
-	 $id_row=tep_db_fetch_array(tep_db_query("select id from ".TABLE_BULLETIN_BOARD_REPLY." order by id desc limit 1"));
-	 $id=$id_row['id']+1;
 	 $bulletin_id=$bulletin_info_row['bulletin_id'];
-	 $bulletin_reply_sql="insert into ".TABLE_BULLETIN_BOARD_REPLY." values($id,$bulletin_id,'$author',now(),'$content','$update_author','$mark','$file_path',now(),0)";
-	 if(tep_db_query($bulletin_reply_sql))tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number+1 where id=$bulletin_id");
-	 $nid_raw=tep_db_fetch_array(tep_db_query("select id from notice order by id desc limit 1"));
-	 $nid=$nid_raw['id'] + 1;
+	 $sql_add_bullention = array(
+		 'bulletin_id' => $bulletin_id,
+	    'content' => $content,
+	    'allow' => $allow,
+	    'manager' => $manager,
+		'mark' => $mark,
+		'collect' => $collect,
+		'reply_number' => $reply_number, 
+	    'title' => $title,
+		'file_path' => $file_path,
+		'update_time'=> 'now()',
+	    'update_user' => $update_author
+	 );
+	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_notice);
+	 $update_reply_id = tep_db_insert_id();
+     tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number+1 where id=$bulletin_id");
 	 $content=explode(">",$content);
 	 $content=$content[0];
 	 $title=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
-	 tep_db_query("insert into notice values($nid,2,'$title',now(),$id,'$update_author',now(),1,'')");
+	 $sql_add_notice = array(
+	    'type' => 2,
+	    'title' => $title,
+		'set_time' => 'now()',
+		'from_notice' => $insert_reply_id,
+		'user' => $add_user,
+		'created_at'=> 'now()',
+		'is_show' =>1,
+	    'deleted' =>''	
+	 );
+
+	 tep_db_perform(TABLE_NOTICE,$sql_add_notice);
 	 $bulletin_id=$bulletin_info_row['bulletin_id'];
 	 $page=isset($_GET['page'])?$_GET['page']:1;
 	 $parm=isset($_GET['order_sort'])?'order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
