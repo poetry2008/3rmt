@@ -261,19 +261,15 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $sql_add_bullention = array(
 		 'bulletin_id' => $bulletin_id,
 	    'content' => $content,
-	    'allow' => $allow,
-	    'manager' => $manager,
 		'mark' => $mark,
 		'collect' => $collect,
-		'reply_number' => $reply_number, 
-	    'title' => $title,
 		'file_path' => $file_path,
 		'add_time'=> $add_time,
 		'update_time'=> 'now()',
 	    'add_user' => $add_user,
 	    'update_user' => $update_user
 	 );
-	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_notice);
+	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_bullention);
 	 $update_reply_id = tep_db_insert_id();
      tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number+1 where id=$bulletin_id");
 	 $content=explode(">",$content);
@@ -287,7 +283,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'user' => $add_user,
 		'created_at'=> 'now()',
 		'is_show' =>1,
-	    'deleted' =>''	
+	    'deleted' =>''
 	 );
 
 	 tep_db_perform(TABLE_NOTICE,$sql_add_notice);
