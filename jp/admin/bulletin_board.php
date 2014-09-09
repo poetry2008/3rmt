@@ -63,6 +63,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'title' => $title,
 		'file_path' => $file_path,
 		'add_time'=> 'now()',
+		'update_time'=> 'now()',
 	    'add_user' => $author
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD,$sql_add_bullention);
@@ -162,9 +163,10 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 if(strlen($mark)<1)$mark.=$value;
 		 else $mark.=",".$value;
 	 }
-	 $add_user=$ocertify->auth_user;
+	 $update_user=$ocertify->auth_user;
 	 $author_row=tep_db_fetch_array(tep_db_query('select * from '.TABLE_BULLETIN_BOARD.' where id='.$bulletin_id.' limit 1'));
-	 $author=$author_row['add_user'];
+	 $add_user=$author_row['add_user'];
+	 $add_time= $author_row['add_time'];
 	 $file_path="";
 	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
 		 $file_name=$_FILES['bulletin_file']['name'][$fk];
@@ -184,8 +186,10 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'reply_number' => $reply_number, 
 	    'title' => $title,
 		'file_path' => $file_path,
+		'add_time'=> $add_time,
 		'update_time'=> 'now()',
-	    'update_user' => $add_user
+	    'add_user' => $add_user
+	    'update_user' => $update_user
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_bullention);
 	 $insert_reply_id = tep_db_insert_id();
@@ -219,7 +223,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 if(strlen($mark)<1)$mark.=$value;
 		 else $mark.=",".$value;
 	 }
-	 $author=$bulletin_info_row['add_user'];
+	 $add_user=$bulletin_info_row['add_user'];
+	 $add_time=$bulletin_info_row['add_time'];
 	 $update_user=$ocertify->auth_user;
 	 $file_path=$bulletin_info_row['file_path'];
 	 if($_POST['delete_file']){
@@ -251,8 +256,10 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'reply_number' => $reply_number, 
 	    'title' => $title,
 		'file_path' => $file_path,
+		'add_time'=> $add_time,
 		'update_time'=> 'now()',
-	    'update_user' => $update_author
+	    'add_user' => $add_user
+	    'update_user' => $update_user
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_notice);
 	 $update_reply_id = tep_db_insert_id();
