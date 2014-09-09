@@ -191,12 +191,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $sql_add_bullention = array(
 		 'bulletin_id' => $bulletin_id,
 	    'content' => $content,
-	    'allow' => $allow,
-	    'manager' => $manager,
 		'mark' => $mark,
 		'collect' => $collect,
-		'reply_number' => $reply_number, 
-	    'title' => $title,
 		'file_path' => $file_path,
 		'add_time'=> $add_time,
 		'update_time'=> 'now()',
