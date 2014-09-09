@@ -212,7 +212,6 @@ function mouse_leave(obj){
 <noscript>
 <div class="messageStackError"><?php echo TEXT_JAVASCRIPT_ERROR;?></div> 
 </noscript>
-<div id="hidden_mp3"></div>
 <div class="compatible_head">
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
