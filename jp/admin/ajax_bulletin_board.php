@@ -2,7 +2,7 @@
   require('includes/application_top.php');
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.'bulletin_board.php');
   require(DIR_FS_ADMIN . '/classes/notice_box.php');
-  //»ñÈ¡µ±Ç°ÓÃ»§µÄÍøÕ¾¹ÜÀíÈ¨ÏÞ
+  //èŽ·å–å½“å‰ç”¨æˆ·çš„ç½‘ç«™ç®¡ç†æƒé™
   $sites_id_sql = tep_db_query("select site_permission from ".TABLE_PERMISSIONS." where userid= '".$ocertify->auth_user."'");
   $userslist= tep_db_fetch_array($sites_id_sql);
   tep_db_free_result($sites_id_sql);
@@ -14,11 +14,11 @@
 if (isset($_GET['action']) and $_GET['action']) {
   switch ($_GET['action']){
 		/*----------------------------------------------
-		  case 'chang_collect_status' ¸ü¸ÄÊÕ²Ø×´Ì¬
-		  case 'new_bulletin' ÏÔÊ¾ÐÂ½¨bulletinµÄÒ³Ãæ
-		  case 'edit_bulletin' ÐÞ¸Äbulletin½çÃæ
-		  case 'new_bulletin_reply' ÏÔÊ¾ÐÂ½¨»Ø¸´½çÃæ
-		  case 'edit_bulletin_reply'   ÏÔÊ¾¸úÌû»Ø¸´½çÃæ
+		  case 'chang_collect_status' æ›´æ”¹æ”¶è—çŠ¶æ€
+		  case 'new_bulletin' æ˜¾ç¤ºæ–°å»ºbulletinçš„é¡µé¢
+		  case 'edit_bulletin' ä¿®æ”¹bulletinç•Œé¢
+		  case 'new_bulletin_reply' æ˜¾ç¤ºæ–°å»ºå›žå¤ç•Œé¢
+		  case 'edit_bulletin_reply'   æ˜¾ç¤ºè·Ÿå¸–å›žå¤ç•Œé¢
 		  --------------------------------------------*/
 	case 'change_collect_status':
 		$id=$_POST['id'];
@@ -169,7 +169,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 echo $notice_box->show_notice();
 	 break;
 
-	//ÐÞ¸Äbulletin
+	//ä¿®æ”¹bulletin
 	case 'edit_bulletin':
 	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
 	 $bulletin_id=$_POST['bulletin_id'];
@@ -365,7 +365,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
 	 $bulletin_content_table = array();
-	//±ê¼Ç
+	//æ ‡è®°
 	 $mark_array = explode(',',$_GET['mark']);
 	 $pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
 	 $users_icon = '<ul class="table_img_list" style="width:100%">'; 
