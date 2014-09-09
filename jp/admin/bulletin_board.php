@@ -34,6 +34,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		if(strlen($allow)>6)$allow.=",".$value;
 		else $allow.=$value;
 	}
+	if($allow=='id:'||$allow=='group:')$allow='all';
 	 $manager=$_POST['manager'];
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $icon){
@@ -1174,7 +1175,7 @@ require("includes/note_js.php");
 	  break;
     }
   }else{
-    $order_sort = 'order by r.id';
+    $order_sort = 'order by r.update_time';
     $order_type = 'desc'; 
   }
   $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
@@ -1363,7 +1364,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 	  break;
     }
   }else{
-    $order_sort = 'id';
+    $order_sort = 'update_time';
     $order_type = 'desc'; 
   }
 
