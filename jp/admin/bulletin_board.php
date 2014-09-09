@@ -69,7 +69,18 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 tep_db_perform(TABLE_BULLETIN_BOARD,$sql_add_bullention);
 	 //notice记录帖子的id
 	 $insert_board_id = tep_db_insert_id();
-	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLAY,$sql_add_bullention);
+	 $sql_add_bullention = array(
+	    'content' => $content,
+	    'bulletin_id' => $insert_board_id,
+		'mark' => $mark,
+		'collect' => $collect,
+		'file_path' => $file_path,
+		'add_time'=> 'now()',
+		'update_time'=> 'now()',
+	    'add_user' => $author,
+	    'update_user' => $author
+	 );
+	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_bullention);
 		//添加提醒和日志
 	 $sql_add_notice = array(
 	    'type' => 1,
