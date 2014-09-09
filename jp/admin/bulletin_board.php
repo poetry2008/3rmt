@@ -228,8 +228,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $id=$_GET['id'];
 	 $bulletin_info_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
 	 $content=$_POST['old_content'];
-         $content=str_replace("\n","\n>",$content);
-         $content= $_POST['content']==''?'>'.$content : $_POST['content'].'\n>'.$content;
+         $content= $_POST['content']==''?'>'.$content : $_POST['content'].'>'.$content;
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $value){
 		 if(strlen($mark)<1)$mark.=$value;
