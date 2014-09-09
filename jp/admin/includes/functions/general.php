@@ -12827,7 +12827,7 @@ function tep_get_category_tree_new($arr,$pid=0,$c_arr='',$spacing=''){
   return $c_arr;
 }
 
-function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
+function tep_new_site_filter($filename, $ca_single = false,$show_all=array(),$show_default=false){
   global $_GET, $_POST, $ocertify;
   $site_list_array = array();
   $site_array = array();
@@ -12887,6 +12887,17 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
     <div id="tep_new_site_filter">
     <ul>
     <?php
+  if($show_default){
+    ?>
+    <li><img src="images/icons/gray_box.png" alt="<?php echo TEXT_CHANGE_SITE_ALT;?>" title="<?php echo TEXT_CHANGE_SITE_ALT;?>"></li>
+    <?php
+    foreach($site_array as $sk => $site){
+      ?>
+      <li title="<?php echo $site_list[$sk-1]['name'];?>"><?php echo $site_list_array[$sk];?></li>
+      <?php 
+    }
+
+  }else{
       if($show_some_site_flag){
   //获得用户ID 和 当前页面 取得设置的显示网站列表
   $userid = $user_info['userid'];
@@ -12991,6 +13002,7 @@ function tep_new_site_filter($filename, $ca_single = false,$show_all=array()){
           }
         }
     }
+}
     ?>
             </ul> 
             </div>
