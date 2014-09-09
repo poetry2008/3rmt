@@ -356,12 +356,6 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     }
     tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$_POST['nid']."'");
   }
-} else if (isset($_GET['action'])&&$_GET['action']=='show_head_notice') {
-/* -----------------------------------------------------
-    功能: 获取头部的notcie信息
-    参数: 无 
- -----------------------------------------------------*/
-  echo tep_get_notice_info(1);
 } else if (isset($_GET['action'])&&$_GET['action']=='is_show_alarm') {
 /* -----------------------------------------------------
     功能: 显示，关闭警告提示 
