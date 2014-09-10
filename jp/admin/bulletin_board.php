@@ -66,7 +66,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'title' => $title,
 		'add_time'=> 'now()',
 		'update_time'=> 'now()',
-	    'add_user' => $author
+	    'add_user' => $author,
+	    'update_user' => $author
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD,$sql_add_bullention);
 	 //notice记录帖子的id
@@ -163,7 +164,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'title' => $title,
 		'file_path' => $file_path,
 		'update_time'=> 'now()',
-	    'update_user' => $update_author
+	    'update_user' => $update_user
 	 );
          tep_db_perform(TABLE_NOTICE,array('title'=>$title),'update',"created_at='".$bulletin_info_row['add_time']."'
              and title='".$bulletin_info_row['title']."'");
@@ -1262,7 +1263,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 		$title=$title[0];
 	}
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent" title="'.$title.'"  width="80%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
+                          'params' => 'class="dataTableContent" title="'.$title.'"  width="70%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $title
                         );
 	$add_file_html='';
@@ -1457,7 +1458,7 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 
 	$title=$bulletin['title'];
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"  width="80%" title="'.$title.'"', 
+                          'params' => 'class="dataTableContent"  width="70%" title="'.$title.'"', 
                           'text' => '<a href="bulletin_board.php?action=show_reply&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
                         );
 	$add_file_html='';
