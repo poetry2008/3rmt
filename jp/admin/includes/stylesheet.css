@@ -211,8 +211,8 @@ width 750px
 }
 
 .compatible{
-	min-width:564px;
-	*min-width:576px;
+	min-width:550px;
+	*min-width:562px;
 	width:100%;
 	width: expression(document.body.clientWidth < 750? "750px": "100%" );
 	
