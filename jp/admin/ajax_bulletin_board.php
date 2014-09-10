@@ -135,7 +135,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
-</table></div>');
+</table></div><br /><div style="display:none;color:#FF0000;" id="popup_user_select">'.TEXT_WARNING_EMPTY.'</div>');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_choose);
 	$mark_array = explode(',',$_GET['mark']);
 	$pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
@@ -176,7 +176,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => TEXT_EDIT_BULLETIN);
-	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin&bulletin_id='.$bulletin_id.'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1"'); 
+	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin&bulletin_id='.$bulletin_id.'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1" onsubmit="return check_value(0)"'); 
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 
      //bulletin infomation
@@ -205,7 +205,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-	 $bulletin_content_row_from[] = array('params'=>'width="80%" style="color:#FF0000;"','text'=>'<input type="text" name="title" style="width:80%;" value="'.$bulletin_info["title"].'" id="bulletin_title"  '.((($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').'> * '.TEXT_MUST_WRITE);
+	 $bulletin_content_row_from[] = array('params'=>'width="80%" style="color:#FF0000;"','text'=>'<input type="text" name="title" style="width:80%;" value="'.$bulletin_info["title"].'" id="bulletin_title"  '.((($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').'> * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
 	 $bulletin_content_row_manager = array();
 	 $bulletin_content_row_manager [] = array('text'=>TEXT_MANAGER);
@@ -290,7 +290,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
-</table></div>');
+</table></div><br /><div style="display:none;color:#FF0000;" id="popup_user_select">'.TEXT_WARNING_EMPTY.'</div>');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_choose);
 	$mark_array = explode(',',$bulletin_info['mark']);
 	$pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
