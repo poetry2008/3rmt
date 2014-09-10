@@ -474,7 +474,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$user_name);
 	 $bulletin_content_row_update[] = array('text'=>TEXT_DATE_UPDATE.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
-	 if($ocertify->npermission>=15)$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',\'show_reply\')">';
+	 if($ocertify->npermission>=15 || tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=".$bulletin_info['bulletin_id']." and manager='$user'"))>0)$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',\'show_reply\')">';
 	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit" id="button_save" value="'.IMAGE_SAVE.'">'.$delete_button_html);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_submit);
 	 $notice_box->get_heading($heading);
