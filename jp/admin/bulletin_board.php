@@ -160,6 +160,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'update_time'=> 'now()',
 	    'update_user' => $update_author
 	 );
+         tep_db_perform(TABLE_NOTICE,array('title'=>$title),'update',"created_at='".$bulletin_info_row['add_time']."'
+             and title='".$bulletin_info_row['title']."'");
 	 tep_db_perform(TABLE_BULLETIN_BOARD, $sql_add_bullention, 'update',  "id = '" .$id  . "'");
 		$page=isset($_GET['page'])?'page='.$_GET['page']:1;
 		$parm=isset($_GET['order_sort'])?'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
