@@ -1,5 +1,5 @@
 <?php
-define('TEXT_COLLECT','お気に入り');
+define('TEXT_COLLECT','既読');
 define('TEXT_MARK','マーク');
 define('TEXT_TITLE','タイトル');
 define('TEXT_MANAGER','管理者');
@@ -16,7 +16,7 @@ define('TEXT_BACK','戻る');
 define('TEXT_CREATE_BULLETIN','新規作成');
 define('TEXT_MUST_INPUT','');
 define('TEXT_RESET','削除');
-define('TEXT_ADDFILE','添付ファイル');
+define('TEXT_ADDFILE','添付');
 define('TEXT_CONTENT','書込み');
 define('TEXT_BULLETIN_EDIT_CONTENT','書込み');
 define('TEXT_GROUP_SELECT','グループ選択');
@@ -29,7 +29,7 @@ define('TEXT_STAFF_LIST','スタッフ一覧');
 define('TEXT_AUTHOR','作成者');
 define('TEXT_DONE_TIME','作成日');
 define('TEXT_UPDATE_AUTHOR','更新者');
-define('TEXT_FILE_DOWNLOAD_URL','添付ファイル');
+define('TEXT_FILE_DOWNLOAD_URL','添付');
 define('TEXT_EDIT_BULLETIN','掲示編集');
 define('TEXT_CREATE_BULLETIN_ERPLY','書き込む');
 define('TEXT_EDIT_BULLETIN_ERPLY','レスを書き込む');
