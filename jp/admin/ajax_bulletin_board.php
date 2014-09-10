@@ -91,15 +91,15 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
 	 $users_list_html='';
 	 foreach($user_name as $user_id=>$name){
-		 $users_list_html.='<div value='.$user_id.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+		 $users_list_html.='<div value='.$name.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="hidden" name="all_staff" value="'.$user_id.'">
 			 '.$name.'
 			 </div>';
 	 }
-	 $group_row=tep_db_query("select name from groups");
+	 $group_row=tep_db_query("select distinct name from groups");
 	 $group_list_html="";
 	 while($row=tep_db_fetch_array($group_row)){
-		 $group_list_html.='<div value='.$row["name"].' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+		 $group_list_html.='<div value="'.$row["name"].'" onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="checkbox" hidden="" name="all_staff" value="'.$row["name"].'">
 			 '.$row["name"].'
 			 </div>';
@@ -237,24 +237,24 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $users_select_html='';
 	 $users_select=explode(',',$users_select[1]);
 	 foreach($user_name as $user_id=>$name){
-		 if(in_array($name,$users_select))$users_select_html.='<div value='.$user_id.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+		 if(in_array($user_id,$users_select))$users_select_html.='<div value='.$name.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="hidden"  name="selected_staff[]" value="'.$user_id.'">
 			 '.$name.'
 			 </div>';
-		 else $users_list_html.='<div value='.$user_id.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+		 else $users_list_html.='<div value='.$name.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="checkbox" hidden="" name="all_staff" value="'.$user_id.'">
 			 '.$name.'
 			 </div>';
 	 }
-	 $group_row=tep_db_query("select name from groups");
+	 $group_row=tep_db_query("select distinct name from groups");
 	 $group_select_html="";
 	 $group_list_html="";
 	 while($row=tep_db_fetch_array($group_row)){
-		 if(in_array($row['name'],$users_select)) $group_select_html.='<div value='.$row["name"].' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+		 if(in_array($row['name'],$users_select)) $group_select_html.='<div value="'.$row["name"].'" onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="hidden" name="selected_staff[]" value="'.$row["name"].'">
 			 '.$row["name"].'
 			 </div>';
-		 else $group_list_html.='<div value='.$row["name"].' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+		 else $group_list_html.='<div value="'.$row["name"].'" onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="checkbox" hidden="" name="all_staff" value="'.$row["name"].'">
 			 '.$row["name"].'
 			 </div>';
