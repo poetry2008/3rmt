@@ -180,7 +180,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 
      //bulletin infomation
-	 $bulletin_sql="select * from bulletin_board where id=$bulletin_id";
+	 $bulletin_sql="select * from ".TABLE_BULLETIN_BOARD." where id=$bulletin_id";
 	 $bulletin_raw=tep_db_query($bulletin_sql);
 	 $bulletin_info=tep_db_fetch_array($bulletin_raw);
 

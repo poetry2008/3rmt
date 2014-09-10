@@ -1037,8 +1037,8 @@ require("includes/note_js.php");
 	//设置标题
 	$group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user') limit 1"));
 	$group_name=$group_raw['name'];
-	$header_title_sql="select * from bulletin_board where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
-	$last_id_sql="select * from bulletin_board where id>0 ";
+	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD."  where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
+	$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
 	$last_id_sql.=$ocertify->npermission <15 ? " and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow  like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))":"";	
 	$next_id_sql=$last_id_sql;
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
@@ -1252,7 +1252,9 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 	$file_list=explode("|||",$bulletin["file_path"]);
 	foreach($file_list as $f){
 		if($f=='')continue;
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.base64_encode($f).'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$url=base64_encode($f);
+		$url=str_replace("+","000ADD",$url);
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$url.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
@@ -1441,7 +1443,9 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 	$file_list=explode("|||",$bulletin["file_path"]);
 	foreach($file_list as $f){
 		if($f=='')continue;
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.base64_encode($f).'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$url=base64_encode($f);
+		$url=str_replace("+","000ADD",$url);
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$url.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 

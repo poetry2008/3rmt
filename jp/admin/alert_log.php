@@ -622,7 +622,7 @@ if ($rec_c % 2) {
       $micro_info_query = tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id='".$arec['from_notice']."'");
       $micro_info_array = tep_db_fetch_array($micro_info_query);
 
-      $alert_user = $micro_info_array['update_user'];
+      $alert_user = $micro_info_array['user_update'];
       $user_info = tep_get_user_info($alert_user);
       $alert_user = $user_info['name'];
       $alert_button_name = TEXT_BULLETIN_BOARD;

@@ -6,6 +6,7 @@
 		$file_id_status = true;
 	}
 	$file_id=$_GET['file_id'];
+	$file_id=str_replace("000ADD","+",$file_id);
 	$file_id=base64_decode($file_id);
 	if($file_id_status){
 		//die(var_dump($file_id_status));	

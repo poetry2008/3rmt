@@ -11159,7 +11159,7 @@ if($row_array['set_time']==0){
  
 	 $order_content_table = array();
 	 $order_content_row_type = array();
-	 $order_content_row_type[] = array('params'=>'width="20%"','text'=>TABLE_HEADING_TYPE );
+	 $order_content_row_type[] = array('params'=>'width="25%"','text'=>TABLE_HEADING_TYPE );
 	 $order_content_row_type[] = array('text'=> TEXT_ORDER);
 	 $order_content_row_type[] = array('params'=>'width="20%"','text'=>'');
 	 $order_content_table[] = array('text'=> $order_content_row_type);
@@ -11175,12 +11175,12 @@ if($row_array['set_time']==0){
 	 $user_name=$user_info['name'];
 	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
 	 $order_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
-	 $order_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['created_at']);
+	 $order_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($order_row['created_at'])?$order_row['created_at']:TEXT_UNSET_DATA));
 	 $order_content_table[] = array('text'=> $order_content_row_author);
 	 $order_content_row_update = array();
 	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
 	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
-	 $order_content_row_update[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['set_time']);
+	 $order_content_row_update[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($order_row['set_time'])?$order_row['set_time']:TEXT_UNSET_DATA));
          $order_content_table[] = array('text'=> $order_content_row_update);
          if($ocertify->npermission >= 15){
 	   $order_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',0)"  value="'.IMAGE_DELETE.'">');
@@ -11208,7 +11208,7 @@ if($row_array['set_time']==0){
  
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_type = array();
-	 $bulletin_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $bulletin_content_row_type[] = array('params'=>'width="25%"','text'=> TABLE_HEADING_TYPE);
 	 $bulletin_content_row_type[] = array('text'=> TEXT_BULLETIN_BOARD);
 	 $bulletin_content_row_type[] = array('params'=>'width="20%"','text'=> '');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_type);
@@ -11224,14 +11224,14 @@ if($row_array['set_time']==0){
 	 $user_name=$user_info['name'];
 	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
 	 $bulletin_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
-	 $bulletin_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['add_time']);
+	 $bulletin_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($bulletin_row['add_time'])?$bulletin_row['add_time']:TEXT_UNSET_DATA));
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_author);
 	 $bulletin_content_row_update = array();
 	 $user_info=tep_get_user_info($bulletin_row['update_user']);
 	 $user_name=$user_info['name'];
 	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
 	 $bulletin_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
-	 $bulletin_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_time']);
+	 $bulletin_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($bulletin_row['update_time'])?$bulletin_row['update_time']:TEXT_UNSET_DATA));
          $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
          if($ocertify->npermission >= 15){
 	   $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',1)"  value="'.IMAGE_DELETE.'">');
@@ -11259,7 +11259,7 @@ if($row_array['set_time']==0){
  
 	 $reply_content_table = array();
 	 $reply_content_row_type = array();
-	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $reply_content_row_type[] = array('params'=>'width="25%"','text'=> TABLE_HEADING_TYPE);
 	 $reply_content_row_type[] = array('text'=> TEXT_BULLETIN_BOARD);
 	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
 	 $reply_content_table[] = array('text'=> $reply_content_row_type);
@@ -11275,14 +11275,14 @@ if($row_array['set_time']==0){
 	 $user_name=$user_info['name'];
 	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
 	 $reply_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
-	 $reply_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['add_time']);
+	 $reply_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($reply_row['add_time'])?$reply_row['add_time']:TEXT_UNSET_DATA));
 	 $reply_content_table[] = array('text'=> $reply_content_row_author);
 	 $reply_content_row_update = array();
 	 $user_info=tep_get_user_info($reply_row['update_user']);
 	 $user_name=$user_info['name'];
 	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
 	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
-	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_time']);
+	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($reply_row['update_time'])?$reply_row['update_time']:TEXT_UNSET_DATA));
          $reply_content_table[] = array('text'=> $reply_content_row_update);
          if($ocertify->npermission >= 15){
 	   $reply_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',2)"  value="'.IMAGE_DELETE.'">');
@@ -11310,7 +11310,7 @@ if($row_array['set_time']==0){
  
 	 $messages_content_table = array();
 	 $messages_content_row_type = array();
-	 $messages_content_row_type[] = array('params'=>'width="20%"','text'=> TABLE_HEADING_TYPE);
+	 $messages_content_row_type[] = array('params'=>'width="25%"','text'=> TABLE_HEADING_TYPE);
 	 $messages_content_row_type[] = array('text'=> MESSAGES_PAGE_LINK_NAME);
 	 $messages_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
 	 $messages_content_table[] = array('text'=> $messages_content_row_type);
@@ -11320,14 +11320,19 @@ if($row_array['set_time']==0){
 	 $messages_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $messages_content_table[] = array('text'=> $messages_content_row_text);
 	 $messages_content_row_author = array();
+	 $messages_time=tep_not_null($messages_row['time'])?$messages_row['time']:TEXT_UNSET_DATA;
+	 if($messages_time=='0000-00-00 00:00:00')$messages_time=TEXT_UNSET_DATA;
+	 if($messages_row['sender_name']=='')$messages_row['sender_name']=TEXT_UNSET_DATA;
 	 $messages_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$messages_row['sender_name']);
-	 $messages_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$messages_row['time']);
+	 $messages_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$messages_time);
 	 $messages_content_table[] = array('text'=> $messages_content_row_author);
 	 $messages_content_row_update = array();
 	 $user_name=$messages_row['user_update'];
 	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
+	 $messages_time=$messages_row['date_update'];
+	 if($messages_time=='0000-00-00 00:00:00')$messages_time=TEXT_UNSET_DATA;
 	 $messages_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
-	 $messages_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$messages_row['date_update']);
+	 $messages_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$messages_time);
          $messages_content_table[] = array('text'=> $messages_content_row_update);
          if($ocertify->npermission >= 15){
 	   $messages_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="button" onclick="delete_alert('.$_POST['id'].',3)"  value="'.IMAGE_DELETE.'">');
