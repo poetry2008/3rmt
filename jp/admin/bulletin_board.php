@@ -990,6 +990,12 @@ function check_value(type){
 		document.getElementById("popup_title").style.display="inline";
 		flag=1;
 	}
+	if(type==0 && 
+					$("#user_add").html()=='' && $("#group_add").html()=='' &&
+					!document.getElementById("select_all_radio").checked ){
+		document.getElementById("popup_user_select").style.display="inline";
+		flag=1;
+	}
 	if(flag==1)return false;
 	else return true;
 }
