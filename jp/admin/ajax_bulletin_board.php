@@ -440,8 +440,12 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $index=1;
 	 $user=$ocertify->auth_user;
 	 foreach(explode('|||',$bulletin_info['file_path']) as $value){
+		 $file_name= $value;
+		 $file_name = str_replace('*','/',$file_name);
+		 $file_name = base64_decode($file_name);
+         $file_name = explode('|||',$file_name);
 		 if($value=='')continue;
-		 $file_download_url.='&nbsp;<div id="delete_file_'.$index.'" style="float:left;"><a href="'.PATH_BULLETIN_BOARD_UPLOAD.$value.'"style="text-decoration:underline;color:#0000FF;">'.$value.'</a>';
+		 $file_download_url.='&nbsp;<div id="delete_file_'.$index.'" style="float:left;"><a href="'.PATH_BULLETIN_BOARD_UPLOAD.$value.'"style="text-decoration:underline;color:#0000FF;">'.$file_name[0].'</a>';
 		 //if($ocertify->npermission>=15)$file_download_url.='&nbsp;&nbsp;<a href="javascript:void(0)" onclick="delete_file(\'delete_file_'.$index.'\',\''.$value.'\')" style="text-decoration:underline;color:#0000FF;">&nbsp;X&nbsp;</a>';
 		 $file_download_url.='&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 		$index++;

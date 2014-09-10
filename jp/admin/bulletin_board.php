@@ -48,7 +48,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $title=$_POST['title'];
 	 $file_path="";
 	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
-		 $file_name=$_FILES['bulletin_file']['name'][$fk];
+		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
 		 $file_path.=$file_name;
@@ -70,6 +70,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 tep_db_perform(TABLE_BULLETIN_BOARD,$sql_add_bullention);
 	 //notice记录帖子的id
 	 $insert_board_id = tep_db_insert_id();
+
 	 $sql_add_bullention = array(
 	    'content' => $content,
 	    'bulletin_id' => $insert_board_id,
@@ -142,7 +143,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 }
 	 }
 	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
-		 $file_name=$_FILES['bulletin_file']['name'][$fk];
+		 //$file_name=$_FILES['bulletin_file']['name'][$fk];
+		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
 		 $file_path.=$file_name;
@@ -183,7 +185,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $add_time= $author_row['add_time'];
 	 $file_path="";
 	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
-		 $file_name=$_FILES['bulletin_file']['name'][$fk];
+		 //$file_name=$_FILES['bulletin_file']['name'][$fk];
+		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 $file_name=$file_name[1];
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
@@ -248,7 +251,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 }
 	 }
 	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
-		 $file_name=$_FILES['bulletin_file']['name'][$fk];
+		 //$file_name=$_FILES['bulletin_file']['name'][$fk];
+		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
 		 $file_path.=$file_name;
@@ -1252,9 +1256,13 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 	$file_list=explode("|||",$bulletin["file_path"]);
 	foreach($file_list as $f){
 		if($f=='')continue;
-		$url=base64_encode($f);
-		$url=str_replace("+","000ADD",$url);
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$url.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$file_name= $f;
+		 $file_name = str_replace('*','/',$file_name);
+         $file_name = base64_decode($file_name);
+         $file_name = explode('|||',$file_name);
+		//$url=base64_encode($f);
+		//$url=str_replace("+","000ADD",$url);
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="images/icons/attach.png" alt="'.$file_name[0].'" title="'.$file_name[0].'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
@@ -1440,12 +1448,14 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                           'text' => '<a href="bulletin_board.php?action=show_reply&bulletin_id='.$bulletin["id"].'"><p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " title="'.$title.'">'.$title.'</p></a>'
                         );
 	$add_file_html='';
-	$file_list=explode("|||",$bulletin["file_path"]);
-	foreach($file_list as $f){
+	$file_list_arr = explode("|||",$bulletin['file_path']); 
+	foreach($file_list_arr as $k=>$f){
 		if($f=='')continue;
-		$url=base64_encode($f);
-		$url=str_replace("+","000ADD",$url);
-		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$url.'"><img src="images/icons/attach.png" alt="'.$f.'" title="'.$f.'"></a>';
+		$file_name= $f;
+		 $file_name = str_replace('*','/',$file_name);
+         $file_name = base64_decode($file_name);
+         $file_name = explode('|||',$file_name);
+		$add_file_html.='<a href="bulletin_file_download.php?file_id='.$f.'"><img src="images/icons/attach.png" alt="'.$file_name[0].'" title="'.$file_name[0].'"></a>';
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
