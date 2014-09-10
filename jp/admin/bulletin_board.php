@@ -1299,7 +1299,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
     }
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
-                          'text' => $bulletin['update_time'] 
+                          'text' => $time_str 
                         );
 	if($bulletin["content"]=='deleted'){
 		$edit_html='<img src="images/icons/info_gray.gif">';
