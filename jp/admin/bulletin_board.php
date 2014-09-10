@@ -280,7 +280,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'type' => 2,
 	    'title' => $title,
 		'set_time' => 'now()',
-		'from_notice' => $insert_reply_id,
+		'from_notice' => $update_reply_id,
 		'user' => $add_user,
 		'created_at'=> 'now()',
 		'is_show' =>1,
