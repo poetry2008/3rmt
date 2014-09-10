@@ -47,13 +47,15 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $reply_number=1;
 	 $title=$_POST['title'];
 	 $file_path="";
-	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
+	   foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
 		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
-		 $file_path.=$file_name;
+		 if($_FILES['bulletin_file']['name'][$fk]!=''){
+			 $file_path.=$file_name;
+		 }
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name);
-	 }
+	   }
 	 $sql_add_bullention = array(
 	    'content' => $content,
 	    'allow' => $allow,
@@ -62,7 +64,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'collect' => $collect,
 		'reply_number' => $reply_number, 
 	    'title' => $title,
-		'file_path' => $file_path,
 		'add_time'=> 'now()',
 		'update_time'=> 'now()',
 	    'add_user' => $author
@@ -147,7 +148,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
-		 $file_path.=$file_name;
+		 if($_FILES['bulletin_file']['name'][$fk]!=''){
+		   $file_path.=$file_name;
+		 }
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
 	 }
 	 $sql_add_bullention = array(
@@ -184,15 +187,17 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $add_user=$author_row['add_user'];
 	 $add_time= $author_row['add_time'];
 	 $file_path="";
-	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
+	   foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
 		 //$file_name=$_FILES['bulletin_file']['name'][$fk];
 		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 $file_name=$file_name[1];
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
-		 $file_path.=$file_name;
+		 if($_FILES['bulletin_file']['name'][$fk]!=''){
+		   $file_path.=$file_name;
+		 }
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
-	 }
+	   }
 	 $sql_add_bullention = array(
 		 'bulletin_id' => $bulletin_id,
 	    'content' => $content,
@@ -250,14 +255,16 @@ if (isset($_GET['action']) and $_GET['action']) {
 			 }
 		 }
 	 }
-	 foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
+	   foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
 		 //$file_name=$_FILES['bulletin_file']['name'][$fk];
 		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
-		 $file_path.=$file_name;
+		 if($_FILES['bulletin_file']['name'][$fk]!=''){
+		   $file_path.=$file_name;
+		 }
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
-	 }
+	   }
 	 $bulletin_id=$bulletin_info_row['bulletin_id'];
 	 $sql_add_bullention = array(
 		 'bulletin_id' => $bulletin_id,
@@ -1121,7 +1128,7 @@ require("includes/note_js.php");
   //bulletin列表  
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_bulletin(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=collect&order_type='.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_COLLECT.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
-  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=mark&order_type='.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MARK.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=mark&order_type='.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MARK.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap" style="width:40%;"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=content&order_type='.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_CONTENT_REPLY.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap" ', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=add_file&order_type='.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_ADDFILE.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=add_user&order_type='.($_GET['order_sort'] == 'add_user' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'."From".($_GET['order_sort'] == 'add_user' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'add_user' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'); 
@@ -1255,8 +1262,8 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
 		$title=$title[0];
 	}
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"  width="300px" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
-                          'text' => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " title="'.$title.'">'.$title.'</p>'
+                          'params' => 'class="dataTableContent" title="'.$title.'"  width="80%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
+                          'text' => $title
                         );
 	$add_file_html='';
 	$file_list=explode("|||",$bulletin["file_path"]);
@@ -1319,7 +1326,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
   //bulletin列表  
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_bulletin(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=collect&order_type='.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_COLLECT.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
-  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=mark&order_type='.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MARK.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" ', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=mark&order_type='.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MARK.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=title&order_type='.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_TITLE.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=add_file&order_type='.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_ADDFILE.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=manager&order_type='.($_GET['order_sort'] == 'manager' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MANAGER.($_GET['order_sort'] == 'manager' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'manager' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'); 
@@ -1413,9 +1420,9 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
     }
 
     if ($bulletin['id']==$_GET['c_id']||$bulletin['id']==$_GET['bulletin_id']) {
-      $bulletin_item_params = 'id="bulletin_'.$bulletin['id'].'" class="dataTableRowSelected"   onmouseover="this.style.cursor=\'hand\'"';
+      $bulletin_item_params = 'id="bulletin_'.$bulletin['id'].'" class="dataTableRowSelected" valign="top"   onmouseover="this.style.cursor=\'hand\'"';
     } else {
-      $bulletin_item_params = 'id="bulletin_'.$bulletin['id'].'" class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+      $bulletin_item_params = 'id="bulletin_'.$bulletin['id'].'" class="'.$nowColor.'" valign="top"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->npermission <15)|| !$site_permission_flag){
 		$select_html='disabled="disabled"';
@@ -1450,8 +1457,8 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 
 	$title=$bulletin['title'];
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"  width="300px"', 
-                          'text' => '<a href="bulletin_board.php?action=show_reply&bulletin_id='.$bulletin["id"].'"><p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " title="'.$title.'">'.$title.'</p></a>'
+                          'params' => 'class="dataTableContent"  width="80%" title="'.$title.'"', 
+                          'text' => '<a href="bulletin_board.php?action=show_reply&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
                         );
 	$add_file_html='';
 	$file_list_arr = explode("|||",$bulletin['file_path']); 

@@ -4,7 +4,7 @@ define('TEXT_MARK','マーク');
 define('TEXT_TITLE','タイトル');
 define('TEXT_MANAGER','管理者');
 define('TEXT_TO','To');
-define('TEXT_REPLY_NUMBER','レス数');
+define('TEXT_REPLY_NUMBER','レス');
 define('TEXT_UPDATE_TIME','更新日');
 define('TEXT_BULLETIN_BOARD','掲示板');
 define('TEXT_BULLETIN_EDIT_CONFIRM','本当に削除しますか？');
