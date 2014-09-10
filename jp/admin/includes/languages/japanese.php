@@ -854,7 +854,6 @@ define('TEXT_MONTH_SEPTEMBER','9月');
 define('TEXT_MONTH_OCTOBER','10月');
 define('TEXT_MONTH_NOVEMBER','11月');
 define('TEXT_MONTH_DECEMBER','12月');
-define('TRADE_CHARACTER_NAME','当社のキャラクター名：');
 define('DATE_FORMAT_TEXT','Y年m月d日 H時i分');
 define('MOVE_TO_SITE','サイトへ移動'); 
 define('COMMON_SITE_DATA','共用データー');
