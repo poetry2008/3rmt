@@ -85,7 +85,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 
 	 //To
 	 $bulletin_content_row_allow = array();
-	 $bulletin_content_row_allow [] =array('text'=>'To');
+	 $bulletin_content_row_allow [] =array('text'=>TEXT_TO_BODY);
 	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input type="radio" value="all" onclick="select_allow(this,0)" checked="true" name="select_all" id="select_all_radio"><label for="select_all_radio">ALL</label></td><td><input type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)"><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label></td><td><input type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label></td></tr></table>');
 	 $bulletin_content_row_allow [] =array('text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
@@ -135,7 +135,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
-</table></div><br /><div style="display:none;color:#FF0000;" id="popup_user_select">'.TEXT_WARNING_EMPTY.'</div>');
+</table></div><div style="display:none;color:#FF0000;" id="popup_user_select">'.TEXT_WARNING_EMPTY.'</div>');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_choose);
 	$mark_array = explode(',',$_GET['mark']);
 	$pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
@@ -217,6 +217,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $user_info=tep_get_user_info($bulletin_info["manager"]);
 	 $manager=$user_info['name'];
+	 $manager=$manager?$manager:$bulletin_info["manager"];
 	 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$bulletin_info["manager"]."'"))==1)$manager='--';
 	 $option_html='<option name="manager" '.((($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' value="'.$bulletin_info["manager"].'">'.$manager.'</option>';
 	 foreach($user_name as $user_id=>$name){
@@ -229,7 +230,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 
 	 //To
 	 $bulletin_content_row_allow = array();
-	 $bulletin_content_row_allow [] =array('text'=>'TO');
+	 $bulletin_content_row_allow [] =array('text'=>TEXT_TO_BODY);
 	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input '.((($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').'type="radio" value="all" onclick="select_allow(this,0)" name="select_all" id="select_all_radio" ><label for="select_all_radio">ALL</label><input '.((($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)" ><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label><input '.((($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label></td></tr></table>');
 	 $bulletin_content_row_allow [] =array('text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
@@ -290,7 +291,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		</td>
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="group_delete_to" style="overflow-y:scroll;height:105px;">'.$group_list_html.'</div></td>
 	</tr>
-</table></div><br /><div style="display:none;color:#FF0000;" id="popup_user_select">'.TEXT_WARNING_EMPTY.'</div>');
+</table></div><div style="display:none;color:#FF0000;" id="popup_user_select">'.TEXT_WARNING_EMPTY.'</div>');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_choose);
 	$mark_array = explode(',',$bulletin_info['mark']);
 	$pic_list_raw = tep_db_query("select * from ".TABLE_CUSTOMERS_PIC_LIST." order by sort_order asc"); 
