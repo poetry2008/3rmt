@@ -107,7 +107,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	case 'update_bulletin':
 	 $id=$_GET['bulletin_id'];
-	 $bulletin_info_raw=tep_db_query("select * from bulletin_board where id=$id");
+	 $bulletin_info_raw=tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id");
 	 $bulletin_info_row=tep_db_fetch_array($bulletin_info_raw);
 	 $author=$ocertify->auth_user;
 	 if($update_user!=$bulletin_info_row['manager']&&$ocertify->npermission<15&&$update_user!=$bulletin_info_row['add_user']){
@@ -327,7 +327,7 @@ if (isset($_GET['action']) and $_GET['action']) {
         $param_str = $_GET['page'];
         foreach($bulletin_id_list as $id){
          if($_GET['delete_type']=='show_reply'){
-			 if($ocertify->npermission>=15 || tep_db_num_rows(tep_db_query("select br.id from bulletin_board_reply br,bulletin_board bb where br.id=$id and br.bulletin_id=bb.id and bb.manager='$ocertify->auth_user'"))>=1) {
+			 if($ocertify->npermission>=15 || tep_db_num_rows(tep_db_query("select br.id from ".TABLE_BULLETIN_BOARD_REPLY." br,".TABLE_BULLETIN_BOARD." bb where br.id=$id and br.bulletin_id=bb.id and bb.manager='$ocertify->auth_user'"))>=1) {
 			 $reply_number_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id  and content!='deleted'"));
 			 if(tep_db_query("update ".TABLE_BULLETIN_BOARD_REPLY." set file_path='',content='deleted' where  content!='deleted' and id=".$id)){
 				$file_list=explode("|||",$reply_number_row['file_path']);
