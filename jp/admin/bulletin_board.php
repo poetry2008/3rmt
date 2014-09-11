@@ -1090,9 +1090,12 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
 		$last_id=$last_id_row['id'];
 		$next_id=$next_id_row['id'];
 		$header_title_html='';
-		if($last_id&&tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name'))) and id>=".$last_id))!=0)$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
-		else $header_title_html.='&nbsp&nbsp&nbsp&nbsp';
-		if($next_id>0&&tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name'))) and id<=".$next_id))!=0)$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
+		if($last_id&&tep_db_num_rows(tep_db_query($last_id_sql." and id>=".$last_id))!=0){
+					$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
+	}else {
+			$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
+	}
+		if($next_id>0&&tep_db_num_rows(tep_db_query($next_id_sql." and id<=".$next_id))!=0)$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
 		else $header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 		$header_title_html.=$header_content.'';
 	}else $header_title_html=TEXT_BULLETIN_BOARD;
