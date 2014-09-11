@@ -75,7 +75,7 @@
                  'title' => $n_value,
                  'orders_id' => $_GET['oID'], 
                  'alarm_date' => date('Y-m-d H:i:00', $alarm_date),
-                 'adminuser' => $ocertify->auth_user,
+                 'adminuser' => $_SESSION['user_name'],
                  'created_at' => 'now()',
                  );  
             tep_db_perform(TABLE_ALARM, $sql_data_array);         
@@ -87,7 +87,7 @@
                 'title' => $n_value,
                 'set_time' => date('Y-m-d H:i:00', $alarm_date),
                 'from_notice' => $alarm_id,
-                'user' => $ocertify->auth_user,
+                'user' => $_SESSION['user_name'],
                 'created_at' => 'now()'
                 ); 
             tep_db_perform(TABLE_NOTICE, $sql_data_array);         

@@ -462,12 +462,12 @@ require("includes/note_js.php");
      }
   }
   // 获取提醒日志信息
-  $memo_query_str = $ocertify->npermission == 31 ? '' : "(bb.manager='".$ocertify->auth_user."' or bb.add_user='".$ocertify->auth_user."' or bb.allow='all' or bb.allow like '%:".$ocertify->auth_user."' or bb.allow like '%:".$ocertify->auth_user.",%' or bb.allow like '%,".$ocertify->auth_user.",%' or bb.allow like  '%,".$ocertify->auth_user."') and ";
+  $memo_query_str = $ocertify->npermission == 31 ? '' : "(bb.manager='".$ocertify->auth_user."' or bb.add_user='".$_SESSION['user_name']."' or bb.allow='all' or bb.allow like '%:".$ocertify->auth_user."' or bb.allow like '%:".$ocertify->auth_user.",%' or bb.allow like '%,".$ocertify->auth_user.",%' or bb.allow like  '%,".$ocertify->auth_user."') and ";
   $alarm_day = get_configuration_by_site_id('ALARM_EXPIRED_DATE_SETTING',0);
   $s_select_temp = "select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from " . TABLE_NOTICE ." n left join ". TABLE_BULLETIN_BOARD ." bb on n.from_notice=bb.id where ".$memo_query_str."n.type='1' and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
   $s_select = "select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from " . TABLE_NOTICE ." n left join ". TABLE_ALARM ." a on n.from_notice=a.alarm_id where n.type='0' and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
   $s_select_messages = "select id,3 type,content title,time set_time,id from_notice,sender_name user,replace(time,'/','-') created_at,1 s_show,0 deleted from messages where trash_status='1' and messages_status='0' and time_format(timediff(now(),time),'%H')<".$alarm_day*24;
-  $s_select_reply="select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from notice n left join ".TABLE_BULLETIN_BOARD_REPLY." br on n.from_notice=br.id join ".TABLE_BULLETIN_BOARD." bb on br.bulletin_id=bb.id where (bb.add_user='$ocertify->auth_user' or bb.manager='$ocertify->auth_user' or bb.allow='all' or bb.allow like '%:$ocertify->auth_user%' or bb.allow like '%:$ocertify->auth_user,%' or bb.allow like '%,$ocertify->auth_user,%' or bb.allow like '%,$ocertify->auth_user') and n.type=2 and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
+  $s_select_reply="select n.id id,n.type type,n.title title,n.set_time set_time,n.from_notice from_notice,n.user user,n.created_at created_at,n.is_show is_show,n.deleted deleted from notice n left join ".TABLE_BULLETIN_BOARD_REPLY." br on n.from_notice=br.id join ".TABLE_BULLETIN_BOARD." bb on br.bulletin_id=bb.id where (bb.add_user='".$_SESSION['user_name']."' or bb.manager='$ocertify->auth_user' or bb.allow='all' or bb.allow like '%:$ocertify->auth_user%' or bb.allow like '%:$ocertify->auth_user,%' or bb.allow like '%,$ocertify->auth_user,%' or bb.allow like '%,$ocertify->auth_user') and n.type=2 and time_format(timediff(now(),n.created_at),'%H')<".$alarm_day*24;
   $s_select = "select * from ((".$s_select.") union (".$s_select_reply.") union (".$s_select_temp.") union (".$s_select_messages.")) n_t";
   $s_select .= " order by ".$alert_log_str;    // 按照提醒日期时间的倒序获取数据
   // 自动删除过期数据 
@@ -578,10 +578,10 @@ if ($rec_c % 2) {
       $alarm_info_array = tep_db_fetch_array($alarm_info_query);
 
       $alert_user = $alarm_info_array['adminuser'];
-      if($alarm_info_array['alarm_flag'] == '0'){
-        $user_info = tep_get_user_info($alert_user);
-        $alert_user = $user_info['name'];
-      }
+      //if($alarm_info_array['alarm_flag'] == '0'){
+       // $user_info = tep_get_user_info($alert_user);
+        //$alert_user = $user_info['name'];
+     // }
       if($alarm_info_array['alarm_flag'] == '1'){
         if($alarm_info_array['orders_flag'] == '1'){
           $alert_button_name = HEADER_TEXT_ALERT_TITLE;
@@ -613,8 +613,6 @@ if ($rec_c % 2) {
       $micro_info_array = tep_db_fetch_array($micro_info_query);
 
       $alert_user = $micro_info_array['add_user'];
-      $user_info = tep_get_user_info($alert_user);
-      $alert_user = $user_info['name'];
       $alert_button_name = TEXT_BULLETIN_BOARD;
       $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = ''; 
@@ -622,9 +620,7 @@ if ($rec_c % 2) {
       $micro_info_query = tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id='".$arec['from_notice']."'");
       $micro_info_array = tep_db_fetch_array($micro_info_query);
 
-      $alert_user = $micro_info_array['user_update'];
-      $user_info = tep_get_user_info($alert_user);
-      $alert_user = $user_info['name'];
+      $alert_user = $micro_info_array['update_user'];
       $alert_button_name = TEXT_BULLETIN_BOARD;
       $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = ''; 

@@ -23,7 +23,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 ------------------------------------------------------*/
 	case 'create_bulletin':
 	 $author=$ocertify->auth_user;
-	 $update_user=$author;
+	 $user_info = tep_get_user_info($author);
+	 $update_user=$user_info['name'];
 	 $content=$_POST['content'];
 	 $collect='';
 	 $allow="";
@@ -66,8 +67,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'title' => $title,
 		'add_time'=> 'now()',
 		'update_time'=> 'now()',
-	    'add_user' => $author,
-	    'update_user' => $author
+	    'add_user' => $update_user,
+	    'update_user' => $update_user
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD,$sql_add_bullention);
 	 //notice记录帖子的id
@@ -81,8 +82,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'file_path' => $file_path,
 		'add_time'=> 'now()',
 		'update_time'=> 'now()',
-	    'add_user' => $author,
-	    'update_user' => $author
+	    'add_user' => $update_user,
+	    'update_user' => $update_user
 	 );
 	 tep_db_perform(TABLE_BULLETIN_BOARD_REPLY,$sql_add_bullention);
 		//添加提醒和日志
@@ -91,7 +92,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'title' => $title,
 		'set_time' => 'now()',
 		'from_notice' => $insert_board_id,
-		'user' => $author,
+		'user' => $add_user,
 		'created_at'=> 'now()',
 		'is_show' =>1,
 	    'deleted' =>''	
@@ -108,10 +109,13 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $id=$_GET['bulletin_id'];
 	 $bulletin_info_raw=tep_db_query("select * from bulletin_board where id=$id");
 	 $bulletin_info_row=tep_db_fetch_array($bulletin_info_raw);
-	 $update_user=$ocertify->auth_user;
+	 $author=$ocertify->auth_user;
 	 if($update_user!=$bulletin_info_row['manager']&&$ocertify->npermission<15&&$update_user!=$bulletin_info_row['add_user']){
 		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD));
-			 }
+	 }
+	 $user_info = tep_get_user_info($author);
+	 $update_user=$user_info['name'];
+
 	 $content=$_POST['content'];
 	 $collect=0;
 	 $allow="";
@@ -183,7 +187,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 if(strlen($mark)<1)$mark.=$value;
 		 else $mark.=",".$value;
 	 }
-	 $update_user=$ocertify->auth_user;
+	 $author=$ocertify->auth_user;
+	 $user_info = tep_get_user_info($author);
+	 $update_user=$user_info['name'];
 	 $author_row=tep_db_fetch_array(tep_db_query('select * from '.TABLE_BULLETIN_BOARD.' where id='.$bulletin_id.' limit 1'));
 	 $add_user=$author_row['add_user'];
 	 $add_time= $author_row['add_time'];
@@ -243,7 +249,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $add_user=$bulletin_info_row['add_user'];
 	 $add_time=$bulletin_info_row['add_time'];
-	 $update_user=$ocertify->auth_user;
+	 $author=$ocertify->auth_user;
+	 $user_info = tep_get_user_info($author);
+	 $update_user=$user_info['name'];
 	 $file_path=$bulletin_info_row['file_path'];
 	 if($_POST['delete_file']){
 		 foreach($_POST['delete_file'] as $value){
@@ -1041,7 +1049,6 @@ require("includes/note_js.php");
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
-
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2" class="content">
   <tr>
@@ -1282,12 +1289,9 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
                           'params' => 'class="dataTableContent"', 
                           'text' => $add_file_html
                         );
-    $user_info = tep_get_user_info($bulletin['update_user']);
-    $user_name = $user_info['name'];
-	if(!$user_name)$user_name=$bulletin['update_user'];
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
-                          'text' => $user_name
+                          'text' => $bulletin['update_user']
                         );
 
     if(date('Y-m-d') == date('Y-m-d',strtotime($bulletin['update_time']))){
@@ -1475,12 +1479,12 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                           'params' => 'class="dataTableContent"', 
                           'text' =>$add_file_html
                         );
-    $user_info = tep_get_user_info($bulletin['manager']);
-    $user_name = $user_info['name'];
-	if(!$user_name)$user_name=$bulletin['update_user'];
+//    $user_info = tep_get_user_info($bulletin['manager']);
+ //   $user_name = $user_info['name'];
+//	if(!$user_name)$user_name=$bulletin['update_user'];
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
-                          'text' => $user_name
+                          'text' => $bulletin['update_user']
                         );
 	$allow=explode(":",$bulletin['allow']);
 	$allow=$allow[1]?$allow[1]:$allow[0];

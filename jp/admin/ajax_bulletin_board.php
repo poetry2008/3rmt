@@ -332,18 +332,12 @@ if (isset($_GET['action']) and $_GET['action']) {
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input '.(($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])?"":'disabled="disabled"').'  type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" '.(($ocertify->npermission>=15||$user==$bulletin_info['add_user']||$user==$bulletin_info['manager'])?' onclick="add_email_file(\'bulletin_file\')"':'').'>'.BUTTON_ADD_TEXT.'</a></div>');
 //	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_add_user=array();
-     $user_info = tep_get_user_info($bulletin_info['add_user']);
-     $user_name = $user_info['name'];
-	 if(!$user_name)$user_name=$bulletin_info['add_user'];
-	 $bulletin_content_row_add_user[] = array('text'=>TEXT_AUTHOR."    ".$user_name);
+	 $bulletin_content_row_add_user[] = array('text'=>TEXT_AUTHOR."    ".$bulletin_info['add_user']);
 	 $bulletin_content_row_add_user[] = array('text'=>TEXT_DONE_TIME.'    '.$bulletin_info['add_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_add_user);
 
 	 $bulletin_content_row_update=array();
-     $user_info = tep_get_user_info($bulletin_info['update_user']);
-     $user_name = $user_info['name'];
-	 if(!$user_name)$user_name=$bulletin_info['update_user'];
-	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$user_name);
+	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$bulletin_info['update_user']);
 	 $bulletin_content_row_update[] = array('text'=>TEXT_DATE_UPDATE.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 	 if($ocertify->npermission>=15||$user==$bulletin_info['manager'])$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',0)">';
@@ -464,18 +458,12 @@ if (isset($_GET['action']) and $_GET['action']) {
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_add_user=array();
-     $user_info = tep_get_user_info($bulletin_info['add_user']);
-     $user_name = $user_info['name'];
-	 if(!$user_name)$user_name=$bulletin_info['add_user'];
-	 $bulletin_content_row_add_user[] = array('text'=>TEXT_AUTHOR."    ".$user_name);
+	 $bulletin_content_row_add_user[] = array('text'=>TEXT_AUTHOR."    ".$bulletin_info['add_user']);
 	 $bulletin_content_row_add_user[] = array('text'=>TEXT_DONE_TIME.'    '.$bulletin_info['add_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_add_user);
 
 	 $bulletin_content_row_update=array();
-     $user_info = tep_get_user_info($bulletin_info['update_user']);
-     $user_name = $user_info['name'];
-	 if(!$user_name)$user_name=$bulletin_info['update_user'];
-	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$user_name);
+	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$bulletin_info['update_user']);
 	 $bulletin_content_row_update[] = array('text'=>TEXT_DATE_UPDATE.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 	 if($ocertify->npermission>=15 || tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=".$bulletin_info['bulletin_id']." and manager='$user'"))>0)$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',\'show_reply\')">';

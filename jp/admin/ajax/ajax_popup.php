@@ -11171,15 +11171,11 @@ if($row_array['set_time']==0){
 	 $order_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $order_content_table[] = array('text'=> $order_content_row_text);
 	 $order_content_row_author = array();
-	 $user_info=tep_get_user_info($order_row['author']);
-	 $user_name=$user_info['name'];
-	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
-	 $order_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $order_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['user']);
 	 $order_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($order_row['created_at'])?$order_row['created_at']:TEXT_UNSET_DATA));
 	 $order_content_table[] = array('text'=> $order_content_row_author);
 	 $order_content_row_update = array();
-	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
-	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $order_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$order_row['user']);
 	 $order_content_row_update[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($order_row['set_time'])?$order_row['set_time']:TEXT_UNSET_DATA));
          $order_content_table[] = array('text'=> $order_content_row_update);
          if($ocertify->npermission >= 15){
@@ -11220,17 +11216,11 @@ if($row_array['set_time']==0){
 	 $bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $bulletin_content_row_author = array();
-	 $user_info=tep_get_user_info($bulletin_row['add_user']);
-	 $user_name=$user_info['name'];
-	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
-	 $bulletin_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $bulletin_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['add_user']);
 	 $bulletin_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($bulletin_row['add_time'])?$bulletin_row['add_time']:TEXT_UNSET_DATA));
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_author);
 	 $bulletin_content_row_update = array();
-	 $user_info=tep_get_user_info($bulletin_row['update_user']);
-	 $user_name=$user_info['name'];
-	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
-	 $bulletin_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $bulletin_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$bulletin_row['update_user']);
 	 $bulletin_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($bulletin_row['update_time'])?$bulletin_row['update_time']:TEXT_UNSET_DATA));
          $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
          if($ocertify->npermission >= 15){
@@ -11271,17 +11261,12 @@ if($row_array['set_time']==0){
 	 $reply_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $reply_content_table[] = array('text'=> $reply_content_row_text);
 	 $reply_content_row_author = array();
-	 $user_info=tep_get_user_info($reply_row['add_user']);
-	 $user_name=$user_info['name'];
-	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
-	 $reply_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $reply_row['add_user']==''?TEXT_UNSET_DATA:$reply_row['add_user'];
+	 $reply_content_row_author[] = array('text'=> TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['add_user']);
 	 $reply_content_row_author[] = array('text'=> TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($reply_row['add_time'])?$reply_row['add_time']:TEXT_UNSET_DATA));
 	 $reply_content_table[] = array('text'=> $reply_content_row_author);
 	 $reply_content_row_update = array();
-	 $user_info=tep_get_user_info($reply_row['update_user']);
-	 $user_name=$user_info['name'];
-	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
-	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $reply_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$reply_row['update_user']);
 	 $reply_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.(tep_not_null($reply_row['update_time'])?$reply_row['update_time']:TEXT_UNSET_DATA));
          $reply_content_table[] = array('text'=> $reply_content_row_update);
          if($ocertify->npermission >= 15){
@@ -11328,10 +11313,10 @@ if($row_array['set_time']==0){
 	 $messages_content_table[] = array('text'=> $messages_content_row_author);
 	 $messages_content_row_update = array();
 	 $user_name=$messages_row['user_update'];
-	 if(!$user_name)$user_name=TEXT_UNSET_DATA;
-	 $messages_time=$messages_row['date_update'];
+	 //if(!$user_name)$user_name=TEXT_UNSET_DATA;
+//	 $messages_time=$messages_row['date_update'];
 	 if($messages_time=='0000-00-00 00:00:00')$messages_time=TEXT_UNSET_DATA;
-	 $messages_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$user_name);
+	 $messages_content_row_update[] = array('text'=> TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$messages_row['sender_name']);
 	 $messages_content_row_update[] = array('text'=> TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$messages_time);
          $messages_content_table[] = array('text'=> $messages_content_row_update);
          if($ocertify->npermission >= 15){
