@@ -64,7 +64,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-	 $bulletin_content_row_from[] = array('params'=>'width="70%" style="color:#FF0000;"','text'=>'<input onfocus="o_submit_single = false;" onblur="o_submit_single = true;" type="text" name="title" id="bulletin_title" style="width:80%;"> * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
+         $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style=" width:80%;" class="textarea_width" rows="1" id="bulletin_title" name="title"></textarea>';
+	 $bulletin_content_row_from[] = array('params'=>'width="70%"
+             style="color:#FF0000;"','text'=>$title_input.' * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
 	 $bulletin_content_row_from[] = array('params'=>'width="10%"','text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
 	 $bulletin_content_row_manager = array();
@@ -206,7 +208,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-	 $bulletin_content_row_from[] = array('params'=>'width="80%" style="color:#FF0000;"','text'=>'<input onfocus="o_submit_single = false;" onblur="o_submit_single = true;" type="text" name="title" style="width:80%;" value="'.$bulletin_info["title"].'" id="bulletin_title"  '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').'> * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
+         $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' style=" width:80%;" class="textarea_width" rows="1" id="bulletin_title" name="title">'.$bulletin_info['title'].'</textarea>';
+	 $bulletin_content_row_from[] = array('params'=>'width="80%" style="color:#FF0000;"','text'=>$title_input.' * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
 	 $bulletin_content_row_manager = array();
 	 $bulletin_content_row_manager [] = array('text'=>TEXT_MANAGER);
@@ -249,22 +252,6 @@ if (isset($_GET['action']) and $_GET['action']) {
            $select_str .= '>'.$name.'</option>';
          }
          $bulletin_content_row_manager [] = array('text'=>$select_str);
-         /*
-	 $user_info=tep_get_user_info($bulletin_info["manager"]);
-	 $manager=$user_info['name'];
-	 $manager=$manager?$manager:$bulletin_info["manager"];
-	 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$bulletin_info["manager"]."'"))==1)$manager='--';
-	 $option_html='<option name="manager" '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' value="'.$bulletin_info["manager"].'">'.$manager.'</option>';
-	 foreach($user_name as $user_id=>$name){
-		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$user_id."'"))==1)continue;
-		 $option_html.='<option name="manager" value='.$user_id;
-		 if($user_id==$bulletin_info['manager']){
-                   $option_html .= ' selected ';
-                 }
-                 $option_html.= '>'.$name.'</option>';
-	 }
-	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="" '.((($ocertify->npermission>=15||$user==$bulletin_info['manager']) && $site_permission_flag)?"":'disabled="disabled"').'>'.$option_html.'</select>');
-         */ 
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
 	 
 	 //To
