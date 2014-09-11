@@ -1055,13 +1055,18 @@ require("includes/note_js.php");
 	//设置标题
 	$group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user') limit 1"));
 	$group_name=$group_raw['name'];
-	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD."  where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
-	$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
+	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD;
+	if($ocertify->npermission <15){
+			$header_title_sql.="  where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
+	}else{
+			$header_title_sql.=" where";
+	}
+$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
 	$last_id_sql.=$ocertify->npermission <15 ? " and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow  like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))":"";	
 	$next_id_sql=$last_id_sql;
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
 		
-		$header_title_sql.=" and id =".$_GET['bulletin_id']." order by id desc";
+		$header_title_sql.=" id =".$_GET['bulletin_id']." order by id desc";
 		$header_title_sql.= " limit 1";
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
@@ -1193,8 +1198,11 @@ require("includes/note_js.php");
   }
   $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
   $group_name=$group_raw['name'];
-  $bulletin_query_str = 'and r.bulletin_id='.$_GET['bulletin_id']." and(b.add_user='$ocertify->auth_user' or b.manager='$ocertify->auth_user' or b.allow='all' or b.allow like '%:$ocertify->auth_user' or b.allow like '%:$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user'  or b.allow like '%:$group_name' or b.allow like '%:$group_name,%' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')";
-  if(isset($_GET['search_text'])&& $_GET['search_text']){
+  $bulletin_query_str = 'and r.bulletin_id='.$_GET['bulletin_id'];
+	if($ocertify->npermission <15){
+			$bulletin_query_str.=" and(b.add_user='$ocertify->auth_user' or b.manager='$ocertify->auth_user' or b.allow='all' or b.allow like '%:$ocertify->auth_user' or b.allow like '%:$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user'  or b.allow like '%:$group_name' or b.allow like '%:$group_name,%' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')";
+	}
+	if(isset($_GET['search_text'])&& $_GET['search_text']){
 	  $bulletin_query_str.=" and (r.content like '%".$search_text."%' )";
   }
   $bulletin_query_raw = "select r.update_user update_user, r.id id, r.content content, r.file_path file_path ,r.update_time update_time ,r.add_user ,r.collect collect ,r.mark mark,r.bulletin_id bulletin_id, b.id bid,b.allow ,b.manager ,b.add_user from " . TABLE_BULLETIN_BOARD_REPLY ." r ,".TABLE_BULLETIN_BOARD." b where r.bulletin_id=b.id  ".$bulletin_query_str." ";
@@ -1483,10 +1491,27 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                           'text' => $user_name
                         );
 	$allow=explode(":",$bulletin['allow']);
-	$allow=$allow[1]?$allow[1]:$allow[0];
+	$user_list='';
+	if($allow[0]=='id'){
+			$allow=$allow[1]?$allow[1]:$allow[0];
+			$allow=explode(",",$allow);
+			$array_count=count($allow);
+			for($i=0;$i<$array_count;$i++){
+					$user_info=tep_get_user_info($allow[$i]);
+					$user_name=$user_info['name'];
+					if($user_name){
+							$user_list.=$user_name;
+					}else{
+							$user_list.=$allow[$i];
+					}
+			}
+	}else{
+			$user_list.=$allow[1]?$allow[1]:$allow[0];
+			$user_list=str_replace(","," ",$user_list);
+	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
-                          'text' => str_replace(",","  ",$allow)
+                          'text' => $user_list
 			);
 
     $bulletin_item_info[] = array(
