@@ -160,7 +160,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'manager' => $manager,
 		'mark' => $mark,
 		'collect' => $collect,
-		'reply_number' => $reply_number, 
+//		'reply_number' => $reply_number, 
 	    'title' => $title,
 		'file_path' => $file_path,
 		'update_time'=> 'now()',
