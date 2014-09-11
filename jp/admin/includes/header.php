@@ -112,9 +112,11 @@ function check_header_messages(){
 			if(data != '0'){
 				$.each(eval(data), function(){
 				var img_mark = '';
+                                if(this.mark){
 				$.each(this['mark'], function(){
 					img_mark += '<img border="0" src="images/icon_list/icon_'+this+'.gif">'
 				});
+                                }
 					if(img_mark !='')img_mark+='&nbsp&nbsp';
 					var str_html='';
 					if(messages_num == 0){
