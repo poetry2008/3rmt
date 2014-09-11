@@ -118,8 +118,8 @@ function check_header_messages(){
 					if(img_mark !='')img_mark+='&nbsp&nbsp';
 					var str_html='';
 					if(messages_num == 0){
-						if(this['type']=='messages')str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFFF33"><td  width="80px" id="messages_head"><img src="images/icons/messages.png"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
-				else str_html+='<table style="background:#FFCC00" value='+this['id']+'  width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFFF33"><td  width="80px" id="messages_head">'+this['title']+'</td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
+						if(this['type']=='messages')str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td  width="80px" id="messages_head"><img src="images/icons/messages.png"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
+				else str_html+='<table style="background:#FFCC00" value='+this['id']+'  width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td  width="80px" id="messages_head">'+this['title']+'</td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
 				$('#show_messages_notice').append(str_html);
 				if(play_flag == true){
 					switch(this['type']){
@@ -139,7 +139,7 @@ function check_header_messages(){
                                 });
 			}
 			if(eval(data).length > 1){
-				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" style="color:#0000FF;text-decoration:underline;" href="javascript:void(0);"><span>他'+(eval(data).length - 1)+'件</span></a>');
+				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)"  href="javascript:void(0);"><span>他'+(eval(data).length - 1)+'件</span></a>');
 				$('#show_all_messages_notice').append('<table style="background:#FFCC00" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFCC00"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.png" ></a></td></tr></table>');
 			};
   		}

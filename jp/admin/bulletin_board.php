@@ -1507,14 +1507,14 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 					$user_info=tep_get_user_info($allow[$i]);
 					$user_name=$user_info['name'];
 					if($user_name){
-							$user_list.=$user_name.'&nbsp;';
+							$user_list.=$user_name.';&nbsp;';
 					}else{
-							$user_list.=$allow[$i].'&nbsp;';
+							$user_list.=$allow[$i].';&nbsp;';
 					}
 			}
 	}else{
 			$user_list.=$allow[1]?$allow[1]:$allow[0];
-			$user_list=str_replace(","," ",$user_list);
+			$user_list=str_replace(",","; ",$user_list);
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
