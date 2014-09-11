@@ -110,12 +110,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_info_raw=tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id");
 	 $bulletin_info_row=tep_db_fetch_array($bulletin_info_raw);
 	 $author=$ocertify->auth_user;
-	 if($update_user!=$bulletin_info_row['manager']&&$ocertify->npermission<15&&$update_user!=$bulletin_info_row['add_user']){
-		tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD));
-	 }
 	 $user_info = tep_get_user_info($author);
 	 $update_user=$user_info['name'];
-
 	 $content=$_POST['content'];
 	 $collect=0;
 	 $allow="";
