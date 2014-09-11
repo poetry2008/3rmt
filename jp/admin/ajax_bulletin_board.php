@@ -216,6 +216,40 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
 		 $user_name[$row['userid']]=$row['name'];
 	 }
+
+         $select_str = '<select name="manager" ';
+         if($ocertify->npermission>=15||$user==$bulletin_info['manager']||$site_permission_flag){
+         }else{
+           $select_str .= 'disabled="disabled"';
+         }
+         $select_str .= ' >';
+         $select_str .= '<option value="" ';
+         if($bulletin_info['manager'] == '--'||$bulletin_info['manager'] ==''){
+           $select_str .= ' selected ';
+         }
+         $select_str .= ' >';
+         foreach($user_name as $user_id=>$name){
+           $show_sql = "select * from permissions where userid='".$user_id."'";
+           $show_query = tep_db_query($show_sql);
+           if($ocertify->npermission<15){
+             if($show_row = tep_db_fetch_array($show_query)){
+               if($show_row['permission']>=15){
+                 if($user_id!=$bulletin_info['manager']){
+                   continue;
+                 }
+               }
+             }else{
+               continue;
+             }
+           }
+           $select_str .= '<option name="manager" value='.$user_id;
+           if($user_id==$bulletin_info['manager']){
+             $select_str .= ' selected ';
+           }
+           $select_str .= '>'.$name.'</option>';
+         }
+         $bulletin_content_row_manager [] = array('text'=>$select_str);
+         /*
 	 $user_info=tep_get_user_info($bulletin_info["manager"]);
 	 $manager=$user_info['name'];
 	 $manager=$manager?$manager:$bulletin_info["manager"];
@@ -223,10 +257,14 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $option_html='<option name="manager" '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' value="'.$bulletin_info["manager"].'">'.$manager.'</option>';
 	 foreach($user_name as $user_id=>$name){
 		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$user_id."'"))==1)continue;
-		 if($name==$manager)continue;
-		 $option_html.='<option name="manager" value='.$user_id.'>'.$name.'</option>';
+		 $option_html.='<option name="manager" value='.$user_id;
+		 if($user_id==$bulletin_info['manager']){
+                   $option_html .= ' selected ';
+                 }
+                 $option_html.= '>'.$name.'</option>';
 	 }
 	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="" '.((($ocertify->npermission>=15||$user==$bulletin_info['manager']) && $site_permission_flag)?"":'disabled="disabled"').'>'.$option_html.'</select>');
+         */ 
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
 	 
 	 //To
