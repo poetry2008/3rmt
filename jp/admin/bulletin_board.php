@@ -164,7 +164,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	    'manager' => $manager,
 		'mark' => $mark,
 		'collect' => $collect,
-		'reply_number' => $reply_number, 
+//		'reply_number' => $reply_number, 
 	    'title' => $title,
 		'file_path' => $file_path,
 		'update_time'=> 'now()',
@@ -241,7 +241,12 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $id=$_GET['id'];
 	 $bulletin_info_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
 	 $content=$_POST['old_content'];
-         $content= $_POST['content']==''?'>'.$content : $_POST['content'].'>'.$content;
+         if($_POST['content']!=''){
+           $_POST['content'] = str_replace("\n","\n>",$_POST['content']);
+           $content = $_POST['content']."\n>".$content;
+         }else{
+           $content = "\n>".$content;    
+         }
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $value){
 		 if(strlen($mark)<1)$mark.=$value;
@@ -1062,14 +1067,18 @@ require("includes/note_js.php");
 	//设置标题
 	$group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user') limit 1"));
 	$group_name=$group_raw['name'];
-	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD."  where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
-	$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
-	$last_id_sql.=$ocertify->npermission <15 ? " and (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow  like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))":"";	
+	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD;
+	if($ocertify->npermission <15){
+			$header_title_sql.="  where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name'))) and";
+	}else{
+			$header_title_sql.=" where";
+	}
+$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
+	$last_id_sql.=$ocertify->npermission <15 ? " and (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow  like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))":"";	
 	$next_id_sql=$last_id_sql;
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
 		
-		$header_title_sql.=" and id =".$_GET['bulletin_id']." order by id desc";
-		$header_title_sql.= " limit 1";
+		$header_title_sql.=" id =".$_GET['bulletin_id'];
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
@@ -1200,8 +1209,11 @@ require("includes/note_js.php");
   }
   $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
   $group_name=$group_raw['name'];
-  $bulletin_query_str = 'and r.bulletin_id='.$_GET['bulletin_id']." and(b.add_user='$ocertify->auth_user' or b.manager='$ocertify->auth_user' or b.allow='all' or b.allow like '%:$ocertify->auth_user' or b.allow like '%:$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user'  or b.allow like '%:$group_name' or b.allow like '%:$group_name,%' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')";
-  if(isset($_GET['search_text'])&& $_GET['search_text']){
+  $bulletin_query_str = 'and r.bulletin_id='.$_GET['bulletin_id'];
+	if($ocertify->npermission <15){
+			$bulletin_query_str.=" and(b.add_user='$ocertify->auth_user' or b.manager='$ocertify->auth_user' or b.allow='all' or b.allow like '%:$ocertify->auth_user' or b.allow like '%:$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user'  or b.allow like '%:$group_name' or b.allow like '%:$group_name,%' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')";
+	}
+	if(isset($_GET['search_text'])&& $_GET['search_text']){
 	  $bulletin_query_str.=" and (r.content like '%".$search_text."%' )";
   }
   $bulletin_query_raw = "select r.update_user update_user, r.id id, r.content content, r.file_path file_path ,r.update_time update_time ,r.add_user ,r.collect collect ,r.mark mark,r.bulletin_id bulletin_id, b.id bid,b.allow ,b.manager ,b.add_user from " . TABLE_BULLETIN_BOARD_REPLY ." r ,".TABLE_BULLETIN_BOARD." b where r.bulletin_id=b.id  ".$bulletin_query_str." ";
@@ -1335,7 +1347,7 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=title&order_type='.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_TITLE.($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'title' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=add_file&order_type='.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_ADDFILE.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=manager&order_type='.($_GET['order_sort'] == 'manager' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MANAGER.($_GET['order_sort'] == 'manager' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'manager' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'); 
-  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=allow&order_type='.($_GET['order_sort'] == 'allow' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_TO.($_GET['order_sort'] == 'allow' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'allow' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
+  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=allow&order_type='.($_GET['order_sort'] == 'allow' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_TO_BODY.($_GET['order_sort'] == 'allow' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'allow' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=reply_number&order_type='.($_GET['order_sort'] == 'reply_number' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_REPLY_NUMBER.($_GET['order_sort'] == 'reply_number' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'reply_number' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=update_time&order_type='.($_GET['order_sort'] == 'update_time' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_UPDATE_TIME.($_GET['order_sort'] == 'update_time' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'update_time' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('align' => 'left','params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'order_sort=action&order_type='.($_GET['order_sort'] == 'action' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TABLE_HEADING_ACTION.($_GET['order_sort'] == 'action' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'action' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
@@ -1394,14 +1406,14 @@ $user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_
   $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
   $group_name=$group_raw['name'];
 	
-  $bulletin_query_str = $ocertify->npermission >= 15 ? ' where id>0 ' : " where (allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
+  $bulletin_query_str = $ocertify->npermission >= 15 ? ' where id>0 ' : " where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or  allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
   if(isset($_GET['action'])&& $_GET['search_text']){
 	  $bulletin_query_str.=" and (content like '%".$search_text."%' or title like '%".$search_text."%')";
   }
   $bulletin_query_raw = "select * from " . TABLE_BULLETIN_BOARD .$bulletin_query_str;
   if($order_sort=='collect'){
-	  $user_collect = $bulletin_query_raw."and id in ( select id from ".TABLE_BULLETIN_BOARD." where (allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
-$user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BULLETIN_BOARD." where (allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
+	  $user_collect = $bulletin_query_raw."and id in ( select id from ".TABLE_BULLETIN_BOARD." where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or  allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
+$user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BULLETIN_BOARD." where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
   if($order_type=='desc')$bulletin_query_raw=$user_collect." union ".$user_not_collect;
   else $bulletin_query_raw=$user_not_collect." union ".$user_collect;
   }else  $bulletin_query_raw .=  "  order by ".$order_sort." ".$order_type;
@@ -1479,18 +1491,35 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
                           'params' => 'class="dataTableContent"', 
                           'text' =>$add_file_html
                         );
-//    $user_info = tep_get_user_info($bulletin['manager']);
- //   $user_name = $user_info['name'];
-//	if(!$user_name)$user_name=$bulletin['update_user'];
+    $user_info = tep_get_user_info($bulletin['manager']);
+    $user_name = $user_info['name'];
+	if(!$user_name)$user_name=$bulletin['manager'];
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
-                          'text' => $bulletin['update_user']
+                          'text' => $user_name
                         );
 	$allow=explode(":",$bulletin['allow']);
-	$allow=$allow[1]?$allow[1]:$allow[0];
+	$user_list='';
+	if($allow[0]=='id'){
+			$allow=$allow[1]?$allow[1]:$allow[0];
+			$allow=explode(",",$allow);
+			$array_count=count($allow);
+			for($i=0;$i<$array_count;$i++){
+					$user_info=tep_get_user_info($allow[$i]);
+					$user_name=$user_info['name'];
+					if($user_name){
+							$user_list.=$user_name;
+					}else{
+							$user_list.=$allow[$i];
+					}
+			}
+	}else{
+			$user_list.=$allow[1]?$allow[1]:$allow[0];
+			$user_list=str_replace(","," ",$user_list);
+	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
-                          'text' => str_replace(",","  ",$allow)
+                          'text' => $user_list
 			);
 
     $bulletin_item_info[] = array(
