@@ -1507,9 +1507,9 @@ $user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BU
 					$user_info=tep_get_user_info($allow[$i]);
 					$user_name=$user_info['name'];
 					if($user_name){
-							$user_list.=$user_name;
+							$user_list.=$user_name.'&nbsp;';
 					}else{
-							$user_list.=$allow[$i];
+							$user_list.=$allow[$i].'&nbsp;';
 					}
 			}
 	}else{

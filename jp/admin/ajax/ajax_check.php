@@ -326,9 +326,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
         }else{
           $new_header['title']='&nbsp;'.$title_str; 
         }
-        $new_header['title']='<img src="images/icons/order.png" onmousemove="this.src=\'images/icons/white_order.png\'" onmouseout="this.src=\'images/icons/order.png\'">'; 
+        $new_header['title']='<img src="images/icons/order.png">'; 
       } else {
-        $new_header['title']='<img src="images/icons/bbs.png" onmousemove="this.src=\'images/icons/white_bbs.png\'" onmouseout="this.src=\'images/icons/bbs.png\'">'; 
+        $new_header['title']='<img src="images/icons/bbs.png" >'; 
       }
       $set_time = strtotime($notice_list['set_time']);
       $leave_time = $set_time - $now_time;
@@ -409,7 +409,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
       if ($notice_list['type'] == '0') {
 		if(tep_db_num_rows(tep_db_query("select * from alarm where alarm_id=".$notice_list['from_notice']." and alarm_flag=1"))>=1){
 			$new_header['type']='button';
-			$new_header['title']='<img src="images/icons/alarm.png" onmousemove="this.src=\'images/icons/white_alarm.png\'" onmouseout="this.src=\'images/icons/alarm.png\'">';
+			$new_header['title']='<img src="images/icons/alarm.png" >';
 		}
 		else $new_header['type']='order';
         $new_header['delete']='&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.png" alt="close" onmousemove="this.src=\'images/icons/white_bbs_del_one.png\'" onmouseout="this.src=\'images/icons/bbs_del_one.png\'"></a>'; 
