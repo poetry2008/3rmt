@@ -236,7 +236,10 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_info_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
 	 $content=$_POST['old_content'];
          if($_POST['content']!=''){
+           $_POST['content'] = str_replace("\n","\n>",$_POST['content']);
            $content = $_POST['content']."\n>".$content;
+         }else{
+           $content = "\n>".$content;    
          }
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $value){
@@ -365,7 +368,6 @@ var box_warp_height = $(".box_warp").height();
         o_submit_single = true;
       }
     }
-    /*
     if (event.which == 13) {
       if ($("#show_popup_info").css("display") != "none") {
         if (o_submit_single) {
@@ -373,7 +375,6 @@ var box_warp_height = $(".box_warp").height();
         }
       }
     }
-    */
     
     if (event.ctrlKey && event.which == 37) {
       if ($("#show_popup_info").css("display") != "none") {
