@@ -615,7 +615,7 @@ if ($rec_c % 2) {
       $alert_user = $micro_info_array['add_user'];
       $user_info = tep_get_user_info($alert_user);
       $alert_user = $user_info['name'];
-      $alert_button_name = TEXT_BULLETIN_BOARD;
+      $alert_button_name = HEADER_TEXT_BULLETIN;
       $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = ''; 
     }elseif ($arec['type'] == 2){
@@ -625,7 +625,7 @@ if ($rec_c % 2) {
       $alert_user = $micro_info_array['user_update'];
       $user_info = tep_get_user_info($alert_user);
       $alert_user = $user_info['name'];
-      $alert_button_name = TEXT_BULLETIN_BOARD;
+      $alert_button_name = HEADER_TEXT_BULLETIN;
       $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = ''; 
 	}
