@@ -197,7 +197,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	   foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
 		 //$file_name=$_FILES['bulletin_file']['name'][$fk];
 		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
-		 $file_name=$file_name[1];
+		 $file_name=$file_name;
 		 if($file_name=='')continue;
 		 if(strlen($file_path)!=0)$file_path.="|||";
 		 if($_FILES['bulletin_file']['name'][$fk]!=''){
