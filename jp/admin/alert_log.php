@@ -40,6 +40,34 @@
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js"></script>
 <?php require('includes/javascript/show_site.js.php');?>
 <script language="javascript">
+$(document).ready(function() {
+  //listen keyup
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      //esc 
+      if ($('#show_popup_info').css('display') != 'none') {
+        hidden_info_box(); 
+      }
+    }
+     
+     if (event.ctrlKey && event.which == 37) {
+      //Ctrl+left
+      if ($('#show_popup_info').css('display') != 'none') {
+        if ($("#alert_prev")) {
+          $("#alert_prev").trigger("click");
+        }
+      } 
+    }
+    if (event.ctrlKey && event.which == 39) {
+      //Ctrl+right
+      if ($('#show_popup_info').css('display') != 'none') {
+        if ($("#alert_next")) {
+          $("#alert_next").trigger("click");
+        }
+      } 
+    }
+  });    
+});
 var alert_prev = '<?php echo IMAGE_PREV;?>';
 var alert_next = '<?php echo IMAGE_NEXT;?>';
 function formConfirm(type) {
