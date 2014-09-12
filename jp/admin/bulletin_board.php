@@ -1120,20 +1120,40 @@ require("includes/note_js.php");
 <!-- body_text //-->
 <?php
 	//设置标题
-	$group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user') limit 1"));
-	$group_name=$group_raw['name'];
-	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD;
+  $where_str = '1 ';
+  $where_group_query = tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
+  $where_group_arr = array();
+  while($where_group_res = tep_db_fetch_array($where_group_query)){
+    $where_group_arr[] = $where_group_res['name'];
+  }
+  if($ocertify->npermission<15){
+    $where_str .= " and ( ";
+    $where_str .= " (bb.manager ='".$ocertify->auth_user."' ) ";
+    $where_str .= " or (bb.allow='all' or 
+      (bb.allow = 'id:".$ocertify->auth_user."' 
+      or bb.allow like 'id:".$ocertify->auth_user.",%' 
+      or bb.allow like 'id:%,".$ocertify->auth_user.",%' 
+      or bb.allow like 'id:%,".$ocertify->auth_user."' 
+      )";
+    if(!empty($where_group_arr)){
+      foreach($where_group_arr as $temp_group){
+        $where_str .= " or bb.allow like 'group:%".$temp_group."%'";
+      }
+    }
+    $where_str .= ")";
+    $where_str .= ")"; 
+  }
+	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where id=".$_GET['bulletin_id'];
 	if($ocertify->npermission <15){
-			$header_title_sql.="  where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name'))) and";
-	}else{
-			$header_title_sql.=" where";
+			$header_title_sql.=$where_str;
 	}
-$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
-	$last_id_sql.=$ocertify->npermission <15 ? " and (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or allow='all' or (allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow  like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))":"";	
-	$next_id_sql=$last_id_sql;
+$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where id>0 ";
+if($ocertify->npermission <15){
+		$last_id_sql.=$where_str;
+}
+		$next_id_sql=$last_id_sql;
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
 		
-		$header_title_sql.=" id =".$_GET['bulletin_id'];
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
@@ -1230,81 +1250,90 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
     switch($_GET['order_sort']){
 
     case 'mark':
-      $order_sort = 'order by r.mark';
+      $order_sort = ' br.mark';
       $order_type = $_GET['order_type'];
       break;
     case 'content':
-      $order_sort = 'order by r.content';
+      $order_sort = ' br.content';
       $order_type = $_GET['order_type'];
       break;
     case 'manager':
-      $order_sort = 'order by r.manager';
+      $order_sort = ' br.manager';
       $order_type = $_GET['order_type'];
       break;
     case 'title':
-      $order_sort = 'order by r.title';
+      $order_sort = ' br.title';
       $order_type = $_GET['order_type'];
       break;
     case 'add_user':
-      $order_sort = 'order by r.add_user';
+      $order_sort = ' br.add_user';
       $order_type = $_GET['order_type'];
       break;
     case 'collect':
-      $order_sort = 'order by r.collect';
+      $order_sort = ' br.collect';
       $order_type = $_GET['order_type'];
       break;
     case 'action':
-      $order_sort = 'order by r.update_time';
+      $order_sort = ' br.update_time';
       $order_type = $_GET['order_type'];
       break;
     case 'update_time':
-      $order_sort = 'order by r.update_time';
+      $order_sort = ' br.update_time';
       $order_type = $_GET['order_type'];
 	  break;
     case 'add_file':
-      $order_sort = 'order by r.file_path';
+      $order_sort = ' br.file_path';
       $order_type = $_GET['order_type'];
 	  break;
     }
   }else{
-    $order_sort = 'order by r.update_time';
+    $order_sort = ' br.id';
     $order_type = 'desc'; 
   }
 
-  $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
-  $group_name=$group_raw['name'];
-  $bulletin_query_str = 'and r.bulletin_id='.$_GET['bulletin_id'];
-	//回复权限控制：admin、root可以查看全部，管理者、作者、阅览者可以查看
-	if($ocertify->npermission <15){
-			//当不是root和admin时 ，判断是否为帖子管理者、作者、阅览者
-			$bulletin_query_str.=" and(b.add_user='$ocertify->auth_user' or b.manager='$ocertify->auth_user' or b.allow='all' 
-					or b.allow like '%:$ocertify->auth_user' or b.allow like '%:$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user'  
-					or b.allow like '%:$group_name' or b.allow like '%:$group_name,%' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')";
-	}
-	//搜索处理
-	if(isset($_GET['search_text'])&& $_GET['search_text']){
-	  $bulletin_query_str.=" and (r.content like '%".$search_text."%' )";
-  }
-
-	//回复列表内容sql
-  $bulletin_query_raw = "select r.update_user update_user, r.id id, r.content content, r.file_path file_path ,r.update_time update_time ,r.add_user ,r.collect collect ,r.mark mark,r.bulletin_id bulletin_id, b.id bid,b.allow ,b.manager ,b.add_user from " . TABLE_BULLETIN_BOARD_REPLY ." r ,".TABLE_BULLETIN_BOARD." b where r.bulletin_id=b.id  ".$bulletin_query_str." ";
-  
-	//收藏排序处理
-	if($order_sort=='collect'){
-		//当前用户收藏的记录
-	  $user_collect = $bulletin_query_raw."and r.id in ( select id from ".TABLE_BULLETIN_BOARD_REPLY." where (b.allow='all' or ((b.allow like 'id:%' and( b.allow like '%:$ocertify->auth_user,%' or b.allow like '%:$ocertify->auth_user' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user') ) or (b.allow like 'group:%' and (b.allow like '%:$group_name,%' or b.allow like '%:$group_name' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')))) and (r.collect='$ocertify->auth_user' or r.collect like '$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user'))";
-		//当前用户未收藏的记录
-		$user_not_collect=$bulletin_query_raw."and r.id not in ( select id from ".TABLE_BULLETIN_BOARD_REPLY." where (b.allow='all' or ((b.allow like 'id:%' and( b.allow like '%:$ocertify->auth_user,%' or b.allow like '%:$ocertify->auth_user' or b.allow like '%,$ocertify->auth_user,%' or b.allow like '%,$ocertify->auth_user') ) or (b.allow like 'group:%' and (b.allow like '%:$group_name,%' or b.allow like '%:$group_name' or b.allow like '%,$group_name,%' or b.allow like '%,$group_name')))) and (r.collect='$ocertify->auth_user' or r.collect like '$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user,%' or r.collect like '%,$ocertify->auth_user'))";
-		if($order_type=='desc'){
-				//收藏倒序sql
-				$bulletin_query_raw=$user_collect." union ".$user_not_collect;
-		}else {
-				//收藏正序sql
-			$bulletin_query_raw=$user_not_collect." union ".$user_collect;
-		}
+  $where_str = 'br.bulletin_id=bb.id and br.bulletin_id= ';
+	if(isset($_GET['bulletin_id'])&&$_GET['bulletin_id']){
+			$where_str.=$_GET['bulletin_id'];
 	}else{
-			$bulletin_query_raw .=  " ".$order_sort." ".$order_type;
+			$where_str.=0;
 	}
+  $where_group_query = tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
+  $where_group_arr = array();
+  while($where_group_res = tep_db_fetch_array($where_group_query)){
+    $where_group_arr[] = $where_group_res['name'];
+  }
+  if($ocertify->npermission<15){
+    $where_str .= " and ( ";
+    $where_str .= " (bb.manager ='".$ocertify->auth_user."' ) ";
+    $where_str .= " or (bb.allow='all' or 
+      (bb.allow = 'id:".$ocertify->auth_user."' or 
+      bb.allow like 'id:".$ocertify->auth_user.",%' or
+      bb.allow like 'id:%,".$ocertify->auth_user.",%' or
+      bb.allow like 'id:%,".$ocertify->auth_user."' 
+      )";
+    if(!empty($where_group_arr)){
+      foreach($where_group_arr as $temp_group){
+        $where_str .= " or bb.allow like 'group:%".$temp_group."%'";
+      }
+    }
+    $where_str .= ")";
+    $where_str .= ")"; 
+  }
+  if($order_sort=='br.collect'){
+    $bulletin_query_raw  = "select br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
+      from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
+			where ".$where_str." order by is_collect ".$order_type;
+  }else if ($order_sort == 'br.file_path'){
+    $bulletin_query_raw  = "select *,if( file_path is null or file_path = '',0,
+      (CHAR_LENGTH(replace(file_path,'|||','||||'))-CHAR_LENGTH(file_path))+1) as file_num
+      from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
+			where ".$where_str." order by file_num ".$order_type;
+  }else{
+    $bulletin_query_raw  = "select br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time 
+      from ". TABLE_BULLETIN_BOARD ." bb,". TABLE_BULLETIN_BOARD_REPLY ." br 
+			where ".$where_str." order by ".$order_sort." ".$order_type;
+  }
+	
   $bulletin_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $bulletin_query_raw, $bulletin_query_numrows);
   $bulletin_query = tep_db_query($bulletin_query_raw);
   if(tep_db_num_rows($bulletin_query) == 0){
@@ -1313,14 +1342,6 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
     $bulletin_table_row[] = array('params' => '', 'text' => $bulletin_data_row);  
   }
   while ($bulletin = tep_db_fetch_array($bulletin_query)) {
-    $even = 'dataTableSecondRow';
-    $odd  = 'dataTableRow';
-    if (isset($nowColor) && $nowColor == $odd) {
-      $nowColor = $even; 
-    } else {
-      $nowColor = $odd; 
-    }
-
     if ($bulletin['id']==$_GET['c_id']) {
       $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="bulletin_'.$bulletin["id"].'" ').'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
     } else {
@@ -1490,7 +1511,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
 	  break;
     }
   }else{
-    $order_sort = 'update_time';
+    $order_sort = 'bb.id';
     $order_type = 'desc'; 
   }
 
