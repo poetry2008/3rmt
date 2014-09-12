@@ -1123,7 +1123,7 @@ require("includes/note_js.php");
 <!-- body_text //-->
 <?php
 	//设置标题
-  $where_str = '1 ';
+  $where_str = '1';
   $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
   $where_group_arr = array();
   while($where_group_res = tep_db_fetch_array($where_group_query)){
@@ -1146,9 +1146,9 @@ require("includes/note_js.php");
     $where_str .= ")";
     $where_str .= ")"; 
   }
-	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where id=".$_GET['bulletin_id'];
+	$header_title_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where bb.id=".$_GET['bulletin_id'];
 	if($ocertify->npermission <15){
-			$header_title_sql.=$where_str;
+			$header_title_sql.= ' and '.$where_str;
 	}
 $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$last_id_sql.=$where_str;
