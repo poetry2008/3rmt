@@ -1338,6 +1338,13 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $bulletin_table_row[] = array('params' => '', 'text' => $bulletin_data_row);  
   }
   while ($bulletin = tep_db_fetch_array($bulletin_query)) {
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
     if ($bulletin['id']==$_GET['c_id']) {
       $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="bulletin_'.$bulletin["id"].'" ').'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
     } else {
