@@ -1465,9 +1465,9 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
     $where_str .= " (bb.manager ='".$ocertify->auth_user."' ) ";
     $where_str .= " or (bb.allow='all' or 
       (bb.allow = 'id:".$ocertify->auth_user."' 
-      bb.allow like 'id:".$ocertify->auth_user.",%' 
-      bb.allow like 'id:%,".$ocertify->auth_user.",%' 
-      bb.allow like 'id:%,".$ocertify->auth_user."' 
+      or bb.allow like 'id:".$ocertify->auth_user.",%' 
+      or bb.allow like 'id:%,".$ocertify->auth_user.",%' 
+      or bb.allow like 'id:%,".$ocertify->auth_user."' 
       )";
     if(!empty($where_group_arr)){
       foreach($where_group_arr as $temp_group){
