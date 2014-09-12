@@ -32,10 +32,14 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 if($_POST['select_group'])$allow="group:";
 	 if($_POST['select_id'])$allow="id:";
 	foreach($_POST['selected_staff'] as $value){
-		if(strlen($allow)>6)$allow.=",".$value;
-		else $allow.=$value;
+		if(strlen($allow)>6){
+				$allow.=",".$value;
+		}else{
+				$allow.=$value;
+		}
 	}
 	if($allow=='id:'||$allow=='group:')$allow='all';
+
 	 $manager=$_POST['manager'];
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $icon){
@@ -119,8 +123,11 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 if($_POST['select_group'])$allow="group:";
 	 if($_POST['select_id'])$allow="id:";
 	foreach($_POST['selected_staff'] as $value){
-		if(strlen($allow)>6)$allow.=",".$value;
-		else $allow.=$value;
+		if(strlen($allow)>6){
+				$allow.=",".$value;
+		}else{
+				$allow.=$value;
+		}
 	}
 	 $manager=$_POST['manager'];
 	 $mark="";
@@ -180,8 +187,11 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $title=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $value){
-		 if(strlen($mark)<1)$mark.=$value;
-		 else $mark.=",".$value;
+		 if(strlen($mark)<1){
+				 $mark.=$value;
+		 }else{
+				 $mark.=",".$value;
+		 }
 	 }
 	 $author=$ocertify->auth_user;
 	 $user_info = tep_get_user_info($author);
@@ -317,36 +327,44 @@ if (isset($_GET['action']) and $_GET['action']) {
 		break;
 
 
-      case 'delete':
-		if(isset($_GET['id']))$bulletin_id_list[]=$_GET['id'];
-		else $bulletin_id_list = tep_db_prepare_input($_POST['bulletin_list_id']);
-        $param_str = $_GET['page'];
-        foreach($bulletin_id_list as $id){
-         if($_GET['delete_type']=='show_reply'){
-			 if($ocertify->npermission>=15 || tep_db_num_rows(tep_db_query("select br.id from ".TABLE_BULLETIN_BOARD_REPLY." br,".TABLE_BULLETIN_BOARD." bb where br.id=$id and br.bulletin_id=bb.id and bb.manager='$ocertify->auth_user'"))>=1) {
-			 $reply_number_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id  and content!='deleted'"));
-			 if(tep_db_query("update ".TABLE_BULLETIN_BOARD_REPLY." set file_path='',content='deleted' where  content!='deleted' and id=".$id)){
-				$file_list=explode("|||",$reply_number_row['file_path']);
-				foreach($file_list as $value){
-					@unlink(PATH_BULLETIN_BOARD.$value);
+   case 'delete':
+		if(isset($_GET['id'])){
+				$bulletin_id_list[]=$_GET['id'];
+		}else{
+				$bulletin_id_list = tep_db_prepare_input($_POST['bulletin_list_id']);
+		}
+    $param_str = $_GET['page'];
+    foreach($bulletin_id_list as $id){
+			if($_GET['delete_type']=='show_reply'){
+				if($ocertify->npermission>=15 || 
+								tep_db_num_rows(tep_db_query("select br.id from ".TABLE_BULLETIN_BOARD_REPLY." br,".TABLE_BULLETIN_BOARD." bb where br.id=$id and br.bulletin_id=bb.id and bb.manager='$ocertify->auth_user'"))>=1) {
+						$reply_number_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id  and content!='deleted'"));
+						if(tep_db_query("update ".TABLE_BULLETIN_BOARD_REPLY." set file_path='',content='deleted' where  content!='deleted' and id=".$id)){
+								$file_list=explode("|||",$reply_number_row['file_path']);
+								foreach($file_list as $value){
+										@unlink(PATH_BULLETIN_BOARD.$value);
+								}
+								$bulletin_id=$reply_number_row['bulletin_id'];
+								$_GET['bulletin_id']=$bulletin_id;
+								tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number-1 where id=$bulletin_id");
+								tep_db_query("delete from ".TABLE_NOTICE." where from_notice=$id and type=2");
+						}
 				}
-				$bulletin_id=$reply_number_row['bulletin_id'];
-				$_GET['bulletin_id']=$bulletin_id;
-				tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number-1 where id=$bulletin_id");
-				tep_db_query("delete from ".TABLE_NOTICE." where from_notice=$id and type=2");
-				 }
-			}
+		 }else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id and  manager='$ocertify->auth_user'"))>0|| 
+						 $ocertify->npermission>=15 ){
+				 tep_db_query("delete from ".TABLE_BULLETIN_BOARD." where id=".$id);
+				 tep_db_query("delete from notice where (from_notice=$id and type=1) or (from_notice in (select id from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=$id) and type=2)");
+				 tep_db_query("delete from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=".$id);
 		 }
-		 else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id and (add_user='$ocertify->auth_user' or manager='$ocertify->auth_user')"))>0|| $ocertify->npermission>=15 ){
-			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD." where id=".$id);
-			 tep_db_query("delete from notice where (from_notice=$id and type=1) or (from_notice in (select id from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=$id) and type=2)");
-			 tep_db_query("delete from ".TABLE_BULLETIN_BOARD_REPLY." where bulletin_id=".$id);
-		 }
-        }
-        if($_GET['delete_type']=='show_reply')tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'action=show_reply&bulletin_id='.$_GET['bulletin_id'].'&page='.$param_str));
-		else tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'page='.$param_str));
-        break;
-    }
+		}
+		if($_GET['delete_type']=='show_reply'){
+				tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'action=show_reply&bulletin_id='.$_GET['bulletin_id'].'&page='.$param_str));
+		}else{
+				tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'page='.$param_str));
+		}
+    break;
+
+		}
   }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -1091,10 +1109,15 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
 	}else {
 			$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 	}
-		if($next_id>0&&tep_db_num_rows(tep_db_query($next_id_sql." and id<=".$next_id))!=0)$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
-		else $header_title_html.='&nbsp&nbsp&nbsp&nbsp';
+		if($next_id>0&&tep_db_num_rows(tep_db_query($next_id_sql." and id<=".$next_id))!=0){
+				$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
+		}else{
+				$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
+		}
 		$header_title_html.=$header_content.'';
-	}else $header_title_html=TEXT_BULLETIN_BOARD;
+	}else{
+		$header_title_html=TEXT_BULLETIN_BOARD;
+	}
 ?>
     <td width="100%" valign="top"><div class="box_warp"><?php echo $notes;?><div class="compatible"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
@@ -1456,7 +1479,9 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
 			}else{
 					$bulletin_query_raw=$user_not_collect." union ".$user_collect;
 			}
-  }else  $bulletin_query_raw .=  "  order by ".$order_sort." ".$order_type;
+  }else{
+			$bulletin_query_raw .=  "  order by ".$order_sort." ".$order_type;
+	}
 
   $bulletin_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $bulletin_query_raw, $bulletin_query_numrows);
   $bulletin_query = tep_db_query($bulletin_query_raw);
@@ -1632,8 +1657,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
 					if($_GET['action']=='show_reply'){
 						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
 						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN_REPLY,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
-					}
-					else{
+					}else{
 						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
 						echo '<a href="javascript:void(0);" onclick="create_bulletin(this);">' .tep_html_element_button(TEXT_CREATE_BULLETIN,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
 					}?></div></td>
