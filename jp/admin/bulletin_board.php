@@ -1040,9 +1040,12 @@ function reply_bulletin(obj,id,bulletin_id){
       }
       $('#show_popup_info').show(); 
       $('#show_popup_info').css('z-index', data_info_array[1]); 
-      o_submit_single = true;
+      o_submit_single = true; 
     }
   }); 
+  if(document.getElementById("old_contents")){
+    document.getElementById("old_contents").style.height = document.getElementById("old_contents").scrollHeight < 163 ? 163+"px" : document.getElementById("old_contents").scrollHeight+"px";
+  }
 }
 
 function delete_file(id,file_name){

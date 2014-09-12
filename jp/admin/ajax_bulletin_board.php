@@ -465,7 +465,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $old_content=$bulletin_info['content'];
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
- 	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="  background:#CCCCCC; width:100%;" class="textarea_width"  rows="10" id="old_contents" name="old_content" readonly="readonly">'.$old_content.'</textarea>';
+ 	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="overflow-y:hidden;width:100%;height:163px;background:#CCCCCC;" class="textarea_width" id="old_contents" name="old_content" readonly="readonly">'.$old_content.'</textarea>';
 	 $bulletin_content_row_text[] = array('params'=>'width="70%"','text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $mark_array = explode(',',$bulletin_info['mark']);
