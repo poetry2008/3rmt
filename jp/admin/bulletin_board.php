@@ -65,6 +65,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'collect' => $collect,
 		'reply_number' => $reply_number, 
 	    'title' => $title,
+		'file_path' => $file_path,
 		'add_time'=> 'now()',
 		'update_time'=> 'now()',
 	    'add_user' => $update_user,
