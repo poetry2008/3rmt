@@ -1313,20 +1313,20 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $where_str .= ")"; 
   }
   if($order_sort=='br.collect'){
-    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
+    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by is_collect ".$order_type;
   }else if ($order_sort == 'br.file_path'){
-    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,if( file_path is null or file_path = '',0,
+    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if( file_path is null or file_path = '',0,
       (CHAR_LENGTH(replace(file_path,'|||','||||'))-CHAR_LENGTH(file_path))+1) as file_num
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by file_num ".$order_type;
   }else if ($order_sort==' u.name'){
-    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,if(u.userid = null or u.userid is null,br.update_user,u.name) as real_name 
+    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(u.userid = null or u.userid is null,br.update_user,u.name) as real_name 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br left join " .TABLE_USERS. " u ON
       br.update_user=u.userid where ".$where_str." order by real_name ".$order_type;
   }else{
-    $bulletin_query_raw  = "select br.id,br.bulletin_id,br.collect,br.content,br.file_path,br.update_user,br.update_time 
+    $bulletin_query_raw  = "select br.id,br.bulletin_id,br.collect,br.content,br.file_path,br.update_user,bb.manager manager,br.update_time 
       from ". TABLE_BULLETIN_BOARD ." bb,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by ".$order_sort." ".$order_type;
   }
