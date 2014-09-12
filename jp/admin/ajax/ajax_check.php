@@ -230,7 +230,8 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 		$messages_header_all[] = $new_messages;
 	}
 	//bulletin_board 消息
-	$notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$ocertify->auth_user."'"; 
+  $user_info =tep_get_user_info($ocertify->auth_user); 
+	$notice_order_sql = "select n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted from ".TABLE_NOTICE." n,".TABLE_ALARM." a where n.from_notice=a.alarm_id and n.type = '0' and n.is_show='1' and a.alarm_flag='0' and n.user = '".$user_info['name']."'"; 
 
 	$notice_micro_sql = "select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,bb.mark icon,bb.id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb where n.from_notice=bb.id and n.type = '1' and n.is_show='1' union select n.type type,n.id,n.type,n.title,n.set_time,n.from_notice,n.user,n.created_at,n.is_show,n.deleted,bb.allow to_users,bb.manager from_users,br.mark icon,br.bulletin_id bb_id from ".TABLE_NOTICE." n,".TABLE_BULLETIN_BOARD." bb,".TABLE_BULLETIN_BOARD_REPLY." br where n.from_notice=br.id and n.type = '2' and n.is_show='1' and bb.id=br.bulletin_id"; 
 

@@ -99,6 +99,9 @@ function delete_header_messages_all(){
 	}
    }
 }
+
+
+var timestamp =Date.parse(new Date());
 function check_header_messages(){
 	var messages_num = 0;
 	$.post(
@@ -111,6 +114,12 @@ function check_header_messages(){
 			$('#show_all_messages_notice').children().remove();
 			if(data != '0'){
 				$.each(eval(data), function(){
+					var message_time = Date.parse(this.time);
+					if(message_time > timestamp){
+						var bgcolor = '#FFFF33';
+					}else{
+						var bgcolor = '#FFCC00';
+					}
 				var img_mark = '';
                                 if(this.mark){
 				$.each(this['mark'], function(){
@@ -120,8 +129,8 @@ function check_header_messages(){
 					if(img_mark !='')img_mark+='&nbsp&nbsp';
 					var str_html='';
 					if(messages_num == 0){
-						if(this['type']=='messages')str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td  width="80px" id="messages_head"><img src="images/icons/messages.png"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
-				else str_html+='<table style="background:#FFCC00" value='+this['id']+'  width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td  width="80px" id="messages_head">'+this['title']+'</td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
+						if(this['type']=='messages')str_html+='<table style="background:'+bgcolor+'" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:'+bgcolor+'"><td  width="80px" id="messages_head"><img src="images/icons/messages.png"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
+				else str_html+='<table style="background:'+bgcolor+'" value='+this['id']+'  width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:'+bgcolor+'"><td  width="80px" id="messages_head">'+this['title']+'</td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
 				$('#show_messages_notice').append(str_html);
 				if(play_flag == true){
 					switch(this['type']){
@@ -133,8 +142,8 @@ function check_header_messages(){
                     notice_audio.play();
                 }
 					}else{
-					if(this['type']=='messages')str_html+='<table style="background:#FFCC00" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td width="80px"><img src="images/icons/messages.png"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
-				else str_html+='<table style="background:#FFCC00" value='+this['id']+' width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:#FFCC00"><td width="80px">'+this['title']+'</td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
+					if(this['type']=='messages')str_html+='<table style="background:'+bgcolor+'" value='+this['id']+' name="messages_notice" width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:'+bgcolor+'"><td width="80px"><img src="images/icons/messages.png"></td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+'<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;" href="messages.php?id='+this['id']+'&page='+this['page']+'">'+this['content']+'</a></td><td width="50px" align="right"><a onclick="delete_header_messages('+this['id']+')" href="javascript:void(0);"><img alt="close" src="images/icons/bbs_del_one.png"></a></td></tr></table>';
+				else str_html+='<table style="background:'+bgcolor+'" value='+this['id']+' width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="26px" style="background:'+bgcolor+'"><td width="80px">'+this['title']+'</td><td width="136px">'+this['time']+'</td><td style="padding:0 0 0 6px">'+img_mark+''+this['content']+'</td><td width="50px" align="right">'+this['delete']+'</td></tr></table>';
 					$('#show_all_messages_notice').append(str_html);
 					}
 					messages_num++;
