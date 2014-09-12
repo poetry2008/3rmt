@@ -101,7 +101,7 @@ function delete_header_messages_all(){
 }
 
 
-var timestamp =Date.parse(new Date());
+var timestamp = <?php echo time();?>;
 function check_header_messages(){
 	var messages_num = 0;
 	$.post(
@@ -114,8 +114,7 @@ function check_header_messages(){
 			$('#show_all_messages_notice').children().remove();
 			if(data != '0'){
 				$.each(eval(data), function(){
-					var message_time = Date.parse(this.time);
-					if(message_time > timestamp){
+					if(parseInt(this.timestamp) > parseInt(timestamp)){
 						var bgcolor = '#FFFF33';
 					}else{
 						var bgcolor = '#FFCC00';

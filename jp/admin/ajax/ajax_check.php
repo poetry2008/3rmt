@@ -202,6 +202,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
             }
           }
                 $new_messages['time'] = str_replace("-","/",substr($new_messages['time'],0,19));
+                $new_messages['timestamp'] = strtotime($new_messages['time']);
                 //针对返信内容处理
                 $contents_text = $new_messages['content'];
                 $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text);
@@ -345,6 +346,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
         $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
       }
       $new_header['time']=substr(str_replace("-","/",$notice_list['created_at']),0,19);
+      $new_header['timestamp'] = strtotime($notice_list['created_at']);
 
       if(in_array($notice_list['id'],$notice_id_array)){
 		  $new_header['mark']=$memo_id_array[$notice_list['id']];
