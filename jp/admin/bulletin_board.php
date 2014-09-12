@@ -1412,35 +1412,39 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
     switch($_GET['order_sort']){
 
     case 'mark':
-      $order_sort = 'mark';
+      $order_sort = 'bb.mark';
       $order_type = $_GET['order_type'];
       break;
     case 'content':
-      $order_sort = 'content';
+      $order_sort = 'bb.content';
       $order_type = $_GET['order_type'];
       break;
     case 'manager':
-      $order_sort = 'manager';
+      $order_sort = 'u.name';
       $order_type = $_GET['order_type'];
       break;
     case 'title':
-      $order_sort = 'title';
+      $order_sort = 'bb.title';
       $order_type = $_GET['order_type'];
       break;
     case 'add_user':
-      $order_sort = 'add_user';
+      $order_sort = 'bb.add_user';
       $order_type = $_GET['order_type'];
       break;
     case 'collect':
-      $order_sort = 'collect';
+      $order_sort = 'bb.collect';
+      $order_type = $_GET['order_type'];
+      break;
+    case 'allow':
+      $order_sort = 'bb.allow';
       $order_type = $_GET['order_type'];
       break;
     case 'action':
-      $order_sort = 'update_time';
+      $order_sort = 'bb.update_time';
       $order_type = $_GET['order_type'];
       break;
     case 'add_file':
-      $order_sort = 'file_path';
+      $order_sort = 'bb.file_path';
       $order_type = $_GET['order_type'];
 	  break;
     }
@@ -1449,40 +1453,43 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
     $order_type = 'desc'; 
   }
 
-  $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
-  $group_name=$group_raw['name'];
-	
-			if($ocertify->npermission >= 15){
-					//用户为root、admin时都可以查看
-					$bulletin_query_str =' where id>0 ';
-			}else{
-					//用户非root、admin时，只可查看自己作为管理者、作者、阅览者的帖子
-					$bulletin_query_str =" where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or  allow='all' or (
-							allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user')) or (
-							allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))";
-			}
-
-			//发帖页面搜索处理
-		if(isset($_GET['action'])&& $_GET['search_text']){
-			$bulletin_query_str.=" and (content like '%".$search_text."%' or title like '%".$search_text."%')";
-		}
-
-		$bulletin_query_raw = "select * from " . TABLE_BULLETIN_BOARD .$bulletin_query_str;
-
-		if($order_sort=='collect'){
-			//收藏过的用户
-			$user_collect = $bulletin_query_raw."and id in ( select id from ".TABLE_BULLETIN_BOARD." where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or  allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
-			//未收藏过的用户
-			$user_not_collect=$bulletin_query_raw."and id not in ( select id from ".TABLE_BULLETIN_BOARD." where (manager='$ocertify->auth_user' or add_user='$ocertify->auth_user' or allow='all' or ((allow like 'id:%' and( allow like '%:$ocertify->auth_user,%' or allow like '%:$ocertify->auth_user' or allow like '%,$ocertify->auth_user,%' or allow like '%,$ocertify->auth_user') ) or (allow like 'group:%' and (allow like '%:$group_name,%' or allow like '%:$group_name' or allow like '%,$group_name,%' or allow like '%,$group_name')))) and (collect='$ocertify->auth_user' or collect like '$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user,%' or collect like '%,$ocertify->auth_user'))";
-  
-			if($order_type=='desc'){
-					$bulletin_query_raw=$user_collect." union ".$user_not_collect;
-			}else{
-					$bulletin_query_raw=$user_not_collect." union ".$user_collect;
-			}
+  $where_str = '1 ';
+  $where_group_query = tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
+  $where_group_arr = array();
+  while($where_group_res = tep_db_fetch_array($where_group_query)){
+    $where_group_arr[] = $where_group_res['name'];
+  }
+  if($ocertify->npermission<15){
+    $where_str .= " and ( ";
+    $where_str .= " (bb.manager ='".$ocertify->auth_user."' ) ";
+    $where_str .= " or (bb.allow='all' or bb.allow like 'id:%".$ocertify->auth_user."%' ";
+    if(!empty($where_group_arr)){
+      foreach($where_group_arr as $temp_group){
+        $where_str .= " or bb.allow like 'group:%".$temp_group."%'";
+      }
+    }
+    $where_str .= ")";
+    $where_str .= ")"; 
+  }
+  if($order_sort=='bb.collect'){
+    $bulletin_query_raw  = "select *,if(bb.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by is_collect ".$order_type;
+  }else if ($order_sort=='u.name'){
+    $bulletin_query_raw  = "select *,if(u.userid = null or u.userid is null,bb.manager,u.name) as real_name 
+      from ". TABLE_BULLETIN_BOARD ." bb left join " .TABLE_USERS. " u ON
+      bb.manager=u.userid where ".$where_str." order by real_name ".$order_type;
+  }else if ($order_sort == 'bb.allow'){
+    $bulletin_query_raw  = "select *,if(bb.allow!='all',(if(bb.allow like
+      'id:%',substring(bb.allow,4),substring(bb.allow,7))),bb.allow) as real_allow 
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by real_allow ".$order_type;
+  }else if ($order_sort == 'bb.file_path'){
+    $bulletin_query_raw  = "select *,if( file_path is null or file_path = '',0,
+      (CHAR_LENGTH(replace(file_path,'|||','||||'))-CHAR_LENGTH(file_path))+1) as file_num
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by file_num ".$order_type;
   }else{
-			$bulletin_query_raw .=  "  order by ".$order_sort." ".$order_type;
-	}
+    $bulletin_query_raw  = "select * 
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by ".$order_sort." ".$order_type;
+  }
 
   $bulletin_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $bulletin_query_raw, $bulletin_query_numrows);
   $bulletin_query = tep_db_query($bulletin_query_raw);
