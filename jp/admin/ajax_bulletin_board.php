@@ -64,11 +64,13 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-         $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style=" width:80%;" class="textarea_width" rows="1" id="bulletin_title" name="title"></textarea>';
-	 $bulletin_content_row_from[] = array('params'=>'width="70%"
-             style="color:#FF0000;"','text'=>$title_input.' * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
-	 $bulletin_content_row_from[] = array('params'=>'width="10%"','text'=>'');
+         $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;"  style="width:100%; padding-right: 0px;"  class="textarea_width" rows="1" id="bulletin_title" name="title"></textarea>';
+	 $bulletin_content_row_from[] = array('params'=>'width="60%"','text'=>$title_input.'<td align="top" style="color:#FF0000;"> * '.TEXT_MUST_WRITE.'</td>');
+	 //请输入的隐藏框
+	 $bulletin_content_hide_text[] = array('text'=>'');
+	 $bulletin_content_hide_text[] = array('text'=>'<div id="popup_title" style="display:none;color:#FF0000;" align="">'.TEXT_WARNING_EMPTY.'</div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_hide_text);
 	 $bulletin_content_row_manager = array();
 	 $bulletin_content_row_manager [] = array('text'=>"From(".TEXT_MANAGER.")");
 	 $sql_for_all_users = 'select userid, name,email from users where status=1 order by name asc';
@@ -88,13 +90,13 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$user_id."'"))>=1)continue;
 		 $option_html.='<option name="manager" value="'.$user_id.'">'.$name.'</option>';
 	 }
-	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager">'.$option_html.'</select>');
+	 $bulletin_content_row_manager [] = array('params' => 'colspan="2"','text'=>'<select name="manager">'.$option_html.'</select>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
 	 
 	 //To
 	 $bulletin_content_row_allow = array();
 	 $bulletin_content_row_allow [] =array('text'=>TEXT_TO_BODY);
-	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input type="radio" value="all" onclick="select_allow(this,0)" checked="true" name="select_all" id="select_all_radio"><label for="select_all_radio">ALL</label></td><td><input type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)"><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label></td><td><input type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label></td></tr></table>');
+	 $bulletin_content_row_allow [] =array('params' => 'colspan="2"','text'=>'<input type="radio" value="all" onclick="select_allow(this,0)" checked="true" name="select_all" id="select_all_radio"><label for="select_all_radio">ALL</label><input type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)"><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label><input type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label>');
 	 $bulletin_content_row_allow [] =array('text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
 	 $users_list_html='';
@@ -154,13 +156,13 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$users_icon .= '</ul>';
 	$bulletin_content_row_mark = array();
 	$bulletin_content_row_mark[] = array('text'=> TEXT_MARK);
-	$bulletin_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
+	$bulletin_content_row_mark[] = array('params' => 'colspan="2"','text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_BULLETIN_EDIT_CONTENT);
- 	$bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style=" width:80%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><br /><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
+ 	$bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style=" width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><br /><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
-	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
+	 $bulletin_content_table[] = array('params' => 'colspan="2"', 'text'=> $bulletin_content_row_text);
 	 $bulletin_content_row_must_write = array();
 	 $bulletin_content_row_must_write[] = array('text'=> '');
 	 $bulletin_content_row_must_write[] = array('text'=> '<div id="bulletin_must_write" style="display: none;"><span style="color:#ff0000;"> '.CONTENT_MUST_WRITE.'</span></div>');
@@ -213,9 +215,15 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-         $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' style=" width:80%;" class="textarea_width" rows="1" id="bulletin_title" name="title">'.$bulletin_info['title'].'</textarea>';
-	 $bulletin_content_row_from[] = array('params'=>'width="80%" style="color:#FF0000;"','text'=>$title_input.' * '.TEXT_MUST_WRITE.'<br /><div id="popup_title" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>');
+     $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' style=" width:100%; padding-right: 0px;" class="textarea_width" rows="1" id="bulletin_title" name="title">'.$bulletin_info['title'].'</textarea>';
+	 $bulletin_content_row_from[] = array('params'=>'width="60%" ','text'=>$title_input.'<td style="color:#FF0000;" align="top"> * '.TEXT_MUST_WRITE.'</td>');
+
+	 //请输入的隐藏框
+	 $bulletin_content_hide_text[] = array('text'=>'');
+	 $bulletin_content_hide_text[] = array('text'=>'<div id="popup_title" style="display:none;color:#FF0000;" align="">'.TEXT_WARNING_EMPTY.'</div>');
+
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_from);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_hide_text);
 	 $bulletin_content_row_manager = array();
 	 $bulletin_content_row_manager [] = array('text'=>TEXT_MANAGER);
 	 $sql_for_all_users = 'select userid, name,email from users where status=1 order by name asc';
@@ -256,13 +264,13 @@ if (isset($_GET['action']) and $_GET['action']) {
            }
            $select_str .= '>'.$name.'</option>';
          }
-         $bulletin_content_row_manager [] = array('text'=>$select_str);
+         $bulletin_content_row_manager [] = array('params'=>'colspan="2"','text'=>$select_str);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
 	 
 	 //To
 	 $bulletin_content_row_allow = array();
 	 $bulletin_content_row_allow [] =array('text'=>TEXT_TO_BODY);
-	 $bulletin_content_row_allow [] =array('text'=>'<table width="100%"><tr><td><input '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').'type="radio" value="all" onclick="select_allow(this,0)" name="select_all" id="select_all_radio" ><label for="select_all_radio">ALL</label><input '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)" ><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label><input '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label></td></tr></table>');
+	 $bulletin_content_row_allow [] =array('params'=>'colspan="2"','text'=>'<table width="100%"><tr><td><input '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').'type="radio" value="all" onclick="select_allow(this,0)" name="select_all" id="select_all_radio" ><label for="select_all_radio">ALL</label><input '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' type="radio" values="group" name="select_group" id="select_group_radio"  onclick="select_allow(this,1)" ><label for="select_group_radio">'.TEXT_GROUP_SELECT.'</label><input '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' type="radio" value="id" onclick="select_allow(this,2)" name="select_id" id="select_id_radio"><label for="select_id_radio">'.TEXT_SELECT_ID.'</label></td></tr></table>');
 	 $bulletin_content_row_allow [] =array('text'=>'');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
 	 $users_list_html='';
@@ -336,7 +344,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$users_icon .= '</ul>';
 	$bulletin_content_row_mark = array();
 	$bulletin_content_row_mark[] = array('text'=> TEXT_MARK);
-	$bulletin_content_row_mark[] = array('text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
+	$bulletin_content_row_mark[] = array('params'=>'colspan="2"','text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_BULLETIN_EDIT_CONTENT);
@@ -379,7 +387,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 			 $add_user=TEXT_UNSET_DATA;
 	 }
 	 $bulletin_content_row_add_user[] = array('text'=>TEXT_AUTHOR."    ".$add_user);
-	 $bulletin_content_row_add_user[] = array('text'=>TEXT_DONE_TIME.'    '.$bulletin_info['add_time']);
+	 $bulletin_content_row_add_user[] = array('params'=>'colspan="2"','text'=>TEXT_DONE_TIME.'    '.$bulletin_info['add_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_add_user);
 
 	 $bulletin_content_row_update=array();
@@ -395,7 +403,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 			 $update_user=TEXT_UNSET_DATA;
 	 }
 	 $bulletin_content_row_update[] = array('text'=>TEXT_UPDATE_AUTHOR."    ".$update_user);
-	 $bulletin_content_row_update[] = array('text'=>TEXT_DATE_UPDATE.'    '.$bulletin_info['update_time']);
+	 $bulletin_content_row_update[] = array('params'=>'colspan="2"','text'=>TEXT_DATE_UPDATE.'    '.$bulletin_info['update_time']);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_update);
 	 if($ocertify->npermission>=15||$user==$bulletin_info['manager'])$delete_button_html='<input type="button" value="'.TEXT_RESET.'"onclick="delete_bulletin('.$bulletin_info["id"].',0)">';
 	 $bulletin_content_row_submit[] = array('params' => 'colspan="2" align="center"','text'=> '<input type="submit" id="button_save" '.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').'  value="'.IMAGE_SAVE.'">'.$delete_button_html);

@@ -1260,18 +1260,6 @@ if($ocertify->npermission <15){
       $order_sort = ' br.content';
       $order_type = $_GET['order_type'];
       break;
-    case 'manager':
-      $order_sort = ' br.manager';
-      $order_type = $_GET['order_type'];
-      break;
-    case 'title':
-      $order_sort = ' br.title';
-      $order_type = $_GET['order_type'];
-      break;
-    case 'add_user':
-      $order_sort = ' br.add_user';
-      $order_type = $_GET['order_type'];
-      break;
     case 'collect':
       $order_sort = ' br.collect';
       $order_type = $_GET['order_type'];
@@ -1323,7 +1311,7 @@ if($ocertify->npermission <15){
     $where_str .= ")"; 
   }
   if($order_sort=='br.collect'){
-    $bulletin_query_raw  = "select br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
+    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by is_collect ".$order_type;
   }else if ($order_sort == 'br.file_path'){
@@ -1332,7 +1320,7 @@ if($ocertify->npermission <15){
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by file_num ".$order_type;
   }else{
-    $bulletin_query_raw  = "select br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time 
+    $bulletin_query_raw  = "select br.id,br.bulletin_id,br.collect,br.content,br.file_path,br.update_user,br.update_time 
       from ". TABLE_BULLETIN_BOARD ." bb,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by ".$order_sort." ".$order_type;
   }
@@ -1490,10 +1478,6 @@ if($ocertify->npermission <15){
       break;
     case 'title':
       $order_sort = 'bb.title';
-      $order_type = $_GET['order_type'];
-      break;
-    case 'add_user':
-      $order_sort = 'bb.add_user';
       $order_type = $_GET['order_type'];
       break;
     case 'collect':
