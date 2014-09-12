@@ -101,7 +101,14 @@ function delete_header_messages_all(){
 }
 
 
-var timestamp =Date.parse(new Date());
+var timestamp = <?php echo time();?>;
+function get_unix_time(dateStr)
+{
+    var newstr = dateStr.replace(/\//g,'/'); 
+    var date =  new Date(newstr); 
+    var time_str = date.getTime().toString();
+    return time_str.substr(0, 10);
+}
 function check_header_messages(){
 	var messages_num = 0;
 	$.post(
@@ -114,8 +121,8 @@ function check_header_messages(){
 			$('#show_all_messages_notice').children().remove();
 			if(data != '0'){
 				$.each(eval(data), function(){
-					var message_time = Date.parse(this.time);
-					if(message_time > timestamp){
+					var message_time = get_unix_time(this.time);
+					if(parseInt(message_time) > parseInt(timestamp)){
 						var bgcolor = '#FFFF33';
 					}else{
 						var bgcolor = '#FFCC00';
