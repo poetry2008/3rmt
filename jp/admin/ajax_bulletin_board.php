@@ -77,12 +77,18 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
 		 $user_name[$row['userid']]=$row['name'];
 	 }
-	 $option_html='<option >--</option>';
+	 if($ocertify->npermission>=15){
+			$option_html='<option >--</option>';
+	 }else{
+			$user_info=tep_get_user_info($ocertify->auth_user);
+			$option_html='<option name="manager" value="'.$ocertify->auth_user.'">'.$user_info['name'].'</option>';
+	 }
 	 foreach($user_name as $user_id=>$name){
+		 if($user_id==$ocertify->auth_user)continue;
 		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$user_id."'"))>=1)continue;
 		 $option_html.='<option name="manager" value='.$user_id.'>'.$name.'</option>';
 	 }
-	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="--">'.$option_html.'</select>');
+	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager">'.$option_html.'</select>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
 	 
 	 //To
