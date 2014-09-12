@@ -77,12 +77,18 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 while($row=tep_db_fetch_array($sql_for_all_users_query)){
 		 $user_name[$row['userid']]=$row['name'];
 	 }
-	 $option_html='<option >--</option>';
-	 foreach($user_name as $user_id=>$name){
-		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$user_id."'"))>=1)continue;
-		 $option_html.='<option name="manager" value='.$user_id.'>'.$name.'</option>';
+	 if($ocertify->npermission>=15){
+			$option_html='<option >--</option>';
+	 }else{
+			$user_info=tep_get_user_info($ocertify->auth_user);
+			$option_html='<option name="manager" value="'.$ocertify->auth_user.'">'.$user_info['name'].'</option>';
 	 }
-	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager" value ="--">'.$option_html.'</select>');
+	 foreach($user_name as $user_id=>$name){
+		 if($user_id==$ocertify->auth_user)continue;
+		 if(tep_db_num_rows(tep_db_query("select * from permissions where permission>=15 and userid='".$user_id."'"))>=1)continue;
+		 $option_html.='<option name="manager" value="'.$user_id.'">'.$name.'</option>';
+	 }
+	 $bulletin_content_row_manager [] = array('text'=>'<select name="manager">'.$option_html.'</select>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
 	 
 	 //To
@@ -93,7 +99,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_allow);
 	 $users_list_html='';
 	 foreach($user_name as $user_id=>$name){
-		 $users_list_html.='<div value='.$name.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+		 $users_list_html.='<div value="'.$name.'" onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="hidden" name="all_staff" value="'.$user_id.'">
 			 '.$name.'
 			 </div>';
@@ -244,7 +250,7 @@ if (isset($_GET['action']) and $_GET['action']) {
                continue;
              }
            }
-           $select_str .= '<option name="manager" value='.$user_id;
+           $select_str .= '<option name="manager" value="'.$user_id.'"';
            if($user_id==$bulletin_info['manager']){
              $select_str .= ' selected ';
            }
@@ -264,12 +270,12 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $users_select=explode(',',$users_select[1]);
 	 foreach($user_name as $user_id=>$name){
 		 if(in_array($user_id,$users_select)){
-				 $users_select_html.='<div value='.$name.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+				 $users_select_html.='<div value="'.$name.'" onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="hidden"  name="selected_staff[]" value="'.$user_id.'">
 			 '.$name.'
 			 </div>';
 		 }else{
-				 $users_list_html.='<div value='.$name.' onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
+				 $users_list_html.='<div value="'.$name.'" onclick="checkbox_event(this,event)" style="cursor: pointer; -moz-user-select: none; background: none repeat scroll 0% 0% rgb(255, 255, 255); color: black;">
 			 <input type="checkbox" hidden="" name="all_staff" value="'.$user_id.'">
 			 '.$name.'
 			 </div>';
