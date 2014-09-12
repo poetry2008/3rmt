@@ -6,6 +6,20 @@
    */
   require('includes/application_top.php');
   require(DIR_FS_ADMIN . '/classes/notice_box.php');
+  //获取系统允许上传文件的大小
+  $php_upload_max_filesize= size_to_b(ini_get('upload_max_filesize'));
+  $php_post_max_size = size_to_b(ini_get('post_max_size'));
+  $php_memmory_list = size_to_b(ini_get('memory_limit'));
+  $min_size_str = ini_get('memory_limit'); 
+  $min_size = $php_memmory_list;
+  if($min_size > $php_post_max_size){
+    $min_size = $php_post_max_size;
+    $min_size_str = ini_get('post_max_size');
+  }
+  if($min_size > $php_upload_max_filesize){
+    $min_size = $php_upload_max_filesize;
+    $min_size_str = ini_get('upload_max_filesize');
+  }
   //获取当前用户的网站管理权限
   $sites_id_sql = tep_db_query("select site_permission from ".TABLE_PERMISSIONS." where userid= '".$ocertify->auth_user."'");
   $userslist= tep_db_fetch_array($sites_id_sql);
@@ -428,6 +442,28 @@ function resize_option_page()
   box_warp_height = $(".box_warp").height(); 
 }
 
+<?php //上传文件大小验证?>
+function save_check(){
+
+  var all_size = 0;
+  var file_size = 0;
+  $("input[name='bulletin_file[]']").each(
+    function(){
+      if($(this).val()){
+        t= this.files;
+        if(t){
+          file_size = t[0].size; 
+        }
+        all_size+= file_size; 
+      }
+    }
+  );
+  if(all_size > <?php echo $min_size;?>){
+      alert('<?php echo sprintf(TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT,$min_size_str);?>');
+      return false;
+  }
+  return true;
+} 
 <?php //删除动作?>
 function select_bulletin_change(value,bulletin_list_id,c_permission)
 {
@@ -1035,8 +1071,12 @@ function check_value(type){
 					!document.getElementById("select_all_radio").checked ){
 		document.getElementById("popup_user_select").style.display="inline";
 		flag=1;
-	}
-	if(flag==1)return false;
+        }
+        if(!save_check()){
+
+          flag=1;
+        }
+        if(flag==1)return false; 
 	else return true;
 }
 
