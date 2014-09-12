@@ -1151,9 +1151,7 @@ require("includes/note_js.php");
 			$header_title_sql.=$where_str;
 	}
 $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
-if($ocertify->npermission <15){
 		$last_id_sql.=$where_str;
-}
 		$next_id_sql=$last_id_sql;
 	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
 		
