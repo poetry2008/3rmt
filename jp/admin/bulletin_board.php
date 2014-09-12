@@ -1617,9 +1617,13 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
                           'params' => 'class="dataTableContent"', 
                           'text' =>$add_file_html
                         );
+    if($bulletin['manager']!=''){
     $user_info = tep_get_user_info($bulletin['manager']);
     $user_name = $user_info['name'];
 	if(!$user_name)$user_name=$bulletin['manager'];
+    }else{
+      $user_name = '--';
+    }
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $user_name
