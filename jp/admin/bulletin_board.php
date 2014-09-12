@@ -1312,6 +1312,9 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $where_str .= ")";
     $where_str .= ")"; 
   }
+		if(isset($_GET['search_text'])&& $_GET['search_text']){
+			$where_str.=" and (content like '%".$search_text."%' or title like '%".$search_text."%')";
+		}
   if($order_sort=='br.collect'){
     $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
@@ -1537,6 +1540,9 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $where_str .= ")";
     $where_str .= ")"; 
   }
+		if(isset($_GET['search_text'])&& $_GET['search_text']){
+			$where_str.=" and (content like '%".$search_text."%' or title like '%".$search_text."%')";
+		}
   if($order_sort=='bb.collect'){
     $bulletin_query_raw  = "select *,if(bb.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by is_collect ".$order_type;
