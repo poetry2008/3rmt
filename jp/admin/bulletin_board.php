@@ -1230,6 +1230,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
     $order_sort = 'order by r.update_time';
     $order_type = 'desc'; 
   }
+
   $group_raw=tep_db_fetch_array(tep_db_query("select name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')"));
   $group_name=$group_raw['name'];
   $bulletin_query_str = 'and r.bulletin_id='.$_GET['bulletin_id'];
@@ -1462,7 +1463,12 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." where id>0 ";
   if($ocertify->npermission<15){
     $where_str .= " and ( ";
     $where_str .= " (bb.manager ='".$ocertify->auth_user."' ) ";
-    $where_str .= " or (bb.allow='all' or bb.allow like 'id:%".$ocertify->auth_user."%' ";
+    $where_str .= " or (bb.allow='all' or 
+      (bb.allow = 'id:".$ocertify->auth_user."' 
+      bb.allow like 'id:".$ocertify->auth_user.",%' 
+      bb.allow like 'id:%,".$ocertify->auth_user.",%' 
+      bb.allow like 'id:%,".$ocertify->auth_user."' 
+      )";
     if(!empty($where_group_arr)){
       foreach($where_group_arr as $temp_group){
         $where_str .= " or bb.allow like 'group:%".$temp_group."%'";
