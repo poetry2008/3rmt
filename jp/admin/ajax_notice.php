@@ -321,6 +321,20 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
             tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$_POST['aid']."'");
      }
   }
+  if($_POST['all_del'] == '1' && $_POST['all_nid'] != '' ){
+    $nid_arr = explode(',',$_POST['all_nid']);
+    foreach($nid_arr as $nid_value){
+      $notice_raw = tep_db_query("select deleted from ".TABLE_NOTICE." where id = '".$nid_value."' and type = '0'");
+      $notice = tep_db_fetch_array($notice_raw);
+      $notice_users_str = ''; 
+      if($notice['deleted'] == ''){
+        $notice_users_str = $ocertify->auth_user; 
+      }else{
+        $notice_users_str = $notice['deleted'].','.$ocertify->auth_user;
+      }
+      tep_db_query("update ".TABLE_NOTICE." set deleted='".$notice_users_str."' where id = '".$nid_value."'");
+    }
+  }
   $notice_raw = tep_db_query("select deleted from ".TABLE_NOTICE." where id = '".$_POST['nid']."' and type = '0'");
   $notice = tep_db_fetch_array($notice_raw);
 

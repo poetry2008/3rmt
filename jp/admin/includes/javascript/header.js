@@ -86,9 +86,21 @@ function delete_notice(all_notice,aid){
 //delete alarm notice
 function delete_alarm_notice(nid, e_type,all_del,aid)
 {
+  all_nid = '';
+  if(all_del==1){
+    var index=1;
+    $('input[name="del_alarm_notice_id[]"]').each(function(){
+        if(index==1){
+          all_nid = $(this).val();
+        }else{
+          all_nid = all_nid+','+$(this).val();
+        }
+        index++;
+    }); 
+  }
   $.ajax({
       url: 'ajax_notice.php?action=delete_alarm',
-      data: {nid:nid,all_del:all_del,aid:aid},
+      data: {nid:nid,all_del:all_del,aid:aid,all_nid:all_nid},
       type: 'POST',
       dataType: 'text',
       async: false,
