@@ -922,22 +922,22 @@ function edit_bulletin(obj,id){
     success: function (data) {
       $('#show_popup_info').html(data); 
       //prev next
-      if($('#bulletin_'+id).prev().attr('id') != '' && $('#bulletin_'+id).prev().attr('id') != null){
-        var bulletin_prev_id = $('#bulletin_'+id).prev().attr('id');
+      if($('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_prev_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
         bulletin_prev_id = bulletin_prev_id.split('_');
 
         if(bulletin_prev_id[0] == 'bulletin' && bulletin_prev_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).prev().attr('id');
+          var bulletin_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_prev" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+bulletin_prev+'</a>&nbsp&nbsp');
         }
       }
-      if($('#bulletin_'+id).next().attr('id') != '' && $('#bulletin_'+id).next().attr('id') != null){
-        var bulletin_next_id = $('#bulletin_'+id).next().attr('id');
+      if($('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_next_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
         bulletin_next_id = bulletin_next_id.split('_');
      
         if(bulletin_next_id[0] == 'bulletin' && bulletin_next_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).next().attr('id');
+          var bulletin_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_next" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+bulletin_next+'&gt</a>&nbsp&nbsp');
         }
@@ -998,22 +998,22 @@ function reply_bulletin(obj,id,bulletin_id){
     success: function (data) {
       $('#show_popup_info').html(data); 
       //prev next
-      if($('#bulletin_'+id).prev().attr('id') != '' && $('#bulletin_'+id).prev().attr('id') != null){
-        var bulletin_prev_id = $('#bulletin_'+id).prev().attr('id');
+      if($('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_prev_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
         bulletin_prev_id = bulletin_prev_id.split('_');
 
         if(bulletin_prev_id[0] == 'bulletin' && bulletin_prev_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).prev().attr('id');
+          var bulletin_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_prev" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+bulletin_prev+'</a>&nbsp&nbsp');
         }
       }
-      if($('#bulletin_'+id).next().attr('id') != '' && $('#bulletin_'+id).next().attr('id') != null){
-        var bulletin_next_id = $('#bulletin_'+id).next().attr('id');
+      if($('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_next_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
         bulletin_next_id = bulletin_next_id.split('_');
      
         if(bulletin_next_id[0] == 'bulletin' && bulletin_next_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).next().attr('id');
+          var bulletin_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_next" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+bulletin_next+'&gt</a>&nbsp&nbsp');
         }
