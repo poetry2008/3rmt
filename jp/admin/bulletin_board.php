@@ -29,6 +29,7 @@
   if(in_array('0',$site_permission_array)||$ocertify->npermission==31){
     $site_permission_flag = true;
   }
+  $param_search = '&search_text='.$_GET['search_text'];
 
 if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
@@ -1163,6 +1164,24 @@ require("includes/note_js.php");
 	}
 $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$last_id_sql.=$where_str;
+
+	if(isset($_GET['search_text'])&& $_GET['search_text']){
+                $show_reply_sql = " select distinct bulletin_id from " .
+                  TABLE_BULLETIN_BOARD_REPLY . " WHERE content like '%".$search_text."%'"; 
+                $show_reply_query = tep_db_query($show_reply_sql);
+                $bulletin_id_search_array = array();
+                while($show_reply_row = tep_db_fetch_array($show_reply_query)){
+                  $bulletin_id_search_array[] = $show_reply_row['bulletin_id'];
+                }
+                array_unique($bulletin_id_search_array);
+                if(!empty($bulletin_id_search_array)){
+                  $bulletin_id_str  = implode(',',$bulletin_id_search_array);
+                  $last_id_sql.=" and ( bb.title like '%".$search_text."%' or  bb.id in (".$bulletin_id_str.") )";
+                }else{
+		  $last_id_sql.=" and bb.title like '%".$search_text."%'";
+                }
+        }
+
 		$next_id_sql=$last_id_sql;
 	if(isset($_GET['bulletin_id']) && $_GET['type']=='show_reply'){
 		
@@ -1178,12 +1197,13 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$next_id=$next_id_row['id'];
 		$header_title_html='';
 		if($last_id&&tep_db_num_rows(tep_db_query($last_id_sql." and id>=".$last_id))!=0){
-					$header_title_html.='<a href="bulletin_board.php?type=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
+					$header_title_html.='<a
+                                          href="bulletin_board.php?type=show_reply&bulletin_id='.$last_id.'&from=last'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
 	}else {
 			$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 	}
 		if($next_id>0&&tep_db_num_rows(tep_db_query($next_id_sql." and id<=".$next_id))!=0){
-				$header_title_html.='<a href="bulletin_board.php?type=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
+				$header_title_html.='<a href="bulletin_board.php?type=show_reply&bulletin_id='.$next_id.'&from=next'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
 		}else{
 				$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 		}
@@ -1571,7 +1591,20 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 
 	//搜索处理
 	if(isset($_GET['search_text'])&& $_GET['search_text']){
-		$where_str.=" and bb.title like '%".$search_text."%'";
+                $show_reply_sql = " select distinct bulletin_id from " .
+                  TABLE_BULLETIN_BOARD_REPLY . " WHERE content like '%".$search_text."%'"; 
+                $show_reply_query = tep_db_query($show_reply_sql);
+                $bulletin_id_search_array = array();
+                while($show_reply_row = tep_db_fetch_array($show_reply_query)){
+                  $bulletin_id_search_array[] = $show_reply_row['bulletin_id'];
+                }
+                array_unique($bulletin_id_search_array);
+                if(!empty($bulletin_id_search_array)){
+                  $bulletin_id_str  = implode(',',$bulletin_id_search_array);
+                  $where_str.=" and ( bb.title like '%".$search_text."%' or  bb.id in (".$bulletin_id_str.") )";
+                }else{
+		  $where_str.=" and bb.title like '%".$search_text."%'";
+                }
 		}
 
 	//排序处理
@@ -1659,7 +1692,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 	$title=$bulletin['title'];
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  width="70%" title="'.$title.'"', 
-                          'text' => '<a href="bulletin_board.php?type=show_reply&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
+                          'text' => '<a href="bulletin_board.php?type=show_reply'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
                         );
 	$add_file_html='';
 	$file_list_arr = explode("|||",$bulletin['file_path']); 
@@ -1725,8 +1758,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     }else{
       $time_str = date('Y/m/d',strtotime($bulletin['update_time']));
     }
-    $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
+    $bulletin_item_info[] = array( 'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $time_str 
                         );
 
@@ -1771,10 +1803,10 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
                   <tr>
                     <td colspan="2" align="right"><div class="td_button"><?php 
 					if($_GET['type']=='show_reply'){
-						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
+						echo '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$param_search).'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
 						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN_REPLY,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
 					}else{
-						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
+						echo '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD).'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
 						echo '<a href="javascript:void(0);" onclick="create_bulletin(this);">' .tep_html_element_button(TEXT_CREATE_BULLETIN,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
 					}?></div></td>
                   </tr>
