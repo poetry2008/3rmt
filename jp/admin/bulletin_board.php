@@ -966,6 +966,9 @@ function edit_bulletin(obj,id){
       o_submit_single = true;
     }
   }); 
+  if(document.getElementById("bulletin_title")){
+    document.getElementById("bulletin_title").style.height = document.getElementById("bulletin_title").scrollHeight < 15 ? 15+"px" : document.getElementById("bulletin_title").scrollHeight+"px";
+  }
 }
 
 
