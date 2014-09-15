@@ -1201,7 +1201,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
 			<td class="pageHeading" align="right">
 			<form method="get" action="bulletin_board.php">
-				<input type="text" id="search_text" name="search_text">
+				<input type="text" id="search_text" name="search_text" value="<?php echo $search_text?$search_text:'';?>">
 				<input type="submit" value="<?php echo HEADING_TITLE_SEARCH;?>">
 				<input type="hidden" name="action" value="search">
 				<input type="hidden" name="bulletin_id" value="<?php echo $_GET['bulletin_id'];?>">
