@@ -217,7 +217,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table = array();
 	 $bulletin_content_row_from = array();
 	 $bulletin_content_row_from[] = array('params'=>'width="20%"','text'=>TEXT_TITLE);
-     $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' style=" width:100%; padding-right: 0px;" class="textarea_width" rows="1" id="bulletin_title" name="title">'.$bulletin_info['title'].'</textarea>';
+     $title_input = '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;"'.((($ocertify->npermission>=15||$user==$bulletin_info['manager'])&& $site_permission_flag)?"":'disabled="disabled"').' style="overflow-y:hidden;width:100%;height:15px;padding-right: 0px;" class="textarea_width" id="bulletin_title" name="title">'.$bulletin_info['title'].'</textarea>';
 	 $bulletin_content_row_from[] = array('params'=>'width="60%" ','text'=>$title_input.'<td style="color:#FF0000;" align="top"> * '.TEXT_MUST_WRITE.'</td>');
 
 	 //请输入的隐藏框
