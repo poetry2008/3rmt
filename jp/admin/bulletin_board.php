@@ -34,6 +34,11 @@ if (isset($_GET['action']) and $_GET['action']) {
     switch ($_GET['action']) {
 /* -----------------------------------------------------
    case 'delete' 删除选中的bulletin 或回复
+	 case 'create_bulletin' 新建告示板
+	 case 'update_bulletin' 修改告示板
+	 case 'search' 搜索处理
+	 case 'create_bulletin_reply' 新建回复
+	 case 'update_bulletin_reply' 跟帖回复
 ------------------------------------------------------*/
 	case 'create_bulletin':
 	 $author=$ocertify->auth_user;
@@ -886,6 +891,7 @@ function select_allow(obj,num){
 	}  
 }
 
+//追加问文件
 function add_email_file(b_id){
   var index = 0;
   var last_id = b_id;
@@ -908,6 +914,7 @@ function file_cancel(obj){
         }
 }
 
+//编辑帖子
 function edit_bulletin(obj,id){
   var tmp =obj;
   obj = obj.parentNode;
@@ -971,7 +978,7 @@ function edit_bulletin(obj,id){
   }
 }
 
-
+//新建回复
 function create_bulletin_reply(obj,id){
   $.ajax({
     url: 'ajax_bulletin_board.php?action=new_bulletin_reply<?php echo "&page=".$_GET['page']."&order_sort=".$_GET['order_sort']."&order_type=".$_GET['order_type'];?>',      
@@ -988,6 +995,8 @@ function create_bulletin_reply(obj,id){
   }); 
 }
 
+
+//跟帖回复
 function reply_bulletin(obj,id,bulletin_id){
   obj = obj.parentNode;
   origin_offset_symbol = 1;
@@ -1061,6 +1070,8 @@ function delete_file(id,file_name){
 	}
 }
 
+
+//提交的参数检查
 function check_value(type){
 	var flag=0;
 	if($("#current_contents").val()==''){
@@ -1085,6 +1096,7 @@ function check_value(type){
 	else return true;
 }
 
+//选中时间
 function bulletin_board_select(id,type){
 	var str='<?php echo FILENAME_BULLETIN_BOARD;?>'+'?';
 	if(type==1)str+='type=show_reply&bulletin_id=<?php echo $_GET["bulletin_id"];?>&';
@@ -1092,7 +1104,7 @@ function bulletin_board_select(id,type){
 	window.location.href=str;
 }
 
-
+//删除告示板 或者回复
 function delete_bulletin(id,type){
 	if(confirm('<?php echo TEXT_BULLETIN_EDIT_CONFIRM; ?>'))
     window.location.href='bulletin_board.php?action=delete&delete_type='+type+'&id='+id+'&bulletin_id=<?php echo $_GET['bulletin_id'];?>';
@@ -1192,7 +1204,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
 			<td class="pageHeading" align="right">
 			<form method="get" action="bulletin_board.php">
-				<input type="text" id="search_text" name="search_text">
+				<input type="text" id="search_text" name="search_text" value="<?php echo $search_text?$search_text:'';?>">
 				<input type="submit" value="<?php echo HEADING_TITLE_SEARCH;?>">
 				<input type="hidden" name="action" value="search">
 				<input type="hidden" name="bulletin_id" value="<?php echo $_GET['bulletin_id'];?>">
@@ -1286,6 +1298,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $order_type = 'desc'; 
   }
 
+	//查询条件
   $where_str = 'br.bulletin_id=bb.id and br.bulletin_id= ';
 	if(isset($_GET['bulletin_id'])&&$_GET['bulletin_id']){
 			$where_str.=$_GET['bulletin_id'];
@@ -1297,6 +1310,8 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
   while($where_group_res = tep_db_fetch_array($where_group_query)){
     $where_group_arr[] = $where_group_res['name'];
   }
+
+	//权限控制
   if($ocertify->npermission<15){
     $where_str .= " and ( ";
     $where_str .= " (bb.manager ='".$ocertify->auth_user."' ) ";
@@ -1314,9 +1329,13 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $where_str .= ")";
     $where_str .= ")"; 
   }
-		if(isset($_GET['search_text'])&& $_GET['search_text']){
-			$where_str.=" and br.content like '%".$search_text."%'";
+
+	//搜索条件
+	if(isset($_GET['search_text'])&& $_GET['search_text']){
+		$where_str.=" and br.content like '%".$search_text."%'";
 		}
+
+	//排序条件
   if($order_sort=='br.collect'){
     $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
@@ -1335,14 +1354,18 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
       from ". TABLE_BULLETIN_BOARD ." bb,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by ".$order_sort." ".$order_type;
   }
+
+
   $bulletin_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $bulletin_query_raw, $bulletin_query_numrows);
   $bulletin_query = tep_db_query($bulletin_query_raw);
+	//列表为空
   if(tep_db_num_rows($bulletin_query) == 0){
     $bulletin_data_row[] = array('align' => 'left','params' => 'colspan="7" nowrap="nowrap"', 'text' => '<font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font>');
                     
     $bulletin_table_row[] = array('params' => '', 'text' => $bulletin_data_row);  
   }
   while ($bulletin = tep_db_fetch_array($bulletin_query)) {
+		//斑马线
     $even = 'dataTableSecondRow';
     $odd  = 'dataTableRow';
     if (isset($nowColor) && $nowColor == $odd) {
@@ -1350,12 +1373,15 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     } else {
       $nowColor = $odd; 
     }
+
+		//选中效果
     if ($bulletin['id']==$_GET['c_id']) {
       $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="bulletin_'.$bulletin["id"].'" ').'class="dataTableRowSelected"  onmouseover="this.style.cursor=\'hand\'"';
     } else {
       $bulletin_item_params = ($bulletin["content"]=='deleted' ? '' : 'id="bulletin_'.$bulletin["id"].'" ').'class="'.$nowColor.'"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
-
+	//不同权限控制：admin、root所有可删除；其它用户，被设置为管理员之后才在相应记录中出现checkbox可选，并有下拉的删除选项
+	//回复中内容为‘deleted’的回复是已经被管理员删除的，前边的checkbox不可选
     $bulletin_item_info = array();  
 	if(($ocertify->npermission <15 && $ocertify->auth_user!=$bulletin['manager'])||$bulletin["content"]=='deleted'||!$site_permission_flag){
 		$select_html='disabled="disabled"';
@@ -1363,6 +1389,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$select_html='';
 		$show_flag=1;
 	}
+
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"', 
                           'text' => '<input type="checkbox" name="bulletin_list_id[]" '.$select_html.' value="'.$bulletin["id"].'">'   
@@ -1518,13 +1545,15 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $order_sort = 'bb.id';
     $order_type = 'desc'; 
   }
-
+	
+	//查询条件
   $where_str = '1 ';
   $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
   $where_group_arr = array();
   while($where_group_res = tep_db_fetch_array($where_group_query)){
     $where_group_arr[] = $where_group_res['name'];
   }
+	//用户权限控制
   if($ocertify->npermission<15){
     $where_str .= " and ( ";
     $where_str .= " (bb.manager ='".$ocertify->auth_user."' ) ";
@@ -1542,9 +1571,13 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $where_str .= ")";
     $where_str .= ")"; 
   }
-		if(isset($_GET['search_text'])&& $_GET['search_text']){
-			$where_str.=" and bb.title like '%".$search_text."%'";
+
+	//搜索处理
+	if(isset($_GET['search_text'])&& $_GET['search_text']){
+		$where_str.=" and bb.title like '%".$search_text."%'";
 		}
+
+	//排序处理
   if($order_sort=='bb.collect'){
     $bulletin_query_raw  = "select *,if(bb.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by is_collect ".$order_type;
@@ -1594,7 +1627,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
       $bulletin_item_params = 'id="bulletin_'.$bulletin['id'].'" class="'.$nowColor.'" valign="top"  onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
     }
 
-		//权限控制：root、admin、管理者 可删除
+		//权限控制：root、admin、管理者 可删除,checkbox 可选；其它用户被设为管理者时checkbox才可选；当有可选的时候下拉框可点击删除
 	if(($ocertify->auth_user!=$bulletin["manager"])&&($ocertify->npermission <15)|| !$site_permission_flag){
 		$select_html='disabled="disabled"';
 	}else{

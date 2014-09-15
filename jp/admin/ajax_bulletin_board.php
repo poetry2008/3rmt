@@ -58,6 +58,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	$heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	$heading[] = array('text' => TEXT_CREATE_BULLETIN);
+
+	//form 表单参数
 	$form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=create_bulletin&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" onsubmit="return check_value(0)" id="form_create_bulletin"'); 
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
  
@@ -88,6 +90,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 			$option_html='<option name="manager" value="'.$ocertify->auth_user.'">'.$user_info['name'].'</option>';
          }
           */
+
+	 //管理者下拉列表
 	 foreach($user_name as $user_id=>$name){
 		 //if($user_id==$ocertify->auth_user)continue;
 		 $option_html.='<option name="manager" value="'.$user_id.'">'.$name.'</option>';
@@ -157,11 +161,14 @@ if (isset($_GET['action']) and $_GET['action']) {
    }
 	$users_icon .= '</ul>';
 	$bulletin_content_row_mark = array();
+
+	//标记
 	$bulletin_content_row_mark[] = array('text'=> TEXT_MARK);
 	$bulletin_content_row_mark[] = array('params' => 'colspan="2"','text'=> $users_icon.'<input type="hidden" id="old_mark_str" value="'.$_GET['mark'].'">');
 	$bulletin_content_table[] = array('text'=> $bulletin_content_row_mark);
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_BULLETIN_EDIT_CONTENT);
+	//输入文本框
  	$bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style=" width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><br /><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('params' => 'colspan="2"', 'text'=> $bulletin_content_row_text);
@@ -170,6 +177,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_row_must_write[] = array('text'=> '<div id="bulletin_must_write" style="display: none;"><span style="color:#ff0000;"> '.CONTENT_MUST_WRITE.'</span></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_must_write);
 	 $bulletin_content_row_addfile = array();
+
+	 //附件
      $bulletin_content_row_addfile[] = array('text'=> TEXT_ADDFILE);
      $bulletin_content_row_addfile[] = array('text'=> '<div id="bulletin_file_boder"><input onfocus="o_submit_single = false;" onblur="o_submit_single = true;" type="file" id="bulletin_file" name="bulletin_file[]"><a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="file_cancel(\'bulletin_file\')">'.DELETE_STAFF.'</a>&nbsp;&nbsp;<a style="color:#0000FF;text-decoration:underline;" href="javascript:void(0)" onclick="add_email_file(\'bulletin_file\')">'.BUTTON_ADD_TEXT.'</a></div>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
@@ -200,6 +209,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $select_type=$users_select[0];
 	 $id_show="none";
 	 $group_show="none";
+	 //设置初始状态
 	 switch($select_type){
 		 case 'all':
 			echo '<script>document.getElementById("select_all_radio").checked=true;</script>';
