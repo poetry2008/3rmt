@@ -379,7 +379,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
       } else {
 		$type_html="";
 		if($memo_type_array[$notice_list['id']]==2){
-			$type_html='action=show_reply&';
+			$type_html='type=show_reply&';
 			$count_row=tep_db_num_rows(tep_db_query("select id from ".TABLE_BULLETIN_BOARD_REPLY." where id>=".$notice_list['from_notice']));
 			$page=ceil($count_row/MAX_DISPLAY_SEARCH_RESULTS);
 			$type_html.='page='.$page.'&c_id='.$notice_list['from_notice'].'&';

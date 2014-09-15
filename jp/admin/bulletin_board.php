@@ -256,7 +256,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 tep_db_perform(TABLE_NOTICE,$sql_add_notice);
 		$page=isset($_GET['page'])?'page='.$_GET['page']:1;
 		$parm=isset($_GET['order_sort'])?'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
-		 tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,"action=show_reply&bulletin_id=$bulletin_id&".$page.$parm));
+		 tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,"type=show_reply&bulletin_id=$bulletin_id&".$page.$parm));
 	 break;
 	 case 'update_bulletin_reply':
 	 $id=$_GET['id'];
@@ -333,12 +333,11 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_id=$bulletin_info_row['bulletin_id'];
 	 $page=isset($_GET['page'])?$_GET['page']:1;
 	 $parm=isset($_GET['order_sort'])?'order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
-	 tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,"action=show_reply&bulletin_id=$bulletin_id&page=$page&$parm"));
+	 tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD,"type=show_reply&bulletin_id=$bulletin_id&page=$page&$parm"));
 	 break;
 	  
 	 case 'search':
 		$search_text=$_GET['search_text'];
-		$_GET['action']=$_GET['search_type']=='show_reply'?'show_reply':'';
 		break;
 
 
@@ -373,7 +372,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 }
 		}
 		if($_GET['delete_type']=='show_reply'){
-				tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'action=show_reply&bulletin_id='.$_GET['bulletin_id'].'&page='.$param_str));
+				tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'type=show_reply&bulletin_id='.$_GET['bulletin_id'].'&page='.$param_str));
 		}else{
 				tep_redirect(tep_href_link(FILENAME_BULLETIN_BOARD, 'page='.$param_str));
 		}
@@ -483,7 +482,7 @@ function select_bulletin_change(value,bulletin_list_id,c_permission)
   if(sel_num == 1){
     if (confirm('<?php echo TEXT_BULLETIN_EDIT_CONFIRM;?>')) {
       if (c_permission >=15) {
-        document.edit_bulletin_form.action = "<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['action'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>";
+        document.edit_bulletin_form.action = "<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['type'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>";
         document.edit_bulletin_form.submit(); 
       } else {
         $.ajax({
@@ -922,22 +921,22 @@ function edit_bulletin(obj,id){
     success: function (data) {
       $('#show_popup_info').html(data); 
       //prev next
-      if($('#bulletin_'+id).prev().attr('id') != '' && $('#bulletin_'+id).prev().attr('id') != null){
-        var bulletin_prev_id = $('#bulletin_'+id).prev().attr('id');
+      if($('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_prev_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
         bulletin_prev_id = bulletin_prev_id.split('_');
 
         if(bulletin_prev_id[0] == 'bulletin' && bulletin_prev_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).prev().attr('id');
+          var bulletin_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_prev" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+bulletin_prev+'</a>&nbsp&nbsp');
         }
       }
-      if($('#bulletin_'+id).next().attr('id') != '' && $('#bulletin_'+id).next().attr('id') != null){
-        var bulletin_next_id = $('#bulletin_'+id).next().attr('id');
+      if($('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_next_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
         bulletin_next_id = bulletin_next_id.split('_');
      
         if(bulletin_next_id[0] == 'bulletin' && bulletin_next_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).next().attr('id');
+          var bulletin_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_next" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+bulletin_next+'&gt</a>&nbsp&nbsp');
         }
@@ -998,22 +997,22 @@ function reply_bulletin(obj,id,bulletin_id){
     success: function (data) {
       $('#show_popup_info').html(data); 
       //prev next
-      if($('#bulletin_'+id).prev().attr('id') != '' && $('#bulletin_'+id).prev().attr('id') != null){
-        var bulletin_prev_id = $('#bulletin_'+id).prev().attr('id');
+      if($('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_prev_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
         bulletin_prev_id = bulletin_prev_id.split('_');
 
         if(bulletin_prev_id[0] == 'bulletin' && bulletin_prev_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).prev().attr('id');
+          var bulletin_id = $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_prev" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">&lt'+bulletin_prev+'</a>&nbsp&nbsp');
         }
       }
-      if($('#bulletin_'+id).next().attr('id') != '' && $('#bulletin_'+id).next().attr('id') != null){
-        var bulletin_next_id = $('#bulletin_'+id).next().attr('id');
+      if($('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id') != null){
+        var bulletin_next_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
         bulletin_next_id = bulletin_next_id.split('_');
      
         if(bulletin_next_id[0] == 'bulletin' && bulletin_next_id[1] != ''){
-          var bulletin_id = $('#bulletin_'+id).next().attr('id');
+          var bulletin_id = $('#bulletin_'+id).nextAll("tr[id^='bulletin_']").attr('id');
           bulletin_id = bulletin_id.split('_');
           $('#next_prev').append('<a id="bulletin_next" onclick="'+$('#click_'+bulletin_id[1]).attr('onclick').replace('this','\'\'')+'" href="javascript:void(0);">'+bulletin_next+'&gt</a>&nbsp&nbsp');
         }
@@ -1085,7 +1084,7 @@ function check_value(type){
 
 function bulletin_board_select(id,type){
 	var str='<?php echo FILENAME_BULLETIN_BOARD;?>'+'?';
-	if(type==1)str+='action=show_reply&bulletin_id=<?php echo $_GET["bulletin_id"];?>&';
+	if(type==1)str+='type=show_reply&bulletin_id=<?php echo $_GET["bulletin_id"];?>&';
 	str+='c_id='+id+'<?echo isset($_GET["page"])?"&page=".$_GET["page"]:"";?>';
 	window.location.href=str;
 }
@@ -1153,7 +1152,7 @@ require("includes/note_js.php");
 $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$last_id_sql.=$where_str;
 		$next_id_sql=$last_id_sql;
-	if(isset($_GET['bulletin_id']) && $_GET['action']=='show_reply'){
+	if(isset($_GET['bulletin_id']) && $_GET['type']=='show_reply'){
 		
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
@@ -1167,12 +1166,12 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$next_id=$next_id_row['id'];
 		$header_title_html='';
 		if($last_id&&tep_db_num_rows(tep_db_query($last_id_sql." and id>=".$last_id))!=0){
-					$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
+					$header_title_html.='<a href="bulletin_board.php?type=show_reply&bulletin_id='.$last_id.'&from=last"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
 	}else {
 			$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 	}
 		if($next_id>0&&tep_db_num_rows(tep_db_query($next_id_sql." and id<=".$next_id))!=0){
-				$header_title_html.='<a href="bulletin_board.php?action=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
+				$header_title_html.='<a href="bulletin_board.php?type=show_reply&bulletin_id='.$next_id.'&from=next" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
 		}else{
 				$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 		}
@@ -1194,7 +1193,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 				<input type="submit" value="<?php echo HEADING_TITLE_SEARCH;?>">
 				<input type="hidden" name="action" value="search">
 				<input type="hidden" name="bulletin_id" value="<?php echo $_GET['bulletin_id'];?>">
-				<input type="hidden" name="search_type" value="<?php echo $_GET['action']=='show_reply'? 'show_reply':'show';?>">
+				<input type="hidden" name="type" value="<?php echo $_GET['type']=='show_reply'? 'show_reply':'show';?>">
 			</form>
 			</td>
           </tr>
@@ -1224,7 +1223,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
   $bulletin_table_row = array();
 
   // 回复内容处理
-  if(isset($_GET['action'])&& $_GET['action']=='show_reply'){
+  if($_GET['type']=='show_reply'){
   $bulletin_title_row = array();                
   //bulletin列表  
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_bulletin(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
@@ -1319,9 +1318,9 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by is_collect ".$order_type;
-  }else if ($order_sort == 'br.file_path'){
-    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if( file_path is null or file_path = '',0,
-      (CHAR_LENGTH(replace(file_path,'|||','||||'))-CHAR_LENGTH(file_path))+1) as file_num
+  }else if ($order_sort == ' br.file_path'){
+    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if( br.file_path is null or br.file_path = '',0,
+      (CHAR_LENGTH(replace(br.file_path,'|||','||||'))-CHAR_LENGTH(br.file_path))+1) as file_num
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by file_num ".$order_type;
   }else if ($order_sort==' u.name'){
@@ -1627,7 +1626,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 	$title=$bulletin['title'];
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  width="70%" title="'.$title.'"', 
-                          'text' => '<a href="bulletin_board.php?action=show_reply&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
+                          'text' => '<a href="bulletin_board.php?type=show_reply&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
                         );
 	$add_file_html='';
 	$file_list_arr = explode("|||",$bulletin['file_path']); 
@@ -1733,12 +1732,12 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
                   </td>
                   </tr>
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $bulletin_split->display_count($bulletin_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], $_GET['action']=='show_reply'?TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD_REPLY:TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD); ?></td>
+                    <td class="smallText" valign="top"><?php echo $bulletin_split->display_count($bulletin_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], $_GET['type']=='show_reply'?TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD_REPLY:TEXT_DISPLAY_NUMBER_OF_BULLETIN_BOARD); ?></td>
                     <td class="smallText" align="right"><div class="td_box"><?php echo $bulletin_split->display_links($bulletin_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'],tep_get_all_get_params(array('x', 'y', 'page'))); ?></div></td>
                   </tr>
                   <tr>
                     <td colspan="2" align="right"><div class="td_button"><?php 
-					if($_GET['action']=='show_reply'){
+					if($_GET['type']=='show_reply'){
 						echo '<a href="'.FILENAME_BULLETIN_BOARD.'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
 						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN_REPLY,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
 					}else{
