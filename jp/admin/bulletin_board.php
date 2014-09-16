@@ -1440,7 +1440,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$title=str_replace("\n",'<br>',$title[0]);
 	}
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent" title="'.$title.'"  width="70%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
+                          'params' => 'class="dataTableContent" title="'.$title.'" width="60%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $title
                         );
 	$add_file_html='';
@@ -1461,7 +1461,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
                         );
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
-                          'text' => $bulletin['update_user']
+                          'text' => '<span style="display:block;white-space:nowrap;">'.$bulletin['update_user'].'</span>'
                         );
 
     if(date('Y-m-d') == date('Y-m-d',strtotime($bulletin['update_time']))){
@@ -1692,9 +1692,9 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
                           'text' => $mark_html 
                         );
 
-	$title=$bulletin['title'];
+        $title=str_replace("\n",'<br>',$bulletin['title']);
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"  width="70%" title="'.$title.'"', 
+                          'params' => 'class="dataTableContent"  width="60%" title="'.$title.'"', 
                           'text' => '<a href="bulletin_board.php?type=show_reply'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
                         );
 	$add_file_html='';
@@ -1720,7 +1720,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     }else{
       $user_name = '--';
     }
-    $user_name = '<span style=" display:inline; white-space:nowrap">'.$user_name.'</span>';
+    $user_name = '<span style="display:block;white-space:nowrap;">'.$user_name.'</span>';
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $user_name
@@ -1736,7 +1736,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 			for($i=0;$i<$array_count;$i++){
 					$user_info=tep_get_user_info($allow[$i]);
 					$user_name=$user_info['name'];
-                                        $user_list .= '<span style=" display:inline; white-space:nowrap">';
+                                        $user_list .= '<span style="display:block;white-space:nowrap;">';
 					if($user_name){
 							$user_list.=$user_name.'</span>';
 					}else{
