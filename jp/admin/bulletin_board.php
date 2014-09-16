@@ -1357,20 +1357,20 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 
 	//排序条件
   if($order_sort=='br.collect'){
-    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
+    $bulletin_query_raw  = "select br.mark,br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by is_collect ".$order_type;
   }else if ($order_sort == ' br.file_path'){
-    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if( br.file_path is null or br.file_path = '',0,
+    $bulletin_query_raw  = "select br.mark,br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if( br.file_path is null or br.file_path = '',0,
       (CHAR_LENGTH(replace(br.file_path,'|||','||||'))-CHAR_LENGTH(br.file_path))+1) as file_num
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by file_num ".$order_type;
   }else if ($order_sort==' u.name'){
-    $bulletin_query_raw  = "select br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(u.userid = null or u.userid is null,br.update_user,u.name) as real_name 
+    $bulletin_query_raw  = "select br.mark,br.bulletin_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(u.userid = null or u.userid is null,br.update_user,u.name) as real_name 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br left join " .TABLE_USERS. " u ON
       br.update_user=u.userid where ".$where_str." order by real_name ".$order_type;
   }else{
-    $bulletin_query_raw  = "select br.id,br.bulletin_id,br.collect,br.content,br.file_path,br.update_user,bb.manager manager,br.update_time 
+    $bulletin_query_raw  = "select br.mark,br.id,br.bulletin_id,br.collect,br.content,br.file_path,br.update_user,bb.manager manager,br.update_time 
       from ". TABLE_BULLETIN_BOARD ." bb,". TABLE_BULLETIN_BOARD_REPLY ." br 
 			where ".$where_str." order by ".$order_sort." ".$order_type;
   }
@@ -1437,7 +1437,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$title=TEXT_DELETED_INFO;
 	}else{
 		$title=explode(">",$bulletin["content"]);
-		$title=$title[0];
+		$title=str_replace("\n",'<br>',$title[0]);
 	}
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" title="'.$title.'"  width="70%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
@@ -1714,16 +1714,21 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     if($bulletin['manager']!=''){
     $user_info = tep_get_user_info($bulletin['manager']);
     $user_name = $user_info['name'];
-	if(!$user_name)$user_name=$bulletin['manager'];
+	if(!$user_name){
+          $user_name=$bulletin['manager'];
+        }
     }else{
       $user_name = '--';
     }
+    $user_name = '<span style=" display:inline; white-space:nowrap">'.$user_name.'</span>';
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_BULLETIN_BOARD, 'page=' . $_GET['page'] . '&c_id=' . $bulletin['id']) . '\'"', 
                           'text' => $user_name
                         );
 	$allow=explode(":",$bulletin['allow']);
 	$user_list='';
+
+
 	if($allow[0]=='id'){
 			$allow=$allow[1]?$allow[1]:$allow[0];
 			$allow=explode(",",$allow);
@@ -1731,10 +1736,11 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 			for($i=0;$i<$array_count;$i++){
 					$user_info=tep_get_user_info($allow[$i]);
 					$user_name=$user_info['name'];
+                                        $user_list .= '<span style=" display:inline; white-space:nowrap">';
 					if($user_name){
-							$user_list.=$user_name.';&nbsp;';
+							$user_list.=$user_name.'</span>';
 					}else{
-							$user_list.=$allow[$i].';&nbsp;';
+							$user_list.=$allow[$i].'</span>';
 					}
 			}
 	}else{
