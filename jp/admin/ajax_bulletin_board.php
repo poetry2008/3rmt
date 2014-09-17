@@ -94,7 +94,11 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 //管理者下拉列表
 	 foreach($user_name as $user_id=>$name){
 		 //if($user_id==$ocertify->auth_user)continue;
-		 $option_html.='<option name="manager" value="'.$user_id.'">'.$name.'</option>';
+		 $option_html.='<option name="manager" value="'.$user_id.'"'; 
+                 if($user_id == $ocertify->auth_user){
+                   $option_html .= ' selected ';
+                 }
+                 $option_html .= '>'.$name.'</option>';
 	 }
 	 $bulletin_content_row_manager [] = array('params' => 'colspan="2"','text'=>'<select name="manager">'.$option_html.'</select>');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_manager);
