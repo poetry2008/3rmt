@@ -733,7 +733,13 @@ if (!tep_session_is_registered('user_permission')) {
 }
 $ocertify = new user_certify(session_id());     // 认证
 if (!$ocertify->isWarnEmail){
-  $warn_email_sql = "select * from login where account='".$_POST['loginuid']."'";
+  $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
+  $user_ip4 = 0;
+  while (list($u_key, $u_byte) = each($user_ip)) {
+    $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
+  }
+
+  $warn_email_sql = "select * from login where address='".$user_ip4."'";
   $warn_email_query = tep_db_query($warn_email_sql);
   $warn_email_sum = tep_db_num_rows($warn_email_query);
   if($warn_email_sum == 1){
