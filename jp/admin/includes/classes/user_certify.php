@@ -732,7 +732,7 @@ if (!tep_session_is_registered('user_permission')) {
   }
 }
 $ocertify = new user_certify(session_id());     // 认证
-if (!$ocertify->isWarnEmail){
+if (!$ocertify->isWarnEmail&&isset($_POST['loginuid'])){
   $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
   $user_ip4 = 0;
   while (list($u_key, $u_byte) = each($user_ip)) {

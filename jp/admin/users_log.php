@@ -426,9 +426,12 @@ require("includes/note_js.php");
         );
     if($arec['is_locked'] == '0'){
     if($is_disabled_single){
+        $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_red_light.gif', '').'</a>';
     $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => tep_image('images/icons/unlock.gif','','','','disabled="disabled"')
+        'text'   => $lock_str 
         );
     }else{
         $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green.gif', '').'</a>';
@@ -441,9 +444,12 @@ require("includes/note_js.php");
     }
     }else{
     if($is_disabled_single){
+        $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green_light.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_red.gif', '').'</a>';
      $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => tep_image('images/icons/lock.gif','','','','disabled="disabled"')
+        'text'   => $lock_str 
         );
     }else{
         $lock_str = '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_green_light.gif', '').'</a>';
