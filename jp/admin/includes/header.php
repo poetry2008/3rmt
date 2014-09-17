@@ -170,6 +170,7 @@ function check_header_messages(){
 
                                   messages_background_color = '#FFFF33';
                                 }
+                                $('#show_all_messages_notice').css('display','none');
 				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)"  href="javascript:void(0);"><span>他'+(eval(data).length - 1)+'件</span></a>');
 				$('#show_all_messages_notice').append('<table style="background:'+messages_background_color+'" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:'+messages_background_color+'"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.png" onmousemove="this.src=\'images/icons/white_bbs_del.png\'" onmouseout="this.src=\'images/icons/bbs_del.png\'" ></a></td></tr></table>');
 			};
