@@ -431,9 +431,12 @@ require("includes/note_js.php");
         'text'   => tep_image('images/icons/unlock.gif','','','','disabled="disabled"')
         );
     }else{
+        $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_lock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_red_light.gif', '').'</a>';
     $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_lock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image('images/icons/unlock.gif').'</a>'
+        'text'   => $lock_str 
         );
     }
     }else{
@@ -443,9 +446,12 @@ require("includes/note_js.php");
         'text'   => tep_image('images/icons/lock.gif','','','','disabled="disabled"')
         );
     }else{
+        $lock_str = '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_green_light.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_red.gif', '').'</a>';
      $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image('images/icons/lock.gif').'</a>' 
+        'text'   => $lock_str 
         );
     }
     }
