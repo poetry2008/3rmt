@@ -501,7 +501,7 @@ function select_bulletin_change(value,bulletin_list_id,c_permission)
             var tmp_msg_arr = msg.split('|||'); 
             var pwd_list_array = tmp_msg_arr[1].split(',');
             if (tmp_msg_arr[0] == '0') {
-              document.edit_bulletin_form.action = "<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['action'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>";
+              document.edit_bulletin_form.action = "<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['type'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>";
               document.edit_bulletin_form.submit(); 
             } else {
               var input_pwd_str = window.prompt('<?php echo JS_TEXT_INPUT_ONETIME_PWD;?>', ''); 
@@ -513,7 +513,7 @@ function select_bulletin_change(value,bulletin_list_id,c_permission)
                   data: 'current_pwd='+input_pwd_str+'&url_redirect_str='+encodeURIComponent('<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['action'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>'),
                   async: false,
                   success: function(msg_info) {
-                    document.edit_bulletin_form.action = "<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['action'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>";
+                    document.edit_bulletin_form.action = "<?php echo tep_href_link(FILENAME_BULLETIN_BOARD, 'action=delete&delete_type='.$_GET['type'].($_GET['page'] != '' ? '&page='.$_GET['page'] : ''));?>";
                     document.edit_bulletin_form.submit(); 
                   }
                 }); 

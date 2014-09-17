@@ -112,10 +112,14 @@ function check_header_messages(){
   		function(data){
 			$('#show_messages_notice').children().remove();
 			$('#show_all_messages_notice').children().remove();
-			if(data != '0'){
-				$.each(eval(data), function(){
+                        if(data != '0'){
+                                var show_recent_messages_num = 0;
+                                var show_all_messages_num = 0;
+                                $.each(eval(data), function(){
+                                        show_all_messages_num++;
 					if(parseInt(this.timestamp) > parseInt(timestamp)){
-						var bgcolor = '#FFFF33';
+                                                var bgcolor = '#FFFF33';
+                                                show_recent_messages_num++;
 					}else{
 						var bgcolor = '#FFCC00';
 					}
@@ -160,9 +164,14 @@ function check_header_messages(){
 					messages_num++;
                                 });
 			}
-			if(eval(data).length > 1){
+                        if(eval(data).length > 1){
+                                var messages_background_color = '#FFCC00';
+                                if(show_recent_messages_num == show_all_messages_num){
+
+                                  messages_background_color = '#FFFF33';
+                                }
 				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)"  href="javascript:void(0);"><span>他'+(eval(data).length - 1)+'件</span></a>');
-				$('#show_all_messages_notice').append('<table style="background:#FFCC00" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:#FFCC00"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.png" onmousemove="this.src=\'images/icons/white_bbs_del.png\'" onmouseout="this.src=\'images/icons/bbs_del.png\'" ></a></td></tr></table>');
+				$('#show_all_messages_notice').append('<table style="background:'+messages_background_color+'" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:'+messages_background_color+'"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.png" onmousemove="this.src=\'images/icons/white_bbs_del.png\'" onmouseout="this.src=\'images/icons/bbs_del.png\'" ></a></td></tr></table>');
 			};
   		}
 	);
