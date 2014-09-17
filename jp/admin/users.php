@@ -178,17 +178,43 @@ if (isset($_GET['action'])) {
                if (count($split_ip) != 4) {
                  continue; 
                }
-               if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') && (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') && (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*')) {
+               if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') &&
+                   (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') &&
+                   (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[2]))) && 
+                   (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[3])))) {
                } else {
                  $split_error = true; 
                }
                if ($split_error) {
                  continue; 
                }
-               $ip_insert_sql = "insert `user_ip` values('".$_POST['userid']."', '".$ip_value."')"; 
+               $ip_insert_sql = "insert `user_ip` values('".$_POST['userid']."', '".$ip_value."','0')"; 
                tep_db_query($ip_insert_sql);
              }
            } 
+           if (!empty($_POST['ip_limit_warn_email'])) {
+             $ip_limit_warn_email_arr = explode("\n", $_POST['ip_limit_warn_email']); 
+             foreach ($ip_limit_warn_email_arr as $ip_warn_email_key => $ip_warn_email_value) {
+               $split_warn_email_ip = explode('.', $ip_warn_email_value);
+               $split_error = false; 
+               if (count($split_warn_email_ip) != 4) {
+                 continue; 
+               }
+               if ((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') && 
+                   (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') && 
+                   (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[2]))) && 
+                   (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[3])))) {
+               } else {
+                 $split_warn_email_error = true; 
+               }
+               if ($split_warn_email_error) {
+                 continue; 
+               }
+               $ip_insert_sql = "insert `user_ip` values('".$_POST['userid']."', '".$ip_warn_email_value."','1')"; 
+               tep_db_query($ip_insert_sql);
+             }
+           }
+
            if ($update_user_res['status'] == '1') {
              tep_db_query("update `".TABLE_LETTERS."` set `userid` = null where `userid` = '".$_POST['userid']."'");   
            } 

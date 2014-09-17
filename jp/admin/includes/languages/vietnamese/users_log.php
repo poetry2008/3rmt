@@ -9,7 +9,6 @@ define('TEXT_ERRINFO_DB_NO_LOGINFO', 'Đã không có được thông tin truy c
 define('TEXT_INFO_DELETE_DAY', 'Xóa thông tin truy cập');
 define('TEXT_INFO_DELETE_FORMER_DAY', 'Dữ liệu của ngày hôm trước');
 // Format: '(id1:val1,id2:val2)'
-define('TEXT_INFO_STATUS_IN', 'a:Xác thực,e:Lỗi DB,p: Lỗi Password,n:Thất bại');
 define('TEXT_INFO_STATUS_OUT', 'i:Đăng nhập,o:Thoát ra,t:Thời gian thoát ra');
 define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
 
