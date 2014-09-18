@@ -102,7 +102,7 @@ if (isset($_GET['action'])) {
                }
                if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') &&
                    (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') &&
-                   (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[2]))) && 
+                   (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && 
                    (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[3])))) {
                } else {
                  $split_error = true; 
@@ -124,7 +124,7 @@ if (isset($_GET['action'])) {
                }
                if ((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') && 
                    (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') && 
-                   (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[2]))) && 
+                   (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*') && 
                    (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[3])))) {
                } else {
                  $split_warn_email_error = true; 
@@ -206,7 +206,7 @@ if (isset($_GET['action'])) {
                }
                if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') &&
                    (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') &&
-                   (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[2]))) && 
+                   (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && 
                    (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[3])))) {
                } else {
                  $split_error = true; 
@@ -228,7 +228,7 @@ if (isset($_GET['action'])) {
                }
                if ((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') && 
                    (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') && 
-                   (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[2]))) && 
+                   (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*') && 
                    (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[3])))) {
                } else {
                  $split_warn_email_error = true; 
