@@ -93,24 +93,50 @@ if (isset($_GET['action'])) {
            tep_db_query("insert into `".TABLE_USERS."` values('".$_POST['userid']."', '".$cryot_password."', '".$_POST['name']."', '".$_POST['user_email']."', '".(isset($_POST['user_rule'])?$_POST['user_rule']:'')."', '".$_SESSION['user_name']."', '".date('Y-m-d H:i:s', time())."', '".$_SESSION['user_name']."', '".date('Y-m-d H:i:s', time())."', '1')");  
            tep_db_query("insert into `".TABLE_PERMISSIONS."` values ('".$_POST['userid']."', '".$permission_num."', '".$permission_list_str."')"); 
            if (!empty($_POST['ip_limit'])) {
-             $ip_limit_array = explode("\n", $_POST['ip_limit']); 
-             foreach ($ip_limit_array as $ip_key => $ip_value) {
+             $ip_limit_arr = explode("\n", $_POST['ip_limit']); 
+             foreach ($ip_limit_arr as $ip_key => $ip_value) {
                $split_ip = explode('.', $ip_value);
                $split_error = false; 
                if (count($split_ip) != 4) {
                  continue; 
                }
-               if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') && (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') && (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*')) {
+               if ((is_numeric(trim($split_ip[0])) || trim($split_ip[0]) == '*') &&
+                   (is_numeric(trim($split_ip[1])) || trim($split_ip[1]) == '*') &&
+                   (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[2]))) && 
+                   (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_ip[3])))) {
                } else {
                  $split_error = true; 
                }
                if ($split_error) {
                  continue; 
                }
-               $ip_insert_sql = "insert `user_ip` values('".$_POST['userid']."', '".$ip_value."')"; 
-               tep_db_query($ip_insert_sql); 
+               $ip_insert_sql = "insert `user_ip` values('".$_POST['userid']."', '".$ip_value."','0')"; 
+               tep_db_query($ip_insert_sql);
+             }
+           } 
+           if (!empty($_POST['ip_limit_warn_email'])) {
+             $ip_limit_warn_email_arr = explode("\n", $_POST['ip_limit_warn_email']); 
+             foreach ($ip_limit_warn_email_arr as $ip_warn_email_key => $ip_warn_email_value) {
+               $split_warn_email_ip = explode('.', $ip_warn_email_value);
+               $split_error = false; 
+               if (count($split_warn_email_ip) != 4) {
+                 continue; 
+               }
+               if ((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') && 
+                   (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') && 
+                   (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[2]))) && 
+                   (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[3])))) {
+               } else {
+                 $split_warn_email_error = true; 
+               }
+               if ($split_warn_email_error) {
+                 continue; 
+               }
+               $ip_insert_sql = "insert `user_ip` values('".$_POST['userid']."', '".$ip_warn_email_value."','1')"; 
+               tep_db_query($ip_insert_sql);
              }
            }
+
          
            $update_users_query = tep_db_query("select configuration_description from ". TABLE_CONFIGURATION ." where configuration_key = 'PERSONAL_SETTING_ORDERS_SITE'");
            $update_users_res = tep_db_fetch_array($update_users_query);
