@@ -8577,7 +8577,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
             tep_db_free_result($o_count_raw);
           }
        }
-     $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
+     $asset_all_product += abs($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
        $quantity_all_product += $tmp_row['products_real_quantity'];
@@ -8651,7 +8651,7 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
      }
   }
   $result['quantity_all_product'] = $row['products_real_quantity'];
-  $result['asset_all_product'] =$tmp_price*$row['products_real_quantity'];
+  $result['asset_all_product'] =abs($tmp_price*$row['products_real_quantity']);
   $result['products_info'] = $products_info_array; 
   if($tmp_price){
     $result['price'] = $tmp_price;
