@@ -9,7 +9,7 @@ define('TEXT_ERRINFO_DB_NO_LOGINFO', '无法获得访问信息');
 define('TEXT_INFO_DELETE_DAY', '删除访问信息');
 define('TEXT_INFO_DELETE_FORMER_DAY', '天以前的数据');
 
-define('TEXT_INFO_STATUS_OUT', 'i:登入,o:退出,t:超时');
+define('TEXT_INFO_STATUS_OUT', 'i:登入,o:退出,t:超时,r:限制IP');
 define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
 
 
