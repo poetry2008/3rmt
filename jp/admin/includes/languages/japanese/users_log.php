@@ -9,7 +9,7 @@ define('TEXT_ERRINFO_DB_NO_LOGINFO', 'アクセス情報が取得できません
 define('TEXT_INFO_DELETE_DAY', 'アクセス情報の削除');
 define('TEXT_INFO_DELETE_FORMER_DAY', '日以前のデータ');
 // Format: '(id1:val1,id2:val2)'
-define('TEXT_INFO_STATUS_OUT', 'i:ログイン,o:ログアウト,t:タイムアウト');
+define('TEXT_INFO_STATUS_OUT', 'i:ログイン,o:ログアウト,t:タイムアウト,r:IP制限');
 define('TEXT_PAGE', '( %s / %s Page [ %s / %s Rows ] )');
 
 // 按钮

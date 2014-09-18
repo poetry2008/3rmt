@@ -412,7 +412,7 @@ require("includes/note_js.php");
     if ($arec['logoutstatus']) {
     $alert_info[] = array(
         'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
-        'text'   =>  ' [' . $a_sts_in[$arec['loginstatus']] .  ']&nbsp;&nbsp;'. ' [' .  $a_sts_out[$arec['logoutstatus']] . ']'
+        'text'   =>  ($arec['logoutstatus'] != 'r' ? ' [' . $a_sts_in[$arec['loginstatus']] .  ']&nbsp;&nbsp;' : ''). ' [' .  $a_sts_out[$arec['logoutstatus']] . ']'
         );
     }else {
     $alert_info[] = array(
