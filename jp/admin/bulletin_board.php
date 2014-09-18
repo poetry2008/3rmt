@@ -1139,7 +1139,7 @@ require("includes/note_js.php");
 <?php
 	//设置标题
   $where_str = '1';
-  $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
+  $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_users_id='$ocertify->auth_user' or all_users_id like '$ocertify->auth_user|||%' or all_users_id like '%|||$ocertify->auth_user|||%' or all_users_id like '%|||$ocertify->auth_user')");
   $where_group_arr = array();
   while($where_group_res = tep_db_fetch_array($where_group_query)){
     $where_group_arr[] = $where_group_res['name'];
@@ -1325,7 +1325,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 	}else{
 			$where_str.=0;
 	}
-  $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
+  $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_users_id='$ocertify->auth_user' or all_users_id like '$ocertify->auth_user|||%' or all_users_id like '%|||$ocertify->auth_user|||%' or all_users_id like '%|||$ocertify->auth_user')");
   $where_group_arr = array();
   while($where_group_res = tep_db_fetch_array($where_group_query)){
     $where_group_arr[] = $where_group_res['name'];
@@ -1570,7 +1570,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 	
 	//查询条件
   $where_str = '1 ';
-  $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_managers_id='$ocertify->auth_user' or all_managers_id like '$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user|||%' or all_managers_id like '%|||$ocertify->auth_user')");
+  $where_group_query = tep_db_query("select distinct name from ".TABLE_GROUPS." where (all_users_id='$ocertify->auth_user' or all_users_id like '$ocertify->auth_user|||%' or all_users_id like '%|||$ocertify->auth_user|||%' or all_users_id like '%|||$ocertify->auth_user')");
   $where_group_arr = array();
   while($where_group_res = tep_db_fetch_array($where_group_query)){
     $where_group_arr[] = $where_group_res['name'];
