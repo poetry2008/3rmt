@@ -221,7 +221,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         $bflag,$site_id,$start,$end,$sort);
     $tmp_arr['products_name'] = $product['products_name'];
     $tmp_arr['products_real_quantity'] = tep_get_quantity($product['products_id']);
-    if(!$tmp_arr['error']){
+    if($tmp_arr['quantity_all_product'] != 0){
       $all_true_row ++;
       $all_quantity += $tmp_arr['quantity_all_product'];
       $all_asset_price += abs($tmp_arr['asset_all_product']);
