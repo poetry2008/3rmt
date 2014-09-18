@@ -436,7 +436,7 @@ require("includes/note_js.php");
     }else{
         $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green.gif', '').'</a>';
         $lock_str .= '&nbsp;&nbsp;';
-        $lock_str .= '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_lock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_red_light.gif', '').'</a>';
+        $lock_str .= '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM_LOCK.'\')){ip_lock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_red_light.gif', '').'</a>';
     $alert_info[] = array(
         'params' => 'class="main"',
         'text'   => $lock_str 
@@ -452,7 +452,7 @@ require("includes/note_js.php");
         'text'   => $lock_str 
         );
     }else{
-        $lock_str = '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_green_light.gif', '').'</a>';
+        $lock_str = '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM_UNLOCK.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_green_light.gif', '').'</a>';
         $lock_str .= '&nbsp;&nbsp;';
         $lock_str .= '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_red.gif', '').'</a>';
      $alert_info[] = array(

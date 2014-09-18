@@ -36,7 +36,8 @@ define('TABLE_HEADING_PERMISSIONS','管理者権限');
 define('TABLE_HEADING_OPERATE','操作');
 define('TEXT_IP_UNLOCK','ロック解除');
 define('TEXT_DELETE_CONFIRM','本当にこのIPアドレスのロックを解除しますか？');
-define('TEXT_CONFIRM','本当に該当IPアドレスをロックしますか？');
+define('TEXT_CONFIRM_LOCK','本当に該当IPアドレスをロックしますか？');
+define('TEXT_CONFIRM_UNLOCK','該当IPアドレスのブロックを解除しますか？');
 define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同じIPで管理者権限のAdmin,Staff,Chiefのユーザーはロックされたとき、先にAdminを解除してください。');
 define('TEXT_LOGS_EDIT_SELECT','選択したものを');
 define('TEXT_LOGS_EDIT_DELETE','削除する');
@@ -44,5 +45,5 @@ define('TEXT_LOGS_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んで
 define('TEXT_LOGS_EDIT_CONFIRM','本当に削除しますか？');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
-define('TEXT_LOCK','ロック');
+define('TEXT_LOCK','ステータス');
 ?>
