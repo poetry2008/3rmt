@@ -45,5 +45,5 @@ define('TEXT_LOGS_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んで
 define('TEXT_LOGS_EDIT_CONFIRM','本当に削除しますか？');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
-define('TEXT_LOCK','ロック');
+define('TEXT_LOCK','ステータス');
 ?>
