@@ -36,7 +36,7 @@ define('TABLE_HEADING_PERMISSIONS','Quyền hạn người quản lý');
 define('TABLE_HEADING_OPERATE','Thao tác');
 define('TEXT_IP_UNLOCK','Mở khóa');
 define('TEXT_DELETE_CONFIRM','Bạn có chắc chắn muốn mở khóa địa chỉ IP này không?？');
-define('TEXT_CONFIRM','Bạn có chắc chắn muốn khóa địa chỉ IP tương ứng không？');
+define('TEXT_CONFIRM_LOCK','Bạn có chắc chắn muốn khóa địa chỉ IP tương ứng không？');
 define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;Khi người Admin,Staff,Chief của quyền hạn quản lý trong cùng một IP bị khóa, hãy xóa Admin trước tiên.');
 define('TEXT_LOGS_EDIT_SELECT','Mục đã chọn');
 define('TEXT_LOGS_EDIT_DELETE','Xóa');
