@@ -374,18 +374,10 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         echo $all_product[$k]['products_real_quantity'].TEXT_ROW;
         echo "</td>";
         echo "<td align='right'>";
-        if ($all_product[$k]['error']) {
-          echo $currencies->format(0);
-        } else {
-          echo $currencies->format($all_product[$k]['price']);
-        }
+        echo $currencies->format($all_product[$k]['price']);
         echo "</td>";
         echo "<td align='right'>";
-        if ($all_product[$k]['error']) {
-          echo $currencies->format(0);
-        } else {
-          echo $currencies->format($all_product[$k]['asset_all_product']);
-        }
+        echo $currencies->format($all_product[$k]['asset_all_product']);
         echo "</td>";
         echo "</tr>";
         echo $products_info_str;
