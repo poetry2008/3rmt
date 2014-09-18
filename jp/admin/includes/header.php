@@ -96,7 +96,8 @@ function delete_header_messages_all(){
 				}	
 			}
 		);
-	}
+        }
+        window.scrollTo(0,0);
    }
 }
 
