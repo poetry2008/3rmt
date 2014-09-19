@@ -10615,9 +10615,9 @@ function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=tr
   参数: $users_name (string)类型  客户昵称 
   返回: 替换后的邮件模板
 ----------------------------------*/
-function tep_replace_mail_templates($mail_templates,$users_email='',$users_name='',$site_id='0'){ 
+function tep_replace_mail_templates($mail_templates,$users_email='',$users_name='',$site_id='0',$continue=true){ 
 
-  if(!isset($ocertify->auth_user)){
+  if(!isset($ocertify->auth_user)&&$continue){
     $ocertify = new user_certify(session_id()); 
     $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
     $admin_user_array = tep_db_fetch_array($admin_user_query);
