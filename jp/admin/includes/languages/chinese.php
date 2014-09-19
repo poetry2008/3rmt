@@ -868,4 +868,4 @@ define('TEXT_PRE_YEAR', '去年');
 define('TEXT_NEXT_YEAR', '明年');
 define('HEADER_TEXT_PAYROLLS','计算工资');
 define('HEADER_TEXT_BULLETIN','公告栏');
-define('TEXT_INFO_STATUS_IN', 'a:认证,e:DB错误,p:Password错误,n:失败');
+define('TEXT_INFO_STATUS_IN', 'a:认证,e:DB错误,p:Password错误,n:失败,r:限制IP');
