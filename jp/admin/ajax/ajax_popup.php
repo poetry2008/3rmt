@@ -1082,13 +1082,13 @@ if ($_GET['action'] == 'show_category_info') {
       $right_td .= '</tr></table>';
       if($tk == 0){
         $contents[] = array('text' => array(
-        array('text' => $left_td), 
+        array('params' => 'width="50%"','text' => $left_td), 
         array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-        array('text' => $left_td), 
+        array('params' => 'width="50%"','text' => $left_td), 
         array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         );
@@ -1118,12 +1118,12 @@ if ($_GET['action'] == 'show_category_info') {
       $right_td .= '</tr></table>';
       if($tk == 0){
       	$contents[] = array('text' => array(
-          array('text' => $left_td), 
+          array('params' => 'width="50%"','text' => $left_td), 
           array('text' => $right_td)
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-          array('text' => $left_td), 
+          array('params' => 'width="50%"','text' => $left_td), 
           array('text' => $right_td)
         );
       }
@@ -9424,7 +9424,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
       $right_td .= '<td align="">'.$work_hours.'</td></tr><tr><td>'.$rest_hours.'</td>';
       $right_td .= '</tr></table>';
         $attendance_info_row[]['text'] = array(
-        array('text' => $left_td), 
+        array('params' => 'width="50%"','text' => $left_td), 
         array('text' => $right_td)
         );
    
