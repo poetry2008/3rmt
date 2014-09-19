@@ -133,10 +133,21 @@ if (isset($_GET['action'])) {
                if (count($split_warn_email_ip) != 4) {
                  continue; 
                }
-               if ((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') && 
-                   (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') && 
+               if (((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') &&
+                   (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') &&
                    (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*') && 
-                   (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[3])))) {
+                   (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*'))||
+                   (is_numeric(trim($split_warn_email_ip[0]))&&is_numeric(trim($split_warn_email_ip[1]))&&is_numeric(trim($split_warn_email_ip[2])))) {
+                 if(trim($split_warn_email_ip[3]) != '*'){
+                   $last_str = explode('/',trim($split_warn_email_ip[3]));
+                   if(count($last_str)!=2){
+                     $split_warn_email_error = true; 
+                   }else{
+                     if($last_str[1] > 32 || $last_str[1] < 0){
+                       $split_warn_email_error = true; 
+                     }
+                   }
+                 }
                } else {
                  $split_warn_email_error = true; 
                }
@@ -248,10 +259,21 @@ if (isset($_GET['action'])) {
                if (count($split_warn_email_ip) != 4) {
                  continue; 
                }
-               if ((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') && 
-                   (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') && 
+               if (((is_numeric(trim($split_warn_email_ip[0])) || trim($split_warn_email_ip[0]) == '*') &&
+                   (is_numeric(trim($split_warn_email_ip[1])) || trim($split_warn_email_ip[1]) == '*') &&
                    (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*') && 
-                   (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*' || preg_match('/^[0-9\/]*$/',trim($split_warn_email_ip[3])))) {
+                   (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*'))||
+                   (is_numeric(trim($split_warn_email_ip[0]))&&is_numeric(trim($split_warn_email_ip[1]))&&is_numeric(trim($split_warn_email_ip[2])))) {
+                 if(trim($split_warn_email_ip[3]) != '*'){
+                   $last_str = explode('/',trim($split_warn_email_ip[3]));
+                   if(count($last_str)!=2){
+                     $split_warn_email_error = true; 
+                   }else{
+                     if($last_str[1] > 32 || $last_str[1] < 0){
+                       $split_warn_email_error = true; 
+                     }
+                   }
+                 }
                } else {
                  $split_warn_email_error = true; 
                }

@@ -51,6 +51,11 @@ class user_certify {
         //如果IP为 *.*.*.* IP不受限制
       while($admin_ip_array = tep_db_fetch_array($admin_ip_query)){
         $admin_ip_str = trim($admin_ip_array['limit_ip']);
+        $admin_warn_email_ip = tep_is_in_iplist(trim($_SERVER['REMOTE_ADDR']),$admin_ip_str);
+        if($admin_warn_email_ip){
+          break;
+        }
+        /*
         $admin_ip_temp_array = explode('.',$admin_ip_str);
         if($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*' && $admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
           $admin_warn_email_ip = true;
@@ -110,6 +115,7 @@ class user_certify {
           }
         } 
         if($admin_warn_email_ip == true){break;}
+        */
       }
 
       }
@@ -127,6 +133,11 @@ class user_certify {
         //如果IP为 *.*.*.* IP不受限制
       while($admin_ip_array = tep_db_fetch_array($admin_ip_query)){
         $admin_ip_str = trim($admin_ip_array['limit_ip']);
+        $admin_ip_limit = tep_is_in_iplist(trim($_SERVER['REMOTE_ADDR']),$admin_ip_str);
+        if($admin_ip_limit){
+          break;
+        }
+        /*
         $admin_ip_temp_array = explode('.',$admin_ip_str);
         if($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*' && $admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
           $admin_ip_limit = true; 
@@ -186,6 +197,7 @@ class user_certify {
           }
         } 
         if($admin_ip_limit == true){break;}
+        */
       }
 
       }
@@ -358,7 +370,7 @@ class user_certify {
                 $aret = $this->user_parmission($s_sid,$user); // 获取用户权限
                 if ($pret && $aret) {
                     $login_ip = $_SERVER['REMOTE_ADDR']; 
-                    $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$user."'"); 
+                    $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$user."' and type ='0'"); 
                     $ip_limit_num = tep_db_num_rows($ip_limit_query);
                     if ($ip_limit_num > 0) {
                       $ip_limit_arr = array();
@@ -389,6 +401,8 @@ class user_certify {
                         $reg_str = '/'.$reg_str.'/'; 
                         if (preg_match($reg_str, $login_ip)) {
                           $login_ip_check = true; 
+                        }else{
+                          $login_ip_check = tep_is_in_iplist(trim($login_ip),trim($ip_limit_res['limit_ip']));
                         }
                       }
                       if (!$login_ip_check) {

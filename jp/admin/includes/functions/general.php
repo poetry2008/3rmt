@@ -15274,3 +15274,71 @@ function tep_sort_attendance($attendance_list,$attendance_info){
   $res_arr = array_merge($temp_time_arr,$temp_sum_arr);
   return $res_arr;
 }
+/*-------------------------------
+  功能:根据掩码返回可用IP
+  参数:IP 地址
+  参数:位 掩码
+  返回值:可用IP 的起始和结束 IP 
+  ------------------------------*/
+function tep_get_ip_arr_by_mask($ip_addr,$mask){
+  $res_arr = array();
+  $mask = long2ip(ip2long("255.255.255.255") << (32-$mask));
+  $subnet_mask = $mask; 
+  $ip = ip2long($ip_addr); 
+  $nm = ip2long($subnet_mask); 
+  $nw = ($ip & $nm); 
+  $bc = $nw | (~$nm); 
+  $res_arr['first_ip'] = long2ip($nw + 1);
+  $res_arr['last_ip'] = long2ip($bc - 1);
+  return $res_arr;
+}
+/*-------------------------------
+  功能:判断IP 是否可用
+  参数:IP 地址
+  参数:允许IP 字符串
+  返回值:是否为允许IP 
+  ------------------------------*/
+function tep_is_in_iplist($ip_addr,$ip_list_str){
+  if(preg_match('/\//',$ip_list_str)){
+    $ip_list_arr = explode('/',$ip_list_str);
+    $ip_list_temp = tep_get_ip_arr_by_mask($ip_list_arr[0],$ip_list_arr[1]);
+    $first_ip = $ip_list_temp['first_ip'];
+    $last_ip = $ip_list_temp['last_ip'];
+    if($last_ip == ''){
+      if($first_ip==$ip_addr){
+        return true;
+      }
+    }else{
+      $start_arr = explode('.',$first_ip);
+      $end_arr = explode('.',$last_ip);
+      $ip_addr_arr = explode('.',$ip_addr);
+      $flag_temp = array(true,false,false,false);
+      foreach($start_arr as $k => $value){
+        for($i=$start_arr[$k];$i<=$end_arr[$k];$i++){
+          if($i==$ip_addr_arr[$k]&&$flag_temp[$k]){
+            $flag_temp[$k+1] = true;
+            break;
+          }
+        }
+      }
+      return $flag_temp[3];
+    }
+  }else{
+    $ip_list_arr = explode('.',trim($ip_list_str));
+    $ip_addr_arr = explode('.',$ip_addr);
+    $flag_temp = true;
+    if(count($ip_list_arr)==4&&count($ip_addr_arr)==4){
+      foreach($ip_list_arr as $k => $value){
+        if($ip_list_arr[$k]=='*'||$ip_list_arr[$k]==$ip_addr_arr[$k]){
+        }else{
+          $flag_temp = false;
+          break;
+        }
+      }
+      return $flag_temp;
+    }else{
+      return false;
+    }
+  }
+  return false;
+}
