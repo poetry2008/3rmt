@@ -15315,8 +15315,8 @@ function tep_is_in_iplist($ip_addr,$ip_list_str){
       $flag_temp = array(true,false,false,false);
       foreach($start_arr as $k => $value){
         for($i=$start_arr[$k];$i<=$end_arr[$k];$i++){
-          if($i==$ip_addr_arr[$k]&&$flag_temp[$k]){
-            $flag_temp[$k+1] = true;
+          if($i==$ip_addr_arr[$k]){
+            $flag_temp[$k]=true;
             break;
           }
         }
