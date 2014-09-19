@@ -2196,6 +2196,7 @@ require("includes/note_js.php");
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_to);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_back);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="40%"','text' => $messages_content);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '&nbsp;');
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_add_file);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_date);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_opt);
@@ -2380,7 +2381,11 @@ require("includes/note_js.php");
         $contents_text_str = nl2br($contents_text);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " >'.$contents_text_str.'</p>'
+		'text'   => '<p id="contents_id_'.$latest_messages['id'].'" style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " >'.$contents_text_str.'</p>'
+        );
+        $messages_info[] = array(
+		'params' => 'class="dataTableContent" valign="bottom"',
+		'text'   => '<p id="contents_show_'.$latest_messages['id'].'" style="margin: 0px auto;"></p><script>if(document.getElementById("contents_id_'.$latest_messages['id'].'").scrollHeight > 36){document.getElementById("contents_show_'.$latest_messages['id'].'").innerHTML="'.TEXT_MESSAGES_CONTENTS.'";}</script>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){

@@ -142,14 +142,16 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $allow="";
 	 if($_POST['select_all'])$allow="all";
 	 if($_POST['select_group'])$allow="group:";
-	 if($_POST['select_id'])$allow="id:";
-	foreach($_POST['selected_staff'] as $value){
+         if($_POST['select_id'])$allow="id:";
+         if(isset($_POST['select_group']) || isset($_POST['select_id'])){
+	   foreach($_POST['selected_staff'] as $value){
 		if(strlen($allow)>6){
 				$allow.=",".$value;
 		}else{
 				$allow.=$value;
 		}
-	}
+           }
+         }
 	 $manager=$_POST['manager'];
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $icon){
@@ -1442,7 +1444,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 		$title=str_replace("\n",'<br>',$title[0]);
 	}
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent" title="'.$td_title.'" width="60%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
+                          'params' => 'class="dataTableContent" width="60%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $title
                         );
 	$add_file_html='';
@@ -1696,7 +1698,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 
         $title=str_replace("\n",'<br>',$bulletin['title']);
     $bulletin_item_info[] = array(
-                          'params' => 'class="dataTableContent"  width="60%" title="'.$bulletin['title'].'"', 
+                          'params' => 'class="dataTableContent"  width="60%"', 
                           'text' => '<a href="bulletin_board.php?type=show_reply'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
                         );
 	$add_file_html='';
