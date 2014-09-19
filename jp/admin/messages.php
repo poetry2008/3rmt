@@ -2380,7 +2380,7 @@ require("includes/note_js.php");
         $contents_text_str = nl2br($contents_text);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.str_replace('"',"&quot;",$contents_text).'" title="'.str_replace('"',"&quot;",$contents_text).'">'.$contents_text_str.'</p>'
+		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " >'.$contents_text_str.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
