@@ -60,5 +60,5 @@ define('TEXT_SEND_MAIL','就这样发信吗？');
 define('TEXT_USER_NO_EMAIL','用户的邮箱地址没有设置，');
 define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','附件请控制在%s以内。');
 define('TEXT_MESSAGES_DELETE_DATA','垃圾箱里的邮件%s天后自动删除。');
-define('TEXT_MESSAGES_CONTENTS','（...更多）');
+define('TEXT_MESSAGES_CONTENTS','（...未完）');
 ?>
