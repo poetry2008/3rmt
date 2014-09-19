@@ -869,4 +869,4 @@ define('TEXT_PRE_YEAR', '前年');
 define('TEXT_NEXT_YEAR', '翌年');
 define('HEADER_TEXT_PAYROLLS','給料計算');
 define('HEADER_TEXT_BULLETIN','掲示板');
-define('TEXT_INFO_STATUS_IN', 'a:認証,e:DBエラー,p:Passwordエラー,n:失敗');
+define('TEXT_INFO_STATUS_IN', 'a:認証,e:DBエラー,p:Passwordエラー,n:失敗,r:IP制限');
