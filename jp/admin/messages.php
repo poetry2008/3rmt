@@ -2381,7 +2381,7 @@ require("includes/note_js.php");
         $contents_text_str = nl2br($contents_text);
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="40%"',
-		'text'   => '<p id="contents_id_'.$latest_messages['id'].'" style="max-height:50px;overflow:hidden;margin:0px 0px 0px 0px " >'.$contents_text_str.'</p>'
+		'text'   => '<p id="contents_id_'.$latest_messages['id'].'" style="line-height:14px; max-height:42px;overflow:hidden;margin:0px 0px 0px 0px " >'.$contents_text_str.'</p>'
         );
         $messages_info[] = array(
 		'params' => 'class="dataTableContent" valign="bottom"',
