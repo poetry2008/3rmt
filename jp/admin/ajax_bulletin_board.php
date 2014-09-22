@@ -490,16 +490,18 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 	 $old_content=$bulletin_info['content'];
          $bulletin_content_table = array();
-         //回复信息
-         $reply_info_array = array();
-         tep_reply_info($bulletin_info['reply_id'],$reply_info_array);
-         foreach($reply_info_array as $reply_key=>$reply_value){
+         if($bulletin_info['reply_id'] != 0){
+           //回复信息
+           $reply_info_array = array();
+           tep_reply_info($bulletin_info['reply_id'],$reply_info_array);
+           foreach($reply_info_array as $reply_key=>$reply_value){
 
-           $reply_str = '---------- Forwarded thread ----------'."\n";
-           $reply_str .= 'From: '.$reply_value['add_user'].' <'.$reply_value['add_email'].'>'."\n";
-           $reply_date_array = explode(' ',tep_date_long($reply_value['add_time']));
-           $reply_str .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($reply_value['add_time'])).' '.end($reply_date_array);
-           $old_content = preg_replace('/(\s)(>{'.($reply_key+1).'}[^>]+)/','$1'.$reply_str."\n".'$2',$old_content);
+             $reply_str = '---------- Forwarded thread ----------'."\n";
+             $reply_str .= 'From: '.$reply_value['add_user'].' <'.$reply_value['add_email'].'>'."\n";
+             $reply_date_array = explode(' ',tep_date_long($reply_value['add_time']));
+             $reply_str .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($reply_value['add_time'])).' '.end($reply_date_array);
+             $old_content = preg_replace('/(\s)(>{'.($reply_key+1).'}[^>]+)/','$1'.$reply_str."\n".'$2',$old_content);
+           }
          }
 	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
  	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="overflow-y:hidden;width:100%;height:163px;background:#CCCCCC;" class="textarea_width" id="old_contents" readonly="readonly">'.$old_content.'</textarea>'.'<input type="hidden" name="old_content" value="'.$bulletin_info['content'].'">';
