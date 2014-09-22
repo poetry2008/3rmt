@@ -15342,43 +15342,21 @@ function tep_is_in_iplist($ip_addr,$ip_list_str){
   }
   return false;
 }
-<<<<<<< HEAD
 
-function substr_cut($str_cut,$length){
-  if (strlen($str_cut) > $length) {
-      for($i=0; $i < $length; $i++)
-		  if (ord($str_cut[$i]) > 128){
-		    $i++;
-		  }
-       $str_cut = substr($str_cut,0,$i)."..";
-    }
-   return $str_cut;
-}
-
-function chinesesubstr($str, $start, $len) { 
-    $strlen = $start + $len;
-    for($i = $start; $i < $strlen;) {
-       if (ord ( substr ( $str, $i, 1 ) ) > 0xa0) { 
-           $tmpstr .= substr ( $str, $i, 3 ); 
-           $i=$i+3; 
-        } else{
-           $tmpstr .= substr ( $str, $i, 1 ); 
-	       $i++;
-        }
-    }
-    return $tmpstr; // 返回字符串
-}
-
+/*返回截取后的字符
+ *$sourcestr 字符串
+ $cutlength 截取的长度
+ * */
 function cut_str($sourcestr,$cutlength) { 
 	$returnstr=''; 
 	$i=0; 
 	$n=0; 
-	$str_length=strlen($sourcestr);//字符串的字节数 
+	$str_length=strlen($sourcestr);
 	while (($n<$cutlength) and ($i<=$str_length)) { 
        $temp_str=substr($sourcestr,$i,1); 
-       $ascnum=Ord($temp_str);//得到字符串中第$i位字符的ascii码 
-       if ($ascnum>=224){    //如果ASCII位高与224，
-           $returnstr=$returnstr.substr($sourcestr,$i,3); //根据UTF-8编码规范，将3个连续的字符计为单个字符         
+       $ascnum=Ord($temp_str); 
+       if ($ascnum>=224){   
+           $returnstr=$returnstr.substr($sourcestr,$i,3); //将3个连续的字符计为单个字符         
           $i=$i+3;            //实际Byte计为3 
           $n++;            //字串长度计1 
        } elseif ($ascnum>=192){ //如果ASCII位高与192 
