@@ -126,7 +126,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $bulletin_content_row_choose = array();
 	 $bulletin_content_row_choose [] =  array('text'=> '');
-	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:none;"><table width="80%">
+	 $bulletin_content_row_choose [] =  array('params' => 'colspan="2"','text'=> '<div width="100%" id="select_user" style="display:none;"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -141,7 +141,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		<td board="0" style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="user_delete_to" style="overflow-y:scroll;height:105px;">'.$users_list_html.'</div></td>
 	</tr>
 </table></div>
-<div width="100%" id="select_group" style="display:none;"><table width="80%">
+<div width="100%" id="select_group" style="display:none;"><table width="90%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -173,9 +173,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_BULLETIN_EDIT_CONTENT);
 	//输入文本框
- 	$bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style=" width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><br /><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
-	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
-	 $bulletin_content_table[] = array('params' => 'colspan="2"', 'text'=> $bulletin_content_row_text);
+ 	$bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:90%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><br /><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
+	 $bulletin_content_row_text[] = array('params' => 'colspan="2"','text'=> $bulletin_text_area);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $bulletin_content_row_must_write = array();
 	 $bulletin_content_row_must_write[] = array('text'=> '');
 	 $bulletin_content_row_must_write[] = array('text'=> '<div id="bulletin_must_write" style="display: none;"><span style="color:#ff0000;"> '.CONTENT_MUST_WRITE.'</span></div>');
@@ -322,7 +322,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $bulletin_content_row_choose = array();
 	 $bulletin_content_row_choose [] =  array('text'=> '');
-	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:'.$id_show.';"><table width="80%">
+	 $bulletin_content_row_choose [] =  array('params'=>'colspan="2"','text'=> '<div width="100%" id="select_user" style="display:'.$id_show.';"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -337,7 +337,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="user_delete_to" style="overflow-y:scroll;height:105px;">'.$users_list_html.'</div></td>
 	</tr>
 </table></div>
-<div width="100%" id="select_group" style="display:'.$group_show.';"><table width="80%">
+<div width="100%" id="select_group" style="display:'.$group_show.';"><table width="90%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
