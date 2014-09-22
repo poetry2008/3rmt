@@ -15342,7 +15342,6 @@ function tep_is_in_iplist($ip_addr,$ip_list_str){
   }
   return false;
 }
-<<<<<<< HEAD
 
 function substr_cut($str_cut,$length){
   if (strlen($str_cut) > $length) {
