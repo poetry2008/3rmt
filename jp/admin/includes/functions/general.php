@@ -15343,6 +15343,7 @@ function tep_is_in_iplist($ip_addr,$ip_list_str){
   return false;
 }
 
+
 /*返回截取后的字符
  *$sourcestr 字符串
  $cutlength 截取的长度
