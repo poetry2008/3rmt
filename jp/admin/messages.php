@@ -2380,12 +2380,12 @@ require("includes/note_js.php");
         $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
         $contents_text_str = nl2br($contents_text);
 	$messages_info[] = array(
-		'params' => 'class="dataTableContent" width="60%"',
-		'text'   => '<p id="contents_id_'.$latest_messages['id'].'" style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " >'.$contents_text_str.'</p>'
+		'params' => 'class="dataTableContent" width="40%"',
+		'text'   => '<p id="contents_id_'.$latest_messages['id'].'" style="max-height:50px;overflow:hidden;margin:0px 0px 0px 0px " >'.$contents_text_str.'</p>'
         );
         $messages_info[] = array(
 		'params' => 'class="dataTableContent" valign="bottom"',
-		'text'   => '<p id="contents_show_'.$latest_messages['id'].'" style="margin: 0px auto;"></p><script>if(document.getElementById("contents_id_'.$latest_messages['id'].'").scrollHeight > 36){document.getElementById("contents_show_'.$latest_messages['id'].'").innerHTML="'.TEXT_MESSAGES_CONTENTS.'";}</script>'
+		'text'   => '<p id="contents_show_'.$latest_messages['id'].'" style="margin: 0px auto; width: 15px;"></p><script>if(document.getElementById("contents_id_'.$latest_messages['id'].'").scrollHeight > 36){document.getElementById("contents_show_'.$latest_messages['id'].'").innerHTML="'.TEXT_MESSAGES_CONTENTS.'";}</script>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){
