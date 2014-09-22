@@ -15342,3 +15342,29 @@ function tep_is_in_iplist($ip_addr,$ip_list_str){
   }
   return false;
 }
+/*-------------------------------
+  功能:递归回复信息
+  参数:$reply_id 回复ID
+  返回值:回复的相关信息 
+  ------------------------------*/
+function tep_reply_info($reply_id,&$reply_info_array=array()){
+
+  $reply_query = tep_db_query("select id,reply_id,update_user,update_time from ".TABLE_BULLETIN_BOARD_REPLY." where id='".$reply_id."'");
+  $reply_array = tep_db_fetch_array($reply_query);
+  tep_db_free_result($reply_query);
+
+  $user_email_query = tep_db_query("select email from ".TABLE_USERS." where name='".$reply_array['update_user']."'");
+  $user_email_array = tep_db_fetch_array($user_email_query);
+  tep_db_free_result($user_email_query);
+
+  $reply_info_array[] = array('add_user'=>$reply_array['update_user'],
+                              'add_time'=>$reply_array['update_time'], 
+                              'add_email'=>$user_email_array['email'], 
+                              'bulletin_id'=>$bulletin_info['bulletin_id']
+                              );
+
+  if($reply_array['reply_id'] != 0){
+
+    tep_reply_info($reply_array['reply_id'],$reply_info_array);
+  }
+}

@@ -489,9 +489,20 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin_reply&id='.$_POST["id"].'&bulletin_id='.$bulletin_info['bulletin_id'].'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1" onsubmit="return check_value(1)"'); 
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 	 $old_content=$bulletin_info['content'];
-	 $bulletin_content_table = array();
+         $bulletin_content_table = array();
+         //回复信息
+         $reply_info_array = array();
+         tep_reply_info($bulletin_info['reply_id'],$reply_info_array);
+         foreach($reply_info_array as $reply_key=>$reply_value){
+
+           $reply_str = '---------- Forwarded thread ----------'."\n";
+           $reply_str .= 'From: '.$reply_value['add_user'].' <'.$reply_value['add_email'].'>'."\n";
+           $reply_date_array = explode(' ',tep_date_long($reply_value['add_time']));
+           $reply_str .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($reply_value['add_time'])).' '.end($reply_date_array);
+           $old_content = preg_replace('/(\s)(>{'.($reply_key+1).'}[^>]+)/','$1'.$reply_str."\n".'$2',$old_content);
+         }
 	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
- 	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="overflow-y:hidden;width:100%;height:163px;background:#CCCCCC;" class="textarea_width" id="old_contents" name="old_content" readonly="readonly">'.$old_content.'</textarea>';
+ 	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="overflow-y:hidden;width:100%;height:163px;background:#CCCCCC;" class="textarea_width" id="old_contents" readonly="readonly">'.$old_content.'</textarea>'.'<input type="hidden" name="old_content" value="'.$bulletin_info['content'].'">';
 	 $bulletin_content_row_text[] = array('params'=>'width="70%"','text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $mark_array = explode(',',$bulletin_info['mark']);

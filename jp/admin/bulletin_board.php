@@ -1268,7 +1268,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"', 'text' => '<input type="hidden" name="execute_delete" value="1"><input type="checkbox" onclick="all_select_bulletin(\'bulletin_list_id[]\');" name="all_check"'.($site_permission_flag == false ? ' disabled="disabled"' : '').'>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=collect&order_type='.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_COLLECT.($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'collect' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=mark&order_type='.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_MARK.($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'mark' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
-  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent"', 'text' => TEXT_BULLETIN_BOARD_NUM);
+  $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=num&order_type='.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_BULLETIN_BOARD_NUM.($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'num' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap" style="width:40%;"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=content&order_type='.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_CONTENT_REPLY.($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'content' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap" ', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=add_file&order_type='.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'.TEXT_ADDFILE.($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'add_file' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>');
   $bulletin_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"', 'text' => '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,tep_get_all_get_params(array('x', 'y', 'order_type','order_sort')).'&order_sort=add_user&order_type='.($_GET['order_sort'] == 'add_user' && $_GET['order_type'] == 'desc' ? 'asc' : 'desc')).'">'."From".($_GET['order_sort'] == 'add_user' && $_GET['order_type'] == 'desc'? '<font color="#c0c0c0">'.TEXT_SORT_ASC.'</font><font color="#facb9c">'.TEXT_SORT_DESC.'</font>' : ($_GET['order_sort'] == 'add_user' && $_GET['order_type'] == 'asc' ? '<font color="#facb9c">'.TEXT_SORT_ASC.'</font><font color="#c0c0c0">'.TEXT_SORT_DESC.'</font>' : '')).'</a>'); 
@@ -1315,6 +1315,10 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
 	  break;
     case 'add_file':
       $order_sort = ' br.file_path';
+      $order_type = $_GET['order_type'];
+          break;
+    case 'num':
+      $order_sort = ' br.id';
       $order_type = $_GET['order_type'];
 	  break;
     }
@@ -1374,6 +1378,10 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
     $bulletin_query_raw  = "select br.mark,br.bulletin_id,br.reply_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(u.userid = null or u.userid is null,br.update_user,u.name) as real_name 
       from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br left join " .TABLE_USERS. " u ON
       br.update_user=u.userid where ".$where_str." order by real_name ".$order_type;
+  }else if($order_sort==' br.id'){
+    $bulletin_query_raw  = "select br.mark,br.bulletin_id,br.reply_id,br.id,br.collect,br.content,br.file_path,br.update_user,br.update_time,bb.manager manager,if(br.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
+      from ". TABLE_BULLETIN_BOARD ." bb ,". TABLE_BULLETIN_BOARD_REPLY ." br 
+			where ".$where_str." order by br.id ".$order_type;
   }else{
     $bulletin_query_raw  = "select br.mark,br.id,br.bulletin_id,br.reply_id,br.collect,br.content,br.file_path,br.update_user,bb.manager manager,br.update_time 
       from ". TABLE_BULLETIN_BOARD ." bb,". TABLE_BULLETIN_BOARD_REPLY ." br 
@@ -1393,7 +1401,11 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
   $bulletin_i = 0;
   $bulletin_contents_info = array();
   $bulletin_contents_alt_info = array();
-  $bulletin_title_query = tep_db_query($bulletin_query_raw);
+  $bulletin_title_query_raw  = "select br.mark,br.id,br.bulletin_id,br.reply_id,br.collect,br.content,br.file_path,br.update_user,bb.manager manager,br.update_time 
+      from ". TABLE_BULLETIN_BOARD ." bb,". TABLE_BULLETIN_BOARD_REPLY ." br 
+			where ".$where_str." order by br.id desc";
+  $bulletin_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $bulletin_title_query_raw, $bulletin_title_query_numrows);
+  $bulletin_title_query = tep_db_query($bulletin_title_query_raw);
   $bulletin_title_i = 0;
   while ($bulletin_array = tep_db_fetch_array($bulletin_title_query)) {
     $bulletin_contents_info[$bulletin_sum-$bulletin_title_i] = $bulletin_array['id'];
@@ -1466,7 +1478,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
         }
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent""', 
-                          'text' => $bulletin_sum-$bulletin_i
+                          'text' => array_search($bulletin["id"],$bulletin_contents_info)
                         );
     //序列号生成
     $bulletin_num = '';
@@ -1525,7 +1537,6 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
                           ); 
                       
     $bulletin_table_row[] = array('params' => $bulletin_item_params, 'text' => $bulletin_item_info);
-    $bulletin_i++;
   }
 
   $form_str = tep_draw_form('bulletin_list', FILENAME_BULLETIN_BOARD, tep_get_all_get_params(array('action')).'action=del_select_bulletin');  
