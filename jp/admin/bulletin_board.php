@@ -681,7 +681,7 @@ function change_collect_status(id,user){
   var bulletin_id = document.getElementById("bulletin_board_collect_"+id);
   var bulletin_id_src = bulletin_id.src;
   var flag=0;
-  var type="<?php echo $_GET['action'];?>";
+  var type="<?php echo $_GET['type'];?>";
   if (bulletin_id_src.match("green")){
 	  bulletin_id.src='images/icons/gray_right.gif';
   }else {
