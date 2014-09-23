@@ -2378,20 +2378,61 @@ require("includes/note_js.php");
         $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text); 
         $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
         $contents_text_str = nl2br($contents_text);
-		$br_arr = explode("\n",$contents_text_str);
-		if(count($br_arr)<3){
-		  $contents_text_str = cut_str($contents_text_str,133);
-		}
-		if(count($br_arr)>3){
-		$contents_text_str='';
-		   for($i=0;$i<3;$i++){
-			 $contents_text_str .= $br_arr[$i];
-		   } 	
-		$contents_text_str=substr($contents_text_str, 0, -7); 
-		}
-	    $messages_info[] = array(
+	$br_arr = explode("\n",$contents_text_str);
+        if(count($br_arr)<=3 && tep_mb_strlen($contents_text_str) > 60){
+          if(count($br_arr) == 3){
+            if(tep_mb_strlen($br_arr[0]) > 60){
+
+              $contents_text_str = mb_substr(cut_str($br_arr[0],67),0,-7).TEXT_MESSAGES_CONTENTS;
+            }else{
+              if(tep_mb_strlen($br_arr[0]) < 20 && tep_mb_strlen($br_arr[1]) > 40){
+
+                $contents_text_str = $br_arr[0].cut_str($br_arr[1],40).TEXT_MESSAGES_CONTENTS;
+              }else if(tep_mb_strlen($br_arr[0]) < 20 && tep_mb_strlen($br_arr[1]) < 20 && tep_mb_strlen($br_arr[2]) > 20){
+
+                $contents_text_str = $br_arr[0].$br_arr[1].cut_str($br_arr[2],20).TEXT_MESSAGES_CONTENTS;
+              }else{
+               
+                $contents_text_str = mb_substr(cut_str($contents_text_str,67),0,-7).TEXT_MESSAGES_CONTENTS;
+              }   
+            }
+          }else if(count($br_arr) == 2){
+            if(tep_mb_strlen($br_arr[0]) > 40){
+
+              $contents_text_str = mb_substr(cut_str($br_arr[0],67),0,-7).TEXT_MESSAGES_CONTENTS;
+            }else{
+              if(tep_mb_strlen($br_arr[0]) < 20 && tep_mb_strlen($br_arr[1]) > 40){
+
+                $contents_text_str = $br_arr[0].mb_substr(cut_str($br_arr[1],47),0,-7).TEXT_MESSAGES_CONTENTS;
+              }else{
+               
+                $contents_text_str = mb_substr(cut_str($contents_text_str,67),0,-7).TEXT_MESSAGES_CONTENTS;
+              }   
+            } 
+          }else{
+            $contents_text_str = mb_substr(cut_str($contents_text_str,67),0,-7).TEXT_MESSAGES_CONTENTS;
+          }
+	}
+	if(count($br_arr)>3){
+	  $contents_text_str='';
+          for($i=0;$i<3;$i++){
+            $contents_len = tep_mb_strlen($br_arr[$i]);
+            if($contents_len > 60){
+              $contents_text_str = cut_str($br_arr[$i],67);
+              break;
+            }else{
+              $contents_text_str .= $br_arr[$i];
+              if($contents_len > 20){
+                $rows_num = ceil($contents_len/20);
+                $i += $rows_num-2;
+              }
+            }
+	  } 	
+	  $contents_text_str=mb_substr($contents_text_str, 0, -7).TEXT_MESSAGES_CONTENTS; 
+	}
+	$messages_info[] = array(
 		'params' => 'class="dataTableContent" width="40%"',
-		'text'   => '<p id="contents_id_'.$latest_messages['id'].'" >'.$contents_text_str.'<span id="contents_show_'.$latest_messages['id'].'"></span><script>if(document.getElementById("contents_id_'.$latest_messages['id'].'").scrollHeight > 36){document.getElementById("contents_show_'.$latest_messages['id'].'").innerHTML="'.TEXT_MESSAGES_CONTENTS.'";}</script></p>'
+		'text'   => '<p style="word-break: break-all; word-wrap:break-word;margin-top:0px;margin-bottom:0px;">'.$contents_text_str.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){

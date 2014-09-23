@@ -15406,3 +15406,35 @@ function tep_reply_info($reply_id,&$reply_info_array=array()){
     tep_reply_info($reply_array['reply_id'],$reply_info_array);
   }
 }
+
+/*-------------------------------
+  功能:计算字符串的长度
+  参数:$sourcestr 字符串
+  返回值:字符串的长度 
+  ------------------------------*/
+function tep_mb_strlen($sourcestr) { 
+	$i=0; 
+	$n=0; 
+        $str_length=strlen($sourcestr);
+	while ($i<=$str_length) { 
+       $temp_str=substr($sourcestr,$i,1); 
+       $ascnum=Ord($temp_str); 
+       if ($ascnum>=224){   
+          $i=$i+3;            //实际Byte计为3 
+          $n++;            //字串长度计1 
+       } elseif ($ascnum>=192){ //如果ASCII位高与192 
+			$i=$i+2;            //实际Byte计为2 
+			$n++;            //字串长度计1 
+		} elseif ($ascnum>=65 && $ascnum<=90) //如果是大写字母， 
+			{ 
+			$i=$i+1;            //实际的Byte数仍计1个 
+			$n++;            //但考虑整体美观，大写字母计成一个高位字符 
+			} 
+			else                //其他情况下，包括小写字母和半角标点符号， 
+			{ 
+			$i=$i+1;            //实际的Byte数计1个 
+			$n=$n+0.5;        //小写字母和半角标点等与半个高位字符宽... 
+			} 
+		} 
+			return $n; 
+}
