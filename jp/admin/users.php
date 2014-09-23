@@ -105,7 +105,7 @@ if (isset($_GET['action'])) {
                    (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && 
                    (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*'))||
                    (is_numeric(trim($split_ip[0]))&&is_numeric(trim($split_ip[1]))&&is_numeric(trim($split_ip[2])))) {
-                 if(trim($split_ip[3]) != '*'){
+                 if(trim($split_ip[3]) != '*'&&!is_numeric(trim($split_ip[3]))){
                    $last_str = explode('/',trim($split_ip[3]));
                    if(count($last_str)!=2){
                      $split_error = true; 
@@ -138,7 +138,7 @@ if (isset($_GET['action'])) {
                    (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*') && 
                    (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*'))||
                    (is_numeric(trim($split_warn_email_ip[0]))&&is_numeric(trim($split_warn_email_ip[1]))&&is_numeric(trim($split_warn_email_ip[2])))) {
-                 if(trim($split_warn_email_ip[3]) != '*'){
+                 if(trim($split_warn_email_ip[3]) != '*'&&!is_numeric(trim($split_warn_email_ip[3]))){
                    $last_str = explode('/',trim($split_warn_email_ip[3]));
                    if(count($last_str)!=2){
                      $split_warn_email_error = true; 
@@ -231,7 +231,7 @@ if (isset($_GET['action'])) {
                    (is_numeric(trim($split_ip[2])) || trim($split_ip[2]) == '*') && 
                    (is_numeric(trim($split_ip[3])) || trim($split_ip[3]) == '*'))||
                    (is_numeric(trim($split_ip[0]))&&is_numeric(trim($split_ip[1]))&&is_numeric(trim($split_ip[2])))) {
-                 if(trim($split_ip[3]) != '*'){
+                 if(trim($split_ip[3]) != '*'&&!is_numeric(trim($split_ip[3]))){
                    $last_str = explode('/',trim($split_ip[3]));
                    if(count($last_str)!=2){
                      $split_error = true; 
@@ -264,7 +264,7 @@ if (isset($_GET['action'])) {
                    (is_numeric(trim($split_warn_email_ip[2])) || trim($split_warn_email_ip[2]) == '*') && 
                    (is_numeric(trim($split_warn_email_ip[3])) || trim($split_warn_email_ip[3]) == '*'))||
                    (is_numeric(trim($split_warn_email_ip[0]))&&is_numeric(trim($split_warn_email_ip[1]))&&is_numeric(trim($split_warn_email_ip[2])))) {
-                 if(trim($split_warn_email_ip[3]) != '*'){
+                 if(trim($split_warn_email_ip[3]) != '*'&&!is_numeric(trim($split_warn_email_ip[3]))){
                    $last_str = explode('/',trim($split_warn_email_ip[3]));
                    if(count($last_str)!=2){
                      $split_warn_email_error = true; 
