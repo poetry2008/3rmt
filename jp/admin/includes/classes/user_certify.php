@@ -645,6 +645,7 @@ if (!tep_session_is_registered('user_permission')) {
   session_regenerate_id(); 
   if ($check_login_pos === false) {
    if(isset($_POST['loginuid'])){
+    $admin_name = $_POST['loginuid'];
     $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
     $user_ip4 = 0;
     while (list($u_key, $u_byte) = each($user_ip)) {
@@ -724,7 +725,7 @@ if (!tep_session_is_registered('user_permission')) {
            
         }
         $users_num_query = tep_db_query("select is_locked from login where is_locked='1' and account='".$_POST['loginuid']."' and address='".$user_ip4."' and time_format(timediff(now(),logintime),'%H')<24");
-        if(tep_db_num_rows($users_num_query) >= 0){
+        if(tep_db_num_rows($users_num_query) > 0){
 
           tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
         }
