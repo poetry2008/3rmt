@@ -37,7 +37,7 @@ define('TABLE_HEADING_OPERATE','操作');
 define('TEXT_IP_UNLOCK','解除锁定');
 define('TEXT_DELETE_CONFIRM','解除阻止此IP访问吗?');
 define('TEXT_CONFIRM_LOCK','阻止此IP访问吗?');
-define('TEXT_CONFIRM_UNLOCK','真的要解除这个IP地址的锁定吗？');
+define('TEXT_CONFIRM_UNLOCK','真的要解除阻止此IP访问吗?');
 define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同一IP下管理者权限的Admin,Staff,Chief用户被锁定时，请优先解除Admin的锁定。');
 define('TEXT_LOGS_EDIT_SELECT','请选择');
 define('TEXT_LOGS_EDIT_DELETE','删除');
