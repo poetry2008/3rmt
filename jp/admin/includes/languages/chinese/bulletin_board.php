@@ -55,4 +55,6 @@ define('TEXT_DELETED_INFO','该回复已被管理员删除');
 define('TEXT_MEMO_EDIT_MUST_SELECT','至少选择一项。');
 define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','附件请控制在%s以内。');
 define('TEXT_BULLETIN_BOARD_NUM','序号');
+define('TEXT_BULLETIN_BOARD_ERROR','帖子已经不存在。');
+define('TEXT_BULLETIN_BOARD_REPLY_ERROR','回复已被删除。');
 ?>

@@ -206,7 +206,12 @@ if (isset($_GET['action']) and $_GET['action']) {
 
      //bulletin infomation
 	 $bulletin_sql="select * from ".TABLE_BULLETIN_BOARD." where id=$bulletin_id";
-	 $bulletin_raw=tep_db_query($bulletin_sql);
+         $bulletin_raw=tep_db_query($bulletin_sql);
+         if(tep_db_num_rows($bulletin_raw) == 0){
+
+           echo 'error'; 
+           exit;
+         }
 	 $bulletin_info=tep_db_fetch_array($bulletin_raw);
 
 	 $users_select=explode(':',$bulletin_info['allow']);
@@ -479,8 +484,19 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 break;
 
 	case 'edit_bulletin_reply':
-	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-     $bulletin_info=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id'].""));
+         $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+         $bulletin_query = tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id']."");
+         if(tep_db_num_rows($bulletin_query) == 0){
+
+           echo 'error';
+           exit;
+         }
+         $bulletin_info=tep_db_fetch_array($bulletin_query);
+         if($bulletin_info['content'] == 'deleted'){
+
+           echo 'deleted';
+           exit;
+         }
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	 $heading[] = array('text' => TEXT_EDIT_BULLETIN_ERPLY);

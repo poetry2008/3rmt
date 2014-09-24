@@ -931,6 +931,12 @@ function edit_bulletin(obj,id){
     dataType: 'text',
     async:false,
     success: function (data) {
+      if(data == 'error'){
+
+        alert('<?php echo TEXT_BULLETIN_BOARD_ERROR;?>');
+        location.reload();
+        return;
+      }
       $('#show_popup_info').html(data); 
       //prev next
       if($('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != null){
@@ -1012,6 +1018,18 @@ function reply_bulletin(obj,id,bulletin_id){
     dataType: 'text',
     async:false,
     success: function (data) {
+      if(data == 'error'){
+
+        alert('<?php echo TEXT_BULLETIN_BOARD_ERROR;?>');
+        location.href="<?php echo tep_href_link(FILENAME_BULLETIN_BOARD);?>";
+        return;
+      }
+      if(data == 'deleted'){
+
+        alert('<?php echo TEXT_BULLETIN_BOARD_REPLY_ERROR;?>');
+        location.reload();
+        return;
+      }
       $('#show_popup_info').html(data); 
       //prev next
       if($('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != '' && $('#bulletin_'+id).prevAll("tr[id^='bulletin_']").attr('id') != null){

@@ -2192,8 +2192,8 @@ require("includes/note_js.php");
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
 	       $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_read_status);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_mark);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_from);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_to);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="8%" nowrap="nowrap"','text' => $messages_from);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="16%" nowrap="nowrap"','text' => $messages_to);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_back);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="40%" nowrap="nowrap"','text' => $messages_content);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_add_file);
@@ -2343,8 +2343,10 @@ require("includes/note_js.php");
           $groups_array = explode('||||||',$latest_messages['recipient_name']);
           $groups_string_alt = $groups_array[0];
           $groups_name_list_array = explode(';',$groups_array[0]);
+          $groups_num = 0;
           foreach($groups_name_list_array as $groups_value){
             $groups_name_str_array = explode('>',$groups_value);
+            $groups_string .= '<span style="display:block;white-space:nowrap;">';
             if(count($groups_name_str_array) > 1){
 
               $groups_i = 0;
@@ -2352,21 +2354,50 @@ require("includes/note_js.php");
                 if(count($groups_name_str_array)-1 != $groups_i){
                   $groups_string .= mb_substr($groups_str_value,0,1).'...>';
                 }else{
-                  $groups_string .= $groups_str_value.';';
+                  $groups_string .= $groups_str_value;
                 }
                 $groups_i++;
               }
             }else{
-              $groups_string .= $groups_value.';';
+              $groups_string .= $groups_value;
+            }
+            $groups_num++;
+            if(count($groups_name_list_array) > 3 && $groups_num == 3){
+
+              $groups_string = $groups_string;
+              $groups_string .= TEXT_MESSAGES_CONTENTS;
+              break;
+            }
+            $groups_string .= '</span>';
+          }
+          $to_messages = $groups_string;
+        }else{
+          $latest_messages['recipient_name'] = $latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name'];
+          $users_string = '';
+          if($latest_messages['recipient_name'] != ''){
+
+            $user_name_array = explode(';',$latest_messages['recipient_name']);
+            $users_num = 0;
+            foreach($user_name_array as $user_name_key=>$user_name_value){
+
+              $users_string .= '<span style="display:block;white-space:nowrap;">';
+              $users_string .= $user_name_value;
+
+              $users_num++;
+              if(count($user_name_array) >3 && $users_num == 3){
+
+                $users_string = $users_string;
+                $users_string .= TEXT_MESSAGES_CONTENTS;
+                break;
+              }
+              $users_string .= '</span>';
             }
           }
-          $to_messages = '<span alt="'.$groups_string_alt.'" title="'.$groups_string_alt.'">'.mb_substr($groups_string,0,-1).'</span>';
-        }else{
-          $to_messages = '<span alt="'.$latest_messages['recipient_name'].'" title="'.($latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name']).'">'.($latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name']).'</span>'; 
+          $to_messages = $users_string; 
         }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">' .$to_messages.'</p>' 
+		'text'   => '<p style="margin:0px 0px 0px 0px;">' .$to_messages.'</p>' 
 	);
 	$messages_reply_status = $latest_messages['reply_status']==0 ? '' : '<img src="images/icons/reply_icon.png" border="0">';
 	$messages_info[] = array(
