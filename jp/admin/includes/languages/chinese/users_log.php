@@ -23,7 +23,6 @@ define('TABLE_HEADING_LOGINID', 'ID');
 define('TABLE_HEADING_LOGINTIME', '登录时间');
 define('TABLE_HEADING_LAST_ACCESSTIME', '最后访问时间');
 define('TABLE_HEADING_USER', '用户');
-define('TABLE_HEADING_STATUS', '状态');
 define('TABLE_HEADING_ADDRESS', 'IP地址');
 define('TABLE_HEADING_PAGE', '页');
 
@@ -37,7 +36,7 @@ define('TABLE_HEADING_OPERATE','操作');
 define('TEXT_IP_UNLOCK','解除锁定');
 define('TEXT_DELETE_CONFIRM','解除阻止此IP访问吗?');
 define('TEXT_CONFIRM_LOCK','阻止此IP访问吗?');
-define('TEXT_CONFIRM_UNLOCK','真的要解除这个IP地址的锁定吗？');
+define('TEXT_CONFIRM_UNLOCK','真的要解除阻止此IP访问吗?');
 define('TEXT_IP_UNLOCK_NOTES','<font color="#FF0000">※</font>&nbsp;同一IP下管理者权限的Admin,Staff,Chief用户被锁定时，请优先解除Admin的锁定。');
 define('TEXT_LOGS_EDIT_SELECT','请选择');
 define('TEXT_LOGS_EDIT_DELETE','删除');
@@ -46,4 +45,5 @@ define('TEXT_LOGS_EDIT_CONFIRM','确定要删除吗？');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_LOCK','锁定');
+define('TABLE_HEADING_STATUS_USER_LOG','操作结果');
 ?>

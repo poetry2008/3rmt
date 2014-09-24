@@ -23,7 +23,6 @@ define('TABLE_HEADING_LOGINID', 'ID');
 define('TABLE_HEADING_LOGINTIME', 'ログイン日時');
 define('TABLE_HEADING_LAST_ACCESSTIME', '最終アクセス日時');
 define('TABLE_HEADING_USER', 'ユーザー');
-define('TABLE_HEADING_STATUS', 'ステータス');
 define('TABLE_HEADING_ADDRESS', 'アドレス');
 define('TABLE_HEADING_PAGE', 'ページ');
 
@@ -46,4 +45,5 @@ define('TEXT_LOGS_EDIT_CONFIRM','本当に削除しますか？');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_LOCK','ステータス');
+define('TABLE_HEADING_STATUS_USER_LOG','操作結果');
 ?>
