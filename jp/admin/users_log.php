@@ -353,9 +353,9 @@ require("includes/note_js.php");
     $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=lastaccesstime&type=desc').'">'.TABLE_HEADING_LAST_ACCESSTIME.$alert_lastaccesstim.'</a>');
     }
     if(isset($_GET['sort']) && $_GET['sort'] == 'status'){
-    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type='.$contents_type).'">'.TABLE_HEADING_STATUS.$alert_status.'</a>');
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type='.$contents_type).'">'.TABLE_HEADING_STATUS_USER_LOG.$alert_status.'</a>');
     }else{
-    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type=desc').'">'.TABLE_HEADING_STATUS.$alert_status.'</a>');
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type=desc').'">'.TABLE_HEADING_STATUS_USER_LOG.$alert_status.'</a>');
     }
     if(isset($_GET['sort']) && $_GET['sort'] == 'address'){
     $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=address&type='.$contents_type).'">'.TABLE_HEADING_ADDRESS.$alert_address.'</a>');
