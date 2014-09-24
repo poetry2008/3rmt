@@ -55,67 +55,6 @@ class user_certify {
         if($admin_warn_email_ip){
           break;
         }
-        /*
-        $admin_ip_temp_array = explode('.',$admin_ip_str);
-        if($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*' && $admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
-          $admin_warn_email_ip = true;
-        }else{
-          if($admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
-            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1]){
-
-              $admin_warn_email_ip = true;
-            }
-          }elseif($admin_ip_temp_array[3] == '*'){
-
-            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1] && $admin_ip_user_array[2] == $admin_ip_temp_array[2]){
-
-              $admin_warn_email_ip = true;
-            }
-          }else if (($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*')||
-              ($admin_ip_user_array[0] == $admin_ip_temp_array[0] &&
-               $admin_ip_user_array[1] == $admin_ip_user_array[1])) {
-            $sub_ip_flag = false;
-            if(count(explode('/',$admin_ip_temp_array[2]))==2){
-              $ip_phase_arr = explode('/',$admin_ip_temp_array[2]);
-              for($i=$ip_phase_arr[0];$i<=$ip_phase_arr[1];$i++){
-                if($i==$admin_ip_user_array[2]){
-                  $sub_ip_flag = true;
-                  break;
-                }
-              }
-            }else{
-              if($admin_ip_user_array[2] == $admin_ip_temp_array[2]){
-                $sub_ip_flag = true;
-              }else{
-                $sub_ip_flag = false;
-              }
-            }
-            if($sub_ip_flag&&count(explode('/',$admin_ip_temp_array[3]))==2){
-              $ip_phase_arr = explode('/',$admin_ip_temp_array[3]);
-              for($i=$ip_phase_arr[0];$i<=$ip_phase_arr[1];$i++){
-                if($i==$admin_ip_user_array[3]){
-                  $admin_warn_email_ip = true;
-                  break;
-                }
-              }
-            }else{
-              if($sub_ip_flag&&$admin_ip_user_array[3] == $admin_ip_temp_array[3]){
-                $admin_warn_email_ip = true;
-              }else{
-                $admin_warn_email_ip = false;
-              }
-            }
-          }else{
-            if($admin_ip_str == $_SERVER['REMOTE_ADDR']){
-
-              $admin_warn_email_ip = true;
-            }else{
-              $admin_warn_email_ip = false;
-            } 
-          }
-        } 
-        if($admin_warn_email_ip == true){break;}
-        */
       }
 
       }
@@ -137,67 +76,6 @@ class user_certify {
         if($admin_ip_limit){
           break;
         }
-        /*
-        $admin_ip_temp_array = explode('.',$admin_ip_str);
-        if($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*' && $admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
-          $admin_ip_limit = true; 
-        }else{
-          if($admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
-            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1]){
-
-              $admin_ip_limit = true;
-            }
-          }elseif($admin_ip_temp_array[3] == '*'){
-
-            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1] && $admin_ip_user_array[2] == $admin_ip_temp_array[2]){
-
-              $admin_ip_limit = true;
-            }
-          }else if (($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*')||
-              ($admin_ip_user_array[0] == $admin_ip_temp_array[0] &&
-               $admin_ip_user_array[1] == $admin_ip_user_array[1])) {
-            $sub_ip_flag = false;
-            if(count(explode('/',$admin_ip_temp_array[2]))==2){
-              $ip_phase_arr = explode('/',$admin_ip_temp_array[2]);
-              for($i=$ip_phase_arr[0];$i<=$ip_phase_arr[1];$i++){
-                if($i==$admin_ip_user_array[2]){
-                  $sub_ip_flag = true;
-                  break;
-                }
-              }
-            }else{
-              if($admin_ip_user_array[2] == $admin_ip_temp_array[2]){
-                $sub_ip_flag = true;
-              }else{
-                $sub_ip_flag = false;
-              }
-            }
-            if($sub_ip_flag&&count(explode('/',$admin_ip_temp_array[3]))==2){
-              $ip_phase_arr = explode('/',$admin_ip_temp_array[3]);
-              for($i=$ip_phase_arr[0];$i<=$ip_phase_arr[1];$i++){
-                if($i==$admin_ip_user_array[3]){
-                  $admin_ip_limit = true;
-                  break;
-                }
-              }
-            }else{
-              if($sub_ip_flag&&$admin_ip_user_array[3] == $admin_ip_temp_array[3]){
-                $admin_ip_limit = true;
-              }else{
-                $admin_ip_limit = false;
-              }
-            }
-          }else{
-            if($admin_ip_str == $_SERVER['REMOTE_ADDR']){
-
-              $admin_ip_limit = true;
-            }else{
-              $admin_ip_limit = false; 
-            } 
-          }
-        } 
-        if($admin_ip_limit == true){break;}
-        */
       }
 
       }
@@ -401,8 +279,12 @@ class user_certify {
                         $reg_str = '/'.$reg_str.'/'; 
                         if (preg_match($reg_str, $login_ip)) {
                           $login_ip_check = true; 
+                          break;
                         }else{
                           $login_ip_check = tep_is_in_iplist(trim($login_ip),trim($ip_limit_res['limit_ip']));
+                          if($login_ip_check){
+                            break;
+                          }
                         }
                       }
                       if (!$login_ip_check) {
