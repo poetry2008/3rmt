@@ -23,7 +23,6 @@ define('TABLE_HEADING_LOGINID', 'ID');
 define('TABLE_HEADING_LOGINTIME', '登录时间');
 define('TABLE_HEADING_LAST_ACCESSTIME', '最后访问时间');
 define('TABLE_HEADING_USER', '用户');
-define('TABLE_HEADING_STATUS', '状态');
 define('TABLE_HEADING_ADDRESS', 'IP地址');
 define('TABLE_HEADING_PAGE', '页');
 
@@ -46,4 +45,5 @@ define('TEXT_LOGS_EDIT_CONFIRM','确定要删除吗？');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_LOCK','锁定');
+define('TABLE_HEADING_STATUS_USER_LOG','操作结果');
 ?>
