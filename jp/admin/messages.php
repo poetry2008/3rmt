@@ -2344,7 +2344,7 @@ require("includes/note_js.php");
           $groups_string_alt = $groups_array[0];
           $groups_name_list_array = explode(';',$groups_array[0]);
           $groups_num = 0;
-          foreach($groups_name_list_array as $groups_value){
+          foreach($groups_name_list_array as $key=>$groups_value){
             $groups_name_str_array = explode('>',$groups_value);
             $groups_string .= '<span style="display:block;white-space:nowrap;">';
             if(count($groups_name_str_array) > 1){
@@ -2354,12 +2354,28 @@ require("includes/note_js.php");
                 if(count($groups_name_str_array)-1 != $groups_i){
                   $groups_string .= mb_substr($groups_str_value,0,1).'...>';
                 }else{
-                  $groups_string .= $groups_str_value;
+					if(count($groups_name_str_array)>2){
+						//如果有三个，最后一个截取三个
+                      $groups_string .= cut_str($groups_str_value,3);
+					  //如果有两个
+					}elseif(count($groups_name_str_array)==2){
+                      $groups_string .= cut_str($groups_str_value,8);
+					}else{
+						//如果单个组,数据很长
+                      $groups_string .= $groups_str_value;
+					
+					}
                 }
                 $groups_i++;
               }
             }else{
-              $groups_string .= $groups_value;
+			  if($key==2){
+				  //第三个(很长)
+                 $groups_string .= cut_str($groups_value,8);
+			  }else{
+				  //不是第三个
+                 $groups_string .= cut_str($groups_value,12);
+			  }
             }
             $groups_num++;
             if(count($groups_name_list_array) > 3 && $groups_num == 3){
