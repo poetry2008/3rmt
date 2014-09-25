@@ -8542,16 +8542,11 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    $asset_all_product = 0;
    $result = array();
    $result['error'] = false;
-   $all_tmp_price = 0;
    $all_tmp_row = 0;
    $products_info_array = array();
    while($tmp_row = tep_db_fetch_array($tmp_query)){
      $tmp_row['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
-     $tmp_price = @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end,$sort);
-     if(!$tmp_price){
-       $tmp_price = $tmp_row['products_price'];
-     }
-     $tmp_relate_products_id = (int)$tmp_row['relate_products_id'];  
+       $tmp_relate_products_id = (int)$tmp_row['relate_products_id'];  
        if (!empty($tmp_relate_products_id)) {
           $o_count_sql = " select op.products_quantity,o.orders_id orders_id,op.final_price final_price from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$tmp_row['relate_products_id']."' and os.calc_price = '1'";
           if($site_id != 0) {
@@ -8577,11 +8572,9 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
             tep_db_free_result($o_count_raw);
           }
        }
-     $asset_all_product += abs($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
        $quantity_all_product += $tmp_row['products_real_quantity'];
-       $all_tmp_price += $tmp_price;
      }
    }
    if(empty($products_info_array)){
@@ -8589,8 +8582,6 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
      $result['error'] = true;
    }
    $result['quantity_all_product'] = $quantity_all_product;
-   $result['asset_all_product'] = $asset_all_product;
-   $result['avg_price'] = @($asset_all_product/$quantity_all_product);
    $result['products_info'] = $products_info_array;
    return $result;
 }
@@ -8611,10 +8602,6 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
     ='".$pid."' and products_bflag='".$bflag."'";
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
-  $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end,$sort);
-  if(!$tmp_price){
-    $tmp_price = $row['products_price'];
-  }
   $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
@@ -8651,13 +8638,7 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
      }
   }
   $result['quantity_all_product'] = $row['products_real_quantity'];
-  $result['asset_all_product'] =abs($tmp_price*$row['products_real_quantity']);
   $result['products_info'] = $products_info_array; 
-  if($tmp_price){
-    $result['price'] = $tmp_price;
-  }else{
-    $result['price'] = '0';
-  }
   return $result;
 }
 
