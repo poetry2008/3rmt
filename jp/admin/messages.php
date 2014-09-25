@@ -2192,7 +2192,7 @@ require("includes/note_js.php");
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
 	       $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_read_status);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_mark);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="8%" nowrap="nowrap"','text' => $messages_from);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="12%" nowrap="nowrap"','text' => $messages_from);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="16%" nowrap="nowrap"','text' => $messages_to);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_back);
                $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="40%" nowrap="nowrap"','text' => $messages_content);
@@ -2346,7 +2346,12 @@ require("includes/note_js.php");
           $groups_num = 0;
           foreach($groups_name_list_array as $key=>$groups_value){
             $groups_name_str_array = explode('>',$groups_value);
-            $groups_string .= '<span style="display:block;white-space:nowrap;">';
+			if(count($groups_name_str_array) > 1){
+              $groups_string .= '<span style="display:block;white-space:nowrap;">';
+			}else{
+              $groups_string .= '<span style="display:block;">';
+			
+			}
             if(count($groups_name_str_array) > 1){
 
               $groups_i = 0;
@@ -2359,7 +2364,7 @@ require("includes/note_js.php");
                       $groups_string .= cut_str($groups_str_value,3);
 					  //如果有两个
 					}elseif(count($groups_name_str_array)==2){
-                      $groups_string .= cut_str($groups_str_value,8);
+                      $groups_string .= cut_str($groups_str_value,12);
 					}else{
 						//如果单个组,数据很长
                       $groups_string .= $groups_str_value;
@@ -2374,7 +2379,7 @@ require("includes/note_js.php");
                  $groups_string .= cut_str($groups_value,8);
 			  }else{
 				  //不是第三个
-                 $groups_string .= cut_str($groups_value,12);
+                 $groups_string .= $groups_value;
 			  }
             }
             $groups_num++;
