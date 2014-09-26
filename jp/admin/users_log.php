@@ -11,10 +11,10 @@
   $ip_query = tep_db_query("select address from login where is_locked='1' group by address");
   while($ip_array = tep_db_fetch_array($ip_query)){
 
-    $user_ip_query = tep_db_query("select sessionid,account from login where address='".$ip_array['address']."' and is_locked='0'");
+    $user_ip_query = tep_db_query("select sessionid,account,status from login where address='".$ip_array['address']."' and is_locked='0'");
     while($user_ip_array = tep_db_fetch_array($user_ip_query)){
 
-      if($user_ip_array['account'] != ''){
+      if($user_ip_array['account'] != '' && $user_ip_array['status'] == 0){
         $user_permissions_query = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$user_ip_array['account']."'");
         $user_permissions_array = tep_db_fetch_array($user_permissions_query);
         tep_db_free_result($user_permissions_query);
