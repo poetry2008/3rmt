@@ -7,6 +7,27 @@
   // 自动删除过期数据
   $alarm_day = get_configuration_by_site_id('USERS_EXPIRED_DATE_SETTING',0); 
   tep_db_query("delete from login where  is_locked='0' and time_format(timediff(now(),logintime),'%H')>".$alarm_day*24);
+  //查询被封IP
+  $ip_query = tep_db_query("select address from login where is_locked='1' group by address");
+  while($ip_array = tep_db_fetch_array($ip_query)){
+
+    $user_ip_query = tep_db_query("select sessionid,account from login where address='".$ip_array['address']."' and is_locked='0'");
+    while($user_ip_array = tep_db_fetch_array($user_ip_query)){
+
+      if($user_ip_array['account'] != ''){
+        $user_permissions_query = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$user_ip_array['account']."'");
+        $user_permissions_array = tep_db_fetch_array($user_permissions_query);
+        tep_db_free_result($user_permissions_query);
+
+        if($user_permissions_array['permission'] < 15){
+
+          tep_db_query("update login set is_locked='1' where sessionid='".$user_ip_array['sessionid']."'");
+        }
+      }
+    }
+    tep_db_free_result($user_ip_query);
+  }
+  tep_db_free_result($ip_query);
   define('TABLE_LOGIN', 'login');
   if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
   if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
