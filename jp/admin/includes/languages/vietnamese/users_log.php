@@ -47,4 +47,5 @@ define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_LOCK','Khóa');
 define('TEXT_CONFIRM_UNLOCK','Bạn có muốn bỏ chặn địa chỉ IP tương ứng ?');
+define('TABLE_USERS_LOGIN_NUM','回数');
 ?>

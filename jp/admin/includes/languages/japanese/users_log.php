@@ -46,4 +46,5 @@ define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_LOCK','ステータス');
 define('TABLE_HEADING_STATUS_USER_LOG','操作結果');
+define('TABLE_USERS_LOGIN_NUM','回数');
 ?>

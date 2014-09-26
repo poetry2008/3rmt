@@ -225,6 +225,14 @@ require("includes/note_js.php");
         $contents_str = 'logoutstatus desc';
         $contents_type = 'desc';
       }
+    }else if($_GET['sort'] == 'login_num'){
+      if($_GET['type'] == 'desc'){
+        $contents_str = 'login_num  desc';
+        $contents_type = 'asc';
+      }else{
+        $contents_str = 'login_num asc';
+        $contents_type = 'desc';
+      }
     }else if($_GET['sort'] == 'address'){
       if($_GET['type'] == 'desc'){
         $contents_str = 'address desc';
@@ -268,6 +276,13 @@ require("includes/note_js.php");
             $alert_status = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
         }else{
             $alert_status = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+        }
+   }
+   if($_GET['sort'] == 'login_num'){
+        if($_GET['type'] == 'desc'){
+            $alert_num = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+        }else{
+            $alert_num = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
         }
    }
    if($_GET['sort'] == 'address'){
@@ -357,6 +372,11 @@ require("includes/note_js.php");
     }else{
     $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type=desc').'">'.TABLE_HEADING_STATUS_USER_LOG.$alert_status.'</a>');
     }
+    if(isset($_GET['sort']) && $_GET['sort'] == 'login_num'){
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=login_num&type='.$contents_type).'">'.TABLE_USERS_LOGIN_NUM.$alert_num.'</a>');
+    }else{
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=login_num&type=desc').'">'.TABLE_USERS_LOGIN_NUM.$alert_num.'</a>');
+    }
     if(isset($_GET['sort']) && $_GET['sort'] == 'address'){
     $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=address&type='.$contents_type).'">'.TABLE_HEADING_ADDRESS.$alert_address.'</a>');
     }else{
@@ -420,6 +440,10 @@ require("includes/note_js.php");
         'text'   => ' [' . $a_sts_in[$arec['loginstatus']] .  ']'
         );
     }
+    $alert_info[] = array(
+        'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
+        'text'   => $arec['login_num'] 
+        );
     $alert_info[] = array(
         'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
         'text'   => $saddress
