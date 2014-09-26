@@ -484,20 +484,17 @@ class user_certify {
 
               $password = '';
             }
-            if($s_status == 'p' || $s_status == 'e' || $s_status == 'n'){
-              //查询已有记录，进行对比，是否累加登录次数
-              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
-              $users_login_array = tep_db_fetch_array($users_login_query);
-              tep_db_free_result($users_login_query);
-              if($users_login_array['account'] == $auth_user && $users_login_array['address'] == $n_ip4 && $users_login_array['loginstatus'] == $s_status){
-                $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address$status_out_c,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'".$auth_user."','{$password}','$s_status','','$n_ip4$status_out','".($users_login_array['login_num']+1)."')");
-                tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
-              }else{
-                $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','$password','$s_status',$n_ip4$status_out)");
-              }
+            //查询已有记录，进行对比，是否累加登录次数
+            $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
+            $users_login_array = tep_db_fetch_array($users_login_query);
+            tep_db_free_result($users_login_query);
+            if($users_login_array['account'] == $auth_user && $users_login_array['address'] == $n_ip4 && $users_login_array['loginstatus'] == $s_status){
+              $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'".$auth_user."','{$password}','$s_status',$n_ip4$status_out,'".($users_login_array['login_num']+1)."')");
+              tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
             }else{
               $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','$password','$s_status',$n_ip4$status_out)");
             }
+            
             if (!$result) {
                 $this->isErr = TRUE;
                 die('<br>'.TEXT_ERRINFO_DBERROR);
