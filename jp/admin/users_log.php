@@ -463,7 +463,7 @@ require("includes/note_js.php");
     }
     $alert_info[] = array(
         'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
-        'text'   => $arec['login_num'] 
+        'text'   => $arec['login_num'] == 1 ? '' : $arec['login_num'] 
         );
     $alert_info[] = array(
         'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
