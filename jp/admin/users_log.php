@@ -213,7 +213,7 @@ require("includes/note_js.php");
    <td>
 <?php 
     if(!isset($_GET['sort']) || $_GET['sort'] == ''){
-       $contents_str = 'lastaccesstime desc'; 
+       $contents_str = 'logintime desc'; 
     }else if($_GET['sort'] == 'account'){
       if($_GET['type'] == 'desc'){
         $contents_str = 'account desc';

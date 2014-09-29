@@ -88,7 +88,7 @@ class user_certify {
         $newc=new funCrypt; 
         $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
         //查询已有记录，进行对比，是否累加登录次数
-        $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,logoutstatus,login_num from login order by lastaccesstime desc limit 0,1");
+        $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,logoutstatus,login_num from login order by logintime desc limit 0,1");
         $users_login_array = tep_db_fetch_array($users_login_query);
         tep_db_free_result($users_login_query);
         if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p' && $users_login_array['logoutstatus'] == 'r'){
@@ -178,7 +178,7 @@ class user_certify {
 
               $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
               //查询已有记录，进行对比，是否累加登录次数
-              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
               $users_login_array = tep_db_fetch_array($users_login_query);
               tep_db_free_result($users_login_query);
               if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p'){
@@ -196,7 +196,7 @@ class user_certify {
               $newc=new funCrypt;
               $password = $newc->enCrypt($_POST['loginpwd'],$this->key);
               //查询已有记录，进行对比，是否累加登录次数
-              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
               $users_login_array = tep_db_fetch_array($users_login_query);
               tep_db_free_result($users_login_query);
               if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'n'){
@@ -485,7 +485,7 @@ class user_certify {
               $password = '';
             }
             //查询已有记录，进行对比，是否累加登录次数
-            $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
+            $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
             $users_login_array = tep_db_fetch_array($users_login_query);
             tep_db_free_result($users_login_query);
             if($users_login_array['account'] == $auth_user && $users_login_array['address'] == $n_ip4 && $users_login_array['loginstatus'] == $s_status){
@@ -664,7 +664,7 @@ if (!tep_session_is_registered('user_permission')) {
               $s_sid = session_id();
               $password = $newc->enCrypt($_POST['loginpwd'],$key);
               //查询已有记录，进行对比，是否累加登录次数
-              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
               $users_login_array = tep_db_fetch_array($users_login_query);
               tep_db_free_result($users_login_query);
               if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p'){
@@ -680,7 +680,7 @@ if (!tep_session_is_registered('user_permission')) {
               $newc=new funCrypt;
               $password = $newc->enCrypt($_POST['loginpwd'],$key);
               //查询已有记录，进行对比，是否累加登录次数
-              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
               $users_login_array = tep_db_fetch_array($users_login_query);
               tep_db_free_result($users_login_query);
               if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'n'){
@@ -707,7 +707,7 @@ if (!tep_session_is_registered('user_permission')) {
         $key = 'gf1a2';
         $password = $newc->enCrypt($_POST['loginpwd'],$key);
         //查询已有记录，进行对比，是否累加登录次数
-        $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by lastaccesstime desc limit 0,1");
+        $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
         $users_login_array = tep_db_fetch_array($users_login_query);
         tep_db_free_result($users_login_query);
         if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p'){
