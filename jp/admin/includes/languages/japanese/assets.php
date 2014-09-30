@@ -39,4 +39,5 @@ define('TEXT_SEARCH_DATE_START','開始日');
 define('TEXT_SEARCH_DATE_END','終了日');
 define('TEXT_ASSETS_INFO','資産計算条件を設定し検索ボタンをクリックしてください<br>資産計算に必要なデータが足りない場合、行が赤色で表示されます');
 define('TEXT_ROW','個');
+define('TEXT_ZERO_DATA','データーなし');
 ?>

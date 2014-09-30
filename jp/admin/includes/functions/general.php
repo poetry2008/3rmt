@@ -8537,9 +8537,21 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price, p.relate_products_id from ".TABLE_PRODUCTS." 
      p,".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p2c.products_id = p.products_id 
      ".$cid_str." and p.products_bflag='".$bflag."'";
+
+   $tmp_sql = "select distinct p.*,pd.*,
+      IF(  `relate_products_id` =0 OR  `relate_products_id` IS NULL , '1', '0' ) as relate_id from 
+      products p, products_description pd, products_to_categories p2c 
+      where p.products_id=pd.products_id 
+      and p2c.products_id=p.products_id
+      and p.products_bflag = '".$bflag."' 
+      ".$cid_str." and pd.site_id='0' 
+       order by relate_id,pd.products_name";
+
+
    $tmp_query=tep_db_query($tmp_sql);
    $quantity_all_product = 0;
    $asset_all_product = 0;
+   $temp_real_all_quantity = 0;
    $result = array();
    $result['error'] = false;
    $all_tmp_row = 0;
@@ -8563,10 +8575,24 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
           }else{
             $o_count_sql .= " order by o.torihiki_date desc";
           }
+          $temp_all_product = $tmp_row['products_real_quantity'];
+          $temp_quantity = 0;
+          $temp_quantity_value = 0;
           $o_count_raw = tep_db_query($o_count_sql);     
           if (tep_db_num_rows($o_count_raw)) {
             while($orders_products_array = tep_db_fetch_array($o_count_raw)){
-
+              if($temp_quantity >= $temp_all_product){
+                break;
+              }
+              $temp_quantity += $orders_products_array['products_quantity'];
+              $temp_quantity_value = $orders_products_array['products_quantity'];
+              if($temp_quantity > $temp_all_product){
+                $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
+              }
+              $temp_real_all_quantity += $temp_quantity_value;
+              if($temp_quantity_value < $orders_products_array['products_quantity']){
+                $orders_products_array['products_quantity'] = $temp_quantity_value;
+              }
               $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$orders_products_array['final_price'],'products_quantity'=>$orders_products_array['products_quantity']);
             } 
             tep_db_free_result($o_count_raw);
@@ -8581,6 +8607,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
 
      $result['error'] = true;
    }
+   $result['real_all_product'] = $temp_real_all_quantity;
    $result['quantity_all_product'] = $quantity_all_product;
    $result['products_info'] = $products_info_array;
    return $result;
