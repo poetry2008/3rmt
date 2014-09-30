@@ -39,5 +39,4 @@ define('TEXT_SEARCH_DATE_START','开始日期');
 define('TEXT_SEARCH_DATE_END','结束日期');
 define('TEXT_ASSETS_INFO','设置资产计算条件后请点击搜索按钮。<br>缺少资产计算数据时,该行以红色显示');
 define('TEXT_ROW','个');
-define('TEXT_ZERO_DATA','无数据');
 ?>
