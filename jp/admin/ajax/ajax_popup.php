@@ -1082,13 +1082,13 @@ if ($_GET['action'] == 'show_category_info') {
       $right_td .= '</tr></table>';
       if($tk == 0){
         $contents[] = array('text' => array(
-        array('params' => 'width="50%"','text' => $left_td), 
+        array('text' => $left_td,'params' => 'width="50%"'), 
         array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-        array('params' => 'width="50%"','text' => $left_td), 
+        array('text' => $left_td,'params' => 'width="50%"'), 
         array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         );
