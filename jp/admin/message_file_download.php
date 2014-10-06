@@ -22,7 +22,9 @@
 			Header("Content-type: application/octet-stream");
 			Header("Accept-Ranges: bytes");
                         Header("Accept-Length: ".filesize('messages_upload/'.$file_name));
-			Header("Content-Disposition: attachment; filename=\"".$file_name."\"");
+                        Header("Content-Disposition: attachment; filename=\"".$file_name."\"");
+                        ob_clean(); 
+                        flush(); 
 			echo fread($file, filesize('messages_upload/'.$file_id));
 			fclose($file);
 		}

@@ -1187,8 +1187,7 @@ require("includes/note_js.php");
 	if($ocertify->npermission <15){
 			$header_title_sql.= ' and '.$where_str;
 	}
-$last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
-		$last_id_sql.=$where_str;
+
 
 	if(isset($_GET['search_text'])&& $_GET['search_text']){
                 $show_reply_sql = " select distinct bulletin_id from " .
@@ -1201,34 +1200,99 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
                 array_unique($bulletin_id_search_array);
                 if(!empty($bulletin_id_search_array)){
                   $bulletin_id_str  = implode(',',$bulletin_id_search_array);
-                  $last_id_sql.=" and ( bb.title like '%".$search_text."%' or  bb.id in (".$bulletin_id_str.") )";
+                  $where_str.=" and ( bb.title like '%".$search_text."%' or  bb.id in (".$bulletin_id_str.") )";
                 }else{
-		  $last_id_sql.=" and bb.title like '%".$search_text."%'";
+		  $where_str.=" and bb.title like '%".$search_text."%'";
                 }
         }
 
+        if(isset($_GET['bulletin_id']) && $_GET['type']=='show_reply'){
+                //根据帖子的排序，来生成上一个，下一个
+		if(isset($_GET['bulletin_order_sort']) && $_GET['bulletin_order_sort'] != '' && isset($_GET['bulletin_order_type']) && $_GET['bulletin_order_type'] != ''){
+                  switch($_GET['bulletin_order_sort']){
+
+                  case 'mark':
+                    $bulletin_order_sort = 'bb.mark';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+                    break;
+                  case 'content':
+                    $bulletin_order_sort = 'bb.content';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+                    break;
+                  case 'manager':
+                    $bulletin_order_sort = 'u.name';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+                    break;
+                  case 'title':
+                    $bulletin_order_sort = 'bb.title';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+                    break;
+                  case 'collect':
+                    $bulletin_order_sort = 'bb.collect';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+                    break;
+                  case 'allow':
+                    $bulletin_order_sort = 'bb.allow';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+                    break;
+                  case 'action':
+                    $bulletin_order_sort = 'bb.update_time';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+                    break;
+                  case 'add_file':
+                    $bulletin_order_sort = 'bb.file_path';
+                    $bulletin_order_type = $_GET['bulletin_order_type'];
+	          break;
+                  }
+                }else{
+                  $bulletin_order_sort = 'bb.update_time';
+                  $bulletin_order_type = 'desc'; 
+                }
+  //排序处理
+  if($bulletin_order_sort=='bb.collect'){
+    $last_id_sql  = "select *,if(bb.collect like '%".$ocertify->auth_user."%',1,0) as is_collect 
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by is_collect ".$bulletin_order_type;
+  }else if ($bulletin_order_sort=='u.name'){
+    $last_id_sql  = "select *,if(u.userid = null or u.userid is null,bb.manager,u.name) as real_name 
+      from ". TABLE_BULLETIN_BOARD ." bb left join " .TABLE_USERS. " u ON
+      bb.manager=u.userid where ".$where_str." order by real_name ".$bulletin_order_type;
+  }else if ($bulletin_order_sort == 'bb.allow'){
+    $last_id_sql  = "select *,if(bb.allow!='all',(if(bb.allow like
+      'id:%',substring(bb.allow,4),substring(bb.allow,7))),bb.allow) as real_allow 
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by real_allow ".$bulletin_order_type;
+  }else if ($bulletin_order_sort == 'bb.file_path'){
+    $last_id_sql  = "select *,if( file_path is null or file_path = '',0,
+      (CHAR_LENGTH(replace(file_path,'|||','||||'))-CHAR_LENGTH(file_path))+1) as file_num
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by file_num ".$bulletin_order_type;
+  }else{
+    $last_id_sql  = "select * 
+      from ". TABLE_BULLETIN_BOARD ." bb where ".$where_str." order by ".$bulletin_order_sort." ".$bulletin_order_type;
+  }
 		$next_id_sql=$last_id_sql;
-	if(isset($_GET['bulletin_id']) && $_GET['type']=='show_reply'){
-		
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
 		$content=$header_title_row['title'];
 	        $header_content=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
-		if(!$header_id)$header_id=$_GET['bulletin_id'];
-		$last_id_row=tep_db_fetch_array(tep_db_query($last_id_sql." and id > $header_id order by id asc limit 1"));
-		$next_id_row=tep_db_fetch_array(tep_db_query($next_id_sql." and id < $header_id order by id desc limit 1"));
-		$last_id=$last_id_row['id'];
-		$next_id=$next_id_row['id'];
+                if(!$header_id)$header_id=$_GET['bulletin_id'];
+                $last_id_query = tep_db_query($last_id_sql);
+                $bulletin_id_list_array = array();
+                while($last_id_array = tep_db_fetch_array($last_id_query)){
+
+                  $bulletin_id_list_array[] = $last_id_array['id'];
+                }
+                tep_db_free_result($last_id_query);
+		$last_id=$bulletin_id_list_array[array_search($header_id,$bulletin_id_list_array)-1];
+		$next_id=$bulletin_id_list_array[array_search($header_id,$bulletin_id_list_array)+1];
 		$header_title_html='';
-		if($last_id&&tep_db_num_rows(tep_db_query($last_id_sql." and id>=".$last_id))!=0){
+		if($last_id){
 					$header_title_html.='<a
-                                          href="bulletin_board.php?type=show_reply&bulletin_id='.$last_id.'&from=last'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
+                                          href="bulletin_board.php?type=show_reply&bulletin_id='.$last_id.'&from=last'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').($_GET['bulletin_order_sort']!=''?'&bulletin_order_sort='.$_GET['bulletin_order_sort']:'').($_GET['bulletin_order_type']!=''?'&bulletin_order_type='.$_GET['bulletin_order_type']:'').'"><img src="images/icons/icon_last.gif" title="'.TEXT_LAST_BULLETIN.'" alt="'.TEXT_LAST_BULLETIN.'"></a>';
 	}else {
 			$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 	}
-		if($next_id>0&&tep_db_num_rows(tep_db_query($next_id_sql." and id<=".$next_id))!=0){
-				$header_title_html.='<a href="bulletin_board.php?type=show_reply&bulletin_id='.$next_id.'&from=next'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
+		if($next_id){
+				$header_title_html.='<a href="bulletin_board.php?type=show_reply&bulletin_id='.$next_id.'&from=next'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').($_GET['bulletin_order_sort']!=''?'&bulletin_order_sort='.$_GET['bulletin_order_sort']:'').($_GET['bulletin_order_type']!=''?'&bulletin_order_type='.$_GET['bulletin_order_type']:'').'" ><img src="images/icons/icon_next.gif" title="'.TEXT_NEXT_BULLETIN.'" alt="'.TEXT_NEXT_BULLETIN.'"></a>';
 		}else{
 				$header_title_html.='&nbsp&nbsp&nbsp&nbsp';
 		}
@@ -1762,7 +1826,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
         $title=str_replace("\n",'<br>',$bulletin['title']);
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  width="60%"', 
-                          'text' => '<a href="bulletin_board.php?type=show_reply'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'&bulletin_id='.$bulletin["id"].'">'.$title.'</a>'
+                          'text' => '<a href="bulletin_board.php?type=show_reply'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'&bulletin_id='.$bulletin["id"].($_GET['order_sort']!=''?'&bulletin_order_sort='.$_GET['order_sort']:'').($_GET['order_type']!=''?'&bulletin_order_type='.$_GET['order_type']:'').'">'.$title.'</a>'
                         );
 	$add_file_html='';
 	$file_list_arr = explode("|||",$bulletin['file_path']); 
@@ -1879,7 +1943,7 @@ $last_id_sql="select * from  ".TABLE_BULLETIN_BOARD." bb where ";
                   <tr>
                     <td colspan="2" align="right"><div class="td_button"><?php 
 					if($_GET['type']=='show_reply'){
-						echo '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$param_search).'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
+						echo '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$param_search).($_GET['bulletin_order_sort']!=''?'&order_sort='.$_GET['bulletin_order_sort']:'').($_GET['bulletin_order_type']!=''?'&order_type='.$_GET['bulletin_order_type']:'').'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
 						echo '<a href="javascript:void(0);" onclick="create_bulletin_reply(this,'.$_GET["bulletin_id"].');">' .tep_html_element_button(TEXT_CREATE_BULLETIN_REPLY,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>'; 
 					}else{
 						echo '<a href="'.tep_href_link(FILENAME_BULLETIN_BOARD).'" onclick="back(this);">' .tep_html_element_button(TEXT_BACK,$site_permission_flag == false ? 'disabled="disabled"' : '') . '</a>';
