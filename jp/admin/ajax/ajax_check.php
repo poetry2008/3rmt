@@ -491,6 +491,18 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }
   $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
   echo $allow_user_select;
+}else if(isset($_GET['action']) && $_GET['action'] == 'open_leftmenu'){
+
+  if ($_COOKIE['tarrow'] == 'open') {
+    require(DIR_WS_BOXES . 'configuration.php');
+    require(DIR_WS_BOXES . 'catalog.php');
+    require(DIR_WS_BOXES . 'modules.php');
+    require(DIR_WS_BOXES . 'customers.php');
+    require(DIR_WS_BOXES . 'localization.php');
+    require(DIR_WS_BOXES . 'reports.php');
+    require(DIR_WS_BOXES . 'tools.php');
+    require(DIR_WS_BOXES . 'users.php');
+  }
 }
  
 ?>

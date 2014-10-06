@@ -9,6 +9,7 @@ if (typeof window.jQuery == "undefined") {
 }
 </script>
 <script>
+var leftmenu_open_status = true;
 $(document).ready(function(){
   <?php
   if ($_COOKIE['tarrow'] == 'open') {
@@ -21,6 +22,7 @@ $(document).ready(function(){
   <?php
   } else {
   ?>
+  leftmenu_open_status = false;
   $('.columnLeft').parent().after('<td class="show_left_menu" valign="top" style="padding-top:5px; *padding-top:48px; padding-right:5px; *padding-left:0;"><a href="javascript:void(0);" class="leftright" onclick="toggle_leftColumn();"><img src="includes/languages/japanese/images/boult.gif" alt="img"></a></td>');
   if ($("#toggle_width").length > 0) {
     $("#toggle_width").css('min-width', '726px'); 
@@ -40,8 +42,24 @@ function toggle_leftColumn()
 
   if (arrow_status == 'none') {
     document.cookie = 'tarrow=open';  
+    if(leftmenu_open_status == false){
+      $.ajax({
+        url: 'ajax.php?action=open_leftmenu',
+        data: '',
+        type: 'POST',
+        dataType: 'text',
+        async : false,
+        success: function(data){
+
+          $('.columnLeft').append(data); 
+          $('.columnLeft').parent().attr('width','174');
+          leftmenu_open_status = true;
+        }
+      });
+    }
   } else {
     document.cookie = 'tarrow=close';  
+    $('.columnLeft').parent().attr('width','0');
   }
   
   $('.columnLeft').toggle();
@@ -199,12 +217,15 @@ $l_select_box_arr = array();
 if (isset($_SESSION['l_select_box'])) {
   $l_select_box_arr = explode(',', $_SESSION['l_select_box']);
 }
-require(DIR_WS_BOXES . 'configuration.php');
-require(DIR_WS_BOXES . 'catalog.php');
-require(DIR_WS_BOXES . 'modules.php');
-require(DIR_WS_BOXES . 'customers.php');
-require(DIR_WS_BOXES . 'localization.php');
-require(DIR_WS_BOXES . 'reports.php');
-require(DIR_WS_BOXES . 'tools.php');
-require(DIR_WS_BOXES . 'users.php');
+
+if ($_COOKIE['tarrow'] == 'open') {
+  require(DIR_WS_BOXES . 'configuration.php');
+  require(DIR_WS_BOXES . 'catalog.php');
+  require(DIR_WS_BOXES . 'modules.php');
+  require(DIR_WS_BOXES . 'customers.php');
+  require(DIR_WS_BOXES . 'localization.php');
+  require(DIR_WS_BOXES . 'reports.php');
+  require(DIR_WS_BOXES . 'tools.php');
+  require(DIR_WS_BOXES . 'users.php');
+}
 ?>

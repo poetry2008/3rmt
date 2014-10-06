@@ -222,21 +222,23 @@ $belong = str_replace($pcode_array[1][0],urlencode($pcode_array[1][0]),$belong);
       }
 
     }
+    var id_list = '';
     count = x.parent().children().each(
                                        function (e,key){
+                                         id_list += $(this).attr('class')+',';
                                          if($(this).attr('id') && ($(this).attr('id')!='o'+e) ){
                                          $(this).attr('id','o'+e);
-                                         ajaxUpdate($(this).attr('class'),$(this).attr('id'));
                                          }
                                        }
                                        );
 
+    ajaxUpdate(id_list);
   }
 <?php //更改序号值?>
-function ajaxUpdate(id,order){
+function ajaxUpdate(id_list){
   $.ajax({
   url: "oa_ajax.php",
-  data: "id="+id+"&order="+order+"&action=updateoaorder&random="+ new Date().getTime(),
+  data: "id_list="+id_list+"&action=updateoaorder&random="+ new Date().getTime(),
   async : false,
   success: function(){
     $(this).addClass("done");

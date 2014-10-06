@@ -57,9 +57,19 @@ if(isset($_GET['action'])){
    case 'stock' 判断提交过来的数据是否与数据库储存的数据一致
 ------------------------------------------------------*/
   case 'updateoaorder':
-    $id = $_GET['id'];
-    $order = substr($_GET['order'],1);
-    $result = tep_db_query("update `".TABLE_OA_FORM_GROUP."` set `ordernumber` = '".tep_db_prepare_input($order)."' where id = '".$id."'");  
+    $id_list = $_GET['id_list'];
+    $id_list_array = explode(',',$id_list);
+    $id_array = array();
+    $i = 1;
+    foreach($id_list_array as $id_list_value){
+
+      $id_list_temp = explode(' ',$id_list_value);
+      if($id_list_temp[1] != ''){
+
+        $result = tep_db_query("update `".TABLE_OA_FORM_GROUP."` set `ordernumber` = '".tep_db_prepare_input($i)."' where id = '".$id_list_temp[0]."'");  
+        $i++;
+      }
+    }
     break;
   case 'updategrouporder':     
     $id = $_GET['id'];
