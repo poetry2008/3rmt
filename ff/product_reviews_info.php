@@ -110,7 +110,7 @@ function showimage($1) {
             </tr> 
             <tr> 
               <td class="main"><br> 
-                <div class="text_main"><span><b><?php echo SUB_TITLE_RATING; ?></b></span><span><?php echo tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating'])); ?></span><span>[<?php echo sprintf(TEXT_OF_FIVE_INFO_STARS, $reviews['reviews_rating']); ?>]</span></div></td> 
+                <div class="text_main"><span><b><?php echo SUB_TITLE_RATING; ?></b></span><span><?php echo tep_image(DIR_WS_IMAGES . 'stars_' .  $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?></span><span>[<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</span></div></td> 
             </tr> 
             <tr> 
               <td><br> 
