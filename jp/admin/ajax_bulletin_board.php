@@ -399,13 +399,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 //	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_add_user=array();
 	 $add_user=$bulletin_info['add_user'];
-	 if($add_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$add_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					$user_info=tep_get_user_info($add_user);
-					$add_user=$user_info['name'];
-			 }
-	 }
 	 if(!$add_user){
 			 $add_user=TEXT_UNSET_DATA;
 	 }
@@ -415,13 +408,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	 $bulletin_content_row_update=array();
 	 $update_user=$bulletin_info['update_user'];
-	 if($update_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$update_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					 $user_info=tep_get_user_info($update_user);
-					 $update_user=$user_info['name'];
-			 }
-	 }
 	 if(!$update_user){
 			 $update_user=TEXT_UNSET_DATA;
 	 }
@@ -571,13 +557,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_add_user=array();
 	 $add_user=$bulletin_info['add_user'];
-	 if($add_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$add_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					$user_info=tep_get_user_info($add_user);
-					$add_user=$user_info['name'];
-			 }
-	 }
 	 if(!$add_user){
 			 $add_user=TEXT_UNSET_DATA;
 	 }
@@ -587,13 +566,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	 $bulletin_content_row_update=array();
 	 $update_user=$bulletin_info['update_user'];
-	 if($update_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$update_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					$user_info=tep_get_user_info($update_user);
-					$update_user=$user_info['name'];
-			 }
-	 }
 	 if(!$update_user){
 			 $update_user=TEXT_UNSET_DATA;
 	 }
