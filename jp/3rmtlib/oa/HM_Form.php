@@ -118,7 +118,7 @@ class HM_Form extends DbRecord
       }
 
       $("#qa_form").find("input[type=text]").each(function (){
-        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val() && $($("#size_"+$(this).attr('name'))).val() != ''){
           canEnd = false; 
         }
       });
@@ -277,7 +277,7 @@ class HM_Form extends DbRecord
                             if($(this).attr('size')){
                               $(this).bind('keyup',function(){
                                   checkLockOrder();
-                                  if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+                                  if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val() && $($("#size_"+$(this).attr('name'))).val() != ''){
                                     $(this).parent().parent().find('.alertmsg').remove();
                                     $("<span class='alertmsg'><?php echo
                                       OA_FORM_TEXT_MAX_INPUT;?>"+$($("#size_"+$(this).attr('name'))).val()+"<?php
@@ -315,7 +315,7 @@ class HM_Form extends DbRecord
 
      var submit_flag = true;
      $("#qa_form").find("input[type=text]").each(function (){
-        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val()){
+        if( $(this).val().length >$($("#size_"+$(this).attr('name'))).val() && $($("#size_"+$(this).attr('name'))).val() != ''){
           submit_flag = false; 
         }
      });

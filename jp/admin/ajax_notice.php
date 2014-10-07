@@ -356,7 +356,7 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
   if($_POST['all_del'] == '1' && $_POST['all_nid'] != '' ){
     $nid_arr = explode(',',$_POST['all_nid']);
     foreach($nid_arr as $nid_value){
-      $notice_raw = tep_db_query("select deleted from ".TABLE_NOTICE." where id = '".$nid_value."' and type = '0'");
+      $notice_raw = tep_db_query("select deleted from ".TABLE_NOTICE." where id = '".$nid_value."'");
       $notice = tep_db_fetch_array($notice_raw);
       $notice_users_str = ''; 
       if($notice['deleted'] == ''){

@@ -33,7 +33,7 @@ define('TEXT_INFO_REVIEW_READ', '読まれた回数');
 define('TEXT_INFO_REVIEW_SIZE', 'サイズ');
 define('TEXT_INFO_PRODUCTS_AVERAGE_RATING', '平均点');
 
-define('TEXT_OF_FIVE_INFO_STARS', '5点中の %s点!');
+define('TEXT_OF_5_STARS', '5点中の %s点!');
 define('TEXT_GOOD', '<font color="#ff0000">良い</font>');
 define('TEXT_BAD', '<font color="#ff0000">悪い</font>');
 define('TEXT_INFO_HEADING_DELETE_REVIEW', 'レビューを削除');

@@ -416,11 +416,11 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 		}
 		else $new_header['type']='order';
         $new_header['delete']='&nbsp;<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.png" alt="close" onmousemove="this.src=\'images/icons/white_bbs_del_one.png\'" onmouseout="this.src=\'images/icons/bbs_del_one.png\'"></a>'; 
-        $new_header['hidden']= '<input name="del_alarm_notice_id[]" value="'.$notice_list['id'].'" type="hidden">';
       } else {
 		$new_header['type']='bulletin';
         $new_header['delete']= '&nbsp;<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$notice_list['id'].'\', \'0\');"><img src="images/icons/bbs_del_one.png" alt="close"  onmousemove="this.src=\'images/icons/white_bbs_del_one.png\'" onmouseout="this.src=\'images/icons/bbs_del_one.png\'"></a>'; 
       }
+      $new_header['hidden']= '<input name="del_alarm_notice_id[]" value="'.$notice_list['id'].'" type="hidden">';
 		$messages_header_all[] = $new_header;
     }
   }
@@ -491,6 +491,18 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   }
   $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
   echo $allow_user_select;
+}else if(isset($_GET['action']) && $_GET['action'] == 'open_leftmenu'){
+
+  if ($_COOKIE['tarrow'] == 'open') {
+    require(DIR_WS_BOXES . 'configuration.php');
+    require(DIR_WS_BOXES . 'catalog.php');
+    require(DIR_WS_BOXES . 'modules.php');
+    require(DIR_WS_BOXES . 'customers.php');
+    require(DIR_WS_BOXES . 'localization.php');
+    require(DIR_WS_BOXES . 'reports.php');
+    require(DIR_WS_BOXES . 'tools.php');
+    require(DIR_WS_BOXES . 'users.php');
+  }
 }
  
 ?>

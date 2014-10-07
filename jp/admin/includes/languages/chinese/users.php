@@ -22,6 +22,7 @@ define('USER_INFO_LAST_LOGIN_DATE', '最后访问时间');
 define('USER_INFO_ONETIME_PWD_READ', '格式： 以2011/2/22 01:00为例  位数:算式<br>3:Y+n+d　＝2011+2+22的计算结果是2035。位数限制为3位，所以密码为035。<br>5:ddd　　＝222222的计算结果是222222。位数限制为5位，所以密码为22222。<br>3:Y/n　　＝2011/2=1005.5的计算结果是1005。位数限制为3位，所以密码为100。<br>4:(y+y)*2　＝(11+11)*2的计算结果是44。位数限制为4位、加一个0所以密码为0044。<br>可以使用算式：<br>+　-　*　/　()');
 define('USER_INFO_NO_ONETIME_PWD_READ', '已经达到创建一次性密码的上限值。<br>如果想添加此用户的话，把一次性密码删掉一个。');
 define('USER_INFO_IP_LIMIT_TEXT', '不受限IP设置');
+define('USER_INFO_IP_WARN_EMAIL_TEXT', '警告邮件排除列表');
 define('TEXT_USER_INFO_IS_NULL', '请输入。');
 define('TEXT_USER_ID_EXISTS', '该名称已经存在');
 define('TEXT_USER_EMAIL_FORMAT_WRONG', '邮件格式错误');

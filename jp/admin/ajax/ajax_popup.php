@@ -1082,13 +1082,13 @@ if ($_GET['action'] == 'show_category_info') {
       $right_td .= '</tr></table>';
       if($tk == 0){
         $contents[] = array('text' => array(
-        array('text' => $left_td), 
+        array('text' => $left_td,'params' => 'width="50%"'), 
         array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-        array('text' => $left_td), 
+        array('text' => $left_td,'params' => 'width="50%"'), 
         array('text' => '','params' => 'width="30px"','align'=>'right'),
         array('text' => $right_td)
         );
@@ -1118,12 +1118,12 @@ if ($_GET['action'] == 'show_category_info') {
       $right_td .= '</tr></table>';
       if($tk == 0){
       	$contents[] = array('text' => array(
-          array('text' => $left_td), 
+          array('params' => 'width="50%"','text' => $left_td), 
           array('text' => $right_td)
         ),'mouse' => true);
       }else{
         $contents[]['text'] = array(
-          array('text' => $left_td), 
+          array('params' => 'width="50%"','text' => $left_td), 
           array('text' => $right_td)
         );
       }
@@ -5430,6 +5430,11 @@ if($_GET['cID'] != -1){
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_IP_LIMIT_TEXT), 
         array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit', 'hard', '30', '10', '', 'style="width:60%;" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"')) 
       );
+
+  $new_user_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_IP_WARN_EMAIL_TEXT), 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit_warn_email', 'hard', '30', '10', '', 'style="width:60%;" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"')) 
+      );
   
   $new_user_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_LOGIN_NUM), 
@@ -5728,7 +5733,7 @@ if($_GET['cID'] != -1){
         );
   }
   $ip_limit_str = '';
-  $user_ip_list_query = tep_db_query("select * from user_ip where userid = '".$_POST['user_e_id']."'");
+  $user_ip_list_query = tep_db_query("select * from user_ip where userid = '".$_POST['user_e_id']."' and type='0'");
   while ($user_ip_list = tep_db_fetch_array($user_ip_list_query)) {
     $ip_limit_str .= $user_ip_list['limit_ip']."\n"; 
   }
@@ -5736,6 +5741,17 @@ if($_GET['cID'] != -1){
         array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_IP_LIMIT_TEXT), 
         array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit', 'hard', '30', '10', $ip_limit_str, 'style="width:60%;" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"'.(($is_disabled_single)?' disabled="disabled"':''))) 
       );
+
+  $ip_warn_email_str = '';
+  $user_ip_warn_email_query = tep_db_query("select * from user_ip where userid = '".$_POST['user_e_id']."' and type='1'");
+  while ($user_ip_warn_email = tep_db_fetch_array($user_ip_warn_email_query)) {
+    $ip_warn_email_str .= $user_ip_warn_email['limit_ip']."\n"; 
+  }
+  $new_user_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="25%"', 'text' => USER_INFO_IP_WARN_EMAIL_TEXT), 
+        array('align' => 'left', 'text' => tep_draw_textarea_field('ip_limit_warn_email', 'hard', '30', '10', $ip_warn_email_str, 'style="width:60%;" onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="resize: vertical;"'.(($is_disabled_single)?' disabled="disabled"':''))) 
+      );
+
   $login_count_query = tep_db_query("select count(sessionid) as len from login where date(`logintime`) = date(now()) and account = '".$user_info_res['userid']."'"); 
   $login_count_res = tep_db_fetch_array($login_count_query);
   $login_count = 0; 
@@ -9408,7 +9424,7 @@ else if($_GET['action'] == 'edit_attendance_info') {
       $right_td .= '<td align="">'.$work_hours.'</td></tr><tr><td>'.$rest_hours.'</td>';
       $right_td .= '</tr></table>';
         $attendance_info_row[]['text'] = array(
-        array('text' => $left_td), 
+        array('params' => 'width="50%"','text' => $left_td), 
         array('text' => $right_td)
         );
    

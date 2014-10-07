@@ -32,3 +32,4 @@ define('TEXT_USER_INFO_FORMAT_WRONG', 'Đã không nhập chính xác.');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('TEXT_USER_RULE_WRONG', 'Hình  thức công thức tính sai.');
+define('USER_INFO_IP_WARN_EMAIL_TEXT', 'Danh sách IP  không gởi mail cảnh báo');

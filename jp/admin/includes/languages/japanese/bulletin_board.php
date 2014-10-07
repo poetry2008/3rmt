@@ -48,4 +48,7 @@ define('TEXT_ALERT_TYPE','タイプ');
 define('TEXT_DELETED_INFO','「管理者によりレスを削除されました。」');
 define('TEXT_MEMO_EDIT_MUST_SELECT','少なくとも1つの選択肢を選んでください。');
 define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','添付ファイルのサイズは%s以内にしてください。');
+define('TEXT_BULLETIN_BOARD_NUM','番号');
+define('TEXT_BULLETIN_BOARD_ERROR','該当スレッドはすでに存在しません。');
+define('TEXT_BULLETIN_BOARD_REPLY_ERROR','該当レスはすでに存在しません。');
 ?>

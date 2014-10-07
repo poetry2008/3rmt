@@ -160,6 +160,7 @@ function delete_micro_notice(nid, e_type)
       } 
       });
   check_header_messages();
+  window.scrollTo(0,0);
 }
 //show header notice
 function show_head_notice(no_type)

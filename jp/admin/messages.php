@@ -2189,17 +2189,17 @@ require("includes/note_js.php");
                $notice_box = new notice_box('','',$messages_table_params);       
                $messages_table_row = array();
                $messages_title_row = array();
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
-	       $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_read_status);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_mark);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_from);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_to);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_back);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="40%"','text' => $messages_content);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_add_file);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_date);
-               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => $messages_opt);
-               $messages_table_row[] = array('params' => 'class="dataTableHeadingRow"','text' => $messages_title_row);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent" nowrap="nowrap"','text' => '<input type="checkbox" name="all_check" onclick="all_select_messages(this);">');
+	       $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_read_status);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_mark);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="12%" nowrap="nowrap"','text' => $messages_from);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="16%" nowrap="nowrap"','text' => $messages_to);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_back);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" width="40%" nowrap="nowrap"','text' => $messages_content);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_add_file);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap" width="8%"','text' => $messages_date);
+               $messages_title_row[] = array('params' => 'class="dataTableHeadingContent_order" nowrap="nowrap"','text' => $messages_opt);
+               $messages_table_row[] = array('params' => 'class="dataTableHeadingRow" nowrap="nowrap"','text' => $messages_title_row);
     $rows = 0;
     if($messages_sort == ''){
       $messages_sort_sql = $messages_sort_default;
@@ -2343,8 +2343,15 @@ require("includes/note_js.php");
           $groups_array = explode('||||||',$latest_messages['recipient_name']);
           $groups_string_alt = $groups_array[0];
           $groups_name_list_array = explode(';',$groups_array[0]);
-          foreach($groups_name_list_array as $groups_value){
+          $groups_num = 0;
+          foreach($groups_name_list_array as $key=>$groups_value){
             $groups_name_str_array = explode('>',$groups_value);
+			if(count($groups_name_str_array) > 1){
+              $groups_string .= '<span style="display:block;white-space:nowrap;">';
+			}else{
+              $groups_string .= '<span style="display:block;">';
+			
+			}
             if(count($groups_name_str_array) > 1){
 
               $groups_i = 0;
@@ -2352,21 +2359,66 @@ require("includes/note_js.php");
                 if(count($groups_name_str_array)-1 != $groups_i){
                   $groups_string .= mb_substr($groups_str_value,0,1).'...>';
                 }else{
-                  $groups_string .= $groups_str_value.';';
+					if(count($groups_name_str_array)>2){
+						//如果有三个，最后一个截取三个
+                      $groups_string .= cut_str($groups_str_value,3);
+					  //如果有两个
+					}elseif(count($groups_name_str_array)==2){
+                      $groups_string .= cut_str($groups_str_value,12);
+					}else{
+						//如果单个组,数据很长
+                      $groups_string .= $groups_str_value;
+					
+					}
                 }
                 $groups_i++;
               }
             }else{
-              $groups_string .= $groups_value.';';
+			  if($key==2){
+				  //第三个(很长)
+                 $groups_string .= cut_str($groups_value,8);
+			  }else{
+				  //不是第三个
+                 $groups_string .= $groups_value;
+			  }
+            }
+            $groups_num++;
+            if(count($groups_name_list_array) > 3 && $groups_num == 3){
+
+              $groups_string = $groups_string;
+              $groups_string .= TEXT_MESSAGES_CONTENTS;
+              break;
+            }
+            $groups_string .= '</span>';
+          }
+          $to_messages = $groups_string;
+        }else{
+          $latest_messages['recipient_name'] = $latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name'];
+          $users_string = '';
+          if($latest_messages['recipient_name'] != ''){
+
+            $user_name_array = explode(';',$latest_messages['recipient_name']);
+            $users_num = 0;
+            foreach($user_name_array as $user_name_key=>$user_name_value){
+
+              $users_string .= '<span style="display:block;white-space:nowrap;">';
+              $users_string .= $user_name_value;
+
+              $users_num++;
+              if(count($user_name_array) >3 && $users_num == 3){
+
+                $users_string = $users_string;
+                $users_string .= TEXT_MESSAGES_CONTENTS;
+                break;
+              }
+              $users_string .= '</span>';
             }
           }
-          $to_messages = '<span alt="'.$groups_string_alt.'" title="'.$groups_string_alt.'">'.mb_substr($groups_string,0,-1).'</span>';
-        }else{
-          $to_messages = '<span alt="'.$latest_messages['recipient_name'].'" title="'.($latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name']).'">'.($latest_messages['recipient_name'] == '||||||' ? '' : $latest_messages['recipient_name']).'</span>'; 
+          $to_messages = $users_string; 
         }
 	$messages_info[] = array(
 		'params' => 'class="dataTableContent"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px ">' .$to_messages.'</p>' 
+		'text'   => '<p style="margin:0px 0px 0px 0px;">' .$to_messages.'</p>' 
 	);
 	$messages_reply_status = $latest_messages['reply_status']==0 ? '' : '<img src="images/icons/reply_icon.png" border="0">';
 	$messages_info[] = array(
@@ -2378,9 +2430,61 @@ require("includes/note_js.php");
         $contents_text = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$contents_text); 
         $contents_text = str_replace('>','&gt',str_replace('<','&lt',$contents_text));
         $contents_text_str = nl2br($contents_text);
+	$br_arr = explode("\n",$contents_text_str);
+        if(count($br_arr)<=3 && tep_mb_strlen($contents_text_str) > 60){
+          if(count($br_arr) == 3){
+            if(tep_mb_strlen($br_arr[0]) > 60){
+
+              $contents_text_str = mb_substr(cut_str($br_arr[0],67),0,-7).TEXT_MESSAGES_CONTENTS;
+            }else{
+              if(tep_mb_strlen($br_arr[0]) < 20 && tep_mb_strlen($br_arr[1]) > 40){
+
+                $contents_text_str = $br_arr[0].cut_str($br_arr[1],40).TEXT_MESSAGES_CONTENTS;
+              }else if(tep_mb_strlen($br_arr[0]) < 20 && tep_mb_strlen($br_arr[1]) < 20 && tep_mb_strlen($br_arr[2]) > 20){
+
+                $contents_text_str = $br_arr[0].$br_arr[1].cut_str($br_arr[2],20).TEXT_MESSAGES_CONTENTS;
+              }else{
+               
+                $contents_text_str = mb_substr(cut_str($contents_text_str,67),0,-7).TEXT_MESSAGES_CONTENTS;
+              }   
+            }
+          }else if(count($br_arr) == 2){
+            if(tep_mb_strlen($br_arr[0]) > 40){
+
+              $contents_text_str = mb_substr(cut_str($br_arr[0],67),0,-7).TEXT_MESSAGES_CONTENTS;
+            }else{
+              if(tep_mb_strlen($br_arr[0]) < 20 && tep_mb_strlen($br_arr[1]) > 40){
+
+                $contents_text_str = $br_arr[0].mb_substr(cut_str($br_arr[1],47),0,-7).TEXT_MESSAGES_CONTENTS;
+              }else{
+               
+                $contents_text_str = mb_substr(cut_str($contents_text_str,67),0,-7).TEXT_MESSAGES_CONTENTS;
+              }   
+            } 
+          }else{
+            $contents_text_str = mb_substr(cut_str($contents_text_str,67),0,-7).TEXT_MESSAGES_CONTENTS;
+          }
+	}
+	if(count($br_arr)>3){
+	  $contents_text_str='';
+          for($i=0;$i<3;$i++){
+            $contents_len = tep_mb_strlen($br_arr[$i]);
+            if($contents_len > 60){
+              $contents_text_str = cut_str($br_arr[$i],67);
+              break;
+            }else{
+              $contents_text_str .= $br_arr[$i];
+              if($contents_len > 20){
+                $rows_num = ceil($contents_len/20);
+                $i += $rows_num-2;
+              }
+            }
+	  } 	
+	  $contents_text_str=mb_substr($contents_text_str, 0, -7).TEXT_MESSAGES_CONTENTS; 
+	}
 	$messages_info[] = array(
-		'params' => 'class="dataTableContent" width="300px"',
-		'text'   => '<p style="max-height:36px;overflow:hidden;margin:0px 0px 0px 0px " alt="'.str_replace('"',"&quot;",$contents_text).'" title="'.str_replace('"',"&quot;",$contents_text).'">'.$contents_text_str.'</p>'
+		'params' => 'class="dataTableContent" width="40%"',
+		'text'   => '<p style="word-break: break-all; word-wrap:break-word;margin-top:0px;margin-bottom:0px;">'.$contents_text_str.'</p>'
         );
         //附件下载处理
         if($latest_messages['attach_file'] == 1){

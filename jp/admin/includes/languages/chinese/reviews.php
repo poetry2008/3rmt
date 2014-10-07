@@ -34,7 +34,7 @@ define('TEXT_INFO_REVIEW_READ', '读取次数');
 define('TEXT_INFO_REVIEW_SIZE', '大小');
 define('TEXT_INFO_PRODUCTS_AVERAGE_RATING', '平均点');
 
-define('TEXT_OF_FIVE_INFO_STARS', '5点中的 %s点!');
+define('TEXT_OF_5_STARS', '5点中的 %s点!');
 define('TEXT_GOOD', '<font color="#ff0000">好</font>');
 define('TEXT_BAD', '<font color="#ff0000">差</font>');
 define('TEXT_INFO_HEADING_DELETE_REVIEW', '删除评论');

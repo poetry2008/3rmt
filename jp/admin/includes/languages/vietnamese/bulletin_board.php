@@ -50,4 +50,7 @@ define('TEXT_ALERT_TYPE','Loại');
 define('TEXT_MEMO_EDIT_MUST_SELECT','Vui lòng chọn ít nhất một cách lựa chọn.');
 define('TEXT_DELETED_INFO','Câu trả lời đã bị xóa bởi người quản lý');
 define('TEXT_UPLOAD_FILE_EXXEEDS_THE_LIMIT','Hãy%s trong kích thước của tập tin đính kèm.');
+define('TEXT_BULLETIN_BOARD_NUM','番号');
+define('TEXT_BULLETIN_BOARD_ERROR','該当スレッドはすでに存在しません。');
+define('TEXT_BULLETIN_BOARD_REPLY_ERROR','該当レスはすでに存在しません。');
 ?>

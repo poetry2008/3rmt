@@ -126,7 +126,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $bulletin_content_row_choose = array();
 	 $bulletin_content_row_choose [] =  array('text'=> '');
-	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:none;"><table width="80%">
+	 $bulletin_content_row_choose [] =  array('params' => 'colspan="2"','text'=> '<div width="100%" id="select_user" style="display:none;"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -141,7 +141,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		<td board="0" style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="user_delete_to" style="overflow-y:scroll;height:105px;">'.$users_list_html.'</div></td>
 	</tr>
 </table></div>
-<div width="100%" id="select_group" style="display:none;"><table width="80%">
+<div width="100%" id="select_group" style="display:none;"><table width="90%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -173,9 +173,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	$bulletin_content_row_text = array();
 	$bulletin_content_row_text[] = array('text'=> TEXT_BULLETIN_EDIT_CONTENT);
 	//输入文本框
- 	$bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style=" width:100%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><br /><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
-	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
-	 $bulletin_content_table[] = array('params' => 'colspan="2"', 'text'=> $bulletin_content_row_text);
+ 	$bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="width:90%;" class="textarea_width" rows="10" id="current_contents" name="content"></textarea><br /><div id="popup_content" style="display:none;color:#FF0000;">'.TEXT_WARNING_EMPTY.'</div>';
+	 $bulletin_content_row_text[] = array('params' => 'colspan="2"','text'=> $bulletin_text_area);
+	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $bulletin_content_row_must_write = array();
 	 $bulletin_content_row_must_write[] = array('text'=> '');
 	 $bulletin_content_row_must_write[] = array('text'=> '<div id="bulletin_must_write" style="display: none;"><span style="color:#ff0000;"> '.CONTENT_MUST_WRITE.'</span></div>');
@@ -206,7 +206,12 @@ if (isset($_GET['action']) and $_GET['action']) {
 
      //bulletin infomation
 	 $bulletin_sql="select * from ".TABLE_BULLETIN_BOARD." where id=$bulletin_id";
-	 $bulletin_raw=tep_db_query($bulletin_sql);
+         $bulletin_raw=tep_db_query($bulletin_sql);
+         if(tep_db_num_rows($bulletin_raw) == 0){
+
+           echo 'error'; 
+           exit;
+         }
 	 $bulletin_info=tep_db_fetch_array($bulletin_raw);
 
 	 $users_select=explode(':',$bulletin_info['allow']);
@@ -322,7 +327,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 }
 	 $bulletin_content_row_choose = array();
 	 $bulletin_content_row_choose [] =  array('text'=> '');
-	 $bulletin_content_row_choose [] =  array('text'=> '<div width="100%" id="select_user" style="display:'.$id_show.';"><table width="80%">
+	 $bulletin_content_row_choose [] =  array('params'=>'colspan="2"','text'=> '<div width="100%" id="select_user" style="display:'.$id_show.';"><table width="80%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -337,7 +342,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		<td style="background:#FFF;border:1px #E0E0E0 solid;"><div width="100%" id="user_delete_to" style="overflow-y:scroll;height:105px;">'.$users_list_html.'</div></td>
 	</tr>
 </table></div>
-<div width="100%" id="select_group" style="display:'.$group_show.';"><table width="80%">
+<div width="100%" id="select_group" style="display:'.$group_show.';"><table width="90%">
 	<tr>
 		<td align="center" width="45%">'.TEXT_TO_BODY.'</td>
 		<td align="center" width="10%"></td>
@@ -394,13 +399,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 //	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_add_user=array();
 	 $add_user=$bulletin_info['add_user'];
-	 if($add_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$add_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					$user_info=tep_get_user_info($add_user);
-					$add_user=$user_info['name'];
-			 }
-	 }
 	 if(!$add_user){
 			 $add_user=TEXT_UNSET_DATA;
 	 }
@@ -410,13 +408,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	 $bulletin_content_row_update=array();
 	 $update_user=$bulletin_info['update_user'];
-	 if($update_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$update_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					 $user_info=tep_get_user_info($update_user);
-					 $update_user=$user_info['name'];
-			 }
-	 }
 	 if(!$update_user){
 			 $update_user=TEXT_UNSET_DATA;
 	 }
@@ -479,8 +470,19 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 break;
 
 	case 'edit_bulletin_reply':
-	 $notice_box = new notice_box('popup_order_title', 'popup_order_info');
-     $bulletin_info=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id'].""));
+         $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+         $bulletin_query = tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=".$_POST['id']."");
+         if(tep_db_num_rows($bulletin_query) == 0){
+
+           echo 'error';
+           exit;
+         }
+         $bulletin_info=tep_db_fetch_array($bulletin_query);
+         if($bulletin_info['content'] == 'deleted'){
+
+           echo 'deleted';
+           exit;
+         }
 	 $page_str = '<a onclick="hidden_info_box('.($_GET['bulletin_sta'] == 'drafts' && $_GET['latest_bulletin_id'] > 0 ? '1' : ($_GET['latest_bulletin_id'] < 0 ? '2' : '3')).');" href="javascript:void(0);">X</a>';
 	 $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 	 $heading[] = array('text' => TEXT_EDIT_BULLETIN_ERPLY);
@@ -489,9 +491,22 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $form_str = tep_draw_form('new_bulletin_board', 'bulletin_board.php','action=update_bulletin_reply&id='.$_POST["id"].'&bulletin_id='.$bulletin_info['bulletin_id'].'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type'].'&page='.$_GET['page'],'post','enctype="multipart/form-data" id="form1" onsubmit="return check_value(1)"'); 
 	 $heading[] = array('align' => 'right', 'text' => '<span id="next_prev"></span>&nbsp&nbsp'.$page_str);
 	 $old_content=$bulletin_info['content'];
-	 $bulletin_content_table = array();
+         $bulletin_content_table = array();
+         if($bulletin_info['reply_id'] != 0){
+           //回复信息
+           $reply_info_array = array();
+           tep_reply_info($bulletin_info['reply_id'],$reply_info_array);
+           foreach($reply_info_array as $reply_key=>$reply_value){
+
+             $reply_str = '---------- Forwarded thread ----------'."\n";
+             $reply_str .= 'From: '.$reply_value['add_user'].' <'.$reply_value['add_email'].'>'."\n";
+             $reply_date_array = explode(' ',tep_date_long($reply_value['add_time']));
+             $reply_str .= 'Date: '.date(DATE_FORMAT_TEXT,strtotime($reply_value['add_time'])).' '.end($reply_date_array);
+             $old_content = preg_replace('/(\s)(>{'.($reply_key+1).'}[^>]+)/','$1'.$reply_str."\n".'$2',$old_content);
+           }
+         }
 	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
- 	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="overflow-y:hidden;width:100%;height:163px;background:#CCCCCC;" class="textarea_width" id="old_contents" name="old_content" readonly="readonly">'.$old_content.'</textarea>';
+ 	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="overflow-y:hidden;width:100%;height:163px;background:#CCCCCC;" class="textarea_width" id="old_contents" readonly="readonly">'.$old_content.'</textarea>'.'<input type="hidden" name="old_content" value="'.$bulletin_info['content'].'">';
 	 $bulletin_content_row_text[] = array('params'=>'width="70%"','text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
 	 $mark_array = explode(',',$bulletin_info['mark']);
@@ -542,13 +557,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_addfile);
 	 $bulletin_content_row_add_user=array();
 	 $add_user=$bulletin_info['add_user'];
-	 if($add_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$add_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					$user_info=tep_get_user_info($add_user);
-					$add_user=$user_info['name'];
-			 }
-	 }
 	 if(!$add_user){
 			 $add_user=TEXT_UNSET_DATA;
 	 }
@@ -558,13 +566,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	 $bulletin_content_row_update=array();
 	 $update_user=$bulletin_info['update_user'];
-	 if($update_user){
-			 $user_num_raw=tep_db_query("select * from ".TABLE_USERS." where name='$update_user'");
-			 if(tep_db_num_rows($user_num_raw)==0){
-					$user_info=tep_get_user_info($update_user);
-					$update_user=$user_info['name'];
-			 }
-	 }
 	 if(!$update_user){
 			 $update_user=TEXT_UNSET_DATA;
 	 }

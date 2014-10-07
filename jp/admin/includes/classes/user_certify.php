@@ -22,6 +22,8 @@ class user_certify {
 
     var $ipSealErr = FALSE;
 
+    var $isWarnEmail = FALSE;
+
     var $key = 'gf1a2';
 /* -------------------------------------
     功  能 : 进行用户认证
@@ -37,9 +39,11 @@ class user_certify {
         $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
       }
       $admin_ip_limit = false;
+      $admin_warn_email_ip = false;
       $admin_name = $_POST['loginuid'];
       $admin_pwd = $_POST['loginpwd'];
-      $admin_ip_query = tep_db_query("select * from user_ip where userid='". $admin_name ."'");
+
+      $admin_ip_query = tep_db_query("select * from user_ip where userid='".  $admin_name ."' and type='1'");
       $admin_ip_num = tep_db_num_rows($admin_ip_query);
       if($admin_ip_num > 0){  
         $admin_ip_user_array = explode('.',trim($_SERVER['REMOTE_ADDR'])); 
@@ -47,32 +51,31 @@ class user_certify {
         //如果IP为 *.*.*.* IP不受限制
       while($admin_ip_array = tep_db_fetch_array($admin_ip_query)){
         $admin_ip_str = trim($admin_ip_array['limit_ip']);
-        $admin_ip_temp_array = explode('.',$admin_ip_str);
-        if($admin_ip_temp_array[0] == '*' && $admin_ip_temp_array[1] == '*' && $admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
-          $admin_ip_limit = true; 
-        }else{
-          if($admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
+        $admin_warn_email_ip = tep_is_in_iplist(trim($_SERVER['REMOTE_ADDR']),$admin_ip_str);
+        if($admin_warn_email_ip){
+          break;
+        }
+      }
 
-            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1]){
+      }
+      if($admin_warn_email_ip){
+        $this->isWarnEmail = true;
+      }
 
-              $admin_ip_limit = true;
-            }
-          }elseif($admin_ip_temp_array[3] == '*'){
 
-            if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1] && $admin_ip_user_array[2] == $admin_ip_temp_array[2]){
 
-              $admin_ip_limit = true;
-            }
-          }else{
-            if($admin_ip_str == $_SERVER['REMOTE_ADDR']){
+      $admin_ip_query = tep_db_query("select * from user_ip where userid='".  $admin_name ."' and type='0'");
+      $admin_ip_num = tep_db_num_rows($admin_ip_query);
+      if($admin_ip_num > 0){  
+        $admin_ip_user_array = explode('.',trim($_SERVER['REMOTE_ADDR'])); 
 
-              $admin_ip_limit = true;
-            }else{
-              $admin_ip_limit = false; 
-            } 
-          }
-        } 
-        if($admin_ip_limit == true){break;}
+        //如果IP为 *.*.*.* IP不受限制
+      while($admin_ip_array = tep_db_fetch_array($admin_ip_query)){
+        $admin_ip_str = trim($admin_ip_array['limit_ip']);
+        $admin_ip_limit = tep_is_in_iplist(trim($_SERVER['REMOTE_ADDR']),$admin_ip_str);
+        if($admin_ip_limit){
+          break;
+        }
       }
 
       }
@@ -84,7 +87,16 @@ class user_certify {
         $s_sid = session_id();
         $newc=new funCrypt; 
         $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
-        tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+        //查询已有记录，进行对比，是否累加登录次数
+        $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,logoutstatus,login_num from login order by logintime desc limit 0,1");
+        $users_login_array = tep_db_fetch_array($users_login_query);
+        tep_db_free_result($users_login_query);
+        if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p' && $users_login_array['logoutstatus'] == 'r'){
+          tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'{$_POST['loginuid']}','{$password}','p','r','$user_ip4','".($users_login_array['login_num']+1)."')");
+          tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
+        }else{
+          tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','r','$user_ip4')");
+        }
       } 
  
       if($admin_ip_limit == true){
@@ -110,10 +122,14 @@ class user_certify {
         tep_db_free_result($user_time_query);
         if($per_flag == true){
           $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $login_num_query = tep_db_query("select sum(login_num) login_sum from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }else{
           $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $login_num_query = tep_db_query("select sum(login_num) login_sum from login where address='{$user_ip4}' and loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }
-        $user_num_rows = tep_db_num_rows($user_query);
+        $login_num_array = tep_db_fetch_array($login_num_query);
+        tep_db_free_result($login_num_query);
+        $user_num_rows = $login_num_array['login_sum'];
         if($user_num_rows >= 5){
             
           $user_time = strtotime($user_max_time.'+24 hour'); 
@@ -147,16 +163,48 @@ class user_certify {
                 $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
                 $mail_text = str_replace('${PW_'.$user_i.'}',$str_pwd_temp,$mail_text); 
                 $mail_text = str_replace('${TIME_'.$user_i.'}',date('Y年m月d日H時i分',strtotime($user_array['logintime'])),$mail_text); 
+                $mail_id = $str_user_temp;
+                $mail_pwd = $str_pwd_temp;
                 $user_i++;
               }
-              $mail_text = tep_replace_mail_templates($mail_text,'','');
+              $mail_text = preg_replace('/\$\{TIME_[1-5]\}/','',$mail_text);
+              $mail_text = preg_replace('/\$\{ID_[1-5]\}/',$mail_id,$mail_text);
+              $mail_text = preg_replace('/\$\{PW_[1-5]\}/',$mail_pwd,$mail_text);
+              $mail_text = tep_replace_mail_templates($mail_text,'','',0,false);
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,'');
               
               session_regenerate_id();            
               $s_sid = session_id();
 
               $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
-              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+              //查询已有记录，进行对比，是否累加登录次数
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
+              $users_login_array = tep_db_fetch_array($users_login_query);
+              tep_db_free_result($users_login_query);
+              if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p'){
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4','".($users_login_array['login_num']+1)."')");
+                tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
+              }else{
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+              }
+              //锁定用户
+              tep_db_query("update login set is_locked='1' where account='".$_POST['loginuid']."' and address='".$user_ip4."'");
+            }else{
+              session_regenerate_id();            
+              $s_sid = session_id();
+
+              $newc=new funCrypt;
+              $password = $newc->enCrypt($_POST['loginpwd'],$this->key);
+              //查询已有记录，进行对比，是否累加登录次数
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
+              $users_login_array = tep_db_fetch_array($users_login_query);
+              tep_db_free_result($users_login_query);
+              if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'n'){
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'{$_POST['loginuid']}','{$password}','n','','$user_ip4','".($users_login_array['login_num']+1)."')");
+                tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
+              }else{
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','n','','$user_ip4')");
+              }
               //锁定用户
               tep_db_query("update login set is_locked='1' where account='".$_POST['loginuid']."' and address='".$user_ip4."'");
             }  
@@ -220,7 +268,7 @@ class user_certify {
             } else {
                 $user = $arec['account'];
             }
-    }
+        }
         if (!$user) {       // 退出初次登陆
             $this->isFirstTime = TRUE;
         } else {
@@ -245,7 +293,7 @@ class user_certify {
                 $aret = $this->user_parmission($s_sid,$user); // 获取用户权限
                 if ($pret && $aret) {
                     $login_ip = $_SERVER['REMOTE_ADDR']; 
-                    $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$user."'"); 
+                    $ip_limit_query = tep_db_query("select * from user_ip where userid = '".$user."' and type ='0'"); 
                     $ip_limit_num = tep_db_num_rows($ip_limit_query);
                     if ($ip_limit_num > 0) {
                       $ip_limit_arr = array();
@@ -276,6 +324,12 @@ class user_certify {
                         $reg_str = '/'.$reg_str.'/'; 
                         if (preg_match($reg_str, $login_ip)) {
                           $login_ip_check = true; 
+                          break;
+                        }else{
+                          $login_ip_check = tep_is_in_iplist(trim($login_ip),trim($ip_limit_res['limit_ip']));
+                          if($login_ip_check){
+                            break;
+                          }
                         }
                       }
                       if (!$login_ip_check) {
@@ -430,7 +484,17 @@ class user_certify {
 
               $password = '';
             }
-            $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','$password','$s_status',$n_ip4$status_out)");
+            //查询已有记录，进行对比，是否累加登录次数
+            $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
+            $users_login_array = tep_db_fetch_array($users_login_query);
+            tep_db_free_result($users_login_query);
+            if($users_login_array['account'] == $auth_user && $users_login_array['address'] == $n_ip4 && $users_login_array['loginstatus'] == $s_status){
+              $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'".$auth_user."','{$password}','$s_status',$n_ip4$status_out,'".($users_login_array['login_num']+1)."')");
+              tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
+            }else{
+              $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','$password','$s_status',$n_ip4$status_out)");
+            }
+            
             if (!$result) {
                 $this->isErr = TRUE;
                 die('<br>'.TEXT_ERRINFO_DBERROR);
@@ -518,6 +582,7 @@ if (!tep_session_is_registered('user_permission')) {
   session_regenerate_id(); 
   if ($check_login_pos === false) {
    if(isset($_POST['loginuid'])){
+    $admin_name = $_POST['loginuid'];
     $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
     $user_ip4 = 0;
     while (list($u_key, $u_byte) = each($user_ip)) {
@@ -545,10 +610,14 @@ if (!tep_session_is_registered('user_permission')) {
         tep_db_free_result($user_time_query);
         if($per_flag == true){
           $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $login_num_query = tep_db_query("select sum(login_num) login_sum from login where address='{$user_ip4}' and loginstatus!='a' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }else{
           $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
+          $login_num_query = tep_db_query("select sum(login_num) login_sum from login where address='{$user_ip4}' and loginstatus!='a' and time_format(timediff(now(),logintime),'%H')<24 and status='0' order by logintime desc");
         }
-        $user_num_rows = tep_db_num_rows($user_query);
+        $login_num_array = tep_db_fetch_array($login_num_query);
+        tep_db_free_result($login_num_query);
+        $user_num_rows = $login_num_array['login_sum'];
 
         if($user_num_rows >= 5){
 
@@ -581,23 +650,53 @@ if (!tep_session_is_registered('user_permission')) {
                 $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
                 $mail_text = str_replace('${PW_'.$user_i.'}',$str_pwd_temp,$mail_text); 
                 $mail_text = str_replace('${TIME_'.$user_i.'}',date('Y年m月d日H時i分',strtotime($user_array['logintime'])),$mail_text); 
+                $mail_id = $str_user_temp;
+                $mail_pwd = $str_pwd_temp;
                 $user_i++; 
               
               }
-              $mail_text = tep_replace_mail_templates($mail_text,'',''); 
+              $mail_text = preg_replace('/\$\{TIME_[1-5]\}/','',$mail_text);
+              $mail_text = preg_replace('/\$\{ID_[1-5]\}/',$mail_id,$mail_text);
+              $mail_text = preg_replace('/\$\{PW_[1-5]\}/',$mail_pwd,$mail_text);
+              $mail_text = tep_replace_mail_templates($mail_text,'','',0,false); 
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,''); 
                 
               $s_sid = session_id();
               $password = $newc->enCrypt($_POST['loginpwd'],$key);
-              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+              //查询已有记录，进行对比，是否累加登录次数
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
+              $users_login_array = tep_db_fetch_array($users_login_query);
+              tep_db_free_result($users_login_query);
+              if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p'){
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4','".($users_login_array['login_num']+1)."')");
+                tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
+              }else{
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+              }
               //锁定用户
               tep_db_query("update login set is_locked='1' where account='".$_POST['loginuid']."' and address='".$user_ip4."'");
+            }else{
+              $s_sid = session_id();
+              $newc=new funCrypt;
+              $password = $newc->enCrypt($_POST['loginpwd'],$key);
+              //查询已有记录，进行对比，是否累加登录次数
+              $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
+              $users_login_array = tep_db_fetch_array($users_login_query);
+              tep_db_free_result($users_login_query);
+              if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'n'){
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'{$_POST['loginuid']}','{$password}','n','','$user_ip4','".($users_login_array['login_num']+1)."')");
+                tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
+              }else{
+                tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','n','','$user_ip4')");
+              }
+              //锁定用户
+              tep_db_query("update login set is_locked='1' where account='".$_POST['loginuid']."' and address='".$user_ip4."'"); 
             }    
           }
            
         }
         $users_num_query = tep_db_query("select is_locked from login where is_locked='1' and account='".$_POST['loginuid']."' and address='".$user_ip4."' and time_format(timediff(now(),logintime),'%H')<24");
-        if(tep_db_num_rows($users_num_query) >= 0){
+        if(tep_db_num_rows($users_num_query) > 0){
 
           tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
         }
@@ -607,7 +706,16 @@ if (!tep_session_is_registered('user_permission')) {
         $newc=new funCrypt;
         $key = 'gf1a2';
         $password = $newc->enCrypt($_POST['loginpwd'],$key);
-        tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+        //查询已有记录，进行对比，是否累加登录次数
+        $users_login_query = tep_db_query("select sessionid,logintime,account,address,loginstatus,login_num from login order by logintime desc limit 0,1");
+        $users_login_array = tep_db_fetch_array($users_login_query);
+        tep_db_free_result($users_login_query);
+        if($users_login_array['account'] == $_POST['loginuid'] && $users_login_array['address'] == $user_ip4 && $users_login_array['loginstatus'] == 'p'){
+          tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address,login_num) values('$s_sid','".$users_login_array['logintime']."',now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4','".($users_login_array['login_num']+1)."')");
+          tep_db_query("delete from login where sessionid='".$users_login_array['sessionid']."'");
+        }else{
+          tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
+        }
   }
     if(isset($_POST['loginuid'])){
       tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
@@ -619,6 +727,36 @@ if (!tep_session_is_registered('user_permission')) {
   }
 }
 $ocertify = new user_certify(session_id());     // 认证
+if (!$ocertify->isWarnEmail&&isset($_POST['loginuid'])){
+  $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
+  $user_ip4 = 0;
+  while (list($u_key, $u_byte) = each($user_ip)) {
+    $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
+  }
+
+  $warn_email_sql = "select * from login where address='".$user_ip4."'";
+  $warn_email_query = tep_db_query($warn_email_sql);
+  $warn_email_sum = tep_db_num_rows($warn_email_query);
+  if($warn_email_sum == 1){
+    $log_error_arr = explode(',',TEXT_INFO_STATUS_IN);
+    if(is_array($log_error_arr)){
+      while(list($key,$val) = each($log_error_arr)){
+        $sts = explode(':',$val);
+        $a_sts_in[$sts[0]] = $sts[1];
+      }
+    }
+    $warn_email_info = tep_db_fetch_array($warn_email_query);
+    $warn_email_array = tep_get_mail_templates('IP_WARN_EMAIL_TEXT',0);
+    $mail_title = $warn_email_array['title'];
+    $mail_array = array('${TIME}','${IP}','${LOGIN_ID}','${LOGIN_RESULT}');
+    $now_time = date('Y/m/d H:i:s',time());
+    $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR'],$_POST['loginuid'],$a_sts_in[$warn_email_info['loginstatus']]);
+    $mail_str = $warn_email_array['contents'];
+    $mail_str = str_replace("\r\n","\n",$mail_str); 
+    $mail_text = str_replace($mail_array,$mail_replace,$mail_str);
+    tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,''); 
+  }
+}
 if ($ocertify->isErr) { 
   if($ocertify->ipSealErr){
     logout_user(1,'',$_GET['his_url']);
@@ -629,7 +767,9 @@ if ($ocertify->isErr) {
       logout_user(1,'',$_GET['his_url']); 
     }
   }
-} elseif ($ocertify->isFirstTime) { logout_user(); }
+} elseif ($ocertify->isFirstTime) { 
+  logout_user(); 
+}
 
 if (isset($_POST['loginuid'])) {
   $super_uid_query = tep_db_query("select u.userid, p.permission from users u, permissions p where u.userid = p.userid and u.userid = '".$_POST['loginuid']."'");

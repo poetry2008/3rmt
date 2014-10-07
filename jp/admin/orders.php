@@ -5832,8 +5832,17 @@ if(isset($_GET['action'])&&$_GET['action']=='edit'){
               <!-- footer -->
               <?php
               require(DIR_WS_INCLUDES . 'footer.php');
+			if(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE")){
             ?>
               <embed id="warn_sound" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php
+			}else{
+?>
+		      <audio id="warn_sound" src="images/warn.mp3"></audio>	
+<?php
+			}
+
+?>
               <!-- footer_eof -->
               <br>
               <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>

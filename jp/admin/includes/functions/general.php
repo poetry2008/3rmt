@@ -8537,48 +8537,79 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price, p.relate_products_id from ".TABLE_PRODUCTS." 
      p,".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p2c.products_id = p.products_id 
      ".$cid_str." and p.products_bflag='".$bflag."'";
+
+   $tmp_sql = "select distinct p.*,pd.*,
+      IF(  `relate_products_id` =0 OR  `relate_products_id` IS NULL , '1', '0' ) as relate_id from 
+      products p, products_description pd, products_to_categories p2c 
+      where p.products_id=pd.products_id 
+      and p2c.products_id=p.products_id
+      and p.products_bflag = '".$bflag."' 
+      ".$cid_str." and pd.site_id='0' 
+       order by relate_id,pd.products_name";
+
+
    $tmp_query=tep_db_query($tmp_sql);
    $quantity_all_product = 0;
    $asset_all_product = 0;
+   $temp_real_all_quantity = 0;
    $result = array();
    $result['error'] = false;
-   $all_tmp_price = 0;
    $all_tmp_row = 0;
+   $products_info_array = array();
    while($tmp_row = tep_db_fetch_array($tmp_query)){
      $tmp_row['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
-     $tmp_price = @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end,$sort);
-     if(!$tmp_price){
-       $tmp_price = $tmp_row['products_price'];
-     }
-     if (!$result['error']) {
-       $tmp_relate_products_id = (int)$tmp_row['relate_products_id']; 
-       if (empty($tmp_relate_products_id)) {
-         $result['error'] = true;
-       }
+       $tmp_relate_products_id = (int)$tmp_row['relate_products_id'];  
        if (!empty($tmp_relate_products_id)) {
-          $o_count_sql = " select op.products_quantity from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$tmp_row['relate_products_id']."' and os.calc_price = '1'";
+          $o_count_sql = " select op.products_quantity,o.orders_id orders_id,op.final_price final_price from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$tmp_row['relate_products_id']."' and os.calc_price = '1'";
           if($site_id != 0) {
              $o_count_sql .= " and o.site_id = '".$site_id."' ";
           }
           if($start != '' && $end != '') {
            $o_count_sql .= " and date_purchased between '".$start."' and '".$end."' ";
           }
+          //排序
+          if($sort=='price_desc'){
+            $o_count_sql .= " order by abs(final_price) asc ";
+          }else if($sort=='price_asc'){
+            $o_count_sql .= " order by abs(final_price) desc ";
+          }else{
+            $o_count_sql .= " order by o.torihiki_date desc";
+          }
+          $temp_all_product = $tmp_row['products_real_quantity'];
+          $temp_quantity = 0;
+          $temp_quantity_value = 0;
           $o_count_raw = tep_db_query($o_count_sql);     
-          if (!tep_db_num_rows($o_count_raw)) {
-            $result['error'] = true;
+          if (tep_db_num_rows($o_count_raw)) {
+            while($orders_products_array = tep_db_fetch_array($o_count_raw)){
+              if($temp_quantity >= $temp_all_product){
+                break;
+              }
+              $temp_quantity += $orders_products_array['products_quantity'];
+              $temp_quantity_value = $orders_products_array['products_quantity'];
+              if($temp_quantity > $temp_all_product){
+                $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
+              }
+              $temp_real_all_quantity += $temp_quantity_value;
+              if($temp_quantity_value < $orders_products_array['products_quantity']){
+                $orders_products_array['products_quantity'] = $temp_quantity_value;
+              }
+              $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$orders_products_array['final_price'],'products_quantity'=>$orders_products_array['products_quantity']);
+            } 
+            tep_db_free_result($o_count_raw);
           }
        }
-     }
-     $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
        $quantity_all_product += $tmp_row['products_real_quantity'];
-       $all_tmp_price += $tmp_price;
      }
    }
+   if(empty($products_info_array)){
+
+     $result['error'] = true;
+   }
+   $result['real_all_product'] = $temp_real_all_quantity;
    $result['quantity_all_product'] = $quantity_all_product;
-   $result['asset_all_product'] = $asset_all_product;
-   $result['avg_price'] = @($asset_all_product/$quantity_all_product);
+   $result['products_info'] = $products_info_array;
    return $result;
 }
 
@@ -8598,10 +8629,6 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
     ='".$pid."' and products_bflag='".$bflag."'";
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
-  $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end,$sort);
-  if(!$tmp_price){
-    $tmp_price = $row['products_price'];
-  }
   $row['products_real_quantity'] = tep_get_quantity($pid);
   $result = array();
   $result['error'] = false;
@@ -8610,25 +8637,35 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
     $result['error'] = true;
   }
   if (!empty($tmp_relate_products_id)) {
-     $o_count_sql = " select op.products_quantity from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$row['relate_products_id']."' and os.calc_price = '1'";
+     $o_count_sql = " select op.products_quantity,o.orders_id orders_id,op.final_price final_price from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$row['relate_products_id']."' and os.calc_price = '1'";
      if($site_id != 0) {
         $o_count_sql .= " and o.site_id = '".$site_id."' ";
      }
      if($start != '' && $end != '') {
       $o_count_sql .= " and date_purchased between '".$start."' and '".$end."' ";
      }
+     //排序
+     if($sort=='price_desc'){
+       $o_count_sql .= " order by abs(final_price) asc ";
+     }else if($sort=='price_asc'){
+       $o_count_sql .= " order by abs(final_price) desc ";
+     }else{
+       $o_count_sql .= " order by o.torihiki_date desc";
+     }
      $o_count_raw = tep_db_query($o_count_sql);     
      if (!tep_db_num_rows($o_count_raw)) {
        $result['error'] = true;
+     }else{
+       $products_info_array = array();
+       while($orders_products_array = tep_db_fetch_array($o_count_raw)){
+
+         $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$orders_products_array['final_price'],'products_quantity'=>$orders_products_array['products_quantity']);
+       } 
+       tep_db_free_result($o_count_raw);
      }
   }
   $result['quantity_all_product'] = $row['products_real_quantity'];
-  $result['asset_all_product'] =$tmp_price*$row['products_real_quantity'];
-  if($tmp_price){
-    $result['price'] = $tmp_price;
-  }else{
-    $result['price'] = '0';
-  }
+  $result['products_info'] = $products_info_array; 
   return $result;
 }
 
@@ -10586,9 +10623,9 @@ function tep_get_payment_flag($payment,$cid='',$site_id=0,$orders_id='',$flag=tr
   参数: $users_name (string)类型  客户昵称 
   返回: 替换后的邮件模板
 ----------------------------------*/
-function tep_replace_mail_templates($mail_templates,$users_email='',$users_name='',$site_id='0'){ 
+function tep_replace_mail_templates($mail_templates,$users_email='',$users_name='',$site_id='0',$continue=true){ 
 
-  if(!isset($ocertify->auth_user)){
+  if(!isset($ocertify->auth_user)&&$continue){
     $ocertify = new user_certify(session_id()); 
     $admin_user_query = tep_db_query("select name,email from ". TABLE_USERS ." where userid='".$ocertify->auth_user."'");
     $admin_user_array = tep_db_fetch_array($admin_user_query);
@@ -15244,4 +15281,166 @@ function tep_sort_attendance($attendance_list,$attendance_info){
   ksort($temp_time_arr);
   $res_arr = array_merge($temp_time_arr,$temp_sum_arr);
   return $res_arr;
+}
+/*-------------------------------
+  功能:根据掩码返回可用IP
+  参数:IP 地址
+  参数:位 掩码
+  返回值:可用IP 的起始和结束 IP 
+  ------------------------------*/
+function tep_get_ip_arr_by_mask($ip_addr,$mask){
+  $res_arr = array();
+  $mask = long2ip(ip2long("255.255.255.255") << (32-$mask));
+  $subnet_mask = $mask; 
+  $ip = ip2long($ip_addr); 
+  $nm = ip2long($subnet_mask); 
+  $nw = ($ip & $nm); 
+  $bc = $nw | (~$nm); 
+  $res_arr['first_ip'] = long2ip($nw + 1);
+  $res_arr['last_ip'] = long2ip($bc - 1);
+  return $res_arr;
+}
+/*-------------------------------
+  功能:判断IP 是否可用
+  参数:IP 地址
+  参数:允许IP 字符串
+  返回值:是否为允许IP 
+  ------------------------------*/
+function tep_is_in_iplist($ip_addr,$ip_list_str){
+  if(preg_match('/\//',$ip_list_str)){
+    $ip_list_arr = explode('/',$ip_list_str);
+    $ip_list_temp = tep_get_ip_arr_by_mask($ip_list_arr[0],$ip_list_arr[1]);
+    $first_ip = $ip_list_temp['first_ip'];
+    $last_ip = $ip_list_temp['last_ip'];
+    if($last_ip == ''){
+      if($first_ip==$ip_addr){
+        return true;
+      }
+    }else{
+      $start_arr = explode('.',$first_ip);
+      $end_arr = explode('.',$last_ip);
+      $ip_addr_arr = explode('.',$ip_addr);
+      $flag_temp = array(true,false,false,false);
+      foreach($start_arr as $k => $value){
+        for($i=$start_arr[$k];$i<=$end_arr[$k];$i++){
+          if($i==$ip_addr_arr[$k]){
+            $flag_temp[$k]=true;
+            break;
+          }
+        }
+      }
+      return $flag_temp[3];
+    }
+  }else{
+    $ip_list_arr = explode('.',trim($ip_list_str));
+    $ip_addr_arr = explode('.',$ip_addr);
+    $flag_temp = true;
+    if(count($ip_list_arr)==4&&count($ip_addr_arr)==4){
+      foreach($ip_list_arr as $k => $value){
+        if($ip_list_arr[$k]=='*'||$ip_list_arr[$k]==$ip_addr_arr[$k]){
+        }else{
+          $flag_temp = false;
+          break;
+        }
+      }
+      return $flag_temp;
+    }else{
+      return false;
+    }
+  }
+  return false;
+}
+/*-------------------------------
+  功能:递归回复信息
+  参数:$reply_id 回复ID
+  返回值:回复的相关信息 
+  ------------------------------*/
+function tep_reply_info($reply_id,&$reply_info_array=array()){
+
+  $reply_query = tep_db_query("select id,reply_id,update_user,update_time from ".TABLE_BULLETIN_BOARD_REPLY." where id='".$reply_id."'");
+  $reply_array = tep_db_fetch_array($reply_query);
+  tep_db_free_result($reply_query);
+
+  $user_email_query = tep_db_query("select email from ".TABLE_USERS." where name='".$reply_array['update_user']."'");
+  $user_email_array = tep_db_fetch_array($user_email_query);
+  tep_db_free_result($user_email_query);
+
+  $reply_info_array[] = array('add_user'=>$reply_array['update_user'],
+                              'add_time'=>$reply_array['update_time'], 
+                              'add_email'=>$user_email_array['email'], 
+                              'bulletin_id'=>$bulletin_info['bulletin_id']
+                              );
+
+  if($reply_array['reply_id'] != 0){
+
+    tep_reply_info($reply_array['reply_id'],$reply_info_array);
+  }
+}
+/*-------------------------------
+  功能:返回截取后的字符
+  参数:$sourcestr 字符串
+  参数:$cutlength 截取的长度
+  返回值:字符串的长度 
+  ------------------------------*/
+function cut_str($sourcestr,$cutlength) { 
+	$returnstr=''; 
+	$i=0; 
+	$n=0; 
+	$str_length=strlen($sourcestr);
+	while (($n<$cutlength) and ($i<=$str_length)) { 
+       $temp_str=substr($sourcestr,$i,1); 
+       $ascnum=Ord($temp_str); 
+       if ($ascnum>=224){   
+           $returnstr=$returnstr.substr($sourcestr,$i,3); //将3个连续的字符计为单个字符         
+          $i=$i+3;            //实际Byte计为3 
+          $n++;            //字串长度计1 
+       } elseif ($ascnum>=192){ //如果ASCII位高与192 
+			$returnstr=$returnstr.substr($sourcestr,$i,2); //根据UTF-8编码规范，将2个连续的字符计为单个字符 
+			$i=$i+2;            //实际Byte计为2 
+			$n++;            //字串长度计1 
+		} elseif ($ascnum>=65 && $ascnum<=90) //如果是大写字母， 
+			{ 
+			$returnstr=$returnstr.substr($sourcestr,$i,1); 
+			$i=$i+1;            //实际的Byte数仍计1个 
+			$n++;            //但考虑整体美观，大写字母计成一个高位字符 
+			} 
+			else                //其他情况下，包括小写字母和半角标点符号， 
+			{ 
+			$returnstr=$returnstr.substr($sourcestr,$i,1); 
+			$i=$i+1;            //实际的Byte数计1个 
+			$n=$n+0.5;        //小写字母和半角标点等与半个高位字符宽... 
+			} 
+		} 
+			return $returnstr; 
+}
+/*-------------------------------
+  功能:计算字符串的长度
+  参数:$sourcestr 字符串
+  返回值:字符串的长度 
+  ------------------------------*/
+function tep_mb_strlen($sourcestr) { 
+	$i=0; 
+	$n=0; 
+        $str_length=strlen($sourcestr);
+	while ($i<=$str_length) { 
+       $temp_str=substr($sourcestr,$i,1); 
+       $ascnum=Ord($temp_str); 
+       if ($ascnum>=224){   
+          $i=$i+3;            //实际Byte计为3 
+          $n++;            //字串长度计1 
+       } elseif ($ascnum>=192){ //如果ASCII位高与192 
+			$i=$i+2;            //实际Byte计为2 
+			$n++;            //字串长度计1 
+		} elseif ($ascnum>=65 && $ascnum<=90) //如果是大写字母， 
+			{ 
+			$i=$i+1;            //实际的Byte数仍计1个 
+			$n++;            //但考虑整体美观，大写字母计成一个高位字符 
+			} 
+			else                //其他情况下，包括小写字母和半角标点符号， 
+			{ 
+			$i=$i+1;            //实际的Byte数计1个 
+			$n=$n+0.5;        //小写字母和半角标点等与半个高位字符宽... 
+			} 
+		} 
+			return $n; 
 }

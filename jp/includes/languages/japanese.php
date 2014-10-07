@@ -106,7 +106,7 @@ define('BOX_HEADING_SPECIALS', '特価商品');
 define('BOX_HEADING_REVIEWS', 'レビュー');
 define('BOX_REVIEWS_WRITE_REVIEW', 'レビューを書く');
 define('BOX_REVIEWS_NO_REVIEWS', '現在レビューはありません');
-define('BOX_REVIEWS_TEXT_OF_FIVE_INFO_STARS', '5点中の %s点!');
+define('BOX_REVIEWS_TEXT_OF_5_STARS', '5点中の %s点!');
 
 // shopping_cart box text in includes/boxes/shopping_cart.php
 define('BOX_HEADING_SHOPPING_CART', 'ショッピングカート');
@@ -351,9 +351,9 @@ define('WARNING_SESSION_DIRECTORY_NOT_WRITEABLE', '警告: セッション・デ
 define('WARNING_SESSION_AUTO_START', '警告: セッション・オートスタートが有効になっています。設定ファイル（php.ini）で無効に設定し、ウェブサーバをリスタートしてください。');
 define('WARNING_DOWNLOAD_DIRECTORY_NON_EXISTENT', '警告: ダウンロード販売商品ディレクトリが存在しません: ' . DIR_FS_DOWNLOAD . '. このディレクトリを作成しない場合ダウンロード販売商品の取扱いが出来ません。');
 
-define('TEXT_CREDIT_CARD_VALID_ERROR', 'クレジットカード有効期限が正しくありません。<br>ご確認後もう一度入力してください。');
-define('TEXT_CREDIT_CARD_NUMBER_ERROR', 'クレジットカードナンバーが正しくありません。<br>ご確認後もう一度入力してください。');
-define('TEXT_CREDIT_CARD_TOP_FOUR_NOT_STRING', '入力したクレジットカードナンバーの最初の4桁は: %s です。<br>ナンバーが正しい場合このカードの取扱いがありません。<br>間違っている場合はご確認後もう一度入力してください。');
+define('TEXT_CCVAL_ERROR_INVALID_DATE', 'クレジットカード有効期限が正しくありません。<br>ご確認後もう一度入力してください。');
+define('TEXT_CCVAL_ERROR_INVALID_NUMBER', 'クレジットカードナンバーが正しくありません。<br>ご確認後もう一度入力してください。');
+define('TEXT_CCVAL_ERROR_UNKNOWN_CARD', '入力したクレジットカードナンバーの最初の4桁は: %s です。<br>ナンバーが正しい場合このカードの取扱いがありません。<br>間違っている場合はご確認後もう一度入力してください。');
 
 
 define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);

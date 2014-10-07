@@ -7,6 +7,27 @@
   // 自动删除过期数据
   $alarm_day = get_configuration_by_site_id('USERS_EXPIRED_DATE_SETTING',0); 
   tep_db_query("delete from login where  is_locked='0' and time_format(timediff(now(),logintime),'%H')>".$alarm_day*24);
+  //查询被封IP
+  $ip_query = tep_db_query("select address from login where is_locked='1' group by address");
+  while($ip_array = tep_db_fetch_array($ip_query)){
+
+    $user_ip_query = tep_db_query("select sessionid,account,status from login where address='".$ip_array['address']."' and is_locked='0'");
+    while($user_ip_array = tep_db_fetch_array($user_ip_query)){
+
+      if($user_ip_array['account'] != '' && $user_ip_array['status'] == 0){
+        $user_permissions_query = tep_db_query("select permission from ".TABLE_PERMISSIONS." where userid='".$user_ip_array['account']."'");
+        $user_permissions_array = tep_db_fetch_array($user_permissions_query);
+        tep_db_free_result($user_permissions_query);
+
+        if($user_permissions_array['permission'] < 15){
+
+          tep_db_query("update login set is_locked='1' where sessionid='".$user_ip_array['sessionid']."'");
+        }
+      }
+    }
+    tep_db_free_result($user_ip_query);
+  }
+  tep_db_free_result($ip_query);
   define('TABLE_LOGIN', 'login');
   if (isset($_POST['sp'])) { $sp = $_POST['sp']; }
   if (isset($_POST['execute_delete'])) { $execute_delete = $_POST['execute_delete']; }
@@ -225,6 +246,14 @@ require("includes/note_js.php");
         $contents_str = 'logoutstatus desc';
         $contents_type = 'desc';
       }
+    }else if($_GET['sort'] == 'login_num'){
+      if($_GET['type'] == 'desc'){
+        $contents_str = 'login_num  desc';
+        $contents_type = 'asc';
+      }else{
+        $contents_str = 'login_num asc';
+        $contents_type = 'desc';
+      }
     }else if($_GET['sort'] == 'address'){
       if($_GET['type'] == 'desc'){
         $contents_str = 'address desc';
@@ -268,6 +297,13 @@ require("includes/note_js.php");
             $alert_status = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
         }else{
             $alert_status = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
+        }
+   }
+   if($_GET['sort'] == 'login_num'){
+        if($_GET['type'] == 'desc'){
+            $alert_num = "<font color='#c0c0c0'>".TEXT_SORT_ASC."</font><font color='#facb9c'>".TEXT_SORT_DESC."</font>";
+        }else{
+            $alert_num = "<font color='#facb9c'>".TEXT_SORT_ASC."</font><font color='#c0c0c0'>".TEXT_SORT_DESC."</font>";
         }
    }
    if($_GET['sort'] == 'address'){
@@ -353,9 +389,14 @@ require("includes/note_js.php");
     $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=lastaccesstime&type=desc').'">'.TABLE_HEADING_LAST_ACCESSTIME.$alert_lastaccesstim.'</a>');
     }
     if(isset($_GET['sort']) && $_GET['sort'] == 'status'){
-    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type='.$contents_type).'">'.TABLE_HEADING_STATUS.$alert_status.'</a>');
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type='.$contents_type).'">'.TABLE_HEADING_STATUS_USER_LOG.$alert_status.'</a>');
     }else{
-    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type=desc').'">'.TABLE_HEADING_STATUS.$alert_status.'</a>');
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=status&type=desc').'">'.TABLE_HEADING_STATUS_USER_LOG.$alert_status.'</a>');
+    }
+    if(isset($_GET['sort']) && $_GET['sort'] == 'login_num'){
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=login_num&type='.$contents_type).'">'.TABLE_USERS_LOGIN_NUM.$alert_num.'</a>');
+    }else{
+    $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=login_num&type=desc').'">'.TABLE_USERS_LOGIN_NUM.$alert_num.'</a>');
     }
     if(isset($_GET['sort']) && $_GET['sort'] == 'address'){
     $alert_title_row[] = array('params' => 'class="dataTableHeadingContent_order"','text' => '<a href="'.tep_href_link('users_log.php','page='.$_GET['page'].'&sort=address&type='.$contents_type).'">'.TABLE_HEADING_ADDRESS.$alert_address.'</a>');
@@ -412,7 +453,7 @@ require("includes/note_js.php");
     if ($arec['logoutstatus']) {
     $alert_info[] = array(
         'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
-        'text'   =>  ' [' . $a_sts_in[$arec['loginstatus']] .  ']&nbsp;&nbsp;'. ' [' .  $a_sts_out[$arec['logoutstatus']] . ']'
+        'text'   =>  ($arec['logoutstatus'] != 'r' ? ' [' . $a_sts_in[$arec['loginstatus']] .  ']&nbsp;&nbsp;' : ''). ' [' .  $a_sts_out[$arec['logoutstatus']] . ']'
         );
     }else {
     $alert_info[] = array(
@@ -422,30 +463,46 @@ require("includes/note_js.php");
     }
     $alert_info[] = array(
         'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
+        'text'   => $arec['login_num'] == 1 ? '' : $arec['login_num'] 
+        );
+    $alert_info[] = array(
+        'params' => 'class="main" onClick="document.location.href=\'' .  tep_href_link('users_log.php',"sid=".$arec['sessionid'].'&page='.$_GET['page']) .'\'"',
         'text'   => $saddress
         );
     if($arec['is_locked'] == '0'){
     if($is_disabled_single){
+        $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_red_light.gif', '').'</a>';
     $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => tep_image('images/icons/unlock.gif','','','','disabled="disabled"')
+        'text'   => $lock_str 
         );
     }else{
+        $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM_LOCK.'\')){ip_lock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_red_light.gif', '').'</a>';
     $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM.'\')){ip_lock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image('images/icons/unlock.gif').'</a>'
+        'text'   => $lock_str 
         );
     }
     }else{
     if($is_disabled_single){
+        $lock_str = '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_green_light.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_red.gif', '').'</a>';
      $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => tep_image('images/icons/lock.gif','','','','disabled="disabled"')
+        'text'   => $lock_str 
         );
     }else{
+        $lock_str = '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_CONFIRM_UNLOCK.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image(DIR_WS_IMAGES .'icon_status_green_light.gif', '').'</a>';
+        $lock_str .= '&nbsp;&nbsp;';
+        $lock_str .= '<a href="javascript:void(0)" >'.tep_image(DIR_WS_IMAGES .'icon_status_red.gif', '').'</a>';
      $alert_info[] = array(
         'params' => 'class="main"',
-        'text'   => '<a href="javascript:void(0)" onclick="if(confirm(\''.TEXT_DELETE_CONFIRM.'\')){ip_unlock(\''.$arec['address'].'\',\''.$arec['account'].'\');}">'.tep_image('images/icons/lock.gif').'</a>' 
+        'text'   => $lock_str 
         );
     }
     }
