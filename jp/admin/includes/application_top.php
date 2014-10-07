@@ -433,9 +433,7 @@ define('TABLE_PERMISSIONS','permissions');
       $_SESSION['text_language'] = $language;
     }
   }
-  if(isset($_SESSION['text_language'])&&$_SESSION['text_language']){
-    $language = $_SESSION['text_language'];
-  }
+  
   if(!isset($_GET['language'])){
     if(PERSONAL_SETTING_LANGUAGE != ''){
       $personal_login_language_array = unserialize(PERSONAL_SETTING_LANGUAGE);
@@ -451,6 +449,9 @@ define('TABLE_PERMISSIONS','permissions');
         $_SESSION['text_language'] = $personal_language_str;
       }
     }
+  }
+  if(isset($_SESSION['text_language'])&&$_SESSION['text_language']){
+    $language = $_SESSION['text_language'];
   }
 
 // include the language translations
