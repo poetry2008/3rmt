@@ -709,7 +709,6 @@ define('TEXT_NOT_ENOUGH_DATA','前からの&nbsp;50&nbsp;件検索結果に不�
 define('CLEATE_DOUGYOUSYA_ALERT', 'まず、入力フォーム追加してください');
 define('BUTTON_MANUAL','マニュアル');
 define('TEXT_JAVASCRIPT_ERROR','JavaScriptまたはCookieの設定がオンになっていません。お手数ですが設定を「オン」にして、ご利用ください。<br>※ 設定がオフになっていますと、ご利用いただけないサービスがあります。');
-define('HEADER_TEXT_PERSONAL_SETTING','個人設定');
 define('TEXT_FLAG_CHECKED','確認済');
 define('TEXT_FLAG_UNCHECK','未確認');
 

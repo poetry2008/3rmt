@@ -47,13 +47,6 @@ define('FILENAME_ONCE_PWD_LOG', 'pwd_log.php');
             echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_USERS, '', 'NONSSL').'\';"><span>'.tep_image(DIR_WS_MENU_ICON .  'icon_user_manage.gif').'</span><span>' . BOX_USER_ADMIN . '</span></div>';
           }
         }
-        if (!check_whether_is_limited(FILENAME_PERSONAL_SETTING)) {
-          if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_PERSONAL_SETTING){
-            echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_PERSONAL_SETTING).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_PERSONAL_SETTING.'</span></div>'; 
-          }else{
-            echo '<div style="" onmouseout="this.className=\'sidebar\'" onmouseover="this.className=\'sidebarover\';this.style.cursor=\'hand\'" class="sidebar" onclick="window.location.href=\''.tep_href_link(FILENAME_PERSONAL_SETTING).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_personal_setting.gif').  '</span><span>'.HEADER_TEXT_PERSONAL_SETTING.'</span></div>'; 
-          }
-        }
         if (!check_whether_is_limited(FILENAME_GROUPS)) {
           if(str_replace('/admin/','',$_SERVER['PHP_SELF']) == FILENAME_GROUPS){
             echo '<div class="sidebarselected" onclick="window.location.href=\''.tep_href_link(FILENAME_GROUPS).'\';"><span>' .  tep_image(DIR_WS_MENU_ICON .  'icon_groups.png').  '</span><span>'.HEADER_TEXT_GROUPS.'</span></div>'; 

@@ -709,7 +709,6 @@ define('TEXT_NOT_ENOUGH_DATA','Từ trước &nbsp;50&nbsp;Kết qur không trù
 define('CLEATE_DOUGYOUSYA_ALERT', 'Đầu tiên hãy thêm input form');
 define('BUTTON_MANUAL','Manual');
 define('TEXT_JAVASCRIPT_ERROR','Thiết lập JavaScript hoặc Cookie không ở trạng thái On.Phiền bạn hãy chọn thiết lập [On] rồi sửu dụng.<br>※ Nếu thiết lập bị OFF, sẽ có những dịch vụ quý khách không thể sử dụng.');
-define('HEADER_TEXT_PERSONAL_SETTING','Thiết lập cá nhân');
 define('TEXT_FLAG_CHECKED','Kiểm tra xong');
 define('TEXT_FLAG_UNCHECK','Chưa kiểm tra');
 

@@ -698,7 +698,6 @@ define('TEXT_LAST_SEARCH_DATA','&nbsp;%s&nbsp;个检索结果');
 define('TEXT_FIND_DATA_STOP','检索%s但是显示停止。');
 define('TEXT_NOT_ENOUGH_DATA','从前面&nbsp;50&nbsp;个检索结果中不重复的检索结果有&nbsp;%s&nbsp;个');
 
-define('HEADER_TEXT_PERSONAL_SETTING','个人设定');
 define('BOX_HEADING_USER', '用户');
 define('BOX_USER_ADMIN', '用户管理');
 define('TEXT_ONE_TIME_CONFIG_SAVE','已保存');

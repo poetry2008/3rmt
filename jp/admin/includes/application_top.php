@@ -158,7 +158,6 @@ if(function_exists('date_default_timezone_set'))date_default_timezone_set('Asia/
   define('FILENAME_BILL_TEMPLATES', 'bill_templates.php');
   define('FILENAME_ADDRESS', 'address.php');
   define('FILENAME_HELP_INFO','help_info.php');
-  define('FILENAME_PERSONAL_SETTING','personal_setting.php');
   define('FILENAME_ALERT_LOG','alert_log.php');
   define('FILENAME_MAIL_TEMPLATES','mail_templates.php');
   define('FILENAME_ALL_ORDERS','all_orders.php');
