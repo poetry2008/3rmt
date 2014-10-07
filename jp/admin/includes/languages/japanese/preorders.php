@@ -7,6 +7,7 @@ define('HEADING_TITLE', '予約管理');
 define('HEADING_TITLE_SEARCH', '注文ID:');
 define('HEADING_TITLE_STATUS', 'ステータス:');
 
+define('TEXT_PREORDERS_TRANSACTION_FINISH', '予約終了');
 define('TABLE_HEADING_COMMENTS', 'コメント');
 define('TABLE_HEADING_CUSTOMERS', '顧客名');
 define('TABLE_HEADING_ORDER_TOTAL', '注文総額');

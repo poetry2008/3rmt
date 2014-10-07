@@ -5047,9 +5047,23 @@ if($c_parent_array['parent_id'] == 0){
         if(!is_array($get_mark_info)&&$get_mark_info==null){
           $get_mark_info = array();
         }
-          ?>
+         ?> 
           <table border="0" width="100%" cellpadding="0" cellspacing="1" class="table_wrapper">
-            <tr>
+            <tr> 
+<?php
+if(PERSONAL_SETTING_TRANSACTION_FINISH == ''){
+  $is_finish  = '1';
+}else {
+  $personal_transaction_array = unserialize(PERSONAL_SETTING_TRANSACTION_FINISH);
+  if (array_key_exists($ocertify->auth_user,$personal_transaction_array)) {
+    $is_finish  = $personal_transaction_array[$ocertify->auth_user];
+  } else {
+    $is_finish  = '1';
+  }
+}            
+$transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecked';
+?>
+              <td id="mark_t" class="<?php echo  $transaction_class; ?>" align="center" onclick="transaction_finish(<?php echo $is_finish;?>)"><?php echo TEXT_TRANSACTION_FINISH;?>&nbsp;</td> 
               <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || (!isset($_GET['mark']) && in_array('0', $work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">&nbsp;</td> 
               <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || (!isset($_GET['mark']) && in_array('1', $work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">A</td> 
               <td id="mark_b" class="<?php echo (in_array('2', $get_mark_info) || (!isset($_GET['mark']) && in_array('2',$work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'2','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">B</td> 
@@ -5072,7 +5086,7 @@ if($c_parent_array['parent_id'] == 0){
         ?>
           <td class="dataTableHeadingContent_order"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
-            echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+            echo "<a class='head_sort_order_select' onclick='select_sort(0,\"".$type_str."\")'  href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=site_romaji&order_type='.$type_str)."'>";
             echo TABLE_HEADING_SITE;
@@ -5093,8 +5107,8 @@ if($c_parent_array['parent_id'] == 0){
             }
           }else{
             if($orders_sort == 'site_romaji' && !isset($_GET['order_sort'])){
-               $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
-               echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+               $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc'; 
+               echo "<a class='head_sort_order_select' onclick='select_sort(0,\"".$orders_type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=site_romaji&order_type='.$orders_type_str)."'>";
                echo TABLE_HEADING_SITE;
@@ -5114,7 +5128,7 @@ if($c_parent_array['parent_id'] == 0){
               echo "</font>";
             }
             }else{
-              echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+              echo "<a class='head_sort_order' onclick='select_sort(0,\"desc\")' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
                 'order_sort=site_romaji&order_type=desc')."'>";
               echo TABLE_HEADING_SITE;
@@ -5124,7 +5138,7 @@ if($c_parent_array['parent_id'] == 0){
         ?></td>
           <td class="dataTableHeadingContent_order" width="22%"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'customers_name'){
-            echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+            echo "<a class='head_sort_order_select' onclick='select_sort(1,\"".$type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=customers_name&order_type='.$type_str)."'>";
             echo TABLE_HEADING_CUSTOMERS; 
@@ -5146,7 +5160,7 @@ if($c_parent_array['parent_id'] == 0){
           }else{
             if($orders_sort == 'customers_name' && !isset($_GET['order_sort'])){
               $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
-              echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+              echo "<a class='head_sort_order_select' onclick='select_sort(1,\"".$orders_type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=customers_name&order_type='.$orders_type_str)."'>";
               echo TABLE_HEADING_CUSTOMERS; 
@@ -5166,7 +5180,7 @@ if($c_parent_array['parent_id'] == 0){
               echo "</font>";
             }
             }else{
-              echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+              echo "<a class='head_sort_order' onclick='select_sort(1,\"desc\")' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
                 'order_sort=customers_name&order_type=desc')."'>";
               echo TABLE_HEADING_CUSTOMERS; 
@@ -5176,7 +5190,7 @@ if($c_parent_array['parent_id'] == 0){
         ?></td>
           <td class="dataTableHeadingContent_order" align="right"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'ot_total'){
-            echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+            echo "<a class='head_sort_order_select' onclick='select_sort(2,\"".$type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=ot_total&order_type='.$type_str)."'>";
             echo TABLE_HEADING_ORDER_TOTAL;
@@ -5198,7 +5212,7 @@ if($c_parent_array['parent_id'] == 0){
           }else{
             if($orders_sort == 'ot_total' && !isset($_GET['order_sort'])){
               $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
-              echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+              echo "<a class='head_sort_order_select' onclick='select_sort(2,\"".$orders_type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=ot_total&order_type='. $orders_type_str)."'>";
               echo TABLE_HEADING_ORDER_TOTAL;
@@ -5218,7 +5232,7 @@ if($c_parent_array['parent_id'] == 0){
               echo "</font>";
             }
             }else{
-              echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+              echo "<a class='head_sort_order' onclick='select_sort(2,\"desc\")' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
                 'order_sort=ot_total&order_type=desc')."'>";
               echo TABLE_HEADING_ORDER_TOTAL;
@@ -5229,7 +5243,7 @@ if($c_parent_array['parent_id'] == 0){
 	  <td class="dataTableHeadingContent_order" align="center"></td>
           <td class="dataTableHeadingContent_order" align="center"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'torihiki_date'){
-            echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+            echo "<a class='head_sort_order_select' onclick='select_sort(3,\"".$type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=torihiki_date&order_type='.$type_str)."'>";
             echo TEXT_ORDER_ORDER_DATE;
@@ -5251,7 +5265,7 @@ if($c_parent_array['parent_id'] == 0){
           }else{
             if($orders_sort == 'torihiki_date' && !isset($_GET['order_sort'])){
               $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
-              echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+              echo "<a class='head_sort_order_select' onclick='select_sort(3,\"".$orders_type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=torihiki_date&order_type='.$orders_type_str)."'>";
               echo TEXT_ORDER_ORDER_DATE;
@@ -5271,7 +5285,7 @@ if($c_parent_array['parent_id'] == 0){
               echo "</font>";
             }
             }else{
-              echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+              echo "<a class='head_sort_order' onclick='select_sort(3,\"desc\")' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
                 'order_sort=torihiki_date&order_type=desc')."'>";
               echo TEXT_ORDER_ORDER_DATE;
@@ -5284,7 +5298,7 @@ if($c_parent_array['parent_id'] == 0){
           <td class="dataTableHeadingContent">&nbsp;</td>
           <td class="dataTableHeadingContent_order" align="center"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'date_purchased'){
-            echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+            echo "<a class='head_sort_order_select' onclick='select_sort(4,\"".$type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=date_purchased&order_type='.$type_str)."'>";
             echo TABLE_HEADING_DATE_PURCHASED; 
@@ -5306,7 +5320,7 @@ if($c_parent_array['parent_id'] == 0){
           }else{
             if($orders_sort == 'date_purchased' && !isset($_GET['order_sort'])){
               $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
-              echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+              echo "<a class='head_sort_order_select' onclick='select_sort(4,\"".$orders_type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=date_purchased&order_type='.$orders_type_str)."'>";
               echo TABLE_HEADING_DATE_PURCHASED; 
@@ -5326,7 +5340,7 @@ if($c_parent_array['parent_id'] == 0){
               echo "</font>";
             }
             }else{
-              echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+              echo "<a class='head_sort_order' onclick='select_sort(4,\"desc\")' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
                 'order_sort=date_purchased&order_type=desc')."'>";
               echo TABLE_HEADING_DATE_PURCHASED; 
@@ -5337,7 +5351,7 @@ if($c_parent_array['parent_id'] == 0){
           <td class="dataTableHeadingContent" align="right"></td>
           <td class="dataTableHeadingContent_order" align="right"><?php 
           if ($HTTP_GET_VARS['order_sort'] == 'orders_status_name'){
-            echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+            echo "<a class='head_sort_order_select' onclick='select_sort(5,\"".$type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=orders_status_name&order_type='.$type_str)."'>";
             echo TABLE_HEADING_STATUS; 
@@ -5359,7 +5373,7 @@ if($c_parent_array['parent_id'] == 0){
           }else{
             if($orders_sort == 'orders_status_name' && !isset($_GET['order_sort'])){
               $orders_type_str = $orders_type == 'asc' ? 'desc' : 'asc';
-              echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
+              echo "<a class='head_sort_order_select' onclick='select_sort(5,\"".$orders_type_str."\")' href='".tep_href_link(FILENAME_ORDERS,
                 tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).'order_sort=orders_status_name&order_type='.$orders_type_str)."'>";
               echo TABLE_HEADING_STATUS; 
@@ -5379,7 +5393,7 @@ if($c_parent_array['parent_id'] == 0){
               echo "</font>";
             }
             }else{
-              echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+              echo "<a class='head_sort_order' onclick='select_sort(5,\"desc\")' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
                     'order_sort')).
                 'order_sort=orders_status_name&order_type=desc')."'>";
               echo TABLE_HEADING_STATUS; 

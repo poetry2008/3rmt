@@ -996,6 +996,48 @@ function mark_work(ele, mark_symbol, select_mark, c_site, param_other)
     }
   });
 }
+
+
+// select sort
+function select_sort(sort_list,sort_type){
+  var type = (sort_type=='asc')?0:1;  
+  $.ajax({
+    type: "POST",
+    data: 'sort_list='+sort_list+'&sort_type='+type,
+    async:false,
+    url: 'ajax_preorders.php?action=select_sort',
+    success: function(data) {
+      data_array = data.split('|||'); 
+      if (data_array[0] == 'success') {
+        window.location.href = data_array[1]; 
+      }
+    }
+  });
+
+}
+
+
+//transaction finish show or hide
+function transaction_finish(is_finish)
+{
+  var is_finish = (is_finish==1)?'0':'1';
+  $.ajax({
+    type: "POST",
+    data: 'is_finish='+is_finish,
+    async:false,
+    url: 'ajax_preorders.php?action=transaction',
+    success: function(data) {
+      data_array = data.split('|||'); 
+      if (data_array[0] == 'success') {  
+        var otd = document.getElementById('mark_t');
+        var otd_class = (is_finish==1)?'mark_flag_checked':'mark_flag_unchecked';
+        otd.className = otd_class;
+        window.location.href = data_array[1]; 
+      }
+    }
+  });
+}
+
 //check new order
 function checkNewPreOrders(t)
 {

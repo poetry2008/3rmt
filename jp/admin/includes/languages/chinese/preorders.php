@@ -8,6 +8,8 @@ define('HEADING_TITLE', '预约管理');
 define('HEADING_TITLE_SEARCH', '订单ID:');
 define('HEADING_TITLE_STATUS', '状态:');
 
+define('TEXT_PREORDERS_TRANSACTION_FINISH', '预约终止');
+define('TEXT_PERSONAL_SETTING_LANGUAGE_OPTION','默认语言选择');
 define('TABLE_HEADING_COMMENTS', '评论');
 define('TABLE_HEADING_CUSTOMERS', '顾客名');
 define('TABLE_HEADING_ORDER_TOTAL', '订单总额');

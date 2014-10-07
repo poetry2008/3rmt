@@ -238,7 +238,39 @@ if (isset($_GET['action'])&&$_GET['action']=='show_all_notice') {
     echo '<tr><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_notice(\''.DELETE_ALL_NOTICE.'\',\''.$_POST['aid'].'\')"><img src="images/icons/bbs_del.gif"></a></td></tr>';
     echo '</table>'; 
   }
-} else if (isset($_GET['action'])&&$_GET['action']=='delete_alarm') {
+}else if (isset($_GET['action'])&&$_GET['action']=='change_language'){
+  $personal_language = $_POST['language'];
+  $cur_page = $_POST['cur_page'];
+  $personal_language_temp_array = array();
+  if(PERSONAL_SETTING_LANGUAGE == ''){
+    $personal_language_temp_array = array($ocertify->auth_user=>$personal_language);
+  }else{
+    $personal_language_str_array = unserialize(PERSONAL_SETTING_LANGUAGE); 
+    $personal_language_str_array[$ocertify->auth_user] = $personal_language;
+    $personal_language_temp_array = $personal_language_str_array;
+  }
+  $personal_language_str = serialize($personal_language_temp_array);
+  $result =  tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_language_str."' where configuration_key='PERSONAL_SETTING_LANGUAGE'");
+
+  if($result){
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link($cur_page,"language=".$personal_language); 
+  } 
+  echo implode('|||', $return_array);
+}else if (isset($_GET['action'])&&$_GET['action']=='change_sound_flag'){
+  //ajax改变通知音状态
+  $bell_sound = $_POST['flag'];
+  if(PERSONAL_SETTING_NOTIFICATION_SOUND==''){
+    $personal_sound_temp_array = array($ocertify->auth_user=>$bell_sound);
+  }else{
+    $personal_sound_str_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
+    $personal_sound_str_array[$ocertify->auth_user]=$bell_sound;
+    $personal_sound_temp_array = $personal_sound_str_array;
+  }
+  $personal_sound_str = serialize($personal_sound_temp_array);
+  tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_sound_str."' where configuration_key='PERSONAL_SETTING_NOTIFICATION_SOUND'");
+  
+}else if (isset($_GET['action'])&&$_GET['action']=='delete_alarm') {
 /* -----------------------------------------------------
     功能: 删除指定的notice
     参数: $_POST['nid'] notcie的id值 

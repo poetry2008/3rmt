@@ -2333,6 +2333,55 @@ echo json_encode($json_array);
     $products_num_error_str = implode('、',$products_num_error_array);
     echo $products_num_error_str;
   }
+}else if ($_GET['action'] == 'select_sort'){
+  $orders_sort_list = tep_db_prepare_input($_POST['sort_list']);
+  $orders_sort = tep_db_prepare_input($_POST['sort_type']); 
+  $user_info = tep_get_user_info($ocertify->auth_user);
+  if($orders_sort_list == '' && $orders_sort == ''){
+      $orders_sort_str = ''; 
+    }else{
+      $orders_sort_temp_array = array();
+      $orders_sort_setting_str = $orders_sort_list.'|'.$orders_sort;
+      if(PERSONAL_SETTING_ORDERS_SORT == ''){
+        $orders_sort_temp_array = array($user_info['name']=>$orders_sort_setting_str);
+      }else{
+        $orders_sort_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SORT);
+        $orders_sort_setting_array[$user_info['name']] = $orders_sort_setting_str;      
+        $orders_sort_temp_array = $orders_sort_setting_array;
+      }
+     $orders_sort_str = serialize($orders_sort_temp_array); 
+    }
+     
+     $result =  tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_sort_str."' where configuration_key='PERSONAL_SETTING_ORDERS_SORT'");
+   
+   if($result){
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link(FILENAME_ORDERS);
+  }
+   
+  echo implode('|||', $return_array);
+}else if ($_GET['action'] == 'transaction'){
+  /*---------------------------------------
+    功能：订单管理页已完成订单的显示与隐藏
+    参数： $_POST['is_finish'] 1 显示 0 隐藏
+   ---------------------------------------*/
+    $is_transaction  = $_POST['is_finish'];
+    $personal_is_transaction_temp_array = array();
+    if(PERSONAL_SETTING_TRANSACTION_FINISH == ''){
+      $personal_is_transaction_temp_array = array($ocertify->auth_user=>$is_transaction);
+    }else{
+      $personal_is_transaction_array = unserialize(PERSONAL_SETTING_TRANSACTION_FINISH); 
+      $personal_is_transaction_array[$ocertify->auth_user] = $is_transaction;
+      $personal_is_transaction_temp_array = $personal_is_transaction_array;
+    }
+    $personal_is_transaction_str = serialize($personal_is_transaction_temp_array);
+    $result =  tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_is_transaction_str."' where configuration_key='PERSONAL_SETTING_TRANSACTION_FINISH'");
+    if($result){
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link(FILENAME_ORDERS);
+    }
+   
+  echo implode('|||', $return_array);
 } else if ($_GET['action'] == 'handle_mark') {
 /*-------------------------------------------
  功能: 处理标记  
@@ -2376,6 +2425,20 @@ echo json_encode($json_array);
     $return_array[] = 'success';
     $return_array[] = tep_href_link(FILENAME_ORDERS, $_POST['param_other'].'mark='.$_GET['mark_symbol'].((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
   }
+    //点击ABCD后，将信息存入数据库
+    $user_info = tep_get_user_info($ocertify->auth_user); 
+    $orders_work = $mark_array; 
+    $orders_work_temp_array = array();
+    $orders_work_setting_str = implode('|',$orders_work);
+    if(PERSONAL_SETTING_ORDERS_WORK == ''){
+      $orders_work_temp_array = array($user_info['name']=>$orders_work_setting_str);
+    }else{
+      $orders_work_setting_array = unserialize(PERSONAL_SETTING_ORDERS_WORK);
+      $orders_work_setting_array[$user_info['name']] = $orders_work_setting_str;       
+      $orders_work_temp_array = $orders_work_setting_array;
+    }
+   $orders_work_str = serialize($orders_work_temp_array);
+   tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_work_str."' where configuration_key='PERSONAL_SETTING_ORDERS_WORK'");
   echo implode('|||', $return_array);
 } else if ($_GET['action'] == 'read_flag') {
 /*------------------------------------------
@@ -2458,6 +2521,35 @@ echo json_encode($json_array);
   }else{
     echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
   }
+    //点击站名后，将信息存入数据库
+    $orders_site = $site_array;
+    $orders_site_temp_array = array();
+    $orders_site_setting_str = implode('|',$orders_site);
+    if(PERSONAL_SETTING_ORDERS_SITE == ''){
+      $orders_site_temp_array = array($user_info['name']=>$orders_site_setting_str);
+    }else{
+      $orders_site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+      $orders_site_setting_array[$user_info['name']] = $orders_site_setting_str;      
+      $orders_site_temp_array = $orders_site_setting_array;
+    }
+    $orders_site_str = serialize($orders_site_temp_array);
+      //把当前用户的更新日期，存入到数据库
+    $configuration_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));
+    $update_user_array = array();
+    if($configuration_row['configuration_description'] != ''){
+
+      $update_user_array = unserialize($configuration_row['configuration_description']);
+      $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
+      $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
+      $orders_site_update_str = serialize($update_user_array);
+    }else{
+      $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
+      $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
+      $orders_site_update_str = serialize($update_user_array); 
+    }
+
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."',configuration_description='".$orders_site_update_str."',user_update='".$_SESSION['user_name']."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+
 } else if ($_GET['action'] == 'handle_split') {
 /*---------------------------------------------
  功能: 处理分组 

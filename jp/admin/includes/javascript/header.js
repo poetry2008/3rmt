@@ -109,6 +109,43 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
       });
   check_header_messages();
 }
+// ajax change language
+function change_language(language,cur_page)
+{
+  $.ajax({
+      url: 'ajax_notice.php?action=change_language',   
+      type: 'POST',
+      dataType: 'text',
+      data: 'language='+language+'&cur_page='+cur_page,
+      async: false,
+      success: function(data) {
+        data_array = data.split('|||'); 
+        if (data_array[0] == 'success') {
+          window.location.href = data_array[1]; 
+        }
+      }
+     }); 
+}
+//ajax 改变声音通知的状态
+function change_sound_flag(flag)
+{
+  var flag = (flag==1)?0:1;
+  var href = location.href;
+  $.ajax({
+      url: 'ajax_notice.php?action=change_sound_flag',   
+      type: 'POST',
+      dataType: 'text',
+      data: 'flag='+flag,
+      async: false,
+      success: function(data) {
+        var sound_img =(flag==1)?'sound_high.png':'sound_mute.png';
+        var oimg = document.getElementById('sound_span');
+        oimg.innerHTML = '<img src="images/menu_icon/'+sound_img+'" />';
+        window.location.href = href;
+      }
+     }); 
+
+}
 //delete notice
 function delete_micro_notice(nid, e_type)
 {

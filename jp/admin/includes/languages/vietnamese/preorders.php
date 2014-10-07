@@ -7,6 +7,7 @@ define('HEADING_TITLE', 'Quản lí đặt hàng trước ');
 define('HEADING_TITLE_SEARCH', 'ID đặt hàng:');
 define('HEADING_TITLE_STATUS', 'Status:');
 
+define('TEXT_PREORDERS_TRANSACTION_FINISH', 'Danh sách đơn hàng hoàn tất đặt trước');
 define('TABLE_HEADING_COMMENTS', 'Nhận xét');
 define('TABLE_HEADING_CUSTOMERS', 'Tên khách hàng');
 define('TABLE_HEADING_ORDER_TOTAL', 'Số tiền đặt hàng');

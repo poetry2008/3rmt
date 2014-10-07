@@ -24,8 +24,9 @@ define('TABLE_HEADING_TOTAL_INCLUDING_TAX', '合计(含税)');
 
 define('TABLE_HEADING_CUSTOMER_NOTIFIED', '通知顾客');
 define('TABLE_HEADING_DATE_ADDED', '处理日期');
-
+define('TEXT_TRANSACTION_FINISH', '交易完成');
 define('ENTRY_CUSTOMER', '顾客名:');
+define('TEXT_PERSONAL_SETTING_LANGUAGE_OPTION','默认语言选择');
 define('ENTRY_SOLD_TO', '订购人物名:');
 !defined('ENTRY_STREET_ADDRESS') && define('ENTRY_STREET_ADDRESS', '住处１:');
 !defined('ENTRY_SUBURB')          && define('ENTRY_SUBURB', '住处２:');

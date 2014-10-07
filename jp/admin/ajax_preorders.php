@@ -1044,6 +1044,59 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
   $_SESSION['preorder_products'][$_POST['oid']]['ot_total'] = $_SESSION['preorder_products'][$_POST['oid']]['ot_subtotal']+$update_total_num;
   $price_array[] = $handle_fee;
   echo implode('|||', $price_array);
+
+}else if ($_GET['action'] == 'select_sort'){
+  $preorders_sort_list = tep_db_prepare_input($_POST['sort_list']);
+  $preorders_sort = tep_db_prepare_input($_POST['sort_type']);
+  $user_info = tep_get_user_info($ocertify->auth_user);
+
+  if($preorders_sort_list == '' && $preorders_sort == ''){
+      $preorders_sort_str = ''; 
+  }else{
+      $preorders_sort_temp_array = array();
+      $preorders_sort_setting_str = $preorders_sort_list.'|'.$preorders_sort;
+      if(PERSONAL_SETTING_PREORDERS_SORT == ''){
+        $preorders_sort_temp_array = array($user_info['name']=>$preorders_sort_setting_str);
+      }else{
+        $preorders_sort_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SORT);
+        $preorders_sort_setting_array[$user_info['name']] = $preorders_sort_setting_str;      
+        $preorders_sort_temp_array = $preorders_sort_setting_array;
+      }
+      $preorders_sort_str = serialize($preorders_sort_temp_array); 
+  } 
+   $result =  tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_sort_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SORT'"); 
+    
+   if($result){
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link(FILENAME_ORDERS);
+  }
+   
+  echo implode('|||', $return_array);
+}else if ($_GET['action'] == 'transaction'){
+  /*---------------------------------------
+    功能：预约中止的订单的显示与隐藏
+    参数： $_POST['is_finish'] 1 显示 0 隐藏
+   ---------------------------------------*/
+    $preorders_is_transaction  = $_POST['is_finish'];
+    $personal_preorders_is_transaction_temp_array = array();
+    if(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH == ''){
+      $personal_preorders_is_transaction_temp_array = array($ocertify->auth_user=>$preorders_is_transaction);
+    }else{
+      $personal_preorders_is_transaction_array =
+        unserialize(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH); 
+      $personal_preorders_is_transaction_array[$ocertify->auth_user] = $preorders_is_transaction;
+      $personal_preorders_is_transaction_temp_array = $personal_preorders_is_transaction_array;
+    }
+    $personal_preorders_is_transaction_str = serialize($personal_preorders_is_transaction_temp_array);
+    $result =  tep_db_query("update ". TABLE_CONFIGURATION ." set
+        configuration_value='".$personal_preorders_is_transaction_str."' where
+        configuration_key='PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH'");
+    if($result){
+    $return_array[] = 'success';
+    $return_array[] = tep_href_link(FILENAME_PREORDERS);
+    }
+   
+    echo implode('|||', $return_array);
 } else if ($_GET['action'] == 'handle_mark') {
 /*----------------------------------------
  功能: 处理标记 
@@ -1087,7 +1140,21 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     $return_array[] = 'success';
     $return_array[] = tep_href_link(FILENAME_PREORDERS, $_POST['param_other'].'mark='.$_GET['mark_symbol'].((!empty($_GET['c_site']))?'&site_id='.$_GET['c_site']:''));
   }
-  echo implode('|||', $return_array);
+    
+    $user_info = tep_get_user_info($ocertify->auth_user);
+    $preorders_work = $mark_array;
+    $preorders_work_temp_array = array();
+    $preorders_work_setting_str = implode('|',$preorders_work);
+    if(PERSONAL_SETTING_PREORDERS_WORK == ''){
+      $preorders_work_temp_array = array($user_info['name']=>$preorders_work_setting_str);
+    }else{
+      $preorders_work_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_WORK);
+      $preorders_work_setting_array[$user_info['name']] = $preorders_work_setting_str;      
+      $preorders_work_temp_array = $preorders_work_setting_array;
+    }
+    $preorders_work_str = serialize($preorders_work_temp_array);
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_work_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_WORK'");
+    echo implode('|||', $return_array);
 } else if ($_GET['action'] == 'read_flag') {
 /*-------------------------------------------
  功能: 读取标志 
@@ -1170,6 +1237,20 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
   }else{
     echo tep_href_link(FILENAME_PREORDERS, $_POST['param_url']); 
   }
+   $preorders_site = $site_array;
+
+    $preorders_site_temp_array = array();
+    $preorders_site_setting_str = implode('|',$preorders_site);
+    if(PERSONAL_SETTING_PREORDERS_SITE == ''){
+      $preorders_site_temp_array = array($user_info['name']=>$preorders_site_setting_str);
+    }else{
+      $preorders_site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+      $preorders_site_setting_array[$user_info['name']] = $preorders_site_setting_str;      
+      $preorders_site_temp_array = $preorders_site_setting_array;
+    }
+    $preorders_site_str = serialize($preorders_site_temp_array);
+    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_site_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SITE'");
+  //
 }else if($_GET['action'] == 'orders_session'){
 /*------------------------------------------
  功能: 订单会话 

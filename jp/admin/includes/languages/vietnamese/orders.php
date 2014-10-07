@@ -7,6 +7,7 @@ define('HEADING_TITLE', 'Quản lí đặt hàng');
 define('HEADING_TITLE_SEARCH', 'ID đặt hàng:');
 define('HEADING_TITLE_STATUS', 'Tình trạng:');
 
+define('TEXT_TRANSACTION_FINISH', 'Hoàn tất giao dịch');
 define('TABLE_HEADING_COMMENTS', 'Nhận xét');
 define('TABLE_HEADING_CUSTOMERS', 'Tên khách hàng');
 define('TABLE_HEADING_ORDER_TOTAL', 'Tổng số đặt hàng');

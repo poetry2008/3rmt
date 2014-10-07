@@ -257,16 +257,39 @@ if ($current_page_tp == FILENAME_CONFIGURATION) {
 if ($current_page_tp == FILENAME_MODULES) {
   $current_page_tp .= '?set='.$_GET['set'];
 }
+
+if($_SESSION['text_language']=='japanese' || $_SESSION['text_language']==''){
+     $help_language = 'jp';
+}else if ($_SESSION['text_language']=='chinese'){
+     $help_language = 'ch';
+}else if ($_SESSION['text_language']=='vietnamese'){
+     $help_language = 'vn';
+}
+//echo '<pre>';
+//print_r($_SESSION);
 //选择语言
-echo '<select name="select_languages" onchange="window.location.href=\''.tep_href_link($cur_page,tep_get_all_get_params(array('language'))."language=").'\'+this.value;">';
+echo '<select name="select_languages" onchange="change_language(this.value,\''.$cur_page.'\')">';
 echo '<option value="ja"'.($_SESSION['text_language'] == 'japanese' ? ' selected="selected"' : '').'>'.TEXT_SELECT_LANGUAGES_JP.'</option>';
 echo '<option value="ch"'.($_SESSION['text_language'] == 'chinese' ? ' selected="selected"' : '').'>'.TEXT_SELECT_LANGUAGES_CH.'</option>';
 echo '<option value="vn"'.($_SESSION['text_language'] == 'vietnamese' ? ' selected="selected"' : '').'>'.TEXT_SELECT_LANGUAGES_VN.'</option>';
 echo '</select>';
-echo '<a href="' . tep_href_link('help.php', 'help_page_name='.urlencode(str_replace('/admin/','',$current_page_tp)), 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
+
+//控制声音
+if (PERSONAL_SETTING_NOTIFICATION_SOUND == '') {
+  $sound_flag = '1';
+} else {
+  $personal_sound_array = unserialize(PERSONAL_SETTING_NOTIFICATION_SOUND);
+  if (array_key_exists($ocertify->auth_user, $personal_sound_array)) {
+  $sound_flag = $personal_sound_array[$ocertify->auth_user]; 
+  } else {
+    $sound_flag = '1'; 
+  }
+}
+$sound_img =($sound_flag==1)?'sound_high.png':'sound_mute.png'; 
+echo '&nbsp;<a href="javascript:change_sound_flag('.$sound_flag.')" class="headerLink"><span id="sound_span"><img src="images/menu_icon/'.$sound_img.'" alt="img"></span></a>&nbsp';
+echo '<a href="' . tep_href_link('help.php','help_page_name='.urlencode(str_replace('/admin/','',$current_page_tp)).'&help_language='.$help_language, 'NONSSL') . '" class="headerLink"  target="_blank"><img src="images/menu_icon/icon_help_info.gif" alt="img"></a>';
 ?>
 </div>
-
 <?php echo tep_draw_form('changepwd', FILENAME_CHANGEPWD,'','post','
     id=\'changepwd_form\'');
 echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
