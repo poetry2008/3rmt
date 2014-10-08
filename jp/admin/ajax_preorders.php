@@ -1142,7 +1142,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
   }
     
     $user_info = tep_get_user_info($ocertify->auth_user);
-    $preorders_work = $mark_array;
+    $preorders_work =(empty($mark_array))?array(0,1,2,3,4): $mark_array;
     $preorders_work_temp_array = array();
     $preorders_work_setting_str = implode('|',$preorders_work);
     if(PERSONAL_SETTING_PREORDERS_WORK == ''){

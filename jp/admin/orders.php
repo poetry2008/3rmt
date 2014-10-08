@@ -1595,8 +1595,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           } 
         }
         $mark_str = substr($mark_str, 0, -1);
-        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+        if($mark_str==''){
+          $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))";
+        }else {
+          $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+        }
       }
+
     } else {
       $mark_str = ''; 
       foreach ($mark_info as $m_key => $m_value) {
@@ -1611,13 +1616,17 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         }
       }
       $mark_str = substr($mark_str, 0, -1);
-      $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+      if($mark_str==''){
+        $mark_sql_str = '';
+      }else {
+        $mark_sql_str = "o.orders_work in (".$mark_str.")";
+      } 
     }
   }else{
     $mark_info = explode('-', $work_str); 
     if (in_array('0', $mark_info)) {
       if (count($mark_info) == 1) {
-        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))"; 
+         $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))";
       } else {
         $mark_str = ''; 
         foreach ($mark_info as $m_key => $m_value) {
@@ -1632,8 +1641,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           } 
         }
         $mark_str = substr($mark_str, 0, -1);
-        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
-      }
+        if($mark_str==''){
+          $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))";
+        }else {
+           $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+        }
+        }
     } else {
       $mark_str = ''; 
       foreach ($mark_info as $m_key => $m_value) {
@@ -1648,7 +1661,11 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         }
       }
       $mark_str = substr($mark_str, 0, -1);
-      $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+      if($mark_str==''){
+        $mark_sql_str = '';
+      }else {
+        $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+      }
     } 
   } 
   if(!isset($_GET['site_id'])){ 

@@ -2306,7 +2306,11 @@ $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecke
           } 
         }
         $mark_str = substr($mark_str, 0, -1);
-        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+        if($mark_str==''){
+            $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))";
+        }else {
+            $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+        }
       }
     } else {
       $mark_str = ''; 
@@ -2322,7 +2326,11 @@ $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecke
         }
       }
       $mark_str = substr($mark_str, 0, -1);
-      $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+      if($mark_str==''){
+         $mark_sql_str = '';
+      }else {
+         $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+      }
     }
   }else{
     $mark_info = explode('-', $work_str); 
@@ -2343,7 +2351,11 @@ $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecke
           } 
         }
         $mark_str = substr($mark_str, 0, -1);
-        $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+        if($mark_str==''){
+            $mark_sql_str = "((o.orders_work is null) or (o.orders_work = ''))";
+        }else {
+            $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
+        }
       }
     } else {
       $mark_str = ''; 
@@ -2359,8 +2371,13 @@ $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecke
         }
       }
       $mark_str = substr($mark_str, 0, -1);
-      $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+      if($mark_str==''){
+          $mark_sql_str = '';
+      }else {
+          $mark_sql_str = "o.orders_work in (".$mark_str.")"; 
+      }
     }
+
   } 
   if (isset($_GET['cEmail']) && $_GET['cEmail']) {
       //邮件查询 
