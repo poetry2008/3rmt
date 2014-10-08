@@ -2918,7 +2918,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
                o.is_gray, 
                o.read_flag
          from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
-         where ".$sort_where. 
+         where ".(($sort_where!='')?$sort_where:' 1 and '). 
           (($mark_sql_str != '')?' '.$mark_sql_str:'')." 
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
