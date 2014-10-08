@@ -1904,6 +1904,7 @@ float left
 /* ---------------------------
 mark
 --------------------------- */
+/*   201410月8号注文管理改*/
 .mark_flag_checked {
 	color: #fff;
 	background: #ff0000;
@@ -1912,7 +1913,10 @@ mark
 	border: 1px solid #000;
 	border-top: 2px solid #000;
 	border-left: 2px solid #000;
-    width:10px;
+        padding-top:2px;
+        height:14px;
+        line-height:14px;
+
 }
 .mark_flag_unchecked {
 	color: #000;
@@ -1923,7 +1927,7 @@ mark
 	border-bottom: 2px solid #000;
 	border-right: 2px solid #000;
 	font-weight:bold;
-    width:10px;
+
 }
 /* ---------------------------
 float right
