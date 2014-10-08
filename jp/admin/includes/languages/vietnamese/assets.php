@@ -1,7 +1,7 @@
 <?php
 define('ASSETS_TITLE', 'Quản lý tài sản');
 define('TEXT_PRODUCTS_NAME','Sản phẩm/ danh mục');
-define('TEXT_PRODUCTS_QUANTITY','Số tồn kho thực tế');
+define('TEXT_PRODUCTS_QUANTITY','Tồn kho thực tế');
 define('TEXT_PRODUCTS_PRICE','Đơn giá');
 define('TEXT_PRODUCTS_PRICE_SUM','Tổng tiền');
 
@@ -37,6 +37,6 @@ define('TEXT_SEARCH_WHERE','Phương pháp hiển thị');
 define('TEXT_SEARCH_DATE','Thời hạn tính tổng hợp');
 define('TEXT_SEARCH_DATE_START','Ngày bắt đầu');
 define('TEXT_SEARCH_DATE_END','Ngày kết thúc');
-define('TEXT_ASSETS_INFO','Vui lòng thiết lập điều kiện tính toán tài sản và click nút tìm kiếm<br>Trường hợp không đủ dữ liệu cần thiết để tính toán tài sản, dòng sẽ được hiển thị màu đỏ');
+define('TEXT_ASSETS_INFO','Vui lòng thiết lập điều kiện tính toán tài sản và click nút tìm kiếm<br>Trường hợp không đủ dữ liệu cần thiết để tính toán tài sản, dòng sẽ được hiển thị màu đỏ<br>Số lượng ứng với 1 đơn vị Ko được tính toán dựa vào giá trị hiện tại');
 define('TEXT_ROW','ko');
 ?>

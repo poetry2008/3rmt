@@ -1,7 +1,7 @@
 <?php
 define('ASSETS_TITLE', '资产管理');
 define('TEXT_PRODUCTS_NAME','分类/商品');
-define('TEXT_PRODUCTS_QUANTITY','实际库存');
+define('TEXT_PRODUCTS_QUANTITY','库存');
 define('TEXT_PRODUCTS_PRICE','均价');
 define('TEXT_PRODUCTS_PRICE_SUM','总额');
 
@@ -37,6 +37,6 @@ define('TEXT_SEARCH_WHERE','显示方法');
 define('TEXT_SEARCH_DATE','合计期限');
 define('TEXT_SEARCH_DATE_START','开始日期');
 define('TEXT_SEARCH_DATE_END','结束日期');
-define('TEXT_ASSETS_INFO','设置资产计算条件后请点击搜索按钮。<br>缺少资产计算数据时,该行以红色显示');
+define('TEXT_ASSETS_INFO','设置资产计算条件后请点击搜索按钮。<br>缺少资产计算数据时,该行以红色显示<br>每个的数量都是基于现在的值算出来的');
 define('TEXT_ROW','个');
 ?>
