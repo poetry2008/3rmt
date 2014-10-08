@@ -138,9 +138,6 @@ function change_sound_flag(flag)
       data: 'flag='+flag,
       async: false,
       success: function(data) {
-        var sound_img =(flag==1)?'sound_high.png':'sound_mute.png';
-        var oimg = document.getElementById('sound_span');
-        oimg.innerHTML = '<img src="images/menu_icon/'+sound_img+'" />';
         window.location.href = href;
       }
      }); 
