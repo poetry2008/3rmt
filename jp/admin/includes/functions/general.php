@@ -8534,10 +8534,6 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    }else if(count($return_arr)==1){
      $cid_str = " and p2c.categories_id = '".$return_arr[0]."' ";
    }
-   $tmp_sql = "select p.products_id,p.products_real_quantity,p.products_price, p.relate_products_id from ".TABLE_PRODUCTS." 
-     p,".TABLE_PRODUCTS_TO_CATEGORIES." p2c where p2c.products_id = p.products_id 
-     ".$cid_str." and p.products_bflag='".$bflag."'";
-
    $tmp_sql = "select distinct p.*,pd.*,
       IF(  `relate_products_id` =0 OR  `relate_products_id` IS NULL , '1', '0' ) as relate_id from 
       products p, products_description pd, products_to_categories p2c 
@@ -8560,7 +8556,7 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
      $tmp_row['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
        $tmp_relate_products_id = (int)$tmp_row['relate_products_id'];  
        if (!empty($tmp_relate_products_id)) {
-          $o_count_sql = " select op.products_quantity,o.orders_id orders_id,op.final_price final_price from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$tmp_row['relate_products_id']."' and os.calc_price = '1'";
+          $o_count_sql = " select op.products_quantity,o.orders_id orders_id,op.final_price final_price,op.products_id products_id,op.products_rate products_rate from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$tmp_row['relate_products_id']."' and os.calc_price = '1'";
           if($site_id != 0) {
              $o_count_sql .= " and o.site_id = '".$site_id."' ";
           }
@@ -8593,7 +8589,20 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
               if($temp_quantity_value < $orders_products_array['products_quantity']){
                 $orders_products_array['products_quantity'] = $temp_quantity_value;
               }
-              $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$orders_products_array['final_price'],'products_quantity'=>$orders_products_array['products_quantity']);
+              if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
+                $products_rate = tep_get_radices($orders_products_array['products_id']);
+                if($orders_products_array['products_rate'] == $products_rate){
+
+                  $products_quantity = $orders_products_array['products_quantity'];
+                }else{
+
+                  $products_quantity = ($orders_products_array['products_rate']*$orders_products_array['products_quantity'])/$products_rate;
+                }
+              }else{
+
+                $products_quantity = $orders_products_array['products_quantity'];
+              }
+              $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$orders_products_array['final_price'],'products_quantity'=>$products_quantity);
             } 
             tep_db_free_result($o_count_raw);
           }
@@ -8637,7 +8646,7 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
     $result['error'] = true;
   }
   if (!empty($tmp_relate_products_id)) {
-     $o_count_sql = " select op.products_quantity,o.orders_id orders_id,op.final_price final_price from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$row['relate_products_id']."' and os.calc_price = '1'";
+     $o_count_sql = " select op.products_quantity,o.orders_id orders_id,op.final_price final_price,op.products_id products_id,op.products_rate products_rate from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id where op.products_id='".(int)$row['relate_products_id']."' and os.calc_price = '1'";
      if($site_id != 0) {
         $o_count_sql .= " and o.site_id = '".$site_id."' ";
      }
@@ -8659,7 +8668,20 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
        $products_info_array = array();
        while($orders_products_array = tep_db_fetch_array($o_count_raw)){
 
-         $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$orders_products_array['final_price'],'products_quantity'=>$orders_products_array['products_quantity']);
+         if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
+           $products_rate = tep_get_radices($orders_products_array['products_id']);
+           if($orders_products_array['products_rate'] == $products_rate){
+
+             $products_quantity = $orders_products_array['products_quantity'];
+           }else{
+
+             $products_quantity = ($orders_products_array['products_rate']*$orders_products_array['products_quantity'])/$products_rate;
+           }
+         }else{
+
+           $products_quantity = $orders_products_array['products_quantity'];
+         }
+         $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$orders_products_array['final_price'],'products_quantity'=>$products_quantity);
        } 
        tep_db_free_result($o_count_raw);
      }
