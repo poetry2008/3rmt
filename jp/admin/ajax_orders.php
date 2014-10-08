@@ -2427,7 +2427,7 @@ echo json_encode($json_array);
   }
     //点击ABCD后，将信息存入数据库
     $user_info = tep_get_user_info($ocertify->auth_user); 
-    $orders_work = $mark_array; 
+    $orders_work =(empty($mark_array))?array(0,1,2,3,4): $mark_array;
     $orders_work_temp_array = array();
     $orders_work_setting_str = implode('|',$orders_work);
     if(PERSONAL_SETTING_ORDERS_WORK == ''){
