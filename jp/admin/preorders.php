@@ -1924,7 +1924,7 @@ if(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH == ''){
 }            
 $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecked';
 ?>
-              <td id="mark_t" class="<?php echo  $transaction_class; ?>" align="center"
+              <td id="mark_t" class="<?php echo  $transaction_class; ?>" width="45%"  align="center"
               onclick="transaction_finish(<?php echo $is_finish;?>)"><?php echo TEXT_PREORDERS_TRANSACTION_FINISH;?>&nbsp;</td> 
               <td id="mark_o" class="<?php echo (in_array('0', $get_mark_info) || (!isset($_GET['mark']) && in_array('0',$work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">&nbsp;</td> 
               <td id="mark_a" class="<?php echo (in_array('1', $get_mark_info) || (!isset($_GET['mark']) && in_array('1',$work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">A</td> 
