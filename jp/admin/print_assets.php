@@ -139,7 +139,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     ?>
       <table width="99%" cellpadding="0" cellspacing="1" border="0" class="assets_table">
       <tr class="assets_text">
-      <td align="center"><?php echo TEXT_PRODUCTS_DATE;?></td>
+      <td align="center" style="height:20px;"><?php echo TEXT_PRODUCTS_DATE;?></td>
       <td align="center"><?php echo TEXT_ORDER_PRODUCTS_NAME;?></td>
       <td align="center"><?php echo TEXT_ORDER_PRODUCTS_QUANTITY;?></td>
       <td align="center"><?php echo TEXT_ORDER_PRODUCTS_PRICE;?></td>
@@ -290,7 +290,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         <?php
         if(count($products)>0){
           ?>
-            <td align="center"><b><?php echo TEXT_PRODUCTS_DATE;?></b></td>
+            <td align="center" style="height:20px;"><b><?php echo TEXT_PRODUCTS_DATE;?></b></td>
             <?php
         }
       ?>
