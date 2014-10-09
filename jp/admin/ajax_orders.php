@@ -2516,39 +2516,33 @@ echo json_encode($json_array);
     }
   }
   sort($site_array);
-  if(!empty($site_array)){
-    echo tep_href_link(FILENAME_ORDERS, $_POST['param_url'].'site_id='.implode('-',$site_array));
+  echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
+  //点击站名后，将信息存入数据库
+  $orders_site = (empty($site_array))?array(2,3,4,5,6,7,8,9,10):$site_array;
+  $orders_site_temp_array = array();
+  $orders_site_setting_str = implode('|',$orders_site);
+  if(PERSONAL_SETTING_ORDERS_SITE == ''){
+    $orders_site_temp_array = array($user_info['name']=>$orders_site_setting_str);
   }else{
-    echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
+    $orders_site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
+    $orders_site_setting_array[$user_info['name']] = $orders_site_setting_str;      
+    $orders_site_temp_array = $orders_site_setting_array;
   }
-    //点击站名后，将信息存入数据库
-    $orders_site = $site_array;
-    $orders_site_temp_array = array();
-    $orders_site_setting_str = implode('|',$orders_site);
-    if(PERSONAL_SETTING_ORDERS_SITE == ''){
-      $orders_site_temp_array = array($user_info['name']=>$orders_site_setting_str);
-    }else{
-      $orders_site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
-      $orders_site_setting_array[$user_info['name']] = $orders_site_setting_str;      
-      $orders_site_temp_array = $orders_site_setting_array;
-    }
-    $orders_site_str = serialize($orders_site_temp_array);
-      //把当前用户的更新日期，存入到数据库
-    $configuration_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));
-    $update_user_array = array();
-    if($configuration_row['configuration_description'] != ''){
-
-      $update_user_array = unserialize($configuration_row['configuration_description']);
-      $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
-      $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
-      $orders_site_update_str = serialize($update_user_array);
-    }else{
-      $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
-      $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
-      $orders_site_update_str = serialize($update_user_array); 
-    }
-
-    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."',configuration_description='".$orders_site_update_str."',user_update='".$_SESSION['user_name']."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
+  $orders_site_str = serialize($orders_site_temp_array);
+    //把当前用户的更新日期，存入到数据库
+  $configuration_row = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='PERSONAL_SETTING_ORDERS_SITE'"));
+  $update_user_array = array();
+  if($configuration_row['configuration_description'] != ''){
+    $update_user_array = unserialize($configuration_row['configuration_description']);
+    $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
+    $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
+    $orders_site_update_str = serialize($update_user_array);
+  }else{
+    $update_user_array[$ocertify->auth_user]['user'] = $user_info['name'];
+    $update_user_array[$ocertify->auth_user]['time'] = date('Y-m-d H:i:s',time()); 
+    $orders_site_update_str = serialize($update_user_array); 
+  }
+  tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$orders_site_str."',configuration_description='".$orders_site_update_str."',user_update='".$_SESSION['user_name']."',last_modified='".date('Y-m-d H:i:s',time())."'  where configuration_key='PERSONAL_SETTING_ORDERS_SITE'");
 
 } else if ($_GET['action'] == 'handle_split') {
 /*---------------------------------------------

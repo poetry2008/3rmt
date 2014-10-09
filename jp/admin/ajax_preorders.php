@@ -1232,25 +1232,19 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
     }
   }
   sort($site_array);
-  if(!empty($site_array)){
-    echo tep_href_link(FILENAME_PREORDERS, $_POST['param_url'].'site_id='.implode('-',$site_array));
-  }else{
-    echo tep_href_link(FILENAME_PREORDERS, $_POST['param_url']); 
-  }
-   $preorders_site = $site_array;
-
-    $preorders_site_temp_array = array();
-    $preorders_site_setting_str = implode('|',$preorders_site);
-    if(PERSONAL_SETTING_PREORDERS_SITE == ''){
-      $preorders_site_temp_array = array($user_info['name']=>$preorders_site_setting_str);
-    }else{
-      $preorders_site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
-      $preorders_site_setting_array[$user_info['name']] = $preorders_site_setting_str;      
-      $preorders_site_temp_array = $preorders_site_setting_array;
-    }
-    $preorders_site_str = serialize($preorders_site_temp_array);
-    tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_site_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SITE'");
-  //
+   echo tep_href_link(FILENAME_PREORDERS, $_POST['param_url']); 
+   $preorders_site = (empty($site_array))?array(2,3,4,5,6,7,8,9,10):$site_array;
+   $preorders_site_temp_array = array();
+   $preorders_site_setting_str = implode('|',$preorders_site);
+   if(PERSONAL_SETTING_PREORDERS_SITE == ''){
+     $preorders_site_temp_array = array($user_info['name']=>$preorders_site_setting_str);
+   }else{
+     $preorders_site_setting_array = unserialize(PERSONAL_SETTING_PREORDERS_SITE);
+     $preorders_site_setting_array[$user_info['name']] = $preorders_site_setting_str;      
+     $preorders_site_temp_array = $preorders_site_setting_array;
+   }
+   $preorders_site_str = serialize($preorders_site_temp_array);
+   tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$preorders_site_str."' where configuration_key='PERSONAL_SETTING_PREORDERS_SITE'");
 }else if($_GET['action'] == 'orders_session'){
 /*------------------------------------------
  功能: 订单会话 

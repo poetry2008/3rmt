@@ -1838,6 +1838,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $site_array = explode('-',$_GET['site_id']);
     $site_list_str = implode(',',$site_array);
   }
+  if($site_list_str==''){
+    $site_list_str = array(2,3,4,5,6,7,8,9,19);
+  }
   $site_list_string = implode('-',$site_array);
   echo tep_draw_hidden_field('site_id', $site_list_string); 
   if (isset($_GET['mark'])) {

@@ -1696,7 +1696,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $site_array = explode('-',$_GET['site_id']);
       $site_list_str = implode(',',$site_array);
   }
-  $site_list_string = implode('-',$site_array);
+  if($site_list_str==''){
+     $site_list_str = array(2,3,4,5,6,7,8,9,10);
+  }
   if (isset($_GET['cEmail']) && $_GET['cEmail']) {
     //邮件查询 
     $cEmail = tep_db_prepare_input($_GET['cEmail']);
