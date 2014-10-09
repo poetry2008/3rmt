@@ -90,7 +90,7 @@ if (isset($_GET['action'])) {
          }
          if ($_GET['action'] == 'insert_user_info') {
            $cryot_password = (string) crypt($_POST['user_password']); 
-           tep_db_query("insert into `".TABLE_USERS."` values('".$_POST['userid']."', '".$cryot_password."', '".$_POST['name']."', '".$_POST['user_email']."', '".(isset($_POST['user_rule'])?$_POST['user_rule']:'')."', '".$_SESSION['user_name']."', '".date('Y-m-d H:i:s', time())."', '".$_SESSION['user_name']."', '".date('Y-m-d H:i:s', time())."', '1')");  
+           tep_db_query("insert into `".TABLE_USERS."` values('".$_POST['userid']."', '".$cryot_password."', '".$_POST['name']."', '".$_POST['user_email']."', '".(isset($_POST['user_rule'])?$_POST['user_rule']:'')."', '".$_SESSION['user_name']."', now(), '".$_SESSION['user_name']."', now(), '1')");  
            tep_db_query("insert into `".TABLE_PERMISSIONS."` values ('".$_POST['userid']."', '".$permission_num."', '".$permission_list_str."')"); 
            if (!empty($_POST['ip_limit'])) {
              $ip_limit_arr = explode("\n", $_POST['ip_limit']); 
@@ -190,9 +190,9 @@ if (isset($_GET['action'])) {
            }
            if (isset($_POST['user_password']) && (trim($_POST['user_password']) != '')) {
              $cryot_password = (string) crypt($_POST['user_password']); 
-             tep_db_query("update `".TABLE_USERS."` set `name` = '".$_POST['name']."', `email` = '".$_POST['user_email']."', `password` = '".$cryot_password."', `rule` = '".$rule_info_str."', `user_update` = '".$_SESSION['user_name']."', `date_update` = '".date('Y-m-d H:i:s', time())."' where `userid` = '".$_POST['userid']."'"); 
+             tep_db_query("update `".TABLE_USERS."` set `name` = '".$_POST['name']."', `email` = '".$_POST['user_email']."', `password` = '".$cryot_password."', `rule` = '".$rule_info_str."', `user_update` = '".$_SESSION['user_name']."', `date_update` = now() where `userid` = '".$_POST['userid']."'"); 
            } else {
-             tep_db_query("update `".TABLE_USERS."` set `name` = '".$_POST['name']."', `email` = '".$_POST['user_email']."', `rule` = '".$rule_info_str."', `user_update` = '".$_SESSION['user_name']."', `date_update` = '".date('Y-m-d H:i:s', time())."' where `userid` = '".$_POST['userid']."'"); 
+             tep_db_query("update `".TABLE_USERS."` set `name` = '".$_POST['name']."', `email` = '".$_POST['user_email']."', `rule` = '".$rule_info_str."', `user_update` = '".$_SESSION['user_name']."', `date_update` = now() where `userid` = '".$_POST['userid']."'"); 
            }
            if (isset($_POST['u_permission'])) {
              if (trim($_POST['other_site']) != '') {
@@ -399,7 +399,7 @@ if (isset($_GET['action'])) {
        tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'user_info_id', 'site_id')))); 
        break;
      case 'setflag':
-       tep_db_query("update `".TABLE_USERS."` set `status` = '".$_GET['flag']."', `user_update` = '".$_SESSION['user_name']."', `date_update` = '".date('Y-m-d H:i:s', time())."' where userid = '".$_GET['user_e_id']."'"); 
+       tep_db_query("update `".TABLE_USERS."` set `status` = '".$_GET['flag']."', `user_update` = '".$_SESSION['user_name']."', `date_update` = now() where userid = '".$_GET['user_e_id']."'"); 
        tep_redirect(tep_href_link(FILENAME_USERS, tep_get_all_get_params(array('action', 'user_e_id', 'flag', 'site_id')))); 
        break;
   }

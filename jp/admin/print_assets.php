@@ -137,7 +137,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   <?php
   if(tep_db_num_rows($product_history_query)){
     ?>
-      <table width="99%" cellpadding="0" cellspacing="1" border="0" class="assets_box">
+      <table width="99%" cellpadding="0" cellspacing="1" border="0" class="assets_table">
       <tr class="assets_text">
       <td align="center"><?php echo TEXT_PRODUCTS_DATE;?></td>
       <td align="center"><?php echo TEXT_ORDER_PRODUCTS_NAME;?></td>
@@ -285,7 +285,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }else{
       ?>
         <div class="assets_print_bottom">
-        <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_box">
+        <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_table">
         <tr class="assets_text">
         <?php
         if(count($products)>0){
@@ -439,8 +439,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       }else{
         echo "colspan='2' ";
       }
-      echo "></td>";
-      echo "<td id='info_title_td' class='assets_bottom_info_left'>";
+      echo " style='border:solid #676767;border-width:0px ;padding:2px;'></td>";
+      echo "<td id='info_title_td' class='assets_bottom_info_left' align='right'>";
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td id='info_value_td' class='assets_bottom_info'>";
@@ -448,14 +448,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
-      echo "<td class='assets_bottom_info_left'>";
+      echo "<td class='assets_bottom_info_left' align='right'>";
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
       echo $currencies->format(@($products_price_sum/$products_quantity_sum));
       echo "</td>";
       echo "<tr class='assets_c'>";
-      echo "<td class='assets_bottom_info_left'>";
+      echo "<td class='assets_bottom_info_left' align='right'>";
       echo TEXT_SUM_PRICE;
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
@@ -468,7 +468,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       //分类数组或者商品数组其中一个不为空
       echo "<table cellpadding='0' cellspacing='1' border='0' width='99%' class='asset_easy'>";
       echo "<tr class='assets_c'>";
-      echo "<td class='asstes_easy_left'>";
+      echo "<td class='asstes_easy_left' align='right'>";
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
@@ -476,14 +476,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
-      echo "<td  class='asstes_easy_left'>";
+      echo "<td  class='asstes_easy_left' align='right'>";
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
       echo $currencies->format(@($products_price_sum/$products_quantity_sum));
       echo "</td>";
       echo "<tr class='assets_c'>";
-      echo "<td  class='asstes_easy_left'>";
+      echo "<td  class='asstes_easy_left' align='right'>";
       echo TEXT_SUM_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";

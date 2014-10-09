@@ -2383,4 +2383,15 @@ display:inline-block;
 .limit_input_width {
    width:30px;
 }
+ /*2014 10月9日资产管理表格修改*/
+.assets_table{ 
+    border-collapse:collapse;
+    border:solid #676767;
+    border-width:1px 1px 0 0;
+}
+.assets_table td{
+    border:solid #676767;
+    border-width:0 0 1px 1px;
+    padding:2px;
+}
 
