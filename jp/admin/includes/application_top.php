@@ -444,9 +444,11 @@ define('TABLE_PERMISSIONS','permissions');
         }else if($personal_login_language_array[$_POST['loginuid']] == 'vn'){
           $personal_language_str = 'vietnamese'; 
         }
-        $_SESSION['language'] = $personal_language_str;
-        $_SESSION['text_language'] = $personal_language_str;
+      }else{
+        $personal_language_str = 'japanese';  
       }
+      $_SESSION['language'] = $personal_language_str;
+      $_SESSION['text_language'] = $personal_language_str;
     }
   }
   if(isset($_SESSION['text_language'])&&$_SESSION['text_language']){

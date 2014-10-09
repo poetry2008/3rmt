@@ -152,9 +152,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   <?php
   if(tep_db_num_rows($product_history_query)){
     ?>
-      <table width="99%" cellpadding="0" cellspacing="1" border="0" class="assets_box">
+      <table width="99%" cellpadding="0" cellspacing="1" border="0" class="assets_table">
       <tr class="assets_text">
-      <td align="center"><?php echo TEXT_PRODUCTS_DATE;?></td>
+      <td align="center" style="height:20px;"><?php echo TEXT_PRODUCTS_DATE;?></td>
       <td align="center"><?php echo TEXT_ORDER_PRODUCTS_NAME;?></td>
       <td align="center"><?php echo TEXT_ORDER_PRODUCTS_QUANTITY;?></td>
       <td align="center"><?php echo TEXT_ORDER_PRODUCTS_PRICE;?></td>
@@ -489,12 +489,12 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
     }else{
       ?>
-        <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_box">
+        <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_table">
         <tr class="assets_text">
         <?php
         if(count($products)>0){
           ?>
-            <td align="center"><b><?php echo TEXT_PRODUCTS_DATE;?></b></td>
+            <td align="center" style="height:20px;"><b><?php echo TEXT_PRODUCTS_DATE;?></b></td>
             <?php
         }
       ?>
@@ -645,8 +645,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       }else{
         echo "colspan='2' ";
       }
-      echo "></td>";
-      echo "<td id='info_title_td' class='assets_bottom_info_left'>";
+      echo " style='border:solid #676767;border-width:0px ;padding:2px;'></td>";
+      echo "<td id='info_title_td' class='assets_bottom_info_left' align='right'>";
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td id='info_value_td' class='assets_bottom_info'>";
@@ -654,14 +654,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
-      echo "<td class='assets_bottom_info_left'>";
+      echo "<td class='assets_bottom_info_left' align='right'>";
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
       echo $currencies->format(@($products_price_sum/$products_quantity_sum))=='0'.TEXT_MONEY_SYMBOL?TEXT_UNSET_DATA:$currencies->format(@($products_price_sum/$products_quantity_sum));
       echo "</td>";
       echo "<tr class='assets_c'>";
-      echo "<td class='assets_bottom_info_left'>";
+      echo "<td class='assets_bottom_info_left' align='right'>";
       echo TEXT_SUM_PRICE;
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
@@ -674,7 +674,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       //分类数量或者商品数量不能全为空
       echo "<table cellpadding='0' cellspacing='1' border='0' width='99%' class='asset_easy'>";
       echo "<tr class='assets_c'>";
-      echo "<td class='asstes_easy_left'>";
+      echo "<td class='asstes_easy_left' align='right'>";
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
@@ -682,14 +682,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
-      echo "<td  class='asstes_easy_left'>";
+      echo "<td  class='asstes_easy_left' align='right'>";
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
       echo $currencies->format(@($products_price_sum/$products_quantity_sum))=='0'.TEXT_MONEY_SYMBOL?TEXT_UNSET_DATA:$currencies->format(@($products_price_sum/$products_quantity_sum));
       echo "</td>";
       echo "<tr class='assets_c'>";
-      echo "<td  class='asstes_easy_left'>";
+      echo "<td  class='asstes_easy_left' align='right'>";
       echo TEXT_SUM_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";

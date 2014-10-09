@@ -1437,7 +1437,7 @@ product
 	padding-right:5px;
 }
 .print_assets_title{
-    color: #727272;
+    color: #000000;
     float: left;
     font-family: "ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif;
     font-size: 18px;
@@ -2382,5 +2382,18 @@ display:inline-block;
 /*限制单个输入框的宽度--隔周输入框 @date20140808*/
 .limit_input_width {
    width:30px;
+}
+ /*2014 10月9日资产管理表格修改*/
+.assets_table{ 
+    border-collapse:collapse;
+    border:solid #676767;
+    border-width:1px 1px 0 0;
+}
+.assets_table td{
+    border:solid #676767;
+    border-width:0 0 1px 1px;
+    padding:2px;
+    height:14px;
+    line-height:14px;
 }
 
