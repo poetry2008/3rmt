@@ -432,16 +432,21 @@ define('TABLE_PERMISSIONS','permissions');
       $_SESSION['text_language'] = $language;
     }
   }
+
+  if(!tep_session_is_registered('adminaccs')) {
+    include(DIR_WS_CLASSES . 'user_certify.php');
+  }
   
   if(!isset($_GET['language'])){
     if(PERSONAL_SETTING_LANGUAGE != ''){
       $personal_login_language_array = unserialize(PERSONAL_SETTING_LANGUAGE);
-      if(array_key_exists($_POST['loginuid'],$personal_login_language_array)){
-        if($personal_login_language_array[$_POST['loginuid']] == 'jp'){
+      $language_user_id = isset($_POST['loginuid']) && $_POST['loginuid'] != '' ? $_POST['loginuid'] : $ocertify->auth_user;
+      if(array_key_exists($language_user_id,$personal_login_language_array)){
+        if($personal_login_language_array[$language_user_id] == 'ja'){
           $personal_language_str = 'japanese';  
-        }else if($personal_login_language_array[$_POST['loginuid']] == 'ch'){
+        }else if($personal_login_language_array[$language_user_id] == 'ch'){
           $personal_language_str = 'chinese'; 
-        }else if($personal_login_language_array[$_POST['loginuid']] == 'vn'){
+        }else if($personal_login_language_array[$language_user_id] == 'vn'){
           $personal_language_str = 'vietnamese'; 
         }
       }else{
@@ -460,13 +465,7 @@ define('TABLE_PERMISSIONS','permissions');
   $current_page = split('\?', basename($_SERVER['SCRIPT_NAME'])); $current_page = $current_page[0]; // for BadBlue(Win32) webserver compatibility
   if (file_exists(DIR_WS_LANGUAGES . $language . '/' . $current_page)) {
     include(DIR_WS_LANGUAGES . $language . '/' . $current_page);
-  }
-
-
-
-  if(!tep_session_is_registered('adminaccs')) {
-    include(DIR_WS_CLASSES . 'user_certify.php');
-  }
+  } 
 
 //exit($PHP_SELF);
   if ($ocertify->npermission == 0 && $PHP_SELF != '/'.FILENAME_ORDERS) {
