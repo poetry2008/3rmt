@@ -8580,32 +8580,56 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
               if($temp_quantity >= $temp_all_product){
                 break;
               }
-              $temp_quantity += $orders_products_array['products_quantity'];
-              $temp_quantity_value = $orders_products_array['products_quantity'];
-              if($temp_quantity > $temp_all_product){
-                $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
-              }
-              $temp_real_all_quantity += $temp_quantity_value;
-              if($temp_quantity_value < $orders_products_array['products_quantity']){
-                $orders_products_array['products_quantity'] = $temp_quantity_value;
-              }
               if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
-                $products_rate = tep_get_radices($orders_products_array['products_id']);
+                $products_rate = tep_get_relate_radices_by_products_id($orders_products_array['products_id']);
                 if($orders_products_array['products_rate'] == $products_rate){
-
+                  $temp_quantity += $orders_products_array['products_quantity'];
+                  $temp_quantity_value = $orders_products_array['products_quantity'];
+                  if($temp_quantity > $temp_all_product){
+                    $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
+                    $temp_quantity -= $orders_products_array['products_quantity'];
+                    $temp_quantity += $temp_quantity_value;
+                  }
+                  $temp_real_all_quantity += $temp_quantity_value;
+                  if($temp_quantity_value < $orders_products_array['products_quantity']){
+                    $orders_products_array['products_quantity'] = $temp_quantity_value;
+                  }
                   $products_quantity = $orders_products_array['products_quantity'];
                   $products_price = $orders_products_array['final_price'];
                 }else{
+                  $product_relate_quantity=($orders_products_array['products_rate']*$orders_products_array['products_quantity'])/$products_rate;
+                  $temp_quantity += $product_relate_quantity;
+                  $temp_quantity_value = $product_relate_quantity;
+                  if($temp_quantity > $temp_all_product){
+                    $temp_quantity_value = $product_relate_quantity-($temp_quantity - $temp_all_product);
+                    $temp_quantity -= $product_relate_quantity;
+                    $temp_quantity += $temp_quantity_value;
+                  }
+                  $temp_real_all_quantity += $temp_quantity_value;
+                  if($temp_quantity_value < $product_relate_quantity){
+                    $orders_products_array['products_quantity'] = $temp_quantity_value;
+                  }
 
-                  $products_quantity = ($orders_products_array['products_rate']*$orders_products_array['products_quantity'])/$products_rate;
+                  $products_quantity = $product_relate_quantity;
                   $products_price = $orders_products_array['final_price']*($products_rate/$orders_products_array['products_rate']);
                 }
               }else{
-
+                $temp_quantity += $orders_products_array['products_quantity'];
+                $temp_quantity_value = $orders_products_array['products_quantity'];
+                if($temp_quantity > $temp_all_product){
+                  $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
+                  $temp_quantity -= $orders_products_array['products_quantity'];
+                  $temp_quantity += $temp_quantity_value;
+                }
+                $temp_real_all_quantity += $temp_quantity_value;
+                if($temp_quantity_value < $orders_products_array['products_quantity']){
+                  $orders_products_array['products_quantity'] = $temp_quantity_value;
+                }
+  
                 $products_quantity = $orders_products_array['products_quantity'];
                 $products_price = $orders_products_array['final_price'];
               }
-              $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$products_price,'products_quantity'=>$products_quantity);
+              $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$products_price,'products_quantity'=>$temp_quantity_value,'products_id'=>$tmp_row['products_id']);
             } 
             tep_db_free_result($o_count_raw);
           }
@@ -8672,7 +8696,7 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
        while($orders_products_array = tep_db_fetch_array($o_count_raw)){
 
          if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
-           $products_rate = tep_get_radices($orders_products_array['products_id']);
+           $products_rate = tep_get_relate_radices_by_products_id($orders_products_array['products_id']);
            if($orders_products_array['products_rate'] == $products_rate){
 
              $products_quantity = $orders_products_array['products_quantity'];
@@ -15471,4 +15495,14 @@ function tep_mb_strlen($sourcestr) {
 			} 
 		} 
 			return $n; 
+}
+function tep_get_relate_radices_by_products_id($pid){
+    $sql = "SELECT products_exchange_rate as radices FROM 
+      " .TABLE_PRODUCTS." WHERE relate_products_id = '".$pid."' limit 1";
+    $query = tep_db_query($sql);
+    if($row = tep_db_fetch_array($query)){
+      return (int)$row['radices'];
+    }else{
+      return 1;
+    }
 }
