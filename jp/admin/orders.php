@@ -1730,7 +1730,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
-               " . " and o.site_id in (". $site_list_str .")"  . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " " . $where_payment . $where_type . " order by ".$order_str;
+               " . " and o.site_id in (". $site_list_str .")"  . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " " . $where_payment . $where_type . " order by ".$order_str;
   } else if (isset($_GET['cID']) && $_GET['cID']) {
     //顾客id查询 
     $cID = tep_db_prepare_input($_GET['cID']);
@@ -1765,7 +1765,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
-               " . " and o.site_id in (". $site_list_str .")"  . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
+               " . " and o.site_id in (". $site_list_str .")"  . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
                " . $where_payment . $where_type . " order by ".$order_str;
   } elseif (isset($_GET['status']) && $_GET['status']) {
     //状态查询 
@@ -1802,7 +1802,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where."
                o.orders_status = '" . tep_db_input($status) . "' 
-               " . " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
+               " . " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
                " . $where_payment . $where_type . " order by ".$order_str;
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
     //商品名查询 
@@ -1814,12 +1814,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     }else{
       $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
     }
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
     //商品id查询 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
 
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ". $order_str;
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ". $order_str;
   } elseif (isset($_GET['scategories_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'categories_id') {
     //分类id查询 
     if (isset($_GET['site_id'])) {
@@ -1827,7 +1827,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     }
     $relate_category_array = tep_get_child_category_by_cid($_GET['scategories_id']);
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o,".TABLE_PRODUCTS_TO_CATEGORIES." p2c " .$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $relate_category_array).")";
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
     //未完成订单查询 
     $query_str = ''; 
@@ -1893,7 +1893,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       o.orders_id = op.orders_id and o.orders_status = o_s.orders_status_id and op.products_id ";
     $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
     $orders_query_raw .= " and o.finished = '0' and flag_qaf = '0'and o_s.is_cancle = 0".$query_str;
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     //订单状态查询 
     if (!empty($_GET['keywords'])) {
@@ -1928,7 +1928,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.read_flag
                  from " . TABLE_ORDERS . " o " . $from_payment . " ,
                ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
-                 " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_status =
+                 " o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_status =
                   '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and
                   (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
                    '%".$_GET['keywords']."%' or o.customers_email_address like
@@ -1967,7 +1967,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                   o.read_flag
                     from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 
                     ".$sort_where .
-                    " o.site_id in (". $site_list_str .")" .  (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and '). "
+                    " o.site_id in (". $site_list_str .")" .  ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and '). "
                      o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment
                      . $where_type ."  order by ".$order_str;
                      }
@@ -2008,7 +2008,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.site_id,
                      o.is_gray,
                      o.read_flag
-                       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ." where " . $sort_where.  " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') .  $orders_id_search .  $where_payment . $where_type."  order by ".$order_str;
+                       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ." where " . $sort_where.  " o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') .  $orders_id_search .  $where_payment . $where_type."  order by ".$order_str;
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
                        //顾客名/邮件查询 
@@ -2050,7 +2050,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   from " . TABLE_ORDERS . " o  " .$use_index. $from_payment . $sort_table."
                                   where   
                                   " .$sort_where . " 1=1 ".
-                                  " and o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str:'') ."
+                                  " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') ."
                                   " . $where_payment . $where_type ;
 
                        $keywords = str_replace('　', ' ', $_GET['keywords']);
@@ -2131,7 +2131,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.read_flag
 	       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ."
 	       where " . $sort_where.
-	       " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_id" .$orders_str.
+	       " o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_id" .$orders_str.
 	       $where_payment . $where_type.' order by '.$order_str;
 	     }
 
@@ -2173,7 +2173,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o " . $from_payment . " ,
                                   ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
-                                    " o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and '). " o.payment_method =
+                                    " o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and '). " o.payment_method =
                                      '".$payment_m[1]."' and o.orders_id = op.orders_id and
                                      (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
                                       '%".$_GET['keywords']."%' or o.customers_email_address like
@@ -2211,7 +2211,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      o.is_gray,
                                      o.read_flag
                                        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-                                       where ".$sort_where." o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.payment_method like '".$payment_m[1]."'";
+                                       where ".$sort_where." o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.payment_method like '".$payment_m[1]."'";
                                     $orders_query_raw .= "order by ".$order_str;
                                      }
                      }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
@@ -2265,7 +2265,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.is_gray,
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
-                                    where ".$sort_where." o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
+                                    where ".$sort_where." o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
                          $orders_query_raw .= " order by ".$order_str;
                        } else {
                          $orders_query_raw = "
@@ -2298,7 +2298,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.is_gray,
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
-                                    where ".$sort_where." o.site_id in (". $site_list_str .")" . (($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type;
+                                    where ".$sort_where." o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type;
                          $orders_query_raw .= " order by ".$order_str;
                        }
                      }elseif (isset($_GET['keywords']) && $_GET['keywords']) {
@@ -2335,7 +2335,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
                                   ".$sort_table."
                                   where ".$sort_where." o.orders_id = op.orders_id
-                                  " . " and o.site_id in (". $site_list_str .")" .  (($mark_sql_str != '')?' and '.$mark_sql_str:'') ."
+                                  " . " and o.site_id in (". $site_list_str .")" .  ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') ."
                                   " . $where_payment . $where_type ;
                        $keywords = str_replace('　', ' ', $_GET['keywords']);
                        tep_parse_search_string($keywords, $search_keywords);
