@@ -1022,12 +1022,12 @@ function select_sort(sort_list,sort_type){
 
 
 //transaction finish show or hide
-function transaction_finish(is_finish)
+function transaction_finish(is_finish,param)
 {
   var is_finish = (is_finish==1)?'0':'1';
   $.ajax({
     type: "POST",
-    data: 'is_finish='+is_finish,
+    data: 'is_finish='+is_finish+'&param='+param,
     async:false,
     url: 'ajax_preorders.php?action=transaction',
     success: function(data) {

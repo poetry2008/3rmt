@@ -2366,6 +2366,7 @@ echo json_encode($json_array);
     参数： $_POST['is_finish'] 1 显示 0 隐藏
    ---------------------------------------*/
     $is_transaction  = $_POST['is_finish'];
+    $param = $_POST['param'];
     $personal_is_transaction_temp_array = array();
     if(PERSONAL_SETTING_TRANSACTION_FINISH == ''){
       $personal_is_transaction_temp_array = array($ocertify->auth_user=>$is_transaction);
@@ -2378,7 +2379,7 @@ echo json_encode($json_array);
     $result =  tep_db_query("update ". TABLE_CONFIGURATION ." set configuration_value='".$personal_is_transaction_str."' where configuration_key='PERSONAL_SETTING_TRANSACTION_FINISH'");
     if($result){
     $return_array[] = 'success';
-    $return_array[] = tep_href_link(FILENAME_ORDERS);
+    $return_array[] = tep_href_link(FILENAME_ORDERS.'?'.$param);
     }
    
   echo implode('|||', $return_array);
@@ -2477,14 +2478,14 @@ echo json_encode($json_array);
  参数: $_POST['site_list'] 站点列表中
  参数: $_POST['site_id'] SITE_ID
  ----------------------------------------*/
+  $user_info = tep_get_user_info($ocertify->auth_user); 
+  $orders_site_array = array();
+  $orders_site_query = tep_db_query("select id from ". TABLE_SITES);
+  while($orders_site_rows = tep_db_fetch_array($orders_site_query)){
+    $orders_site_array[] = $orders_site_rows['id'];
+  }
+  tep_db_free_result($orders_site_query);
   if($_POST['site_list'] == ''){
-    $orders_site_array = array();
-    $orders_site_query = tep_db_query("select id from ". TABLE_SITES);
-    while($orders_site_rows = tep_db_fetch_array($orders_site_query)){
-      $orders_site_array[] = $orders_site_rows['id'];
-    }
-    tep_db_free_result($orders_site_query);
-    $user_info = tep_get_user_info($ocertify->auth_user); 
     if(PERSONAL_SETTING_ORDERS_SITE != ''){
       $site_setting_array = unserialize(PERSONAL_SETTING_ORDERS_SITE);
       if(array_key_exists($user_info['name'],$site_setting_array)){
@@ -2515,6 +2516,7 @@ echo json_encode($json_array);
       $site_array[] = $_POST['site_id']; 
     }
   }
+  $site_array = empty($site_array) ? $orders_site_array : $site_array;
   sort($site_array);
   if(!empty($site_array)){
     echo tep_href_link(FILENAME_ORDERS, $_POST['param_url'].'site_id='.implode('-',$site_array));
