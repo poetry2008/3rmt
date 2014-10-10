@@ -2518,7 +2518,7 @@ echo json_encode($json_array);
   sort($site_array);
   echo tep_href_link(FILENAME_ORDERS, $_POST['param_url']); 
   //点击站名后，将信息存入数据库
-  $orders_site = (empty($site_array))?array(2,3,4,5,6,7,8,9,10):$site_array;
+  $orders_site = (empty($site_array))?array(1,2,3,4,5,6,7,8,9,10):$site_array;
   $orders_site_temp_array = array();
   $orders_site_setting_str = implode('|',$orders_site);
   if(PERSONAL_SETTING_ORDERS_SITE == ''){

@@ -1601,7 +1601,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           $mark_sql_str = "((o.orders_work is null) or (o.orders_work = '') or (o.orders_work in (".$mark_str.")))"; 
         }
       }
-
     } else {
       $mark_str = ''; 
       foreach ($mark_info as $m_key => $m_value) {
@@ -1696,9 +1695,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $site_array = explode('-',$_GET['site_id']);
       $site_list_str = implode(',',$site_array);
   }
-  if($site_list_str==''){
-     $site_list_str = array(2,3,4,5,6,7,8,9,10);
-  }
+  $site_list_string = implode('-',$site_array);
   if (isset($_GET['cEmail']) && $_GET['cEmail']) {
     //邮件查询 
     $cEmail = tep_db_prepare_input($_GET['cEmail']);

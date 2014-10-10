@@ -448,6 +448,8 @@ define('TABLE_PERMISSIONS','permissions');
           $personal_language_str = 'chinese'; 
         }else if($personal_login_language_array[$language_user_id] == 'vn'){
           $personal_language_str = 'vietnamese'; 
+        }else{
+          $personal_language_str = 'japanese';  
         }
       }else{
         $personal_language_str = 'japanese';  

@@ -1233,7 +1233,7 @@ if (isset($_POST['orders_id']) && isset($_POST['orders_comment'])) {
   }
   sort($site_array);
    echo tep_href_link(FILENAME_PREORDERS, $_POST['param_url']); 
-   $preorders_site = (empty($site_array))?array(2,3,4,5,6,7,8,9,10):$site_array;
+   $preorders_site = (empty($site_array))?array(1,2,3,4,5,6,7,8,9,10):$site_array;
    $preorders_site_temp_array = array();
    $preorders_site_setting_str = implode('|',$preorders_site);
    if(PERSONAL_SETTING_PREORDERS_SITE == ''){
