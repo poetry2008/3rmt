@@ -1913,19 +1913,19 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <tr>
 <?php
 if(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH == ''){
-  $is_finish  = '1';
+  $is_finish  = '0';
 }else {
   $personal_transaction_array = unserialize(PERSONAL_SETTING_PREORDERS_TRANSACTION_FINISH);
   if (array_key_exists($ocertify->auth_user,$personal_transaction_array)) {
     $is_finish  = $personal_transaction_array[$ocertify->auth_user];
   } else {
-    $is_finish  = '1';
+    $is_finish  = '0';
   }
 }            
 $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecked';
 ?>
               <td id="mark_t" class="<?php echo  $transaction_class; ?>" align="center"  style="white-space:nowrap; "
-              onclick="transaction_finish(<?php echo $is_finish;?>)"><?php echo
+              onclick="transaction_finish(<?php echo $is_finish;?>,'<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'site_id')));?>')"><?php echo
               TEXT_PREORDERS_TRANSACTION_FINISH;?></td> 
               <td id="mark_o" width="15%" class="<?php echo (in_array('0', $get_mark_info) || (!isset($_GET['mark']) && in_array('0',$work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'0','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">&nbsp;</td> 
               <td id="mark_a" width="15%" class="<?php echo (in_array('1', $get_mark_info) || (!isset($_GET['mark']) && in_array('1',$work_array)))?'mark_flag_checked':'mark_flag_unchecked';?>" align="center" onclick="mark_work(this,'1','<?php echo isset($_GET['mark']) ? $_GET['mark'] : $work_str;?>', '<?php echo $_GET['site_id'];?>', '<?php echo urlencode(tep_get_all_get_params(array('page', 'oID', 'action', 'mark', 'site_id')));?>')">A</td> 
