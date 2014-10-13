@@ -2,7 +2,7 @@
 
 require('includes/application_top.php');
 
-function show_effective_number($str,$count=2){ 
+function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){ 
   if($str+1 == 1){
     return TEXT_UNSET_DATA;
   }
@@ -29,7 +29,11 @@ function show_effective_number($str,$count=2){
       break;
     }
   }
-  return '0.'.substr($str,2,$i).TEXT_MONEY_SYMBOL;
+  if($str<2){
+    return '0.'.substr($str,2,$i).$str_end;
+  }else{
+    return substr($str-1,0,2).substr($str,2,$i).$str_end;
+  }
 }
 
 require(DIR_WS_CLASSES . 'currencies.php');
@@ -571,7 +575,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 
               $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $category_asset_arr[$key]['real_all_product']);
             }
-            $info_str_temp .= '<td align="right">'.$products_quantity_value.TEXT_ROW.'</td>';
+            $info_str_temp .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
             $info_str_temp .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
             $info_str_temp .= '<td align="right">'.($currencies->format(abs($products_quantity_value*$info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($products_quantity_value*$info_value['final_price'])):$currencies->format(abs($products_quantity_value*$info_value['final_price']))).'</td>';
             $info_str_temp .= '</tr>';
@@ -595,7 +599,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           echo $category_asset_arr[$key]['categories_name'];
           echo "</td>";
           echo "<td align='right'>";
-          echo $category_asset_arr[$key]['quantity_all_product'].TEXT_ROW;
+          echo show_effective_number($category_asset_arr[$key]['quantity_all_product'],TEXT_ROW);
           echo "</td>";
           echo "<td align='right'>";
           echo $currencies->format($products_price_total/$products_quantity_total)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_total/$products_quantity_total):$currencies->format($products_price_total/$products_quantity_total);
@@ -628,7 +632,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             echo tep_get_products_name($p_value);
             echo "</td>";
             echo "<td align='right'>";
-            echo tep_get_quantity($p_value).TEXT_ROW;
+            echo show_effective_number(tep_get_quantity($p_value),TEXT_ROW);
             echo "</td>";
             echo "<td align='right'>";
             echo $currencies->format($p_temp_price_total/$p_temp_quantity)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($p_temp_price_total/$p_temp_quantity):$currencies->format($p_temp_price_total/$p_temp_quantity);
@@ -669,7 +673,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 
               $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $all_product[$k]['quantity_all_product']);
             }
-            $products_info_str .= '<td align="right">'.$products_quantity_value.TEXT_ROW.'</td>';
+            $products_info_str .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
             $products_info_str .= '<td
               align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
             $products_info_str .= '<td align="right">'.($currencies->format(abs($products_quantity_value*$info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($products_quantity_value*$info_value['final_price'])):$currencies->format(abs($products_quantity_value*$info_value['final_price']))).'</td>';
@@ -695,7 +699,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         echo $all_product[$k]['products_name'];
         echo "</td>";
         echo "<td align='right'>";
-        echo $all_product[$k]['products_real_quantity'].TEXT_ROW;
+        echo show_effective_number($all_product[$k]['products_real_quantity'],TEXT_ROW);
         echo "</td>";
         echo "<td align='right'>";
         echo $currencies->format($products_price_total/$products_quantity_total)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_total/$products_quantity_total):$currencies->format($products_price_total/$products_quantity_total);
@@ -730,7 +734,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td id='info_value_td' class='assets_bottom_info'>";
-      echo $all_quantity.TEXT_ROW;
+      echo show_effective_number($all_quantity,TEXT_ROW);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
@@ -758,7 +762,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
-      echo $all_quantity.TEXT_ROW;
+      echo show_effective_number($all_quantity,TEXT_ROW);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
