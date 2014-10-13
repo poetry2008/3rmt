@@ -62,5 +62,14 @@ define('SHOW_NULL_ATT_STATUS','非表示');
 define('TEXT_ATT_SET_VALUE','指定在席時間数小計');
 define('TEXT_ATT_ACTUAL_VALUE','実際在席時間数小計');
 define('TEXT_REMIND_CHOICE_SELECT','*必須');
+define('TEXT_ATTENDANCE_SETTING', '各種設定');
+define('TEXT_ATTENDANCE_SETTING_USER', '出勤スタッフ');
+define('TEXT_ATTENDANCE_SETTING_GROUP', '出勤グループ');
+define('TEXT_ATTENDANCE_SETTING_CHANGE', '出勤変更');
+define('TEXT_ATTENDANCE_SETTING_MOVE', 'シフト');
+define('TEXT_ATTENDANCE_SETTING_PAYROLLS', '給料関連設定');
+define('TEXT_ATTENDANCE_SETTING_SHOW', '表示設定');
+define('TEXT_ATTENDANCE_TABLE_MODE', 'シフト表モード');
+define('TEXT_ATTENDANCE_CALENDAR_MODE', 'カレンダ―モード');
 ?>
 

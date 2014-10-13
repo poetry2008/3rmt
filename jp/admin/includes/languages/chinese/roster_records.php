@@ -62,5 +62,14 @@ define('SHOW_NULL_ATT_STATUS','不显示');
 define('TEXT_ATT_SET_VALUE','打卡时间设定值小计');
 define('TEXT_ATT_ACTUAL_VALUE','打卡时间实际值小计');
 define('TEXT_REMIND_CHOICE_SELECT','*必须');
+define('TEXT_ATTENDANCE_SETTING', '各种设定');
+define('TEXT_ATTENDANCE_SETTING_USER', '上班员工');
+define('TEXT_ATTENDANCE_SETTING_GROUP', '上班组别');
+define('TEXT_ATTENDANCE_SETTING_CHANGE', '上班变动');
+define('TEXT_ATTENDANCE_SETTING_MOVE', '排班');
+define('TEXT_ATTENDANCE_SETTING_PAYROLLS', '工资相关设定');
+define('TEXT_ATTENDANCE_SETTING_SHOW', '显示设定');
+define('TEXT_ATTENDANCE_TABLE_MODE', '排班表模式');
+define('TEXT_ATTENDANCE_CALENDAR_MODE', '日历模式');
 ?>
 
