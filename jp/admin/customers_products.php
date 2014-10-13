@@ -515,9 +515,9 @@ $(document).ready(function(){
         <tr>
           <td width="30"></td>
           <td width="292" valign="top" align="left" class="input_print03">
-          <font size="3"><u><textarea id="data5" type="text" rows="2" style="font-size:14px; width:270px; overflow-y:visible; resize:none;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data6" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
-          <font size="3"><u><textarea id="data7" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data5" type="text" rows="2" style="font-size:14px; width:270px; overflow:hidden; resize:none;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data6" type="text" rows="2" style="font-size:14px; overflow:hidden; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
+          <font size="3"><u><textarea id="data7" type="text" rows="2" style="font-size:14px; overflow:hidden; width:200px; resize:none;" onChange="textarea_change()"></textarea></u></font>
           </td>
         </tr>
 </tr>
@@ -529,7 +529,7 @@ $(document).ready(function(){
       <table border="0" width="50%" align="right" class="print_innput" style=" margin:10px 0;">
       <tr><td height="4"></td></tr>
         <tr><td height="30" valign="bottom" align="right"><input name="textfield" type="text" id="textfield" value="<?php echo tep_date_long(date('Y-m-d H:i:s'));?>" style=" height:20px; width:190px; text-align:right; font-size:16px;  margin:5px 0 20px 20px;"></td></tr>
-        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow-y:visible; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
+        <tr><td align="right"><textarea id="data10" type="text" rows="2" style="font-size:14px; overflow:hidden; width:280px; resize:none;text-align:right;" ></textarea></td></tr>
         <tr><td align="right" class="input_print02">
   <font size="2">
   <input name="textfield" type="text" id="email_text" value="" onChange="$('#email_display').val(this.value)" onpropertychange="$('#email_display').val(this.value)" onBlur="$('#email_display').val(this.value)" style="text-align:right; font-size:12px; width:300px;">
@@ -540,7 +540,7 @@ $(document).ready(function(){
           <tr><td style="border-bottom:#000000 1px solid;  padding-top:4px;" align="center">
           <input name="textfield" type="text" id="data11" value="" style="width:110px; font-size:12px; padding-top:4px; text-align:center; height:20px;">
           </td></tr>
-          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="1" style=" width:100px; font-size:20px; overflow-y:visible; text-align:center; padding:15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
+          <tr><td colspan="6" align="center" valign="middle"><textarea id="responsible" type="text" rows="1" style=" width:100px; font-size:20px; overflow:hidden; text-align:center; padding:15px 0; resize:none;" onChange="textarea_change()"></textarea></td></tr>
           </table>
         </td></tr>
       </table>
