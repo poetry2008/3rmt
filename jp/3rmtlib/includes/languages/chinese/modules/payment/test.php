@@ -4,7 +4,7 @@
 */
 
 // 乐天银行
-  define('TS_MODULE_PAYMENT_TEST_TEXT_TITLE', '测试');
+  define('TS_MODULE_PAYMENT_TEST_TEXT_TITLE', '用于测试的支付方法');
   define('TS_MODULE_PAYMENT_TEST_TEXT_DESCRIPTION', '乐天银行(货款包含手续费)');
   define('TS_MODULE_PAYMENT_TEST_FIELDS_DESCRIPTION', '请在下列输入框写上电话号码');
   define('TS_MODULE_PAYMENT_TEST_TEXT_EXPLAIN','汇入乐天银行时请选择。<br>转账手续费由客户承担。');
