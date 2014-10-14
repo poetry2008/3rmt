@@ -32,7 +32,12 @@ function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){
   if($str<2){
     return '0.'.substr($str,2,$i).$str_end;
   }else{
-    return substr($str-1,0,2).substr($str,2,$i).$str_end;
+    $arr = explode('.',$str-1);
+    if(count($arr)==1){
+      return ($str-1).$str_end;
+    }else{
+      return $arr[0].'.'.substr($str-1,strlen($arr[0])+1,$i).$str_end;
+    }
   }
 }
 
@@ -674,8 +679,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
               $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $all_product[$k]['quantity_all_product']);
             }
             $products_info_str .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
-            $products_info_str .= '<td
-              align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
+            $products_info_str .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
             $products_info_str .= '<td align="right">'.($currencies->format(abs($products_quantity_value*$info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($products_quantity_value*$info_value['final_price'])):$currencies->format(abs($products_quantity_value*$info_value['final_price']))).'</td>';
             $products_info_str .= '</tr>';
             $products_price_total += abs($products_quantity_value*$info_value['final_price']);

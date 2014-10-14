@@ -4,7 +4,7 @@
 */
 
 // 乐天银行
-  define('TS_MODULE_PAYMENT_TEST_TEXT_TITLE', 'test');
+  define('TS_MODULE_PAYMENT_TEST_TEXT_TITLE', 'テスト用支払い');
   define('TS_MODULE_PAYMENT_TEST_TEXT_DESCRIPTION', '楽天銀行(代金に手数料が連動)');
   define('TS_MODULE_PAYMENT_TEST_FIELDS_DESCRIPTION', '下記入力欄に電話番号をご記入ください');
   define('TS_MODULE_PAYMENT_TEST_TEXT_EXPLAIN','楽天銀行へ振り込みする場合は選択してください。<br>振込手数料はお客様のご負担となります。');
