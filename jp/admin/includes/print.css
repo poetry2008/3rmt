@@ -12,7 +12,7 @@ textarea{ border:0!important;}
 .print_none input ,.print_none select{ display:none!important;}
 .print_none a{ display:none!important;}
 .link_01 a{display:none!important;}
-textarea{ overflow-y:visible!important;}
+textarea{ overflow:hidden!important;}
 /*.link_print td{ background-color:#fff!important; border:1px solid #000000!important;}*/
 .print_none_info{ background-color:#000000!important;}
 .print_none_info td{ background-color:#fff!important;}
