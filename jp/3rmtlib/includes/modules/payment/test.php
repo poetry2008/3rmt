@@ -5,7 +5,7 @@
 
 // 货到付款（手续费与购买价格连动）
 require_once (DIR_WS_CLASSES . 'basePayment.php');
-class rakuten_bank  extends basePayment  implements paymentInterface {
+class test  extends basePayment  implements paymentInterface {
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix, $show_payment_info;
   var $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', 
        '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
@@ -16,7 +16,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
  -----------------------------*/
   function loadSpecialSettings($site_id=0){
     $this->site_id = $site_id;
-    $this->code               = 'rakuten_bank';
+    $this->code               = 'test';
     $this->field_description  = 'TS_MODULE_PAYMENT_RAKUTEN_INFO_TEXT';
     $this->show_payment_info = 0;
   }
@@ -60,7 +60,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT,
                        "field"=>tep_draw_input_field('rakuten_telnumber', $theData['rakuten_telnumber'],'onpaste="return false" '.$style_width.$input_text_id.'').'&nbsp;&nbsp'.TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
                        "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_CHECK_TEL),
-                       "error_msg" => array(TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE,TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE) 
+                       "error_msg" => array(TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE,TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE) 
                        ),
                  array(
                        "code"=>'rakuten_telnumber_again',
@@ -69,7 +69,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
                        "rule"=>array(basePayment::RULE_NOT_NULL,
                          basePayment::RULE_CHECK_TEL, basePayment::RULE_SAME_TO),
                        "params_code"=>'rakuten_telnumber',
-                       "error_msg" => array(TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE) 
+                       "error_msg" => array(TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE_NOE) 
                        ),
                  );
     }
@@ -85,9 +85,9 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
  --------------------*/
   function update_status() {
     global $order;
-    if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_RAKUTEN_BANK_ZONE > 0) ) {
+    if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_TEST_ZONE > 0) ) {
       $check_flag = false;
-      $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_RAKUTEN_BANK_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
+      $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_TEST_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
       while ($check = tep_db_fetch_array($check_query)) {
         if ($check['zone_id'] < 1) {
           $check_flag = true;
@@ -127,7 +127,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
 
     $added_hidden = ''; 
     if (!empty($this->n_fee)) {
-      $s_message = $f_result ? (MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
+      $s_message = $f_result ? (MODULE_PAYMENT_TEST_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
     } else {
       $s_message = $f_result ? '': ('<font color="#FF0000">' . $this->s_error . '</font>');
     }
@@ -138,7 +138,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
           'id' => $this->code,
           'module' => $this->title,
           'fields' => array(
-                            array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS.'xv',
+                            array('title' => MODULE_PAYMENT_TEST_TEXT_PROCESS.'xv',
                                   'field' => ''),
                             array('title' => $s_message,
                                   'field' => $added_hidden)
@@ -171,9 +171,9 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
         $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false);
         //do for &type turn into &amp;type url ,fix it afterlater
         $url_test = explode('?',$redirect_url);
-        if ($url_test[1] == 'payment_error=rakuten_bank&amp;type=noe')
+        if ($url_test[1] == 'payment_error=test&amp;type=noe')
         {
-          $url_test[1] = 'payment_error=rakuten_bank&type=noe';
+          $url_test[1] = 'payment_error=test&type=noe';
           $redirect_url = $url_test[0] .'?'. $url_test[1]; 
         }
         //do for &type turn into &amp;type url ,fix it afterlater
@@ -244,7 +244,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
       $total -= intval($point);
     }   
 
-    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'rakuten_bank')) {
+    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'test')) {
       $total += intval($_POST['codt_fee']);
     }
 
@@ -252,7 +252,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     // email_footer里使用的字符串
     $s_message = $_POST['codt_fee_error']
       ? $_POST['codt_fee_error']
-      : sprintf(MODULE_PAYMENT_RAKUTEN_BANK_TEXT_MAILFOOTER,
+      : sprintf(MODULE_PAYMENT_TEST_TEXT_MAILFOOTER,
           $currencies->format($total),
           $currencies->format($_POST['codt_fee']));
 
@@ -288,15 +288,15 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
       if (isset($_GET['type']) && $_GET['type'] == 'noe')
       {
-        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE;
+        $error_message = MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE_NOE;
       }
       else if (isset($_GET['type']) && $_GET['type'] == 'nom')
       {
-        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM;
+        $error_message = MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE_NOM;
       }
       else
       {
-        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;
+        $error_message = MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE;
       }
 
       return array('title' => $this->title.' エラー!',
@@ -314,15 +314,15 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
   function get_preorder_error($error_type) {
       if ($error_type == 1)
       {
-        $error_message = TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE;
+        $error_message = TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE_NOE;
       }
       else if ($error_type == 2)
       {
-        $error_message = TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM;
+        $error_message = TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE_NOM;
       }
       else
       {
-        $error_message = TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;
+        $error_message = TS_MODULE_PAYMENT_TEST_TEXT_ERROR_MESSAGE;
       }
     return $error_message; 
   }
@@ -334,7 +334,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
  --------------------------*/  
   function check() {
     if (!isset($this->_check)) {
-      $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_RAKUTEN_BANK_STATUS' and site_id = '".$this->site_id."'");
+      $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_TEST_STATUS' and site_id = '".$this->site_id."'");
       $this->_check = tep_db_num_rows($check_query);
     }
     return $this->_check;
@@ -348,27 +348,27 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title,
       configuration_key, configuration_value, configuration_description,
       configuration_group_id, sort_order, set_function, date_added,user_added,
-      site_id) values ('楽天銀行を有効にする', 'MODULE_PAYMENT_RAKUTEN_BANK_STATUS',
+      site_id) values ('楽天銀行を有効にする', 'MODULE_PAYMENT_TEST_STATUS',
         'True', '楽天銀行による支払いを受け付けますか?', '6', '1',
         'tep_cfg_select_option(array(\'True\', \'False\'),
           ',now(),'".$_SESSION['user_name']."', ".$this->site_id.");");
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('加盟店コード', 'MODULE_PAYMENT_RAKUTEN_BANK_IP', '', '加盟店コードの設定をします。', '6', '2', now(), ".$this->site_id.")");
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続URL', 'MODULE_PAYMENT_RAKUTEN_BANK_URL', '', '接続URLの設定をします。', '6', '6', now(), ".$this->site_id.")");
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_RAKUTEN_BANK_COST', '99999999999:*0', '決済手数料 例: 代金300円以下、30円手数料をとる場合　300:*0+30, 代金301～1000円以内、代金の2％の手数料をとる場合　999:*0.02, 代金1000円以上の場合、手数料を無料する場合　99999999:*0, 無限大の符号を使えないため、このサイトで存在可能性がない数値で使ってください。 300:*0+30では*0がなければ、手数料は300+30になってしまいますので、ご注意ください。', '6', '3', now(), ".$this->site_id.")");
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_RAKUTEN_BANK_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0' , now(), ".$this->site_id.")");
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_RAKUTEN_BANK_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '4', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_RAKUTEN_BANK_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '5', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済可能金額', 'MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT', '0,99999999999', '決済可能金額の最大と最小値の設置
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('加盟店コード', 'MODULE_PAYMENT_TEST_IP', '', '加盟店コードの設定をします。', '6', '2', now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続URL', 'MODULE_PAYMENT_TEST_URL', '', '接続URLの設定をします。', '6', '6', now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_TEST_COST', '99999999999:*0', '決済手数料 例: 代金300円以下、30円手数料をとる場合　300:*0+30, 代金301～1000円以内、代金の2％の手数料をとる場合　999:*0.02, 代金1000円以上の場合、手数料を無料する場合　99999999:*0, 無限大の符号を使えないため、このサイトで存在可能性がない数値で使ってください。 300:*0+30では*0がなければ、手数料は300+30になってしまいますので、ご注意ください。', '6', '3', now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_TEST_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0' , now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added, site_id) values ('適用地域', 'MODULE_PAYMENT_TEST_ZONE', '0', '適用地域を選択すると、選択した地域のみで利用可能となります.', '6', '4', 'tep_get_zone_class_title', 'tep_cfg_pull_down_zone_classes(', now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_TEST_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '5', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済可能金額', 'MODULE_PAYMENT_TEST_MONEY_LIMIT', '0,99999999999', '決済可能金額の最大と最小値の設置
       例：0,3000
       0,3000円に入れると、0円から3000円までの金額が決済可能。設定範囲外の決済は不可。', '6', '0', now(), ".$this->site_id.")");
 
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('表示設定', 'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW', 'a:2:{i:0;s:1:\"1\";i:1;s:1:\"2\";}', '表示設定', '6', '1', 'tep_cfg_payment_checkbox_option(array(\'1\', \'2\'), ',now(), ".$this->site_id.");");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('表示設定', 'MODULE_PAYMENT_TEST_LIMIT_SHOW', 'a:2:{i:0;s:1:\"1\";i:1;s:1:\"2\";}', '表示設定', '6', '1', 'tep_cfg_payment_checkbox_option(array(\'1\', \'2\'), ',now(), ".$this->site_id.");");
 
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('予約注文', 'MODULE_PAYMENT_RAKUTEN_BANK_PREORDER_SHOW', 'True', '予約注文で楽天銀行を表示します', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".$this->site_id.");");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('予約注文', 'MODULE_PAYMENT_TEST_PREORDER_SHOW', 'True', '予約注文で楽天銀行を表示します', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".$this->site_id.");");
     
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_RAKUTEN_BANK_IS_GET_POINT', 'True', 'ポイント', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".$this->site_id.");");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('ポイント', 'MODULE_PAYMENT_TEST_IS_GET_POINT', 'True', 'ポイント', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ',now(), ".$this->site_id.");");
     
-    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_RAKUTEN_BANK_POINT_RATE', '0.01', 'ポイント還元率', '6', '0' , now(), ".$this->site_id.")");
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('ポイント還元率', 'MODULE_PAYMENT_TEST_POINT_RATE', '0.01', 'ポイント還元率', '6', '0' , now(), ".$this->site_id.")");
   }
 /*------------------------------
  功能：删除SQL
@@ -385,17 +385,17 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
  ----------------------------*/
   function keys() {
     return array( 
-        'MODULE_PAYMENT_RAKUTEN_BANK_STATUS', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_PREORDER_SHOW', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_IS_GET_POINT', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_POINT_RATE', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_ZONE', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_ORDER_STATUS_ID' , 
-        'MODULE_PAYMENT_RAKUTEN_BANK_PREORDER_STATUS_ID' ,
-        'MODULE_PAYMENT_RAKUTEN_BANK_SORT_ORDER', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_COST', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT',
+        'MODULE_PAYMENT_TEST_STATUS', 
+        'MODULE_PAYMENT_TEST_LIMIT_SHOW', 
+        'MODULE_PAYMENT_TEST_PREORDER_SHOW', 
+        'MODULE_PAYMENT_TEST_IS_GET_POINT', 
+        'MODULE_PAYMENT_TEST_POINT_RATE', 
+        'MODULE_PAYMENT_TEST_ZONE', 
+        'MODULE_PAYMENT_TEST_ORDER_STATUS_ID' , 
+        'MODULE_PAYMENT_TEST_PREORDER_STATUS_ID' ,
+        'MODULE_PAYMENT_TEST_SORT_ORDER', 
+        'MODULE_PAYMENT_TEST_COST', 
+        'MODULE_PAYMENT_TEST_MONEY_LIMIT',
 );
   }
 /*---------------------------
@@ -717,17 +717,17 @@ EOT;
       } 
     } 
     if ($exists_single) {
-      $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' and date_purchased >= '".$customers_info['customers_info_date_account_created']."' limit 0,1");
+      $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_TEST_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' and date_purchased >= '".$customers_info['customers_info_date_account_created']."' limit 0,1");
     } else {
-      $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' limit 0,1");
+      $orders_status_history_temp_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_TEST_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' limit 0,1");
     }
     $orders_num_rows = tep_db_num_rows($orders_status_history_temp_query);
     tep_db_free_result($orders_status_history_temp_query);
     if($orders_num_rows > 0){
       if ($exists_single) {
-        $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' and date_purchased >= '".$customers_info['customers_info_date_account_created']."' order by orders_id desc limit 0,1");
+        $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_TEST_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' and date_purchased >= '".$customers_info['customers_info_date_account_created']."' order by orders_id desc limit 0,1");
       } else {
-        $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' order by orders_id desc limit 0,1");
+        $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". $orders_type_str ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_TEST_TEXT_TITLE."' and is_gray != '1' and is_guest = '0' order by orders_id desc limit 0,1");
       }
       $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
       $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
@@ -752,7 +752,7 @@ EOT;
  -------------------------*/  
   function admin_is_get_point($site_id)
   {
-    return get_configuration_by_site_id_or_default('MODULE_PAYMENT_RAKUTEN_BANK_IS_GET_POINT', (int)$site_id); 
+    return get_configuration_by_site_id_or_default('MODULE_PAYMENT_TEST_IS_GET_POINT', (int)$site_id); 
   }
 /*------------------------
  功能：后台获取点率
@@ -761,7 +761,7 @@ EOT;
  -----------------------*/  
   function admin_get_point_rate($site_id)
   {
-    return get_configuration_by_site_id_or_default('MODULE_PAYMENT_RAKUTEN_BANK_POINT_RATE', (int)$site_id); 
+    return get_configuration_by_site_id_or_default('MODULE_PAYMENT_TEST_POINT_RATE', (int)$site_id); 
   }
 /*----------------------
  功能：后台计算得到的点数
@@ -802,7 +802,7 @@ EOT;
  -------------------------*/  
   function get_point_rate()
   {
-    return MODULE_PAYMENT_RAKUTEN_BANK_POINT_RATE; 
+    return MODULE_PAYMENT_TEST_POINT_RATE; 
   }
 /*--------------------------
  功能：后台获得评论
