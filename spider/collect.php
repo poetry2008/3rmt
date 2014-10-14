@@ -2146,6 +2146,13 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
         }else if($site_value == 1){
           $result_str = $result_array[0]['price'][$product_key];
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',trim($result_array[0]['inventory'][$product_key]),$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($result_array[0]['inventory'][$product_key] != ''){
+           $result_inventory = $result_array[0]['inventory'][$product_key];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
           switch($game_type){
             case 'FF14':
               $result_inventory = $inventory_array[0]/10;
@@ -2617,12 +2624,19 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
 
       } 
       }else if($site_value == 2){
-          if($game_type != 'L2'){
-            preg_match('/([0-9,]+)(口|M|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-          }else{
-          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-          }
-          switch($game_type){
+         if($game_type != 'L2'){
+           preg_match('/([0-9,]+)(口|M|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         }else{
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         }
+         $price = $result_array[0]['price'][$product_key]; 
+         if($result_array[0]['inventory'][$product_key] != ''){
+           $result_inventory = $result_array[0]['inventory'][$product_key];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
           case 'FF14':
               if($category_value == 'buy'){
                 if($inventory_array[0] != ''){
@@ -2886,8 +2900,14 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
           }else{
           preg_match('/([0-9,]+)\s*?(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           }
-              $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
-          if($category_value == 'buy'){
+           $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
+          $price = $result_array[0]['price'][$product_key]; 
+          if($result_array[0]['inventory'][$product_key] != ''){
+            $result_inventory = $result_array[0]['inventory'][$product_key];
+          }else{
+            $result_inventory = 0; 
+          } 
+          $result_str = $price; 
             switch($game_type){
             case 'FF14':
               if($inventory_array[0] != ''){
@@ -2908,6 +2928,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
               $result_str = $price;
               break;
             case 'RO':
+              if($category_value == 'buy'){
               if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
 
@@ -2915,16 +2936,21 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
                 }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
                   $price = $result_array[0]['50-99'][$product_key]; 
                 }else{
-             
                   $price = $result_array[0]['100-'][$product_key]; 
                 } 
                 $result_inventory = $inventory_array[0];
-              }else{
-                $price = $result_array[0]['1-49'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $price= str_replace(',','',$price); 
-              $result_str = $price;
+                }else{
+                  $price = $result_array[0]['1-49'][$product_key]; 
+                  $result_inventory = 0;
+                }
+                $price= str_replace(',','',$price); 
+                $result_str = $price;
+			  }else{
+
+                 $price = $result_array[0]['price'][$product_key];
+                 $result_str = $price*100;
+                 $result_inventory = $inventory_array[0]/100;
+			  }
               break;
             case 'RS':
               if($inventory_array[0] != ''){
@@ -2945,33 +2971,60 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
               $result_str = $price;
               break; 
               case 'DQ10':
-              if($inventory_array[0] != ''){
-                if(strpos($result_array[0]['inventory'][$product_key],'span')){
-                 $inventory_array[0]=0;
-                }
-                if($inventory_array[0] >= 0 && $inventory_array[0] <=19){
-                  $price = $result_array[0]['1-19'][$product_key]; 
-                }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
-                  $price = $result_array[0]['20-49'][$product_key]; 
+              if($category_value == 'buy'){
+                if($inventory_array[0] != ''){
+                  if(strpos($result_array[0]['inventory'][$product_key],'span')){
+                   $inventory_array[0]=0;
+                  }
+                  if($inventory_array[0] >= 0 && $inventory_array[0] <=19){
+                    $price = $result_array[0]['1-19'][$product_key]; 
+                  }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
+                    $price = $result_array[0]['20-49'][$product_key]; 
+                  }else{
+                    $price = $result_array[0]['50-'][$product_key]; 
+                  } 
+                  $result_inventory = $inventory_array[0]/10;
                 }else{
-                  $price = $result_array[0]['50-'][$product_key]; 
-                } 
+                  $price = $result_array[0]['1-19'][$product_key]; 
+                  $result_inventory = 0;
+                }
+                $result_str = $price*10;
+		     }else{
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 1 && $inventory_array[0] <=19){
+  
+                    $price = $result_array[0]['1-19'][$product_key]; 
+                  }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
+                    $price = $result_array[0]['20-49'][$product_key]; 
+                  }else{
+                    $price = $result_array[0]['50-'][$product_key]; 
+                  } 
+                }else{
+                  $price = $result_array[0]['1-19'][$product_key]; 
+                }
+                $result_str = $price*10;
                 $result_inventory = $inventory_array[0]/10;
-              }else{
-                $price = $result_array[0]['1-19'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $result_str = $price*10;
+			 }
               break;
               case 'L2':
-              if($inventory_array[0] != ''){
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = $inventory_array[0];
-              }else{
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $result_str = $price;
+              if($category_value == 'buy'){
+                if($inventory_array[0] != ''){
+                 $price = $result_array[0]['price'][$product_key]; 
+                 $result_inventory = $inventory_array[0];
+                }else{
+                  $price = $result_array[0]['price'][$product_key]; 
+                  $result_inventory = 0;
+                }
+                  $result_str = $price;
+			   }else{
+                if($inventory_array[0] != ''){
+                  $result_inventory = $inventory_array[0];
+                }else{
+                  $result_inventory = 0; 
+                } 
+                $price = $result_array[0]['price'][$product_key];
+                $result_str = $price;
+			  }
               break;
               case 'ARAD':
               if($inventory_array[0] != ''){
@@ -2985,6 +3038,8 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
               break;
               case 'blade':
              $value = str_replace('こはく','琥珀',$value);
+
+			 if($category_value == 'buy'){
               $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
                 if($inventory_array[0] != ''){
                   if($inventory_array[0] >= 1 && $inventory_array[0] <=4){
@@ -3001,6 +3056,20 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
                 }
 
               $result_str = $price*10;
+			 }else{
+              if($inventory_array[0] != ''){
+                if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
+                  $price = $result_array[0]['1-9'][$product_key]; 
+                }else{
+                  $price = $result_array[0]['10-'][$product_key]; 
+                } 
+                $result_inventory = $inventory_array[0];
+              }else{
+                $price = $result_array[0]['1-9'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price*10;
+			 }
               break;
               case 'genshin':
            $inventory_array[0] = str_replace(',','',$result_array[0]['inventory'][$product_key]); 
@@ -3020,78 +3089,18 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
 
               $result_str = $price;
               break;
-
-            }
-          }else{
-            $price = $result_array[0]['price'][$product_key]; 
-            if($inventory_array[0] != ''){
-              $result_inventory = $inventory_array[0];
-            }else{
-              $result_inventory = 0; 
-            } 
-            $result_str = $price;
-
-            if($game_type == 'DQ10'){
-              if($inventory_array[0] != ''){
-                if($inventory_array[0] >= 1 && $inventory_array[0] <=19){
-
-                  $price = $result_array[0]['1-19'][$product_key]; 
-                }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
-                  $price = $result_array[0]['20-49'][$product_key]; 
-                }else{
-             
-                  $price = $result_array[0]['50-'][$product_key]; 
-                } 
-              }else{
-                $price = $result_array[0]['1-19'][$product_key]; 
-              }
-              $result_str = $price*10;
-              $result_inventory = $inventory_array[0]/10;
-            }else if($game_type == 'L2'){
-
-             if($inventory_array[0] != ''){
-
-                $result_inventory = $inventory_array[0];
-             }else{
-                $result_inventory = 0; 
-             } 
-             $price = $result_array[0]['price'][$product_key];
-             $result_str = $price;
-            } else if($game_type == 'latale'){
-
-             $value = str_replace('ダイア','ダイヤ',$value);
-             if($inventory_array[0] != ''){
-
-                $result_inventory = $inventory_array[0]/10;
-             }else{
-                $result_inventory = 0; 
-             } 
-             $price = $result_array[0]['price'][$product_key];
-             $result_str = $price*10;
-            }
-            else if($game_type == 'RO') {
+			  case 'latale':
+              if($category_value == 'sell'){
+               $value = str_replace('ダイア','ダイヤ',$value);
+               if($inventory_array[0] != ''){
+                  $result_inventory = $inventory_array[0]/10;
+               }else{
+                 $result_inventory = 0; 
+               } 
                $price = $result_array[0]['price'][$product_key];
-               $result_str = $price*100;
-               $result_inventory = $inventory_array[0]/100;
-            }
-
-
-            else if($game_type == 'blade'){
-             $value = str_replace('こはく','琥珀',$value);
-              if($inventory_array[0] != ''){
-                if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
-                  $price = $result_array[0]['1-9'][$product_key]; 
-                }else{
-                  $price = $result_array[0]['10-'][$product_key]; 
-                } 
-                $result_inventory = $inventory_array[0];
-              }else{
-                $price = $result_array[0]['1-9'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $result_str = $price*10;
-          }
-
+               $result_str = $price*10;
+			  }	  
+			  break;
          }
         }else if($site_value == 4){
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -3168,6 +3177,13 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
 
         }else if($site_value ==5) {
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+          $price = $result_array[0]['price'][$product_key]; 
+          if($result_array[0]['inventory'][$product_key] != ''){
+            $result_inventory = $result_array[0]['inventory'][$product_key];
+          }else{
+            $result_inventory = 0; 
+          } 
+         $result_str = $price; 
           switch($game_type){
 		  case 'L2':
                if(strpos($result_array[0]['inventory'][$product_key],'span')){
