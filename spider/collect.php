@@ -1616,7 +1616,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
 
     $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
     foreach($result_array[0]['products_name'] as $product_key=>$value){
-        if($site_value == 0){
+        if($site_value == 0){//夢幻
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           switch($game_type){
             case 'FF11':
@@ -1675,13 +1675,6 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
               $result_str = $price;
             break;
             case 'DQ10':
-              $price = $result_array[0]['price'][$product_key];
-              $result_str = $price;
-              if($inventory_array[0] != ''){
-                $result_inventory = $inventory_array[0]/10;
-              }else{
-                $result_inventory = 0; 
-              }
               break;
              case 'L2':
               $price = $result_array[0]['price'][$product_key];
@@ -2143,7 +2136,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
               break;
 
           }
-        }else if($site_value == 1){
+        }else if($site_value == 1){//マツブシ
           $result_str = $result_array[0]['price'][$product_key];
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',trim($result_array[0]['inventory'][$product_key]),$inventory_array);
          $price = $result_array[0]['price'][$product_key]; 
@@ -2180,27 +2173,14 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
               $result_str = $price;
            break;
            case 'DQ10':
-              if($category_value == 'buy'){
-                if($inventory_array[0] != ''){
-                  if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
-
-                    $price = $result_array[0]['1-49'][$product_key]; 
-                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
-                    $price = $result_array[0]['50-99'][$product_key]; 
-                  }else{
-             
-                    $price = $result_array[0]['100-'][$product_key]; 
-                  } 
-                  $result_inventory = $inventory_array[0]/10;
-                }else{
-                  $price = $result_array[0]['1-49'][$product_key]; 
-                  $result_inventory = 0;
-                }
-              }else{
-                $price = $result_array[0]['price'][$product_key]; 
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
                 $result_inventory = $inventory_array[0]/10;
+              }else{
+                $result_inventory = 0; 
               }
-              $result_str = $price*10;
+
           break;
           case 'L2':
              if(strpos($result_array[0]['inventory'][$product_key],'img')){
@@ -2623,7 +2603,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
 
 
       } 
-      }else if($site_value == 2){
+      }else if($site_value == 2){//FTB
          if($game_type != 'L2'){
            preg_match('/([0-9,]+)(口|M|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
          }else{
@@ -2717,6 +2697,29 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
                 $result_str = $price;
             break;  
             case 'DQ10':
+              if($category_value == 'buy'){
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
+
+                    $price = $result_array[0]['1-49'][$product_key]; 
+                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                    $price = $result_array[0]['50-99'][$product_key]; 
+                  }else{
+             
+                    $price = $result_array[0]['100-'][$product_key]; 
+                  } 
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $price = $result_array[0]['1-49'][$product_key]; 
+                  $result_inventory = 0;
+                }
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = $inventory_array[0]/10;
+              }
+              $result_str = $price*10;
+
+//第8个
               if($inventory_array[0] != ''){
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = $inventory_array[0];
@@ -2894,7 +2897,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
              break;
 
             }
-        }else if($site_value == 3){
+        }else if($site_value == 3){//WM
           if($game_type == 'L2'){
             preg_match('/([0-9,]+)&nbsp;口/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           }else{
@@ -3102,7 +3105,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
 			  }	  
 			  break;
          }
-        }else if($site_value == 4){
+        }else if($site_value == 4){//ランキング
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           $price = $result_array[0]['price'][$product_key]; 
           if($result_array[0]['inventory'][$product_key] != ''){
@@ -3175,7 +3178,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
          break;
            }
 
-        }else if($site_value ==5) {
+        }else if($site_value == 5) {//カカラン
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           $price = $result_array[0]['price'][$product_key]; 
           if($result_array[0]['inventory'][$product_key] != ''){
@@ -3219,9 +3222,77 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
             
 			 break;
           } 
-        }
-        
-        
+      }else if($site_value == 6){
+		  //这个是主站
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+      }else if($site_value == 7){//ぱすてる
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($result_array[0]['inventory'][$product_key] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+		 }
+      }else if($site_value == 8){//ダイアモンドギル
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+		 }
+	  }
+      else if($site_value == 9){//アサヒ
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+		 }
+	  }
+      else if($site_value == 10){//KING
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+		 }
+	  }
+      else if($site_value == 11){//SONIC
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+		 }
+	  }
+
+
         else{
 
           $price = $result_array[0]['price'][$product_key]; 
