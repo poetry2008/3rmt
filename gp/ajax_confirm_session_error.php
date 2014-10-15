@@ -43,6 +43,13 @@ if (!empty($check_products_info)) {
    echo implode('|||', $return_array);
    exit;
 } 
+//检测商品的OPTION是否缺失，如果缺失给出相应的提示
+$check_products_option = tep_check_less_product_option(true);
+if(!empty($check_products_option)){
+
+  echo 'error';
+  exit;
+}
 
 if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])){
   echo 'error';
