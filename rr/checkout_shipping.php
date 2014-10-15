@@ -3,14 +3,6 @@
   $Id$
 */
   require('includes/application_top.php');
-  require('includes/classes/http_client.php');
-  require(DIR_WS_CLASSES . 'order.php'); 
-  $order = new order;
-  $_SESSION['c_point'] = $_POST['point'];
-  require(DIR_WS_ACTIONS.'checkout_shipping.php');
-  $billing_option = new AD_Option();
-  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
-  $_SESSION['shipping_page_str'] = end($page_url_array);
   //检测商品OPTION是否改动
   if ($_GET['action'] == 'check_products_op') {
       $check_products_info = tep_check_less_product_option(); 
@@ -28,6 +20,15 @@
       echo implode('|||', $return_check_array); 
       exit; 
   }
+  require('includes/classes/http_client.php');
+  require(DIR_WS_CLASSES . 'order.php'); 
+  $order = new order;
+  $_SESSION['c_point'] = $_POST['point'];
+  require(DIR_WS_ACTIONS.'checkout_shipping.php');
+  $billing_option = new AD_Option();
+  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+  $_SESSION['shipping_page_str'] = end($page_url_array);
+  
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();

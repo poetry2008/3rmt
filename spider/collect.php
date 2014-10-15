@@ -164,12 +164,6 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
        break;
        case 'FF11':
          $search_array = array(
-                  
-                   array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>\s*?([\sa-zA-Z]+?)\s*?<\/td>',
-                        '1-99'=>'<td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
-                        '100-10000'=>'<td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
-                        'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'
-                      ), 
                     array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">([a-zA-Z]+).*?<\/font><\/u><\/font><\/a>',
                       'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>.*?<td class="center">.*?円<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
@@ -179,19 +173,6 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
                       '10-'=>'<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">(.*?)円<\/td>',
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
-                    
-                    array('products_name'=>'<td rowspan="3"><span>(.*?)<\/span><\/td>',
-                      '1-49'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>',
-                      '50-99'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td>',
-                      '100-'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td>',
-                      'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
-                    ),
-                    
-                    array('products_name'=>'<td class="col0"><a href=".*?">(.*?)<\/a><\/td>',
-                      'price'=>'<td class="col0"><a href=".*?">.*?<\/a><\/td>.*?<td class="col2">([0-9,.]*?) 円 .*?<\/td>',
-                      'inventory'=>'<td class="col2">[0-9,.]*? WM .*?<\/td>.*?<td class="col2">([0-9,.]*?) 口 .*?<\/td>' 
-                    ),
-
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のギル販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
@@ -200,25 +181,66 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
           break;
        case 'DQ10':
           $search_array = array(
-                      array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
+                  array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>(.*?)<\/td>',
+                        '51-100'=>'<td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
+                        '101-9999'=>'<td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
+                        'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'
+                      ),
+                  array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                       'price'=>'<td class="center">(.*?)円<\/td>.*?<td class="center">.*?円<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
-                    array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">(.*?)<\/A><\/td>',
+                  array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">(.*?)<\/A><\/td>',
                       '1-49'=>'<td width="70" class="txt_12" align="center">(.*?)円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>',
                       '50-99'=>'<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">(.*?)円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>',
                       '100-'=>'<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">(.*?)円<\/td>',
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
-                    array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z0-9]+のゴールド販売)<\/a>',
+                   array('products_name'=>'<td rowspan="3"><span>(.*?)<\/span><\/td>',
+                      '1-9'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>',
+                      '10-29'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td>',
+                      '30-'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td>',
+                      'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">.*?([0-9,]+口).*?<br\/>.*?<a .*?>.*?<img.*?>.*?<\/td>' 
+                    ),
+                  array('products_name'=>'<td class="col0"><a href=".*?">(.*?)<\/a><\/td>',
+                      'price'=>'<td class="col0"><a href=".*?">.*?<\/a><\/td>.*?<td class="col2">([0-9,.]*?) 円 .*?<\/td>',
+                      'inventory'=>'<td class="col2">[0-9,.]*? WM .*?<\/td>.*?<td class="col2">([0-9,.]*?) 口 .*?<\/td>' 
+                    ), 
+                  array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                      'price'=>'<td><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,]+)円<\/td>',
+                      'inventory'=>'<td>.*?円<\/span><\/td>.*?<td>([0-9,]+)<\/span>.*?<\/td>.*?<td class="price">.*?<a href=".*?">.*?<\/a>.*?<\/td>' 
+                    ),
+                  array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z0-9]+のゴールド販売)<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
-                    array('products_name'=>'<td class="center" rowspan="3">(.*?)<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?銀行振込.*?<\/td>',
+                  array('products_name'=>'<td class="center" rowspan="3">(.*?)<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?銀行振込.*?<\/td>',
                       '1-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                       '20-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                       '50-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
                       'inventory'=>'<td class="center" rowspan="3">.*?<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">(.*?)<\/td>' 
+                    ),
+                  array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">(.*?)<\/a>.*?<\/td>',
+                      '1-49'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
+                      '50-99'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
+                      '100-'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td>',
+          	      'inventory'=>'<a href=".*?">.*?<b .*?>(.*?)<\/b>.*?<\/a>'
+                    ),
+                  array('products_name'=>'<td class="left" style=".*?"><a href=".*?">(.*?)<\/a><\/td>',
+                      'price'=>'<td class="left" style=".*?"><a href=".*?">.*?<\/a><\/td>.*?<td style=".*?">([0-9,]+)円<\/td>',
+                      'inventory'=>'<td style=".*?">.*?WM<\/td>.*?<td style=".*?">([0-9,]+) 口<\/td>' 
+                    ),
+                  array('products_name'=>'<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
+                      '1-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '50-149'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '150-299'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>',
+                      '300-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>',
+                      'inventory'=>'<td class="center" rowspan="4">.*?<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?([0-9,.]+).*?<\/td>' 
+                    ),
+                  array('products_name'=>'<tr><td class=buygmnr2 style="cursor:pointer;"><a .*?>(.*?)<\/a><\/td>',
+                      '1-99'=>'<td class=buygmnr2>([0-9,]+)円<\/td><td class=buygmnr2>.*?円<\/td><td class=buygmnr2>.*?円<\/td>',
+                      '100-'=>'<td class=buygmnr2>.*?円<\/td><td class=buygmnr2>([0-9,]+)円<\/td><td class=buygmnr2>.*?円<\/td>',
+	     	      'inventory'=>'<td class=buygmnr2 style="cursor:pointer;"><a .*?>([0-9.,]+&nbsp;口)<\/a><\/td>.*?<td class=buygmnr2>.*?円<\/td>' 
                     ),
                   );
           break;
@@ -247,7 +269,7 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
                       '20-49'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '50-99'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '100-'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td>',
-                      'inventory'=>'<td align="center">.*?<a href=".*?">.*?<\/a>.*?<\/td><td align="center">(.*?)<\/td>' 
+					  'inventory'=>'<a href=".*?">.*?<b .*?>(.*?)<\/b>.*?<\/a>' 
                     ),
                     array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                     '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
@@ -954,7 +976,8 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
           break; 
     case 'DQ10':
           $search_array = array(
-                      array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
+		    array(),
+                    array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                       'price'=>'<td class="center">(.*?)円<\/td>.*?<td class="center">.*?<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
@@ -962,15 +985,42 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
                       'price'=>'<td width="50" class="txt_11" align="center">(.*?)円<\/td>',
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
+                    array('products_name'=>'<td class="th"><?.*?>?([^>]*?)<?\/?a?>?<\/td>',
+                      'price'=>'<td>([0-9,.]+?)円<\/td>',
+                      'inventory'=>'<td>[0-9,.]+?円<\/td>.*?<td>[0-9,.]+?Pt<\/td>.*?<td>([0-9,.]+ 口).*?<\/td>' 
+                    ),
+	       	    array(),
+                    array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                      'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
+                      'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
+                    ),
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z\s0-9]+のゴールド買取)<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
                     array('products_name'=>'<td class="center">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>',
-                      '1-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
-                      '20-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
-                      '50-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
+                      '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
+                      '10-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
+                      '50-99'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
+                      '100-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
                       'inventory'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>' 
+                    ),
+                    array('products_name'=>'<span class="sell_serverName" style="width:21%">&nbsp;(.*?)<\/span>',
+                      '1-9'=>'<span class="sell_serverPrice" .*?>(.*?)円<\/span><span .*?>.*?円<\/span><span.*?>.*?円<\/span><span .*?>.*?円<\/span>',
+                      '10-49'=>'<span class="sell_serverPrice" .*?>.*?円<\/span><span .*?>(.*?)円<\/span><span.*?>.*?円<\/span><span .*?>.*?円<\/span>',
+                      '50-99'=>'<span class="sell_serverPrice" .*?>.*?円<\/span><span .*?>.*?円<\/span><span.*?>(.*?)円<\/span><span .*?>.*?円<\/span>',
+                      '100-'=>'<span class="sell_serverPrice" .*?>.*?円<\/span><span .*?>.*?円<\/span><span.*?>.*?円<\/span><span .*?>.*?円<\/span>',
+                      'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/span><\/li>' 
+                    ),
+                    array('products_name'=>'<td class="left"><a href=".*?">(.*?)<\/a><\/td>',
+                      'price'=>'<td>([0-9,]+)円<\/td>',
+                      'inventory'=>'<td>([0-9,]+) 口<\/td>' 
+                    ),
+                    array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>.*?<td .*?>',
+                      '1-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '50-149'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '150-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>',
+                      'inventory'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
                     ),
                   );
           break; 
@@ -1506,8 +1556,8 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')){$curl_flag=0;}else{$curl_flag=1;}
     $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
     $result_array = $result->fetch();
-//echo $url_array[$site_value];
-//echo $site_value;
+echo $url_array[$site_value];
+echo $site_value;
 var_dump($result_array);
 
 //将ip地址重新转换成域名形式
@@ -1568,16 +1618,17 @@ var_dump($result_array);
 
     $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
     foreach($result_array[0]['products_name'] as $product_key=>$value){
-        if($site_value == 0){
+        if($site_value == 0){//夢幻
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           switch($game_type){
             case 'FF11':
                if($category_value == 'buy'){
                   $result_inventory =$inventory_array[0]/10;
+                  $price = $result_array[0]['price'][$product_key]*10;
                }else{
                   $result_inventory =$inventory_array[0]/100;
+                  $price = $result_array[0]['price'][$product_key];
                }
-               $price = $result_array[0]['price'][$product_key];
                $result_str = $price;
             break;
             case 'FF14':
@@ -1626,13 +1677,23 @@ var_dump($result_array);
               $result_str = $price;
             break;
             case 'DQ10':
-              $price = $result_array[0]['price'][$product_key];
-              $result_str = $price;
-              if($inventory_array[0] != ''){
-                $result_inventory = $inventory_array[0]/10;
-              }else{
-                $result_inventory = 0; 
-              }
+             if(!strpos($value,'通取')){
+               $value = '';
+	     }else{
+                 if($inventory_array[0] != ''){
+                    if($inventory_array[0] >= 101 && $inventory_array[0] <=9999){
+                        $price = $result_array[0]['101-9999'][$product_key]; 
+                    }else{
+                        $price = $result_array[0]['51-100'][$product_key]; 
+                    } 
+                    $result_inventory = $inventory_array[0]/10;
+                 }else{
+                    $price = $result_array[0]['51-100'][$product_key]; 
+                    $result_inventory = 0;
+                 }
+                 $result_str = $price*10;
+	    }
+
               break;
              case 'L2':
               $price = $result_array[0]['price'][$product_key];
@@ -2094,9 +2155,16 @@ var_dump($result_array);
               break;
 
           }
-        }else if($site_value == 1){
+        }else if($site_value == 1){//マツブシ
           $result_str = $result_array[0]['price'][$product_key];
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',trim($result_array[0]['inventory'][$product_key]),$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($result_array[0]['inventory'][$product_key] != ''){
+           $result_inventory = $result_array[0]['inventory'][$product_key];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
           switch($game_type){
             case 'FF14':
               $result_inventory = $inventory_array[0]/10;
@@ -2124,27 +2192,13 @@ var_dump($result_array);
               $result_str = $price;
            break;
            case 'DQ10':
-              if($category_value == 'buy'){
-                if($inventory_array[0] != ''){
-                  if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
-
-                    $price = $result_array[0]['1-49'][$product_key]; 
-                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
-                    $price = $result_array[0]['50-99'][$product_key]; 
-                  }else{
-             
-                    $price = $result_array[0]['100-'][$product_key]; 
-                  } 
-                  $result_inventory = $inventory_array[0]/10;
-                }else{
-                  $price = $result_array[0]['1-49'][$product_key]; 
-                  $result_inventory = 0;
-                }
-              }else{
-                $price = $result_array[0]['price'][$product_key]; 
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
                 $result_inventory = $inventory_array[0]/10;
+              }else{
+                $result_inventory = 0; 
               }
-              $result_str = $price*10;
           break;
           case 'L2':
              if(strpos($result_array[0]['inventory'][$product_key],'img')){
@@ -2567,13 +2621,20 @@ var_dump($result_array);
 
 
       } 
-      }else if($site_value == 2){
-          if($game_type != 'L2'){
-            preg_match('/([0-9,]+)(口|M|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-          }else{
-          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-          }
-          switch($game_type){
+      }else if($site_value == 2){//FTB
+         if($game_type != 'L2'){
+           preg_match('/([0-9,]+)(口|M|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         }else{
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         }
+         $price = $result_array[0]['price'][$product_key]; 
+         if($result_array[0]['inventory'][$product_key] != ''){
+           $result_inventory = $result_array[0]['inventory'][$product_key];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
           case 'FF14':
               if($category_value == 'buy'){
                 if($inventory_array[0] != ''){
@@ -2627,9 +2688,11 @@ var_dump($result_array);
             }
           break;
           case 'RS':
+
              if(strpos($result_array[0]['inventory'][$product_key],'img')){
                $inventory_array[0]=0;
              }
+			 if($category_value == 'buy'){
               if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
 
@@ -2645,22 +2708,35 @@ var_dump($result_array);
                 $price = $result_array[0]['1-9'][$product_key]; 
                 $result_inventory = 0;
               }
-              $result_str = $price;
+			 }else{
+		        $result_inventory = $inventory_array[0];
+                $price = $result_array[0]['price'][$product_key];
+			 }
+                $result_str = $price;
             break;  
             case 'DQ10':
-              if($inventory_array[0] != ''){
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = $inventory_array[0];
-              }else{
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = 0;
-              }
               if($category_value == 'buy'){
-                  $result_str = $price;
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
+
+                    $price = $result_array[0]['1-49'][$product_key]; 
+                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                    $price = $result_array[0]['50-99'][$product_key]; 
+                  }else{
+             
+                    $price = $result_array[0]['100-'][$product_key]; 
+                  } 
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $price = $result_array[0]['1-49'][$product_key]; 
+                  $result_inventory = 0;
+                }
               }else{
-                  $result_str = $price/10; 
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = $inventory_array[0]/10;
               }
-              $result_inventory = $result_inventory*10;
+              $result_str = $price*10;
+
             break;
             case 'L2':
               if($result_array[0]['inventory'][$product_key] != ''){
@@ -2825,14 +2901,20 @@ var_dump($result_array);
              break;
 
             }
-        }else if($site_value == 3){
+        }else if($site_value == 3){//WM
           if($game_type == 'L2'){
             preg_match('/([0-9,]+)&nbsp;口/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           }else{
           preg_match('/([0-9,]+)\s*?(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           }
-              $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
-          if($category_value == 'buy'){
+           $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
+          $price = $result_array[0]['price'][$product_key]; 
+          if($result_array[0]['inventory'][$product_key] != ''){
+            $result_inventory = $result_array[0]['inventory'][$product_key];
+          }else{
+            $result_inventory = 0; 
+          } 
+          $result_str = $price; 
             switch($game_type){
             case 'FF14':
               if($inventory_array[0] != ''){
@@ -2853,6 +2935,7 @@ var_dump($result_array);
               $result_str = $price;
               break;
             case 'RO':
+              if($category_value == 'buy'){
               if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
 
@@ -2860,21 +2943,25 @@ var_dump($result_array);
                 }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
                   $price = $result_array[0]['50-99'][$product_key]; 
                 }else{
-             
                   $price = $result_array[0]['100-'][$product_key]; 
                 } 
                 $result_inventory = $inventory_array[0];
-              }else{
-                $price = $result_array[0]['1-49'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $price= str_replace(',','',$price); 
-              $result_str = $price;
+                }else{
+                  $price = $result_array[0]['1-49'][$product_key]; 
+                  $result_inventory = 0;
+                }
+                $price= str_replace(',','',$price); 
+                $result_str = $price;
+			  }else{
+
+                 $price = $result_array[0]['price'][$product_key];
+                 $result_str = $price*100;
+                 $result_inventory = $inventory_array[0]/100;
+			  }
               break;
             case 'RS':
               if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 5 && $inventory_array[0] <=99){
-
                   $price = $result_array[0]['5-99'][$product_key]; 
                 }else if($inventory_array[0] >= 100 && $inventory_array[0] <=199){
                   $price = $result_array[0]['100-199'][$product_key]; 
@@ -2890,33 +2977,54 @@ var_dump($result_array);
               $result_str = $price;
               break; 
               case 'DQ10':
-              if($inventory_array[0] != ''){
-             if(strpos($result_array[0]['inventory'][$product_key],'span')){
-               $inventory_array[0]=0;
-             }
-                if($inventory_array[0] >= 0 && $inventory_array[0] <=19){
-                  $price = $result_array[0]['1-19'][$product_key]; 
-                }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
-                  $price = $result_array[0]['20-49'][$product_key]; 
-                }else{
-                  $price = $result_array[0]['50-'][$product_key]; 
-                } 
-                $result_inventory = $inventory_array[0]/10;
-              }else{
-                $price = $result_array[0]['1-19'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $result_str = $price*10;
+                  if($product_key != 2){
+                      $value = '';
+	          }else{
+		      if($category_value == 'buy'){
+                          if($inventory_array[0] != ''){
+                             if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
+                                $price = $result_array[0]['1-9'][$product_key]; 
+                             }else if($inventory_array[0] >= 10 && $inventory_array[0] <=29){
+                                 $price = $result_array[0]['10-29'][$product_key]; 
+                             }else{
+                                 $price = $result_array[0]['30-'][$product_key]; 
+                             } 
+                             $result_inventory = $inventory_array[0];
+                          }else{
+                              $price = $result_array[0]['1-9'][$product_key]; 
+                              $result_inventory = 0;
+                          }
+		      }else{
+                         if($inventory_array[0] != ''){
+                            $result_inventory = $inventory_array[0];
+                         }else{
+                            $result_inventory = 0; 
+                         } 
+                         $price = $result_array[0]['price'][$product_key];
+		      } 
+                        $result_str = $price;
+	         }
+
               break;
               case 'L2':
-              if($inventory_array[0] != ''){
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = $inventory_array[0];
-              }else{
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $result_str = $price;
+              if($category_value == 'buy'){
+                if($inventory_array[0] != ''){
+                 $price = $result_array[0]['price'][$product_key]; 
+                 $result_inventory = $inventory_array[0];
+                }else{
+                  $price = $result_array[0]['price'][$product_key]; 
+                  $result_inventory = 0;
+                }
+                  $result_str = $price;
+			   }else{
+                if($inventory_array[0] != ''){
+                  $result_inventory = $inventory_array[0];
+                }else{
+                  $result_inventory = 0; 
+                } 
+                $price = $result_array[0]['price'][$product_key];
+                $result_str = $price;
+			  }
               break;
               case 'ARAD':
               if($inventory_array[0] != ''){
@@ -2930,6 +3038,8 @@ var_dump($result_array);
               break;
               case 'blade':
              $value = str_replace('こはく','琥珀',$value);
+
+			 if($category_value == 'buy'){
               $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
                 if($inventory_array[0] != ''){
                   if($inventory_array[0] >= 1 && $inventory_array[0] <=4){
@@ -2946,6 +3056,20 @@ var_dump($result_array);
                 }
 
               $result_str = $price*10;
+			 }else{
+              if($inventory_array[0] != ''){
+                if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
+                  $price = $result_array[0]['1-9'][$product_key]; 
+                }else{
+                  $price = $result_array[0]['10-'][$product_key]; 
+                } 
+                $result_inventory = $inventory_array[0];
+              }else{
+                $price = $result_array[0]['1-9'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price*10;
+			 }
               break;
               case 'genshin':
            $inventory_array[0] = str_replace(',','',$result_array[0]['inventory'][$product_key]); 
@@ -2965,80 +3089,20 @@ var_dump($result_array);
 
               $result_str = $price;
               break;
-
-            }
-          }else{
-            $price = $result_array[0]['price'][$product_key]; 
-            if($inventory_array[0] != ''){
-              $result_inventory = $inventory_array[0];
-            }else{
-              $result_inventory = 0; 
-            } 
-            $result_str = $price;
-
-            if($game_type == 'DQ10'){
-              if($inventory_array[0] != ''){
-                if($inventory_array[0] >= 1 && $inventory_array[0] <=19){
-
-                  $price = $result_array[0]['1-19'][$product_key]; 
-                }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
-                  $price = $result_array[0]['20-49'][$product_key]; 
-                }else{
-             
-                  $price = $result_array[0]['50-'][$product_key]; 
-                } 
-              }else{
-                $price = $result_array[0]['1-19'][$product_key]; 
-              }
-              $result_str = $price*10;
-              $result_inventory = $inventory_array[0]/10;
-            }else if($game_type == 'L2'){
-
-             if($inventory_array[0] != ''){
-
-                $result_inventory = $inventory_array[0];
-             }else{
-                $result_inventory = 0; 
-             } 
-             $price = $result_array[0]['price'][$product_key];
-             $result_str = $price;
-            } else if($game_type == 'latale'){
-
-             $value = str_replace('ダイア','ダイヤ',$value);
-             if($inventory_array[0] != ''){
-
-                $result_inventory = $inventory_array[0]/10;
-             }else{
-                $result_inventory = 0; 
-             } 
-             $price = $result_array[0]['price'][$product_key];
-             $result_str = $price*10;
-            }
-            else if($game_type == 'RO') {
+			  case 'latale':
+              if($category_value == 'sell'){
+               $value = str_replace('ダイア','ダイヤ',$value);
+               if($inventory_array[0] != ''){
+                  $result_inventory = $inventory_array[0]/10;
+               }else{
+                 $result_inventory = 0; 
+               } 
                $price = $result_array[0]['price'][$product_key];
-               $result_str = $price*100;
-               $result_inventory = $inventory_array[0]/100;
-            }
-
-
-            else if($game_type == 'blade'){
-             $value = str_replace('こはく','琥珀',$value);
-              if($inventory_array[0] != ''){
-                if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
-                  $price = $result_array[0]['1-9'][$product_key]; 
-                }else{
-                  $price = $result_array[0]['10-'][$product_key]; 
-                } 
-                $result_inventory = $inventory_array[0];
-              }else{
-                $price = $result_array[0]['1-9'][$product_key]; 
-                $result_inventory = 0;
-              }
-              $result_str = $price*10;
-          }
-
+               $result_str = $price*10;
+			  }	  
+			  break;
          }
-        }else if($site_value == 4){
+        }else if($site_value == 4){//ランキング
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           $price = $result_array[0]['price'][$product_key]; 
           if($result_array[0]['inventory'][$product_key] != ''){
@@ -3048,8 +3112,22 @@ var_dump($result_array);
           } 
           $result_str = $price; 
 
-          if($game_type == 'L2'){
+        switch($game_type){
+		case 'DQ10':
+            if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0]/10;
+              }else{
+                $result_inventory = 0;
+              }
+               $price = $result_array[0]['price'][$product_key]; 
+           
+              $result_str = $price*10;
 
+			break;
+		case 'L2':
+             if(strpos($result_array[0]['inventory'][$product_key],'span')){
+               $inventory_array[0]=0;
+             }
            if($category_value == 'buy'){
             if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=19){
@@ -3070,27 +3148,26 @@ var_dump($result_array);
               }
            }else{
             if($inventory_array[0] != ''){
-                  $price = $result_array[0]['1-9'][$product_key]; 
                 $result_inventory = $inventory_array[0];
               }else{
                 $result_inventory = 0;
               }
-             $result_str = $price;
+               $price = $result_array[0]['1-9'][$product_key]; 
            }
               $result_str = $price;
-          }
-          if($game_type == 'RO'){
+        break; 
+		case 'RO':
              $price = $result_array[0]['price'][$product_key];
              $result_inventory = $result_array[0]['inventory'][$product_key]/100;
              $result_str = $price*100;
-          }
-          if($game_type == 'latale'){
+        break; 
+		case 'latale':
              $value = str_replace('ダイア','ダイヤ',$value);
              $price = $result_array[0]['price'][$product_key];
              $result_inventory = $result_array[0]['inventory'][$product_key]/10;
              $result_str = $price*10;
-          }
-          if($game_type=='L1'){
+        break; 
+		case 'L1':
             if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
 
@@ -3106,15 +3183,23 @@ var_dump($result_array);
                 $result_inventory = 0;
               }
              $result_str = $price;
-
+         break;
            }
 
-        }else if($site_value ==5) {
+        }else if($site_value == 5) {//カカラン
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-          if($game_type=='L2'){
-             if(strpos($result_array[0]['inventory'][$product_key],'span')){
-               $inventory_array[0]=0;
-             }
+          $price = $result_array[0]['price'][$product_key]; 
+          if($result_array[0]['inventory'][$product_key] != ''){
+            $result_inventory = $result_array[0]['inventory'][$product_key];
+          }else{
+            $result_inventory = 0; 
+          } 
+         $result_str = $price; 
+          switch($game_type){
+		  case 'L2':
+               if(strpos($result_array[0]['inventory'][$product_key],'span')){
+                 $inventory_array[0]=0;
+               }
              if($inventory_array[0] !=''){
                   if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
                     $price = $result_array[0]['1-9'][$product_key]; 
@@ -3131,21 +3216,219 @@ var_dump($result_array);
                   $result_inventory = 0;
                 }
                  $result_str = $price;
-
-           }else if($game_type=='RS'){
+         break;
+		  case 'RS':
 
              $price = $result_array[0]['price'][$product_key];
               $result_str = $price;
              $result_inventory = $result_array[0]['inventory'][$product_key];
-          }else if($game_type=='RO'){
+			 break;
+		  case 'RO':
              $price = $result_array[0]['price'][$product_key];
              $result_str = $price*100;
              $result_inventory = $result_array[0]['inventory'][$product_key]/100;
             
+			 break;
           } 
-        }
-        
-        
+      }else if($site_value == 6){
+		  //这个是主站
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+      }else if($site_value == 7){//ぱすてる
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($result_array[0]['inventory'][$product_key] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+	 case 'DQ10':
+              if(strpos($result_array[0]['inventory'][$product_key],'span')){
+                   $inventory_array[0]=0;
+              }
+              if($category_value == 'buy'){
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 0 && $inventory_array[0] <=19){
+                    $price = $result_array[0]['1-19'][$product_key]; 
+                  }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
+                    $price = $result_array[0]['20-49'][$product_key]; 
+                  }else{
+                    $price = $result_array[0]['50-'][$product_key]; 
+                  } 
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $price = $result_array[0]['1-19'][$product_key]; 
+                  $result_inventory = 0;
+                }
+                $result_str = $price*10;
+		      }else{
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 1 && $inventory_array[0] <=19){
+  
+                    $price = $result_array[0]['1-19'][$product_key]; 
+                  }else if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
+                    $price = $result_array[0]['20-49'][$product_key]; 
+                  }else{
+                    $price = $result_array[0]['50-'][$product_key]; 
+                  } 
+                 }else{
+                    $price = $result_array[0]['1-19'][$product_key]; 
+                 }
+                 $result_str = $price*10;
+                 $result_inventory = $inventory_array[0]/10;
+			 }
+       break;
+		}
+      }else if($site_value == 8){//ダイアモンドギル
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+	 case 'DQ10':
+             if($product_key != 1){
+               $value = '';
+	     }else{
+		 if($category_value == 'buy'){
+                     if($inventory_array[0] != ''){
+                        if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
+                            $price = $result_array[0]['1-49'][$product_key]; 
+                        }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                            $price = $result_array[0]['50-99'][$product_key]; 
+                        }else{
+                            $price = $result_array[0]['100-'][$product_key]; 
+                        } 
+                      }else{
+                        $price = $result_array[0]['1-49'][$product_key]; 
+                      }
+		 }else{
+                     if($inventory_array[0] != ''){
+                        if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
+                            $price = $result_array[0]['1-9'][$product_key]; 
+                        }else if($inventory_array[0] >= 10 && $inventory_array[0] <=49){
+                            $price = $result_array[0]['10-49'][$product_key]; 
+                        }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                            $price = $result_array[0]['50-99'][$product_key]; 
+                        }else{
+                            $price = $result_array[0]['100-'][$product_key]; 
+                        } 
+                      }else{
+                        $price = $result_array[0]['1-9'][$product_key]; 
+                      }
+		 }
+                     $result_str = $price;
+                     $result_inventory = $inventory_array[0];
+		  }
+
+			 break;
+		 }
+	  }
+      else if($site_value == 9){//アサヒ
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+			 //DQ10不需要处理
+		 }
+	  }
+      else if($site_value == 10){//KING
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+		 case 'DQ10':
+
+             if(!strpos($value,'ゴールド')){
+               $value = '';
+			 }else{
+				 if($category_value == 'buy'){
+                     if($inventory_array[0] != ''){
+                        if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
+                            $price = $result_array[0]['1-49'][$product_key]; 
+                        }else if($inventory_array[0] >= 50 && $inventory_array[0] <=149){
+                            $price = $result_array[0]['50-149'][$product_key]; 
+                        }else if($inventory_array[0] >= 150 && $inventory_array[0] <=299){
+                            $price = $result_array[0]['150-299'][$product_key]; 
+                        }else{
+                            $price = $result_array[0]['300-'][$product_key]; 
+                        } 
+                      }else{
+                        $price = $result_array[0]['1-49'][$product_key]; 
+                      }
+				 }else{
+                     if($inventory_array[0] != ''){
+                        if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
+                            $price = $result_array[0]['1-49'][$product_key]; 
+                        }else if($inventory_array[0] >= 50 && $inventory_array[0] <=149){
+                            $price = $result_array[0]['50-149'][$product_key]; 
+                        }else{
+                            $price = $result_array[0]['150-'][$product_key]; 
+                        } 
+                      }else{
+                        $price = $result_array[0]['1-49'][$product_key]; 
+                      }
+				 }
+                     $result_str = $price;
+                     $result_inventory = $inventory_array[0];
+			 }
+			 break;
+		 }
+	  }
+      else if($site_value == 11){//SONIC
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+         $price = $result_array[0]['price'][$product_key]; 
+         if($inventory_array[0] != ''){
+           $result_inventory = $inventory_array[0];
+         }else{
+           $result_inventory = 0; 
+         } 
+         $result_str = $price; 
+         switch($game_type){
+	 case 'DQ10':
+             if($product_key != 1){
+               $value = '';
+	     }else{
+                 if($inventory_array[0] != ''){
+                     if($inventory_array[0] >= 1 && $inventory_array[0] <=99){
+                        $price = $result_array[0]['1-99'][$product_key]; 
+                     }else{
+                        $price = $result_array[0]['100-'][$product_key]; 
+                     } 
+                     $result_inventory = $inventory_array[0];
+                  }else{
+                     $price = $result_array[0]['1-99'][$product_key]; 
+                     $result_inventory = 0;
+                  }
+                $result_str = $price;
+
+             }
+		 break;
+           }
+       }
+
+
         else{
 
           $price = $result_array[0]['price'][$product_key]; 
@@ -3162,7 +3445,7 @@ var_dump($result_array);
       $result_str = str_replace(',','',$result_str);
       $result_inventory = str_replace(',','',$result_inventory);
       $value = preg_replace('/<.*?>/','',$value);
-     echo "insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."',0)<br>";
+     //echo "insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."',0)<br>";
       //数据入库
 if($product_key==0){
   mysql_query("delete from product where category_id='".$category_id_array[$site_value]."'");

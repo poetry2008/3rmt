@@ -390,7 +390,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                  9=>'http://rmt.diamond-gil.jp/game2.php/gameid/doragonkuesuto/view/sv/',
                                  10=>'http://www.asahi-rmt-service.com/dqx/purchase.html',
                                  11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=161&Mode=Buy&',
-                                 12=>'http://rmt.diamond-gil.jp/',
+                                 12=>'http://www.rmtsonic.jp/',
                                 ),
                               ),
                   'L2'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
