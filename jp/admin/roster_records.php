@@ -1368,7 +1368,7 @@ while($j<=$end_day)
       and date='".$date."'";
     $replace_query = tep_db_query($replace_sql);
     if($replace_user_row = tep_db_fetch_array($replace_query)){
-      $info_td_attendance_str .= '<span>';
+      $info_td_attendance_str .= "<span onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$user_value."\",\"".$user_attenande['attendance_detail_id']."\")'>";
       $replace_attendance_info = $all_att_arr[$replace_user_row['replace_attendance_detail_id']];
       if($replace_attendance_info['scheduling_type']==0){
         if(file_exists("images/".$replace_attendance_info['src_text'])&&$replace_attendance_info['src_text']!=''){
@@ -1400,6 +1400,7 @@ while($j<=$end_day)
     $info_td_attendance_str .= "<tr>";
     if($replace_attendance_info['scheduling_type'] == 0){
       $info_td_attendance_str .=  '<td style="border-width:0px; padding-top:6px;">';
+      $info_td_attendance_str .= "<span onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$user_value."\",\"".$other_replace_user_row['attendance_detail_id']."\")' >";
       $info_td_attendance_str .=  $replace_attendance_info['short_language'];
       if(file_exists("images/".$replace_attendance_info['src_text'])&&$replace_attendance_info['src_text']!=''){
         $info_td_attendance_str .=  '<img style="width:16px;"
@@ -1407,6 +1408,7 @@ while($j<=$end_day)
       }
     }else{
       $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($replace_attendance_info['scheduling_type'] == 1 && $replace_attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$replace_attendance_info['src_text']."'>";
+      $info_td_attendance_str .= "<span onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$user_value."\",\"".$other_replace_user_row['attendance_detail_id']."\")' >";
       $info_td_attendance_str .=  $replace_attendance_info['short_language'];
     }
     if($other_replace_user_row['allow_status']==0&& 
@@ -1414,8 +1416,9 @@ while($j<=$end_day)
          $ocertify->auth_user==$other_replace_user_row['user'])){
       $info_td_attendance_str .= "<img src='images/icons/mark.gif' alt='UNALLOW'>";
     }
-    $info_td_attendance_str .=  "</td>";
-    $info_td_attendance_str .=  "</tr>";
+    $info_td_attendance_str .= "</span>";
+    $info_td_attendance_str .= "</td>";
+    $info_td_attendance_str .= "</tr>";
   }
   $info_td_attendance_str .= '</table>';
   echo $info_td_attendance_str;
