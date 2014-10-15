@@ -14186,7 +14186,8 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'rest_end' => '',
           'set_time' => '',
           'work_hours' => '',
-          'rest_hours' => '' 
+          'rest_hours' => '',
+          'user_id' => $r_info['user_id'],
         );
   }
   if(count($attendance_dd_arr_tmp)>1){
@@ -14214,7 +14215,9 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'rest_end' => $v['rest_end'],
           'set_time' => $v['set_time'],
           'work_hours' => $v['work_hours'],
-          'rest_hours' => $v['rest_hours']
+          'rest_hours' => $v['rest_hours'],
+          'group_id' => $v['group_id'],
+          'user_id' => $v['user_id']
           );
       }
     }
@@ -14241,7 +14244,9 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
             'rest_end' => $attendance_dd_arr_tmp[0]['rest_end'],
             'set_time' => $attendance_dd_arr_tmp[0]['set_time'],
             'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
-            'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours']
+            'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours'],
+            'group_id' => $attendance_dd_arr_tmp[0]['group_id'],
+            'user_id' => $attendance_dd_arr_tmp[0]['user_id']
             );
         }
       }
@@ -14264,7 +14269,9 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'rest_end' => $sv['rest_end'],
           'set_time' => $sv['set_time'],
           'work_hours' => $sv['work_hours'],
-          'rest_hours' => $sv['rest_hours']
+          'rest_hours' => $sv['rest_hours'],
+          'group_id' => $sv['group_id'],
+          'user_id' => $sv['user_id'],
           );
       }
     }
@@ -14782,7 +14789,7 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
       $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
     }
   }
-  $return_str = $user_info['name'].'&nbsp;';
+//  $return_str = $user_info['name'].'&nbsp;';
   if(!empty($atted_info)){
     if($param_str != ''){
       if($show_status !=2 ){
@@ -14806,14 +14813,14 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
       }else{
         $return_str .= substr($atted_info['logout_time'],11,5);
       }
-      $return_str .= '</font><br>';
+      $return_str .= '</font>';
     }else{
       if($show_status == 0){
         $return_str .= '<font color ="#000000">';
         $return_str .= substr($atted_info['login_time'],11,5)
           .  '～';
         $return_str .= substr($atted_info['logout_time'],11,5);
-        $return_str .= '</font><br>';
+        $return_str .= '</font>';
       }
     }
   }
