@@ -9156,6 +9156,599 @@ else if($_GET['action'] == 'check_same_group_att') {
 	}
 
 }
+/**
+ *@20141015
+ *新版排班设定
+ */
+else if($_GET['action'] == 'set_attendance_info') {
+
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
+
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  if($ocertify->npermission <15 ){
+	  $show_style =' disabled="disabled" ';
+  }
+
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  $action ='';
+  if($_POST['param_y']!='undefined'){
+      $action .=',&y='.$_POST['param_y'];
+      $action .=',&m='.$_POST['param_m'];
+  }
+
+  //排版
+  $attendance_detail_list = array();
+  $attendance_detail_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
+  $attendance_detail_query = tep_db_query($attendance_detail_sql);
+  while($attendance_detail_row = tep_db_fetch_array($attendance_detail_query)){
+    $attendance_detail_list[] = $attendance_detail_row;
+  }
+
+  if($id==0){
+       $attendance_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " order by sort asc limit 1";
+  }else{
+      $attendance_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id;
+  }
+  $attendance_info_tep = tep_db_query($attendance_select_sql); 
+  $attendance_info_res = tep_db_fetch_array($attendance_info_tep); 
+  $id = $attendance_info_res['id'];
+  $cid_array = array();
+  $site_array = array();
+  $buttons = array();
+  $page_str = '';
+
+  
+  $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
+  $page_s = ATTENDANCE_HEAD_TITLE; 
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $page_s);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  
+  $attendance_info_row = array();
+  //排版类型
+  $adl_select = '<select onchange="set_attendance_info(this, this.value,0)" >';
+  foreach($attendance_detail_list as $att_value){
+    $selected = $att_value['id']!=$id ?'':' selected ';
+    $adl_select .= '<option value="'.$att_value['id'].'" '.$selected.'>'.$att_value['title'].'</option>';
+  }
+  $adl_select .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => TEXT_ATTENDANCE_SETTING_MOVE),
+           array('text' => $adl_select)
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => TEXT_TITLE_NOTE),
+           array('text' => tep_draw_input_field('title',$attendance_info_res['title'],'id="attendance_title" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
+        array('text' => tep_draw_hidden_field('id', $id)) 
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_ABBREVIATION),
+           array('text' => tep_draw_input_field('short_language',$attendance_info_res['short_language'],'id="short_language" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
+     ); 
+//排班类型
+    $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id" style="width: 109px;" '.$show_style.'>';
+    $attendance_select_type .= '<option value="0" '.($attendance_info_res['scheduling_type']=='0'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</option>';
+    $attendance_select_type .= '<option value="1" '.($attendance_info_res['scheduling_type']=='1'?' selected="selected"' : '').'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</option>';
+    $attendance_select_type .= '</select>';
+	//被隐藏的上传图片按钮
+    $attendance_select_type .= tep_draw_file_field('src_image','','id="upload_file_image" onchange=change_image_text(this) style="opacity:0; width:0px"');
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_SCHEDULING_TYPE),
+           array('text' => $attendance_select_type)
+     ); 
+//颜色
+  $color_array = array('#000000','#808080','#800000','#800080','#008000','#808000','#000080','#008080','#C0C0C0','#FFFFFF','#FF0000','#FF00FF','#00FF00','#FFFF00','#0000FF','#00FFFF');
+  if(!empty($id) && $attendance_info_res['scheduling_type']==1){
+     $style_color = 'style="display:block;"'; 
+  }else{
+     $style_color = 'style="display:none;"'; 
+  }
+  $select_type_color .='<table id="src_text_color" '. $style_color.'><tr>';
+  foreach($color_array as $color_key=>$color_value){
+	$border_style = $attendance_info_res['src_text']==$color_value ? 'border: 1px solid #4F4F4F;':'border: 1px solid #CCCCCC;';
+    $select_type_color .= '<td><a href="javascript:void(0);" onclick="document.getElementById(\'color_val\').value = \''.$color_value.'\'"><div style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
+ }
+
+  $select_type_color .='<td><input name="scheduling_type_color" id="color_val" style="opacity:0;" value=\''.$attendance_info_res['src_text'].'\'></td></tr></table>';
+  
+	  
+
+//图片
+  if((!empty($id) && $attendance_info_res['scheduling_type']==0) || empty($id)){
+  $src_text = $attendance_info_res['src_text'];
+   $style_image = 'style="display:block; float:left; margin:0;"';
+  }else{
+   $style_image = 'style="display:none;"';
+  }
+	$select_type_image = '<div class="upload_image" '.$style_image.'>'.tep_draw_input_field('src_image_input',$src_text, 'id="src_text_image" class="input_text_width"'. $show_style .'');
+    $select_type_image .= tep_html_element_button(IMAGE_SELECT,'onclick="document.attendances.upload_file_image.click()" id="upload_button" '. $show_style .'').'</div>'; 
+	 
+	$div_image ='<div id="image_div" '.$style_image.'>'.ATTENDANCE_SCHEDULING_TYPE_IMAGE.'</div>';
+	$div_color ='<div id="color_div" '.$style_color.'>'.ATTENDANCE_SCHEDULING_TYPE_COLOR.'</div>';
+      $attendance_info_row[]['text'] = array(
+          array('text' => $div_image),
+		  array('text' =>$select_type_image), 
+     ); 
+
+      $attendance_info_row[]['text'] = array(
+          array('text' => $div_color),
+		  array('text' =>$select_type_color) 
+     ); 
+
+
+     if($attendance_info_res['set_time']==0 || empty($id) ) {
+	   $selected_1='true';
+     }else{
+	   $selected_2='false';
+     }
+      $attendance_info_row[]['text'] = array(
+	       array('text' => ATTENDANCE_SET_TIME),
+           array('text' => tep_draw_radio_field('set_time',0,$selected_1,'','id="set_left" onclick=change_set_time(0)'.$show_style).ATTENDANCE_SET_TIME_FIELD.'&nbsp;'.tep_draw_radio_field('set_time',1,$selected_2,'','id="set_right" onclick=change_set_time(1)' .$show_style).ATTENDANCE_SET_FIELD_TIME)
+	  );
+
+//工作开始时间
+	  $work_start_array = explode(':',$attendance_info_res['work_start']);
+	  
+	  $work_start_min_left= substr($work_start_array[1],0,1);
+	  $work_start_min_right= substr($work_start_array[1],1,2);
+      $work_start = '<select name="work_start_hour" id="work_start_hour" '.$show_style.'>';
+	  for($i=0;$i<=23;$i++){
+          $selected = $work_start_array['0']!=$i ?'':' selected ';
+          $work_start .= '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+	  }
+      $work_start .= '</select>&nbsp;'.HOUR_TEXT;
+
+      $work_start .= '<select name="work_start_minute_a" id="work_start_min_l" '.$show_style.'>';
+	  for($i=0;$i<=5;$i++){
+          $selected = $work_start_min_left!=$i ?'':' selected ';
+          $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $work_start .= '</select>';
+
+      $work_start .= '<select name="work_start_minute_b" id="work_start_min_r" '.$show_style.'>';
+	  for($i=0;$i<=9;$i++){
+          $selected = $work_start_min_right!=$i ?'':' selected ';
+          $work_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $work_start .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="work_start_error"></font>';
+
+//工作结束时间
+	  
+	  $work_end_array = explode(':',$attendance_info_res['work_end']);
+	  $work_end_min_left= substr($work_end_array[1],0,1);
+	  $work_end_min_right= substr($work_end_array[1],1,2);
+      $work_end = '<select name="work_end_hour" id="work_end_hour" '.$show_style.'>';
+	  for($i=0;$i<=23;$i++){
+          $selected = $work_end_array['0']!=$i ?'':' selected ';
+          $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $work_end .= '</select>&nbsp;'.HOUR_TEXT;
+
+      $work_end .= '<select name="work_end_minute_a" id="work_end_min_l" '.$show_style.'>';
+	  for($i=0;$i<=5;$i++){
+          $selected = $work_end_min_left!=$i ?'':' selected ';
+          $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $work_end .= '</select>';
+
+      $work_end .= '<select name="work_end_minute_b" id="work_end_min_r" '.$show_style.'>';
+	  for($i=0;$i<=9;$i++){
+          $selected = $work_end_min_right!=$i ?'':' selected ';
+          $work_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $work_end .= '</select>&nbsp;'.MINUTE_TEXT.'&nbsp;&nbsp;<font color="red" id="work_end_error"></font>';
+
+
+//休息开始时间
+	  $rest_start_array = explode(':',$attendance_info_res['rest_start']);
+	  $rest_start_min_left= substr($rest_start_array[1],0,1);
+	  $rest_start_min_right= substr($rest_start_array[1],1,2);
+      $rest_start = '<select name="rest_start_hour" '.$show_style.'>';
+	  for($i=0;$i<=23;$i++){
+          $selected = $rest_start_array['0']!=$i ?'':' selected ';
+          $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $rest_start .= '</select>&nbsp;'.HOUR_TEXT;
+
+      $rest_start .= '<select name="rest_start_minute_a" '.$show_style.'>';
+	  for($i=0;$i<=5;$i++){
+          $selected = $rest_start_min_left!=$i ?'':' selected ';
+          $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $rest_start .= '</select>';
+      $rest_start .= '<select name="rest_start_minute_b" '.$show_style.'>';
+	  for($i=0;$i<=9;$i++){
+          $selected = $rest_start_min_right!=$i ?'':' selected ';
+          $rest_start .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $rest_start .= '</select>&nbsp;'.MINUTE_TEXT;
+
+
+//休息结束时间
+	  $rest_end_array = explode(':',$attendance_info_res['rest_end']);
+	  $rest_end_min_left= substr($rest_end_array[1],0,1);
+	  $rest_end_min_right= substr($rest_end_array[1],1,2);
+      $rest_end = '<select name="rest_end_hour" '.$show_style.'>';
+	  for($i=0;$i<=24;$i++){
+          $selected = $rest_end_array['0']!=$i ?'':' selected ';
+          $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $rest_end .= '</select>&nbsp;'.HOUR_TEXT;
+
+      $rest_end .= '<select name="rest_end_minute_a" '.$show_style.'>';
+	  for($i=0;$i<=5;$i++){
+          $selected = $rest_end_min_left!=$i ?'':' selected ';
+          $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $rest_end .= '</select>';
+      $rest_end .= '<select name="rest_end_minute_b" '.$show_style.'>';
+	  for($i=0;$i<=9;$i++){
+          $selected = $rest_end_min_right!=$i ?'':' selected ';
+          $rest_end .= '<option value="'.$i.'"'.$selected.'>'.$i.'</option>';
+	  }
+      $rest_end .= '</select>&nbsp;'.MINUTE_TEXT;
+      
+	  if($attendance_info_res['set_time']==0 || empty($id)){
+	      $time_field_style = 'style="display:block;"';
+	  }else{
+	      $time_field_style = 'style="display:none;"';
+	  }
+
+      $left_t = '';
+      $left_t .= '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="set_time_field_title"'.$time_field_style.'><tr>';
+      $left_t .= '<td>'.ATTENDANCE_WORK_START.'</td></tr><tr><td>'.ATTENDANCE_WORK_END.'</td></tr><tr><td>'.ATTENDANCE_REST_START.'</td></tr><tr><td>'.ATTENDANCE_REST_END.'</td>';
+      $left_t .= '</tr></table>';
+      $right_t = '';
+      $right_t .= '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="set_time_field_content"'.$time_field_style.'><tr>';
+      $right_t .= '<td>'.$work_start.'</td></tr><tr><td>'.$work_end.'</td></tr><tr><td>'.$rest_start.'</td></tr><tr><td>'.$rest_end.'</td>';
+      $right_t .= '</tr></table>';
+      $attendance_info_row[]['text'] = array(
+        array('text' => $left_t), 
+        array('text' => $right_t)
+       );
+
+
+	  //时间数
+     if(!empty($id) && $attendance_info_res['set_time']==1){
+	    $attendance_work_hours= del_zero($attendance_info_res['work_hours']);
+	    $attendance_rest_hours= del_zero($attendance_info_res['rest_hours']);
+	 }
+      $work_hours=  tep_draw_input_field('work_hours',$attendance_work_hours,'id="work_hours" class="input_text_width" style="text-align:right;"' .$show_style) . TELECOM_UNKNOW_TABLE_TIME .'&nbsp;&nbsp;<font color="red" id="work_hours_error"></font>';
+      $rest_hours =  tep_draw_input_field('rest_hours',$attendance_rest_hours,'id="rest_hours" class="input_text_width" style="text-align:right;"' .$show_style) . TELECOM_UNKNOW_TABLE_TIME .'&nbsp;&nbsp;<font color="red" id="rest_hours_error"></font>';
+	  
+	  if($attendance_info_res['set_time']==1 && !empty($id)){
+	      $time_numbers_style = 'style="display:block;"';
+	  }else{
+	      $time_numbers_style = 'style="display:none;"';
+	  }
+
+      $left_td = '';
+      $left_td .= '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="set_time_numbers_title"'.$time_numbers_style.'><tr>';
+      $left_td .= '<td align="">'.ATTENDANCE_WORK_HOURS.'</td></tr><tr><td>'.ATTENDANCE_REST_HOURS.'</td>';
+      $left_td .= '</tr></table>';
+      $right_td = '';
+      $right_td .= '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="set_time_numbers_content"'.$time_numbers_style.'><tr>';
+      $right_td .= '<td align="">'.$work_hours.'</td></tr><tr><td>'.$rest_hours.'</td>';
+      $right_td .= '</tr></table>';
+        $attendance_info_row[]['text'] = array(
+        array('params' => 'width="50%"','text' => $left_td), 
+        array('text' => $right_td)
+        );
+   
+	  //sort
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_SORT),
+           array('text' => tep_draw_input_field('sort',$attendance_info_res['sort'],'class="input_text_width" style="text-align:right;"'.$show_style))
+     ); 
+    $add_user_text= TEXT_USER_ADDED.$attendance_info_res['add_user'];
+    $update_user_text= TEXT_DATE_ADDED.$attendance_info_res['add_time'];
+    $add_time_text= TEXT_USER_UPDATE.$attendance_info_res['update_user'];
+    $update_time_text= TEXT_DATE_UPDATE.$attendance_info_res['update_time'];
+     $hidden_add_user = tep_draw_input_field('add_user',$attendance_info_res['add_user'],'style="display:none"');
+     $hidden_add_time = tep_draw_input_field('add_time',$attendance_info_res['add_time'],'style="display:none"');
+
+	 if(!empty($id)) {
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_user)
+      );
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_time)
+      );
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_user_text),
+           array('text' =>$update_user_text)
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_time_text),
+           array('text' =>$update_time_text)
+	   ); 
+	 }
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="check_attendance_info(0'.$action.');"'.$show_style).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"'.$show_style).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info(1'.$action.');"'.$show_style).'</a>'; 
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($attendance_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}
+else if($_GET['action'] == 'set_payrols_info') {
+
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
+
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  if($ocertify->npermission <15 ){
+	  $show_style =' disabled="disabled" ';
+  }
+
+  $site_id = isset($_GET['s_site_id'])?$_GET['s_site_id']:0; 
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+  $action ='update';
+  if($_POST['param_y']!='undefined'){
+      $action .='&y='.$_POST['param_y'];
+      $action .='&m='.$_POST['param_m'];
+  }
+  $attendance_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id;
+  $attendance_info_tep = tep_db_query($attendance_select_sql); 
+  $attendance_info_res = tep_db_fetch_array($attendance_info_tep); 
+  $cid_array = array();
+  $site_array = array();
+  $buttons = array();
+  $page_str = '';
+  
+  $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
+  $page_s = ATTENDANCE_HEAD_TITLE; 
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $page_s);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+
+  //排班
+  $attendance_detail_list = array();
+  $attendance_detail_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." order by sort asc";
+  $attendance_detail_query = tep_db_query($attendance_detail_sql);
+  while($attendance_detail_row = tep_db_fetch_array($attendance_detail_query)){
+    $attendance_detail_list[] = $attendance_detail_row;
+  }
+
+  if($id==0){
+       $attendance_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " order by sort asc limit 1";
+  }else{
+      $attendance_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id;
+  }
+  $attendance_info_tep = tep_db_query($attendance_select_sql); 
+  $attendance_info_res = tep_db_fetch_array($attendance_info_tep); 
+  $id = $attendance_info_res['id'];
+  $cid_array = array();
+  $site_array = array();
+  $buttons = array();
+  $page_str = '';
+
+  
+  $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
+  $page_s = ATTENDANCE_HEAD_TITLE; 
+  $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $page_s);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  
+  $attendance_info_row = array();
+  //排版类型
+  $adl_select = '<select onchange="set_attendance_info(this, this.value,1)" >';
+  foreach($attendance_detail_list as $att_value){
+    $selected = $att_value['id']!=$id ?'':' selected ';
+    $adl_select .= '<option value="'.$att_value['id'].'" '.$selected.'>'.$att_value['title'].'</option>';
+  }
+  $adl_select .= '</select>';
+
+      $attendance_info_row[]['text'] = array(
+           array('text' => TEXT_ATTENDANCE_SETTING_MOVE),
+           array('text' => $adl_select)
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_ABBREVIATION),
+           array('text' => $attendance_info_res['short_language']),
+           array('text' => tep_draw_hidden_field('id', $id)) 
+     ); 
+  
+//排班类型
+//颜色
+	//param
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_PARAM_TEXT),
+           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_SET_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_a',$attendance_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
+     ); 
+	  $attendance_info_row[]['text'] =array(
+	       array('text' => ''), 
+           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_ACTUAL_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_b',$attendance_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
+     ); 
+
+
+    $add_user_text= TEXT_USER_ADDED.$attendance_info_res['add_user'];
+    $update_user_text= TEXT_DATE_ADDED.$attendance_info_res['add_time'];
+    $add_time_text= TEXT_USER_UPDATE.$attendance_info_res['update_user'];
+    $update_time_text= TEXT_DATE_UPDATE.$attendance_info_res['update_time'];
+     $hidden_add_user = tep_draw_input_field('add_user',$attendance_info_res['add_user'],'style="display:none"');
+     $hidden_add_time = tep_draw_input_field('add_time',$attendance_info_res['add_time'],'style="display:none"');
+
+	 if(!empty($id)) {
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_user)
+      );
+      $attendance_info_row[]['text'] = array(
+		  array('text' => $hidden_add_time)
+      );
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_user_text),
+           array('text' =>$update_user_text)
+     ); 
+      $attendance_info_row[]['text'] = array(
+           array('text' => $add_time_text),
+           array('text' =>$update_time_text)
+	   ); 
+	 }
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"'.$show_style).'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info();"'.$show_style).'</a>'; 
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+   
+  $notice_box->get_contents($attendance_info_row, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}else if($_GET['action'] == 'set_attendance_group_info'){
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_GROUPS);
+ include(DIR_FS_ADMIN.'classes/notice_box.php');
+ $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+ $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => $page_s);
+  $heading[] = array('align' => 'right', 'text' => $page_str);
+  $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, 'action=update_show_user', 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
+ $group_content_row_staff = array();
+ $user_info = tep_get_user_info($ocertify->auth_user);
+ $group_list = tep_get_group_tree();
+  $show_group_id=0;
+        $show_checked_user_list = array();
+        $show_group_user = array();
+        $show_select_group_user = array();
+        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+        $show_group_query = tep_db_query($show_group_sql);
+        $has_default = false;
+        while($show_group_row = tep_db_fetch_array($show_group_query)){
+          $has_default = true;
+          $show_group_id = $show_group_row['gid'];
+          if($show_group_row['user_id']!=''){
+            $show_select_group_user[] = $show_group_row['user_id'];
+          }
+		  $show_att_status =$show_group_row['att_status'];
+        }
+        if($has_default){
+          if($show_group_id==0){
+            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_query = tep_db_query($user_sql);
+            while($user_row = tep_db_fetch_array($user_query)){
+              $show_group_user[] = $user_row['userid'];
+            }
+          } else {
+            $user_sql = "select * from ".TABLE_GROUPS." 
+               where id='".$show_group_id."'";
+            $user_query = tep_db_query($user_sql);
+            if($user_row = tep_db_fetch_array($user_query)){
+              $show_group_user = explode('|||',$user_row['all_users_id']);
+            }
+          }
+        }else{
+          if($ocertify->npermission>10){
+            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_query = tep_db_query($user_sql);
+            while($user_row = tep_db_fetch_array($user_query)){
+              $show_group_user[] = $user_row['userid'];
+              $show_select_group_user[] = $user_row['userid'];
+            }
+          }else{
+            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
+            if(!empty($prent_group)){
+              $show_group_id = $prent_group[0];
+              if($show_group_id==0){
+                $user_sql = "select * from ".TABLE_USERS." where status='1'";
+                $user_query = tep_db_query($user_sql);
+                while($user_row = tep_db_fetch_array($user_query)){
+                  $show_group_user[] = $user_row['userid'];
+                }
+              } else {
+                $user_sql = "select * from ".TABLE_GROUPS." 
+                   where id='".$show_group_id."'";
+                $user_query = tep_db_query($user_sql);
+                if($user_row = tep_db_fetch_array($user_query)){
+                  $show_group_user = explode('|||',$user_row['all_users_id']);
+                }
+              }
+            }else{
+              $user_sql = "select * from ".TABLE_USERS." where status='1'";
+              $user_query = tep_db_query($user_sql);
+              while($user_row = tep_db_fetch_array($user_query)){
+                $show_group_user[] = $user_row['userid'];
+              }
+            }
+          }
+          $show_select_group_user[] = $ocertify->auth_user;
+        }
+        $show_select_group_user = array_unique($show_select_group_user);
+
+ $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
+ $group_str .= '<option value="0" ';
+ if($show_group_id==0){
+   $group_str .= ' selected ';
+ }
+ $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
+ foreach($group_list as $group){
+    $group_str .= '<option value="'.$group['id'].'"';
+    if($show_group_id == $group['id']){
+       $group_str .= ' selected ';
+    }
+   $group_str .= '>'.$group['text'].'</option>';
+ }
+$group_str .= '</select>';
+
+      $group_content[]['text'] = array(
+           array('params'=>'width="20%"','text'=> GROUP_STAFF),
+           array('text' => $group_str)
+	   ); 
+
+        foreach($show_group_user as $show_list_uid){
+          if($show_list_uid!=''){
+			$tep_array= tep_get_user_info($show_list_uid);
+			$uname_arr[] = $tep_array['name'];
+
+          }
+        }
+		$group_user_list = array_combine($show_group_user,$uname_arr);
+		asort($group_user_list);
+$user_str = '<div id="show_user_list">';
+		foreach($group_user_list as $key=>$val) {
+          $user_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
+          if(in_array($key,$show_select_group_user)){
+            $user_str .= ' checked="checked" ';
+            $user_atted[$key] = tep_is_attenandced_date($key);
+            $show_checked_user_list[] = $key;
+          }
+          $user_str .= ' value="'.$key.'" >';
+          $user_str .=  '<label for="'.$key.'">'.$val.'</label>';
+          $user_str .= '&nbsp;&nbsp;&nbsp;';
+		}
+$user_str .= '</div>';
+
+    $group_content[]['text'] = array(
+           array('params'=>'width="20%"','text'=> GROUP_STAFF),
+           array('text' =>$user_str)
+	); 
+
+ $button[] = array('params'=>'align="center" colspan="2"','text'=>'<input type="submit" value="'.IMAGE_SAVE.'">');
+  if (!empty($button)) {
+    $buttons = array('align' => 'center', 'button' => $button); 
+  }
+
+ $notice_box->get_heading($heading);
+ $notice_box->get_form($form_str);
+  $notice_box->get_contents($group_content, $buttons);
+ echo $notice_box->show_notice();
+}
  /**
   *@date20140709 
   *出勤管理列表弹框编辑
