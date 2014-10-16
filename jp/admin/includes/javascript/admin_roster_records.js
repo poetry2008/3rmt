@@ -103,16 +103,37 @@ function set_param_style(id,param){
 
 //select all/no users
 function select_all_box(flag){
-if(flag == 1){
-   $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
-      $(this).attr("checked",true);
-   })
-}else{
-   $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
-      $(this).removeAttr("checked");
-   })
-}
-
+    if(flag== 1){
+      if(document.getElementById("select_all_users").checked){
+        $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+          $(this).attr("checked",true);
+         $("#select_all_users").val("2");
+        })
+      }
+    }
+	if(flag == 2){
+        $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+          $(this).removeAttr("checked");
+         })
+		$("#select_all_users").removeAttr("checked");
+         $("#select_all_users").val("1");
+    }
+	if(flag==5){
+      if(document.getElementById("select_all_users").checked){
+         $("#select_all_users").removeAttr("checked");
+         $("#select_all_users").val("2");
+    }else{
+		 var tag=1;
+        $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+			if(!this.checked){
+				tag =0;
+			}
+         })
+		if(tag==1){
+		   $("#select_all_users").attr("checked",true);
+		}
+	  }
+	}
 }
 
 

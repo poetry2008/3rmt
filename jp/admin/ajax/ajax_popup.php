@@ -9662,7 +9662,6 @@ else if($_GET['action'] == 'set_payrols_info') {
 	}
 }
 
-
 }else if($_GET['action'] == 'set_attendance_group_info'){
  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
  include(DIR_FS_ADMIN.'classes/notice_box.php');
@@ -9768,8 +9767,7 @@ $group_str .= '</select>';
        array('params'=>'width="20%"','text'=> TEXT_GROUP_SELECT),
        array('text' => $group_str)
   ); 
-$select_all ='<input type="checkbox"  onclick="select_all_box(1)" id="select_all_users">';
-$select_null ='<input type="checkbox"  onclick="select_all_box(0)" id="select_no_users">';
+$select_all ='<input type="checkbox" value="1" onclick="select_all_box(this.value)" id="select_all_users">';
 $group_content[]['text'] = array(
       array('text' => TEXT_GROUP_SELECT),
       array('text' => $select_all.TEXT_GROUP_SELECT.'&nbsp;'.$select_null.TEXT_GROUP_SELECT)
@@ -9786,7 +9784,7 @@ $group_content[]['text'] = array(
 		asort($group_user_list);
         $user_str = '<div id="show_user_list">';
 		foreach($group_user_list as $key=>$val) {
-          $user_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
+          $user_str .= '<input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
           if(in_array($key,$show_select_group_user)){
             $user_str .= ' checked="checked" ';
             $user_atted[$key] = tep_is_attenandced_date($key);
