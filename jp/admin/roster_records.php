@@ -1567,13 +1567,13 @@ while($j<=$day_num)
   echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
-      echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$show_group_id."\")' >";
+      echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$show_group_id."\")' >";
     }else{
-      echo " onclick='attendance_setting(\"".$date."\",\"".$j."\",\"\")' >";
+      echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"\")' >";
     }
   }else{
     if($today <= $date){
-      echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
+      echo " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
     }else{
       echo " >";
     }
@@ -1599,14 +1599,14 @@ while($j<=$day_num)
       $info_td_attendance_str .= "<tr>";
       if($attendance_info['scheduling_type'] == 0){
         $info_td_attendance_str .=  '<td style="border-width:0px; padding-top:6px;">';
-        $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\")' style=".$style.">";
+        $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\")' style=".$style.">";
         $info_td_attendance_str .=  $attendance_info['short_language'];
         if(file_exists("images/".$attendance_info['src_text'])&&$attendance_info['src_text']!=''){
           $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
         $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
-        $info_td_attendance_str .=  "<div onclick='attendance_setting(\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\")' style=".$style.">";
+        $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\")' style=".$style.">";
         $info_td_attendance_str .=  $attendance_info['short_language'];
       }
       $info_td_attendance_str .=  "</div>";
@@ -1677,7 +1677,7 @@ while($j<=$day_num)
         $manager_list = tep_get_user_list_by_userid($u_list);
         if($ocertify->auth_user==$u_list||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list)){
           if($date>=$today||!empty($user_replace)){
-            $info_td_attendance_str .=  " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$attendance_row['attendance_detail_id']."\")' ";
+            $info_td_attendance_str .=  " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"".$u_list."\",\"".$attendance_row['attendance_detail_id']."\")' ";
           }
         }else{
           $v_att = false;
@@ -1750,14 +1750,14 @@ while($j<=$day_num)
       echo "<tr>";
       if($attendance_info['scheduling_type'] == 0){
         echo '<td style="border-width:0px; padding-top:6px;">';
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
+        echo "<div onclick='show_user_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $attendance_info['short_language'];
         if(file_exists("images/".$attendance_info['src_text'])&&$attendance_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
         echo "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
-        echo "<div onclick='attendance_setting_user(\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
+        echo "<div onclick='show_user_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $attendance_info['short_language'];
       }
       echo "</div>";
@@ -1803,7 +1803,7 @@ while($j<=$day_num)
       $manager_list = tep_get_user_list_by_userid($uatt_arr['user_id']);
       if($ocertify->auth_user==$uatt_arr['user_id']||$ocertify->npermission>'10'){
         if($date>=$today||!empty($user_replace)){
-          echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' ";
+          echo " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"".$uatt_arr['user_id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' ";
         }
       }else{
         $v_att =false;
@@ -1843,7 +1843,7 @@ if($show_ulist_flag){
       $attendance_date_info = tep_get_attendance_by_id($row_replace_att['replace_attendance_detail_id']);
       echo "<span>";
       echo "<a href='javascript:void(0)' ";
-      echo " onclick='attendance_replace(\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\",\"".$row_replace_att['attendance_detail_id']."\")' ";
+      echo " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"".$row_replace_att['user']."\",\"".$row_replace_att['attendance_detail_id']."\")' ";
       echo " >";
       if($show_flag||in_array($ocertify->auth_user,explode('|||',$user_replace['allow_user']))||$ocertify->auth_user==$user_replace['user']){
       if(!empty($u_info)){
