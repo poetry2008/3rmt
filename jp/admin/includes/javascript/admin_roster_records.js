@@ -288,7 +288,8 @@ function change_image_text(_this) {
     $("#src_text_image").val(image_name);
 }
 
-function attendance_setting(date,ele,gid,add_id){
+//show group attendance info
+function show_group_attendance_info(ele,date,num,gid,add_id){
 	//check the user if is manager or group leader
    $.ajax({
       url: 'ajax.php?action=tep_show_info_attendance',
@@ -322,8 +323,7 @@ function attendance_setting(date,ele,gid,add_id){
   }else{
     temp_attendance_id=add_id;
   }
-  var index = ele;
-  var ele = document.getElementById('date_td_'+ele);
+  var index = num;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -337,7 +337,7 @@ function attendance_setting(date,ele,gid,add_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id,
+    url: 'ajax.php?action=edit_group_attendance_info&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -684,15 +684,15 @@ function change_user_list(ele){
   });
 }
 
-function attendance_replace(date,ele,uid,att_id){
+//show replace attendance info
+function show_replace_attendance_info(ele,date,num,uid,att_id){
   if(!uid){
     uid='';
   }
   if(!att_id){
     att_id='';
   }
-  var index = ele;
-  var ele = document.getElementById('date_td_'+ele);
+  var index = num;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -706,7 +706,7 @@ function attendance_replace(date,ele,uid,att_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_replace&date='+date+'&uid='+uid+'&index='+index+'&att_id='+att_id,
+    url: 'ajax.php?action=edit_replace_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&att_id='+att_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -936,7 +936,8 @@ function resizepage(){
 }
 
 
-function attendance_setting_user(date,ele,uid,add_id,u_att_id){
+//show user attendance info
+function show_user_attendance_info(ele,date,num,uid,add_id,u_att_id){
   if(!uid){
     uid='';
   }
@@ -946,8 +947,7 @@ function attendance_setting_user(date,ele,uid,add_id,u_att_id){
   if(!u_att_id){
     u_att_id='';
   }
-  var index = ele;
-  var ele = document.getElementById('date_td_'+ele);
+  var index = num;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -963,7 +963,7 @@ function attendance_setting_user(date,ele,uid,add_id,u_att_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting_user&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id+'&back_group_id='+back_group_id+'&back_attendance_id='+back_attendance_id,
+    url: 'ajax.php?action=edit_user_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id+'&back_group_id='+back_group_id+'&back_attendance_id='+back_attendance_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -1025,4 +1025,143 @@ function add_person_row(ele,aid){
     $('#add_person select[id="user_tep"]').attr('name','user['+aid+'][]');
   }
     $(ele).parent().parent().after($('#add_person tbody').html());
+}
+
+//popup calendar
+function open_new_calendar(type)
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    //mm-dd-yyyy || mm/dd/yyyy
+    $('#toggle_open').val('1'); 
+
+    var rules = {
+      "all": {
+        "all": {
+          "all": {
+            "all": "current_s_day",
+          }
+        }
+      }};
+    if ($("#date_orders").val() != '') {
+      if ($("#date_orders").val() == '0000-00-00') {
+        date_info_str =  js_cale_date;  
+        date_info = date_info_str.split('-');  
+      } else {
+        date_info = $("#date_orders").val().split('-'); 
+      }
+    } else {
+      //mm-dd-yyyy || mm/dd/yyyy
+      date_info_str = js_cale_date;  
+      date_info = date_info_str.split('-');  
+    }
+    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+contentBox: "#mycalendar",
+width:'170px',
+date: new_date
+
+}).render();
+        if (rules != '') {
+        month_tmp = date_info[1].substr(0, 1);
+        if (month_tmp == '0') {
+        month_tmp = date_info[1].substr(1);
+        month_tmp = month_tmp-1;
+        } else {
+        month_tmp = date_info[1]-1; 
+        }
+        day_tmp = date_info[2].substr(0, 1);
+
+        if (day_tmp == '0') {
+        day_tmp = date_info[2].substr(1);
+        } else {
+        day_tmp = date_info[2];   
+        }
+        data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
+        calendar.set("customRenderer", {
+rules: rules,
+filterFunction: function (date, node, rules) {
+cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+if (cmp_tmp_str == data_tmp_str) {
+node.addClass("redtext"); 
+}
+}
+});
+}
+var dtdate = Y.DataType.Date;
+calendar.on("selectionChange", function (ev) {
+    var newDate = ev.newSelection[0];
+    tmp_show_date = dtdate.format(newDate); 
+    tmp_show_date_array = tmp_show_date.split('-');
+    $("#fetch_year").val(tmp_show_date_array[0]); 
+    $("#fetch_month").val(tmp_show_date_array[1]); 
+    $("#fetch_day").val(tmp_show_date_array[2]);
+    date = tmp_show_date_array[0]+tmp_show_date_array[1]+tmp_show_date_array[2];
+    if(type == 'user'){
+      show_user_attendance_info('',date,'','','','');
+    }else if(type == 'group'){
+      show_group_attendance_info('',date,'','','');
+    }else if(type == 'replace'){
+      show_replace_attendance_info('',date,'','','');
+    }
+    $("#date_orders").val(tmp_show_date); 
+    $('#toggle_open').val('0');
+    $('#toggle_open').next().html('<div id="mycalendar"></div>');
+    });
+});
+}
+}
+
+//check date is right
+function is_date(dateval)
+{
+  var arr = new Array();
+  if(dateval.indexOf("-") != -1){
+    arr = dateval.toString().split("-");
+  }else if(dateval.indexOf("/") != -1){
+    arr = dateval.toString().split("/");
+  }else{
+    return false;
+  }
+  if(arr[0].length==4){
+    var date = new Date(arr[0],arr[1]-1,arr[2]);
+    if(date.getFullYear()==arr[0] && date.getMonth()==arr[1]-1 && date.getDate()==arr[2]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[1]-1,arr[0]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[1]-1 && date.getDate()==arr[0]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[0]-1,arr[1]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[0]-1 && date.getDate()==arr[1]) {
+      return true;
+    }
+  }
+ 
+  return false;
+}
+
+//copy the date of delivery time to hide field
+function change_fetch_date(type) {
+  fetch_date_str = $("#fetch_year").val()+"-"+$("#fetch_month").val()+"-"+$("#fetch_day").val(); 
+  date = $("#fetch_year").val()+$("#fetch_month").val()+$("#fetch_day").val(); 
+  if (!is_date(fetch_date_str)) {
+    alert(js_ed_orders_input_right_date); 
+  } else {
+    $("#date_orders").val(fetch_date_str); 
+    if(type == 'user'){
+      show_user_attendance_info('',date,'','','','');
+    }else if(type == 'group'){
+      show_group_attendance_info('',date,'','','');
+    }else if(type == 'replace'){
+      show_replace_attendance_info('',date,'','','');
+    }
+  }
 }
