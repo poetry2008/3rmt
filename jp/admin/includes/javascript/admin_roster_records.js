@@ -988,3 +988,20 @@ function add_person_row(ele,aid){
   }
     $(ele).parent().parent().after($('#add_person tbody').html());
 }
+
+// save att type old or new 
+function save_type(ele,url){
+  var year = $('#hidden_year').val();
+  var month = $('#hidden_month').val();
+  var user = $('#hidden_user').val();
+  var show_type = ele.value
+  document.location.href = url+'?y='+year+'&month='+month+'&user='+user+'&show_type='+show_type+'&action=save_type';
+}
+// save att status 0 1 2
+function save_att_status(url){
+  var year = $('#hidden_year').val();
+  var month = $('#hidden_month').val();
+  var user = $('#hidden_user').val();
+  var att_status =  $('input[name="att_status"]:checked').val();
+  document.location.href = url+'?y='+year+'&month='+month+'&att_status='+att_status+'&user='+user+'&action=save_att_status'
+}
