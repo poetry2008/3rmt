@@ -80,6 +80,43 @@ function set_attendance_group_info(ele,gid,param_y,param_m){
   }); 
 
 }
+//change param 
+function set_param_style(id,param){
+        $.ajax({
+            url: 'ajax.php?action=select_param_sigle',
+            data: 'id='+id+'&param='+param,
+            type: 'POST',
+            dataType: 'text',
+            async : false,
+            success: function(data){
+				if(data){
+                  var tmp_param_arr = data.split('||'); 
+                  $("input[type='text'][name='param_a']").val(tmp_param_arr[0]);
+                  $("input[type='text'][name='param_b']").val(tmp_param_arr[1]);
+				}
+            }
+        }); 
+
+
+}
+
+
+//select all/no users
+function select_all_box(flag){
+if(flag == 1){
+   $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+      $(this).attr("checked",true);
+   })
+}else{
+   $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+      $(this).removeAttr("checked");
+   })
+}
+
+}
+
+
+
 //show attendance info
 function show_attendance_info(ele,id,param_y,param_m){
   var ele_width = $(".box_warp").width(); 
@@ -175,7 +212,7 @@ function change_set_time(set_id) {
    }
 }
 
-function check_attendance_info(flag){
+function check_attendance_info(flag,param_a,param_b){
       var title_val = $("#attendance_title").val();
       var short_lan_val = $("#short_language").val();
       var work_start_hour = $("#work_start_hour").val();
@@ -224,9 +261,19 @@ function check_attendance_info(flag){
 	      return false;
 	  }else{
 		  if(flag==0){
-		     document.forms.attendances.action='roster_records.php?&action=insert';
+			  if(param_a!=0){
+		     document.forms.attendances.action='roster_records.php?&action=insert'+'&y='+param_a+'&m='+param_b;
 		  }else{
+		     document.forms.attendances.action='roster_records.php?&action=insert';
+		  
+		  }
+		  }if(flag==1){
+			  if(param_a!=0){
+		     document.forms.attendances.action='roster_records.php?&action=update'+'&y='+param_a+'&m='+param_b;
+			  }else{
 		     document.forms.attendances.action='roster_records.php?&action=update';
+			  
+			  }
 		  }
          document.forms.attendances.submit();
 	  }

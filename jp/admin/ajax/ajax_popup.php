@@ -9173,8 +9173,10 @@ else if($_GET['action'] == 'set_attendance_info') {
   $notice_box = new notice_box('popup_order_title', 'popup_order_info');
   $action ='';
   if($_POST['param_y']!='undefined'){
-      $action .=',&y='.$_POST['param_y'];
-      $action .=',&m='.$_POST['param_m'];
+      $action .=',y='.$_POST['param_y'];
+      $action .=',m='.$_POST['param_m'];
+  }else{
+  $action =',0,0';
   }
 
   //排版
@@ -9200,7 +9202,7 @@ else if($_GET['action'] == 'set_attendance_info') {
 
   
   $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
-  $page_s = ATTENDANCE_HEAD_TITLE; 
+  $page_s = TEXT_ATTENDANCE_SETTING_MOVE.TEXT_ATTENDANCE_SETTING_SHOW; 
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -9217,7 +9219,7 @@ else if($_GET['action'] == 'set_attendance_info') {
   $adl_select .= '</select>';
 
       $attendance_info_row[]['text'] = array(
-           array('text' => TEXT_ATTENDANCE_SETTING_MOVE),
+           array('params' => 'width="20%"','text' => TEXT_ATTENDANCE_SETTING_MOVE),
            array('text' => $adl_select)
      ); 
       $attendance_info_row[]['text'] = array(
@@ -9521,7 +9523,6 @@ else if($_GET['action'] == 'set_payrols_info') {
   while($attendance_detail_row = tep_db_fetch_array($attendance_detail_query)){
     $attendance_detail_list[] = $attendance_detail_row;
   }
-
   if($id==0){
        $attendance_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " order by sort asc limit 1";
   }else{
@@ -9537,7 +9538,7 @@ else if($_GET['action'] == 'set_payrols_info') {
 
   
   $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
-  $page_s = ATTENDANCE_HEAD_TITLE; 
+  $page_s = TEXT_ATTENDANCE_SETTING_PAYROLLS; 
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -9552,19 +9553,35 @@ else if($_GET['action'] == 'set_payrols_info') {
     $adl_select .= '<option value="'.$att_value['id'].'" '.$selected.'>'.$att_value['title'].'</option>';
   }
   $adl_select .= '</select>';
+  $attendance_info_row[]['text'] = array(
+      array('text' => TEXT_ATTENDANCE_SETTING_MOVE),
+      array('text' => $adl_select),
+      array('text' => tep_draw_hidden_field('id', $id)) 
+   ); 
+  //参数标题
 
+  $param_array = array(
+	  'SHIFT'   =>'出勤',
+	  'DAYOFF'  =>'休み',
+	  'HOLIDAY' =>'休暇',
+	  'OVERTIME'=>'残業',
+  );
+  $param_mod = '<select onchange="set_param_style('.$id.',this.value)">';
+  $param_mod .= '<option >--</option>';
+  foreach($param_array as $key=>$param_val){
+	if(!is_bool(strpos($attendance_info_res['param_a'],$key.'_')) && !is_bool(strpos($attendance_info_res['param_b'],'ACTUAL_'.$key.'_'))){
+    $selected = 'selected = selected';
+	}else{
+    $selected = '';
+	}
+    $param_mod .= '<option value="'.$key.'" '.$selected.'>'.$param_val.'</option>';
+  }
+  $param_mod .= '</select>';
       $attendance_info_row[]['text'] = array(
-           array('text' => TEXT_ATTENDANCE_SETTING_MOVE),
-           array('text' => $adl_select)
-     ); 
-      $attendance_info_row[]['text'] = array(
-           array('text' => ATTENDANCE_ABBREVIATION),
-           array('text' => $attendance_info_res['short_language']),
-           array('text' => tep_draw_hidden_field('id', $id)) 
+           array('text' => TEXT_PARAM_TYPE),
+           array('text' => $param_mod)
      ); 
   
-//排班类型
-//颜色
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
@@ -9611,19 +9628,60 @@ else if($_GET['action'] == 'set_payrols_info') {
   $notice_box->get_contents($attendance_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
   echo $notice_box->show_notice();
+
+  //排版参数默认值
+}else if($_GET['action'] == 'select_param_sigle'){
+	$id = $_POST['id'];
+    $attendance_detail_query = tep_db_query("select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id);
+    $attendance_res = tep_db_fetch_array($attendance_detail_query);
+	$param =$_POST['param']; 
+	//原有数据符合
+
+	if(!is_bool(strpos($attendance_res['param_a'],$param)) && !is_bool(strpos($attendance_res['param_b'],'ACTUAL_'.$param.'_'))){
+       echo  $attendance_res['param_a'].'||'.$attendance_res['param_b'];	
+	   exit;
+	
+	}else{
+	$param_search_sql = "select * from ". TABLE_ATTENDANCE_DETAIL."
+        where `param_a` like '%".$param."%'
+        or `param_b` like '%".$param."%'";
+	$param_array_ext = array(
+		A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,AA,BB,CC,DD,EE,FF,GG,HH,II,JJ,KK,LL,MM,NN,OO,PP,QQ,RR,SS,TT,UU,VV,WW,XX,YY,ZZ	
+	);
+    $param_query = tep_db_query($param_search_sql);
+    while($param_row = tep_db_fetch_array($param_query)){
+		$param_list[]=$param_row['param_a'];
+		$param_list[]=$param_row['param_b'];
+	}
+	foreach($param_array_ext as $key=>$val){
+		if(!in_array($param.'_'.$val,$param_list) and !in_array('ACTUAL_'.$param.'_'.$val,$param_list)){
+		   echo  $param.'_'.$val.'||ACTUAL_'.$param.'_'.$val;
+		   exit;
+		}
+	   
+	}
+}
+
+
 }else if($_GET['action'] == 'set_attendance_group_info'){
- include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_GROUPS);
+ include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
  include(DIR_FS_ADMIN.'classes/notice_box.php');
  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
+ $page_s = TEXT_GROUP_USER_LIST.TEXT_ATTENDANCE_SETTING_SHOW; 
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
-  $heading[] = array('align' => 'left', 'text' => $page_s);
-  $heading[] = array('align' => 'right', 'text' => $page_str);
-  $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, 'action=update_show_user', 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
+ $heading[] = array('align' => 'left', 'text' => $page_s);
+ $heading[] = array('align' => 'right', 'text' => $page_str);
+$action = 'update_show_user';
+  if($_POST['param_y']!='undefined'){
+      $action .='&y='.$_POST['param_y'];
+      $action .='&m='.$_POST['param_m'];
+  }
+ $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, 'action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
  $group_content_row_staff = array();
  $user_info = tep_get_user_info($ocertify->auth_user);
- $group_list = tep_get_group_tree();
-  $show_group_id=0;
+        $group_list = tep_get_group_tree();
+        $show_group_id=0;
         $show_checked_user_list = array();
         $show_group_user = array();
         $show_select_group_user = array();
@@ -9706,10 +9764,16 @@ else if($_GET['action'] == 'set_payrols_info') {
  }
 $group_str .= '</select>';
 
-      $group_content[]['text'] = array(
-           array('params'=>'width="20%"','text'=> GROUP_STAFF),
-           array('text' => $group_str)
-	   ); 
+ $group_content[]['text'] = array(
+       array('params'=>'width="20%"','text'=> TEXT_GROUP_SELECT),
+       array('text' => $group_str)
+  ); 
+$select_all ='<input type="checkbox"  onclick="select_all_box(1)" id="select_all_users">';
+$select_null ='<input type="checkbox"  onclick="select_all_box(0)" id="select_no_users">';
+$group_content[]['text'] = array(
+      array('text' => TEXT_GROUP_SELECT),
+      array('text' => $select_all.TEXT_GROUP_SELECT.'&nbsp;'.$select_null.TEXT_GROUP_SELECT)
+  ); 
 
         foreach($show_group_user as $show_list_uid){
           if($show_list_uid!=''){
@@ -9720,7 +9784,7 @@ $group_str .= '</select>';
         }
 		$group_user_list = array_combine($show_group_user,$uname_arr);
 		asort($group_user_list);
-$user_str = '<div id="show_user_list">';
+        $user_str = '<div id="show_user_list">';
 		foreach($group_user_list as $key=>$val) {
           $user_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
           if(in_array($key,$show_select_group_user)){
@@ -9732,21 +9796,21 @@ $user_str = '<div id="show_user_list">';
           $user_str .=  '<label for="'.$key.'">'.$val.'</label>';
           $user_str .= '&nbsp;&nbsp;&nbsp;';
 		}
-$user_str .= '</div>';
+       $user_str .= '</div>';
 
     $group_content[]['text'] = array(
-           array('params'=>'width="20%"','text'=> GROUP_STAFF),
+           array('params'=>'width="20%"','text'=> TEXT_GROUP_USER_LIST),
            array('text' =>$user_str)
 	); 
 
  $button[] = array('params'=>'align="center" colspan="2"','text'=>'<input type="submit" value="'.IMAGE_SAVE.'">');
-  if (!empty($button)) {
-    $buttons = array('align' => 'center', 'button' => $button); 
-  }
+    $group_content[]= array(
+          'text'=> $button,
+	); 
 
  $notice_box->get_heading($heading);
  $notice_box->get_form($form_str);
-  $notice_box->get_contents($group_content, $buttons);
+ $notice_box->get_contents($group_content);
  echo $notice_box->show_notice();
 }
  /**

@@ -832,6 +832,16 @@ require("includes/note_js.php");
         </table></td>
       </tr>
       <?php
+//时间参数
+$param_attendance = $_SERVER['QUERY_STRING'];
+$param_tep = explode('&',$param_attendance);
+if($param_tep[0]!=''){
+	if(count($param_tep)>1){
+    $param .=','.$param_tep[0].','.$param_tep[1];
+	}
+}
+
+
       //判断用户是否打过卡
         $user_atted = array();
         $status_str = '<table border="0" cellspacing="0" cellpadding="0"><tr>';
@@ -990,10 +1000,10 @@ require("includes/note_js.php");
         $group_str .= '<a href="javascript:void(0);"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0)">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1)">'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')">'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
         $group_str .= '</table>';
@@ -1009,7 +1019,7 @@ require("includes/note_js.php");
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
-        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_group_info(this,'.$show_group_id.')">'.TEXT_GROUP_USER_LIST.'</a>';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_group_info(this,'.$show_group_id.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
         $group_str .= '<select name="show_mode">';
@@ -1052,15 +1062,6 @@ require("includes/note_js.php");
 <td align="left">
 <ul style="padding: 0px;">
 <?php 
-
-$param_attendance = $_SERVER['QUERY_STRING'];
-$param_tep = explode('&',$param_attendance);
-if($param_tep[0]!=''){
-	if(count($param_tep)>1){
-    $param .=','.$param_tep[0].','.$param_tep[1];
-	}
-}
-
 
 $attendance_select_sql = "select attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where "; 
 $replace_select_sql = '';
