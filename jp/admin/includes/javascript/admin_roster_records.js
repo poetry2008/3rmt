@@ -24,43 +24,13 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
   if(flag==1){
     url_tep=  'ajax.php?action=set_payrols_info';
   }
+  if(flag==2){
+    url_tep= 'ajax.php?action=set_attendance_group_info';
+  }
+  
   $.ajax({
   url: url_tep,
   data: 'id='+id+'&param_y='+param_y+'&param_m='+param_m,
-  type: 'POST',
-  dataType: 'text',
-  async : false,
-  success: function(data){
-     $('#show_attendance_edit').html(data);
-     $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height());
-     if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
-
-       $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
-     }else{
-       $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
-     } 
-     ele_value_obj_att = ele;
-     ele_index = 0;
-     $('#show_attendance_edit').css('display','block');
- }
-  }); 
-
-}
-function set_attendance_group_info(ele,gid,param_y,param_m){
-  var ele_width = $(".box_warp").width(); 
-  var box_warp = '';
-  var box_warp_top = 0;
-  var box_warp_left = 0;
-  if($(".box_warp").offset()){
-    box_warp = $(".box_warp").offset();
-    box_warp_top = box_warp.top;
-    box_warp_left = box_warp.left;
-  }
-  var ele_obj = '';
-  ele_obj = $(ele).offset();   
-  $.ajax({
-  url: 'ajax.php?action=set_attendance_group_info',
-  data: 'gid='+gid+'&param_y='+param_y+'&param_m='+param_m,
   type: 'POST',
   dataType: 'text',
   async : false,

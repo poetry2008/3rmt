@@ -1019,7 +1019,7 @@ if($param_tep[0]!=''){
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
-        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_group_info(this,'.$show_group_id.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
         $group_str .= '<select name="show_mode">';
