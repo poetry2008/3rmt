@@ -14786,16 +14786,11 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
     if($date<$today){
-      $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
+      $param_str = '<a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
     }
   }
 //  $return_str = $user_info['name'].'&nbsp;';
   if(!empty($atted_info)){
-    if($param_str != ''){
-      if($show_status !=2 ){
-        $return_str .= $param_str;
-      }
-    }
     if($atted_info['error']&&$show_status!=2){
       if($bg_color == '#FF0000'){
         $return_str .= '<font color ="#FFFFFF">';
@@ -14821,6 +14816,11 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
           .  '～';
         $return_str .= substr($atted_info['logout_time'],11,5);
         $return_str .= '</font>';
+      }
+    }
+    if($param_str != ''){
+      if($show_status !=2 ){
+        $return_str = $param_str.$return_str.'</a>';
       }
     }
   }
