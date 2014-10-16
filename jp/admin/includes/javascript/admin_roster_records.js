@@ -1042,6 +1042,7 @@ function save_att_status(url){
   var user = $('#hidden_user').val();
   var att_status =  $('input[name="att_status"]:checked').val();
   document.location.href = url+'?y='+year+'&month='+month+'&att_status='+att_status+'&user='+user+'&action=save_att_status'
+}
 //popup calendar
 function open_new_calendar(type)
 {
