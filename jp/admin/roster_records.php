@@ -659,6 +659,9 @@ case 'insert':
 case 'update':
 	 tep_isset_eof();
 	$id = $_POST['id'];
+	 $attendance_select_sql = "select * from " . TABLE_ATTENDANCE_DETAIL . " where id=".$id;
+	 $attendance_info_tep = tep_db_query($attendance_select_sql);
+     $attendance_info_res = tep_db_fetch_array($attendance_info_tep);
 	 $title = tep_db_prepare_input($_POST['title']);
 	 $short_language = tep_db_prepare_input($_POST['short_language']);
      $param_a = tep_db_prepare_input($_POST['param_a']);
@@ -716,22 +719,22 @@ case 'update':
 
 
 	 $sql_data_array =array(
-	   'title' => $title,
-	   'short_language' => $short_language,
-	   'src_text'=> $src_text,
-	   'param_a' => $param_a, 
-	   'param_b' => $param_b, 
-       'sort' => $sort,
-	   'scheduling_type' => $scheduling_type,
-	   'set_time' => $set_time,
-       'work_start' => $work_start,
-	   'work_end' => $work_end,
-	   'rest_start' => $rest_start,
-	   'rest_end' => $rest_end,
-	   'work_hours' => $work_hours,
-	   'rest_hours' => $rest_hours,
-	   'add_user' => $add_user,
-	   'add_time' => $add_time,
+	   'title' => $title==''?$attendance_info_res['title']:$title,
+	   'short_language' => $short_language==''?$attendance_info_res['short_language']:$short_language,
+	   'src_text'=> $src_text==''?$attendance_info_res['src_text']:$src_text,
+	   'param_a' => $param_a==''?$attendance_info_res['param_a']:$param_a, 
+	   'param_b' => $param_b==''?$attendance_info_res['param_b']:$param_b, 
+       'sort' => $sort==''?$attendance_info_res['sort']:$sort,
+	   'scheduling_type' => $scheduling_type==''?$attendance_info_res['scheduling_type']:$scheduling_type,
+	   'set_time' => $set_time==''?$attendance_info_res['set_time']:$set_time,
+       'work_start' => $work_start==''?$attendance_info_res['work_start']:$work_start,
+	   'work_end' => $work_end==''?$attendance_info_res['work_end']:$work_end,
+	   'rest_start' => $rest_start==''?$attendance_info_res['rest_start']:$rest_start,
+	   'rest_end' => $rest_end==''?$attendance_info_res['rest_end']:$rest_end,
+	   'work_hours' => $work_hours==''?$attendance_info_res['work_hours']:$work_hours,
+	   'rest_hours' => $rest_hours==''?$attendance_info_res['rest_hours']:$rest_hours,
+	   'add_user' => $add_user==''?$attendance_info_res['add_user']:$add_user,
+	   'add_time' => $add_time==''?$attendance_info_res['add_time']:$add_time,
 	   'update_user' => $update_user,
 	   'update_time' => $update_time
 	 );
@@ -863,6 +866,16 @@ color:#0066CC;
         </table></td>
       </tr>
       <?php
+//时间参数
+$param_attendance = $_SERVER['QUERY_STRING'];
+$param_tep = explode('&',$param_attendance);
+if($param_tep[0]!=''){
+	if(count($param_tep)>1){
+    $param .=','.$param_tep[0].','.$param_tep[1];
+	}
+}
+
+
       //判断用户是否打过卡
         $user_atted = array();
         $status_str = '<table border="0" cellspacing="0" cellpadding="0"><tr>';
@@ -1021,10 +1034,10 @@ color:#0066CC;
         $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a href="javascript:void(0);"><u>'.TEXT_ATTENDANCE_SETTING_MOVE.'</u></a>';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a href="javascript:void(0);"><u>'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</u></a>';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')">'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
         $group_str .= '</table>';
@@ -1040,7 +1053,7 @@ color:#0066CC;
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
-        $group_str .= '<a href="javascript:void(0);"><u>'.TEXT_GROUP_USER_LIST.'</u></a>';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_group_info(this,'.$show_group_id.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
         $group_str .= '<select name="show_mode">';
@@ -1083,15 +1096,6 @@ color:#0066CC;
 <td align="left">
 <ul style="padding: 0px;">
 <?php 
-
-$param_attendance = $_SERVER['QUERY_STRING'];
-$param_tep = explode('&',$param_attendance);
-if($param_tep[0]!=''){
-	if(count($param_tep)>1){
-    $param .=','.$param_tep[0].','.$param_tep[1];
-	}
-}
-
 
 $attendance_select_sql = "select attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where "; 
 $replace_select_sql = '';

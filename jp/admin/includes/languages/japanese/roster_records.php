@@ -72,5 +72,6 @@ define('TEXT_ATTENDANCE_SETTING_SHOW', '表示設定');
 define('TEXT_ATTENDANCE_TABLE_MODE', 'シフト表モード');
 define('TEXT_ATTENDANCE_CALENDAR_MODE', 'カレンダ―モード');
 define('TEXT_ATTENDANCE_DATE', '日付');
+define('TEXT_PARAM_TYPE','タイプ');
 ?>
 
