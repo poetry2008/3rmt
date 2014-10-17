@@ -290,6 +290,12 @@ function change_image_text(_this) {
 
 //show group attendance info
 function show_group_attendance_info(ele,date,num,gid,add_id,user){
+  if(!user){
+    user = '';
+  }
+  if(!gid){
+    gid = '';
+  }
 	//check the user if is manager or group leader
    $.ajax({
       url: 'ajax.php?action=tep_show_info_attendance',
