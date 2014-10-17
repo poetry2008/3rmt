@@ -1064,7 +1064,7 @@ if($param_tep[0]!=''){
         $group_str .= '<a href="javascript:void(0);" onclick="show_group_attendance_info(this,\'\',\'\',\'\',\'\',\''.$ocertify->auth_user.'\');"><u>'.TEXT_ATTENDANCE_SETTING_GROUP.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
+        $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
         $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
@@ -1337,13 +1337,13 @@ while($j<=$end_day)
     }
     if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
       if($show_group_id!=0){
-        echo " onclick='show_group_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"".$show_group_id."\",\"".$ocertify->auth_user."\")' >";
+        echo " onclick='show_group_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"".$show_group_id."\",\"\",\"\")' >";
       }else{
-        echo " onclick='show_group_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"\",\"".$ocertify->auth_user."\")' >";
+        echo " onclick='show_group_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"\",\"\",\"\")' >";
       }
     }else{
       if($today <= $date_temp){
-        echo " onclick='show_replace_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
+        echo " onclick='show_replace_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"\",\"\")' >";
       }else{
         echo " >";
       }
@@ -1586,13 +1586,13 @@ while($j<=$day_num)
   echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
-      echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$show_group_id."\",\"".$ocertify->auth_user."\")' >";
+      echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$show_group_id."\",\"\",\"\")' >";
     }else{
-      echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"\",\"".$ocertify->auth_user."\")' >";
+      echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"\",\"\",\"\")' >";
     }
   }else{
     if($today <= $date){
-      echo " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"".$ocertify->auth_user."\")' >";
+      echo " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"\",\"\")' >";
     }else{
       echo " >";
     }
@@ -1618,14 +1618,14 @@ while($j<=$day_num)
       $info_td_attendance_str .= "<tr>";
       if($attendance_info['scheduling_type'] == 0){
         $info_td_attendance_str .=  '<td style="border-width:0px; padding-top:6px;">';
-        $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\",\"".$ocertify->auth_user."\")' style=".$style.">";
+        $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\",\"\")' style=".$style.">";
         $info_td_attendance_str .=  $attendance_info['short_language'];
         if(file_exists("images/".$attendance_info['src_text'])&&$attendance_info['src_text']!=''){
           $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
         $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
-        $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\",\"".$ocertify->auth_user."\")' style=".$style.">";
+        $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\",\"\")' style=".$style.">";
         $info_td_attendance_str .=  $attendance_info['short_language'];
       }
       $info_td_attendance_str .=  "</div>";
