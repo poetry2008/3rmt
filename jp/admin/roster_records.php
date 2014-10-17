@@ -1289,7 +1289,7 @@ while($all_att_row = tep_db_fetch_array($all_att_auery)){
 
 ?>
 <table width="100%" border="0" cellspacing="1" cellpadding="0" class="dataTable_border">
-<?php if($show_type==1){?>
+<?php if($show_type!=1){?>
 <tr>
 <?php 
 echo '  <td width="9%">&nbsp;</td>
