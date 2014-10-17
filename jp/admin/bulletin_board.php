@@ -272,7 +272,7 @@ if (isset($_GET['action']) and $_GET['action']) {
          $content=$_POST['old_content'];
          $content = preg_replace('/(>+)/','$1>',$content);
          if($_POST['content']!=''){
-           $_POST['content'] = str_replace("\n","\n>",$_POST['content']);
+           $_POST['content'] = preg_replace("/\n$/","\n>",$_POST['content']);
            $content = $_POST['content']."\n>".$content;
          }else{
            $content = "\n>".$content;    
