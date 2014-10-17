@@ -2,6 +2,112 @@ var temp_group_id = '';
 var temp_attendance_id = '';
 var ele_value_obj_att = '';
 var ele_index = 0;
+/*@20141015 
+ *最新排版设定 
+ */
+function set_attendance_info(ele,id,flag,param_y,param_m){
+  var ele_width = $(".box_warp").width(); 
+  var box_warp = '';
+  var box_warp_top = 0;
+  var box_warp_left = 0;
+  if($(".box_warp").offset()){
+    box_warp = $(".box_warp").offset();
+    box_warp_top = box_warp.top;
+    box_warp_left = box_warp.left;
+  }
+  var ele_obj = '';
+  ele_obj = $(ele).offset();   
+  var flag;
+  if(flag==0){
+    url_tep=  'ajax.php?action=set_attendance_info';
+  }
+  if(flag==1){
+    url_tep=  'ajax.php?action=set_payrols_info';
+  }
+  if(flag==2){
+    url_tep= 'ajax.php?action=set_attendance_group_info';
+  }
+  
+  $.ajax({
+  url: url_tep,
+  data: 'id='+id+'&param_y='+param_y+'&param_m='+param_m,
+  type: 'POST',
+  dataType: 'text',
+  async : false,
+  success: function(data){
+     $('#show_attendance_edit').html(data);
+     $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height());
+     if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
+
+       $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
+     }else{
+       $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
+     } 
+     ele_value_obj_att = ele;
+     ele_index = 0;
+     $('#show_attendance_edit').css('display','block');
+ }
+  }); 
+
+}
+//change param 
+function set_param_style(id,param){
+        $.ajax({
+            url: 'ajax.php?action=select_param_sigle',
+            data: 'id='+id+'&param='+param,
+            type: 'POST',
+            dataType: 'text',
+            async : false,
+            success: function(data){
+				if(data){
+                  var tmp_param_arr = data.split('||'); 
+                  $("input[type='text'][name='param_a']").val(tmp_param_arr[0]);
+                  $("input[type='text'][name='param_b']").val(tmp_param_arr[1]);
+				}
+            }
+        }); 
+
+
+}
+
+
+//select all/no users
+function select_all_box(flag){
+    if(flag== 1){
+      if(document.getElementById("select_all_users").checked){
+        $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+          $(this).attr("checked",true);
+         $("#select_all_users").val("2");
+        })
+      }
+    }
+	if(flag == 2){
+        $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+          $(this).removeAttr("checked");
+         })
+		$("#select_all_users").removeAttr("checked");
+         $("#select_all_users").val("1");
+    }
+	if(flag==5){
+      if(document.getElementById("select_all_users").checked){
+         $("#select_all_users").removeAttr("checked");
+         $("#select_all_users").val("2");
+    }else{
+		 var tag=1;
+        $("input[type='checkbox'][name='show_group_user_list[]']").each(function(){
+			if(!this.checked){
+				tag =0;
+			}
+         })
+		if(tag==1){
+		   $("#select_all_users").attr("checked",true);
+		}
+	  }
+	}
+}
+
+
+
 //show attendance info
 function show_attendance_info(ele,id,param_y,param_m){
   var ele_width = $(".box_warp").width(); 
@@ -97,7 +203,7 @@ function change_set_time(set_id) {
    }
 }
 
-function check_attendance_info(){
+function check_attendance_info(flag,param_a,param_b){
       var title_val = $("#attendance_title").val();
       var short_lan_val = $("#short_language").val();
       var work_start_hour = $("#work_start_hour").val();
@@ -145,6 +251,21 @@ function check_attendance_info(){
 	  if(sign ==1){
 	      return false;
 	  }else{
+		  if(flag==0){
+			  if(param_a!=0){
+		     document.forms.attendances.action='roster_records.php?&action=insert'+'&y='+param_a+'&m='+param_b;
+		  }else{
+		     document.forms.attendances.action='roster_records.php?&action=insert';
+		  
+		  }
+		  }if(flag==1){
+			  if(param_a!=0){
+		     document.forms.attendances.action='roster_records.php?&action=update'+'&y='+param_a+'&m='+param_b;
+			  }else{
+		     document.forms.attendances.action='roster_records.php?&action=update';
+			  
+			  }
+		  }
          document.forms.attendances.submit();
 	  }
 
@@ -167,7 +288,8 @@ function change_image_text(_this) {
     $("#src_text_image").val(image_name);
 }
 
-function attendance_setting(date,ele,gid,add_id){
+//show group attendance info
+function show_group_attendance_info(ele,date,num,gid,add_id){
 	//check the user if is manager or group leader
    $.ajax({
       url: 'ajax.php?action=tep_show_info_attendance',
@@ -201,8 +323,7 @@ function attendance_setting(date,ele,gid,add_id){
   }else{
     temp_attendance_id=add_id;
   }
-  var index = ele;
-  var ele = document.getElementById('date_td_'+ele);
+  var index = num;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -216,7 +337,7 @@ function attendance_setting(date,ele,gid,add_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id,
+    url: 'ajax.php?action=edit_group_attendance_info&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -563,15 +684,15 @@ function change_user_list(ele){
   });
 }
 
-function attendance_replace(date,ele,uid,att_id){
+//show replace attendance info
+function show_replace_attendance_info(ele,date,num,uid,att_id){
   if(!uid){
     uid='';
   }
   if(!att_id){
     att_id='';
   }
-  var index = ele;
-  var ele = document.getElementById('date_td_'+ele);
+  var index = num;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -585,7 +706,7 @@ function attendance_replace(date,ele,uid,att_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_replace&date='+date+'&uid='+uid+'&index='+index+'&att_id='+att_id,
+    url: 'ajax.php?action=edit_replace_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&att_id='+att_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -815,7 +936,8 @@ function resizepage(){
 }
 
 
-function attendance_setting_user(date,ele,uid,add_id,u_att_id){
+//show user attendance info
+function show_user_attendance_info(ele,date,num,uid,add_id,u_att_id){
   if(!uid){
     uid='';
   }
@@ -825,8 +947,7 @@ function attendance_setting_user(date,ele,uid,add_id,u_att_id){
   if(!u_att_id){
     u_att_id='';
   }
-  var index = ele;
-  var ele = document.getElementById('date_td_'+ele);
+  var index = num;
   var ele_width = $(".box_warp").width(); 
   var box_warp = '';
   var box_warp_top = 0;
@@ -842,7 +963,7 @@ function attendance_setting_user(date,ele,uid,add_id,u_att_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=attendance_setting_user&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id+'&back_group_id='+back_group_id+'&back_attendance_id='+back_attendance_id,
+    url: 'ajax.php?action=edit_user_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id+'&back_group_id='+back_group_id+'&back_attendance_id='+back_attendance_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -904,4 +1025,159 @@ function add_person_row(ele,aid){
     $('#add_person select[id="user_tep"]').attr('name','user['+aid+'][]');
   }
     $(ele).parent().parent().after($('#add_person tbody').html());
+}
+
+// save att type old or new 
+function save_type(ele,url){
+  var year = $('#hidden_year').val();
+  var month = $('#hidden_month').val();
+  var user = $('#hidden_user').val();
+  var show_type = ele.value
+  document.location.href = url+'?y='+year+'&month='+month+'&user='+user+'&show_type='+show_type+'&action=save_type';
+}
+// save att status 0 1 2
+function save_att_status(url){
+  var year = $('#hidden_year').val();
+  var month = $('#hidden_month').val();
+  var user = $('#hidden_user').val();
+  var att_status =  $('input[name="att_status"]:checked').val();
+  document.location.href = url+'?y='+year+'&month='+month+'&att_status='+att_status+'&user='+user+'&action=save_att_status'
+}
+//popup calendar
+function open_new_calendar(type)
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    //mm-dd-yyyy || mm/dd/yyyy
+    $('#toggle_open').val('1'); 
+
+    var rules = {
+      "all": {
+        "all": {
+          "all": {
+            "all": "current_s_day",
+          }
+        }
+      }};
+    if ($("#date_orders").val() != '') {
+      if ($("#date_orders").val() == '0000-00-00') {
+        date_info_str =  js_cale_date;  
+        date_info = date_info_str.split('-');  
+      } else {
+        date_info = $("#date_orders").val().split('-'); 
+      }
+    } else {
+      //mm-dd-yyyy || mm/dd/yyyy
+      date_info_str = js_cale_date;  
+      date_info = date_info_str.split('-');  
+    }
+    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+contentBox: "#mycalendar",
+width:'170px',
+date: new_date
+
+}).render();
+        if (rules != '') {
+        month_tmp = date_info[1].substr(0, 1);
+        if (month_tmp == '0') {
+        month_tmp = date_info[1].substr(1);
+        month_tmp = month_tmp-1;
+        } else {
+        month_tmp = date_info[1]-1; 
+        }
+        day_tmp = date_info[2].substr(0, 1);
+
+        if (day_tmp == '0') {
+        day_tmp = date_info[2].substr(1);
+        } else {
+        day_tmp = date_info[2];   
+        }
+        data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
+        calendar.set("customRenderer", {
+rules: rules,
+filterFunction: function (date, node, rules) {
+cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+if (cmp_tmp_str == data_tmp_str) {
+node.addClass("redtext"); 
+}
+}
+});
+}
+var dtdate = Y.DataType.Date;
+calendar.on("selectionChange", function (ev) {
+    var newDate = ev.newSelection[0];
+    tmp_show_date = dtdate.format(newDate); 
+    tmp_show_date_array = tmp_show_date.split('-');
+    $("#fetch_year").val(tmp_show_date_array[0]); 
+    $("#fetch_month").val(tmp_show_date_array[1]); 
+    $("#fetch_day").val(tmp_show_date_array[2]);
+    date = tmp_show_date_array[0]+tmp_show_date_array[1]+tmp_show_date_array[2];
+    if(type == 'user'){
+      show_user_attendance_info('',date,'','','','');
+    }else if(type == 'group'){
+      show_group_attendance_info('',date,'','','');
+    }else if(type == 'replace'){
+      show_replace_attendance_info('',date,'','','');
+    }
+    $("#date_orders").val(tmp_show_date); 
+    $('#toggle_open').val('0');
+    $('#toggle_open').next().html('<div id="mycalendar"></div>');
+    });
+});
+}
+}
+
+//check date is right
+function is_date(dateval)
+{
+  var arr = new Array();
+  if(dateval.indexOf("-") != -1){
+    arr = dateval.toString().split("-");
+  }else if(dateval.indexOf("/") != -1){
+    arr = dateval.toString().split("/");
+  }else{
+    return false;
+  }
+  if(arr[0].length==4){
+    var date = new Date(arr[0],arr[1]-1,arr[2]);
+    if(date.getFullYear()==arr[0] && date.getMonth()==arr[1]-1 && date.getDate()==arr[2]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[1]-1,arr[0]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[1]-1 && date.getDate()==arr[0]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[0]-1,arr[1]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[0]-1 && date.getDate()==arr[1]) {
+      return true;
+    }
+  }
+ 
+  return false;
+}
+
+//copy the date of delivery time to hide field
+function change_fetch_date(type) {
+  fetch_date_str = $("#fetch_year").val()+"-"+$("#fetch_month").val()+"-"+$("#fetch_day").val(); 
+  date = $("#fetch_year").val()+$("#fetch_month").val()+$("#fetch_day").val(); 
+  if (!is_date(fetch_date_str)) {
+    alert(js_ed_orders_input_right_date); 
+  } else {
+    $("#date_orders").val(fetch_date_str); 
+    if(type == 'user'){
+      show_user_attendance_info('',date,'','','','');
+    }else if(type == 'group'){
+      show_group_attendance_info('',date,'','','');
+    }else if(type == 'replace'){
+      show_replace_attendance_info('',date,'','','');
+    }
+  }
 }
