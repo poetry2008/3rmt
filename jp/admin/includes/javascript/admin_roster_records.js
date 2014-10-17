@@ -36,6 +36,7 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
   async : false,
   success: function(data){
      $('#show_attendance_edit').html(data);
+     if($('#show_attendance_edit').css('display')!='block'){
      $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height());
      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
@@ -46,6 +47,7 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
      ele_value_obj_att = ele;
      ele_index = 0;
      $('#show_attendance_edit').css('display','block');
+     }
  }
   }); 
 
@@ -1186,4 +1188,11 @@ function change_fetch_date(type) {
       show_replace_attendance_info('',date,'','','');
     }
   }
+}
+function select_color(ele,color){
+  document.getElementById("color_val").value=color;
+  $('.color_div').each(function(){
+      $(this).css('border','2px solid #CCCCCC');
+  });
+  $(ele).find("div").css('border','2px solid #4F4F4F');
 }

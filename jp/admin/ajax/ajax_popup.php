@@ -9251,11 +9251,11 @@ else if($_GET['action'] == 'set_attendance_info') {
   }
   $select_type_color .='<table id="src_text_color" '. $style_color.'><tr>';
   foreach($color_array as $color_key=>$color_value){
-	$border_style = $attendance_info_res['src_text']==$color_value ? 'border: 1px solid #4F4F4F;':'border: 1px solid #CCCCCC;';
-    $select_type_color .= '<td><a href="javascript:void(0);" onclick="document.getElementById(\'color_val\').value = \''.$color_value.'\'"><div style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
+	$border_style = $attendance_info_res['src_text']==$color_value ? 'border: 2px solid #4F4F4F;':'border: 2px solid #CCCCCC;';
+    $select_type_color .= '<td><a href="javascript:void(0);" onclick="select_color(this,\''.$color_value.'\')"><div class="color_div" style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
  }
 
-  $select_type_color .='<td><input name="scheduling_type_color" id="color_val" style="opacity:0;" value=\''.$attendance_info_res['src_text'].'\'></td></tr></table>';
+  $select_type_color .='<td><input type="hidden" name="scheduling_type_color" id="color_val" value=\''.$attendance_info_res['src_text'].'\'></td></tr></table>';
   
 	  
 
