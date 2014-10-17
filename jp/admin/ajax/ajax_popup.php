@@ -9224,8 +9224,7 @@ else if($_GET['action'] == 'set_attendance_info') {
      ); 
       $attendance_info_row[]['text'] = array(
            array('text' => TEXT_TITLE_NOTE),
-           array('text' => tep_draw_input_field('title',$attendance_info_res['title'],'id="attendance_title" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
-        array('text' => tep_draw_hidden_field('id', $id)) 
+           array('text' => tep_draw_input_field('title',$attendance_info_res['title'],'id="attendance_title" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'.tep_draw_hidden_field('id', $id)) 
      ); 
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_ABBREVIATION),
@@ -9252,11 +9251,11 @@ else if($_GET['action'] == 'set_attendance_info') {
   }
   $select_type_color .='<table id="src_text_color" '. $style_color.'><tr>';
   foreach($color_array as $color_key=>$color_value){
-	$border_style = $attendance_info_res['src_text']==$color_value ? 'border: 1px solid #4F4F4F;':'border: 1px solid #CCCCCC;';
-    $select_type_color .= '<td><a href="javascript:void(0);" onclick="document.getElementById(\'color_val\').value = \''.$color_value.'\'"><div style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
+	$border_style = $attendance_info_res['src_text']==$color_value ? 'border: 2px solid #4F4F4F;':'border: 2px solid #CCCCCC;';
+    $select_type_color .= '<td><a href="javascript:void(0);" onclick="select_color(this,\''.$color_value.'\')"><div class="color_div" style="float: left; background-color:'.$color_value.'; '. $border_style .' padding: 8px;"></div></a></td>';
  }
 
-  $select_type_color .='<td><input name="scheduling_type_color" id="color_val" style="opacity:0;" value=\''.$attendance_info_res['src_text'].'\'></td></tr></table>';
+  $select_type_color .='<td><input type="hidden" name="scheduling_type_color" id="color_val" value=\''.$attendance_info_res['src_text'].'\'></td></tr></table>';
   
 	  
 
@@ -9438,7 +9437,7 @@ else if($_GET['action'] == 'set_attendance_info') {
       $right_td .= '<td align="">'.$work_hours.'</td></tr><tr><td>'.$rest_hours.'</td>';
       $right_td .= '</tr></table>';
         $attendance_info_row[]['text'] = array(
-        array('params' => 'width="50%"','text' => $left_td), 
+        array('params' => 'width="20%"','text' => $left_td), 
         array('text' => $right_td)
         );
    
@@ -9456,10 +9455,10 @@ else if($_GET['action'] == 'set_attendance_info') {
 
 	 if(!empty($id)) {
       $attendance_info_row[]['text'] = array(
-		  array('text' => $hidden_add_user)
+		  array('params' => 'colspan="2"','text' => $hidden_add_user)
       );
       $attendance_info_row[]['text'] = array(
-		  array('text' => $hidden_add_time)
+		  array('params' => 'colspan="2"','text' => $hidden_add_time)
       );
       $attendance_info_row[]['text'] = array(
            array('text' => $add_user_text),
@@ -10922,7 +10921,7 @@ if($row_array['set_time']==0){
 		 */
       $user_select_hidden = '<input type="hidden" name="user_hidden[]" value="'.$user['user'].'">';
     }
-    $user_select .= '>'.$user['name'].'</oprion>';
+    $user_select .= ($user['userid']==$_GET['uid'] ? ' selected' :'').'>'.$user['name'].'</oprion>';
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
   $user_select .= '</select></select><input type="hidden" value="1" class="tep_index_num">&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"><input  '.$disabled.' type="button" onclick="add_person_row(this,\'\')" value="'.TEXT_ADD_ADL.'"></td>';
@@ -11166,7 +11165,7 @@ if($row_array['set_time']==0){
   //底部内容
   $buttons = array();
   if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']==''){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['back_group_id'].'\',\''.$_GET['back_attendance_id'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['back_group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
 
@@ -11557,7 +11556,7 @@ if($row_array['set_time']==0){
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10 || tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
@@ -12081,9 +12080,9 @@ if($row_array['set_time']==0){
   
   if(!isset($_GET['uid'])||$_GET['uid']==''||tep_is_group_manager($ocertify->auth_user)){
     if(tep_is_group_manager($ocertify->auth_user)){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',temp_group_id,\'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',temp_group_id,\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }else{
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_BACK, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }
   }
   if($ocertify->npermission>10
