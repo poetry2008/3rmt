@@ -71,5 +71,6 @@ define('TEXT_ATTENDANCE_SETTING_PAYROLLS', '工资相关设定');
 define('TEXT_ATTENDANCE_SETTING_SHOW', '显示设定');
 define('TEXT_ATTENDANCE_TABLE_MODE', '排班表模式');
 define('TEXT_ATTENDANCE_CALENDAR_MODE', '日历模式');
+define('TEXT_ATTENDANCE_DATE', '日期');
 ?>
 

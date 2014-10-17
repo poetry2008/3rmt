@@ -11011,8 +11011,7 @@ if($row_array['set_time']==0){
                 </div></td>';
   $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $date_select_str),
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $date_click_str)
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<table cellspacing="0" cellpadding="0" border="0"><tr><td>'.$date_select_str.'</td><td align="left">'.$date_click_str.'</td></tr></table>')
       );
   $show_arr = true;
   $attendane_temp_user_list_arr = array();
@@ -11368,8 +11367,7 @@ if($row_array['set_time']==0){
                 </div></td>';
   $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $date_select_str),
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $date_click_str)
+        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '<table cellspacing="0" cellpadding="0" border="0"><tr><td>'.$date_select_str.'</td><td align="left">'.$date_click_str.'</td></tr></table>')
       );
   //是否有出勤数据
   if(!empty($attendance_dd_arr)){
@@ -11883,8 +11881,7 @@ if($row_array['set_time']==0){
                 </div></td>';
   $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $date_select_str),
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $date_click_str)
+        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '<table cellspacing="0" cellpadding="0" border="0"><tr><td>'.$date_select_str.'</td><td align="left">'.$date_click_str.'</td></tr></table>')
       );
 
   if((!isset($_GET['uid'])||$_GET['uid']=='')){
