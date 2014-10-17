@@ -73,5 +73,6 @@ define('TEXT_ATTENDANCE_TABLE_MODE', 'シフト表モード');
 define('TEXT_ATTENDANCE_CALENDAR_MODE', 'カレンダ―モード');
 define('TEXT_ATTENDANCE_DATE', '日付');
 define('TEXT_PARAM_TYPE','タイプ');
+define('SELECT_ALL','全て選択');
 ?>
 
