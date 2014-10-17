@@ -971,11 +971,13 @@ if($param_tep[0]!=''){
           $show_select_group_user[] = $ocertify->auth_user;
         }
         $show_select_group_user = array_unique($show_select_group_user);
+        $group_str ='';
+        $group_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
+        /*
         $group_str = '<form action="'.
         tep_href_link(FILENAME_ROSTER_RECORDS,'action=update_show_user'.
             ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
             ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')).'" method="post">';
-        $group_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
         $group_str .= '<tr >';
         $group_str .= '<td width="15%" align="left">';
         $group_str .= TEXT_GROUP_SELECT;
@@ -1031,6 +1033,7 @@ if($param_tep[0]!=''){
         $group_str .= '<input type="submit" value="'.IMAGE_UPDATE.'">';
         $group_str .= '</td>';
         $group_str .= '</tr>';
+        */
 
         //new 各种设定
         $group_str .= '<tr>';
@@ -1162,6 +1165,7 @@ while($user_info_row = tep_db_fetch_array($all_user_query)){
 
  $num = count($attendance_list);
  $i=0;
+ /*
  foreach($attendance_list as $k=>$val) {
  if($val['scheduling_type']==0){
     $image_directory = 'images';
@@ -1183,6 +1187,7 @@ if($ocertify->npermission>'10'){
     echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0'.$param.')" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
 }
  
+*/
 ?> 
 </table>
             </td>
