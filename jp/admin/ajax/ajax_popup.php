@@ -9769,8 +9769,8 @@ $group_str .= '</select>';
   ); 
 $select_all ='<input type="checkbox" value="1" onclick="select_all_box(this.value)" id="select_all_users">';
 $group_content[]['text'] = array(
-      array('text' => TEXT_GROUP_SELECT),
-      array('text' => $select_all.TEXT_GROUP_SELECT.'&nbsp;'.$select_null.TEXT_GROUP_SELECT)
+      array('text' => SELECT_ALL),
+      array('text' => $select_all.SELECT_ALL)
   ); 
 
         foreach($show_group_user as $show_list_uid){
