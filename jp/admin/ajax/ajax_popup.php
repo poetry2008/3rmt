@@ -10862,7 +10862,7 @@ if($row_array['set_time']==0){
  
   //头部内容
   $heading = array();
-  $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  $date_str = TEXT_ATTENDANCE_SETTING_USER;
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
 
@@ -11254,7 +11254,7 @@ if($row_array['set_time']==0){
  
   //头部内容
   $heading = array();
-  $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  $date_str = TEXT_ATTENDANCE_SETTING_GROUP;
   $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   if(!empty($attendance_dd_arr)){
     $group_info_sql = "select * from ".TABLE_GROUPS." WHERE id ='".$_GET['gid']."' and group_status=1";
@@ -11836,7 +11836,7 @@ if($row_array['set_time']==0){
 
   //头部内容
   $heading = array();
-  $date_str = substr($_GET['date'],0,4).'-'.substr($_GET['date'],4,2).'-'.substr($_GET['date'],6,2);
+  $date_str = TEXT_ATTENDANCE_SETTING_CHANGE;
   if(isset($_GET['uid'])&&$_GET['uid']!=''){ 
     $user_info_self = tep_get_user_info($_GET['uid']);
     $date_str .= '&nbsp;&nbsp;'.$user_info_self['name'].'<span id="use_get_userid" style="display:none;">'.$_GET['uid'].'||'.$_GET['date'].'</span>';
