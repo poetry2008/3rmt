@@ -9224,8 +9224,7 @@ else if($_GET['action'] == 'set_attendance_info') {
      ); 
       $attendance_info_row[]['text'] = array(
            array('text' => TEXT_TITLE_NOTE),
-           array('text' => tep_draw_input_field('title',$attendance_info_res['title'],'id="attendance_title" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'),
-        array('text' => tep_draw_hidden_field('id', $id)) 
+           array('text' => tep_draw_input_field('title',$attendance_info_res['title'],'id="attendance_title" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="title_text_error"></font>'.tep_draw_hidden_field('id', $id)) 
      ); 
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_ABBREVIATION),
@@ -9438,7 +9437,7 @@ else if($_GET['action'] == 'set_attendance_info') {
       $right_td .= '<td align="">'.$work_hours.'</td></tr><tr><td>'.$rest_hours.'</td>';
       $right_td .= '</tr></table>';
         $attendance_info_row[]['text'] = array(
-        array('params' => 'width="50%"','text' => $left_td), 
+        array('params' => 'width="20%"','text' => $left_td), 
         array('text' => $right_td)
         );
    
@@ -9456,10 +9455,10 @@ else if($_GET['action'] == 'set_attendance_info') {
 
 	 if(!empty($id)) {
       $attendance_info_row[]['text'] = array(
-		  array('text' => $hidden_add_user)
+		  array('params' => 'colspan="2"','text' => $hidden_add_user)
       );
       $attendance_info_row[]['text'] = array(
-		  array('text' => $hidden_add_time)
+		  array('params' => 'colspan="2"','text' => $hidden_add_time)
       );
       $attendance_info_row[]['text'] = array(
            array('text' => $add_user_text),
