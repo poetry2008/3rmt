@@ -1034,6 +1034,20 @@ if($param_tep[0]!=''){
         $group_str .= '</td>';
         $group_str .= '</tr>';
         */
+        foreach($show_group_user as $show_list_uid){
+          if($show_list_uid!=''){
+            $tep_array= tep_get_user_info($show_list_uid);
+            $uname_arr[] = $tep_array['name'];
+          }
+        }
+        $group_user_list = array_combine($show_group_user,$uname_arr);
+        asort($group_user_list);
+        foreach($group_user_list as $key=>$val) {
+          if(in_array($key,$show_select_group_user)){
+            $user_atted[$key] = tep_is_attenandced_date($key);
+            $show_checked_user_list[] = $key;
+          }
+        }
 
         //new 各种设定
         $group_str .= '<tr>';
@@ -1934,6 +1948,7 @@ while($week%7 != 6)
 }
 if(!$end)
   echo "</tr>";
+
 }
 ?>
 
