@@ -289,7 +289,7 @@ function change_image_text(_this) {
 }
 
 //show group attendance info
-function show_group_attendance_info(ele,date,num,gid,add_id){
+function show_group_attendance_info(ele,date,num,gid,add_id,user){
 	//check the user if is manager or group leader
    $.ajax({
       url: 'ajax.php?action=tep_show_info_attendance',
@@ -337,7 +337,7 @@ function show_group_attendance_info(ele,date,num,gid,add_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=edit_group_attendance_info&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id,
+    url: 'ajax.php?action=edit_group_attendance_info&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id+'&user='+user,
     dataType: 'text',
     async: false,
     success: function(text) {
