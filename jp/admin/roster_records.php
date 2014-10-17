@@ -1348,7 +1348,14 @@ while($j<=$end_day)
         echo " >";
       }
     }
-    echo $j."</td>";
+    if($date_temp == $today){
+      echo "<div class='dataTable_hight_red'>";
+    }
+    echo $j;
+    if($date_temp == $today){
+      echo "</div>";
+    }
+    echo "</td>";
   }else{
     echo '<td>&nbsp;</td>'; 
   }
@@ -1379,9 +1386,6 @@ while($j<=$end_day)
   echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
   $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date);
   echo (empty($temp_user_attenande) ? " onclick='show_group_attendance_info(this,\"".$date."\",\"".$k."\",\"\",\"\",\"".$user_value."\");'" : '').">";
-  if($date == $today){
-    echo "<div class='dataTable_hight_red'>";
-  }
   if(empty($temp_user_attenande)){
     echo "&nbsp;";
   }
@@ -1499,9 +1503,6 @@ while($j<=$end_day)
   }
   $info_td_attendance_str .= '</table>';
   echo $info_td_attendance_str;
-  if($date == $today){
-    echo "</div>";
-  }
   echo "</td></tr>";
     echo "</table>";
     echo "</div>";
