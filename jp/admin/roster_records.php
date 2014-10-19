@@ -1050,7 +1050,7 @@ if($param_tep[0]!=''){
         }
 
         //new 各种设定
-        $group_str .= '<tr>';
+        $group_str .= '<tr height="18">';
         $group_str .= '<td valign="top">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
@@ -1331,7 +1331,7 @@ while($j<=$end_day)
   $edit_replace = false;
   if($j<=$day_num){
     $date_temp = $year.tep_add_front_zone($month).tep_add_front_zone($j); //日期
-    echo "<td id='date_td_".$j."'  valign='top' align='center'"; 
+    echo "<td id='date_td_".$j."'  valign='top' style='font-size:14px' align='center'"; 
     if($today <= $date_temp){
       $edit_replace = true;
     }
@@ -1350,11 +1350,11 @@ while($j<=$end_day)
     }
     if($date_temp == $today){
       echo "<div class='dataTable_hight_red'>";
+    }else{
+      echo "<div style='background-color:#3C7FB1'>";
     }
     echo $j;
-    if($date_temp == $today){
-      echo "</div>";
-    }
+    echo "</div>";
     echo "</td>";
   }else{
     echo '<td>&nbsp;</td>'; 
@@ -1383,12 +1383,9 @@ while($j<=$end_day)
 
   echo '<td>';
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
-  echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
-  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date);
-  echo (empty($temp_user_attenande) ? " onclick='show_group_attendance_info(this,\"".$date."\",\"".$k."\",\"\",\"\",\"".$user_value."\");'" : '').">";
-  if(empty($temp_user_attenande)){
-    echo "&nbsp;";
-  }
+  echo "<tr><td align='right' style='font-size:12px; border-width:0px; cursor:pointer;' ";
+  $temp_user_attenande = array();
+  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date,$show_group_id);
   //个人的所有排班
   $info_td_attendance_str = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
   foreach($temp_user_attenande as $user_attenande){
@@ -1476,7 +1473,9 @@ while($j<=$end_day)
     and attendance_detail_id='0' 
     and date='".$date."'";
   $other_replace_query = tep_db_query($other_replace_sql);
+  $is_replace = false;
   while($other_replace_user_row = tep_db_fetch_array($other_replace_query)){
+    $is_replace = true;
     $replace_attendance_info = $all_att_arr[$other_replace_user_row['replace_attendance_detail_id']];
     $info_td_attendance_str .= "<tr>";
     if($replace_attendance_info['scheduling_type'] == 0){
@@ -1500,6 +1499,10 @@ while($j<=$end_day)
     $info_td_attendance_str .= "</span>";
     $info_td_attendance_str .= "</td>";
     $info_td_attendance_str .= "</tr>";
+  }
+  echo (empty($temp_user_attenande)&&!$is_replace ? " onclick='show_group_attendance_info(this,\"".$date."\",\"".$k."\",\"\",\"\",\"".$user_value."\");'" : '').">";
+  if(empty($temp_user_attenande)){
+    echo "&nbsp;";
   }
   $info_td_attendance_str .= '</table>';
   echo $info_td_attendance_str;
