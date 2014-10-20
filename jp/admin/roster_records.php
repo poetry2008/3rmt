@@ -986,68 +986,7 @@ if($param_tep[0]!=''){
         $show_select_group_user = array_unique($show_select_group_user);
         $group_str ='';
         $group_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
-        /*
-        $group_str = '<form action="'.
-        tep_href_link(FILENAME_ROSTER_RECORDS,'action=update_show_user'.
-            ((isset($_GET['y'])&&$_GET['y']!='')?'&y='.$_GET['y']:'').
-            ((isset($_GET['m'])&&$_GET['m']!='')?'&m='.$_GET['m']:'')).'" method="post">';
-        $group_str .= '<tr >';
-        $group_str .= '<td width="15%" align="left">';
-        $group_str .= TEXT_GROUP_SELECT;
-        $group_str .= '</td>';
-        $group_str .= '<td colspan="2" align="left">';
-        $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
-        $group_str .= '<option value="0" ';
-        if($show_group_id==0){
-          $group_str .= ' selected ';
-        }
-        $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
-        foreach($group_list as $group){
-          $group_str .= '<option value="'.$group['id'].'"';
-          if($show_group_id == $group['id']){
-            $group_str .= ' selected ';
-          }
-          $group_str .= '>'.$group['text'].'</option>';
-        }
-        $group_str .= '</select>';
-        $group_str .= '</td>';
-        $group_str .= '</tr>';
-        $group_str .= '<tr>';
-        $group_str .= '<td valign="top">';
-        $group_str .= TEXT_GROUP_USER_LIST;
-        $group_str .= '</td>';
-        $group_str .= '<td align="left">';
-        $group_str .= '<div id="show_user_list">';
-        foreach($show_group_user as $show_list_uid){
-          if($show_list_uid!=''){
-			$tep_array= tep_get_user_info($show_list_uid);
-			$uname_arr[] = $tep_array['name'];
-
-          }
-        }
-		$group_user_list = array_combine($show_group_user,$uname_arr);
-		asort($group_user_list);
-
-		foreach($group_user_list as $key=>$val) {
-          $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
-          if(in_array($key,$show_select_group_user)){
-            $group_str .= ' checked="checked" ';
-            $user_atted[$key] = tep_is_attenandced_date($key);
-            $show_checked_user_list[] = $key;
-          }
-          $group_str .= ' value="'.$key.'" >';
-          $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
-          $group_str .= '&nbsp;&nbsp;&nbsp;';
-		}
-
-        $group_str .= '</div>';
-        $group_str .= '</td>';
-        $group_str .= '<td align="right">';
-        $group_str .= '<input type="submit" value="'.IMAGE_UPDATE.'">';
-        $group_str .= '</td>';
-        $group_str .= '</tr>';
-        */
-        foreach($show_group_user as $show_list_uid){
+                foreach($show_group_user as $show_list_uid){
           if($show_list_uid!=''){
             $tep_array= tep_get_user_info($show_list_uid);
             $uname_arr[] = $tep_array['name'];
@@ -1192,29 +1131,7 @@ while($user_info_row = tep_db_fetch_array($all_user_query)){
 
  $num = count($attendance_list);
  $i=0;
- /*
- foreach($attendance_list as $k=>$val) {
- if($val['scheduling_type']==0){
-    $image_directory = 'images';
-    $image_dir = $image_directory.'/'.$val['src_text'];
-	echo "<li style='float:right; height:16px; list-style-type:none; margin-right: 10px; margin-top:5px;'>";
-        if($val['src_text']!=''&&file_exists($image_dir)){
-          echo "<img src='".$image_dir."' style='width: 16px;'>"; 
-        }
-}elseif($val['scheduling_type']==1){
-     echo '<li style="float:right; height:16px; list-style-type:none; margin-right: 10px; margin-top:5px;"><div style="float: left; background-color:'.$val['src_text'].'; border: 1px solid #CCCCCC; padding: 6px;"></div>';
- }
-echo  '<a onclick="show_attendance_info(this, '.$val['id'].$param.')" href="javascript:void(0);" style="text-decoration: underline;"> >> '.$val['title'].'</a></li>';
- }
 
-echo '</ul>';
-echo ' </td><td valign="top">';
-
-if($ocertify->npermission>'10'){
-    echo '<ul style="padding: 0px;"><li style="list-style-type:none;"><a onclick="show_attendance_info(this,0'.$param.')" href="javascript:void(0);">' .tep_html_element_button(IMAGE_NEW_ATTENDANCE,'id="create_attendance" ').' </a></li></ul></td>';
-}
- 
-*/
 ?> 
 </table>
             </td>
@@ -1315,7 +1232,7 @@ while($all_att_row = tep_db_fetch_array($all_att_auery)){
 }
 
 ?>
-<table width="100%" border="0" cellspacing="1" cellpadding="0" class="dataTable_border">
+<table width="100%" border="0" cellspacing="1" cellpadding="2" class="dataTable_border">
 <?php if($show_type!=1){?>
 <tr>
 <?php 
@@ -1344,7 +1261,7 @@ while($j<=$end_day)
   $edit_replace = false;
   if($j<=$day_num){
     $date_temp = $year.tep_add_front_zone($month).tep_add_front_zone($j); //日期
-    echo "<td id='date_td_".$j."'  valign='top' style='font-size:14px' align='center'"; 
+    echo "<td id='date_td_".$j."'  valign='top' style='font-size:16px' align='center'"; 
     if($today <= $date_temp){
       $edit_replace = true;
     }
@@ -1362,9 +1279,9 @@ while($j<=$end_day)
       }
     }
     if($date_temp == $today){
-      echo "<div class='dataTable_hight_red'>";
+      echo "<div class='dataTable_hight_red' style=''>";
     }else{
-      echo "<div style='background-color:#3C7FB1'>";
+      echo "<div style='background-color:#3C7FB1;color:#ffffff'>";
     }
     echo $j;
     echo "</div>";
