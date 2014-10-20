@@ -9696,7 +9696,8 @@ $action = 'update_show_user';
         }
         if($has_default){
           if($show_group_id==0){
-            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+           // $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
             $user_query = tep_db_query($user_sql);
             while($user_row = tep_db_fetch_array($user_query)){
               $show_group_user[] = $user_row['userid'];
@@ -9711,7 +9712,8 @@ $action = 'update_show_user';
           }
         }else{
           if($ocertify->npermission>10){
-            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            //$user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
             $user_query = tep_db_query($user_sql);
             while($user_row = tep_db_fetch_array($user_query)){
               $show_group_user[] = $user_row['userid'];
@@ -9722,7 +9724,8 @@ $action = 'update_show_user';
             if(!empty($prent_group)){
               $show_group_id = $prent_group[0];
               if($show_group_id==0){
-                $user_sql = "select * from ".TABLE_USERS." where status='1'";
+             //    $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
                 $user_query = tep_db_query($user_sql);
                 while($user_row = tep_db_fetch_array($user_query)){
                   $show_group_user[] = $user_row['userid'];
@@ -9736,7 +9739,8 @@ $action = 'update_show_user';
                 }
               }
             }else{
-              $user_sql = "select * from ".TABLE_USERS." where status='1'";
+           //   $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
               $user_query = tep_db_query($user_sql);
               while($user_row = tep_db_fetch_array($user_query)){
                 $show_group_user[] = $user_row['userid'];
@@ -11054,7 +11058,7 @@ if($row_array['set_time']==0){
   $show_user = true;
   $temp_count = 0;
   for($j=0; $j<count($a_info);$j++){
-    $has_user_select = '<select name="has_user['.$a_info[$j]["u_group"].'][]" '.$disabled.'>';
+    $has_user_select = '<select name="has_user['.$a_info[$j]["u_group"].'][]" '.$disabled.' style="max-width:280px;">';
     $has_user_select_hidden = '';
     $default_has_user = '';
     if(!in_array($a_info[$j]['user_id'],$show_user_id_list)){
@@ -11275,8 +11279,8 @@ if($row_array['set_time']==0){
   }
   $adl_select .= '</select>&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font>';
 
-  $group_select = '<select name="group[]" '.$group_disabled.'>';
-  $hidden_group_select = '<select name="group[]" >';
+  $group_select = '<select name="group[]" '.$group_disabled.' style="max-width:280px;">';
+  $hidden_group_select = '<select name="group[]" style="max-width:280px;" >';
   $group_select .= '<option value="">--</option>';
   $group_select_hidden = '';
   $hidden_group_select .= '<option value="">--</option>';
