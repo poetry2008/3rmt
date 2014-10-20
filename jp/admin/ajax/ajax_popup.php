@@ -11684,26 +11684,13 @@ if($row_array['set_time']==0){
   }
   $replace_select = '<select id ="att_detail_id" name="replace_attendance_detail_id" '.$disabled.' onchange="change_scheduling_time(this.value);">';
   if(!empty($replace_att_list)){
-  $select_replace_attendance_info = array();
   foreach($replace_att_list as $attendance_info){
     $attendance_select .= '<option value="'.$attendance_info['id'].'"';
     if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$attendance_info['id']){
-      $select_replace_attendance_info = $attendance_info;
       $attendance_select .= ' selected ';
     }
     $attendance_select .= '>'.$attendance_info['title'].'</option>';
 
-  }
-  if(empty($select_replace_attendance_info)){
-    $select_replace_attendance_info=$replace_att_list[0];
-
-  }
-  //show work time detail
-  if($select_replace_attendance_info['set_time']==0){
-          $user_adl = '<span>'.$select_replace_attendance_info['work_start'].'--'.$select_replace_attendance_info['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$select_replace_attendance_info['work_start'].'"><input type="hidden" name="email_work_end" value="'.$select_replace_attendance_info['work_end'].'">';
-  }elseif($select_replace_attendance_info['set_time']==1){
-         $work_time = $select_replace_attendance_info['work_hours']+$select_replace_attendance_info['rest_hours'];
-         $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
   }
   }else{
     $attendance_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
@@ -11729,6 +11716,7 @@ if($row_array['set_time']==0){
     $attendance_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
     $attendance_select_hidden = '';
     if(!empty($replace_att_list)){
+    $select_replace_attendance_info = array();
       foreach($replace_att_list as $attendance_info){
         if($attendance_select_hidden =='' ){
           $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$attendance_info['id'].'">';
@@ -11741,6 +11729,7 @@ if($row_array['set_time']==0){
             $attendance_select .= '<option value="'.$attendance_info['id'].'"';
             if($_GET['att_id']==$attendance_info['id']){
               $attendance_select .= ' selected ';
+              $select_replace_attendance_info = $attendance_info;
               $select_att = $attendance_info['id'];
               $current_att_title = $attendance_info['title'];
               $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$attendance_info['id'].'">';
@@ -11751,6 +11740,7 @@ if($row_array['set_time']==0){
           $attendance_select .= '<option value="'.$attendance_info['id'].'"';
           if(isset($_GET['att_id'])&&$_GET['att_id']==$attendance_info['id']){
             $attendance_select .= ' selected ';
+            $select_replace_attendance_info = $attendance_info;
             $select_att = $attendance_info['id'];
             $current_att_title = $attendance_info['title'];
             $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$attendance_info['id'].'">';
@@ -11761,6 +11751,15 @@ if($row_array['set_time']==0){
       }
       if($select_att == ''){
         $select_att = 0;
+      }
+
+      if(!empty($select_replace_attendance_info)){
+        if($select_replace_attendance_info['set_time']==0){
+          $user_adl = '<span>'.$select_replace_attendance_info['work_start'].'--'.$select_replace_attendance_info['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$select_replace_attendance_info['work_start'].'"><input type="hidden" name="email_work_end" value="'.$select_replace_attendance_info['work_end'].'">';
+        }elseif($select_replace_attendance_info['set_time']==1){
+          $work_time = $select_replace_attendance_info['work_hours']+$select_replace_attendance_info['rest_hours'];
+          $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
+        }
       }
     }
   }else{
