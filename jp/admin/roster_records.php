@@ -1396,6 +1396,9 @@ while($j<=$end_day)
   //个人的所有排班
   $info_td_attendance_str = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
   foreach($temp_user_attenande as $user_attenande){
+    if($user_attenande['replace_attendance_detail_id']!=''){
+      continue;
+    }
     //排班信息输出
     $attendance_info =  $all_att_arr[$user_attenande['attendance_detail_id']];
     $info_td_attendance_str .= "<tr>";

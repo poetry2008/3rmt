@@ -9780,6 +9780,7 @@ $group_content[]['text'] = array(
           }
         }
 		$group_user_list = array_combine($show_group_user,$uname_arr);
+		 $group_user_list = array_filter($group_user_list);
 		asort($group_user_list);
         $user_str = '<div id="show_user_list">';
 		foreach($group_user_list as $key=>$val) {
