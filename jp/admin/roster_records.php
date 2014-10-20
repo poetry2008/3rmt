@@ -890,6 +890,9 @@ color:#0066CC;
         </table></td>
       </tr>
       <?php
+//显示白色字的背景
+   $color_array = array('#000000','#808080','#800000','#800080','#008000','#808000','#000080','#008080');
+
 //时间参数
 $param_attendance = $_SERVER['QUERY_STRING'];
 $param_tep = explode('&',$param_attendance);
@@ -1423,7 +1426,7 @@ while($j<=$end_day)
         $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
       }
     }else{
-      $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
+      $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
       if($user_attenande['group_id']!=0){
         $info_td_attendance_str .=  "<span onclick='show_group_attendance_info(this,\"".$date."\",\"".$k."\",\"".$user_attenande['group_id']."\",\"".$user_attenande['aid']."\",\"".$user_value."\")' style=".$style.">";
       }else{
@@ -1506,7 +1509,7 @@ while($j<=$end_day)
           src="images/'.$replace_attendance_info['src_text'].'" alt="'.$replace_attendance_info['title'].'">';
       }
     }else{
-      $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($replace_attendance_info['scheduling_type'] == 1 && $replace_attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$replace_attendance_info['src_text']."'>";
+      $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($replace_attendance_info['scheduling_type'] == 1 && in_array($replace_attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$replace_attendance_info['src_text']."'>";
       $info_td_attendance_str .= "<span onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"".$user_value."\",\"".$other_replace_user_row['attendance_detail_id']."\")' >";
       $info_td_attendance_str .=  $replace_attendance_info['short_language'];
     }
@@ -1647,7 +1650,7 @@ while($j<=$day_num)
           $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
-        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
+        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
         $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\",\"\")' style=".$style.">";
         $info_td_attendance_str .=  $attendance_info['short_language'];
       }
@@ -1724,7 +1727,7 @@ while($j<=$day_num)
         }else{
           $v_att = false;
         }
-        $info_td_attendance_str .=  ($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
+        $info_td_attendance_str .=  ($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? ' style="color:#FFFFFF;"' : '').">";
         if($v_att!=false){
           $info_td_attendance_str .=  preg_replace("/$/",$replace_str.'',$v_att);
         }else{
@@ -1798,7 +1801,7 @@ while($j<=$day_num)
           echo '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
-        echo "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
         echo "<div onclick='show_user_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\")' style='cursor:pointer;'>";
         echo $attendance_info['short_language'];
       }
@@ -1850,7 +1853,7 @@ while($j<=$day_num)
       }else{
         $v_att =false;
       }
-      echo ($attendance_info['scheduling_type'] == 1 && $attendance_info['src_text'] == '#000000' ? ' style="color:#FFFFFF;"' : '').">";
+      echo ($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? ' style="color:#FFFFFF;"' : '').">";
       if($v_att!=false){
         echo $v_att;
       }else{
