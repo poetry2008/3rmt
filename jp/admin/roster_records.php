@@ -1500,7 +1500,7 @@ while($j<=$end_day)
     $info_td_attendance_str .= "</td>";
     $info_td_attendance_str .= "</tr>";
   }
-  echo (empty($temp_user_attenande)&&!$is_replace ? " onclick='show_group_attendance_info(this,\"".$date."\",\"".$k."\",\"\",\"\",\"".$user_value."\");'" : '').">";
+  echo (empty($temp_user_attenande)&&!$is_replace ? " onclick='show_user_attendance_info(this,\"".$date."\",\"".$k."\",\"".$user_value."\",\"\",\"\");'" : '').">";
   if(empty($temp_user_attenande)){
     echo "&nbsp;";
   }
