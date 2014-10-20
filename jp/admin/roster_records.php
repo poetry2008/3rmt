@@ -497,14 +497,14 @@ if(isset($_GET['action'])){
 	      $_SERVER['HTTP_REFERER'],
 	      $staff_info['name'],
 	      $allow_user['name'],
-	      $_POST['email_work_start'],
-	      $_POST['email_work_end'],
+	      $_POST['email_work_start'] == '' ? TEXT_UNSET_DATA : $_POST['email_work_start'],
+	      $_POST['email_work_end'] == '' ? TEXT_UNSET_DATA : $_POST['email_work_end'],
 	      $leave_start,
 	      $leave_end,
               date('Y-m-d',strtotime($date)),
               $_POST['text_info'],
               SENDMAIL_ROSTER_STATUS_CONFIRM,
-              $attendance_name[$attendance_detail_id],
+              $attendance_name[$attendance_detail_id] == '' ? TEXT_UNSET_DATA : $attendance_name[$attendance_detail_id],
               $attendance_name[$replace_attendance_detail_id]
             ),$mail_model_tep);
             $mail_model_tep = tep_replace_mail_templates($mail_model_tep);  
@@ -538,14 +538,14 @@ if(isset($_GET['action'])){
 	      $_SERVER['HTTP_REFERER'],
 	      $staff_info['name'],
 	      implode(' ',$allow_user_info),
-	      $_POST['email_work_start'],
-	      $_POST['email_work_end'],
+	      $_POST['email_work_start'] == '' ? TEXT_UNSET_DATA : $_POST['email_work_start'],
+	      $_POST['email_work_end'] == '' ? TEXT_UNSET_DATA : $_POST['email_work_end'],
 	      $leave_start,
 	      $leave_end, 
               date('Y-m-d',strtotime($date)),
               $_POST['text_info'],
               SENDMAIL_ROSTER_STATUS_ALLOW,
-              $attendance_name[$attendance_detail_id],
+              $attendance_name[$attendance_detail_id] == '' ? TEXT_UNSET_DATA : $attendance_name[$attendance_detail_id],
               $attendance_name[$replace_attendance_detail_id]
               ),$mail_model_tep);
         $mail_model_tep = tep_replace_mail_templates($mail_model_tep);
