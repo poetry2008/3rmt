@@ -3552,8 +3552,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
 	      }
         }
         $group_user_list = array_combine($show_group_user,$uname_arr);
-	    asort($group_user_list);
-
+		$group_user_list = array_filter($group_user_list);
         foreach($group_user_list as $key=>$val) {
             $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
             if(in_array($key,$show_select_group_user)){
