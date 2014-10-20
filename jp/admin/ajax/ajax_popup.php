@@ -11684,19 +11684,25 @@ if($row_array['set_time']==0){
   }
   $replace_select = '<select id ="att_detail_id" name="replace_attendance_detail_id" '.$disabled.' onchange="change_scheduling_time(this.value);">';
   if(!empty($replace_att_list)){
+  $select_replace_attendance_info = array();
   foreach($replace_att_list as $attendance_info){
     $attendance_select .= '<option value="'.$attendance_info['id'].'"';
     if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$attendance_info['id']){
+      $select_replace_attendance_info = $attendance_info;
       $attendance_select .= ' selected ';
     }
     $attendance_select .= '>'.$attendance_info['title'].'</option>';
 
   }
+  if(empty($select_replace_attendance_info)){
+    $select_replace_attendance_info=$replace_att_list[0];
+
+  }
   //show work time detail
-  if($replace_att_list[0]['set_time']==0){
-          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$replace_att_list[0]['work_start'].'"><input type="hidden" name="email_work_end" value="'.$replace_att_list[0]['work_end'].'">';
-  }elseif($replace_att_list[0]['set_time']==1){
-         $work_time = $replace_att_list[0]['work_hours']+$replace_att_list[0]['rest_hours'];
+  if($select_replace_attendance_info['set_time']==0){
+          $user_adl = '<span>'.$select_replace_attendance_info['work_start'].'--'.$select_replace_attendance_info['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$select_replace_attendance_info['work_start'].'"><input type="hidden" name="email_work_end" value="'.$select_replace_attendance_info['work_end'].'">';
+  }elseif($select_replace_attendance_info['set_time']==1){
+         $work_time = $select_replace_attendance_info['work_hours']+$select_replace_attendance_info['rest_hours'];
          $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
   }
   }else{
