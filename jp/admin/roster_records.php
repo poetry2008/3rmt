@@ -1290,6 +1290,9 @@ for($i = 0; $i<$start_week; $i++)
 }
 $end_day = $day_num+(7-($day_num+$start_week)%7);
 $j=1;
+$user_info_arr = array();
+$user_key_arr = array();
+$is_manager = tep_is_group_manager($ocertify->auth_user);
 while($j<=$end_day)
 { 
   $edit_replace = false;
@@ -1299,7 +1302,7 @@ while($j<=$end_day)
     if($today <= $date_temp){
       $edit_replace = true;
     }
-    if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
+    if($ocertify->npermission>10||$is_manager){
       if($show_group_id!=0){
         echo " onclick='show_group_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"".$show_group_id."\",\"\",\"\")' >";
       }else{
@@ -1330,7 +1333,11 @@ while($j<=$end_day)
     $row_index = 0;
     foreach($show_select_group_user as $user_value){
 
-      $users_info = tep_get_user_info($user_value);
+      if(!in_array($user_value,$user_key_arr)){
+        $users_info = tep_get_user_info($user_value);
+        $user_info_arr[$user_value] = $users_info;
+        $user_key_arr[] = $user_value;
+      }
       //下面的一行代码，为了适应以前显示排班，临时加的，以后可以去掉
       $show_select_group_users = array($user_value);
       $row_index++;
