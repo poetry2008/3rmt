@@ -1037,10 +1037,10 @@ if($param_tep[0]!=''){
 
         //new 各种设定
         $group_str .= '<tr height="19">';
-        $group_str .= '<td style="padding-bottom:5px">';
+        $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
-        $group_str .= '<td style="padding-bottom:5px">';
+        $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
@@ -1065,10 +1065,10 @@ if($param_tep[0]!=''){
 
         //new 显示设定
         $group_str .= '<tr>';
-        $group_str .= '<td style="padding-bottom:5px">';
+        $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= TEXT_ATTENDANCE_SETTING_SHOW;
         $group_sr .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '<td style="padding-bottom:3px">';
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
@@ -1298,7 +1298,7 @@ while($j<=$end_day)
   $edit_replace = false;
   if($j<=$day_num){
     $date_temp = $year.tep_add_front_zone($month).tep_add_front_zone($j); //日期
-    echo "<td id='date_td_".$j."'  valign='top' style='font-size:14px' align='center'"; 
+    echo "<td id='date_td_".$j."'  valign='top' style='font-size:14px' align='right'"; 
     if($today <= $date_temp){
       $edit_replace = true;
     }
