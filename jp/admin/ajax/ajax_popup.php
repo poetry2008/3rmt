@@ -9780,6 +9780,7 @@ $group_content[]['text'] = array(
           }
         }
 		$group_user_list = array_combine($show_group_user,$uname_arr);
+		 $group_user_list = array_filter($group_user_list);
 		asort($group_user_list);
         $user_str = '<div id="show_user_list">';
 		foreach($group_user_list as $key=>$val) {
@@ -10880,8 +10881,12 @@ if($row_array['set_time']==0){
     $date_str .= '&nbsp;&nbsp;'.$self_user['name'];
   }else{
     $attendance_dd_arr = array();
-    foreach($all_user as $user_info){
-      $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
+    if($_GET['index'] == ''){
+      foreach($all_user as $user_info){
+        $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$user_info['userid']));
+      }
+    }else{
+      $attendance_dd_arr = array_merge($attendance_dd_arr,tep_get_attendance_user($_GET['date'],$_GET['uid']));
     }
   }
 
