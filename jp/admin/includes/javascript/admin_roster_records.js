@@ -35,19 +35,16 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
   dataType: 'text',
   async : false,
   success: function(data){
-     $('#show_attendance_edit').html(data);
-     if($('#show_attendance_edit').css('display')!='block'){
-     $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height());
-     if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
+      $('#show_attendance_edit').html(data);
+      $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height()+2);
+      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
-       $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
-     }else{
-       $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
-     } 
-     ele_value_obj_att = ele;
-     ele_index = 0;
-     $('#show_attendance_edit').css('display','block');
-     }
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
+      }else{
+        $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
+      } 
+      ele_value_obj_att = ele;
+      $('#show_attendance_edit').css('display','block'); 
  }
   }); 
 
