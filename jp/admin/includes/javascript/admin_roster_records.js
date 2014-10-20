@@ -1192,7 +1192,7 @@ function change_fetch_date(type) {
 function select_color(ele,color){
   document.getElementById("color_val").value=color;
   $('.color_div').each(function(){
-      $(this).css('border','2px solid #CCCCCC');
+      $(this).css('border','1px solid #CCCCCC');
   });
   $(ele).find("div").css('border','2px solid #4F4F4F');
 }
