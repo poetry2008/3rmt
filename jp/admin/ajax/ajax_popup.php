@@ -9584,11 +9584,11 @@ else if($_GET['action'] == 'set_payrols_info') {
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_SET_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_a',$attendance_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
+           array('text' => '<div>'.TEXT_ATT_SET_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_a',$attendance_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
-           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_ACTUAL_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_b',$attendance_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
+           array('text' => '<div>'.TEXT_ATT_ACTUAL_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_b',$attendance_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 
 
@@ -9920,11 +9920,11 @@ else if($_GET['action'] == 'edit_attendance_info') {
 	//param
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_SET_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_a',$attendance_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
+           array('text' => '<div>'.TEXT_ATT_SET_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_a',$attendance_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 	  $attendance_info_row[]['text'] =array(
 	       array('text' => ''), 
-           array('text' => '<div style="margin-left: -13px;">'.TEXT_ATT_ACTUAL_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_b',$attendance_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
+           array('text' => '<div>'.TEXT_ATT_ACTUAL_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_b',$attendance_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 
 
