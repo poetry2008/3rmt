@@ -602,6 +602,12 @@ if(isset($_GET['action'])){
       if(isset($_POST['show_group_user_list'])&&
           is_array($_POST['show_group_user_list'])&&
           !empty($_POST['show_group_user_list'])){
+        $type_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW. " where is_select=1 and operator_id='".$operator_id."'";
+        $type_query = tep_db_query($type_sql);
+        $type_value = 0;
+        if($type_row = tep_db_fetch_array($type_query)){
+          $type_value = $type_row['show_type'];
+        }
         //删除当组数据
         //修改其他组是否显示
         $del_sql = "delete from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE gid='".$_POST['show_group']."' and operator_id='".$operator_id."'";
@@ -616,6 +622,7 @@ if(isset($_GET['action'])){
           $insert_arr['is_select'] = '1';
           $insert_arr['operator_id'] = $operator_id;
           $insert_arr['att_status'] = $_POST['att_status'];
+          $insert_arr['show_type'] = $type_value;
           $perform_flag =tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
           if($error){
              $error = $perform_flag;
@@ -1368,7 +1375,7 @@ while($j<=$end_day)
       $users_info = tep_get_user_info($user_value);
       //下面的一行代码，为了适应以前显示排班，临时加的，以后可以去掉
       $show_select_group_users = array($user_value);
-      echo '<tr>';
+      echo '<tr onmouseout="this.className=\'\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'">';
       echo '<td>'.$users_info['name'].'</td>';
       if($j == 7 - $start_week){
         for($i = 0; $i<$start_week; $i++){
