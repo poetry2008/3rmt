@@ -10837,7 +10837,7 @@ if($row_array['set_time']==0){
       $show_user_id_list[] = $row_all_check_user['userid'];
     }
 	//全部的
-    $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+    $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
       if(in_array($row_all_user['userid'],$show_user_id_list)){
@@ -11530,7 +11530,7 @@ if($row_array['set_time']==0){
     $already_add_user_array = array_unique($already_add_user_array);
     $current_users_list = array();
     if($ocertify->npermission >= '15'){
-      $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+      $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       while($row_all_user = tep_db_fetch_array($query_all_user)){
         if(!in_array($row_all_user['userid'],$already_add_user_array)){
@@ -11692,13 +11692,6 @@ if($row_array['set_time']==0){
     $attendance_select .= '>'.$attendance_info['title'].'</option>';
 
   }
-  //show work time detail
-  if($replace_att_list[0]['set_time']==0){
-          $user_adl = '<span>'.$replace_att_list[0]['work_start'].'--'.$replace_att_list[0]['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$replace_att_list[0]['work_start'].'"><input type="hidden" name="email_work_end" value="'.$replace_att_list[0]['work_end'].'">';
-  }elseif($replace_att_list[0]['set_time']==1){
-         $work_time = $replace_att_list[0]['work_hours']+$replace_att_list[0]['rest_hours'];
-         $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
-  }
   }else{
     $attendance_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
   }
@@ -11723,6 +11716,7 @@ if($row_array['set_time']==0){
     $attendance_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
     $attendance_select_hidden = '';
     if(!empty($replace_att_list)){
+    $select_replace_attendance_info = array();
       foreach($replace_att_list as $attendance_info){
         if($attendance_select_hidden =='' ){
           $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$attendance_info['id'].'">';
@@ -11735,6 +11729,7 @@ if($row_array['set_time']==0){
             $attendance_select .= '<option value="'.$attendance_info['id'].'"';
             if($_GET['att_id']==$attendance_info['id']){
               $attendance_select .= ' selected ';
+              $select_replace_attendance_info = $attendance_info;
               $select_att = $attendance_info['id'];
               $current_att_title = $attendance_info['title'];
               $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$attendance_info['id'].'">';
@@ -11745,6 +11740,7 @@ if($row_array['set_time']==0){
           $attendance_select .= '<option value="'.$attendance_info['id'].'"';
           if(isset($_GET['att_id'])&&$_GET['att_id']==$attendance_info['id']){
             $attendance_select .= ' selected ';
+            $select_replace_attendance_info = $attendance_info;
             $select_att = $attendance_info['id'];
             $current_att_title = $attendance_info['title'];
             $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="'.$attendance_info['id'].'">';
@@ -11755,6 +11751,15 @@ if($row_array['set_time']==0){
       }
       if($select_att == ''){
         $select_att = 0;
+      }
+
+      if(!empty($select_replace_attendance_info)){
+        if($select_replace_attendance_info['set_time']==0){
+          $user_adl = '<span>'.$select_replace_attendance_info['work_start'].'--'.$select_replace_attendance_info['work_end'].'</span><input type="hidden" name="email_work_start" value="'.$select_replace_attendance_info['work_start'].'"><input type="hidden" name="email_work_end" value="'.$select_replace_attendance_info['work_end'].'">';
+        }elseif($select_replace_attendance_info['set_time']==1){
+          $work_time = $select_replace_attendance_info['work_hours']+$select_replace_attendance_info['rest_hours'];
+          $user_adl = '<span>'.$work_time .TELECOM_UNKNOW_TABLE_TIME. '</span>';
+        }
       }
     }
   }else{
@@ -11922,7 +11927,7 @@ if($row_array['set_time']==0){
     $already_add_user_array = array_unique($already_add_user_array);
     $current_users_list = array();
     if($ocertify->npermission >= '15'){
-      $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+      $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
       while($row_all_user = tep_db_fetch_array($query_all_user)){

@@ -1063,7 +1063,7 @@ if($param_tep[0]!=''){
         }
 
         //new 各种设定
-        $group_str .= '<tr height="18">';
+        $group_str .= '<tr height="19">';
         $group_str .= '<td valign="top">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
