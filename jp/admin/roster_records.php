@@ -1305,7 +1305,7 @@ while($j<=$end_day)
       }else{
         echo '<tr  onmouseout="this.className=\'dataTableSecondRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableSecondRow">';
       }
-      echo '<td>'.$users_info['name'].'</td>';
+      echo '<td height="16">'.$users_info['name'].'</td>';
       if($j == 7 - $start_week){
         for($i = 0; $i<$start_week; $i++){
           echo "<td>&nbsp;</td>";
@@ -1440,7 +1440,7 @@ while($j<=$end_day)
     $info_td_attendance_str .= "</tr>";
   }
   echo (empty($temp_user_attenande)&&!$is_replace ? " onclick='show_user_attendance_info(this,\"".$date."\",\"".$k."\",\"".$user_value."\",\"\",\"\");'" : '').">";
-  if(empty($temp_user_attenande)){
+  if(empty($temp_user_attenande)&&!$is_replace){
     echo "&nbsp;";
   }
   $info_td_attendance_str .= '</table>';
