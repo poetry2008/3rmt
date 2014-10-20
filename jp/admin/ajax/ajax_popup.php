@@ -10837,7 +10837,7 @@ if($row_array['set_time']==0){
       $show_user_id_list[] = $row_all_check_user['userid'];
     }
 	//全部的
-    $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+    $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
       if(in_array($row_all_user['userid'],$show_user_id_list)){
@@ -11530,7 +11530,7 @@ if($row_array['set_time']==0){
     $already_add_user_array = array_unique($already_add_user_array);
     $current_users_list = array();
     if($ocertify->npermission >= '15'){
-      $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+      $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       while($row_all_user = tep_db_fetch_array($query_all_user)){
         if(!in_array($row_all_user['userid'],$already_add_user_array)){
@@ -11922,7 +11922,7 @@ if($row_array['set_time']==0){
     $already_add_user_array = array_unique($already_add_user_array);
     $current_users_list = array();
     if($ocertify->npermission >= '15'){
-      $sql_all_user = "select * from ".TABLE_USERS." where status='1' order by name asc";
+      $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
