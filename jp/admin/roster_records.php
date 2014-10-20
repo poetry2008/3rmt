@@ -1099,13 +1099,13 @@ if($param_tep[0]!=''){
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
-        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
-        $group_str .= '</td>';
-        $group_str .= '<td>';
         $group_str .= '<select onchange="save_type(this,\''.$self_href.'\')" name="show_mode">';
         $group_str .= '<option value="0" '.($show_type==0?' selected ':'').'>'.TEXT_ATTENDANCE_TABLE_MODE.'</option>';
         $group_str .= '<option value="1" '.($show_type==1?' selected ':'').'>'.TEXT_ATTENDANCE_CALENDAR_MODE.'</option>';
         $group_str .= '</select>';
+        $group_str .= '</td>';
+        $group_str .= '<td align="left">';
+        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
         $group_str .= '</table>';
