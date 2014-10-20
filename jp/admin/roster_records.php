@@ -1293,6 +1293,7 @@ $j=1;
 $user_info_arr = array();
 $user_key_arr = array();
 $is_manager = tep_is_group_manager($ocertify->auth_user);
+$user_group_arr = array();
 while($j<=$end_day)
 { 
   $edit_replace = false;
@@ -1337,6 +1338,9 @@ while($j<=$end_day)
         $users_info = tep_get_user_info($user_value);
         $user_info_arr[$user_value] = $users_info;
         $user_key_arr[] = $user_value;
+        $user_group_arr[$user_value] = tep_get_groups_by_user($user_value);
+      }else{
+        $users_info = $user_info_arr[$user_value];
       }
       //下面的一行代码，为了适应以前显示排班，临时加的，以后可以去掉
       $show_select_group_users = array($user_value);
@@ -1362,7 +1366,7 @@ while($j<=$end_day)
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
   echo "<tr><td align='right' style='font-size:12px; border-width:0px; cursor:pointer;' ";
   $temp_user_attenande = array();
-  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date,$show_group_id);
+  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date,$show_group_id,$user_group_arr[$user_value],false);
   //个人的所有排班
   $info_td_attendance_str = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
   foreach($temp_user_attenande as $user_attenande){
