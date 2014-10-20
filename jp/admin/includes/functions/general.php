@@ -13996,7 +13996,7 @@ function tep_get_userlist_by_group_uid($uid){
   return $res;
 }
 
-function tep_no_parent_data($arr,$parent_arr=array()){
+function tep_no_parent_data($arr,$parent_arr=array(),$new_style=false){
   if(empty($parent_arr)){
     foreach($arr as $info){
       $parent_arr[] = $info['parent_id']; 
@@ -14005,7 +14005,12 @@ function tep_no_parent_data($arr,$parent_arr=array()){
   if(!empty($parent_arr)){
   $res_arr = array();
   foreach($arr as $value){
-    if(!in_array($value['id'],$parent_arr)){
+    if($new_style){
+      $temp_id = $value['aid'];
+    }else{
+      $temp_id = $value['id'];
+    }
+    if(!in_array($temp_id,$parent_arr)){
       $res_arr[] = $value;
     }
   }
@@ -14123,13 +14128,13 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
       $all_sql .= " false )";
     }
   }
-  $all_sql .= ")  and atd.date <= ".$date." order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
+  $all_sql .= ") and ( valid_date = 0 or valid_date > ".$date.") and atd.date <= ".$date." order by atd.is_user desc,atd.id desc,ad.set_time desc,ad.work_start asc";
   $query = tep_db_query($all_sql);
   $attendance_dd_arr_tmp = array();
   while($row = tep_db_fetch_array($query)){
     $attendance_dd_arr_tmp[] = $row;
   }
-  $attendance_dd_arr = tep_no_parent_data($attendance_dd_arr);
+  $attendance_dd_arr_tmp = tep_no_parent_data($attendance_dd_arr_tmp,array(),true);
   $diff_arr = array();
   if(count($attendance_dd_arr_tmp)>1){
     // 时间段 和 时间数 的排班数组
@@ -14188,6 +14193,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'work_hours' => '',
           'rest_hours' => '',
           'user_id' => $r_info['user_id'],
+          'date' => $r_info['date']
         );
   }
   if(count($attendance_dd_arr_tmp)>1){
@@ -14217,7 +14223,8 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'work_hours' => $v['work_hours'],
           'rest_hours' => $v['rest_hours'],
           'group_id' => $v['group_id'],
-          'user_id' => $v['user_id']
+          'user_id' => $v['user_id'],
+          'date' => $v['date']
           );
       }
     }
@@ -14246,7 +14253,8 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
             'work_hours' => $attendance_dd_arr_tmp[0]['work_hours'],
             'rest_hours' => $attendance_dd_arr_tmp[0]['rest_hours'],
             'group_id' => $attendance_dd_arr_tmp[0]['group_id'],
-            'user_id' => $attendance_dd_arr_tmp[0]['user_id']
+            'user_id' => $attendance_dd_arr_tmp[0]['user_id'],
+            'date' => $attendance_dd_arr_tmp[0]['date']
             );
         }
       }
@@ -14272,6 +14280,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'rest_hours' => $sv['rest_hours'],
           'group_id' => $sv['group_id'],
           'user_id' => $sv['user_id'],
+          'date' => $sv['date'],
           );
       }
     }
@@ -14774,7 +14783,7 @@ function time_diff($start_time,$end_time){
 
   return round($work_hours_time,1);
 }
-function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_status=0){
+function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_status=0,$show_type=0){
   global $ocertify,$user_atted;
   $today = date('Ymd',time());
   $user_info = tep_get_user_info($uid);
@@ -14786,11 +14795,24 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
     if($date<$today){
-      $param_str = '<a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
+      if($show_type==0){
+        $param_str = '</a><a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
+      }else{
+        $param_str = '<a href="javascript:void(0)" onclick="change_att_date(\''.$date.'\',\''.$index.'\',\''.$uid.'\',\''.$atted_info['aid'].'\')">';
+      }
     }
   }
-//  $return_str = $user_info['name'].'&nbsp;';
+  if($show_type==0){
+    $return_str = $user_info['name'].'&nbsp;';
+  }
   if(!empty($atted_info)){
+    if($show_type==0){
+      if($param_str != ''){
+        if($show_status !=2 ){
+          $return_str .= $param_str;
+        }
+      }
+    }
     if($atted_info['error']&&$show_status!=2){
       if($bg_color == '#FF0000'){
         $return_str .= '<font color ="#FFFFFF">';
@@ -14818,9 +14840,13 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
         $return_str .= '</font>';
       }
     }
-    if($param_str != ''){
-      if($show_status !=2 ){
-        $return_str = $param_str.$return_str.'</a>';
+    if($show_type==0){
+      $return_str .= '<br>';
+    }else{
+      if($param_str != ''){
+        if($show_status !=2 ){
+          $return_str = $param_str.$return_str.'</a>';
+        }
       }
     }
   }

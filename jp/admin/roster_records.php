@@ -602,6 +602,12 @@ if(isset($_GET['action'])){
       if(isset($_POST['show_group_user_list'])&&
           is_array($_POST['show_group_user_list'])&&
           !empty($_POST['show_group_user_list'])){
+        $type_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW. " where is_select=1 and operator_id='".$operator_id."'";
+        $type_query = tep_db_query($type_sql);
+        $type_value = 0;
+        if($type_row = tep_db_fetch_array($type_query)){
+          $type_value = $type_row['show_type'];
+        }
         //删除当组数据
         //修改其他组是否显示
         $del_sql = "delete from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE gid='".$_POST['show_group']."' and operator_id='".$operator_id."'";
@@ -616,6 +622,7 @@ if(isset($_GET['action'])){
           $insert_arr['is_select'] = '1';
           $insert_arr['operator_id'] = $operator_id;
           $insert_arr['att_status'] = $_POST['att_status'];
+          $insert_arr['show_type'] = $type_value;
           $perform_flag =tep_db_perform(TABLE_ATTENDANCE_GROUP_SHOW,$insert_arr);
           if($error){
              $error = $perform_flag;
@@ -1050,7 +1057,7 @@ if($param_tep[0]!=''){
         }
 
         //new 各种设定
-        $group_str .= '<tr>';
+        $group_str .= '<tr height="18">';
         $group_str .= '<td valign="top">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
@@ -1331,7 +1338,7 @@ while($j<=$end_day)
   $edit_replace = false;
   if($j<=$day_num){
     $date_temp = $year.tep_add_front_zone($month).tep_add_front_zone($j); //日期
-    echo "<td id='date_td_".$j."'  valign='top' align='center'"; 
+    echo "<td id='date_td_".$j."'  valign='top' style='font-size:14px' align='center'"; 
     if($today <= $date_temp){
       $edit_replace = true;
     }
@@ -1348,7 +1355,14 @@ while($j<=$end_day)
         echo " >";
       }
     }
-    echo $j."</td>";
+    if($date_temp == $today){
+      echo "<div class='dataTable_hight_red'>";
+    }else{
+      echo "<div style='background-color:#3C7FB1'>";
+    }
+    echo $j;
+    echo "</div>";
+    echo "</td>";
   }else{
     echo '<td>&nbsp;</td>'; 
   }
@@ -1361,7 +1375,7 @@ while($j<=$end_day)
       $users_info = tep_get_user_info($user_value);
       //下面的一行代码，为了适应以前显示排班，临时加的，以后可以去掉
       $show_select_group_users = array($user_value);
-      echo '<tr>';
+      echo '<tr onmouseout="this.className=\'\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'">';
       echo '<td>'.$users_info['name'].'</td>';
       if($j == 7 - $start_week){
         for($i = 0; $i<$start_week; $i++){
@@ -1376,18 +1390,15 @@ while($j<=$end_day)
 
   echo '<td>';
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
-  echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
-  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date);
-  echo (empty($temp_user_attenande) ? " onclick='show_group_attendance_info(this,\"".$date."\",\"".$k."\",\"\",\"\",\"".$user_value."\");'" : '').">";
-  if($date == $today){
-    echo "<div class='dataTable_hight_red'>";
-  }
-  if(empty($temp_user_attenande)){
-    echo "&nbsp;";
-  }
+  echo "<tr><td align='right' style='font-size:12px; border-width:0px; cursor:pointer;' ";
+  $temp_user_attenande = array();
+  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date,$show_group_id);
   //个人的所有排班
   $info_td_attendance_str = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
   foreach($temp_user_attenande as $user_attenande){
+    if($user_attenande['replace_attendance_detail_id']!=''){
+      continue;
+    }
     //排班信息输出
     $attendance_info =  $all_att_arr[$user_attenande['attendance_detail_id']];
     $info_td_attendance_str .= "<tr>";
@@ -1472,7 +1483,9 @@ while($j<=$end_day)
     and attendance_detail_id='0' 
     and date='".$date."'";
   $other_replace_query = tep_db_query($other_replace_sql);
+  $is_replace = false;
   while($other_replace_user_row = tep_db_fetch_array($other_replace_query)){
+    $is_replace = true;
     $replace_attendance_info = $all_att_arr[$other_replace_user_row['replace_attendance_detail_id']];
     $info_td_attendance_str .= "<tr>";
     if($replace_attendance_info['scheduling_type'] == 0){
@@ -1497,11 +1510,12 @@ while($j<=$end_day)
     $info_td_attendance_str .= "</td>";
     $info_td_attendance_str .= "</tr>";
   }
+  echo (empty($temp_user_attenande)&&!$is_replace ? " onclick='show_user_attendance_info(this,\"".$date."\",\"".$k."\",\"".$user_value."\",\"\",\"\");'" : '').">";
+  if(empty($temp_user_attenande)){
+    echo "&nbsp;";
+  }
   $info_td_attendance_str .= '</table>';
   echo $info_td_attendance_str;
-  if($date == $today){
-    echo "</div>";
-  }
   echo "</td></tr>";
     echo "</table>";
     echo "</div>";
