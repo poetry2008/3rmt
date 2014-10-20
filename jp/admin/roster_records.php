@@ -807,12 +807,15 @@ $(document).ready(function() {
       <?php //esc?>
       if ($('#show_attendance_edit').css('display') != 'none') {
         hidden_info_box();
+        o_submit_single = true;
       }
     }
     if (event.which == 13) {
       <?php //回车?>
       if ($('#show_attendance_edit').css('display') != 'none') {
-        $("#button_save").trigger("click");
+        if(o_submit_single){
+          $("#button_save").trigger("click");
+        }
       }
     }
   });
@@ -1370,12 +1373,18 @@ while($j<=$end_day)
 
   if($week == 6){
     echo "</tr>";
+    $row_index = 0;
     foreach($show_select_group_user as $user_value){
 
       $users_info = tep_get_user_info($user_value);
       //下面的一行代码，为了适应以前显示排班，临时加的，以后可以去掉
       $show_select_group_users = array($user_value);
-      echo '<tr onmouseout="this.className=\'\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'">';
+      $row_index++;
+      if($row_index%2==1){
+        echo '<tr onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow">';
+      }else{
+        echo '<tr  onmouseout="this.className=\'dataTableSecondRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableSecondRow">';
+      }
       echo '<td>'.$users_info['name'].'</td>';
       if($j == 7 - $start_week){
         for($i = 0; $i<$start_week; $i++){
