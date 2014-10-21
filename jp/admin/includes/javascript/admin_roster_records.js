@@ -610,6 +610,7 @@ if(flag !=1 && sign!=1) {
 function del_as(ele,asl_id,c_permission){
   var tr_index = $(ele).parent().parent().index();
   var next_input = $(ele).parent().html();
+  tr_index++;
 
   $('.popup_order_info').find('tr').eq(tr_index).remove();
   $('.popup_order_info').find('tr').eq(tr_index).remove();
@@ -627,6 +628,7 @@ function del_as(ele,asl_id,c_permission){
 }
 function del_as_user(ele,asl_id,is_new){
   var tr_index = $(ele).parent().parent().index();
+  tr_index++;
   $('.popup_order_info').find('tr').eq(tr_index).remove();
   if(!is_new){
     $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
@@ -634,6 +636,7 @@ function del_as_user(ele,asl_id,is_new){
 }
 function del_as_group(ele,attendance_group,is_new,c_permission){
   var tr_index = $(ele).parent().parent().index();
+  tr_index++;
 
   if(is_new == false){
   var del_sum = 0;
