@@ -332,7 +332,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 5=>'http://rmtrank.com/pico7+index.htm',
                                 6=>'http://rmt.kakaran.jp/redstone/',
                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=13&Mode=Buy&',
-                                9=>'http://rmt.diamond-gil.jp/',
+                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/redstone/view/sv/',
                                 10=>'http://www.asahi-rmt-service.com/redstone/purchase.html',
                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=9&Mode=Buy&',
                                 12=>'http://www.rmtsonic.jp/games/redstone.html'
@@ -344,7 +344,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                  5=>'http://rmtrank.com/',
                                  6=>'http://rmt.kakaran.jp/redstone/',
                                  8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=13&Mode=Sale',
-                                 9=>'http://rmt.diamond-gil.jp/',
+                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/redstone/view/sv/',
                                  10=>'http://www.asahi-rmt-service.com/redstone/sale.html',
                                  11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=9&Mode=Sale',
                                  12=>'http://www.rmtsonic.jp/'
