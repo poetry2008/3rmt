@@ -35,17 +35,16 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
   dataType: 'text',
   async : false,
   success: function(data){
-     $('#show_attendance_edit').html(data);
-     $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height());
-     if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
+      $('#show_attendance_edit').html(data);
+      $("#show_attendance_edit").css('top',ele_obj.top-box_warp_top+$(ele).height()+2);
+      if(ele_obj.left-box_warp_left+$("#show_attendance_edit").width() > ele_width){
 
-       $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
-     }else{
-       $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
-     } 
-     ele_value_obj_att = ele;
-     ele_index = 0;
-     $('#show_attendance_edit').css('display','block');
+        $("#show_attendance_edit").css('left',ele_width-$("#show_attendance_edit").width()); 
+      }else{
+        $("#show_attendance_edit").css('left',ele_obj.left-box_warp_left);
+      } 
+      ele_value_obj_att = ele;
+      $('#show_attendance_edit').css('display','block'); 
  }
   }); 
 
@@ -289,7 +288,13 @@ function change_image_text(_this) {
 }
 
 //show group attendance info
-function show_group_attendance_info(ele,date,num,gid,add_id){
+function show_group_attendance_info(ele,date,num,gid,add_id,user){
+  if(!user){
+    user = '';
+  }
+  if(!gid){
+    gid = '';
+  }
 	//check the user if is manager or group leader
    $.ajax({
       url: 'ajax.php?action=tep_show_info_attendance',
@@ -337,7 +342,7 @@ function show_group_attendance_info(ele,date,num,gid,add_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=edit_group_attendance_info&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id,
+    url: 'ajax.php?action=edit_group_attendance_info&date='+date+'&gid='+gid+'&index='+index+'&add_id='+add_id+'&user='+user,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -1180,4 +1185,11 @@ function change_fetch_date(type) {
       show_replace_attendance_info('',date,'','','');
     }
   }
+}
+function select_color(ele,color){
+  document.getElementById("color_val").value=color;
+  $('.color_div').each(function(){
+      $(this).css('border','1px solid #CCCCCC');
+  });
+  $(ele).find("div").css('border','2px solid #4F4F4F');
 }

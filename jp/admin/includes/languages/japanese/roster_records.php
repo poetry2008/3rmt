@@ -65,6 +65,7 @@ define('TEXT_REMIND_CHOICE_SELECT','*必須');
 define('TEXT_ATTENDANCE_SETTING', '各種設定');
 define('TEXT_ATTENDANCE_SETTING_USER', '出勤スタッフ');
 define('TEXT_ATTENDANCE_SETTING_GROUP', '出勤グループ');
+define('TEXT_ATTENDANCE_SETTING_GROUP_CONFIG', 'グループ設定');
 define('TEXT_ATTENDANCE_SETTING_CHANGE', '出勤変更');
 define('TEXT_ATTENDANCE_SETTING_MOVE', 'シフト');
 define('TEXT_ATTENDANCE_SETTING_PAYROLLS', '給料関連設定');
@@ -73,5 +74,6 @@ define('TEXT_ATTENDANCE_TABLE_MODE', 'シフト表モード');
 define('TEXT_ATTENDANCE_CALENDAR_MODE', 'カレンダ―モード');
 define('TEXT_ATTENDANCE_DATE', '日付');
 define('TEXT_PARAM_TYPE','タイプ');
+define('SELECT_ALL','全て選択');
 ?>
 

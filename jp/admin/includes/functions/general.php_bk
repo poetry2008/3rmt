@@ -14108,7 +14108,7 @@ function tep_is_attenandced_date($user){
 /***************************
   获得用户当前日期需要出勤的所有排班
 ***************************/
-function tep_all_attenande_by_uid($user,$date,$show_group=0){
+function tep_all_attenande_by_uid($user,$date,$show_group=0,$user_group_arr=array(),$is_group=true){
   $date_info = tep_date_info($date);
   $all_sql = "select atd.id as aid,atd.*,ad.* from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
     ". TABLE_ATTENDANCE_DETAIL ." ad on atd.attendance_detail_id = ad.id  
@@ -14120,8 +14120,12 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
   if($show_group!=0){
     $all_sql .= " group_id='".$show_group."' )";
   }else{
-    $group_list = tep_get_groups_by_user($user);
-    if(!empty($group_list)){
+    if(empty($user_group_arr)){
+      $group_list = tep_get_groups_by_user($user);
+    }else{
+      $group_list = $user_group_arr;
+    }
+    if(!empty($group_list)&&$is_group){
       $group_str = implode(',',$group_list);
       $all_sql .= " group_id in ( ".$group_str." )) ";
     }else{
@@ -14791,7 +14795,7 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
     $return_str = $user_info['name'].'&nbsp;';
     return $return_str;
   }
-  $mger_listanager_list = tep_get_user_list_by_userid($uid);
+  $manager_list = tep_get_user_list_by_userid($uid);
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
     if($date<$today){
