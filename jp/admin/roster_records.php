@@ -969,7 +969,7 @@ if($param_tep[0]!=''){
         }
         if($has_default){
           if($show_group_id==0){
-            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
             $user_query = tep_db_query($user_sql);
             while($user_row = tep_db_fetch_array($user_query)){
               $show_group_user[] = $user_row['userid'];
@@ -984,7 +984,7 @@ if($param_tep[0]!=''){
           }
         }else{
           if($ocertify->npermission>10){
-            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
             $user_query = tep_db_query($user_sql);
             while($user_row = tep_db_fetch_array($user_query)){
               $show_group_user[] = $user_row['userid'];
@@ -995,21 +995,20 @@ if($param_tep[0]!=''){
             if(!empty($prent_group)){
               $show_group_id = $prent_group[0];
               if($show_group_id==0){
-                $user_sql = "select * from ".TABLE_USERS." where status='1'";
+                $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
                 $user_query = tep_db_query($user_sql);
                 while($user_row = tep_db_fetch_array($user_query)){
                   $show_group_user[] = $user_row['userid'];
                 }
               } else {
-                $user_sql = "select * from ".TABLE_GROUPS." 
-                   where id='".$show_group_id."'";
+                $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
                 $user_query = tep_db_query($user_sql);
                 if($user_row = tep_db_fetch_array($user_query)){
                   $show_group_user = explode('|||',$user_row['all_users_id']);
                 }
               }
             }else{
-              $user_sql = "select * from ".TABLE_USERS." where status='1'";
+              $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
               $user_query = tep_db_query($user_sql);
               while($user_row = tep_db_fetch_array($user_query)){
                 $show_group_user[] = $user_row['userid'];
