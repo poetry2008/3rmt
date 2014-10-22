@@ -4824,6 +4824,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
       and c.site_id = ".SITE_ID);
    $customers_res = tep_db_fetch_array($customers_raw);
    $referer = $customers_res['referer'];
+   tep_db_query("update ".TABLE_CUSTOMERS." set referer=''   where customers_id='".$customers_id."'");
   
    $shipping_address_query = tep_db_query("
       select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state 
