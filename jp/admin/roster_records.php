@@ -969,7 +969,7 @@ if($param_tep[0]!=''){
         }
         if($has_default){
           if($show_group_id==0){
-            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
             $user_query = tep_db_query($user_sql);
             while($user_row = tep_db_fetch_array($user_query)){
               $show_group_user[] = $user_row['userid'];
@@ -984,7 +984,7 @@ if($param_tep[0]!=''){
           }
         }else{
           if($ocertify->npermission>10){
-            $user_sql = "select * from ".TABLE_USERS." where status='1'";
+            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
             $user_query = tep_db_query($user_sql);
             while($user_row = tep_db_fetch_array($user_query)){
               $show_group_user[] = $user_row['userid'];
@@ -995,21 +995,20 @@ if($param_tep[0]!=''){
             if(!empty($prent_group)){
               $show_group_id = $prent_group[0];
               if($show_group_id==0){
-                $user_sql = "select * from ".TABLE_USERS." where status='1'";
+                $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
                 $user_query = tep_db_query($user_sql);
                 while($user_row = tep_db_fetch_array($user_query)){
                   $show_group_user[] = $user_row['userid'];
                 }
               } else {
-                $user_sql = "select * from ".TABLE_GROUPS." 
-                   where id='".$show_group_id."'";
+                $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
                 $user_query = tep_db_query($user_sql);
                 if($user_row = tep_db_fetch_array($user_query)){
                   $show_group_user = explode('|||',$user_row['all_users_id']);
                 }
               }
             }else{
-              $user_sql = "select * from ".TABLE_USERS." where status='1'";
+              $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
               $user_query = tep_db_query($user_sql);
               while($user_row = tep_db_fetch_array($user_query)){
                 $show_group_user[] = $user_row['userid'];
@@ -1037,10 +1036,10 @@ if($param_tep[0]!=''){
 
         //new 各种设定
         $group_str .= '<tr height="19">';
-        $group_str .= '<td style="padding-bottom:5px">';
+        $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
-        $group_str .= '<td style="padding-bottom:5px">';
+        $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
@@ -1065,10 +1064,10 @@ if($param_tep[0]!=''){
 
         //new 显示设定
         $group_str .= '<tr>';
-        $group_str .= '<td style="padding-bottom:5px">';
+        $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= TEXT_ATTENDANCE_SETTING_SHOW;
         $group_sr .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '<td style="padding-bottom:3px">';
         $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
         $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
@@ -1290,16 +1289,20 @@ for($i = 0; $i<$start_week; $i++)
 }
 $end_day = $day_num+(7-($day_num+$start_week)%7);
 $j=1;
+$user_info_arr = array();
+$user_key_arr = array();
+$is_manager = tep_is_group_manager($ocertify->auth_user);
+$user_group_arr = array();
 while($j<=$end_day)
 { 
   $edit_replace = false;
   if($j<=$day_num){
     $date_temp = $year.tep_add_front_zone($month).tep_add_front_zone($j); //日期
-    echo "<td id='date_td_".$j."'  valign='top' style='font-size:14px' align='center'"; 
+    echo "<td id='date_td_".$j."'  valign='top' style='font-size:14px' align='right'"; 
     if($today <= $date_temp){
       $edit_replace = true;
     }
-    if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
+    if($ocertify->npermission>10||$is_manager){
       if($show_group_id!=0){
         echo " onclick='show_group_attendance_info(this,\"".$date_temp."\",\"".$j."\",\"".$show_group_id."\",\"\",\"\")' >";
       }else{
@@ -1330,7 +1333,14 @@ while($j<=$end_day)
     $row_index = 0;
     foreach($show_select_group_user as $user_value){
 
-      $users_info = tep_get_user_info($user_value);
+      if(!in_array($user_value,$user_key_arr)){
+        $users_info = tep_get_user_info($user_value);
+        $user_info_arr[$user_value] = $users_info;
+        $user_key_arr[] = $user_value;
+        $user_group_arr[$user_value] = tep_get_groups_by_user($user_value);
+      }else{
+        $users_info = $user_info_arr[$user_value];
+      }
       //下面的一行代码，为了适应以前显示排班，临时加的，以后可以去掉
       $show_select_group_users = array($user_value);
       $row_index++;
@@ -1355,7 +1365,7 @@ while($j<=$end_day)
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
   echo "<tr><td align='right' style='font-size:12px; border-width:0px; cursor:pointer;' ";
   $temp_user_attenande = array();
-  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date,$show_group_id);
+  $temp_user_attenande = tep_all_attenande_by_uid($user_value,$date,$show_group_id,$user_group_arr[$user_value],false);
   //个人的所有排班
   $info_td_attendance_str = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
   foreach($temp_user_attenande as $user_attenande){

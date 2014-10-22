@@ -3530,7 +3530,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         if($show_group_id==0){
          // $user_sql = "select * from ".TABLE_USERS." where status='1'";
           $user_list_query_raw = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
-          $user_query = tep_db_query($user_sql);
+          $user_query = tep_db_query($user_list_query_raw);
           while($user_row = tep_db_fetch_array($user_query)){
             $show_group_user[] = $user_row['userid'];
           }
