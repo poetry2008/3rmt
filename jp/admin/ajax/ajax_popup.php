@@ -11174,7 +11174,7 @@ if($row_array['set_time']==0){
   //底部内容
   $buttons = array();
   if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']==''){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['back_group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
 
@@ -11565,10 +11565,10 @@ if($row_array['set_time']==0){
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10 || tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\',\''.$_GET['gid'].'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'as\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
@@ -11708,7 +11708,7 @@ if($row_array['set_time']==0){
 
     $admin_flag = true;
   }
-  $attendance_select = '<select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value);"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
+  $attendance_select = '<select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value,\''.$_GET['group_id'].'\');"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,$_GET['uid']); 
     $select_att = '';
@@ -12094,9 +12094,9 @@ if($row_array['set_time']==0){
   
   if(!isset($_GET['uid'])||$_GET['uid']==''||tep_is_group_manager($ocertify->auth_user)){
     if(tep_is_group_manager($ocertify->auth_user)){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',temp_group_id,\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }else{
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }
   }
   if($ocertify->npermission>10
@@ -12128,5 +12128,167 @@ if($row_array['set_time']==0){
   $notice_box->get_heading($heading);   
   $notice_box->get_contents($as_info_row, $buttons);
   $notice_box->get_eof(tep_eof_hidden());
+  echo $notice_box->show_notice();
+}else if($_GET['action'] == 'edit_basic_object_info'){
+  /* -----------------------------------------------------
+    功能: 编辑组的基本项目弹出框
+    参数: group_id 组ID 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PAYROLLS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => TEXT_PAYROLLS_SETTING_BASIC_OBJECT);
+  $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
+
+  $buttons = array();
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick=""').'</a>';
+
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $user_payrolls_info = array();
+
+  //生成组的下拉框
+  $group_list = tep_get_group_tree();
+  if(USER_PAYROLL_SETTING != ''){
+    $user_payroll_array = unserialize(USER_PAYROLL_SETTING);
+    if(isset($user_payroll_array[$ocertify->auth_user])){
+      $show_group_id = $user_payroll_array[$ocertify->auth_user]['group'];
+    }else{
+      $show_group_id = $group_list[0]['id']; 
+    }
+  }else{
+    $show_group_id = $group_list[0]['id']; 
+  }
+  $show_group_id = $_GET['group_id'] != '' ? $_GET['group_id'] : $show_group_id;
+
+  $group_str .= '<select name="show_group" onchange="change_group_list(0,this.value)">';
+  foreach($group_list as $group){
+    $group_str .= '<option value="'.$group['id'].'"';
+    if($show_group_id == $group['id']){
+      $group_str .= ' selected ';
+    }
+    $group_str .= '>'.$group['text'].'</oprion>';
+  }
+  $group_str .= '</select>';
+
+  $user_payrolls_info[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_GROUP_SELECT), 
+        array('align' => 'left', 'text' => $group_str), 
+      ); 
+  //工资计算
+  $payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$show_group_id."' and project_id=0 order by sort"); 
+  //计算工资的项目
+  if(tep_db_num_rows($payroll_query) > 0){
+    $i = 1;
+    //已有的项目ID
+    $old_project_id_array = array();
+    $text_array = array();
+    while($payroll_array = tep_db_fetch_array($payroll_query)){
+
+      $group_content_row_payroll = array();
+      $group_content_row_payroll[] = array('params'=>'width="20%"','text'=> '<input type="hidden" value="'.$payroll_array['id'].'" name="payroll_sort[]">'.TEXT_PAYROLLS_OBJECT_VALUE); 
+      $old_project_id_array[] = $payroll_array['id'];
+      $group_content_row_payroll[] = array('text' => '<input type="text" style="width: 145px;" value="'.$payroll_array['title'].'" name="old_object_title['.$payroll_array['id'].']"><input type="text" style="width: 150px;" value="'.$payroll_array['contents'].'" name="old_object_contents['.$payroll_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_PAYROLL_OBJECT_VALUE.'\',\''.TEXT_GROUP_PAYROLL_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><textarea style="overflow-y: hidden; width: 299px; height: 15px;" name="old_object_value['.$payroll_array['id'].']" id="textarea_'.$i.'">'.$payroll_array['project_value'].'</textarea>'); 
+      $user_payrolls_info[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_payroll);
+      $i++;
+    }
+  }
+  tep_db_free_result($payroll_query); 
+  $form_str = tep_draw_form('copy_group', FILENAME_GROUPS, 'action=copy_group_confirm');
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($user_payrolls_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+
+  echo $notice_box->show_notice();
+}else if($_GET['action'] == 'edit_formula_object_info'){
+  /* -----------------------------------------------------
+    功能: 编辑组的公式项目弹出框
+    参数: group_id 组ID 
+ -----------------------------------------------------*/
+  include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.'/'.$language.'/'.FILENAME_PAYROLLS);
+  include(DIR_FS_ADMIN.'classes/notice_box.php');
+  
+  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
+
+  
+  $heading = array();
+  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
+  $heading[] = array('align' => 'left', 'text' => TEXT_PAYROLLS_SETTING_BASIC_OBJECT);
+  $heading[] = array('align' => 'right', 'text' => '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>');
+
+  $buttons = array();
+
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick=""').'</a>';
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick=""').'</a>';
+
+  $buttons = array('align' => 'center', 'button' => $button); 
+  
+  $user_payrolls_info = array();
+
+  //生成组的下拉框
+  $group_list = tep_get_group_tree();
+  if(USER_PAYROLL_SETTING != ''){
+    $user_payroll_array = unserialize(USER_PAYROLL_SETTING);
+    if(isset($user_payroll_array[$ocertify->auth_user])){
+      $show_group_id = $user_payroll_array[$ocertify->auth_user]['group'];
+    }else{
+      $show_group_id = $group_list[0]['id']; 
+    }
+  }else{
+    $show_group_id = $group_list[0]['id']; 
+  }
+  $show_group_id = $_GET['group_id'] != '' ? $_GET['group_id'] : $show_group_id;
+
+  $group_str .= '<select name="show_group" onchange="change_group_list(1,this.value)">';
+  foreach($group_list as $group){
+    $group_str .= '<option value="'.$group['id'].'"';
+    if($show_group_id == $group['id']){
+      $group_str .= ' selected ';
+    }
+    $group_str .= '>'.$group['text'].'</oprion>';
+  }
+  $group_str .= '</select>';
+
+  $user_payrolls_info[]['text'] = array(
+        array('align' => 'left', 'text' => TEXT_GROUP_SELECT), 
+        array('align' => 'left', 'text' => $group_str), 
+      ); 
+  //工资计算
+  $payroll_query = tep_db_query("select * from ".TABLE_PAYROLL_SETTLEMENT." where group_id='".$show_group_id."' and project_id=1 order by sort"); 
+  //计算工资的项目
+  if(tep_db_num_rows($payroll_query) > 0){
+    $i = 1;
+    //已有的项目ID
+    $old_project_id_array = array();
+    $old_formula_id_array = array();
+    $text_array = array();
+    while($payroll_array = tep_db_fetch_array($payroll_query)){
+
+      $group_content_row_payroll = array();
+      $group_content_row_payroll[] = array('params'=>'width="20%"','text'=> '<input type="hidden" value="'.$payroll_array['id'].'" name="payroll_sort[]">'.TEXT_PAYROLLS_OBJECT_FORMULA); 
+      $old_formula_id_array[] = $payroll_array['id'];
+      $group_content_row_payroll[] = array('text' => '<input type="text" value="'.$payroll_array['title'].'" style="width: 145px;" name="old_formula_title['.$payroll_array['id'].']"><input type="text" value="'.$payroll_array['contents'].'" style="width: 150px;" name="old_formula_contents['.$payroll_array['id'].']"><input type="button" onclick="delete_obj('.$i.');" value="'.IMAGE_DELETE.'">&nbsp;&nbsp;<input type="button" value="'.BUTTON_ADD_TEXT.'" onclick="add_obj(this,\''.TEXT_GROUP_PAYROLL_OBJECT_VALUE.'\',\''.TEXT_GROUP_PAYROLL_OBJECT_FORMULA.'\',\''.IMAGE_DELETE.'\',1);"><br><textarea style="overflow-y: hidden; width: 299px; height: 15px;" name="old_formula_value['.$payroll_array['id'].']" id="textarea_'.$i.'">'.$payroll_array['project_value'].'</textarea>');
+      $text_array[] = $i;
+      $user_payrolls_info[] = array('params'=>'id="obj_tr_'.$i.'"','text'=>$group_content_row_payroll);
+      $i++;
+    }
+  }
+  tep_db_free_result($payroll_query); 
+  $form_str = tep_draw_form('copy_group', FILENAME_GROUPS, 'action=copy_group_confirm');
+  
+  $notice_box->get_form($form_str);
+  $notice_box->get_heading($heading);
+  $notice_box->get_contents($user_payrolls_info, $buttons);
+  $notice_box->get_eof(tep_eof_hidden());
+
   echo $notice_box->show_notice();
 }

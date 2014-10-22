@@ -448,7 +448,6 @@ case 'edit':
     $value['set_function'] = $_value['set_function'];
 
     if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
-      $keys .= tep_draw_hidden_field('configuration[' . $key . ']', $value['value']);
     } else {
       $keys .=  $value['title'] . '<br>' . $value['description'] . '<br>';
       if ($value['set_function']) {

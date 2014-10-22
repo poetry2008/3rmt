@@ -690,12 +690,16 @@ function change_user_list(ele){
 }
 
 //show replace attendance info
-function show_replace_attendance_info(ele,date,num,uid,att_id){
+function show_replace_attendance_info(ele,date,num,uid,att_id,group_id){
   if(!uid){
     uid='';
   }
   if(!att_id){
     att_id='';
+  }
+  if(!group_id){
+  
+    group_id = '';
   }
   var index = num;
   var ele_width = $(".box_warp").width(); 
@@ -711,7 +715,7 @@ function show_replace_attendance_info(ele,date,num,uid,att_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=edit_replace_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&att_id='+att_id,
+    url: 'ajax.php?action=edit_replace_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&att_id='+att_id+'&group_id='+group_id,
     dataType: 'text',
     async: false,
     success: function(text) {
@@ -942,7 +946,7 @@ function resizepage(){
 
 
 //show user attendance info
-function show_user_attendance_info(ele,date,num,uid,add_id,u_att_id){
+function show_user_attendance_info(ele,date,num,uid,add_id,u_att_id,group_id){
   if(!uid){
     uid='';
   }
@@ -951,6 +955,10 @@ function show_user_attendance_info(ele,date,num,uid,add_id,u_att_id){
   }
   if(!u_att_id){
     u_att_id='';
+  }
+  if(!group_id){
+  
+    group_id='';
   }
   var index = num;
   var ele_width = $(".box_warp").width(); 
@@ -968,7 +976,7 @@ function show_user_attendance_info(ele,date,num,uid,add_id,u_att_id){
   ele_obj = $(ele).offset();   
   $.ajax({
     dataType: 'text',
-    url: 'ajax.php?action=edit_user_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id+'&back_group_id='+back_group_id+'&back_attendance_id='+back_attendance_id,
+    url: 'ajax.php?action=edit_user_attendance_info&date='+date+'&uid='+uid+'&index='+index+'&add_id='+add_id+'&u_att_id='+u_att_id+'&back_group_id='+back_group_id+'&back_attendance_id='+back_attendance_id+'&group_id='+group_id,
     dataType: 'text',
     async: false,
     success: function(text) {
