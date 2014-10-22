@@ -291,40 +291,39 @@ alert(msg);
     }
   }); 
 }
-function update_all_data(cate_str){
-	var arr_cat = cate_str.split('||||');
-    var cate_num = arr_cat.length;
-    var i=0;	
-	if(i == 0) {
-       $.ajax({
-          type: "POST",
-          data: 'game='+arr_cat[i],
-          async:true,
-          url: 'collect.php',
-          success: function(msg) {
-     		 alert(msg);
-	    	 i++
-          }
-        }); 
-	}
-       setInterval(function(){
-          $.ajax({
-             type: "POST",
-             data: 'game='+arr_cat[i],
-             async:true,
-             url: 'collect.php',
-             success: function(msg) {
-				 alert(msg);
-				 i++
-             }
-          }); 
-		   if(i>cate_num-1){
-			   location=location;
-		   }
-	  },5000);
-      	
-}
 
+
+function update_all_data(cate_str){
+var arr_cat = cate_str.split('||||');
+var cate_num = arr_cat.length;
+var i=0;
+    if(i == 0) {
+      $.ajax({
+         type: "POST",
+         data: 'game='+arr_cat[i],
+         async:true,
+         url: 'collect.php',
+         success: function(msg) {
+            ++i;
+         }
+      });
+      setInterval(function(){
+      $.ajax({
+         type: "POST",
+         data: 'game='+arr_cat[i],
+         async:true,
+         url: 'collect.php',
+         success: function(msg) {
+            i++
+         }
+      });
+       if(i>cate_num-1){
+          location=location
+       }
+        },5000);
+
+      }
+}
 
 </script>
 <?php
@@ -1279,18 +1278,18 @@ $category_list_array = array();
 $category_query = mysql_query("select * from category where category_name='".$game."' and game_server='jp' and site_id!=7");
 
 while($category_array = mysql_fetch_array($category_query)){
-
   if($category_array['category_url'] != ''){
     if($category_array['category_type'] == 1){
       $category_list_array[$category_array['site_id']]['buy'] = $category_array['category_id'];
       $category_site_array['buy'][] = $category_array['site_id'];
+      $category_tep_array[$game]['buy'][$category_array['site_id']] = $category_array['category_url'];
     }else{
       $category_list_array[$category_array['site_id']]['sell'] = $category_array['category_id'];
       $category_site_array['sell'][] = $category_array['site_id'];
+      $category_tep_array[$game]['sell'][$category_array['site_id']] = $category_array['category_url'];
     }
   }
 }
-
 $flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 $site_str = implode(',',$category_site_array[$flag]);
 $site_list_array = array();
@@ -1307,8 +1306,7 @@ $url_arr = parse_url($_GET['error_url']);
 if($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] || strpos($url_array[$game][$flag][$site_array['site_id']],$url_arr['host'])){
     echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" ><img src="images/icon_alarm_log.gif"></span></td>';
 }else{
-
-    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
+    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="'.$category_tep_array[$game][$flag][$site_array['site_id']].'" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
 }
   }
 }
