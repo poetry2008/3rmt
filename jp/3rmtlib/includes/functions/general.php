@@ -4795,6 +4795,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    
    $customers_raw = tep_db_query("
       select c.customers_firstname, 
+              c.referer,
               c.customers_lastname, 
               c.customers_firstname_f, 
               c.customers_lastname_f, 
@@ -4822,6 +4823,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
       and c.customers_default_address_id = ab.address_book_id 
       and c.site_id = ".SITE_ID);
    $customers_res = tep_db_fetch_array($customers_raw);
+   $referer = $customers_res['referer'];
   
    $shipping_address_query = tep_db_query("
       select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state 
@@ -4859,9 +4861,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'currency_value' =>
                            $currencies->currencies[$currency]['value'],
                            'site_id' => SITE_ID, 
-                           'orders_ref'        => tep_db_prepare_input($_SESSION['referer']),
-                           'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
-                           'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
+                           'orders_ref'        => tep_db_prepare_input($referer),
+                           'orders_ref_site'   => tep_get_domain($referer),
+                           'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($referer))),
                            'orders_ip' => $_SERVER['REMOTE_ADDR'], 
                            'orders_host_name'  => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))), 
                            'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'], 
