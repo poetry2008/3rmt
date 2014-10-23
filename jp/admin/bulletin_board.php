@@ -115,7 +115,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		//添加提醒和日志
 	 $sql_add_notice = array(
 	    'type' => 1,
-	    'title' => $title,
+	    'title' => $title.'　'.$content,
 		'set_time' => 'now()',
 		'from_notice' => $insert_board_id,
 		'user' => $add_user,
