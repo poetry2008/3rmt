@@ -14108,7 +14108,7 @@ function tep_is_attenandced_date($user){
 /***************************
   获得用户当前日期需要出勤的所有排班
 ***************************/
-function tep_all_attenande_by_uid($user,$date,$show_group=0){
+function tep_all_attenande_by_uid($user,$date,$show_group=0,$user_group_arr=array(),$is_group=true){
   $date_info = tep_date_info($date);
   $all_sql = "select atd.id as aid,atd.*,ad.* from " .TABLE_ATTENDANCE_DETAIL_DATE. " atd left join 
     ". TABLE_ATTENDANCE_DETAIL ." ad on atd.attendance_detail_id = ad.id  
@@ -14120,8 +14120,12 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
   if($show_group!=0){
     $all_sql .= " group_id='".$show_group."' )";
   }else{
-    $group_list = tep_get_groups_by_user($user);
-    if(!empty($group_list)){
+    if(empty($user_group_arr)){
+      $group_list = tep_get_groups_by_user($user);
+    }else{
+      $group_list = $user_group_arr;
+    }
+    if(!empty($group_list)&&$is_group){
       $group_str = implode(',',$group_list);
       $all_sql .= " group_id in ( ".$group_str." )) ";
     }else{
@@ -14192,7 +14196,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
           'set_time' => '',
           'work_hours' => '',
           'rest_hours' => '',
-          'user_id' => $r_info['user_id'],
+          'user_id' => $r_info['user'],
           'date' => $r_info['date']
         );
   }
@@ -14290,7 +14294,7 @@ function tep_all_attenande_by_uid($user,$date,$show_group=0){
 /* -------------------------------------
    根据用户和组 获得所有出勤时间的详细信息
  ------------------------------------ */
-function tep_validate_user_attenandced($all_user,$date,$show_group=0){
+function tep_validate_user_attenandced($all_user,$date,$show_group=0,$all_user_attendance_list=false){
   $user_att_info = array();
   $user_att_list = array();
   //获得当天 所有打卡信息
@@ -14306,7 +14310,11 @@ function tep_validate_user_attenandced($all_user,$date,$show_group=0){
     //先判断请假的是否迟到
     $user_att_date_list = array();
     //获得所有时间信息
-    $user_att_date_list = tep_all_attenande_by_uid($user,$date,$show_group);
+    if($all_user_attendance_list){
+      $user_att_date_list = $all_user_attendance_list[$user.'_'.$date];
+    }else{
+      $user_att_date_list = tep_all_attenande_by_uid($user,$date,$show_group);
+    }
     //判断每一个用户 当天排班的 出勤状态
     //返回出勤信息 兵标记是否迟到
     $index = 1;
@@ -14791,7 +14799,7 @@ function tep_show_att_time($atted_info,$uid,$date,$bg_color,$index=0,$show_statu
     $return_str = $user_info['name'].'&nbsp;';
     return $return_str;
   }
-  $mger_listanager_list = tep_get_user_list_by_userid($uid);
+  $manager_list = tep_get_user_list_by_userid($uid);
   $param_str = '';
   if($ocertify->npermission>10||in_array($ocertify->auth_user,$manager_list)){
     if($date<$today){
@@ -15538,4 +15546,106 @@ function tep_get_relate_radices_by_products_id($pid){
     }else{
       return 1;
     }
+}
+/*--------------------------
+  功能: 获得用户的排班包括组
+  参数: $date 日期字符串
+  参数: $show_group_id 用户ID列表
+  参数: $show_select_group_user 组ID 
+  参数: $falg 是否显示覆盖（一个日期多个时间重复排班）
+  返回值: 排班数组 array[user_date] 
+---------------------------*/
+function tep_get_attendance_list_by_user_date($date,$show_group_id,$show_select_group_user,$user_group_id,$flag){
+  global $all_att_arr;
+  if(empty($show_select_group_user)){
+    return false;
+  }
+  if(empty($all_att_arr)){
+    $all_att_arr = array();
+    $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
+    $all_att_auery = tep_db_query($all_att_sql);
+    while($all_att_row = tep_db_fetch_array($all_att_auery)){
+        $all_att_arr[$all_att_row['id']] = $all_att_row;
+    }
+  }
+  $date_info = tep_date_info($date);
+  $attendance_arr = tep_get_attendance($date,$show_group_id,$flag);
+  $user_attendance_arr = tep_get_attendance_user($date,'',$flag);
+  $arr_all_attendance_list = array();
+  $user_attendance_list = array();
+  $all_replace_arr = array();
+  $all_replace_arr_attendance_id = array();
+  $all_replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." 
+    WHERE date='".$date."' and allow_status = '1'";
+  $all_replace_query = tep_db_query($all_replace_sql);
+  while($replace_row = tep_db_fetch_array($all_replace_query)){
+    if(!isset($all_replace_arr[$replace_row['user_name']])){
+      $all_replace_arr[$replace_row['user']] = array();
+      $all_replace_arr_attendance_id[$replace_row['user']] = array();
+    }
+    if($replace_row['attendance_detail_id']!=0){
+      $all_replace_arr[$replace_row['user']][] = $replace_row;
+      $all_replace_arr_attendance_id[$replace_row['user']][] = $replace_row['attendance_detail_id'];
+    }
+  }
+  foreach($user_attendance_arr as $user_attendance){
+    $user_attendance_list[$user_attendance['user_id']][] = $user_attendance;
+  }
+  foreach($show_select_group_user as $user_show){
+    $arr_all_attendance_list[$user_show.'_'.$date] = array();
+    foreach($attendance_arr as $group_attendance){
+      if(in_array($group_attendance['group_id'],$user_group_id[$user_show])){
+        $group_attendance['aid'] = $group_attendance['id'];
+        if(in_array($group_attendance['attendance_detail_id'],$all_replace_arr_attendance_id[$user_show])){
+          $temp_key = array_search($group_attendance['attendance_detail_id'],$all_replace_arr_attendance_id[$user_show]);
+          $group_attendance = array(
+            'type' => 'replace',
+            'attendance_detail_id' => $all_replace_arr[$user_show][$temp_key]['attendance_detail_id'],
+            'replace_attendance_detail_id' => $all_replace_arr[$user_show][$temp_key]['replace_attendance_detail_id'],
+            'work_start' => $all_replace_arr[$user_show][$temp_key]['leave_start'],
+            'work_end' => $all_replace_arr[$user_show][$temp_key]['leave_end'],
+            'rest_start' => '',
+            'rest_end' => '',
+            'set_time' => '',
+            'work_hours' => '',
+            'rest_hours' => '',
+            'user_id' => $all_replace_arr[$user_show][$temp_key]['user'],
+            'date' => $all_replace_arr[$user_show][$temp_key]['date']
+          );
+        }
+        $arr_all_attendance_list[$user_show.'_'.$date][] = $group_attendance;
+      }
+    }
+    if(empty($user_attendance_list[$user_show])){
+      continue;
+    }
+    foreach($user_attendance_list[$user_show] as $temp_user_attendance){
+      $temp_user_attendance['aid'] = $temp_user_attendance['id'];
+      if(in_array($temp_user_attendance['attendance_detail_id'],$all_replace_arr_attendance_id[$user_show])){
+        $temp_key = array_search($temp_user_attendance['attendance_detail_id'],$all_replace_arr_attendance_id[$user_show]);
+        $temp_user_attendance = array(
+          'type' => 'replace',
+          'attendance_detail_id' => $all_replace_arr[$user_show][$temp_key]['attendance_detail_id'],
+          'replace_attendance_detail_id' => $all_replace_arr[$user_show][$temp_key]['replace_attendance_detail_id'],
+          'work_start' => $all_replace_arr[$user_show][$temp_key]['leave_start'],
+          'work_end' => $all_replace_arr[$user_show][$temp_key]['leave_end'],
+          'rest_start' => '',
+          'rest_end' => '',
+          'set_time' => '',
+          'work_hours' => '',
+          'rest_hours' => '',
+          'user_id' => $all_replace_arr[$user_show][$temp_key]['user'],
+          'date' => $all_replace_arr[$user_show][$temp_key]['date']
+        );
+      }
+      $temp_user_attendance['group_id'] = 0;
+      $arr_all_attendance_list[$user_show.'_'.$date][] = $temp_user_attendance;
+    }
+  }
+  $result = array();
+  foreach($arr_all_attendance_list as $key => $value){
+    $result[$key] = tep_sort_attendance($value,$all_att_arr);
+  }
+  return $result;
+
 }
