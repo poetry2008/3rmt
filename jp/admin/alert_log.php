@@ -606,10 +606,6 @@ if ($rec_c % 2) {
       $alarm_info_array = tep_db_fetch_array($alarm_info_query);
 
       $alert_user = $alarm_info_array['adminuser'];
-      //if($alarm_info_array['alarm_flag'] == '0'){
-       // $user_info = tep_get_user_info($alert_user);
-        //$alert_user = $user_info['name'];
-     // }
       if($alarm_info_array['alarm_flag'] == '1'){
         if($alarm_info_array['orders_flag'] == '1'){
           $alert_button_name = HEADER_TEXT_ALERT_TITLE;
