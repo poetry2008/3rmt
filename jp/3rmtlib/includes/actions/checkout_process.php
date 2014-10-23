@@ -541,7 +541,6 @@ if($payment_modules->moneyInRange($payment,$valadate_total)){
 }
 $customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_quantity, is_quited, quited_date from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $customers_referer_array = tep_db_fetch_array($customers_referer_query);
-$referer = $customers_referer_array['referer'];
 # Select
 
 $_SESSION['insert_id'] = $insert_id;
@@ -594,7 +593,7 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'site_id'           => SITE_ID,
                         'torihiki_date'     => $insert_torihiki_date,
                         'torihiki_date_end' => $insert_torihiki_date_end,
-                        'orders_ref'        => $referer,
+                        'orders_ref'        => tep_db_prepare_input($_SESSION['referer']),
                         'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
                         'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
                         'orders_ip'         => $_SERVER['REMOTE_ADDR'],

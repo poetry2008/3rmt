@@ -789,9 +789,16 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   }
   if ($_SERVER["HTTP_REFERER"]&&$_SERVER['HTTP_REFERER']!='') {
 if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("#".HTTPS_SERVER."#", $_SERVER["HTTP_REFERER"])){
+    //预约 订单 客户注册 页面不记录 referer
+  if($_SERVER['PHP_SELF'] != '/'.FILENAME_CHECKOUT_PROCESS &&
+      $_SERVER['PHP_SELF'] != '/nm_token.php' &&
+      $_SERVER['PHP_SELF'] != '/m_token.php' &&
+      $_SERVER['PHP_SELF'] != '/password_token.php' &&
+      $_SERVER['PHP_SELF'] != '/change_preorder_process.php'){
 if(!isset($_SESSION['referer'])){
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
 }
+  }
 	  }
     // 统计 Google Adsense
     if (isset($_GET['from']) && $_GET['from'] == 'adwords') {
