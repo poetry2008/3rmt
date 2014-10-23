@@ -45,7 +45,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $author=$ocertify->auth_user;
 	 $user_info = tep_get_user_info($author);
 	 $update_user=$user_info['name'];
-	 $content=$_POST['content'];
+         $content=$_POST['content'];
+         $content = str_replace('>','&gt;',$content);
 	 $collect='';
 	 $allow="";
 	 if($_POST['select_all'])$allow="all";
@@ -206,7 +207,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	case 'create_bulletin_reply':
 	 $bulletin_id=$_GET['bulletin_id'];
-	 $content=$_POST['content'];
+         $content=$_POST['content'];
+         $content = str_replace('>','&gt;',$content);
 	 $title=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $value){
@@ -270,6 +272,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $id=$_GET['id'];
 	 $bulletin_info_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
          $content=$_POST['old_content'];
+         $_POST['content'] = str_replace('>','&gt;',$_POST['content']);
          $content = preg_replace('/(>+)/','$1>',$content);
          if($_POST['content']!=''){
            $_POST['content'] = preg_replace("/\n$/","\n>",$_POST['content']);
@@ -371,7 +374,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 								$bulletin_id=$reply_number_row['bulletin_id'];
 								$_GET['bulletin_id']=$bulletin_id;
 								tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number-1 where id=$bulletin_id");
-								tep_db_query("delete from ".TABLE_NOTICE." where from_notice=$id and type=2");
+								tep_db_query("update ".TABLE_NOTICE." set is_show=0 where from_notice=$id and type=2");
 						}
 				}
 		 }else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id and  manager='$ocertify->auth_user'"))>0|| 
