@@ -1052,10 +1052,10 @@ if($param_tep[0]!=''){
         $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
+        $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')">'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
+        $group_str .= '<a id="set_payrols_info" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')">'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
         $group_str .= '</table>';
