@@ -45,7 +45,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $author=$ocertify->auth_user;
 	 $user_info = tep_get_user_info($author);
 	 $update_user=$user_info['name'];
-         $content=$_POST['content'];
+         $content=tep_db_prepare_input($_POST['content']);
          $content = str_replace('>','&gt;',$content);
 	 $collect='';
 	 $allow="";
@@ -71,7 +71,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 }
 	 }
 	 $reply_number=1;
-	 $title=$_POST['title'];
+	 $title=tep_db_prepare_input($_POST['title']);
 	 $file_path="";
 	   foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
 		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
@@ -138,7 +138,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $author=$ocertify->auth_user;
 	 $user_info = tep_get_user_info($author);
 	 $update_user=$user_info['name'];
-	 $content=$_POST['content'];
+	 $content=tep_db_prepare_input($_POST['content']);
 	 $collect=0;
 	 $allow="";
 	 if($_POST['select_all'])$allow="all";
@@ -162,7 +162,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 			 $mark.=$icon;
 		 }
 	 }
-	 $title=$_POST['title'];
+	 $title=tep_db_prepare_input($_POST['title']);
 	 $file_path=$bulletin_info_row['file_path'];
 	 if($_POST['delete_file']){
 		 foreach($_POST['delete_file'] as $value){
@@ -207,7 +207,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	case 'create_bulletin_reply':
 	 $bulletin_id=$_GET['bulletin_id'];
-         $content=$_POST['content'];
+         $content=tep_db_prepare_input($_POST['content']);
          $content = str_replace('>','&gt;',$content);
 	 $title=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
 	 $mark="";
@@ -271,7 +271,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 case 'update_bulletin_reply':
 	 $id=$_GET['id'];
 	 $bulletin_info_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
-         $content=$_POST['old_content'];
+         $content=tep_db_prepare_input($_POST['old_content']);
+         $_POST['content'] = tep_db_prepare_input($_POST['content']);
          $_POST['content'] = str_replace('>','&gt;',$_POST['content']);
          $content = preg_replace('/(>+)/','$1>',$content);
          if($_POST['content']!=''){
@@ -1275,7 +1276,7 @@ require("includes/note_js.php");
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
-		$content=$header_title_row['title'];
+		$content=str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$header_title_row['title']);
 	        $header_content=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
                 if(!$header_id)$header_id=$_GET['bulletin_id'];
                 $last_id_query = tep_db_query($last_id_sql);
@@ -1559,7 +1560,7 @@ require("includes/note_js.php");
 	}else{
 		$title=explode(">",$bulletin["content"]);
                 $td_title=$title[0];
-		$title=str_replace("\n",'<br>',$title[0]);
+		$title=$title[0];
         }
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent""', 
@@ -1573,6 +1574,7 @@ require("includes/note_js.php");
       $bulletin_num .= $bulletin_key;
       $bulletin_num .= '</a>&nbsp;&nbsp;'; 
     }
+    $title = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$title);
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" width="60%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $bulletin_num.$title
@@ -1826,7 +1828,8 @@ require("includes/note_js.php");
                           'text' => $mark_html 
                         );
 
-        $title=str_replace("\n",'<br>',$bulletin['title']);
+        $title=$bulletin['title'];
+        $title = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$title);
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  width="60%"', 
                           'text' => '<a href="bulletin_board.php?type=show_reply'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'&bulletin_id='.$bulletin["id"].($_GET['order_sort']!=''?'&bulletin_order_sort='.$_GET['order_sort']:'').($_GET['order_type']!=''?'&bulletin_order_type='.$_GET['order_type']:'').'">'.$title.'</a>'
