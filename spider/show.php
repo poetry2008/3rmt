@@ -221,7 +221,6 @@ $category_name_str= rtrim($category_name_str,'||||');
 echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
 echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
 echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="'.TEXT_UPDATE.'" onclick="update_data();">';
-echo "<input type=\"button\" name=\"button_update\" value=\"".TEXT_UPDATE_ALL_AUTO."\" onclick=update_all_data(\"".$category_name_str."\");></td>";
 echo '</tr></table>';
 echo '</form>';
 ?>
@@ -271,12 +270,11 @@ function read_time(){
 function update_data(){
   $.ajax({
     type: "POST",
-    data: 'game=<?php echo isset($_GET['game']) ? $_GET['game'] : 'FF11';?>',
+    data: 'game=<?php echo isset($_GET['game']) ? $_GET['game'] : 'FF11';?>&flag=<?php echo 'has';?>',
     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
     async:true,
     url: 'collect.php',
     success: function(msg) {
-alert(msg);
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -293,37 +291,6 @@ alert(msg);
 }
 
 
-function update_all_data(cate_str){
-var arr_cat = cate_str.split('||||');
-var cate_num = arr_cat.length;
-var i=0;
-    if(i == 0) {
-      $.ajax({
-         type: "POST",
-         data: 'game='+arr_cat[i],
-         async:true,
-         url: 'collect.php',
-         success: function(msg) {
-            ++i;
-         }
-      });
-      setInterval(function(){
-      $.ajax({
-         type: "POST",
-         data: 'game='+arr_cat[i],
-         async:true,
-         url: 'collect.php',
-         success: function(msg) {
-            i++
-         }
-      });
-       if(i>cate_num-1){
-          location=location
-       }
-        },5000);
-
-      }
-}
 
 </script>
 <?php
@@ -450,7 +417,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 4=>'http://www.rmt-wm.com/buy/0003.html',
                                 5=>'http://rmtrank.com/pico5+index.htm',
                                 6=>'http://rmt.kakaran.jp/lineage2/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Buy&',
+                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Sale&',
                                 9=>'http://rmt.diamond-gil.jp/game.php/gameid/lineage2/view/sv/',
                                 10=>'http://www.asahi-rmt-service.com/lineage/sale.html',
                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=4&Mode=Sale&',
@@ -462,7 +429,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                  4=>'http://www.rmt-wm.com/sale/0003.html', 
                                  5=>'http://rmtrank.com/',
                                  6=>'http://rmt.kakaran.jp/lineage2/',
-                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Sale&',
+                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Buy&',
                                  9=>'http://rmt.diamond-gil.jp/game2.php/gameid/lineage2/view/sv/',
                                  10=>'http://www.asahi-rmt-service.com/lineage/purchase.html',
                                  11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=4&Mode=Buy&',
