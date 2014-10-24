@@ -630,6 +630,7 @@ if ($rec_c % 2) {
       $alert_user = $arec['user'];
       $alert_button_name = MESSAGES_PAGE_LINK_NAME;
       $arec['title'] = preg_replace('/\-\-\-\-\-\-\-\-\-\- Forwarded message \-\-\-\-\-\-\-\-\-\-[\s\S]*\>.*+/','',$arec['title']);
+      $arec['title'] = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$arec['title']);
       $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = '';
     }elseif ($arec['type'] == '1'){
@@ -638,6 +639,7 @@ if ($rec_c % 2) {
 
       $alert_user = $micro_info_array['add_user'];
       $alert_button_name = HEADER_TEXT_BULLETIN;
+      $arec['title'] = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$arec['title']);
       $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = ''; 
     }elseif ($arec['type'] == 2){
@@ -646,6 +648,7 @@ if ($rec_c % 2) {
 
       $alert_user = $micro_info_array['update_user'];
       $alert_button_name = HEADER_TEXT_BULLETIN;
+      $arec['title'] = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$arec['title']);
       $alert_button_comment = mb_strlen($arec['title'],'utf-8') > 30 ? mb_substr($arec['title'],0,30,'utf-8').'...' : $arec['title'];
       $alert_orders_id = ''; 
 	}
