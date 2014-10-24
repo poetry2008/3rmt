@@ -505,7 +505,8 @@ if (isset($_GET['action']) and $_GET['action']) {
              $old_content = preg_replace('/(\s)(>{'.($reply_key+1).'}[^>]+)/','$1'.$reply_str."\n".'$2',$old_content);
            }
          }
-	 $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
+         $bulletin_content_row_text[] = array('text'=> TEXT_CONTENT_REPLY);
+         $bulletin_info['content'] = str_replace('"','&#34;',$bulletin_info['content']);
  	 $bulletin_text_area =  '<textarea onfocus="o_submit_single = false;" onblur="o_submit_single = true;" style="overflow-y:hidden;width:100%;height:163px;background:#CCCCCC;" class="textarea_width" id="old_contents" readonly="readonly">'.$old_content.'</textarea>'.'<input type="hidden" name="old_content" value="'.$bulletin_info['content'].'">';
 	 $bulletin_content_row_text[] = array('params'=>'width="70%"','text'=> $bulletin_text_area);
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);

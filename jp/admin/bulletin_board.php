@@ -45,7 +45,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $author=$ocertify->auth_user;
 	 $user_info = tep_get_user_info($author);
 	 $update_user=$user_info['name'];
-	 $content=$_POST['content'];
+         $content=tep_db_prepare_input($_POST['content']);
+         $content = str_replace('>','&gt;',$content);
 	 $collect='';
 	 $allow="";
 	 if($_POST['select_all'])$allow="all";
@@ -70,7 +71,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		 }
 	 }
 	 $reply_number=1;
-	 $title=$_POST['title'];
+	 $title=tep_db_prepare_input($_POST['title']);
 	 $file_path="";
 	   foreach($_FILES['bulletin_file']['name'] as $fk => $fv){
 		 $file_name= base64_encode($_FILES['bulletin_file']['name'][$fk].'|||'.time().'|||'.$fk);
@@ -114,7 +115,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		//添加提醒和日志
 	 $sql_add_notice = array(
 	    'type' => 1,
-	    'title' => $title,
+	    'title' => TEXT_TITLE_NOTE.'：'.$title.'　'.TEXT_COMMENT_NOTE.'：'.$content,
 		'set_time' => 'now()',
 		'from_notice' => $insert_board_id,
 		'user' => $add_user,
@@ -137,7 +138,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $author=$ocertify->auth_user;
 	 $user_info = tep_get_user_info($author);
 	 $update_user=$user_info['name'];
-	 $content=$_POST['content'];
 	 $collect=0;
 	 $allow="";
 	 if($_POST['select_all'])$allow="all";
@@ -161,7 +161,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 			 $mark.=$icon;
 		 }
 	 }
-	 $title=$_POST['title'];
+	 $title=tep_db_prepare_input($_POST['title']);
 	 $file_path=$bulletin_info_row['file_path'];
 	 if($_POST['delete_file']){
 		 foreach($_POST['delete_file'] as $value){
@@ -185,7 +185,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
 	 }
 	 $sql_add_bullention = array(
-	    'content' => $content,
 	    'allow' => $allow,
 	    'manager' => $manager,
 		'mark' => $mark,
@@ -196,8 +195,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 		'update_time'=> 'now()',
 	    'update_user' => $update_user
 	 );
-         tep_db_perform(TABLE_NOTICE,array('title'=>$title),'update',"created_at='".$bulletin_info_row['add_time']."'
-             and title='".$bulletin_info_row['title']."'");
+         tep_db_perform(TABLE_NOTICE,array('title'=>TEXT_TITLE_NOTE.'：'.$title.'　'.TEXT_COMMENT_NOTE.'：'.$bulletin_info_row['content']),'update',"type=1 and from_notice='".$id."'");
 	 tep_db_perform(TABLE_BULLETIN_BOARD, $sql_add_bullention, 'update',  "id = '" .$id  . "'");
 		$page=isset($_GET['page'])?'page='.$_GET['page']:1;
 		$parm=isset($_GET['order_sort'])?'&order_sort='.$_GET['order_sort'].'&order_type='.$_GET['order_type']:'';
@@ -206,7 +204,8 @@ if (isset($_GET['action']) and $_GET['action']) {
 
 	case 'create_bulletin_reply':
 	 $bulletin_id=$_GET['bulletin_id'];
-	 $content=$_POST['content'];
+         $content=tep_db_prepare_input($_POST['content']);
+         $content = str_replace('>','&gt;',$content);
 	 $title=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
 	 $mark="";
 	 foreach($_POST['pic_icon'] as $value){
@@ -269,7 +268,9 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 case 'update_bulletin_reply':
 	 $id=$_GET['id'];
 	 $bulletin_info_row=tep_db_fetch_array(tep_db_query("select * from ".TABLE_BULLETIN_BOARD_REPLY." where id=$id"));
-         $content=$_POST['old_content'];
+         $content=tep_db_prepare_input($_POST['old_content']);
+         $_POST['content'] = tep_db_prepare_input($_POST['content']);
+         $_POST['content'] = str_replace('>','&gt;',$_POST['content']);
          $content = preg_replace('/(>+)/','$1>',$content);
          if($_POST['content']!=''){
            $_POST['content'] = preg_replace("/\n$/","\n>",$_POST['content']);
@@ -371,7 +372,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 								$bulletin_id=$reply_number_row['bulletin_id'];
 								$_GET['bulletin_id']=$bulletin_id;
 								tep_db_query("update ".TABLE_BULLETIN_BOARD." set reply_number=reply_number-1 where id=$bulletin_id");
-								tep_db_query("delete from ".TABLE_NOTICE." where from_notice=$id and type=2");
+								tep_db_query("update ".TABLE_NOTICE." set is_show=0 where from_notice=$id and type=2");
 						}
 				}
 		 }else if(tep_db_num_rows(tep_db_query("select * from ".TABLE_BULLETIN_BOARD." where id=$id and  manager='$ocertify->auth_user'"))>0|| 
@@ -1272,7 +1273,7 @@ require("includes/note_js.php");
 		$header_title_raw=tep_db_query($header_title_sql);
 		$header_title_row=tep_db_fetch_array($header_title_raw);
 		$header_id=$header_title_row['id'];
-		$content=$header_title_row['title'];
+		$content=str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$header_title_row['title']);
 	        $header_content=mb_strlen($content) > 30 ? mb_substr($content, 0, 30).'...' : $content;
                 if(!$header_id)$header_id=$_GET['bulletin_id'];
                 $last_id_query = tep_db_query($last_id_sql);
@@ -1556,7 +1557,7 @@ require("includes/note_js.php");
 	}else{
 		$title=explode(">",$bulletin["content"]);
                 $td_title=$title[0];
-		$title=str_replace("\n",'<br>',$title[0]);
+		$title=$title[0];
         }
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent""', 
@@ -1570,6 +1571,7 @@ require("includes/note_js.php");
       $bulletin_num .= $bulletin_key;
       $bulletin_num .= '</a>&nbsp;&nbsp;'; 
     }
+    $title = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$title);
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent" width="60%" onclick="bulletin_board_select('.$bulletin["id"].',1)"', 
                           'text' => $bulletin_num.$title
@@ -1823,7 +1825,8 @@ require("includes/note_js.php");
                           'text' => $mark_html 
                         );
 
-        $title=str_replace("\n",'<br>',$bulletin['title']);
+        $title=$bulletin['title'];
+        $title = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$title);
     $bulletin_item_info[] = array(
                           'params' => 'class="dataTableContent"  width="60%"', 
                           'text' => '<a href="bulletin_board.php?type=show_reply'.($_GET['search_text']!=''?'&search_text='.$_GET['search_text']:'').'&bulletin_id='.$bulletin["id"].($_GET['order_sort']!=''?'&bulletin_order_sort='.$_GET['order_sort']:'').($_GET['order_type']!=''?'&bulletin_order_type='.$_GET['order_type']:'').'">'.$title.'</a>'
