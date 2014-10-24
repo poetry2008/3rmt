@@ -14,7 +14,6 @@ header('Pragma: no-cache');
 
 //file patch
 require('includes/configure.php');
-require('includes/language/japanese.php');
 require_once('class/spider.php');
 
 //link db
@@ -101,38 +100,38 @@ $game_str_array = array('FF14'=>'FF14',
                         'nobunaga'=>'信長の野望',
                         'PSO2'=>'PSO2',
                         'L1'=>'リネージュ',
-                        'TERA'=> 'TERA',
-                        'AION'=> 'AION',
-                        'CABAL'=> 'CABAL',
-                        'WZ'=> 'ウィザードリィ',
-                        'latale'=> 'ラテール',
-                        'blade'=> 'ブレイドアンドソウル',
-                        'megaten'=> '女神転生IMAGINE',
-                        'EWD'=> 'エルソード',
-                        'LH'=> 'ルーセントハート',
-                        'HR'=> 'マビノギ英雄伝',
-                        'AA'=> 'ArcheAge',
-                        'ThreeSeven'=> '777タウン',
-                        'ECO'=> 'エミルクロニクル',
-                        'FNO'=> 'FNO',
-                        'SUN'=> 'SUN',
-                        'talesweave'=> 'テイルズウィーバー',
-                        'MU'=> 'MU',
-                        'C9'=> 'C9',
-                        'MS'=> 'メイプルストーリー',
-                        'cronous'=> 'クロノス',
-                        'tenjouhi'=> '天上碑',
-                        'rose'=> 'ローズオンライン',
-                        'hzr'=> '晴空物語',
-                        'dekaron'=> 'デカロン',
-                        'fez'=> 'ファンタジーアースゼロ',
-                        'lakatonia'=> 'ラカトニア',
-                        'moe'=> 'ラカトニア',
-                        'mabinogi'=> 'マビノギ',
-                        'WF'=> '戦場のエルタ',
-                        'rohan'=> 'ROHAN',
-                        'genshin'=> '幻想神域',
-                        'lineage'=> 'リネージュ'
+			'TERA'=> 'TERA',
+			'AION'=> 'AION',
+			'CABAL'=> 'CABAL',
+			'WZ'=> 'ウィザードリィ',
+			'latale'=> 'ラテール',
+			'blade'=> 'ブレイドアンドソウル',
+			'megaten'=> '女神転生IMAGINE',
+			'EWD'=> 'エルソード',
+			'LH'=> 'ルーセントハート',
+			'HR'=> 'マビノギ英雄伝',
+			'AA'=> 'ArcheAge',
+			'ThreeSeven'=> '777タウン',
+			'ECO'=> 'エミルクロニクル',
+			'FNO'=> 'FNO',
+			'SUN'=> 'SUN',
+			'talesweave'=> 'テイルズウィーバー',
+			'MU'=> 'MU',
+			'C9'=> 'C9',
+			'MS'=> 'メイプルストーリー',
+			'cronous'=> 'クロノス',
+			'tenjouhi'=> '天上碑',
+			'rose'=> 'ローズオンライン',
+			'hzr'=> '晴空物語',
+			'dekaron'=> 'デカロン',
+			'fez'=> 'ファンタジーアースゼロ',
+			'lakatonia'=> 'ラカトニア',
+			'moe'=> 'ラカトニア',
+			'mabinogi'=> 'マビノギ',
+			'WF'=> '戦場のエルタ',
+			'rohan'=> 'ROHAN',
+			'genshin'=> '幻想神域',
+			'lineage'=> 'リネージュ'
                       );
 $game = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -210,18 +209,9 @@ while($config_array = mysql_fetch_array($config_query)){
     }
   }
 }
-$category_query=  mysql_query("select distinct(category_name) from category order by category_id asc");  
-
-$category_name_str ='';
-while($row = mysql_fetch_array($category_query)){
-    $category_name_str .= $row['category_name'].'||||';
-}
-$category_name_str= rtrim($category_name_str,'||||');
-
 echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
 echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="'.TEXT_UPDATE.'" onclick="update_data();">';
-echo "<input type=\"button\" name=\"button_update\" value=\"".TEXT_UPDATE_ALL_AUTO."\" onclick=update_all_data(\"".$category_name_str."\");></td>";
+echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新" onclick="update_data();"></td>';
 echo '</tr></table>';
 echo '</form>';
 ?>
@@ -291,40 +281,6 @@ alert(msg);
     }
   }); 
 }
-
-
-function update_all_data(cate_str){
-var arr_cat = cate_str.split('||||');
-var cate_num = arr_cat.length;
-var i=0;
-    if(i == 0) {
-      $.ajax({
-         type: "POST",
-         data: 'game='+arr_cat[i],
-         async:true,
-         url: 'collect.php',
-         success: function(msg) {
-            ++i;
-         }
-      });
-      setInterval(function(){
-      $.ajax({
-         type: "POST",
-         data: 'game='+arr_cat[i],
-         async:true,
-         url: 'collect.php',
-         success: function(msg) {
-            i++
-         }
-      });
-       if(i>cate_num-1){
-          location=location
-       }
-        },5000);
-
-      }
-}
-
 </script>
 <?php
 /*
@@ -447,22 +403,22 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                   'L2'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/Lineage2.html',
                                 2=>'http://www.matubusi.com/system/pc/cart/lineage2-rmt-hanbai/hanbai/items',
                                 3=>'http://ftb-rmt.jp/lineage2/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/0003.html',
+                                4=>'http://www.rmt-wm.com/sale/0003.html',
                                 5=>'http://rmtrank.com/pico5+index.htm',
                                 6=>'http://rmt.kakaran.jp/lineage2/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Buy&',
+                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Sale&',
                                 9=>'http://rmt.diamond-gil.jp/game.php/gameid/lineage2/view/sv/',
                                 10=>'http://www.asahi-rmt-service.com/lineage/sale.html',
                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=4&Mode=Sale&',
                                 12=>'http://www.rmtsonic.jp/games/lineage2.html',
                                 ),
-                               'sell'=>array(1=>'http://www.mugenrmt.com/',
+                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/lineage2-rmt-kaitori/kaitori/items',
                                  3=>'http://ftb-rmt.jp/lineage2/sell/', 
                                  4=>'http://www.rmt-wm.com/sale/0003.html', 
                                  5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/lineage2/',
-                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Sale&',
+                                 6=>'http://rmt.kakaran.jp/lineage2',
+                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Buy&',
                                  9=>'http://rmt.diamond-gil.jp/game2.php/gameid/lineage2/view/sv/',
                                  10=>'http://www.asahi-rmt-service.com/lineage/purchase.html',
                                  11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=4&Mode=Buy&',
@@ -552,21 +508,27 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
 
             'TERA'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
                                 2=>'http://www.matubusi.com/system/pc/cart/tera-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
+                                3=>'http://ftb-rmt.jp/tera/buy/', 
+                                4=>'http://www.rmt-wm.com/buy/tera.html',
                                 5=>'http://rmtrank.com/tera+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
+                                6=>'http://rmt.kakaran.jp/tera/',
+                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=36&Mode=Sale&',
+                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/tera/view/sv/',
+                                10=>'http://www.asahi-rmt-service.com/tera/sale.html',
+                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=95&Mode=Sale&',
+                                12=>'http://www.rmtsonic.jp/games/TERA.html',
                                 ),
                                  'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/tera-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/nobunaga/', 
-                                 4=>'http://www.rmt-wm.com/', 
+                                 3=>'http://ftb-rmt.jp/tera/sell/', 
+                                 4=>'http://www.rmt-wm.com/sale/tera.html', 
                                  5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
+                                 6=>'http://rmt.kakaran.jp/tera/',
+                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=36&Mode=Buy&',
+                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/tera/view/sv/',
+                                 10=>'http://www.asahi-rmt-service.com/tera/purchase.html',
+                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=95&Mode=Buy&',
+                                 12=>'http://www.rmtsonic.jp/',
                                 ),
                              ),
             'AION'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
@@ -1234,38 +1196,38 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
                    'nobunaga'=>'1個あたり  10万（100,000）貫',
                    'PSO2'=>'1個あたり  100万（1,000,000）メセ',
                    'L1'=>'1個あたり  100万（1,000,000）アデナ(Adena)',
-                   'TERA'=>'1個あたり  1万（10,000）金(金貨)',
-                   'AION'=>'1個あたり  1億（100,000,000）ギーナ',
-                   'CABAL'=>'1個あたり  1億（100,000,000）アゼル',
-                   'WZ'=>'1個あたり  1千万（10,000,000）G',
-                   'latale'=>'1個あたり  10億（1,000,000,000）エリー(ELY)',
-                   'blade'=>'1個あたり  10金',
-                   'megaten'=>'1個あたり  1千万（10,000,000）マッカ',
-                   'EWD'=>'1個あたり  1億（100,000,000）ED',
-                   'LH'=>'1個あたり  1億（100,000,000）スター',
-                   'HR'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-                   'AA'=>'1個あたり  100金',
-                   'ThreeSeven'=>'1個あたり  10枚',
-                   'ECO'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-                   'FNO'=>'1個あたり  1千（1,000）G',
-                   'SUN'=>'1個あたり  1億（100,000,000）ハイム',
-                   'talesweave'=>'1個あたり  1千万（10,000,000）シード(Seed)',
-                   'MU'=>'1個あたり　祝福の宝石  10個',
-                   'C9'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-                   'MS'=>'1個あたり  10億（1,000,000,000）メル',
-                   'cronous'=>'1個あたり  100億（10,000,000,000）クロ',
-                   'tenjouhi'=>'1個あたり  1億（100,000,000）銀銭',
-                   'rose'=>'1個あたり貯金箱  1個(1億ジュリー)',
-                   'hzr'=>'1個あたり  100G(金)',
-                   'dekaron'=>'1個あたり  1億（100,000,000）ディル(DIL)',
-                   'fez'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
-                   'lakatonia'=>'1個あたり  100G',
-                   'moe'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
-                   'mabinogi'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
-                   'WF'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-                   'rohan'=>'1個あたり  1千万（10,000,000）クロン',
-                   'genshin'=>'1個あたり  100金',
-                   'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
+		   'TERA'=>'1個あたり  1万（10,000）金(金貨)',
+		   'AION'=>'1個あたり  1億（100,000,000）ギーナ',
+		   'CABAL'=>'1個あたり  1億（100,000,000）アゼル',
+		   'WZ'=>'1個あたり  1千万（10,000,000）G',
+		   'latale'=>'1個あたり  10億（1,000,000,000）エリー(ELY)',
+		   'blade'=>'1個あたり  10金',
+		   'megaten'=>'1個あたり  1千万（10,000,000）マッカ',
+		   'EWD'=>'1個あたり  1億（100,000,000）ED',
+		   'LH'=>'1個あたり  1億（100,000,000）スター',
+		   'HR'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+		   'AA'=>'1個あたり  100金',
+		   'ThreeSeven'=>'1個あたり  10枚',
+		   'ECO'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+		   'FNO'=>'1個あたり  1千（1,000）G',
+		   'SUN'=>'1個あたり  1億（100,000,000）ハイム',
+		   'talesweave'=>'1個あたり  1千万（10,000,000）シード(Seed)',
+		   'MU'=>'1個あたり　祝福の宝石  10個',
+		   'C9'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+		   'MS'=>'1個あたり  10億（1,000,000,000）メル',
+		   'cronous'=>'1個あたり  100億（10,000,000,000）クロ',
+		   'tenjouhi'=>'1個あたり  1億（100,000,000）銀銭',
+		   'rose'=>'1個あたり貯金箱  1個(1億ジュリー)',
+		   'hzr'=>'1個あたり  100G(金)',
+		   'dekaron'=>'1個あたり  1億（100,000,000）ディル(DIL)',
+		   'fez'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
+		   'lakatonia'=>'1個あたり  100G',
+		   'moe'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
+		   'mabinogi'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
+		   'WF'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+		   'rohan'=>'1個あたり  1千万（10,000,000）クロン',
+		   'genshin'=>'1個あたり  100金',
+		   'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
 );
 $date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
 $date_array = mysql_fetch_array($date_query);
@@ -1278,18 +1240,18 @@ $category_list_array = array();
 $category_query = mysql_query("select * from category where category_name='".$game."' and game_server='jp' and site_id!=7");
 
 while($category_array = mysql_fetch_array($category_query)){
+
   if($category_array['category_url'] != ''){
     if($category_array['category_type'] == 1){
       $category_list_array[$category_array['site_id']]['buy'] = $category_array['category_id'];
       $category_site_array['buy'][] = $category_array['site_id'];
-      $category_tep_array[$game]['buy'][$category_array['site_id']] = $category_array['category_url'];
     }else{
       $category_list_array[$category_array['site_id']]['sell'] = $category_array['category_id'];
       $category_site_array['sell'][] = $category_array['site_id'];
-      $category_tep_array[$game]['sell'][$category_array['site_id']] = $category_array['category_url'];
     }
   }
 }
+
 $flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 $site_str = implode(',',$category_site_array[$flag]);
 $site_list_array = array();
@@ -1306,7 +1268,8 @@ $url_arr = parse_url($_GET['error_url']);
 if($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] || strpos($url_array[$game][$flag][$site_array['site_id']],$url_arr['host'])){
     echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" ><img src="images/icon_alarm_log.gif"></span></td>';
 }else{
-    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="'.$category_tep_array[$game][$flag][$site_array['site_id']].'" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
+
+    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
 }
   }
 }
