@@ -138,7 +138,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 	 $author=$ocertify->auth_user;
 	 $user_info = tep_get_user_info($author);
 	 $update_user=$user_info['name'];
-	 $content=tep_db_prepare_input($_POST['content']);
 	 $collect=0;
 	 $allow="";
 	 if($_POST['select_all'])$allow="all";
@@ -186,7 +185,6 @@ if (isset($_GET['action']) and $_GET['action']) {
 	   	 move_uploaded_file($_FILES['bulletin_file']["tmp_name"][$fk],PATH_BULLETIN_BOARD_UPLOAD.$file_name); 
 	 }
 	 $sql_add_bullention = array(
-	    'content' => $content,
 	    'allow' => $allow,
 	    'manager' => $manager,
 		'mark' => $mark,
