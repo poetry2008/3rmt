@@ -17,12 +17,15 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
   }
   var ele_obj = '';
   ele_obj = $(ele).offset();   
-  var flag;
   if(flag==0){
     url_tep=  'ajax.php?action=set_attendance_info';
+    ele_obj = $("#set_attendance_info").offset();
+    ele = "#set_attendance_info";
   }
   if(flag==1){
     url_tep=  'ajax.php?action=set_payrols_info';
+    ele_obj = $("#set_payrols_info").offset();
+    ele = "#set_payrols_info";
   }
   if(flag==2){
     url_tep= 'ajax.php?action=set_attendance_group_info';
@@ -45,7 +48,7 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
       } 
       ele_value_obj_att = ele;
       $('#show_attendance_edit').css('display','block'); 
- }
+   }
   }); 
 
 }

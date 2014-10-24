@@ -10379,9 +10379,11 @@ if($row_array['set_time']==0){
 	 $bulletin_content_row_type[] = array('params'=>'width="20%"','text'=> '');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_type);
 
-    
+
+         $bulletin_row['title'] = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$bulletin_row['title']); 
+         $bulletin_row['content'] = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$bulletin_row['content']);
 	 $bulletin_content_row_text[] = array('params'=>'valign="top"','text'=> TABLE_HEADING_BUTTON_NAME);
- 	 $bulletin_text_area =  '<div style="width: 100%;min-height:100px;display:block;word-break: break-all;word-wrap: break-word;">'.str_replace("\n","<br />",$bulletin_row['content']).'</div>';
+ 	 $bulletin_text_area =  '<div style="width: 100%;min-height:100px;display:block;word-break: break-all;word-wrap: break-word;">'.TEXT_TITLE_NOTE.'：'.$bulletin_row['title'].'<br>'.TEXT_COMMENT_NOTE.'：'.str_replace("\n","<br />",$bulletin_row['content']).'</div>';
 	 $bulletin_content_row_text[] = array('text'=> $bulletin_text_area);
 	 $bulletin_content_row_text[] = array('params'=>'style="color:#FF0000;"');
 	 $bulletin_content_table[] = array('text'=> $bulletin_content_row_text);
@@ -10424,7 +10426,8 @@ if($row_array['set_time']==0){
 	 $reply_content_row_type[] = array('params'=>'width="20%"','text'=> ' ');
 	 $reply_content_table[] = array('text'=> $reply_content_row_type);
 
-    
+
+         $reply_row['content'] = str_replace(array('>','<',"\n"),array('&gt;','&lt;','<br>'),$reply_row['content']); 
 	 $reply_content_row_text[] = array('params'=>'valign="top"','text'=>TABLE_HEADING_BUTTON_NAME);
  	 $reply_text_area =  '<div style="width: 100%; min-height:100px;display:block;word-break: break-all;word-wrap: break-word;">'.str_replace("\n","<br />",$reply_row['content']).'</div>';
 	 $reply_content_row_text[] = array('text'=> $reply_text_area);

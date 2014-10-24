@@ -389,7 +389,8 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 			$count_row=tep_db_num_rows(tep_db_query("select id from ".TABLE_BULLETIN_BOARD." where id>=".$notice_list['from_notice']));
 			$page=ceil($count_row/MAX_DISPLAY_SEARCH_RESULTS);
 			$type_html.='page='.$page.'&';
-		}
+                }
+                $notice_list['title'] = str_replace(array('>','<'),array('&gt;','&lt;'),$notice_list['title']);
          $new_header['content']='<a onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" style="color:#0000FF;"  href="'.tep_href_link(FILENAME_BULLETIN_BOARD,$type_html.'bulletin_id='.$memo_cid_array[$notice_list['id']]).'">'.(mb_strlen($notice_list['title'],'utf-8') > 30 ? mb_substr($notice_list['title'],0,30,'utf-8').'...' : $notice_list['title']).'</a>'; 
       }
       if ($notice_list['type'] == '0') {
