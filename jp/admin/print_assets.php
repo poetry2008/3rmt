@@ -2,6 +2,52 @@
 
 require('includes/application_top.php');
 
+function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){ 
+  if($str+1 == 1){
+    return TEXT_UNSET_DATA;
+  }
+  $str = $str+1;
+  $arr = str_split($str);
+  $add_flag = false;
+  $i=0;
+  foreach($arr as $value){
+    if($add_flag){
+      if($value!=0){
+        break;
+      }
+      $i++;
+    }
+    if($value=='.'){
+      $add_flag = true;
+    }
+  }
+  $i = $i+$count;
+  if($str<2){
+    for($j=$count;$j>0;$j--){
+      if(substr($str,$i+1,1)==0){
+        $i--;
+      }else{
+        break;
+      }
+    }
+    return '0.'.substr($str,2,$i).$str_end;
+  }else{
+    $arr = explode('.',$str-1);
+    if(count($arr)==1){
+      return ($str-1).$str_end;
+    }else{
+      for($j=$count;$j>0;$j--){
+        if(substr($arr[1],$j-1,1)==0){
+          $i--;
+        }else{
+          break;
+        }
+      }
+      return $arr[0].'.'.substr($arr[1],0,$i-1).$str_end;
+    }
+  }
+}
+
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
 $bflag =0 ;
@@ -151,7 +197,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           <td><?php echo $row['torihiki_date'];?></td>
           <td><?php echo $row['products_name'];?></td>
           <td align="right"><?php echo $row['products_quantity'];?></td>
-          <td align="right"><?php echo $currencies->format($row['final_price']);?></td>
+          <td align="right"><?php echo $currencies->format($row['final_price'])=='0'.TEXT_MONEY_SYMBOL?show_effective_number($row['final_price']):$currencies->format($row['final_price']);?></td>
           </tr>
           <?php
       }
@@ -198,15 +244,15 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       $products_price_total = 0;
       foreach($temp_row['products_info'] as $info_value){
 
-         if($products_quantity_num >= $temp_row['quantity_all_product']){
+         if($products_quantity_num >= $temp_row['real_all_product']){
 
            break;
          }
          $products_quantity_num += $info_value['products_quantity'];
          $products_quantity_value = $info_value['products_quantity'];
-         if($products_quantity_num > $temp_row['quantity_all_product']){
+         if($products_quantity_num > $temp_row['real_all_product']){
 
-            $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $temp_row['quantity_all_product']);
+            $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $temp_row['real_all_product']);
          }
          $products_quantity_sum += $products_quantity_value; 
          $products_price_total += abs($products_quantity_value*$info_value['final_price']);
@@ -308,30 +354,46 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             continue;
           }
           $products_quantity_num = 0;
-          $products_info_str = '';
+          $products_info_str = array();
           $products_price_total = 0;
           $products_quantity_total = 0;
+          $products_info_arr = array();
+          $products_show_info = array();
+          $products_show_num = array();
+          $parent_show_num = $category_asset_arr[$key]['quantity_all_product'];
+          $temp_parent_show_num = $parent_show_num;
           foreach($category_asset_arr[$key]['products_info'] as $info_value){
 
-            if($products_quantity_num >= $category_asset_arr[$key]['quantity_all_product']){
+            if($products_quantity_num >= $category_asset_arr[$key]['real_all_product']){
 
               break;
             }
+            if(!in_array($info_value['products_id'],$products_info_arr)){
+              $products_info_arr[] = $info_value['products_id'];
+              $products_show_info[$info_value['products_id']] = array();
+              $products_info_str[$info_value['products_id']] = array();
+            }
+            $info_str_temp = '';
             $products_quantity_num += $info_value['products_quantity'];
-            $products_info_str .= '<tr class="assets_c">';
+            $info_str_temp .= '<tr class="assets_c">';
             if(count($products) > 0){
-              $products_info_str .= '<td>&nbsp;</td>';
+              $info_str_temp .= '<td>&nbsp;</td>';
             }
-            $products_info_str .= '<td>&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
+            $info_str_temp .= '<td>&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
             $products_quantity_value = $info_value['products_quantity'];
-            if($products_quantity_num > $category_asset_arr[$key]['quantity_all_product']){
+            if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
 
-              $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $category_asset_arr[$key]['quantity_all_product']);
+              $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $category_asset_arr[$key]['real_all_product']);
             }
-            $products_info_str .= '<td align="right">'.$products_quantity_value.TEXT_ROW.'</td>';
-            $products_info_str .= '<td align="right">'.$currencies->format(abs($info_value['final_price'])).'</td>';
-            $products_info_str .= '<td align="right">'.$currencies->format(abs($products_quantity_value*$info_value['final_price'])).'</td>';
-            $products_info_str .= '</tr>';
+            $info_str_temp .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
+            $info_str_temp .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
+            $info_str_temp .= '<td align="right">'.($currencies->format(abs($products_quantity_value*$info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($products_quantity_value*$info_value['final_price'])):$currencies->format(abs($products_quantity_value*$info_value['final_price']))).'</td>';
+            $info_str_temp .= '</tr>';
+            $products_temp_info['price_totle'] = abs($products_quantity_value*$info_value['final_price']);
+            $products_temp_info['quantity'] = $products_quantity_value; 
+            $products_show_info[$info_value['products_id']][] = $products_temp_info; 
+            $products_info_str[$info_value['products_id']][] = $info_str_temp;
+            $products_show_num[$info_value['products_id']][] = $products_quantity_value;
             $products_price_total += abs($products_quantity_value*$info_value['final_price']);
             $products_quantity_total += $products_quantity_value;
           }
@@ -348,16 +410,99 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           echo $category_asset_arr[$key]['categories_name'];
           echo "</td>";
           echo "<td align='right'>";
-          echo $category_asset_arr[$key]['quantity_all_product'].TEXT_ROW;
+          echo show_effective_number($category_asset_arr[$key]['quantity_all_product'],TEXT_ROW);
           echo "</td>";
           echo "<td align='right'>";
-          echo $currencies->format($products_price_total/$products_quantity_total);
+          echo $currencies->format($products_price_total/$products_quantity_total)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_total/$products_quantity_total):$currencies->format($products_price_total/$products_quantity_total);
           echo "</td>";
           echo "<td align='right'>";
-          echo $currencies->format($products_price_total);
+          echo $currencies->format($products_price_total)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_total):$currencies->format($products_price_total);
           echo "</td>";
           echo "</tr>";
-          echo $products_info_str; 
+          foreach($products_info_arr as $p_value){
+            $p_temp_price_total = 0;
+            $p_temp_quantity = 0;
+            $show_all_products_num = tep_get_quantity($p_value);
+            $temp_show_all_products_num = $show_all_products_num;
+            foreach($products_show_num[$p_value] as $sub_num){
+              $show_all_products_num = $show_all_products_num-$sub_num;
+              $parent_show_num = $parent_show_num-$sub_num;
+            }
+            foreach($products_show_info[$p_value] as $show_info){
+              if($show_info['quantity']==0||$show_info['price_totle']==0){
+                continue;
+              }
+              $p_temp_price_total += $show_info['price_totle'];
+              $p_temp_quantity += $show_info['quantity'];
+            }
+            if($category_asset_arr[$key]['error']){
+              echo "<tr class='assets_error'>";
+            }else{
+              echo "<tr class='assets_c'>";
+            }
+            if(count($products)!=0){
+              echo "<td>";
+              echo "</td>";
+            }
+
+            echo "<td>";
+            echo tep_get_products_name($p_value);
+            echo "</td>";
+            echo "<td align='right'>";
+            echo show_effective_number(tep_get_quantity($p_value),TEXT_ROW);
+            echo "</td>";
+            echo "<td align='right'>";
+            echo $currencies->format($p_temp_price_total/$p_temp_quantity)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($p_temp_price_total/$p_temp_quantity):$currencies->format($p_temp_price_total/$p_temp_quantity);
+            echo "</td>";
+            echo "<td align='right'>";
+            echo $currencies->format($p_temp_price_total)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($p_temp_price_total):$currencies->format($p_temp_price_total);
+            echo "</td>";
+
+            echo "</tr>";
+            foreach($products_info_str[$p_value] as $show_str){
+              echo $show_str;
+            }
+            if($show_all_products_num>0&&!$category_asset_arr[$key]['error']&&$temp_show_all_products_num!=$show_all_products_num){
+              echo "<tr class='assets_error'>";
+              if(count($products)!=0){
+                echo "<td>";
+                echo "</td>";
+              }
+              echo "<td>";
+              echo '&nbsp;&nbsp;'.TEXT_UNSET_DATA;
+              echo "</td>";
+              echo "<td align='right'>";
+              echo show_effective_number($show_all_products_num,TEXT_ROW);
+              echo "</td>";
+              echo "<td align='right'>";
+              echo TEXT_UNSET_DATA;
+              echo "</td>";
+              echo "<td align='right'>";
+              echo TEXT_UNSET_DATA;
+              echo "</td>";
+              echo "</tr>";
+            }
+          }
+          if($parent_show_num>0&&!$category_asset_arr[$key]['error']&&$temp_parent_show_num!=$parent_show_num){
+            echo "<tr class='assets_error'>";
+            if(count($products)!=0){
+              echo "<td>";
+              echo "</td>";
+            }
+            echo "<td>";
+            echo TEXT_UNSET_DATA;
+            echo "</td>";
+            echo "<td align='right'>";
+            echo show_effective_number($parent_show_num,TEXT_ROW);
+            echo "</td>";
+            echo "<td align='right'>";
+            echo TEXT_UNSET_DATA;
+            echo "</td>";
+            echo "<td align='right'>";
+            echo TEXT_UNSET_DATA;
+            echo "</td>";
+            echo "</tr>";
+          }
         }
       foreach($sort_product_arr as $k => $v){
         if($all_product[$k]['products_real_quantity'] == 0){
@@ -368,6 +513,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         $products_info_str = '';
         $products_price_total = 0;
         $products_quantity_total = 0;
+        $show_all_products_num = $all_product[$k]['products_real_quantity'];
+        $temp_show_all_products_num = $show_all_products_num;
         foreach($all_product[$k]['products_info'] as $info_value){
 
             if($products_quantity_num >= $all_product[$k]['quantity_all_product']){
@@ -385,10 +532,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 
               $products_quantity_value = $info_value['products_quantity'] - ($products_quantity_num - $all_product[$k]['quantity_all_product']);
             }
-            $products_info_str .= '<td align="right">'.$products_quantity_value.TEXT_ROW.'</td>';
-            $products_info_str .= '<td align="right">'.$currencies->format(abs($info_value['final_price'])).'</td>';
-            $products_info_str .= '<td align="right">'.$currencies->format(abs($products_quantity_value*$info_value['final_price'])).'</td>';
+            $products_info_str .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
+            $products_info_str .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
+            $products_info_str .= '<td align="right">'.($currencies->format(abs($products_quantity_value*$info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($products_quantity_value*$info_value['final_price'])):$currencies->format(abs($products_quantity_value*$info_value['final_price']))).'</td>';
             $products_info_str .= '</tr>';
+            $show_all_products_num = $show_all_products_num - $products_quantity_value;
             $products_price_total += abs($products_quantity_value*$info_value['final_price']);
             $products_quantity_total += $products_quantity_value;
         }
@@ -406,16 +554,34 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         echo $all_product[$k]['products_name'];
         echo "</td>";
         echo "<td align='right'>";
-        echo $all_product[$k]['products_real_quantity'].TEXT_ROW;
+        echo show_effective_number($all_product[$k]['products_real_quantity'],TEXT_ROW);
         echo "</td>";
         echo "<td align='right'>";
-        echo $currencies->format($products_price_total/$products_quantity_total);
+        echo $currencies->format($products_price_total/$products_quantity_total)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_total/$products_quantity_total):$currencies->format($products_price_total/$products_quantity_total);
         echo "</td>";
         echo "<td align='right'>";
-        echo $currencies->format($products_price_total);
+        echo $currencies->format($products_price_total)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_total):$currencies->format($products_price_total);
         echo "</td>";
         echo "</tr>";
         echo $products_info_str;
+        if($show_all_products_num>0&&!$all_product[$k]['error']&&$temp_show_all_products_num != $show_all_products_num){
+              echo "<tr class='assets_error'>";
+              echo "<td>";
+              echo "</td>";
+              echo "<td>";
+              echo TEXT_UNSET_DATA;
+              echo "</td>";
+              echo "<td align='right'>";
+              echo show_effective_number($show_all_products_num,TEXT_ROW);
+              echo "</td>";
+              echo "<td align='right'>";
+              echo TEXT_UNSET_DATA;
+              echo "</td>";
+              echo "<td align='right'>";
+              echo TEXT_UNSET_DATA;
+              echo "</td>";
+              echo "</tr>";
+        }
 
       }
     }
@@ -426,9 +592,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }
   ?>
   <?php
-    $all_product_info =
-      tep_get_all_asset_category_by_cid($_GET['product_categories_id'],
-          $bflag,$site_id,$start,$end);
     if(isset($_GET['show_status'])&&$_GET['show_status']=='info'
         &&(count($category_asset_arr)!=0||count($products)!=0)){
       //显示详细信息并且分类数组或者商品数组其中一个不为空 
@@ -444,7 +607,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td id='info_value_td' class='assets_bottom_info'>";
-      echo $all_quantity.TEXT_ROW;
+      echo show_effective_number($all_quantity,TEXT_ROW);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
@@ -452,14 +615,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
-      echo $currencies->format(@($products_price_sum/$products_quantity_sum));
+      echo $currencies->format(@($products_price_sum/$products_quantity_sum))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(@($products_price_sum/$products_quantity_sum)):$currencies->format(@($products_price_sum/$products_quantity_sum));
       echo "</td>";
       echo "<tr class='assets_c'>";
       echo "<td class='assets_bottom_info_left' align='right'>";
       echo TEXT_SUM_PRICE;
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
-      echo $currencies->format($products_price_sum);
+      echo $currencies->format($products_price_sum)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_sum):$currencies->format($products_price_sum);
       echo "</td>";
       echo "</tr>";
       echo "</table>";
@@ -472,7 +635,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
-      echo $all_quantity.TEXT_ROW;
+      echo show_effective_number($all_quantity,TEXT_ROW);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
@@ -480,14 +643,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
-      echo $currencies->format(@($products_price_sum/$products_quantity_sum));
+      echo $currencies->format(@($products_price_sum/$products_quantity_sum))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(@($products_price_sum/$products_quantity_sum)):$currencies->format(@($products_price_sum/$products_quantity_sum));
       echo "</td>";
       echo "<tr class='assets_c'>";
       echo "<td  class='asstes_easy_left' align='right'>";
       echo TEXT_SUM_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
-      echo $currencies->format($products_price_sum);
+      echo $currencies->format($products_price_sum)=='0'.TEXT_MONEY_SYMBOL?show_effective_number($products_price_sum):$currencies->format($products_price_sum);
       echo "</td>";
       echo "</tr>";
       echo "</table>";
