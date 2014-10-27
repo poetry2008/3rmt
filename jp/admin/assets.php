@@ -36,14 +36,14 @@ function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){
     if(count($arr)==1){
       return ($str-1).$str_end;
     }else{
-      for($j=$count;$j>0;$j--){
-        if(substr($arr[1],$j-1,1)==0){
+      for($j=$i;$j>0;$j--){
+        if(substr($arr[1],$i-1,1)==0){
           $i--;
         }else{
           break;
         }
       }
-      return $arr[0].'.'.substr($arr[1],0,$i-1).$str_end;
+      return $arr[0].'.'.substr($arr[1],0,$i).$str_end;
     }
   }
 }
