@@ -18,17 +18,31 @@ $kakaran_array = array('http://rmt.kakaran.jp/ragnarok/','http://rmt.kakaran.jp/
 
 //获取游戏分类
 $game_type = $_POST['game'];
-$game_type = $game_type == '' ? 'FF11' : $game_type;
+$flag_check = $_POST['flag'];
+if($flag_check!= ''){
+  //在show里面点击更新
+   $game_type = $game_type == '' ? 'FF11' : $game_type;
+   $category = array('buy','sell');
+   get_contents_main($game_type,$category,'');
+
+}
+
+
+
+function get_contents_main($game_type,$category,$site){
+
   /*
    * jp 游戏各网站采集
    */
-
-  //category_type
-  $category_type = array('buy','sell');
-  //site
   $site_str = array();
   $url_str_array = array();
   $category_id_str_array = array();
+  /*以下是区分是手动更新的还是后台自动执行更新的判断
+   * 买卖是数组是手动更新的,相反就是后台自动更新的
+   * */
+if(is_array($category)){
+	$category_type = $category;
+  //site
   $site_query = mysql_query("select site_id from site order by site_id asc");
   $i = 0;
   $j = 0;
@@ -52,14 +66,29 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
       }
     } 
   }
+}else{
+	if($category==1){
+	    $category_tep = 'buy';
+	}else{
+	    $category_tep ='sell';
+	}
+    $category_type = array($category_tep);
+	$x=0;
+    $category_query = mysql_query("select * from category where site_id='".$site."' and category_type=".$category." and category_name='".$game_type."' and game_server='jp'");
+    $category_array =  mysql_fetch_array($category_query);
+	$x=$site-1;
+        $url_str_array[$category_tep][$x] = $category_array['category_url'];
+        $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
+        $site_str[$category_tep][] = $x;
+}
+/*以下是正式采集*/
+$game_type=$game_type;
 
   foreach($category_type as $category_value){
-
     if($category_value == 'buy'){ 
       $url_array = $url_str_array['buy'];
       $category_id_array = $category_id_str_array['buy'];
       $site = $site_str['buy'];
-
       switch($game_type){ 
         case 'FF14':
           $search_array = array(array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>([a-zA-Z]+).*?\-rmt<\/td>',
@@ -1728,11 +1757,9 @@ $game_type = $game_type == '' ? 'FF11' : $game_type;
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
      $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
-   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')){$curl_flag=0;}else{$curl_flag=1;}
+   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
     $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
     $result_array = $result->fetch();
-echo $url_array[$site_value];
-var_dump($result_array);
 
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
@@ -4048,26 +4075,23 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
       $value = preg_replace('/<.*?>/','',$value);
      //echo "insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."',0)<br>";
       //数据入库
-if($product_key==0){
-  mysql_query("delete from product where category_id='".$category_id_array[$site_value]."'");
-}
- //     $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+      $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
 
     if(strpos($url_array[$site_value],'www.iimy.co.jp')){
       $sort_order =10000-$product_key;
-      $flag_insert = 1;
     }else{
-       $flag_insert = 2;
        $sort_order = 0;
     }
 
-   if($result_str==0 && $flag_insert != 1){
-     $value = '';
-   }
-   if($value!=''){
-       $products_query = mysql_query("insert into product values('','".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
-        }
 
+      if(mysql_num_rows($search_query) == 1){
+
+        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+      }else{
+        if($value!=''){
+          $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
+        }
+      }
       }    
   }
   //exit;
@@ -4176,5 +4200,7 @@ if($game_type == 'FF14'){
     }
   }
 }
-echo '数据采集完毕。';
+//echo '数据采集完毕。';
+/*get_contents_main end*/
+}
 ?>
