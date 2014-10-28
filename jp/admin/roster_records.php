@@ -1039,10 +1039,10 @@ if($param_tep[0]!=''){
         $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
-        $group_str .= '<td style="padding-bottom:8px">';
-        $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
-        $group_str .= '<tr>';
         $group_str .= '<td width="20%">';
+        $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
+        $group_str .= '</td>';
+        $group_str .= '<td>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_user_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_USER.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
@@ -1052,13 +1052,7 @@ if($param_tep[0]!=''){
         $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
-        $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
-        $group_str .= '</td>';
-        $group_str .= '<td>';
         $group_str .= '<a id="set_payrols_info" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')">'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
-        $group_str .= '</td>';
-        $group_str .= '</tr>';
-        $group_str .= '</table>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
 
@@ -1067,28 +1061,10 @@ if($param_tep[0]!=''){
         $group_str .= '<td style="padding-bottom:8px">';
         $group_str .= TEXT_ATTENDANCE_SETTING_SHOW;
         $group_sr .= '</td>';
-        $group_str .= '<td style="padding-bottom:3px">';
-        $group_str .= '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
-        $group_str .= '<tr>';
-        $group_str .= '<td width="20%">';
-        $group_str .= '<select onchange="save_type(this,\''.$self_href.'\')" name="show_mode">';
-        $group_str .= '<option value="1" '.($show_type==1?' selected ':'').'>'.TEXT_ATTENDANCE_CALENDAR_MODE.'</option>';
-        $group_str .= '<option value="0" '.($show_type==0?' selected ':'').'>'.TEXT_ATTENDANCE_TABLE_MODE.'</option>';
-        $group_str .= '</select>';
-        $group_str .= '</td>';
-        $group_str .= '<td align="left">';
+        $group_str .= '<td>';
         $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
         $group_str .= '</td>';
-        $group_str .= '</tr>';
-        $group_str .= '</table>';
-        $group_str .= '</td>';
-        $group_str .= '</tr>';
         
-        $group_str .= '<tr>';
-
-        $group_str .= '<td valign="top">';
-        $group_str .= TEXT_ADL_SELECT_USER_TEXT;
-        $group_sr .= '</td>';
         $group_str .= '<td>';
 		if($show_att_status==1){
 	      $status_error = 'checked ="ckecked"';
@@ -1097,10 +1073,11 @@ if($param_tep[0]!=''){
 		}else{
 	      $status_all = 'checked ="ckecked"';
 		}
-        $group_str .= '<input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>';
+        $group_str .= '<input type="radio" style="margin:0px; padding:0px;" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>';
         $group_str .= '<input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_error" value="1" '.$status_error.'><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>';
         $group_str .= '<input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_null" value="2" '.$status_null.'><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>';
         $group_sr .= '</td>';
+
 
         $group_str .= '</tr>';
         $group_str .= '</table></form>';
@@ -1269,7 +1246,12 @@ while($all_att_row = tep_db_fetch_array($all_att_auery)){
 <?php if($show_type!=1){?>
 <tr>
 <?php 
-echo '  <td width="16%">&nbsp;</td>
+echo '  <td width="16%">
+        <select onchange="save_type(this,\''.$self_href.'\')" name="show_mode">
+        <option value="1" '.($show_type==1?' selected ':'').'>'.TEXT_ATTENDANCE_CALENDAR_MODE.'</option>
+        <option value="0" '.($show_type==0?' selected ':'').'>'.TEXT_ATTENDANCE_TABLE_MODE.'</option>
+        </select>
+	</td>
         <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
         <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
         <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
@@ -1354,14 +1336,14 @@ while($j<=$end_day)
       $show_select_group_users = array($user_value);
       $row_index++;
       if($row_index%2==1){
-        echo '<tr onmouseout="this.className=\'dataTableRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableRow">';
+        echo '<tr style="cursor:pointer">';
       }else{
-        echo '<tr  onmouseout="this.className=\'dataTableSecondRow\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" class="dataTableSecondRow">';
+        echo '<tr style="cursor:pointer">';
       }
       echo '<td height="16">'.$users_info['name'].'</td>';
       if($j == 7 - $start_week){
         for($i = 0; $i<$start_week; $i++){
-          echo "<td>&nbsp;</td>";
+          echo "<td style='cursor:default;'>&nbsp;</td>";
         }
       }
       $week_temp = $j == 7 - $start_week ? 6-$start_week : 6;
@@ -1523,17 +1505,23 @@ while($j<=$end_day)
 <tr>
 <?php 
 echo '
-        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
-        <td width="14%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
+        <td width="16%">
+            <select onchange="save_type(this,\''.$self_href.'\')" name="show_mode">
+            <option value="1" '.($show_type==1?' selected ':'').'>'.TEXT_ATTENDANCE_CALENDAR_MODE.'</option>
+            <option value="0" '.($show_type==0?' selected ':'').'>'.TEXT_ATTENDANCE_TABLE_MODE.'</option>
+            </select>
+		</td>
+        <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_SUNDAY.'</font></td>
+        <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_MONDAY.'</font></td>
+        <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_TUESDAY.'</font></td>
+        <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_WEDNESDAY.'</font></td>
+        <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_THURSDAY.'</font></td>
+        <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_FRIDAY.'</font></td>
+        <td width="12%" align="middle" bgcolor="#eeeeee" height="15"><font size="2">'.CL_TEXT_DATE_STATURDAY.'</font></td>
         ';
         ?>
 </tr>
-<tr>
+<tr><td></td>
 <?php 
 for($i = 0; $i<$start_week; $i++)
 {
@@ -1935,7 +1923,7 @@ if($show_ulist_flag){
   if($week == 6){
     echo "</tr>";
     if($j != $day_num)
-      echo "<tr>";
+      echo "<tr><td></td>";
     else $end = true;
   }
   $j++;
