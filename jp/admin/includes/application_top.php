@@ -593,7 +593,7 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   if ($back_rand_res['value']) {
     $back_rand_info = substr($back_rand_res['value'], 0, 4); 
   } else {
-    $back_rand_info = date('YmdHi', time()); 
+    $back_rand_info = date('Ymd', time()); 
   }
   
 $_SESSION['onetime_pwd'] = true;

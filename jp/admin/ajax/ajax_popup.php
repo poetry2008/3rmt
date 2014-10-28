@@ -9202,7 +9202,7 @@ else if($_GET['action'] == 'set_attendance_info') {
 
   
   $form_str = tep_draw_form('attendances', FILENAME_ROSTER_RECORDS, '&action='.$action, 'post','enctype="multipart/form-data"', 'onSubmit="return check_form();"') ."\n"; 
-  $page_s = TEXT_ATTENDANCE_SETTING_MOVE.TEXT_ATTENDANCE_SETTING_SHOW; 
+  $page_s = TEXT_ATTENDANCE_SETTING_MOVE; 
   $page_str .= '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
   $heading = array();
   $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
@@ -9219,7 +9219,7 @@ else if($_GET['action'] == 'set_attendance_info') {
   $adl_select .= '</select>';
 
       $attendance_info_row[]['text'] = array(
-           array('params' => 'width="20%"','text' => TEXT_ATTENDANCE_SETTING_MOVE),
+           array('params' => 'width="20%"','text' => TEXT_ATTENDANCE_SETTING_TITLE),
            array('text' => $adl_select)
      ); 
       $attendance_info_row[]['text'] = array(
@@ -9229,6 +9229,11 @@ else if($_GET['action'] == 'set_attendance_info') {
       $attendance_info_row[]['text'] = array(
            array('text' => ATTENDANCE_ABBREVIATION),
            array('text' => tep_draw_input_field('short_language',$attendance_info_res['short_language'],'id="short_language" class="input_text_width"' .$show_style).'&nbsp;&nbsp;<font color="red" id="short_lan_error"></font>'),
+     ); 
+	  //sort
+      $attendance_info_row[]['text'] = array(
+           array('text' => ATTENDANCE_SORT),
+           array('text' => tep_draw_input_field('sort',$attendance_info_res['sort'],'class="input_text_width" style="text-align:right;"'.$show_style))
      ); 
 //排班类型
     $attendance_select_type = '<select name="scheduling_type" onchange="change_type_text()" id="type_id" style="width: 109px;" '.$show_style.'>';
@@ -9441,11 +9446,6 @@ else if($_GET['action'] == 'set_attendance_info') {
         array('text' => $right_td)
         );
    
-	  //sort
-      $attendance_info_row[]['text'] = array(
-           array('text' => ATTENDANCE_SORT),
-           array('text' => tep_draw_input_field('sort',$attendance_info_res['sort'],'class="input_text_width" style="text-align:right;"'.$show_style))
-     ); 
     $add_user_text= TEXT_USER_ADDED.$attendance_info_res['add_user'];
     $update_user_text= TEXT_DATE_ADDED.$attendance_info_res['add_time'];
     $add_time_text= TEXT_USER_UPDATE.$attendance_info_res['update_user'];
@@ -9552,7 +9552,7 @@ else if($_GET['action'] == 'set_attendance_info') {
   }
   $adl_select .= '</select>';
   $attendance_info_row[]['text'] = array(
-      array('text' => TEXT_ATTENDANCE_SETTING_MOVE),
+      array('text' => TEXT_ATTENDANCE_SETTING_TITLE),
       array('text' => $adl_select),
       array('text' => tep_draw_hidden_field('id', $id)) 
    ); 
@@ -9582,12 +9582,12 @@ else if($_GET['action'] == 'set_attendance_info') {
   
 	//param
       $attendance_info_row[]['text'] = array(
-           array('text' => ATTENDANCE_PARAM_TEXT),
-           array('text' => '<div>'.TEXT_ATT_SET_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_a',$attendance_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
+           array('text' => TEXT_ADL_SELECT_USER_TEXT),
+           array('text' => '<div>${ '.tep_draw_input_field('param_a',$attendance_info_res['param_a'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 	  $attendance_info_row[]['text'] =array(
-	       array('text' => ''), 
-           array('text' => '<div>'.TEXT_ATT_ACTUAL_VALUE.'&nbsp;&nbsp;${ '.tep_draw_input_field('param_b',$attendance_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
+	       array('text' => TEXT_PRRAM_ATTENDANCE_NUM), 
+           array('text' => '<div>${ '.tep_draw_input_field('param_b',$attendance_info_res['param_b'],'class="input_text_width"'.$show_style).' }</div>')
      ); 
 
 
@@ -9665,7 +9665,7 @@ else if($_GET['action'] == 'set_attendance_info') {
  include(DIR_FS_ADMIN.'classes/notice_box.php');
  $notice_box = new notice_box('popup_order_title', 'popup_order_info');
  $page_str = '<a onclick="hidden_info_box();" href="javascript:void(0);">X</a>';
- $page_s = TEXT_GROUP_USER_LIST.TEXT_ATTENDANCE_SETTING_SHOW; 
+ $page_s = TEXT_GROUP_USER_LIST; 
  $heading[] = array('params' => 'width="22"', 'text' => '<img width="16" height="16" alt="'.IMAGE_ICON_INFO.'" src="images/icon_info.gif">');
  $heading[] = array('align' => 'left', 'text' => $page_s);
  $heading[] = array('align' => 'right', 'text' => $page_str);
@@ -9771,8 +9771,8 @@ $group_str .= '</select>';
   ); 
 $select_all ='<input type="checkbox" value="1" onclick="select_all_box(this.value)" id="select_all_users">';
 $group_content[]['text'] = array(
-      array('text' => SELECT_ALL),
-      array('text' => $select_all.SELECT_ALL)
+      array('text' => TEXT_ATTENDANCE_SELECT_TITLE),
+      array('text' => $select_all.TEXT_ALL_GROUP)
   ); 
 
         foreach($show_group_user as $show_list_uid){
@@ -9800,7 +9800,7 @@ $group_content[]['text'] = array(
        $user_str .= '</div>';
 
     $group_content[]['text'] = array(
-           array('params'=>'width="20%"','text'=> TEXT_GROUP_USER_LIST),
+           array('params'=>'width="20%"','text'=> ''),
            array('text' =>$user_str)
 	); 
 
@@ -11581,6 +11581,9 @@ if($row_array['set_time']==0){
                 </div>
                 </div></td>';
   $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap" colspan="3"', 'text' => TEXT_ATTENDANCE_CHANGE_USER), 
+      );
+  $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
         array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '<table cellspacing="0" cellpadding="0" border="0"><tr><td>'.$date_select_str.'</td><td align="left">'.$date_click_str.'</td></tr></table>')
       );
@@ -11659,6 +11662,9 @@ if($row_array['set_time']==0){
   }else{
     $attendance_select .= '<input type="hidden" value="'.$_GET['uid'].'" name="user_id">';
   }
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap" colspan="3"', 'text' =>TEXT_ATTENDANCE_CHANGE_DETAIL_INFO), 
+  );
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER), 
@@ -11714,6 +11720,10 @@ if($row_array['set_time']==0){
       $allow_user_text = TEXT_ALLOW_USER;
       $allow_user_button = '<input type="button" value="'.TEXT_DEL_ADL.'" '.$disabled.' onclick="del_allow_user(this)">';
     }
+  $as_info_row[]['text'] = array(
+    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
+    array('align' => 'left', 'params' => 'width="40%" nowrap="nowrap"', 'text' => $leave_start.'&nbsp;～&nbsp;'.$leave_end), 
+  );
     $as_info_row[]['text'] = array(
       array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => $allow_user_text), 
       array('align' => 'left', 'params' => 'nowrap="nowrap" id="users_groups"', 'text' => $allow_user_select),
@@ -11758,10 +11768,6 @@ if($row_array['set_time']==0){
     array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $status_str)
   ));
 
-  $as_info_row[]['text'] = array(
-    array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ALLOW_START), 
-    array('align' => 'left', 'params' => 'width="40%" nowrap="nowrap"', 'text' => $leave_start.'&nbsp;～&nbsp;'.$leave_end), 
-  );
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_TEXT_INFO), 

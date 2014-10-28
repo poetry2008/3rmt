@@ -506,6 +506,14 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
     require(DIR_WS_BOXES . 'tools.php');
     require(DIR_WS_BOXES . 'users.php');
   }
+}else if(isset($_GET['action']) && $_GET['action'] == 'update_collect_info'){
+  //把采集的商品价格同步到后台
+  $cid = $_POST['cid'];
+  $category_name_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES." where categories_id='".$cid."' and site_id=0");
+  $category_name_array = tep_db_fetch_array($category_name_query);
+  tep_db_free_result($category_name_query);
+
+  echo $category_name_array['categories_name'];
 }
  
 ?>

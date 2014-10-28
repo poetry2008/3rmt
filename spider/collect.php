@@ -124,7 +124,7 @@ $game_type=$game_type;
                         '100-9999'=>'<td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
                         'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'
                       ),
-                      array('products_name'=>'<th class="rowheader">.*?([^>]*?)<br>.*?<\/th>',
+                    array('products_name'=>'<th class="rowheader">.*?([^>]*?)<br>.*?<\/th>',
                       'price'=>'<td class="center">([0-9,]+)円<\/td>.*?<td class="center">[0-9,]+円<\/td>',
                       'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
@@ -144,13 +144,36 @@ $game_type=$game_type;
                       'price'=>'<td class="col0"><a href=".*?">.*?<\/a><\/td>.*?<td class="col2">([0-9,.]*?) 円 .*?<\/td>',
                       'inventory'=>'<td class="col2">[0-9,.]*? WM .*?<\/td>.*?<td class="col2">([0-9,.]*?) 口 .*?<\/td>' 
                     ),
-                      array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+).*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                    array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+).*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                       'price'=>'<td><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,]+)円<\/td>',
                       'inventory'=>'<td>.*?円<\/span><\/td>.*?<td>([0-9,]+)<\/span>.*?<\/td>.*?<td class="price">.*?<a href=".*?">.*?<\/a>.*?<\/td>' 
-),
+                     ),
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゼニー販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
+                    ),
+                    array('products_name'=>'<td class="center" rowspan="3">(.*?)<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?銀行振込.*?<\/td>',
+                      '1-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
+                      '20-29'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
+                      '30-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
+                      'inventory'=>'<td class="center" rowspan="3">.*?<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">(.*?)<\/td>' 
+                    ),
+                    array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">([a-zA-Z]+).*?<\/a>.*?<\/td>',
+                      '1-49'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
+                      '50-99'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
+                      '100-'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td>',
+          	          'inventory'=>'<td align="left" bgcolor="#D6ECFC">.*?<\/td>.*?<td align="center">(.*?)<\/td>'
+                    ),
+                    array('products_name'=>'<td class="center" rowspan="4">.*?([a-zA-Z]+).*?<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
+                      '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '10-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '20-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>',
+                      'inventory'=>'<td class="center" rowspan="4">.*?<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?([0-9,.]+).*?<\/td>' 
+                    ),
+                    array('products_name'=>'<tr><td class=.*? style="cursor:pointer;"><a .*?>([a-zA-Z]+).*?<\/a><\/td>',
+                      '1-10'=>'<td class=.*?>([0-9,]+)円<\/td><td class=.*?>.*?円<\/td><td class=.*?>.*?円<\/td>',
+                      '11-'=>'<td class=.*?>.*?円<\/td><td class=.*?>([0-9,]+)円<\/td><td class=.*?>.*?円<\/td>',
+	     	          'inventory'=>'<td class=.*? style="cursor:pointer;"><a .*?>([0-9.,]+&nbsp;口)<\/a><\/td>.*?<td class=.*?>.*?円<\/td>' 
                     ),
                   );
         break;
@@ -346,10 +369,10 @@ $game_type=$game_type;
           break;
       case 'L2':
           $search_array = array(
-                     array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>[0-9]+ 鯖(.*?)rmt<\/td>',
+                     array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>[0-9１２３４５鯖]+(.*?)rmt<\/td>',
                           '5-30'=>'<td class=\'border03 border04\'>([0-9,.]+)円<span style=\'margin-right:5px\'>.*?<\/span>.*?WM<\/td><td class=\'border03 border04\'>[0-9,.]+円<span style=\'margin-right:5px\'>.*?<\/span>.*?WM<\/td>',
                           '31-500'=>'<td class=\'border03 border04\'>[0-9,.]+円<span style=\'margin-right:5px\'>.*?<\/span>.*?WM<\/td><td class=\'border03 border04\'>([0-9,.]+)円<span style=\'margin-right:5px\'>.*?<\/span>.*?WM<\/td>',
-                          'inventory'=>'<td class=\'border03 border04\'>([0-9]+)口</td>'                       
+                          'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'                       
                        ),
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                       'price'=>'<td class="center">([0-9.,]+)円<\/td>.*?<td class="center">[0-9.,]+円<\/td>',
@@ -363,13 +386,13 @@ $game_type=$game_type;
                     ),
                     array('products_name'=>'<tr class=".*?">.*?<td rowspan="3"><span>(.*?)<\/span><\/td>',
                           '1-19'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>([0-9.,]+)円<\/td><td>[0-9.,]+円<\/td><td>[0-9.,]+円<\/td>',
-                          '20- 49'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9.,]+円<\/td><td>([0-9.,]+)円<\/td><td>[0-9.,]+円<\/td>',
+                          '20-49'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9.,]+円<\/td><td>([0-9.,]+)円<\/td><td>[0-9.,]+円<\/td>',
                           '50-'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9.,]+円<\/td><td>[0-9.,]+円<\/td><td>([0-9.,]+)円<\/td>',
-                           'inventory'=>'<td>[0-9.,]+円<\/td><td>[0-9.,]+円<\/td><td>([0-9.,]+)円<\/td>.*?<td rowspan="3">([0-9,.]+)口<br\/>'
+                           'inventory'=>'<td>[0-9.,]+円<\/td><td>[0-9.,]+円<\/td><td>[0-9.,]+円<\/td>.*?<td rowspan="3">([0-9,.]+)口<br\/>'
                       ),
-                     array('products_name'=>'<td class="col0"><a href=".*?">(.*?)<\a><\/td>',
-                           'price'=>'<td class="col0"><a href=".*?">(.*?)<\a><\/td>.*?<td class="col2">([0-9]+) 円 <\/td>',
-                           'inventory'=>'<td class="col2">.*? WM <\/td>.*?<td class="col2">([0-9]+) 口 <img src=".*?" alt="増加" width="10" height="13" \/><\/td>'
+                     array('products_name'=>'<td class="col0"><a href=".*?">(.*?)<\/a><\/td>',
+                           'price'=>'<td class="col0"><a href=".*?">.*?<\/a><\/td>.*?<td class="col2">([0-9]+) 円.*?<\/td>',
+                           'inventory'=>'<td class="col2">.*?WM.*?<\/td>.*?<td class="col2">([0-9]+) 口.*?<\/td>'
                          ),
                       array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                       'price'=>'<td><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,]+)円<\/td>',
@@ -380,10 +403,13 @@ $game_type=$game_type;
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
 
-                    array('products_name'=>'<td class="center">.*?([\sa-zA-Z]+?).*?<\/td> ',
-                        'price'=>'<td class="center" nowrap="nowrap" colspan="3">.*?<span style="font-weight: bold;">(.*?)<\/span>.*?<\/td>',
-                        'inventory'=>'<td class="center" nowrap="nowrap" colspan="3">.*?<span style="font-weight: bold;">.*?<\/span>.*?<\/td><td class="center" nowrap="nowrap">(.*?)<\/td>'
+                    array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="3">(.*?)<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?<span style="color: #CC3333; font-weight: bold;">.*?<\/span>.*?<\/td>',                
+                          '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>',
+                          '10-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>',
+                          '20-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*?<\/td>',
+                          'inventory'=>'<td class="center" rowspan="3">.*?<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?<span style="color: #CC3333; font-weight: bold;">(.*?)<\/span>.*?<\/td>'
                         ),
+                        
                     array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">(.*?)<\/a>.*?<\/td>',
                       '1-19'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '20-49'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
@@ -391,8 +417,9 @@ $game_type=$game_type;
                       '100-'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td>',
 					  'inventory'=>'<a href=".*?">.*?<b .*?>(.*?)<\/b>.*?<\/a>' 
                     ),
+            
                     array('products_name'=>'<td class="left" style=".*?"><a href=".*?">(.*?)<\/a><\/td>',
-                        'price'=>'<td class="left" style=".*?"><a href=".*?">.*?<\/a><\/td>.*?<td class="left" style=".*?">([0-9]+)円<\/td>',
+                        'price'=>'<td class="left" style=".*?"><a href=".*?">.*?<\/a><\/td>.*?<td .*?>([0-9]+)円<\/td>',
                         'inventory'=>'<td style=".*?">.*?WM<\/td>.*?<td style=".*?">([0-9]+) 口<\/td>'
                         ),
                     array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
@@ -402,10 +429,10 @@ $game_type=$game_type;
                       '100-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" colspan="2" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>',
                       'inventory'=>'<td class="center" rowspan="4">.*?<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">(.*?)<\/td>' 
                     ),
-                    array('products_name'=>'<td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]]+(.*?)<\/a><\/td>.*?<td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]+&nbsp;口<\/a><\/td>',
+                    array('products_name'=>'<td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]+(.*?)<\/a><\/td> <td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]+&nbsp;口<\/a><\/td>',
                         '1-5'=>'<td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]+&nbsp;口<\/a><\/td><td class=.*?>([0-9]+)円<\/td><td class=.*?>[0-9]+円<\/td>',
                         '6'=>'<td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]+&nbsp;口<\/a><\/td><td class=.*?>[0-9]+円<\/td><td class=.*?>([0-9]+)円<\/td>',
-                        'inventory'=>'<td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]]+.*?<\/a><\/td>.*?<td class=.*? style="cursor:pointer;"><a onClick=".*?">([0-9]+)&nbsp;口<\/a><\/td>'
+                        'inventory'=>'<td class=.*? style="cursor:pointer;"><a onClick=".*?">[0-9]+.*?<\/a><\/td> <td class=.*? style="cursor:pointer;"><a onClick=".*?">([0-9]+)&nbsp;口<\/a><\/td>'
                         ),
                   );
           break;
@@ -1061,6 +1088,11 @@ $game_type=$game_type;
                       'price'=>'<td>([0-9,.]+?)円<\/td>',
                       'inventory'=>'<td>[0-9,.]+?円<\/td>.*?<td>[0-9,.]+?Pt<\/td>.*?<td>(.*?)<\/td>' 
                     ),
+					array(),
+                    array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                      'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
+                      'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
+                    ),
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゼニー買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
@@ -1218,8 +1250,8 @@ $game_type=$game_type;
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
                     array('products_name'=>'<tr class=".*?">.*?<td class="th"><a href=".*?">(.*?)<\/a><\/td>',
-                          'price'=>'<tr class=".*?">.*?<td class="th"><a href=".*?">(.*?)<\/a><\/td>.*?<td>([0-9,.]+)円<\/td>',
-                          'inventory'=>'<td>[0-9,.]+Pt<\/td>.*?<td([0-9,.]+)口.*?<\/a><\/td>'
+                          'price'=>'<tr class=".*?">.*?<td class="th"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)円<\/td>',
+                          'inventory'=>'<td>[0-9,.]+Pt<\/td>.*?<td>([0-9,.]+) 口.*?<\/a><\/td>'
                       ),
                     array(),
                     array('products_name'=>'<tr>.*?<td><a href=".*?">(.*?)<\/a><\/td>',
@@ -1236,7 +1268,7 @@ $game_type=$game_type;
                          '20-'=>'<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*? <\/td><td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*? <\/td><td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*? <\/td>',
                          'inventory'=>'<td class="center" rowspan="3">.*?<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?<span style=".*?">(.*?)<\/span>.*?<\/td>'                        
                         ),
-                    array('products_name'=>'<span class="sell_serverName" style="width:40%">&nbsp;<?a? ?h?r?e?f?=?"?.*?"?>?([^"]*?)<?\/?a?>?<\/span>',
+                    array('products_name'=>'<span class="sell_serverName" style="width:40%">&nbsp;(.*?)<\/span>',
                       'price'=>'<span class="sell_serverPrice" title=".*?" style=".*?"  onmouseover=".*?" onmouseout=".*?">([0-9,.]+)&nbsp;円<\/span>',
                       'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/span>' 
                     ),
@@ -1760,6 +1792,9 @@ $game_type=$game_type;
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
     $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
     $result_array = $result->fetch();
+echo $url_array[$site_value];
+echo $site_value;
+var_dump($result_array);
 
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
@@ -1882,6 +1917,9 @@ if(empty($result_array[0]['products_name'])){
               $result_str = $price;
             break;
              case 'L2':
+              if(strpos($result_array[0]['inventory'][$product_key],'a')){
+  		  $inventory_array[0]=0;
+              }
               if($inventory_array[0] != ''){
                 if($inventory_array[0] >=5 && $inventory_array[0] <=30){
                   $price = $result_array[0]['5-30'][$product_key];
@@ -3222,11 +3260,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
 
             }
         }else if($site_value == 3){//WM
-          if($game_type == 'L2'){
-            preg_match('/([0-9,]+)&nbsp;口/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-          }else{
           preg_match('/([0-9,]+)\s*?(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-          }
            $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
           $price = $result_array[0]['price'][$product_key]; 
           if($result_array[0]['inventory'][$product_key] != ''){
@@ -3649,7 +3683,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             }
        break;
          case 'L2':
-          if($category_value == 'sale'){
+          if($category_value == 'buy'){
            if($inventory_array[0] != ''){
               if($inventory_array[0] >= 0 && $inventory_array[0] <=9){
                 $price = $result_array[0]['1-9'][$product_key];
@@ -3808,7 +3842,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
              }else{
                 $result_inventory = 0;
              }
-             $price = $result_array[0]['10-'][$product_key];
+             $price = $result_array[0]['price'][$product_key];
            }
            $result_str = $price;
          break;
@@ -4075,20 +4109,26 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
       $value = preg_replace('/<.*?>/','',$value);
      //echo "insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."',0)<br>";
       //数据入库
+
+//给主站的商品进行排序
+ if(strpos($url_array[$site_value],'www.iimy.co.jp')){
+      $sort_order =10000-$product_key;
+ }else{
+//如果价格是空或是0
+    if($result_str==0){
+        $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+    }
+       $sort_order = 0;
+   }
+
+//判断数据库是否存在相同名称相同category_id 的商品
       $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
 
-    if(strpos($url_array[$site_value],'www.iimy.co.jp')){
-      $sort_order =10000-$product_key;
-    }else{
-       $sort_order = 0;
-    }
-
-
+//有,则更新 没有,则添加
       if(mysql_num_rows($search_query) == 1){
-
         $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
       }else{
-        if($value!=''){
+        if($value!='' && $result_str!=''){
           $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
         }
       }

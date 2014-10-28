@@ -2412,7 +2412,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <input type="hidden" name="products_id" value="<?php echo $_GET['pID'];?>">
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
-                <td class="main" valign="top"><?php echo (isset($_GET['s_site_id']))?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></td>
+                <td class="main" valign="top"><?php echo '<br>'.tep_get_site_name_by_id(isset($_GET['s_site_id']) ? $_GET['s_site_id'] : 0);?></td>
                 <td class="main" align="right"><?php 
                 $delete_action = FILENAME_CATEGORIES.'?cPath=' .$cPath . '&page='.$_GET['page'].'&action=delete_product_confirm'.($_GET['search']?'&search='.$_GET['search']:'').(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '');
                 if(isset($_GET['show_type'])&&$_GET['show_type']=='one'){
@@ -3300,7 +3300,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                 <tr>
                 <td class="main" align="right">
-                <div style="float:left;"><?php echo (isset($_GET['s_site_id']))?('<br>'.tep_get_site_name_by_id($_GET['s_site_id'])):'';?></div>
+                <div style="float:left;"><?php echo '<br>'.tep_get_site_name_by_id(isset($_GET['s_site_id']) ? $_GET['s_site_id'] : 0);?></div>
               <?php
               if ($_GET['action'] == 'new_category') {
                 if (isset($_GET['new_c_type'])) {
@@ -3723,7 +3723,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 <?php
                 if ($cPath) {
                   //显示分类名
-                  $show_ca_query = tep_db_query("select * from (select c.categories_id,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id =cd.categories_id and c.categories_id ='".$current_category_id."' and cd.language_id = '4' ".  ((isset($_GET['site_id'])&&$_GET['site_id'])?"order by site_id DESC":"").") c where site_id = '0' or site_id ='".$s_site_id."'group by categories_id limit 1");
+                  $show_ca_query = tep_db_query("select * from (select c.categories_id,c.parent_id,cd.site_id, cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id =cd.categories_id and c.categories_id ='".$current_category_id."' and cd.language_id = '4' ".  ((isset($_GET['site_id'])&&$_GET['site_id'])?"order by site_id DESC":"").") c where site_id = '0' or site_id ='".$s_site_id."'group by categories_id limit 1");
                   $show_ca_res = tep_db_fetch_array($show_ca_query);
                   echo '&nbsp;'.$show_ca_res['categories_name'];
                 }
@@ -3880,6 +3880,12 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       'text'=>TABLE_HEADING_CATEGORIES_PEER_PERSON_NO_SETTING);
                 }
               }
+              //采集价格
+              $categories_title_collect = ''; 
+              $categories_title_collect .= "<a class='head_sort_order' href='javascript:void(0);' onclick='update_collect_info(".$show_ca_res['parent_id'].");'>";
+              $categories_title_collect .= PRODUCTS_COLLECT_PRICE;
+              $categories_title_collect .= '</a>';
+              $categories_title_row[] = array('align'=>'center','params'=>'class="dataTableHeadingContent_order"','text'=>$categories_title_collect);  
               $categories_title_price = '';
               //操作时间排序
               if($_GET['order_sort'] == 'price'){
@@ -4506,7 +4512,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                          pd.products_status, 
                          p.products_bflag,
                          p2c.categories_id,
-                         pd.site_id 
+                         pd.site_id,
+                         p.collect_price 
                            from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c,(select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
                            where p.products_id = pd.products_id 
                            and pd.language_id = '" . $languages_id . "' 
@@ -4533,7 +4540,8 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       pd.site_id, 
                       p.sort_order, 
                       p.products_bflag,
-                      pd.products_status 
+                      pd.products_status,
+                      p.collect_price 
                         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c,(select id,romaji from ".TABLE_SITES." union select 0 id ,'ALL' romaji) s 
                         where p.products_id = pd.products_id 
                         and pd.language_id = '" . $languages_id . "' 
@@ -4956,6 +4964,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       $products_table_content_row[] = array('params'=>$products_peer_params, 'text'=>$products_peer_text);
                     }
                   }
+                $products_table_content_row[] = array('params'=>$products_peer_params, 'text'=>$currencies->format($products['collect_price']));
                 $tmp_p_price = ($products['products_bflag'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
                 if (empty($s_site_id)) {
                   $products_price_params .= 'class="dataTableContent" align="right" onclick="show_update_info(this,'.$products['products_id'].', \'3\','. $target_cnt.')" onmouseover="this.style.cursor=\'pointer\'" ';
