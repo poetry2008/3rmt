@@ -216,11 +216,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       $products_quantity_num = 0;
       $products_price_total = 0;
       foreach($temp_row['products_info'] as $info_value){
-
-         if($products_quantity_num >= $temp_row['real_all_product']){
-
-           break;
-         }
+        if($info_value['orders_id']!=''){
          $products_quantity_num += $info_value['products_quantity'];
          $products_quantity_value = $info_value['products_quantity'];
          if($products_quantity_num > $temp_row['real_all_product']){
@@ -229,6 +225,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
          }
          $products_quantity_sum += $products_quantity_value; 
          $products_price_total += abs($products_quantity_value*$info_value['final_price']);
+        }
       }
       $products_price_sum += $products_price_total;
     }
