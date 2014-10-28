@@ -6,6 +6,32 @@ function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){
   if("$str" == 0){
     return TEXT_UNSET_DATA;
   }
+  if($str<1){
+    $str = $str+1;
+    $arr = str_split($str);
+    $add_flag = false;
+    $i=0;
+    foreach($arr as $value){
+      if($add_flag){
+        if($value!=0){
+          break;
+        }
+        $i++;
+      }
+      if($value=='.'){
+        $add_flag = true;
+      }
+    }
+    $i = $i+$count;
+    for($j=$count;$j>0;$j--){
+      if(substr($str,$i+1,1)==0){
+        $i--;
+      }else{
+        break;
+      }
+    }
+    return '0.'.substr($str,2,$i);
+  }
   $arr = explode('.',$str);
   if(count($arr)==1){
     return $str.$str_end;
