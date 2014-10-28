@@ -6,45 +6,18 @@ function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){
   if($str+1 == 1){
     return TEXT_UNSET_DATA;
   }
-  $str = $str+1;
-  $arr = str_split($str);
-  $add_flag = false;
-  $i=0;
-  foreach($arr as $value){
-    if($add_flag){
-      if($value!=0){
-        break;
-      }
-      $i++;
-    }
-    if($value=='.'){
-      $add_flag = true;
-    }
-  }
-  $i = $i+$count;
-  if($str<2){
+  $arr = explode('.',$str);
+  if(count($arr)==1){
+    return $str.$str_end;
+  }else{
     for($j=$count;$j>0;$j--){
-      if(substr($str,$i+1,1)==0){
-        $i--;
+      if(substr($arr[1],$count-1,1)==0){
+        $count--;
       }else{
         break;
       }
     }
-    return '0.'.substr($str,2,$i).$str_end;
-  }else{
-    $arr = explode('.',$str-1);
-    if(count($arr)==1){
-      return ($str-1).$str_end;
-    }else{
-      for($j=$i;$j>0;$j--){
-        if(substr($arr[1],$i-1,1)==0){
-          $i--;
-        }else{
-          break;
-        }
-      }
-      return $arr[0].'.'.substr($arr[1],0,$i).$str_end;
-    }
+    return $arr[0].'.'.substr($arr[1],0,$count).$str_end;
   }
 }
 
@@ -566,11 +539,12 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           $products_show_info = array();
           $products_show_num = array();
           $parent_show_num = $category_asset_arr[$key]['quantity_all_product'];
+          $temp_parent_show_num = $category_asset_arr[$key]['quantity_all_product'];
           foreach($category_asset_arr[$key]['products_info'] as $info_value){
 
             if($products_quantity_num >= $category_asset_arr[$key]['real_all_product']){
 
-              break;
+            //  break;
             }
             if(!in_array($info_value['products_id'],$products_info_arr)){
               $products_info_arr[] = $info_value['products_id'];
@@ -578,12 +552,17 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
               $products_info_str[$info_value['products_id']] = array();
             }
             $info_str_temp = '';
-            $products_quantity_num += $info_value['products_quantity'];
-            $info_str_temp .= '<tr class="assets_c">';
+            if($info_value['orders_id']==''){
+              $info_str_temp .= '<tr class="assets_error">';
+            }else{
+              $info_str_temp .= '<tr class="assets_c">';
+              $products_quantity_num += $info_value['products_quantity'];
+            }
             if(count($products) > 0){
               $info_str_temp .= '<td>&nbsp;</td>';
             }
-            $info_str_temp .= '<td>&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
+            if($info_value['orders_id']!=''){
+            $info_str_temp .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
             $products_quantity_value = $info_value['products_quantity'];
             if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
 
@@ -600,6 +579,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             $products_show_num[$info_value['products_id']][] = $products_quantity_value;
             $products_price_total += abs($products_quantity_value*$info_value['final_price']);
             $products_quantity_total += $products_quantity_value;
+            }
           }
           if($category_asset_arr[$key]['error']){
             echo "<tr class='assets_error'>";
@@ -650,7 +630,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             }
 
             echo "<td>";
-            echo tep_get_products_name($p_value);
+            echo '&nbsp;&nbsp;'.tep_get_products_name($p_value);
             echo "</td>";
             echo "<td align='right'>";
             echo show_effective_number(tep_get_quantity($p_value),TEXT_ROW);
@@ -673,7 +653,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
                 echo "</td>";
               }
               echo "<td>";
-              echo '&nbsp;&nbsp;'.TEXT_UNSET_DATA;
+              echo '&nbsp;&nbsp;&nbsp;&nbsp;'.TEXT_UNSET_DATA;
               echo "</td>";
               echo "<td align='right'>";
               echo show_effective_number($show_all_products_num,TEXT_ROW);
