@@ -2084,3 +2084,19 @@ function show_tags_change(num){
   }
 
 }
+
+//update collect info
+function update_collect_info(cid){
+  $.ajax({
+      type:'POST', 
+      dataType:'text',
+      beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
+      data:'cid='+cid, 
+      async:false, 
+      url: 'ajax.php?action=update_collect_info',
+      success: function(msg) {
+        setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();}, 500);
+        window.location.reload();
+      }
+  }); 
+}

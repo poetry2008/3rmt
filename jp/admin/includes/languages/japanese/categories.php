@@ -314,3 +314,4 @@ define('HIDE_SOME_TAGS','たたむ▲');
 define('SELECT_ALL','全て選択');
 define('SELECT_ONE_TAG','タグを選択してください。');
 define('NO_RELATED_PRODUCTS','データがありません。');
+define('PRODUCTS_COLLECT_PRICE','スパイダー');

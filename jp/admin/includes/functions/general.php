@@ -2708,15 +2708,8 @@ function tep_get_bflag_by_product_id($product_id) {
     返回值: 商品数量的乘积(string) 
  ------------------------------------ */
 function tep_get_full_count2($cnt, $pid, $prate = ''){
-  if ($prate&&$prate!=''&&$prate!=0) {
+  if(number_format($prate * $cnt)){
     return '(' . number_format($prate * $cnt) . ')';
-  }else{
-    $radices = tep_get_radices($pid);
-    if($radices!=1&&$radices!=0){
-    return '(' . number_format($radices * $cnt) . ')';
-    }else{
-      return '';
-    }
   }
 }
 
@@ -8581,6 +8574,10 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
               if($temp_quantity >= $temp_all_product){
                 break;
               }
+              if($orders_products_array['products_rate'] == '' ||
+                  $orders_products_array['products_rate'] == null){
+                continue;
+              }
               if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
                 if($orders_products_array['products_rate'] == $products_rate){
                   $temp_quantity += $orders_products_array['products_quantity'];
@@ -8695,7 +8692,10 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
      }else{
        $products_info_array = array();
        while($orders_products_array = tep_db_fetch_array($o_count_raw)){
-
+         if($orders_products_array['products_rate'] == '' ||
+             $orders_products_array['products_rate'] == null){
+           continue;
+         }
          if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
            if($orders_products_array['products_rate'] == $products_rate){
 

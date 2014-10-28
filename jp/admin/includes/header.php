@@ -178,8 +178,10 @@ function check_header_messages(){
   		}
 	);
 }
-check_header_messages();
-setInterval(function(){check_header_messages()}, 60000);
+$(document).ready(function(){
+  check_header_messages();
+  setInterval(function(){check_header_messages()}, 60000);
+});
 
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {

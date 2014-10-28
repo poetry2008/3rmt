@@ -1567,6 +1567,7 @@ require("includes/note_js.php");
     $bulletin_num = '';
     $bulletin_key = array_search($bulletin['reply_id'],$bulletin_contents_info);
     if($bulletin["content"] != 'deleted' && $bulletin['reply_id'] != 0 && $bulletin_key){
+      $bulletin_contents_alt_info[$bulletin_key] = str_replace(array('>','<',"\n",'"'),array('&gt;','&lt;','<br>','&#34;'),$bulletin_contents_alt_info[$bulletin_key]);
       $bulletin_num .= '<a href="javascript:void(0);" alt="'.$bulletin_contents_alt_info[$bulletin_key].'" title="'.$bulletin_contents_alt_info[$bulletin_key].'">>>';
       $bulletin_num .= $bulletin_key;
       $bulletin_num .= '</a>&nbsp;&nbsp;'; 
