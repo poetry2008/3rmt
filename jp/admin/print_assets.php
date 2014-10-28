@@ -350,7 +350,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
               $info_str_temp .= '<td>&nbsp;</td>';
             }
             if($info_value['orders_id']!=''){
-            $info_str_temp .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
+            $info_str_temp .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;'.$info_value['orders_id'].'</td>';
             $products_quantity_value = $info_value['products_quantity'];
             if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
 
