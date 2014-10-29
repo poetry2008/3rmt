@@ -494,12 +494,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             foreach($products_info_str[$p_value] as $show_str){
               echo $show_str;
             }
-            $show_all_products_num = show_effective_number($show_all_products_num,'');
-            if($sum_flag){
-              foreach($products_type_arr as $type_sum){
-                $show_all_products_num = "$show_all_products_num"-"$type_sum";
-              }
-            }
             if($show_all_products_num>0&&!$category_asset_arr[$key]['error']&&$show_all_products_num!=$temp_show_all_products_num){
               echo "<tr class='assets_error'>";
               if(count($products)!=0){
@@ -522,7 +516,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             }
           }
           $parent_show_num = "$parent_show_num"-"$sub_i";
-          $parent_show_num = show_effective_number($parent_show_num,'');
           if($parent_show_num>0&&!$category_asset_arr[$key]['error']){
             echo "<tr class='assets_error'>";
             if(count($products)!=0){
@@ -606,7 +599,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         echo "</td>";
         echo "</tr>";
         echo $products_info_str;
-        $show_all_products_num = show_effective_number($show_all_products_num,'');
         if($show_all_products_num>0&&!$all_product[$k]['error']&&$show_all_products_num!=$temp_show_all_products_num){
               echo "<tr class='assets_error'>";
               echo "<td>";
