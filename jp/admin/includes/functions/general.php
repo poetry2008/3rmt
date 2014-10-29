@@ -8579,17 +8579,16 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
               }
               if($orders_products_array['products_rate'] == '' ||
                   $orders_products_array['products_rate'] == null){
-                $products_info_array[] = array('orders_id'=>'','products_quantity'=>$tmp_row['products_real_quantity'],'products_id'=>$tmp_row['products_id']);
+                $products_info_array[] = array('type'=>'error','orders_id'=>'','products_quantity'=>$tmp_row['products_real_quantity'],'products_id'=>$tmp_row['products_id']);
               }else{
               if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
                 if($orders_products_array['products_rate'] == $products_rate){
+                  $temp_quantity += $orders_products_array['products_quantity'];
                   $temp_quantity_value = $orders_products_array['products_quantity'];
-                  $temp_quantity += "$temp_quantity_value";
                   if($temp_quantity > $temp_all_product){
-                    $tmp_qvalue = $temp_quantity_value;
-                    $temp_quantity_value = "$temp_quantity_value"-("$temp_quantity" - "$temp_all_product");
-                    $temp_quantity -= "$tmp_qvalue";
-                    $temp_quantity += "$temp_quantity_value";
+                    $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
+                    $temp_quantity -= $orders_products_array['products_quantity'];
+                    $temp_quantity += $temp_quantity_value;
                   }
                   $temp_real_all_quantity += $temp_quantity_value;
                   if($temp_quantity_value < $orders_products_array['products_quantity']){
@@ -8599,14 +8598,14 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
                   $products_price = $orders_products_array['final_price'];
                 }else{
                   $product_relate_quantity=($orders_products_array['products_rate']*$orders_products_array['products_quantity'])/$products_rate;
-                  $temp_quantity += "$product_relate_quantity";
+                  $temp_quantity += $product_relate_quantity;
                   $temp_quantity_value = $product_relate_quantity;
                   if($temp_quantity > $temp_all_product){
-                    $temp_quantity_value = "$product_relate_quantity"-("$temp_quantity" - "$temp_all_product");
-                    $temp_quantity -= "$product_relate_quantity";
-                    $temp_quantity += "$temp_quantity_value";
+                    $temp_quantity_value = $product_relate_quantity-($temp_quantity - $temp_all_product);
+                    $temp_quantity -= $product_relate_quantity;
+                    $temp_quantity += $temp_quantity_value;
                   }
-                  $temp_real_all_quantity += "$temp_quantity_value";
+                  $temp_real_all_quantity += $temp_quantity_value;
                   if($temp_quantity_value < $product_relate_quantity){
                     $orders_products_array['products_quantity'] = $temp_quantity_value;
                   }
@@ -8618,10 +8617,9 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
                 $temp_quantity += $orders_products_array['products_quantity'];
                 $temp_quantity_value = $orders_products_array['products_quantity'];
                 if($temp_quantity > $temp_all_product){
-                  $tmp_qvalue = $temp_quantity_value;
-                  $temp_quantity_value = "$temp_quantity_value"-("$temp_quantity" - "$temp_all_product");
-                  $temp_quantity -= "$tmp_qvalue";
-                  $temp_quantity += "$temp_quantity_value";
+                  $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
+                  $temp_quantity -= $orders_products_array['products_quantity'];
+                  $temp_quantity += $temp_quantity_value;
                 }
                 $temp_real_all_quantity += $temp_quantity_value;
                 if($temp_quantity_value < $orders_products_array['products_quantity']){
